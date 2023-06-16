@@ -1,6 +1,6 @@
 ---
 my_dci_ethernet_interfaces:
-  Ethernet4000:
+  - name: Ethernet4000
     description: My test
     ip_address: 10.1.2.3/12
     shutdown: false
@@ -18,7 +18,7 @@ evpn_overlay_bgp_rtc: true
 # Override other custom_structured_config (above)
 # Will only take effect on DC1_BL1B since the same key is set in hostvars for DC1_BL1A.
 my_special_dci_ethernet_interfaces:
-  Ethernet4000:
+  - name: Ethernet4000
     description: My second test
 
 overlay_rd_type:

@@ -3,9 +3,9 @@
 pod_name: L2LS_L2ONLY
 
 tenants:
-  L2LS_L2ONLY:
+  - name: L2LS_L2ONLY
     l2vlans:
-      100:
+      - id: 100
         name: L2VLAN_100
 
 network_ports:

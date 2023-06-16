@@ -6,6 +6,6 @@ mgmt_gateway: 1.1.1.1
 l2leaf:
   defaults:
   nodes:
-    mgmt_interface_description:
+    - name: mgmt_interface_description
       mgmt_ip: 1.1.1.2
       id: 102

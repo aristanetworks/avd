@@ -4,6 +4,8 @@
 type: dict
 keys:
   design:
+    documentation_options:
+      table: design
     type: dict
     keys:
       type:

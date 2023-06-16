@@ -4,17 +4,17 @@ type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    connected_endpoints:
+    - name: connected_endpoints
 
 servers:
   # single port override physical port description
-  OLD_SW-1/4:
+  - name: OLD_SW-1/4
     adapters:
       - switches: [connected_endpoints]
         switch_ports: [Ethernet4]
         description: "PHYSICAL_PORT_DESCRIPTION"
   # port-channel provide port-channel description
-  OLD_SW-1/5:
+  - name: OLD_SW-1/5
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
         switch_ports: [Ethernet5, Ethernet6]
@@ -22,7 +22,7 @@ servers:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
   # port-channel provide physical and port-channel descriptions
-  OLD_SW-1/6:
+  - name: OLD_SW-1/6
     adapters:
       - switches: [connected_endpoints, connected_endpoints]
         switch_ports: [Ethernet7, Ethernet8]

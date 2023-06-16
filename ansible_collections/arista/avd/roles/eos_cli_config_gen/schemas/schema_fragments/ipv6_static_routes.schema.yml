@@ -10,6 +10,8 @@ keys:
       keys:
         vrf:
           type: str
+          convert_types:
+            - int
         destination_address_prefix:
           type: str
           description: IPv6 Network/Mask

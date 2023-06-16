@@ -13,9 +13,6 @@ router_bgp:
     ecmp: 4
   updates:
     wait_install: true
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -198,6 +195,12 @@ router_bgp:
         - '31:31'
     redistribute_routes:
     - source_protocol: connected
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 2.2.2.2
+        activate: true
+      - ip_address: 2.2.2.3
+        activate: true
     neighbors:
     - ip_address: 2.2.2.2
       peer_group: Tenant_C_BGP_PEER_GROUP
@@ -205,12 +208,6 @@ router_bgp:
     - ip_address: 2.2.2.3
       peer_group: Tenant_C_BGP_PEER_GROUP2
       description: test_bgp_peer_group_without_nodes_2nd_time
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 2.2.2.2
-        activate: true
-      - ip_address: 2.2.2.3
-        activate: true
     updates:
       wait_install: true
   vlan_aware_bundles:

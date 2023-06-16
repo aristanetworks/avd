@@ -4,6 +4,8 @@
 type: dict
 keys:
   bgp_peer_groups:
+    documentation_options:
+      table: bgp-settings
     description: |
       Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
       Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
@@ -19,9 +21,12 @@ keys:
           password:
             type: str
             description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: False
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
       mlag_ipv4_underlay_peer:
         type: dict
         keys:
@@ -32,9 +37,12 @@ keys:
           password:
             type: str
             description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: False
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
       evpn_overlay_peers:
         type: dict
         keys:
@@ -45,9 +53,12 @@ keys:
           password:
             type: str
             description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
       evpn_overlay_core:
         type: dict
         keys:
@@ -58,9 +69,12 @@ keys:
           password:
             type: str
             description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
       mpls_overlay_peers:
         type: dict
         keys:
@@ -71,9 +85,12 @@ keys:
           password:
             type: str
             description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
       rr_overlay_peers:
         type: dict
         keys:
@@ -84,9 +101,12 @@ keys:
           password:
             type: str
             description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
       ipvpn_gateway_peers:
         type: dict
         keys:
@@ -97,9 +117,12 @@ keys:
           password:
             type: str
             description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:

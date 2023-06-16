@@ -4,5 +4,7 @@
 type: dict
 keys:
   underlay_isis_instance_name:
-    description: Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls
+    documentation_options:
+      table: isis-settings
+    description: Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls.
     type: str

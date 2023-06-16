@@ -4,6 +4,8 @@
 type: dict
 keys:
   shutdown_interfaces_towards_undeployed_peers:
+    documentation_options:
+      table: fabric-settings
     type: bool
     default: false
     description: |

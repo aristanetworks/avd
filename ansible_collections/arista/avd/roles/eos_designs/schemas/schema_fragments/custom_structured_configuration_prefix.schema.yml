@@ -4,6 +4,8 @@
 type: dict
 keys:
   custom_structured_configuration_prefix:
+    documentation_options:
+      table: custom-structured-configuration
     type: list
     convert_types:
       - str

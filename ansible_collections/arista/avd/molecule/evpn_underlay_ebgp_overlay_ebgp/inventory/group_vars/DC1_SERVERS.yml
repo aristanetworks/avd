@@ -1,22 +1,22 @@
 port_profiles:
-  TENANT_A_B:
+  - profile: TENANT_A_B
     mode: trunk
     vlans: "110-111,210-211"
 
-  TENANT_A:
+  - profile: TENANT_A
     mode: access
     vlans: "110"
 
-  TENANT_A_MTU:
+  - profile: TENANT_A_MTU
     mode: access
     vlans: "110"
     mtu: 1600
 
-  TENANT_B:
+  - profile: TENANT_B
     mode: trunk
     vlans: "210-211"
 
-  ALL_WITH_SECURITY:
+  - profile: ALL_WITH_SECURITY
     parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
     mode: trunk
     vlans: "1-4094"
@@ -38,7 +38,7 @@ port_profiles:
         level: 2
         unit: percent
 
-  ALL_WITH_SECURITY_PORT_CHANNEL:
+  - profile: ALL_WITH_SECURITY_PORT_CHANNEL
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
@@ -62,7 +62,7 @@ port_profiles:
       description: ALL_WITH_SECURITY_PORT_CHANNEL
       mode: active
 
-  ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK:
+  - profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
@@ -89,14 +89,14 @@ port_profiles:
         mode: static
         timeout: 10
 
-  NESTED_PORT_PROFILE:
+  - profile: NESTED_PORT_PROFILE
     parent_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
     port_channel:
       description: NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
       mode: active
 
 servers:
-  server01_MLAG:
+  - name: server01_MLAG
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth2, Eth3 ]
@@ -107,7 +107,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  server01_MTU_PROFILE_MLAG:
+  - name: server01_MTU_PROFILE_MLAG
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth4, Eth5 ]
@@ -118,7 +118,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  server01_MTU_ADAPTOR_MLAG:
+  - name: server01_MTU_ADAPTOR_MLAG
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth6, Eth7, Eth8, Eth9 ]
@@ -129,7 +129,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  server02_SINGLE_NODE_TRUNK:
+  - name: server02_SINGLE_NODE_TRUNK
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -137,7 +137,7 @@ servers:
         switches: [ DC1-LEAF1A ]
         profile: ALL_WITH_SECURITY
 
-  server02_SINGLE_NODE:
+  - name: server02_SINGLE_NODE
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -145,7 +145,7 @@ servers:
         switches: [ DC1-LEAF1A ]
         profile: TENANT_A
 
-  server03_ESI:
+  - name: server03_ESI
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -157,7 +157,7 @@ servers:
           mode: active
           short_esi: '0303:0202:0101'
 
-  server04_inherit_all_from_profile:
+  - name: server04_inherit_all_from_profile
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -165,7 +165,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY
 
-  server05_no_profile:
+  - name: server05_no_profile
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -190,7 +190,7 @@ servers:
             level: 2
             unit: percent
 
-  server06_override_profile:
+  - name: server06_override_profile
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -216,7 +216,7 @@ servers:
             level: 2
             unit: percent
 
-  server07_inherit_all_from_profile_port_channel:
+  - name: server07_inherit_all_from_profile_port_channel
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -224,7 +224,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL
 
-  server08_no_profile_port_channel:
+  - name: server08_no_profile_port_channel
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -252,7 +252,7 @@ servers:
           description: server08_no_profile_port_channel
           mode: 'on'
 
-  server09_override_profile_no_port_channel:
+  - name: server09_override_profile_no_port_channel
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -279,7 +279,7 @@ servers:
             unit: percent
         port_channel: null   #Setting to null, to override port-channel inherited from profile
 
-  server10_no_profile_port_channel_lacp_fallback:
+  - name: server10_no_profile_port_channel_lacp_fallback
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -309,7 +309,7 @@ servers:
           lacp_fallback:
             mode: static
 
-  server11_inherit_profile_port_channel_lacp_fallback:
+  - name: server11_inherit_profile_port_channel_lacp_fallback
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -317,7 +317,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
 
-  server12_inherit_nested_profile_port_channel_lacp_fallback:
+  - name: server12_inherit_nested_profile_port_channel_lacp_fallback
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -325,7 +325,7 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: NESTED_PORT_PROFILE
 
-  server13_disabled_interfaces:
+  - name: server13_disabled_interfaces
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -334,7 +334,7 @@ servers:
         profile: TENANT_A
         enabled: false
 
-  server14_explicitly_enabled_interfaces:
+  - name: server14_explicitly_enabled_interfaces
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -343,7 +343,7 @@ servers:
         profile: TENANT_A
         enabled: true
 
-  server15_port_channel_disabled_interfaces:
+  - name: server15_port_channel_disabled_interfaces
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]
@@ -355,7 +355,7 @@ servers:
           mode: active
 
 firewalls:
-  FIREWALL01:
+  - name: FIREWALL01
     rack: RackB
     adapters:
       - endpoint_ports: [ E0, E1 ]
@@ -368,7 +368,7 @@ firewalls:
 
 
 routers:
-  ROUTER01:
+  - name: ROUTER01
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth0, Eth1 ]

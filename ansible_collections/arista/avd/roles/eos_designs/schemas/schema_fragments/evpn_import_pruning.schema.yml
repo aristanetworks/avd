@@ -4,10 +4,11 @@
 type: dict
 keys:
   evpn_import_pruning:
+    documentation_options:
+      table: evpn-settings
     description: |
-      Enable VPN import pruning (Min. EOS 4.24.2F)
-      The Route Target extended communities carried by incoming VPN paths will
-      be examined. If none of those Route Targets have been configured for import,
-      the path will be immediately discarded
+      Enable VPN import pruning (Min. EOS 4.24.2F).
+      The Route Target extended communities carried by incoming VPN paths will be examined.
+      If none of those Route Targets have been configured for import, the path will be immediately discarded.
     type: bool
     default: false

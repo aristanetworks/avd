@@ -4,6 +4,8 @@
 type: dict
 keys:
   underlay_ospf_area:
+    documentation_options:
+      table: ospf-settings
     type: str
     convert_types:
       - int

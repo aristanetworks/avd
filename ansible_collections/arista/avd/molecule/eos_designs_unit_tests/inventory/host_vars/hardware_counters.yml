@@ -33,5 +33,5 @@ type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    hardware_counters:
+    - name: hardware_counters
       id: 42

@@ -626,8 +626,6 @@ router ospf 101
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 10 ecmp 10 |
@@ -697,8 +695,6 @@ router ospf 101
 !
 router bgp 65102
    router-id 192.168.255.7
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 10 ecmp 10
    update wait-install
    no bgp default ipv4-unicast

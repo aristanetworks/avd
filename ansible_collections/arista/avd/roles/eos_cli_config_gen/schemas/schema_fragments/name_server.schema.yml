@@ -16,6 +16,8 @@ keys:
           vrf:
             description: VRF Name
             type: str
+            convert_types:
+              - int
       nodes:
         type: list
         items:

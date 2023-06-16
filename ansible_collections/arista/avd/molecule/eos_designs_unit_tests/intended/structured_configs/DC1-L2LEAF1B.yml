@@ -170,8 +170,8 @@ mlag_configuration:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: false
-    id: 120
+  - id: 120
+    enabled: false
 cloudvision_tags:
   device_tags:
   - label: topology_hint_fabric

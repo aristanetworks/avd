@@ -7,9 +7,6 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -109,7 +106,6 @@ management_api_http:
 ptp:
   mode: boundary
   forward_unicast: true
-  clock_identity: 00:1C:73:28:00:01
   source:
     ip: 10.254.1.2
   priority1: 40

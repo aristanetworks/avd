@@ -1,13 +1,8 @@
-# Ansible Collection for Arista Validated Designs
+# Arista Validated Designs
 
 <center><img src="media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
 
-[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). This collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
-
-Full documentation for the collection:
-
-- [stable version](https://www.avd.sh/en/stable/)
-- [collection development version](https://www.avd.sh/en/devel/)
+Arista Validated Designs (AVD) is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
 
 ## Features
 
@@ -19,7 +14,16 @@ Full documentation for the collection:
 
 - [L3LS VXLAN-EVPN, L2LS, and MPLS (beta)](https://avd.sh/en/stable/roles/eos_designs/index.html)
 
-## Roles overview
+## AVD Ansible Collection
+
+[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
+
+Full documentation for the collection:
+
+- [stable version](https://www.avd.sh/en/stable/)
+- [development version](https://www.avd.sh/en/devel/)
+
+### Roles overview
 
 This repository provides content for Arista's **arista.avd** collection. The following roles are included.
 
@@ -36,20 +40,20 @@ This repository provides content for Arista's **arista.avd** collection. The fol
 ![Arista AVD Overview](docs/_media/avd_roles_dark.svg#only-dark)
 ![Arista AVD Overview](docs/_media/avd_roles_light.svg#only-light)
 
-## Custom plugins & modules
+### Collection installation
+
+Ansible galaxy hosts all stable versions of the `arista.avd` collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.sh/en/stable/docs/installation/collection-installation.html).
+
+### Examples
+
+- [Getting started](./docs/getting-started/intro-to-ansible-and-avd.md)
+- [Arista NetDevOps GitHub repository](https://github.com/aristanetworks/netdevops-examples)
+
+### Custom plugins & modules
 
 This repository provides custom plugins for Arista's AVD collection:
 
 - [Arista AVD Plugins](plugins/README.md)
-
-## Collection installation
-
-Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.sh/en/stable/docs/installation/collection-installation.html).
-
-## Examples
-
-- [Getting started examples](./docs/getting-started/intro-to-ansible-and-avd.md)
-- [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional resources
 
@@ -60,7 +64,11 @@ Ansible galaxy hosts all stable versions of this collection. Installation from a
 
 ## Ask a question
 
-Support for this `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
+Support for the `arista.avd` collection is provided by the community directly in this repository. If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions).
+
+### Official Arista support
+
+AVD version 4.x releases with full support from Arista TAC. If your organization has the appropriate support agreement, please don't hesitate to contact TAC with any questions or issues.
 
 ## Contributing
 

@@ -189,6 +189,3 @@ keys:
                   type: int
                   convert_types:
                     - str
-      no_passive_interfaces:
-        type: list
-        description: Unused key - to be removed from eos_designs.

@@ -1,7 +1,7 @@
 ---
 # Minimum config to only test the specific feature.
 node_type_keys:
-  pe:
+  - key: pe
     type: pe
     mpls_lsr: true
     default_mpls_overlay_role: client
@@ -19,7 +19,7 @@ pe:
     loopback_ipv4_pool: 10.42.0.0/24
     bgp_as: 42
   nodes:
-    duplicate-interfaces-point-to-point-services-3:
+    - name: duplicate-interfaces-point-to-point-services-3
       id: 42
 
 type: pe
@@ -48,4 +48,4 @@ tenants:
             nodes: [ "duplicate-interfaces-point-to-point-services-3" ]
             interfaces: [ "Ethernet6" ]
 
-expected_error_message: "Duplicate interface_name Ethernet6.1000 found while generating subinterfaces under port_to_point_services"
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under point_to_point_services. {'name': 'Ethernet6.1000'} conflicts with {'name': 'Ethernet6.1000'}."

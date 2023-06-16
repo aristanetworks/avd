@@ -11,7 +11,7 @@ keys:
       interval:
         type: int
         convert_types:
-        - str
+          - str
       interface_sets:
         type: list
         items:
@@ -51,6 +51,8 @@ keys:
             name:
               description: VRF Name
               type: str
+              convert_types:
+                - int
             description:
               type: str
             interface_sets:

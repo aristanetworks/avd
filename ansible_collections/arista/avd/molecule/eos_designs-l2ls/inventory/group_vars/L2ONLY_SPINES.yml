@@ -9,9 +9,9 @@ spine:
     # Test always_configure_ip_routing on an ipv4 topology
     always_configure_ip_routing: true
   node_groups:
-    L2ONLY_SPINES:
+    - group: L2ONLY_SPINES
       nodes:
-        L2ONLY-SPINE1:
+        - name: L2ONLY-SPINE1
           id: 1
-        L2ONLY-SPINE2:
+        - name: L2ONLY-SPINE2
           id: 2

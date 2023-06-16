@@ -4,6 +4,8 @@
 type: dict
 keys:
   mgmt_vrf_routing:
+    documentation_options:
+      table: management-interface-settings
     type: bool
     default: False
     description: Configure IP routing for the OOB Management VRF.

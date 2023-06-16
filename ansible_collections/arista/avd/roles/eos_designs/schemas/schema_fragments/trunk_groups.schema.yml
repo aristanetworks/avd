@@ -4,12 +4,14 @@
 type: dict
 keys:
   trunk_groups:
+    documentation_options:
+      table: fabric-settings
     type: dict
     keys:
       mlag:
         type: dict
         description: |
-          Trunk Group used for MLAG VLAN (Typically VLAN 4094)
+          Trunk Group used for MLAG VLAN (Typically VLAN 4094).
         keys:
           name:
             type: str
@@ -17,7 +19,7 @@ keys:
       mlag_l3:
         type: dict
         description: |
-          Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093)
+          Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093).
         keys:
           name:
             type: str
@@ -25,7 +27,7 @@ keys:
       uplink:
         type: dict
         description: |
-          Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set
+          Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set.
         keys:
           name:
             type: str
