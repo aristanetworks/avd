@@ -11,7 +11,7 @@ SCRIPTS_DIR = $(CURRENT_DIR)/scripts
 EOS_CLI_CONFIG_GEN_TEMPLATE_DIR = $(VENDOR_DIR)/templates
 SCHEMAS_DIR = $(VENDOR_DIR)/schemas
 EOS_DESIGNS_MODULES_DIR = $(VENDOR_DIR)/eos_designs
-export PYTHONPATH=$(CURRENT_DIR)
+# export PYTHONPATH=$(CURRENT_DIR) # Uncomment to test from source
 
 .PHONY: help
 help: ## Display help message
@@ -24,14 +24,21 @@ dep: copy-libs fix-libs ## Copy and Fix Ansible AVD python files
 test-dep: copy-test-data fix-test-data ## Copy and Fix Ansible AVD test files
 
 .PHONY: clean
+clean: ## Delete vendor dir
 	rm -rf $(VENDOR_DIR)
-	rm -rf $(SCHEMAS_DIR)
 
 .PHONY: build
-build: ##Create pyavd package, (Note: Run make dep first)
+build: ## Build pyavd package, (Note: Run make dep first)
 	pip3 install build
 	rm -rf $(CURRENT_DIR)/build/ $(CURRENT_DIR)/dist/ $(CURRENT_DIR)/pyavd.egg-info/
 	python3 -m build --wheel
+
+.PHONY: publish
+publish: ## Publish pyavd package to PyPI (build first)
+	pip3 install twine
+	twine check dist/*
+	twine upload -r testpypi dist/*
+	twine upload dist/*
 
 .PHONY: copy-libs
 copy-libs: ## Copy files from Ansible AVD collection
@@ -84,22 +91,33 @@ fix-libs: ## Fix/remove various Ansible specifics things from python files
 copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 	rm -rf $(TESTS_ARTIFACTS)
 
+## EOS_CLI_CONFIG_GEN
+
 ## Workaround to get the lookup plugin to resolve this TCAM profile before exporting vars
-	mkdir -p scripts/inventory
-	cp ../ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/TCAM_TRAFFIC_POLICY.conf scripts/inventory/
+	mkdir -p $(SCRIPTS_DIR)/inventory
+	cp $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/TCAM_TRAFFIC_POLICY.conf $(SCRIPTS_DIR)/inventory/
 
 ## Excluding prompt because the unsafe marker is lost during the export of hostvars.
 ## Excluding custom-templates since there is no jinja support in pyavd
-	ansible-playbook --limit 'all:!prompt:!custom-templates' -i ../ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini scripts/export_test_vars.yml -e testdir=eos_cli_config_gen -f 10
+	ansible-playbook \
+		--limit 'all:!prompt:!custom-templates' \
+		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini \
+		$(SCRIPTS_DIR)/export_test_vars.yml \
+		-e testdir=eos_cli_config_gen \
+		-f 10
 
-	rm -rf scripts/inventory/
+	rm -rf $(SCRIPTS_DIR)/inventory/
 
 ## Remove excluded tests
 	rm $(TESTS_ARTIFACTS)/eos_cli_config_gen/expected_configs/prompt.cfg
 	rm $(TESTS_ARTIFACTS)/eos_cli_config_gen/expected_configs/custom-templates.cfg
 
+## EOS_DESIGNS
 
-	ansible-playbook -i ../ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml scripts/export_test_vars.yml -e testdir=eos_designs_unit_tests -f 10
+	ansible-playbook \
+		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml $(SCRIPTS_DIR)/export_test_vars.yml \
+		-e testdir=eos_designs_unit_tests \
+		-f 10
 
 ## Remove tests with custom templates
 	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/vars/CUSTOM-TEMPLATES*.json

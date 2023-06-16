@@ -1,15 +1,3 @@
-[build-system]
-requires = [
-    "setuptools>=61.2",
-    "wheel",
-    "jinja2>=3.0",
-    "jsonschema>=4.5.1",
-    "deepmerge>=1.1.0",
-    "pyyaml>=6.0.0",
-    "mkdocstrings[python]",
-]
-build-backend = "setuptools.build_meta"
-
 [project]
 name="pyavd"
 dynamic = ["version"]
@@ -40,6 +28,18 @@ requires-python = ">=3.10"
 [project.urls]
 homepage = "https://avd.arista.com"
 repository = "https://github.com/aristanetworks/ansible-avd"
+
+[build-system]
+requires = [
+    "setuptools>=61.2",
+    "wheel",
+    "jinja2>=3.0",
+    "jsonschema>=4.5.1",
+    "deepmerge>=1.1.0",
+    "pyyaml>=6.0.0",
+    "mkdocstrings[python]",
+]
+build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 include-package-data = true

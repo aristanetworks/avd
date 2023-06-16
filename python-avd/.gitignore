@@ -11,3 +11,4 @@ __pycache__/
 /pyavd/vendor/
 /pyavd/version.py
 *.prof
+/site/

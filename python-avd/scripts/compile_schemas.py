@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 from pickle import HIGHEST_PROTOCOL, dump
+from sys import path
 
 from yaml import safe_load
+
+path.append(".")
 
 from pyavd.vendor.schema.default_schemas import DEFAULT_PICKLED_SCHEMAS, DEFAULT_SCHEMAS
 

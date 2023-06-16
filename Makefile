@@ -17,7 +17,7 @@ collection-build: ## Build arista.cvp collection locally
 	ansible-galaxy collection build --force ansible_collections/arista/avd
 
 #########################################
-# pyavd package actions                 #
+# pyavd actions                 #
 #########################################
 .PHONY: pyavd-build
 pyavd-build: ## Build pyavd python package locally
@@ -25,7 +25,11 @@ pyavd-build: ## Build pyavd python package locally
 
 .PHONY: pyavd-test
 pyavd-test: ## Test pyavd python code
-	cd python-avd && $(MAKE) dep test-dep test
+	cd python-avd && tox
+
+.PHONY: pyavd-publish
+pyavd-build: ## Build pyavd python package locally
+	cd python-avd && $(MAKE) dep build
 
 #########################################
 # Code Validation using ansible-test 	#
