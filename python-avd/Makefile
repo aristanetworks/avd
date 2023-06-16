@@ -35,9 +35,9 @@ build: ## Build pyavd package, (Note: Run make dep first)
 
 .PHONY: publish
 publish: ## Publish pyavd package to PyPI (build first)
-	pip3 install twine
-	twine check dist/*
-	twine upload -r testpypi dist/*
+	pip3 install twine && \
+	twine check dist/* && \
+	twine upload -r testpypi dist/* && \
 	twine upload dist/*
 
 .PHONY: copy-libs

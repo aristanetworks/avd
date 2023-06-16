@@ -25,11 +25,11 @@ pyavd-build: ## Build pyavd python package locally
 
 .PHONY: pyavd-test
 pyavd-test: ## Test pyavd python code
-	cd python-avd && tox
+	cd python-avd && $(MAKE) dep && tox
 
 .PHONY: pyavd-publish
-pyavd-build: ## Build pyavd python package locally
-	cd python-avd && $(MAKE) dep build
+pyavd-build: ## Build and publish pyavd python package
+	cd python-avd && $(MAKE) dep build publish
 
 #########################################
 # Code Validation using ansible-test 	#
