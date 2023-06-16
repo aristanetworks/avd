@@ -1,6 +1,6 @@
 ---
 - name: Remove output folders
-  hosts: all
+  hosts: test-hosts
   gather_facts: false
   connection: local
   vars:

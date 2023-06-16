@@ -1,3 +1,37 @@
 # UNDERLAY_MULTICAST_TESTS
 
 mgmt_gateway: 192.168.200.5
+
+underlay_multicast_rps:
+  - rp: 192.168.200.1
+    groups:
+      - 239.255.1.0/24
+  - rp: 192.168.200.2
+    groups:
+      - 239.255.2.0/24
+    access_list_name: RP_ACL_2
+  - rp: 192.168.200.3
+    groups:
+      - 239.255.3.0/24
+    access_list_name: RP_ACL_3
+    nodes:
+      - name: UNDERLAY-MULTICAST-L3LEAF1A
+        loopback_number: 3
+  - rp: 192.168.200.4
+    groups:
+      - 239.255.4.0/24
+    access_list_name: RP_ACL_4
+    nodes:
+      - name: UNDERLAY-MULTICAST-L3LEAF1A
+        loopback_number: 4
+      - name: UNDERLAY-MULTICAST-L3LEAF1B
+        loopback_number: 4
+  - rp: 192.168.200.5
+    groups:
+      - 239.255.5.0/24
+    access_list_name: RP_ACL_5
+    nodes:
+      - name: UNDERLAY-MULTICAST-L3LEAF2A
+        loopback_number: 5
+      - name: UNDERLAY-MULTICAST-L3LEAF2B
+        loopback_number: 5
