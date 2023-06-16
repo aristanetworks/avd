@@ -42,7 +42,7 @@ Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista
 {%         set row_interface_groups = unit.groups.interface_groups | arista.avd.default(['-']) | arista.avd.natural_sort | join('<br/>') %}
 {%         set row_bgp_groups = unit.groups.bgp_groups | arista.avd.default(['-']) | arista.avd.natural_sort | join('<br/>') %}
 {%         set row_unit_profile = unit.profile | arista.avd.default(maintenance.default_unit_profile, 'Default') %}
-{%         set row_quiesce = unit.quiesce | arista.avd.default(false) | ternary('Yes', 'No') %}
+{%         set row_quiesce = 'Yes' if unit.quiesce is arista.avd.defined(true) else 'No' %}
 | {{ unit.name }} | {{ row_interface_groups }} | {{ row_bgp_groups }} | {{ row_unit_profile }} | {{ row_quiesce }} |
 {%     endfor %}
 

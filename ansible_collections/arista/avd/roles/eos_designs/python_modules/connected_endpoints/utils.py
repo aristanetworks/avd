@@ -24,7 +24,7 @@ class UtilsMixin:
     @cached_property
     def _filtered_connected_endpoints(self) -> list:
         """
-        Return list of endpoints defined under one of the keys in "connected_endpoint_keys"
+        Return list of endpoints defined under one of the keys in "connected_endpoints_keys"
         which are connected to this switch.
 
         Adapters are filtered to contain only the ones connected to this switch.
