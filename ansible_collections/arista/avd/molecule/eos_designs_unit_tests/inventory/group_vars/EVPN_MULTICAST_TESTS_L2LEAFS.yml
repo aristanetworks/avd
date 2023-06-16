@@ -12,7 +12,7 @@ l2leaf:
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     uplink_switches: [ EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B ]
   nodes:
-    EVPN-MULTICAST-L2LEAF1A:
+    - name: EVPN-MULTICAST-L2LEAF1A
       id: 1
       mgmt_ip: 192.168.200.109/24
       uplink_switch_interfaces: [ Ethernet6, Ethernet6 ]

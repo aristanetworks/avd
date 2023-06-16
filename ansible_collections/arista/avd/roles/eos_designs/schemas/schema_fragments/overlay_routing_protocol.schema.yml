@@ -4,6 +4,8 @@
 type: dict
 keys:
   overlay_routing_protocol:
+    documentation_options:
+      table: overlay-settings
     description: |
       - The following overlay routing protocols are supported:
         - eBGP: Configures fabric with eBGP, default for l3ls-evpn design.

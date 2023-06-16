@@ -13,7 +13,7 @@ keys:
           local:
             type: str
             convert_types:
-            - int
+              - int
             description: |
               Engine ID in hexadecimal
           remotes:
@@ -24,7 +24,7 @@ keys:
                 id:
                   type: str
                   convert_types:
-                  - int
+                    - int
                   description: |
                     Remote engine ID in hexadecimal
                 address:
@@ -34,7 +34,7 @@ keys:
                 udp_port:
                   type: int
                   convert_types:
-                  - str
+                    - str
       contact:
         type: str
         description: SNMP contact
@@ -45,7 +45,7 @@ keys:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -79,6 +79,8 @@ keys:
               description: IPv4 access list name
             vrf:
               type: str
+              convert_types:
+                - int
       ipv6_acls:
         type: list
         items:
@@ -89,11 +91,13 @@ keys:
               description: IPv6 access list name
             vrf:
               type: str
+              convert_types:
+                - int
       local_interfaces:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -103,6 +107,8 @@ keys:
               description: Interface name
             vrf:
               type: str
+              convert_types:
+                - int
       views:
         type: list
         items:
@@ -163,7 +169,7 @@ keys:
             udp_port:
               type: int
               convert_types:
-              - str
+                - str
               description: |
                 udp_port will not be used if no remote_address is configured
             version:
@@ -172,7 +178,7 @@ keys:
             localized:
               type: str
               convert_types:
-              - int
+                - int
               description: |
                 Engine ID in hexadecimal for localizing auth and/or priv
             auth:
@@ -201,10 +207,12 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
+              convert_types:
+                - int
             version:
               type: str
               convert_types:
-              - int
+                - int
               valid_values: ["1", "2c", "3"]
             community:
               type: str
@@ -244,11 +252,14 @@ keys:
                   default: true
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+                - int
             enable:
               type: bool

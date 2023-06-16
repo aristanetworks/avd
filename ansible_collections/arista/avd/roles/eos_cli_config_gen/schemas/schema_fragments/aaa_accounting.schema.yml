@@ -90,6 +90,3 @@ keys:
                   type: str
                 logging:
                   type: bool
-          commands_default:
-            type: list
-            description: "Deprecated and removed key from AVD 2.x"

@@ -4,7 +4,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get
 
 from .utils import UtilsMixin
 
@@ -30,22 +30,37 @@ class VlanInterfacesMixin(UtilsMixin):
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
-                    vlan_id = int(svi["id"])
-                    vlan_interfaces.append({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_svi(svi, vrf, tenant)})
+                    vlan_interface = self._get_vlan_interface_config_for_svi(svi, vrf)
+                    append_if_not_duplicate(
+                        list_of_dicts=vlan_interfaces,
+                        primary_key="name",
+                        new_dict=vlan_interface,
+                        context="VLAN Interfaces",
+                        context_keys=["name", "tenant"],
+                        ignore_keys={"tenant"},
+                    )
 
                 # MLAG IBGP Peering VLANs per VRF
                 # Continue to next VRF if mlag vlan_id is not set
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is None:
                     continue
 
-                vlan_interfaces.append({"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_mlag_peering(vrf, tenant)})
+                vlan_interface = {"name": f"Vlan{vlan_id}", **self._get_vlan_interface_config_for_mlag_peering(vrf)}
+                append_if_not_duplicate(
+                    list_of_dicts=vlan_interfaces,
+                    primary_key="name",
+                    new_dict=vlan_interface,
+                    context="MLAG iBGP Peering VLAN Interfaces",
+                    context_keys=["name", "tenant"],
+                    ignore_keys={"tenant"},
+                )
 
         if vlan_interfaces:
             return vlan_interfaces
 
         return None
 
-    def _get_vlan_interface_config_for_svi(self, svi, vrf, tenant) -> dict:
+    def _get_vlan_interface_config_for_svi(self, svi, vrf) -> dict:
         def _check_virtual_router_mac_address(vlan_interface_config: dict, variables: list):
             """
             Check if any variable in the list of variables is not None in vlan_interface_config
@@ -58,7 +73,8 @@ class VlanInterfacesMixin(UtilsMixin):
                 )
 
         vlan_interface_config = {
-            "tenant": tenant["name"],
+            "name": f"Vlan{int(svi['id'])}",
+            "tenant": svi["tenant"],
             "tags": svi.get("tags"),
             "description": default(svi.get("description"), svi["name"]),
             "shutdown": not (svi.get("enabled", False)),
@@ -90,7 +106,7 @@ class VlanInterfacesMixin(UtilsMixin):
             if "ip_address_virtual" in vlan_interface_config:
                 if (vrf_diagnostic_loopback := get(vrf, "vtep_diagnostic.loopback")) is None:
                     raise AristaAvdMissingVariableError(
-                        f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{tenant['name']}'."
+                        f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{svi['tenant']}'."
                         "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
                     )
                 pim_config_ipv4["local_interface"] = f"Loopback{vrf_diagnostic_loopback}"
@@ -158,9 +174,9 @@ class VlanInterfacesMixin(UtilsMixin):
 
         return vlan_interface_config
 
-    def _get_vlan_interface_config_for_mlag_peering(self, vrf, tenant) -> dict:
+    def _get_vlan_interface_config_for_mlag_peering(self, vrf) -> dict:
         vlan_interface_config = {
-            "tenant": tenant["name"],
+            "tenant": vrf["tenant"],
             "type": "underlay_peering",
             "shutdown": False,
             "description": f"MLAG_PEER_L3_iBGP: vrf {vrf['name']}",

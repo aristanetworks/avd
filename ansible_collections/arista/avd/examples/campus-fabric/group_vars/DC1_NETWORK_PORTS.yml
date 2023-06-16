@@ -2,10 +2,20 @@
 ### group_vars/DC1_NETWORK_PORTS.yml
 
 port_profiles:
-  PP-DOT1X:
+  - profile: PP-DOT1X
     mode: "trunk phone"
     spanning_tree_portfast: edge
     spanning_tree_bpduguard: enabled
+    poe:
+      priority: critical
+      reboot:
+        action: maintain
+      link_down:
+        action: maintain
+      shutdown:
+        action: power-off
+      limit:
+        class: 4
     dot1x:
       port_control: auto
       reauthentication: true

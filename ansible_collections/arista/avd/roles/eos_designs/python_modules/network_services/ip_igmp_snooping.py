@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get
 
 from .utils import UtilsMixin
 
@@ -33,11 +33,23 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if vlan := self._ip_igmp_snooping_vlan(svi, tenant):
-                        vlans.append(dict(vlan, id=int(svi["id"])))
+                        append_if_not_duplicate(
+                            list_of_dicts=vlans,
+                            primary_key="id",
+                            new_dict=vlan,
+                            context=f"IGMP snooping for SVIs in VRF '{vrf['name']}'",
+                            context_keys=["id"],
+                        )
 
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._ip_igmp_snooping_vlan(l2vlan, tenant):
-                    vlans.append(dict(vlan, id=int(l2vlan["id"])))
+                    append_if_not_duplicate(
+                        list_of_dicts=vlans,
+                        primary_key="id",
+                        new_dict=vlan,
+                        context="IGMP snooping for L2VLANs",
+                        context_keys=["id"],
+                    )
 
         if vlans:
             ip_igmp_snooping["vlans"] = vlans
@@ -92,5 +104,8 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             )
             if version is not None:
                 ip_igmp_snooping_vlan["querier"]["version"] = version
+
+        if ip_igmp_snooping_vlan:
+            return {"id": int(vlan["id"]), **ip_igmp_snooping_vlan}
 
         return ip_igmp_snooping_vlan

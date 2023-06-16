@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Management API GNMI](#management-api-gnmi)
+  - [Management API gNMI](#management-api-gnmi)
 
 ## Management
 
@@ -34,23 +34,25 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-### Management API GNMI
+### Management API gNMI
 
-#### Management API GNMI Summary
+#### Management API gNMI Summary
 
-| VRF with GNMI | OCTA |
-| ------------- | ---- |
-| MGMT | enabled |
-| MONITORING | enabled |
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
+| --------- | ----------- | --- | ---------------------- | --- |
+| MGMT | - | MGMT | last-change-time | ACL-GNMI |
+| MONITORING | - | MONITORING | last-change-time | - |
 
-#### Management API gnmi configuration
+Provider eos-native is configured.
+
+#### Management API gNMI configuration
 
 ```eos
 !
 management api gnmi
    transport grpc MGMT
-      ip access-group ACL-GNMI
       vrf MGMT
+      ip access-group ACL-GNMI
    transport grpc MONITORING
       vrf MONITORING
    provider eos-native

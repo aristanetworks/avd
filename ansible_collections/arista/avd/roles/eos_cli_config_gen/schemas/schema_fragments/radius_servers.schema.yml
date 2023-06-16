@@ -17,6 +17,8 @@ keys:
           description: Host IP address or name
         vrf:
           type: str
+          convert_types:
+            - int
         key:
           type: str
           description: Encrypted key

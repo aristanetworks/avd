@@ -4,6 +4,8 @@
 type: dict
 keys:
   cvp_instance_ip:
+    documentation_options:
+      table: cloudvision-settings
     type: str
     description: |
       IPv4 address or DNS name for CloudVision.

@@ -546,8 +546,6 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
@@ -632,8 +630,6 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 !
 router bgp 65105
    router-id 192.168.255.11
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast

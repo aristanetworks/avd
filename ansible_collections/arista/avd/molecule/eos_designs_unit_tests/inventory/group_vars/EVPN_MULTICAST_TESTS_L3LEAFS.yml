@@ -23,13 +23,13 @@ l3leaf:
   # - p2p links configured with "pim ipv4 sparse-mode"
   # - Multi vtep configuration
   # - proper configuration of vlan-aware bundles (igmp redistribution)
-    EVPN_MULTICAST_L3LEAF1:
+    - group: EVPN_MULTICAST_L3LEAF1
       nodes:
-        EVPN-MULTICAST-L3LEAF1A:
+        - name: EVPN-MULTICAST-L3LEAF1A
           id: 1
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: [ Ethernet1 ]
-        EVPN-MULTICAST-L3LEAF1B:
+        - name: EVPN-MULTICAST-L3LEAF1B
           id: 2
           mgmt_ip: 192.168.200.106/24
           uplink_switch_interfaces: [ Ethernet2 ]
@@ -42,21 +42,21 @@ l3leaf:
     # - no changes to vxlan source VTEP configuration since this is non-mlag
     # - proper configuration of bgp vlans (igmp redistribution)
     # - platform trident * configuration
-    EVPN-MULTICAST-L3LEAF2:
+    - group: EVPN-MULTICAST-L3LEAF2
       platform: "7050X3"
       nodes:
-        EVPN-MULTICAST-L3LEAF2A:
+        - name: EVPN-MULTICAST-L3LEAF2A
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [ Ethernet3 ]
-    EVPN_MULTICAST_L3LEAF3:
+    - group: EVPN_MULTICAST_L3LEAF3
       mlag: false
       nodes:
-        EVPN-MULTICAST-L3LEAF3A:
+        - name: EVPN-MULTICAST-L3LEAF3A
           id: 4
           mgmt_ip: 192.168.200.108/24
           uplink_switch_interfaces: [ Ethernet4 ]
-        EVPN-MULTICAST-L3LEAF3B:
+        - name: EVPN-MULTICAST-L3LEAF3B
           id: 5
           mgmt_ip: 192.168.200.109/24
           uplink_switch_interfaces: [ Ethernet5 ]

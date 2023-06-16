@@ -13,9 +13,6 @@ router_bgp:
     ecmp: 4
   updates:
     wait_install: true
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -194,6 +191,10 @@ router_bgp:
         - '31:31'
     redistribute_routes:
     - source_protocol: connected
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 1.1.1.1
+        activate: true
     neighbors:
     - ip_address: 1.1.1.1
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
@@ -202,10 +203,6 @@ router_bgp:
     - ip_address: BEBA::C0CA:C07A
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       description: test_ipv6
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 1.1.1.1
-        activate: true
     address_family_ipv6:
       neighbors:
       - ip_address: BEBA::C0CA:C07A

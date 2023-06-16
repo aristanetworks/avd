@@ -8,7 +8,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    SNMP_SYSTEM_MAC_ENGINEID_2:
+    - name: SNMP_SYSTEM_MAC_ENGINEID_2
       id: 42
       # no topology system_mac_address
 

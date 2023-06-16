@@ -5,11 +5,11 @@ pod_name: L2LS_OSPF
 underlay_routing_protocol: ospf
 
 tenants:
-  L2LS_OSPF:
+  - name: L2LS_OSPF
     vrfs:
-      default:
+      - name: default
         svis:
-          100:
+          - id: 100
             name: SVI_100
             ip_address_virtual: 10.0.100.1/24
             enabled: true

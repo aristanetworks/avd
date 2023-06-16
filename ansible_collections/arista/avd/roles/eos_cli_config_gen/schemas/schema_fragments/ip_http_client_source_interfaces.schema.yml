@@ -13,3 +13,5 @@ keys:
           type: str
         vrf:
           type: str
+          convert_types:
+            - int

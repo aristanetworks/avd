@@ -6,7 +6,7 @@ l3leaf:
     bgp_as: 42
     vtep_loopback_ipv4_pool: 10.43.0.0/24
   nodes:
-    duplicate-interfaces-core-interfaces-with-port-channel:
+    - name: duplicate-interfaces-core-interfaces-with-port-channel
       id: 42
 
 type: l3leaf
@@ -41,8 +41,10 @@ core_interfaces:
         mode: active
         nodes_child_interfaces:
           # duplicate interface name
-          duplicate-interfaces-core-interfaces-with-port-channel: [ Ethernet1 ]
-          core-2-ospf-ldp: [ Ethernet12]
+          - node: duplicate-interfaces-core-interfaces-with-port-channel
+            interfaces: [ Ethernet1 ]
+          - node: core-2-ospf-ldp
+            interfaces: [ Ethernet12]
       profile: isis_bb_profile
 
-expected_error_message: "Duplicate interface name Ethernet1 found while generating ethernet_interfaces for core_interfaces with port-channel members, peer: core-2-ospf-ldp, peer_interface: Port-Channel12. Description on duplicate interface: P2P_LINK_TO_peer1_Ethernet2"
+expected_error_message: "Duplicate interface name Ethernet1 found while generating ethernet_interfaces for core_interfaces with port-channel members, peer: core-2-ospf-ldp, peer_interface: Ethernet12. Description on duplicate interface: P2P_LINK_TO_peer1_Ethernet2"

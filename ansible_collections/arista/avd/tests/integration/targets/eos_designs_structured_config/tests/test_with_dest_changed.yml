@@ -1,0 +1,29 @@
+- name: Test with dest (changing) - Remove test file to force change in template action
+  ansible.builtin.file:
+    path: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+    state: absent
+
+- name: Test with dest (changing)
+  ignore_errors: no
+  register: result
+  arista.avd.eos_designs_structured_config:
+    dest: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+
+- name: Compare actual output with expected output
+  ansible.builtin.shell: diff "{{ expected_output_dir }}/eos_designs_structured_config_test_with_dest.yml" "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.yml"
+  failed_when: diff_output.rc
+  register: diff_output
+  delegate_to: localhost
+
+- name: Set expected_ansible_facts variable
+  ansible.builtin.include_vars:
+    name: expected_ansible_facts
+    file: "{{ expected_output_dir }}/eos_designs_structured_config_ansible_facts.yml"
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.changed == true
+      - result.ansible_facts is defined
+      - result.ansible_facts == expected_ansible_facts

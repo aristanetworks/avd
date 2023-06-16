@@ -4,6 +4,8 @@
 type: dict
 keys:
   vxlan_vlan_aware_bundles:
+    documentation_options:
+      table: evpn-settings
     deprecation:
       warning: true
       new_key: evpn_vlan_aware_bundles

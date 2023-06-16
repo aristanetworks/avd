@@ -10,10 +10,10 @@ l3spine:
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
   node_groups:
-    BGP_SPINES:
+    - group: BGP_SPINES
       bgp_as: 65001
       nodes:
-        BGP-SPINE1:
+        - name: BGP-SPINE1
           id: 1
-        BGP-SPINE2:
+        - name: BGP-SPINE2
           id: 2

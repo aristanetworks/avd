@@ -4,5 +4,7 @@
 type: dict
 keys:
   terminattr_smashexcludes:
+    documentation_options:
+      table: cloudvision-settings
     type: str
     default: "ale,flexCounter,hardware,kni,pulse,strata"

@@ -275,5 +275,5 @@
 
 | Profile Name | Parent Profile |
 | ------------ | -------------- |
-| NESTED_TENANT_A | - |
+| NESTED_TENANT_A | TENANT_A |
 | TENANT_A | - |

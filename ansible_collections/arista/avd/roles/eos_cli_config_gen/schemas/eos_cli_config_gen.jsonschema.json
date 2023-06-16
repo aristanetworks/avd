@@ -203,11 +203,6 @@
                 }
               },
               "title": "Default"
-            },
-            "commands_default": {
-              "type": "array",
-              "description": "Deprecated and removed key from AVD 2.x",
-              "title": "Commands Default"
             }
           },
           "additionalProperties": false,
@@ -523,7 +518,6 @@
     "access_lists": {
       "type": "array",
       "title": "IP Extended Access-Lists (legacy model)",
-      "description": "AVD currently supports 2 different data models for extended ACLs:\n\n- The legacy `access_lists` data model, for compatibility with existing deployments\n- The improved `ip_access_lists` data model, for access to more EOS features\n\nBoth data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.\nAccess list names must be unique.\n\nThe legacy data model supports simplified ACL definition with `sequence` to `action` mapping:\n",
       "items": {
         "type": "object",
         "properties": {
@@ -758,6 +752,33 @@
       },
       "title": "As Path"
     },
+    "avd_data_conversion_mode": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "error",
+        "warning",
+        "info",
+        "debug",
+        "quiet"
+      ],
+      "default": "debug",
+      "description": "Conversion Mode for AVD input data conversion.\nInput data conversion will perform type conversion of input variables as defined in the schema.\nThe type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.\nDuring conversion, messages will generated with information about the host(s) and key(s) which required conversion.\n\"disabled\" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.\n\"quiet\" will not produce any messages",
+      "title": "AVD Data Conversion Mode"
+    },
+    "avd_data_validation_mode": {
+      "type": "string",
+      "enum": [
+        "disabled",
+        "error",
+        "warning",
+        "info",
+        "debug"
+      ],
+      "default": "warning",
+      "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
+      "title": "AVD Data Validation Mode"
+    },
     "banners": {
       "type": "object",
       "properties": {
@@ -977,7 +998,6 @@
     "community_lists": {
       "type": "array",
       "title": "Community Lists (legacy model)",
-      "description": "AVD supports 2 different data models for community lists:\n\n- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe legacy data model supports simplified community list definition that only allows a single action to be defined as string:\n",
       "items": {
         "type": "object",
         "properties": {
@@ -1292,7 +1312,7 @@
         },
         "cvgnmi": {
           "type": "boolean",
-          "description": "Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1\n",
+          "description": "Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1\n",
           "title": "Cvgnmi"
         },
         "disable_aaa": {
@@ -1357,40 +1377,8 @@
         },
         "cvcompression": {
           "type": "string",
-          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\n",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.",
           "title": "Cvcompression"
-        },
-        "ingestauth_key": {
-          "type": "string",
-          "description": "Deprecated key. Use `cvauth` instead.\n",
-          "title": "Ingestauth Key"
-        },
-        "ingestgrpcurl": {
-          "type": "object",
-          "description": "Deprecated key. Use `cvaddrs` instead.\n",
-          "properties": {
-            "ips": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              },
-              "title": "Ips"
-            },
-            "port": {
-              "type": "integer",
-              "title": "Port"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "Ingestgrpcurl"
-        },
-        "ingestvrf": {
-          "description": "Deprecated key. Use `cvvrf` instead.\n",
-          "type": "string",
-          "title": "Ingestvrf"
         }
       },
       "additionalProperties": false,
@@ -1402,6 +1390,7 @@
     "daemons": {
       "type": "array",
       "title": "Custom Daemons",
+      "description": "This will add a daemon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus.",
       "items": {
         "type": "object",
         "properties": {
@@ -4348,7 +4337,6 @@
     "ip_access_lists": {
       "type": "array",
       "title": "IP Extended Access-Lists (improved model)",
-      "description": "AVD currently supports 2 different data models for extended ACLs:\n\n- The legacy `access_lists` data model, for compatibility with existing deployments\n- The improved `ip_access_lists` data model, for access to more EOS features\n\nBoth data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.\nAccess list names must be unique.\n\nThe improved data model has a more sophisticated design documented below:\n",
       "items": {
         "type": "object",
         "properties": {
@@ -4536,13 +4524,13 @@
     },
     "ip_access_lists_max_entries": {
       "type": "integer",
-      "description": "The `ip_access_lists` data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.\nOnly normal entries under `ip_access_lists` will be counted, remarks will be ignored.\nIf the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.\nThe numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.",
+      "description": "Limit ACL entries defined under the `ip_access_lists`.",
       "title": "IP Access Lists Max Entries"
     },
     "ip_community_lists": {
       "type": "array",
       "title": "IP Community Lists",
-      "description": "AVD supports 2 different data models for community lists:\n\n- The legacy `community_lists` data model that can be used for compatibility with the existing deployments.\n- The improved `ip_community_lists` data model.\n\nBoth data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.\nCommunity list names must be unique.\n\nThe improved data model has a better design documented below:\n\ncommunities and regexp MUST not be configured together in the same entry\npossible community strings are (case insensitive):\n\n- GSHUT\n- internet\n- local-as\n- no-advertise\n- no-export\n- <1-4294967040>\n- aa:nn\n",
+      "description": "Communities and regexp entries MUST not be configured in the same community-list\n",
       "items": {
         "type": "object",
         "properties": {
@@ -4569,7 +4557,7 @@
                   "items": {
                     "type": "string"
                   },
-                  "description": "If defined, a standard community-list will be configured",
+                  "description": "If defined, a standard community-list will be configured.\nSupported community strings (case insensitive):\n- GSHUT\n- internet\n- local-as\n- no-advertise\n- no-export\n- <1-4294967040>\n- aa:nn\n",
                   "title": "Communities"
                 },
                 "regexp": {
@@ -4833,6 +4821,7 @@
         "globally_enabled": {
           "type": "boolean",
           "default": true,
+          "description": "Activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.",
           "title": "Globally Enabled"
         },
         "robustness_variable": {
@@ -6944,7 +6933,7 @@
                       "send-time",
                       "last-change-time"
                     ],
-                    "description": "Per the GNMI specification, the default timestamp field of a notification message is set to be\nthe time at which the value of the underlying data source changes or when the reported event takes place.\nIn order to facilitate integration in legacy environments oriented around polling style operations,\nan option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.\n",
+                    "description": "Per the gNMI specification, the default timestamp field of a notification message is set to be\nthe time at which the value of the underlying data source changes or when the reported event takes place.\nIn order to facilitate integration in legacy environments oriented around polling style operations,\nan option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.\n",
                     "title": "Notification Timestamp"
                   },
                   "ip_access_group": {
@@ -6983,7 +6972,7 @@
                   "gnmi_ssl_profile": {
                     "type": "string",
                     "description": "gNMI SSL profile name",
-                    "title": "Gnmi SSL Profile"
+                    "title": "gNMI SSL Profile"
                   },
                   "vrf": {
                     "type": "string",
@@ -7085,7 +7074,8 @@
         },
         "enable_vrfs": {
           "type": "array",
-          "description": "Enable VRFs will be deprecated in AVD v4.0.\nThese should not be mixed with the new keys above.\n",
+          "description": "These should not be mixed with the new keys above.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>transport.grpc</samp> instead.",
+          "deprecated": true,
           "items": {
             "type": "object",
             "properties": {
@@ -7112,7 +7102,8 @@
         },
         "octa": {
           "type": "object",
-          "description": "Octa key will be deprecated in AVD v4.0.\nThese should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.",
+          "description": "These should not be mixed with the new keys above.\nOcta activates `eos-native` provider and it is the only provider currently supported by EOS.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>provider</samp> instead.",
+          "deprecated": true,
           "title": "Octa"
         }
       },
@@ -7120,7 +7111,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Management API Gnmi"
+      "title": "Management API gNMI"
     },
     "management_api_http": {
       "type": "object",
@@ -8058,7 +8049,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -10947,6 +10941,11 @@
                     "^_.+$": {}
                   },
                   "title": "Shape"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "Text comment added to queue.\n",
+                  "title": "Comment"
                 }
               },
               "required": [
@@ -10999,6 +10998,11 @@
                     "^_.+$": {}
                   },
                   "title": "Shape"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "Text comment added to queue.\n",
+                  "title": "Comment"
                 }
               },
               "required": [
@@ -11042,7 +11046,7 @@
                   "properties": {
                     "rate": {
                       "type": "string",
-                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"",
+                      "description": "Supported options are platform dependent\nExample: \"< rate > kbps\", \"1-100 percent\", \"< rate > pps\"\n",
                       "title": "Rate"
                     }
                   },
@@ -11051,6 +11055,11 @@
                     "^_.+$": {}
                   },
                   "title": "Shape"
+                },
+                "comment": {
+                  "type": "string",
+                  "description": "Text comment added to queue.",
+                  "title": "Comment"
                 }
               },
               "required": [
@@ -11783,6 +11792,24 @@
               },
               "title": "Default"
             },
+            "route_reflector_preserve_attributes": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Enabled"
+                },
+                "always": {
+                  "type": "boolean",
+                  "title": "Always"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Route Reflector Preserve Attributes"
+            },
             "bestpath": {
               "type": "object",
               "properties": {
@@ -11940,7 +11967,8 @@
               },
               "peer_filter": {
                 "type": "string",
-                "description": "Peer-filter name\nnote: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0\nThese should not be mixed with the new `listen_ranges` key above to avoid conflicts.\n",
+                "description": "Peer-filter name\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                "deprecated": true,
                 "title": "Peer Filter"
               },
               "next_hop_unchanged": {
@@ -12104,7 +12132,8 @@
               },
               "bgp_listen_range_prefix": {
                 "type": "string",
-                "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0\nThese should not be mixed with the new `listen_ranges` key above to avoid conflicts.\n",
+                "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                "deprecated": true,
                 "title": "BGP Listen Range Prefix"
               },
               "session_tracker": {
@@ -13214,6 +13243,27 @@
                   "next_hop": {
                     "type": "object",
                     "properties": {
+                      "address_family_ipv6": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean",
+                            "title": "Enabled"
+                          },
+                          "originate": {
+                            "type": "boolean",
+                            "title": "Originate"
+                          }
+                        },
+                        "required": [
+                          "enabled"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Address Family IPv6"
+                      },
                       "address_family_ipv6_originate": {
                         "type": "boolean",
                         "title": "Address Family IPv6 Originate"
@@ -13566,6 +13616,346 @@
             "^_.+$": {}
           },
           "title": "Address Family IPv6"
+        },
+        "address_family_ipv6_multicast": {
+          "type": "object",
+          "properties": {
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "missing_policy": {
+                  "type": "object",
+                  "properties": {
+                    "direction_in_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction In Action"
+                    },
+                    "direction_out_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction Out Action"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Missing Policy"
+                },
+                "additional_paths": {
+                  "type": "object",
+                  "properties": {
+                    "receive": {
+                      "type": "boolean",
+                      "title": "Receive"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Additional Paths"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Inbound route-map name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Outbound route-map name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            },
+            "networks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "prefix": {
+                    "type": "string",
+                    "description": "IPv6 prefix \"A:B:C:D:E:F:G:H/I\"",
+                    "title": "Prefix"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "prefix"
+                ]
+              },
+              "title": "Networks"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family IPv6 Multicast"
+        },
+        "address_family_flow_spec_ipv4": {
+          "type": "object",
+          "properties": {
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "missing_policy": {
+                  "type": "object",
+                  "properties": {
+                    "direction_in_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction In Action"
+                    },
+                    "direction_out_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction Out Action"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Missing Policy"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family Flow Spec IPv4"
+        },
+        "address_family_flow_spec_ipv6": {
+          "type": "object",
+          "properties": {
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "missing_policy": {
+                  "type": "object",
+                  "properties": {
+                    "direction_in_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction In Action"
+                    },
+                    "direction_out_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction Out Action"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Missing Policy"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family Flow Spec IPv6"
         },
         "address_family_vpn_ipv4": {
           "type": "object",
@@ -14470,31 +14860,6 @@
                           "type": "string",
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "required": [
-                        "ip_address"
-                      ]
-                    },
-                    "title": "Neighbors"
-                  },
-                  "peer_groups": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Peer-group name",
-                          "title": "Name"
-                        },
-                        "activate": {
-                          "type": "boolean",
-                          "title": "Activate"
                         },
                         "next_hop": {
                           "type": "object",
@@ -14533,10 +14898,10 @@
                         "^_.+$": {}
                       },
                       "required": [
-                        "name"
+                        "ip_address"
                       ]
                     },
-                    "title": "Peer Groups"
+                    "title": "Neighbors"
                   },
                   "networks": {
                     "type": "array",
@@ -14703,31 +15068,6 @@
                     },
                     "title": "Neighbors"
                   },
-                  "peer_groups": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Peer-group name",
-                          "title": "Name"
-                        },
-                        "activate": {
-                          "type": "boolean",
-                          "title": "Activate"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "required": [
-                        "name"
-                      ]
-                    },
-                    "title": "Peer Groups"
-                  },
                   "networks": {
                     "type": "array",
                     "items": {
@@ -14849,31 +15189,6 @@
                     },
                     "title": "Neighbors"
                   },
-                  "peer_groups": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Peer-group name",
-                          "title": "Name"
-                        },
-                        "activate": {
-                          "type": "boolean",
-                          "title": "Activate"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "required": [
-                        "name"
-                      ]
-                    },
-                    "title": "Peer Groups"
-                  },
                   "networks": {
                     "type": "array",
                     "items": {
@@ -14994,31 +15309,6 @@
                       ]
                     },
                     "title": "Neighbors"
-                  },
-                  "peer_groups": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string",
-                          "description": "Peer-group name",
-                          "title": "Name"
-                        },
-                        "activate": {
-                          "type": "boolean",
-                          "title": "Activate"
-                        }
-                      },
-                      "additionalProperties": false,
-                      "patternProperties": {
-                        "^_.+$": {}
-                      },
-                      "required": [
-                        "name"
-                      ]
-                    },
-                    "title": "Peer Groups"
                   },
                   "networks": {
                     "type": "array",
@@ -15868,11 +16158,6 @@
             "^_.+$": {}
           },
           "title": "Segment Routing MPLS"
-        },
-        "no_passive_interfaces": {
-          "type": "array",
-          "description": "Unused key - to be removed from eos_designs.",
-          "title": "No Passive Interfaces"
         }
       },
       "additionalProperties": false,
@@ -16469,7 +16754,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -16693,6 +16981,22 @@
                   "always": {
                     "type": "boolean",
                     "title": "Always"
+                  },
+                  "metric": {
+                    "type": "integer",
+                    "description": "Metric for default route",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Metric"
+                  },
+                  "metric_type": {
+                    "type": "integer",
+                    "enum": [
+                      1,
+                      2
+                    ],
+                    "description": "OSPF metric type for default route",
+                    "title": "Metric Type"
                   }
                 },
                 "additionalProperties": false,
@@ -17178,6 +17482,9 @@
                 "title": "IPv4"
               }
             },
+            "required": [
+              "name"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -18050,7 +18357,10 @@
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -19761,7 +20071,8 @@
           },
           "ipv6_virtual_router_address": {
             "type": "string",
-            "description": "\"ipv6_virtual_router_address\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n",
+            "description": "\"ipv6_virtual_router_address\" should not be mixed with\nthe new \"ipv6_virtual_router_addresses\" key below to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ipv6_virtual_router_addresses</samp> instead.",
+            "deprecated": true,
             "title": "IPv6 Virtual Router Address"
           },
           "ipv6_virtual_router_addresses": {
@@ -20312,7 +20623,8 @@
           },
           "vrrp": {
             "type": "object",
-            "description": "\"vrrp\" key will be deprecated in AVD v4.0\nThis should not be mixed with the new \"vrrp_ids\" key above to avoid conflicts.\n",
+            "description": "\"vrrp\" should not be mixed with the new \"vrrp_ids\" key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>vrrp_ids</samp> instead.",
+            "deprecated": true,
             "properties": {
               "virtual_router": {
                 "type": "string",

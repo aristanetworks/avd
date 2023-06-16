@@ -4,7 +4,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    duplicate-vlans-svi-id:
+    - name: duplicate-vlans-svi-id
       id: 1
 
 tenants:
@@ -23,4 +23,4 @@ tenants:
             name: vlan2
 
 
-expected_error_message: "Duplicate VLAN ID '2' found in Tenant 'TenantB' during configuration of SVI in VRF 'Tenant_B_OP_Zone'. Other VLAN is in Tenant 'TenantA'."
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for SVIs in VRF 'Tenant_B_OP_Zone'. {'id': 2, 'name': 'vlan2', 'tenant': 'TenantB'} conflicts with {'id': 2, 'name': 'vlan1', 'tenant': 'TenantA'}."
