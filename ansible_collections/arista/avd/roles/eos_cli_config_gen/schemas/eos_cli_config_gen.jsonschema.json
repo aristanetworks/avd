@@ -6900,6 +6900,30 @@
         "^_.+$": {}
       }
     },
+    "management_accounts": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "object",
+          "properties": {
+            "policy": {
+              "type": "string",
+              "title": "Policy"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Password"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Management Accounts"
+    },
     "management_api_gnmi": {
       "type": "object",
       "properties": {

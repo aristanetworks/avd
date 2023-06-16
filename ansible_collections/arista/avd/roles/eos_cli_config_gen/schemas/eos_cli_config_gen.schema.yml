@@ -4276,6 +4276,14 @@ keys:
                   items:
                     type: str
                     description: Name of Interface Group
+  management_accounts:
+    type: dict
+    keys:
+      password:
+        type: dict
+        keys:
+          policy:
+            type: str
   management_api_gnmi:
     type: dict
     keys:
