@@ -20,6 +20,6 @@
     tags: "{{ cv_tag_data }}"
     mode: assign
     auto_create: true
-  delegate_to: "{{ cvp_node }}"
+  delegate_to: "{{ cloudvision_node }}"
   when:
     - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
