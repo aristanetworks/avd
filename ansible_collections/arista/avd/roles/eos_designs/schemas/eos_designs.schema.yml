@@ -2251,9 +2251,9 @@ keys:
 
       with one of the following methods:
 
-      - Anycast RP using PIM (RFC4610)
+      - Anycast RP using PIM (RFC4610).
 
-      - Anycast RP using MSDP (RFC4611)
+      - Anycast RP using MSDP (RFC4611).
 
 
       NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to
@@ -2282,7 +2282,7 @@ keys:
       according to the ''underlay_multicast_anycast_rp.mode'' setting.
 
 
-      Requires ''underlay_multicast: true''
+      Requires ''underlay_multicast: true''.
 
       '
     type: list
@@ -2293,7 +2293,7 @@ keys:
         rp:
           required: true
           type: str
-          description: RP IPv4 address
+          description: RP IPv4 address.
         nodes:
           type: list
           description: 'List of nodes where a Loopback interface with the RP address
@@ -2306,7 +2306,7 @@ keys:
             keys:
               name:
                 type: str
-                description: Hostname
+                description: Hostname.
               loopback_number:
                 type: int
                 convert_types:
@@ -2314,7 +2314,7 @@ keys:
                 required: true
               description:
                 type: str
-                description: Interface description
+                description: Interface description.
                 default: PIM RP
         groups:
           type: list
@@ -2328,7 +2328,7 @@ keys:
             '
           items:
             type: str
-            description: Multicast Group IPv4 prefix/mask
+            description: Multicast Group IPv4 prefix/mask.
         access_list_name:
           type: str
           description: Name of standard Access-List.

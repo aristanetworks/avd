@@ -6140,7 +6140,7 @@
     },
     "underlay_multicast_anycast_rp": {
       "type": "object",
-      "description": "If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured\nwith one of the following methods:\n- Anycast RP using PIM (RFC4610)\n- Anycast RP using MSDP (RFC4611)\n\nNOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named \"ANYCAST-RP\".\n",
+      "description": "If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured\nwith one of the following methods:\n- Anycast RP using PIM (RFC4610).\n- Anycast RP using MSDP (RFC4611).\n\nNOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named \"ANYCAST-RP\".\n",
       "properties": {
         "mode": {
           "type": "string",
@@ -6159,14 +6159,14 @@
       "title": "Underlay Multicast Anycast RP"
     },
     "underlay_multicast_rps": {
-      "description": "List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.\nThe device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).\nIf multiple nodes are configured under 'nodes' for the same RP address, they will be configured\naccording to the 'underlay_multicast_anycast_rp.mode' setting.\n\nRequires 'underlay_multicast: true'\n",
+      "description": "List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.\nThe device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).\nIf multiple nodes are configured under 'nodes' for the same RP address, they will be configured\naccording to the 'underlay_multicast_anycast_rp.mode' setting.\n\nRequires 'underlay_multicast: true'.\n",
       "type": "array",
       "items": {
         "type": "object",
         "properties": {
           "rp": {
             "type": "string",
-            "description": "RP IPv4 address",
+            "description": "RP IPv4 address.",
             "title": "RP"
           },
           "nodes": {
@@ -6177,7 +6177,7 @@
               "properties": {
                 "name": {
                   "type": "string",
-                  "description": "Hostname",
+                  "description": "Hostname.",
                   "title": "Name"
                 },
                 "loopback_number": {
@@ -6186,7 +6186,7 @@
                 },
                 "description": {
                   "type": "string",
-                  "description": "Interface description",
+                  "description": "Interface description.",
                   "default": "PIM RP",
                   "title": "Description"
                 }
@@ -6207,7 +6207,7 @@
             "description": "List of groups to associate with the RP address set in 'rp'.\nIf access_list_name is set, a standard access-list will be configured matching these groups.\nOtherwise the groups are configured directly on the RP command.\n",
             "items": {
               "type": "string",
-              "description": "Multicast Group IPv4 prefix/mask"
+              "description": "Multicast Group IPv4 prefix/mask."
             },
             "title": "Groups"
           },

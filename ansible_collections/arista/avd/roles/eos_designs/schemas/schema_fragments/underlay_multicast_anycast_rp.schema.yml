@@ -10,8 +10,8 @@ keys:
     description: |
       If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured
       with one of the following methods:
-      - Anycast RP using PIM (RFC4610)
-      - Anycast RP using MSDP (RFC4611)
+      - Anycast RP using PIM (RFC4610).
+      - Anycast RP using MSDP (RFC4611).
 
       NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".
     keys:
