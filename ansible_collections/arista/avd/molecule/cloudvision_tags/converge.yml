@@ -16,6 +16,6 @@
       ansible.builtin.import_role:
         name: arista.avd.cloudvision
       vars:
-        cvp_node: cv_server
+        cloudvision_node: cv_server
       when:
         - CVP_ADDRESS != "None"
