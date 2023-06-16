@@ -7,9 +7,6 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
