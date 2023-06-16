@@ -94,9 +94,9 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     if management_security.password.policy is arista.avd.defined %}
 
 ### Password Policies
-{%     if management_security.password.policy is arista.avd.defined %}
 {%         for policy in management_security.password.policy %}
 #### Policy {{ policy.name }}
 
