@@ -141,7 +141,7 @@ nav:
           - Role Configuration: roles/eos_cli_config_gen/docs/role-configuration.md
           - Input Variables: roles/eos_cli_config_gen/docs/input-variables.md
       - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
-      - cvp_tags: roles/cvp_tags/README.md
+      - cloudvision: roles/cloudvision/README.md
       - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
       - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
       - eos_validate_state: roles/eos_validate_state/README.md
