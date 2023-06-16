@@ -99,13 +99,13 @@ management security
    password encryption-key common
    password encryption reversible aes-256-gcm
    password minimum length 17
-   password policy AVD_POLICY minimum digits 3
-   password policy AVD_POLICY minimum length 10
-   password policy AVD_POLICY minimum lower 2
-   password policy AVD_POLICY minimum special 1
-   password policy AVD_POLICY minimum upper 1
-   password policy AVD_POLICY maximum repetitive 2
-   password policy AVD_POLICY maximum sequential 2
+   password policy AVD_POLICY minimum digits 1
+   password policy AVD_POLICY minimum length 2
+   password policy AVD_POLICY minimum lower 3
+   password policy AVD_POLICY minimum special 4
+   password policy AVD_POLICY minimum upper 5
+   password policy AVD_POLICY maximum repetitive 6
+   password policy AVD_POLICY maximum sequential 7
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
    ssl profile cipher-list-profile

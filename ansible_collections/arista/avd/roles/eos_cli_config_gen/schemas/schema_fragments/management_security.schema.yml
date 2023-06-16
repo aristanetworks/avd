@@ -22,35 +22,39 @@ keys:
           encryption_reversible:
             type: str
           policy:
-            type: dict
-            keys:
-              minimum:
-                type: dict
-                keys:
-                  digits:
-                    type: int
-                    min: 0
-                  length:
-                    type: int
-                    min: 0
-                  lower:
-                    type: int
-                    min: 0
-                  special:
-                    type: int
-                    min: 0
-                  upper:
-                    type: int
-                    min: 0
-              maximum:
-                type: dict
-                keys:
-                  repetitive:
-                    type: int
-                    min: 0
-                  sequential:
-                    type: int
-                    min: 0
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                minimum:
+                  type: dict
+                  keys:
+                    digits:
+                      type: int
+                      min: 0
+                    length:
+                      type: int
+                      min: 0
+                    lower:
+                      type: int
+                      min: 0
+                    special:
+                      type: int
+                      min: 0
+                    upper:
+                      type: int
+                      min: 0
+                maximum:
+                  type: dict
+                  keys:
+                    repetitive:
+                      type: int
+                      min: 0
+                    sequential:
+                      type: int
+                      min: 0
       ssl_profiles:
         type: list
         items:
