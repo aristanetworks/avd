@@ -18,6 +18,17 @@
     | [<samp>underlay_filter_redistribute_connected</samp>](## "underlay_filter_redistribute_connected") | Boolean |  | `True` |  | Filter redistribution of connected into the underlay routing protocol.<br>Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.<br>Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.<br> |
     | [<samp>underlay_ipv6</samp>](## "underlay_ipv6") | Boolean |  | `False` |  | This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.<br>Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.<br> |
     | [<samp>underlay_multicast</samp>](## "underlay_multicast") | Boolean |  | `False` |  | Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.<br>Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.<br>No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM).<br>The configuration is intended to be used as multicast underlay for EVPN OISM overlay.<br> |
+    | [<samp>underlay_multicast_anycast_rp</samp>](## "underlay_multicast_anycast_rp") | Dictionary |  |  |  | If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured<br>with one of the following methods:<br>- Anycast RP using PIM (RFC4610).<br>- Anycast RP using MSDP (RFC4611).<br><br>NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".<br> |
+    | [<samp>&nbsp;&nbsp;mode</samp>](## "underlay_multicast_anycast_rp.mode") | String |  | `pim` | Valid Values:<br>- pim<br>- msdp |  |
+    | [<samp>underlay_multicast_rps</samp>](## "underlay_multicast_rps") | List, items: Dictionary |  |  |  | List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.<br>The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).<br>If multiple nodes are configured under 'nodes' for the same RP address, they will be configured<br>according to the 'underlay_multicast_anycast_rp.mode' setting.<br><br>Requires 'underlay_multicast: true'.<br> |
+    | [<samp>&nbsp;&nbsp;- rp</samp>](## "underlay_multicast_rps.[].rp") | String | Required, Unique |  |  | RP IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "underlay_multicast_rps.[].nodes") | List, items: Dictionary |  |  |  | List of nodes where a Loopback interface with the RP address will be configured.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "underlay_multicast_rps.[].nodes.[].name") | String | Required, Unique |  |  | Hostname. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_number</samp>](## "underlay_multicast_rps.[].nodes.[].loopback_number") | Integer | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "underlay_multicast_rps.[].nodes.[].description") | String |  | `PIM RP` |  | Interface description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "underlay_multicast_rps.[].groups") | List, items: String |  |  |  | List of groups to associate with the RP address set in 'rp'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "underlay_multicast_rps.[].groups.[].&lt;str&gt;") | String |  |  |  | Multicast Group IPv4 prefix/mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "underlay_multicast_rps.[].access_list_name") | String |  |  |  | Name of standard Access-List. |
     | [<samp>underlay_rfc5549</samp>](## "underlay_rfc5549") | Boolean |  | `False` |  | Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.<br>Requires "underlay_routing_protocol: ebgp".<br> |
     | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ospf<br>- isis<br>- isis-sr<br>- isis-ldp<br>- isis-sr-ldp<br>- ospf-ldp | - The following underlay routing protocols are supported:<br>  - EBGP (default for l3ls-evpn)<br>  - OSPF.<br>  - ISIS.<br>  - ISIS-SR*.<br>  - ISIS-LDP*.<br>  - ISIS-SR-LDP*.<br>  - OSPF-LDP*.<br>- The variables should be applied to all devices in the fabric.<br>*Only supported with core_interfaces data model.<br> |
     | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links. |
@@ -42,6 +53,17 @@
     underlay_filter_redistribute_connected: <bool>
     underlay_ipv6: <bool>
     underlay_multicast: <bool>
+    underlay_multicast_anycast_rp:
+      mode: <str>
+    underlay_multicast_rps:
+      - rp: <str>
+        nodes:
+          - name: <str>
+            loopback_number: <int>
+            description: <str>
+        groups:
+          - <str>
+        access_list_name: <str>
     underlay_rfc5549: <bool>
     underlay_routing_protocol: <str>
     uplink_ptp:

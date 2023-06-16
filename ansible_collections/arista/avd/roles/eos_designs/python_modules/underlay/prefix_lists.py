@@ -36,6 +36,13 @@ class PrefixListsMixin(UtilsMixin):
 
         prefix_lists = [{"name": "PL-LOOPBACKS-EVPN-OVERLAY", "sequence_numbers": sequence_numbers}]
 
+        if self.shared_utils.underlay_multicast_rp_interfaces is not None:
+            sequence_numbers = [
+                {"sequence": (index + 1) * 10, "action": f"permit {interface['ip_address']}"}
+                for index, interface in enumerate(self.shared_utils.underlay_multicast_rp_interfaces)
+            ]
+            prefix_lists.append({"name": "PL-LOOPBACKS-PIM-RP", "sequence_numbers": sequence_numbers})
+
         return prefix_lists
 
     @cached_property
