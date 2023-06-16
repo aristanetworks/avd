@@ -5,7 +5,7 @@
 **cloudvision** is a role designed to apply AVD related changes to CloudVision.
 At the moment, the changes supported are:
 
-- Add ClouVision Tags
+- Add CloudVision Tags
 
 The **cloudvision** role :
 
@@ -21,11 +21,12 @@ This role requires to install `arista.cvp` collection to support CloudVision int
 ansible-galaxy collection install arista.cvp
 ```
 
-> **NOTE**: When using ansible-cvp modules, the user executing the Ansible playbook must have access to both CVP and the EOS CLI.
+!!! note
+    When using ansible-cvp modules, the user executing the Ansible playbook must have access to both CVP and the EOS CLI.
 
 ## Role Inputs and Outputs
 
-Figure 1 below provides a visualization of the role's inputs, outputs, and tasks in order executed by the role.
+<!-- Figure 1 below provides a visualization of the role's inputs, outputs, and tasks in order executed by the role. -->
 <!--
 ![Figure 1: Ansible Role eos_config_deploy_eapi](../../docs/_media/eos_config_deploy_cvp_dark.svg#only-dark)
 ![Figure 1: Ansible Role eos_config_deploy_eapi](../../docs/_media/eos_config_deploy_cvp_light.svg#only-light) -->
@@ -39,14 +40,14 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 
 **Sturctured Config:**
 
-The role expects that the `structured_config` for the devices to be target has already been generated using `eos_designs` role. Refer to ???????
+The role expects that the `structured_config` for the devices to be target has already been generated using `eos_designs` role. Refer to [eos_desing CloudVision Tags](../eos_designs/docs/input-variables.md#cloudvision-tags)
 
 **Inventory configuration:**
 
 An entry must be part of the inventory to describe the CloudVision server. `arista.cvp` modules use the httpapi approach. The example below provides a framework to use in your inventory.
 
-| ---- |
-| **Note: As opposed to `eos_config_deploy_cvp`, the target/host that the role expectes to be run against in the playbook is the EOS device. The `cloudvision_node` should be indicated to the role as a separate variable.** |
+!!! info
+    As opposed to `eos_config_deploy_cvp`, the target/host that the role expectes to be run against in the playbook is the EOS device. The `cloudvision_node` should be indicated to the role as a separate variable.**
 
 ```yaml
 all:
