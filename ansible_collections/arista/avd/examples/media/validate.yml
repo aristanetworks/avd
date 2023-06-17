@@ -1,6 +1,6 @@
 ---
 - name: validate states on EOS devices
-  hosts: FABRIC
+  hosts: MEDIA_FABRIC
   connection: httpapi
   gather_facts: false
   collections:

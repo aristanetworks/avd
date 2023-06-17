@@ -6,6 +6,24 @@ media_spine:
     platform: 7050X3
     loopback_ipv4_pool: 10.255.2.0/27
     bgp_as: 65200
+    filter:
+      tenants: [ blue ]
+    structured_config:
+      mcs_client:
+        shutdown: false
+      loopback_interfaces:
+        Loopback1:
+          ip_address: 172.24.0.10/32
+          description: Anycast RP
+      router_pim_sparse_mode:
+        ipv4:
+          rp_addresses:
+            172.24.0.10:
+          anycast_rps:
+            172.24.0.10:
+              other_anycast_rp_addresses:
+                172.24.0.11:
+                172.24.0.12:
 
   nodes:
     blue-spine1:

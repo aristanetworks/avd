@@ -14,6 +14,13 @@ media_leaf:
       tenants: [ blue ]
     ptp:
       priority2: 2
+    uplink_structured_config:
+      multicast:
+        ipv4:
+          static: true
+    structured_config:
+      mcs_client:
+        shutdown: false
 
   nodes:
     blue-leaf1:

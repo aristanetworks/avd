@@ -2,7 +2,7 @@
 # build.yml
 
 - name: Build Configurations and Documentation # (1)!
-  hosts: FABRIC
+  hosts: MEDIA_FABRIC
   gather_facts: false
   tasks:
 

@@ -1,3 +1,4 @@
+serial_number: JPE20302208
 router_bgp:
   as: '65102'
   router_id: 10.255.1.4
@@ -9,9 +10,6 @@ router_bgp:
     ecmp: 4
   updates:
     wait_install: true
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -33,7 +31,7 @@ router_bgp:
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.252.0.1
+  gateway: 10.90.227.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 router_multicast:
@@ -61,6 +59,10 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$n7NC6yuQmsXgOMKP$UZu7iLcCZgydY8NMdGAz244RVKdWqEikN.9ByPifgwQ90xS3fT6.46j5WcfUxkmVYWhWSgbIpODxVw67VkbkQ0
+- name: dataminer
+  privilege: 1
+  role: view-only
+  sha512_password: $6$tDLfGUdh6qFbD7XV$YOgbgeXei40thdIzlH1/Nz38K2IBkBcA6hYe.ihQnyq3qC92qP/ezmFZcrdOSmbF7xo10VegijeznJrn9X9lc.
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -70,7 +72,7 @@ management_interfaces:
   shutdown: false
   vrf: MGMT
   ip_address: 10.90.227.27/24
-  gateway: 10.252.0.1
+  gateway: 10.90.227.1
   type: oob
 tcam_profile:
   system: vxlan-routing
@@ -87,7 +89,7 @@ ptp:
   clock_identity: 00:1C:73:1e:00:01
   priority1: 30
   priority2: 1
-  domain: 0
+  domain: 127
   monitor:
     enabled: true
     threshold:
@@ -122,12 +124,15 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
+  multicast:
+    ipv4:
+      static: true
 - name: Ethernet1
   peer: AMBER_VLAN112
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -148,7 +153,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -169,7 +174,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -190,7 +195,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -211,7 +216,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -232,7 +237,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -253,7 +258,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -274,7 +279,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -295,7 +300,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -316,7 +321,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -337,7 +342,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -358,7 +363,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -375,16 +380,14 @@ ethernet_interfaces:
     enable: true
     role: master
 - name: Ethernet13
-  peer: AMBER_VLAN112
+  peer: C100-1 P2-2
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
+  description: C100-1 P2-2
+  speed: forced 10000full
   shutdown: false
   type: switched
   mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
+  vlans: '2271'
   ptp:
     announce:
       interval: 0
@@ -396,16 +399,14 @@ ethernet_interfaces:
     enable: true
     role: master
 - name: Ethernet14
-  peer: AMBER_VLAN112
+  peer: C100-1 P2-2
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
+  description: C100-1 P2-2
+  speed: forced 10000full
   shutdown: false
   type: switched
   mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
+  vlans: '2273'
   ptp:
     announce:
       interval: 0
@@ -417,16 +418,14 @@ ethernet_interfaces:
     enable: true
     role: master
 - name: Ethernet15
-  peer: AMBER_VLAN112
+  peer: C100-1 P2-3
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
+  description: C100-1 P2-3
+  speed: forced 10000full
   shutdown: false
   type: switched
   mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
+  vlans: '2273'
   ptp:
     announce:
       interval: 0
@@ -438,16 +437,14 @@ ethernet_interfaces:
     enable: true
     role: master
 - name: Ethernet16
-  peer: AMBER_VLAN112
+  peer: C100-1 P2-4
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
+  description: C100-1 P2-4
+  speed: forced 10000full
   shutdown: false
   type: switched
   mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
+  vlans: '2273'
   ptp:
     announce:
       interval: 0
@@ -459,16 +456,12 @@ ethernet_interfaces:
     enable: true
     role: master
 - name: Ethernet17
-  peer: AMBER_VLAN112
+  peer: C100-2 P2-1
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
+  description: C100-2 P2-1
+  speed: forced 10000full
+  shutdown: true
+  type: routed
   ptp:
     announce:
       interval: 0
@@ -479,17 +472,20 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
+  ip_address: 172.24.227.49/30
+  pim:
+    ipv4:
+      sparse_mode: true
+  multicast:
+    ipv4:
+      static: true
 - name: Ethernet18
-  peer: AMBER_VLAN112
+  peer: C100-2 P2-2
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
+  description: C100-2 P2-2
+  speed: forced 10000full
+  shutdown: true
+  type: routed
   ptp:
     announce:
       interval: 0
@@ -500,17 +496,20 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
+  ip_address: 172.24.227.53/30
+  pim:
+    ipv4:
+      sparse_mode: true
+  multicast:
+    ipv4:
+      static: true
 - name: Ethernet19
-  peer: AMBER_VLAN112
+  peer: C100-2 P2-3
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
+  description: C100-2 P2-3
+  speed: forced 10000full
+  shutdown: true
+  type: routed
   ptp:
     announce:
       interval: 0
@@ -521,17 +520,20 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
+  ip_address: 172.24.227.57/30
+  pim:
+    ipv4:
+      sparse_mode: true
+  multicast:
+    ipv4:
+      static: true
 - name: Ethernet20
-  peer: AMBER_VLAN112
+  peer: C100-2 P2-4
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
+  description: C100-2 P2-4
+  speed: forced 10000full
+  shutdown: true
+  type: routed
   ptp:
     announce:
       interval: 0
@@ -542,432 +544,139 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
+  ip_address: 172.24.227.61/30
+  pim:
+    ipv4:
+      sparse_mode: true
+  multicast:
+    ipv4:
+      static: true
 - name: Ethernet21
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet22
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet23
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet24
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet25
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet26
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet27
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet28
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet29
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet30
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet31
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet32
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet33
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet34
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet35
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet36
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet37
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet38
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet39
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet40
-  peer: AMBER_VLAN112
+  peer: mcs senders/receivers
   peer_type: network_port
-  port_profile: AMBER_112
-  description: AMBER_VLAN112
-  shutdown: false
-  type: switched
-  mode: access
-  vlans: '112'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
 - name: Ethernet41
   peer: AMBER_VLAN112
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -988,7 +697,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -1009,7 +718,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -1030,7 +739,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -1051,7 +760,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -1072,7 +781,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -1093,7 +802,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -1114,7 +823,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: AMBER_112
   description: AMBER_VLAN112
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '112'
@@ -1130,6 +839,67 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
+- name: Ethernet50/1
+  peer: SHUTDOWN_SPINE_LINKS
+  peer_type: network_port
+  description: SHUTDOWN_SPINE_LINKS
+  shutdown: true
+  type: switched
+- name: Ethernet51/1
+  peer: SHUTDOWN_SPINE_LINKS
+  peer_type: network_port
+  description: SHUTDOWN_SPINE_LINKS
+  shutdown: true
+  type: switched
+- name: Ethernet52/1
+  peer: SHUTDOWN_SPINE_LINKS
+  peer_type: network_port
+  description: SHUTDOWN_SPINE_LINKS
+  shutdown: true
+  type: switched
+- name: Ethernet53/1
+  peer: EVS Neuron
+  peer_type: network_port
+  description: EVS Neuron
+  speed: forced 100Gfull
+  shutdown: false
+  type: switched
+  mode: access
+  vlans: '2272'
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+- name: Ethernet54/1
+  peer: Imagine SNP-2118212563-Data-B
+  peer_type: network_port
+  description: Imagine SNP-2118212563-Data-B
+  speed: forced 100Gfull
+  shutdown: false
+  type: routed
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+  ip_address: 172.24.200.1/30
+  pim:
+    ipv4:
+      sparse_mode: true
+  multicast:
+    ipv4:
+      static: true
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -1152,6 +922,9 @@ vlan_interfaces:
   ip_address: 10.252.10.1/24
   ip_helpers:
   - ip_helper: 10.252.4.253
+  no_autostate: true
+mcs_client:
+  shutdown: false
 aaa_authentication:
   login:
     default: local

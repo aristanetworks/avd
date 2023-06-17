@@ -8,14 +8,25 @@
   - [IP Name Servers](#ip-name-servers)
   - [NTP](#ntp)
   - [PTP](#ptp)
+  - [Management API gNMI](#management-api-gnmi)
+  - [Management CVX Summary](#management-cvx-summary)
   - [Management API HTTP](#management-api-http)
+  - [Management API Models](#management-api-models)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Roles](#roles)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
+- [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
+  - [MCS client Summary](#mcs-client-summary)
+  - [SNMP](#snmp)
   - [SFlow](#sflow)
+- [Monitor Connectivity](#monitor-connectivity)
+  - [Global Configuration](#global-configuration)
+  - [Vrf Configuration](#vrf-configuration)
+  - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Hardware TCAM configuration](#hardware-tcam-configuration)
 - [Spanning Tree](#spanning-tree)
@@ -59,7 +70,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.90.227.27/24 | 10.252.0.1 |
+| Management1 | oob_management | oob | MGMT | 10.90.227.27/24 | 10.90.227.1 |
 
 ##### IPv6
 
@@ -126,7 +137,7 @@ ntp server vrf MGMT ntp.aristanetworks.com iburst
 
 | Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
 | -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| 00:1C:73:1e:00:01 | - | 30 | 1 | - | 0 | boundary | - |
+| 00:1C:73:1e:00:01 | - | 30 | 1 | - | 127 | boundary | - |
 
 #### PTP Device Configuration
 
@@ -135,7 +146,7 @@ ntp server vrf MGMT ntp.aristanetworks.com iburst
 ptp clock-identity 00:1C:73:1e:00:01
 ptp priority1 30
 ptp priority2 1
-ptp domain 0
+ptp domain 127
 ptp mode boundary
 ptp monitor threshold offset-from-master 250
 ptp monitor threshold mean-path-delay 1500
@@ -144,6 +155,42 @@ ptp monitor threshold missing-message announce 3 sequence-ids
 ptp monitor threshold missing-message delay-resp 3 sequence-ids
 ptp monitor threshold missing-message follow-up 3 sequence-ids
 ptp monitor threshold missing-message sync 3 sequence-ids
+```
+
+### Management API gNMI
+
+#### Management API gNMI Summary
+
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
+| --------- | ----------- | --- | ---------------------- | --- |
+| grpc | - | MGMT | last-change-time | - |
+
+Provider eos-native is configured.
+
+#### Management API gNMI configuration
+
+```eos
+!
+management api gnmi
+   transport grpc grpc
+      vrf MGMT
+   provider eos-native
+```
+
+### Management CVX Summary
+
+| Shutdown | CVX Servers |
+| -------- | ----------- |
+| False | 10.90.224.188 |
+
+#### Management CVX configuration
+
+```eos
+!
+management cvx
+   no shutdown
+   server host 10.90.224.188
+   vrf MGMT
 ```
 
 ### Management API HTTP
@@ -172,6 +219,28 @@ management api http-commands
       no shutdown
 ```
 
+### Management API Models
+
+#### Management API Models Summary
+
+| Provider | Path | Disabled |
+| -------- | ---- | ------- |
+| smash | bridging | False |
+| smash | ptp | False |
+| smash | routing | False |
+
+#### Management API Models Configuration
+
+```eos
+!
+management api models
+   !
+   provider smash
+      path bridging
+      path ptp
+      path routing
+```
+
 ## Authentication
 
 ### Local Users
@@ -182,6 +251,7 @@ management api http-commands
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
+| dataminer | 1 | view-only | False | - |
 
 #### Local Users Device Configuration
 
@@ -189,6 +259,35 @@ management api http-commands
 !
 username admin privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
+username dataminer privilege 1 role view-only secret sha512 <removed>
+```
+
+### Roles
+
+#### Roles Summary
+
+##### Role view-only
+
+| Sequence | Action | Mode | Command |
+| -------- | ------ | ---- | ------- |
+| 10 | permit | - | enable |
+| 20 | deny | exec | reload |
+| 30 | deny | config-all | .* |
+| 40 | deny | exec | clear .* |
+| 50 | permit | - | show .* |
+| 60 | permit | - | bash timeout 1 df -h |
+
+#### Roles Device Configuration
+
+```eos
+!
+role view-only
+   10 permit command enable
+   20 deny mode exec command reload
+   30 deny mode config-all command .*
+   40 deny mode exec command clear .*
+   50 permit command show .*
+   60 permit command bash timeout 1 df -h
 ```
 
 ### AAA Authentication
@@ -223,6 +322,39 @@ aaa authorization exec default local
 !
 ```
 
+## Aliases
+
+```eos
+alias sln show lldp neighbors
+alias conint sh interface | I connected
+alias connect show interfaces status connected
+alias descr show int descr
+alias drops watch 1 diff show int coun dis | nz
+alias dump bash tcpdump -i %1
+alias ptpcount watch 1 diff sh ptp interface counters | egrep 'Ethernet|Manage'| grep -v "received: 0" | grep -v sent
+alias ptpmgmt watch 1 diff sh ptp int count | egrep "Management messages received: | Ethernet" | nz
+alias rates watch 1 diff show int count rates | nz
+alias routeage bash echo show ip route | cliribd
+alias senz show interface counter error | nz
+alias senzwatch watch 1 diff show interface counter error | nz
+alias shmc show int | awk '/^[A-Z]/ { intf = $1 } /, address is/ { print intf, $6 }'
+alias shptp show ptp int counters drop
+alias snoopcount watch 1 diff sh ip igmp snooping counters | nz
+alias snoopgroup watch 1 diff sh ip igmp snooping groups | nz
+alias snz show interface counter | nz
+alias spd show port-channel %1 detail all
+alias sqnz show interface counter queue | nz
+alias srnz show interface counter rate | nz
+alias watchptp watch 1 diff sh ip igmp snooping group 224.0.1.129 | nz
+alias igmpgroups show ip igmp snooping groups detail
+alias ptpwatch watch 1 diff show ptp
+alias sdnz show int count discard | nz
+alias sie show ip igmp snoop counters err | nz
+alias sqml show queue-monitor length
+
+!
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -245,6 +377,41 @@ daemon TerminAttr
    no shutdown
 ```
 
+### MCS client Summary
+
+MCS client is enabled
+
+#### MCS client configuration
+
+```eos
+!
+mcs client
+   no shutdown
+```
+
+### SNMP
+
+#### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | - | All | Disabled |
+
+#### SNMP Communities
+
+| Community | Access | Access List IPv4 | Access List IPv6 | View |
+| --------- | ------ | ---------------- | ---------------- | ---- |
+| <removed> | ro | - | - | - |
+| <removed> | rw | - | - | - |
+
+#### SNMP Device Configuration
+
+```eos
+!
+snmp-server community <removed> ro
+snmp-server community <removed> rw
+```
+
 ### SFlow
 
 #### SFlow Summary
@@ -263,6 +430,92 @@ sFlow is enabled.
 sflow destination 127.0.0.1
 sflow source-interface loopback0
 sflow run
+```
+
+## Monitor Connectivity
+
+### Global Configuration
+
+#### Interface Sets
+
+| Name | Interfaces |
+| ---- | ---------- |
+| Loopback | loopback0 |
+
+#### Probing Configuration
+
+| Enabled | Interval | Default Interface Set |
+| ------- | -------- | --------------------- |
+| True | - | - |
+
+#### Host Parameters
+
+| Host Name | Description | IPv4 Address | Probing Interface Set | URL |
+| --------- | ----------- | ------------ | --------------------- | --- |
+| GM1 | GM1 | 172.24.121.65 | Loopback | - |
+
+### Vrf Configuration
+
+| Name | Description | Default Interface Set |
+| ---- | ----------- | --------------------- |
+| MGMT | - | Management |
+
+#### Vrf MGMT Configuration
+
+##### Interface Sets
+
+| Name | Interfaces |
+| ---- | ---------- |
+| Management | Management1 |
+
+##### Host Parameters
+
+| Host Name | Description | IPv4 Address | Probing Interface Set | URL |
+| --------- | ----------- | ------------ | --------------------- | --- |
+| aws-us-east-1 | aws-us-east-1 | 52.216.227.10 | - | http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com |
+| aws-us-west-2 | aws-us-west-2 | 52.218.182.251 | - | http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com |
+| azure-eastus | aws-us-west-2 | 52.216.227.10 | - | http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com |
+| Google | Google | 8.8.8.8 | - | - |
+
+### Monitor Connectivity Device Configuration
+
+```eos
+!
+monitor connectivity
+   no shutdown
+   interface set Loopback loopback0
+   !
+   host GM1
+      description
+      GM1
+      local-interfaces Loopback address-only
+      ip 172.24.121.65
+   vrf MGMT
+      interface set Management Management1
+      local-interfaces Management address-only default
+      !
+      host aws-us-east-1
+         description
+         aws-us-east-1
+         ip 52.216.227.10
+         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com
+      !
+      host aws-us-west-2
+         description
+         aws-us-west-2
+         ip 52.218.182.251
+         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com
+      !
+      host azure-eastus
+         description
+         aws-us-west-2
+         ip 52.216.227.10
+         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com
+      !
+      host Google
+         description
+         Google
+         ip 8.8.8.8
 ```
 
 ## Hardware TCAM Profile
@@ -350,34 +603,10 @@ vlan 112
 | Ethernet10 |  AMBER_VLAN112 | access | 112 | - | - | - |
 | Ethernet11 |  AMBER_VLAN112 | access | 112 | - | - | - |
 | Ethernet12 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet13 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet14 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet15 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet16 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet17 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet18 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet19 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet20 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet21 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet22 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet23 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet24 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet25 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet26 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet27 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet28 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet29 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet30 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet31 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet32 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet33 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet34 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet35 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet36 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet37 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet38 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet39 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet40 |  AMBER_VLAN112 | access | 112 | - | - | - |
+| Ethernet13 |  C100-1 P2-2 | access | 2271 | - | - | - |
+| Ethernet14 |  C100-1 P2-2 | access | 2273 | - | - | - |
+| Ethernet15 |  C100-1 P2-3 | access | 2273 | - | - | - |
+| Ethernet16 |  C100-1 P2-4 | access | 2273 | - | - | - |
 | Ethernet41 |  AMBER_VLAN112 | access | 112 | - | - | - |
 | Ethernet42 |  AMBER_VLAN112 | access | 112 | - | - | - |
 | Ethernet43 |  AMBER_VLAN112 | access | 112 | - | - | - |
@@ -386,14 +615,34 @@ vlan 112
 | Ethernet46 |  AMBER_VLAN112 | access | 112 | - | - | - |
 | Ethernet47 |  AMBER_VLAN112 | access | 112 | - | - | - |
 | Ethernet48 |  AMBER_VLAN112 | access | 112 | - | - | - |
+| Ethernet50/1 |  SHUTDOWN_SPINE_LINKS | access | - | - | - | - |
+| Ethernet51/1 |  SHUTDOWN_SPINE_LINKS | access | - | - | - | - |
+| Ethernet52/1 |  SHUTDOWN_SPINE_LINKS | access | - | - | - | - |
+| Ethernet53/1 |  EVS Neuron | access | 2272 | - | - | - |
 
 *Inherited from Port-Channel Interface
+
+##### Multicast Routing
+
+| Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
+| --------- | ---------- | --------------------- | -------------------- |
+| Ethernet17 | IPv4 | True | - |
+| Ethernet18 | IPv4 | True | - |
+| Ethernet19 | IPv4 | True | - |
+| Ethernet20 | IPv4 | True | - |
+| Ethernet49/1 | IPv4 | True | - |
+| Ethernet54/1 | IPv4 | True | - |
 
 ##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet17 | C100-2 P2-1 | routed | - | 172.24.227.49/30 | default | - | True | - | - |
+| Ethernet18 | C100-2 P2-2 | routed | - | 172.24.227.53/30 | default | - | True | - | - |
+| Ethernet19 | C100-2 P2-3 | routed | - | 172.24.227.57/30 | default | - | True | - | - |
+| Ethernet20 | C100-2 P2-4 | routed | - | 172.24.227.61/30 | default | - | True | - | - |
 | Ethernet49/1 | P2P_LINK_TO_AMBER-SPINE1_Ethernet3/1 | routed | - | 10.255.254.3/31 | default | 9214 | False | - | - |
+| Ethernet54/1 | Imagine SNP-2118212563-Data-B | routed | - | 172.24.200.1/30 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -401,7 +650,7 @@ vlan 112
 !
 interface Ethernet1
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -417,7 +666,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -433,7 +682,7 @@ interface Ethernet2
 !
 interface Ethernet3
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -449,7 +698,7 @@ interface Ethernet3
 !
 interface Ethernet4
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -465,7 +714,7 @@ interface Ethernet4
 !
 interface Ethernet5
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -481,7 +730,7 @@ interface Ethernet5
 !
 interface Ethernet6
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -497,7 +746,7 @@ interface Ethernet6
 !
 interface Ethernet7
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -513,7 +762,7 @@ interface Ethernet7
 !
 interface Ethernet8
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -529,7 +778,7 @@ interface Ethernet8
 !
 interface Ethernet9
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -545,7 +794,7 @@ interface Ethernet9
 !
 interface Ethernet10
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -561,7 +810,7 @@ interface Ethernet10
 !
 interface Ethernet11
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -577,7 +826,7 @@ interface Ethernet11
 !
 interface Ethernet12
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -592,9 +841,10 @@ interface Ethernet12
    spanning-tree bpdufilter enable
 !
 interface Ethernet13
-   description AMBER_VLAN112
+   description C100-1 P2-2
    no shutdown
-   switchport access vlan 112
+   speed forced 10000full
+   switchport access vlan 2271
    switchport mode access
    switchport
    ptp enable
@@ -604,13 +854,12 @@ interface Ethernet13
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet14
-   description AMBER_VLAN112
+   description C100-1 P2-2
    no shutdown
-   switchport access vlan 112
+   speed forced 10000full
+   switchport access vlan 2273
    switchport mode access
    switchport
    ptp enable
@@ -620,13 +869,12 @@ interface Ethernet14
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet15
-   description AMBER_VLAN112
+   description C100-1 P2-3
    no shutdown
-   switchport access vlan 112
+   speed forced 10000full
+   switchport access vlan 2273
    switchport mode access
    switchport
    ptp enable
@@ -636,13 +884,12 @@ interface Ethernet15
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet16
-   description AMBER_VLAN112
+   description C100-1 P2-4
    no shutdown
-   switchport access vlan 112
+   speed forced 10000full
+   switchport access vlan 2273
    switchport mode access
    switchport
    ptp enable
@@ -652,15 +899,15 @@ interface Ethernet16
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet17
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
+   description C100-2 P2-1
+   shutdown
+   speed forced 10000full
+   no switchport
+   ip address 172.24.227.49/30
+   multicast ipv4 static
+   pim ipv4 sparse-mode
    ptp enable
    ptp sync-message interval -3
    ptp announce interval 0
@@ -668,15 +915,15 @@ interface Ethernet17
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet18
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
+   description C100-2 P2-2
+   shutdown
+   speed forced 10000full
+   no switchport
+   ip address 172.24.227.53/30
+   multicast ipv4 static
+   pim ipv4 sparse-mode
    ptp enable
    ptp sync-message interval -3
    ptp announce interval 0
@@ -684,15 +931,15 @@ interface Ethernet18
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet19
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
+   description C100-2 P2-3
+   shutdown
+   speed forced 10000full
+   no switchport
+   ip address 172.24.227.57/30
+   multicast ipv4 static
+   pim ipv4 sparse-mode
    ptp enable
    ptp sync-message interval -3
    ptp announce interval 0
@@ -700,15 +947,15 @@ interface Ethernet19
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet20
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
+   description C100-2 P2-4
+   shutdown
+   speed forced 10000full
+   no switchport
+   ip address 172.24.227.61/30
+   multicast ipv4 static
+   pim ipv4 sparse-mode
    ptp enable
    ptp sync-message interval -3
    ptp announce interval 0
@@ -716,332 +963,110 @@ interface Ethernet20
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet21
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet22
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet23
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet24
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet25
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet26
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet27
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet28
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet29
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet30
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet31
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet32
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet33
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet34
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet35
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet36
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet37
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet38
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet39
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet40
-   description AMBER_VLAN112
-   no shutdown
-   switchport access vlan 112
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
+   description mcs senders/receivers
+   shutdown
+   no switchport
 !
 interface Ethernet41
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -1057,7 +1082,7 @@ interface Ethernet41
 !
 interface Ethernet42
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -1073,7 +1098,7 @@ interface Ethernet42
 !
 interface Ethernet43
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -1089,7 +1114,7 @@ interface Ethernet43
 !
 interface Ethernet44
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -1105,7 +1130,7 @@ interface Ethernet44
 !
 interface Ethernet45
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -1121,7 +1146,7 @@ interface Ethernet45
 !
 interface Ethernet46
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -1137,7 +1162,7 @@ interface Ethernet46
 !
 interface Ethernet47
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -1153,7 +1178,7 @@ interface Ethernet47
 !
 interface Ethernet48
    description AMBER_VLAN112
-   no shutdown
+   shutdown
    switchport access vlan 112
    switchport mode access
    switchport
@@ -1173,6 +1198,7 @@ interface Ethernet49/1
    mtu 9214
    no switchport
    ip address 10.255.254.3/31
+   multicast ipv4 static
    pim ipv4 sparse-mode
    ptp enable
    ptp sync-message interval -3
@@ -1180,6 +1206,52 @@ interface Ethernet49/1
    ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+!
+interface Ethernet50/1
+   description SHUTDOWN_SPINE_LINKS
+   shutdown
+   switchport
+!
+interface Ethernet51/1
+   description SHUTDOWN_SPINE_LINKS
+   shutdown
+   switchport
+!
+interface Ethernet52/1
+   description SHUTDOWN_SPINE_LINKS
+   shutdown
+   switchport
+!
+interface Ethernet53/1
+   description EVS Neuron
+   no shutdown
+   speed forced 100Gfull
+   switchport access vlan 2272
+   switchport mode access
+   switchport
+   ptp enable
+   ptp sync-message interval -3
+   ptp announce interval 0
+   ptp transport ipv4
+   ptp announce timeout 3
+   ptp delay-req interval -3
+   ptp role master
+!
+interface Ethernet54/1
+   description Imagine SNP-2118212563-Data-B
+   no shutdown
+   speed forced 100Gfull
+   no switchport
+   ip address 172.24.200.1/30
+   multicast ipv4 static
+   pim ipv4 sparse-mode
+   ptp enable
+   ptp sync-message interval -3
+   ptp announce interval 0
+   ptp transport ipv4
+   ptp announce timeout 3
+   ptp delay-req interval -3
+   ptp role master
 ```
 
 ### Loopback Interfaces
@@ -1230,6 +1302,7 @@ interface Loopback0
 interface Vlan112
    description VLAN112
    no shutdown
+   no autostate
    ip address 10.252.10.1/24
    ip helper-address 10.252.4.253
 ```
@@ -1290,13 +1363,13 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT | 0.0.0.0/0 | 10.252.0.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 10.90.227.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 10.252.0.1
+ip route vrf MGMT 0.0.0.0/0 10.90.227.1
 ```
 
 ### Router BGP
@@ -1309,8 +1382,6 @@ ip route vrf MGMT 0.0.0.0/0 10.252.0.1
 
 | BGP Tuning |
 | ---------- |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
@@ -1337,8 +1408,6 @@ ip route vrf MGMT 0.0.0.0/0 10.252.0.1
 !
 router bgp 65102
    router-id 10.255.1.4
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
@@ -1388,11 +1457,37 @@ router multicast
 
 ### PIM Sparse Mode
 
+#### Router PIM Sparse Mode
+
+##### IP Sparse Mode Information
+
+BFD enabled: False
+
+####### IP Rendezvous Information
+
+| Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
+| ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
+| 172.24.0.10 | - | - | - | - | - |
+
+##### Router Multicast Device Configuration
+
+```eos
+!
+router pim sparse-mode
+   ipv4
+      rp address 172.24.0.10
+```
+
 #### PIM Sparse Mode enabled interfaces
 
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |
+| Ethernet17 | - | IPv4 | - | - |
+| Ethernet18 | - | IPv4 | - | - |
+| Ethernet19 | - | IPv4 | - | - |
+| Ethernet20 | - | IPv4 | - | - |
 | Ethernet49/1 | - | IPv4 | - | - |
+| Ethernet54/1 | - | IPv4 | - | - |
 
 ## VRF Instances
 

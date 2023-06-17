@@ -10,3 +10,11 @@
         name: arista.avd.eos_config_deploy_cvp
       vars:
         cv_collection: v3 # (3)!
+        fabric_name: MEDIA_FABRIC # (4)!
+        container_root: 'MEDIA_FABRIC'
+        configlets_prefix: 'AVD-MEDIA-FABRIC'
+        container_apply_mode: strict
+        device_apply_mode: strict
+        state: present
+        execute_tasks: false
+        device_search_key: serialNumber
