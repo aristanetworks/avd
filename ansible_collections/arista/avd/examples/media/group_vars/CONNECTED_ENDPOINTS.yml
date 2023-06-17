@@ -4,6 +4,7 @@
 port_profiles:
   AMBER_111:
     mode: access
+    enabled: false
     vlans: "111"
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: enabled
@@ -12,6 +13,7 @@ port_profiles:
 
   AMBER_112:
     mode: access
+    enabled: false
     vlans: "112"
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: enabled
@@ -20,6 +22,7 @@ port_profiles:
 
   BLUE_121:
     mode: access
+    enabled: false
     vlans: "121"
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: enabled
@@ -28,6 +31,7 @@ port_profiles:
 
   BLUE_122:
     mode: access
+    enabled: false
     vlans: "122"
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: enabled
@@ -38,12 +42,20 @@ port_profiles:
 # All switch_ports ranges are expanded into individual port configurations
 # Switches are matched with regex matching the full hostname.
 network_ports:
+  # Generic Port Settings
   - switches:
       - amber-leaf1
     switch_ports:
       - Ethernet1-48
     profile: AMBER_111
     description: AMBER_VLAN111
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet50-52/1
+    enabled: false
+    description: SHUTDOWN_SPINE_LINKS
 
   - switches:
       - amber-leaf2
@@ -53,35 +65,680 @@ network_ports:
     description: AMBER_VLAN112
 
   - switches:
-      - blue-leaf1
+      - amber-leaf2
     switch_ports:
-      - Ethernet1-48
-    profile: BLUE_121
-    description: BLUE_VLAN121
+      - Ethernet50-52/1
+    enabled: false
+    description: SHUTDOWN_SPINE_LINKS
 
   - switches:
       - blue-leaf2
     switch_ports:
-      - Ethernet1-48
+      - Ethernet1-52,Ethernet53/1
     profile: BLUE_122
     description: BLUE_VLAN122
 
-  # - switches:
-  #     - amber-leaf2
-  #   switch_ports:
-  #     - Ethernet47
-  #   profile: AMBER_112
-  #   description: GM-Meinberg_NIC_1
-  #   ptp:
-  #     enabled: true
-  #     endpoint_role: bmca
+  - switches:
+      - blue-leaf2
+    switch_ports:
+      - Ethernet53/1
+    enabled: false
+    description: SHUTDOWN_SPINE_LINKS
 
-  # - switches:
-  #     - blue-leaf2
-  #   switch_ports:
-  #     - Ethernet47
-  #   profile: BLUE_122
-  #   description: GM-Meinberg_NIC_2
-  #   ptp:
-  #     enabled: true
-  #     endpoint_role: bmca
+  # media-PTP-1
+  - switches:
+      - media-PTP-1
+    switch_ports:
+      - Ethernet3-47,Ethernet49-50
+    enabled: false
+    description: mcs senders/receivers
+    # speed: forced 1000full
+    structured_config:
+      type: routed
+
+  - switches:
+      - media-PTP-1
+    switch_ports:
+      - Ethernet48
+    enabled: false
+    description: Meinberg Interface(cu-cu)
+    speed: forced 1000full
+    mode: access
+    vlans: 2222
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
+  - switches:
+      - media-PTP-1
+    switch_ports:
+      - Ethernet53
+    enabled: false
+    description: (Unused) Meinberg SFP-1G-T
+    speed: forced 1000full
+    mode: access
+    vlans: 2222
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
+  - switches:
+      - media-PTP-1
+    switch_ports:
+      - Ethernet54
+    description: Meinberg 1G Optical
+    speed: forced 1000full
+    mode: access
+    vlans: 2222
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
+  # media-PTP-2
+  - switches:
+      - media-PTP-2
+    switch_ports:
+      - Ethernet3-44,Ethernet46-47,Ethernet49-50
+    enabled: false
+    description: mcs senders/receivers
+    # speed: forced 1000full
+    structured_config:
+      type: routed
+
+  - switches:
+      - media-PTP-2
+    switch_ports:
+      - Ethernet45
+    enabled: false
+    description: Evertz 5700MSC-IP Eth2
+    speed: forced 1000full
+    structured_config:
+      type: routed
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
+  - switches:
+      - media-PTP-2
+    switch_ports:
+      - Ethernet48
+    enabled: false
+    description: Meinberg Interface(cu-cu)
+    speed: forced 1000full
+    mode: access
+    vlans: 2223
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
+  - switches:
+      - media-PTP-2
+    switch_ports:
+      - Ethernet53
+    enabled: false
+    description: Meinberg SFP-1G-T
+    speed: forced 1000full
+    mode: access
+    vlans: 2223
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
+  - switches:
+      - media-PTP-2
+    switch_ports:
+      - Ethernet54
+    description: Meinberg 1G Optical
+    speed: forced 1000full
+    mode: access
+    vlans: 2223
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
+  # amber-leaf1
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet6
+    enabled: false
+    description: DirectOut EXBOX
+    speed: forced 1000full
+    structured_config:
+      type: routed
+      ip_address: 192.168.40.22/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet13
+    description: C100-1 P1-1
+    speed: forced 10000full
+    mode: access
+    vlans: 2253
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet14
+    description: C100-1 P1-2
+    speed: forced 10000full
+    mode: access
+    vlans: 2253
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet16
+    description: C100-1 P1-4
+    speed: forced 10000full
+    mode: access
+    vlans: 2253
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet17
+    enabled: false
+    description: C100-2 P1-1
+    speed: forced 10000full
+    structured_config:
+      type: routed
+      ip_address: 172.24.225.49/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet18
+    enabled: false
+    description: C100-2 P1-2
+    speed: forced 10000full
+    structured_config:
+      type: routed
+      ip_address: 172.24.225.53/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet19
+    enabled: false
+    description: C100-2 P1-3
+    speed: forced 10000full
+    structured_config:
+      type: routed
+      ip_address: 172.24.225.57/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet20
+    enabled: false
+    description: C100-2 P1-4
+    speed: forced 10000full
+    structured_config:
+      type: routed
+      ip_address: 172.24.225.61/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet21-24,Ethernet27-40
+    enabled: false
+    description: mcs senders/receivers
+    speed: forced 10000full
+    structured_config:
+      type: routed
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet53/1
+    description: EVS Neuron
+    speed: forced 100Gfull
+    mode: access
+    vlans: 2252
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet54/1
+    description: Imagine SNP-2118212563-Data-A
+    speed: forced 100Gfull
+    structured_config:
+      type: routed
+      ip_address: 172.24.100.1/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  # amber-leaf2
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet13
+    description: C100-1 P2-2
+    speed: forced 10000full
+    mode: access
+    vlans: 2271
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet14
+    description: C100-1 P2-2
+    speed: forced 10000full
+    mode: access
+    vlans: 2273
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet15
+    description: C100-1 P2-3
+    speed: forced 10000full
+    mode: access
+    vlans: 2273
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet16
+    description: C100-1 P2-4
+    speed: forced 10000full
+    mode: access
+    vlans: 2273
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet17
+    enabled: false
+    description: C100-2 P2-1
+    speed: forced 10000full
+    structured_config:
+      type: routed
+      ip_address: 172.24.227.49/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet18
+    enabled: false
+    description: C100-2 P2-2
+    speed: forced 10000full
+    structured_config:
+      type: routed
+      ip_address: 172.24.227.53/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet19
+    enabled: false
+    description: C100-2 P2-3
+    speed: forced 10000full
+    structured_config:
+      type: routed
+      ip_address: 172.24.227.57/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet20
+    enabled: false
+    description: C100-2 P2-4
+    speed: forced 10000full
+    structured_config:
+      type: routed
+      ip_address: 172.24.227.61/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet21-40
+    enabled: false
+    description: mcs senders/receivers
+    # speed: forced 10000full
+    structured_config:
+      type: routed
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet53/1
+    description: EVS Neuron
+    speed: forced 100Gfull
+    mode: access
+    vlans: 2272
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet54/1
+    description: Imagine SNP-2118212563-Data-B
+    speed: forced 100Gfull
+    structured_config:
+      type: routed
+      ip_address: 172.24.200.1/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  # blue-leaf1
+  - switches:
+      - blue-leaf1
+    switch_ports:
+      - Ethernet1-48,Ethernet49-50/1,Ethernet52-59/1,Ethernet60/1-4
+    profile: BLUE_121
+    description: BLUE_VLAN121
+
+  - switches:
+      - blue-leaf1
+    switch_ports:
+      - Ethernet49-50/1,Ethernet52/1
+    enabled: false
+    description: SHUTDOWN_SPINE_LINK
+
+  - switches:
+      - blue-leaf1
+    switch_ports:
+      - Ethernet1
+    enabled: false
+    description: Newt-1 A
+    speed: forced 10000full
+    mode: access
+    vlans: 2291
+    ptp:
+      enabled: true
+
+  - switches:
+      - blue-leaf1
+    switch_ports:
+      - Ethernet2
+    enabled: false
+    description: Newt-1 B
+    speed: forced 10000full
+    mode: access
+    vlans: 2292
+    ptp:
+      enabled: true
+
+  - switches:
+      - blue-leaf1
+    switch_ports:
+      - Ethernet3
+    enabled: false
+    description: Newt-2 A
+    speed: forced 10000full
+    mode: access
+    vlans: 2293
+    ptp:
+      enabled: true
+
+  - switches:
+      - blue-leaf1
+    switch_ports:
+      - Ethernet4
+    enabled: false
+    description: Newt-2 B
+    speed: forced 10000full
+    mode: access
+    vlans: 2294
+    ptp:
+      enabled: true
+
+  # amber-spine1
+  - switches:
+      - amber-spine1
+    switch_ports:
+      - Ethernet2/1,Ethernet4/1,Ethernet5/1-4,Ethernet6/1,Ethernet7/1-4,Ethernet8-26/1,Ethernet27-28/2-3
+    enabled: false
+    description: mcs senders/receivers
+    structured_config:
+      type: routed
+
+  - switches:
+      - amber-spine1
+    switch_ports:
+      - Ethernet29-30/1
+    enabled: false
+    description: Links to blue-spine1
+    structured_config:
+      type: routed
+
+  - switches:
+      - amber-spine1
+    switch_ports:
+      - Ethernet13/1
+    description: C100-2 P1
+    speed: forced 40Gfull
+    structured_config:
+      type: routed
+      ip_address: 172.24.211.5/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-spine1
+    switch_ports:
+      - Ethernet15/1
+    description: Telestream iQ Inspect - Eth2
+    speed: forced 100Gfull
+    structured_config:
+      type: routed
+      ip_address: 172.24.211.9/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - amber-spine1
+    switch_ports:
+      - Ethernet16/1
+    description: smartSCOPE-AristaMaELAB,mcs sender/receiver
+    speed: forced 100Gfull
+    structured_config:
+      type: routed
+      ip_address: 172.24.211.1/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  # blue-spine1
+  - switches:
+      - blue-spine1
+    switch_ports:
+      - Ethernet5/1
+    description: Loopback to this Spine Eth 6/1
+    speed: forced 100Gfull
+
+  - switches:
+      - blue-spine1
+    switch_ports:
+      - Ethernet6/1
+    description: Loopback to this Spine Eth 5/1
+    speed: forced 100Gfull
+
+  - switches:
+      - blue-spine1
+    switch_ports:
+      - Ethernet8-12/1
+    enabled: false
+    description: mcs senders/receivers
+    speed: forced 100Gfull
+    structured_config:
+      type: routed
+
+  - switches:
+      - blue-spine1
+    switch_ports:
+      - Ethernet13/1
+    description: C100-2 P2
+    speed: forced 40Gfull
+    structured_config:
+      type: routed
+      ip_address: 172.24.212.5/30
+      pim:
+        ipv4:
+          sparse_mode: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - blue-spine1
+    switch_ports:
+      - Ethernet15/1
+    description: Telestream iQ Inspect - Eth3
+    speed: forced 100Gfull
+    structured_config:
+      type: routed
+      ip_address: 172.24.212.9/30
+      pim:
+        ipv4:
+          sparse_mode: true
+      multicast:
+        ipv4:
+          static: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - blue-spine1
+    switch_ports:
+      - Ethernet16/1
+    description: smartSCOPE-Arista M&E LAB
+    speed: forced 100Gfull
+    structured_config:
+      type: routed
+      ip_address: 172.24.128.1/30
+      pim:
+        ipv4:
+          sparse_mode: true
+    ptp:
+      enabled: true
+
+  - switches:
+      - blue-spine1
+    switch_ports:
+      - Ethernet19-24/1,Ethernet31-32/1,Ethernet33-34
+    enabled: false
+    description: mcs senders/receivers
+    speed: forced 100Gfull
+    structured_config:
+      type: routed

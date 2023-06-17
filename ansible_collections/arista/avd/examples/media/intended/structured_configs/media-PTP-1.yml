@@ -1,3 +1,4 @@
+serial_number: JPE20284615
 router_bgp:
   as: '65401'
   router_id: 10.255.3.1
@@ -9,9 +10,6 @@ router_bgp:
     ecmp: 4
   updates:
     wait_install: true
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -65,6 +63,10 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$n7NC6yuQmsXgOMKP$UZu7iLcCZgydY8NMdGAz244RVKdWqEikN.9ByPifgwQ90xS3fT6.46j5WcfUxkmVYWhWSgbIpODxVw67VkbkQ0
+- name: dataminer
+  privilege: 1
+  role: view-only
+  sha512_password: $6$tDLfGUdh6qFbD7XV$YOgbgeXei40thdIzlH1/Nz38K2IBkBcA6hYe.ihQnyq3qC92qP/ezmFZcrdOSmbF7xo10VegijeznJrn9X9lc.
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -85,7 +87,7 @@ ptp:
   clock_identity: 00:1C:73:0a:00:01
   priority1: 10
   priority2: 1
-  domain: 0
+  domain: 127
   monitor:
     enabled: true
     threshold:
@@ -175,19 +177,361 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
+- name: Ethernet3
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet4
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet5
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet6
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet7
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet8
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet9
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet10
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet11
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet12
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet13
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet14
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet15
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet16
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet17
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet18
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet19
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet20
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet21
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet22
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet23
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet24
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet25
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet26
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet27
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet28
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet29
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet30
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet31
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet32
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet33
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet34
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet35
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet36
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet37
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet38
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet39
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet40
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet41
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet42
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet43
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet44
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet45
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet46
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet47
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet49
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet50
+  peer: mcs senders/receivers
+  peer_type: network_port
+  description: mcs senders/receivers
+  shutdown: true
+  type: routed
+- name: Ethernet48
+  peer: Meinberg Interface(cu-cu)
+  peer_type: network_port
+  description: Meinberg Interface(cu-cu)
+  speed: forced 1000full
+  shutdown: true
+  type: switched
+  mode: access
+  vlans: '2222'
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+- name: Ethernet53
+  peer: (Unused) Meinberg SFP-1G-T
+  peer_type: network_port
+  description: (Unused) Meinberg SFP-1G-T
+  speed: forced 1000full
+  shutdown: false
+  type: switched
+  mode: access
+  vlans: '2222'
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+- name: Ethernet54
+  peer: Meinberg 1G Optical
+  peer_type: network_port
+  description: Meinberg 1G Optical
+  speed: forced 1000full
+  shutdown: false
+  type: switched
+  mode: access
+  vlans: '2222'
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
   shutdown: false
   ip_address: 10.255.3.1/32
-ip_igmp_snooping:
-  globally_enabled: true
-ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vlans:
 - id: 2222
   name: vlan_PTP_1
+  tenant: ptp
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
 vlan_interfaces:
-- name: vlan 2222
+- name: Vlan2222
+  tenant: ptp
+  tags:
+  - media-PTP-1
+  description: vlan_PTP_1
+  shutdown: false
   ip_address: 172.24.121.65/30
   no_autostate: true
 aaa_authentication:

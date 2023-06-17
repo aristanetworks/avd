@@ -1,0 +1,351 @@
+---
+# Ansible connectivity definitions
+# eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
+ansible_connection: ansible.netcommon.httpapi
+# Specifies that we are indeed using Arista EOS
+ansible_network_os: arista.eos.eos
+# This user/password must exist on the switches to enable Ansible access
+ansible_user: admin
+ansible_password: arista123!
+# User escalation (to enter enable mode)
+ansible_become: true
+ansible_become_method: enable
+# Use SSL (HTTPS)
+ansible_httpapi_use_ssl: true
+# Do not try to validate certs
+ansible_httpapi_validate_certs: false
+
+# Common AVD group variables
+fabric_name: "MEDIA_FABRIC"
+
+# Custom node_type_keys to:
+# - Enable connected_endpoints on media_spines (for connectivity to endpoints if required)
+# - Disable VTEP and MLAG on leaf switches
+# - Set default_ptp_priority1 for "media_leaf" as this is only set by default for "l3leaf"
+node_type_keys:
+  ptp_leaf:
+    type: ptp_leaf
+    default_overlay_routing_protocol: none
+    connected_endpoints: true
+    network_services:
+      l2: true
+      l3: true
+    default_ptp_priority1: 10
+  media_spine:
+    type: media_spine
+    default_overlay_routing_protocol: none
+    connected_endpoints: true
+    network_services:
+      l2: true
+      l3: true
+    default_ptp_priority1: 20
+  media_leaf:
+    type: media_leaf
+    default_overlay_routing_protocol: none
+    connected_endpoints: true
+    network_services:
+      l2: true
+      l3: true
+    default_ptp_priority1: 30
+
+daemon_terminattr:
+  # Address of the gRPC server on CloudVision
+  # TCP 9910 is used on on-prem
+  # TCP 443 is used on CV as a Service
+  clusters: # For multiple cluster support
+    cvaas:
+      cvaddrs:
+        - apiserver.arista.io:443
+      cvauth:
+        method: token-secure
+        token_file: /tmp/cv-onboarding-token
+      cvvrf: MGMT
+    dev:
+      cvaddrs:
+        - 10.243.132.193:9910
+      cvauth:
+        method: token
+        token_file: /tmp/devtoken
+      cvvrf: MGMT
+    lab:
+      cvaddrs:
+        - 10.90.227.161:9910
+      cvauth:
+        method: token
+        token_file: /tmp/token
+      cvvrf: MGMT
+
+# Local users
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$ttzoDdVO8Uz2SiBF$Ge.hQWy9wPGWyGc9.Q/mMyjycNO.9ylh40Vc.0iiqU/MtR7MKKIuOgbKkOeD3EpPMtN2SBForxog2ZCqv0kbu0
+    #password: "arista123!"
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$n7NC6yuQmsXgOMKP$UZu7iLcCZgydY8NMdGAz244RVKdWqEikN.9ByPifgwQ90xS3fT6.46j5WcfUxkmVYWhWSgbIpODxVw67VkbkQ0
+    #password: "arista123!"
+  dataminer:
+    privilege: 1
+    role: view-only
+    sha512_password: $6$tDLfGUdh6qFbD7XV$YOgbgeXei40thdIzlH1/Nz38K2IBkBcA6hYe.ihQnyq3qC92qP/ezmFZcrdOSmbF7xo10VegijeznJrn9X9lc.
+
+roles:
+  - name: view-only
+    sequence_numbers:
+      - sequence: 10
+        action: permit
+        command: enable
+      - sequence: 20
+        action: deny
+        mode: "exec"
+        command: reload
+      - sequence: 30
+        action: deny
+        mode: "config-all"
+        command: .*
+      - sequence: 40
+        action: deny
+        mode: "exec"
+        command: clear .*
+      - sequence: 50
+        action: permit
+        command: show .*
+      - sequence: 60
+        action: permit
+        command: bash timeout 1 df -h
+
+# BGP peer groups passwords
+bgp_peer_groups:
+  # all passwords set to "arista"
+  ipv4_underlay_peers:
+    password: 7x4B4rnJhZB438m9+BrBfQ==
+
+# P2P interfaces MTU, includes VLANs 4093 and 4094 that are over peer-link
+p2p_uplinks_mtu: 9214
+# If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
+# p2p_uplinks_mtu: 1500
+
+# MCS Client Configuration
+management_cvx:
+  shutdown: false
+  server_hosts:
+    - 10.90.224.188
+  vrf: MGMT
+
+# Enable PTP for the entire fabric
+ptp:
+  enabled: true
+  # domain: 127
+  # profile: aes67-r16-2016 # used by default if no profile is specified
+  # profile: aes67 # "Slow" profile
+  # profile: smpte2059-2 # "Fast" profile
+
+# Underlay multicast (SSM)
+underlay_multicast: true
+
+# Rendezvous Point
+router_pim_sparse_mode:
+  ipv4:
+    rp_addresses:
+      172.24.0.10:
+
+# SNMP
+snmp_server:
+  communities:
+    ro:
+      access: ro
+    rw:
+      access: rw
+
+custom_structured_configuration_aaa_authentication:
+  login:
+    default: local
+custom_structured_configuration_aaa_authorization:
+  exec:
+    default: local
+
+# Disable route-map for "redistribute connected"
+custom_structured_configuration_router_bgp:
+  redistribute_routes:
+    connected:
+      route_map: null
+
+# Disable route-map and prefix-list
+custom_structured_configuration_route_maps: null
+custom_structured_configuration_prefix_lists: null
+
+core_interfaces:
+  p2p_links:
+    - id: 1
+      # Nodes where this link should be configured
+      nodes: [ media-PTP-1, media-PTP-2 ]
+      # Interfaces where this link should be configured | Required unless using port-channels
+      interfaces: [ Ethernet1, Ethernet1 ]
+      # Enable PTP
+      ptp:
+        enabled: true
+      # Do not add this interface to underlay routing protocol
+      include_in_underlay_protocol: false
+    - id: 2
+      # Nodes where this link should be configured
+      nodes: [ media-PTP-1, media-PTP-2 ]
+      # Interfaces where this link should be configured | Required unless using port-channels
+      interfaces: [ Ethernet2, Ethernet2 ]
+      # Enable PTP
+      ptp:
+        enabled: true
+      # Do not add this interface to underlay routing protocol
+      include_in_underlay_protocol: false
+
+# OOB Management network default gateway.
+mgmt_interface: Management1
+mgmt_gateway: 10.90.227.1
+mgmt_destination_networks:
+  - 0.0.0.0/0
+
+# dns servers.
+dns_domain: MnE.lab
+name_servers:
+  - 10.90.227.155
+
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
+ntp:
+  servers:
+    - name: ntp.aristanetworks.com
+      iburst: true
+      vrf: MGMT
+
+# sFLow
+sflow:
+  destinations:
+    127.0.0.1:
+  source_interface: loopback0
+  run: true
+
+event_monitor:
+  enabled: true
+
+# Allow 3rd party transceivers on all switches
+# DO NOT DISTRIBITE LICENSE OR CAPABILITY
+service_unsupported_transceiver:
+  license_name: FoxNetworksWoodlandsTesting
+  license_key: e9ae09fb
+
+# LANZ
+queue_monitor_length:
+
+queue_monitor_streaming:
+  enable: true
+
+load_interval:
+  default: 5
+
+monitor_connectivity:
+  shutdown: false
+  interface_sets:
+    - name: Loopback
+      interfaces: loopback0
+  hosts:
+    - name: GM1
+      description: GM1
+      ip: 172.24.121.65
+      local_interfaces: Loopback
+  vrfs:
+    - name: MGMT
+      interface_sets:
+        - name: Management
+          interfaces: Management1
+      local_interfaces: Management
+      hosts:
+        - name: Google
+          description: Google
+          ip: 8.8.8.8
+        - name: aws-us-east-1
+          description: aws-us-east-1
+          ip: 52.216.227.10
+          url: http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com
+        - name: aws-us-west-2
+          description: aws-us-west-2
+          ip: 52.218.182.251
+          url: http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com
+        - name: azure-eastus
+          description: aws-us-west-2
+          ip: 52.216.227.10
+          url: http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com
+
+# -------------------------------------------------- MANAGEMENT API --------------------------------------------------
+management_api_gnmi:
+  provider: "eos-native"
+  transport:
+    grpc:
+      - name: grpc
+        vrf: MGMT
+
+management_api_http:
+  enable_http: true
+
+management_api_models:
+  providers:
+    - name: smash
+      paths:
+        - path: bridging
+          disabled: false
+        - path: ptp
+          disabled: false
+        - path: routing
+          disabled: false
+
+# -------------------------------------------------- ALIASES --------------------------------------------------
+#< list of alias commands in EOS CLI syntax >
+aliases: |
+  alias sln show lldp neighbors
+  alias conint sh interface | I connected
+  alias connect show interfaces status connected
+  alias descr show int descr
+  alias drops watch 1 diff show int coun dis | nz
+  alias dump bash tcpdump -i %1
+  alias ptpcount watch 1 diff sh ptp interface counters | egrep 'Ethernet|Manage'| grep -v "received: 0" | grep -v sent
+  alias ptpmgmt watch 1 diff sh ptp int count | egrep "Management messages received: | Ethernet" | nz
+  alias rates watch 1 diff show int count rates | nz
+  alias routeage bash echo show ip route | cliribd
+  alias senz show interface counter error | nz
+  alias senzwatch watch 1 diff show interface counter error | nz
+  alias shmc show int | awk '/^[A-Z]/ { intf = $1 } /, address is/ { print intf, $6 }'
+  alias shptp show ptp int counters drop
+  alias snoopcount watch 1 diff sh ip igmp snooping counters | nz
+  alias snoopgroup watch 1 diff sh ip igmp snooping groups | nz
+  alias snz show interface counter | nz
+  alias spd show port-channel %1 detail all
+  alias sqnz show interface counter queue | nz
+  alias srnz show interface counter rate | nz
+  alias watchptp watch 1 diff sh ip igmp snooping group 224.0.1.129 | nz
+  alias igmpgroups show ip igmp snooping groups detail
+  alias ptpwatch watch 1 diff show ptp
+  alias sdnz show int count discard | nz
+  alias sie show ip igmp snoop counters err | nz
+  alias sqml show queue-monitor length
+
+# -------------------------------------------------- VALIDATE STATE --------------------------------------------------
+# configure playbook to ingnore errors and continue testing.
+eos_validate_state_validation_mode_loose: true
+# Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
+root_dir: '{{ inventory_dir }}'
+eos_validate_state_name: 'reports'
+eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
+# Reports name
+eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
+eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
+# Markdown flavor to support non-text rendering
+# Only support default and github
+validate_state_markdown_flavor: "default"
+# Allow different manufacturers
+accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
+# Allow different states for power supplies
+accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.default(['ok']) }}"
+# Allow different states for fans
+accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok']) }}"
+# Generate MD results file
+validation_report_md: "{{ validation_role.validation_report_md | arista.avd.default(true) }}"

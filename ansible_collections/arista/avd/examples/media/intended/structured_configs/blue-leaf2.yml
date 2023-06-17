@@ -1,3 +1,4 @@
+serial_number: JPE19363421
 router_bgp:
   as: '65202'
   router_id: 10.255.2.4
@@ -9,9 +10,6 @@ router_bgp:
     ecmp: 4
   updates:
     wait_install: true
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -33,7 +31,7 @@ router_bgp:
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.252.0.1
+  gateway: 10.90.227.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 router_multicast:
@@ -61,6 +59,10 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$n7NC6yuQmsXgOMKP$UZu7iLcCZgydY8NMdGAz244RVKdWqEikN.9ByPifgwQ90xS3fT6.46j5WcfUxkmVYWhWSgbIpODxVw67VkbkQ0
+- name: dataminer
+  privilege: 1
+  role: view-only
+  sha512_password: $6$tDLfGUdh6qFbD7XV$YOgbgeXei40thdIzlH1/Nz38K2IBkBcA6hYe.ihQnyq3qC92qP/ezmFZcrdOSmbF7xo10VegijeznJrn9X9lc.
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -70,7 +72,7 @@ management_interfaces:
   shutdown: false
   vrf: MGMT
   ip_address: 10.90.227.31/24
-  gateway: 10.252.0.1
+  gateway: 10.90.227.1
   type: oob
 management_api_http:
   enable_vrfs:
@@ -81,7 +83,7 @@ ptp:
   clock_identity: 00:1C:73:1e:00:02
   priority1: 30
   priority2: 2
-  domain: 0
+  domain: 127
   monitor:
     enabled: true
     threshold:
@@ -116,12 +118,15 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
+  multicast:
+    ipv4:
+      static: true
 - name: Ethernet1
   peer: BLUE_VLAN122
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -142,7 +147,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -163,7 +168,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -184,7 +189,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -205,7 +210,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -226,7 +231,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -247,7 +252,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -268,7 +273,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -289,7 +294,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -310,7 +315,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -331,7 +336,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -352,7 +357,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -373,7 +378,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -394,7 +399,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -415,7 +420,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -436,7 +441,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -457,7 +462,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -478,7 +483,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -499,7 +504,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -520,7 +525,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -541,7 +546,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -562,7 +567,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -583,7 +588,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -604,7 +609,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -625,7 +630,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -646,7 +651,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -667,7 +672,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -688,7 +693,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -709,7 +714,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -730,7 +735,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -751,7 +756,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -772,7 +777,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -793,7 +798,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -814,7 +819,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -835,7 +840,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -856,7 +861,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -877,7 +882,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -898,7 +903,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -919,7 +924,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -940,7 +945,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -961,7 +966,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -982,7 +987,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -1003,7 +1008,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -1024,7 +1029,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -1045,7 +1050,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -1066,7 +1071,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -1087,7 +1092,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -1108,7 +1113,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: BLUE_122
   description: BLUE_VLAN122
-  shutdown: false
+  shutdown: true
   type: switched
   mode: access
   vlans: '122'
@@ -1124,6 +1129,96 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
+- name: Ethernet49
+  peer: BLUE_VLAN122
+  peer_type: network_port
+  port_profile: BLUE_122
+  description: BLUE_VLAN122
+  shutdown: true
+  type: switched
+  mode: access
+  vlans: '122'
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: enabled
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+- name: Ethernet50
+  peer: BLUE_VLAN122
+  peer_type: network_port
+  port_profile: BLUE_122
+  description: BLUE_VLAN122
+  shutdown: true
+  type: switched
+  mode: access
+  vlans: '122'
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: enabled
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+- name: Ethernet51
+  peer: BLUE_VLAN122
+  peer_type: network_port
+  port_profile: BLUE_122
+  description: BLUE_VLAN122
+  shutdown: true
+  type: switched
+  mode: access
+  vlans: '122'
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: enabled
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+- name: Ethernet52
+  peer: BLUE_VLAN122
+  peer_type: network_port
+  port_profile: BLUE_122
+  description: BLUE_VLAN122
+  shutdown: true
+  type: switched
+  mode: access
+  vlans: '122'
+  spanning_tree_portfast: edge
+  spanning_tree_bpdufilter: enabled
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+    role: master
+- name: Ethernet53/1
+  peer: SHUTDOWN_SPINE_LINKS
+  peer_type: network_port
+  description: SHUTDOWN_SPINE_LINKS
+  shutdown: true
+  type: switched
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -1144,8 +1239,9 @@ vlan_interfaces:
   description: VLAN122
   shutdown: false
   ip_address: 10.252.14.1/24
-  ip_helpers:
-  - ip_helper: 10.252.4.253
+  no_autostate: true
+mcs_client:
+  shutdown: false
 aaa_authentication:
   login:
     default: local

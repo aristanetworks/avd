@@ -8,14 +8,24 @@
   - [IP Name Servers](#ip-name-servers)
   - [NTP](#ntp)
   - [PTP](#ptp)
+  - [Management API gNMI](#management-api-gnmi)
+  - [Management CVX Summary](#management-cvx-summary)
   - [Management API HTTP](#management-api-http)
+  - [Management API Models](#management-api-models)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Roles](#roles)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
+- [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
+  - [SNMP](#snmp)
   - [SFlow](#sflow)
+- [Monitor Connectivity](#monitor-connectivity)
+  - [Global Configuration](#global-configuration)
+  - [Vrf Configuration](#vrf-configuration)
+  - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -121,7 +131,7 @@ ntp server vrf MGMT ntp.aristanetworks.com iburst
 
 | Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
 | -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| 00:1C:73:0a:00:01 | - | 10 | 1 | - | 0 | boundary | - |
+| 00:1C:73:0a:00:01 | - | 10 | 1 | - | 127 | boundary | - |
 
 #### PTP Device Configuration
 
@@ -130,7 +140,7 @@ ntp server vrf MGMT ntp.aristanetworks.com iburst
 ptp clock-identity 00:1C:73:0a:00:01
 ptp priority1 10
 ptp priority2 1
-ptp domain 0
+ptp domain 127
 ptp mode boundary
 ptp monitor threshold offset-from-master 250
 ptp monitor threshold mean-path-delay 1500
@@ -139,6 +149,42 @@ ptp monitor threshold missing-message announce 3 sequence-ids
 ptp monitor threshold missing-message delay-resp 3 sequence-ids
 ptp monitor threshold missing-message follow-up 3 sequence-ids
 ptp monitor threshold missing-message sync 3 sequence-ids
+```
+
+### Management API gNMI
+
+#### Management API gNMI Summary
+
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
+| --------- | ----------- | --- | ---------------------- | --- |
+| grpc | - | MGMT | last-change-time | - |
+
+Provider eos-native is configured.
+
+#### Management API gNMI configuration
+
+```eos
+!
+management api gnmi
+   transport grpc grpc
+      vrf MGMT
+   provider eos-native
+```
+
+### Management CVX Summary
+
+| Shutdown | CVX Servers |
+| -------- | ----------- |
+| False | 10.90.224.188 |
+
+#### Management CVX configuration
+
+```eos
+!
+management cvx
+   no shutdown
+   server host 10.90.224.188
+   vrf MGMT
 ```
 
 ### Management API HTTP
@@ -167,6 +213,28 @@ management api http-commands
       no shutdown
 ```
 
+### Management API Models
+
+#### Management API Models Summary
+
+| Provider | Path | Disabled |
+| -------- | ---- | ------- |
+| smash | bridging | False |
+| smash | ptp | False |
+| smash | routing | False |
+
+#### Management API Models Configuration
+
+```eos
+!
+management api models
+   !
+   provider smash
+      path bridging
+      path ptp
+      path routing
+```
+
 ## Authentication
 
 ### Local Users
@@ -177,6 +245,7 @@ management api http-commands
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
+| dataminer | 1 | view-only | False | - |
 
 #### Local Users Device Configuration
 
@@ -184,6 +253,35 @@ management api http-commands
 !
 username admin privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
+username dataminer privilege 1 role view-only secret sha512 <removed>
+```
+
+### Roles
+
+#### Roles Summary
+
+##### Role view-only
+
+| Sequence | Action | Mode | Command |
+| -------- | ------ | ---- | ------- |
+| 10 | permit | - | enable |
+| 20 | deny | exec | reload |
+| 30 | deny | config-all | .* |
+| 40 | deny | exec | clear .* |
+| 50 | permit | - | show .* |
+| 60 | permit | - | bash timeout 1 df -h |
+
+#### Roles Device Configuration
+
+```eos
+!
+role view-only
+   10 permit command enable
+   20 deny mode exec command reload
+   30 deny mode config-all command .*
+   40 deny mode exec command clear .*
+   50 permit command show .*
+   60 permit command bash timeout 1 df -h
 ```
 
 ### AAA Authentication
@@ -218,6 +316,39 @@ aaa authorization exec default local
 !
 ```
 
+## Aliases
+
+```eos
+alias sln show lldp neighbors
+alias conint sh interface | I connected
+alias connect show interfaces status connected
+alias descr show int descr
+alias drops watch 1 diff show int coun dis | nz
+alias dump bash tcpdump -i %1
+alias ptpcount watch 1 diff sh ptp interface counters | egrep 'Ethernet|Manage'| grep -v "received: 0" | grep -v sent
+alias ptpmgmt watch 1 diff sh ptp int count | egrep "Management messages received: | Ethernet" | nz
+alias rates watch 1 diff show int count rates | nz
+alias routeage bash echo show ip route | cliribd
+alias senz show interface counter error | nz
+alias senzwatch watch 1 diff show interface counter error | nz
+alias shmc show int | awk '/^[A-Z]/ { intf = $1 } /, address is/ { print intf, $6 }'
+alias shptp show ptp int counters drop
+alias snoopcount watch 1 diff sh ip igmp snooping counters | nz
+alias snoopgroup watch 1 diff sh ip igmp snooping groups | nz
+alias snz show interface counter | nz
+alias spd show port-channel %1 detail all
+alias sqnz show interface counter queue | nz
+alias srnz show interface counter rate | nz
+alias watchptp watch 1 diff sh ip igmp snooping group 224.0.1.129 | nz
+alias igmpgroups show ip igmp snooping groups detail
+alias ptpwatch watch 1 diff show ptp
+alias sdnz show int count discard | nz
+alias sie show ip igmp snoop counters err | nz
+alias sqml show queue-monitor length
+
+!
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -240,6 +371,29 @@ daemon TerminAttr
    no shutdown
 ```
 
+### SNMP
+
+#### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | - | All | Disabled |
+
+#### SNMP Communities
+
+| Community | Access | Access List IPv4 | Access List IPv6 | View |
+| --------- | ------ | ---------------- | ---------------- | ---- |
+| <removed> | ro | - | - | - |
+| <removed> | rw | - | - | - |
+
+#### SNMP Device Configuration
+
+```eos
+!
+snmp-server community <removed> ro
+snmp-server community <removed> rw
+```
+
 ### SFlow
 
 #### SFlow Summary
@@ -258,6 +412,92 @@ sFlow is enabled.
 sflow destination 127.0.0.1
 sflow source-interface loopback0
 sflow run
+```
+
+## Monitor Connectivity
+
+### Global Configuration
+
+#### Interface Sets
+
+| Name | Interfaces |
+| ---- | ---------- |
+| Loopback | loopback0 |
+
+#### Probing Configuration
+
+| Enabled | Interval | Default Interface Set |
+| ------- | -------- | --------------------- |
+| True | - | - |
+
+#### Host Parameters
+
+| Host Name | Description | IPv4 Address | Probing Interface Set | URL |
+| --------- | ----------- | ------------ | --------------------- | --- |
+| GM1 | GM1 | 172.24.121.65 | Loopback | - |
+
+### Vrf Configuration
+
+| Name | Description | Default Interface Set |
+| ---- | ----------- | --------------------- |
+| MGMT | - | Management |
+
+#### Vrf MGMT Configuration
+
+##### Interface Sets
+
+| Name | Interfaces |
+| ---- | ---------- |
+| Management | Management1 |
+
+##### Host Parameters
+
+| Host Name | Description | IPv4 Address | Probing Interface Set | URL |
+| --------- | ----------- | ------------ | --------------------- | --- |
+| aws-us-east-1 | aws-us-east-1 | 52.216.227.10 | - | http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com |
+| aws-us-west-2 | aws-us-west-2 | 52.218.182.251 | - | http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com |
+| azure-eastus | aws-us-west-2 | 52.216.227.10 | - | http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com |
+| Google | Google | 8.8.8.8 | - | - |
+
+### Monitor Connectivity Device Configuration
+
+```eos
+!
+monitor connectivity
+   no shutdown
+   interface set Loopback loopback0
+   !
+   host GM1
+      description
+      GM1
+      local-interfaces Loopback address-only
+      ip 172.24.121.65
+   vrf MGMT
+      interface set Management Management1
+      local-interfaces Management address-only default
+      !
+      host aws-us-east-1
+         description
+         aws-us-east-1
+         ip 52.216.227.10
+         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com
+      !
+      host aws-us-west-2
+         description
+         aws-us-west-2
+         ip 52.218.182.251
+         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com
+      !
+      host azure-eastus
+         description
+         aws-us-west-2
+         ip 52.216.227.10
+         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com
+      !
+      host Google
+         description
+         Google
+         ip 8.8.8.8
 ```
 
 ## Spanning Tree
@@ -321,6 +561,9 @@ vlan 2222
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet48 |  Meinberg Interface(cu-cu) | access | 2222 | - | - | - |
+| Ethernet53 |  (Unused) Meinberg SFP-1G-T | access | 2222 | - | - | - |
+| Ethernet54 |  Meinberg 1G Optical | access | 2222 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -359,6 +602,255 @@ interface Ethernet2
    ptp announce timeout 3
    ptp delay-req interval -3
 !
+interface Ethernet3
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet4
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet5
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet6
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet7
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet8
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet9
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet10
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet11
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet12
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet13
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet14
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet15
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet16
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet17
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet18
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet19
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet20
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet21
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet22
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet23
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet24
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet25
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet26
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet27
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet28
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet29
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet30
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet31
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet32
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet33
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet34
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet35
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet36
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet37
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet38
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet39
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet40
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet41
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet42
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet43
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet44
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet45
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet46
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet47
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet48
+   description Meinberg Interface(cu-cu)
+   shutdown
+   speed forced 1000full
+   switchport access vlan 2222
+   switchport mode access
+   switchport
+   ptp enable
+   ptp sync-message interval -3
+   ptp announce interval 0
+   ptp transport ipv4
+   ptp announce timeout 3
+   ptp delay-req interval -3
+!
+interface Ethernet49
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
+interface Ethernet50
+   description mcs senders/receivers
+   shutdown
+   no switchport
+!
 interface Ethernet51
    description P2P_LINK_TO_AMBER-SPINE1_Ethernet27/1
    no shutdown
@@ -380,6 +872,34 @@ interface Ethernet52
    no switchport
    ip address 10.255.253.3/31
    pim ipv4 sparse-mode
+   ptp enable
+   ptp sync-message interval -3
+   ptp announce interval 0
+   ptp transport ipv4
+   ptp announce timeout 3
+   ptp delay-req interval -3
+!
+interface Ethernet53
+   description (Unused) Meinberg SFP-1G-T
+   no shutdown
+   speed forced 1000full
+   switchport access vlan 2222
+   switchport mode access
+   switchport
+   ptp enable
+   ptp sync-message interval -3
+   ptp announce interval 0
+   ptp transport ipv4
+   ptp announce timeout 3
+   ptp delay-req interval -3
+!
+interface Ethernet54
+   description Meinberg 1G Optical
+   no shutdown
+   speed forced 1000full
+   switchport access vlan 2222
+   switchport mode access
+   switchport
    ptp enable
    ptp sync-message interval -3
    ptp announce interval 0
@@ -421,19 +941,21 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| vlan 2222 | - | default | - | - |
+| Vlan2222 | vlan_PTP_1 | default | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| vlan 2222 |  default  |  172.24.121.65/30  |  -  |  -  |  -  |  -  |  -  |
+| Vlan2222 |  default  |  172.24.121.65/30  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
 !
-interface vlan 2222
+interface Vlan2222
+   description vlan_PTP_1
+   no shutdown
    no autostate
    ip address 172.24.121.65/30
 ```
@@ -513,8 +1035,6 @@ ip route vrf MGMT 0.0.0.0/0 10.90.227.1
 
 | BGP Tuning |
 | ---------- |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
@@ -542,8 +1062,6 @@ ip route vrf MGMT 0.0.0.0/0 10.90.227.1
 !
 router bgp 65401
    router-id 10.255.3.1
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
@@ -595,6 +1113,27 @@ router multicast
 
 
 ### PIM Sparse Mode
+
+#### Router PIM Sparse Mode
+
+##### IP Sparse Mode Information
+
+BFD enabled: False
+
+####### IP Rendezvous Information
+
+| Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
+| ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
+| 172.24.0.10 | - | - | - | - | - |
+
+##### Router Multicast Device Configuration
+
+```eos
+!
+router pim sparse-mode
+   ipv4
+      rp address 172.24.0.10
+```
 
 #### PIM Sparse Mode enabled interfaces
 

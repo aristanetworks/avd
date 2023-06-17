@@ -1,4 +1,4 @@
-# FABRIC
+# MEDIA_FABRIC
 
 ## Table of Contents
 
@@ -17,14 +17,14 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| FABRIC | media_leaf | amber-leaf1 | 10.90.227.25/24 | 7280R2 | Provisioned | - |
-| FABRIC | media_leaf | amber-leaf2 | 10.90.227.27/24 | 7280R2 | Provisioned | - |
-| FABRIC | media_spine | amber-spine1 | 10.90.227.11/24 | 7280R2 | Provisioned | - |
-| FABRIC | media_leaf | blue-leaf1 | 10.90.227.29/24 | 7050X3 | Provisioned | - |
-| FABRIC | media_leaf | blue-leaf2 | 10.90.227.31/24 | 720XP | Provisioned | - |
-| FABRIC | media_spine | blue-spine1 | 10.90.227.12/24 | 7050X3 | Provisioned | - |
-| FABRIC | ptp_leaf | media-PTP-1 | 10.90.227.21/24 | 7020TR | Provisioned | - |
-| FABRIC | ptp_leaf | media-PTP-2 | 10.90.227.23/24 | 7020TR | Provisioned | - |
+| MEDIA_FABRIC | media_leaf | amber-leaf1 | 10.90.227.25/24 | 7280R2 | Provisioned | JPE20302333 |
+| MEDIA_FABRIC | media_leaf | amber-leaf2 | 10.90.227.27/24 | 7280R2 | Provisioned | JPE20302208 |
+| MEDIA_FABRIC | media_spine | amber-spine1 | 10.90.227.11/24 | 7280R2 | Provisioned | JPE20244151 |
+| MEDIA_FABRIC | media_leaf | blue-leaf1 | 10.90.227.29/24 | 7050X3 | Provisioned | JPE20282733 |
+| MEDIA_FABRIC | media_leaf | blue-leaf2 | 10.90.227.31/24 | 720XP | Provisioned | JPE19363421 |
+| MEDIA_FABRIC | media_spine | blue-spine1 | 10.90.227.12/24 | 7050X3 | Provisioned | JPE21090526 |
+| MEDIA_FABRIC | ptp_leaf | media-PTP-1 | 10.90.227.21/24 | 7020TR | Provisioned | JPE20284615 |
+| MEDIA_FABRIC | ptp_leaf | media-PTP-2 | 10.90.227.23/24 | 7020TR | Provisioned | JPE20284734 |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -83,14 +83,14 @@
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
-| FABRIC | amber-leaf1 | 10.255.1.3/32 |
-| FABRIC | amber-leaf2 | 10.255.1.4/32 |
-| FABRIC | amber-spine1 | 10.255.1.1/32 |
-| FABRIC | blue-leaf1 | 10.255.2.3/32 |
-| FABRIC | blue-leaf2 | 10.255.2.4/32 |
-| FABRIC | blue-spine1 | 10.255.2.1/32 |
-| FABRIC | media-PTP-1 | 10.255.3.1/32 |
-| FABRIC | media-PTP-2 | 10.255.3.2/32 |
+| MEDIA_FABRIC | amber-leaf1 | 10.255.1.3/32 |
+| MEDIA_FABRIC | amber-leaf2 | 10.255.1.4/32 |
+| MEDIA_FABRIC | amber-spine1 | 10.255.1.1/32 |
+| MEDIA_FABRIC | blue-leaf1 | 10.255.2.3/32 |
+| MEDIA_FABRIC | blue-leaf2 | 10.255.2.4/32 |
+| MEDIA_FABRIC | blue-spine1 | 10.255.2.1/32 |
+| MEDIA_FABRIC | media-PTP-1 | 10.255.3.1/32 |
+| MEDIA_FABRIC | media-PTP-2 | 10.255.3.2/32 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
@@ -101,3 +101,5 @@
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
+| MEDIA_FABRIC | amber-spine1 | 172.24.0.10/32 |
+| MEDIA_FABRIC | blue-spine1 | 172.24.0.10/32 |

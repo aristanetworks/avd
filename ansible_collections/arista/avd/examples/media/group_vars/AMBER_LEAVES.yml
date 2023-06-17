@@ -16,6 +16,13 @@ media_leaf:
       tenants: [ amber ]
     ptp:
       priority2: 1
+    uplink_structured_config:
+      multicast:
+        ipv4:
+          static: true
+    structured_config:
+      mcs_client:
+        shutdown: false
 
   nodes:
     amber-leaf1:
