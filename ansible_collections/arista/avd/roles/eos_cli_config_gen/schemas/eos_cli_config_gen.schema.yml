@@ -4601,7 +4601,7 @@ keys:
             type: bool
           encryption_reversible:
             type: str
-          policy:
+          policies:
             type: list
             items:
               type: dict
@@ -4614,27 +4614,41 @@ keys:
                     digits:
                       type: int
                       min: 0
+                      convert_types:
+                      - str
                     length:
                       type: int
                       min: 0
+                      convert_types:
+                      - str
                     lower:
                       type: int
                       min: 0
+                      convert_types:
+                      - str
                     special:
                       type: int
                       min: 0
+                      convert_types:
+                      - str
                     upper:
                       type: int
                       min: 0
+                      convert_types:
+                      - str
                 maximum:
                   type: dict
                   keys:
                     repetitive:
                       type: int
                       min: 0
+                      convert_types:
+                      - str
                     sequential:
                       type: int
                       min: 0
+                      convert_types:
+                      - str
       ssl_profiles:
         type: list
         items:

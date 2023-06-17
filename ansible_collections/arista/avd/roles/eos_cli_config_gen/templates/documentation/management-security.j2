@@ -94,10 +94,10 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if management_security.password.policy is arista.avd.defined %}
+{%     if management_security.password.policies is arista.avd.defined %}
 
 ### Password Policies
-{%         for policy in management_security.password.policy %}
+{%         for policy in management_security.password.policies %}
 #### Policy {{ policy.name }}
 
 {%             if policy.minimum is arista.avd.defined %}

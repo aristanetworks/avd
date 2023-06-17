@@ -5,7 +5,7 @@ management_security:
     minimum_length: 17
     encryption_key_common: true
     encryption_reversible: aes-256-gcm
-    policy:
+    policies:
       - name: AVD_POLICY
         minimum:
           digits: 1

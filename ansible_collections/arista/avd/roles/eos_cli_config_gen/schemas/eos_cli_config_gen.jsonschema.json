@@ -7455,7 +7455,7 @@
               "type": "string",
               "title": "Encryption Reversible"
             },
-            "policy": {
+            "policies": {
               "type": "array",
               "items": {
                 "type": "object",
@@ -7525,7 +7525,7 @@
                   "^_.+$": {}
                 }
               },
-              "title": "Policy"
+              "title": "Policies"
             }
           },
           "additionalProperties": false,

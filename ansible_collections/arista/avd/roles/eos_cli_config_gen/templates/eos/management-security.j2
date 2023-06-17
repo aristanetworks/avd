@@ -14,8 +14,8 @@ management security
 {%     if management_security.password.minimum_length is arista.avd.defined %}
    password minimum length {{ management_security.password.minimum_length }}
 {%     endif %}
-{%     if management_security.password.policy is arista.avd.defined %}
-{%         for policy in management_security.password.policy %}
+{%     if management_security.password.policies is arista.avd.defined %}
+{%         for policy in management_security.password.policies %}
    password policy {{ policy.name }}
 {%             if policy.minimum is arista.avd.defined %}
 {%                 if policy.minimum.digits is arista.avd.defined %}
