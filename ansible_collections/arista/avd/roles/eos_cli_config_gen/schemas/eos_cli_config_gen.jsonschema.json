@@ -18921,7 +18921,7 @@
               },
               "source": {
                 "type": "string",
-                "description": "TCAM profile local source path. Used to read the TCAM profile from a local path existing in the device.\nThe file can contain different TCAM profiles and the used will be defined by the \"system\" variable.",
+                "description": "TCAM profile local source path. Used to read the TCAM profile from a local path existing in the device.\nThe file can contain different TCAM profiles and the one used will be defined by the \"system\" variable.",
                 "title": "Source"
               }
             },
