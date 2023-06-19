@@ -256,3 +256,11 @@ vlan_interfaces:
   ip_attached_host_route_export:
     enabled: true
     distance: 19
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_datacenter
+    value: DC1
+  - name: topology_hint_fabric
+    value: TWODC_5STAGE_CLOS
+  - name: topology_hint_pod
+    value: DC1_POD1
