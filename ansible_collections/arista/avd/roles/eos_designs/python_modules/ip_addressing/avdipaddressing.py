@@ -49,7 +49,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         if self._fabric_ipaddress_mlag_algorithm == "same_subnet":
             pool_network = ipaddress.ip_network(pool, strict=False)
             if pool_network.prefixlen != 31:
-                raise AristaAvdError("MLAG same_subnet addressing requires the subnet to be a /31")
+                raise AristaAvdError("MLAG same_subnet addressing requires the pool to be a /31")
             return self._ip(pool, 31, 0, ip_offset)
 
         # Use default first_id
