@@ -4,7 +4,7 @@ If  `avd_generate_cloudvision_tags` is set to `True`, `arista.avd.eos_designs` c
 
 !!! note
     - **By default this new feature is turned off. Set `avd_generate_cloudvision_tags: True` in the Fabric to enable this feature.**
-    - **These tags would need to be applied to CloudVision using the [`arista.avd.cloudvision`](../../../roles/cloudvision/README.md) role.**
+    - **These tags would need to be applied to CloudVision using the [`arista.avd.cloudvision`](../../../cloudvision/README.md) role.**
 
 ### CloudVision Topology Tags
 

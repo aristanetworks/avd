@@ -28,6 +28,12 @@
       "description": "Validation Mode for AVD input data validation.\nInput data validation will validate the input variables according to the schema.\nDuring validation, messages will generated with information about the host(s) and key(s) which failed validation.\n\"disabled\" means that validation will not run.\n\"error\" will produce error messages and fail the task.\n\"warning\" will produce warning messages.\n\"info\" will produce regular log messages.\n\"debug\" will produce hidden debug messages viewable with -v.",
       "title": "AVD Data Validation Mode"
     },
+    "avd_generate_cloudvision_tags": {
+      "type": "boolean",
+      "default": false,
+      "description": "To be updated.",
+      "title": "AVD Generate Cloudvision Tags"
+    },
     "bfd_multihop": {
       "type": "object",
       "description": "BFD Multihop tuning.",

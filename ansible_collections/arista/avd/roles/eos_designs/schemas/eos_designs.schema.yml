@@ -64,6 +64,12 @@ keys:
       "info" will produce regular log messages.
 
       "debug" will produce hidden debug messages viewable with -v.'
+  avd_generate_cloudvision_tags:
+    documentation_options:
+      table: role-input-cloudvision-tags
+    type: bool
+    default: false
+    description: To be updated.
   bfd_multihop:
     documentation_options:
       table: bfd-settings
