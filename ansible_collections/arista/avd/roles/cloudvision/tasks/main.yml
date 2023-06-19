@@ -10,10 +10,12 @@
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 
 - name: "Generate CloudVision Tag Data"
-  arista.avd.cloudvision_convert_tags:
-  delegate_to: localhost
-  when:
-    - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
+  set_fact:
+    cv_tag_data: [ {
+      'device': "{{ inventory_hostname }}",
+      'device_tags': "{{ cloudvision_tags.device_tags }}",
+      'interface_tags': "{{ cloudvision_tags.interface_tags }}"
+    } ]
 
 - name: "Update tags on CVP"
   arista.cvp.cv_tag_v3:
