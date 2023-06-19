@@ -14,7 +14,6 @@ jobs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
       cloudvision: ${{ steps.filter.outputs.cloudvision }}
-      cvp_tags: ${{ steps.filter.output.cvp_tags }}
       dhcp: ${{ steps.filter.outputs.dhcp }}
       plugins: ${{ steps.filter.outputs.plugins }}
       requirements: ${{ steps.filter.outputs.requirements }}
@@ -47,12 +46,10 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
               - '.github/workflows/pull-request-management.yml'
-            cvp_tags:
-              - 'ansible_collections/arista/avd/roles/cvp_tags/*'
-              - 'ansible_collections/arista/avd/roles/cvp_tags/**/*'
-              - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/molecule/cvp_tags/*'
-              - 'ansible_collections/arista/avd/molecule/cvp_tags/**/*'
+              - 'ansible_collections/arista/avd/roles/cloudvision/*'
+              - 'ansible_collections/arista/avd/roles/cloudvision/**/*'
+              - 'ansible_collections/arista/avd/molecule/cloudvision/*'
+              - 'ansible_collections/arista/avd/molecule/cloudvision/**/*'
             dhcp:
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
@@ -311,24 +308,24 @@ jobs:
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
 
   # ----------------------------------- #
-  # CVP TAGS MOLECULE
+  # CloudVision TAGS MOLECULE
   # ----------------------------------- #
-  molecule_cvp_tags:
-    name: Validate cvp_tags
+  molecule_cloudvision_tags:
+    name: Validate CloudVision Role for Tags
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
         avd_scenario:
-          - 'cvp_tags'
+          - 'cloudvision_tags'
         ansible_version:
           - 'ansible-core>=2.12.6,<2.15.0,!=2.13.0'
         # Also test minimum ansible version for one scenario.
         include:
-          - avd_scenario: 'cvp_tags'
+          - avd_scenario: 'cloudvision_tags'
             ansible_version: 'ansible-core==2.12.6'
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.cvp_tags == 'true'
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.cloudvision == 'true'
     steps:
       - name: 'Set environment variables'
         run: |
