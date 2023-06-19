@@ -611,7 +611,6 @@ keys:
       timezone:
         type: str
   cloudvision_tags:
-    required: false
     type: dict
     keys:
       device_tags:
