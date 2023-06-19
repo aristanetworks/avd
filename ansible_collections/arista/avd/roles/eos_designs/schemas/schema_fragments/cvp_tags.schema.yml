@@ -5,7 +5,7 @@ type: dict
 keys:
   cloudvision_tags_topology_type:
     description: |
-      Type that CloudVision should use when generating the Topology.
+      Device type that CloudVision should use when generating the Topology.
     type: str
     valid_values:
       - "leaf"
@@ -20,10 +20,14 @@ keys:
     items:
       type: dict
       keys:
-        label:
+        name:
+          description: |
+            Tag name to be assigned to generated tags.
           required: true
           type: str
         field:
+          description: |
+            Sturctured config field/key to be used to find the value for the tag.
           required: true
           type: str
 
@@ -35,10 +39,14 @@ keys:
     items:
       type: dict
       keys:
-        label:
+        name:
+          description: |
+            Tag name to be assigned to generated tags.
           required: true
           type: str
         field:
+          description: |
+            Sturctured config field/key to be used to find the value for the tag.
           required: true
           type: str
 
@@ -50,9 +58,13 @@ keys:
     items:
       type: dict
       keys:
-        label:
+        name:
+          description: |
+            Tag name to be assigned to generated tag.
           required: true
           type: str
         value:
+          description: |
+            Value to be assigned to the tag.
           required: true
           type: str

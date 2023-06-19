@@ -67,18 +67,7 @@ port_channel_interfaces:
   shutdown: false
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: EOS_DESIGNS_UNIT_TESTS
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: leaf
-  interface_tags:
-  - interface: Ethernet4
-    tags: []
-  - interface: Ethernet5
-    tags: []
-  - interface: Ethernet6
-    tags: []
-  - interface: Ethernet7
-    tags: []
-  - interface: Ethernet8
-    tags: []

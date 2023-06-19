@@ -40,15 +40,14 @@ INVALID_CUSTOM_DEVICE_TAGS = [
 
 class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
     """
-    This would return facts to ansible set at the rool-level of the host vars for the host calling this:
+    This returns the cloudvision_tags data strucutre as per the below example
     {
-        "cvp_tags": {
+        "cloudvision_tags": {
             "topology_hint_type": <topology_hint_type taken from node_type_keys.[].cvp_tags.topology_hint_type>,
         },
         "key2": "bar"
     }
 
-    Missing fabric_name from shared_utils
     """
 
     def __init__(self, hostvars: dict, shared_utils: SharedUtils):
@@ -59,12 +58,8 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
     @cached_property
     def cloudvision_tags(self) -> str:
         """
-        Insert all the logic to deduct cvp tags here.
-        User helper functions to larger code blocks
-        Helper functions should be regular methods on the class (start with underscore)
-        and if you need @cached_properties make sure to start the name with underscore.
+        Generate the data structure `cloudvision_tags`.
         """
-        # interface_peer_name = self._interface_peer_name
         device_tags = []
 
         hints = [self._topology_hint_dc, self._topology_hint_fabric, self._topology_hint_pod, self._topology_hint_type, self._topology_hint_rack]
@@ -73,21 +68,22 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
                 device_tags.append(hint)
 
         for custom_tag in get(self.shared_utils.hostvars, "cloudvision_tags_device_custom", []):
-            if custom_tag["label"].lower() not in INVALID_CUSTOM_DEVICE_TAGS:
+            if custom_tag["name"].lower() not in INVALID_CUSTOM_DEVICE_TAGS:
                 device_tags.append(custom_tag)
             else:
-                raise AristaAvdError(f"{custom_tag['label']} is Invalid. System Tags cannot be overriden")
+                raise AristaAvdError(f"{custom_tag['name']} is Invalid. System Tags cannot be overriden")
 
         for generate_tag in get(self.shared_utils.hostvars, "cloudvision_tags_device_generate", []):
             value = get(self.shared_utils.hostvars, generate_tag["field"])
-            if generate_tag["label"] in INVALID_CUSTOM_DEVICE_TAGS:
-                raise AristaAvdError(f"{generate_tag['label']} is Invalid. System Tags cannot be overriden")
+            if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
+                raise AristaAvdError(f"{generate_tag['name']} is Invalid. System Tags cannot be overriden")
             if type(value) in [list, dict]:
                 raise AristaAvdError(f"The field {generate_tag['field']} appears to be a {type(value).__name__}. This is not supported for cloudvision fields.")
             if value:
-                device_tags.append({"label": generate_tag["label"], "value": str(value)})
+                device_tags.append({"name": generate_tag["name"], "value": str(value)})
             else:
-                self.ansible_display.warning(msg=f"{generate_tag['field']} not found for {self.shared_utils.hostname}")
+                # self.ansible_display.warning(msg=f"{generate_tag['field']} not found for {self.shared_utils.hostname}")
+                pass
 
         interface_tags = []
         for link in get(self.shared_utils.hostvars, "ethernet_interfaces", []):
@@ -103,7 +99,7 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
 
     @staticmethod
     def tag_dict(name, value):
-        return {"label": name, "value": value}
+        return {"name": name, "value": value}
 
     @cached_property
     def _topology_hint_type(self) -> dict:
@@ -115,8 +111,7 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         hint_type = get(self.shared_utils.hostvars, "cloudvision_tags_topology_type", hint_type)
 
         if not hint_type:
-            # raise AristaAvdError(f"No topology hint type found for {self.shared_utils.hostname}")
-            self.ansible_display.warning(msg=f"No topology hint type found for {self.shared_utils.hostname}")
+            # self.ansible_display.warning(msg=f"No topology hint type found for {self.shared_utils.hostname}")
             return None
 
         return self.tag_dict("topology_hint_type", hint_type)
@@ -127,8 +122,7 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         Return the topology fabric hint tag.
         """
         if not self.shared_utils.fabric_name:
-            # raise AristaAvdError(f"'pod_name' not found for {self.shared_utils.hostname}")
-            self.ansible_display.warning(msg=f"'fabric_name' not found for {self.shared_utils.hostname}")
+            # self.ansible_display.warning(msg=f"'fabric_name' not found for {self.shared_utils.hostname}")
             return None
 
         return self.tag_dict("topology_hint_fabric", self.shared_utils.fabric_name)
@@ -139,8 +133,7 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         Return the topology fabric hint tag.
         """
         if not self.shared_utils.pod_name:
-            # raise AristaAvdError(f"'pod_name' not found for {self.shared_utils.hostname}")
-            self.ansible_display.warning(msg=f"'pod_name' not found for {self.shared_utils.hostname}")
+            # self.ansible_display.warning(msg=f"'pod_name' not found for {self.shared_utils.hostname}")
             return None
 
         return self.tag_dict("topology_hint_pod", self.shared_utils.pod_name)
@@ -151,8 +144,7 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         Return the topology fabric hint tag.
         """
         if not self.shared_utils.dc_name:
-            # raise AristaAvdError(f"'dc_name' not found for {self.shared_utils.hostname}")
-            self.ansible_display.warning(msg=f"'dc_name' not found for {self.shared_utils.hostname}")
+            # self.ansible_display.warning(msg=f"'dc_name' not found for {self.shared_utils.hostname}")
             return None
         return self.tag_dict("topology_hint_datacenter", self.shared_utils.dc_name)
 
@@ -162,7 +154,7 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         Return the topology hint for the rack tag.
         """
         if not self.shared_utils.rack:
-            self.ansible_display.warning(msg=f"'rack' information not found for {self.shared_utils.hostname} ")
+            # self.ansible_display.warning(msg=f"'rack' information not found for {self.shared_utils.hostname} ")
             return None
         return self.tag_dict("topology_hint_rack", self.shared_utils.rack)
 
@@ -171,15 +163,16 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
 
         for generate_tag in get(self.shared_utils.hostvars, "cloudvision_tags_interface_generate", []):
             value = get(link, generate_tag["field"])
-            if generate_tag["label"] in INVALID_CUSTOM_DEVICE_TAGS:
-                raise AristaAvdError(f"{generate_tag['label']} is Invalid. System Tags cannot be overriden")
+            if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
+                raise AristaAvdError(f"{generate_tag['name']} is Invalid. System Tags cannot be overriden")
             if type(value) in [list, dict]:
                 raise AristaAvdError(f"The field {generate_tag['field']} appears to be a {type(value).__name__}. This is not supported for cloudvision fields.")
             if value:
-                tags.append({"label": generate_tag["label"], "value": str(value)})
+                tags.append({"name": generate_tag["name"], "value": str(value)})
             else:
-                self.ansible_display.warning(msg=f"{generate_tag['field']} not found for {self.shared_utils.hostname}")
+                # self.ansible_display.warning(msg=f"{generate_tag['field']} not found for {self.shared_utils.hostname}")
+                pass
         if tags:
             return {"interface": link["name"], "tags": tags}
-        self.ansible_display.warning(msg=f"No tags for {link['name']}")
+        # self.ansible_display.warning(msg=f"No tags for {link['name']}")
         return None

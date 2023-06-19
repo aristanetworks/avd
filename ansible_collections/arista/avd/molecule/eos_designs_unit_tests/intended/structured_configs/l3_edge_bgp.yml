@@ -183,24 +183,7 @@ port_channel_interfaces:
   ip_address: 192.168.0.10/31
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: EOS_DESIGNS_UNIT_TESTS
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: spine
-  interface_tags:
-  - interface: ethernet1
-    tags: []
-  - interface: ethernet2
-    tags: []
-  - interface: ethernet3
-    tags: []
-  - interface: ethernet4
-    tags: []
-  - interface: Ethernet5
-    tags: []
-  - interface: Ethernet6
-    tags: []
-  - interface: Ethernet7
-    tags: []
-  - interface: Ethernet8
-    tags: []

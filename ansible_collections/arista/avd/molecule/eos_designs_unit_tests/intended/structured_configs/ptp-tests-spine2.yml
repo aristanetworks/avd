@@ -187,16 +187,7 @@ ethernet_interfaces:
     enable: true
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: PTP_TESTS
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: spine
-  interface_tags:
-  - interface: Ethernet6
-    tags: []
-  - interface: Ethernet7
-    tags: []
-  - interface: Ethernet8
-    tags: []
-  - interface: Ethernet9
-    tags: []

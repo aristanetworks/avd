@@ -620,7 +620,7 @@ keys:
         items:
           type: dict
           keys:
-            label:
+            name:
               type: str
               required: true
             value:
@@ -640,7 +640,7 @@ keys:
               items:
                 type: dict
                 keys:
-                  label:
+                  name:
                     type: str
                     required: true
                   value:

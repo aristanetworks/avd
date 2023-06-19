@@ -597,7 +597,8 @@ roles/eos_designs/docs/tables/cloudvision-settings.md
 
 `arista.avd.eos_designs` can generate CloudVision Tags that can be applied to interfaces and/or devices. These tags can be used during Topology generateion, or used in searches/filters to select devices based on tags values.
 
-**Note: these tags would need to be applied to CloudVision using the [`arista.avd.cloudvision`](../../../roles/cloudvision/README.md) role.**
+!!! note
+    **These tags would need to be applied to CloudVision using the [`arista.avd.cloudvision`](../../../roles/cloudvision/README.md) role.**
 
 ### CloudVision Topology Tags
 
@@ -636,7 +637,8 @@ roles/eos_designs/docs/tables/cloudvision-tags-topology-type.md
 
 It is possible to assing custom Tags and values to devices. Depending where the key `cloudvision_tags_device_custom` is defined, the tag can be generated for a whole group or only a single device.
 
-**Note: Tag labels cannot have the name of any existing system tags on CloudVision. System tags cannot be emanded with this approach.**
+!!! warning
+    **Tag labels cannot have the name of any existing system tags on CloudVision. System tags cannot be emanded with this approach.**
 
 --8<--
 roles/eos_designs/docs/tables/cloudvision-tags-device-custom.md
@@ -649,7 +651,7 @@ roles/eos_designs/docs/tables/cloudvision-tags-device-custom.md
         hosts:
           dc1-pod1-leaf1a:
             cloudvision_tags_device_custom:
-              - label: custom_tag
+              - name: custom_tag
                 value: custom_value_leaf1a
             ansible_host: 172.16.1.101
     ```
@@ -665,10 +667,11 @@ It is possible to generate tags based on values that would be defined in `struct
 can be defined as the value for a tag. This allows for tags to be generated with values that are calculated for that device. Refer to the example below.
 
 !!! tip
-    Generate the `structured_config` once to get a better idea of what keys are available.
+    **Generate the `structured_config` once to get a better idea of what keys are available.**
 
-- **Note 1: Tag labels cannot have the name of any existing system tags on CloudVision. System tags cannot be emanded with this approach.**
-- **Note 2: If the key specified in `field` is not found, the tag is not generated. This avoids having a lot of empty tags.**
+!!! warning
+    - **Note 1: Tag labels cannot have the name of any existing system tags on CloudVision. System tags cannot be emanded with this approach.**
+    - **Note 2: If the key specified in `field` is not found, the tag is not generated. This avoids having a lot of empty tags.**
 
 **Generating Tags for Devices**
 --8<--
@@ -690,15 +693,15 @@ roles/eos_designs/docs/tables/cloudvision-tags-interface-generate.md
       # the respective tags will not be created.
       cloudvision_tags_interface_generate:
         - field: peer
-          label: peer_device_name
+          name: peer_device_name
         - field: peer_interface
-          label: peer_device_interface
+          name: peer_device_interface
 
       # Each EOS device will have tag called 'ip_routing' which will
       # have a value of 'True' if ip_routing is enabled on the device.
       cloudvision_tags_device_generate:
         - field: ip_routing
-          label: layer3_routing
+          name: layer3_routing
     ```
 
 ## Endpoint connectivity

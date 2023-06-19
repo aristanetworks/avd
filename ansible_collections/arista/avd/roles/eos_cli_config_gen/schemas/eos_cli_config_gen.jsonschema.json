@@ -1003,9 +1003,9 @@
           "items": {
             "type": "object",
             "properties": {
-              "label": {
+              "name": {
                 "type": "string",
-                "title": "Label"
+                "title": "Name"
               },
               "value": {
                 "type": "string",
@@ -1013,7 +1013,7 @@
               }
             },
             "required": [
-              "label",
+              "name",
               "value"
             ],
             "additionalProperties": false,
@@ -1037,9 +1037,9 @@
                 "items": {
                   "type": "object",
                   "properties": {
-                    "label": {
+                    "name": {
                       "type": "string",
-                      "title": "Label"
+                      "title": "Name"
                     },
                     "value": {
                       "type": "string",
@@ -1047,7 +1047,7 @@
                     }
                   },
                   "required": [
-                    "label",
+                    "name",
                     "value"
                   ],
                   "additionalProperties": false,

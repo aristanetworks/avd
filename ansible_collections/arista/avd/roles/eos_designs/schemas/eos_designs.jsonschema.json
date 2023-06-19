@@ -1029,7 +1029,7 @@
       "title": "CVP Instance Ips"
     },
     "cloudvision_tags_topology_type": {
-      "description": "Type that CloudVision should use when generating the Topology.\n",
+      "description": "Device type that CloudVision should use when generating the Topology.\n",
       "type": "string",
       "enum": [
         "leaf",
@@ -1045,17 +1045,19 @@
       "items": {
         "type": "object",
         "properties": {
-          "label": {
+          "name": {
+            "description": "Tag name to be assigned to generated tags.\n",
             "type": "string",
-            "title": "Label"
+            "title": "Name"
           },
           "field": {
+            "description": "Sturctured config field/key to be used to find the value for the tag.\n",
             "type": "string",
             "title": "Field"
           }
         },
         "required": [
-          "label",
+          "name",
           "field"
         ],
         "additionalProperties": false,
@@ -1071,17 +1073,19 @@
       "items": {
         "type": "object",
         "properties": {
-          "label": {
+          "name": {
+            "description": "Tag name to be assigned to generated tags.\n",
             "type": "string",
-            "title": "Label"
+            "title": "Name"
           },
           "field": {
+            "description": "Sturctured config field/key to be used to find the value for the tag.\n",
             "type": "string",
             "title": "Field"
           }
         },
         "required": [
-          "label",
+          "name",
           "field"
         ],
         "additionalProperties": false,
@@ -1097,17 +1101,19 @@
       "items": {
         "type": "object",
         "properties": {
-          "label": {
+          "name": {
+            "description": "Tag name to be assigned to generated tag.\n",
             "type": "string",
-            "title": "Label"
+            "title": "Name"
           },
           "value": {
+            "description": "Value to be assigned to the tag.\n",
             "type": "string",
             "title": "Value"
           }
         },
         "required": [
-          "label",
+          "name",
           "value"
         ],
         "additionalProperties": false,

@@ -1556,70 +1556,7 @@ monitor_sessions:
     direction: tx
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: EOS_DESIGNS_UNIT_TESTS
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: leaf
-  interface_tags:
-  - interface: Ethernet53/1
-    tags: []
-  - interface: Ethernet54/1
-    tags: []
-  - interface: Ethernet7
-    tags: []
-  - interface: Ethernet8
-    tags: []
-  - interface: Ethernet49/1
-    tags: []
-  - interface: Ethernet50/1
-    tags: []
-  - interface: Ethernet51/1
-    tags: []
-  - interface: Ethernet52/1
-    tags: []
-  - interface: Ethernet11
-    tags: []
-  - interface: Ethernet12
-    tags: []
-  - interface: Ethernet13
-    tags: []
-  - interface: Ethernet14
-    tags: []
-  - interface: Ethernet15
-    tags: []
-  - interface: Ethernet16
-    tags: []
-  - interface: Ethernet17
-    tags: []
-  - interface: Ethernet18
-    tags: []
-  - interface: Ethernet19
-    tags: []
-  - interface: Ethernet20
-    tags: []
-  - interface: Ethernet21
-    tags: []
-  - interface: Ethernet22
-    tags: []
-  - interface: Ethernet23
-    tags: []
-  - interface: Ethernet24
-    tags: []
-  - interface: Ethernet25
-    tags: []
-  - interface: Ethernet27
-    tags: []
-  - interface: Ethernet26
-    tags: []
-  - interface: Ethernet42
-    tags: []
-  - interface: Ethernet29
-    tags: []
-  - interface: Ethernet31
-    tags: []
-  - interface: Ethernet32
-    tags: []
-  - interface: Ethernet33
-    tags: []
-  - interface: Ethernet34
-    tags: []
