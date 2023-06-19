@@ -443,18 +443,7 @@ vxlan_interface:
         vni: 1
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: PTP_TESTS
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: leaf
-  interface_tags:
-  - interface: Ethernet1
-    tags: []
-  - interface: Ethernet2
-    tags: []
-  - interface: Ethernet13
-    tags: []
-  - interface: Ethernet5
-    tags: []
-  - interface: Ethernet3
-    tags: []

@@ -108,7 +108,7 @@ router_bfd:
     multiplier: 3
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: PTP_TESTS
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: spine

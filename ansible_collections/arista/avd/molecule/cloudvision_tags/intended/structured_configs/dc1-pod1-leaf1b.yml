@@ -439,46 +439,46 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.11.4
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_datacenter
+  - name: topology_hint_datacenter
     value: DC1
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: FABRIC
-  - label: topology_hint_pod
+  - name: topology_hint_pod
     value: pod1
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: leaf
-  - label: topology_hint_rack
+  - name: topology_hint_rack
     value: rack-1c
-  - label: layer3_routing
+  - name: layer3_routing
     value: 'True'
   interface_tags:
   - interface: Ethernet3
     tags:
-    - label: peer_device_name
+    - name: peer_device_name
       value: dc1-pod1-leaf1a
-    - label: peer_device_interface
+    - name: peer_device_interface
       value: Ethernet3
   - interface: Ethernet4
     tags:
-    - label: peer_device_name
+    - name: peer_device_name
       value: dc1-pod1-leaf1a
-    - label: peer_device_interface
+    - name: peer_device_interface
       value: Ethernet4
   - interface: Ethernet1
     tags:
-    - label: peer_device_name
+    - name: peer_device_name
       value: dc1-pod1-spine1
-    - label: peer_device_interface
+    - name: peer_device_interface
       value: Ethernet2
   - interface: Ethernet2
     tags:
-    - label: peer_device_name
+    - name: peer_device_name
       value: dc1-pod1-spine2
-    - label: peer_device_interface
+    - name: peer_device_interface
       value: Ethernet2
   - interface: Ethernet8
     tags:
-    - label: peer_device_name
+    - name: peer_device_name
       value: dc1-pod1-leaf1c
-    - label: peer_device_interface
+    - name: peer_device_interface
       value: Ethernet2

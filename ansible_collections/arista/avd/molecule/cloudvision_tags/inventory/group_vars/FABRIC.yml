@@ -52,10 +52,10 @@ p2p_uplinks_mtu: 1500
 
 cloudvision_tags_interface_generate:
   - field: peer
-    label: peer_device_name
+    name: peer_device_name
   - field: peer_interface
-    label: peer_device_interface
+    name: peer_device_interface
 
 cloudvision_tags_device_generate:
   - field: ip_routing
-    label: layer3_routing
+    name: layer3_routing

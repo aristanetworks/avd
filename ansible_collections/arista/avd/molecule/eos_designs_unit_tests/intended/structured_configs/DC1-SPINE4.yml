@@ -426,38 +426,7 @@ router_bfd:
     multiplier: 3
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: EOS_DESIGNS_UNIT_TESTS
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: spine
-  interface_tags:
-  - interface: Ethernet1/1
-    tags: []
-  - interface: Ethernet3/1
-    tags: []
-  - interface: Ethernet4/1
-    tags: []
-  - interface: Ethernet5/1
-    tags: []
-  - interface: Ethernet6/1
-    tags: []
-  - interface: Ethernet7/1
-    tags: []
-  - interface: Ethernet9/1
-    tags: []
-  - interface: Ethernet22
-    tags: []
-  - interface: Ethernet23
-    tags: []
-  - interface: Ethernet24
-    tags: []
-  - interface: Ethernet25
-    tags: []
-  - interface: Ethernet26
-    tags: []
-  - interface: Ethernet27
-    tags: []
-  - interface: Ethernet28
-    tags: []
-  - interface: Ethernet29
-    tags: []

@@ -12,10 +12,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools i
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from ..base import AvdStructuredConfigBase
+from ..cloudvision_tags import AvdStructuredConfigTags
 from ..connected_endpoints import AvdStructuredConfigConnectedEndpoints
 from ..core_interfaces_and_l3_edge import AvdStructuredConfigCoreInterfacesAndL3Edge
 from ..custom_structured_configuration import AvdStructuredConfigCustomStructuredConfiguration
-from ..cvp_tags import AvdStructuredConfigTags
 from ..inband_management import AvdStructuredConfigInbandManagement
 from ..mlag import AvdStructuredConfigMlag
 from ..network_services import AvdStructuredConfigNetworkServices

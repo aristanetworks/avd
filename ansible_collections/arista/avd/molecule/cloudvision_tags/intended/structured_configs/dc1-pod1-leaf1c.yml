@@ -98,32 +98,32 @@ ip_igmp_snooping:
   globally_enabled: true
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_datacenter
+  - name: topology_hint_datacenter
     value: DC1
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: FABRIC
-  - label: topology_hint_pod
+  - name: topology_hint_pod
     value: pod1
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: leaf
-  - label: topology_hint_rack
+  - name: topology_hint_rack
     value: rack-1c
   interface_tags:
   - interface: Ethernet1
     tags:
-    - label: peer_device_name
+    - name: peer_device_name
       value: dc1-pod1-leaf1a
-    - label: peer_device_interface
+    - name: peer_device_interface
       value: Ethernet8
   - interface: Ethernet2
     tags:
-    - label: peer_device_name
+    - name: peer_device_name
       value: dc1-pod1-leaf1b
-    - label: peer_device_interface
+    - name: peer_device_interface
       value: Ethernet8
   - interface: Ethernet5
     tags:
-    - label: peer_device_name
+    - name: peer_device_name
       value: dc1-pod1-leaf1-server1
-    - label: peer_device_interface
+    - name: peer_device_interface
       value: iLO

@@ -1044,20 +1044,7 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.1.21
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: EOS_DESIGNS_UNIT_TESTS
-  - label: topology_hint_type
+  - name: topology_hint_type
     value: leaf
-  interface_tags:
-  - interface: Ethernet57/1
-    tags: []
-  - interface: Ethernet58/1
-    tags: []
-  - interface: Ethernet49/1
-    tags: []
-  - interface: Ethernet50/1
-    tags: []
-  - interface: Ethernet51/1
-    tags: []
-  - interface: Ethernet52/1
-    tags: []

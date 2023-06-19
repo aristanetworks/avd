@@ -32,7 +32,7 @@ cvx:
       shutdown: false
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_datacenter
+  - name: topology_hint_datacenter
     value: OVERLAY_ROUTING_PROTOCOL_CVX_TESTS
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: EOS_DESIGNS_UNIT_TESTS

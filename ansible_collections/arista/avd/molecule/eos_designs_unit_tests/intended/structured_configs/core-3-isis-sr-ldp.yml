@@ -70,5 +70,5 @@ mpls:
     transport_address_interface: Loopback0
 cloudvision_tags:
   device_tags:
-  - label: topology_hint_fabric
+  - name: topology_hint_fabric
     value: EOS_DESIGNS_UNIT_TESTS

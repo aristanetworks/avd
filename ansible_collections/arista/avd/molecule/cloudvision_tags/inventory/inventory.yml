@@ -40,7 +40,7 @@ all:
                   hosts:
                     dc1-pod1-leaf1a:
                       cloudvision_tags_device_custom:
-                        - label: custom_tag
+                        - name: custom_tag
                           value: custom_value_leaf1a
                       ansible_host: 172.16.1.101
                     dc1-pod1-leaf1b:

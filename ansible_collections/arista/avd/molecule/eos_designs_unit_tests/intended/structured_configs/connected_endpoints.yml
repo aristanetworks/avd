@@ -95,3 +95,9 @@ port_channel_interfaces:
   description: OLD_SW-1/7_PORT_CHANNEL_DESCRIPTION
   type: switched
   shutdown: false
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - name: topology_hint_type
+    value: leaf
