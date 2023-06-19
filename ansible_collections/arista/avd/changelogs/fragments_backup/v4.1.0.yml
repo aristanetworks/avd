@@ -1,0 +1,16 @@
+release_summary: |
+  Release 4.1.0 - See documentation on avd.arista.com for details.
+bugfixes:
+- Fix(eos_designs) - Schema validation for connected endpoints not executed (https://github.com/aristanetworks/ansible-avd/pull/2984)
+- Fix(eos_designs) - Sort internal objects for consistent output (https://github.com/aristanetworks/ansible-avd/pull/2988)
+- Fix(cvp_configlet_upload) - Add requirements checks (https://github.com/aristanetworks/ansible-avd/pull/2990)
+minor_changes:
+- Feat(eos_cli_config_gen) - Add comments to queue (https://github.com/aristanetworks/ansible-avd/pull/2864)
+- Feat(eos_cli_config_gen) - Add OSPF default_information_originate options (https://github.com/aristanetworks/ansible-avd/pull/2896)
+- Feat(eos_cli_config_gen) - Add trust and chain certificate (https://github.com/aristanetworks/ansible-avd/pull/2804)
+- Feat(eos_designs) - Add support for POE settings under connected endpoints by @jrecchia1029 in (https://github.com/aristanetworks/ansible-avd/pull/2975)
+- Feat(eos_designs) - Enhance RD/RT assignments options (https://github.com/aristanetworks/ansible-avd/pull/2893)
+- Feat(eos_designs) - Compact MLAG allocations (https://github.com/aristanetworks/ansible-avd/pull/2946)
+- Feat(eos_designs) - Make BFD configurable under bgp_peer_groups (https://github.com/aristanetworks/ansible-avd/pull/2890)
+- Feat(eos_designs) - Support setting "ptp.auto_clock_identity to false" as group/hostvar (https://github.com/aristanetworks/ansible-avd/pull/2815)
+- Feat(eos_designs) - Support for underlay_multicast RPs and Anycast-RP (https://github.com/aristanetworks/ansible-avd/pull/2846)

@@ -76,7 +76,11 @@ plugins:
       type: date
   - search:
       lang: en
-
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - python-avd
 markdown_extensions:
   - admonition
   - attr_list
@@ -173,6 +177,7 @@ nav:
       - 1.0.x: docs/release-notes/1.0.x.md
   - Porting Guides:
       - 4.x.x: docs/porting-guides/4.x.x.md
+  - pyavd: docs/pyavd.md
   - About:
       - AVD on Ansible Galaxy: https://galaxy.ansible.com/arista/avd
       - Arista CVP Collection: https://cvp.avd.sh/en/latest/
