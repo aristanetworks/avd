@@ -106,3 +106,9 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 ip_igmp_snooping:
   globally_enabled: true
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_fabric
+    value: L2LS
+  - name: topology_hint_pod
+    value: L2LS_L2ONLY

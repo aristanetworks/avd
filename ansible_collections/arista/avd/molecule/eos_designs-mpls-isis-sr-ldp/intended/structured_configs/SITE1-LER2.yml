@@ -500,3 +500,7 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0333
     route_target: 03:03:02:02:03:33
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_fabric
+    value: MPLS_CORE

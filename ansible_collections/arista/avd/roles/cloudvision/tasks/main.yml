@@ -16,6 +16,9 @@
       'device_tags': "{{ cloudvision_tags.device_tags }}",
       'interface_tags': "{{ cloudvision_tags.interface_tags }}"
     } ]
+  when:
+    - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
+    - cloudvision_tags is arista.avd.defined
 
 - name: "Update tags on CVP"
   arista.cvp.cv_tag_v3:
@@ -25,3 +28,4 @@
   delegate_to: "{{ cloudvision_node }}"
   when:
     - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
+    - cloudvision_tags is arista.avd.defined

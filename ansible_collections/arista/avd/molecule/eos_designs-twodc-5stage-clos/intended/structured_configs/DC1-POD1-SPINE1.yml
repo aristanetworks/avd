@@ -287,3 +287,11 @@ route_maps:
     - as 65211
   - sequence: 20
     type: permit
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_datacenter
+    value: DC1
+  - name: topology_hint_fabric
+    value: TWODC_5STAGE_CLOS
+  - name: topology_hint_pod
+    value: DC1_POD1

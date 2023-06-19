@@ -148,3 +148,9 @@ router_ospf:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:00:99
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_fabric
+    value: L2LS
+  - name: topology_hint_pod
+    value: L2LS_OSPF

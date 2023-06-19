@@ -65,3 +65,9 @@ vlans:
   tenant: L2LS_OSPF
 ip_igmp_snooping:
   globally_enabled: true
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_fabric
+    value: L2LS
+  - name: topology_hint_pod
+    value: L2LS_OSPF
