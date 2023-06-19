@@ -7523,7 +7523,10 @@
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
-                }
+                },
+                "required": [
+                  "name"
+                ]
               },
               "title": "Policies"
             }
