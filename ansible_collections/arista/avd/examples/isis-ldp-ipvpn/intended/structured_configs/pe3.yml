@@ -226,7 +226,3 @@ router_ospf:
     - Ethernet2
     redistribute:
       bgp: {}
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: FABRIC

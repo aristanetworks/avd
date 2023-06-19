@@ -126,7 +126,3 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: FABRIC

@@ -3,8 +3,6 @@
   hosts: test-hosts
   gather_facts: false
   connection: local
-  vars:
-    root_dir: '{{ playbook_dir }}'
   tasks:
     - name: Delete local folders
       delegate_to: 127.0.0.1

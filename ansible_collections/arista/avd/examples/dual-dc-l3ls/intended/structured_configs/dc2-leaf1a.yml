@@ -456,9 +456,3 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.10.13
 - name: VRF11
   ip_address: 10.255.11.13
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: FABRIC
-  - name: topology_hint_type
-    value: leaf
