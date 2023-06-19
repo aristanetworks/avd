@@ -75,11 +75,3 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.21.210.4/24
   type: inband_mgmt
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_datacenter
-    value: DC2
-  - name: topology_hint_fabric
-    value: TWODC_5STAGE_CLOS
-  - name: topology_hint_pod
-    value: DC2_POD1

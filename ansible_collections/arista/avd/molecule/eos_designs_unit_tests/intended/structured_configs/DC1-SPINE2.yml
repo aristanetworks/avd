@@ -430,9 +430,3 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: spine

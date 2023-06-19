@@ -506,9 +506,3 @@ vxlan_interface:
         vni: 30311
       - id: 350
         vni: 30350
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: leaf

@@ -4,6 +4,8 @@
 type: dict
 keys:
   cloudvision_tags_topology_type:
+    documentation_options:
+      table: cloudvision-tags
     description: |
       Device type that CloudVision should use when generating the Topology.
     type: str
@@ -13,6 +15,8 @@ keys:
       - "core"
       - "edge"
   cloudvision_tags_interface_generate:
+    documentation_options:
+      table: cloudvision-tags
     description: |
       List of device tags that should be generated from
       structured configuration.
@@ -23,6 +27,7 @@ keys:
         name:
           description: |
             Tag name to be assigned to generated tags.
+          convert_to_lower_case: true
           required: true
           type: str
         field:
@@ -32,6 +37,8 @@ keys:
           type: str
 
   cloudvision_tags_device_generate:
+    documentation_options:
+      table: cloudvision-tags
     description: |
       List of device tags that should be generated from
       structured configuration.
@@ -42,6 +49,7 @@ keys:
         name:
           description: |
             Tag name to be assigned to generated tags.
+          convert_to_lower_case: true
           required: true
           type: str
         field:
@@ -51,6 +59,8 @@ keys:
           type: str
 
   cloudvision_tags_device_custom:
+    documentation_options:
+      table: cloudvision-tags
     description: |
       List of user defined tags and their values to be applied to this
       device on CVP.
@@ -63,6 +73,7 @@ keys:
             Tag name to be assigned to generated tag.
           required: true
           type: str
+          convert_to_lower_case: true
         value:
           description: |
             Value to be assigned to the tag.

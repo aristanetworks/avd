@@ -191,9 +191,3 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.10/31
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: spine

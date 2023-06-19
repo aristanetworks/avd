@@ -564,11 +564,3 @@ vxlan_interface:
         vni: 200
       - name: TG_300
         vni: 300
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_pod
-    value: TRUNK_GROUP_TESTS
-  - name: topology_hint_type
-    value: leaf

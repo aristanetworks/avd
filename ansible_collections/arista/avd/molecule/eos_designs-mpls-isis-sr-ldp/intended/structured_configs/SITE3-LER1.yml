@@ -85,7 +85,3 @@ mpls:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:00
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: MPLS_CORE

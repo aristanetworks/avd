@@ -783,11 +783,3 @@ virtual_source_nat_vrfs:
 domain_list:
 - structured-config.set.on.node
 - structured-config.set.under.vrf.common-vrf
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_datacenter
-    value: DC1
-  - name: topology_hint_fabric
-    value: TWODC_5STAGE_CLOS
-  - name: topology_hint_pod
-    value: DC1_POD1

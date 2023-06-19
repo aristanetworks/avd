@@ -189,9 +189,3 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: PTP_TESTS
-  - name: topology_hint_type
-    value: spine

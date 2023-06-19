@@ -81,9 +81,3 @@ route_maps:
     - as 65001
   - sequence: 20
     type: permit
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: spine
