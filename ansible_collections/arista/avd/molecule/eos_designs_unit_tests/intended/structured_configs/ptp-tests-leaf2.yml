@@ -243,9 +243,3 @@ vxlan_interface:
       vrfs:
       - name: VRF1
         vni: 1
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: PTP_TESTS
-  - name: topology_hint_type
-    value: leaf

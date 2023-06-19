@@ -483,7 +483,3 @@ router_ospf:
     max_lsa: 10000
     redistribute:
       bgp: {}
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: MPLS_CORE

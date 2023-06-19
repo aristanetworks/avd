@@ -180,9 +180,3 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_datacenter
-    value: DC1
-  - name: topology_hint_fabric
-    value: TWODC_5STAGE_CLOS

@@ -80,9 +80,3 @@ ethernet_interfaces:
   ip_address: 192.168.0.6/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: spine

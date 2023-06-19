@@ -54,9 +54,3 @@ vlan_interfaces:
   vrf: INBANDMGMT
   ip_address: 192.168.103.22/24
   type: inband_mgmt
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: leaf

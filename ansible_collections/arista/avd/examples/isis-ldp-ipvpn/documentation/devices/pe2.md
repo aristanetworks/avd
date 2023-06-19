@@ -442,8 +442,6 @@ router isis CORE
 
 | BGP Tuning |
 | ---------- |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
@@ -498,8 +496,6 @@ router isis CORE
 router bgp 65001
    router-id 10.255.1.2
    distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
    neighbor MPLS-OVERLAY-PEERS peer group

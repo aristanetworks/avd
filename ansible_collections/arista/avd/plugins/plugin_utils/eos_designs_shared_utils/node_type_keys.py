@@ -40,8 +40,17 @@ DEFAULT_NODE_TYPE_KEYS = {
             "uplink_type": "port-channel",
             "cloudvision_tags_topology_type": "leaf",
         },
-        {"key": "super_spine", "type": "super-spine", "cloudvision_tags_topology_type": "core"},
-        {"key": "overlay_controller", "type": "overlay-controller", "default_evpn_role": "server", "cloudvision_tags_topology_type": "spine"},
+        {
+            "key": "super_spine",
+            "type": "super-spine",
+            "cloudvision_tags_topology_type": "core",
+        },
+        {
+            "key": "overlay_controller",
+            "type": "overlay-controller",
+            "default_evpn_role": "server",
+            "cloudvision_tags_topology_type": "spine",
+        },
     ],
     "mpls": [
         {

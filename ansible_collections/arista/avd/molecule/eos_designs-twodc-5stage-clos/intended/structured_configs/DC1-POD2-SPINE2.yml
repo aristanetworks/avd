@@ -181,11 +181,3 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_datacenter
-    value: DC1
-  - name: topology_hint_fabric
-    value: TWODC_5STAGE_CLOS
-  - name: topology_hint_pod
-    value: DC1_POD2

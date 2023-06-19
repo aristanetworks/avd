@@ -10,7 +10,7 @@ pre-commit>=2.9.2
 pre-commit-hooks>=3.3.0
 identify>=1.4.20
 docker
-molecule>=5.0.1
+molecule>=3.2.0
 molecule-plugins[docker]>=23.4.0 ; python_version >= "3.9" #Not supported in 3.8
 yamllint
 treelib

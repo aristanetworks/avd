@@ -545,9 +545,3 @@ vxlan_interface:
         vni: 21
       - name: IGMP_QUERIER_TEST_3
         vni: 41
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: leaf

@@ -65,9 +65,3 @@ port_channel_interfaces:
   description: PHYSICAL_PORT_DESCRIPTION_PORT_CHANNEL_DESCRIPTION
   type: switched
   shutdown: false
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: leaf

@@ -5,27 +5,20 @@
   delegate_to: localhost
   when:
     - structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
-    - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
+    - is_deployed is not arista.avd.defined(false)
   vars:
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 
-- name: "Generate CloudVision Tag Data"
-  set_fact:
-    cv_tag_data: [ {
+- name: "Update tags on CVP"
+  arista.cvp.cv_tag_v3:
+    tags: [ {
       'device': "{{ inventory_hostname }}",
       'device_tags': "{{ cloudvision_tags.device_tags }}",
       'interface_tags': "{{ cloudvision_tags.interface_tags }}"
     } ]
-  when:
-    - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
-    - cloudvision_tags is arista.avd.defined
-
-- name: "Update tags on CVP"
-  arista.cvp.cv_tag_v3:
-    tags: "{{ cv_tag_data }}"
     mode: assign
     auto_create: true
   delegate_to: "{{ cloudvision_node }}"
   when:
-    - not hostvars[inventory_hostname].is_deployed is arista.avd.defined(false)
+    - is_deployed is not arista.avd.defined(false)
     - cloudvision_tags is arista.avd.defined

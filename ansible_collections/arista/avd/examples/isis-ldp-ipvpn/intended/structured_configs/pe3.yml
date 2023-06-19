@@ -11,9 +11,6 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
     type: mpls
@@ -72,16 +69,16 @@ router_bgp:
         - '20:20'
     redistribute_routes:
     - source_protocol: connected
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.1.1.10
+        activate: true
     neighbors:
     - ip_address: 10.1.1.10
       remote_as: '65124'
       description: C2_ROUTER2
       send_community: standard
       maximum_routes: 100
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 10.1.1.10
-        activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -229,3 +226,7 @@ router_ospf:
     - Ethernet2
     redistribute:
       bgp: {}
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_fabric
+    value: FABRIC

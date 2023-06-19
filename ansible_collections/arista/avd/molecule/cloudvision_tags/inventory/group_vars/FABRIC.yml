@@ -50,6 +50,8 @@ bgp_peer_groups:
 # p2p_uplinks_mtu: 1500
 p2p_uplinks_mtu: 1500
 
+avd_generate_cloudvision_tags: True
+
 cloudvision_tags_interface_generate:
   - field: peer
     name: peer_device_name

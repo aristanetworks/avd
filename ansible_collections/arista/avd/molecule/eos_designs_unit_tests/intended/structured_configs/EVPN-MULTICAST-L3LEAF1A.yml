@@ -1608,9 +1608,3 @@ router_pim_sparse_mode:
         - 232.0.112.0/21
       - address: 10.1.51.130
       - address: 10.1.52.130
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: leaf

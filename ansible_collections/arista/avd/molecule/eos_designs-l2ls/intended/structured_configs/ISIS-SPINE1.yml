@@ -85,9 +85,3 @@ vlan_interfaces:
   description: SVI_110
   shutdown: false
   ip_address_virtual: 10.0.110.1/24
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: L2LS
-  - name: topology_hint_pod
-    value: L2LS_ISIS

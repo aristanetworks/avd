@@ -199,11 +199,3 @@ ip_igmp_snooping:
   vlans:
   - id: 120
     enabled: false
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: leaf
-  - name: topology_hint_rack
-    value: rackE

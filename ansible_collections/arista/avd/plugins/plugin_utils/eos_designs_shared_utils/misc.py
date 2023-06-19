@@ -155,8 +155,8 @@ class MiscMixin:
         return get(self.hostvars, "dc_name")
 
     @cached_property
-    def fabric_name(self: SharedUtils) -> str | None:
-        return get(self.hostvars, "fabric_name")
+    def fabric_name(self: SharedUtils) -> str:
+        return get(self.hostvars, "fabric_name", required=True)
 
     @cached_property
     def rack(self: SharedUtils) -> str | None:

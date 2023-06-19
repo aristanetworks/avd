@@ -99,9 +99,3 @@ vlans:
   tenant: Tenant_X
 ip_igmp_snooping:
   globally_enabled: true
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: EOS_DESIGNS_UNIT_TESTS
-  - name: topology_hint_type
-    value: leaf

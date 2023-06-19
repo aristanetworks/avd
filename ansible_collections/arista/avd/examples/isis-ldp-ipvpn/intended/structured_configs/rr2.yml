@@ -11,9 +11,6 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   bgp_cluster_id: 10.255.2.2
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
@@ -195,3 +192,7 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_fabric
+    value: FABRIC

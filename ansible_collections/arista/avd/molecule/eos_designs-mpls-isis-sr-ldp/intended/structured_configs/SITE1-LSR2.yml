@@ -128,7 +128,3 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-cloudvision_tags:
-  device_tags:
-  - name: topology_hint_fabric
-    value: MPLS_CORE
