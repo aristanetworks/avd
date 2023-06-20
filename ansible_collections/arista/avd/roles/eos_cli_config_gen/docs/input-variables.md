@@ -447,7 +447,7 @@ roles/eos_cli_config_gen/docs/tables/ip-name-servers.md
 roles/eos_cli_config_gen/docs/tables/ip-ssh-client-source-interfaces.md
 --8<--
 
-### Management Accounts
+### Management accounts
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/management-accounts.md
