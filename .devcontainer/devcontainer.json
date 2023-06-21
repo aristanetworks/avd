@@ -2,7 +2,7 @@
     "name": "AVD Development",
     "build": {
         "dockerfile": "Dockerfile",
-        "args": { "VARIANT": "3.8-v2.0" }
+        "args": { "VARIANT": "3.8-v2.0" },
     },
     "remoteUser": "avd",
     "updateRemoteUserUID": true,
