@@ -151,7 +151,7 @@ class VlanInterfacesMixin(UtilsMixin):
                 vlan_interface_config["ip_helpers"] = ip_helpers
 
         if get(svi, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
-            vlan_interface_config["ospf_area"] = svi["ospf"].get("area", 0)
+            vlan_interface_config["ospf_area"] = svi["ospf"].get("area", "0.0.0.0")
             vlan_interface_config["ospf_network_point_to_point"] = svi["ospf"].get("point_to_point", False)
             vlan_interface_config["ospf_cost"] = svi["ospf"].get("cost")
             ospf_authentication = svi["ospf"].get("authentication")

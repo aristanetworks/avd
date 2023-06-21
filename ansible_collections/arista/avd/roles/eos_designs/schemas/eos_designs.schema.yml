@@ -4046,11 +4046,11 @@ $defs:
                           type: bool
                           default: false
                         area:
-                          type: int
+                          type: str
                           convert_types:
-                          - str
+                          - int
                           description: OSPF area id.
-                          default: 0
+                          default: 0.0.0.0
                         cost:
                           type: int
                           convert_types:
