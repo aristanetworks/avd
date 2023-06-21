@@ -98,6 +98,12 @@ You **must** define the `fabric_name` variable and it **must** match the Ansible
 roles/eos_designs/docs/tables/fabric-topology.md
 --8<--
 
+## Fabric IP Addressing
+
+--8<--
+roles/eos_designs/docs/tables/fabric-ip-addressing.md
+--8<--
+
 ## Node Type Variables
 
 The following tables provide information on the default node types that have been pre-defined in `eos_designs` for each design type.
@@ -349,6 +355,9 @@ roles/eos_designs/docs/tables/node-type-uplink-configuration.md
 --8<--
 
 ### Node type L2 and MLAG configuration
+
+!!! tip
+    Alternate addressing schemes are available at [`fabric_ip_addressing`](#fabric-ip-addressing).
 
 --8<--
 roles/eos_designs/docs/tables/node-type-l2-mlag-configuration.md
