@@ -385,9 +385,9 @@ keys:
             description: Configure enforcement for locked IPv6 addresses
   aliases:
     type: str
-    description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
-      |\n  alias wr copy running-config startup-config\n  alias siib show ip interface
-      brief\n```"
+    description: "Multi-line string with one or more alias commands.\n\nExample:\n\
+      \n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias\
+      \ siib show ip interface brief\n```"
   arp:
     type: dict
     keys:
@@ -632,14 +632,14 @@ keys:
   custom_templates:
     type: list
     display_name: Extensibility with Custom Templates
-    description: "- Custom templates can be added below the playbook directory.\n-
-      If a location above the directory is desired, a symbolic link can be used.\n-
-      Example under the `playbooks` directory create symbolic link with the following
-      command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n
-      \ ```\n\n- The output will be rendered at the end of the configuration.\n- The
-      order of custom templates in the list can be important if they overlap.\n- It
-      is recommended to use a `!` delimiter at the top of each custom template.\n\nAdd
-      `custom_templates` to group/host variables:\n"
+    description: "- Custom templates can be added below the playbook directory.\n\
+      - If a location above the directory is desired, a symbolic link can be used.\n\
+      - Example under the `playbooks` directory create symbolic link with the following\
+      \ command:\n\n  ```bash\n  ln -s ../../shared_repo/custom_avd_templates/ ./custom_avd_templates\n\
+      \  ```\n\n- The output will be rendered at the end of the configuration.\n-\
+      \ The order of custom templates in the list can be important if they overlap.\n\
+      - It is recommended to use a `!` delimiter at the top of each custom template.\n\
+      \nAdd `custom_templates` to group/host variables:\n"
     items:
       type: str
       description: Template relative path below playbook directory
@@ -691,12 +691,13 @@ keys:
                 - data-plane
   daemon_terminattr:
     type: dict
-    description: "You can either provide a list of IPs/FQDNs to target on-premise
-      Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\nStreaming
-      to multiple clusters both on-prem and cloud service is supported.\n\n!!! note\n
-      \   For TerminAttr version recommendation and EOS compatibility matrix, please
-      refer to the latest TerminAttr Release Notes\n    which always contain the latest
-      recommended versions and minimum required versions per EOS release.\n"
+    description: "You can either provide a list of IPs/FQDNs to target on-premise\
+      \ Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.\n\
+      Streaming to multiple clusters both on-prem and cloud service is supported.\n\
+      \n!!! note\n    For TerminAttr version recommendation and EOS compatibility\
+      \ matrix, please refer to the latest TerminAttr Release Notes\n    which always\
+      \ contain the latest recommended versions and minimum required versions per\
+      \ EOS release.\n"
     keys:
       cvaddrs:
         type: list
@@ -2480,21 +2481,22 @@ keys:
     keys:
       features:
         type: list
-        description: "This data model allows to configure the list of hardware counters
-          feature\navailable on Arista platforms.\n\nThe `name` key accepts a list
-          of valid_values which MUST be updated to support\nnew feature as they are
-          released in EOS.\n\nThe available values of the different keys like 'direction'
-          or 'address_type'\nare feature and hardware dependent and this model DOES
-          NOT validate that the\ncombinations are valid. It is the responsability
-          of the user of this data model\nto make sure that the rendered CLI is accepted
-          by the targeted device.\n\nExamples:\n\n  * Use:\n    ```yaml\n    hardware_counters:\n
-          \     features:\n        - name: ip\n          direction: out\n          layer3:
-          true\n          units_packets: true\n    ```\n\n    to render:\n    ```eos\n
-          \   hardware counter feature ip out layer3 units packets\n    ```\n  * Use:\n
-          \   ```yaml\n    hardware_counters:\n      features:\n        - name: route\n
-          \         address_type: ipv4\n          vrf: test\n          prefix: 192.168.0.0/24\n
-          \   ```\n\n    to render:\n    ```eos\n    hardware counter feature route
-          ipv4 vrf test 192.168.0.0/24\n    ```\n"
+        description: "This data model allows to configure the list of hardware counters\
+          \ feature\navailable on Arista platforms.\n\nThe `name` key accepts a list\
+          \ of valid_values which MUST be updated to support\nnew feature as they\
+          \ are released in EOS.\n\nThe available values of the different keys like\
+          \ 'direction' or 'address_type'\nare feature and hardware dependent and\
+          \ this model DOES NOT validate that the\ncombinations are valid. It is the\
+          \ responsability of the user of this data model\nto make sure that the rendered\
+          \ CLI is accepted by the targeted device.\n\nExamples:\n\n  * Use:\n   \
+          \ ```yaml\n    hardware_counters:\n      features:\n        - name: ip\n\
+          \          direction: out\n          layer3: true\n          units_packets:\
+          \ true\n    ```\n\n    to render:\n    ```eos\n    hardware counter feature\
+          \ ip out layer3 units packets\n    ```\n  * Use:\n    ```yaml\n    hardware_counters:\n\
+          \      features:\n        - name: route\n          address_type: ipv4\n\
+          \          vrf: test\n          prefix: 192.168.0.0/24\n    ```\n\n    to\
+          \ render:\n    ```eos\n    hardware counter feature route ipv4 vrf test\
+          \ 192.168.0.0/24\n    ```\n"
         items:
           type: dict
           keys:
@@ -4600,8 +4602,8 @@ keys:
               type: str
             tls_versions:
               type: str
-              description: "List of allowed TLS versions as string\nExamples:\n  -
-                \"1.0\"\n  - \"1.0 1.1\"\n"
+              description: "List of allowed TLS versions as string\nExamples:\n  -\
+                \ \"1.0\"\n  - \"1.0 1.1\"\n"
               convert_types:
               - float
             cipher_list:
@@ -4617,8 +4619,8 @@ keys:
               keys:
                 certificates:
                   type: list
-                  description: "List of trust certificate names\nExamples:\n  - test1.crt\n
-                    \ - test2.crt\n"
+                  description: "List of trust certificate names\nExamples:\n  - test1.crt\n\
+                    \  - test2.crt\n"
                   items:
                     type: str
                 requirement:
@@ -4643,8 +4645,8 @@ keys:
               keys:
                 certificates:
                   type: list
-                  description: "List of chain certificate names\nExamples:\n  - chain1.crt\n
-                    \ - chain2.crt\n"
+                  description: "List of chain certificate names\nExamples:\n  - chain1.crt\n\
+                    \  - chain2.crt\n"
                   items:
                     type: str
                 requirement:
@@ -5052,12 +5054,12 @@ keys:
               type: str
         rate_limit_per_ingress_chip:
           type: str
-          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
-            \ \"100 kbps\"\n  \"10 mbps\"\n"
+          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\
+            \n  \"100 kbps\"\n  \"10 mbps\"\n"
         rate_limit_per_egress_chip:
           type: str
-          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\n
-            \ \"100 kbps\"\n  \"10 mbps\"\n"
+          description: "Ratelimit and unit as string.\nExamples:\n  \"100000 bps\"\
+            \n  \"100 kbps\"\n  \"10 mbps\"\n"
         sample:
           type: int
           convert_types:
@@ -12117,7 +12119,8 @@ keys:
                     type: bool
                   ecn_propagation:
                     type: bool
-                    description: 'Enable copying ECN marking to/from encapsulted packet.
+                    description: 'Enable copying the ECN marking to/from encapsulated
+                      packets.
 
                       '
                   map_dscp_to_traffic_class_decapsulation:
