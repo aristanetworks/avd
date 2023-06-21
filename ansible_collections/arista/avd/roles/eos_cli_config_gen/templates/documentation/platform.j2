@@ -11,11 +11,9 @@
 
 | Settings | Value |
 | -------- | ----- |
-{%             for tridentsetting in platform.trident | arista.avd.natural_sort %}
-{%                 if platform.trident[tridentsetting] is not mapping %}
-| {{ tridentsetting }} | {{ platform.trident[tridentsetting] }} |
-{%                 endif %}
-{%             endfor %}
+{%             if platform.trident.forwarding_table_partition is arista.avd.defined %}
+| Forwarding Table Partition | {{ platform.trident.forwarding_table_partition }}
+{%             endif %}
 {%             if platform.trident.mmu.active_profile is arista.avd.defined %}
 | MMU Applied Profile | {{ platform.trident.mmu.active_profile }} |
 {%             endif %}
