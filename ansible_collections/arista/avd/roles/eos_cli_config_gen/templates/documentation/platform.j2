@@ -12,7 +12,7 @@
 | Settings | Value |
 | -------- | ----- |
 {%             if platform.trident.forwarding_table_partition is arista.avd.defined %}
-| Forwarding Table Partition | {{ platform.trident.forwarding_table_partition }}
+| Forwarding Table Partition | {{ platform.trident.forwarding_table_partition }} |
 {%             endif %}
 {%             if platform.trident.mmu.active_profile is arista.avd.defined %}
 | MMU Applied Profile | {{ platform.trident.mmu.active_profile }} |
