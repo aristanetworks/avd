@@ -6272,38 +6272,45 @@
         },
         "event": {
           "type": "object",
-          "items": {
-            "type": "object",
-            "properties": {
-              "storm_control_discards": {
-                "type": "object",
-                "items": {
+          "properties": {
+            "storm_control": {
+              "type": "object",
+              "properties": {
+                "discards": {
                   "type": "object",
                   "properties": {
                     "enable": {
                       "type": "boolean",
-                      "description": "Enable logging for storm-control discards",
                       "title": "Enable"
                     },
                     "interval": {
                       "type": "integer",
-                      "description": "Interval in seconds",
                       "minimum": 10,
                       "maximum": 65535,
+                      "description": "Logging interval in seconds",
                       "title": "Interval"
-                    },
+                    }
                   },
-                },
-                "title": "Storm-Control discards"
-              }
-            },
-            "additionalProperties": false,
-            "patternProperties": {
-              "^_.+$": {}
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Discards"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Storm Control"
             }
           },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
           "title": "Event"
-        },
+        }
       },
       "additionalProperties": false,
       "patternProperties": {

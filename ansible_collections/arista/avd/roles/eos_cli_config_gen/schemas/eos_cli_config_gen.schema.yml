@@ -3925,15 +3925,23 @@ keys:
                       valid_values:
                       - discard
       event:
-        storm_control_discards:
-          enable: bool
-          interval:
-            description: Interval in seconds
-            type: int
-            min: 10
-            max: 65535
-            convert_types:
-            - str
+        type: dict
+        keys:
+          storm_control:
+            type: dict
+            keys:
+              discards:
+                type: dict
+                keys:
+                  enable:
+                    type: bool
+                  interval:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 10
+                    max: 65535
+                    description: Logging interval in seconds
   loopback_interfaces:
     type: list
     primary_key: name
