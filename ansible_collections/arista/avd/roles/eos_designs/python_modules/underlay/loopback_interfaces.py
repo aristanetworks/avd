@@ -75,6 +75,11 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
             loopback_interfaces.append(vtep_loopback)
 
+        # Underlay Multicast RP Loopbacks
+        if self.shared_utils.underlay_multicast_rp_interfaces is not None:
+            for underlay_multicast_rp_interface in self.shared_utils.underlay_multicast_rp_interfaces:
+                loopback_interfaces.append(underlay_multicast_rp_interface)
+
         return loopback_interfaces
 
     @cached_property
