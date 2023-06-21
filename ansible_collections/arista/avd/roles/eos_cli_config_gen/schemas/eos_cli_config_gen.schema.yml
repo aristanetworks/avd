@@ -10338,6 +10338,21 @@ keys:
             keys:
               default:
                 type: bool
+          egress:
+            type: dict
+            keys:
+              enable_default:
+                type: bool
+                description: 'Enable egress sFlow by default.
+
+                  '
+              unmodified:
+                type: bool
+                description: 'Enable egress sFlow unmodified.
+
+                  Platform dependent feature.
+
+                  '
       run:
         type: bool
       hardware_acceleration:
