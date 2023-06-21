@@ -6371,7 +6371,7 @@ keys:
               '
           timeout:
             type: str
-            pattern: \d+(\.\d)?
+            pattern: \d+(\.\d{1,2})?
             convert_types:
             - int
             - float
@@ -6380,28 +6380,28 @@ keys:
 
               should start dropping on congested priorities.
 
-              This should be decimal with up to 1 decimal point.
+              This should be decimal with up to 2 decimal point.
 
-              Example: 0.5 or 60
+              Example: 0.01 or 60
 
               '
           polling_interval:
             type: str
-            pattern: \d+(\.\d)?
+            pattern: \d+(\.\d{1,3})?
             convert_types:
             - int
             - float
             description: 'Time interval in seconds at which the watchdog should poll
               the queues.
 
-              This should be decimal with up to 1 decimal point.
+              This should be decimal with up to 3 decimal point.
 
-              Example: 0.5 or 60
+              Example: 0.005 or 60
 
               '
           recovery_time:
             type: str
-            pattern: \d+(\.\d)?
+            pattern: \d+(\.\d{1,2})?
             convert_types:
             - int
             - float
@@ -6409,9 +6409,9 @@ keys:
 
               recover and start forwarding again.
 
-              This should be decimal with up to 1 decimal point.
+              This should be decimal with up to 2 decimal point.
 
-              Example: 0.5 or 60
+              Example: 0.01 or 60
 
               '
           override_action_drop:
@@ -6813,7 +6813,7 @@ keys:
                     timeout:
                       type: str
                       required: true
-                      pattern: \d+(\.\d)?
+                      pattern: \d+(\.\d{1,2})?
                       convert_types:
                       - int
                       - float
@@ -6822,26 +6822,26 @@ keys:
 
                         should start dropping on congested priorities.
 
-                        This should be decimal with up to 1 decimal point
+                        This should be decimal with up to 2 decimal point
 
-                        Example: 0.5 or 60
+                        Example: 0.01 or 60
 
                         '
                     polling_interval:
                       type: str
                       required: true
-                      pattern: auto|\d+(\.\d)?
+                      pattern: auto|\d+(\.\d{1,3})?
                       convert_types:
                       - int
                       - float
                       description: 'Time interval in seconds at which the watchdog
                         should poll the queues.
 
-                        This should be decimal with up to 1 decimal point or set
+                        This should be decimal with up to 3 decimal point or set
 
                         to ''auto'' based on recovery_time and timeout values.
 
-                        Example: 0.5 or 60
+                        Example: 0.005 or 60
 
                         '
                     recovery_time:
@@ -6856,9 +6856,9 @@ keys:
 
                         recover and start forwarding again.
 
-                        This should be decimal with up to 1 decimal point.
+                        This should be decimal with up to 2 decimal point.
 
-                        Example: 0.5 or 60
+                        Example: 0.01 or 60
 
                         '
                     forced:

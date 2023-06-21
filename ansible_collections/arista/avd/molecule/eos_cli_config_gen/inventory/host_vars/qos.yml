@@ -18,11 +18,11 @@ priority_flow_control:
   all_off: true
   watchdog:
     action: no-drop
-    timeout: "0.5"
+    timeout: "0.05"
     # Test conversion of float
-    polling_interval: 10.1
+    polling_interval: 10.001
     # Test conversion of int
-    recovery_time: 1
+    recovery_time: 1.22
     override_action_drop: false
 
 qos_profiles:
@@ -87,9 +87,9 @@ qos_profiles:
         enabled: true
         action: drop
         timer:
-          timeout: "0.5"
+          timeout: "0.05"
           polling_interval: auto
-          recovery_time: 1.1
+          recovery_time: 1.11
           forced: true
       priorities:
         - priority: 0

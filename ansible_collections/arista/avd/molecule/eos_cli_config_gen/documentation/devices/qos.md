@@ -370,11 +370,11 @@ QOS Profile: **test_with_pfc**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 0 | All | 1 | - | - |
-| 1 | All | 80 | - | - |
-| 5 | All | 19 | no priority | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 0 | All | 1 | - | - | - |
+| 1 | All | 80 | - | - | - |
+| 5 | All | 19 | no priority | - | - |
 
 **Priority Flow Control**
 
@@ -389,7 +389,7 @@ Priority Flow Control is **enabled**.
 
 | Enabled | Action | Timeout | Recovery | Polling |
 | ------- | ------ | ------- | -------- | ------- |
-| True | drop | 0.5 | 1.1 | auto |
+| True | drop | 0.05 | 1.11 | auto |
 
 QOS Profile: **uc_mc_queues_test**
 
@@ -487,7 +487,7 @@ qos profile test_with_pfc
    priority-flow-control priority 1 drop
    priority-flow-control pause watchdog
    priority-flow-control pause watchdog port action drop
-   priority-flow-control pause watchdog port timer timeout 0.5 polling-interval auto recovery-time 1.1 forced
+   priority-flow-control pause watchdog port timer timeout 0.05 polling-interval auto recovery-time 1.11 forced
 !
 qos profile uc_mc_queues_test
    !
@@ -536,13 +536,13 @@ Priority Flow Control is **Off** on all interfaces.
 
 | Action | Timeout | Recovery | Polling | Override Action Drop |
 | ------ | ------- | -------- | ------- |
-| no-drop | 0.5 | 1 | 10.1 | False |
+| no-drop | 0.05 | 1.22 | 10.001 | False |
 
 ```eos
 !
 priority-flow-control all off
 priority-flow-control pause watchdog action no-drop
-priority-flow-control pause watchdog default timeout 0.5
-priority-flow-control pause watchdog default polling-interval 10.1
-priority-flow-control pause watchdog default recovery-time 1
+priority-flow-control pause watchdog default timeout 0.05
+priority-flow-control pause watchdog default polling-interval 10.001
+priority-flow-control pause watchdog default recovery-time 1.22
 ```
