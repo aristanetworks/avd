@@ -1,0 +1,4 @@
+---
+# Testing anycast-rp with MSDP
+underlay_multicast_anycast_rp:
+  mode: msdp

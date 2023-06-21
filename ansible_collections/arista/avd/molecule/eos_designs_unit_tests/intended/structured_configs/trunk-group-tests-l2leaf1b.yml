@@ -33,16 +33,16 @@ vlans:
   name: svi200_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
-  - TG_200
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
+  - TG_200
 - id: 300
   name: svi300_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
+  - TG_300
 - id: 398
   name: svi398_without_trunk_groups
   tenant: TRUNK_GROUP_TESTS
@@ -59,16 +59,16 @@ vlans:
   name: l2vlan210_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
-  - TG_200
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
+  - TG_200
 - id: 310
   name: l2vlan310_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
   - CUSTOM_UPLINK_TG_NAME
+  - TG_300
 - id: 399
   name: l2vlan399_without_trunk_groups
   tenant: TRUNK_GROUP_TESTS

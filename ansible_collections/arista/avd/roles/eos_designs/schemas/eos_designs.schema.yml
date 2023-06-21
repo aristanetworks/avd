@@ -2439,6 +2439,96 @@ keys:
 
       '
     default: false
+  underlay_multicast_anycast_rp:
+    documentation_options:
+      table: fabric-settings
+    type: dict
+    description: 'If multiple nodes are configured under ''underlay_multicast_rps.[].nodes''
+      for the same RP address, they will be configured
+
+      with one of the following methods:
+
+      - Anycast RP using PIM (RFC4610).
+
+      - Anycast RP using MSDP (RFC4611).
+
+
+      NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to
+      a single MSDP mesh group named "ANYCAST-RP".
+
+      '
+    keys:
+      mode:
+        type: str
+        valid_values:
+        - pim
+        - msdp
+        default: pim
+  underlay_multicast_rps:
+    documentation_options:
+      table: fabric-settings
+    description: 'List of PIM Sparse-Mode Rendevouz Points configured for underlay
+      multicast on all devices.
+
+      The device(s) listed under ''nodes'', will be configured as the Rendevouz point
+      router(s).
+
+      If multiple nodes are configured under ''nodes'' for the same RP address, they
+      will be configured
+
+      according to the ''underlay_multicast_anycast_rp.mode'' setting.
+
+
+      Requires ''underlay_multicast: true''.
+
+      '
+    type: list
+    primary_key: rp
+    items:
+      type: dict
+      keys:
+        rp:
+          required: true
+          type: str
+          description: RP IPv4 address.
+        nodes:
+          type: list
+          description: 'List of nodes where a Loopback interface with the RP address
+            will be configured.
+
+            '
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Hostname.
+              loopback_number:
+                type: int
+                convert_types:
+                - str
+                required: true
+              description:
+                type: str
+                description: Interface description.
+                default: PIM RP
+        groups:
+          type: list
+          description: 'List of groups to associate with the RP address set in ''rp''.
+
+            If access_list_name is set, a standard access-list will be configured
+            matching these groups.
+
+            Otherwise the groups are configured directly on the RP command.
+
+            '
+          items:
+            type: str
+            description: Multicast Group IPv4 prefix/mask.
+        access_list_name:
+          type: str
+          description: Name of standard Access-List.
   underlay_ospf_area:
     documentation_options:
       table: ospf-settings

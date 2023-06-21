@@ -7,7 +7,6 @@ __metaclass__ = type
 import hashlib
 
 from ansible.errors import AnsibleFilterError
-from ansible.module_utils._text import to_native
 
 PRIV_KEY_LENGTH = {"des": 128, "aes": 128, "aes192": 192, "aes256": 256}
 
@@ -25,7 +24,7 @@ def get_hash_object(auth_type: str) -> hashlib._hashlib.HASH:
     try:
         return hashlib.new(auth)
     except ValueError:
-        raise AnsibleFilterError(to_native(f"{auth_type} is not a valid Auth algorithm for SNMPv3")) from ValueError
+        raise AnsibleFilterError(f"{auth_type} is not a valid Auth algorithm for SNMPv3") from ValueError
 
 
 def key_from_passphrase(passphrase: str, auth_type: str) -> str:
