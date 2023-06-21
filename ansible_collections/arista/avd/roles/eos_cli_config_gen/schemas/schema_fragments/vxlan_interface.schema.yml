@@ -63,7 +63,7 @@ keys:
                   ecn_propagation:
                     type: bool
                     description: |
-                      Enable copying ECN marking to/from encapsulted packet.
+                      Enable copying the ECN marking to/from encapsulated packets.
                   map_dscp_to_traffic_class_decapsulation:
                     type: bool
               vlans:
