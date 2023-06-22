@@ -56,7 +56,7 @@ This repository provides custom plugins for Arista's AVD collection:
 
 ## Additional resources
 
-- Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on ansible documentation.
+- Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on Ansible documentation
 - Ansible [CloudVision modules](https://cvp.avd.sh/en/stable/)
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
