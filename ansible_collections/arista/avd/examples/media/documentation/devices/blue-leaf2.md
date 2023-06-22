@@ -7,7 +7,6 @@
   - [DNS Domain](#dns-domain)
   - [IP Name Servers](#ip-name-servers)
   - [NTP](#ntp)
-  - [PTP](#ptp)
   - [Management API gNMI](#management-api-gnmi)
   - [Management CVX Summary](#management-cvx-summary)
   - [Management API HTTP](#management-api-http)
@@ -124,32 +123,6 @@ ip name-server vrf MGMT 10.90.227.155
 ```eos
 !
 ntp server vrf MGMT ntp.aristanetworks.com iburst
-```
-
-### PTP
-
-#### PTP Summary
-
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| 00:1C:73:1e:00:02 | - | 30 | 2 | - | 127 | boundary | - |
-
-#### PTP Device Configuration
-
-```eos
-!
-ptp clock-identity 00:1C:73:1e:00:02
-ptp priority1 30
-ptp priority2 2
-ptp domain 127
-ptp mode boundary
-ptp monitor threshold offset-from-master 250
-ptp monitor threshold mean-path-delay 1500
-ptp monitor sequence-id
-ptp monitor threshold missing-message announce 3 sequence-ids
-ptp monitor threshold missing-message delay-resp 3 sequence-ids
-ptp monitor threshold missing-message follow-up 3 sequence-ids
-ptp monitor threshold missing-message sync 3 sequence-ids
 ```
 
 ### Management API gNMI
@@ -359,16 +332,16 @@ alias sqml show queue-monitor length
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
 +
-| gzip | apiserver.arista.io:443 | MGMT | token-secure,/tmp/cv-onboarding-token | - | - | False |
-| gzip | 10.243.132.193:9910 | MGMT | token,/tmp/devtoken | - | - | False |
-| gzip | 10.90.227.161:9910 | MGMT | token,/tmp/token | - | - | False |
+| gzip | apiserver.arista.io:443 | MGMT | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
+| gzip | 10.244.132.193:9910 | MGMT | token,/tmp/devtoken | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
+| gzip | 10.90.227.161:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
 
 #### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvopt cvaas.addr=apiserver.arista.io:443 -cvopt cvaas.auth=token-secure,/tmp/cv-onboarding-token -cvopt cvaas.vrf=MGMT -cvopt dev.addr=10.243.132.193:9910 -cvopt dev.auth=token,/tmp/devtoken -cvopt dev.vrf=MGMT -cvopt lab.addr=10.90.227.161:9910 -cvopt lab.auth=token,/tmp/token -cvopt lab.vrf=MGMT -taillogs
+   exec /usr/bin/TerminAttr -cvopt cvaas.addr=apiserver.arista.io:443 -cvopt cvaas.auth=token-secure,/tmp/cv-onboarding-token -cvopt cvaas.vrf=MGMT -cvopt dev.addr=10.244.132.193:9910 -cvopt dev.auth=token,/tmp/devtoken -cvopt dev.vrf=MGMT -cvopt lab.addr=10.90.227.161:9910 -cvopt lab.auth=token,/tmp/token -cvopt lab.vrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -431,12 +404,6 @@ sflow run
 
 ### Global Configuration
 
-#### Interface Sets
-
-| Name | Interfaces |
-| ---- | ---------- |
-| Loopback | loopback0 |
-
 #### Probing Configuration
 
 | Enabled | Interval | Default Interface Set |
@@ -447,21 +414,15 @@ sflow run
 
 | Host Name | Description | IPv4 Address | Probing Interface Set | URL |
 | --------- | ----------- | ------------ | --------------------- | --- |
-| GM1 | GM1 | 172.24.121.65 | Loopback | - |
+| GM1 | - | 172.24.121.65 | - | - |
 
 ### Vrf Configuration
 
 | Name | Description | Default Interface Set |
 | ---- | ----------- | --------------------- |
-| MGMT | - | Management |
+| MGMT | - | - |
 
 #### Vrf MGMT Configuration
-
-##### Interface Sets
-
-| Name | Interfaces |
-| ---- | ---------- |
-| Management | Management1 |
 
 ##### Host Parameters
 
@@ -478,16 +439,10 @@ sflow run
 !
 monitor connectivity
    no shutdown
-   interface set Loopback loopback0
    !
    host GM1
-      description
-      GM1
-      local-interfaces Loopback address-only
       ip 172.24.121.65
    vrf MGMT
-      interface set Management Management1
-      local-interfaces Management address-only default
       !
       host aws-us-east-1
          description
@@ -1491,12 +1446,6 @@ interface Ethernet54/1
    ip address 10.255.255.3/31
    multicast ipv4 static
    pim ipv4 sparse-mode
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
 ```
 
 ### Loopback Interfaces
