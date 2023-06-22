@@ -1,15 +1,14 @@
-# Ansible Collection For Arista Validated Designs - arista.avd
+# Arista Validated Designs
 
 ![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
 
 <center><img src="ansible_collections/arista/avd/media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
 
-[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running the Extensible Operating System (EOS) operating system natively through EOS API (eAPI) or [CloudVision Portal (CVP)](https://www.arista.com/en/products/eos/eos-cloudvision).
-This collection includes a set of ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs!
+Arista Validated Designs (AVD) is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
 
-Full documentation for the collection:
+AVD Documentation:
 
-- [Stable version](https://www.avd.sh/en/stable/)
+- [Stable version](https://avd.arista.com/stable/)
 - [Development version](https://www.avd.sh/en/devel/)
 
 ## Features
@@ -20,18 +19,18 @@ Full documentation for the collection:
 
 ## Reference designs
 
-- [L3LS VXLAN-EVPN, L2LS, and MPLS (beta)](./ansible_collections/arista/avd/roles/eos_designs/README.md)
+- [L3LS VXLAN-EVPN, L2LS, and MPLS](https://avd.arista.com/stable/roles/eos_designs/index.html)
 
-## Collection installation
+## AVD Ansible Collection
 
-Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](./ansible_collections/arista/avd/docs/installation/collection-installation.md).
+[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
 
-## Examples
+### Examples
 
-- [Getting started examples](./ansible_collections/arista/avd/docs/getting-started/intro-to-ansible-and-avd.md)
+- [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
 - [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
-## Additional resources
+### Additional resources
 
 - Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on ansible documentation.
 - Ansible [CloudVision modules](https://cvp.avd.sh/en/stable/)
