@@ -175,11 +175,11 @@ cvp_configlets:
     Vlan2253\n   description VLAN2253\n   no shutdown\n   no autostate\n   ip address
     172.24.225.33/28\n   multicast ipv4 static\n   pim ipv4 sparse-mode\n!\nhardware
     tcam\n   system profile vxlan-routing\n!\nmonitor connectivity\n   no shutdown\n
-    \  !\n   host GM1\n      description\n      GM1\n      ip 172.24.121.65\n   vrf
-    MGMT\n      !\n      host aws-us-east-1\n         description\n         aws-us-east-1\n
-    \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
-    \     !\n      host aws-us-west-2\n         description\n         aws-us-west-2\n
-    \        ip 52.218.182.251\n         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
+    \  !\n   host GM1\n      ip 172.24.121.65\n   vrf MGMT\n      !\n      host aws-us-east-1\n
+    \        description\n         aws-us-east-1\n         ip 52.216.227.10\n         url
+    http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n      !\n      host
+    aws-us-west-2\n         description\n         aws-us-west-2\n         ip 52.218.182.251\n
+    \        url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
     \     !\n      host azure-eastus\n         description\n         aws-us-west-2\n
     \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
     \     !\n      host Google\n         description\n         Google\n         ip
@@ -402,11 +402,11 @@ cvp_configlets:
     address 10.90.227.27/24\n!\ninterface Vlan112\n   description VLAN112\n   no shutdown\n
     \  no autostate\n   ip address 10.252.10.1/24\n   ip helper-address 10.252.4.253\n!\nhardware
     tcam\n   system profile vxlan-routing\n!\nmonitor connectivity\n   no shutdown\n
-    \  !\n   host GM1\n      description\n      GM1\n      ip 172.24.121.65\n   vrf
-    MGMT\n      !\n      host aws-us-east-1\n         description\n         aws-us-east-1\n
-    \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
-    \     !\n      host aws-us-west-2\n         description\n         aws-us-west-2\n
-    \        ip 52.218.182.251\n         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
+    \  !\n   host GM1\n      ip 172.24.121.65\n   vrf MGMT\n      !\n      host aws-us-east-1\n
+    \        description\n         aws-us-east-1\n         ip 52.216.227.10\n         url
+    http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n      !\n      host
+    aws-us-west-2\n         description\n         aws-us-west-2\n         ip 52.218.182.251\n
+    \        url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
     \     !\n      host azure-eastus\n         description\n         aws-us-west-2\n
     \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
     \     !\n      host Google\n         description\n         Google\n         ip
@@ -526,9 +526,9 @@ cvp_configlets:
     Loopback1\n   description Anycast RP\n   ip address 172.24.0.10/32\n!\ninterface
     Management1\n   description oob_management\n   no shutdown\n   vrf MGMT\n   ip
     address 10.90.227.11/24\n!\nhardware tcam\n   system profile vxlan-routing\n!\nmonitor
-    connectivity\n   no shutdown\n   !\n   host GM1\n      description\n      GM1\n
-    \     ip 172.24.121.65\n   vrf MGMT\n      !\n      host aws-us-east-1\n         description\n
-    \        aws-us-east-1\n         ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
+    connectivity\n   no shutdown\n   !\n   host GM1\n      ip 172.24.121.65\n   vrf
+    MGMT\n      !\n      host aws-us-east-1\n         description\n         aws-us-east-1\n
+    \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
     \     !\n      host aws-us-west-2\n         description\n         aws-us-west-2\n
     \        ip 52.218.182.251\n         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
     \     !\n      host azure-eastus\n         description\n         aws-us-west-2\n
@@ -868,9 +868,9 @@ cvp_configlets:
     \  ip address 10.255.2.3/32\n!\ninterface Management1\n   description oob_management\n
     \  no shutdown\n   vrf MGMT\n   ip address 10.90.227.29/24\n!\ninterface Vlan121\n
     \  description VLAN121\n   no shutdown\n   no autostate\n   ip address 10.252.13.1/24\n!\nmonitor
-    connectivity\n   no shutdown\n   !\n   host GM1\n      description\n      GM1\n
-    \     ip 172.24.121.65\n   vrf MGMT\n      !\n      host aws-us-east-1\n         description\n
-    \        aws-us-east-1\n         ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
+    connectivity\n   no shutdown\n   !\n   host GM1\n      ip 172.24.121.65\n   vrf
+    MGMT\n      !\n      host aws-us-east-1\n         description\n         aws-us-east-1\n
+    \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
     \     !\n      host aws-us-west-2\n         description\n         aws-us-west-2\n
     \        ip 52.218.182.251\n         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
     \     !\n      host azure-eastus\n         description\n         aws-us-west-2\n
@@ -1172,12 +1172,11 @@ cvp_configlets:
     \  no shutdown\n   ip address 10.255.2.4/32\n!\ninterface Management1\n   description
     oob_management\n   no shutdown\n   vrf MGMT\n   ip address 10.90.227.31/24\n!\ninterface
     Vlan122\n   description VLAN122\n   no shutdown\n   no autostate\n   ip address
-    10.252.14.1/24\n!\nmonitor connectivity\n   no shutdown\n   !\n   host GM1\n      description\n
-    \     GM1\n      ip 172.24.121.65\n   vrf MGMT\n      !\n      host aws-us-east-1\n
-    \        description\n         aws-us-east-1\n         ip 52.216.227.10\n         url
-    http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n      !\n      host
-    aws-us-west-2\n         description\n         aws-us-west-2\n         ip 52.218.182.251\n
-    \        url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
+    10.252.14.1/24\n!\nmonitor connectivity\n   no shutdown\n   !\n   host GM1\n      ip
+    172.24.121.65\n   vrf MGMT\n      !\n      host aws-us-east-1\n         description\n
+    \        aws-us-east-1\n         ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
+    \     !\n      host aws-us-west-2\n         description\n         aws-us-west-2\n
+    \        ip 52.218.182.251\n         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
     \     !\n      host azure-eastus\n         description\n         aws-us-west-2\n
     \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
     \     !\n      host Google\n         description\n         Google\n         ip
@@ -1287,11 +1286,11 @@ cvp_configlets:
     Loopback1\n   description Anycast RP\n   ip address 172.24.0.10/32\n!\ninterface
     Management1\n   description oob_management\n   no shutdown\n   vrf MGMT\n   ip
     address 10.90.227.12/24\n!\nmonitor connectivity\n   no shutdown\n   !\n   host
-    GM1\n      description\n      GM1\n      ip 172.24.121.65\n   vrf MGMT\n      !\n
-    \     host aws-us-east-1\n         description\n         aws-us-east-1\n         ip
-    52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
-    \     !\n      host aws-us-west-2\n         description\n         aws-us-west-2\n
-    \        ip 52.218.182.251\n         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
+    GM1\n      ip 172.24.121.65\n   vrf MGMT\n      !\n      host aws-us-east-1\n
+    \        description\n         aws-us-east-1\n         ip 52.216.227.10\n         url
+    http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n      !\n      host
+    aws-us-west-2\n         description\n         aws-us-west-2\n         ip 52.218.182.251\n
+    \        url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
     \     !\n      host azure-eastus\n         description\n         aws-us-west-2\n
     \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
     \     !\n      host Google\n         description\n         Google\n         ip
@@ -1426,9 +1425,9 @@ cvp_configlets:
     Management1\n   description oob_management\n   no shutdown\n   vrf MGMT\n   ip
     address 10.90.227.21/24\n!\ninterface Vlan2222\n   description vlan_PTP_1\n   no
     shutdown\n   no autostate\n   ip address 172.24.121.65/30\n!\nmonitor connectivity\n
-    \  no shutdown\n   !\n   host GM1\n      description\n      GM1\n      ip 172.24.121.65\n
-    \  vrf MGMT\n      !\n      host aws-us-east-1\n         description\n         aws-us-east-1\n
-    \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
+    \  no shutdown\n   !\n   host GM1\n      ip 172.24.121.65\n   vrf MGMT\n      !\n
+    \     host aws-us-east-1\n         description\n         aws-us-east-1\n         ip
+    52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
     \     !\n      host aws-us-west-2\n         description\n         aws-us-west-2\n
     \        ip 52.218.182.251\n         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
     \     !\n      host azure-eastus\n         description\n         aws-us-west-2\n
@@ -1564,9 +1563,9 @@ cvp_configlets:
     Management1\n   description oob_management\n   no shutdown\n   vrf MGMT\n   ip
     address 10.90.227.23/24\n!\ninterface Vlan2223\n   description vlan_PTP_2\n   no
     shutdown\n   no autostate\n   ip address 172.24.123.65/30\n!\nmonitor connectivity\n
-    \  no shutdown\n   !\n   host GM1\n      description\n      GM1\n      ip 172.24.121.65\n
-    \  vrf MGMT\n      !\n      host aws-us-east-1\n         description\n         aws-us-east-1\n
-    \        ip 52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
+    \  no shutdown\n   !\n   host GM1\n      ip 172.24.121.65\n   vrf MGMT\n      !\n
+    \     host aws-us-east-1\n         description\n         aws-us-east-1\n         ip
+    52.216.227.10\n         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com\n
     \     !\n      host aws-us-west-2\n         description\n         aws-us-west-2\n
     \        ip 52.218.182.251\n         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com\n
     \     !\n      host azure-eastus\n         description\n         aws-us-west-2\n

@@ -3,7 +3,6 @@ all:
   children:
     MEDIA_FABRIC:
       children:
-
         AMBER:
           children:
             AMBER_SPINES:
@@ -19,7 +18,6 @@ all:
                 amber-leaf2:
                   ansible_host: 10.90.227.27
                   serial_number: JPE20302208
-
         BLUE:
           children:
             BLUE_SPINES:
@@ -35,7 +33,6 @@ all:
                 blue-leaf2:
                   ansible_host: 10.90.227.31
                   serial_number: JPE19363421
-
         PTP_LEAVES:
           hosts:
             media-PTP-1:
@@ -44,26 +41,23 @@ all:
             media-PTP-2:
               ansible_host: 10.90.227.23
               serial_number: JPE20284734
-
     NETWORK_SERVICES:
       children:
         AMBER_LEAVES:
         BLUE_LEAVES:
         PTP_LEAVES:
-
     CONNECTED_ENDPOINTS:
       children:
         AMBER:
         BLUE:
         PTP_LEAVES:
-
 CLOUDVISION:
   hosts:
-    cv_server01:
-      ansible_host: 10.90.227.161
-      ansible_user: cvpadmin
-      ansible_password: arista123!
+    cvp:
+      ansible_host: www.cv-prod-euwest-2.arista.io
+      ansible_user: cvaas
+      ansible_password: "{{ lookup('file', 'cvaas.token')}}"
       ansible_connection: httpapi
-      ansible_httpapi_use_ssl: True
-      ansible_httpapi_validate_certs: False
+      ansible_httpapi_use_ssl: true
+      ansible_httpapi_validate_certs: false
       ansible_network_os: eos

@@ -1,19 +1,9 @@
 ---
-# Ansible connectivity definitions
-# eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
-ansible_connection: ansible.netcommon.httpapi
-# Specifies that we are indeed using Arista EOS
-ansible_network_os: arista.eos.eos
-# This user/password must exist on the switches to enable Ansible access
-ansible_user: admin
-ansible_password: arista123!
-# User escalation (to enter enable mode)
-ansible_become: true
-ansible_become_method: enable
-# Use SSL (HTTPS)
-ansible_httpapi_use_ssl: true
-# Do not try to validate certs
-ansible_httpapi_validate_certs: false
+# CVaaS definitions
+cvp_instance_ip: apiserver.arista.io
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+# terminattr_disable_aaa: true
 
 # Common AVD group variables
 fabric_name: "MEDIA_FABRIC"
@@ -62,7 +52,7 @@ daemon_terminattr:
       cvvrf: MGMT
     dev:
       cvaddrs:
-        - 10.243.132.193:9910
+        - 10.244.132.193:9910
       cvauth:
         method: token
         token_file: /tmp/devtoken
@@ -74,6 +64,10 @@ daemon_terminattr:
         method: token
         token_file: /tmp/token
       cvvrf: MGMT
+  disable_aaa: true
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  taillogs:
 
 # Local users
 local_users:
@@ -136,8 +130,8 @@ management_cvx:
   vrf: MGMT
 
 # Enable PTP for the entire fabric
-ptp:
-  enabled: true
+# ptp:
+#   enabled: true
   # domain: 127
   # profile: aes67-r16-2016 # used by default if no profile is specified
   # profile: aes67 # "Slow" profile
@@ -245,20 +239,12 @@ load_interval:
 
 monitor_connectivity:
   shutdown: false
-  interface_sets:
-    - name: Loopback
-      interfaces: loopback0
   hosts:
     - name: GM1
-      description: GM1
+      # description: GM1
       ip: 172.24.121.65
-      local_interfaces: Loopback
   vrfs:
     - name: MGMT
-      interface_sets:
-        - name: Management
-          interfaces: Management1
-      local_interfaces: Management
       hosts:
         - name: Google
           description: Google
@@ -349,3 +335,19 @@ accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.d
 accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok']) }}"
 # Generate MD results file
 validation_report_md: "{{ validation_role.validation_report_md | arista.avd.default(true) }}"
+
+# # Ansible connectivity definitions
+# # eAPI connectivity via HTTPS is specified (as opposed to CLI via SSH)
+# ansible_connection: ansible.netcommon.httpapi
+# # Specifies that we are indeed using Arista EOS
+# ansible_network_os: arista.eos.eos
+# # This user/password must exist on the switches to enable Ansible access
+# ansible_user: admin
+# ansible_password: arista123!
+# # User escalation (to enter enable mode)
+# ansible_become: true
+# ansible_become_method: enable
+# # Use SSL (HTTPS)
+# ansible_httpapi_use_ssl: true
+# # Do not try to validate certs
+# ansible_httpapi_validate_certs: false

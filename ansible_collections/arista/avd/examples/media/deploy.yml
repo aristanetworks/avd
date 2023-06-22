@@ -1,6 +1,5 @@
 ---
 # deploy.yml
-
 - name: Deploy Configurations to Devices using eAPI # (1)!
   hosts: MEDIA_FABRIC
   gather_facts: false

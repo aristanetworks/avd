@@ -340,7 +340,7 @@ ptp_leaf,media-PTP-1,Ethernet49,network_port,mcs senders/receivers,,False
 ptp_leaf,media-PTP-1,Ethernet50,network_port,mcs senders/receivers,,False
 ptp_leaf,media-PTP-1,Ethernet51,media_spine,amber-spine1,Ethernet27/1,True
 ptp_leaf,media-PTP-1,Ethernet52,media_spine,blue-spine1,Ethernet27/1,True
-ptp_leaf,media-PTP-1,Ethernet53,network_port,(Unused) Meinberg SFP-1G-T,,True
+ptp_leaf,media-PTP-1,Ethernet53,network_port,(Unused) Meinberg SFP-1G-T,,False
 ptp_leaf,media-PTP-1,Ethernet54,network_port,Meinberg 1G Optical,,True
 ptp_leaf,media-PTP-2,Ethernet1,ptp_leaf,media-PTP-1,Ethernet1,True
 ptp_leaf,media-PTP-2,Ethernet2,ptp_leaf,media-PTP-1,Ethernet2,True
