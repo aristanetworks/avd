@@ -40,11 +40,19 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         Different addressing algorithms:
             - first_id: offset from pool is `(mlag_primary_id - 1) * 2`
             - odd_id: offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID
+            - same_subnet: offset from pool is always 0. All MLAG pairs will be the same /31. Requires pool to be a /31
         """
         if self._fabric_ipaddress_mlag_algorithm == "odd_id":
             offset = self._mlag_odd_id_based_offset
             return self._ip(pool, 31, offset, ip_offset)
 
+        if self._fabric_ipaddress_mlag_algorithm == "same_subnet":
+            pool_network = ipaddress.ip_network(pool, strict=False)
+            if pool_network.prefixlen != 31:
+                raise AristaAvdError("MLAG same_subnet addressing requires the pool to be a /31")
+            return self._ip(pool, 31, 0, ip_offset)
+
+        # Use default first_id
         offset = self._mlag_primary_id - 1
         return self._ip(pool, 31, offset, ip_offset)
 
