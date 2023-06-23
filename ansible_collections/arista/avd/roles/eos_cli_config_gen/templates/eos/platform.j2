@@ -42,6 +42,9 @@ platform trident mmu queue profile {{ profile.name }}
     egress multicast queue {{ queue.id }} drop-precedence {{ queue.drop.precedence }} drop-threshold {{ queue.drop.threshold }}
 {%             endif %}
 {%         endfor %}
+{%         if loop.last %}
+!
+{%         endif %}
 {%     endfor %}
 {%     if platform.sand is arista.avd.defined %}
 {%         for qos_map in platform.sand.qos_maps | arista.avd.natural_sort('traffic_class') %}
