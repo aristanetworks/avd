@@ -66,8 +66,6 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
 
     """
 
-    def __init__(self, hostvars: dict, shared_utils: SharedUtils):
-        super().__init__(hostvars=hostvars, shared_utils=shared_utils)
 
     @cached_property
     def cloudvision_tags(self) -> str | None:
