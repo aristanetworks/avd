@@ -288,7 +288,7 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.5.10.1/24
   vrf: svi_profile_tests_vrf
-  ospf_area: 0.0.0.0
+  ospf_area: '0'
   ospf_network_point_to_point: false
 - name: Vlan511
   tenant: svi_profile_tests
@@ -296,7 +296,7 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.5.11.1/24
   vrf: svi_profile_tests_vrf
-  ospf_area: 0.0.0.0
+  ospf_area: '0'
   ospf_network_point_to_point: false
 - name: Vlan512
   tenant: svi_profile_tests
@@ -304,7 +304,7 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.5.12.1/24
   vrf: svi_profile_tests_vrf
-  ospf_area: 0.0.0.0
+  ospf_area: '0'
   ospf_network_point_to_point: false
 router_ospf:
   process_ids:
