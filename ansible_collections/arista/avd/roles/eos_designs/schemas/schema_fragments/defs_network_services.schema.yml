@@ -559,7 +559,7 @@ $defs:
                           type: str
                           convert_types:
                             - int
-                          description: OSPF area id.
+                          description: OSPF area ID.
                           default: '0.0.0.0'
                         cost:
                           type: int
