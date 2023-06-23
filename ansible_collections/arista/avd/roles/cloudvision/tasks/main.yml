@@ -1,5 +1,5 @@
 ---
-- name: "Load tag information from strucutred config"
+- name: "Load tag information from structured config"
   ansible.builtin.include_vars:
     file: "{{ filename }}"
   delegate_to: localhost
