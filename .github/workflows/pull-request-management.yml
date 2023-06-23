@@ -320,6 +320,7 @@ jobs:
           - 'cloudvision_tags'
         ansible_version:
           - 'ansible-core>=2.12.6,<2.15.0,!=2.13.0'
+          - 'ansible-core==2.12.6'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.cloudvision == 'true'
     steps:
