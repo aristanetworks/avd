@@ -5,8 +5,10 @@ from .port_channel_interfaces import PortChannelInterfacesMixin
 from .router_bgp import RouterBgpMixin
 from .router_ospf import RouterOspfMixin
 
+DATA_MODELS = ["core_interfaces", "l3_edge"]
 
-class AvdStructuredConfigL3Edge(
+
+class AvdStructuredConfigCoreInterfacesAndL3Edge(
     AvdFacts,
     EthernetInterfacesMixin,
     PortChannelInterfacesMixin,
@@ -27,9 +29,11 @@ class AvdStructuredConfigL3Edge(
     """
 
     def render(self) -> dict:
-        """
-        Wrap class render function with a check if l3_edge is set
-        """
-        if self._l3_edge is not None:
-            return super().render()
-        return {}
+        result_list = []
+
+        for data_model in DATA_MODELS:
+            self.data_model = data_model
+            result_list.append(super().render())
+            self.clear_cache()
+
+        return result_list

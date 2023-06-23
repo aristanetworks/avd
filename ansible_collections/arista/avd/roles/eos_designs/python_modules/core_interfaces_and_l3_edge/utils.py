@@ -23,20 +23,16 @@ class UtilsMixin:
     shared_utils: SharedUtils
 
     @cached_property
-    def _l3_edge(self) -> list:
-        return get(self._hostvars, "l3_edge")
-
-    @cached_property
     def _p2p_links_profiles(self) -> list:
-        return convert_dicts(get(self._hostvars, "l3_edge.p2p_links_profiles", default=[]), "name")
+        return get(self._hostvars, f"{self.data_model}.p2p_links_profiles", default=[])
 
     @cached_property
     def _p2p_links_ip_pools(self) -> list:
-        return convert_dicts(get(self._hostvars, "l3_edge.p2p_links_ip_pools", default=[]), primary_key="name", secondary_key="ipv4_pool")
+        return get(self._hostvars, f"{self.data_model}.p2p_links_ip_pools", default=[])
 
     @cached_property
     def _p2p_links(self) -> list:
-        return get(self._hostvars, "l3_edge.p2p_links", default=[])
+        return get(self._hostvars, f"{self.data_model}.p2p_links", default=[])
 
     @cached_property
     def _filtered_p2p_links(self) -> list:
@@ -89,7 +85,6 @@ class UtilsMixin:
         elif "ip_pool" not in p2p_link or "id" not in p2p_link or not self._p2p_links_ip_pools:
             # Subnet not set and not possible to resolve from pool. Returning original
             return p2p_link
-
         else:
             # Resolving subnet from pool
             ip_pool = get_item(self._p2p_links_ip_pools, "name", p2p_link["ip_pool"], default={})
@@ -114,7 +109,6 @@ class UtilsMixin:
             peer: <peer name>
             peer_type: <type of peer>
             interface: <interface on this node>
-            description: <description for interface on this node>
             peer_interface: <interface on peer>
             port_channel_id: <id on this node | None>
             port_channel_members:
@@ -147,8 +141,8 @@ class UtilsMixin:
             "peer_type": peer_type,
             "ip": ip[index],
             "peer_ip": ip[peer_index],
-            "bgp_as": str(bgp_as[index]) if bgp_as[index] is not None else None,
-            "peer_bgp_as": str(bgp_as[peer_index]) if bgp_as[peer_index] is not None else None,
+            "bgp_as": str(bgp_as[index]),
+            "peer_bgp_as": str(bgp_as[peer_index]),
             "description": descriptions[index],
         }
 
@@ -162,7 +156,7 @@ class UtilsMixin:
                 "node",
                 peer,
                 required=True,
-                var_name=f"{peer} under l3_edge.p2p_links.[].port_channel.nodes_child_interfaces",
+                var_name=f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces",
             )["interfaces"]
             id = int("".join(re.findall(r"\d", member_interfaces[0])))
             peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
@@ -194,7 +188,7 @@ class UtilsMixin:
             )
             return data
 
-        raise AristaAvdMissingVariableError("l3_edge.p2p_links must have either 'interfaces' or 'port_channel' with correct members set.")
+        raise AristaAvdMissingVariableError(f"{self.data_model}.p2p_links must have either 'interfaces' or 'port_channel' with correct members set.")
 
     def _get_common_interface_cfg(self, p2p_link: dict) -> dict:
         """
@@ -219,6 +213,7 @@ class UtilsMixin:
             "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
             "eos_cli": p2p_link.get("raw_eos_cli"),
         }
+
         if (ip := get(p2p_link, "ip")) is not None:
             interface_cfg["ip_address"] = ip[index]
 
@@ -280,7 +275,7 @@ class UtilsMixin:
 
         ptp_config = {}
 
-        # Apply PTP profile config if using the new ptp config style
+        # Apply PTP profile config
         if self.shared_utils.ptp_enabled:
             ptp_config.update(self.shared_utils.ptp_profile)
 
