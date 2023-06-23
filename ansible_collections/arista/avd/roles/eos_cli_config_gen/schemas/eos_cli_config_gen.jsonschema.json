@@ -17830,6 +17830,26 @@
                 "^_.+$": {}
               },
               "title": "Disable"
+            },
+            "egress": {
+              "type": "object",
+              "properties": {
+                "enable_default": {
+                  "type": "boolean",
+                  "description": "Enable egress sFlow by default.\n",
+                  "title": "Enable Default"
+                },
+                "unmodified": {
+                  "type": "boolean",
+                  "description": "Enable egress sFlow unmodified.\nPlatform dependent feature.\n",
+                  "title": "Unmodified"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Egress"
             }
           },
           "additionalProperties": false,
