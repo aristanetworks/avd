@@ -1,0 +1,32 @@
+---
+fabric_ip_addressing:
+  mlag:
+    algorithm: "same_subnet"
+l3leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 10.10.255.0/31
+    mlag_peer_l3_ipv4_pool: 10.10.224.0/31
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+    mlag_interfaces: [Ethernet5, Ethernet6]
+  node_groups:
+    - group: MLAG_SAME_SUBNET_L3LEAF1
+      bgp_as: 923
+      nodes:
+        - name: MLAG_SAME_SUBNET_L3LEAF1A
+          id: 0
+          mgmt_ip: 192.168.201.116/24
+        - name: MLAG_SAME_SUBNET_L3LEAF1B
+          id: 1
+          mgmt_ip: 192.168.201.117/24
+    - group: MLAG_SAME_SUBNET_L3LEAF2
+      bgp_as: 923
+      nodes:
+        - name: MLAG_SAME_SUBNET_L3LEAF2A
+          id: 2
+          mgmt_ip: 192.168.201.118/24
+        - name: MLAG_SAME_SUBNET_L3LEAF2B
+          id: 3
+          mgmt_ip: 192.168.201.119/24
