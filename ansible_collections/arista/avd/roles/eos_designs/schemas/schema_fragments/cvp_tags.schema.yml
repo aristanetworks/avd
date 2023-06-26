@@ -32,7 +32,7 @@ keys:
           type: str
         field:
           description: |
-            Sturctured config field/key to be used to find the value for the tag.
+            Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.
           required: true
           type: str
 
@@ -54,7 +54,7 @@ keys:
           type: str
         field:
           description: |
-            Sturctured config field/key to be used to find the value for the tag.
+            Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.
           required: true
           type: str
 

@@ -16,7 +16,13 @@ if TYPE_CHECKING:
 # NOTE: There is a static list of default node_type_keys in the fabric documentation templates
 DEFAULT_NODE_TYPE_KEYS = {
     "l3ls-evpn": [
-        {"key": "spine", "type": "spine", "default_evpn_role": "server", "default_ptp_priority1": 20, "cloudvision_tags_topology_type": "spine"},
+        {
+            "key": "spine",
+            "type": "spine",
+            "default_evpn_role": "server",
+            "default_ptp_priority1": 20,
+            "cloudvision_tags_topology_type": "spine",
+        },
         {
             "key": "l3leaf",
             "type": "l3leaf",
