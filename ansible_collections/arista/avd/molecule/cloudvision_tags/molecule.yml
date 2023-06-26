@@ -18,12 +18,8 @@ dependency:
 driver:
   name: delegated
 platforms:
-  - name: dc1-super-spine1
-    image: avdteam/base:3.8-v2.0
-    pre_build_image: true
+  - name: dummy
     managed: false
-    groups:
-      - FABRIC
 provisioner:
   name: ansible
   config_options:
@@ -34,6 +30,7 @@ provisioner:
     links:
       hosts: 'inventory/inventory.yml'
       group_vars: 'inventory/group_vars/'
+      host_vars: 'inventory/host_vars/'
   ansible_args: []
     # - -vvv
   #   # - --skip-tags=documentation
