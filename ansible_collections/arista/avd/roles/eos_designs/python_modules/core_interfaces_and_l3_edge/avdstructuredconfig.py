@@ -29,6 +29,9 @@ class AvdStructuredConfigCoreInterfacesAndL3Edge(
     """
 
     def render(self) -> dict:
+        """
+        Render structured configs for core_interfaces and l3_Edge
+        """
         result_list = []
 
         for data_model in DATA_MODELS:
