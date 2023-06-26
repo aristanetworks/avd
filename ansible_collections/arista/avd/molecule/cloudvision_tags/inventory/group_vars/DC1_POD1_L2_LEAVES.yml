@@ -2,3 +2,5 @@
 type: l2leaf
 
 pod_name: pod1
+
+cloudvision_tags_topology_type: edge

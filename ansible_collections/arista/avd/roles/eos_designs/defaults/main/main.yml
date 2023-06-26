@@ -25,6 +25,3 @@ avd_structured_config_file_format: "yml"
 # Input Variable Validation
 avd_data_conversion_mode: "debug"
 avd_data_validation_mode: "warning"
-
-# Enable/Disable CloudVision tag generation
-avd_generate_cloudvision_tags: False

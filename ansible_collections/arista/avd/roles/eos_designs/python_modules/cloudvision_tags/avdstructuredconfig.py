@@ -1,15 +1,10 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay.utils import UtilsMixin
-
-if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 
 INVALID_CUSTOM_DEVICE_TAGS = [
     "topology_hint_type",
@@ -36,7 +31,7 @@ INVALID_CUSTOM_DEVICE_TAGS = [
 ]
 
 
-class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
+class AvdStructuredConfigTags(AvdFacts):
     """
     This returns the cloudvision_tags data strucutre as per the below example
     {
@@ -66,7 +61,6 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
 
     """
 
-
     @cached_property
     def cloudvision_tags(self) -> str | None:
         """
@@ -84,7 +78,9 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
             if custom_tag["name"].lower() not in INVALID_CUSTOM_DEVICE_TAGS:
                 device_tags.append(custom_tag)
             else:
-                raise AristaAvdError(f"{custom_tag['name']} is Invalid. System Tags cannot be overriden")
+                raise AristaAvdError(
+                    f"The CloudVision tag name {custom_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
+                )
 
         for generate_tag in get(self._hostvars, "cloudvision_tags_device_generate", []):
             value = get(self._hostvars, generate_tag["field"], None)
@@ -167,7 +163,9 @@ class AvdStructuredConfigTags(AvdFacts, UtilsMixin):
         for generate_tag in get(self._hostvars, "cloudvision_tags_interface_generate", []):
             value = get(link, generate_tag["field"])
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
-                raise AristaAvdError(f"{generate_tag['name']} is Invalid. System Tags cannot be overriden")
+                raise AristaAvdError(
+                    f"The CloudVision tag name {generate_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
+                )
             if type(value) in [list, dict]:
                 raise AristaAvdError(f"The field {generate_tag['field']} appears to be a {type(value).__name__}. This is not supported for cloudvision fields.")
             if value:

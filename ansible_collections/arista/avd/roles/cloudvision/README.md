@@ -116,9 +116,8 @@ Here is an overview with the key configured in the YAML inventory:
 
 ### Tasks
 
-1. Load the `structurd_config` and parse the CloudVision tags.
-2. Generate the CloudVision tags data structure.
-3. Use CloudVision APIs to apply the tags to the devices.
+1. Load the `structured_config` created by `eos_designs` and parse the CloudVision tags.
+2. Use CloudVision APIs to apply the tags to the devices.
 
 ## Requirements
 

@@ -13,11 +13,6 @@ all:
           ansible_httpapi_validate_certs: false
           ansible_network_os: eos
           ansible_httpapi_port: 443
-          # Configuration to get Virtual Env information
-          ansible_python_interpreter: $(which python3)
-          configlet_dir_var: 'configlets'
-          configlets_prefix_var: 'AVD'
-          configlet_file_extension: 'conf'
     FABRIC:
       children:
         DC1:
@@ -25,51 +20,33 @@ all:
             DC1_SUPER_SPINES:
               hosts:
                 dc1-super-spine1:
-                  ansible_host: 172.16.1.211
                 dc1-super-spine2:
-                  ansible_host: 172.16.1.212
             DC1_POD1:
               children:
                 DC1_POD1_SPINES:
                   hosts:
                     dc1-pod1-spine1:
-                      ansible_host: 172.16.1.11
                     dc1-pod1-spine2:
-                      ansible_host: 172.16.1.12
                 DC1_POD1_L3_LEAVES:
                   hosts:
                     dc1-pod1-leaf1a:
-                      cloudvision_tags_device_custom:
-                        - name: custom_tag
-                          value: custom_value_leaf1a
-                      ansible_host: 172.16.1.101
                     dc1-pod1-leaf1b:
-                      ansible_host: 172.16.1.102
                     dc1-pod1-leaf2a:
-                      ansible_host: 172.16.1.103
                     dc1-pod1-leaf2b:
-                      ansible_host: 172.16.1.104
                 DC1_POD1_L2_LEAVES:
                   hosts:
                     dc1-pod1-leaf1c:
-                      ansible_host: 172.16.1.151
                     dc1-pod1-leaf2c:
-                      ansible_host: 172.16.1.152
-                      cloudvision_tags_topology_type: edge
             DC1_POD2:
               children:
                 DC1_POD2_SPINES:
                   hosts:
                     dc1-pod2-spine1:
-                      ansible_host: 172.16.1.111
                     dc1-pod2-spine2:
-                      ansible_host: 172.16.1.112
                 DC1_POD2_L3_LEAVES:
                   hosts:
                     dc1-pod2-leaf1a:
-                      ansible_host: 172.16.1.121
                     dc1-pod2-leaf1b:
-                      ansible_host: 172.16.1.122
 
     NETWORK_SERVICES:
       children:

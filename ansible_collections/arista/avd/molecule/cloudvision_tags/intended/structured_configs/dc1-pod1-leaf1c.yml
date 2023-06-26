@@ -105,7 +105,7 @@ cloudvision_tags:
   - name: topology_hint_pod
     value: pod1
   - name: topology_hint_type
-    value: leaf
+    value: edge
   - name: topology_hint_rack
     value: rack-1c
   interface_tags:

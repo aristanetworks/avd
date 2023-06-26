@@ -2,3 +2,5 @@
 type: l3leaf
 
 pod_name: pod2
+
+avd_generate_cloudvision_tags: False

@@ -1,5 +1,5 @@
 ---
-- name: "Load tag information from strucutred config"
+- name: "Load tag information from structured config"
   ansible.builtin.include_vars:
     file: "{{ filename }}"
   delegate_to: localhost
@@ -11,11 +11,10 @@
 
 - name: "Update tags on CVP"
   arista.cvp.cv_tag_v3:
-    tags: [ {
-      'device': "{{ inventory_hostname }}",
-      'device_tags': "{{ cloudvision_tags.device_tags }}",
-      'interface_tags': "{{ cloudvision_tags.interface_tags }}"
-    } ]
+    tags:
+      - device: "{{ inventory_hostname }}"
+        device_tags: "{{ cloudvision_tags.device_tags }}"
+        interface_tags: "{{ cloudvision_tags.interface_tags }}"
     mode: assign
     auto_create: true
   delegate_to: "{{ cloudvision_node }}"
