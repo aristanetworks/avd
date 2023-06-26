@@ -10,8 +10,10 @@
 
 | Sequence | Action |
 | -------- | ------ |
-{%         for sequence in prefix_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+{%         for sequence in prefix_list.sequence_numbers | arista.avd.default([]) | arista.avd.natural_sort('sequence') %}
+{%             if sequence.sequence is arista.avd.defined and sequence.action is arista.avd.defined %}
 | {{ sequence.sequence }} | {{ sequence.action }} |
+{%             endif %}
 {%         endfor %}
 
 {%     endfor %}

@@ -6225,11 +6225,9 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Prefix-list Name
         sequence_numbers:
           type: list
-          required: true
           primary_key: sequence
           convert_types:
           - dict
@@ -6238,13 +6236,11 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                 - str
               action:
                 type: str
-                required: true
                 description: 'Action as string
 
                   Example: "permit 10.255.0.0/27 eq 32"'
