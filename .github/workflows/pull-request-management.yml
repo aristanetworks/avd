@@ -302,10 +302,6 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
 
   # ----------------------------------- #
   # CloudVision TAGS MOLECULE
