@@ -9,6 +9,17 @@
   vars:
     filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 
+# We want to alert the user that in most cases this role should be used
+# with `delegate_to` to make changes on the CloudVision instance.
+- name: "Check that role has been delegated"
+  ansible.builtin.assert:
+    that:
+      - ansible_host != hostvars[inventory_hostname].ansible_host | arista.avd.default('NONE')
+      - ansible_host != inventory_hostname
+    fail_msg: "It appears this role was not called with delegated_to for {{ inventory_hostname }}. Refer to documentation about why this might be an issue."
+    quiet: True
+  ignore_errors: True
+
 - name: "Update tags on CVP"
   arista.cvp.cv_tag_v3:
     tags:
@@ -17,7 +28,6 @@
         interface_tags: "{{ cloudvision_tags.interface_tags }}"
     mode: assign
     auto_create: true
-  delegate_to: "{{ cloudvision_node }}"
   when:
     - is_deployed is not arista.avd.defined(false)
     - cloudvision_tags is arista.avd.defined

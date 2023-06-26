@@ -610,3 +610,9 @@ sflow:
     - destination: 10.0.200.90
     source_interface: Management1
 ntp: null
+cloudvision_tags:
+  device_tags:
+  - name: topology_hint_fabric
+    value: EOS_DESIGNS_UNIT_TESTS
+  - name: topology_hint_type
+    value: leaf
