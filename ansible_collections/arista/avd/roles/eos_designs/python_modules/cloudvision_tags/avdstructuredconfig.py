@@ -91,7 +91,7 @@ class AvdStructuredConfigTags(AvdFacts):
             if type(value) in [list, dict]:
                 raise AristaAvdError(f"The field {generate_tag['field']} appears to be a {type(value).__name__}. This is not supported for cloudvision fields.")
             if value is not None:
-                device_tags.append(self.tag_dict(generate_tag["name"], value))
+                device_tags.append(self._tag_dict(generate_tag["name"], value))
 
         interface_tags = []
         for link in get(self._hostvars, "ethernet_interfaces", []):
@@ -103,7 +103,7 @@ class AvdStructuredConfigTags(AvdFacts):
 
         return result
 
-    def tag_dict(self, name, value) -> dict:
+    def _tag_dict(self, name, value) -> dict:
         return {"name": name, "value": str(value)}
 
     @cached_property
@@ -118,7 +118,7 @@ class AvdStructuredConfigTags(AvdFacts):
         if not hint_type:
             return None
 
-        return self.tag_dict("topology_hint_type", hint_type)
+        return self._tag_dict("topology_hint_type", hint_type)
 
     @cached_property
     def _topology_hint_fabric(self) -> dict:
@@ -127,7 +127,7 @@ class AvdStructuredConfigTags(AvdFacts):
         """
         # `fabric_name` is required for any fabric, so we don't need to handle
         # the case this is not available
-        return self.tag_dict("topology_hint_fabric", self.shared_utils.fabric_name)
+        return self._tag_dict("topology_hint_fabric", self.shared_utils.fabric_name)
 
     @cached_property
     def _topology_hint_pod(self) -> dict | None:
@@ -137,7 +137,7 @@ class AvdStructuredConfigTags(AvdFacts):
         if not self.shared_utils.pod_name:
             return None
 
-        return self.tag_dict("topology_hint_pod", self.shared_utils.pod_name)
+        return self._tag_dict("topology_hint_pod", self.shared_utils.pod_name)
 
     @cached_property
     def _topology_hint_dc(self) -> dict | None:
@@ -146,7 +146,7 @@ class AvdStructuredConfigTags(AvdFacts):
         """
         if not self.shared_utils.dc_name:
             return None
-        return self.tag_dict("topology_hint_datacenter", self.shared_utils.dc_name)
+        return self._tag_dict("topology_hint_datacenter", self.shared_utils.dc_name)
 
     @cached_property
     def _topology_hint_rack(self) -> dict | None:
@@ -155,7 +155,7 @@ class AvdStructuredConfigTags(AvdFacts):
         """
         if not self.shared_utils.rack:
             return None
-        return self.tag_dict("topology_hint_rack", self.shared_utils.rack)
+        return self._tag_dict("topology_hint_rack", self.shared_utils.rack)
 
     def _interface_tags(self, link) -> list:
         tags = []
@@ -169,7 +169,7 @@ class AvdStructuredConfigTags(AvdFacts):
             if type(value) in [list, dict]:
                 raise AristaAvdError(f"The field {generate_tag['field']} appears to be a {type(value).__name__}. This is not supported for cloudvision fields.")
             if value:
-                tags.append(self.tag_dict(generate_tag["name"], value))
+                tags.append(self._tag_dict(generate_tag["name"], value))
         if tags:
             return [{"interface": link["name"], "tags": tags}]
         return []

@@ -3,4 +3,8 @@ type: l2leaf
 
 pod_name: pod1
 
+# Test overriding default topology hint
+# associated with l2leafs for leafs in this
+# group. These leafs should be set to edge
+# in the topology on CloudVision.
 cloudvision_tags_topology_type: edge

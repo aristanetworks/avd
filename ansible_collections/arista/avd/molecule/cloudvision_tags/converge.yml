@@ -15,7 +15,6 @@
     - name: Apply tags in CloudVision
       ansible.builtin.import_role:
         name: arista.avd.cloudvision
-      vars:
-        cloudvision_node: cv_server
+      delegate_to: cv_server
       when:
         - cvp_address != "None"
