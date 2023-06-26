@@ -10430,24 +10430,25 @@
                   "title": "Action"
                 }
               },
+              "required": [
+                "sequence",
+                "action"
+              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              },
-              "required": [
-                "sequence"
-              ]
+              }
             },
             "title": "Sequence Numbers"
           }
         },
+        "required": [
+          "name"
+        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        },
-        "required": [
-          "name"
-        ]
+        }
       },
       "title": "Prefix Lists"
     },
