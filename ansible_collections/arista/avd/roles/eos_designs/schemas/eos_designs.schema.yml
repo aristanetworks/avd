@@ -66,10 +66,12 @@ keys:
       "debug" will produce hidden debug messages viewable with -v.'
   avd_generate_cloudvision_tags:
     documentation_options:
-      table: role-input-cloudvision-tags
+      table: cloudvision-tags
     type: bool
     default: false
-    description: To be updated.
+    description: Enable the generation of CloudVision tags that can be applied using
+      the `cloudvision` role. If not defined, the value is assumed to be False and
+      no tags are generated.
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -530,8 +532,8 @@ keys:
           required: true
           type: str
         field:
-          description: 'Sturctured config field/key to be used to find the value for
-            the tag.
+          description: 'Sturctured config field/key path to be used to find the value
+            for the tag. Dot notation is supported to reference values inside dictionaries.
 
             '
           required: true
@@ -556,8 +558,8 @@ keys:
           required: true
           type: str
         field:
-          description: 'Sturctured config field/key to be used to find the value for
-            the tag.
+          description: 'Sturctured config field/key path to be used to find the value
+            for the tag. Dot notation is supported to reference values inside dictionaries.
 
             '
           required: true

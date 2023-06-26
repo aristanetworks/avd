@@ -5,8 +5,8 @@ type: dict
 keys:
   avd_generate_cloudvision_tags:
     documentation_options:
-      table: role-input-cloudvision-tags
+      table: cloudvision-tags
     type: bool
     default: False
     description: |
-        To be updated.
+        Enable the generation of CloudVision tags that can be applied using the `cloudvision` role. If not defined, the value is assumed to be False and no tags are generated.

@@ -32,5 +32,5 @@ This can be set in the host/group vars to influence all or some of the devices. 
     **Refer to the [how-to](./how-to/cloudvision-tags.md) documentation for more details on how to use this feature.**
 
 --8<--
-roles/eos_designs/docs/tables/role-input-cloudvision-tags.md
+roles/eos_designs/docs/tables/cloudvision-tags.md
 --8<--

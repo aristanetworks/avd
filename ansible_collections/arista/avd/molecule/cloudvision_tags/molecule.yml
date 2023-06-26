@@ -4,13 +4,10 @@ scenario:
     - syntax
     - create
     - converge
-    # - verify # No verification at the moment
   test_sequence:
     - syntax
     - create
     - converge
-    # - idempotence
-    # - verify # No verification at the moment
   cleanup_sequence:
     - destroy
 dependency:
@@ -32,13 +29,7 @@ provisioner:
       group_vars: 'inventory/group_vars/'
       host_vars: 'inventory/host_vars/'
   ansible_args: []
-    # - -vvv
-  #   # - --skip-tags=documentation
-  #   # - --tags=debug
   env:
-    # Custom pythonpath to allow loading custom ip_addressing and descriptions modules.
-    # See CUSTOM_PYTHON_MODULES_TESTS group vars for details.
-    PYTHONPATH: ${PYTHONPATH}:${MOLECULE_SCENARIO_DIRECTORY}/custom_modules
     CVP_ADDRESS: ${CVP_ADDRESS}
     CVP_USERNAME: ${CVP_USERNAME}
     CVP_PASSWORD: ${CVP_PASSWORD}

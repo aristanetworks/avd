@@ -31,7 +31,7 @@
     "avd_generate_cloudvision_tags": {
       "type": "boolean",
       "default": false,
-      "description": "To be updated.",
+      "description": "Enable the generation of CloudVision tags that can be applied using the `cloudvision` role. If not defined, the value is assumed to be False and no tags are generated.",
       "title": "AVD Generate Cloudvision Tags"
     },
     "bfd_multihop": {
@@ -1057,7 +1057,7 @@
             "title": "Name"
           },
           "field": {
-            "description": "Sturctured config field/key to be used to find the value for the tag.\n",
+            "description": "Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\n",
             "type": "string",
             "title": "Field"
           }
@@ -1085,7 +1085,7 @@
             "title": "Name"
           },
           "field": {
-            "description": "Sturctured config field/key to be used to find the value for the tag.\n",
+            "description": "Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\n",
             "type": "string",
             "title": "Field"
           }

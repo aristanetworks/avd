@@ -4,7 +4,6 @@ all:
     CVP:
       hosts:
         cv_server:
-          ansible_httpapi_host: "{{ lookup('ansible.builtin.env', 'CVP_ADDRESS') }}"
           ansible_host: "{{ lookup('ansible.builtin.env', 'CVP_ADDRESS') }}"
           ansible_user: "{{ lookup('ansible.builtin.env', 'CVP_USERNAME') }}"
           ansible_password: "{{ lookup('ansible.builtin.env', 'CVP_PASSWORD') }}"
