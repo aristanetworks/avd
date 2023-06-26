@@ -7753,8 +7753,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-            - int
           neighbor_default:
             type: dict
             keys:
@@ -8252,8 +8250,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-            - int
           peer_groups:
             type: list
             primary_key: name
@@ -8308,8 +8304,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-            - int
           peer_groups:
             type: list
             primary_key: name

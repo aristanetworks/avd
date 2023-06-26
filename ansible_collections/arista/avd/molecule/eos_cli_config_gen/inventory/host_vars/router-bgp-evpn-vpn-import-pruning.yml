@@ -33,7 +33,7 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
   redistribute_routes:
   address_family_evpn:
-    domain_identifier: 65101:0
+    domain_identifier: "65101:0"
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true
