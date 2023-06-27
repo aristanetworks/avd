@@ -5,7 +5,6 @@ dependencies = [
     "jinja2>=3.0",
     "jsonschema>=4.5.1",
     "deepmerge>=1.1.0",
-    "pyyaml>=6.0.0",
 ]
 authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
 description="Arista validated designs"
@@ -53,7 +52,7 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["pyavd*"]
-exclude = ["vendor_overrides*", "pyavd/vendor/tests*"]
+exclude = ["vendor_overrides*", "pyavd/tools*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
