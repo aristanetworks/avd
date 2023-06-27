@@ -1,11 +1,14 @@
 router_bgp:
   as: '65001'
   router_id: 192.168.250.10
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -63,6 +66,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TG_200
     router_id: 192.168.250.10
     rd: 192.168.250.10:200
@@ -80,6 +85,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   - name: TG_300
     router_id: 192.168.250.10
     rd: 192.168.250.10:300
@@ -97,6 +104,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlans:
   - id: 100
     tenant: TRUNK_GROUP_TESTS
@@ -247,15 +256,15 @@ vlans:
 - id: 300
   trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
+  - TG_300
   name: svi300_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 310
   trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
+  - TG_300
   name: l2vlan310_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 398
@@ -284,8 +293,8 @@ vlans:
   name: svi301_with_trunk_groups_only_l3leaf
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
+  - TG_300
 - id: 3299
   name: MLAG_iBGP_TG_300
   trunk_groups:
@@ -295,20 +304,20 @@ vlans:
   name: l2vlan310_with_trunk_groups_only_l3leaf
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
+  - TG_300
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.247.1/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.248.1/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan100
   tenant: TRUNK_GROUP_TESTS
   tags:
@@ -324,7 +333,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_100'
   vrf: TG_100
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.247.1/31
 - name: Vlan200
   tenant: TRUNK_GROUP_TESTS
@@ -341,7 +350,7 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
   vrf: TG_200
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.247.1/31
 - name: Vlan300
   tenant: TRUNK_GROUP_TESTS
@@ -375,14 +384,13 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_300'
   vrf: TG_300
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.247.1/31
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_trunk-group-tests-l3leaf1a_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - CUSTOM_LEAF_PEER_L3_TG_NAME

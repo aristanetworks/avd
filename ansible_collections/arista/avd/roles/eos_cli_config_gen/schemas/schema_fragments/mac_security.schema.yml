@@ -4,8 +4,6 @@
 type: dict
 keys:
   mac_security:
-    documentation_options:
-      filename: data_model/MAC Security
     type: dict
     display_name: MAC Security (MACsec)
     keys:

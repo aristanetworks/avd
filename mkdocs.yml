@@ -1,7 +1,7 @@
 # Project information
-site_name: Arista AVD collection
+site_name: Arista AVD
 site_author: Arista Ansible Team
-site_description: Arista Validated Design collection's documentation
+site_description: Arista Validated Designs documentation
 copyright: Copyright &copy; 2019 - 2023 Arista Networks
 
 # Repository information
@@ -22,7 +22,7 @@ theme:
     - navigation.instant
     - navigation.top
     - search.highlight
-    - toc.integrate
+    #- toc.integrate
     - toc.follow
   highlightjs: true
   icon:
@@ -55,6 +55,9 @@ extra:
       link: https://twitter.com/AristaNetworks
     - icon: fontawesome/solid/globe
       link: https://www.arista.com
+  version:
+    provider: mike
+    default: stable
 
 extra_css:
   - docs/stylesheets/extra.material.css
@@ -73,7 +76,11 @@ plugins:
       type: date
   - search:
       lang: en
-
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - python-avd
 markdown_extensions:
   - admonition
   - attr_list
@@ -122,39 +129,21 @@ nav:
       - Example for Dual DC L3LS: examples/dual-dc-l3ls/README.md
       - Example for L2LS Fabric: examples/l2ls-fabric/README.md
       - Example for Campus Fabric: examples/campus-fabric/README.md
+      - Example for ISIS-LDP IPVPN: examples/isis-ldp-ipvpn/README.md
   - Installation:
       - Collection Installation: docs/installation/collection-installation.md
-  - How-To:
-      - Build Your First AVD Project: docs/how-to/first-project.md
-      - Build Your First AVD & CVP Project: docs/how-to/first-cvp-avd-project.md
-      - Use NAT Gateway With eAPI: docs/how-to/lab-with-nat.md
-      - AWX & Tower Integration: docs/how-to/tower-integration.md
-      - Configure ZTP Server With CVP Collection: docs/how-to/ztp.md
-      - Setup Ansible AVD With VS Code Container: docs/how-to/vscode-container.md
-  - Validation of Input Variables (BETA): docs/input-variable-validation-BETA.md
   - Roles Documentation:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
-          - Connected Endpoints: roles/eos_designs/doc/connected-endpoints.md
-          - DCI & L3 Edge: roles/eos_designs/doc/l3-edge.md
-          - Fabric Topology: roles/eos_designs/doc/fabric-topology.md
-          - Fabric Variables: roles/eos_designs/doc/fabric-variables.md
-          - Management Settings: roles/eos_designs/doc/management-settings.md
-          - Network Services: roles/eos_designs/doc/network-services.md
-          - PTP: roles/eos_designs/doc/ptp.md
-          - Node Types: roles/eos_designs/doc/node-types.md
-          - Platform Specific Settings: roles/eos_designs/doc/platform-settings.md
-          - Custom Structured Configuration: roles/eos_designs/doc/custom-structured-configuration.md
-          - MPLS Design (BETA):
-              - Fabric Topology MPLS (BETA): roles/eos_designs/doc/fabric-topology-mpls-BETA.md
-              - Fabric Variables MPLS (BETA): roles/eos_designs/doc/fabric-variables-mpls-BETA.md
-              - Core Interfaces (BETA): roles/eos_designs/doc/core-interfaces-BETA.md
-              - Network Services MPLS (BETA): roles/eos_designs/doc/network-services-mpls-BETA.md
-              - Connected Endpoints MPLS (BETA): roles/eos_designs/doc/connected-endpoints-mpls-BETA.md
+          - Role Configuration: roles/eos_designs/docs/role-configuration.md
+          - Input Variables: roles/eos_designs/docs/input-variables.md
+          - How-To Guides:
+              - Configuring PTP: roles/eos_designs/docs/how-to/ptp.md
+              - Custom Structured Configuration: roles/eos_designs/docs/how-to/custom-structured-configuration.md
       - eos_cli_config_gen:
           - Overview: roles/eos_cli_config_gen/README.md
-          - Role Inputs: roles/eos_cli_config_gen/docs/inputs/Role Inputs.md
-          - Data Model: roles/eos_cli_config_gen/docs/data_model
+          - Role Configuration: roles/eos_cli_config_gen/docs/role-configuration.md
+          - Input Variables: roles/eos_cli_config_gen/docs/input-variables.md
       - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
       - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
       - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
@@ -174,6 +163,8 @@ nav:
       - Getting Started: docs/contribution/getting-started.md
       - Code Style: docs/contribution/style-guide.md
       - Development Tips & Tricks: docs/contribution/development.md
+      - Validation of Input Variables: docs/contribution/input-variable-validation.md
+      - EOS Designs internal notes: docs/contribution/eos_designs_internal_notes.md
   - External Resources:
       - Ansible Collection User Guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User Guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
@@ -185,6 +176,7 @@ nav:
       - 1.0.x: docs/release-notes/1.0.x.md
   - Porting Guides:
       - 4.x.x: docs/porting-guides/4.x.x.md
+  - pyavd: docs/pyavd.md
   - About:
       - AVD on Ansible Galaxy: https://galaxy.ansible.com/arista/avd
       - Arista CVP Collection: https://cvp.avd.sh/en/latest/

@@ -4,13 +4,12 @@
 type: dict
 keys:
   ip_igmp_snooping:
-    documentation_options:
-      filename: data_model/Multicast
     type: dict
     keys:
       globally_enabled:
         type: bool
         default: true
+        description: Activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
       robustness_variable:
         type: int
         convert_types:

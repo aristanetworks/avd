@@ -1,0 +1,31 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.0.0/27
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 10.255.1.0/27
+    uplink_interfaces: ['Ethernet1']
+    uplink_switches: ['duplicate-ip-address-uplink-switch-router-bgp']
+    uplink_ipv4_pool: 10.255.255.0/26
+    mlag_interfaces: ['Ethernet3', 'Ethernet4']
+    mlag_peer_ipv4_pool: 10.255.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.255.1.96/27
+
+  node_groups:
+    - group: duplicate-ip-address-router-bgp
+      bgp_as: 65101
+      nodes:
+        - name: duplicate-ip-address-1
+          id: 2
+          mgmt_ip: 172.16.1.101/24
+          uplink_switch_interfaces:
+            - Ethernet1
+        - name: duplicate-ip-address-2
+          # duplicate id which will generate duplicate ip_address for uplink switch
+          id: 2
+          mgmt_ip: 172.16.1.102/24
+          uplink_switch_interfaces:
+            - Ethernet2

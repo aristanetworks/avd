@@ -4,6 +4,10 @@
 type: dict
 keys:
   mgmt_interface_vrf:
+    documentation_options:
+      table: management-interface-settings
     type: str
     default: MGMT
     description: OOB Management VRF.
+    convert_types:
+      - int

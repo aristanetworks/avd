@@ -6,7 +6,7 @@ from .router_bgp import RouterBgpMixin
 from .router_ospf import RouterOspfMixin
 
 
-class AvdStructuredConfig(
+class AvdStructuredConfigCoreInterfaces(
     AvdFacts,
     EthernetInterfacesMixin,
     PortChannelInterfacesMixin,
@@ -14,9 +14,9 @@ class AvdStructuredConfig(
     RouterOspfMixin,
 ):
     """
-    The AvdStructuredConfig Class is imported by "yaml_templates_to_facts" to render parts of the structured config.
+    The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
 
-    "yaml_templates_to_facts" imports, instantiates and run the .render() method on the class.
+    "get_structured_config" imports, instantiates and run the .render() method on the class.
     .render() runs all class methods not starting with _ and of type @cached property and inserts the returned data into
     a dict with the name of the method as key. This means that each key in the final dict corresponds to a method.
 

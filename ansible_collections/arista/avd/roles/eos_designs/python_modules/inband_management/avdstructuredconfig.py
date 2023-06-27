@@ -3,13 +3,14 @@ from __future__ import annotations
 from functools import cached_property
 from ipaddress import ip_network
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
-class AvdStructuredConfig(AvdFacts):
+class AvdStructuredConfigInbandManagement(AvdFacts):
     @cached_property
     def vlans(self) -> list | None:
         if not self._inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
@@ -87,11 +88,7 @@ class AvdStructuredConfig(AvdFacts):
         if not self.shared_utils.underlay_bgp:
             return None
 
-        return {
-            "redistribute_routes": {
-                "attached-host": {},
-            }
-        }
+        return {"redistribute_routes": [{"source_protocol": "attached-host"}]}
 
     @cached_property
     def prefix_lists(self) -> list | None:
@@ -138,13 +135,14 @@ class AvdStructuredConfig(AvdFacts):
         return [
             {
                 "name": "RM-CONN-2-BGP",
-                "sequence_numbers": {
-                    # sequence 10 is set in underlay so avoid setting it here
-                    20: {
+                "sequence_numbers": [
+                    {
+                        # sequence 10 is set in underlay so avoid setting it here
+                        "sequence": 20,
                         "type": "permit",
                         "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"],
                     }
-                },
+                ],
             }
         ]
 
@@ -155,7 +153,7 @@ class AvdStructuredConfig(AvdFacts):
 
         svis = {}
         subnets = []
-        peers = get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[])
+        peers = natural_sort(get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[]))
         for peer in peers:
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
             if (vlan := peer_facts.get("inband_mgmt_vlan")) is None:

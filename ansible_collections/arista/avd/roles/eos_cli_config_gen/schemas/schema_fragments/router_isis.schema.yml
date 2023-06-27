@@ -4,8 +4,6 @@
 type: dict
 keys:
   router_isis:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       instance:
@@ -191,6 +189,3 @@ keys:
                   type: int
                   convert_types:
                     - str
-      no_passive_interfaces:
-        type: list
-        description: Unused key - to be removed from eos_designs.

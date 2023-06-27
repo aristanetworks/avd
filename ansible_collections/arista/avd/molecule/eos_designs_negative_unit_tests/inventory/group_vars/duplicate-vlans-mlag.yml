@@ -1,0 +1,39 @@
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+    mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+
+  node_groups:
+    - group: duplicate-vlans-mlag
+      nodes:
+        - name: duplicate-vlans-mlag-a
+          bgp_as: 42
+          id: 42
+
+        - name: duplicate-vlans-mlag-b
+          bgp_as: 6500
+          id: 40
+
+type: l3leaf
+
+tenants:
+  - name: Tenant_C
+    vrfs:
+      - name: Tenant_C_OP_Zone
+        enable_mlag_ibgp_peering_vrfs: true
+        mlag_ibgp_peering_vlan: 2
+        svis:
+          - id: 310
+            name: Tenant_C_OP_Zone_1
+      - name: Tenant_C_WAN_Zone
+        enable_mlag_ibgp_peering_vrfs: true
+        # duplicate vlan_id in mlag ibgp peering
+        mlag_ibgp_peering_vlan: 2
+        svis:
+          - id: 350
+            name: Tenant_C_WAN_Zone_1
+
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for MLAG Peering VLAN in VRF 'Tenant_C_WAN_Zone' (check for duplicate VRF VNI/ID). {'id': 2, 'name': 'MLAG_iBGP_Tenant_C_WAN_Zone', 'tenant': 'Tenant_C'} conflicts with {'id': 2, 'name': 'MLAG_iBGP_Tenant_C_OP_Zone', 'tenant': 'Tenant_C'}."

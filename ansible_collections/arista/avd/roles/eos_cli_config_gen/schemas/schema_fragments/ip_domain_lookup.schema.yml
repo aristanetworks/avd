@@ -4,15 +4,13 @@
 type: dict
 keys:
   ip_domain_lookup:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       source_interfaces:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -23,3 +21,5 @@ keys:
                 Source Interface
             vrf:
               type: str
+              convert_types:
+                - int

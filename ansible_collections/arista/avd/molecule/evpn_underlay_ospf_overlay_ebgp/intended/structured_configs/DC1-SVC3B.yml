@@ -3,10 +3,14 @@ router_bgp:
   router_id: 192.168.255.9
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 10 ecmp 10
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 10
+    ecmp: 10
+  updates:
+    wait_install: true
   peer_groups:
   - name: EVPN-OVERLAY-PEERS
     type: evpn
@@ -74,6 +78,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.252.6
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: Tenant_B_OP_Zone
     rd: 192.168.255.9:20
@@ -186,7 +192,6 @@ port_channel_interfaces:
   description: MLAG_PEER_DC1-SVC3A_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3

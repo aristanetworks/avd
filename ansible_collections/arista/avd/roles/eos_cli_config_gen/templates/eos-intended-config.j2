@@ -1,6 +1,6 @@
 {# Device Configuration #}
 {# context used to hide password and keys #}
-{% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords %}
+{% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(false) %}
 {% include 'eos/rancid-content-type.j2' %}
 {# System Boot Configuration #}
 {% include 'eos/boot.j2' %}

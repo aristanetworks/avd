@@ -12,11 +12,13 @@ core_interfaces:
   p2p_links:
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet6, Ethernet6 ]
-      ptp_enable: true
+      ptp:
+        enabled: true
       include_in_underlay_protocol: false
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet7, Ethernet7 ]
-      ptp_enable: true
+      ptp:
+        enabled: true
       include_in_underlay_protocol: false
 
 # Testing the same as above with l3_edge
@@ -24,44 +26,55 @@ l3_edge:
   p2p_links:
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet8, Ethernet8 ]
-      ptp_enable: true
+      ptp:
+        enabled: true
       include_in_underlay_protocol: false
     - nodes: [ ptp-tests-spine1, ptp-tests-spine2 ]
       interfaces: [ Ethernet9, Ethernet9 ]
-      ptp_enable: true
+      ptp:
+        enabled: true
       include_in_underlay_protocol: false
 
+ptp:
+  enabled: true
+  # profile: < aes67 | smpte2059-2 | aes67-r16-2016 | default -> aes67-r16-2016  >
+  # domain: < 0-255 | default -> 127 >
+
 tenants:
-  PTP:
+  - name: PTP
     mac_vrf_vni_base: 10000
     vrfs:
       # VRF definitions inside the tenant.
-      VRF1:
+      - name: VRF1
         # VRF VNI definition.
         vrf_vni: 1
         svis:
-          11:
+          - id: 11
             name: VLAN11
             enabled: true
             nodes:
-              ptp-tests-leaf1:
+              - node: ptp-tests-leaf1
                 ip_address: 172.16.11.1/24
-              ptp-tests-leaf2:
+              - node: ptp-tests-leaf2
                 ip_address: 172.17.11.1/24
 
+port_profiles:
+  - profile: PTP-profile-BMCA
+    vlans: 11
+    mode: access
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
 servers:
-  bmca-endpoint:
+  - name: bmca-endpoint
     adapters:
       - endpoint_ports: [ eth1 ]
         switch_ports: [ Ethernet13 ]
         switches: [ ptp-tests-leaf1 ]
-        vlans: 11
-        mode: access
-        ptp:
-          enable: true
-          endpoint_role: bmca
+        profile: PTP-profile-BMCA
 
-  video-endpoint:
+  - name: video-endpoint
     adapters:
       - endpoint_ports: [ PCI1, PCI2 ]
         switch_ports: [ Ethernet5, Ethernet5 ]
@@ -70,10 +83,10 @@ servers:
         mode: access
         spanning_tree_portfast: edge
         ptp:
-          enable: true
+          enabled: true
           endpoint_role: follower
 
-  Endpoint-with-specific-PTP-profile:
+  - name: Endpoint-with-specific-PTP-profile
     adapters:
       - endpoint_ports: [ eth3 ]
         switch_ports: [ Ethernet3 ]
@@ -81,5 +94,5 @@ servers:
         vlans: 11
         mode: access
         ptp:
-          enable: true
+          enabled: true
           profile: smpte2059-2

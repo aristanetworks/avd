@@ -5,13 +5,13 @@ type: dict
 keys:
   platform_speed_groups:
     documentation_options:
-      filename: Platform Specific Settings
+      table: platform-settings
     type: list
     primary_key: platform
     secondary_key: speeds
     convert_types:
       - dict
-    description: Set Hardware Speed Groups per Platform
+    description: Set Hardware Speed Groups per Platform.
     items:
       type: dict
       keys:

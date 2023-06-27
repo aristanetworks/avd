@@ -4,8 +4,6 @@
 type: dict
 keys:
   router_l2_vpn:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       arp_learning_bridged:

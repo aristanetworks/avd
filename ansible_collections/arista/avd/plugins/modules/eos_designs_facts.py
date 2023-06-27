@@ -32,15 +32,12 @@ description:
   - The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by jinja templates
     and python module in `arista.avd.eos_designs` to generate the `structured_configuration`.
 options:
-  schema:
-    description: Schema conforming to "AVD Meta Schema". Either schema or schema_id must be set.
+  template_output:
+    description: |
+      If true the output data will be run through another jinja2 rendering before returning.
+      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     required: false
-    type: dict
-  schema_id:
-    description: ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
-    required: false
-    type: str
-    choices: [ "eos_cli_config_gen", "eos_designs" ]
+    type: bool
   conversion_mode:
     description:
       - Run data conversion in either "error", "warning", "info", "debug", "quiet" or "disabled" mode.
@@ -71,6 +68,12 @@ options:
     default: "warning"
     type: str
     choices: [ "error", "warning", "info", "debug", "disabled" ]
+  cprofile_file:
+    description:
+      - Filename for storing cprofile data used to debug performance issues.
+      - Running cprofile will slow down performance in it self, so only set this while troubleshooting.
+    required: false
+    type: str
 """
 
 EXAMPLES = r"""

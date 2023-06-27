@@ -4,8 +4,6 @@
 type: dict
 keys:
   hardware_counters:
-    documentation_options:
-      filename: data_model/Hardware
     type: dict
     keys:
       features:
@@ -121,6 +119,8 @@ keys:
               description: |
                 Supported only for the 'route' feature.
                 This validation IS NOT made by the schemas.
+              convert_types:
+                - int
             prefix:
               type: str
               description: |

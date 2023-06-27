@@ -246,12 +246,10 @@ interface Ethernet2
 !
 interface Ethernet3
    no shutdown
-   switchport
    channel-group 3 mode active
 !
 interface Ethernet4
    no shutdown
-   switchport
    channel-group 3 mode active
 !
 interface Ethernet6
@@ -632,10 +630,9 @@ router isis CORE
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| maximum-paths 4 ecmp 4 |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -702,11 +699,10 @@ router isis CORE
 !
 router bgp 65000
    router-id 100.70.0.5
+   maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
-   maximum-paths 4 ecmp 4
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0

@@ -4,8 +4,6 @@
 type: dict
 keys:
   tcam_profile:
-    documentation_options:
-      filename: data_model/Hardware
     type: dict
     display_name: Hardware TCAM Profiles
     keys:
@@ -37,4 +35,4 @@ keys:
               required: false
               description: |
                 TCAM profile local source path. Used to read the TCAM profile from a local path existing in the device.
-                The file can contain different TCAM profiles and the used will be defined by the "system" variable.
+                The file can contain different TCAM profiles and the one used will be defined by the "system" variable.

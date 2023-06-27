@@ -820,3 +820,33 @@ ethernet_interfaces:
           - original_ip: 3.0.0.8
             translated_ip: 4.0.0.8
             direction: ingress
+
+  - name: Ethernet61
+    logging:
+      event:
+        link_status: false
+        congestion_drops: false
+        spanning_tree: false
+        storm_control: false
+    description: interface_in_mode_access_with_voice
+    type: switched
+    native_vlan: 100
+    mode: "trunk phone"
+    phone:
+      trunk: "untagged phone"
+      vlan: 70
+
+  - name: Ethernet62
+    logging:
+      event:
+        link_status: false
+        congestion_drops: false
+        spanning_tree: false
+        storm_control: false
+    description: interface_in_mode_access_with_voice
+    type: switched
+    native_vlan: 100
+    mode: "trunk phone"
+    phone:
+      trunk: "tagged phone"
+      vlan: 70

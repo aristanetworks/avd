@@ -3,12 +3,14 @@ router_bgp:
   router_id: 100.70.0.6
   bgp_defaults:
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
     type: mpls
@@ -48,6 +50,12 @@ router_bgp:
   - ip_address: 100.70.0.9
     peer_group: MPLS-OVERLAY-PEERS
     description: SITE2-RR1
+  - ip_address: 100.70.0.5
+    peer_group: MPLS-OVERLAY-PEERS
+    description: SITE1-LER1
+  - ip_address: 100.70.0.7
+    peer_group: MPLS-OVERLAY-PEERS
+    description: SITE2-LER1
   vrfs:
   - name: TENANT_B_INTRA
     router_id: 100.70.0.6
@@ -83,16 +91,17 @@ router_bgp:
         - '65000:20'
     redistribute_routes:
     - source_protocol: connected
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 192.168.48.1
+        activate: true
     neighbors:
     - ip_address: 192.168.48.1
       description: TENANT_B_CPE_SITE3
       password: toZKiUFLVUTU4hdS5V8F4Q==
       remote_as: '65201'
-    address_families:
-    - address_family: ipv4
-      neighbors:
-      - ip_address: 192.168.48.1
-        activate: true
+    updates:
+      wait_install: true
   vlans:
   - id: 10
     tenant: TENANT_A
@@ -225,6 +234,11 @@ mpls:
     router_id: 100.70.0.6
     shutdown: false
     transport_address_interface: Loopback0
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 ethernet_interfaces:
 - name: Ethernet1
   peer: SITE1-LSR2
@@ -278,6 +292,32 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 10000full
+- name: Ethernet5.100
+  peer_type: l3_interface
+  ip_address: 192.168.48.0/31
+  shutdown: false
+  description: TENANT_B_SITE_3
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 100
+  vrf: TENANT_B_WAN
+- name: Ethernet3
+  type: port-channel-member
+  peer_type: point_to_point_service
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+- name: Ethernet4
+  type: port-channel-member
+  peer_type: point_to_point_service
+  shutdown: false
+  channel_group:
+    id: 3
+    mode: active
+- name: Ethernet5
+  type: routed
+  peer_type: l3_interface
+  shutdown: false
 - name: Ethernet8
   peer: CPE_TENANT_A_SITE1
   peer_interface: Ethernet2
@@ -289,136 +329,6 @@ ethernet_interfaces:
   channel_group:
     id: 8
     mode: active
-- name: Ethernet5.100
-  peer_type: l3_interface
-  ip_address: 192.168.48.0/31
-  shutdown: false
-  description: TENANT_B_SITE_3
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
-  vrf: TENANT_B_WAN
-- name: Ethernet3
-  shutdown: false
-  channel_group:
-    id: 3
-    mode: active
-- name: Ethernet4
-  shutdown: false
-  channel_group:
-    id: 3
-    mode: active
-- name: Ethernet5
-  type: routed
-  peer_type: l3_interface
-  shutdown: false
-port_channel_interfaces:
-- name: Port-Channel8
-  description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
-  type: routed
-  shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0101
-    route_target: 03:03:02:02:01:01
-  lacp_id: 0303.0202.0101
-- name: Port-Channel8.111
-  type: l2dot1q
-  vlan_id: 111
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 111
-    network:
-      client: true
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0111
-    route_target: 03:03:02:02:01:11
-- name: Port-Channel8.222
-  type: l2dot1q
-  vlan_id: 222
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 222
-    network:
-      client: true
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0222
-    route_target: 03:03:02:02:02:22
-- name: Port-Channel8.333
-  type: l2dot1q
-  vlan_id: 434
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 333
-    network:
-      client: true
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0333
-    route_target: 03:03:02:02:03:33
-- name: Port-Channel3.1000
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1000
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3.1001
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1001
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3.1002
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1002
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3.1003
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1003
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3.1004
-  type: l2dot1q
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 1004
-    network:
-      client: true
-  peer_type: l3_interface
-  shutdown: false
-- name: Port-Channel3
-  type: routed
-  peer_type: l3_interface
-  shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0102:0000:0034
-    route_target: 01:02:00:00:00:34
-  lacp_id: 0102.0000.0034
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
 patch_panel:
   patches:
   - name: TEN_B_site3_site5_eline_vlan_based_1000
@@ -487,3 +397,106 @@ vlan_interfaces:
   description: TENANT_B_INSIDE_FW
   shutdown: false
   vrf: TENANT_B_INTRA
+port_channel_interfaces:
+- name: Port-Channel3.1000
+  type: l2dot1q
+  peer_type: point_to_point_service
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1000
+    network:
+      client: true
+  shutdown: false
+- name: Port-Channel3.1001
+  type: l2dot1q
+  peer_type: point_to_point_service
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1001
+    network:
+      client: true
+  shutdown: false
+- name: Port-Channel3.1002
+  type: l2dot1q
+  peer_type: point_to_point_service
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1002
+    network:
+      client: true
+  shutdown: false
+- name: Port-Channel3.1003
+  type: l2dot1q
+  peer_type: point_to_point_service
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1003
+    network:
+      client: true
+  shutdown: false
+- name: Port-Channel3.1004
+  type: l2dot1q
+  peer_type: point_to_point_service
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 1004
+    network:
+      client: true
+  shutdown: false
+- name: Port-Channel3
+  type: routed
+  peer_type: system
+  shutdown: false
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0102:0000:0034
+    route_target: 01:02:00:00:00:34
+  lacp_id: 0102.0000.0034
+- name: Port-Channel8
+  description: CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
+  type: routed
+  shutdown: false
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0101
+    route_target: 03:03:02:02:01:01
+  lacp_id: 0303.0202.0101
+- name: Port-Channel8.111
+  type: l2dot1q
+  vlan_id: 111
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 111
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0111
+    route_target: 03:03:02:02:01:11
+- name: Port-Channel8.222
+  type: l2dot1q
+  vlan_id: 222
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 222
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0222
+    route_target: 03:03:02:02:02:22
+- name: Port-Channel8.333
+  type: l2dot1q
+  vlan_id: 434
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 333
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0333
+    route_target: 03:03:02:02:03:33

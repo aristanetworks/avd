@@ -1,11 +1,12 @@
 router_bgp:
   as: '65101'
   router_id: 10.254.1.1
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -127,7 +128,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -145,7 +146,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet2
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ptp:
     announce:
@@ -161,6 +162,7 @@ ethernet_interfaces:
   peer: bmca-endpoint
   peer_interface: eth1
   peer_type: server
+  port_profile: PTP-profile-BMCA
   description: bmca-endpoint_eth1
   shutdown: false
   type: switched

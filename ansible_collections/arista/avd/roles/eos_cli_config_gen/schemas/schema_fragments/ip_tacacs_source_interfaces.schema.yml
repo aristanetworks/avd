@@ -4,8 +4,6 @@
 type: dict
 keys:
   ip_tacacs_source_interfaces:
-    documentation_options:
-      filename: data_model/Authentication
     type: list
     display_name: IP Tacacs Source Interfaces
     items:
@@ -17,3 +15,5 @@ keys:
         vrf:
           type: str
           display_name: VRF
+          convert_types:
+            - int

@@ -1,0 +1,53 @@
+---
+# Minimum config to only test the specific feature.
+node_type_keys:
+  - key: pe
+    type: pe
+    mpls_lsr: true
+    default_mpls_overlay_role: client
+    default_evpn_role: client
+    network_services:
+      l1: true
+      l2: true
+      l3: true
+    default_overlay_routing_protocol: ibgp
+    default_overlay_address_families: [ evpn ]
+    default_evpn_encapsulation: mpls
+
+pe:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+  nodes:
+    - name: duplicate-interfaces-point-to-point-services-4
+      id: 42
+
+type: pe
+design:
+  type: mpls
+
+tenants:
+  - name: TENANT
+    vrfs:
+      - name: TEST
+        l3_interfaces:
+          - nodes: ["duplicate-interfaces-point-to-point-services-4", "some_other_device"]
+            interfaces: ["Ethernet6.1000", "some_other_interface"]
+            ip_addresses: [10.42.255.0/31, 10.42.255.1/31]
+
+  - name: TENANT_A
+    point_to_point_services:
+      - name: TEN_A_site2_site5_eline_port_based
+        # calculated interface would be Ethernet6.1000
+        subinterfaces:
+          - number: 1000
+        endpoints:
+          - id: 26
+            nodes: [ "duplicate-interfaces-point-to-point-services-4" ]
+            interfaces: [ "Ethernet6" ]   # interface name would be Ethernet6.1000 (duplicate)
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under point_to_point_services.
+  {'name': 'Ethernet6.1000', 'encapsulation_vlan': {'client': {'dot1q': {'vlan': 1000}}, 'network': {'client': True}}, 'peer_type':
+  'point_to_point_service', 'type': 'l2dot1q'} conflicts with {'name': 'Ethernet6.1000', 'encapsulation_vlan': None, 'peer_type': 'l3_interface',
+  'type': 'l3dot1q'}.

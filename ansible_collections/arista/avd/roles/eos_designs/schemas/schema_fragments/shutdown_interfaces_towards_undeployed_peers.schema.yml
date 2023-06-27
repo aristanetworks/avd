@@ -5,8 +5,7 @@ type: dict
 keys:
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
-      filename: Fabric Variables
-      table: Uplink Settings
+      table: fabric-settings
     type: bool
     default: false
     description: |

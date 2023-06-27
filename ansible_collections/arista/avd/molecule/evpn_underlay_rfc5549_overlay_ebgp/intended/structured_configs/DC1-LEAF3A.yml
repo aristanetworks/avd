@@ -3,10 +3,14 @@ router_bgp:
   router_id: 192.168.255.12
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: MLAG_PEER
     type: ipv4
@@ -41,11 +45,15 @@ router_bgp:
     - name: MLAG_PEER
       activate: true
       next_hop:
-        address_family_ipv6_originate: true
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: UNDERLAY_PEERS
       activate: true
       next_hop:
-        address_family_ipv6_originate: true
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   neighbor_interfaces:
@@ -303,21 +311,27 @@ vrfs:
 - name: Tenant_A_APP_Zone
   tenant: Tenant_A
   ip_routing_ipv6_interfaces: true
+  ipv6_routing: true
 - name: Tenant_A_DB_Zone
   tenant: Tenant_A
   ip_routing_ipv6_interfaces: true
+  ipv6_routing: true
 - name: Tenant_A_OP_Zone
   tenant: Tenant_A
   ip_routing_ipv6_interfaces: true
+  ipv6_routing: true
 - name: Tenant_A_WEB_Zone
   tenant: Tenant_A
   ip_routing_ipv6_interfaces: true
+  ipv6_routing: true
 - name: Tenant_B_OP_Zone
   tenant: Tenant_B
   ip_routing_ipv6_interfaces: true
+  ipv6_routing: true
 - name: Tenant_C_OP_Zone
   tenant: Tenant_C
   ip_routing_ipv6_interfaces: true
+  ipv6_routing: true
 management_interfaces:
 - name: Management1
   description: oob_management
@@ -592,7 +606,6 @@ port_channel_interfaces:
   description: MLAG_PEER_DC1-LEAF3B_Po5
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3
@@ -687,8 +700,8 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: false
-    id: 120
+  - id: 120
+    enabled: false
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:

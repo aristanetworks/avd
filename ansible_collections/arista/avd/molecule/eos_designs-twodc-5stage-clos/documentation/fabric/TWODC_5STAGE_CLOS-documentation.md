@@ -245,11 +245,18 @@
 
 | Key | Type | Description |
 | --- | ---- | ----------- |
+| access_points | access_point | Access Point |
+| cameras | camera | Camera |
+| cpes | cpe | CPE |
 | firewalls | firewall | Firewall |
+| generic_devices | generic_device | Generic Device |
 | load_balancers | load_balancer | Load Balancer |
+| phones | phone | Phone |
+| printers | printer | Printer |
 | routers | router | Router |
 | servers | server | Server |
 | storage_arrays | storage_array | Storage Array |
+| workstations | workstation | Workstation |
 
 ### Servers
 
@@ -268,5 +275,5 @@
 
 | Profile Name | Parent Profile |
 | ------------ | -------------- |
-| NESTED_TENANT_A | - |
+| NESTED_TENANT_A | TENANT_A |
 | TENANT_A | - |

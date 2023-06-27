@@ -271,8 +271,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *none | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *none | *- | *- | 7 |
 
@@ -373,7 +373,7 @@ interface Ethernet8
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | none | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -384,7 +384,6 @@ interface Port-Channel5
    description MLAG_PEER_DC1-SVC3A_Po5
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
@@ -620,8 +619,9 @@ router isis EVPN_UNDERLAY
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -657,9 +657,10 @@ router isis EVPN_UNDERLAY
 !
 router bgp 65000
    router-id 192.168.255.9
+   maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
    neighbor OVERLAY-PEERS peer group
    neighbor OVERLAY-PEERS remote-as 65000
    neighbor OVERLAY-PEERS update-source Loopback0

@@ -1,11 +1,14 @@
 router_bgp:
   as: '65153'
   router_id: 192.168.255.35
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4

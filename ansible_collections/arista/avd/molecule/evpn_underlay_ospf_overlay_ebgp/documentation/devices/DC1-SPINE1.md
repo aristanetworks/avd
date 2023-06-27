@@ -417,8 +417,9 @@ router ospf 101
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| maximum-paths 10 ecmp 10 |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 10 ecmp 10 |
 
 #### Router BGP Peer Groups
 
@@ -460,9 +461,10 @@ router ospf 101
 !
 router bgp 65001
    router-id 192.168.255.1
+   maximum-paths 10 ecmp 10
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 10 ecmp 10
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0

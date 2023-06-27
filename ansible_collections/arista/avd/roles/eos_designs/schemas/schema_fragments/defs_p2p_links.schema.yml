@@ -20,7 +20,7 @@ $defs:
           description: The values can be speed or auto speed or forced speed.
         ip_pool:
           type: str
-          description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link
+          description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.
         subnet:
           type: str
           description: IPv4 address/Mask. Subnet used on this P2P link.
@@ -105,10 +105,14 @@ $defs:
           type: bool
           default: false
           description: Enable BFD (only considered for BGP).
-        ptp_enable:
-          type: bool
-          default: false
-          description: Enable PTP
+        ptp:
+          description: PTP parameters.
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              default: false
+              description: Enable PTP.
         qos_profile:
           type: str
           description: QOS service profile.

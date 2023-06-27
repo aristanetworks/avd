@@ -4,8 +4,6 @@
 type: dict
 keys:
   virtual_source_nat_vrfs:
-    documentation_options:
-      filename: data_model/Virtual Source NAT
     type: list
     primary_key: name
     convert_types:
@@ -16,6 +14,8 @@ keys:
         name:
           type: str
           description: VRF Name
+          convert_types:
+            - int
         ip_address:
           type: str
           description: IPv4 Address

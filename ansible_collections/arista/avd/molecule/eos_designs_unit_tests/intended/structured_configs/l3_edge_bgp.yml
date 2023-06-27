@@ -1,11 +1,14 @@
 router_bgp:
   as: '65000'
   router_id: 1.2.3.1
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -98,7 +101,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer2_ethernet2
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.2/31
   ipv6_enable: true
 - name: ethernet3
@@ -108,7 +111,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer3_ethernet3
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.4/31
 - name: ethernet4
   peer: peer4
@@ -117,14 +120,14 @@ ethernet_interfaces:
   description: Custom description on l3_edge_bgp eth4
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.6/31
 - name: Ethernet5
   type: port-channel-member
   peer: peer5
-  peer_interface: Port-Channel5
+  peer_interface: Ethernet5
   peer_type: other
-  description: P2P_LINK_TO_peer5_Port-Channel5
+  description: P2P_LINK_TO_peer5_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -132,9 +135,9 @@ ethernet_interfaces:
 - name: Ethernet6
   type: port-channel-member
   peer: peer5
-  peer_interface: Port-Channel5
+  peer_interface: Ethernet6
   peer_type: other
-  description: P2P_LINK_TO_peer5_Port-Channel5
+  description: P2P_LINK_TO_peer5_Ethernet6
   shutdown: false
   channel_group:
     id: 5
@@ -142,9 +145,9 @@ ethernet_interfaces:
 - name: Ethernet7
   type: port-channel-member
   peer: peer6
-  peer_interface: Port-Channel7
+  peer_interface: Ethernet7
   peer_type: other
-  description: P2P_LINK_TO_peer6_Port-Channel7
+  description: P2P_LINK_TO_peer6_Ethernet7
   shutdown: false
   channel_group:
     id: 7
@@ -152,9 +155,9 @@ ethernet_interfaces:
 - name: Ethernet8
   type: port-channel-member
   peer: peer6
-  peer_interface: Port-Channel7
+  peer_interface: Ethernet8
   peer_type: other
-  description: P2P_LINK_TO_peer6_Port-Channel7
+  description: P2P_LINK_TO_peer6_Ethernet8
   shutdown: false
   channel_group:
     id: 7
@@ -167,7 +170,7 @@ port_channel_interfaces:
   description: P2P_LINK_TO_peer5_Port-Channel5
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.8/31
 - name: Port-Channel7
   peer: peer6
@@ -176,5 +179,5 @@ port_channel_interfaces:
   description: P2P_LINK_TO_peer6_Port-Channel7
   type: routed
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 192.168.0.10/31

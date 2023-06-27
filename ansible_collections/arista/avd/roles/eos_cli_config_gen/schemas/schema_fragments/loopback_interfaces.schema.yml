@@ -4,12 +4,10 @@
 type: dict
 keys:
   loopback_interfaces:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
-    - dict
+      - dict
     items:
       type: dict
       keys:
@@ -24,6 +22,8 @@ keys:
         vrf:
           type: str
           description: VRF name
+          convert_types:
+            - int
         ip_address:
           type: str
           description: IPv4_address/Mask
@@ -42,7 +42,7 @@ keys:
         ospf_area:
           type: str
           convert_types:
-          - int
+            - int
         mpls:
           type: dict
           keys:
@@ -59,7 +59,7 @@ keys:
         isis_metric:
           type: int
           convert_types:
-          - str
+            - str
         isis_network_point_to_point:
           type: bool
         node_segment:
@@ -68,11 +68,11 @@ keys:
             ipv4_index:
               type: int
               convert_types:
-              - str
+                - str
             ipv6_index:
               type: int
               convert_types:
-              - str
+                - str
         eos_cli:
           type: str
           description: EOS CLI rendered directly on the loopback interface in the final EOS configuration

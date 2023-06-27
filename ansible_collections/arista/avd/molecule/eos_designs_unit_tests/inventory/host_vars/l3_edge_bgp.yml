@@ -1,7 +1,7 @@
 type: spine
 spine:
   nodes:
-    l3_edge_bgp:
+    - name: l3_edge_bgp
       id: 1
       evpn_role: "none"
       loopback_ipv4_pool: 1.2.3.4/24
@@ -9,19 +9,21 @@ spine:
 
 l3_edge:
   p2p_links_profiles:
-    profile1:
+    - name: profile1
       ip_pool: pool1
       speed: "forced 10000full"
       mtu: 2000
       bfd: true
-      ptp_enable: true
+      ptp:
+        enabled: true
       qos_profile: TEST-QOS-PROFILE
       macsec_profile: TEST-MACSEC-PROFILE
       raw_eos_cli: |
         ! TEST RAW_EOS_CLI
 
   p2p_links_ip_pools:
-    pool1: 192.168.0.0/24
+    - name: pool1
+      ipv4_pool: 192.168.0.0/24
 
   p2p_links:
       # P2P link without routing. Settings set via profile
@@ -60,8 +62,10 @@ l3_edge:
       port_channel:
         mode: active
         nodes_child_interfaces:
-          l3_edge_bgp: [ Ethernet5, Ethernet6 ]
-          peer5: [ Ethernet5, Ethernet6 ]
+          - node: l3_edge_bgp
+            interfaces: [ Ethernet5, Ethernet6 ]
+          - node: peer5
+            interfaces: [ Ethernet5, Ethernet6 ]
       include_in_underlay_protocol: true
 
     # P2P link with Port-Channel with underlay routing and IP set via ip_pool and id.
@@ -72,6 +76,8 @@ l3_edge:
       port_channel:
         mode: active
         nodes_child_interfaces:
-          l3_edge_bgp: [ Ethernet7, Ethernet8 ]
-          peer6: [ Ethernet7, Ethernet8 ]
+          - node: l3_edge_bgp
+            interfaces: [ Ethernet7, Ethernet8 ]
+          - node: peer6
+            interfaces: [ Ethernet7, Ethernet8 ]
       include_in_underlay_protocol: true

@@ -4,23 +4,11 @@
 type: dict
 keys:
   community_lists:
-    documentation_options:
-      filename: data_model/Filters
     type: list
     primary_key: name
     convert_types:
       - dict
     display_name: Community Lists (legacy model)
-    description: |
-      AVD supports 2 different data models for community lists:
-
-      - The legacy `community_lists` data model that can be used for compatibility with the existing deployments.
-      - The improved `ip_community_lists` data model.
-
-      Both data models can coexist without conflicts, as different keys are used: `community_lists` vs `ip_community_lists`.
-      Community list names must be unique.
-
-      The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
     items:
       type: dict
       keys:

@@ -1,7 +1,7 @@
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 172.16.2.1
+  gateway: 172.16.1.1
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending
@@ -30,8 +30,8 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 172.16.2.251/24
-  gateway: 172.16.2.1
+  ip_address: 172.16.1.161/24
+  gateway: 172.16.1.1
   type: oob
 management_api_http:
   enable_vrfs:

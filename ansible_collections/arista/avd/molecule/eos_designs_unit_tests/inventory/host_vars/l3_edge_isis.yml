@@ -4,7 +4,7 @@ isis_area_id: "49.0001"
 type: spine
 spine:
   nodes:
-    l3_edge_isis:
+    - name: l3_edge_isis
       id: 1
       evpn_role: "none"
       loopback_ipv4_pool: 1.2.3.4/24
@@ -14,17 +14,19 @@ spine:
 
 l3_edge:
   p2p_links_profiles:
-    profile1:
+    - name: profile1
       ip_pool: pool1
       speed: "forced 10000full"
       mtu: 2000
       bfd: true
-      ptp_enable: true
+      ptp:
+        enabled: true
       qos_profile: TEST-QOS-PROFILE
       macsec_profile: TEST-MACSEC-PROFILE
 
   p2p_links_ip_pools:
-    pool1: 192.168.0.0/24
+    - name: pool1
+      ipv4_pool: 192.168.0.0/24
 
   p2p_links:
       # P2P link without routing. Settings set via profile

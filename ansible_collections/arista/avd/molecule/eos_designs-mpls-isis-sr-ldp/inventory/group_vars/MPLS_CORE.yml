@@ -57,16 +57,16 @@ p:
       management security
          password encryption-key common
   nodes:
-    SITE1-LSR1:
+    - name: SITE1-LSR1
       id: 1
       mgmt_ip: 192.168.200.101/24
-    SITE1-LSR2:
+    - name: SITE1-LSR2
       id: 2
       mgmt_ip: 192.168.200.102/24
-    SITE2-LSR1:
+    - name: SITE2-LSR1
       id: 3
       mgmt_ip: 192.168.200.103/24
-    SITE2-LSR2:
+    - name: SITE2-LSR2
       id: 4
       mgmt_ip: 192.168.200.104/24
 
@@ -84,44 +84,44 @@ pe:
     spanning_tree_mode: mstp
     overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
     bgp_defaults:
-      - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
+      - distance bgp 20 200 200
     mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1 ]
     raw_eos_cli: |
       management security
          password encryption-key common
   node_groups:
-    SITE1-LER1-2:
+    - group: SITE1-LER1-2
       filter:
         tenants: [ all ]
         tags: [ all ]
       nodes:
-        SITE1-LER1:
+        - name: SITE1-LER1
           id: 5
           mpls_overlay_role: none
           evpn_role: client
           overlay_address_families: [ evpn ]
           mgmt_ip: 192.168.200.105/24
-        SITE1-LER2:
+        - name: SITE1-LER2
           id: 6
           mgmt_ip: 192.168.200.106/24
-    SITE2-LER1:
+          # Hostvars for this node has bgp_mesh_pes: true so this device will setup BGP peerings to all other PEs as well as the RRs.
+          # Should always be set fabric-wide but in this case we just need to test if it works.
+    - group: SITE2-LER1
       filter:
         tenants: [ all ]
         tags: [ all ]
       nodes:
-        SITE2-LER1:
+        - name: SITE2-LER1
           id: 7
           mgmt_ip: 192.168.200.107/24
-    SITE3-LER1-TEST:
+    - group: SITE3-LER1-TEST
       mpls_overlay_role: none
       evpn_role: none
       filter:
         tenants: [ all ]
         tags: [ all ]
       nodes:
-        SITE3-LER1:
+        - name: SITE3-LER1
           id: 10
           mgmt_ip: 192.168.200.110/24
 
@@ -137,21 +137,19 @@ rr:
     overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
     mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1 ]
     bgp_defaults:
-      - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
-      - 'bgp route-reflector preserve-attributes always'
+      - distance bgp 20 200 200
+      - bgp route-reflector preserve-attributes always
     raw_eos_cli: |
       management security
          password encryption-key common
   node_groups:
-    RR-CLUSTER:
+    - group: RR-CLUSTER
       bgp_cluster_id: 1.1.1.1
       nodes:
-        SITE1-RR1:
+        - name: SITE1-RR1
           id: 8
           mgmt_ip: 10.30.30.108/24
-        SITE2-RR1:
+        - name: SITE2-RR1
           id: 9
           mgmt_ip: 10.30.30.109/24
 
@@ -232,8 +230,10 @@ core_interfaces:
       port_channel:
         mode: active
         nodes_child_interfaces:
-          SITE2-LSR2: [ Ethernet12, Ethernet13 ]
-          SITE2-LER1: [ Ethernet11, Ethernet11 ]
+          - node: SITE2-LSR2
+            interfaces: [ Ethernet12, Ethernet13 ]
+          - node: SITE2-LER1
+            interfaces: [ Ethernet11, Ethernet12 ]
       profile: default_bb_profile
       raw_eos_cli: |
         link-debounce time 1600

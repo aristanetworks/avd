@@ -6,15 +6,6 @@ $defs:
   adapter_config:
     type: dict
     keys:
-      endpoint_ports:
-        type: list
-        description: |
-          Endpoint ports is used for description, required unless description is set.
-          The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
-          Each list item is one switchport.
-        items:
-          type: str
-          description: Interface name.
       speed:
         type: str
         description: |
@@ -112,7 +103,7 @@ $defs:
           The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.
           `ptp role master` is set to ensure control over the PTP topology.
         keys:
-          enable:
+          enabled:
             type: bool
             default: false
           endpoint_role:
@@ -232,6 +223,10 @@ $defs:
               - str
             min: 1
             max: 10
+      poe:
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
+        type: dict
+        description: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
       storm_control:
         type: dict
         description: Storm control settings applied on port toward the endpoint.
@@ -240,9 +235,10 @@ $defs:
             type: dict
             keys:
               level:
-                type: int
+                type: str
                 convert_types:
-                  - str
+                  - int
+                  - float
                 description: Configure maximum storm-control level.
               unit:
                 type: str

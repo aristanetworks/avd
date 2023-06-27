@@ -1,11 +1,14 @@
 router_bgp:
   as: '65001'
   router_id: 192.168.255.1
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -287,12 +290,12 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: true
-    id: 210
-  - enabled: true
-    id: 211
-  - enabled: true
-    id: 212
+  - id: 210
+    enabled: true
+  - id: 211
+    enabled: true
+  - id: 212
+    enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
 - name: Vlan110

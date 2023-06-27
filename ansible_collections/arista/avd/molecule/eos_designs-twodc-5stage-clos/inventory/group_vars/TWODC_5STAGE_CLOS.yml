@@ -12,7 +12,7 @@ mgmt_destination_networks:
 p2p_uplinks_qos_profile: QOS-PROFILE
 
 local_users:
-  admin:
+  - name: admin
     privilege: 15
     role: network-admin
     no_password: true
@@ -23,14 +23,18 @@ snmp_settings:
 
 l3_edge:
   p2p_links_ip_pools:
-    pool-leaf: 11.1.0.0/24
-    pool-spine: 11.1.1.0/24
-    pool-super-spine: 11.1.2.0/24
+    - name: pool-leaf
+      ipv4_pool: 11.1.0.0/24
+    - name: pool-spine
+      ipv4_pool: 11.1.1.0/24
+    - name: pool-super-spine
+      ipv4_pool: 11.1.2.0/24
   p2p_links_profiles:
-    generic-profile:
+    - name: generic-profile
       mtu: 1499
       bfd: false
-      ptp_enable: true
+      ptp:
+        enabled: true
   p2p_links:
     - nodes: [ DC1-SUPER-SPINE1, DC2-SUPER-SPINE1 ]
       id: 1
@@ -95,13 +99,13 @@ custom_structured_configuration_list_merge: 'append'
 
 # Node type definitions
 node_type_keys:
-  spine:
+  - key: spine
     type: spine
     default_evpn_role: server
     ip_addressing:
       p2p_uplinks_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2'
       p2p_uplinks_peer_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
-  l3leaf:
+  - key: l3leaf
     type: l3leaf
     connected_endpoints: true
     default_evpn_role: client
@@ -110,7 +114,7 @@ node_type_keys:
       l2: true
       l3: true
     vtep: true
-  l2leaf:
+  - key: l2leaf
     type: l2leaf
     connected_endpoints: true
     mlag_support: true
@@ -118,7 +122,7 @@ node_type_keys:
       l2: true
     underlay_router: false
     uplink_type: port-channel
-  super_spine:
+  - key: super_spine
     type: super-spine
-  overlay_controller:
+  - key: overlay_controller
     type: overlay-controller

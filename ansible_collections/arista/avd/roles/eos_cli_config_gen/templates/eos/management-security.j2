@@ -18,12 +18,44 @@ management security
    ssl profile {{ ssl_profile.name }}
 {%         if ssl_profile.tls_versions is arista.avd.defined %}
       tls versions {{ ssl_profile.tls_versions }}
-{%         endif  %}
+{%         endif %}
 {%         if ssl_profile.cipher_list is arista.avd.defined %}
       cipher-list {{ ssl_profile.cipher_list }}
-{%         endif  %}
+{%         endif %}
+{%         if ssl_profile.trust_certificate is arista.avd.defined %}
+{%             for trust_cert in ssl_profile.trust_certificate.certificates | arista.avd.natural_sort %}
+      trust certificate {{ trust_cert }}
+{%             endfor %}
+{%             if ssl_profile.trust_certificate.system is arista.avd.defined(true) %}
+      trust certificate system
+{%             endif %}
+{%             if ssl_profile.trust_certificate.requirement is arista.avd.defined %}
+{%                 if ssl_profile.trust_certificate.requirement.basic_constraint_ca is arista.avd.defined(true) %}
+      trust certificate requirement basic-constraint ca true
+{%                 endif %}
+{%                 if ssl_profile.trust_certificate.requirement.hostname_fqdn is arista.avd.defined(true) %}
+      trust certificate requirement hostname fqdn
+{%                 endif %}
+{%             endif %}
+{%             if ssl_profile.trust_certificate.policy_expiry_date_ignore is arista.avd.defined(true) %}
+      trust certificate policy expiry-date ignore
+{%             endif %}
+{%         endif %}
+{%         if ssl_profile.chain_certificate is arista.avd.defined %}
+{%             for chain_cert in ssl_profile.chain_certificate.certificates | arista.avd.natural_sort %}
+      chain certificate {{ chain_cert }}
+{%             endfor %}
+{%             if ssl_profile.chain_certificate.requirement is arista.avd.defined %}
+{%                 if ssl_profile.chain_certificate.requirement.basic_constraint_ca is arista.avd.defined(true) %}
+      chain certificate requirement basic-constraint ca true
+{%                 endif %}
+{%                 if ssl_profile.chain_certificate.requirement.include_root_ca is arista.avd.defined(true) %}
+      chain certificate requirement include root-ca
+{%                 endif %}
+{%             endif %}
+{%         endif %}
 {%         if ssl_profile.certificate is arista.avd.defined %}
       certificate {{ ssl_profile.certificate.file }} key {{ ssl_profile.certificate.key }}
-{%         endif  %}
+{%         endif %}
 {%     endfor %}
 {% endif %}

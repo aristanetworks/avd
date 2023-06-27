@@ -4,8 +4,6 @@
 type: dict
 keys:
   tunnel_interfaces:
-    documentation_options:
-      filename: data_model/Interfaces
     type: list
     primary_key: name
     convert_types:
@@ -30,6 +28,8 @@ keys:
         vrf:
           type: str
           description: VRF Name
+          convert_types:
+            - int
         ip_address:
           type: str
           format: ipv4_cidr

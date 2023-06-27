@@ -5,36 +5,36 @@ type: dict
 allow_other_keys: true
 keys:
   sflow:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     keys:
       sample:
         type: int
         convert_types:
-        - str
+          - str
       dangerous:
         type: bool
       polling_interval:
         type: int
         convert_types:
-        - str
+          - str
         description: Polling interval in seconds
       vrfs:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
             name:
               type: str
+              convert_types:
+                - int
             destinations:
               type: list
               primary_key: destination
               convert_types:
-              - dict
+                - dict
               items:
                 type: dict
                 keys:
@@ -45,7 +45,7 @@ keys:
                     type: int
                     description: Port Number
                     convert_types:
-                    - str
+                      - str
             source:
               type: str
               description: |
@@ -58,7 +58,7 @@ keys:
         type: list
         primary_key: destination
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -69,7 +69,7 @@ keys:
               type: int
               description: Port Number
               convert_types:
-              - str
+                - str
       source:
         type: str
         description: |
@@ -109,7 +109,7 @@ keys:
           sample:
             type: int
             convert_types:
-            - str
+              - str
           modules:
             type: list
             primary_key: name

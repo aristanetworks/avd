@@ -24,7 +24,7 @@ class UtilsMixin:
     @cached_property
     def _filtered_connected_endpoints(self) -> list:
         """
-        Return list of endpoints defined under one of the keys in "connected_endpoint_keys"
+        Return list of endpoints defined under one of the keys in "connected_endpoints_keys"
         which are connected to this switch.
 
         Adapters are filtered to contain only the ones connected to this switch.
@@ -201,7 +201,7 @@ class UtilsMixin:
         """
         Return ptp for one adapter
         """
-        if get(adapter, "ptp.enable") is not True:
+        if get(adapter, "ptp.enabled") is not True:
             return None
 
         ptp_config = {}
@@ -218,3 +218,12 @@ class UtilsMixin:
         ptp_config.pop("profile", None)
 
         return ptp_config
+
+    def _get_adapter_poe(self, adapter: dict) -> dict | None:
+        """
+        Return poe settings for one adapter
+        """
+        if self.shared_utils.platform_settings_feature_support_poe:
+            return get(adapter, "poe")
+
+        return None

@@ -4,8 +4,6 @@
 type: dict
 keys:
   management_security:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       entropy_source:
@@ -44,6 +42,52 @@ keys:
               description: |
                 cipher_list syntax follows the openssl cipher strings format.
                 Colon (:) separated list of allowed ciphers as a string
+            trust_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: |
+                    List of trust certificate names
+                    Examples:
+                      - test1.crt
+                      - test2.crt
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    basic_constraint_ca:
+                      type: bool
+                    hostname_fqdn:
+                      type: bool
+                      description: |
+                        Enforce hostname to be FQDN without wildcard.
+                policy_expiry_date_ignore:
+                  type: bool
+                system:
+                  type: bool
+                  description: |
+                    Use system-supplied trust certificates.
+            chain_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: |
+                    List of chain certificate names
+                    Examples:
+                      - chain1.crt
+                      - chain2.crt
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    basic_constraint_ca:
+                      type: bool
+                    include_root_ca:
+                      type: bool
             certificate:
               type: dict
               keys:

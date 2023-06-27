@@ -56,7 +56,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.2.204/24 | 172.16.2.1 |
+| Management1 | oob_management | oob | MGMT | 172.16.1.114/24 | 172.16.1.1 |
 
 ##### IPv6
 
@@ -72,7 +72,7 @@ interface Management1
    description oob_management
    no shutdown
    vrf MGMT
-   ip address 172.16.2.204/24
+   ip address 172.16.1.114/24
 ```
 
 ### Management API HTTP
@@ -249,8 +249,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_dc2-leaf2a_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_dc2-leaf2a_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_dc2-leaf2a_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_dc2-leaf2a_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet5 | dc2-leaf2-server1_PCI2 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
 | Ethernet8 | DC2-LEAF2C_Ethernet2 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
 
@@ -318,7 +318,7 @@ interface Ethernet8
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_dc2-leaf2a_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_dc2-leaf2a_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | dc2-leaf2-server1_PortChannel dc2-leaf2-server1 | switched | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | DC2-LEAF2C_Po1 | switched | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
@@ -330,7 +330,6 @@ interface Port-Channel3
    description MLAG_PEER_dc2-leaf2a_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
@@ -597,13 +596,13 @@ ip routing vrf VRF11
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT | 0.0.0.0/0 | 172.16.2.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 172.16.1.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 172.16.2.1
+ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 ```
 
 ### Router BGP
@@ -616,11 +615,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.2.1
 
 | BGP Tuning |
 | ---------- |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| maximum-paths 4 ecmp 4 |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -719,11 +715,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.2.1
 !
 router bgp 65202
    router-id 10.255.128.16
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
+   no bgp default ipv4-unicast
    neighbor EVPN-OVERLAY-CORE peer group
    neighbor EVPN-OVERLAY-CORE update-source Loopback0
    neighbor EVPN-OVERLAY-CORE bfd

@@ -188,7 +188,8 @@ vlan 2020
 | Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | l3dot1q | - | 123.1.1.2/31 | TENANT_B_INTRA | - | False | - | - |
 | Ethernet6.100 | TENANT_B_SITE_3_OSPF | l3dot1q | - | 192.168.48.4/31 | TENANT_B_WAN | - | False | - | - |
 | Ethernet6.101 | TENANT_B_SITE_5 | l3dot1q | - | 192.168.48.2/31 | TENANT_B_WAN | - | False | - | - |
-| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | *routed | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
+| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | *routed | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
+| Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | *routed | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
 *Inherited from Port-Channel Interface
 
 ##### IPv6
@@ -196,7 +197,8 @@ vlan 2020
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
 | Ethernet1 | P2P_LINK_TO_SITE2-LSR1_Ethernet1 | routed | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Port-Channel12 | *routed | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet11 | P2P_LINK_TO_SITE2-LSR2_Ethernet12 | *routed | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
+| Ethernet12 | P2P_LINK_TO_SITE2-LSR2_Ethernet13 | *routed | 11 | *- | *default | *9178 | *False | *- | *- | *- | *- |
  *Inherited from Port-Channel Interface
 
 ##### ISIS
@@ -205,6 +207,7 @@ vlan 2020
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 | Ethernet1 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
 | Ethernet11 | 11 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
+| Ethernet12 | 11 | *CORE | *60 | *point-to-point | *level-2 | *False | *md5 |
  *Inherited from Port-Channel Interface
 
 #### Ethernet Interfaces Device Configuration
@@ -234,12 +237,10 @@ interface Ethernet1
 !
 interface Ethernet4
    no shutdown
-   switchport
    channel-group 4 mode active
 !
 interface Ethernet5
    no shutdown
-   switchport
    channel-group 4 mode active
 !
 interface Ethernet6
@@ -288,7 +289,13 @@ interface Ethernet8
    spanning-tree portfast
 !
 interface Ethernet11
-   description P2P_LINK_TO_SITE2-LSR2_Port-Channel12
+   description P2P_LINK_TO_SITE2-LSR2_Ethernet12
+   no shutdown
+   speed forced 40gfull
+   channel-group 11 mode active
+!
+interface Ethernet12
+   description P2P_LINK_TO_SITE2-LSR2_Ethernet13
    no shutdown
    speed forced 40gfull
    channel-group 11 mode active
@@ -634,10 +641,9 @@ router isis CORE
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| maximum-paths 4 ecmp 4 |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -722,11 +728,10 @@ router isis CORE
 !
 router bgp 65000
    router-id 100.70.0.7
+   maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
-   maximum-paths 4 ecmp 4
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0
@@ -810,6 +815,7 @@ router bgp 65000
       route-target export vpn-ipv4 65000:20
       route-target export vpn-ipv6 65000:20
       router-id 100.70.0.7
+      update wait-install
       neighbor 192.168.48.3 remote-as 65202
       neighbor 192.168.48.3 password 7 <removed>
       neighbor 192.168.48.3 description TENANT_B_CPE_SITE5

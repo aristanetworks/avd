@@ -4,8 +4,6 @@
 type: dict
 keys:
   router_multicast:
-    documentation_options:
-      filename: data_model/Multicast
     type: dict
     keys:
       ipv4:
@@ -20,7 +18,7 @@ keys:
                 min: 0
                 max: 600
                 convert_types:
-                - str
+                  - str
           routing:
             type: bool
           multipath:
@@ -57,14 +55,17 @@ keys:
                             min: 1
                             max: 255
                             convert_types:
-                            - str
+                              - str
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
+              convert_types:
+                - int
             ipv4:
               type: dict
               keys:

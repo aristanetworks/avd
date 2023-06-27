@@ -4,8 +4,6 @@
 type: dict
 keys:
   router_ospf:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     display_name: Router OSPF Configuration
     keys:
@@ -25,6 +23,8 @@ keys:
             vrf:
               type: str
               description: VRF Name for OSPF Process
+              convert_types:
+                - int
             passive_interface_default:
               type: bool
             router_id:
@@ -149,6 +149,19 @@ keys:
               keys:
                 always:
                   type: bool
+                metric:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Metric for default route
+                  min: 1
+                  max: 65535
+                metric_type:
+                  type: int
+                  convert_types:
+                    - str
+                  valid_values: [1, 2]
+                  description: OSPF metric type for default route
             summary_addresses:
               type: list
               primary_key: prefix

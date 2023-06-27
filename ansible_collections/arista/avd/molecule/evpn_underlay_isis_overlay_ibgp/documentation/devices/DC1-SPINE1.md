@@ -461,8 +461,9 @@ router isis EVPN_UNDERLAY
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -504,10 +505,11 @@ router isis EVPN_UNDERLAY
 !
 router bgp 65000
    router-id 192.168.255.1
+   maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    bgp cluster-id 192.168.255.1
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
    neighbor OVERLAY-PEERS peer group
    neighbor OVERLAY-PEERS remote-as 65000
    neighbor OVERLAY-PEERS update-source Loopback0

@@ -1,8 +1,6 @@
 #
 # arista.avd.hide_passwords filter
 #
-from __future__ import annotations
-
 __metaclass__ = type
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError

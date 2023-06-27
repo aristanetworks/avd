@@ -1,11 +1,14 @@
 router_bgp:
   as: '65001'
   router_id: 192.168.255.1
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -84,7 +87,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1A_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.20/31
 - name: Ethernet2
@@ -93,7 +96,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-TEMPLATES-L3LEAF1B_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 172.31.255.22/31
 loopback_interfaces:

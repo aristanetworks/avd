@@ -24,8 +24,6 @@ spine:
     loopback_ipv4_pool: 192.168.255.0/24
     bgp_defaults:
       - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
     mlag_peer_ipv4_pool: 10.255.252.0/24
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
   nodes:
@@ -55,8 +53,6 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:dc:01
     bgp_defaults:
       - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
   node_groups:

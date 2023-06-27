@@ -11,7 +11,7 @@ flowchart TD
   subgraph role[arista.avd.eos_designs role]
     eos_designs_facts[[arista.avd.eos_designs_facts action plugin]] -->
     SetSwitchFacts(Set switch.* Facts) -->
-    yaml_templates_to_facts[[arista.avd.yaml_templates_to_facts action plugin]]-->
+    eos_designs_structured_config[[arista.avd.eos_designs_structured_config action plugin]]-->
     RemoveAvdSwitchFacts(Remove AvdSwitchFacts)
   end
 ```
@@ -31,51 +31,18 @@ The plugin is designed to `run_once`. With this, Ansible will set the same facts
 
 The facts can also be copied to the "root" `switch` variable in a task run per device (see example below).
 
-The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by Python modules loaded in `arista.avd.yaml_templates_to_facts` to generate the `structured_configuration`.
+The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by Python modules loaded in `arista.avd.eos_designs_structured_config` to generate the `structured_configuration`.
 
 #### Arguments
 
 ```yaml
-  schema:
-    description: Schema conforming to "AVD Meta Schema". Either schema or schema_id must be set.
-    required: false
-    type: dict
-  schema_id:
-    description: ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
-    required: false
-    type: str
-    choices: [ "eos_cli_config_gen", "eos_designs" ]
-  conversion_mode:
-    description:
-      - Run data conversion in either "warning", "info", "debug", "quiet" or "disabled" mode.
-      - Conversion will perform type conversion of input variables as defined in the schema.
-      - Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
-      - During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
-      - conversion_mode:disabled means that conversion will not run.
-      - conversion_mode:error will produce error messages and fail the task.
-      - conversion_mode:warning will produce warning messages.
-      - conversion_mode:info will produce regular log messages.
-      - conversion_mode:debug will produce hidden messages viewable with -v.
-      - conversion_mode:quiet will not produce any messages.
-    required: false
-    default: "debug"
-    type: str
-    choices: [ "error", "warning", "info", "debug", "quiet", "disabled" ]
-  validation_mode:
-    description:
-      - Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
-      - Validation will validate the input variables according to the schema.
-      - During validation, messages will be generated with information about the host(s) and key(s) which failed validation.
-      - validation_mode:disabled means that validation will not run.
-      - validation_mode:error will produce error messages and fail the task.
-      - validation_mode:warning will produce warning messages.
-      - validation_mode:info will produce regular log messages.
-      - validation_mode:debug will produce hidden messages viewable with -v.
-    required: false
-    default: "warning"
-    type: str
-    choices: [ "error", "warning", "info", "debug", "disabled" ]
+  template_output: <true | false | default -> false>
+  conversion_mode: <"warning" | "info" | "debug" | "quiet" | "disabled" | default -> "debug">
+  validation_mode: <"error" | "warning" | "info" | "debug" | "disabled" | default -> "warning">
+  cprofile_file: <Filename for storing cprofile data used to debug performance issues>
 ```
+
+See the full argument spec [here](../../plugins/modules/eos_designs_facts.py)
 
 #### Output data model
 
@@ -107,24 +74,6 @@ ansible_facts:
 
 The facts can be inspected in a file per device by running the `arista.avd.eos_designs` role with `--tags facts,debug`.
 
-#### Example Playbook
-
-```yaml
-- name: Set eos_designs facts
-  tags: [build, provision, facts]
-  arista.avd.eos_designs_facts:
-    schema_id: eos_designs
-  check_mode: False
-  run_once: True
-
-- name: Set eos_designs facts per device
-  tags: [build, provision, facts]
-  ansible.builtin.set_fact:
-    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
-  delegate_to: localhost
-  changed_when: false
-```
-
 #### Internal structure
 
 ```mermaid
@@ -134,8 +83,9 @@ classDiagram
     - Verify devices are in one fabric group
     - Read and template default role_vars
     - Read and validate Hostvars for all devices
-    - Instantiate EosDesignsFacts class per device
-    - Update hostvars with reference to all EosDesignsFacts instances
+    - Instantiate SharedUtils and EosDesignsFacts classes per device
+    - Set "avd_switch_facts" referencing all EosDesignsFacts instances
+    - Set "switch" referencing the device's own EosDesignsFacts instance
     - Run "render" method on all EosDesignsFacts instances
     - Build facts from data returned by "render"
   }
@@ -153,7 +103,7 @@ classDiagram
   EosDesignsFacts ..> eos_designs_facts : pointer to instances for other devices
 ```
 
-### `arista.avd.yaml_templates_to_facts`
+### `arista.avd.eos_designs_structured_config`
 
 TODO
 
@@ -161,7 +111,7 @@ TODO
 
 ### AvdFacts
 
-The `AvdFacts` class serve as a base class for `EosDesignsFacts` as well as the many `AvdStructuredConfig` variants.
+The `AvdFacts` class serve as a base class for `EosDesignsFacts` as well as the many `AvdStructuredConfig*` classes.
 
 The purpose of `AvdFacts` subclasses is to return a dictionary when the `render` method is called.
 
@@ -179,7 +129,11 @@ The base class has a few important methods:
 - `get(key, default=None)` returns the value of the requested "key" (`cached_property`) if the "key" is in the list returned by `keys()`.
   Otherwise the default value is returned.
 
-Path: `ansible_collections/arista/avd/plugins/plugin_utils/avdfacts.py`
+See the source code [here](../../plugins/plugin_utils/avdfacts.py)
+
+### get_structured_config
+
+TODO
 
 ### EosDesignsFacts
 
@@ -188,10 +142,7 @@ Path: `ansible_collections/arista/avd/plugins/plugin_utils/avdfacts.py`
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which is a dict of `EosDesignsfacts` instances covering all devices.
 
-hostvars["switch"] is set to self, to allow `shared_utils` to work the same when they are called from `EosDesignsFacts` or from
-`AvdStructuredConfig`.
-
-Path: `ansible_collections/arista/avd/plugins/plugin_utils/eos_designs_facts/`
+See the source code [here](../../plugins/plugin_utils/eos_designs_facts/__init__.py)
 
 ```mermaid
 classDiagram
@@ -222,7 +173,7 @@ classDiagram
 
 ### SharedUtils
 
-Path: `ansible_collections/arista/avd/plugins/plugin_utils/shared_utils/`
+See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/__init__.py)
 
 ```mermaid
 classDiagram
@@ -261,31 +212,31 @@ classDiagram
   IpAddressingMixin --* AvdIpAddressing
 ```
 
-### AvdStructuredConfig
+### AvdStructuredConfig*
 
-`AvdStructuredConfig` is based on `AvdFacts`, so make sure to read the description there first.
+`AvdStructuredConfig*` classes are based on `AvdFacts`, so make sure to read the description there first.
 
-The generation of the final `structured_config` is split into multiple python modules which are subclasses of `AvdStructuredConfig`.
-Each subclass is loaded dynamically in `yaml_templates_to_facts` and rendered. All the results are deepmerged into the final `structured_config`.
+The generation of the final `structured_config` is split into multiple python modules which are subclasses of `AvdFacts`.
+Each class is loaded in `get_structured_config` and rendered. All the results are deepmerged into the final `structured_config`.
 
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
-which at the time where `yaml_templates_to_facts` run, is a nested `dict`. It contains the output from `EosDesignsFacts`'s `render()` method.
+which at the time where `eos_designs_structured_config` run, is a nested `dict`. It contains the output from `EosDesignsFacts`'s `render()` method.
 
 Subclasses are typically using Mixin classes to split all the attributes/`cached_properties` into managable files.
 
-Paths:
+Source code:
 
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/base/`
-  Unfortunate naming. Base here refers to base configurations. Not a Base class.
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/connected_endpoints/`
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/core_interfaces/`
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/custom_structured_configuration/`
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/inband_management/`
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/l3_edge/`
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/mlag/`
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/network_services/`
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/overlay/`
-- `ansible_collections/arista/avd/roles/eos_designs/python_modules/underlay/`
+- [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/__init__.py)
+  (Unfortunate naming. Base here refers to base configurations. Not a Base class.)
+- [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/__init__.py)
+- [AvdStructuredConfigCoreInterfaces](../../roles/eos_designs/python_modules/core_interfaces/__init__.py)
+- [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/__init__.py)
+- [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/__init__.py)
+- [AvdStructuredConfigL3Edge](../../roles/eos_designs/python_modules/l3_edge/__init__.py)
+- [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/__init__.py)
+- [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/__init__.py)
+- [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/__init__.py)
+- [AvdStructuredConfigUnderlay](../../roles/eos_designs/python_modules/underlay/__init__.py)
 
 ```mermaid
 classDiagram
@@ -293,16 +244,16 @@ classDiagram
   class AvdFacts{
     render(): dict
   }
-  class AvdStructuredConfigBase["AvdStructuredConfig - base"]
-  class AvdStructuredConfigConnectedEndpoints["AvdStructuredConfig - connected_endpoints"]
-  class AvdStructuredConfigCoreInterfaces["AvdStructuredConfig - core_interfaces"]
-  class AvdStructuredConfigCustomStructuredConfiguration["AvdStructuredConfig - custom_structured_configuration"]
-  class AvdStructuredConfigInbandManagement["AvdStructuredConfig - inband_management"]
-  class AvdStructuredConfigL3Edge["AvdStructuredConfig - l3_edge"]
-  class AvdStructuredConfigMlag["AvdStructuredConfig - mlag"]
-  class AvdStructuredConfigNetworkServices["AvdStructuredConfig - network_services"]
-  class AvdStructuredConfigOverlay["AvdStructuredConfig - overlay"]
-  class AvdStructuredConfigUnderlay["AvdStructuredConfig - underlay"]
+  class AvdStructuredConfigBase
+  class AvdStructuredConfigConnectedEndpoints
+  class AvdStructuredConfigCoreInterfaces
+  class AvdStructuredConfigCustomStructuredConfiguration
+  class AvdStructuredConfigInbandManagement
+  class AvdStructuredConfigL3Edge
+  class AvdStructuredConfigMlag
+  class AvdStructuredConfigNetworkServices
+  class AvdStructuredConfigOverlay
+  class AvdStructuredConfigUnderlay
   AvdFacts <|-- AvdStructuredConfigBase : extends
   AvdFacts <|-- AvdStructuredConfigConnectedEndpoints : extends
   AvdFacts <|-- AvdStructuredConfigCoreInterfaces : extends

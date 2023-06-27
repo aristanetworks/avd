@@ -1,21 +1,21 @@
 port_profiles:
 
-  TENANT_A_B:
+  - profile: TENANT_A_B
     mode: trunk
     vlans: "110-111,210-211"
 
-  TENANT_A:
+  - profile: TENANT_A
     mode: access
     vlans: "110"
 
-  TENANT_B:
+  - profile: TENANT_B
     mode: trunk
     vlans: "210-211"
 
 
 servers:
 
-  server01_MLAG:
+  - name: server01_MLAG
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth2, Eth3 ]
@@ -26,7 +26,7 @@ servers:
           description: PortChanne1
           mode: active
 
-  server02_SINGLE_NODE_TRUNK:
+  - name: server02_SINGLE_NODE_TRUNK
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -34,7 +34,7 @@ servers:
         switches: [ DC1-LEAF1A ]
         profile: TENANT_A_B
 
-  server02_SINGLE_NODE:
+  - name: server02_SINGLE_NODE
     rack: RackB
     adapters:
       - endpoint_ports: [ Eth1 ]
@@ -42,7 +42,7 @@ servers:
         switches: [ DC1-LEAF1A ]
         profile: TENANT_A
 
-  server03_ESI:
+  - name: server03_ESI
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2 ]

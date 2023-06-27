@@ -5,8 +5,6 @@ type: dict
 allow_other_keys: true
 keys:
   system:
-    documentation_options:
-      filename: data_model/System Control-Plane
     type: dict
     keys:
       control_plane:
@@ -25,7 +23,7 @@ keys:
             type: list
             primary_key: acl_name
             convert_types:
-            - dict
+              - dict
             items:
               type: dict
               keys:
@@ -33,11 +31,13 @@ keys:
                   type: str
                 vrf:
                   type: str
+                  convert_types:
+                    - int
           ipv6_access_groups:
             type: list
             primary_key: acl_name
             convert_types:
-            - dict
+              - dict
             items:
               type: dict
               keys:
@@ -45,3 +45,5 @@ keys:
                   type: str
                 vrf:
                   type: str
+                  convert_types:
+                    - int

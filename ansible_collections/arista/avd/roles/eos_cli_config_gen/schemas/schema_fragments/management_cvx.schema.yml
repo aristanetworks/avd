@@ -4,8 +4,6 @@
 type: dict
 keys:
   management_cvx:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       shutdown:
@@ -21,3 +19,5 @@ keys:
       vrf:
         type: str
         description: VRF Name
+        convert_types:
+          - int

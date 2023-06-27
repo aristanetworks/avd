@@ -29,6 +29,14 @@ vlan_interfaces:
       - fc00:10:11:2::1/64
       - fc00:10:12:2::1/64
 
+  Vlan3:
+    description: test ipv6_address_virtual
+    ipv6_enable: true
+    ipv6_address: 1b11:3a00:22b3:5200::15/64
+    # Testing ipv6_virtual_router_address
+    # ipv6_virtual_router_address deprecated in 4.0.0. To be removed in 5.0.0
+    ipv6_virtual_router_address: fc00:10:10:3::1/64
+
   Vlan42:
     description: SVI Description
     shutdown: false

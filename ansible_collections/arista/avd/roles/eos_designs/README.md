@@ -8,7 +8,7 @@ The **eos_designs** role:
 
 - Enables network engineers to deploy Arista Leaf & Spine fabrics with underlay and overlay network services effectively and with consistency.
 - Designed to be extended easily, leveraging a ***"stackable template architecture."***
-  - Enabled by the [yaml_template_to_facts](../../plugins/README.md#yaml-templates-to-facts) action plugin.
+  - Enabled by the [eos_designs_custom_templates](docs/role-configuration.md#custom-templates) data model.
 - Designed to be used with the [eos_cli_config_gen](../eos_cli_config_gen/README.md) role to generate a complete switch configuration and applied using a config replace strategy with either
   - [eos_config_deploy_eapi](../eos_config_deploy_eapi/README.md) role.
   - [eos_config_deploy_cvp](../eos_config_deploy_cvp/README.md)  role.
@@ -28,7 +28,7 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 - Desired variables are defined in: role defaults, group_vars, and host_vars variables.
 - If desired, the role can be extended to leverage data from dynamic sources such as an IPAM or CMDB.
 
-To understand the interaction between `eos_designs` input variables and `eos_cli_config_gen` input variables refer to the [Variables Precedence section](./doc/custom-structured-configuration.md#variables-precedence)
+To understand the interaction between `eos_designs` input variables and `eos_cli_config_gen` input variables refer to the [Variables Precedence section](docs/how-to/custom-structured-configuration.md#variables-precedence)
 
 **Outputs:**
 
@@ -101,7 +101,7 @@ Across all designs, the following functionality is provided:
 | L3 + OSPF | L2 | Arbitrary or leaf-spine |
 | L3 + ISIS | L2 | Arbitrary or leaf-spine |
 
-### (BETA) MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
+### MPLS Core with MPLS EVPN, VPN-IPv4, VPN-IPv6
 
 | Underlay | Overlay | Topology |
 | -------- | ------- | -------- |
@@ -112,13 +112,19 @@ Across all designs, the following functionality is provided:
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../README.md#Requirements)
+Requirements are located in the [collection installation guide](../../docs/installation/collection-installation.md)
 
-## Role Variables
+## Input Variables
 
-The role variables are documented inline within YAML formatted output with: `< >`. Some variables are required, while others are optional. Default values are stored in the role defaults [main.yml](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults) file.
+The input variables are documented in the [Input Variables](docs/input-variables.md) section.
 
-Role variables are grouped by configuration elements and are typically stored in different group_vars files.
+Input variables are grouped by configuration elements and are typically stored in different group_vars files.
+
+## Role Configuration
+
+The role configuration are documented in the [Role Configuration](docs/role-configuration.md) section.
+
+Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 
 ## vEOS-LAB Know Caveats and Recommendations
 
@@ -133,21 +139,7 @@ However, because vEOS-LAB implements a virtual data plane, there are known cavea
 **Variables adjustments required for vEOS-LAB:**
 
 ```yaml
-# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
-spine_bgp_defaults:
-#  - update wait-for-convergence
-#  - update wait-install
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-leaf_bgp_defaults:
-#  - update wait-install
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
+# Update p2p_uplinks_mtu 9214 -> 1500, MTU 9214 is not supported in vEOS-LAB on some hypervisors.
 p2p_uplinks_mtu: 1500
 
 # Adjust default bfd values, to avoid high CPU.

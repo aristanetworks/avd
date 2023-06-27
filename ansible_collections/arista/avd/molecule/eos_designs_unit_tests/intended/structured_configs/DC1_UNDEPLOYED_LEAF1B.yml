@@ -3,10 +3,14 @@ router_bgp:
   router_id: 192.168.255.22
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: MLAG-PEERS
     type: ipv4
@@ -104,6 +108,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_A_DB_Zone
     router_id: 192.168.255.22
     rd: 192.168.255.22:13
@@ -121,6 +127,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_A_OP_Zone
     router_id: 192.168.255.22
     rd: 192.168.255.22:9
@@ -138,6 +146,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_A_WAN_Zone
     router_id: 192.168.255.22
     rd: 192.168.255.22:14
@@ -157,6 +167,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_A_WEB_Zone
     router_id: 192.168.255.22
     rd: 192.168.255.22:11
@@ -174,6 +186,8 @@ router_bgp:
     neighbors:
     - ip_address: 172.31.11.24
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_B_OP_Zone
     router_id: 192.168.255.22
     rd: 192.168.255.22:20
@@ -191,6 +205,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_B_WAN_Zone
     router_id: 192.168.255.22
     rd: 192.168.255.22:21
@@ -208,6 +224,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_C_OP_Zone
     router_id: 192.168.255.22
     rd: 192.168.255.22:30
@@ -225,6 +243,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   - name: Tenant_C_WAN_Zone
     router_id: 192.168.255.22
     rd: 192.168.255.22:31
@@ -242,6 +262,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
+    updates:
+      wait_install: true
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.22:12
@@ -910,8 +932,8 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: false
-    id: 120
+  - id: 120
+    enabled: false
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:

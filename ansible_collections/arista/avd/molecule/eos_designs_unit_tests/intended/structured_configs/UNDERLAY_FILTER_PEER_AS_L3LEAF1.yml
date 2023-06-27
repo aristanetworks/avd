@@ -1,11 +1,14 @@
 router_bgp:
   as: '65001'
   router_id: 192.168.255.3
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -49,7 +52,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE1_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 192.168.0.1/31
 - name: Ethernet2
@@ -58,7 +61,7 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_SPINE2_Ethernet1
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   type: routed
   ip_address: 192.168.0.3/31
 loopback_interfaces:

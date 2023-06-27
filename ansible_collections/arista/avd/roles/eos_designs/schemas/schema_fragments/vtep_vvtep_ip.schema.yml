@@ -5,8 +5,7 @@ type: dict
 keys:
   vtep_vvtep_ip:
     documentation_options:
-      filename: Fabric Variables
-      table: Overlay General Settings
+      table: overlay-settings
     description: |
       IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.
       This is only needed for centralized routing designs.

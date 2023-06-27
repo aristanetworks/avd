@@ -4,8 +4,6 @@
 type: dict
 keys:
   logging:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     keys:
       console:
@@ -24,7 +22,7 @@ keys:
           size:
             type: int
             convert_types:
-            - str
+              - str
             min: 10
             max: 2147483647
           level:
@@ -73,12 +71,14 @@ keys:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
             name:
               type: str
+              convert_types:
+                - int
               required: true
               description: VRF name
             source_interface:
@@ -88,7 +88,7 @@ keys:
               type: list
               primary_key: name
               convert_types:
-              - dict
+                - dict
               items:
                 type: dict
                 keys:
@@ -105,7 +105,7 @@ keys:
                     items:
                       type: int
                       convert_types:
-                      - str
+                        - str
       policy:
         type: dict
         keys:
@@ -116,7 +116,7 @@ keys:
                 type: list
                 primary_key: name
                 convert_types:
-                - dict
+                  - dict
                 items:
                   type: dict
                   keys:

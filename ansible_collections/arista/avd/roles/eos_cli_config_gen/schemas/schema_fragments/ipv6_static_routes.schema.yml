@@ -4,14 +4,14 @@
 type: dict
 keys:
   ipv6_static_routes:
-    documentation_options:
-      filename: data_model/Routing
     type: list
     items:
       type: dict
       keys:
         vrf:
           type: str
+          convert_types:
+            - int
         destination_address_prefix:
           type: str
           description: IPv6 Network/Mask

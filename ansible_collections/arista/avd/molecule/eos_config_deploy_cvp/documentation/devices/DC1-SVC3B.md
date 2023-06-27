@@ -383,8 +383,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 7 |
 
@@ -460,7 +460,7 @@ interface Ethernet8
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -471,7 +471,6 @@ interface Port-Channel5
    description MLAG_PEER_DC1-SVC3A_Po5
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
@@ -947,8 +946,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -1046,9 +1046,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 !
 router bgp 65103
    router-id 192.168.255.9
+   maximum-paths 4 ecmp 4
+   update wait-install
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -1163,6 +1164,7 @@ router bgp 65103
       route-target import evpn 12:12
       route-target export evpn 12:12
       router-id 192.168.255.9
+      update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1171,6 +1173,7 @@ router bgp 65103
       route-target import evpn 13:13
       route-target export evpn 13:13
       router-id 192.168.255.9
+      update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1179,6 +1182,7 @@ router bgp 65103
       route-target import evpn 10:10
       route-target export evpn 10:10
       router-id 192.168.255.9
+      update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1187,6 +1191,7 @@ router bgp 65103
       route-target import evpn 14:14
       route-target export evpn 14:14
       router-id 192.168.255.9
+      update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1195,6 +1200,7 @@ router bgp 65103
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.9
+      update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1203,6 +1209,7 @@ router bgp 65103
       route-target import evpn 20:20
       route-target export evpn 20:20
       router-id 192.168.255.9
+      update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1211,6 +1218,7 @@ router bgp 65103
       route-target import evpn 21:21
       route-target export evpn 21:21
       router-id 192.168.255.9
+      update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1219,6 +1227,7 @@ router bgp 65103
       route-target import evpn 30:30
       route-target export evpn 30:30
       router-id 192.168.255.9
+      update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -1227,6 +1236,7 @@ router bgp 65103
       route-target import evpn 31:31
       route-target export evpn 31:31
       router-id 192.168.255.9
+      update wait-install
       neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
 ```

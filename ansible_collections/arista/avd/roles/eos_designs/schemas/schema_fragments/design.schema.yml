@@ -5,14 +5,10 @@ type: dict
 keys:
   design:
     documentation_options:
-      filename: Fabric Topology
-      table: Design Variables
+      table: design
     type: dict
     keys:
       type:
-        documentation_options:
-          filename: Fabric Topology
-          table: Design Variables
         type: str
         description: |
           By setting the design.type variable, the default node-types and templates described in these documents will be used.

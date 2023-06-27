@@ -3,10 +3,14 @@ router_bgp:
   router_id: 192.168.255.10
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: UNDERLAY-PEERS
     type: ipv4
@@ -599,12 +603,12 @@ vlans:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: false
-    id: 120
-  - enabled: true
-    id: 160
-  - enabled: false
-    id: 161
+  - id: 120
+    enabled: false
+  - id: 160
+    enabled: true
+  - id: 161
+    enabled: false
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
 - name: Vlan130

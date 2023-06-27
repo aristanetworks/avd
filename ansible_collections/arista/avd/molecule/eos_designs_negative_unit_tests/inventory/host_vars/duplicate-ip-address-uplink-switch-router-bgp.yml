@@ -1,0 +1,21 @@
+---
+type: spine
+
+spine:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65100
+    bgp_defaults:
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+
+  nodes:
+    # This is the uplink switch for node-group "duplicate-ip-address-router-bgp"
+    - name: duplicate-ip-address-uplink-switch-router-bgp
+      id: 1
+      mgmt_ip: 172.16.1.11/24
+
+expected_error_message: "Duplicate ip_address 10.255.255.3 found while generating BGP neighbor configuration for duplicate-ip-address-2, Ethernet1. Duplicate IP of duplicate-ip-address-1_Ethernet1"

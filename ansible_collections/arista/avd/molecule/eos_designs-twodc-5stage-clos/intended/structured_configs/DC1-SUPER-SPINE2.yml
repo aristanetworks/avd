@@ -3,12 +3,14 @@ router_bgp:
   router_id: 172.16.100.2
   bgp_defaults:
   - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4

@@ -132,7 +132,6 @@ port_channel_interfaces:
   description: MLAG_PEER_DC1-L2LEAF2B_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - MLAG
@@ -198,5 +197,5 @@ mlag_configuration:
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
-  - enabled: false
-    id: 120
+  - id: 120
+    enabled: false

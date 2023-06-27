@@ -1,11 +1,14 @@
 router_bgp:
   as: '65002'
   router_id: 192.168.250.11
-  bgp_defaults:
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -63,6 +66,8 @@ router_bgp:
     neighbors:
     - ip_address: 10.255.247.5
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+    updates:
+      wait_install: true
   vlans:
   - id: 200
     tenant: TRUNK_GROUP_TESTS
@@ -117,17 +122,17 @@ vlans:
 - id: 200
   trunk_groups:
   - trunk-group-tests-l2leaf4
+  - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: svi200_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 210
   trunk_groups:
   - trunk-group-tests-l2leaf4
+  - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: l2vlan210_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 3199
@@ -139,14 +144,14 @@ vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING
   shutdown: false
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.247.4/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
   ip_address: 10.255.248.4/31
   no_autostate: true
-  mtu: 9000
+  mtu: 9214
 - name: Vlan200
   tenant: TRUNK_GROUP_TESTS
   tags:
@@ -162,14 +167,13 @@ vlan_interfaces:
   shutdown: false
   description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
   vrf: TG_200
-  mtu: 9000
+  mtu: 9214
   ip_address: 10.255.247.4/31
 port_channel_interfaces:
 - name: Port-Channel3
   description: MLAG_PEER_trunk-group-tests-l3leaf2b_Po3
   type: switched
   shutdown: false
-  vlans: 2-4094
   mode: trunk
   trunk_groups:
   - LEAF_PEER_L3

@@ -152,8 +152,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | BGP-LEAF1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
 | Ethernet2 | BGP-LEAF2_Ethernet1 | *trunk | *100 | *- | *- | 2 |
-| Ethernet3 | MLAG_PEER_BGP-SPINE2_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_BGP-SPINE2_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_BGP-SPINE2_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_BGP-SPINE2_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -161,7 +161,7 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/3 | routed | - | 192.168.253.4/31 | default | 9000 | False | - | - |
+| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/3 | routed | - | 192.168.253.4/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -190,7 +190,7 @@ interface Ethernet4
 interface Ethernet5
    description P2P_LINK_TO_DUMMY-CORE_Ethernet1/3
    no shutdown
-   mtu 9000
+   mtu 9214
    no switchport
    ip address 192.168.253.4/31
 ```
@@ -205,7 +205,7 @@ interface Ethernet5
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | BGP-LEAF1_Po1 | switched | trunk | 100 | - | - | - | - | 1 | - |
 | Port-Channel2 | BGP-LEAF2_Po1 | switched | trunk | 100 | - | - | - | - | 2 | - |
-| Port-Channel3 | MLAG_PEER_BGP-SPINE2_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_BGP-SPINE2_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -231,7 +231,6 @@ interface Port-Channel3
    description MLAG_PEER_BGP-SPINE2_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
@@ -271,7 +270,7 @@ interface Loopback0
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan100 | SVI_100 | default | - | False |
-| Vlan4094 | MLAG_PEER | default | 9000 | False |
+| Vlan4094 | MLAG_PEER | default | 9214 | False |
 
 ##### IPv4
 
@@ -292,7 +291,7 @@ interface Vlan100
 interface Vlan4094
    description MLAG_PEER
    no shutdown
-   mtu 9000
+   mtu 9214
    no autostate
    ip address 192.168.254.0/31
 ```
@@ -372,8 +371,9 @@ ip route vrf MGMT 0.0.0.0/0 172.31.0.1
 
 | BGP Tuning |
 | ---------- |
-| maximum-paths 4 ecmp 4 |
+| update wait-install |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -408,8 +408,9 @@ ip route vrf MGMT 0.0.0.0/0 172.31.0.1
 !
 router bgp 65001
    router-id 192.168.255.1
-   no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
+   update wait-install
+   no bgp default ipv4-unicast
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000

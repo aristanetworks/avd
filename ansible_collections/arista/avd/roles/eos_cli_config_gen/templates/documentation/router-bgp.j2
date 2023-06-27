@@ -21,6 +21,24 @@
 {%         for bgp_default in router_bgp.bgp_defaults | arista.avd.default([]) %}
 | {{ bgp_default }} |
 {%         endfor %}
+{%         if router_bgp.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             if router_bgp.graceful_restart.restart_time is arista.avd.defined %}
+| graceful-restart restart-time {{ router_bgp.graceful_restart.restart_time }} |
+{%             endif %}
+{%             if router_bgp.graceful_restart.stalepath_time is arista.avd.defined %}
+| graceful-restart stalepath-time {{ router_bgp.graceful_restart.stalepath_time }} |
+{%             endif %}
+| graceful-restart |
+{%         endif %}
+{%         if router_bgp.graceful_restart_helper.enabled is arista.avd.defined(false) %}
+| no graceful-restart-helper |
+{%         elif router_bgp.graceful_restart_helper.enabled is arista.avd.defined(true) %}
+{%             if router_bgp.graceful_restart_helper.restart_time is arista.avd.defined %}
+| graceful-restart-helper restart-time {{ router_bgp.graceful_restart_helper.restart_time }} |
+{%             elif router_bgp.graceful_restart_helper.long_lived is arista.avd.defined(true) %}
+| graceful-restart-helper long-lived |
+{%             endif %}
+{%         endif %}
 {%         if router_bgp.bgp.bestpath.d_path is arista.avd.defined(true) %}
 | bgp bestpath d-path |
 {%         endif %}
@@ -53,6 +71,13 @@
 {%                 set paths_cli = paths_cli ~ " ecmp " ~ router_bgp.maximum_paths.ecmp %}
 {%             endif %}
 | {{ paths_cli }} |
+{%         endif %}
+{%         if router_bgp.bgp.route_reflector_preserve_attributes.enabled is arista.avd.defined(true) %}
+{%             set rr_preserve_attributes_cli = 'bgp route-reflector preserve-attributes' %}
+{%             if router_bgp.bgp.route_reflector_preserve_attributes.always is arista.avd.defined(true) %}
+{%                 set rr_preserve_attributes_cli = rr_preserve_attributes_cli ~ ' always' %}
+{%             endif %}
+| {{ rr_preserve_attributes_cli }} |
 {%         endif %}
 {%     endif %}
 {# Check if listen_ranges exist under router_bgp.vrfs #}

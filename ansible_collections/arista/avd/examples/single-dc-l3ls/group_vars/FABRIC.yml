@@ -25,12 +25,12 @@ overlay_routing_protocol: ebgp
 # Local users
 local_users:
   # Define a new user, which is called "ansible"
-  ansible:
+  - name: ansible
     privilege: 15
     role: network-admin
     # Password set to "ansible". Same string as the device generates when configuring a username.
     sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
-  admin:
+  - name: admin
     privilege: 15
     role: network-admin
     no_password: true
@@ -47,5 +47,39 @@ bgp_peer_groups:
 
 # P2P interfaces MTU, includes VLANs 4093 and 4094 that are over peer-link
 # If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
-# p2p_uplinks_mtu: 1500
+# p2p_uplinks_mtu: 9214
 p2p_uplinks_mtu: 1500
+
+# Set default uplink, downlink, and MLAG interfaces based on node type
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    downlink_interfaces: [ Ethernet1-8 ]
+  - types: [ l3leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    mlag_interfaces: [ Ethernet3-4 ]
+    downlink_interfaces: [ Ethernet8 ]
+  - types: [ l2leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-2 ]
+
+# CloudVision Portal definitions
+cvp_instance_ip: 192.168.1.12
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+terminattr_disable_aaa: true
+
+# DNS Server
+name_servers:
+  - 192.168.1.1
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Management VRF
+custom_structured_configuration_ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+    - name: 0.pool.ntp.org
+      vrf: MGMT

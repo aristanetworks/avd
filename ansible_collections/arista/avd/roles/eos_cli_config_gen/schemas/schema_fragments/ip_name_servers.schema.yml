@@ -4,8 +4,6 @@
 type: dict
 keys:
   ip_name_servers:
-    documentation_options:
-      filename: data_model/Management
     type: list
     items:
       type: dict
@@ -16,6 +14,8 @@ keys:
         vrf:
           description: VRF Name
           type: str
+          convert_types:
+            - int
         priority:
           description: Priority value (lower is first)
           type: int

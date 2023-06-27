@@ -5,8 +5,7 @@ type: dict
 keys:
   underlay_routing_protocol:
     documentation_options:
-      filename: Fabric Variables
-      table: Routing Protocol Selection
+      table: fabric-settings
     type: str
     convert_to_lower_case: true
     description: |

@@ -5,8 +5,7 @@ type: dict
 keys:
   evpn_prevent_readvertise_to_server:
     documentation_options:
-      filename: Fabric Variables
-      table: EVPN Settings
+      table: evpn-settings
     description: |
       Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
       This is very useful in large-scale networks, where convergence will be quicker by not returning all updates received

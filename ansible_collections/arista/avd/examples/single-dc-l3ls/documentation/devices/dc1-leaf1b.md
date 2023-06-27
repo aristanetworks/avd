@@ -4,9 +4,13 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+  - [IP Name Servers](#ip-name-servers)
+  - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+- [Monitoring](#monitoring)
+  - [TerminAttr Daemon](#terminattr-daemon)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -75,6 +79,44 @@ interface Management1
    ip address 172.16.1.102/24
 ```
 
+### IP Name Servers
+
+#### IP Name Servers Summary
+
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+| 192.168.1.1 | MGMT | - |
+
+#### IP Name Servers Device Configuration
+
+```eos
+ip name-server vrf MGMT 192.168.1.1
+```
+
+### NTP
+
+#### NTP Summary
+
+##### NTP Local Interface
+
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
+
+##### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 0.pool.ntp.org | MGMT | - | - | - | - | - | - | - | - |
+
+#### NTP Device Configuration
+
+```eos
+!
+ntp local-interface vrf MGMT Management1
+ntp server vrf MGMT 0.pool.ntp.org
+```
+
 ### Management API HTTP
 
 #### Management API HTTP Summary
@@ -118,6 +160,25 @@ management api http-commands
 !
 username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 <removed>
+```
+
+## Monitoring
+
+### TerminAttr Daemon
+
+#### TerminAttr Daemon Summary
+
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.1.12:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
+
+#### TerminAttr Daemon Device Configuration
+
+```eos
+!
+daemon TerminAttr
+   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   no shutdown
 ```
 
 ## MLAG
@@ -249,8 +310,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | MLAG_PEER_dc1-leaf1a_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_dc1-leaf1a_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet3 | MLAG_PEER_dc1-leaf1a_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_dc1-leaf1a_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet5 | dc1-leaf1-server1_PCI2 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
 | Ethernet8 | DC1-LEAF1C_Ethernet2 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
 
@@ -310,7 +371,7 @@ interface Ethernet8
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_dc1-leaf1a_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_dc1-leaf1a_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | dc1-leaf1-server1_PortChannel dc1-leaf1-server1 | switched | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
 | Port-Channel8 | DC1-LEAF1C_Po1 | switched | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
@@ -322,7 +383,6 @@ interface Port-Channel3
    description MLAG_PEER_dc1-leaf1a_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
@@ -608,11 +668,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | BGP Tuning |
 | ---------- |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| maximum-paths 4 ecmp 4 |
 | no bgp default ipv4-unicast |
+| maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
@@ -689,11 +746,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 !
 router bgp 65101
    router-id 10.255.0.4
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
+   no bgp default ipv4-unicast
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd

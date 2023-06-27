@@ -3,10 +3,14 @@ router_bgp:
   router_id: 192.168.255.6
   bgp_defaults:
   - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
   bgp:
     default:
       ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
   peer_groups:
   - name: UNDERLAY_PEERS
     type: ipv4
@@ -27,7 +31,9 @@ router_bgp:
     - name: UNDERLAY_PEERS
       activate: true
       next_hop:
-        address_family_ipv6_originate: true
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   address_family_ipv6:

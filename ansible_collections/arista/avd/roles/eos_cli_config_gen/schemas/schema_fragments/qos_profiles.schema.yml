@@ -4,8 +4,6 @@
 type: dict
 keys:
   qos_profiles:
-    documentation_options:
-      filename: data_model/Quality of Service
     type: list
     primary_key: name
     convert_types:
@@ -78,6 +76,10 @@ keys:
                     description: |
                       Supported options are platform dependent
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              comment:
+                type: str
+                description: |
+                  Text comment added to queue.
         uc_tx_queues:
           type: list
           primary_key: id
@@ -111,6 +113,10 @@ keys:
                     description: |
                       Supported options are platform dependent
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              comment:
+                type: str
+                description: |
+                  Text comment added to queue.
         mc_tx_queues:
           type: list
           primary_key: id
@@ -144,3 +150,7 @@ keys:
                     description: |
                       Supported options are platform dependent
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
+              comment:
+                type: str
+                description: |
+                  Text comment added to queue.
