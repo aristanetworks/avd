@@ -146,7 +146,7 @@ AVD provides the capability to customize your node types, supporting a variety o
 ??? example "Default value for design `l3ls-evpn`"
 
     ```yaml
-    node_type:keys:
+    node_type_keys:
 
       - key: spine
         type: spine
@@ -184,7 +184,7 @@ AVD provides the capability to customize your node types, supporting a variety o
 ??? example "Default value for design `l2ls`"
 
     ```yaml
-    node_type:keys:
+    node_type_keys:
 
       - key: l3spine
         type: l3spine
@@ -218,7 +218,7 @@ AVD provides the capability to customize your node types, supporting a variety o
 ??? example "Default value for design `mpls`"
 
     ```yaml
-    node_type:keys:
+    node_type_keys:
 
       - key: p
         type: p
