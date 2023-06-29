@@ -5,3 +5,7 @@ type: dict
 dynamic_keys:
   "network_services_keys.name":
     $ref: "#/$defs/network_services"
+    type: list
+    display_name: Network Services
+    documentation_options:
+      table: network-services

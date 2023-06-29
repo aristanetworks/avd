@@ -66,6 +66,8 @@ sFlow is enabled.
 
 sFlow is disabled on all interfaces by default.
 
+Unmodified egress sFlow is enabled on all interfaces by default.
+
 sFlow hardware acceleration is enabled.
 
 sFlow hardware accelerated Sample Rate: 1024
@@ -112,6 +114,7 @@ sflow extension router
 no sflow extension switch
 no sflow extension tunnel
 sflow interface disable default
+sflow interface egress unmodified enable default
 sflow run
 sflow hardware acceleration
 sflow hardware acceleration sample 1024

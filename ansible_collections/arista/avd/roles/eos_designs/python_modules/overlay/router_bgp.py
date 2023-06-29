@@ -53,7 +53,7 @@ class RouterBgpMixin(UtilsMixin):
             "name": self.shared_utils.bgp_peer_groups[pg_name]["name"],
             "type": pg_type,
             "update_source": "Loopback0",
-            "bfd": True,
+            "bfd": self.shared_utils.bgp_peer_groups[pg_name]["bfd"],
             "password": self.shared_utils.bgp_peer_groups[pg_name]["password"],
             "send_community": "all",
             "maximum_routes": 0,

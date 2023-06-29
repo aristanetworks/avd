@@ -4,5 +4,7 @@
 type: dict
 keys:
   hardware_counters:
+    documentation_options:
+      table: system-settings
     $ref: "eos_cli_config_gen#/keys/hardware_counters"
     type: dict

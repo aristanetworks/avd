@@ -72,7 +72,7 @@ repos:
     hooks:
       - id: schemas
         name: Build AVD Schemas and Documentation
-        entry: sh -c 'exec env ANSIBLE_COLLECTIONS_PATHS=`pwd` ansible-playbook arista.avd._build_schemas_and_docs'
+        entry: sh -c 'exec env ANSIBLE_COLLECTIONS_PATHS=`pwd` ansible-playbook --forks 10 arista.avd._build_schemas_and_docs'
         language: system
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false

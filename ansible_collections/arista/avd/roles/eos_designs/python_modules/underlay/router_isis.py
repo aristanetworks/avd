@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -30,19 +30,6 @@ class RouterIsisMixin(UtilsMixin):
             "is_type": self._is_type,
             "address_family_ipv4": {"enabled": True, "maximum_paths": get(self._hostvars, "isis_maximum_paths", default=4)},
         }
-
-        # no passive interfaces
-        no_passive_interfaces = [link["interface"] for link in self._underlay_links if link["type"] == "underlay_p2p"]
-
-        if self.shared_utils.mlag_l3:
-            mlag_l3_vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.mlag_peer_vlan)
-            no_passive_interfaces.append(f"Vlan{mlag_l3_vlan}")
-
-        if self.shared_utils.overlay_vtep is True:
-            no_passive_interfaces.append(self.shared_utils.vtep_loopback)
-
-        if no_passive_interfaces:
-            router_isis["no_passive_interfaces"] = no_passive_interfaces
 
         if self.shared_utils.underlay_ldp is True:
             router_isis["mpls_ldp_sync_default"] = True

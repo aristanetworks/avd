@@ -25,3 +25,5 @@ keys:
               vrf:
                 type: str
                 description: VRF name
+                convert_types:
+                  - int

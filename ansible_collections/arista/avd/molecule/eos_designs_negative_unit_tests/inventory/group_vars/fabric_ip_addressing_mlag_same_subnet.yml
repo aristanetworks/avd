@@ -1,0 +1,28 @@
+---
+fabric_name: fabric_ip_addressing_mlag_same_subnet
+mlag_support: true
+type: l3leaf
+fabric_ip_addressing:
+  mlag:
+    algorithm: "same_subnet"
+l3leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    mlag_peer_l3_ipv4_pool: 10.10.224.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+    mlag_interfaces: [Ethernet5, Ethernet6]
+  node_groups:
+    - group: fabric_ip_addressing_mlag_same_subnet
+      bgp_as: 923
+      nodes:
+        - name: mlag_same_subnet_1
+          id: 1
+          mgmt_ip: 192.168.201.116/24
+        - name: mlag_same_subnet_2
+          id: 2
+          mgmt_ip: 192.168.201.117/24
+
+expected_error_message: "Unexpected failure during module execution: MLAG same_subnet addressing requires the pool to be a /31"

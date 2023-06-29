@@ -1,110 +1,111 @@
 tenant_d:
-  mac_vrf_vni_base: 40000
-  vrfs:
-    Tenant_D_OP_Zone:
-      vrf_vni: 40
-      enable_mlag_ibgp_peering_vrfs: true
-      mlag_ibgp_peering_vlan: 2
-      svis:
-        410:
-          name: Tenant_D_v6_OP_Zone_1
-          tags: ['v6opzone']
-          enabled: True
-          ip_address_virtual: 10.3.10.1/24
-          ipv6_address_virtual: 2001:db8:310::1/64
-          ipv6_address_virtuals:
-            - 2001:db8:311::1/64
-            - 2001:db8:312::1/64
-        411:
-          name: Tenant_D_v6_OP_Zone_2
-          tags: ['v6opzone']
-          enabled: True
-          ip_virtual_router_addresses: [ 10.3.11.1/24 ]
-          ipv6_virtual_router_addresses: [ "2001:db8:311::1" ]
-          nodes:
-            DC1-LEAF2A:
-              ip_address: 10.3.11.2/24
-              ipv6_address: 2001:db8:311::2/64
-            DC1-LEAF2B:
-              ip_address: 10.3.11.3/24
-              ipv6_address: 2001:db8:311::3/64
-            evpn_services_l2_only_false:
-              ip_address: 10.3.11.4/24
-              ipv6_address: 2001:db8:311::4/64
-        412:
-          name: Tenant_D_v6_OP_Zone_1
-          tags: ['v6opzone']
-          enabled: True
-          profile: GENERIC_DUAL_STACK
-        # Test case for SVI - Node config inheritance
-        413:
-          name: Tenant_D_v6_OP_Zone_3
-          tags: ['v6opzone']
-          enabled: True
-          profile: TEST_SVI_NODE_INHERIT
-          ip_virtual_router_addresses: [ "11.4.13.1" ]
-          ipv6_virtual_router_addresses: [ "2001:db9:413::1" ]
-          nodes:
-            DC1-LEAF2A:
-              # ip/ipv6 virtual_router_addresses will be configured
-              ip_address: 11.4.13.2/24
-              ipv6_address: 2001:db9:413::2/64
-            DC1-LEAF2B:
-              # Node specific config which has the highest precedence
-              ip_address: 101.4.13.2/24
-              ipv6_address: 2002:db9:413::2/64
-              ip_virtual_router_addresses: [ "101.4.13.1" ]
-              ipv6_virtual_router_addresses: [ "2002:db9:413::1" ]
-            evpn_services_l2_only_false:
-              # Inherit node specific config from the profile
-              # Configures the ip virtual router addresses picked from profile
-              # Configure the ip_helpers as mentioned below
-              ip_helpers:
-                - ip_helper: 1.1.1.2
-                  source_interface: lo102
-                  source_vrf: TEST
-      static_routes:
-        - destination_address_prefix: 0.0.0.0/0
-          gateway: "10.3.11.4"
-          nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
-        - destination_address_prefix: 1.1.1.0/24
-          gateway: "10.3.11.4"
-          nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
-          track_bfd: true
-          name: Track-bfd-network-services
-      ipv6_static_routes:
-        - destination_address_prefix: ::/0
-          gateway: 2001:db8:311::4
-          name: IPv6-test-2
-          nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
-        - destination_address_prefix: 2001:db8::/32
-          gateway: 2001:db8:310::1
-          name: IPv6-test
-          nodes: [ DC1-LEAF1A ]
-        - destination_address_prefix: 2001:db9::/32
-          gateway: 2001:db8:310::1
-          name: IPv6-test-1
-          nodes: [ DC1-LEAF1A ]
-        - destination_address_prefix: 2001:dba::/32
-          gateway: 2001:db8:310::1
-          name: Track-bfd-network-services
-          track_bfd: true
-          nodes: [ DC1-LEAF2A ]
-    Tenant_D_WAN_Zone:
-      vrf_vni: 41
-      svis:
-        450:
-          name: Tenant_D_v6_WAN_Zone_1
-          tags: ['v6wan']
-          enabled: True
-          ipv6_address_virtual: 2001:db8:355::1/64
-        451:
-          name: Tenant_D_v6_WAN_Zone_2
-          tags: ['v6wan']
-          enabled: True
-          profile: GENERIC_FULL_V6
-        452:
-          name: Tenant_D_v6_WAN_Zone_3
-          tags: ['v6wan']
-          enabled: True
-          profile: GENERIC_DUAL_STACK
+  - name: Tenant_D
+    mac_vrf_vni_base: 40000
+    vrfs:
+      - name: Tenant_D_OP_Zone
+        vrf_vni: 40
+        enable_mlag_ibgp_peering_vrfs: true
+        mlag_ibgp_peering_vlan: 2
+        svis:
+          - id: 410
+            name: Tenant_D_v6_OP_Zone_1
+            tags: ['v6opzone']
+            enabled: True
+            ip_address_virtual: 10.3.10.1/24
+            ipv6_address_virtual: 2001:db8:310::1/64
+            ipv6_address_virtuals:
+              - 2001:db8:311::1/64
+              - 2001:db8:312::1/64
+          - id: 411
+            name: Tenant_D_v6_OP_Zone_2
+            tags: ['v6opzone']
+            enabled: True
+            ip_virtual_router_addresses: [ 10.3.11.1/24 ]
+            ipv6_virtual_router_addresses: [ "2001:db8:311::1" ]
+            nodes:
+              - node: DC1-LEAF2A
+                ip_address: 10.3.11.2/24
+                ipv6_address: 2001:db8:311::2/64
+              - node: DC1-LEAF2B
+                ip_address: 10.3.11.3/24
+                ipv6_address: 2001:db8:311::3/64
+              - node: evpn_services_l2_only_false
+                ip_address: 10.3.11.4/24
+                ipv6_address: 2001:db8:311::4/64
+          - id: 412
+            name: Tenant_D_v6_OP_Zone_1
+            tags: ['v6opzone']
+            enabled: True
+            profile: GENERIC_DUAL_STACK
+          # Test case for SVI - Node config inheritance
+          - id: 413
+            name: Tenant_D_v6_OP_Zone_3
+            tags: ['v6opzone']
+            enabled: True
+            profile: TEST_SVI_NODE_INHERIT
+            ip_virtual_router_addresses: [ "11.4.13.1" ]
+            ipv6_virtual_router_addresses: [ "2001:db9:413::1" ]
+            nodes:
+              - node: DC1-LEAF2A
+                # ip/ipv6 virtual_router_addresses will be configured
+                ip_address: 11.4.13.2/24
+                ipv6_address: 2001:db9:413::2/64
+              - node: DC1-LEAF2B
+                # Node specific config which has the highest precedence
+                ip_address: 101.4.13.2/24
+                ipv6_address: 2002:db9:413::2/64
+                ip_virtual_router_addresses: [ "101.4.13.1" ]
+                ipv6_virtual_router_addresses: [ "2002:db9:413::1" ]
+              - node: evpn_services_l2_only_false
+                # Inherit node specific config from the profile
+                # Configures the ip virtual router addresses picked from profile
+                # Configure the ip_helpers as mentioned below
+                ip_helpers:
+                  - ip_helper: 1.1.1.2
+                    source_interface: lo102
+                    source_vrf: TEST
+        static_routes:
+          - destination_address_prefix: 0.0.0.0/0
+            gateway: "10.3.11.4"
+            nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
+          - destination_address_prefix: 1.1.1.0/24
+            gateway: "10.3.11.4"
+            nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
+            track_bfd: true
+            name: Track-bfd-network-services
+        ipv6_static_routes:
+          - destination_address_prefix: ::/0
+            gateway: 2001:db8:311::4
+            name: IPv6-test-2
+            nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
+          - destination_address_prefix: 2001:db8::/32
+            gateway: 2001:db8:310::1
+            name: IPv6-test
+            nodes: [ DC1-LEAF1A ]
+          - destination_address_prefix: 2001:db9::/32
+            gateway: 2001:db8:310::1
+            name: IPv6-test-1
+            nodes: [ DC1-LEAF1A ]
+          - destination_address_prefix: 2001:dba::/32
+            gateway: 2001:db8:310::1
+            name: Track-bfd-network-services
+            track_bfd: true
+            nodes: [ DC1-LEAF2A ]
+      - name: 12345678 # Testing all numeric VRF name (will require auto-conversion in schema)
+        vrf_vni: 41
+        svis:
+          - id: 450
+            name: Tenant_D_v6_WAN_Zone_1
+            tags: ['v6wan']
+            enabled: True
+            ipv6_address_virtual: 2001:db8:355::1/64
+          - id: 451
+            name: Tenant_D_v6_WAN_Zone_2
+            tags: ['v6wan']
+            enabled: True
+            profile: GENERIC_FULL_V6
+          - id: 452
+            name: Tenant_D_v6_WAN_Zone_3
+            tags: ['v6wan']
+            enabled: True
+            profile: GENERIC_DUAL_STACK

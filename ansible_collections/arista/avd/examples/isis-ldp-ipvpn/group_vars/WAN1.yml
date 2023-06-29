@@ -1,0 +1,175 @@
+---
+# Default gateway used for the management interface
+mgmt_gateway: 172.16.1.1
+
+# iBGP ASN for the fabric
+bgp_as: 65001
+
+# BGP distance for specific route types
+bgp_distance:
+  external_routes: 20
+  internal_routes: 200
+  local_routes: 200
+
+# P router group
+p:
+  # Definition of default values that will be configured to all nodes defined in this group
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: vEOS-lab
+    # Pool of IPv4 addresses to configure interface Loopback0 used for Router ID
+    loopback_ipv4_pool: 10.255.0.0/27
+    # ISIS NET system id prefix
+    isis_system_id_prefix: '0000.0000'
+  # Definition of nodes contained in this group.
+  # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
+  nodes:
+    # Name of the node to be defined (must be consistent with definition in inventory)
+    - name: p1
+      # Device ID definition. An integer number used for internal calculations (ie. IPv4 address of the loopback_ipv4_pool among others)
+      id: 1
+      # Management IP to be assigned to the management interface
+      mgmt_ip: 172.16.1.11/24
+    - name: p2
+      id: 2
+      mgmt_ip: 172.16.1.12/24
+    - name: p3
+      id: 3
+      mgmt_ip: 172.16.1.13/24
+    - name: p4
+      id: 4
+      mgmt_ip: 172.16.1.14/24
+
+# PE router group
+pe:
+  defaults:
+    # Set the relevant platform as each platform has different default values in Ansible AVD
+    platform: vEOS-lab
+    # Pool of IPv4 addresses to configure interface Loopback0 used for BGP EVPN sessions
+    loopback_ipv4_pool: 10.255.1.0/27
+    virtual_router_mac_address: 00:1c:73:00:dc:00
+    mpls_route_reflectors: [ rr1, rr2 ]
+    # ISIS NET system id prefix
+    isis_system_id_prefix: '0000.0001'
+    spanning_tree_mode: none
+
+  # If two nodes (and only two) are in the same node_group, they will automatically form an MLAG pair
+  node_groups:
+    # Definition of a node group that will include two devices in MLAG.
+    # Definitions under the group will be inherited by both nodes in the group
+    - group: WAN1-PE1-2
+      nodes:
+        # Definition of hostnames under the node_group
+        - name: pe1
+          id: 1
+          mgmt_ip: 172.16.1.101/24
+        - name: pe2
+          id: 2
+          mgmt_ip: 172.16.1.102/24
+
+    - group: WAN1-PE3
+      nodes:
+        - name: pe3
+          id: 3
+          mgmt_ip: 172.16.1.103/24
+
+# RR router group
+rr:
+  defaults:
+    platform: vEOS-lab
+    spanning_tree_mode: none
+    loopback_ipv4_pool: 10.255.2.0/27
+    mpls_route_reflectors: [ rr1, rr2 ]
+    # ISIS NET system id prefix
+    isis_system_id_prefix: '0000.0002'
+
+  node_groups:
+    - group: WAN1_RR1-2
+      nodes:
+        - name: rr1
+          id: 1
+          mgmt_ip: 172.16.1.151/24
+        - name: rr2
+          id: 2
+          mgmt_ip: 172.16.1.152/24
+
+# As MPLS-VPN WAN networks are often not pure l3ls-topologies, but arbitrary mesh topologies/hub-and-spoke, etc, the l3ls-evpn method
+# of defining underlay topology on the nodes/node-defaults with uplink_switches, uplink_interfaces and uplink_switch_interfaces is
+# substituted for this free-standing data model of core_interfaces, where all p2p underlay links in the topology are defined.
+
+core_interfaces:
+  # First, an IP-pool for the underlay p2p links is defined
+  p2p_links_ip_pools:
+    - name: core_pool
+      ipv4_pool: 100.64.48.0/24
+  p2p_links_profiles:
+    - name: core_profile
+      # speed: 100gfull
+      # On vEOS-lab, MTU values larger than 1500 can cause issues, in an actual production network this is normally a larger value
+      mtu: 1500
+      isis_metric: 50
+      ip_pool: core_pool
+      isis_circuit_type: level-2
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
+  p2p_links:
+    # PE1 links
+    - nodes: [ pe1, p1 ]
+      id: 1
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: core_profile
+    - nodes: [ pe1, p2 ]
+      id: 2
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: core_profile
+    # PE2 links
+    - nodes: [ pe2, p2 ]
+      id: 3
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: core_profile
+    - nodes: [ pe2, p1 ]
+      id: 4
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: core_profile
+    # P1 links
+    # The rest of the P1/P2 links are defined under PE1/PE2/RR1/RR2 links
+    - nodes: [ p1, p2 ]
+      id: 5
+      interfaces: [ Ethernet4, Ethernet4 ]
+      profile: core_profile
+    # RR1 links
+    - nodes: [ rr1, p1 ]
+      id: 6
+      interfaces: [ Ethernet3, Ethernet3 ]
+      profile: core_profile
+    - nodes: [ rr1, p3 ]
+      id: 7
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: core_profile
+    - nodes: [ rr1, rr2 ]
+      id: 8
+      interfaces: [ Ethernet4, Ethernet4 ]
+      profile: core_profile
+    # RR2 links
+    - nodes: [ rr2, p2 ]
+      id: 9
+      interfaces: [ Ethernet3, Ethernet3 ]
+      profile: core_profile
+    - nodes: [ rr2, p4 ]
+      id: 10
+      interfaces: [ Ethernet2, Ethernet2 ]
+      profile: core_profile
+    # P3 links
+    - nodes: [ p3, p4 ]
+      id: 11
+      interfaces: [ Ethernet4, Ethernet4 ]
+      profile: core_profile
+    # PE3 links
+    - nodes: [ pe3, p3 ]
+      id: 12
+      interfaces: [ Ethernet1, Ethernet1 ]
+      profile: core_profile
+    - nodes: [ pe3, p4 ]
+      id: 13
+      interfaces: [ Ethernet3, Ethernet3 ]
+      profile: core_profile

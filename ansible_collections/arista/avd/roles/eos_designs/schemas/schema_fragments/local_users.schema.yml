@@ -4,5 +4,7 @@
 type: dict
 keys:
   local_users:
+    documentation_options:
+      table: management-settings
     $ref: "eos_cli_config_gen#/keys/local_users"
     type: list

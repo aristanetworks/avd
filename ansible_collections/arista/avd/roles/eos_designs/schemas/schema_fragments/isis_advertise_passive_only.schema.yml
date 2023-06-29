@@ -4,5 +4,7 @@
 type: dict
 keys:
   isis_advertise_passive_only:
+    documentation_options:
+      table: isis-settings
     type: bool
     default: false

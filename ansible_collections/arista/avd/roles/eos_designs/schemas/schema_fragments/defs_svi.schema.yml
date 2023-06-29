@@ -12,7 +12,9 @@ $defs:
         primary_key: node
         convert_types:
           - dict
-        description: Define node specific configuration, such as unique IP addresses.
+        description: |
+          Define node specific configuration, such as unique IP addresses.
+          Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
         items:
           type: dict
           $ref: "#/$defs/svi_settings"

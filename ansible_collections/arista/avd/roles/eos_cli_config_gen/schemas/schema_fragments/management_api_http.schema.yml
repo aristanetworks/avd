@@ -20,7 +20,7 @@ keys:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -28,6 +28,8 @@ keys:
               description: VRF Name
               type: str
               required: true
+              convert_types:
+                - int
             access_group:
               description: Standard IPv4 ACL name
               type: str

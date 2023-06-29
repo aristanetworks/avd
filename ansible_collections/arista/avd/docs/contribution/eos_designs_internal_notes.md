@@ -83,8 +83,9 @@ classDiagram
     - Verify devices are in one fabric group
     - Read and template default role_vars
     - Read and validate Hostvars for all devices
-    - Instantiate EosDesignsFacts class per device
-    - Update hostvars with reference to all EosDesignsFacts instances
+    - Instantiate SharedUtils and EosDesignsFacts classes per device
+    - Set "avd_switch_facts" referencing all EosDesignsFacts instances
+    - Set "switch" referencing the device's own EosDesignsFacts instance
     - Run "render" method on all EosDesignsFacts instances
     - Build facts from data returned by "render"
   }
@@ -141,10 +142,7 @@ TODO
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which is a dict of `EosDesignsfacts` instances covering all devices.
 
-hostvars["switch"] is set to self, to allow `shared_utils` to work the same when they are called from `EosDesignsFacts` or from
-`AvdStructuredConfig`.
-
-See the source code [here](../../plugins/plugin_utils/eos_designs_facts/)
+See the source code [here](../../plugins/plugin_utils/eos_designs_facts/__init__.py)
 
 ```mermaid
 classDiagram
@@ -175,7 +173,7 @@ classDiagram
 
 ### SharedUtils
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/)
+See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/__init__.py)
 
 ```mermaid
 classDiagram
@@ -228,17 +226,16 @@ Subclasses are typically using Mixin classes to split all the attributes/`cached
 
 Source code:
 
-- [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/)
+- [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/__init__.py)
   (Unfortunate naming. Base here refers to base configurations. Not a Base class.)
-- [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/)
-- [AvdStructuredConfigCoreInterfaces](../../roles/eos_designs/python_modules/core_interfaces/)
-- [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/)
-- [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/)
-- [AvdStructuredConfigL3Edge](../../roles/eos_designs/python_modules/l3_edge/)
-- [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/)
-- [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/)
-- [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/)
-- [AvdStructuredConfigUnderlay](../../roles/eos_designs/python_modules/underlay/)
+- [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/__init__.py)
+- [AvdStructuredConfigCoreInterfacesAndL3Edge](../../roles/eos_designs/python_modules/core_interfaces_and_l3_edge/__init__.py)
+- [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/__init__.py)
+- [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/__init__.py)
+- [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/__init__.py)
+- [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/__init__.py)
+- [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/__init__.py)
+- [AvdStructuredConfigUnderlay](../../roles/eos_designs/python_modules/underlay/__init__.py)
 
 ```mermaid
 classDiagram
@@ -248,30 +245,27 @@ classDiagram
   }
   class AvdStructuredConfigBase
   class AvdStructuredConfigConnectedEndpoints
-  class AvdStructuredConfigCoreInterfaces
+  class AvdStructuredConfigCoreInterfacesAndL3Edge
   class AvdStructuredConfigCustomStructuredConfiguration
   class AvdStructuredConfigInbandManagement
-  class AvdStructuredConfigL3Edge
   class AvdStructuredConfigMlag
   class AvdStructuredConfigNetworkServices
   class AvdStructuredConfigOverlay
   class AvdStructuredConfigUnderlay
   AvdFacts <|-- AvdStructuredConfigBase : extends
   AvdFacts <|-- AvdStructuredConfigConnectedEndpoints : extends
-  AvdFacts <|-- AvdStructuredConfigCoreInterfaces : extends
+  AvdFacts <|-- AvdStructuredConfigCoreInterfacesAndL3Edge : extends
   AvdFacts <|-- AvdStructuredConfigCustomStructuredConfiguration : extends
   AvdFacts <|-- AvdStructuredConfigInbandManagement : extends
-  AvdFacts <|-- AvdStructuredConfigL3Edge : extends
   AvdFacts <|-- AvdStructuredConfigMlag : extends
   AvdFacts <|-- AvdStructuredConfigNetworkServices : extends
   AvdFacts <|-- AvdStructuredConfigOverlay : extends
   AvdFacts <|-- AvdStructuredConfigUnderlay : extends
   AvdStructuredConfigBase --* SharedUtils
   AvdStructuredConfigConnectedEndpoints --* SharedUtils
-  AvdStructuredConfigCoreInterfaces --* SharedUtils
+  AvdStructuredConfigCoreInterfacesAndL3Edge --* SharedUtils
   AvdStructuredConfigCustomStructuredConfiguration --* SharedUtils
   AvdStructuredConfigInbandManagement --* SharedUtils
-  AvdStructuredConfigL3Edge --* SharedUtils
   AvdStructuredConfigMlag --* SharedUtils
   AvdStructuredConfigNetworkServices --* SharedUtils
   AvdStructuredConfigOverlay --* SharedUtils

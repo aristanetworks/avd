@@ -7,7 +7,7 @@ spine:
     bgp_as: 42
     vtep_loopback_ipv4_pool: 10.43.0.0/24
   nodes:
-    duplicate-interface-l3-edge:
+    - name: duplicate-interface-l3-edge
       id: 1
 
 l3_edge:

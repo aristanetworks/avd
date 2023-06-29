@@ -6,7 +6,7 @@ l3leaf:
     bgp_as: 42
     vtep_loopback_ipv4_pool: 10.43.0.0/24
   nodes:
-    duplicate-vni-l3-interfaces-in-vxlan-interface:
+    - name: duplicate-vni-l3-interfaces-in-vxlan-interface
       id: 42
 
 type: l3leaf
@@ -33,4 +33,4 @@ tenants:
             enabled: True
             description: "test"
 
-expected_error_message: "Duplicate VXLAN VNI '1010' found in Tenant 'Tenant_A' during configuration of VRF 'Tenant_A_WAN_Zone'."
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for VXLAN VNIs for VRFs. {'id': None, 'name': 'Tenant_A_WAN_Zone', 'vni': 1010} conflicts with {'id': 10, 'name': None, 'vni': 1010}."

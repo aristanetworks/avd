@@ -4,5 +4,7 @@
 type: dict
 keys:
   p2p_uplinks_qos_profile:
-    description: QOS Profile assigned on all infrastructure links
+    documentation_options:
+      table: fabric-settings
+    description: QOS Profile assigned on all infrastructure links.
     type: str

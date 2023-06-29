@@ -80,3 +80,11 @@ class AvdDeprecationWarning(AristaAvdError):
 
         self.message = " ".join(messages)
         super().__init__(self.message)
+
+
+class AristaAvdDuplicateDataError(AristaAvdError):
+    def __init__(self, context: str, context_item_a: str, context_item_b: str):
+        self.message = (
+            f"Found duplicate objects with conflicting data while generating configuration for {context}. {context_item_a} conflicts with {context_item_b}."
+        )
+        super().__init__(self.message)

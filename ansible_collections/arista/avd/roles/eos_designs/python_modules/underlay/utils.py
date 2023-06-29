@@ -26,7 +26,7 @@ class UtilsMixin:
         This cannot be loaded in shared_utils since it will not be calculated until EosDesignsFacts has been rendered
         and shared_utils are shared between EosDesignsFacts and AvdStructuredConfig classes like this one.
         """
-        return get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[])
+        return natural_sort(get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[]))
 
     @cached_property
     def _underlay_filter_peer_as_route_maps_asns(self) -> list:

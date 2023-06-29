@@ -1,0 +1,16 @@
+fabric_name: fabric_invalid_schema_connected_endpoints
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: invalid-schema-connected-endpoints
+
+servers:
+  - name: host1
+    adapters:
+      - endpoint_ports: [Eth1]
+        swtch_ports: [Ethernet1]
+        switches: [invalid-schema-connected-endpoints]
+
+expected_error_message: >-
+  2 errors found during schema validation of input vars.

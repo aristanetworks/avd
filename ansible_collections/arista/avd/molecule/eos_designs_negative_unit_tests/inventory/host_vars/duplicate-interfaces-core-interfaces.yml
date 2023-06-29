@@ -6,7 +6,7 @@ l3leaf:
     bgp_as: 42
     vtep_loopback_ipv4_pool: 10.43.0.0/24
   nodes:
-    duplicate-interfaces-core-interfaces:
+    - name: duplicate-interfaces-core-interfaces
       id: 42
 
 type: l3leaf
@@ -35,4 +35,4 @@ core_interfaces:
       id: 2
       interfaces: [ Ethernet1, Ethernet3 ]
 
-expected_error_message: "Duplicate interface name Ethernet1 found while generating ethernet_interface for core_interfaces peer: peer2, peer_interface: Ethernet3. Description on duplicate interface: P2P_LINK_TO_peer1_Ethernet2"
+expected_error_message: "Duplicate interface name Ethernet1 found while generating ethernet_interfaces for core_interfaces peer: peer2, peer_interface: Ethernet3. Description on duplicate interface: P2P_LINK_TO_peer1_Ethernet2"

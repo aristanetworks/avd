@@ -47,6 +47,15 @@ class RouteMapsMixin(UtilsMixin):
                     }
                 )
 
+            if self.shared_utils.underlay_multicast_rp_interfaces is not None:
+                sequence_numbers.append(
+                    {
+                        "sequence": 40,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-LOOPBACKS-PIM-RP"],
+                    }
+                )
+
             route_maps.append({"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers})
 
         # RM-BGP-AS{{ asn }}-OUT

@@ -7,13 +7,13 @@
 
 ## Pull requests
 
-- **Before** you start working on a pull request, make sure to open an issue and discuss your ideas with the **ansible-avd** maintainers. This will help prevent wasting time on something we might not be able to implement. When suggesting a new feature, ensure it won't conflict with any work already in progress.
+- **Before** you start working on a pull request, open an issue and discuss your ideas with the **ansible-avd** maintainers. This will help prevent wasting time on something we might be unable to implement. When suggesting a new feature, ensure it will be consistent with all work already in progress.
 
 - Any pull request which *doesn't* relate to an accepted issue will not be approved.
 
 - All major new functionality must include relevant molecule tests where applicable.
 
-- When submitting a pull request, please be sure to rebase from the `devel` branch rather than a release branch:`releases/*`. This is because the `devel` branch is used for ongoing development, while `releases/*` are used for tagging new stable releases.
+- When submitting a pull request, please rebase from the `devel` branch rather than a release branch:`releases/*`. This is because the `devel` branch is used for ongoing development, while `releases/*` are used for tagging new stable releases.
 
 - All code submissions should meet the following criteria (CI will enforce these checks):
 
@@ -50,7 +50,7 @@ Adhering to the following process is the best way to get your work merged:
   git checkout -b <topic-branch-name>
   ```
 
-- Commit your changes in logical chunks. Please adhere to these [Git commit message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) or your code is unlikely to be merged into the main project. Use Git's [git rebase](https://docs.github.com/en/get-started/using-git/about-git-rebase) feature to tidy up your commits before making them public.
+- Commit your changes in logical chunks. Please adhere to these [Git commit message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html), or your code will unlikely be merged into the main project. Use Git's [git rebase](https://docs.github.com/en/get-started/using-git/about-git-rebase) feature to tidy up your commits before making them public.
 
 - Locally merge (or rebase) the upstream development branch into your topic branch:
 
