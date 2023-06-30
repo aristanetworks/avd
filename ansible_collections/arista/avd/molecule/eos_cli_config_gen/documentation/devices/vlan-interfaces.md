@@ -68,6 +68,7 @@ interface Management1
 | Vlan92 | SVI Description | default | - | - |
 | Vlan110 | PVLAN Primary with vlan mapping | Tenant_A | - | False |
 | Vlan333 | Multiple VRIDs and tracking | default | - | False |
+| Vlan334 | SVI description | default | - | False |
 | Vlan501 | SVI Description | default | - | False |
 | Vlan667 | Multiple VRIDs | default | - | False |
 | Vlan1001 | SVI Description | Tenant_A | - | False |
@@ -107,6 +108,7 @@ interface Management1
 | Vlan92 |  default  |  10.10.92.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan110 |  Tenant_A  |  10.0.101.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan333 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
+| Vlan334 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
 | Vlan667 |  default  |  192.0.2.2/25  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
@@ -151,6 +153,7 @@ interface Management1
 | Vlan81 | Tenant_C | - | fc00:10:10:81::1/64, fc00:10:11:81::1/64, fc00:10:12:81::1/64 | - | - | - | - | - | - |
 | Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | True | - | - |
 | Vlan333 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
+| Vlan334 | default | - | 2001:db9::1/64 | - | - | - | - | - | - |
 | Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | True | - | - | - |
 | Vlan667 | default | 2001:db8::2/64 | - | - | - | - | - | - | - |
 | Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | True | - | - |
@@ -368,6 +371,16 @@ interface Vlan333
    vrrp 3 timers delay reload 900
    vrrp 3 ipv4 100.64.0.1
    vrrp 3 ipv4 version 3
+!
+interface Vlan334
+   description SVI description
+   no shutdown
+   ipv6 address virtual 2001:db9::1/64
+   ipv6 helper-address 2001:db8::aaaa vrf A source-address 2001:db8::aaab
+   ipv6 helper-address 2001:db8::bbbb vrf A local-interface Loopback0
+   ipv6 helper-address 2001:db8::cccc vrf A source-address 2001:db8::cccd link-address 2001:db8::ccce
+   ipv6 helper-address 2001:db8::dddd link-address 2001:db8::ddde
+   ipv6 helper-address 2001:db8::eeee vrf A local-interface Loopback0 link-address 2001:db8::eeef
 !
 interface Vlan501
    description SVI Description
