@@ -1,3 +1,4 @@
+hostname: SITE1-LER1
 router_bgp:
   as: '65000'
   router_id: 100.70.0.5

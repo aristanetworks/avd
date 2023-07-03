@@ -1,3 +1,4 @@
+hostname: dc2-leaf2a
 router_bgp:
   as: '65202'
   router_id: 10.255.128.15
