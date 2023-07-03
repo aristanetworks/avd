@@ -135,7 +135,6 @@ class UtilsMixin:
         bgp_as = get(p2p_link, "as", default=[None, None])
         # Set descriptions or fallback to list with None values
         descriptions = get(p2p_link, "descriptions", default=[None, None])
-        struct_cfg = get(p2p_link, "structured_config", default={})
 
         data = {
             "peer": peer,
@@ -145,7 +144,6 @@ class UtilsMixin:
             "bgp_as": str(bgp_as[index]),
             "peer_bgp_as": str(bgp_as[peer_index]),
             "description": descriptions[index],
-            "struct_cfg": struct_cfg,
         }
 
         node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
