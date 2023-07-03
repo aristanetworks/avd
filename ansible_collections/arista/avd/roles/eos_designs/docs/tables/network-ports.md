@@ -29,6 +29,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].ptp.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_role</samp>](## "network_ports.[].ptp.endpoint_role") | String |  | `follower` | Valid Values:<br>- bmca<br>- default<br>- follower |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_ports.[].ptp.profile") | String |  | `aes67-r16-2016` | Valid Values:<br>- aes67<br>- aes67-r16-2016<br>- smpte2059-2 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "network_ports.[].sflow") | Boolean |  |  |  | Configures sFlow on the interface. Overrides `fabric_sflow` setting.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;link_tracking</samp>](## "network_ports.[].link_tracking") | Dictionary |  |  |  | Configure the downstream interfaces of a respective Link Tracking Group.<br>If `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.<br>Else all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].link_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "network_ports.[].link_tracking.name") | String |  |  |  | Tracking group name.<br>The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".<br>Optional if default link_tracking settings are configured on the node.<br> |
@@ -166,6 +167,7 @@
           enabled: <bool>
           endpoint_role: <str>
           profile: <str>
+        sflow: <bool>
         link_tracking:
           enabled: <bool>
           name: <str>

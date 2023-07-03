@@ -215,7 +215,7 @@ class MiscMixin:
         It defaults to 'first_id' if the variable is not defined.
         """
         return get(self.hostvars, "fabric_ip_addressing.mlag.algorithm", default="first_id")
-    
+
     @cached_property
     def fabric_sflow_uplinks(self: SharedUtils) -> bool | None:
         return get(self.hostvars, "fabric_sflow.uplinks")
