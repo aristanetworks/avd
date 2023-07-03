@@ -95,9 +95,9 @@ ethernet_interfaces:
   speed: forced 10000full
   ptp:
     enable: true
-  service_poicy:
+  service_policy:
     qos:
-      input: <name of policy>
+      input: TEST_POLICY
 - name: ethernet2
   peer: peer2
   peer_interface: ethernet2

@@ -19,9 +19,9 @@ l3_edge:
       qos_profile: TEST-QOS-PROFILE
       macsec_profile: TEST-MACSEC-PROFILE
       structured_config:
-        service_poicy:
+        service_policy:
           qos:
-            input: <name of policy>
+            input: TEST_POLICY
       raw_eos_cli: |
         ! TEST RAW_EOS_CLI
 
