@@ -92,18 +92,9 @@ interface Management1
 | - | Hostname must be FQDN | - | Enabled |
 
 ### Password Policies
-#### Policy AVD_POLICY
-
-**Minimum requirements:**
-- Digits: 1
-- Length: 2
-- Lowercase letters: 3
-- Special characters: 4
-- Uppercase letters: 5
-
-**Maximum requirements:**
-- Repetitive characters: 6
-- Sequential characters: 7
+| Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
+|-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
+| AVD_POLICY | > 1 | > 2 | > 3 | > 4 | > 5 | < 6 | < 7 |
 
 ### Management Security Configuration
 
