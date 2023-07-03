@@ -28,7 +28,7 @@ router_bgp:
       remote_as: 65004
       send_community: all
   address_family_vpn_ipv4:
-    domain_identifier: 65000:0
+    domain_identifier: "65000:0"
     route:
       import_match_failure_action: discard
     peer_groups:
@@ -44,7 +44,7 @@ router_bgp:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
   address_family_vpn_ipv6:
-    domain_identifier: 65000:0
+    domain_identifier: "65000:0"
     route:
       import_match_failure_action: discard
     peer_groups:
