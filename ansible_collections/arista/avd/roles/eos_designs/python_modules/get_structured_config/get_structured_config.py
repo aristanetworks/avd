@@ -10,10 +10,9 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from ..base import AvdStructuredConfigBase
 from ..connected_endpoints import AvdStructuredConfigConnectedEndpoints
-from ..core_interfaces import AvdStructuredConfigCoreInterfaces
+from ..core_interfaces_and_l3_edge import AvdStructuredConfigCoreInterfacesAndL3Edge
 from ..custom_structured_configuration import AvdStructuredConfigCustomStructuredConfiguration
 from ..inband_management import AvdStructuredConfigInbandManagement
-from ..l3_edge import AvdStructuredConfigL3Edge
 from ..mlag import AvdStructuredConfigMlag
 from ..network_services import AvdStructuredConfigNetworkServices
 from ..overlay import AvdStructuredConfigOverlay
@@ -24,8 +23,7 @@ AVD_STRUCTURED_CONFIG_CLASSES = [
     AvdStructuredConfigMlag,
     AvdStructuredConfigUnderlay,
     AvdStructuredConfigOverlay,
-    AvdStructuredConfigCoreInterfaces,
-    AvdStructuredConfigL3Edge,
+    AvdStructuredConfigCoreInterfacesAndL3Edge,
     AvdStructuredConfigNetworkServices,
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,

@@ -168,7 +168,7 @@ router bgp 65101
    !
    address-family evpn
       host-flap detection window 10 threshold 1
-      domain identifier 3906060
+      domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
       route import match-failure action discard
