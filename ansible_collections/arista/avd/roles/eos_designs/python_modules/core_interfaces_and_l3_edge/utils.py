@@ -135,6 +135,7 @@ class UtilsMixin:
         bgp_as = get(p2p_link, "as", default=[None, None])
         # Set descriptions or fallback to list with None values
         descriptions = get(p2p_link, "descriptions", default=[None, None])
+        struct_cfg = get(p2p_link, "structured_config", default={})
 
         data = {
             "peer": peer,
@@ -144,6 +145,7 @@ class UtilsMixin:
             "bgp_as": str(bgp_as[index]),
             "peer_bgp_as": str(bgp_as[peer_index]),
             "description": descriptions[index],
+            "struct_cfg": struct_cfg,
         }
 
         node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
@@ -201,6 +203,7 @@ class UtilsMixin:
         peer = p2p_link["data"]["peer"]
         peer_interface = p2p_link["data"]["peer_interface"]
         default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
+        struct_cfg = get(p2p_link, "structured_config", default={})
         interface_cfg = {
             "name": p2p_link["data"]["interface"],
             "peer": peer,
@@ -212,6 +215,7 @@ class UtilsMixin:
             "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu),
             "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
             "eos_cli": p2p_link.get("raw_eos_cli"),
+            "struct_cfg": struct_cfg,
         }
 
         if (ip := get(p2p_link, "ip")) is not None:

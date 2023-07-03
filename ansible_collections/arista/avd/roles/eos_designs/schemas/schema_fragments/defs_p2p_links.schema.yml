@@ -146,3 +146,6 @@ $defs:
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
+        structured_config:
+          type: dict
+          description: Custom structured config for interfaces

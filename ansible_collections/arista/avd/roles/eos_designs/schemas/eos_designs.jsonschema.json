@@ -740,6 +740,11 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "structured_config": {
+                "type": "object",
+                "description": "Custom structured config for interfaces",
+                "title": "Structured Config"
               }
             },
             "required": [
@@ -965,6 +970,11 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "structured_config": {
+                "type": "object",
+                "description": "Custom structured config for interfaces",
+                "title": "Structured Config"
               }
             },
             "required": [
@@ -1915,6 +1925,11 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "structured_config": {
+                "type": "object",
+                "description": "Custom structured config for interfaces",
+                "title": "Structured Config"
               }
             },
             "required": [
@@ -2140,6 +2155,11 @@
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
                 "title": "Raw EOS CLI"
+              },
+              "structured_config": {
+                "type": "object",
+                "description": "Custom structured config for interfaces",
+                "title": "Structured Config"
               }
             },
             "required": [
