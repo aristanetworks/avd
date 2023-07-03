@@ -34,7 +34,7 @@ class AvdSchemaTools:
         Returns
             dict :
                 failed : bool
-                    True if Conversion succeeded. False if it failed.
+                    True if Conversion failed. Otherwise False.
                 errors : list[Exception]
                     Any errors raised during variable conversion
         """
@@ -63,7 +63,7 @@ class AvdSchemaTools:
         Returns
             dict :
                 failed : bool
-                    True if data is valid. Otherwise False.
+                    True if data is invalid. Otherwise False.
                 errors : list[Exception]
                     Any errors raised during validation.
                     This will contain errors raised as well as data validation issues.
@@ -93,7 +93,7 @@ class AvdSchemaTools:
         Returns
             dict :
                 failed : bool
-                    True if Conversion succeeded and data is valid. False if either failed.
+                    True if Conversion failed or data is invalid. Otherwise False.
                 errors : list[Exception]
                     Any errors raised during variable conversion and validation
                     This will contain errors raised as well as data validation issues.
