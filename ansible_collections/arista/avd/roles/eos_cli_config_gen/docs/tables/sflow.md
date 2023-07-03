@@ -24,6 +24,9 @@
     | [<samp>&nbsp;&nbsp;interface</samp>](## "sflow.interface") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disable</samp>](## "sflow.interface.disable") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "sflow.interface.disable.default") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;egress</samp>](## "sflow.interface.egress") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable_default</samp>](## "sflow.interface.egress.enable_default") | Boolean |  |  |  | Enable egress sFlow by default.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified</samp>](## "sflow.interface.egress.unmodified") | Boolean |  |  |  | Enable egress sFlow unmodified.<br>Platform dependent feature.<br> |
     | [<samp>&nbsp;&nbsp;run</samp>](## "sflow.run") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;hardware_acceleration</samp>](## "sflow.hardware_acceleration") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "sflow.hardware_acceleration.enabled") | Boolean |  |  |  |  |
@@ -57,6 +60,9 @@
       interface:
         disable:
           default: <bool>
+        egress:
+          enable_default: <bool>
+          unmodified: <bool>
       run: <bool>
       hardware_acceleration:
         enabled: <bool>

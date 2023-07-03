@@ -7718,8 +7718,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-            - int
           neighbor_default:
             type: dict
             keys:
@@ -8217,8 +8215,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-            - int
           peer_groups:
             type: list
             primary_key: name
@@ -8273,8 +8269,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-            - int
           peer_groups:
             type: list
             primary_key: name
@@ -10330,6 +10324,21 @@ keys:
             keys:
               default:
                 type: bool
+          egress:
+            type: dict
+            keys:
+              enable_default:
+                type: bool
+                description: 'Enable egress sFlow by default.
+
+                  '
+              unmodified:
+                type: bool
+                description: 'Enable egress sFlow unmodified.
+
+                  Platform dependent feature.
+
+                  '
       run:
         type: bool
       hardware_acceleration:
