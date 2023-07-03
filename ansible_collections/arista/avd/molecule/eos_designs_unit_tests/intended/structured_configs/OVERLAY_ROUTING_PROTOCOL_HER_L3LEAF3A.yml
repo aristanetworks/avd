@@ -1,3 +1,4 @@
+hostname: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
 router_bgp:
   as: '65003'
   router_id: 192.168.254.3

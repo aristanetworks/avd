@@ -1,3 +1,4 @@
+hostname: no_mgmt_interface
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending

@@ -1,3 +1,4 @@
+hostname: DC1-BL1B
 router_bgp:
   as: '65105'
   router_id: 192.168.255.15
