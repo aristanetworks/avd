@@ -18,14 +18,13 @@ def validate_inputs(inputs: dict) -> dict:
         Dictionary with boolean "failed" and list of "errors" like:
             ```python
             {
-                "failed": True
-                "errors": [
-                    <Exception>, ...
-                ]
+                "failed": bool,
+                "errors": list[Exception],
             }
+            ```
 
-            "failed" is True if Conversion failed or data is invalid. Otherwise False.
-            "Errors" is a list of Exceptions raised during variable conversion and validation containing errors raised as well as data validation issues.
+            - "failed" is True if Conversion failed or data is invalid. Otherwise False.
+            - "errors" is a list of Exceptions raised during variable conversion and validation containing errors raised as well as data validation issues.
     """
 
     # Initialize a global instance of eos_designs_schema_tools

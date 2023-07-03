@@ -9,6 +9,14 @@
 pip3 install pyavd
 ```
 
+Requirements (automatically installed with above command)
+
+```ini
+jinja2>=3.0
+jsonschema>=4.5.1
+deepmerge>=1.1.0
+```
+
 ## Reference
 
 ::: pyavd.validate_inputs
@@ -23,6 +31,11 @@ pip3 install pyavd
 ::: pyavd.get_device_structured_config
     options:
       show_root_toc_entry: false
+
+::: pyavd.validate_structured_config
+    options:
+      show_root_toc_entry: false
+      paths: ../../../../python-avd
 
 ::: pyavd.get_device_config
     options:
