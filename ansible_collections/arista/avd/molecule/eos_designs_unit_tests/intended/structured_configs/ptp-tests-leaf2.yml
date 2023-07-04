@@ -176,6 +176,10 @@ ethernet_interfaces:
   peer_type: server
   description: video-endpoint_PCI2
   shutdown: false
+  type: switched
+  mode: access
+  vlans: '11'
+  spanning_tree_portfast: edge
   ptp:
     announce:
       interval: 0
@@ -186,10 +190,6 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
-  type: switched
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
