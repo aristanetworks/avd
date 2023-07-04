@@ -89,7 +89,8 @@ keys:
                       description: Template interval in milliseconds
               table_size:
                 type: int
-                convert_types: ["str"]
+                convert_types:
+                  - str
                 min: 1
                 description: |
                   Maximum number of entries in flow table.
