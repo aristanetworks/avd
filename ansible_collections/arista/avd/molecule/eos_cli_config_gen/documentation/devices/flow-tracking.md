@@ -50,9 +50,9 @@ Sample: 666
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
 | ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
-| T1 | 3666 | 5666 | True | 0 |  | -
-| T2 | - | - | False | 1 | Ethernet40 | 999999
-| T3 | - | - | - | 4 | Ethernet41<br>Ethernet42<br>Port-Channel42 | 100000
+| T1 | 3666 | 5666 | True | 0 |  | - |
+| T2 | - | - | False | 1 | Ethernet40 | 999999 |
+| T3 | - | - | - | 4 | Ethernet41<br>Ethernet42<br>Port-Channel42 | 100000 |
 
 ##### Exporters Summary
 
