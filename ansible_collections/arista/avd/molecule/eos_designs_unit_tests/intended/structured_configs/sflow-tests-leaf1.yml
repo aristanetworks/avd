@@ -134,9 +134,9 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
+  type: switched
   mode: access
   vlans: '11'
-  type: switched
 - name: Ethernet5
   peer: port-channel-interface-true
   peer_interface: PCI1
@@ -145,9 +145,6 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
   type: port-channel-member
   channel_group:
     id: 5
@@ -160,9 +157,9 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: false
+  type: switched
   mode: access
   vlans: '11'
-  type: switched
 - name: Ethernet15
   peer: port-channel-interface-false
   peer_interface: PCI11
@@ -171,9 +168,6 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
   type: port-channel-member
   channel_group:
     id: 15
@@ -186,9 +180,9 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
+  type: switched
   mode: access
   vlans: '11'
-  type: switched
 - name: Ethernet17
   peer: port-channel-interface-no-definition
   peer_interface: PCI13
@@ -197,9 +191,6 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
   type: port-channel-member
   channel_group:
     id: 17

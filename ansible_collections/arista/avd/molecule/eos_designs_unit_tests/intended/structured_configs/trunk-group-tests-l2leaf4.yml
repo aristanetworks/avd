@@ -42,11 +42,11 @@ ethernet_interfaces:
   peer_type: server
   description: server_with_tg_200_Nic3
   shutdown: false
+  type: switched
   mode: trunk
   trunk_groups:
   - TG_NOT_MATCHING_ANY_VLANS
   - TG_200
-  type: switched
 port_channel_interfaces:
 - name: Port-Channel1
   description: TRUNK_GROUP_TESTS_L3LEAF2_Po1

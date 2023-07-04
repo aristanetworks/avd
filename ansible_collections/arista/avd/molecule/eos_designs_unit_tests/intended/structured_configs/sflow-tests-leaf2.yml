@@ -134,9 +134,6 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
   type: port-channel-member
   channel_group:
     id: 5
@@ -149,9 +146,6 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
   type: port-channel-member
   channel_group:
     id: 15
@@ -164,9 +158,6 @@ ethernet_interfaces:
   shutdown: false
   sflow:
     enable: true
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
   type: port-channel-member
   channel_group:
     id: 17
