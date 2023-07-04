@@ -162,6 +162,10 @@ ethernet_interfaces:
   peer_type: server
   description: server_with_tg_300_Nic3
   shutdown: false
+  mode: trunk
+  trunk_groups:
+  - TG_NOT_MATCHING_ANY_VLANS
+  - TG_300
   type: port-channel-member
   channel_group:
     id: 13

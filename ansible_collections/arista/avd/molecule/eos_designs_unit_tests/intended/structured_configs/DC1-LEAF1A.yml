@@ -301,13 +301,13 @@ ethernet_interfaces:
   port_profile: ALL_WITH_SECURITY
   description: server02_SINGLE_NODE_TRUNK_Eth1
   shutdown: false
-  type: switched
-  l2_mtu: 8000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: 'False'
   spanning_tree_bpduguard: 'False'
+  type: switched
+  l2_mtu: 8000
 - name: Ethernet7
   peer: server02_SINGLE_NODE
   peer_interface: Eth1
@@ -315,9 +315,9 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: server02_SINGLE_NODE_Eth1
   shutdown: false
-  type: switched
   mode: access
   vlans: '110'
+  type: switched
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

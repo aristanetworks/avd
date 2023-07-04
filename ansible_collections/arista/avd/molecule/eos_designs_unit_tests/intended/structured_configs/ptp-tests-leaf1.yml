@@ -165,7 +165,6 @@ ethernet_interfaces:
   port_profile: PTP-profile-BMCA
   description: bmca-endpoint_eth1
   shutdown: false
-  type: switched
   mode: access
   vlans: '11'
   ptp:
@@ -177,13 +176,13 @@ ethernet_interfaces:
       interval: -3
     transport: ipv4
     enable: true
+  type: switched
 - name: Ethernet5
   peer: video-endpoint
   peer_interface: PCI1
   peer_type: server
   description: video-endpoint_PCI1
   shutdown: false
-  type: switched
   mode: access
   vlans: '11'
   spanning_tree_portfast: edge
@@ -197,13 +196,13 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
+  type: switched
 - name: Ethernet3
   peer: Endpoint-with-specific-PTP-profile
   peer_interface: eth3
   peer_type: server
   description: Endpoint-with-specific-PTP-profile_eth3
   shutdown: false
-  type: switched
   mode: access
   vlans: '11'
   ptp:
@@ -216,6 +215,7 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
+  type: switched
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

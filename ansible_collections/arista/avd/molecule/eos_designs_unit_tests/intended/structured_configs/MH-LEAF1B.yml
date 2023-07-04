@@ -162,6 +162,8 @@ ethernet_interfaces:
   port_profile: Tenant_X
   description: server01_ES1_Eth2
   shutdown: false
+  mode: access
+  vlans: '310'
   type: port-channel-member
   channel_group:
     id: 10
@@ -173,6 +175,8 @@ ethernet_interfaces:
   port_profile: Tenant_X
   description: server03_AUTO_ESI_Eth2
   shutdown: false
+  mode: access
+  vlans: '310'
   type: port-channel-member
   channel_group:
     id: 12
@@ -184,6 +188,8 @@ ethernet_interfaces:
   port_profile: Tenant_ESI_Auto
   description: server04_AUTO_ESI_Profile_Eth2
   shutdown: false
+  mode: access
+  vlans: '310'
   type: port-channel-member
   channel_group:
     id: 13
@@ -195,6 +201,8 @@ ethernet_interfaces:
   port_profile: Tenant_ESI_Auto
   description: server05_AUTO_ESI_Profile_Override_Eth2
   shutdown: false
+  mode: access
+  vlans: '310'
   type: port-channel-member
   channel_group:
     id: 14
@@ -206,6 +214,8 @@ ethernet_interfaces:
   port_profile: Tenant_X_Trunk_Auto
   description: server06_Single_Active_Port_Channel_Eth2
   shutdown: false
+  mode: trunk
+  vlans: '310'
   type: port-channel-member
   channel_group:
     id: 15
@@ -217,6 +227,8 @@ ethernet_interfaces:
   port_profile: Tenant_X_Trunk
   description: server07_Single_Active_Port_Channel_Manual_DF_Eth2
   shutdown: false
+  mode: trunk
+  vlans: '310'
   type: port-channel-member
   channel_group:
     id: 16
@@ -228,9 +240,9 @@ ethernet_interfaces:
   port_profile: Tenant_X_Trunk_Auto_Eth
   description: server08_Single_Active_Ethernet_Eth2
   shutdown: false
-  type: switched
   mode: trunk
   vlans: '310'
+  type: switched
   evpn_ethernet_segment:
     identifier: 0000:0000:213f:36b8:ff71
     redundancy: single-active
@@ -245,9 +257,9 @@ ethernet_interfaces:
   port_profile: Tenant_X_Trunk
   description: server09_All_Active_Ethernet_Eth2
   shutdown: false
-  type: switched
   mode: trunk
   vlans: '310'
+  type: switched
   evpn_ethernet_segment:
     identifier: 0000:0000:00dd:00dd:00dd
     redundancy: all-active
@@ -261,9 +273,9 @@ ethernet_interfaces:
   port_profile: Tenant_X_Trunk
   description: server10_Single_Active_Ethernet_Manual_DF_Eth2
   shutdown: false
-  type: switched
   mode: trunk
   vlans: '310'
+  type: switched
   evpn_ethernet_segment:
     identifier: 0000:0000:885b:86cc:8bac
     redundancy: single-active
@@ -278,6 +290,8 @@ ethernet_interfaces:
   port_profile: Tenant_X_Trunk
   description: server11_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_Eth2
   shutdown: false
+  mode: trunk
+  vlans: '310'
   type: port-channel-member
   channel_group:
     id: 20
@@ -289,9 +303,9 @@ ethernet_interfaces:
   port_profile: Tenant_X_Trunk
   description: server12_Single_Active_Ethernet_Manual_DF_Dont_Preempt_Eth2
   shutdown: false
-  type: switched
   mode: trunk
   vlans: '310'
+  type: switched
   evpn_ethernet_segment:
     identifier: 0000:0000:5d0b:68d3:6ff9
     redundancy: single-active
@@ -307,6 +321,8 @@ ethernet_interfaces:
   port_profile: Tenant_X_Trunk
   description: server13_Single_Active_Port_Channel_Manual_DF_Dont_Preempt_modulus_Eth2
   shutdown: false
+  mode: trunk
+  vlans: '310'
   type: port-channel-member
   channel_group:
     id: 22
@@ -318,9 +334,9 @@ ethernet_interfaces:
   port_profile: Tenant_X_Trunk
   description: server14_Single_Active_Ethernet_Manual_DF_Dont_Preempt_modulus_Eth2
   shutdown: false
-  type: switched
   mode: trunk
   vlans: '310'
+  type: switched
   evpn_ethernet_segment:
     identifier: 0000:0000:262b:7df9:c98b
     redundancy: single-active

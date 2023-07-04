@@ -1,0 +1,27 @@
+---
+type: spine
+
+fabric_sflow:
+  uplinks: false
+  downlinks: false
+  endpoints: false
+  l3_edge: false
+  core_interfaces: false
+  mlag_interfaces: false
+
+spine:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65200
+
+  nodes:
+
+    - name: sflow-tests-spine3
+      id: 3
+      mgmt_ip: 192.168.0.31/24
+
+
+    - name: sflow-tests-spine4
+      id: 4
+      mgmt_ip: 192.168.0.41/24

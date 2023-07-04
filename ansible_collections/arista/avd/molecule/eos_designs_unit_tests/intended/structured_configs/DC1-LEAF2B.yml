@@ -584,6 +584,10 @@ ethernet_interfaces:
   port_profile: TENANT_B
   description: server01_MLAG_Eth3
   shutdown: false
+  mode: trunk
+  vlans: 210-211
+  spanning_tree_bpdufilter: disabled
+  spanning_tree_bpduguard: disabled
   type: port-channel-member
   channel_group:
     id: 10
@@ -595,6 +599,10 @@ ethernet_interfaces:
   port_profile: TENANT_A_MTU
   description: server01_MTU_PROFILE_MLAG_Eth5
   shutdown: false
+  mode: access
+  vlans: '110'
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_bpduguard: enabled
   type: port-channel-member
   channel_group:
     id: 11
@@ -605,6 +613,8 @@ ethernet_interfaces:
   peer_type: server
   description: server01_MTU_ADAPTOR_MLAG_Eth7
   shutdown: false
+  spanning_tree_bpdufilter: 'True'
+  spanning_tree_bpduguard: 'True'
   type: port-channel-member
   channel_group:
     id: 12
@@ -616,6 +626,8 @@ ethernet_interfaces:
   port_profile: TENANT_A_B
   description: FIREWALL01_E1
   shutdown: false
+  mode: trunk
+  vlans: 110-111,210-211
   type: port-channel-member
   channel_group:
     id: 20
@@ -627,9 +639,9 @@ ethernet_interfaces:
   port_profile: TENANT_A
   description: ROUTER01_Eth1
   shutdown: false
-  type: switched
   mode: access
   vlans: '110'
+  type: switched
 port_channel_interfaces:
 - name: Port-Channel7
   description: DC1_L2LEAF1_Po1

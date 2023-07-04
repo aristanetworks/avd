@@ -98,6 +98,19 @@ class EthernetInterfacesMixin(UtilsMixin):
             "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, adapter.get("description")),
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
+            "sflow": self._get_adapter_sflow(adapter),
+            "mode": adapter.get("mode"),
+            "vlans": adapter.get("vlans"),
+            "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
+            "native_vlan_tag": adapter.get("native_vlan_tag"),
+            "native_vlan": adapter.get("native_vlan"),
+            "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
+            "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
+            "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
+            "storm_control": self._get_adapter_storm_control(adapter),
+            "service_profile": adapter.get("qos_profile"),
+            "dot1x": adapter.get("dot1x"),
+            "ptp": self._get_adapter_ptp(adapter),
             "eos_cli": adapter.get("raw_eos_cli"),
             "struct_cfg": adapter.get("structured_config"),
         }
@@ -141,6 +154,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "dot1x": adapter.get("dot1x"),
                     "poe": self._get_adapter_poe(adapter),
                     "ptp": self._get_adapter_ptp(adapter),
+                    "sflow": self._get_adapter_sflow(adapter),
                     "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
                         adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
                     ),

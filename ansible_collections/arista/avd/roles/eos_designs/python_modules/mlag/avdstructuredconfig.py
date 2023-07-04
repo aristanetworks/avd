@@ -160,6 +160,9 @@ class AvdStructuredConfigMlag(AvdFacts):
             # Retain legacy order
             port_channel_interface["trunk_groups"].reverse()
 
+        if (self.shared_utils.fabric_sflow_mlag_interfaces) is not None:
+            port_channel_interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_mlag_interfaces}
+
         return [strip_empties_from_dict(port_channel_interface)]
 
     @cached_property
