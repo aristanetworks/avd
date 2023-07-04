@@ -256,15 +256,15 @@ vlans:
 - id: 300
   trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
+  - TG_300
   name: svi300_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 310
   trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
+  - TG_300
   name: l2vlan310_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 398
@@ -293,8 +293,8 @@ vlans:
   name: svi301_with_trunk_groups_only_l3leaf
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
+  - TG_300
 - id: 3299
   name: MLAG_iBGP_TG_300
   trunk_groups:
@@ -304,8 +304,8 @@ vlans:
   name: l2vlan310_with_trunk_groups_only_l3leaf
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
-  - TG_300
   - CUSTOM_MLAG_TG_NAME
+  - TG_300
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING

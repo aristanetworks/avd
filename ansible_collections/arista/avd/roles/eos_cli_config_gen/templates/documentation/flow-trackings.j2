@@ -31,7 +31,7 @@ Sample: {{ flow_tracking.sample | arista.avd.default("default") }}
 {%                             do applied_on.append(port_channel_interface.name) %}
 {%                         endif %}
 {%                     endfor %}
-| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} | {{ table_size }}
+| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} | {{ table_size }} |
 {%                 endfor %}
 
 ##### Exporters Summary

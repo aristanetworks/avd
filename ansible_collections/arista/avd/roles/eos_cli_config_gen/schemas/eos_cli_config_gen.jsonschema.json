@@ -7459,6 +7459,88 @@
                 "description": "cipher_list syntax follows the openssl cipher strings format.\nColon (:) separated list of allowed ciphers as a string\n",
                 "title": "Cipher List"
               },
+              "trust_certificate": {
+                "type": "object",
+                "properties": {
+                  "certificates": {
+                    "type": "array",
+                    "description": "List of trust certificate names\nExamples:\n  - test1.crt\n  - test2.crt\n",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Certificates"
+                  },
+                  "requirement": {
+                    "type": "object",
+                    "properties": {
+                      "basic_constraint_ca": {
+                        "type": "boolean",
+                        "title": "Basic Constraint Ca"
+                      },
+                      "hostname_fqdn": {
+                        "type": "boolean",
+                        "description": "Enforce hostname to be FQDN without wildcard.\n",
+                        "title": "Hostname Fqdn"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Requirement"
+                  },
+                  "policy_expiry_date_ignore": {
+                    "type": "boolean",
+                    "title": "Policy Expiry Date Ignore"
+                  },
+                  "system": {
+                    "type": "boolean",
+                    "description": "Use system-supplied trust certificates.\n",
+                    "title": "System"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Trust Certificate"
+              },
+              "chain_certificate": {
+                "type": "object",
+                "properties": {
+                  "certificates": {
+                    "type": "array",
+                    "description": "List of chain certificate names\nExamples:\n  - chain1.crt\n  - chain2.crt\n",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Certificates"
+                  },
+                  "requirement": {
+                    "type": "object",
+                    "properties": {
+                      "basic_constraint_ca": {
+                        "type": "boolean",
+                        "title": "Basic Constraint Ca"
+                      },
+                      "include_root_ca": {
+                        "type": "boolean",
+                        "title": "Include Root Ca"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Requirement"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Chain Certificate"
+              },
               "certificate": {
                 "type": "object",
                 "properties": {
@@ -17674,6 +17756,26 @@
                 "^_.+$": {}
               },
               "title": "Disable"
+            },
+            "egress": {
+              "type": "object",
+              "properties": {
+                "enable_default": {
+                  "type": "boolean",
+                  "description": "Enable egress sFlow by default.\n",
+                  "title": "Enable Default"
+                },
+                "unmodified": {
+                  "type": "boolean",
+                  "description": "Enable egress sFlow unmodified.\nPlatform dependent feature.\n",
+                  "title": "Unmodified"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Egress"
             }
           },
           "additionalProperties": false,
