@@ -19,7 +19,7 @@
 {%             endif %}
 {%             if platform.trident.mmu.queue_profiles is arista.avd.defined %}
 
-#### Trident MMU QUEUE PROFILES**
+#### Trident MMU QUEUE PROFILES
 {%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 
 **{{ profile.name }}**
