@@ -5,13 +5,13 @@ fabric_name: SFLOW_TESTS
 
 mgmt_gateway: 192.168.0.1
 
-# fabric_sflow:
-#   uplinks: true
-#   downlinks: true
-#   endpoints: true
-#   l3_edge: true
-#   core_interfaces: true
-#   mlag_interfaces: true
+fabric_sflow:
+  uplinks: true
+  downlinks: true
+  endpoints: true
+  l3_edge: true
+  core_interfaces: true
+  mlag_interfaces: true
 
 # P2P links between spine switches.
 core_interfaces:
