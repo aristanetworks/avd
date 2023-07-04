@@ -201,7 +201,6 @@ class UtilsMixin:
         peer = p2p_link["data"]["peer"]
         peer_interface = p2p_link["data"]["peer_interface"]
         default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
-        struct_cfg = get(p2p_link, "structured_config", default={})
         interface_cfg = {
             "name": p2p_link["data"]["interface"],
             "peer": peer,
@@ -213,7 +212,7 @@ class UtilsMixin:
             "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu),
             "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
             "eos_cli": p2p_link.get("raw_eos_cli"),
-            "struct_cfg": struct_cfg,
+            "struct_cfg": get(p2p_link, "structured_config"),
         }
 
         if (ip := get(p2p_link, "ip")) is not None:
