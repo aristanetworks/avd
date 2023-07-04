@@ -99,7 +99,6 @@ class EthernetInterfacesMixin(UtilsMixin):
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
             "sflow": self._get_adapter_sflow(adapter),
-            "ptp": self._get_adapter_ptp(adapter),
             "eos_cli": adapter.get("raw_eos_cli"),
             "struct_cfg": adapter.get("structured_config"),
         }
