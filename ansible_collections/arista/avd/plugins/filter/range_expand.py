@@ -27,12 +27,44 @@ def range_expand(range_to_expand):
     # Must be a str now
     else:
         prefix = ""
+        if "(" in range_to_expand:  # To handle Eth(1,2)/(3,4) cases
+            temp_range_to_expand = ""
+            # replacing "," with "&"
+            range_to_expand = re.sub(r"\((.*?)\)", lambda match: match.group(0).replace(",", "&"), range_to_expand)
+            for parenthesis_range in range_to_expand.split(","):
+                if "/(" in parenthesis_range:
+                    # regex to handle sub-interface example --/(1,2)
+                    sr = re.search(r"^(.*?)(\/\()([\d+&\d+]+)(\)\/)?(.*)", parenthesis_range)
+                    sr_groups = sr.groups()
+                    interface_string = ""
+                    for ps in sr_groups[2].split("&"):
+                        interface_string += sr_groups[0].strip() + "/" + ps.strip()
+                        if sr_groups[3] is not None:  # to add last sub-interface --/--/(1,2)
+                            interface_string += "/" + sr_groups[4].strip()
+                        interface_string += ","
+                    result.extend(range_expand(interface_string))
+                    continue
+                if "(" not in parenthesis_range:
+                    interfaces_name = parenthesis_range
+                else:
+                    interfaces_name = ""
+                    # regex to handle parent interface example Eth(1,2)/--
+                    sr = re.search(r"^(.*?)(\()([\d+&\d+]+)(\)\/)?(.*)", parenthesis_range)
+                    sr_groups = sr.groups()
+                    interface_prefix = sr_groups[0]
+                    for pp in sr_groups[2].split("&"):
+                        if interfaces_name:
+                            interfaces_name += ","
+                        interfaces_name += interface_prefix.strip() + pp.strip()
+                        if len(parenthesis_range.split("/")) > 1:
+                            interfaces_name += "/" + sr_groups[4]
+                temp_range_to_expand += interfaces_name + ","
+            range_to_expand = temp_range_to_expand[0:-1]
 
         # Unpack list in string
         for one_range in range_to_expand.split(","):
             if one_range is None:
                 continue
-
             # Find prefix (if any)
             regex = r"^(.*?)(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+))(\.((\d+)-)?(\d+))?"
             # Number of groups in this regex.
@@ -134,7 +166,6 @@ def range_expand(range_to_expand):
 
                 else:
                     raise AnsibleFilterError(f"Invalid range, got {one_range} and found {search_result.groups()}")
-
     return result
 
 
