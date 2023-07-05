@@ -39,15 +39,15 @@ l3leaf:
     - group: sflow-tests-leaf-mlag
       bgp_as: 65105
       nodes:
-        - name: sflow-tests-leaf5
+        - name: sflow-tests-leaf3
           id: 5
-          mgmt_ip: 192.168.0.105/24
+          mgmt_ip: 192.168.0.103/24
           uplink_switch_interfaces:
             - Ethernet5
             - Ethernet6
-        - name: sflow-tests-leaf6
+        - name: sflow-tests-leaf4
           id: 6
-          mgmt_ip: 192.168.0.106/24
+          mgmt_ip: 192.168.0.104/24
           uplink_switch_interfaces:
             - Ethernet7
             - Ethernet8
