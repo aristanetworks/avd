@@ -135,6 +135,12 @@ options:
     required: false
     type: str
     choices: [ "eos_cli_config_gen", "eos_designs" ]
+  set_switch_fact:
+    description:
+      - Set "switch" fact from on "avd_switch_facts.<inventory_hostname>.switch"
+    required: false
+    type: bool
+    default: true
 """
 
 EXAMPLES = r"""
