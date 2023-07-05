@@ -126,75 +126,39 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 10.254.2.3/31
-- name: Ethernet13
+- name: Ethernet10
   peer: single-interface-true
   peer_interface: eth1
   peer_type: server
   description: single-interface-true_eth1
   shutdown: false
-  sflow:
-    enable: true
   type: switched
   mode: access
   vlans: '11'
-- name: Ethernet5
-  peer: port-channel-interface-true
-  peer_interface: PCI1
-  peer_type: server
-  description: port-channel-interface-true_PCI1
-  shutdown: false
   sflow:
     enable: true
-  type: port-channel-member
-  channel_group:
-    id: 5
-    mode: 'on'
-- name: Ethernet14
+- name: Ethernet12
   peer: single-interface-false
   peer_interface: eth11
   peer_type: server
   description: single-interface-false_eth11
   shutdown: false
-  sflow:
-    enable: false
   type: switched
   mode: access
   vlans: '11'
-- name: Ethernet15
-  peer: port-channel-interface-false
-  peer_interface: PCI11
-  peer_type: server
-  description: port-channel-interface-false_PCI11
-  shutdown: false
   sflow:
     enable: false
-  type: port-channel-member
-  channel_group:
-    id: 15
-    mode: 'on'
-- name: Ethernet16
+- name: Ethernet14
   peer: single-interface-no-definition
   peer_interface: eth12
   peer_type: server
   description: single-interface-no-definition_eth12
   shutdown: false
-  sflow:
-    enable: true
   type: switched
   mode: access
   vlans: '11'
-- name: Ethernet17
-  peer: port-channel-interface-no-definition
-  peer_interface: PCI13
-  peer_type: server
-  description: port-channel-interface-no-definition_PCI13
-  shutdown: false
   sflow:
     enable: true
-  type: port-channel-member
-  channel_group:
-    id: 17
-    mode: 'on'
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -248,31 +212,3 @@ vxlan_interface:
       vrfs:
       - name: VRF1
         vni: 1
-port_channel_interfaces:
-- name: Port-Channel5
-  description: port-channel-interface-true
-  type: switched
-  shutdown: false
-  sflow:
-    enable: true
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
-- name: Port-Channel15
-  description: port-channel-interface-false
-  type: switched
-  shutdown: false
-  sflow:
-    enable: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
-- name: Port-Channel17
-  description: port-channel-interface-no-definition
-  type: switched
-  shutdown: false
-  sflow:
-    enable: true
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge

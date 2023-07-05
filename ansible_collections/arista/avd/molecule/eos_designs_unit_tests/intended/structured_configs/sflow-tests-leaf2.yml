@@ -126,42 +126,6 @@ ethernet_interfaces:
   mtu: 9214
   type: routed
   ip_address: 10.254.2.7/31
-- name: Ethernet5
-  peer: port-channel-interface-true
-  peer_interface: PCI2
-  peer_type: server
-  description: port-channel-interface-true_PCI2
-  shutdown: false
-  sflow:
-    enable: true
-  type: port-channel-member
-  channel_group:
-    id: 5
-    mode: 'on'
-- name: Ethernet15
-  peer: port-channel-interface-false
-  peer_interface: PCI12
-  peer_type: server
-  description: port-channel-interface-false_PCI12
-  shutdown: false
-  sflow:
-    enable: false
-  type: port-channel-member
-  channel_group:
-    id: 15
-    mode: 'on'
-- name: Ethernet17
-  peer: port-channel-interface-no-definition
-  peer_interface: PCI14
-  peer_type: server
-  description: port-channel-interface-no-definition_PCI14
-  shutdown: false
-  sflow:
-    enable: true
-  type: port-channel-member
-  channel_group:
-    id: 17
-    mode: 'on'
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -215,31 +179,3 @@ vxlan_interface:
       vrfs:
       - name: VRF1
         vni: 1
-port_channel_interfaces:
-- name: Port-Channel5
-  description: port-channel-interface-true
-  type: switched
-  shutdown: false
-  sflow:
-    enable: true
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
-- name: Port-Channel15
-  description: port-channel-interface-false
-  type: switched
-  shutdown: false
-  sflow:
-    enable: false
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge
-- name: Port-Channel17
-  description: port-channel-interface-no-definition
-  type: switched
-  shutdown: false
-  sflow:
-    enable: true
-  mode: access
-  vlans: '11'
-  spanning_tree_portfast: edge

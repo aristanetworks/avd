@@ -86,51 +86,21 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 ethernet_interfaces:
-- name: Ethernet6
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet6
-  peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine1_Ethernet6
-  type: routed
-  shutdown: false
-  mtu: 9214
-  sflow:
-    enable: true
-- name: Ethernet7
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet7
-  peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine1_Ethernet7
-  type: routed
-  shutdown: false
-  mtu: 9214
-  sflow:
-    enable: false
-- name: Ethernet10
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet10
-  peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine1_Ethernet10
-  type: routed
-  shutdown: false
-  mtu: 9214
-  sflow:
-    enable: true
-- name: Ethernet8
-  peer: sflow-tests-spine1
-  peer_interface: Ethernet8
-  peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine1_Ethernet8
-  type: routed
-  shutdown: false
-  mtu: 9214
-  sflow:
-    enable: true
 - name: Ethernet9
   peer: sflow-tests-spine1
   peer_interface: Ethernet9
   peer_type: spine
   description: P2P_LINK_TO_sflow-tests-spine1_Ethernet9
+  type: routed
+  shutdown: false
+  mtu: 9214
+  sflow:
+    enable: true
+- name: Ethernet10
+  peer: sflow-tests-spine1
+  peer_interface: Ethernet10
+  peer_type: spine
+  description: P2P_LINK_TO_sflow-tests-spine1_Ethernet10
   type: routed
   shutdown: false
   mtu: 9214
@@ -146,3 +116,13 @@ ethernet_interfaces:
   mtu: 9214
   sflow:
     enable: true
+- name: Ethernet12
+  peer: sflow-tests-spine1
+  peer_interface: Ethernet12
+  peer_type: spine
+  description: P2P_LINK_TO_sflow-tests-spine1_Ethernet12
+  type: routed
+  shutdown: false
+  mtu: 9214
+  sflow:
+    enable: false
