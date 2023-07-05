@@ -1030,7 +1030,7 @@ roles/eos_designs/docs/tables/connected-endpoints-keys.md
 
 ## Network Services
 
-The network services variabless provide an abstracted model to define network services across the fabric.
+The network services variables provide an abstracted model to define network services across the fabric.
 The network services are grouped by tenants. The definition of a tenant may vary between organizations. E.g. tenants can be organizations or departments.
 
 The filtering models defined under [Node type network services configuration](#node-type-network-services-configuration) allows
