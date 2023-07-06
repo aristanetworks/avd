@@ -1,3 +1,4 @@
+hostname: DC2-POD1-SPINE2
 router_bgp:
   as: '65210'
   router_id: 172.16.210.2

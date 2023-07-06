@@ -1,3 +1,4 @@
+hostname: inband-mgmt-subnet
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending

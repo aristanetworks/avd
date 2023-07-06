@@ -1,3 +1,4 @@
+hostname: DC1-POD2-LEAF1A
 router_bgp:
   as: '65121'
   router_id: 172.16.120.3

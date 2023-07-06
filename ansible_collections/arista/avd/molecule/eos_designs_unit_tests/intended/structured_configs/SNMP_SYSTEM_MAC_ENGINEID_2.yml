@@ -1,3 +1,4 @@
+hostname: SNMP_SYSTEM_MAC_ENGINEID_2
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending

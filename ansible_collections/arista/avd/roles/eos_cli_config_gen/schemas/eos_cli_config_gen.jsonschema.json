@@ -4231,6 +4231,10 @@
       },
       "title": "Hardware Counters"
     },
+    "hostname": {
+      "type": "string",
+      "title": "Hostname"
+    },
     "interface_defaults": {
       "type": "object",
       "properties": {

@@ -1,3 +1,4 @@
+hostname: l3_edge_bgp
 router_bgp:
   as: '65000'
   router_id: 1.2.3.1

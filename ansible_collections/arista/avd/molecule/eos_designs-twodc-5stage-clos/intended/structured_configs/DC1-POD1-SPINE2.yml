@@ -1,3 +1,4 @@
+hostname: DC1-POD1-SPINE2
 serial_number: DEADBEEFC0FFEE
 router_bgp:
   as: '65110.100'
