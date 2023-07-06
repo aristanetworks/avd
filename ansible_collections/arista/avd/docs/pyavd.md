@@ -44,3 +44,8 @@ deepmerge>=1.1.0
 ::: pyavd.get_device_doc
     options:
       show_root_toc_entry: false
+
+::: pyavd.validation_result
+    options:
+      show_root_toc_entry: false
+      paths: ../../../../python-avd

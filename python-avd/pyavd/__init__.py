@@ -3,12 +3,14 @@ from .get_device_config import get_device_config
 from .get_device_doc import get_device_doc
 from .get_device_structured_config import get_device_structured_config
 from .validate_inputs import validate_inputs
+from .validate_structured_config import validate_structured_config
+from .validation_result import ValidationResult
 from .vendor.version import VERSION
 
 """ Library for running Arista Validated Designs (AVD) in Python
 """
 
-PYAVD_VERSION = "a3"
+PYAVD_VERSION = "a4"
 AVD_VERSION = VERSION.split("-", maxsplit=1)[0]
 
 if "-dev" in VERSION:
@@ -29,4 +31,6 @@ __all__ = [
     "get_device_doc",
     "get_device_structured_config",
     "validate_inputs",
+    "validate_structured_config",
+    "ValidationResult",
 ]

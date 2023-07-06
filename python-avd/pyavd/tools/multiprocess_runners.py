@@ -53,8 +53,8 @@ def run_eos_cli_config_gen_process(
         device_vars.update(read_vars(structured_config_file))
 
     res = validate_structured_config(device_vars)
-    if res["failed"]:
-        for err in res["errors"]:
+    if res.failed:
+        for err in res.validation_errors:
             print(f"[{hostname}]: {str(err)}")
         raise ValueError("Some inputs are invalid")
 
@@ -151,8 +151,8 @@ def run_eos_designs_facts(common_varfiles: list[str], device_varfiles: str, fact
 
     for hostname, hostvars in all_hostvars.items():
         res = validate_inputs(hostvars)
-        if res["failed"]:
-            for err in res["errors"]:
+        if res.failed:
+            for err in res.validation_errors:
                 print(f"[{hostname}]: {str(err)}")
             raise ValueError("Some inputs are invalid")
 
@@ -192,8 +192,8 @@ def run_eos_designs_structured_configs_process(device_var_file: str, common_vars
     device_vars.update(read_vars(device_var_file))
 
     res = validate_inputs(device_vars)
-    if res["failed"]:
-        for err in res["errors"]:
+    if res.failed:
+        for err in res.validation_errors:
             print(f"[{hostname}]: {str(err)}")
         raise ValueError("Some inputs are invalid")
 
