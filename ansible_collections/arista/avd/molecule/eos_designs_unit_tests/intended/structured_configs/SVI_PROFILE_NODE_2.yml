@@ -1,3 +1,4 @@
+hostname: SVI_PROFILE_NODE_2
 router_bgp:
   as: '65002'
   router_id: 192.168.255.1

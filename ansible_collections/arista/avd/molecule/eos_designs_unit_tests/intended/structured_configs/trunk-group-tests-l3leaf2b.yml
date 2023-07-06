@@ -1,3 +1,4 @@
+hostname: trunk-group-tests-l3leaf2b
 router_bgp:
   as: '65002'
   router_id: 192.168.250.12

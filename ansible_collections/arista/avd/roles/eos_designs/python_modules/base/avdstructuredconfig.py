@@ -14,6 +14,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 class AvdStructuredConfigBase(AvdFacts):
     @cached_property
+    def hostname(self) -> str:
+        return self.shared_utils.hostname
+
+    @cached_property
     def serial_number(self) -> str | None:
         """
         serial_number variable set based on serial_number fact
