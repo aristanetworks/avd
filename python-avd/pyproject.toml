@@ -3,7 +3,7 @@ name="pyavd"
 dynamic = ["version"]
 dependencies = [
     "jinja2>=3.0",
-    "jsonschema>=4.5.1",
+    "jsonschema>=4.5.1,<4.18",
     "deepmerge>=1.1.0",
 ]
 authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
@@ -33,7 +33,7 @@ requires = [
     "setuptools>=61.2",
     "wheel",
     "jinja2>=3.0",
-    "jsonschema>=4.5.1",
+    "jsonschema>=4.5.1,<4.18",
     "deepmerge>=1.1.0",
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
