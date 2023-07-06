@@ -1,3 +1,4 @@
+hostname: AUTO_BGP_ASN_LEAF8A
 router_bgp:
   as: '65222.12'
   router_id: 192.168.255.15

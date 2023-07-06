@@ -1,3 +1,4 @@
+hostname: ignore-custom-keys-in-data-models
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending

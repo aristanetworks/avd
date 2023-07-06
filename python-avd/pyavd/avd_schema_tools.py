@@ -1,9 +1,11 @@
 from typing import Generator
 
-from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning
+from .validation_result import ValidationResult
+from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError
 from .vendor.schema.avdschema import AvdSchema
 
 IGNORE_EXCEPTIONS = (AvdDeprecationWarning, AvdConversionWarning)
+RETURN_EXCEPTIONS = AvdValidationError
 
 
 class AvdSchemaTools:
@@ -22,7 +24,7 @@ class AvdSchemaTools:
         """
         self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
 
-    def convert_data(self, data: dict) -> dict:
+    def convert_data(self, data: dict) -> None:
         """
         Convert data according to the schema (convert_types)
         The data conversion is done in-place (updating the original "data" dict).
@@ -30,29 +32,21 @@ class AvdSchemaTools:
         Args:
             data:
                 Input variables which should be converted according to the schema.
-
-        Returns
-            dict :
-                failed : bool
-                    True if Conversion succeeded. False if it failed.
-                errors : list[Exception]
-                    Any errors raised during variable conversion
         """
-        result = {"failed": False, "errors": []}
 
         # avdschema.convert returns a Generator, so we have to iterate through it to perform the actual conversions.
         exceptions: Generator = self.avdschema.convert(data)
         for exception in exceptions:
             # Ignore conversions and deprecations
-            if exception is None or isinstance(exception, IGNORE_EXCEPTIONS):
+            if isinstance(exception, IGNORE_EXCEPTIONS):
                 continue
 
-            result["errors"].append(exception)
-            result["failed"] = True
+            if isinstance(exception, Exception):
+                raise exception
 
-        return result
+        return None
 
-    def validate_data(self, data: dict) -> dict:
+    def validate_data(self, data: dict) -> ValidationResult:
         """
         Validate data according to the schema
 
@@ -60,31 +54,33 @@ class AvdSchemaTools:
             data:
                 Input variables which are to be validated according to the schema.
 
-        Returns
-            dict :
-                failed : bool
-                    True if data is valid. Otherwise False.
-                errors : list[Exception]
-                    Any errors raised during validation.
-                    This will contain errors raised as well as data validation issues.
+        Returns:
+            Instance of ValidationResult, where "failed" is True if data is invalid and "errors" is a list of AvdValidationError.
         """
-        result = {"failed": False, "errors": []}
+        result = ValidationResult(failed=False, validation_errors=[])
 
         # avdschema.validate returns a Generator, so we have to iterate through it to perform the actual validations.
         exceptions: Generator = self.avdschema.validate(data)
         for exception in exceptions:
             # Ignore conversions and deprecations
-            if exception is None or isinstance(exception, IGNORE_EXCEPTIONS):
+            if isinstance(exception, IGNORE_EXCEPTIONS):
                 continue
 
-            result["errors"].append(exception)
-            result["failed"] = True
+            if isinstance(exception, RETURN_EXCEPTIONS):
+                result.validation_errors.append(exception)
+                result.failed = True
+                continue
+
+            if isinstance(exception, Exception):
+                raise exception
 
         return result
 
     def convert_and_validate_data(self, data: dict) -> dict:
         """
         Convert and validate data according to the schema
+
+        Returns dictionary to be compatible with Ansible plugin. Called from vendored "get_structured_config".
 
         Args:
             data:
@@ -93,14 +89,10 @@ class AvdSchemaTools:
         Returns
             dict :
                 failed : bool
-                    True if Conversion succeeded and data is valid. False if either failed.
+                    True if data is invalid. Otherwise False.
                 errors : list[Exception]
-                    Any errors raised during variable conversion and validation
-                    This will contain errors raised as well as data validation issues.
+                    Any data validation issues.
         """
-        result = self.convert_data(data)
-        if result["failed"]:
-            return result
-
-        result = self.validate_data(data)
-        return result
+        self.convert_data(data)
+        res = self.validate_data(data)
+        return {"failed": res.failed, "errors": res.validation_errors}

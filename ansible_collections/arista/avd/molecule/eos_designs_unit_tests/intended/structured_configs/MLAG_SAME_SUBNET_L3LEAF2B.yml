@@ -1,3 +1,4 @@
+hostname: MLAG_SAME_SUBNET_L3LEAF2B
 router_bgp:
   as: '923'
   router_id: 192.168.255.35

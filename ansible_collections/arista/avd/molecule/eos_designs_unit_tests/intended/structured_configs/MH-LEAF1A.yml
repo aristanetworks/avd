@@ -1,3 +1,4 @@
+hostname: MH-LEAF1A
 router_bgp:
   as: '65151'
   router_id: 192.168.255.33

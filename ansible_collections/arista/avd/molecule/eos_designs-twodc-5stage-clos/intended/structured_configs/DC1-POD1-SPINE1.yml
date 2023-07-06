@@ -1,3 +1,4 @@
+hostname: DC1-POD1-SPINE1
 router_bgp:
   as: '65110.100'
   router_id: 172.16.110.1
