@@ -178,6 +178,24 @@ port_channel_interfaces:
   vlans: '11'
   spanning_tree_portfast: edge
   mlag: 11
+- name: Port-Channel16
+  description: SFLOW-TESTS-L2-LEAF1_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  sflow:
+    enable: true
+  vlans: '11'
+  mlag: 16
+- name: Port-Channel17
+  description: SFLOW-TESTS-L2-LEAF2_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  sflow:
+    enable: true
+  vlans: '11'
+  mlag: 17
 - name: Port-Channel13
   description: port-channel-interface-false
   type: switched
@@ -225,10 +243,10 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet5
   shutdown: false
-  sflow:
-    enable: true
   mtu: 9214
   type: routed
+  sflow:
+    enable: true
   ip_address: 10.254.2.17/31
 - name: Ethernet2
   peer: sflow-tests-spine1
@@ -236,11 +254,31 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet6
   shutdown: false
-  sflow:
-    enable: true
   mtu: 9214
   type: routed
+  sflow:
+    enable: true
   ip_address: 10.254.2.19/31
+- name: Ethernet16
+  peer: sflow-tests-l2-leaf1
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+  description: SFLOW-TESTS-L2-LEAF1_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 16
+    mode: active
+- name: Ethernet17
+  peer: sflow-tests-l2-leaf2
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+  description: SFLOW-TESTS-L2-LEAF2_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 17
+    mode: active
 - name: Ethernet13
   peer: port-channel-interface-false
   peer_interface: PCI11

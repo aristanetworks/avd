@@ -125,4 +125,24 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   sflow:
+    enable: true
+- name: Ethernet13
+  peer: sflow-tests-spine1
+  peer_interface: Ethernet13
+  peer_type: spine
+  description: P2P_LINK_TO_sflow-tests-spine1_Ethernet13
+  type: routed
+  shutdown: false
+  mtu: 9214
+  sflow:
     enable: false
+- name: Ethernet14
+  peer: sflow-tests-spine1
+  peer_interface: Ethernet14
+  peer_type: spine
+  description: P2P_LINK_TO_sflow-tests-spine1_Ethernet14
+  type: routed
+  shutdown: false
+  mtu: 9214
+  sflow:
+    enable: true

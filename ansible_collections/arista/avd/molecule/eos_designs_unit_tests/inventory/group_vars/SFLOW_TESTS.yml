@@ -24,18 +24,25 @@ core_interfaces:
       interfaces: [ Ethernet10, Ethernet10 ]
       include_in_underlay_protocol: false
       sflow: false
+    - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
+      interfaces: [ Ethernet11, Ethernet11 ]
+      include_in_underlay_protocol: false
+
 
 # Testing the same as above with l3_edge
 l3_edge:
   p2p_links:
     - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
-      interfaces: [ Ethernet11, Ethernet11 ]
+      interfaces: [ Ethernet12, Ethernet12 ]
       include_in_underlay_protocol: false
       sflow: true
     - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
-      interfaces: [ Ethernet12, Ethernet12 ]
+      interfaces: [ Ethernet13, Ethernet13 ]
       include_in_underlay_protocol: false
       sflow: false
+    - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
+      interfaces: [ Ethernet14, Ethernet14 ]
+      include_in_underlay_protocol: false
 
 tenants:
   - name: SFLOW

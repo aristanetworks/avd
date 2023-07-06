@@ -110,10 +110,10 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet1
   shutdown: false
-  sflow:
-    enable: true
   mtu: 9214
   type: routed
+  sflow:
+    enable: true
   ip_address: 10.254.2.1/31
 - name: Ethernet2
   peer: sflow-tests-spine1
@@ -121,10 +121,10 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet2
   shutdown: false
-  sflow:
-    enable: true
   mtu: 9214
   type: routed
+  sflow:
+    enable: true
   ip_address: 10.254.2.3/31
 - name: Ethernet10
   peer: single-interface-true
