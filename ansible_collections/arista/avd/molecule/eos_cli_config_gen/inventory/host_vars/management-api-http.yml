@@ -12,7 +12,7 @@ management_api_http:
   protocol_https_certificate:
     certificate: <cert_string>
     private_key: <private_key>
-    
+
 # Standard ACLs
 standard_access_lists:
   - name: ACL-API
