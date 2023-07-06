@@ -1,3 +1,4 @@
+hostname: trunk-group-tests-l3leaf2a
 router_bgp:
   as: '65002'
   router_id: 192.168.250.11
@@ -122,17 +123,17 @@ vlans:
 - id: 200
   trunk_groups:
   - trunk-group-tests-l2leaf4
+  - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: svi200_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 210
   trunk_groups:
   - trunk-group-tests-l2leaf4
+  - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: l2vlan210_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 3199

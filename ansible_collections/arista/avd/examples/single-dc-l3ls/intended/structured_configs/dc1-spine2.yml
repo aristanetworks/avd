@@ -1,3 +1,4 @@
+hostname: dc1-spine2
 router_bgp:
   as: '65100'
   router_id: 10.255.0.2

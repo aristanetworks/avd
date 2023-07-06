@@ -1,3 +1,4 @@
+hostname: trunk-group-tests-l3leaf1a
 router_bgp:
   as: '65001'
   router_id: 192.168.250.9
@@ -230,51 +231,51 @@ vlans:
 - id: 100
   trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
+  - MLAG
   - TG_100
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: svi100_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 110
   trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
+  - MLAG
   - TG_100
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: l2vlan110_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 200
   trunk_groups:
   - trunk-group-tests-l2leaf3
   - TRUNK_GROUP_TESTS_L2LEAF1
+  - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: svi200_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 210
   trunk_groups:
   - trunk-group-tests-l2leaf3
   - TRUNK_GROUP_TESTS_L2LEAF1
+  - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: l2vlan210_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 300
   trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
+  - MLAG
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: svi300_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 310
   trunk_groups:
   - TRUNK_GROUP_TESTS_L2LEAF1
+  - MLAG
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   name: l2vlan310_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 398
@@ -303,9 +304,9 @@ vlans:
   name: svi301_with_trunk_groups_only_l3leaf
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
+  - MLAG
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
 - id: 3299
   name: MLAG_iBGP_TG_300
   trunk_groups:
@@ -315,9 +316,9 @@ vlans:
   name: l2vlan310_with_trunk_groups_only_l3leaf
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
+  - MLAG
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
 vlan_interfaces:
 - name: Vlan4093
   description: MLAG_PEER_L3_PEERING

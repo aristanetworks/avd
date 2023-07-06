@@ -1,3 +1,4 @@
+hostname: RD-RT-ADMIN-SUBFIELD-L3LEAF1
 router_bgp:
   as: '65001'
   router_id: 192.168.255.1

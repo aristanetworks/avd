@@ -18,3 +18,27 @@ management_security:
       tls_versions: "1.1"
     - name: tls-single-version-profile-as-float
       tls_versions: 1.0
+    - name: test1-trust-cert
+      trust_certificate:
+        certificates:
+          - test-trust1.crt
+          - test-trust2.crt
+        requirement:
+          basic_constraint_ca: true
+        policy_expiry_date_ignore: true
+    - name: test1-chain-cert
+      chain_certificate:
+        certificates:
+          - test-chain-cert1.crt
+          - test-chain-cert2.crt
+        requirement:
+          basic_constraint_ca: true
+    - name: test2-trust-cert
+      trust_certificate:
+        requirement:
+          hostname_fqdn: true
+        system: true
+    - name: test2-chain-cert
+      chain_certificate:
+        requirement:
+          include_root_ca: true

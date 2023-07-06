@@ -3,6 +3,7 @@ from __future__ import annotations
 from functools import cached_property
 from ipaddress import ip_network
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
@@ -152,7 +153,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
 
         svis = {}
         subnets = []
-        peers = get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[])
+        peers = natural_sort(get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[]))
         for peer in peers:
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
             if (vlan := peer_facts.get("inband_mgmt_vlan")) is None:

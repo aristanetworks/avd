@@ -1,3 +1,4 @@
+hostname: DC1-LEAF3A
 router_bgp:
   as: '65106'
   router_id: 192.168.255.12

@@ -2756,6 +2756,8 @@ keys:
                 '
             units_packets:
               type: bool
+  hostname:
+    type: str
   interface_defaults:
     type: dict
     keys:
@@ -4782,6 +4784,48 @@ keys:
                 Colon (:) separated list of allowed ciphers as a string
 
                 '
+            trust_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: "List of trust certificate names\nExamples:\n  - test1.crt\n
+                    \ - test2.crt\n"
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    basic_constraint_ca:
+                      type: bool
+                    hostname_fqdn:
+                      type: bool
+                      description: 'Enforce hostname to be FQDN without wildcard.
+
+                        '
+                policy_expiry_date_ignore:
+                  type: bool
+                system:
+                  type: bool
+                  description: 'Use system-supplied trust certificates.
+
+                    '
+            chain_certificate:
+              type: dict
+              keys:
+                certificates:
+                  type: list
+                  description: "List of chain certificate names\nExamples:\n  - chain1.crt\n
+                    \ - chain2.crt\n"
+                  items:
+                    type: str
+                requirement:
+                  type: dict
+                  keys:
+                    basic_constraint_ca:
+                      type: bool
+                    include_root_ca:
+                      type: bool
             certificate:
               type: dict
               keys:
@@ -6357,7 +6401,6 @@ keys:
           description: Prefix-list Name
         sequence_numbers:
           type: list
-          required: true
           primary_key: sequence
           convert_types:
           - dict
@@ -7996,8 +8039,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-            - int
           neighbor_default:
             type: dict
             keys:
@@ -8495,8 +8536,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-            - int
           peer_groups:
             type: list
             primary_key: name
@@ -8551,8 +8590,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-            - int
           peer_groups:
             type: list
             primary_key: name
@@ -10608,6 +10645,21 @@ keys:
             keys:
               default:
                 type: bool
+          egress:
+            type: dict
+            keys:
+              enable_default:
+                type: bool
+                description: 'Enable egress sFlow by default.
+
+                  '
+              unmodified:
+                type: bool
+                description: 'Enable egress sFlow unmodified.
+
+                  Platform dependent feature.
+
+                  '
       run:
         type: bool
       hardware_acceleration:
