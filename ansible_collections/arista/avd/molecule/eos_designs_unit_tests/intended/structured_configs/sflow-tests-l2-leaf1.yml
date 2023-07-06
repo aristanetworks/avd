@@ -1,3 +1,4 @@
+hostname: sflow-tests-l2-leaf1
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

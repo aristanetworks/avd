@@ -1,3 +1,4 @@
+hostname: sflow-tests-leaf3
 router_bgp:
   as: '65105'
   router_id: 10.254.1.5
