@@ -6231,7 +6231,6 @@ keys:
           description: Prefix-list Name
         sequence_numbers:
           type: list
-          required: true
           primary_key: sequence
           convert_types:
           - dict
