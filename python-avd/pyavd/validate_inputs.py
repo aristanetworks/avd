@@ -16,7 +16,8 @@ def validate_inputs(inputs: dict) -> ValidationResult:
         inputs: Dictionary with inputs for "eos_designs".
 
     Returns:
-        Instance of ValidationResult, where "failed" is True if data is invalid and "errors" is a list of AvdValidationErrors containing schema violations.
+        Instance of ValidationResult, where "failed" is True if data is not valid according to the schema
+            and "errors" is a list of AvdValidationErrors containing schema violations.
     """
 
     # Initialize a global instance of eos_designs_schema_tools

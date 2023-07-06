@@ -6,7 +6,7 @@ class ValidationResult:
     Object containing result of data validation
 
     Attributes:
-        failed: True if Conversion failed or data is invalid. Otherwise False.
+        failed: True if data is not valid according to the schema. Otherwise False.
         validation_errors: List of AvdValidationErrors containing schema violations.
     """
 
