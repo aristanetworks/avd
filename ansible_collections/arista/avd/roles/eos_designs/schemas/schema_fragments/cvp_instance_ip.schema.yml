@@ -6,6 +6,11 @@ keys:
   cvp_instance_ip:
     documentation_options:
       table: cloudvision-settings
+    deprecation:
+      warning: true
+      new_key: cvp_instance_ips
+      removed: true
+      remove_in_version: "5.0.0"
     type: str
     description: |
       IPv4 address or DNS name for CloudVision.

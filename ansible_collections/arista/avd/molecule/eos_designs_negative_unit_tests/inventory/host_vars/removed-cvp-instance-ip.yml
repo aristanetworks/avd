@@ -1,0 +1,6 @@
+fabric_name: fabric_removed_cvp_instance_ip
+
+cvp_instance_ip: 192.168.200.11
+
+expected_error_message: >-
+  [DEPRECATED]: [removed-cvp-instance-ip]: The input data model 'cvp_instance_ip' was removed. Use 'cvp_instance_ips' instead. This feature was removed from arista.avd.eos_designs in version 5.0.0. Please update your playbooks.

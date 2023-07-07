@@ -226,7 +226,7 @@ class AvdStructuredConfigBase(AvdFacts):
     @cached_property
     def daemon_terminattr(self) -> dict | None:
         """
-        daemon_terminattr set based on cvp_instance_ip and cvp_instance_ips variables
+        daemon_terminattr set based on cvp_instance_ips variables
 
         Updating cvaddrs and cvauth considering conditions for cvaas and cvp_on_prem IPs
 
@@ -235,10 +235,8 @@ class AvdStructuredConfigBase(AvdFacts):
             else:
                  <updating as cvp_on_prem ip>
         """
-        cvp_instance_ip = get(self._hostvars, "cvp_instance_ip")
         cvp_instance_ip_list = get(self._hostvars, "cvp_instance_ips", [])
-        if cvp_instance_ip is not None:
-            cvp_instance_ip_list.append(cvp_instance_ip)
+
         if not cvp_instance_ip_list:
             return None
 
