@@ -4,9 +4,9 @@ Role configuration settings can be set either as regular inventory variables or 
 
 ## Input Variables Validation settings
 
---8<--
-roles/eos_cli_config_gen/docs/tables/role-input-validation.md
---8<--
+--avdschema--
+eos_cli_config_gen:role-input-validation
+--avdschema--
 
 ## Extensibility with Custom Templates
 
@@ -22,21 +22,21 @@ roles/eos_cli_config_gen/docs/tables/role-input-validation.md
 - The order of custom templates in the list can be important if they overlap.
 - It is recommenended to use a `!` delimiter at the top of each custom template.
 
---8<--
-roles/eos_cli_config_gen/docs/tables/custom-templates.md
---8<--
+--avdschema--
+eos_cli_config_gen:custom-templates
+--avdschema--
 
 ### eos_cli_config_gen configuration
 
---8<--
-roles/eos_cli_config_gen/docs/tables/eos-cli-config-gen-configuration.md
---8<--
+--avdschema--
+eos_cli_config_gen:eos-cli-config-gen-configuration
+--avdschema--
 
 ### eos_cli_config_gen documentation
 
---8<--
-roles/eos_cli_config_gen/docs/tables/eos-cli-config-gen-documentation.md
---8<--
+--avdschema--
+eos_cli_config_gen:eos-cli-config-gen-documentation
+--avdschema--
 
 ### Generate default config
 
@@ -52,12 +52,12 @@ The following commands will be omitted when `generate_default_config` is set to 
 - Transceiver qsfp default mode
 - End of configuration delimiter
 
---8<--
-roles/eos_cli_config_gen/docs/tables/generate-default-config.md
---8<--
+--avdschema--
+eos_cli_config_gen:generate-default-config
+--avdschema--
 
 ### Generate device documentation
 
---8<--
-roles/eos_cli_config_gen/docs/tables/generate-device-documentation.md
---8<--
+--avdschema--
+eos_cli_config_gen:generate-device-documentation
+--avdschema--

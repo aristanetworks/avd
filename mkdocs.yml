@@ -65,6 +65,11 @@ extra_css:
 extra_javascript:
   - https://unpkg.com/tablesort@5.3.0/dist/tablesort.min.js
   - docs/stylesheets/tables.js
+  - https://unpkg.com/monaco-editor@latest/min/vs/loader.js
+  - docs/stylesheets/monaco-editor.js
+
+hooks:
+  - ansible_collections/arista/avd/docs/_hooks/mkdocs_schema_table.py
 
 plugins:
   - exclude:

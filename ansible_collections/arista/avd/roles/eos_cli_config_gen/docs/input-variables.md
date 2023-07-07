@@ -18,81 +18,81 @@ All values are optional.
 
 ### AAA accounting
 
---8<--
-roles/eos_cli_config_gen/docs/tables/aaa-accounting.md
---8<--
+--avdschema--
+eos_cli_config_gen:aaa-accounting
+--avdschema--
 
 ### AAA authentication
 
---8<--
-roles/eos_cli_config_gen/docs/tables/aaa-authentication.md
---8<--
+--avdschema--
+eos_cli_config_gen:aaa-authentication
+--avdschema--
 
 ### AAA authorization
 
---8<--
-roles/eos_cli_config_gen/docs/tables/aaa-authorization.md
---8<--
+--avdschema--
+eos_cli_config_gen:aaa-authorization
+--avdschema--
 
 ### AAA root
 
---8<--
-roles/eos_cli_config_gen/docs/tables/aaa-root.md
---8<--
+--avdschema--
+eos_cli_config_gen:aaa-root
+--avdschema--
 
 ### AAA server groups
 
---8<--
-roles/eos_cli_config_gen/docs/tables/aaa-server-groups.md
---8<--
+--avdschema--
+eos_cli_config_gen:aaa-server-groups
+--avdschema--
 
 ### Enable password
 
---8<--
-roles/eos_cli_config_gen/docs/tables/enable-password.md
---8<--
+--avdschema--
+eos_cli_config_gen:enable-password
+--avdschema--
 
 ### IP radius source-interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-radius-source-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-radius-source-interfaces
+--avdschema--
 
 ### IP tacacs source-interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-tacacs-source-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-tacacs-source-interfaces
+--avdschema--
 
 ### Local users
 
---8<--
-roles/eos_cli_config_gen/docs/tables/local-users.md
---8<--
+--avdschema--
+eos_cli_config_gen:local-users
+--avdschema--
 
 ### Radius server
 
---8<--
-roles/eos_cli_config_gen/docs/tables/radius-server.md
---8<--
+--avdschema--
+eos_cli_config_gen:radius-server
+--avdschema--
 
 ### Radius servers
 
---8<--
-roles/eos_cli_config_gen/docs/tables/radius-servers.md
---8<--
+--avdschema--
+eos_cli_config_gen:radius-servers
+--avdschema--
 
 ### Roles
 
---8<--
-roles/eos_cli_config_gen/docs/tables/roles.md
---8<--
+--avdschema--
+eos_cli_config_gen:roles
+--avdschema--
 
 ### Tacacs servers
 
---8<--
-roles/eos_cli_config_gen/docs/tables/tacacs-servers.md
---8<--
+--avdschema--
+eos_cli_config_gen:tacacs-servers
+--avdschema--
 
 ## ACLs
 
@@ -108,88 +108,88 @@ Access list names must be unique.
 
 The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
 
---8<--
-roles/eos_cli_config_gen/docs/tables/access-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:access-lists
+--avdschema--
 
 The improved data model has a more sophisticated design documented below:
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-access-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-access-lists
+--avdschema--
 
 The improved data model allows to limit the number of ACL entries that AVD is allowed to generate by defining `ip_access_lists_max_entries`.
 Only normal entries under `ip_access_lists` will be counted, remarks will be ignored.
 If the number is above the limit, the playbook will fail. This provides a simplified control over hardware utilization.
 The numbers must be based on the hardware tests and AVD does not provide any guidance. Note that other EOS features may use the same hardware resources and affect the supported scale.
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-access-lists-max-entries.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-access-lists-max-entries
+--avdschema--
 
 ### IPv6 access-lists
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ipv6-access-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:ipv6-access-lists
+--avdschema--
 
 ### IPv6 standard access-lists
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ipv6-standard-access-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:ipv6-standard-access-lists
+--avdschema--
 
 ### MAC access-lists
 
---8<--
-roles/eos_cli_config_gen/docs/tables/mac-access-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:mac-access-lists
+--avdschema--
 
 ### Standard access-lists
 
---8<--
-roles/eos_cli_config_gen/docs/tables/standard-access-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:standard-access-lists
+--avdschema--
 
 ## Endpoint Security
 
 ### Address-locking
 
---8<--
-roles/eos_cli_config_gen/docs/tables/address-locking.md
---8<--
+--avdschema--
+eos_cli_config_gen:address-locking
+--avdschema--
 
 ### Dot1x
 
---8<--
-roles/eos_cli_config_gen/docs/tables/dot1x.md
---8<--
+--avdschema--
+eos_cli_config_gen:dot1x
+--avdschema--
 
 ### MAC security
 
---8<--
-roles/eos_cli_config_gen/docs/tables/mac-security.md
---8<--
+--avdschema--
+eos_cli_config_gen:mac-security
+--avdschema--
 
 ## Filters and policies
 
 ### AS path
 
---8<--
-roles/eos_cli_config_gen/docs/tables/as-path.md
---8<--
+--avdschema--
+eos_cli_config_gen:as-path
+--avdschema--
 
 ### Class-maps
 
---8<--
-roles/eos_cli_config_gen/docs/tables/class-maps.md
---8<--
+--avdschema--
+eos_cli_config_gen:class-maps
+--avdschema--
 
 ### Dynamic prefix lists
 
---8<--
-roles/eos_cli_config_gen/docs/tables/dynamic-prefix-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:dynamic-prefix-lists
+--avdschema--
 
 ### IP community lists
 
@@ -203,728 +203,728 @@ Community list names must be unique.
 
 The legacy data model supports simplified community list definition that only allows a single action to be defined as string:
 
---8<--
-roles/eos_cli_config_gen/docs/tables/community-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:community-lists
+--avdschema--
 
 The improved data model has a better design documented below:
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-community-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-community-lists
+--avdschema--
 
 ### IP extcommunity-lists
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-extcommunity-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-extcommunity-lists
+--avdschema--
 
 ### IP extcommunity-lists-regexp
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-extcommunity-lists-regexp.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-extcommunity-lists-regexp
+--avdschema--
 
 ### IPv6 prefix-lists
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ipv6-prefix-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:ipv6-prefix-lists
+--avdschema--
 
 ### Match list input
 
---8<--
-roles/eos_cli_config_gen/docs/tables/match-list-input.md
---8<--
+--avdschema--
+eos_cli_config_gen:match-list-input
+--avdschema--
 
 ### Peer-filters
 
---8<--
-roles/eos_cli_config_gen/docs/tables/peer-filters.md
---8<--
+--avdschema--
+eos_cli_config_gen:peer-filters
+--avdschema--
 
 ### Policy-maps
 
---8<--
-roles/eos_cli_config_gen/docs/tables/policy-maps.md
---8<--
+--avdschema--
+eos_cli_config_gen:policy-maps
+--avdschema--
 
 ### Prefix-lists
 
---8<--
-roles/eos_cli_config_gen/docs/tables/prefix-lists.md
---8<--
+--avdschema--
+eos_cli_config_gen:prefix-lists
+--avdschema--
 
 ### Route-maps
 
---8<--
-roles/eos_cli_config_gen/docs/tables/route-maps.md
---8<--
+--avdschema--
+eos_cli_config_gen:route-maps
+--avdschema--
 
 ### Trackers
 
---8<--
-roles/eos_cli_config_gen/docs/tables/trackers.md
---8<--
+--avdschema--
+eos_cli_config_gen:trackers
+--avdschema--
 
 ### Traffic policies
 
---8<--
-roles/eos_cli_config_gen/docs/tables/traffic-policies.md
---8<--
+--avdschema--
+eos_cli_config_gen:traffic-policies
+--avdschema--
 
 ## Interfaces
 
 ### Errdisable
 
---8<--
-roles/eos_cli_config_gen/docs/tables/errdisable.md
---8<--
+--avdschema--
+eos_cli_config_gen:errdisable
+--avdschema--
 
 ### Ethernet interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ethernet-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:ethernet-interfaces
+--avdschema--
 
 ### Interface defaults
 
---8<--
-roles/eos_cli_config_gen/docs/tables/interface-defaults.md
---8<--
+--avdschema--
+eos_cli_config_gen:interface-defaults
+--avdschema--
 
 ### Interface profiles
 
---8<--
-roles/eos_cli_config_gen/docs/tables/interface-profiles.md
---8<--
+--avdschema--
+eos_cli_config_gen:interface-profiles
+--avdschema--
 
 ### LACP
 
---8<--
-roles/eos_cli_config_gen/docs/tables/lacp.md
---8<--
+--avdschema--
+eos_cli_config_gen:lacp
+--avdschema--
 
 ### Link tracking groups
 
---8<--
-roles/eos_cli_config_gen/docs/tables/link-tracking-groups.md
---8<--
+--avdschema--
+eos_cli_config_gen:link-tracking-groups
+--avdschema--
 
 ### LLDP
 
---8<--
-roles/eos_cli_config_gen/docs/tables/lldp.md
---8<--
+--avdschema--
+eos_cli_config_gen:lldp
+--avdschema--
 
 ### Loopback interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/loopback-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:loopback-interfaces
+--avdschema--
 
 ### Management interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-interfaces
+--avdschema--
 
 ### Patch panel
 
---8<--
-roles/eos_cli_config_gen/docs/tables/patch-panel.md
---8<--
+--avdschema--
+eos_cli_config_gen:patch-panel
+--avdschema--
 
 ### Port-channel interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/port-channel-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:port-channel-interfaces
+--avdschema--
 
 ### Switchport default
 
---8<--
-roles/eos_cli_config_gen/docs/tables/switchport-default.md
---8<--
+--avdschema--
+eos_cli_config_gen:switchport-default
+--avdschema--
 
 ### Tunnel interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/tunnel-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:tunnel-interfaces
+--avdschema--
 
 ### VLAN interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/vlan-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:vlan-interfaces
+--avdschema--
 
 ### VXLAN interface
 
---8<--
-roles/eos_cli_config_gen/docs/tables/vxlan-interface.md
---8<--
+--avdschema--
+eos_cli_config_gen:vxlan-interface
+--avdschema--
 
 ## Maintenance Mode
 
 ### BGP groups
 
---8<--
-roles/eos_cli_config_gen/docs/tables/bgp-groups.md
---8<--
+--avdschema--
+eos_cli_config_gen:bgp-groups
+--avdschema--
 
 ### Interface groups
 
---8<--
-roles/eos_cli_config_gen/docs/tables/interface-groups.md
---8<--
+--avdschema--
+eos_cli_config_gen:interface-groups
+--avdschema--
 
 ### Maintenance
 
---8<--
-roles/eos_cli_config_gen/docs/tables/maintenance.md
---8<--
+--avdschema--
+eos_cli_config_gen:maintenance
+--avdschema--
 
 ## Management
 
 ### Aliases
 
---8<--
-roles/eos_cli_config_gen/docs/tables/aliases.md
---8<--
+--avdschema--
+eos_cli_config_gen:aliases
+--avdschema--
 
 ### Banners
 
---8<--
-roles/eos_cli_config_gen/docs/tables/banners.md
---8<--
+--avdschema--
+eos_cli_config_gen:banners
+--avdschema--
 
 ### Boot
 
---8<--
-roles/eos_cli_config_gen/docs/tables/boot.md
---8<--
+--avdschema--
+eos_cli_config_gen:boot
+--avdschema--
 
 ### Clock
 
---8<--
-roles/eos_cli_config_gen/docs/tables/clock.md
---8<--
+--avdschema--
+eos_cli_config_gen:clock
+--avdschema--
 
 ### DNS domain
 
---8<--
-roles/eos_cli_config_gen/docs/tables/dns-domain.md
---8<--
+--avdschema--
+eos_cli_config_gen:dns-domain
+--avdschema--
 
 ### Domain-list
 
---8<--
-roles/eos_cli_config_gen/docs/tables/domain-list.md
---8<--
+--avdschema--
+eos_cli_config_gen:domain-list
+--avdschema--
 
 ### IP domain lookup
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-domain-lookup.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-domain-lookup
+--avdschema--
 
 ### IP HTTP client source-interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-http-client-source-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-http-client-source-interfaces
+--avdschema--
 
 ### IP name servers
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-name-servers.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-name-servers
+--avdschema--
 
 ### IP SSH client source-interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-ssh-client-source-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-ssh-client-source-interfaces
+--avdschema--
 
 ### Management API HTTP
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-api-http.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-api-http
+--avdschema--
 
 ### Management API models
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-api-models.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-api-models
+--avdschema--
 
 ### Management console
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-console.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-console
+--avdschema--
 
 ### Management defaults
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-defaults.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-defaults
+--avdschema--
 
 ### Management security
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-security.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-security
+--avdschema--
 
 ### Management SSH
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-ssh.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-ssh
+--avdschema--
 
 ### Management tech-support
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-tech-support.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-tech-support
+--avdschema--
 
 ### Name server
 
---8<--
-roles/eos_cli_config_gen/docs/tables/name-server.md
---8<--
+--avdschema--
+eos_cli_config_gen:name-server
+--avdschema--
 
 ### NTP
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ntp.md
---8<--
+--avdschema--
+eos_cli_config_gen:ntp
+--avdschema--
 
 ### Prompt
 
---8<--
-roles/eos_cli_config_gen/docs/tables/prompt.md
---8<--
+--avdschema--
+eos_cli_config_gen:prompt
+--avdschema--
 
 ### Terminal
 
---8<--
-roles/eos_cli_config_gen/docs/tables/terminal.md
---8<--
+--avdschema--
+eos_cli_config_gen:terminal
+--avdschema--
 
 ### Virtual source NAT VRFs
 
---8<--
-roles/eos_cli_config_gen/docs/tables/virtual-source-nat-vrfs.md
---8<--
+--avdschema--
+eos_cli_config_gen:virtual-source-nat-vrfs
+--avdschema--
 
 ## Miscellaneous
 
 ### CVX
 
---8<--
-roles/eos_cli_config_gen/docs/tables/cvx.md
---8<--
+--avdschema--
+eos_cli_config_gen:cvx
+--avdschema--
 
 ### EOS cli
 
---8<--
-roles/eos_cli_config_gen/docs/tables/eos-cli.md
---8<--
+--avdschema--
+eos_cli_config_gen:eos-cli
+--avdschema--
 
 ### Management CVX
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-cvx.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-cvx
+--avdschema--
 
 ### MCS client
 
---8<--
-roles/eos_cli_config_gen/docs/tables/mcs-client.md
---8<--
+--avdschema--
+eos_cli_config_gen:mcs-client
+--avdschema--
 
 ## Monitoring
 
 ### Daemons
 
---8<--
-roles/eos_cli_config_gen/docs/tables/daemons.md
---8<--
+--avdschema--
+eos_cli_config_gen:daemons
+--avdschema--
 
 ### Daemon terminattr
 
---8<--
-roles/eos_cli_config_gen/docs/tables/daemon-terminattr.md
---8<--
+--avdschema--
+eos_cli_config_gen:daemon-terminattr
+--avdschema--
 
 ### Event handlers
 
---8<--
-roles/eos_cli_config_gen/docs/tables/event-handlers.md
---8<--
+--avdschema--
+eos_cli_config_gen:event-handlers
+--avdschema--
 
 ### Event monitor
 
---8<--
-roles/eos_cli_config_gen/docs/tables/event-monitor.md
---8<--
+--avdschema--
+eos_cli_config_gen:event-monitor
+--avdschema--
 
 ### Flow tracking
 
---8<--
-roles/eos_cli_config_gen/docs/tables/flow-trackings.md
---8<--
+--avdschema--
+eos_cli_config_gen:flow-trackings
+--avdschema--
 
 ### Load interval
 
---8<--
-roles/eos_cli_config_gen/docs/tables/load-interval.md
---8<--
+--avdschema--
+eos_cli_config_gen:load-interval
+--avdschema--
 
 ### Logging
 
---8<--
-roles/eos_cli_config_gen/docs/tables/logging.md
---8<--
+--avdschema--
+eos_cli_config_gen:logging
+--avdschema--
 
 ### Management API gNMI
 
---8<--
-roles/eos_cli_config_gen/docs/tables/management-api-gnmi.md
---8<--
+--avdschema--
+eos_cli_config_gen:management-api-gnmi
+--avdschema--
 
 ### Monitor connectivity
 
---8<--
-roles/eos_cli_config_gen/docs/tables/monitor-connectivity.md
---8<--
+--avdschema--
+eos_cli_config_gen:monitor-connectivity
+--avdschema--
 
 ### Monitor sessions
 
---8<--
-roles/eos_cli_config_gen/docs/tables/monitor-sessions.md
---8<--
+--avdschema--
+eos_cli_config_gen:monitor-sessions
+--avdschema--
 
 ### SFLOW
 
---8<--
-roles/eos_cli_config_gen/docs/tables/sflow.md
---8<--
+--avdschema--
+eos_cli_config_gen:sflow
+--avdschema--
 
 ### SNMP server
 
---8<--
-roles/eos_cli_config_gen/docs/tables/snmp-server.md
---8<--
+--avdschema--
+eos_cli_config_gen:snmp-server
+--avdschema--
 
 ### Tap aggregation
 
---8<--
-roles/eos_cli_config_gen/docs/tables/tap-aggregation.md
---8<--
+--avdschema--
+eos_cli_config_gen:tap-aggregation
+--avdschema--
 
 ### VM tracer-sessions
 
---8<--
-roles/eos_cli_config_gen/docs/tables/vmtracer-sessions.md
---8<--
+--avdschema--
+eos_cli_config_gen:vmtracer-sessions
+--avdschema--
 
 ## Multicast
 
 ### IP IGMP snooping
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-igmp-snooping.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-igmp-snooping
+--avdschema--
 
 ### Router IGMP
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-igmp.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-igmp
+--avdschema--
 
 ### Router MSDP
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-msdp.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-msdp
+--avdschema--
 
 ### Router multicast
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-multicast.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-multicast
+--avdschema--
 
 ### Router PIM sparse-mode
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-pim-sparse-mode.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-pim-sparse-mode
+--avdschema--
 
 ## Quality of Service
 
 ### QoS
 
---8<--
-roles/eos_cli_config_gen/docs/tables/qos.md
---8<--
+--avdschema--
+eos_cli_config_gen:qos
+--avdschema--
 
 ### QoS profiles
 
---8<--
-roles/eos_cli_config_gen/docs/tables/qos-profiles.md
---8<--
+--avdschema--
+eos_cli_config_gen:qos-profiles
+--avdschema--
 
 ### Queue monitor-length
 
---8<--
-roles/eos_cli_config_gen/docs/tables/queue-monitor-length.md
---8<--
+--avdschema--
+eos_cli_config_gen:queue-monitor-length
+--avdschema--
 
 ### Queue monitor-streaming
 
---8<--
-roles/eos_cli_config_gen/docs/tables/queue-monitor-streaming.md
---8<--
+--avdschema--
+eos_cli_config_gen:queue-monitor-streaming
+--avdschema--
 
 ## Routing
 
 ### ARP
 
---8<--
-roles/eos_cli_config_gen/docs/tables/arp.md
---8<--
+--avdschema--
+eos_cli_config_gen:arp
+--avdschema--
 
 ### DHCP relay
 
---8<--
-roles/eos_cli_config_gen/docs/tables/dhcp-relay.md
---8<--
+--avdschema--
+eos_cli_config_gen:dhcp-relay
+--avdschema--
 
 ### IP DHCP relay
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-dhcp-relay
+--avdschema--
 
 ### IP ICMP redirect
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-icmp-redirect.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-icmp-redirect
+--avdschema--
 
 ### IP NAT
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-nat.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-nat
+--avdschema--
 
 ### IP routing IPv6 interfaces
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-routing-ipv6-interfaces.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-routing-ipv6-interfaces
+--avdschema--
 
 ### IP routing
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-routing.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-routing
+--avdschema--
 
 ### IP virtual router MAC address
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-virtual-router-mac-address.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-virtual-router-mac-address
+--avdschema--
 
 ### IPv6 ICMP redirects
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ipv6-icmp-redirect.md
---8<--
+--avdschema--
+eos_cli_config_gen:ipv6-icmp-redirect
+--avdschema--
 
 ### IPv6 static routes
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ipv6-static-routes.md
---8<--
+--avdschema--
+eos_cli_config_gen:ipv6-static-routes
+--avdschema--
 
 ### IPv6 unicast routing
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ipv6-unicast-routing.md
---8<--
+--avdschema--
+eos_cli_config_gen:ipv6-unicast-routing
+--avdschema--
 
 ### MPLS
 
---8<--
-roles/eos_cli_config_gen/docs/tables/mpls.md
---8<--
+--avdschema--
+eos_cli_config_gen:mpls
+--avdschema--
 
 ### Router BFD
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-bfd.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-bfd
+--avdschema--
 
 ### Router BGP
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-bgp.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-bgp
+--avdschema--
 
 ### Router general
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-general.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-general
+--avdschema--
 
 ### Router ISIS
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-isis.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-isis
+--avdschema--
 
 ### Router L2 VPN
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-l2-vpn.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-l2-vpn
+--avdschema--
 
 ### Router OSPF
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-ospf.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-ospf
+--avdschema--
 
 ### Router traffic engineering
 
---8<--
-roles/eos_cli_config_gen/docs/tables/router-traffic-engineering.md
---8<--
+--avdschema--
+eos_cli_config_gen:router-traffic-engineering
+--avdschema--
 
 ### Service routing configuration bgp
 
---8<--
-roles/eos_cli_config_gen/docs/tables/service-routing-configuration-bgp.md
---8<--
+--avdschema--
+eos_cli_config_gen:service-routing-configuration-bgp
+--avdschema--
 
 ### Service routing protocols model
 
---8<--
-roles/eos_cli_config_gen/docs/tables/service-routing-protocols-model.md
---8<--
+--avdschema--
+eos_cli_config_gen:service-routing-protocols-model
+--avdschema--
 
 ### Static routes
 
---8<--
-roles/eos_cli_config_gen/docs/tables/static-routes.md
---8<--
+--avdschema--
+eos_cli_config_gen:static-routes
+--avdschema--
 
 ### VRFs
 
---8<--
-roles/eos_cli_config_gen/docs/tables/vrfs.md
---8<--
+--avdschema--
+eos_cli_config_gen:vrfs
+--avdschema--
 
 ## Switching
 
 ### MLAG configuration
 
---8<--
-roles/eos_cli_config_gen/docs/tables/mlag-configuration.md
---8<--
+--avdschema--
+eos_cli_config_gen:mlag-configuration
+--avdschema--
 
 ### Spanning-tree
 
---8<--
-roles/eos_cli_config_gen/docs/tables/spanning-tree.md
---8<--
+--avdschema--
+eos_cli_config_gen:spanning-tree
+--avdschema--
 
 ### VLAN internal order
 
---8<--
-roles/eos_cli_config_gen/docs/tables/vlan-internal-order.md
---8<--
+--avdschema--
+eos_cli_config_gen:vlan-internal-order
+--avdschema--
 
 ### VLANs
 
---8<--
-roles/eos_cli_config_gen/docs/tables/vlans.md
---8<--
+--avdschema--
+eos_cli_config_gen:vlans
+--avdschema--
 
 ## System settings
 
 ### Hardware counters
 
---8<--
-roles/eos_cli_config_gen/docs/tables/hardware-counters.md
---8<--
+--avdschema--
+eos_cli_config_gen:hardware-counters
+--avdschema--
 
 ### Hardware
 
---8<--
-roles/eos_cli_config_gen/docs/tables/hardware.md
---8<--
+--avdschema--
+eos_cli_config_gen:hardware
+--avdschema--
 
 ### IP hardware
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ip-hardware.md
---8<--
+--avdschema--
+eos_cli_config_gen:ip-hardware
+--avdschema--
 
 ### IPv6 hardware
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ipv6-hardware.md
---8<--
+--avdschema--
+eos_cli_config_gen:ipv6-hardware
+--avdschema--
 
 ### L2 protocol
 
---8<--
-roles/eos_cli_config_gen/docs/tables/l2-protocol.md
---8<--
+--avdschema--
+eos_cli_config_gen:l2-protocol
+--avdschema--
 
 ### MAC address-table
 
---8<--
-roles/eos_cli_config_gen/docs/tables/mac-address-table.md
---8<--
+--avdschema--
+eos_cli_config_gen:mac-address-table
+--avdschema--
 
 ### Platform
 
---8<--
-roles/eos_cli_config_gen/docs/tables/platform.md
---8<--
+--avdschema--
+eos_cli_config_gen:platform
+--avdschema--
 
 ### PoE
 
---8<--
-roles/eos_cli_config_gen/docs/tables/poe.md
---8<--
+--avdschema--
+eos_cli_config_gen:poe
+--avdschema--
 
 ### PTP
 
---8<--
-roles/eos_cli_config_gen/docs/tables/ptp.md
---8<--
+--avdschema--
+eos_cli_config_gen:ptp
+--avdschema--
 
 ### Redundancy
 
---8<--
-roles/eos_cli_config_gen/docs/tables/redundancy.md
---8<--
+--avdschema--
+eos_cli_config_gen:redundancy
+--avdschema--
 
 ### System
 
---8<--
-roles/eos_cli_config_gen/docs/tables/system.md
---8<--
+--avdschema--
+eos_cli_config_gen:system
+--avdschema--
 
 ### TCAM profile
 
---8<--
-roles/eos_cli_config_gen/docs/tables/tcam-profile.md
---8<--
+--avdschema--
+eos_cli_config_gen:tcam-profile
+--avdschema--

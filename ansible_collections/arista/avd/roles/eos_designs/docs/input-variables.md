@@ -20,9 +20,9 @@ The input variables are documented below in tables and YAML.
 
 By setting the `design.type` variable, the default node-types described in [Node Type Variables](#node-type-variables) will be used.
 
---8<--
-roles/eos_designs/docs/tables/design.md
---8<--
+--avdschema--
+eos_designs:design
+--avdschema--
 
 ### 3-stage clos topology support (Leaf & Spine)
 
@@ -94,15 +94,15 @@ As per the diagram above, the topology hierarchy is the following:
 
 You **must** define the `fabric_name` variable and it **must** match the Ansible inventory group name covering all devices in scope of the fabric.
 
---8<--
-roles/eos_designs/docs/tables/fabric-topology.md
---8<--
+--avdschema--
+eos_designs:fabric-topology
+--avdschema--
 
 ## Fabric IP Addressing
 
---8<--
-roles/eos_designs/docs/tables/fabric-ip-addressing.md
---8<--
+--avdschema--
+eos_designs:fabric-ip-addressing
+--avdschema--
 
 ## Node Type Variables
 
@@ -255,9 +255,9 @@ AVD provides the capability to customize your node types, supporting a variety o
         mpls_lsr: true
     ```
 
---8<--
-roles/eos_designs/docs/tables/node-type-keys.md
---8<--
+--avdschema--
+eos_designs:node-type-keys
+--avdschema--
 
 ## Type setting
 
@@ -291,15 +291,15 @@ roles/eos_designs/docs/tables/node-type-keys.md
     type: overlay-controller
     ```
 
---8<--
-roles/eos_designs/docs/tables/type-setting.md
---8<--
+--avdschema--
+eos_designs:type-setting
+--avdschema--
 
 ## Default node types settings
 
---8<--
-roles/eos_designs/docs/tables/default-node-types.md
---8<--
+--avdschema--
+eos_designs:default-node-types
+--avdschema--
 
 ## Node type settings
 
@@ -318,9 +318,9 @@ defaults <- node_group <- node_group.node <- node
 !!! tip
     Define common node settings under defaults. This reduces user input requirements, limiting errors.
 
---8<--
-roles/eos_designs/docs/tables/node-type-structure.md
---8<--
+--avdschema--
+eos_designs:node-type-structure
+--avdschema--
 
 ### Node type common configuration
 
@@ -332,15 +332,15 @@ Define your nodes, id, management and common configuration elements.
 !!! info
     A static unique identifier (id) is assigned to each device. This is leveraged to derive the IP address assignment from each summary defined in the Fabric Underlay and Overlay Topology Variables.
 
---8<--
-roles/eos_designs/docs/tables/node-type-common-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-common-configuration
+--avdschema--
 
 ### Node type inband management
 
---8<--
-roles/eos_designs/docs/tables/node-type-inband-management-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-inband-management-configuration
+--avdschema--
 
 ### Node type uplink management
 
@@ -350,66 +350,66 @@ Source uplink interfaces and parent interfaces are defined on the child.
 !!! tip
     Leverage [`default_interfaces`](#default-interface-settings) data model to auto define uplink and downlink interfaces based on the node id.
 
---8<--
-roles/eos_designs/docs/tables/node-type-uplink-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-uplink-configuration
+--avdschema--
 
 ### Node type L2 and MLAG configuration
 
 !!! tip
     Alternate addressing schemes are available at [`fabric_ip_addressing`](#fabric-ip-addressing).
 
---8<--
-roles/eos_designs/docs/tables/node-type-l2-mlag-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-l2-mlag-configuration
+--avdschema--
 
 ### Node type Loopback and VTEP configuration
 
---8<--
-roles/eos_designs/docs/tables/node-type-loopback-vtep-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-loopback-vtep-configuration
+--avdschema--
 
 ### Node type BGP configuration
 
---8<--
-roles/eos_designs/docs/tables/node-type-bgp-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-bgp-configuration
+--avdschema--
 
 ### Node type network services configuration
 
---8<--
-roles/eos_designs/docs/tables/node-type-evpn-services-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-evpn-services-configuration
+--avdschema--
 
 ### Node type EVPN gateway configuration
 
---8<--
-roles/eos_designs/docs/tables/node-type-evpn-ipvpn-gateway-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-evpn-ipvpn-gateway-configuration
+--avdschema--
 
 ### Node type EVPN multi-domain gateway configuration
 
---8<--
-roles/eos_designs/docs/tables/node-type-evpn-multi-domain-gateway-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-evpn-multi-domain-gateway-configuration
+--avdschema--
 
 ### Node type ISIS Configuration
 
---8<--
-roles/eos_designs/docs/tables/node-type-isis-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-isis-configuration
+--avdschema--
 
 ### Node type MPLS configuration
 
---8<--
-roles/eos_designs/docs/tables/node-type-mpls-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-mpls-configuration
+--avdschema--
 
 ### Node type PTP configuration
 
---8<--
-roles/eos_designs/docs/tables/node-type-ptp-configuration.md
---8<--
+--avdschema--
+eos_designs:node-type-ptp-configuration
+--avdschema--
 
 ## Default interface settings
 
@@ -438,9 +438,9 @@ roles/eos_designs/docs/tables/node-type-ptp-configuration.md
         downlink_interfaces: [ Ethernet1-32/1 ]
     ```
 
---8<--
-roles/eos_designs/docs/tables/default-interfaces.md
---8<--
+--avdschema--
+eos_designs:default-interfaces
+--avdschema--
 
 ## L3 edge and DCI settings
 
@@ -451,9 +451,9 @@ For BGP peerings the AS number must be specified. If the AS number is different 
 
 Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.
 
---8<--
-roles/eos_designs/docs/tables/l3-edge.md
---8<--
+--avdschema--
+eos_designs:l3-edge
+--avdschema--
 
 ## Core interfaces settings
 
@@ -464,9 +464,9 @@ For BGP peerings the AS number must be specified. If the AS number is different 
 
 Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.
 
---8<--
-roles/eos_designs/docs/tables/core-interfaces.md
---8<--
+--avdschema--
+eos_designs:core-interfaces
+--avdschema--
 
 ## Flagging a device as not deployed
 
@@ -476,9 +476,9 @@ roles/eos_designs/docs/tables/core-interfaces.md
 - If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail lldp_toplogy and interface tests on peers of the undeployed device trying to verify that interfaces are up.
 - To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface and lldp_topology tests. Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.
 
---8<--
-roles/eos_designs/docs/tables/is-deployed.md
---8<--
+--avdschema--
+eos_designs:is-deployed
+--avdschema--
 
 ## Fabric settings
 
@@ -527,39 +527,39 @@ The following underlay routing protocols are supported:
 
     ![Figure: Enable only_local_vlan_trunk_groups](../../../media/only_local_vlan_trunk_groups.png)
 
---8<--
-roles/eos_designs/docs/tables/fabric-settings.md
---8<--
+--avdschema--
+eos_designs:fabric-settings
+--avdschema--
 
 ## Management interface settings
 
---8<--
-roles/eos_designs/docs/tables/management-interface-settings.md
---8<--
+--avdschema--
+eos_designs:management-interface-settings
+--avdschema--
 
 ## BFD settings
 
---8<--
-roles/eos_designs/docs/tables/bfd-settings.md
---8<--
+--avdschema--
+eos_designs:bfd-settings
+--avdschema--
 
 ## BGP settings
 
---8<--
-roles/eos_designs/docs/tables/bgp-settings.md
---8<--
+--avdschema--
+eos_designs:bgp-settings
+--avdschema--
 
 ## OSPF settings
 
---8<--
-roles/eos_designs/docs/tables/ospf-settings.md
---8<--
+--avdschema--
+eos_designs:ospf-settings
+--avdschema--
 
 ## ISIS settings
 
---8<--
-roles/eos_designs/docs/tables/isis-settings.md
---8<--
+--avdschema--
+eos_designs:isis-settings
+--avdschema--
 
 ## Overlay settings
 
@@ -574,33 +574,33 @@ The following overlay routing protocols are supported:
 \* For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.<br />
 \** By setting `overlay_routing_protocol:HER`, `eos_designs` will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
 
---8<--
-roles/eos_designs/docs/tables/overlay-settings.md
---8<--
+--avdschema--
+eos_designs:overlay-settings
+--avdschema--
 
 ## EVPN settings
 
---8<--
-roles/eos_designs/docs/tables/evpn-settings.md
---8<--
+--avdschema--
+eos_designs:evpn-settings
+--avdschema--
 
 ## Management settings
 
---8<--
-roles/eos_designs/docs/tables/management-settings.md
---8<--
+--avdschema--
+eos_designs:management-settings
+--avdschema--
 
 ## System settings
 
---8<--
-roles/eos_designs/docs/tables/system-settings.md
---8<--
+--avdschema--
+eos_designs:system-settings
+--avdschema--
 
 ## CloudVision Settings
 
---8<--
-roles/eos_designs/docs/tables/cloudvision-settings.md
---8<--
+--avdschema--
+eos_designs:cloudvision-settings
+--avdschema--
 
 ## Endpoint connectivity
 
@@ -785,9 +785,9 @@ Both data models support variable inheritance from profiles defined under [`port
               short_esi: 0303:0202:0101
     ```
 
---8<--
-roles/eos_designs/docs/tables/connected-endpoints.md
---8<--
+--avdschema--
+eos_designs:connected-endpoints
+--avdschema--
 
 ### Network ports settings
 
@@ -894,9 +894,9 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
     !!! tip
         To leverage automatic channel-id computation and configure port-channel with multiple members, `connected_endpoints` should be used.
 
---8<--
-roles/eos_designs/docs/tables/network-ports.md
---8<--
+--avdschema--
+eos_designs:network-ports
+--avdschema--
 
 ### Port profiles settings
 
@@ -905,9 +905,9 @@ Keys are the same as used under endpoint adapters. Keys defined under endpoints 
 
 A port profile can refer to another port profile using `parent_profile` to inherit settings in up to two levels (adapter->profile->parent_profile).
 
---8<--
-roles/eos_designs/docs/tables/port-profiles.md
---8<--
+--avdschema--
+eos_designs:port-profiles
+--avdschema--
 
 ### Connected endpoints keys settings
 
@@ -921,9 +921,9 @@ The keys can be customized to provide a better better organization or grouping o
 !!! note
     The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
 
---8<--
-roles/eos_designs/docs/tables/connected-endpoints-keys.md
---8<--
+--avdschema--
+eos_designs:connected-endpoints-keys
+--avdschema--
 
 ## Network Services
 
@@ -954,57 +954,57 @@ Typically services within each tenant share common VNI ranges and MAC VRF assign
 The keys used to define network services are configurable using [`network_services_keys`](#network-services-keys-settings).
 The default available keys is `tenants`.
 
---8<--
-roles/eos_designs/docs/tables/network-services.md
---8<--
+--avdschema--
+eos_designs:network-services
+--avdschema--
 
 #### Network services VRFs configuration
 
---8<--
-roles/eos_designs/docs/tables/network-services-vrfs-settings.md
---8<--
+--avdschema--
+eos_designs:network-services-vrfs-settings
+--avdschema--
 
 #### Network services VRF SVIs configuration
 
---8<--
-roles/eos_designs/docs/tables/network-services-vrfs-svis-settings.md
---8<--
+--avdschema--
+eos_designs:network-services-vrfs-svis-settings
+--avdschema--
 
 #### Network services VRF L3 Interfaces configuration
 
---8<--
-roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
---8<--
+--avdschema--
+eos_designs:network-services-vrfs-l3-interfaces-settings
+--avdschema--
 
 #### Network services VRF BGP configuration
 
---8<--
-roles/eos_designs/docs/tables/network-services-vrfs-bgp-settings.md
---8<--
+--avdschema--
+eos_designs:network-services-vrfs-bgp-settings
+--avdschema--
 
 #### Network services VRF OSPF configuration
 
---8<--
-roles/eos_designs/docs/tables/network-services-vrfs-ospf-settings.md
---8<--
+--avdschema--
+eos_designs:network-services-vrfs-ospf-settings
+--avdschema--
 
 #### Network services L2 VLANs configuration
 
---8<--
-roles/eos_designs/docs/tables/network-services-l2vlans-settings.md
---8<--
+--avdschema--
+eos_designs:network-services-l2vlans-settings
+--avdschema--
 
 #### Network services point-to-point services configuration
 
---8<--
-roles/eos_designs/docs/tables/network-services-point-to-point-services-settings.md
---8<--
+--avdschema--
+eos_designs:network-services-point-to-point-services-settings
+--avdschema--
 
 #### Network services multicast configuration
 
---8<--
-roles/eos_designs/docs/tables/network-services-multicast-settings.md
---8<--
+--avdschema--
+eos_designs:network-services-multicast-settings
+--avdschema--
 
 ### SVI profiles settings
 
@@ -1021,9 +1021,9 @@ Note: structured configuration is not merged recursively and will be taken direc
 5. svi_profile.structured_config
 6. svi_parent_profile.structured_config
 
---8<--
-roles/eos_designs/docs/tables/svi-profiles.md
---8<--
+--avdschema--
+eos_designs:svi-profiles
+--avdschema--
 
 ### Network services keys settings
 
@@ -1035,9 +1035,9 @@ The keys can be customized to provide a better better organization or grouping o
 !!! note
     The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
 
---8<--
-roles/eos_designs/docs/tables/network-services-keys.md
---8<--
+--avdschema--
+eos_designs:network-services-keys
+--avdschema--
 
 ## Platform settings
 
@@ -1053,22 +1053,22 @@ Management interface is modified for specific platforms like modular platforms w
 !!! note
     The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
 
---8<--
-roles/eos_designs/docs/tables/platform-settings.md
---8<--
+--avdschema--
+eos_designs:platform-settings
+--avdschema--
 
 ## PTP settings
 
 See the [Configuring PTP](how-to/ptp.md) how-to for details.
 
---8<--
-roles/eos_designs/docs/tables/ptp.md
---8<--
+--avdschema--
+eos_designs:ptp
+--avdschema--
 
 ## Custom Structured Configuration
 
 See the [Custom Structured Configuration](how-to/custom-structured-configuration.md) how-to for details.
 
---8<--
-roles/eos_designs/docs/tables/custom-structured-configuration.md
---8<--
+--avdschema--
+eos_designs:custom-structured-configuration
+--avdschema--
