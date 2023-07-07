@@ -12,3 +12,47 @@
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
         tasks_from: build-schemas
+
+    # - name: Gather AVD Schema Fragments for avd_switch_facts
+    #   tags: [avd_switch_facts]
+    #   vars:
+    #     schema_dir: ../schemas/avd_switch_facts
+    #     schema_fragments_dir: "{{ schema_dir }}/schema_fragments"
+    #     schema_fragments_glob: "{{ schema_fragments_dir }}/*.schema.yml"
+    #     schema_path: "{{ schema_dir }}/avd_switch_facts.schema.yml"
+    #     schema_json_schema_path: "{{ schema_dir }}/avd_switch_facts.jsonschema.json"
+    #     schema_pydantic_path: "{{ schema_dir }}/avd_switch_facts.py"
+    #   block:
+    #     - name: "Create {{ schema_dir }}"
+    #       ansible.builtin.file:
+    #         path: "{{ schema_dir }}"
+    #         state: directory
+    #         mode: 0775
+    #     - name: "Create {{ schema_fragments_dir }}"
+    #       ansible.builtin.file:
+    #         path: "{{ schema_fragments_dir }}"
+    #         state: directory
+    #         mode: 0775
+
+    #     - name: Gather AVD Schema Fragments for avd_switch_facts
+    #       ansible.builtin.copy:
+    #         content: "{{ query('ansible.builtin.file', *schema_files) | map('from_yaml') | ansible.builtin.combine(recursive=True) | to_nice_yaml(indent=2, sort_keys=false) }}"
+    #         dest: "{{ schema_path }}"
+    #         mode: 0664
+    #       vars:
+    #         schema_files: "{{ query('ansible.builtin.fileglob', schema_fragments_glob) | arista.avd.natural_sort }}"
+
+    #     - name: Convert AVD Schema to JSON Schema
+    #       ansible.builtin.copy:
+    #         content: "{{ lookup('ansible.builtin.file', schema_path) | from_yaml | arista.avd.convert_schema(type='jsonschema') | to_nice_json(indent=2, sort_keys=false) }}"
+    #         dest: "{{ schema_json_schema_path }}"
+    #         mode: 0664
+
+    #     - name: Convert AVD Schema to Pydantic Classes
+    #       ansible.builtin.copy:
+    #         content: "{{ lookup('ansible.builtin.file', schema_path) | from_yaml | arista.avd.convert_schema(type='pydantic', root_key='avdfacts') }}"
+    #         dest: "{{ schema_pydantic_path }}"
+    #         mode: 0664
+
+    #   delegate_to: localhost
+    #   run_once: true

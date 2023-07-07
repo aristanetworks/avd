@@ -1,0 +1,485 @@
+type: dict
+allow_other_keys: true
+keys:
+  switch:
+    type: dict
+    required: true
+    keys:
+      type:
+        type: str
+        required: true
+      hostname:
+        type: str
+        required: true
+      node_type_key:
+        type: str
+        required: true
+      connected_endpoints:
+        type: bool
+        default: false
+      default_downlink_interfaces:
+        type: list
+        default: []
+        items:
+          type: str
+      default_evpn_role:
+        type: str
+        default: none
+      default_interfaces:
+        type: dict
+        default: {}
+      default_underlay_routing_protocol:
+        type: str
+        default: ebgp
+      default_overlay_routing_protocol:
+        type: str
+        default: ebgp
+      default_overlay_address_families:
+        type: list
+        required: true
+        default:
+        - evpn
+        items:
+          type: str
+      default_mpls_overlay_role:
+        type: str
+        default: none
+      mpls_lsr:
+        type: bool
+        default: false
+      mlag_support:
+        type: bool
+        default: false
+      network_services_l1:
+        type: bool
+        default: false
+      network_services_l2:
+        type: bool
+        default: false
+      network_services_l3:
+        type: bool
+        default: false
+      underlay_router:
+        type: bool
+        default: true
+      uplink_type:
+        type: str
+        default: p2p
+      vtep:
+        type: bool
+        default: false
+      ip_addressing:
+        type: dict
+        default: {}
+      interface_descriptions:
+        type: dict
+        default: {}
+      group:
+        type: str
+      id:
+        type: int
+        required: true
+      mgmt_ip:
+        type: str
+      platform:
+        type: str
+      max_parallel_uplinks:
+        type: int
+        default: 1
+      uplink_switches:
+        type: list
+        items:
+          type: str
+      uplink_interfaces:
+        type: list
+        default: []
+        items:
+          type: str
+      uplink_switch_interfaces:
+        type: list
+        items:
+          type: str
+      uplink_interface_speed:
+        type: str
+      uplink_bfd:
+        type: bool
+      uplink_ptp:
+        type: dict
+        keys:
+          enable:
+            type: bool
+      default_ptp_priority1:
+        type: int
+        default: 127
+      ptp:
+        type: dict
+      uplink_macsec:
+        type: bool
+      uplink_structured_config:
+        type: dict
+      short_esi:
+        type: str
+      rack:
+        type: str
+      raw_eos_cli:
+        type: str
+      struct_cfg:
+        type: dict
+      max_uplink_switches:
+        type: int
+        required: true
+      is_deployed:
+        type: bool
+        default: true
+      platform_settings:
+        type: dict
+        default: {}
+      mgmt_interface:
+        type: str
+      system_mac_address:
+        type: str
+      underlay_routing_protocol:
+        type: str
+        required: true
+      overlay_routing_protocol:
+        type: str
+        required: true
+      overlay_address_families:
+        type: list
+        default: []
+        items:
+          type: str
+      link_tracking_groups:
+        type: list
+        items:
+          type: dict
+      lacp_port_id:
+        type: dict
+        keys:
+          begin:
+            type: int
+          end:
+            type: int
+      filter_tenants:
+        type: list
+        default:
+        - all
+        items:
+          type: str
+      always_include_vrfs_in_tenants:
+        type: list
+        items:
+          type: str
+      filter_tags:
+        type: list
+        default:
+        - all
+        items:
+          type: str
+      filter_only_vlans_in_use:
+        type: bool
+        default: false
+      virtual_router_mac_address:
+        type: str
+      trunk_groups:
+        type: dict
+        keys:
+          mlag:
+            type: dict
+            keys:
+              name:
+                type: str
+                default: MLAG
+          mlag_l3:
+            type: dict
+            keys:
+              name:
+                type: str
+                default: LEAF_PEER_L3
+          uplink:
+            type: dict
+            keys:
+              name:
+                type: str
+                default: UPLINK
+      enable_trunk_groups:
+        type: bool
+      only_local_vlan_trunk_groups:
+        type: bool
+      endpoint_trunk_groups:
+        type: list
+        default: []
+      vlans:
+        type: str
+        description: 'Compressed list of vlans to be defined on this switch
+
+
+          Ex. "1-100, 201-202"
+
+          '
+        default: ''
+      spanning_tree_mode:
+        type: str
+      spanning_tree_priority:
+        type: int
+      spanning_tree_root_super:
+        type: bool
+      underlay_multicast:
+        type: bool
+      overlay_rd_type_admin_subfield:
+        type: str
+        required: true
+      evpn_multicast:
+        type: bool
+      multi_vtep:
+        type: bool
+      igmp_snooping_enabled:
+        type: bool
+      loopback_ipv4_pool:
+        type: str
+      loopback_ipv4_offset:
+        type: int
+      uplink_ipv4_pool:
+        type: str
+      router_id:
+        type: str
+      evpn_gateway_vxlan_l2:
+        type: bool
+      evpn_gateway_vxlan_l3:
+        type: bool
+      evpn_gateway_vxlan_l3_inter_domain:
+        type: bool
+      evpn_gateway_remote_peers:
+        type: list
+        items:
+          type: dict
+      bgp_defaults:
+        type: list
+        items:
+          type: str
+      bgp_cluster_id:
+        type: str
+      bgp_peer_groups:
+        type: dict
+      evpn_role:
+        type: str
+      mpls_overlay_role:
+        type: str
+      bgp_as:
+        type: str
+      evpn_route_servers:
+        type: list
+        default: []
+        items:
+          type: str
+      mpls_route_reflectors:
+        type: list
+        items:
+          type: str
+      isis_net:
+        type: str
+      is_type:
+        type: str
+      isis_instance_name:
+        type: str
+      node_sid:
+        type: str
+      underlay_ipv6:
+        type: bool
+      loopback_ipv6_pool:
+        type: str
+      loopback_ipv6_offset:
+        type: int
+      ipv6_router_id:
+        type: str
+      mlag:
+        type: bool
+        required: true
+      mlag_ibgp_origin_incomplete:
+        type: bool
+      mlag_peer_vlan:
+        type: int
+      mlag_peer_link_allowed_vlans:
+        type: str
+      mlag_dual_primary_detection:
+        type: bool
+      mlag_interfaces:
+        type: list
+        items:
+          type: str
+      mlag_interfaces_speed:
+        type: str
+      mlag_peer_ipv4_pool:
+        type: str
+      mlag_peer_l3_ipv4_pool:
+        type: str
+      mlag_port_channel_structured_config:
+        type: dict
+      mlag_peer_vlan_structured_config:
+        type: dict
+      mlag_peer_l3_vlan_structured_config:
+        type: dict
+      mlag_role:
+        type: str
+      mlag_peer:
+        type: str
+      mlag_l3:
+        type: bool
+      mlag_peer_l3_vlan:
+        type: int
+      mlag_port_channel_id:
+        type: int
+      vtep_loopback_ipv4_pool:
+        type: str
+      vtep_loopback:
+        type: str
+      inband_management_subnet:
+        type: str
+      inband_management_role:
+        type: str
+      inband_management_parents:
+        type: list
+        items:
+          type: str
+      inband_management_vlan:
+        type: int
+      inband_management_ip:
+        type: str
+      inband_management_gateway:
+        type: str
+      inband_management_interface:
+        type: str
+      uplinks:
+        type: list
+        description: 'List of uplinks with all parameters
+
+
+          These facts are leveraged by templates for this device when rendering uplinks
+
+          and by templates for peer devices when rendering downlinks
+
+          '
+        default: []
+        items:
+          type: dict
+      uplink_peers:
+        type: list
+        description: 'List of all uplink peers
+
+
+          These are used to generate the "avd_topology_peers" fact covering downlinks
+          for all devices
+
+          '
+        default: []
+        items:
+          type: str
+      mlag_switch_ids:
+        type: dict
+        description: Switch id's of both primary and secondary switches for a given
+          node group
+        keys:
+          primary:
+            type: int
+          secondary:
+            type: int
+      vtep_ip:
+        type: str
+      mlag_ip:
+        type: str
+      mlag_peer_ip:
+        type: str
+      mlag_l3_ip:
+        type: str
+      mlag_peer_l3_ip:
+        type: str
+      mlag_peer_mgmt_ip:
+        type: str
+      overlay_routing_protocol_address_family:
+        type: str
+        default: ipv4
+      bgp:
+        type: bool
+        description: Boolean telling if BGP Routing should be configured
+        required: true
+      evpn_encapsulation:
+        type: str
+        default: vxlan
+      underlay:
+        type: dict
+        description: Dictionary of underlay parameters to configure on the node
+        required: true
+        keys:
+          bgp:
+            type: bool
+            required: true
+          ldp:
+            type: bool
+            required: true
+          mpls:
+            type: bool
+            required: true
+          sr:
+            type: bool
+            required: true
+          ospf:
+            type: bool
+            required: true
+          isis:
+            type: bool
+            required: true
+      overlay:
+        type: dict
+        description: Dictionary of overlay parameters to configure on the node
+        required: true
+        keys:
+          peering_address:
+            type: str
+          ler:
+            type: bool
+            required: true
+          vtep:
+            type: bool
+            required: true
+          evpn:
+            type: bool
+            required: true
+          evpn_vxlan:
+            type: bool
+            required: true
+          evpn_mpls:
+            type: bool
+            required: true
+          vpn_ipv4:
+            type: bool
+            required: true
+          vpn_ipv6:
+            type: bool
+            required: true
+          ipvpn_gateway:
+            type: bool
+            required: true
+          dpath:
+            type: bool
+            required: true
+      ipvpn_gateway:
+        type: dict
+        description: Dictionary of ipvpn interworking gateway parameters to configure
+          on the node
+        keys:
+          evpn_domain_id:
+            type: str
+            default: 0:1
+          ipvpn_domain_id:
+            type: str
+            default: 0:2
+          max_routes:
+            type: int
+            default: 0
+          local_as:
+            type: str
+          remote_peers:
+            type: list
+            default: []
+            items:
+              type: dict

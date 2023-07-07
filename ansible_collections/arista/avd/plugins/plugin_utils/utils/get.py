@@ -1,6 +1,8 @@
 # Copyright (c) 2023 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from collections import ChainMap
+
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 
 
@@ -40,14 +42,23 @@ def get(dictionary, key, default=None, required=False, org_key=None, separator="
 
     if org_key is None:
         org_key = key
+
     keys = str(key).split(separator)
-    value = dictionary.get(keys[0])
+    if isinstance(dictionary, (dict, ChainMap)):
+        value = dictionary.get(keys[0])
+
+    else:
+        value = getattr(dictionary, keys[0], None)
+
     if value is None:
         if required is True:
             raise AristaAvdMissingVariableError(org_key)
+
         return default
+
     else:
         if len(keys) > 1:
             return get(value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator)
+
         else:
             return value

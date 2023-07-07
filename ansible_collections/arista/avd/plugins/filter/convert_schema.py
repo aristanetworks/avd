@@ -13,6 +13,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtodocumentationschemaconverter import AvdToDocumentationSchemaConverter
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtojsonschemaconverter import AvdToJsonSchemaConverter
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtopydanticconverter import AvdToPydanticConverter
 
 DOCUMENTATION = r"""
 ---
@@ -82,6 +83,9 @@ def convert_schema(schema_id: str, type: str):
 
     elif type == "jsonschema":
         return AvdToJsonSchemaConverter(avdschema).convert_schema()
+
+    elif type == "pydantic":
+        return AvdToPydanticConverter(avdschema).convert_schema(root_key=schema_id)
 
     else:
         raise AristaAvdError(f"Filter arista.avd.convert_schema requires type 'documentation_tables' or 'jsonschema'. Got {type}")
