@@ -441,7 +441,11 @@ $defs:
               new_key: short_esi
           short_esi:
             type: str
-            description: In format xxxx:xxxx:xxxx or "auto".
+            deprecation:
+              warning: true
+              removed: true
+              remove_in_version: "5.0.0"
+              new_key: ethernet_segment.short_esi
           lacp_fallback:
             type: dict
             description: LACP fallback configuration.
