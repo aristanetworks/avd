@@ -1,0 +1,22 @@
+fabric_name: fabric_removed_port_channel_short_esi
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: removed-port-channel-short-esi-connected-endpoints
+
+servers:
+  - name: server01_ESI
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ removed-port-channel-short-esi-connected-endpoints ]
+        profile: TENANT_A_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+          short_esi: '0303:0202:0101'
+
+expected_error_message: >-
+  [DEPRECATED]: [removed-port-channel-short-esi-connected-endpoints]: The input data model 'servers.[0].adapters.[0].port_channel.short_esi' was removed. Use 'ethernet_segment.short_esi' instead. This feature was removed from arista.avd.eos_designs in version 5.0.0. Please update your playbooks.
