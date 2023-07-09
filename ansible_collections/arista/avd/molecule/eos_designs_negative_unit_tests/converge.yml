@@ -130,4 +130,3 @@
             that:
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
-
