@@ -212,6 +212,7 @@ class UtilsMixin:
             "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu),
             "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
             "eos_cli": p2p_link.get("raw_eos_cli"),
+            "struct_cfg": get(p2p_link, "structured_config"),
         }
 
         if (ip := get(p2p_link, "ip")) is not None:
