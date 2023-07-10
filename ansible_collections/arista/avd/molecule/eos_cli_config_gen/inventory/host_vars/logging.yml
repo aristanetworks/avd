@@ -45,5 +45,5 @@ logging:
   event:
     storm_control:
       discards:
-        enable: true
+        global: true
         interval: 10

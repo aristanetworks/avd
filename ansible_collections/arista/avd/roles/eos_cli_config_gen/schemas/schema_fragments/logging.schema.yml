@@ -136,7 +136,7 @@ keys:
               discards:
                 type: dict
                 keys:
-                  enable:
+                  global:
                     type: bool
                   interval:
                     type: int

@@ -6279,9 +6279,9 @@
                 "discards": {
                   "type": "object",
                   "properties": {
-                    "enable": {
+                    "global": {
                       "type": "boolean",
-                      "title": "Enable"
+                      "title": "Global"
                     },
                     "interval": {
                       "type": "integer",

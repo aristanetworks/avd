@@ -28,7 +28,7 @@ no logging monitor
 {%     elif logging.monitor is arista.avd.defined %}
 logging monitor {{ logging.monitor }}
 {%     endif %}
-{%     if logging.event.storm_control.discards.enable is arista.avd.defined(true) %}
+{%     if logging.event.storm_control.discards.global is arista.avd.defined(true) %}
 logging event storm-control discards global
 {%     endif %}
 {%     if logging.event.storm_control.discards.interval is arista.avd.defined %}
