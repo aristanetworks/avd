@@ -4,7 +4,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_item
 
 from .utils import UtilsMixin
 
@@ -125,19 +125,26 @@ class EthernetInterfacesMixin(UtilsMixin):
 
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
+            append_if_not_duplicate(
+                list_of_dicts=ethernet_interfaces,
+                primary_key="name",
+                new_dict=ethernet_interface,
+                context=f"Ethernet Interfaces defined under underlay",
+                context_keys=["name", "peer", "peer_interface"],
+            )
 
-            if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
-                ethernet_interfaces.append(ethernet_interface)
-            else:
-                if found_eth_interface == ethernet_interface:
-                    # Same ethernet_interface information twice in the input data. So not duplicate interface name.
-                    continue
-
-                raise AristaAvdError(
-                    f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for underlay peer:"
-                    f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface name:"
-                    f" {found_eth_interface['description']}"
-                )
+            # if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
+            #     ethernet_interfaces.append(ethernet_interface)
+            # else:
+            #     if found_eth_interface == ethernet_interface:
+            #         # Same ethernet_interface information twice in the input data. So not duplicate interface name.
+            #         continue
+            #
+            #     raise AristaAvdError(
+            #         f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for underlay peer:"
+            #         f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface name:"
+            #         f" {found_eth_interface['description']}"
+            #     )
 
         if ethernet_interfaces:
             return ethernet_interfaces
