@@ -682,6 +682,11 @@
                 },
                 "title": "PTP"
               },
+              "sflow": {
+                "type": "boolean",
+                "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
+                "title": "Sflow"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -911,6 +916,11 @@
                   "^_.+$": {}
                 },
                 "title": "PTP"
+              },
+              "sflow": {
+                "type": "boolean",
+                "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
+                "title": "Sflow"
               },
               "qos_profile": {
                 "type": "string",
@@ -1867,6 +1877,11 @@
                 },
                 "title": "PTP"
               },
+              "sflow": {
+                "type": "boolean",
+                "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
+                "title": "Sflow"
+              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -2096,6 +2111,11 @@
                   "^_.+$": {}
                 },
                 "title": "PTP"
+              },
+              "sflow": {
+                "type": "boolean",
+                "description": "Enable sFlow. Overrides `fabric_sflow` setting.",
+                "title": "Sflow"
               },
               "qos_profile": {
                 "type": "string",
@@ -2532,6 +2552,11 @@
               "^_.+$": {}
             },
             "title": "PTP"
+          },
+          "sflow": {
+            "type": "boolean",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
+            "title": "Sflow"
           },
           "link_tracking": {
             "type": "object",
@@ -4285,6 +4310,11 @@
               "^_.+$": {}
             },
             "title": "PTP"
+          },
+          "sflow": {
+            "type": "boolean",
+            "description": "Configures sFlow on the interface. Overrides `fabric_sflow` setting.\n",
+            "title": "Sflow"
           },
           "link_tracking": {
             "type": "object",

@@ -44,6 +44,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "type": "routed",
                         "ipv6_enable": link.get("ipv6_enable"),
                         "link_tracking_groups": link.get("link_tracking_groups"),
+                        "sflow": link.get("sflow"),
                     }
                 )
 
