@@ -10004,6 +10004,11 @@ keys:
                           max: 16777215
             mpls_ldp_sync_default:
               type: bool
+            eos_cli:
+              type: list
+              items:
+                type: str
+                description: The eos cli command
   router_pim_sparse_mode:
     type: dict
     keys:

@@ -17180,6 +17180,14 @@
               "mpls_ldp_sync_default": {
                 "type": "boolean",
                 "title": "MPLS LDP Sync Default"
+              },
+              "eos_cli": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "The eos cli command"
+                },
+                "title": "EOS CLI"
               }
             },
             "additionalProperties": false,
