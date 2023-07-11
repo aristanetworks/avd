@@ -1034,6 +1034,12 @@
       "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication:\n- On-premise using token onboarding. Default token path is '/tmp/token'.\n- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.\nToken must be copied to the device first.",
       "title": "CVP Ingestauth Key"
     },
+    "cvp_instance_ip": {
+      "type": "string",
+      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cvp_instance_ips</samp> instead.",
+      "deprecated": true,
+      "title": "CVP Instance IP"
+    },
     "cvp_instance_ips": {
       "type": "array",
       "description": "List of IPv4 addresses or DNS names for CloudVision.\nFor on-premise CloudVision enter all the nodes of the cluster.\nFor CloudVision as a Service enter the DNS name of the instance.\n`eos_designs` only supports one CloudVision cluster.\n",

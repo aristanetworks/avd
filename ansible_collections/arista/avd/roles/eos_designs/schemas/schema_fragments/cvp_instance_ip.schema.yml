@@ -9,7 +9,6 @@ keys:
     deprecation:
       warning: true
       new_key: cvp_instance_ips
-      removed: true
       remove_in_version: "5.0.0"
     type: str
     description: |
