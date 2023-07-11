@@ -6,9 +6,8 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_lacp_id, generate_route_target
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from .utils import UtilsMixin
 
@@ -203,18 +202,13 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         If 1 is False for every port-channel in the port_channel_interfaces, it is a new port-channel and it is appended to the list.
         """
-        if (matching_port_channel_config := get_item(port_channel_interfaces, "name", candidate_port_channel_config["name"])) is None:
-            # No port_channel_interface found with the same name in port_channel_interfaces
-            # append to the list and return
-            port_channel_interfaces.append(candidate_port_channel_config)
-            return
-
-        if matching_port_channel_config != candidate_port_channel_config:
-            # Found duplicate name with different generated configs
-            raise AristaAvdError(
-                f"Duplicate port-channel name {candidate_port_channel_config['name']} with conflicting configurations found while generating port-channels for"
-                " connected-endpoints or network-ports"
-            )
+        append_if_not_duplicate(
+            list_of_dicts=port_channel_interfaces,
+            primary_key="name",
+            new_dict=candidate_port_channel_config,
+            context="Port-channel Interfaces defined under connected_endpoints",
+            context_keys=["name"],
+        )
 
         # Duplicate name with same configuration - nothing to do
         return
