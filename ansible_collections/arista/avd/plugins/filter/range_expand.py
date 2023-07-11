@@ -13,6 +13,25 @@ import re
 from ansible.errors import AnsibleFilterError
 
 
+def extend_range(one_range):
+    regex = r"(\(\s*(?:\d*)(?:(?:\s*,\s*\d+)*(?:\s*,?\s*\d+\-\d+)*)*\s*\))|([0-9]+\-[0-9]+)"
+    range_sr = re.search(regex, one_range)
+    groups = range_sr.groups()
+    start_index, end_index = range_sr.start(), range_sr.end()
+    replaced_list = []
+    if groups[0]:
+        # To replace the values inside parenthesis, Ex. (2,3,4-6)
+        ports_list = groups[0].replace("(", "").replace(")", "").split(",")
+        for i in ports_list:
+            replaced_list.append(one_range.replace(one_range[start_index:end_index], str(i), 1))
+    elif groups[1]:
+        # To replace the values of range, Ex. 4-6
+        range_start, range_end = groups[1].split("-")
+        for i in range(int(range_start), int(range_end) + 1):
+            replaced_list.append(one_range.replace(one_range[start_index:end_index], str(i), 1))
+    return replaced_list
+
+
 def range_expand(range_to_expand):
     if not (isinstance(range_to_expand, list) or isinstance(range_to_expand, str)):
         raise AnsibleFilterError(f"value must be of type list or str, got {type(range_to_expand)}")
@@ -27,145 +46,25 @@ def range_expand(range_to_expand):
     # Must be a str now
     else:
         prefix = ""
-        if "(" in range_to_expand:  # To handle Eth(1,2)/(3,4) cases
-            temp_range_to_expand = ""
-            # replacing "," with "&"
-            range_to_expand = re.sub(r"\((.*?)\)", lambda match: match.group(0).replace(",", "&"), range_to_expand)
-            for parenthesis_range in range_to_expand.split(","):
-                if "/(" in parenthesis_range:
-                    # regex to handle sub-interface example --/(1,2)
-                    sr = re.search(r"^(.*?)(\/\()([\d+&\d+]+)(\)\/)?(.*)", parenthesis_range)
-                    sr_groups = sr.groups()
-                    interface_string = ""
-                    for ps in sr_groups[2].split("&"):
-                        interface_string += sr_groups[0].strip() + "/" + ps.strip()
-                        if sr_groups[3] is not None:  # to add last sub-interface --/--/(1,2)
-                            interface_string += "/" + sr_groups[4].strip()
-                        interface_string += ","
-                    result.extend(range_expand(interface_string))
-                    continue
-                if "(" not in parenthesis_range:
-                    interfaces_name = parenthesis_range
-                else:
-                    interfaces_name = ""
-                    # regex to handle parent interface example Eth(1,2)/--
-                    sr = re.search(r"^(.*?)(\()([\d+&\d+]+)(\)\/)?(.*)", parenthesis_range)
-                    sr_groups = sr.groups()
-                    interface_prefix = sr_groups[0]
-                    for pp in sr_groups[2].split("&"):
-                        if interfaces_name:
-                            interfaces_name += ","
-                        interfaces_name += interface_prefix.strip() + pp.strip()
-                        if len(parenthesis_range.split("/")) > 1:
-                            interfaces_name += "/" + sr_groups[4]
-                temp_range_to_expand += interfaces_name + ","
-            range_to_expand = temp_range_to_expand[0:-1]
-
+        # Replacing "," inside () with "&" so that below for loop won't split it.
+        range_to_expand = re.sub(r"\((.*?)\)", lambda match: match.group(0).replace(",", "&"), range_to_expand)
         # Unpack list in string
         for one_range in range_to_expand.split(","):
+            # Changing "&" back to ",".
+            one_range = re.sub(r"\((.*?)\)", lambda match: match.group(0).replace("&", ","), one_range)
             if one_range is None:
                 continue
-            # Find prefix (if any)
-            regex = r"^(.*?)(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+)\/)?(((\d+)-)?(\d+))(\.((\d+)-)?(\d+))?"
-            # Number of groups in this regex.
-            regex_groups = 17
-            # Groups one-by-one:
-            # Group 1  (.*?)                                                                           matches prefix ex. Ethernet, Eth, Po, Port-Channel
-            # Group 2       (((\d+)-)?(\d+)\/)?                                                        matches module(s) and slash ex. 12/, 1-3/
-            # Group 3        ((\d+)-)?                                                                 matches first module and dash ex. 1-
-            # Group 4         (\d+)                                                                    matches first module ex. 1
-            # Group 5                 (\d+)                                                            matches last module ex. 12, 3
-            # Group 6                          (((\d+)-)?(\d+)\/)?                                     matches parent interface(s) and slash ex. 47/, 1-48/
-            # Group 7                           ((\d+)-)?                                              matches parent interface(s) and dash ex. 47-
-            # Group 8                            (\d+)                                                 matches first parent interface ex. 1
-            # Group 9                                    (\d+)                                         matches last parent interface ex. 47, 48
-            # Group 10                                            (((\d+)-)?(\d+))                     matches (breakout) interface(s) ex. 1, 1-4, 1-48
-            # Group 11                                             ((\d+)-)?                           matches first interfaces and dash ex. 1-, 1-
-            # Group 12                                              (\d+)                              matches first interface
-            # Group 13                                                      (\d+)                      matches last interface ex. 1, 4, 48
-            # Group 14                                                            (\.((\d+)-)?(\d+))?  matches dot and sub-interface(s) ex. .141, .12-15
-            # Group 15                                                               ((\d+)-)?         matches first sub-interface and dash ex. 12-
-            # Group 16                                                                (\d+)            matches first sub-interface ex. 12
-            # Group 17                                                                        (\d+)    matches last sub-interface ex. 141, 15
-            # Remember that the groups() object is 0-based and the group numbers above are 1-based
-            search_result = re.search(regex, one_range)
-            if search_result:
-                if len(search_result.groups()) == regex_groups:
-                    groups = search_result.groups()
-                    first_module = last_module = None
-                    first_parent_interface = last_parent_interface = None
-                    first_interface = last_interface = None
-                    first_subinterface = last_subinterface = None
-                    # Set prefix if found (otherwise use last set prefix)
-                    if groups[0]:
-                        prefix = groups[0]
-                    if groups[4]:
-                        last_module = int(groups[4])
-                    if groups[3]:
-                        first_module = int(groups[3])
-                    else:
-                        first_module = last_module
-                    if groups[8]:
-                        last_parent_interface = int(groups[8])
-                    if groups[7]:
-                        first_parent_interface = int(groups[7])
-                    else:
-                        first_parent_interface = last_parent_interface
-                    if groups[12]:
-                        last_interface = int(groups[12])
-                    if groups[11]:
-                        first_interface = int(groups[11])
-                    else:
-                        first_interface = last_interface
-                    if groups[16]:
-                        last_subinterface = int(groups[16])
-                    if groups[15]:
-                        first_subinterface = int(groups[15])
-                    else:
-                        first_subinterface = last_subinterface
-
-                    def expand_subinterfaces(interface_string):
-                        result = []
-                        if last_subinterface is not None:
-                            for subinterface in range(first_subinterface, last_subinterface + 1):
-                                result.append(f"{interface_string}.{subinterface}")
-                        else:
-                            result.append(interface_string)
-                        return result
-
-                    def expand_interfaces(interface_string):
-                        result = []
-                        for interface in range(first_interface, last_interface + 1):
-                            for res in expand_subinterfaces(f"{interface_string}{interface}"):
-                                result.append(res)
-                        return result
-
-                    def expand_parent_interfaces(interface_string):
-                        result = []
-                        if last_parent_interface:
-                            for parent_interface in range(first_parent_interface, last_parent_interface + 1):
-                                for res in expand_interfaces(f"{interface_string}{parent_interface}/"):
-                                    result.append(res)
-                        else:
-                            for res in expand_interfaces(f"{interface_string}"):
-                                result.append(res)
-                        return result
-
-                    def expand_module(interface_string):
-                        result = []
-                        if last_module:
-                            for module in range(first_module, last_module + 1):
-                                for res in expand_parent_interfaces(f"{interface_string}{module}/"):
-                                    result.append(res)
-                        else:
-                            for res in expand_parent_interfaces(f"{interface_string}"):
-                                result.append(res)
-                        return result
-
-                    result.extend(expand_module(prefix))
-
+            regex = r"([A-Za-z]+\s*)?(.*)"
+            sr = re.search(regex, one_range)
+            try:
+                prefix_group = sr.groups()
+                if prefix_group[0]:
+                    prefix = prefix_group[0]
                 else:
-                    raise AnsibleFilterError(f"Invalid range, got {one_range} and found {search_result.groups()}")
+                    one_range = prefix + one_range
+                result.extend(range_expand(extend_range(one_range)))
+            except AttributeError:
+                result.extend([one_range])
     return result
 
 
