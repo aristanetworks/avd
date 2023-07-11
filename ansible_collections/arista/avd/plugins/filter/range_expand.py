@@ -64,7 +64,10 @@ def range_expand(range_to_expand):
                     one_range = prefix + one_range
                 result.extend(range_expand(extend_range(one_range)))
             except AttributeError:
-                result.extend([one_range])
+                if one_range:
+                    result.extend([one_range])
+                else:
+                    result.extend(one_range)
     return result
 
 
