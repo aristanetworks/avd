@@ -19705,46 +19705,6 @@
             },
             "title": "IP Helpers"
           },
-          "ipv6_helpers": {
-            "type": "array",
-            "description": "List of DHCP servers",
-            "items": {
-              "type": "object",
-              "properties": {
-                "ipv6_helper": {
-                  "type": "string",
-                  "description": "IPv6 address or hostname of DHCP server",
-                  "title": "IPv6 Helper"
-                },
-                "link_address": {
-                  "type": "string",
-                  "title": "Link Address"
-                },
-                "local_interface": {
-                  "type": "string",
-                  "title": "Local Interface"
-                },
-                "source_address": {
-                  "type": "string",
-                  "description": "Address used as source for forwarded DHCP packets",
-                  "title": "Source Address"
-                },
-                "vrf": {
-                  "type": "string",
-                  "description": "VRF where DHCP server can be reached",
-                  "title": "VRF"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "required": [
-                "ipv6_helper"
-              ]
-            },
-            "title": "IPv6 Helpers"
-          },
           "ip_nat": {
             "type": "object",
             "properties": {
@@ -20140,6 +20100,46 @@
               }
             },
             "title": "IPv6 DHCP Relay Destinations"
+          },
+          "ipv6_helpers": {
+            "type": "array",
+            "description": "List of DHCP servers",
+            "items": {
+              "type": "object",
+              "properties": {
+                "ipv6_helper": {
+                  "type": "string",
+                  "description": "IPv6 address or hostname of DHCP server",
+                  "title": "IPv6 Helper"
+                },
+                "link_address": {
+                  "type": "string",
+                  "title": "Link Address"
+                },
+                "local_interface": {
+                  "type": "string",
+                  "title": "Local Interface"
+                },
+                "source_address": {
+                  "type": "string",
+                  "description": "Address used as source for forwarded DHCP packets",
+                  "title": "Source Address"
+                },
+                "vrf": {
+                  "type": "string",
+                  "description": "VRF where DHCP server can be reached",
+                  "title": "VRF"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "ipv6_helper"
+              ]
+            },
+            "title": "IPv6 Helpers"
           },
           "access_group_in": {
             "type": "string",

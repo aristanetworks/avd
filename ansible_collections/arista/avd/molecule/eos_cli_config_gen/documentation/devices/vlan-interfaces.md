@@ -376,10 +376,10 @@ interface Vlan334
    description SVI description
    no shutdown
    ipv6 address virtual 2001:db9::1/64
+   ipv6 helper-address 2001:db8::dddd link-address 2001:db8::ddde
    ipv6 helper-address 2001:db8::aaaa vrf A source-address 2001:db8::aaab
    ipv6 helper-address 2001:db8::bbbb vrf A local-interface Loopback0
    ipv6 helper-address 2001:db8::cccc vrf A source-address 2001:db8::cccd link-address 2001:db8::ccce
-   ipv6 helper-address 2001:db8::dddd link-address 2001:db8::ddde
    ipv6 helper-address 2001:db8::eeee vrf A local-interface Loopback0 link-address 2001:db8::eeef
 !
 interface Vlan501

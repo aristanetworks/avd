@@ -11505,30 +11505,6 @@ keys:
                 description: VRF where DHCP server can be reached
                 convert_types:
                 - int
-        ipv6_helpers:
-          type: list
-          description: List of DHCP servers
-          convert_types:
-          - dict
-          primary_key: ipv6_helper
-          items:
-            type: dict
-            keys:
-              ipv6_helper:
-                type: str
-                description: IPv6 address or hostname of DHCP server
-              link_address:
-                type: str
-              local_interface:
-                type: str
-              source_address:
-                type: str
-                description: Address used as source for forwarded DHCP packets
-              vrf:
-                type: str
-                description: VRF where DHCP server can be reached
-                convert_types:
-                - int
         ip_nat:
           $ref: '#/$defs/interface_ip_nat'
         ipv6_enable:
@@ -11628,6 +11604,30 @@ keys:
                 type: str
                 description: Override the default link address specified in the relayed
                   DHCP packet
+        ipv6_helpers:
+          type: list
+          description: List of DHCP servers
+          convert_types:
+          - dict
+          primary_key: ipv6_helper
+          items:
+            type: dict
+            keys:
+              ipv6_helper:
+                type: str
+                description: IPv6 address or hostname of DHCP server
+              link_address:
+                type: str
+              local_interface:
+                type: str
+              source_address:
+                type: str
+                description: Address used as source for forwarded DHCP packets
+              vrf:
+                type: str
+                description: VRF where DHCP server can be reached
+                convert_types:
+                - int
         access_group_in:
           type: str
           description: IPv4 access-list name

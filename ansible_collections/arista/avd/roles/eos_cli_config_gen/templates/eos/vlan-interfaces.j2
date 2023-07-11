@@ -164,20 +164,36 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ipv6_access_group_out is arista.avd.defined %}
    ipv6 access-group {{ vlan_interface.ipv6_access_group_out }} out
 {%     endif %}
+{# First ipv6_helper for loop is to check for those without a vrf #}
+{%     for ipv6_helper in vlan_interface.ipv6_helpers | arista.avd.natural_sort('ipv6_helper') %}
+{%         set ipv6_helper_cli = "ipv6 helper-address " ~ ipv6_helper.ipv6_helper %}
+{%         if ipv6_helper.vrf is not arista.avd.defined %}
+{%             if ipv6_helper.source_address is arista.avd.defined %}
+{%                 set ipv6_helper_cli = ipv6_helper_cli ~ " source-address " ~ ipv6_helper.source_address %}
+{%             elif ipv6_helper.local_interface is arista.avd.defined %}
+{%                 set ipv6_helper_cli = ipv6_helper_cli ~ " local-interface " ~ ipv6_helper.local_interface %}
+{%             endif %}
+{%             if ipv6_helper.link_address is arista.avd.defined %}
+{%                 set ipv6_helper_cli = ipv6_helper_cli ~ " link-address " ~ ipv6_helper.link_address %}
+{%             endif %}
+   {{ ipv6_helper_cli }}
+{%         endif %}
+{%     endfor %}
+{# Second ipv6_helper for loop is to check for those with a vrf #}
 {%     for ipv6_helper in vlan_interface.ipv6_helpers | arista.avd.natural_sort('ipv6_helper') %}
 {%         set ipv6_helper_cli = "ipv6 helper-address " ~ ipv6_helper.ipv6_helper %}
 {%         if ipv6_helper.vrf is arista.avd.defined %}
 {%             set ipv6_helper_cli = ipv6_helper_cli ~ " vrf " ~ ipv6_helper.vrf %}
-{%         endif %}
-{%         if ipv6_helper.source_address is arista.avd.defined %}
-{%             set ipv6_helper_cli = ipv6_helper_cli ~ " source-address " ~ ipv6_helper.source_address %}
-{%         elif ipv6_helper.local_interface is arista.avd.defined %}
-{%             set ipv6_helper_cli = ipv6_helper_cli ~ " local-interface " ~ ipv6_helper.local_interface %}
-{%         endif %}
-{%         if ipv6_helper.link_address is arista.avd.defined %}
-{%             set ipv6_helper_cli = ipv6_helper_cli ~ " link-address " ~ ipv6_helper.link_address %}
-{%         endif %}
+{%             if ipv6_helper.source_address is arista.avd.defined %}
+{%                 set ipv6_helper_cli = ipv6_helper_cli ~ " source-address " ~ ipv6_helper.source_address %}
+{%             elif ipv6_helper.local_interface is arista.avd.defined %}
+{%                 set ipv6_helper_cli = ipv6_helper_cli ~ " local-interface " ~ ipv6_helper.local_interface %}
+{%             endif %}
+{%             if ipv6_helper.link_address is arista.avd.defined %}
+{%                 set ipv6_helper_cli = ipv6_helper_cli ~ " link-address " ~ ipv6_helper.link_address %}
+{%             endif %}
    {{ ipv6_helper_cli }}
+{%         endif %}
 {%     endfor %}
 {%     if vlan_interface.ospf_network_point_to_point is arista.avd.defined(true) %}
    ip ospf network point-to-point
