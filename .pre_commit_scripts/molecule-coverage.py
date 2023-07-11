@@ -46,8 +46,15 @@ def _parse_schema(schema_id: str) -> CoverageNode:
     Returns root node of parsed schema
     """
     avdschema = AvdSchema(schema_id=schema_id)
-    converter = AvdToCoverageSchemaConverter(avdschema)
-    return converter.convert_schema()
+    converter = AvdToCoverageSchemaConverter(avdschema, schema_id)
+    coverage_tree = converter.convert_schema()
+    # Apply schema defaults if required
+    # Need to be created for each schema_id
+    for schema_default in converter.schema_defaults:
+        # Assume all defaults are at rood node for now
+        coverage_tree.get_coverage(schema_default, [])
+
+    return coverage_tree
 
 
 def _run_schema_molecule_coverage(schema_id: str, coverage_tree: CoverageNode, data_paths: list[pathlib.Path]) -> None:
@@ -90,44 +97,47 @@ def _schema_load_eos_designs_default(coverage_tree) -> None:
     For eos_designs load the role defaults in the schema as data
     coverage_tree is the root node of the parse eos_designs schema
     """
-    eos_designs_default_path = EOS_DESIGNS_PATH / "defaults" / "main"
-    data_paths_designs = [
-        # connected_endpoints
-        eos_designs_default_path / "default-connected-endpoints-keys.yml",
-        # node_type_keys
-        eos_designs_default_path / "default-node-type-keys.yml",
-        # platforms
-        # eos_designs_default_path / "default-node-type-keys.yml",
-    ]
-    for file in data_paths_designs:
-        with open(file, "r", encoding="utf-8") as f:
-            try:
-                data = yaml.safe_load(f.read())
-            except Exception as e:
-                print(e)
-        # Empty list for root node
-        for key, design_dicts in data.items():
-            for design, design_dict in design_dicts.items():
-                normal_key = key[1 + key.find("_") :]
-                coverage_tree.get_coverage({normal_key: design_dict}, [])
+    # node types keys
 
-    data_paths = [
-        # platforms
-        eos_designs_default_path
-        / "default-platform-settings.yml",
-    ]
-    for file in data_paths:
-        with open(file, "r", encoding="utf-8") as f:
-            try:
-                data = yaml.safe_load(f.read())
-            except Exception as e:
-                print(e)
-        # Empty list for root node
-        for key, data_dict in data.items():
-            normal_key = key[1 + key.find("_") :]
-            coverage_tree.get_coverage({normal_key: data_dict}, [])
+    # eos_designs_default_path = EOS_DESIGNS_PATH / "defaults" / "main"
+    # data_paths_designs = [
+    #     # connected_endpoints
+    #     eos_designs_default_path / "default-connected-endpoints-keys.yml",
+    #     # node_type_keys
+    #     eos_designs_default_path / "default-node-type-keys.yml",
+    #     # platforms
+    #     # eos_designs_default_path / "default-node-type-keys.yml",
+    # ]
+    # for file in data_paths_designs:
+    #     with open(file, "r", encoding="utf-8") as f:
+    #         try:
+    #             data = yaml.safe_load(f.read())
+    #         except Exception as e:
+    #             print(e)
+    #     # Empty list for root node
+    #     for key, design_dicts in data.items():
+    #         for design, design_dict in design_dicts.items():
+    #             # remove "default"
+    #             normal_key = key[1 + key.find("_") :]
+    #             coverage_tree.get_coverage({normal_key: design_dict}, [])
 
-    # TODO - network_services
+    # data_paths = [
+    #     # platforms
+    #     eos_designs_default_path
+    #     / "default-platform-settings.yml",
+    # ]
+    # for file in data_paths:
+    #     with open(file, "r", encoding="utf-8") as f:
+    #         try:
+    #             data = yaml.safe_load(f.read())
+    #         except Exception as e:
+    #             print(e)
+    #     # Empty list for root node
+    #     for key, data_dict in data.items():
+    #         normal_key = key[1 + key.find("_") :]
+    #         coverage_tree.get_coverage({normal_key: data_dict}, [])
+
+    # # TODO - network_services
 
 
 def eos_designs_schema_molecule_coverage():
@@ -160,7 +170,7 @@ def eos_designs_schema_molecule_coverage():
     # for eos_designs it is required to load the default for
     # node_type_keys, connected_endpoints and network_services
     # first
-    _schema_load_eos_designs_default(coverage_tree)
+    # _schema_load_eos_designs_default(coverage_tree)
     coverage_tree.path_repr()
 
     _run_schema_molecule_coverage(schema_id, coverage_tree, data_paths)

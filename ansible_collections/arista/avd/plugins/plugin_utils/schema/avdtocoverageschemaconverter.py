@@ -10,6 +10,7 @@ class CoverageNode:
         self.key = key
         self.is_dynamic = is_dynamic
         self.value = None
+        self.default_value = None
         # if this node is in a list keep the value of the parent
         self.ancestor_primary_key_paths = []
         self.primary_key = primary_key
@@ -25,24 +26,19 @@ class CoverageNode:
         self.children.append(child_node)
 
     def get_child(self, key):
-        for child in self.children:
-            if child.key == key:
-                return child
-        return None
+        return next((child for child in self.children if child.key == key), None)
 
     # Path
     @cached_property
     def _path_list(self):
-        # Handle root case
         if self.parent is None:
             return []
+        if self.primary_key:
+            node_path = [f"{self.key}[<{self.primary_key}>]"]
+        elif self.is_dynamic:
+            node_path = [f"{self.key}[<DYNAMIC>]"]
         else:
-            if self.primary_key:
-                node_path = [f"{self.key}[<{self.primary_key}>]"]
-            elif self.is_dynamic:
-                node_path = [f"{self.key}[<DYNAMIC>]"]
-            else:
-                node_path = [self.key]
+            node_path = [self.key]
 
         return self.parent._path_list + node_path
 
@@ -52,6 +48,7 @@ class CoverageNode:
         return "/" + "/".join(path_list)
 
     def render_ancestors_path(self, ancestors_path):
+        print(ancestors_path)
         def _list(node, ancestors_path):
             if node.parent is None:
                 return []
@@ -253,16 +250,18 @@ class CoverageNode:
             result_node.primary_key_values.extend(node.primary_key_values)
             for child in node.children:
                 child_dicts.setdefault(child.key, []).append(child)
-        for key, children in child_dicts:
+        for children in child_dicts.values():
             merged_child = CoverageNode.merge_nodes(children, parent=result_node)
             result_node.add_child(merged_child)
 
         return result_node
 
     def __str__(self):
-        msg = [f"****************** {self.path}"]
-        msg.append(f"{self.primary_key}")
-        msg.append("******************")
+        msg = [
+            f"****************** {self.path}",
+            f"{self.primary_key}",
+            "******************",
+        ]
         return "\n".join(msg)
 
 
@@ -274,8 +273,11 @@ class AvdToCoverageSchemaConverter:
 
     """
 
-    def __init__(self, avdschema):
+    def __init__(self, avdschema, schema_id: None | str = None):
         self._avdschema = avdschema
+        # Hmmm how come we cannot get schema_id from the schema.. TODO
+        self._schema_id = schema_id
+        self.schema_defaults = []
 
     def convert_schema(self):
         root_node = CoverageNode("__root__", None)
@@ -297,26 +299,37 @@ class AvdToCoverageSchemaConverter:
 
         for key, childschema in schema_keys.items():
             output_node = CoverageNode(key, parent_node)
-            if primary_key is not None:
-                parent_node.primary_key = primary_key
-            parent_node.add_child(output_node)
-            self.build_node(output_node, childschema)
-
+            self._maybe_special_eos_designs_keys(key, parent_node, childschema)
+            self._maybe_extract_primary_key(primary_key, parent_node, output_node, childschema)
         # Handle dynamic keys
         if schema.get("type") == "dict":
             dynamic_schema_keys = self._get_dynamic_keys(schema)
             for key, childschema in dynamic_schema_keys.items():
+                self._maybe_special_eos_designs_keys(key, parent_node, childschema)
                 output_node = CoverageNode(key, parent_node, is_dynamic=True)
-                if primary_key is not None:
-                    parent_node.primary_key = primary_key
-                parent_node.add_child(output_node)
-                self.build_node(output_node, childschema)
+                self._maybe_extract_primary_key(primary_key, parent_node, output_node, childschema)
+
+    def _maybe_special_eos_designs_keys(self, key: str, parent_node: CoverageNode, schema: dict):
+        EOS_DESIGNS_SPECIAL_KEYS = ["network_services_keys", "connected_endpoints_keys", "node_type_keys"]
+        if self._schema_id != "eos_designs":
+            return
+        if key in EOS_DESIGNS_SPECIAL_KEYS:
+            print(key)
+            default_values = schema.get("default")
+            print(key, default_values)
+            if default_values:
+                print({key: default_values})
+                self.schema_defaults.append({key: default_values})
+
+    def _maybe_extract_primary_key(self, primary_key, parent_node, output_node, childschema):
+        if primary_key is not None:
+            parent_node.primary_key = primary_key
+        parent_node.add_child(output_node)
+        self.build_node(output_node, childschema)
 
     def _get_items(self, schema: dict):
         primary_key = schema.get("primary_key")
-        keys = {}
-        if (items := schema.get("items")) is not None:
-            keys = self._get_keys(items)
+        keys = {} if (items := schema.get("items")) is None else self._get_keys(items)
         return primary_key, keys
 
     def _get_keys(self, schema: dict):
@@ -331,7 +344,5 @@ class AvdToCoverageSchemaConverter:
         return keys
 
     def _get_dynamic_keys(self, schema: dict):
-        keys = {}
         dynamic_keys = schema.get("dynamic_keys", {})
-        keys.update({f"{dynamic_key}": subschema for dynamic_key, subschema in dynamic_keys.items()})
-        return keys
+        return dict({f"{dynamic_key}": subschema for dynamic_key, subschema in dynamic_keys.items()})
