@@ -144,7 +144,6 @@ options:
 """
 
 EXAMPLES = r"""
-# tasks file for configlet_build_config
 - name: Generate device configuration in structured format
   arista.avd.yaml_templates_to_facts:
     root_key: structured_config
@@ -161,6 +160,8 @@ EXAMPLES = r"""
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
+    schema_id: eos_designs
+    output_schema_id: eos_cli_config_gen
   check_mode: no
   changed_when: False
 """

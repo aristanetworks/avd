@@ -565,7 +565,7 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 
 The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin providing the following capabilities:
 
-- Set Facts based on one or more Jinja2 templates producing YAML output.
+- Set Facts based on one or more Jinja2 templates or Python Classes producing YAML output.
 - Recursively combining templates' output to allow templates to update overlapping parts of the data models.
 - Facts set by one template will be accessible by the following templates.
 - Returned facts can be set below a specific `root_key`.
@@ -575,17 +575,22 @@ The module arguments are:
 
 ```yaml
 - arista.avd.yaml_templates_to_facts:
-    root_key: < optional root_key name >
-    templates:
-        # Path to template file
-      - template: "< template file >"
-        options:
+    # Run data conversion in either "error", "warning", "info", "debug", "quiet" or "disabled" mode.
+    # Conversion will perform type conversion of input variables as defined in the schema.
+    # Conversion is intended to help the user to identify minor # issues with the input data,
+    # while still allowing the data to be validated.
+    # During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
+    #
+    # conversion_mode:disabled means that conversion will not run.
+    # conversion_mode:error will produce error messages and fail the task.
+    # conversion_mode:warning will produce warning messages.
+    # conversion_mode:info will produce regular log messages.
+    # conversion_mode:debug will produce hidden messages viewable with -v.
+    # conversion_mode:quiet will not produce any messages.
+    conversion_mode: < error | warning | info | debug (default) | quiet | disabled >
 
-          # Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.
-          list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
-
-          # Filter out keys from the generated output if value is null/none/undefined
-          strip_empty_keys: < true (default) | false >
+    # Export cProfile data to a file ex. "eos_designs_structured_config-{{inventory_hostname}}"
+    cprofile_file: < filename >
 
     # Output list 'avd_yaml_templates_to_facts_debug' with timestamps of each performed action.
     debug: < true | false (default) >
@@ -594,34 +599,84 @@ The module arguments are:
     # Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
     dest: < path >
 
+    # File mode (ex. 0664) for dest file. See 'ansible.builtin.copy' module for details.
+    mode: < string >
+
+    # AVD Schema for output data. Used for automatic merge of data.
+    output_schem: < schema as dict>
+
+    # ID of AVD Schema for output data. Used for automatic merge of data.
+    output_schema_id: < eos_cli_config_gen | eos_designs >
+
+    # Root key under which the facts will be defined. If not set the facts well be set directly on root level.
+    root_key: < root_key name >
+
+    # Schema conforming to "AVD Meta Schema". Either schema or schema_id must be set.
+    schema: < schema as dict >
+
+    # ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
+    schema_id: < eos_cli_config_gen | eos_designs >
+
+    # Set "switch" fact from on "avd_switch_facts.<inventory_hostname>.switch"
+    set_switch_fact: < true (default) | false >
+
+    templates:
+      - # Python module to import Either template or python_module must be set.
+        python_module: "< python module name >"
+        # Name of Python Class to import (default: AvdStructuredConfig)
+        python_class_name: "< Python Class Name | default: AvdStructuredConfig >"
+        # Template file. Either template or python_module must be set.
+        template: "< template file >"
+        options:
+
+          # Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.
+          list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
+
+          # Filter out keys from the generated output if value is null/none/undefined
+          strip_empty_keys: < true (default) | false >
+
     # If true the output data will be run through another jinja2 rendering before returning.
     # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     template_output: < true | false (default) >
 
-    # Export cProfile data to a file ex. "eos_designs_structured_config-{{inventory_hostname}}"
-    cprofile_file: < filename >
+    # Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
+    # Validation will validate the input variables according to the schema.
+    # During validation, messages will be generated with information
+    # about the host(s) and key(s) which failed validation.
+    #
+    # validation_mode:disabled means that validation will not run.
+    # validation_mode:error will produce error messages and fail the task.
+    # validation_mode:warning will produce warning messages.
+    # validation_mode:info will produce regular log messages.
+    # validation_mode:debug will produce hidden messages viewable with -v.
+    validation_mode: < error | warning (default) | info | debug | disabled >
 ```
 
 **example:**
 
 ```yaml
-- name: Set AVD facts
-  tags: [build, provision]
+- name: Generate device configuration in structured format
   arista.avd.yaml_templates_to_facts:
-    templates: "{{ templates.facts }}"
+    root_key: structured_config
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    templates:
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
+        python_class_name: "AvdStructuredConfig"
+      - template: "mlag/main.j2"
+      - template: "designs/underlay/main.j2"
+      - template: "designs/overlay/main.j2"
+      - template: "l3_edge/main.j2"
+      - template: "designs/network_services/main.j2"
+      - template: "connected_endpoints/main.j2"
+      - template: "custom-structured-configuration-from-var.j2"
+        options:
+          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          strip_empty_keys: false
+    schema_id: eos_designs
+    output_schema_id: eos_cli_config_gen
   delegate_to: localhost
   check_mode: no
   changed_when: False
-
-- name: Generate device configuration in structured format
-  tags: [build, provision]
-  arista.avd.yaml_templates_to_facts:
-    templates: "{{ templates.structured_config }}"
-    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
-    template_output: True
-  delegate_to: localhost
-  check_mode: no
-  register: structured_config
 ```
 
 Role default variables applied to this example:
