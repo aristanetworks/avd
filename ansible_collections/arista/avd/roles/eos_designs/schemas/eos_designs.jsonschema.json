@@ -3211,11 +3211,9 @@
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
-              "esi": {
+              "short_esi": {
                 "type": "string",
-                "description": "Format xxxx:xxxx:xxxx.\nThis key is deprecated. Support will be removed in AVD version 4.0.0. Use <samp>short_esi</samp> instead.",
-                "deprecated": true,
-                "title": "Esi"
+                "title": "Short Esi"
               },
               "lacp_fallback": {
                 "type": "object",
@@ -4970,11 +4968,9 @@
                 "description": "Port-Channel administrative state.\nSetting to false will set port to 'shutdown' in intended configuration.\n",
                 "title": "Enabled"
               },
-              "esi": {
+              "short_esi": {
                 "type": "string",
-                "description": "Format xxxx:xxxx:xxxx.\nThis key is deprecated. Support will be removed in AVD version 4.0.0. Use <samp>short_esi</samp> instead.",
-                "deprecated": true,
-                "title": "Esi"
+                "title": "Short Esi"
               },
               "lacp_fallback": {
                 "type": "object",

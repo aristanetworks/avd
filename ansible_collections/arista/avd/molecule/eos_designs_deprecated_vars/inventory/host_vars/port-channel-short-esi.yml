@@ -1,0 +1,17 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: port-channel-short-esi
+
+servers:
+  - name: server01_ESI
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ port-channel-short-esi ]
+        profile: TENANT_A_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+          short_esi: '0303:0202:0101'

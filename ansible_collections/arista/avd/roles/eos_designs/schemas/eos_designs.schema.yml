@@ -3117,13 +3117,13 @@ $defs:
             description: Format xxxx:xxxx:xxxx.
             deprecation:
               warning: true
+              removed: true
               remove_in_version: 4.0.0
               new_key: short_esi
           short_esi:
             type: str
             deprecation:
               warning: true
-              removed: true
               remove_in_version: 5.0.0
               new_key: ethernet_segment.short_esi
           lacp_fallback:
