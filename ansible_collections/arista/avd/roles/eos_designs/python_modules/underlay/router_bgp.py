@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay.utils import UtilsMixin
 
 
@@ -97,7 +96,7 @@ class RouterBgpMixin(UtilsMixin):
                     list_of_dicts=neighbors,
                     primary_key="ip_address",
                     new_dict=neighbor,
-                    context=f"Ip address defined under BGP neighbor for underlay",
+                    context="Ip address defined under BGP neighbor for underlay",
                     context_keys=["ip_address", "peer_group"],
                 )
 
