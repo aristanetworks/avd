@@ -436,7 +436,6 @@ $defs:
             description: Format xxxx:xxxx:xxxx.
             deprecation:
               warning: true
-              removed: true
               remove_in_version: "4.0.0"
               new_key: short_esi
           short_esi:
