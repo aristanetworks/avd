@@ -603,7 +603,7 @@ The module arguments are:
     mode: < string >
 
     # AVD Schema for output data. Used for automatic merge of data.
-    output_schem: < schema as dict>
+    output_schema: < schema as dict >
 
     # ID of AVD Schema for output data. Used for automatic merge of data.
     output_schema_id: < eos_cli_config_gen | eos_designs >
