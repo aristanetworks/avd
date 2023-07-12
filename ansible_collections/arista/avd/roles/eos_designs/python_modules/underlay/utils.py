@@ -46,6 +46,9 @@ class UtilsMixin:
         """
         underlay_links = []
         underlay_links.extend(self._uplinks)
+        if self.shared_utils.fabric_sflow_uplinks is not None:
+            for uplink in underlay_links:
+                uplink.update({"sflow": {"enable": self.shared_utils.fabric_sflow_uplinks}})
 
         for peer in self._avd_peers:
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
@@ -74,6 +77,7 @@ class UtilsMixin:
                         "short_esi": get(uplink, "peer_short_esi"),
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
+                        "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
                         "structured_config": get(uplink, "structured_config"),
                     }
                     underlay_links.append(strip_empties_from_dict(link))

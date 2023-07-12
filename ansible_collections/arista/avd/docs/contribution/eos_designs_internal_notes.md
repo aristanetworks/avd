@@ -79,7 +79,7 @@ The facts can be inspected in a file per device by running the `arista.avd.eos_d
 ```mermaid
 classDiagram
   direction LR
-  class eos_designs_facts["arista.avd.eos_designs_facts"]{
+  class eos_designs_facts{
     - Verify devices are in one fabric group
     - Read and template default role_vars
     - Read and validate Hostvars for all devices
@@ -89,7 +89,7 @@ classDiagram
     - Run "render" method on all EosDesignsFacts instances
     - Build facts from data returned by "render"
   }
-  class ActionBase["Ansible ActionBase"]{
+  class ActionBase{
   }
   class AvdSchemaTools{
   }

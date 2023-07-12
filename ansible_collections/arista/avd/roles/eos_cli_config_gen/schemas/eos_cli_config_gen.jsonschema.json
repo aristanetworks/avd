@@ -10447,8 +10447,7 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
