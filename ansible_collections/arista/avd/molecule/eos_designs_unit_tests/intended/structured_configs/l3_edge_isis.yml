@@ -1,3 +1,4 @@
+hostname: l3_edge_isis
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
