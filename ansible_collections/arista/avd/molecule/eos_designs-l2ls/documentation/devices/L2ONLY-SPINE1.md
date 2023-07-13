@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Management](#management)
+  - [PTP](#ptp)
   - [Management API HTTP](#management-api-http)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
@@ -32,6 +33,32 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 
 ## Management
+
+### PTP
+
+#### PTP Summary
+
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
+| 00:1C:73:7f:00:01 | - | 127 | 1 | - | 127 | boundary | - |
+
+#### PTP Device Configuration
+
+```eos
+!
+ptp clock-identity 00:1C:73:7f:00:01
+ptp priority1 127
+ptp priority2 1
+ptp domain 127
+ptp mode boundary
+ptp monitor threshold offset-from-master 250
+ptp monitor threshold mean-path-delay 1500
+ptp monitor sequence-id
+ptp monitor threshold missing-message announce 3 sequence-ids
+ptp monitor threshold missing-message delay-resp 3 sequence-ids
+ptp monitor threshold missing-message follow-up 3 sequence-ids
+ptp monitor threshold missing-message sync 3 sequence-ids
+```
 
 ### Management API HTTP
 
@@ -200,6 +227,12 @@ interface Port-Channel1
    switchport trunk allowed vlan 100
    switchport mode trunk
    mlag 1
+   ptp enable
+   ptp announce interval 0
+   ptp announce timeout 3
+   ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 !
 interface Port-Channel2
    description L2ONLY-LEAF2_Po1
@@ -208,6 +241,12 @@ interface Port-Channel2
    switchport trunk allowed vlan 100
    switchport mode trunk
    mlag 2
+   ptp enable
+   ptp announce interval 0
+   ptp announce timeout 3
+   ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 !
 interface Port-Channel3
    description MLAG_PEER_L2ONLY-SPINE2_Po3
