@@ -88,7 +88,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 interface["vrf"] = vrf["name"]
 
                             if get(l3_interface, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
-                                interface["ospf_area"] = l3_interface["ospf"].get("area", "0")
+                                interface["ospf_area"] = l3_interface["ospf"].get("area", "0.0.0.0")
                                 interface["ospf_network_point_to_point"] = l3_interface["ospf"].get("point_to_point", False)
                                 interface["ospf_cost"] = l3_interface["ospf"].get("cost")
                                 ospf_authentication = l3_interface["ospf"].get("authentication")
