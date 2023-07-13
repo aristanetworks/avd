@@ -1,3 +1,4 @@
+hostname: dc2-leaf2c
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

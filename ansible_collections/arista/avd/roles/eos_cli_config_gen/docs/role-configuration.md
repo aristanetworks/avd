@@ -22,6 +22,10 @@ roles/eos_cli_config_gen/docs/tables/role-input-validation.md
 - The order of custom templates in the list can be important if they overlap.
 - It is recommenended to use a `!` delimiter at the top of each custom template.
 
+!!! tip
+    The templates will have any host or group variable available to it.
+    If adding custom keys to an existing AVD data model, start the key with an underscore `_`, so it will be ignored by schema validation.
+
 --8<--
 roles/eos_cli_config_gen/docs/tables/custom-templates.md
 --8<--

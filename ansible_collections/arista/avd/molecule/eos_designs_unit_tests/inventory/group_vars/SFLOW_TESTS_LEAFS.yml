@@ -1,0 +1,53 @@
+---
+type: l3leaf
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.254.1.0/27
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['sflow-tests-spine1', 'sflow-tests-spine1']
+    uplink_ipv4_pool: 10.254.2.0/24
+    vtep_loopback_ipv4_pool: 10.254.11.0/27
+    mlag_interfaces: ['Ethernet11', 'Ethernet12']
+    mlag_peer_ipv4_pool: 10.254.1.64/27
+    mlag_peer_l3_ipv4_pool: 10.254.1.96/27
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+
+
+  nodes:
+    - name: sflow-tests-leaf1
+      id: 1
+      bgp_as: 65101
+      mgmt_ip: 192.168.0.101/24
+      uplink_switch_interfaces:
+        - Ethernet1
+        - Ethernet2
+
+
+    - name: sflow-tests-leaf2
+      id: 2
+      bgp_as: 65102
+      mgmt_ip: 192.168.0.102/24
+      uplink_switch_interfaces:
+        - Ethernet3
+        - Ethernet4
+
+
+  node_groups:
+    - group: sflow-tests-leaf-mlag
+      bgp_as: 65105
+      nodes:
+        - name: sflow-tests-leaf3
+          id: 5
+          mgmt_ip: 192.168.0.103/24
+          uplink_switch_interfaces:
+            - Ethernet5
+            - Ethernet6
+        - name: sflow-tests-leaf4
+          id: 6
+          mgmt_ip: 192.168.0.104/24
+          uplink_switch_interfaces:
+            - Ethernet7
+            - Ethernet8

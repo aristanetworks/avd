@@ -1,3 +1,4 @@
+hostname: DC1-SVC3A
 router_bgp:
   as: '65103'
   router_id: 192.168.255.8

@@ -1,3 +1,4 @@
+hostname: AUTO_BGP_ASN_LEAF5A
 router_bgp:
   as: '65333'
   router_id: 192.168.255.11

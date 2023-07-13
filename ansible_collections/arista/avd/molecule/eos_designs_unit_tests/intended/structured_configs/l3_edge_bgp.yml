@@ -1,3 +1,4 @@
+hostname: l3_edge_bgp
 router_bgp:
   as: '65000'
   router_id: 1.2.3.1
@@ -94,6 +95,9 @@ ethernet_interfaces:
   speed: forced 10000full
   ptp:
     enable: true
+  service_policy:
+    qos:
+      input: TEST_POLICY
 - name: ethernet2
   peer: peer2
   peer_interface: ethernet2

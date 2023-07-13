@@ -1,3 +1,4 @@
+hostname: MLAG-OSPF-L3LEAF1B
 router_bgp:
   as: '65161'
   router_id: 192.168.255.37

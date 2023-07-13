@@ -120,6 +120,10 @@ $defs:
               - "aes67"
               - "aes67-r16-2016"
               - "smpte2059-2"
+      sflow:
+        type: bool
+        description: |
+          Configures sFlow on the interface. Overrides `fabric_sflow` setting.
       link_tracking:
         type: dict
         description: |

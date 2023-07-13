@@ -2594,6 +2594,8 @@ keys:
                 '
             units_packets:
               type: bool
+  hostname:
+    type: str
   interface_defaults:
     type: dict
     keys:
@@ -6237,7 +6239,6 @@ keys:
           description: Prefix-list Name
         sequence_numbers:
           type: list
-          required: true
           primary_key: sequence
           convert_types:
           - dict

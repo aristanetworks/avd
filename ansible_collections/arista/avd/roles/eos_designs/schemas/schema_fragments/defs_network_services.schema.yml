@@ -556,11 +556,11 @@ $defs:
                           type: bool
                           default: false
                         area:
-                          type: int
+                          type: str
                           convert_types:
-                            - str
-                          description: OSPF area id.
-                          default: 0
+                            - int
+                          description: OSPF area ID.
+                          default: "0"
                         cost:
                           type: int
                           convert_types:
