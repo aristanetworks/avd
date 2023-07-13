@@ -17,7 +17,7 @@ Full documentation for the collection:
 
 ## Reference designs
 
-- [L3LS VXLAN-EVPN, L2LS, and MPLS (beta)](https://avd.sh/en/stable/roles/eos_designs/index.html)
+- [L3LS VXLAN-EVPN, L2LS, and MPLS (beta)](https://avd.arista.com/3.8/roles/eos_designs/index.html)
 
 ## Roles overview
 
@@ -43,7 +43,7 @@ This repository provides custom plugins for Arista's AVD collection:
 
 ## Collection installation
 
-Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.sh/en/stable/docs/installation/collection-installation.html).
+Ansible galaxy hosts all stable versions of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.arista.com/3.8/docs/installation/collection-installation.html).
 
 ## Examples
 
@@ -63,7 +63,7 @@ Support for this `arista.avd` collection is provided by the community directly i
 
 ## Contributing
 
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](https://avd.sh/en/stable/docs/contribution/overview.html) for additional details.
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](https://avd.arista.com/3.8/docs/contribution/overview.html) for additional details.
 
 You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problems or submit enhancements.
 

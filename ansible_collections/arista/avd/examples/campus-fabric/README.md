@@ -137,7 +137,7 @@ leaf:
     inband_management_vlan: 10
 ```
 
-Details on this feature can be found [here](https://avd.sh/en/stable/roles/eos_designs/doc/fabric-topology-v4.0.html?h=inband#inband-management-vlan).
+Details on this feature can be found [here](https://avd.arista.com/3.8/roles/eos_designs/doc/fabric-topology-v4.0.html?h=inband#inband-management-vlan).
 
 | Node   | Management0     | Vlan10    |
 | ------ | --------------- | --------- |
@@ -233,7 +233,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "DC1_NETWORK_PORTS"
-    Our fabric would not be complete without connecting some devices to it. Therefore, we define port profiles and network port ranges in the  **group_vars/DC1_NETWORKS_PORTS.yml** file. A single port_profile may be used across several switches and port ranges. In our example, we create a port profile called `PP-DOT1X` to define generic 802.1x (NAC) settings we wish to apply to a range of ports. The `network_ports` data model is where we define which switches and ports to apply the port profile. This data model allows a single regex statement to define a list of switches. In addition, the variable `switch_ports` expands into a range of ports. You can view more details of the `range_expand` filter [here](https://avd.sh/en/stable/plugins/index.html#range_expand-filter). These variables are applied to spine and leaf nodes since they are a part of this inventory group.
+    Our fabric would not be complete without connecting some devices to it. Therefore, we define port profiles and network port ranges in the  **group_vars/DC1_NETWORKS_PORTS.yml** file. A single port_profile may be used across several switches and port ranges. In our example, we create a port profile called `PP-DOT1X` to define generic 802.1x (NAC) settings we wish to apply to a range of ports. The `network_ports` data model is where we define which switches and ports to apply the port profile. This data model allows a single regex statement to define a list of switches. In addition, the variable `switch_ports` expands into a range of ports. You can view more details of the `range_expand` filter [here](https://avd.arista.com/3.8/plugins/index.html#range_expand-filter). These variables are applied to spine and leaf nodes since they are a part of this inventory group.
 
     ``` yaml
     --8<--
@@ -259,7 +259,7 @@ AVD provides a way to standardize and reuse port profiles through a compact data
 
 ![Figure: 3](images/dot1x_ports.svg)
 
-The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see documentation for [`port_profiles`](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#port-profiles) and [`network_ports`](https://avd.sh/en/stable/roles/eos_designs/doc/connected-endpoints.html#network-ports_1).
+The above sample port configuration is easily produced with `port_profiles` and `network_ports` data models. Each port has similar configuration items defined in `port_profiles`, while `network_ports` defines which switches and port ranges are to be applied. The `network_ports` data model allows regex to match switches and an `expand_range` filter to cover a range of ports. For details, see documentation for [`port_profiles`](https://avd.arista.com/3.8/roles/eos_designs/doc/connected-endpoints.html#port-profiles) and [`network_ports`](https://avd.arista.com/3.8/roles/eos_designs/doc/connected-endpoints.html#network-ports_1).
 
 ## WAN/Core Edge
 
