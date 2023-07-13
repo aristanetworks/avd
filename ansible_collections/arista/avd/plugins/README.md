@@ -581,12 +581,12 @@ The module arguments are:
     # while still allowing the data to be validated.
     # During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
     #
-    # conversion_mode:disabled means that conversion will not run.
-    # conversion_mode:error will produce error messages and fail the task.
-    # conversion_mode:warning will produce warning messages.
-    # conversion_mode:info will produce regular log messages.
-    # conversion_mode:debug will produce hidden messages viewable with -v.
-    # conversion_mode:quiet will not produce any messages.
+    # "conversion_mode: disabled" means that conversion will not run.
+    # "conversion_mode: error" will produce error messages and fail the task.
+    # "conversion_mode: warning" will produce warning messages.
+    # "conversion_mode: info" will produce regular log messages.
+    # "conversion_mode: debug" will produce hidden messages viewable with -v.
+    # "conversion_mode: quiet" will not produce any messages.
     conversion_mode: < error | warning | info | debug (default) | quiet | disabled >
 
     # Export cProfile data to a file ex. "eos_designs_structured_config-{{inventory_hostname}}"
@@ -632,7 +632,7 @@ The module arguments are:
           # Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.
           list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
 
-          # Filter out keys from the generated output if value is null/none/undefined
+          # Filter out keys from the generated output if the value is null/none/undefined
           strip_empty_keys: < true (default) | false >
 
     # If true the output data will be run through another jinja2 rendering before returning.
@@ -644,11 +644,11 @@ The module arguments are:
     # During validation, messages will be generated with information
     # about the host(s) and key(s) which failed validation.
     #
-    # validation_mode:disabled means that validation will not run.
-    # validation_mode:error will produce error messages and fail the task.
-    # validation_mode:warning will produce warning messages.
-    # validation_mode:info will produce regular log messages.
-    # validation_mode:debug will produce hidden messages viewable with -v.
+    # "validation_mode: disabled" means that validation will not run.
+    # "validation_mode: error" will produce error messages and fail the task.
+    # "validation_mode: warning" will produce warning messages.
+    # "validation_mode: info" will produce regular log messages.
+    # "validation_mode: debug" will produce hidden messages viewable with -v.
     validation_mode: < error | warning (default) | info | debug | disabled >
 ```
 
