@@ -95,7 +95,8 @@ class RouterBgpMixin(UtilsMixin):
                 bgp_peer_groups[peer_group_name] = peer_group
 
         # router bgp default vrf configuration for evpn
-        if (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]) and self._overlay_vtep and self._overlay_evpn:
+
+        if self._vrf_default_evpn and (self._vrf_default_ipv4_subnets or self._vrf_default_ipv4_static_routes["static_routes"]):
             peer_group_name = self._peer_group_ipv4_underlay_peers_name
             bgp_peer_groups[peer_group_name] = {
                 "type": "ipv4",
@@ -140,7 +141,7 @@ class RouterBgpMixin(UtilsMixin):
                 for rt in vrf["additional_route_targets"]:
                     route_targets.setdefault(rt["type"], {}).setdefault(rt["address_family"], []).append(rt["route_target"])
 
-                if vrf_name == "default" and self._overlay_evpn and self._vrf_default_ipv4_subnets:
+                if vrf_name == "default" and self._vrf_default_evpn and self._vrf_default_ipv4_subnets:
                     # Special handling of vrf default.
                     route_targets["export"].setdefault("evpn", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
                     bgp_vrf = {
