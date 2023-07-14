@@ -299,4 +299,4 @@ keys:
               type: bool
             eos_cli:
               type: str
-              description: Multiline EOS CLI rendered directly on the router ospf in the final EOS configuration
+              description: Multiline EOS CLI rendered directly on the router ospf process id in the final EOS configuration

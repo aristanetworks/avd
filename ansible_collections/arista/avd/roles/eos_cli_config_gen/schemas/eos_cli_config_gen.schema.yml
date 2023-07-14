@@ -10007,7 +10007,7 @@ keys:
             eos_cli:
               type: str
               description: Multiline EOS CLI rendered directly on the router ospf
-                in the final EOS configuration
+                process id in the final EOS configuration
   router_pim_sparse_mode:
     type: dict
     keys:
