@@ -68,7 +68,6 @@ class RouteMapsMixin(UtilsMixin):
 
         Called from main route_maps function
         """
-
         if not self._vrf_default_evpn:
             return None
 

@@ -18,7 +18,6 @@ class PrefixListsMixin(UtilsMixin):
 
         Only used for EVPN services in VRF "default"
         """
-
         if not self._vrf_default_evpn:
             return None
 

@@ -141,7 +141,6 @@ class RouterBgpMixin(UtilsMixin):
                 for rt in vrf["additional_route_targets"]:
                     route_targets.setdefault(rt["type"], {}).setdefault(rt["address_family"], []).append(rt["route_target"])
 
-
                 if vrf_name == "default" and self._vrf_default_evpn and self._vrf_default_ipv4_subnets:
                     # Special handling of vrf default.
                     route_targets["export"].setdefault("evpn", []).append("route-map RM-EVPN-EXPORT-VRF-DEFAULT")
