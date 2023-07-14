@@ -10005,10 +10005,9 @@ keys:
             mpls_ldp_sync_default:
               type: bool
             eos_cli:
-              type: list
-              items:
-                type: str
-                description: The eos cli command
+              type: str
+              description: Multiline EOS CLI rendered directly on the router ospf
+                in the final EOS configuration
   router_pim_sparse_mode:
     type: dict
     keys:

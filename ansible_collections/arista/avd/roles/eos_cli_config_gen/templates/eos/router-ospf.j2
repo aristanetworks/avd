@@ -200,7 +200,7 @@ router ospf {{ process_id.id }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     for eos_cli in process_id.eos_cli | arista.avd.default([]) %}
-   {{ eos_cli }}
-{%     endfor %}
+{%     if process_id.eos_cli is arista.avd.defined %}
+   {{ process_id.eos_cli | indent(3, false) }}
+{%     endif %}
 {% endfor %}

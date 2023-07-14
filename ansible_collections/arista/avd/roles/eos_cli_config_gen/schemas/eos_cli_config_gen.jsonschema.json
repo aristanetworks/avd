@@ -17182,11 +17182,8 @@
                 "title": "MPLS LDP Sync Default"
               },
               "eos_cli": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "description": "The eos cli command"
-                },
+                "type": "string",
+                "description": "Multiline EOS CLI rendered directly on the router ospf in the final EOS configuration",
                 "title": "EOS CLI"
               }
             },
