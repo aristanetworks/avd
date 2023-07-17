@@ -17183,7 +17183,7 @@
               },
               "eos_cli": {
                 "type": "string",
-                "description": "Multiline EOS CLI rendered directly on the router ospf process id in the final EOS configuration",
+                "description": "Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration",
                 "title": "EOS CLI"
               }
             },
