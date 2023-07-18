@@ -30,7 +30,7 @@ class ActionModule(ActionBase):
         if task_vars is None:
             task_vars = {}
 
-        # self._maybe_convert_device_filter()
+        self._maybe_convert_device_filter()
 
         module_args = self._task.args.copy()
 
