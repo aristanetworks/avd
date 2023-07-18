@@ -4,28 +4,16 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [DNS Domain](#dns-domain)
   - [IP Name Servers](#ip-name-servers)
   - [NTP](#ntp)
-  - [Management API gNMI](#management-api-gnmi)
-  - [Management CVX Summary](#management-cvx-summary)
+  - [PTP](#ptp)
   - [Management API HTTP](#management-api-http)
-  - [Management API Models](#management-api-models)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [Roles](#roles)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
-- [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
-  - [MCS client Summary](#mcs-client-summary)
-  - [SNMP](#snmp)
-  - [SFlow](#sflow)
-- [Monitor Connectivity](#monitor-connectivity)
-  - [Global Configuration](#global-configuration)
-  - [Vrf Configuration](#vrf-configuration)
-  - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -41,7 +29,6 @@
   - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
-  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -64,7 +51,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.90.227.31/24 | 10.90.227.1 |
+| Management1 | oob_management | oob | MGMT | 172.16.1.212/24 | 172.16.1.1 |
 
 ##### IPv6
 
@@ -80,18 +67,7 @@ interface Management1
    description oob_management
    no shutdown
    vrf MGMT
-   ip address 10.90.227.31/24
-```
-
-### DNS Domain
-
-#### DNS domain: MnE.lab
-
-#### DNS Domain Device Configuration
-
-```eos
-dns domain MnE.lab
-!
+   ip address 172.16.1.212/24
 ```
 
 ### IP Name Servers
@@ -100,65 +76,62 @@ dns domain MnE.lab
 
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
-| 10.90.227.155 | MGMT | - |
+| 192.168.1.1 | MGMT | - |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 10.90.227.155
+ip name-server vrf MGMT 192.168.1.1
 ```
 
 ### NTP
 
 #### NTP Summary
 
+##### NTP Local Interface
+
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
+
 ##### NTP Servers
 
 | Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
 | ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| ntp.aristanetworks.com | MGMT | - | - | True | - | - | - | - | - |
+| 0.pool.ntp.org | MGMT | - | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
 ```eos
 !
-ntp server vrf MGMT ntp.aristanetworks.com iburst
+ntp local-interface vrf MGMT Management1
+ntp server vrf MGMT 0.pool.ntp.org
 ```
 
-### Management API gNMI
+### PTP
 
-#### Management API gNMI Summary
+#### PTP Summary
 
-| Transport | SSL Profile | VRF | Notification Timestamp | ACL |
-| --------- | ----------- | --- | ---------------------- | --- |
-| grpc | - | MGMT | last-change-time | - |
+| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
+| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
+| 00:1C:73:1e:00:02 | - | 30 | 2 | - | 127 | boundary | - |
 
-Provider eos-native is configured.
-
-#### Management API gNMI configuration
+#### PTP Device Configuration
 
 ```eos
 !
-management api gnmi
-   transport grpc grpc
-      vrf MGMT
-   provider eos-native
-```
-
-### Management CVX Summary
-
-| Shutdown | CVX Servers |
-| -------- | ----------- |
-| False | 10.90.224.188 |
-
-#### Management CVX configuration
-
-```eos
-!
-management cvx
-   no shutdown
-   server host 10.90.224.188
-   vrf MGMT
+ptp clock-identity 00:1C:73:1e:00:02
+ptp priority1 30
+ptp priority2 2
+ptp domain 127
+ptp mode boundary
+ptp monitor threshold offset-from-master 250
+ptp monitor threshold mean-path-delay 1500
+ptp monitor sequence-id
+ptp monitor threshold missing-message announce 3 sequence-ids
+ptp monitor threshold missing-message delay-resp 3 sequence-ids
+ptp monitor threshold missing-message follow-up 3 sequence-ids
+ptp monitor threshold missing-message sync 3 sequence-ids
 ```
 
 ### Management API HTTP
@@ -187,28 +160,6 @@ management api http-commands
       no shutdown
 ```
 
-### Management API Models
-
-#### Management API Models Summary
-
-| Provider | Path | Disabled |
-| -------- | ---- | ------- |
-| smash | bridging | False |
-| smash | ptp | False |
-| smash | routing | False |
-
-#### Management API Models Configuration
-
-```eos
-!
-management api models
-   !
-   provider smash
-      path bridging
-      path ptp
-      path routing
-```
-
 ## Authentication
 
 ### Local Users
@@ -218,44 +169,14 @@ management api models
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
-| cvpadmin | 15 | network-admin | False | - |
-| dataminer | 1 | view-only | False | - |
+| ansible | 15 | network-admin | False | - |
 
 #### Local Users Device Configuration
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 <removed>
-username cvpadmin privilege 15 role network-admin secret sha512 <removed>
-username dataminer privilege 1 role view-only secret sha512 <removed>
-```
-
-### Roles
-
-#### Roles Summary
-
-##### Role view-only
-
-| Sequence | Action | Mode | Command |
-| -------- | ------ | ---- | ------- |
-| 10 | permit | - | enable |
-| 20 | deny | exec | reload |
-| 30 | deny | config-all | .* |
-| 40 | deny | exec | clear .* |
-| 50 | permit | - | show .* |
-| 60 | permit | - | bash timeout 1 df -h |
-
-#### Roles Device Configuration
-
-```eos
-!
-role view-only
-   10 permit command enable
-   20 deny mode exec command reload
-   30 deny mode config-all command .*
-   40 deny mode exec command clear .*
-   50 permit command show .*
-   60 permit command bash timeout 1 df -h
+username admin privilege 15 role network-admin nopassword
+username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ### AAA Authentication
@@ -290,39 +211,6 @@ aaa authorization exec default local
 !
 ```
 
-## Aliases
-
-```eos
-alias sln show lldp neighbors
-alias conint sh interface | I connected
-alias connect show interfaces status connected
-alias descr show int descr
-alias drops watch 1 diff show int coun dis | nz
-alias dump bash tcpdump -i %1
-alias ptpcount watch 1 diff sh ptp interface counters | egrep 'Ethernet|Manage'| grep -v "received: 0" | grep -v sent
-alias ptpmgmt watch 1 diff sh ptp int count | egrep "Management messages received: | Ethernet" | nz
-alias rates watch 1 diff show int count rates | nz
-alias routeage bash echo show ip route | cliribd
-alias senz show interface counter error | nz
-alias senzwatch watch 1 diff show interface counter error | nz
-alias shmc show int | awk '/^[A-Z]/ { intf = $1 } /, address is/ { print intf, $6 }'
-alias shptp show ptp int counters drop
-alias snoopcount watch 1 diff sh ip igmp snooping counters | nz
-alias snoopgroup watch 1 diff sh ip igmp snooping groups | nz
-alias snz show interface counter | nz
-alias spd show port-channel %1 detail all
-alias sqnz show interface counter queue | nz
-alias srnz show interface counter rate | nz
-alias watchptp watch 1 diff sh ip igmp snooping group 224.0.1.129 | nz
-alias igmpgroups show ip igmp snooping groups detail
-alias ptpwatch watch 1 diff show ptp
-alias sdnz show int count discard | nz
-alias sie show ip igmp snoop counters err | nz
-alias sqml show queue-monitor length
-
-!
-```
-
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -331,141 +219,15 @@ alias sqml show queue-monitor length
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-+
-| gzip | apiserver.arista.io:443 | MGMT | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
-| gzip | 10.244.132.193:9910 | MGMT | token,/tmp/devtoken | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
-| gzip | 10.90.227.161:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
+| gzip | 192.168.1.12:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
 
 #### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvopt cvaas.addr=apiserver.arista.io:443 -cvopt cvaas.auth=token-secure,/tmp/cv-onboarding-token -cvopt cvaas.vrf=MGMT -cvopt dev.addr=10.244.132.193:9910 -cvopt dev.auth=token,/tmp/devtoken -cvopt dev.vrf=MGMT -cvopt lab.addr=10.90.227.161:9910 -cvopt lab.auth=token,/tmp/token -cvopt lab.vrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
-```
-
-### MCS client Summary
-
-MCS client is enabled
-
-#### MCS client configuration
-
-```eos
-!
-mcs client
-   no shutdown
-```
-
-### SNMP
-
-#### SNMP Configuration Summary
-
-| Contact | Location | SNMP Traps | State |
-| ------- | -------- | ---------- | ----- |
-| - | - | All | Disabled |
-
-#### SNMP Communities
-
-| Community | Access | Access List IPv4 | Access List IPv6 | View |
-| --------- | ------ | ---------------- | ---------------- | ---- |
-| <removed> | ro | - | - | - |
-| <removed> | rw | - | - | - |
-
-#### SNMP Device Configuration
-
-```eos
-!
-snmp-server community <removed> ro
-snmp-server community <removed> rw
-```
-
-### SFlow
-
-#### SFlow Summary
-
-| VRF | SFlow Source | SFlow Destination | Port |
-| --- | ------------ | ----------------- | ---- |
-| default | - | 127.0.0.1 | 6343 |
-| default | loopback0 | - | - |
-
-sFlow is enabled.
-
-#### SFlow Device Configuration
-
-```eos
-!
-sflow destination 127.0.0.1
-sflow source-interface loopback0
-sflow run
-```
-
-## Monitor Connectivity
-
-### Global Configuration
-
-#### Probing Configuration
-
-| Enabled | Interval | Default Interface Set |
-| ------- | -------- | --------------------- |
-| True | - | - |
-
-#### Host Parameters
-
-| Host Name | Description | IPv4 Address | Probing Interface Set | URL |
-| --------- | ----------- | ------------ | --------------------- | --- |
-| GM1 | - | 172.24.121.65 | - | - |
-
-### Vrf Configuration
-
-| Name | Description | Default Interface Set |
-| ---- | ----------- | --------------------- |
-| MGMT | - | - |
-
-#### Vrf MGMT Configuration
-
-##### Host Parameters
-
-| Host Name | Description | IPv4 Address | Probing Interface Set | URL |
-| --------- | ----------- | ------------ | --------------------- | --- |
-| aws-us-east-1 | aws-us-east-1 | 52.216.227.10 | - | http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com |
-| aws-us-west-2 | aws-us-west-2 | 52.218.182.251 | - | http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com |
-| azure-eastus | aws-us-west-2 | 52.216.227.10 | - | http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com |
-| Google | Google | 8.8.8.8 | - | - |
-
-### Monitor Connectivity Device Configuration
-
-```eos
-!
-monitor connectivity
-   no shutdown
-   !
-   host GM1
-      ip 172.24.121.65
-   vrf MGMT
-      !
-      host aws-us-east-1
-         description
-         aws-us-east-1
-         ip 52.216.227.10
-         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com
-      !
-      host aws-us-west-2
-         description
-         aws-us-west-2
-         ip 52.218.182.251
-         url http://fredwebsitebuckettest.s3-website-us-west-2.amazonaws.com
-      !
-      host azure-eastus
-         description
-         aws-us-west-2
-         ip 52.216.227.10
-         url http://fredcloudtracereast1.s3-website-us-east-1.amazonaws.com
-      !
-      host Google
-         description
-         Google
-         ip 8.8.8.8
 ```
 
 ## Spanning Tree
@@ -509,14 +271,14 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 122 | VLAN122 | - |
+| 212 | VLAN212 | - |
 
 ### VLANs Device Configuration
 
 ```eos
 !
-vlan 122
-   name VLAN122
+vlan 212
+   name VLAN212
 ```
 
 ## Interfaces
@@ -529,114 +291,98 @@ vlan 122
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet2 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet3 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet4 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet5 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet6 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet7 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet8 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet9 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet10 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet11 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet12 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet13 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet14 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet15 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet16 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet17 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet18 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet19 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet20 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet21 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet22 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet23 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet24 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet25 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet26 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet27 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet28 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet29 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet30 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet31 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet32 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet33 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet34 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet35 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet36 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet37 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet38 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet39 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet40 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet41 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet42 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet43 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet44 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet45 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet46 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet47 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet48 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet49 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet50 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet51 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet52 |  BLUE_VLAN122 | access | 122 | - | - | - |
-| Ethernet53/1 |  SHUTDOWN_SPINE_LINKS | access | - | - | - | - |
+| Ethernet3 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet4 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet5 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet6 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet7 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet8 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet9 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet10 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet11 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet12 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet13 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet14 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet15 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet16 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet17 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet18 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet19 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet20 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet21 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet22 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet23 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet24 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet25 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet26 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet27 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet28 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet29 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet30 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet31 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet32 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet33 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet34 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet35 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet36 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet37 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet38 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet39 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet40 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet41 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet42 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet43 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet44 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet45 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet46 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet47 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet48 |  BLUE_VLAN212 | access | 212 | - | - | - |
 
 *Inherited from Port-Channel Interface
-
-##### Multicast Routing
-
-| Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
-| --------- | ---------- | --------------------- | -------------------- |
-| Ethernet54/1 | IPv4 | True | - |
 
 ##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet54/1 | P2P_LINK_TO_BLUE-SPINE1_Ethernet25/1 | routed | - | 10.255.255.3/31 | default | 9214 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_BLUE-SPINE1_Ethernet3 | routed | - | 10.255.255.9/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_LINK_TO_BLUE-SPINE1_Ethernet4 | routed | - | 10.255.255.11/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description BLUE_VLAN122
-   shutdown
-   switchport access vlan 122
-   switchport mode access
-   switchport
+   description P2P_LINK_TO_BLUE-SPINE1_Ethernet3
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.255.255.9/31
+   pim ipv4 sparse-mode
    ptp enable
    ptp sync-message interval -3
    ptp announce interval 0
    ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet2
-   description BLUE_VLAN122
-   shutdown
-   switchport access vlan 122
-   switchport mode access
-   switchport
+   description P2P_LINK_TO_BLUE-SPINE1_Ethernet4
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.255.255.11/31
+   pim ipv4 sparse-mode
    ptp enable
    ptp sync-message interval -3
    ptp announce interval 0
    ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
 !
 interface Ethernet3
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -650,9 +396,9 @@ interface Ethernet3
    spanning-tree bpdufilter enable
 !
 interface Ethernet4
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -666,9 +412,9 @@ interface Ethernet4
    spanning-tree bpdufilter enable
 !
 interface Ethernet5
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -682,9 +428,9 @@ interface Ethernet5
    spanning-tree bpdufilter enable
 !
 interface Ethernet6
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -698,9 +444,9 @@ interface Ethernet6
    spanning-tree bpdufilter enable
 !
 interface Ethernet7
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -714,9 +460,9 @@ interface Ethernet7
    spanning-tree bpdufilter enable
 !
 interface Ethernet8
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -730,9 +476,9 @@ interface Ethernet8
    spanning-tree bpdufilter enable
 !
 interface Ethernet9
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -746,9 +492,9 @@ interface Ethernet9
    spanning-tree bpdufilter enable
 !
 interface Ethernet10
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -762,9 +508,9 @@ interface Ethernet10
    spanning-tree bpdufilter enable
 !
 interface Ethernet11
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -778,9 +524,9 @@ interface Ethernet11
    spanning-tree bpdufilter enable
 !
 interface Ethernet12
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -794,9 +540,9 @@ interface Ethernet12
    spanning-tree bpdufilter enable
 !
 interface Ethernet13
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -810,9 +556,9 @@ interface Ethernet13
    spanning-tree bpdufilter enable
 !
 interface Ethernet14
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -826,9 +572,9 @@ interface Ethernet14
    spanning-tree bpdufilter enable
 !
 interface Ethernet15
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -842,9 +588,9 @@ interface Ethernet15
    spanning-tree bpdufilter enable
 !
 interface Ethernet16
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -858,9 +604,9 @@ interface Ethernet16
    spanning-tree bpdufilter enable
 !
 interface Ethernet17
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -874,9 +620,9 @@ interface Ethernet17
    spanning-tree bpdufilter enable
 !
 interface Ethernet18
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -890,9 +636,9 @@ interface Ethernet18
    spanning-tree bpdufilter enable
 !
 interface Ethernet19
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -906,9 +652,9 @@ interface Ethernet19
    spanning-tree bpdufilter enable
 !
 interface Ethernet20
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -922,9 +668,9 @@ interface Ethernet20
    spanning-tree bpdufilter enable
 !
 interface Ethernet21
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -938,9 +684,9 @@ interface Ethernet21
    spanning-tree bpdufilter enable
 !
 interface Ethernet22
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -954,9 +700,9 @@ interface Ethernet22
    spanning-tree bpdufilter enable
 !
 interface Ethernet23
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -970,9 +716,9 @@ interface Ethernet23
    spanning-tree bpdufilter enable
 !
 interface Ethernet24
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -986,9 +732,9 @@ interface Ethernet24
    spanning-tree bpdufilter enable
 !
 interface Ethernet25
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1002,9 +748,9 @@ interface Ethernet25
    spanning-tree bpdufilter enable
 !
 interface Ethernet26
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1018,9 +764,9 @@ interface Ethernet26
    spanning-tree bpdufilter enable
 !
 interface Ethernet27
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1034,9 +780,9 @@ interface Ethernet27
    spanning-tree bpdufilter enable
 !
 interface Ethernet28
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1050,9 +796,9 @@ interface Ethernet28
    spanning-tree bpdufilter enable
 !
 interface Ethernet29
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1066,9 +812,9 @@ interface Ethernet29
    spanning-tree bpdufilter enable
 !
 interface Ethernet30
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1082,9 +828,9 @@ interface Ethernet30
    spanning-tree bpdufilter enable
 !
 interface Ethernet31
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1098,9 +844,9 @@ interface Ethernet31
    spanning-tree bpdufilter enable
 !
 interface Ethernet32
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1114,9 +860,9 @@ interface Ethernet32
    spanning-tree bpdufilter enable
 !
 interface Ethernet33
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1130,9 +876,9 @@ interface Ethernet33
    spanning-tree bpdufilter enable
 !
 interface Ethernet34
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1146,9 +892,9 @@ interface Ethernet34
    spanning-tree bpdufilter enable
 !
 interface Ethernet35
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1162,9 +908,9 @@ interface Ethernet35
    spanning-tree bpdufilter enable
 !
 interface Ethernet36
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1178,9 +924,9 @@ interface Ethernet36
    spanning-tree bpdufilter enable
 !
 interface Ethernet37
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1194,9 +940,9 @@ interface Ethernet37
    spanning-tree bpdufilter enable
 !
 interface Ethernet38
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1210,9 +956,9 @@ interface Ethernet38
    spanning-tree bpdufilter enable
 !
 interface Ethernet39
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1226,9 +972,9 @@ interface Ethernet39
    spanning-tree bpdufilter enable
 !
 interface Ethernet40
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1242,9 +988,9 @@ interface Ethernet40
    spanning-tree bpdufilter enable
 !
 interface Ethernet41
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1258,9 +1004,9 @@ interface Ethernet41
    spanning-tree bpdufilter enable
 !
 interface Ethernet42
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1274,9 +1020,9 @@ interface Ethernet42
    spanning-tree bpdufilter enable
 !
 interface Ethernet43
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1290,9 +1036,9 @@ interface Ethernet43
    spanning-tree bpdufilter enable
 !
 interface Ethernet44
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1306,9 +1052,9 @@ interface Ethernet44
    spanning-tree bpdufilter enable
 !
 interface Ethernet45
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1322,9 +1068,9 @@ interface Ethernet45
    spanning-tree bpdufilter enable
 !
 interface Ethernet46
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1338,9 +1084,9 @@ interface Ethernet46
    spanning-tree bpdufilter enable
 !
 interface Ethernet47
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1354,9 +1100,9 @@ interface Ethernet47
    spanning-tree bpdufilter enable
 !
 interface Ethernet48
-   description BLUE_VLAN122
+   description BLUE_VLAN212
    shutdown
-   switchport access vlan 122
+   switchport access vlan 212
    switchport mode access
    switchport
    ptp enable
@@ -1368,84 +1114,6 @@ interface Ethernet48
    ptp role master
    spanning-tree portfast
    spanning-tree bpdufilter enable
-!
-interface Ethernet49
-   description BLUE_VLAN122
-   shutdown
-   switchport access vlan 122
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-!
-interface Ethernet50
-   description BLUE_VLAN122
-   shutdown
-   switchport access vlan 122
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-!
-interface Ethernet51
-   description BLUE_VLAN122
-   shutdown
-   switchport access vlan 122
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-!
-interface Ethernet52
-   description BLUE_VLAN122
-   shutdown
-   switchport access vlan 122
-   switchport mode access
-   switchport
-   ptp enable
-   ptp sync-message interval -3
-   ptp announce interval 0
-   ptp transport ipv4
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp role master
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-!
-interface Ethernet53/1
-   description SHUTDOWN_SPINE_LINKS
-   shutdown
-   switchport
-!
-interface Ethernet54/1
-   description P2P_LINK_TO_BLUE-SPINE1_Ethernet25/1
-   no shutdown
-   mtu 9214
-   no switchport
-   ip address 10.255.255.3/31
-   multicast ipv4 static
-   pim ipv4 sparse-mode
 ```
 
 ### Loopback Interfaces
@@ -1456,7 +1124,7 @@ interface Ethernet54/1
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 10.255.2.4/32 |
+| Loopback0 | Router_ID | default | 10.255.2.3/32 |
 
 ##### IPv6
 
@@ -1472,7 +1140,7 @@ interface Ethernet54/1
 interface Loopback0
    description Router_ID
    no shutdown
-   ip address 10.255.2.4/32
+   ip address 10.255.2.3/32
 ```
 
 ### VLAN Interfaces
@@ -1481,23 +1149,22 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan122 | VLAN122 | default | - | False |
+| Vlan212 | VLAN212 | default | - | False |
 
 ##### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan122 |  default  |  10.252.14.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan212 |  default  |  10.10.212.1/24  |  -  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
 ```eos
 !
-interface Vlan122
-   description VLAN122
+interface Vlan212
+   description VLAN212
    no shutdown
-   no autostate
-   ip address 10.252.14.1/24
+   ip address 10.10.212.1/24
 ```
 
 ## Routing
@@ -1509,19 +1176,6 @@ Multi agent routing protocol model enabled
 ```eos
 !
 service routing protocols model multi-agent
-```
-
-### Virtual Router MAC Address
-
-#### Virtual Router MAC Address Summary
-
-##### Virtual Router MAC Address: 00:1c:73:00:00:99
-
-#### Virtual Router MAC Address Configuration
-
-```eos
-!
-ip virtual-router mac-address 00:1c:73:00:00:99
 ```
 
 ### IP Routing
@@ -1556,13 +1210,13 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT | 0.0.0.0/0 | 10.90.227.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 172.16.1.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 10.90.227.1
+ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 ```
 
 ### Router BGP
@@ -1571,11 +1225,10 @@ ip route vrf MGMT 0.0.0.0/0 10.90.227.1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65202|  10.255.2.4 |
+| 65202|  10.255.2.3 |
 
 | BGP Tuning |
 | ---------- |
-| update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
@@ -1593,24 +1246,27 @@ ip route vrf MGMT 0.0.0.0/0 10.90.227.1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 10.255.255.2 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.255.255.8 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| 10.255.255.10 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65202
-   router-id 10.255.2.4
+   router-id 10.255.2.3
    maximum-paths 4 ecmp 4
-   update wait-install
    no bgp default ipv4-unicast
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 10.255.255.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.255.255.2 remote-as 65200
-   neighbor 10.255.255.2 description blue-spine1_Ethernet25/1
+   neighbor 10.255.255.8 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.8 remote-as 65200
+   neighbor 10.255.255.8 description blue-spine1_Ethernet3
+   neighbor 10.255.255.10 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.255.10 remote-as 65200
+   neighbor 10.255.255.10 description blue-spine1_Ethernet4
    redistribute connected
    !
    address-family ipv4
@@ -1650,32 +1306,12 @@ router multicast
 
 ### PIM Sparse Mode
 
-#### Router PIM Sparse Mode
-
-##### IP Sparse Mode Information
-
-BFD enabled: False
-
-####### IP Rendezvous Information
-
-| Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
-| ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
-| 172.24.0.10 | - | - | - | - | - |
-
-##### Router Multicast Device Configuration
-
-```eos
-!
-router pim sparse-mode
-   ipv4
-      rp address 172.24.0.10
-```
-
 #### PIM Sparse Mode enabled interfaces
 
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |
-| Ethernet54/1 | - | IPv4 | - | - |
+| Ethernet1 | - | IPv4 | - | - |
+| Ethernet2 | - | IPv4 | - | - |
 
 ## VRF Instances
 

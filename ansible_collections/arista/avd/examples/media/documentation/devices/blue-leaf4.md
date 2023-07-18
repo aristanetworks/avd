@@ -1,19 +1,13 @@
-# amber-leaf2
-
-## Table of Contents
+# blue-leaf4
+# Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP Name Servers](#ip-name-servers)
-  - [NTP](#ntp)
   - [PTP](#ptp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [AAA Authentication](#aaa-authentication)
-  - [AAA Authorization](#aaa-authorization)
 - [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -29,6 +23,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
+  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -37,29 +32,32 @@
   - [IP IGMP Snooping](#ip-igmp-snooping)
   - [Router Multicast](#router-multicast)
   - [PIM Sparse Mode](#pim-sparse-mode)
+- [Filters](#filters)
+- [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
-## Management
+# Management
 
-### Management Interfaces
+## Management Interfaces
 
-#### Management Interfaces Summary
+### Management Interfaces Summary
 
-##### IPv4
+#### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.1.112/24 | 10.90.227.1 |
+| Management1 | oob_management | oob | MGMT | 192.168.0.22/24 | 192.168.0.1 |
 
-##### IPv6
+#### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-#### Management Interfaces Device Configuration
+### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -67,62 +65,24 @@ interface Management1
    description oob_management
    no shutdown
    vrf MGMT
-   ip address 172.16.1.112/24
+   ip address 192.168.0.22/24
 ```
 
-### IP Name Servers
+## PTP
 
-#### IP Name Servers Summary
-
-| Name Server | VRF | Priority |
-| ----------- | --- | -------- |
-| 192.168.1.1 | MGMT | - |
-
-#### IP Name Servers Device Configuration
-
-```eos
-ip name-server vrf MGMT 192.168.1.1
-```
-
-### NTP
-
-#### NTP Summary
-
-##### NTP Local Interface
-
-| Interface | VRF |
-| --------- | --- |
-| Management1 | MGMT |
-
-##### NTP Servers
-
-| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
-| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | MGMT | - | - | - | - | - | - | - | - |
-
-#### NTP Device Configuration
-
-```eos
-!
-ntp local-interface vrf MGMT Management1
-ntp server vrf MGMT 0.pool.ntp.org
-```
-
-### PTP
-
-#### PTP Summary
+### PTP Summary
 
 | Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
 | -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| 00:1C:73:1e:00:01 | - | 30 | 1 | - | 127 | boundary | - |
+| 00:1C:73:1e:00:04 | - | 30 | 4 | - | 127 | boundary | - |
 
-#### PTP Device Configuration
+### PTP Device Configuration
 
 ```eos
 !
-ptp clock-identity 00:1C:73:1e:00:01
+ptp clock-identity 00:1C:73:1e:00:04
 ptp priority1 30
-ptp priority2 1
+ptp priority2 4
 ptp domain 127
 ptp mode boundary
 ptp monitor threshold offset-from-master 250
@@ -134,21 +94,21 @@ ptp monitor threshold missing-message follow-up 3 sequence-ids
 ptp monitor threshold missing-message sync 3 sequence-ids
 ```
 
-### Management API HTTP
+## Management API HTTP
 
-#### Management API HTTP Summary
+### Management API HTTP Summary
 
 | HTTP | HTTPS | Default Services |
 | ---- | ----- | ---------------- |
 | False | True | - |
 
-#### Management API VRF Access
+### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+### Management API HTTP Configuration
 
 ```eos
 !
@@ -160,89 +120,40 @@ management api http-commands
       no shutdown
 ```
 
-## Authentication
+# Authentication
 
-### Local Users
+## Local Users
 
-#### Local Users Summary
+### Local Users Summary
 
-| User | Privilege | Role | Disabled | Shell |
-| ---- | --------- | ---- | -------- | ----- |
-| admin | 15 | network-admin | False | - |
-| ansible | 15 | network-admin | False | - |
+| User | Privilege | Role | Disabled |
+| ---- | --------- | ---- | -------- |
+| admin | 15 | network-admin | False |
+| ansible | 15 | - | False |
 
-#### Local Users Device Configuration
+### Local Users Device Configuration
 
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
-username ansible privilege 15 role network-admin secret sha512 <removed>
+username ansible privilege 15 secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
 ```
 
-### AAA Authentication
+# Monitoring
 
-#### AAA Authentication Summary
+# Spanning Tree
 
-| Type | Sub-type | User Stores |
-| ---- | -------- | ---------- |
-| Login | default | local |
-
-#### AAA Authentication Device Configuration
-
-```eos
-aaa authentication login default local
-!
-```
-
-### AAA Authorization
-
-#### AAA Authorization Summary
-
-| Type | User Stores |
-| ---- | ----------- |
-| Exec | local |
-
-Authorization for configuration commands is disabled.
-
-#### AAA Authorization Device Configuration
-
-```eos
-aaa authorization exec default local
-!
-```
-
-## Monitoring
-
-### TerminAttr Daemon
-
-#### TerminAttr Daemon Summary
-
-| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
-| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 192.168.1.12:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
-
-#### TerminAttr Daemon Device Configuration
-
-```eos
-!
-daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
-   no shutdown
-```
-
-## Spanning Tree
-
-### Spanning Tree Summary
+## Spanning Tree Summary
 
 STP mode: **mstp**
 
-#### MSTP Instance and Priority
+### MSTP Instance and Priority
 
 | Instance(s) | Priority |
 | -------- | -------- |
 | 0 | 4096 |
 
-### Spanning Tree Device Configuration
+## Spanning Tree Device Configuration
 
 ```eos
 !
@@ -250,139 +161,149 @@ spanning-tree mode mstp
 spanning-tree mst 0 priority 4096
 ```
 
-## Internal VLAN Allocation Policy
+# Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+## Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
 vlan internal order ascending range 1006 1199
 ```
 
-## VLANs
+# VLANs
 
-### VLANs Summary
+## VLANs Summary
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 112 | VLAN112 | - |
+| 11 | VLAN11 | - |
+| 12 | VLAN12 | - |
 
-### VLANs Device Configuration
+## VLANs Device Configuration
 
 ```eos
 !
-vlan 112
-   name VLAN112
+vlan 11
+   name VLAN11
+!
+vlan 12
+   name VLAN12
 ```
 
-## Interfaces
+# Interfaces
 
-### Ethernet Interfaces
+## Ethernet Interfaces
 
-#### Ethernet Interfaces Summary
+### Ethernet Interfaces Summary
 
-##### L2
+#### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet4 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet5 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet6 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet7 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet8 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet9 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet10 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet11 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet12 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet13 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet14 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet15 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet16 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet17 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet18 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet19 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet20 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet21 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet22 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet23 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet24 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet25 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet26 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet27 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet28 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet29 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet30 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet31 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet32 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet33 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet34 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet35 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet36 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet37 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet38 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet39 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet40 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet41 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet42 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet43 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet44 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet45 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet46 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet47 |  AMBER_VLAN112 | access | 112 | - | - | - |
-| Ethernet48 |  AMBER_VLAN112 | access | 112 | - | - | - |
+| Ethernet1 |  MEDIA | access | 11 | - | - | - |
+| Ethernet2 |  MEDIA | access | 11 | - | - | - |
+| Ethernet3 |  MEDIA | access | 11 | - | - | - |
+| Ethernet4 |  MEDIA | access | 11 | - | - | - |
+| Ethernet5 |  MEDIA | access | 11 | - | - | - |
+| Ethernet6 |  MEDIA | access | 11 | - | - | - |
+| Ethernet7 |  MEDIA | access | 11 | - | - | - |
+| Ethernet8 |  MEDIA | access | 11 | - | - | - |
+| Ethernet9 |  MEDIA | access | 11 | - | - | - |
+| Ethernet10 |  MEDIA | access | 11 | - | - | - |
+| Ethernet11 |  MEDIA | access | 11 | - | - | - |
+| Ethernet12 |  MEDIA | access | 11 | - | - | - |
+| Ethernet13 |  MEDIA | access | 11 | - | - | - |
+| Ethernet14 |  MEDIA | access | 11 | - | - | - |
+| Ethernet15 |  MEDIA | access | 11 | - | - | - |
+| Ethernet16 |  MEDIA | access | 11 | - | - | - |
+| Ethernet17 |  MEDIA | access | 11 | - | - | - |
+| Ethernet18 |  MEDIA | access | 11 | - | - | - |
+| Ethernet19 |  MEDIA | access | 11 | - | - | - |
+| Ethernet20 |  MEDIA | access | 11 | - | - | - |
+| Ethernet21 |  MEDIA | access | 11 | - | - | - |
+| Ethernet22 |  MEDIA | access | 11 | - | - | - |
+| Ethernet23 |  MEDIA | access | 11 | - | - | - |
+| Ethernet24 |  MEDIA | access | 11 | - | - | - |
+| Ethernet25 |  MEDIA | access | 11 | - | - | - |
+| Ethernet26 |  MEDIA | access | 11 | - | - | - |
+| Ethernet27 |  MEDIA | access | 11 | - | - | - |
+| Ethernet28 |  MEDIA | access | 11 | - | - | - |
+| Ethernet29 |  MEDIA | access | 11 | - | - | - |
+| Ethernet30 |  MEDIA | access | 11 | - | - | - |
+| Ethernet31 |  MEDIA | access | 11 | - | - | - |
+| Ethernet32 |  MEDIA | access | 11 | - | - | - |
+| Ethernet33 |  MEDIA | access | 11 | - | - | - |
+| Ethernet34 |  MEDIA | access | 11 | - | - | - |
+| Ethernet35 |  MEDIA | access | 11 | - | - | - |
+| Ethernet36 |  MEDIA | access | 11 | - | - | - |
+| Ethernet37 |  MEDIA | access | 11 | - | - | - |
+| Ethernet38 |  MEDIA | access | 11 | - | - | - |
+| Ethernet39 |  MEDIA | access | 11 | - | - | - |
+| Ethernet40 |  MEDIA | access | 11 | - | - | - |
+| Ethernet41 |  MEDIA | access | 11 | - | - | - |
+| Ethernet42 |  MEDIA | access | 11 | - | - | - |
+| Ethernet43 |  MEDIA | access | 11 | - | - | - |
+| Ethernet44 |  MEDIA | access | 11 | - | - | - |
+| Ethernet45 |  MEDIA | access | 11 | - | - | - |
+| Ethernet46 |  MEDIA | access | 11 | - | - | - |
+| Ethernet47 |  MEDIA | access | 11 | - | - | - |
+| Ethernet48 |  MEDIA | access | 11 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
-##### IPv4
+#### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_AMBER-SPINE1_Ethernet3 | routed | - | 10.255.254.9/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_AMBER-SPINE1_Ethernet4 | routed | - | 10.255.254.11/31 | default | 1500 | False | - | - |
+| Ethernet51/1 | P2P_LINK_TO_BLUE-SPINE1_Ethernet5/1 | routed | - | 10.255.2.13/31 | default | 1500 | False | - | - |
+| Ethernet52/1 | P2P_LINK_TO_BLUE-SPINE1_Ethernet6/1 | routed | - | 10.255.2.15/31 | default | 1500 | False | - | - |
 
-#### Ethernet Interfaces Device Configuration
+### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_AMBER-SPINE1_Ethernet3
+   description MEDIA
    no shutdown
-   mtu 1500
-   no switchport
-   ip address 10.255.254.9/31
-   pim ipv4 sparse-mode
+   switchport access vlan 11
+   switchport mode access
+   switchport
    ptp enable
    ptp sync-message interval -3
    ptp announce interval 0
    ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp role master
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Ethernet2
-   description P2P_LINK_TO_AMBER-SPINE1_Ethernet4
+   description MEDIA
    no shutdown
-   mtu 1500
-   no switchport
-   ip address 10.255.254.11/31
-   pim ipv4 sparse-mode
+   switchport access vlan 11
+   switchport mode access
+   switchport
    ptp enable
    ptp sync-message interval -3
    ptp announce interval 0
    ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp role master
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Ethernet3
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -396,9 +317,9 @@ interface Ethernet3
    spanning-tree bpdufilter enable
 !
 interface Ethernet4
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -412,9 +333,9 @@ interface Ethernet4
    spanning-tree bpdufilter enable
 !
 interface Ethernet5
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -428,9 +349,9 @@ interface Ethernet5
    spanning-tree bpdufilter enable
 !
 interface Ethernet6
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -444,9 +365,9 @@ interface Ethernet6
    spanning-tree bpdufilter enable
 !
 interface Ethernet7
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -460,9 +381,9 @@ interface Ethernet7
    spanning-tree bpdufilter enable
 !
 interface Ethernet8
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -476,9 +397,9 @@ interface Ethernet8
    spanning-tree bpdufilter enable
 !
 interface Ethernet9
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -492,9 +413,9 @@ interface Ethernet9
    spanning-tree bpdufilter enable
 !
 interface Ethernet10
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -508,9 +429,9 @@ interface Ethernet10
    spanning-tree bpdufilter enable
 !
 interface Ethernet11
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -524,9 +445,9 @@ interface Ethernet11
    spanning-tree bpdufilter enable
 !
 interface Ethernet12
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -540,9 +461,9 @@ interface Ethernet12
    spanning-tree bpdufilter enable
 !
 interface Ethernet13
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -556,9 +477,9 @@ interface Ethernet13
    spanning-tree bpdufilter enable
 !
 interface Ethernet14
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -572,9 +493,9 @@ interface Ethernet14
    spanning-tree bpdufilter enable
 !
 interface Ethernet15
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -588,9 +509,9 @@ interface Ethernet15
    spanning-tree bpdufilter enable
 !
 interface Ethernet16
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -604,9 +525,9 @@ interface Ethernet16
    spanning-tree bpdufilter enable
 !
 interface Ethernet17
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -620,9 +541,9 @@ interface Ethernet17
    spanning-tree bpdufilter enable
 !
 interface Ethernet18
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -636,9 +557,9 @@ interface Ethernet18
    spanning-tree bpdufilter enable
 !
 interface Ethernet19
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -652,9 +573,9 @@ interface Ethernet19
    spanning-tree bpdufilter enable
 !
 interface Ethernet20
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -668,9 +589,9 @@ interface Ethernet20
    spanning-tree bpdufilter enable
 !
 interface Ethernet21
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -684,9 +605,9 @@ interface Ethernet21
    spanning-tree bpdufilter enable
 !
 interface Ethernet22
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -700,9 +621,9 @@ interface Ethernet22
    spanning-tree bpdufilter enable
 !
 interface Ethernet23
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -716,9 +637,9 @@ interface Ethernet23
    spanning-tree bpdufilter enable
 !
 interface Ethernet24
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -732,9 +653,9 @@ interface Ethernet24
    spanning-tree bpdufilter enable
 !
 interface Ethernet25
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -748,9 +669,9 @@ interface Ethernet25
    spanning-tree bpdufilter enable
 !
 interface Ethernet26
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -764,9 +685,9 @@ interface Ethernet26
    spanning-tree bpdufilter enable
 !
 interface Ethernet27
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -780,9 +701,9 @@ interface Ethernet27
    spanning-tree bpdufilter enable
 !
 interface Ethernet28
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -796,9 +717,9 @@ interface Ethernet28
    spanning-tree bpdufilter enable
 !
 interface Ethernet29
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -812,9 +733,9 @@ interface Ethernet29
    spanning-tree bpdufilter enable
 !
 interface Ethernet30
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -828,9 +749,9 @@ interface Ethernet30
    spanning-tree bpdufilter enable
 !
 interface Ethernet31
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -844,9 +765,9 @@ interface Ethernet31
    spanning-tree bpdufilter enable
 !
 interface Ethernet32
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -860,9 +781,9 @@ interface Ethernet32
    spanning-tree bpdufilter enable
 !
 interface Ethernet33
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -876,9 +797,9 @@ interface Ethernet33
    spanning-tree bpdufilter enable
 !
 interface Ethernet34
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -892,9 +813,9 @@ interface Ethernet34
    spanning-tree bpdufilter enable
 !
 interface Ethernet35
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -908,9 +829,9 @@ interface Ethernet35
    spanning-tree bpdufilter enable
 !
 interface Ethernet36
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -924,9 +845,9 @@ interface Ethernet36
    spanning-tree bpdufilter enable
 !
 interface Ethernet37
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -940,9 +861,9 @@ interface Ethernet37
    spanning-tree bpdufilter enable
 !
 interface Ethernet38
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -956,9 +877,9 @@ interface Ethernet38
    spanning-tree bpdufilter enable
 !
 interface Ethernet39
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -972,9 +893,9 @@ interface Ethernet39
    spanning-tree bpdufilter enable
 !
 interface Ethernet40
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -988,9 +909,9 @@ interface Ethernet40
    spanning-tree bpdufilter enable
 !
 interface Ethernet41
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -1004,9 +925,9 @@ interface Ethernet41
    spanning-tree bpdufilter enable
 !
 interface Ethernet42
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -1020,9 +941,9 @@ interface Ethernet42
    spanning-tree bpdufilter enable
 !
 interface Ethernet43
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -1036,9 +957,9 @@ interface Ethernet43
    spanning-tree bpdufilter enable
 !
 interface Ethernet44
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -1052,9 +973,9 @@ interface Ethernet44
    spanning-tree bpdufilter enable
 !
 interface Ethernet45
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -1068,9 +989,9 @@ interface Ethernet45
    spanning-tree bpdufilter enable
 !
 interface Ethernet46
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -1084,9 +1005,9 @@ interface Ethernet46
    spanning-tree bpdufilter enable
 !
 interface Ethernet47
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -1100,9 +1021,9 @@ interface Ethernet47
    spanning-tree bpdufilter enable
 !
 interface Ethernet48
-   description AMBER_VLAN112
-   shutdown
-   switchport access vlan 112
+   description MEDIA
+   no shutdown
+   switchport access vlan 11
    switchport mode access
    switchport
    ptp enable
@@ -1114,63 +1035,96 @@ interface Ethernet48
    ptp role master
    spanning-tree portfast
    spanning-tree bpdufilter enable
+!
+interface Ethernet51/1
+   description P2P_LINK_TO_BLUE-SPINE1_Ethernet5/1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.255.2.13/31
+   pim ipv4 sparse-mode
+   ptp enable
+   ptp sync-message interval -3
+   ptp announce interval 0
+   ptp transport ipv4
+   ptp announce timeout 3
+   ptp delay-req interval -3
+!
+interface Ethernet52/1
+   description P2P_LINK_TO_BLUE-SPINE1_Ethernet6/1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.255.2.15/31
+   pim ipv4 sparse-mode
+   ptp enable
+   ptp sync-message interval -3
+   ptp announce interval 0
+   ptp transport ipv4
+   ptp announce timeout 3
+   ptp delay-req interval -3
 ```
 
-### Loopback Interfaces
+## Loopback Interfaces
 
-#### Loopback Interfaces Summary
+### Loopback Interfaces Summary
 
-##### IPv4
+#### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 10.255.1.3/32 |
+| Loopback0 | Router-id | default | 10.255.1.4/32 |
 
-##### IPv6
+#### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | Router-id | default | - |
 
 
-#### Loopback Interfaces Device Configuration
+### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description Router-id
    no shutdown
-   ip address 10.255.1.3/32
+   ip address 10.255.1.4/32
 ```
 
-### VLAN Interfaces
+## VLAN Interfaces
 
-#### VLAN Interfaces Summary
+### VLAN Interfaces Summary
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan112 | VLAN112 | default | - | False |
+| Vlan11 | VLAN11 | default | - | False |
+| Vlan12 | VLAN12 | default | - | False |
 
-##### IPv4
+#### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan112 |  default  |  10.10.112.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan11 |  default  |  10.4.11.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan12 |  default  |  10.4.12.1/24  |  -  |  -  |  -  |  -  |  -  |
 
-#### VLAN Interfaces Device Configuration
+### VLAN Interfaces Device Configuration
 
 ```eos
 !
-interface Vlan112
-   description VLAN112
+interface Vlan11
+   description VLAN11
    no shutdown
-   ip address 10.10.112.1/24
-   ip helper-address 10.252.4.253
+   ip address 10.4.11.1/24
+!
+interface Vlan12
+   description VLAN12
+   no shutdown
+   ip address 10.4.12.1/24
 ```
 
-## Routing
-
-### Service Routing Protocols Model
+# Routing
+## Service Routing Protocols Model
 
 Multi agent routing protocol model enabled
 
@@ -1179,63 +1133,74 @@ Multi agent routing protocol model enabled
 service routing protocols model multi-agent
 ```
 
-### IP Routing
+## Virtual Router MAC Address
 
-#### IP Routing Summary
+### Virtual Router MAC Address Summary
+
+#### Virtual Router MAC Address: 00:1c:73:00:00:99
+
+### Virtual Router MAC Address Configuration
+
+```eos
+!
+ip virtual-router mac-address 00:1c:73:00:00:99
+```
+
+## IP Routing
+
+### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | False |
+| MGMT | false |
 
-#### IP Routing Device Configuration
+### IP Routing Device Configuration
 
 ```eos
 !
 ip routing
 no ip routing vrf MGMT
 ```
+## IPv6 Routing
 
-### IPv6 Routing
-
-#### IPv6 Routing Summary
+### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
 | MGMT | false |
 
-### Static Routes
+## Static Routes
 
-#### Static Routes Summary
+### Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
-| MGMT | 0.0.0.0/0 | 10.90.227.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.0.1 | - | 1 | - | - | - |
 
-#### Static Routes Device Configuration
+### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 10.90.227.1
+ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 ```
 
-### Router BGP
+## Router BGP
 
-#### Router BGP Summary
+### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65102|  10.255.1.3 |
+| 65104|  10.255.1.4 |
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
-#### Router BGP Peer Groups
+### Router BGP Peer Groups
 
-##### IPv4-UNDERLAY-PEERS
+#### IPv4-UNDERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -1243,59 +1208,58 @@ ip route vrf MGMT 0.0.0.0/0 10.90.227.1
 | Send community | all |
 | Maximum routes | 12000 |
 
-#### BGP Neighbors
+### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 10.255.254.8 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.255.254.10 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
+| 10.255.2.12 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - |
+| 10.255.2.14 | 65100 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - |
 
-#### Router BGP Device Configuration
+### Router BGP Device Configuration
 
 ```eos
 !
-router bgp 65102
-   router-id 10.255.1.3
+router bgp 65104
+   router-id 10.255.1.4
    maximum-paths 4 ecmp 4
-   no bgp default ipv4-unicast
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
+   neighbor IPv4-UNDERLAY-PEERS password 7 7x4B4rnJhZB438m9+BrBfQ==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor 10.255.254.8 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.255.254.8 remote-as 65100
-   neighbor 10.255.254.8 description amber-spine1_Ethernet3
-   neighbor 10.255.254.10 peer group IPv4-UNDERLAY-PEERS
-   neighbor 10.255.254.10 remote-as 65100
-   neighbor 10.255.254.10 description amber-spine1_Ethernet4
+   neighbor 10.255.2.12 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.2.12 remote-as 65100
+   neighbor 10.255.2.12 description blue-spine1_Ethernet5/1
+   neighbor 10.255.2.14 peer group IPv4-UNDERLAY-PEERS
+   neighbor 10.255.2.14 remote-as 65100
+   neighbor 10.255.2.14 description blue-spine1_Ethernet6/1
    redistribute connected
    !
    address-family ipv4
       neighbor IPv4-UNDERLAY-PEERS activate
 ```
 
-## Multicast
+# Multicast
 
-### IP IGMP Snooping
+## IP IGMP Snooping
 
-#### IP IGMP Snooping Summary
+### IP IGMP Snooping Summary
 
 | IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
 | ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
 | Enabled | - | - | - | - | - |
 
-#### IP IGMP Snooping Device Configuration
+### IP IGMP Snooping Device Configuration
 
 ```eos
 ```
 
-### Router Multicast
+## Router Multicast
 
-#### IP Router Multicast Summary
+### IP Router Multicast Summary
 
 - Routing for IPv4 multicast is enabled.
 
-#### Router Multicast Device Configuration
+### Router Multicast Device Configuration
 
 ```eos
 !
@@ -1305,26 +1269,53 @@ router multicast
 ```
 
 
-### PIM Sparse Mode
+## PIM Sparse Mode
 
-#### PIM Sparse Mode enabled interfaces
+### Router PIM Sparse Mode
+
+#### IP Sparse Mode Information
+
+BFD enabled: False
+
+##### IP Rendezvous Information
+
+| Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
+| ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
+| 10.255.0.1 | - | - | - | - | - |
+
+#### Router Multicast Device Configuration
+
+```eos
+!
+router pim sparse-mode
+   ipv4
+      rp address 10.255.0.1
+```
+
+### PIM Sparse Mode enabled interfaces
 
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |
-| Ethernet1 | - | IPv4 | - | - |
-| Ethernet2 | - | IPv4 | - | - |
+| Ethernet51/1 | - | IPv4 | - | - |
+| Ethernet52/1 | - | IPv4 | - | - |
 
-## VRF Instances
+# Filters
 
-### VRF Instances Summary
+# ACL
+
+# VRF Instances
+
+## VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | disabled |
 
-### VRF Instances Device Configuration
+## VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

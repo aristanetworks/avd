@@ -17,14 +17,14 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| MEDIA_FABRIC | media_leaf | amber-leaf1 | 10.90.227.25/24 | 7280R2 | Provisioned | JPE20302333 |
-| MEDIA_FABRIC | media_leaf | amber-leaf2 | 10.90.227.27/24 | 7280R2 | Provisioned | JPE20302208 |
-| MEDIA_FABRIC | media_spine | amber-spine1 | 10.90.227.11/24 | 7280R2 | Provisioned | JPE20244151 |
-| MEDIA_FABRIC | media_leaf | blue-leaf1 | 10.90.227.29/24 | 7050X3 | Provisioned | JPE20282733 |
-| MEDIA_FABRIC | media_leaf | blue-leaf2 | 10.90.227.31/24 | 720XP | Provisioned | JPE19363421 |
-| MEDIA_FABRIC | media_spine | blue-spine1 | 10.90.227.12/24 | 7050X3 | Provisioned | JPE21090526 |
-| MEDIA_FABRIC | ptp_leaf | media-PTP-1 | 10.90.227.21/24 | 7020TR | Provisioned | JPE20284615 |
-| MEDIA_FABRIC | ptp_leaf | media-PTP-2 | 10.90.227.23/24 | 7020TR | Provisioned | JPE20284734 |
+| MEDIA_FABRIC | media_leaf | amber-leaf1 | 172.16.1.111/24 | vEOS-lab | Provisioned | - |
+| MEDIA_FABRIC | media_leaf | amber-leaf2 | 172.16.1.112/24 | vEOS-lab | Provisioned | - |
+| MEDIA_FABRIC | media_spine | amber-spine1 | 172.16.1.11/24 | vEOS-lab | Provisioned | - |
+| MEDIA_FABRIC | media_leaf | blue-leaf1 | 172.16.1.211/24 | vEOS-lab | Provisioned | - |
+| MEDIA_FABRIC | media_leaf | blue-leaf2 | 172.16.1.212/24 | vEOS-lab | Provisioned | - |
+| MEDIA_FABRIC | media_spine | blue-spine1 | 172.16.1.21/24 | vEOS-lab | Provisioned | - |
+| MEDIA_FABRIC | ptp_leaf | media-PTP-1 | 172.16.3.101/24 | vEOS-lab | Provisioned | - |
+| MEDIA_FABRIC | ptp_leaf | media-PTP-2 | 172.16.3.102/24 | vEOS-lab | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -37,16 +37,20 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
-| media_leaf | amber-leaf1 | Ethernet49/1 | media_spine | amber-spine1 | Ethernet1/1 |
-| media_leaf | amber-leaf2 | Ethernet49/1 | media_spine | amber-spine1 | Ethernet3/1 |
-| media_spine | amber-spine1 | Ethernet27/1 | ptp_leaf | media-PTP-1 | Ethernet51 |
-| media_spine | amber-spine1 | Ethernet28/1 | ptp_leaf | media-PTP-2 | Ethernet51 |
-| media_leaf | blue-leaf1 | Ethernet51/1 | media_spine | blue-spine1 | Ethernet17/1 |
-| media_leaf | blue-leaf2 | Ethernet54/1 | media_spine | blue-spine1 | Ethernet25/1 |
-| media_spine | blue-spine1 | Ethernet27/1 | ptp_leaf | media-PTP-1 | Ethernet52 |
-| media_spine | blue-spine1 | Ethernet28/1 | ptp_leaf | media-PTP-2 | Ethernet52 |
-| ptp_leaf | media-PTP-1 | Ethernet1 | ptp_leaf | media-PTP-2 | Ethernet1 |
-| ptp_leaf | media-PTP-1 | Ethernet2 | ptp_leaf | media-PTP-2 | Ethernet2 |
+| media_leaf | amber-leaf1 | Ethernet1 | media_spine | amber-spine1 | Ethernet1 |
+| media_leaf | amber-leaf1 | Ethernet2 | media_spine | amber-spine1 | Ethernet2 |
+| media_leaf | amber-leaf2 | Ethernet1 | media_spine | amber-spine1 | Ethernet3 |
+| media_leaf | amber-leaf2 | Ethernet2 | media_spine | amber-spine1 | Ethernet4 |
+| media_spine | amber-spine1 | Ethernet5 | ptp_leaf | media-PTP-1 | Ethernet1 |
+| media_spine | amber-spine1 | Ethernet6 | ptp_leaf | media-PTP-2 | Ethernet1 |
+| media_leaf | blue-leaf1 | Ethernet1 | media_spine | blue-spine1 | Ethernet1 |
+| media_leaf | blue-leaf1 | Ethernet2 | media_spine | blue-spine1 | Ethernet2 |
+| media_leaf | blue-leaf2 | Ethernet1 | media_spine | blue-spine1 | Ethernet3 |
+| media_leaf | blue-leaf2 | Ethernet2 | media_spine | blue-spine1 | Ethernet4 |
+| media_spine | blue-spine1 | Ethernet5 | ptp_leaf | media-PTP-1 | Ethernet2 |
+| media_spine | blue-spine1 | Ethernet6 | ptp_leaf | media-PTP-2 | Ethernet2 |
+| ptp_leaf | media-PTP-1 | Ethernet3 | ptp_leaf | media-PTP-2 | Ethernet3 |
+| ptp_leaf | media-PTP-1 | Ethernet4 | ptp_leaf | media-PTP-2 | Ethernet4 |
 
 ## Fabric IP Allocation
 
@@ -55,21 +59,25 @@
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
 | 10.255.253.0/26 | 64 | 8 | 12.5 % |
-| 10.255.254.0/26 | 64 | 4 | 6.25 % |
-| 10.255.255.0/26 | 64 | 4 | 6.25 % |
+| 10.255.254.0/26 | 64 | 8 | 12.5 % |
+| 10.255.255.0/26 | 64 | 8 | 12.5 % |
 
 ### Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
-| amber-leaf1 | Ethernet49/1 | 10.255.254.1/31 | amber-spine1 | Ethernet1/1 | 10.255.254.0/31 |
-| amber-leaf2 | Ethernet49/1 | 10.255.254.3/31 | amber-spine1 | Ethernet3/1 | 10.255.254.2/31 |
-| amber-spine1 | Ethernet27/1 | 10.255.253.0/31 | media-PTP-1 | Ethernet51 | 10.255.253.1/31 |
-| amber-spine1 | Ethernet28/1 | 10.255.253.4/31 | media-PTP-2 | Ethernet51 | 10.255.253.5/31 |
-| blue-leaf1 | Ethernet51/1 | 10.255.255.1/31 | blue-spine1 | Ethernet17/1 | 10.255.255.0/31 |
-| blue-leaf2 | Ethernet54/1 | 10.255.255.3/31 | blue-spine1 | Ethernet25/1 | 10.255.255.2/31 |
-| blue-spine1 | Ethernet27/1 | 10.255.253.2/31 | media-PTP-1 | Ethernet52 | 10.255.253.3/31 |
-| blue-spine1 | Ethernet28/1 | 10.255.253.6/31 | media-PTP-2 | Ethernet52 | 10.255.253.7/31 |
+| amber-leaf1 | Ethernet1 | 10.255.254.1/31 | amber-spine1 | Ethernet1 | 10.255.254.0/31 |
+| amber-leaf1 | Ethernet2 | 10.255.254.3/31 | amber-spine1 | Ethernet2 | 10.255.254.2/31 |
+| amber-leaf2 | Ethernet1 | 10.255.254.9/31 | amber-spine1 | Ethernet3 | 10.255.254.8/31 |
+| amber-leaf2 | Ethernet2 | 10.255.254.11/31 | amber-spine1 | Ethernet4 | 10.255.254.10/31 |
+| amber-spine1 | Ethernet5 | 10.255.253.0/31 | media-PTP-1 | Ethernet1 | 10.255.253.1/31 |
+| amber-spine1 | Ethernet6 | 10.255.253.4/31 | media-PTP-2 | Ethernet1 | 10.255.253.5/31 |
+| blue-leaf1 | Ethernet1 | 10.255.255.1/31 | blue-spine1 | Ethernet1 | 10.255.255.0/31 |
+| blue-leaf1 | Ethernet2 | 10.255.255.3/31 | blue-spine1 | Ethernet2 | 10.255.255.2/31 |
+| blue-leaf2 | Ethernet1 | 10.255.255.9/31 | blue-spine1 | Ethernet3 | 10.255.255.8/31 |
+| blue-leaf2 | Ethernet2 | 10.255.255.11/31 | blue-spine1 | Ethernet4 | 10.255.255.10/31 |
+| blue-spine1 | Ethernet5 | 10.255.253.2/31 | media-PTP-1 | Ethernet2 | 10.255.253.3/31 |
+| blue-spine1 | Ethernet6 | 10.255.253.6/31 | media-PTP-2 | Ethernet2 | 10.255.253.7/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 
@@ -83,11 +91,11 @@
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
-| MEDIA_FABRIC | amber-leaf1 | 10.255.1.3/32 |
-| MEDIA_FABRIC | amber-leaf2 | 10.255.1.4/32 |
+| MEDIA_FABRIC | amber-leaf1 | 10.255.1.2/32 |
+| MEDIA_FABRIC | amber-leaf2 | 10.255.1.3/32 |
 | MEDIA_FABRIC | amber-spine1 | 10.255.1.1/32 |
-| MEDIA_FABRIC | blue-leaf1 | 10.255.2.3/32 |
-| MEDIA_FABRIC | blue-leaf2 | 10.255.2.4/32 |
+| MEDIA_FABRIC | blue-leaf1 | 10.255.2.2/32 |
+| MEDIA_FABRIC | blue-leaf2 | 10.255.2.3/32 |
 | MEDIA_FABRIC | blue-spine1 | 10.255.2.1/32 |
 | MEDIA_FABRIC | media-PTP-1 | 10.255.3.1/32 |
 | MEDIA_FABRIC | media-PTP-2 | 10.255.3.2/32 |
@@ -101,5 +109,3 @@
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
-| MEDIA_FABRIC | amber-spine1 | 172.24.0.10/32 |
-| MEDIA_FABRIC | blue-spine1 | 172.24.0.10/32 |

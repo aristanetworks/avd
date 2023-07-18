@@ -1,3 +1,4 @@
+---
 tenants:
   amber:
     vrfs:
@@ -8,95 +9,54 @@ tenants:
             enabled: true
             tags: [ amber-leaf1 ]
             nodes:
-              amber-leaf1:
-                ip_address: 10.252.9.1/24
+              - node: amber-leaf1
+                ip_address: 10.10.111.1/24
             ip_helpers:
               10.252.4.253:
-            structured_config:
-              no_autostate: true
+
           112:
             name: VLAN112
             enabled: true
             tags: [ amber-leaf2 ]
             nodes:
-              amber-leaf2:
-                ip_address: 10.252.10.1/24
+              - node: amber-leaf2
+                ip_address: 10.10.112.1/24
             ip_helpers:
               10.252.4.253:
-            structured_config:
-              no_autostate: true
-          2252:
-            name: VLAN2252
-            enabled: true
-            tags: [ amber-leaf1 ]
-            nodes:
-              - node: amber-leaf1
-                ip_address: 172.24.225.17/28
-                structured_config:
-                  no_autostate: true
-                  pim:
-                    ipv4:
-                      sparse_mode: true
-                  multicast:
-                    ipv4:
-                      static: true
-          2253:
-            name: VLAN2253
-            enabled: true
-            tags: [ amber-leaf1 ]
-            nodes:
-              - node: amber-leaf1
-                ip_address: 172.24.225.33/28
-                structured_config:
-                  no_autostate: true
-                  pim:
-                    ipv4:
-                      sparse_mode: true
-                  multicast:
-                    ipv4:
-                      static: true
 
   blue:
     vrfs:
       default:
         svis:
-          121:
-            name: VLAN121
+          211:
+            name: VLAN211
             enabled: true
             tags: [ blue-leaf1 ]
             nodes:
               - node: blue-leaf1
-                ip_address: 10.252.13.1/24
-            structured_config:
-              no_autostate: true
-          122:
-            name: VLAN122
+                ip_address: 10.10.211.1/24
+          212:
+            name: VLAN212
             enabled: true
             tags: [ blue-leaf2 ]
             nodes:
               - node: blue-leaf2
-                ip_address: 10.252.14.1/24
-            structured_config:
-              no_autostate: true
+                ip_address: 10.10.212.1/24
   ptp:
     vrfs:
       default:
         svis:
-          2222:
-            name: vlan_PTP_1
+          131:
+            name: VLAN131
             enabled: true
             tags: [ media-PTP-1 ]
             nodes:
               - node: media-PTP-1
-                ip_address: 172.24.121.65/30
-            structured_config:
-              no_autostate: true
-          2223:
-            name: vlan_PTP_2
+                ip_address: 10.10.131.1/24
+          132:
+            name: VLAN132
             enabled: true
             tags: [ media-PTP-2 ]
             nodes:
               - node: media-PTP-2
-                ip_address: 172.24.123.65/30
-            structured_config:
-              no_autostate: true
+                ip_address: 10.10.132.1/24

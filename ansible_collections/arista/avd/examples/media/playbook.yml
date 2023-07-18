@@ -1,0 +1,11 @@
+---
+- name: Run AVD
+  hosts: FABRIC
+  gather_facts: false
+  tasks:
+    - name: generate intented variables
+      import_role:
+        name: arista.avd.eos_designs
+    - name: generate device intended config and documention
+      import_role:
+        name: arista.avd.eos_cli_config_gen

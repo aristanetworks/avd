@@ -1,0 +1,13 @@
+Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
+leaf,amber-leaf1,Ethernet49/1,10.252.11.1/31,spine,amber-spine1,Ethernet1/1,10.252.11.0/31
+leaf,amber-leaf1,Ethernet50/1,10.252.11.3/31,spine,amber-spine1,Ethernet2/1,10.252.11.2/31
+leaf,amber-leaf2,Ethernet49,10.252.11.9/31,spine,amber-spine1,Ethernet3/1,10.252.11.8/31
+leaf,amber-leaf2,Ethernet50,10.252.11.11/31,spine,amber-spine1,Ethernet3/2,10.252.11.10/31
+leaf,amber-leaf2,Ethernet51,10.252.11.13/31,spine,amber-spine1,Ethernet3/3,10.252.11.12/31
+leaf,amber-leaf2,Ethernet52,10.252.11.15/31,spine,amber-spine1,Ethernet3/4,10.252.11.14/31
+leaf,blue-leaf1,Ethernet49/1,10.252.15.1/31,spine,blue-spine1,Ethernet1/1,10.252.15.0/31
+leaf,blue-leaf1,Ethernet50/1,10.252.15.3/31,spine,blue-spine1,Ethernet2/1,10.252.15.2/31
+leaf,blue-leaf2,Ethernet49,10.252.15.9/31,spine,blue-spine1,Ethernet3/1,10.252.15.8/31
+leaf,blue-leaf2,Ethernet50,10.252.15.11/31,spine,blue-spine1,Ethernet3/2,10.252.15.10/31
+leaf,blue-leaf2,Ethernet51,10.252.15.13/31,spine,blue-spine1,Ethernet3/3,10.252.15.12/31
+leaf,blue-leaf2,Ethernet52,10.252.15.15/31,spine,blue-spine1,Ethernet3/4,10.252.15.14/31
