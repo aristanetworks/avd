@@ -91,6 +91,17 @@ class EthernetInterfacesMixin(UtilsMixin):
         channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
         short_esi = self._get_short_esi(adapter, channel_group_id)
 
+        # check lengths of lists
+        nodes_length = len(adapter["switches"])
+        if len(adapter["switch_ports"]) != nodes_length or ("descriptions" in adapter and len(adapter["descriptions"]) != nodes_length):
+            raise AristaAvdError("Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter.")
+
+        # if 'descriptions' is set, it is preferred
+        if (interface_descriptions := adapter.get("descriptions")) is not None:
+            interface_description = interface_descriptions[node_index]
+        else:
+            interface_description = adapter.get("description")
+
         # Common ethernet_interface settings
         ethernet_interface = {
             "name": adapter["switch_ports"][node_index],
