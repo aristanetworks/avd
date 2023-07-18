@@ -9,16 +9,28 @@ from ansible.inventory.host import Host
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase
+from ansible.utils.display import Display
 
 # Root container on CloudVision.
 # Shall not be changed unless CloudVision changes it in the core.
 CVP_ROOT_CONTAINER = "Tenant"
 
+display = Display()
+
 
 class ActionModule(ActionBase):
+    def _maybe_convert_device_filter(self):
+        # Converting string device filter to list
+        device_filter = self._task.args["device_filter"]
+        if not isinstance(device_filter, list):
+            display.debug(f"device_filter must be of type list, got '{device_filter}' of type {type(device_filter)} instead. Converting...")
+            self._task.args["device_filter"] = [device_filter]
+
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
             task_vars = {}
+
+        # self._maybe_convert_device_filter()
 
         module_args = self._task.args.copy()
 
