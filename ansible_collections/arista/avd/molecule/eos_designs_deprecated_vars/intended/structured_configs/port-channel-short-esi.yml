@@ -29,9 +29,33 @@ ethernet_interfaces:
 port_channel_interfaces:
 - name: Port-Channel10
   description: server01_ESI_PortChanne1
-  type: switched
+  type: routed
   shutdown: false
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0101
     route_target: 03:03:02:02:01:01
   lacp_id: 0303.0202.0101
+- name: Port-Channel10.111
+  type: l2dot1q
+  vlan_id: 111
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 111
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0111
+    route_target: 03:03:02:02:01:11
+- name: Port-Channel10.222
+  type: l2dot1q
+  vlan_id: 222
+  encapsulation_vlan:
+    client:
+      dot1q:
+        vlan: 222
+    network:
+      client: true
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0222
+    route_target: 03:03:02:02:02:22

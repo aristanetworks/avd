@@ -15,3 +15,8 @@ servers:
           description: PortChanne1
           mode: active
           short_esi: '0303:0202:0101'
+          subinterfaces:
+            - number: 111
+              short_esi: 0303:0202:0111
+            - number: 222
+              short_esi: 0303:0202:0222
