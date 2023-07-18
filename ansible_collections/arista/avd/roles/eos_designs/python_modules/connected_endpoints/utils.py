@@ -92,9 +92,10 @@ class UtilsMixin:
             # Only configure ESI for multi-homing.
             return None
 
-        # short_esi is only set when called from sub-interface port-channels.
         if short_esi is None:
-            if (short_esi := get(adapter, "ethernet_segment.short_esi")) is None:
+            # Setting short_esi under port_channel will be deprecated in AVD5.0
+            port_channel_short_esi = get(adapter, "port_channel.short_esi")
+            if (short_esi := get(adapter, "ethernet_segment.short_esi", default=port_channel_short_esi)) is None:
                 return None
 
         endpoint_ports: list = adapter.get("endpoint_ports")

@@ -7,9 +7,9 @@ servers:
   - name: server01_ESI
     rack: RackC
     adapters:
-      - endpoint_ports: [ Eth1 ]
-        switch_ports: [ Ethernet10 ]
-        switches: [ port-channel-short-esi ]
+      - endpoint_ports: [ Eth1, Eth2]
+        switch_ports: [ Ethernet10, Ethernet10]
+        switches: [ port-channel-short-esi, Leaf1]
         profile: TENANT_A_B
         port_channel:
           description: PortChanne1

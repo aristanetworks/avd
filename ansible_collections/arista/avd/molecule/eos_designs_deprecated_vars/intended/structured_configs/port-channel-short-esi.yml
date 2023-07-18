@@ -31,3 +31,7 @@ port_channel_interfaces:
   description: server01_ESI_PortChanne1
   type: switched
   shutdown: false
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0101
+    route_target: 03:03:02:02:01:01
+  lacp_id: 0303.0202.0101
