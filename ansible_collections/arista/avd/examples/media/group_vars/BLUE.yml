@@ -2,4 +2,3 @@
 # L3LS Fabric Values - update these values with caution,
 # SOME CHANGES COULD BE DISRUPTIVE.
 
-mgmt_gateway: 10.90.227.1

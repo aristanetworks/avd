@@ -3,44 +3,30 @@ type: media_leaf
 
 media_leaf:
   defaults:
+    platform: vEOS-lab
     loopback_ipv4_pool: 10.255.2.0/27
-    loopback_ipv4_offset: 2
-    uplink_switches: [ 'blue-spine1' ]
+    loopback_ipv4_offset: 1
+    uplink_switches: [ 'blue-spine1', 'blue-spine1' ]
+    max_parallel_uplinks: 2
     uplink_ipv4_pool: 10.255.255.0/26
-    virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
     filter:
       tenants: [ blue ]
     ptp:
       priority2: 2
-    uplink_structured_config:
-      multicast:
-        ipv4:
-          static: true
-    structured_config:
-      mcs_client:
-        shutdown: false
 
   nodes:
     blue-leaf1:
-      platform: 7050X3
       id: 1
       bgp_as: 65201
-      mgmt_ip: 10.90.227.29/24
+      mgmt_ip: 172.16.1.211/24
       filter:
         tags: [ blue-leaf1 ]
-      uplink_interfaces: [ 'Ethernet51/1' ]
-      uplink_switch_interfaces:
-        - Ethernet17/1
 
     blue-leaf2:
-      platform: 720XP
       id: 2
       bgp_as: 65202
-      mgmt_ip: 10.90.227.31/24
+      mgmt_ip: 172.16.1.212/24
       filter:
         tags: [ blue-leaf2 ]
-      uplink_interfaces: [ 'Ethernet54/1' ]
-      uplink_switch_interfaces:
-        - Ethernet25/1

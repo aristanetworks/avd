@@ -1,6 +1,17 @@
 ---
 all:
   children:
+    CLOUDVISION:
+      hosts:
+        cvp:
+          # Ansible variables used by the ansible_avd and ansible_cvp roles to push configuration to devices via CVP
+          ansible_host: 192.168.1.12
+          ansible_user: ansible
+          ansible_password: ansible
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: true
+          ansible_httpapi_validate_certs: false
+          ansible_network_os: eos
     MEDIA_FABRIC:
       children:
         AMBER:
@@ -8,39 +19,31 @@ all:
             AMBER_SPINES:
               hosts:
                 amber-spine1:
-                  ansible_host: 10.90.227.11
-                  serial_number: JPE20244151
+                  ansible_host: 172.16.1.11
             AMBER_LEAVES:
               hosts:
                 amber-leaf1:
-                  ansible_host: 10.90.227.25
-                  serial_number: JPE20302333
+                  ansible_host: 172.16.1.111
                 amber-leaf2:
-                  ansible_host: 10.90.227.27
-                  serial_number: JPE20302208
+                  ansible_host: 172.16.1.112
         BLUE:
           children:
             BLUE_SPINES:
               hosts:
                 blue-spine1:
-                  ansible_host: 10.90.227.12
-                  serial_number: JPE21090526
+                  ansible_host: 172.16.1.21
             BLUE_LEAVES:
               hosts:
                 blue-leaf1:
-                  ansible_host: 10.90.227.29
-                  serial_number: JPE20282733
+                  ansible_host: 172.16.1.211
                 blue-leaf2:
-                  ansible_host: 10.90.227.31
-                  serial_number: JPE19363421
+                  ansible_host: 172.16.1.212
         PTP_LEAVES:
           hosts:
             media-PTP-1:
-              ansible_host: 10.90.227.21
-              serial_number: JPE20284615
+              ansible_host: 172.16.1.131
             media-PTP-2:
-              ansible_host: 10.90.227.23
-              serial_number: JPE20284734
+              ansible_host: 172.16.1.132
     NETWORK_SERVICES:
       children:
         AMBER_LEAVES:
@@ -48,16 +51,6 @@ all:
         PTP_LEAVES:
     CONNECTED_ENDPOINTS:
       children:
-        AMBER:
-        BLUE:
+        AMBER_LEAVES:
+        BLUE_LEAVES:
         PTP_LEAVES:
-CLOUDVISION:
-  hosts:
-    cvp:
-      ansible_host: www.cv-prod-euwest-2.arista.io
-      ansible_user: cvaas
-      ansible_password: "{{ lookup('file', 'cvaas.token')}}"
-      ansible_connection: httpapi
-      ansible_httpapi_use_ssl: true
-      ansible_httpapi_validate_certs: false
-      ansible_network_os: eos
