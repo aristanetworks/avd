@@ -21,8 +21,8 @@ display = Display()
 class ActionModule(ActionBase):
     def _maybe_convert_device_filter(self):
         # Converting string device filter to list
-        device_filter = self._task.args["device_filter"]
-        if not isinstance(device_filter, list):
+        device_filter = self._task.args.get("device_filter")
+        if device_filter is not None and not isinstance(device_filter, list):
             display.debug(f"device_filter must be of type list, got '{device_filter}' of type {type(device_filter)} instead. Converting...")
             self._task.args["device_filter"] = [device_filter]
 
