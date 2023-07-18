@@ -128,7 +128,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 list_of_dicts=ethernet_interfaces,
                 primary_key="name",
                 new_dict=ethernet_interface,
-                context="Ethernet Interfaces defined under underlay",
+                context="Ethernet Interfaces defined for underlay",
                 context_keys=["name", "peer", "peer_interface"],
             )
 

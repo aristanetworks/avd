@@ -96,7 +96,7 @@ class RouterBgpMixin(UtilsMixin):
                     list_of_dicts=neighbors,
                     primary_key="ip_address",
                     new_dict=neighbor,
-                    context="Ip address defined under BGP neighbor for underlay",
+                    context="IP address defined under BGP neighbor for underlay",
                     context_keys=["ip_address", "peer_group"],
                 )
 
