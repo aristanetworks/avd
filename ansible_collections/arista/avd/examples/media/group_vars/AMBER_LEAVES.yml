@@ -6,7 +6,7 @@ media_leaf:
     platform: vEOS-lab
     loopback_ipv4_pool: 10.255.1.0/27
     loopback_ipv4_offset: 1
-    uplink_switches: [ 'amber-spine1','amber-spine1' ]
+    uplink_switches: [ 'amber-spine1', 'amber-spine1' ]
     max_parallel_uplinks: 2
     uplink_ipv4_pool: 10.255.254.0/26
     spanning_tree_priority: 4096
