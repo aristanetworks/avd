@@ -5,7 +5,7 @@ ptp_leaf:
   defaults:
     platform: vEOS-lab
     loopback_ipv4_pool: 10.255.3.0/27
-    uplink_switches: [ 'amber-spine1','blue-spine1' ]
+    uplink_switches: [ 'amber-spine1', 'blue-spine1' ]
     uplink_ipv4_pool: 10.255.253.0/26
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
