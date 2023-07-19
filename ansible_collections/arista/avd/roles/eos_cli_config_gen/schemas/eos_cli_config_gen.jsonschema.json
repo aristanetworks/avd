@@ -16073,6 +16073,9 @@
           "title": "Segment Routing MPLS"
         }
       },
+      "required": [
+        "instance"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
