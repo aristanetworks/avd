@@ -1962,21 +1962,23 @@ class EosDesignsFacts(AvdFacts):
         dpath = self._overlay_ipvpn_gateway and get(self._switch_data_combined, "ipvpn_gateway.enable_d_path", default=True)
 
         overlay_dict = {
-                "ler": self._overlay_ler,
-                "vtep": self._overlay_vtep,
-                "evpn": self._overlay_evpn,
-                "evpn_vxlan": evpn_vxlan,
-                "vpn_ipv4": self._overlay_vpn_ipv4,
-                "vpn_ipv6": self._overlay_vpn_ipv6,
-                "ipvpn_gateway": self._overlay_ipvpn_gateway,
-                "dpath": dpath,
-            }
+            "ler": self._overlay_ler,
+            "vtep": self._overlay_vtep,
+            "evpn": self._overlay_evpn,
+            "evpn_vxlan": evpn_vxlan,
+            "vpn_ipv4": self._overlay_vpn_ipv4,
+            "vpn_ipv6": self._overlay_vpn_ipv6,
+            "ipvpn_gateway": self._overlay_ipvpn_gateway,
+            "dpath": dpath,
+        }
 
         if self.underlay_router is True:
-            overlay_dict.update({
-                "peering_address": self.overlay_peering_address,
-                "evpn_mpls": evpn_mpls,
-            })
+            overlay_dict.update(
+                {
+                    "peering_address": self.overlay_peering_address,
+                    "evpn_mpls": evpn_mpls,
+                }
+            )
 
         return overlay_dict
 
