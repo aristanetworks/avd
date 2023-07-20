@@ -201,8 +201,8 @@ class UtilsMixin:
         if self._overlay_mpls is not True:
             return {}
 
-        _bgp_mesh_pe = get(self._hostvars, "bgp_mesh_pe") is True
-        if _bgp_mesh_pe is not True:
+        _bgp_mesh_pes = get(self._hostvars, "bgp_mesh_pes") is True
+        if _bgp_mesh_pes is not True:
             return {}
 
         mpls_mesh_pe = {}
