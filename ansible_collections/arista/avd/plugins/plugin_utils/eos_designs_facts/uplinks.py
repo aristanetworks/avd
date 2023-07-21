@@ -223,12 +223,13 @@ class UplinksMixin:
         """
         Exposed in avd_switch_facts
 
-        List of all uplink peers
+        List of all **unique** uplink peers
 
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         """
         uplink_switches = self.shared_utils.uplink_switches
-        return [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices]
+        # Making sure each peer is unique
+        return list({uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices})
 
     @cached_property
     def _default_downlink_interfaces(self: EosDesignsFacts) -> list:
