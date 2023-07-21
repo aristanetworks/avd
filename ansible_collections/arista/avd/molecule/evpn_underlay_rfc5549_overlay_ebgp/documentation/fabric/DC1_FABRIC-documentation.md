@@ -49,56 +49,10 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
-| l3leaf | DC1-BL1A | Ethernet1 | spine | DC1-SPINE1 | Ethernet6 |
-| l3leaf | DC1-BL1A | Ethernet2 | spine | DC1-SPINE2 | Ethernet6 |
-| l3leaf | DC1-BL1A | Ethernet3 | spine | DC1-SPINE3 | Ethernet6 |
-| l3leaf | DC1-BL1A | Ethernet4 | spine | DC1-SPINE4 | Ethernet6 |
-| l3leaf | DC1-BL1A | Ethernet9 | l3leaf | DC1-BL1B | Ethernet9 |
-| l3leaf | DC1-BL1A | Ethernet10 | l3leaf | DC1-BL1B | Ethernet10 |
-| l3leaf | DC1-BL1B | Ethernet1 | spine | DC1-SPINE1 | Ethernet7 |
-| l3leaf | DC1-BL1B | Ethernet2 | spine | DC1-SPINE2 | Ethernet7 |
-| l3leaf | DC1-BL1B | Ethernet3 | spine | DC1-SPINE3 | Ethernet7 |
-| l3leaf | DC1-BL1B | Ethernet4 | spine | DC1-SPINE4 | Ethernet7 |
-| l2leaf | DC1-L2LEAF1A | Ethernet1 | l3leaf | DC1-LEAF2A | Ethernet7 |
-| l2leaf | DC1-L2LEAF1A | Ethernet2 | l3leaf | DC1-LEAF2B | Ethernet7 |
-| l2leaf | DC1-L2LEAF2A | Ethernet1 | l3leaf | DC1-SVC3A | Ethernet7 |
-| l2leaf | DC1-L2LEAF2A | Ethernet2 | l3leaf | DC1-SVC3B | Ethernet7 |
-| l2leaf | DC1-L2LEAF2A | Ethernet3 | mlag_peer | DC1-L2LEAF2B | Ethernet3 |
-| l2leaf | DC1-L2LEAF2A | Ethernet4 | mlag_peer | DC1-L2LEAF2B | Ethernet4 |
-| l2leaf | DC1-L2LEAF2B | Ethernet1 | l3leaf | DC1-SVC3A | Ethernet8 |
-| l2leaf | DC1-L2LEAF2B | Ethernet2 | l3leaf | DC1-SVC3B | Ethernet8 |
-| l3leaf | DC1-LEAF1A | Ethernet1 | spine | DC1-SPINE1 | Ethernet1 |
-| l3leaf | DC1-LEAF1A | Ethernet2 | spine | DC1-SPINE2 | Ethernet1 |
-| l3leaf | DC1-LEAF1A | Ethernet3 | spine | DC1-SPINE3 | Ethernet1 |
-| l3leaf | DC1-LEAF1A | Ethernet4 | spine | DC1-SPINE4 | Ethernet1 |
-| l3leaf | DC1-LEAF2A | Ethernet1 | spine | DC1-SPINE1 | Ethernet2 |
-| l3leaf | DC1-LEAF2A | Ethernet2 | spine | DC1-SPINE2 | Ethernet2 |
-| l3leaf | DC1-LEAF2A | Ethernet3 | spine | DC1-SPINE3 | Ethernet2 |
-| l3leaf | DC1-LEAF2A | Ethernet4 | spine | DC1-SPINE4 | Ethernet2 |
-| l3leaf | DC1-LEAF2A | Ethernet5 | mlag_peer | DC1-LEAF2B | Ethernet5 |
-| l3leaf | DC1-LEAF2A | Ethernet6 | mlag_peer | DC1-LEAF2B | Ethernet6 |
-| l3leaf | DC1-LEAF2B | Ethernet1 | spine | DC1-SPINE1 | Ethernet3 |
-| l3leaf | DC1-LEAF2B | Ethernet2 | spine | DC1-SPINE2 | Ethernet3 |
-| l3leaf | DC1-LEAF2B | Ethernet3 | spine | DC1-SPINE3 | Ethernet3 |
-| l3leaf | DC1-LEAF2B | Ethernet4 | spine | DC1-SPINE4 | Ethernet3 |
-| l3leaf | DC1-LEAF3A | Ethernet1 | spine | DC1-SPINE5 | Ethernet1 |
-| l3leaf | DC1-LEAF3A | Ethernet5 | mlag_peer | DC1-LEAF3B | Ethernet5 |
-| l3leaf | DC1-LEAF3A | Ethernet6 | mlag_peer | DC1-LEAF3B | Ethernet6 |
-| l3leaf | DC1-LEAF3B | Ethernet1 | spine | DC1-SPINE5 | Ethernet2 |
-| l3leaf | DC1-LEAF4A | Ethernet1 | spine | DC1-SPINE6 | Ethernet1 |
-| l3leaf | DC1-LEAF4A | Ethernet5 | mlag_peer | DC1-LEAF4B | Ethernet5 |
-| l3leaf | DC1-LEAF4A | Ethernet6 | mlag_peer | DC1-LEAF4B | Ethernet6 |
-| l3leaf | DC1-LEAF4B | Ethernet1 | spine | DC1-SPINE6 | Ethernet2 |
-| spine | DC1-SPINE1 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet1 |
-| spine | DC1-SPINE1 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet1 |
-| spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet2 |
-| spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet2 |
-| spine | DC1-SPINE3 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet3 |
-| spine | DC1-SPINE3 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet3 |
-| spine | DC1-SPINE4 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet4 |
-| spine | DC1-SPINE4 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet4 |
-| l3leaf | DC1-SVC3A | Ethernet5 | mlag_peer | DC1-SVC3B | Ethernet5 |
-| l3leaf | DC1-SVC3A | Ethernet6 | mlag_peer | DC1-SVC3B | Ethernet6 |
+| spine | DC1-SPINE5 | Ethernet1 | l3leaf | DC1-LEAF3A | Ethernet1 |
+| spine | DC1-SPINE5 | Ethernet2 | l3leaf | DC1-LEAF3B | Ethernet1 |
+| spine | DC1-SPINE5 | Ethernet3 | l3leaf | DC1-LEAF3A | Ethernet2 |
+| spine | DC1-SPINE5 | Ethernet4 | l3leaf | DC1-LEAF3B | Ethernet2 |
 
 ## Fabric IP Allocation
 
@@ -116,48 +70,21 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 17 | 6.65 % |
+| 192.168.255.0/24 | 256 | 1 | 0.4 % |
 
 ### Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
-| DC1_FABRIC | DC1-BL1A | 192.168.255.10/32 |
-| DC1_FABRIC | DC1-BL1B | 192.168.255.11/32 |
-| DC1_FABRIC | DC1-LEAF1A | 192.168.255.5/32 |
-| DC1_FABRIC | DC1-LEAF2A | 192.168.255.6/32 |
-| DC1_FABRIC | DC1-LEAF2B | 192.168.255.7/32 |
-| DC1_FABRIC | DC1-LEAF3A | 192.168.255.12/32 |
-| DC1_FABRIC | DC1-LEAF3B | 192.168.255.13/32 |
-| DC1_FABRIC | DC1-LEAF4A | 192.168.255.14/32 |
-| DC1_FABRIC | DC1-LEAF4B | 192.168.255.15/32 |
-| DC1_FABRIC | DC1-SPINE1 | 192.168.255.1/32 |
-| DC1_FABRIC | DC1-SPINE2 | 192.168.255.2/32 |
-| DC1_FABRIC | DC1-SPINE3 | 192.168.255.3/32 |
-| DC1_FABRIC | DC1-SPINE4 | 192.168.255.4/32 |
 | DC1_FABRIC | DC1-SPINE5 | 192.168.255.5/32 |
-| DC1_FABRIC | DC1-SPINE6 | 192.168.255.6/32 |
-| DC1_FABRIC | DC1-SVC3A | 192.168.255.8/32 |
-| DC1_FABRIC | DC1-SVC3B | 192.168.255.9/32 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 11 | 4.3 % |
+| 192.168.254.0/24 | 256 | 0 | 0.0 % |
 
 ### VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |
-| DC1_FABRIC | DC1-BL1A | 192.168.254.10/32 |
-| DC1_FABRIC | DC1-BL1B | 192.168.254.11/32 |
-| DC1_FABRIC | DC1-LEAF1A | 192.168.254.5/32 |
-| DC1_FABRIC | DC1-LEAF2A | 192.168.254.6/32 |
-| DC1_FABRIC | DC1-LEAF2B | 192.168.254.6/32 |
-| DC1_FABRIC | DC1-LEAF3A | 192.168.254.12/32 |
-| DC1_FABRIC | DC1-LEAF3B | 192.168.254.12/32 |
-| DC1_FABRIC | DC1-LEAF4A | 192.168.254.14/32 |
-| DC1_FABRIC | DC1-LEAF4B | 192.168.254.14/32 |
-| DC1_FABRIC | DC1-SVC3A | 192.168.254.8/32 |
-| DC1_FABRIC | DC1-SVC3B | 192.168.254.8/32 |
