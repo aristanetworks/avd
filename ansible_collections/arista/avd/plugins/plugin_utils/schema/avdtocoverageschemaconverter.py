@@ -48,7 +48,8 @@ class CoverageNode:
         return "/" + "/".join(path_list)
 
     def render_ancestors_path(self, ancestors_path):
-        print(ancestors_path)
+        print(self.key, ancestors_path)
+
         def _list(node, ancestors_path):
             if node.parent is None:
                 return []
@@ -69,21 +70,41 @@ class CoverageNode:
         Parse a data dictionnary and keep track of the hits
         by descending into the dictionnary
         """
+        if isinstance(data, dict) and "servers" in data:
+            print(data)
         if isinstance(data, dict):
             self.hit(ancestor_primary_key_path)
             for key, value in data.items():
+                print(f"LOOKING AT KEY {key}")
                 # if self.key == "__root__":
-                #     for child in self.children:
-                #         print(f"{child.key} - {child.is_dynamic}")
+                #    for child in [c for c in self.children if c.is_dynamic]:
+                #        print(f"{child.key} - {self._get_dynamic_key_values(child.key)}")
                 key_found = False
+                # Check non dynamic keys first
                 for child in [child for child in self.children if not child.is_dynamic]:
                     if child.key == key:
                         child.get_coverage(value, ancestor_primary_key_path=ancestor_primary_key_path)
                         key_found = True
                 # check if it could be a dynamic key
                 for child in [child for child in self.children if child.is_dynamic]:
+                    print(f"DYNAMIC - {child.key}")
                     # Need to see if the key could be one of the dynamic values
                     # TODO - could be a problem if multiple children have the same dynamic key
+                    if key in [
+                        "servers",
+                        "firewalls",
+                        "routers",
+                        "load_balancers",
+                        "storage_arrays",
+                        "cpes",
+                        "workstations",
+                        "access_points",
+                        "phones",
+                        "printers",
+                        "cameras",
+                        "generic_devices",
+                    ]:
+                        print(key)
                     dynamic_key_values = self._get_dynamic_key_values(child.key)
                     # print(f"DK {dynamic_key_values}")
                     if key in dynamic_key_values:
