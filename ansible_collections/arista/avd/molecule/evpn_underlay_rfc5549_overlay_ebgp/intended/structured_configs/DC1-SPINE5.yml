@@ -49,14 +49,6 @@ router_bgp:
     peer_group: UNDERLAY_PEERS
     remote_as: '65106'
     description: DC1-LEAF3A_Ethernet1
-  - name: Ethernet1
-    peer_group: UNDERLAY_PEERS
-    remote_as: '65106'
-    description: DC1-LEAF3A_Ethernet1
-  - name: Ethernet2
-    peer_group: UNDERLAY_PEERS
-    remote_as: '65106'
-    description: DC1-LEAF3B_Ethernet1
   - name: Ethernet2
     peer_group: UNDERLAY_PEERS
     remote_as: '65106'
@@ -65,14 +57,6 @@ router_bgp:
     peer_group: UNDERLAY_PEERS
     remote_as: '65106'
     description: DC1-LEAF3A_Ethernet2
-  - name: Ethernet3
-    peer_group: UNDERLAY_PEERS
-    remote_as: '65106'
-    description: DC1-LEAF3A_Ethernet2
-  - name: Ethernet4
-    peer_group: UNDERLAY_PEERS
-    remote_as: '65106'
-    description: DC1-LEAF3B_Ethernet2
   - name: Ethernet4
     peer_group: UNDERLAY_PEERS
     remote_as: '65106'
