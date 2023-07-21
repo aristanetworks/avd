@@ -100,12 +100,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG-PEERS
-      address_family_ipv4:
-        neighbors:
-          10.255.251.7:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_A_DB_Zone:
       router_id: 192.168.255.12
       rd: '65103:13'
@@ -121,12 +115,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG-PEERS
-      address_family_ipv4:
-        neighbors:
-          10.255.251.7:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_A_OP_Zone:
       router_id: 192.168.255.12
       rd: '65103:9'
@@ -142,12 +130,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG-PEERS
-      address_family_ipv4:
-        neighbors:
-          10.255.251.7:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.12
       rd: '65103:14'
@@ -165,12 +147,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG-PEERS
-      address_family_ipv4:
-        neighbors:
-          10.255.251.7:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.12
       rd: '65103:11'
@@ -186,12 +162,6 @@ router_bgp:
       neighbors:
         172.31.11.7:
           peer_group: MLAG-PEERS
-      address_family_ipv4:
-        neighbors:
-          172.31.11.7:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_B_OP_Zone:
       router_id: 192.168.255.12
       rd: '65103:20'
@@ -207,12 +177,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG-PEERS
-      address_family_ipv4:
-        neighbors:
-          10.255.251.7:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.12
       rd: '65103:21'
@@ -228,12 +192,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG-PEERS
-      address_family_ipv4:
-        neighbors:
-          10.255.251.7:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_C_OP_Zone:
       router_id: 192.168.255.12
       rd: '65103:30'
@@ -249,12 +207,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG-PEERS
-      address_family_ipv4:
-        neighbors:
-          10.255.251.7:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.12
       rd: '65103:31'
@@ -270,12 +222,6 @@ router_bgp:
       neighbors:
         10.255.251.7:
           peer_group: MLAG-PEERS
-      address_family_ipv4:
-        neighbors:
-          10.255.251.7:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
       rd: '65103:12'

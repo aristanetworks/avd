@@ -66,12 +66,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     MULTICAST_ENABLED_110_111:
       router_id: 192.168.255.3
       rd: 192.168.255.3:11
@@ -87,12 +81,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     MULTICAST_ENABLED_210_DISABLED_211:
       router_id: 192.168.255.3
       rd: 192.168.255.3:12
@@ -108,12 +96,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     MULTICAST_DISABLED_5_6:
       router_id: 192.168.255.3
       rd: 192.168.255.3:23
@@ -129,12 +111,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     MULTICAST_ENABLED_1_2:
       router_id: 192.168.255.3
       rd: 192.168.255.3:21
@@ -150,12 +126,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     MULTICAST_ENABLED_3_DISABLED_4:
       router_id: 192.168.255.3
       rd: 192.168.255.3:22
@@ -171,12 +141,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     TEN_C_L3_MULTICAST_DISABLED_330_331:
       router_id: 192.168.255.3
       rd: 192.168.255.3:33
@@ -193,12 +157,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     TEN_C_L3_MULTICAST_ENABLED_130_131:
       router_id: 192.168.255.3
       rd: 192.168.255.3:31
@@ -215,12 +173,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231:
       router_id: 192.168.255.3
       rd: 192.168.255.3:32
@@ -237,12 +189,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     TEN_D_L3_MULTICAST_DISABLED_240_241:
       router_id: 192.168.255.3
       rd: 192.168.255.3:42
@@ -259,12 +205,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141:
       router_id: 192.168.255.3
       rd: 192.168.255.3:41
@@ -281,12 +221,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE:
       router_id: 192.168.255.3
       rd: 192.168.255.3:55
@@ -303,12 +237,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES:
       router_id: 192.168.255.3
       rd: 192.168.255.3:60
@@ -325,12 +253,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
       evpn_multicast_address_family:
         ipv4:
           transit: true
@@ -350,12 +272,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
       evpn_multicast_address_family:
         ipv4:
           transit: true
@@ -375,12 +291,6 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
   vlan_aware_bundles:
     MULTICAST_DISABLED_310_311:
       rd: 192.168.255.3:13

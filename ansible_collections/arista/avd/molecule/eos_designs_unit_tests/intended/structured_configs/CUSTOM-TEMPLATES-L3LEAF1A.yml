@@ -66,12 +66,6 @@ router_bgp:
       neighbors:
         10.255.240.11:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.240.11:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
   vlans:
     110:
       tenant: CUSTOM_TEMPLATES_TENANT

@@ -95,12 +95,6 @@ router_bgp:
       neighbors:
         10.255.251.3:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.3:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_A_DB_Zone:
       router_id: 192.168.255.6
       rd: 192.168.255.6:13
@@ -116,12 +110,6 @@ router_bgp:
       neighbors:
         10.255.251.3:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.3:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_A_OP_Zone:
       router_id: 192.168.255.6
       rd: 192.168.255.6:10
@@ -137,12 +125,6 @@ router_bgp:
       neighbors:
         10.255.251.3:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.3:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.6
       rd: 192.168.255.6:11
@@ -158,12 +140,6 @@ router_bgp:
       neighbors:
         10.255.251.3:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.3:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_B_OP_Zone:
       router_id: 192.168.255.6
       rd: 192.168.255.6:20
@@ -179,12 +155,6 @@ router_bgp:
       neighbors:
         10.255.251.3:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.3:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     Tenant_C_OP_Zone:
       router_id: 192.168.255.6
       rd: 192.168.255.6:30
@@ -200,12 +170,6 @@ router_bgp:
       neighbors:
         10.255.251.3:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.251.3:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
       rd: 192.168.255.6:12

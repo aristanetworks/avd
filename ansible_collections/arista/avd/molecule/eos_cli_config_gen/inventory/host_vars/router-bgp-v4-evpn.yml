@@ -182,8 +182,8 @@ router_bgp:
                 enabled: false
                 originate: true # this should not get added to the configuration
         networks:
-          - prefix: 10.0.0.0/8
-          - prefix: 100.64.0.0/10
+          10.0.0.0/8:
+          100.64.0.0/10:
             route_map: RM-10.2.3.4
         peer_groups:
           TEST_PEER_GRP:

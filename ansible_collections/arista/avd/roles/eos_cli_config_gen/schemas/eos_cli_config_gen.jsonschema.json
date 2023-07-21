@@ -9789,6 +9789,97 @@
           "additionalProperties": false,
           "title": "Address Family IPv4"
         },
+        "address_family_ipv4_multicast": {
+          "type": "object",
+          "properties": {
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Inbound route-map name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Outbound route-map name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Inbound route-map name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Outbound route-map name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "redistribute_routes": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "source_protocol": {
+                    "type": "string",
+                    "title": "Source Protocol"
+                  },
+                  "route_map": {
+                    "type": "string",
+                    "title": "Route Map"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "source_protocol"
+                ]
+              },
+              "title": "Redistribute Routes"
+            }
+          },
+          "additionalProperties": false,
+          "title": "Address Family IPv4 Multicast"
+        },
         "address_family_ipv6": {
           "type": "object",
           "properties": {
@@ -9922,97 +10013,6 @@
           },
           "additionalProperties": false,
           "title": "Address Family IPv6"
-        },
-        "address_family_ipv4_multicast": {
-          "type": "object",
-          "properties": {
-            "peer_groups": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Peer-group name",
-                    "title": "Name"
-                  },
-                  "activate": {
-                    "type": "boolean",
-                    "title": "Activate"
-                  },
-                  "route_map_in": {
-                    "type": "string",
-                    "description": "Inbound route-map name",
-                    "title": "Route Map In"
-                  },
-                  "route_map_out": {
-                    "type": "string",
-                    "description": "Outbound route-map name",
-                    "title": "Route Map Out"
-                  }
-                },
-                "additionalProperties": false,
-                "required": [
-                  "name"
-                ]
-              },
-              "title": "Peer Groups"
-            },
-            "neighbors": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "ip_address": {
-                    "type": "string",
-                    "title": "IP Address"
-                  },
-                  "activate": {
-                    "type": "boolean",
-                    "title": "Activate"
-                  },
-                  "route_map_in": {
-                    "type": "string",
-                    "description": "Inbound route-map name",
-                    "title": "Route Map In"
-                  },
-                  "route_map_out": {
-                    "type": "string",
-                    "description": "Outbound route-map name",
-                    "title": "Route Map Out"
-                  }
-                },
-                "additionalProperties": false,
-                "required": [
-                  "ip_address"
-                ]
-              },
-              "title": "Neighbors"
-            },
-            "redistribute_routes": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "source_protocol": {
-                    "type": "string",
-                    "title": "Source Protocol"
-                  },
-                  "route_map": {
-                    "type": "string",
-                    "title": "Route Map"
-                  }
-                },
-                "additionalProperties": false,
-                "required": [
-                  "source_protocol"
-                ]
-              },
-              "title": "Redistribute Routes"
-            }
-          },
-          "additionalProperties": false,
-          "title": "Address Family IPv4 Multicast"
         },
         "address_family_vpn_ipv4": {
           "type": "object",

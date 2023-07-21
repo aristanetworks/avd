@@ -1487,9 +1487,6 @@ router bgp 65103
       router-id 192.168.255.13
       neighbor 10.255.252.6 peer group MLAG-PEERS
       redistribute connected
-      !
-      address-family ipv4
-         no neighbor 10.255.252.6 next-hop address-family ipv6
    !
    vrf Tenant_A_DB_Zone
       rd 192.168.255.13:13
@@ -1498,9 +1495,6 @@ router bgp 65103
       router-id 192.168.255.13
       neighbor 10.255.252.6 peer group MLAG-PEERS
       redistribute connected
-      !
-      address-family ipv4
-         no neighbor 10.255.252.6 next-hop address-family ipv6
    !
    vrf Tenant_A_OP_Zone
       rd 192.168.255.13:10
@@ -1509,9 +1503,6 @@ router bgp 65103
       router-id 192.168.255.13
       neighbor 10.255.252.6 peer group MLAG-PEERS
       redistribute connected
-      !
-      address-family ipv4
-         no neighbor 10.255.252.6 next-hop address-family ipv6
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.13:14
@@ -1523,9 +1514,6 @@ router bgp 65103
       neighbor 10.255.252.6 peer group MLAG-PEERS
       redistribute connected
       redistribute static
-      !
-      address-family ipv4
-         no neighbor 10.255.252.6 next-hop address-family ipv6
    !
    vrf Tenant_A_WEB_Zone
       rd 192.168.255.13:11
@@ -1534,9 +1522,6 @@ router bgp 65103
       router-id 192.168.255.13
       neighbor 10.255.252.6 peer group MLAG-PEERS
       redistribute connected
-      !
-      address-family ipv4
-         no neighbor 10.255.252.6 next-hop address-family ipv6
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.255.13:20
@@ -1545,9 +1530,6 @@ router bgp 65103
       router-id 192.168.255.13
       neighbor 10.255.252.6 peer group MLAG-PEERS
       redistribute connected
-      !
-      address-family ipv4
-         no neighbor 10.255.252.6 next-hop address-family ipv6
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.13:21
@@ -1556,9 +1538,6 @@ router bgp 65103
       router-id 192.168.255.13
       neighbor 10.255.252.6 peer group MLAG-PEERS
       redistribute connected
-      !
-      address-family ipv4
-         no neighbor 10.255.252.6 next-hop address-family ipv6
    !
    vrf Tenant_C_OP_Zone
       rd 192.168.255.13:30
@@ -1567,9 +1546,6 @@ router bgp 65103
       router-id 192.168.255.13
       neighbor 10.255.252.6 peer group MLAG-PEERS
       redistribute connected
-      !
-      address-family ipv4
-         no neighbor 10.255.252.6 next-hop address-family ipv6
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.255.13:31
@@ -1578,9 +1554,6 @@ router bgp 65103
       router-id 192.168.255.13
       neighbor 10.255.252.6 peer group MLAG-PEERS
       redistribute connected
-      !
-      address-family ipv4
-         no neighbor 10.255.252.6 next-hop address-family ipv6
 ```
 
 # BFD

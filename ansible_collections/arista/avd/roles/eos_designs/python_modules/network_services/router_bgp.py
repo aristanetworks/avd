@@ -184,27 +184,24 @@ class RouterBgpMixin(UtilsMixin):
                             ip_address = self._mlag_peer_ibgp_ip
 
                         bgp_vrf.setdefault("neighbors", {})[ip_address] = {"peer_group": self._peer_group_mlag_ipv4_underlay_peer_name}
-                        # raise Exception(bgp_vrf)
-                        if self._underlay_rfc5549:
+                        if self._underlay_rfc5549():
                             bgp_vrf.setdefault("address_family_ipv4", {}).setdefault("neighbors", {}).update(
                                 {
                                     ip_address: {
                                         "next_hop": {
                                             "address_family_ipv6": {
                                                 "enabled": False,
-                                                }
-                                            },
-                                        }
+                                            }
+                                        },
+                                    }
                                 }
                             )
 
                 address_families = {}
                 for bgp_peer in vrf["bgp_peers"]:
                     peer_ip = bgp_peer.pop("ip_address")
-
                     address_family = f"ipv{ipaddress.ip_address(peer_ip).version}"
                     address_families.setdefault(address_family, {}).setdefault("neighbors", {})[peer_ip] = {"activate": True}
-
                     if bgp_peer.get("set_ipv4_next_hop") is not None or bgp_peer.get("set_ipv6_next_hop") is not None:
                         route_map = f"RM-{vrf_name}-{peer_ip}-SET-NEXT-HOP-OUT"
                         bgp_peer["route_map_out"] = route_map

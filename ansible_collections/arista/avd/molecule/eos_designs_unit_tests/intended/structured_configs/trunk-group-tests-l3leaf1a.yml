@@ -58,12 +58,6 @@ router_bgp:
       neighbors:
         10.255.247.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.247.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     TG_200:
       router_id: 192.168.250.9
       rd: 192.168.250.9:200
@@ -79,12 +73,6 @@ router_bgp:
       neighbors:
         10.255.247.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.247.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
     TG_300:
       router_id: 192.168.250.9
       rd: 192.168.250.9:300
@@ -100,12 +88,6 @@ router_bgp:
       neighbors:
         10.255.247.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      address_family_ipv4:
-        neighbors:
-          10.255.247.1:
-            next_hop:
-              address_family_ipv6:
-                enabled: false
   vlans:
     100:
       tenant: TRUNK_GROUP_TESTS
