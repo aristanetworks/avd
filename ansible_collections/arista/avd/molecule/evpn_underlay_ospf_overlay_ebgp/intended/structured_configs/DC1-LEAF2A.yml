@@ -70,6 +70,12 @@ router_bgp:
       neighbors:
         10.255.251.3:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+      address_family_ipv4:
+        neighbors:
+          10.255.251.3:
+            next_hop:
+              address_family_ipv6:
+                enabled: false
   vlan_aware_bundles:
     Tenant_B_OP_Zone:
       rd: 192.168.255.6:20

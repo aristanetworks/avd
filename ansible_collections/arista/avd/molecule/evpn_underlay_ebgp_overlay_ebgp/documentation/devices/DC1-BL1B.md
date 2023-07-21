@@ -258,17 +258,117 @@ vlan 350
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet4000 |  My second test | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
+
+#### Encapsulation Dot1q Interfaces
+
+| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | -----| ------- | -------------- |
+| Ethernet10.100 | subinterface test | l3dot1q | - | 100 |
+| Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 141 |
+
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet7 | test | routed | - | 10.10.20.20/24 | Tenant_A_WAN_Zone | 9000 | False | - | - |
+| Ethernet8 | test | routed | - | 10.10.30.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet9 | test | routed | - | 10.10.40.20/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet10.100 | subinterface test | l3dot1q | - | 10.10.31.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 10.10.41.10/24 | Tenant_L3_VRF_Zone | 9000 | False | - | - |
+| Ethernet45 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | 172.31.255.97/31 | default | 1500 | False | - | - |
+| Ethernet46 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | 172.31.255.99/31 | default | 1500 | False | - | - |
+| Ethernet47 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7 | routed | - | 172.31.255.101/31 | default | 1500 | False | - | - |
+| Ethernet48 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7 | routed | - | 172.31.255.103/31 | default | 1500 | False | - | - |
+| Ethernet4000 | My second test | routed | - | 10.1.2.3/12 | default | 1500 | False | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
+interface Ethernet7
+   description test
+   no shutdown
+   mtu 9000
+   no switchport
+   vrf Tenant_A_WAN_Zone
+   ip address 10.10.20.20/24
+!
+interface Ethernet8
+   description test
+   no shutdown
+   mtu 9000
+   no switchport
+   vrf Tenant_L3_VRF_Zone
+   ip address 10.10.30.10/24
+!
+interface Ethernet9
+   description test
+   no shutdown
+   mtu 9000
+   no switchport
+   vrf Tenant_L3_VRF_Zone
+   ip address 10.10.40.20/24
+!
+interface Ethernet10
+   no shutdown
+   no switchport
+!
+interface Ethernet10.100
+   description subinterface test
+   no shutdown
+   mtu 9000
+   encapsulation dot1q vlan 100
+   vrf Tenant_L3_VRF_Zone
+   ip address 10.10.31.10/24
+!
+interface Ethernet10.200
+   description subinterface test with vlan override
+   no shutdown
+   mtu 9000
+   encapsulation dot1q vlan 141
+   vrf Tenant_L3_VRF_Zone
+   ip address 10.10.41.10/24
+!
+interface Ethernet45
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.255.97/31
+!
+interface Ethernet46
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.255.99/31
+!
+interface Ethernet47
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.255.101/31
+!
+interface Ethernet48
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7
+   no shutdown
+   mtu 1500
+   speed forced 100gfull
+   no switchport
+   ip address 172.31.255.103/31
+!
 interface Ethernet4000
    description My second test
-   switchport
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 10.1.2.3/12
 ```
 
 ## Loopback Interfaces

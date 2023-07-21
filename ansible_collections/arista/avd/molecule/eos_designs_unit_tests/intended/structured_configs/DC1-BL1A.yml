@@ -129,12 +129,6 @@ router_bgp:
       - connected
       - static
       - ospf
-      address_family_ipv4:
-        neighbors:
-        - ip_address: 123.1.1.10
-          activate: true
-        - ip_address: 123.1.1.11
-          activate: true
       neighbors:
         123.1.1.10:
           remote_as: 1234
@@ -170,12 +164,19 @@ router_bgp:
           route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::b:
           remote_as: 12345
-      address_family_ipv6:
-        neighbors:
-        - ip_address: fd5a:fe45:8831:06c5::a
-          activate: true
-        - ip_address: fd5a:fe45:8831:06c5::b
-          activate: true
+      address_families:
+        ipv4:
+          neighbors:
+            123.1.1.10:
+              activate: true
+            123.1.1.11:
+              activate: true
+        ipv6:
+          neighbors:
+            fd5a:fe45:8831:06c5::a:
+              activate: true
+            fd5a:fe45:8831:06c5::b:
+              activate: true
     Tenant_B_OP_Zone:
       router_id: 192.168.255.14
       rd: 192.168.254.14:20

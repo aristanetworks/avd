@@ -776,6 +776,9 @@ router bgp 65102
       router-id 10.255.0.6
       neighbor 10.255.1.100 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.1.100 next-hop address-family ipv6
    !
    vrf VRF11
       rd 10.255.0.6:11
@@ -784,6 +787,9 @@ router bgp 65102
       router-id 10.255.0.6
       neighbor 10.255.1.100 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.1.100 next-hop address-family ipv6
 ```
 
 # BFD

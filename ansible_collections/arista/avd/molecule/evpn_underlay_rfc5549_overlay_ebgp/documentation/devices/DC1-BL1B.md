@@ -272,9 +272,62 @@ vlan 350
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet4000 | My test | routed | - | 10.1.2.3/12 | default | 1500 | False | - | - |
 
+#### IPv6
+
+| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet7 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet7 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet9 | P2P_LINK_TO_DC1-BL1A_Ethernet9 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet10 | P2P_LINK_TO_DC1-BL1A_Ethernet10 | routed | - | - | default | 1500 | False | - | - | - | - |
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
+!
+interface Ethernet1
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet7
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
+!
+interface Ethernet2
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet7
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
+!
+interface Ethernet3
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet7
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
+!
+interface Ethernet4
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet7
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
+!
+interface Ethernet9
+   description P2P_LINK_TO_DC1-BL1A_Ethernet9
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
+!
+interface Ethernet10
+   description P2P_LINK_TO_DC1-BL1A_Ethernet10
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
 !
 interface Ethernet4000
    description My test

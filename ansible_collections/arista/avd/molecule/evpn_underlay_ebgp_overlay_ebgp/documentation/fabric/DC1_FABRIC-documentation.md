@@ -44,6 +44,14 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| l3leaf | DC1-BL1A | Ethernet41 | spine | DC1-SPINE1 | Ethernet6 |
+| l3leaf | DC1-BL1A | Ethernet42 | spine | DC1-SPINE2 | Ethernet6 |
+| l3leaf | DC1-BL1A | Ethernet43 | spine | DC1-SPINE3 | Ethernet6 |
+| l3leaf | DC1-BL1A | Ethernet44 | spine | DC1-SPINE4 | Ethernet6 |
+| l3leaf | DC1-BL1B | Ethernet45 | spine | DC1-SPINE1 | Ethernet7 |
+| l3leaf | DC1-BL1B | Ethernet46 | spine | DC1-SPINE2 | Ethernet7 |
+| l3leaf | DC1-BL1B | Ethernet47 | spine | DC1-SPINE3 | Ethernet7 |
+| l3leaf | DC1-BL1B | Ethernet48 | spine | DC1-SPINE4 | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet1 | l3leaf | DC1-LEAF2A | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet2 | l3leaf | DC1-LEAF2B | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet3 | mlag_peer | DC1-L2LEAF1B | Ethernet3 |
@@ -72,20 +80,12 @@
 | l3leaf | DC1-LEAF2B | Ethernet4 | spine | DC1-SPINE4 | Ethernet3 |
 | spine | DC1-SPINE1 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet41 |
 | spine | DC1-SPINE1 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet41 |
-| spine | DC1-SPINE1 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet41 |
-| spine | DC1-SPINE1 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet45 |
 | spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet42 |
 | spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet42 |
-| spine | DC1-SPINE2 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet42 |
-| spine | DC1-SPINE2 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet46 |
 | spine | DC1-SPINE3 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet43 |
 | spine | DC1-SPINE3 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet43 |
-| spine | DC1-SPINE3 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet43 |
-| spine | DC1-SPINE3 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet47 |
 | spine | DC1-SPINE4 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet44 |
 | spine | DC1-SPINE4 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet44 |
-| spine | DC1-SPINE4 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet44 |
-| spine | DC1-SPINE4 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet48 |
 | l3leaf | DC1-SVC3A | Ethernet5 | mlag_peer | DC1-SVC3B | Ethernet5 |
 | l3leaf | DC1-SVC3A | Ethernet6 | mlag_peer | DC1-SVC3B | Ethernet6 |
 
@@ -95,12 +95,20 @@
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
-| 172.31.255.0/24 | 256 | 48 | 18.75 % |
+| 172.31.255.0/24 | 256 | 56 | 21.88 % |
 
 ## Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
+| DC1-BL1A | Ethernet41 | 172.31.255.81/31 | DC1-SPINE1 | Ethernet6 | 172.31.255.80/31 |
+| DC1-BL1A | Ethernet42 | 172.31.255.83/31 | DC1-SPINE2 | Ethernet6 | 172.31.255.82/31 |
+| DC1-BL1A | Ethernet43 | 172.31.255.85/31 | DC1-SPINE3 | Ethernet6 | 172.31.255.84/31 |
+| DC1-BL1A | Ethernet44 | 172.31.255.87/31 | DC1-SPINE4 | Ethernet6 | 172.31.255.86/31 |
+| DC1-BL1B | Ethernet45 | 172.31.255.97/31 | DC1-SPINE1 | Ethernet7 | 172.31.255.96/31 |
+| DC1-BL1B | Ethernet46 | 172.31.255.99/31 | DC1-SPINE2 | Ethernet7 | 172.31.255.98/31 |
+| DC1-BL1B | Ethernet47 | 172.31.255.101/31 | DC1-SPINE3 | Ethernet7 | 172.31.255.100/31 |
+| DC1-BL1B | Ethernet48 | 172.31.255.103/31 | DC1-SPINE4 | Ethernet7 | 172.31.255.102/31 |
 | DC1-LEAF1A | Ethernet1 | 172.31.255.1/31 | DC1-SPINE1 | Ethernet1 | 172.31.255.0/31 |
 | DC1-LEAF1A | Ethernet2 | 172.31.255.3/31 | DC1-SPINE2 | Ethernet1 | 172.31.255.2/31 |
 | DC1-LEAF1A | Ethernet3 | 172.31.255.5/31 | DC1-SPINE3 | Ethernet1 | 172.31.255.4/31 |

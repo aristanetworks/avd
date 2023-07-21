@@ -180,12 +180,6 @@ router_bgp:
           - '31:31'
       redistribute_routes:
       - connected
-      address_family_ipv4:
-        neighbors:
-        - ip_address: 2.2.2.2
-          activate: true
-        - ip_address: 2.2.2.3
-          activate: true
       neighbors:
         2.2.2.2:
           peer_group: Tenant_C_BGP_PEER_GROUP
@@ -193,6 +187,13 @@ router_bgp:
         2.2.2.3:
           peer_group: Tenant_C_BGP_PEER_GROUP2
           description: test_bgp_peer_group_without_nodes_2nd_time
+      address_families:
+        ipv4:
+          neighbors:
+            2.2.2.2:
+              activate: true
+            2.2.2.3:
+              activate: true
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.255.16:14

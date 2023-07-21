@@ -48,6 +48,16 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
+| l3leaf | DC1-BL1A | Ethernet1 | spine | DC1-SPINE1 | Ethernet6 |
+| l3leaf | DC1-BL1A | Ethernet2 | spine | DC1-SPINE2 | Ethernet6 |
+| l3leaf | DC1-BL1A | Ethernet3 | spine | DC1-SPINE3 | Ethernet6 |
+| l3leaf | DC1-BL1A | Ethernet4 | spine | DC1-SPINE4 | Ethernet6 |
+| l3leaf | DC1-BL1A | Ethernet9 | l3leaf | DC1-BL1B | Ethernet9 |
+| l3leaf | DC1-BL1A | Ethernet10 | l3leaf | DC1-BL1B | Ethernet10 |
+| l3leaf | DC1-BL1B | Ethernet1 | spine | DC1-SPINE1 | Ethernet7 |
+| l3leaf | DC1-BL1B | Ethernet2 | spine | DC1-SPINE2 | Ethernet7 |
+| l3leaf | DC1-BL1B | Ethernet3 | spine | DC1-SPINE3 | Ethernet7 |
+| l3leaf | DC1-BL1B | Ethernet4 | spine | DC1-SPINE4 | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet1 | l3leaf | DC1-LEAF2A | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet2 | l3leaf | DC1-LEAF2B | Ethernet7 |
 | l2leaf | DC1-L2LEAF2A | Ethernet1 | l3leaf | DC1-SVC3A | Ethernet7 |
@@ -80,20 +90,12 @@
 | l3leaf | DC1-LEAF4B | Ethernet1 | spine | DC1-SPINE6 | Ethernet2 |
 | spine | DC1-SPINE1 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet1 |
-| spine | DC1-SPINE1 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet1 |
-| spine | DC1-SPINE1 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet1 |
 | spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet2 |
-| spine | DC1-SPINE2 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet2 |
-| spine | DC1-SPINE2 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet2 |
 | spine | DC1-SPINE3 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet3 |
 | spine | DC1-SPINE3 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet3 |
-| spine | DC1-SPINE3 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet3 |
-| spine | DC1-SPINE3 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet3 |
 | spine | DC1-SPINE4 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet4 |
 | spine | DC1-SPINE4 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet4 |
-| spine | DC1-SPINE4 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet4 |
-| spine | DC1-SPINE4 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet4 |
 | l3leaf | DC1-SVC3A | Ethernet5 | mlag_peer | DC1-SVC3B | Ethernet5 |
 | l3leaf | DC1-SVC3A | Ethernet6 | mlag_peer | DC1-SVC3B | Ethernet6 |
 

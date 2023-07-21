@@ -739,6 +739,9 @@ router bgp 65103
       router-id 192.168.255.9
       neighbor 10.255.252.6 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      !
+      address-family ipv4
+         no neighbor 10.255.252.6 next-hop address-family ipv6
 ```
 
 # BFD

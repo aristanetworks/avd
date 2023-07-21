@@ -176,10 +176,6 @@ router_bgp:
           - '31:31'
       redistribute_routes:
       - connected
-      address_family_ipv4:
-        neighbors:
-        - ip_address: 1.1.1.1
-          activate: true
       neighbors:
         1.1.1.1:
           peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
@@ -188,10 +184,15 @@ router_bgp:
         BEBA::C0CA:C07A:
           peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
           description: test_ipv6
-      address_family_ipv6:
-        neighbors:
-        - ip_address: BEBA::C0CA:C07A
-          activate: true
+      address_families:
+        ipv4:
+          neighbors:
+            1.1.1.1:
+              activate: true
+        ipv6:
+          neighbors:
+            BEBA::C0CA:C07A:
+              activate: true
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.255.17:14

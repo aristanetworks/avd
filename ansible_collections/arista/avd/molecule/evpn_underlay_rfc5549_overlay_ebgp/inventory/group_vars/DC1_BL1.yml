@@ -1,6 +1,6 @@
 ---
 my_dci_ethernet_interfaces:
-  - name: Ethernet4000
+  Ethernet4000:
     description: My test
     ip_address: 10.1.2.3/12
     shutdown: false

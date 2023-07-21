@@ -64,14 +64,14 @@ router_bgp:
       redistribute_routes:
       - connected
       neighbors:
-      - ip_address: 10.255.240.10
-        peer_group: MLAG-IPv4-UNDERLAY-PEER
+        10.255.240.10:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
       address_family_ipv4:
         neighbors:
-        - ip_address: 10.255.240.10
-          next_hop:
-            address_family_ipv6:
-              enabled: false
+          10.255.240.10:
+            next_hop:
+              address_family_ipv6:
+                enabled: false
   vlans:
     110:
       tenant: CUSTOM_TEMPLATES_TENANT

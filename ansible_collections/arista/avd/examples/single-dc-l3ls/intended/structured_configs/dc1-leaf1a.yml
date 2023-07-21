@@ -81,6 +81,12 @@ router_bgp:
       neighbors:
         10.255.1.97:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+      address_family_ipv4:
+        neighbors:
+          10.255.1.97:
+            next_hop:
+              address_family_ipv6:
+                enabled: false
     VRF11:
       router_id: 10.255.0.3
       rd: 10.255.0.3:11
@@ -96,6 +102,12 @@ router_bgp:
       neighbors:
         10.255.1.97:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+      address_family_ipv4:
+        neighbors:
+          10.255.1.97:
+            next_hop:
+              address_family_ipv6:
+                enabled: false
   vlans:
     11:
       tenant: TENANT1
