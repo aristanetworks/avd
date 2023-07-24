@@ -141,6 +141,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "dot1x": adapter.get("dot1x"),
                     "poe": self._get_adapter_poe(adapter),
                     "ptp": self._get_adapter_ptp(adapter),
+                    "sflow": self._get_adapter_sflow(adapter),
                     "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
                         adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
                     ),
