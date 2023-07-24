@@ -71,6 +71,11 @@ dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_3
 
 #### Prefix-lists Summary
 
+##### PL-IPV4-LOOPBACKS
+
+| Sequence | Action |
+| -------- | ------ |
+
 ##### PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Action |
@@ -81,6 +86,8 @@ dynamic prefix-list DYNAMIC_PREFIX_LIST_NAME_3
 #### Prefix-lists Device Configuration
 
 ```eos
+!
+ip prefix-list PL-IPV4-LOOPBACKS
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32

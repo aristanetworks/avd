@@ -1,3 +1,4 @@
+hostname: DC1-SPINE1
 router_bgp:
   as: '65000'
   router_id: 192.168.255.1

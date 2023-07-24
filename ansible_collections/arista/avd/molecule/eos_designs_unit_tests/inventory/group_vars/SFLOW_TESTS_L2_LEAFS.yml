@@ -1,0 +1,24 @@
+---
+type: l2leaf
+
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['sflow-tests-leaf3', 'sflow-tests-leaf4']
+
+  nodes:
+    - name: sflow-tests-l2-leaf1
+      id: 1
+      mgmt_ip: 192.168.0.201/24
+      uplink_switch_interfaces:
+        - Ethernet16
+        - Ethernet16
+
+
+    - name: sflow-tests-l2-leaf2
+      id: 2
+      mgmt_ip: 192.168.0.202/24
+      uplink_switch_interfaces:
+        - Ethernet17
+        - Ethernet17

@@ -1,3 +1,4 @@
+hostname: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1
 router_bgp:
   as: '65001'
   router_id: 192.168.254.1

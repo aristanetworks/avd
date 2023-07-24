@@ -2586,6 +2586,8 @@ keys:
                 '
             units_packets:
               type: bool
+  hostname:
+    type: str
   interface_defaults:
     type: dict
     keys:
@@ -4274,6 +4276,14 @@ keys:
                   items:
                     type: str
                     description: Name of Interface Group
+  management_accounts:
+    type: dict
+    keys:
+      password:
+        type: dict
+        keys:
+          policy:
+            type: str
   management_api_gnmi:
     type: dict
     keys:
@@ -4591,6 +4601,62 @@ keys:
             type: bool
           encryption_reversible:
             type: str
+          policies:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                minimum:
+                  type: dict
+                  keys:
+                    digits:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    length:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    lower:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    special:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    upper:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                maximum:
+                  type: dict
+                  keys:
+                    repetitive:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    sequential:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
       ssl_profiles:
         type: list
         items:
@@ -6229,7 +6295,6 @@ keys:
           description: Prefix-list Name
         sequence_numbers:
           type: list
-          required: true
           primary_key: sequence
           convert_types:
           - dict
@@ -9186,6 +9251,7 @@ keys:
     keys:
       instance:
         type: str
+        required: true
         description: ISIS Instance Name
       net:
         type: str

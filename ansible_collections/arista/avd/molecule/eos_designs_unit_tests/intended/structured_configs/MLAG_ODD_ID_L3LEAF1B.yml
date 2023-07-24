@@ -1,3 +1,4 @@
+hostname: MLAG_ODD_ID_L3LEAF1B
 router_bgp:
   as: '923'
   router_id: 192.168.255.36

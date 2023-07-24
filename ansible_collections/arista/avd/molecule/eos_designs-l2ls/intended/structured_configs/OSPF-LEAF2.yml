@@ -1,3 +1,4 @@
+hostname: OSPF-LEAF2
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

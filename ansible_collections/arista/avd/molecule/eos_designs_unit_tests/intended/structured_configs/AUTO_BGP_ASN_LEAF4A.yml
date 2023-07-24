@@ -1,3 +1,4 @@
+hostname: AUTO_BGP_ASN_LEAF4A
 router_bgp:
   as: '65222'
   router_id: 192.168.255.9
