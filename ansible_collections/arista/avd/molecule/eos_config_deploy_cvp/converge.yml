@@ -31,3 +31,24 @@
         execute_tasks: false
         state: present
         cv_collection: v3
+
+- name: "Converge -- Build Cloudvision Configuration - empty filter as a string"
+  hosts: CVP
+  gather_facts: false
+  connection: local
+  vars:
+    root_dir: '{{ playbook_dir }}'
+  tasks:
+    - name: Run CVP provisioning
+      # tags: generate
+      ansible.builtin.import_role:
+        name: arista.avd.eos_config_deploy_cvp
+      vars:
+        container_root: 'DC1_FABRIC'
+        configlets_prefix: 'AVD'
+        device_filter: ''
+        execute_tasks: false
+        state: absent
+        cv_collection: v3
+        # overwriting the default structured_cvp_dir_name to get different files
+        structured_cvp_dir_name: cvp-empty-filter
