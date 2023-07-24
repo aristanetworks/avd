@@ -9251,6 +9251,7 @@ keys:
     keys:
       instance:
         type: str
+        required: true
         description: ISIS Instance Name
       net:
         type: str
