@@ -1,0 +1,33 @@
+- name: Test with device_filter as empty string
+  register: cvp_vars
+  inventory_to_container:
+    inventory: '{{ inventory_path }}/inventory.yml'
+    container_root: 'DC1_FABRIC'
+    configlet_dir: '{{ configlet_path }}'
+    configlet_prefix: 'AVD'
+    device_filter: ""
+    destination: "{{ actual_output }}"
+
+- name: Compare actual output with expected output
+  ansible.builtin.shell: diff "{{ expected_output }}/expected_with_device_filter_empty_string.yml" "{{ actual_output }}"
+  failed_when: "diff_output.rc > 1"
+  register: diff_output
+  delegate_to: localhost
+
+- name: Validate output
+  assert:
+    that:
+      - cvp_vars is success
+      - cvp_vars.cvp_topology != {}
+      - cvp_vars.cvp_configlets != {}
+      - item is defined
+      - "'AVD' in item[0:3]"
+      - diff_output.stdout == ""
+  with_items: "{{ cvp_vars.cvp_configlets }}"
+
+- name: Validate cvp_topology
+  assert:
+    that:
+      - item is defined
+      - item == "Tenant"
+  with_items: "{{ cvp_vars.cvp_topology.DC1_FABRIC.parent_container }}"
