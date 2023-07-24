@@ -3,6 +3,8 @@
   hosts: all
   gather_facts: false
   connection: local
+  vars:
+    string_set_as_play_var: "test of var set under play vars"
   tasks:
 
     - name: Generate intended variables

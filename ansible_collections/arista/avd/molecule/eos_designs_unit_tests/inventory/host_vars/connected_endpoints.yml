@@ -30,3 +30,10 @@ servers:
         port_channel:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
+  # Testing of play_vars in eos_designs_structured_config
+  # Single port override physical port description with play_var
+  - name: SERVER_WITH_PLAYVAR_DESCRIPTION
+    adapters:
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet9]
+        description: "{{ string_set_as_play_var }}"
