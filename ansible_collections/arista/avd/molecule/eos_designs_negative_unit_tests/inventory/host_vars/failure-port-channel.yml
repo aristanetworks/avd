@@ -28,4 +28,7 @@ servers:
           channel_id: 42
 
 
-expected_error_message: "Duplicate port-channel name Port-Channel42 with conflicting configurations found while generating port-channels for connected-endpoints or network-ports"
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Port-channel Interfaces defined under
+  connected_endpoints. {'name': 'Port-Channel42', 'description': 'server1_Description2'} conflicts with
+  {'name': 'Port-Channel42', 'description': 'server1_Description1'}.
