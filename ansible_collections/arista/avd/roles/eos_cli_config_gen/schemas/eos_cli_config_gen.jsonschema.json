@@ -4044,6 +4044,7 @@
                 "table_size": {
                   "type": "integer",
                   "minimum": 1,
+                  "maximum": 614400,
                   "description": "Maximum number of entries in flow table.\n",
                   "title": "Table Size"
                 }

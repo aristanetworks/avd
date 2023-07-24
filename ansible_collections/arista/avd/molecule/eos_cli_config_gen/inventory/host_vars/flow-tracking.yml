@@ -13,7 +13,7 @@ flow_trackings:
         # no exporter
       - name: T2
         # table size as string
-        table_size: "999999"
+        table_size: "614400"
         record_export:
           # Should not be rendered
           mpls: false
