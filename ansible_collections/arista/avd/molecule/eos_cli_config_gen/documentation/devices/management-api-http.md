@@ -53,6 +53,8 @@ Management HTTPS is using the SSL profile SSL_PROFILE
 | default | ACL-API | - |
 | MGMT | ACL-API | - |
 
+HTTPS certificate and private key are configured.
+
 #### Management API HTTP Configuration
 
 ```eos
@@ -71,6 +73,11 @@ management api http-commands
    vrf MGMT
       no shutdown
       ip access-group ACL-API
+   protocol https certificate
+<cert_string>
+EOF
+<private_key>
+EOF
 ```
 
 ## ACL

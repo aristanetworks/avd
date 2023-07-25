@@ -11,6 +11,7 @@
   - [SSL profile test1-trust-cert Certificates Summary](#ssl-profile-test1-trust-cert-certificates-summary)
   - [SSL profile test2-chain-cert Certificates Summary](#ssl-profile-test2-chain-cert-certificates-summary)
   - [SSL profile test2-trust-cert Certificates Summary](#ssl-profile-test2-trust-cert-certificates-summary)
+  - [Password Policies](#password-policies)
   - [Management Security Configuration](#management-security-configuration)
 
 ## Management
@@ -90,6 +91,11 @@ interface Management1
 | ------------------ | ----------- | ------ | ------ |
 | - | Hostname must be FQDN | - | Enabled |
 
+### Password Policies
+| Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
+|-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
+| AVD_POLICY | > 1 | > 2 | > 3 | > 4 | > 5 | < 6 | < 7 |
+
 ### Management Security Configuration
 
 ```eos
@@ -99,6 +105,14 @@ management security
    password encryption-key common
    password encryption reversible aes-256-gcm
    password minimum length 17
+   password policy AVD_POLICY
+      minimum digits 1
+      minimum length 2
+      minimum lower 3
+      minimum special 4
+      minimum upper 5
+      maximum repetitive 6
+      maximum sequential 7
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
    ssl profile cipher-list-profile

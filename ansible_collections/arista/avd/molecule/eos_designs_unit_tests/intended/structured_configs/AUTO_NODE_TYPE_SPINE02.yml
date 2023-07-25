@@ -1,3 +1,4 @@
+hostname: AUTO_NODE_TYPE_SPINE02
 router_bgp:
   as: '65100'
   router_id: 192.168.255.2

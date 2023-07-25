@@ -8,6 +8,7 @@ from ..get_device_config import get_device_config
 from ..get_device_doc import get_device_doc
 from ..get_device_structured_config import get_device_structured_config
 from ..validate_inputs import validate_inputs
+from ..validate_structured_config import validate_structured_config
 from .read_vars import read_vars
 from .write_result import write_result, write_yaml_result
 
@@ -51,13 +52,17 @@ def run_eos_cli_config_gen_process(
         structured_config_file = path.join(struct_cfg_file_dir, f"{hostname}.yml")
         device_vars.update(read_vars(structured_config_file))
 
-    validate_inputs({hostname: device_vars}, eos_designs=False, eos_cli_config_gen=True)
+    res = validate_structured_config(device_vars)
+    if res.failed:
+        for err in res.validation_errors:
+            print(f"[{hostname}]: {str(err)}")
+        raise ValueError("Some inputs are invalid")
 
     if render_configuration:
-        configuration = get_device_config(hostname, device_vars)
+        configuration = get_device_config(device_vars)
         write_result(path.join(cfg_file_dir, f"{hostname}.cfg"), configuration)
     if render_documentation:
-        documentation = get_device_doc(hostname, device_vars)
+        documentation = get_device_doc(device_vars)
         write_result(path.join(doc_file_dir, f"{hostname}.md"), documentation)
 
     print(f"OK: {hostname}")
@@ -144,7 +149,12 @@ def run_eos_designs_facts(common_varfiles: list[str], device_varfiles: str, fact
 
     print("Imported files ", end=None)
 
-    validate_inputs(all_hostvars, eos_designs=True, eos_cli_config_gen=False)
+    for hostname, hostvars in all_hostvars.items():
+        res = validate_inputs(hostvars)
+        if res.failed:
+            for err in res.validation_errors:
+                print(f"[{hostname}]: {str(err)}")
+            raise ValueError("Some inputs are invalid")
 
     print("Validated ", end=None)
 
@@ -181,7 +191,11 @@ def run_eos_designs_structured_configs_process(device_var_file: str, common_vars
     device_vars = common_vars.copy()
     device_vars.update(read_vars(device_var_file))
 
-    validate_inputs({hostname: device_vars}, eos_designs=True, eos_cli_config_gen=False)
+    res = validate_inputs(device_vars)
+    if res.failed:
+        for err in res.validation_errors:
+            print(f"[{hostname}]: {str(err)}")
+        raise ValueError("Some inputs are invalid")
 
     structured_configuration = get_device_structured_config(hostname, device_vars, avd_facts)
     write_yaml_result(

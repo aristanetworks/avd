@@ -3,6 +3,8 @@
   hosts: test-hosts
   gather_facts: false
   connection: local
+  vars:
+    tacacs_key_set_as_play_var: "071B245F5A"
   tasks:
 
     - name: Generate device intended config and documentation
