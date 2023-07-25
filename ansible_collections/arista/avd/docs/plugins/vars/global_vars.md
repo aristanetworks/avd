@@ -14,23 +14,37 @@ Hidden files \(starting with \'\.\'\) and backup files \(ending with \'\~\'\) fi
 
 Only applies to inventory sources that are existing paths\.
 
-Examples\:
-\- <code>ansible\.cfg</code> only example
-  1\. Enable the plugin in <code>ansible\.cfg</code> \- DO NOT REMOVE <code>host\_group\_vars</code>\.
-    <code>\[defaults\]</code>
-    <code>vars\_plugins\_enabled \= arista\.avd\.global\_vars\, host\_group\_vars</code>
-    <code>\[vars\_global\_vars\]</code>
-    <code>paths \= \.\./relative/path/to/my/global/vars/file/or/dir</code>
+<hr>
 
-  2\. Run your playbook
-    <code>ansible\-playbook \-i inventory\.yml playbook\.yml</code>
+<b>ansible\.cfg only example</b>
 
-\- <code>ansible\.cfg</code> \+ environment variable example
-  1\. Enable the plugin in <code>ansible\.cfg</code> \- DO NOT REMOVE <code>host\_group\_vars</code>\.
-    <code>\[defaults\]</code>
-    <code>vars\_plugins\_enabled \= arista\.avd\.global\_vars\, host\_group\_vars</code>
-  2\. Run your playbook
-    <code>ARISTA\_AVD\_GLOBAL\_VARS\_PATHS\=\.\./relative/path/to/my/global/vars/file/or/dir ansible\-playbook \-i inventory\.yml playbook\.yml</code>
+1 \- Enable the plugin in <code>ansible\.cfg</code> \- DO NOT REMOVE <code>host\_group\_vars</code>\.
+
+<code>\[defaults\]</code>
+
+<code>vars\_plugins\_enabled \= arista\.avd\.global\_vars\, host\_group\_vars</code>
+
+<code>\[vars\_global\_vars\]</code>
+
+<code>paths \= \.\./relative/path/to/my/global/vars/file/or/dir</code>
+
+2 \- Run your playbook
+
+<code>ansible\-playbook \-i inventory\.yml playbook\.yml</code>
+
+<hr>
+
+<b>ansible\.cfg \+ environment variable example</b>
+
+1 \- Enable the plugin in <code>ansible\.cfg</code> \- DO NOT REMOVE <code>host\_group\_vars</code>\.
+
+<code>\[defaults\]</code>
+
+<code>vars\_plugins\_enabled \= arista\.avd\.global\_vars\, host\_group\_vars</code>
+
+2 \- Run your playbook
+
+<code>ARISTA\_AVD\_GLOBAL\_VARS\_PATHS\=\.\./relative/path/to/my/global/vars/file/or/dir ansible\-playbook \-i inventory\.yml playbook\.yml</code>
 
 ## Requirements
 

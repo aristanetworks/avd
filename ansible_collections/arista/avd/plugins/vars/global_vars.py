@@ -19,24 +19,22 @@ description:
   - Files are restricted by extension to one of .yaml, .json, .yml or no extension.
   - Hidden files (starting with '.') and backup files (ending with '~') files are ignored.
   - Only applies to inventory sources that are existing paths.
-  - |-
-    Examples:
-    - C(ansible.cfg) only example
-      1. Enable the plugin in C(ansible.cfg) - DO NOT REMOVE C(host_group_vars).
-        C([defaults])
-        C(vars_plugins_enabled = arista.avd.global_vars, host_group_vars)
-        C([vars_global_vars])
-        C(paths = ../relative/path/to/my/global/vars/file/or/dir)
-
-      2. Run your playbook
-        C(ansible-playbook -i inventory.yml playbook.yml)
-
-    - C(ansible.cfg) + environment variable example
-      1. Enable the plugin in C(ansible.cfg) - DO NOT REMOVE C(host_group_vars).
-        C([defaults])
-        C(vars_plugins_enabled = arista.avd.global_vars, host_group_vars)
-      2. Run your playbook
-        C(ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml)
+  - HORIZONTALLINE
+  - B(ansible.cfg only example)
+  - 1 - Enable the plugin in C(ansible.cfg) - DO NOT REMOVE C(host_group_vars).
+  - C([defaults])
+  - C(vars_plugins_enabled = arista.avd.global_vars, host_group_vars)
+  - C([vars_global_vars])
+  - C(paths = ../relative/path/to/my/global/vars/file/or/dir)
+  - 2 - Run your playbook
+  - C(ansible-playbook -i inventory.yml playbook.yml)
+  - HORIZONTALLINE
+  - B(ansible.cfg + environment variable example)
+  - 1 - Enable the plugin in C(ansible.cfg) - DO NOT REMOVE C(host_group_vars).
+  - C([defaults])
+  - C(vars_plugins_enabled = arista.avd.global_vars, host_group_vars)
+  - 2 - Run your playbook
+  - C(ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml)
 
 options:
   paths:
