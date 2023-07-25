@@ -10,10 +10,10 @@ The test accepts either a single test\_value or a list of test\_values\.
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | list | True | None | List of items to test\. |
-| test_value | any | optional | None | Single item or list of items to test for in value\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | list | True | None |  | List of items to test\. |
+| test_value | any | optional | None |  | Single item or list of items to test for in value\. |
 
 ## Examples
 

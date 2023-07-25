@@ -16,13 +16,13 @@ Compared to the builtin <code>is defined</code> test\, this test will also test 
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | any | True | None | Value to test |
-| test_value | any | optional | None | Value to match for in addition to defined and not none |
-| var_type | string | optional | None | Type or Class to test for |
-| fail_action | string | optional | None | Optional action if test fails to emit a Warning or Error |
-| var_name | string | optional | None | Optional string to use as variable name in warning or error messages |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | any | True | None |  | Value to test |
+| test_value | any | optional | None |  | Value to match for in addition to defined and not none |
+| var_type | string | optional | None | Valid values:<br>- <code>float</code><br>- <code>int</code><br>- <code>str</code><br>- <code>list</code><br>- <code>dict</code><br>- <code>tuple</code><br>- <code>bool</code> | Type or Class to test for |
+| fail_action | string | optional | None | Valid values:<br>- <code>warning</code><br>- <code>error</code> | Optional action if test fails to emit a Warning or Error |
+| var_name | string | optional | None |  | Optional string to use as variable name in warning or error messages |
 
 ## Examples
 

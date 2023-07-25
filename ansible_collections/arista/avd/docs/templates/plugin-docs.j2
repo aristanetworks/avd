@@ -1,15 +1,28 @@
 {# Based on https://github.com/xlab-steampunk/ansible-doc-extractor/blob/master/src/ansible_doc_extractor/templates/module.md.j2 #}
 {% macro option_desc(opts, level) %}
 {%     if not level %}
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
 {%     endif %}
 {%     for name, spec in opts.items() %}
 {%         set req = spec.required | default("optional") %}
 {%         set typ = spec.type | default("any") %}
 {%         set def_val = spec.default | default("None") %}
+{%         set restrictions = [] %}
+{%         if spec.choices %}
+{%             set _ = restrictions.append("Valid values:") %}
+{%             for choice in spec.choices %}
+{%                 set _ = restrictions.append ("- <code>" ~ choice ~ "</code>") %}
+{%             endfor %}
+{%         endif %}
+{%         if spec.min %}
+{%             set _ = restrictions.append("Min value: <code>" ~ spec.min ~ "</code>") %}
+{%         endif %}
+{%         if spec.max %}
+{%             set _ = restrictions.append("Max value: <code>" ~ spec.max ~ "</code>") %}
+{%         endif %}
 {%         set description = spec.description | map("md_ify") | join("<br>") %}
-| {{ "  " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ description }} |
+| {{ "  " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
 {%         if spec.suboptions %}
 {{ option_desc(spec.suboptions, level + 1) -}}
 {%         endif %}

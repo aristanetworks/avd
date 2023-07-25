@@ -8,10 +8,10 @@ Only for internal use\.
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | string | True | None | ID of AVD Schema\. |
-| type | string | True | None | Type of schema to convert to\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | string | True | None | Valid values:<br>- <code>eos_cli_config_gen</code><br>- <code>eos_designs</code> | ID of AVD Schema\. |
+| type | string | True | None | Valid values:<br>- <code>documentation_tables</code><br>- <code>jsonschema</code> | Type of schema to convert to\. |
 
 ## Return Values
 

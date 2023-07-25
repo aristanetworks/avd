@@ -8,10 +8,10 @@ Concatenates the given <em>esi\_prefix</em> and <em>short\_esi</em>\.
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | string | True | None | Short ESI value as per AVD definition in eos\_designs\. |
-| esi_prefix | string | optional | 0000:0000: | ESI prefix value\. Will be concatenated with the <em>short\_esi</em>\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | string | True | None |  | Short ESI value as per AVD definition in eos\_designs\. |
+| esi_prefix | string | optional | 0000:0000: |  | ESI prefix value\. Will be concatenated with the <em>short\_esi</em>\. |
 
 ## Examples
 

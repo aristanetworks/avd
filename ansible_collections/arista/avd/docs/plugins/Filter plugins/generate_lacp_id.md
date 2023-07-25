@@ -8,9 +8,9 @@ Replaces <code>\:</code> with <code>\.</code>
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | string | True | None | Short ESI value as per AVD definition in eos\_designs\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | string | True | None |  | Short ESI value as per AVD definition in eos\_designs\. |
 
 ## Examples
 

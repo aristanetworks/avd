@@ -10,10 +10,10 @@ The filter matches if any of the filter strings are found in the given input hos
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | string | True | None | One hostname to match with <em>hostname\_filter</em>\. |
-| hostname_filter | any | True | None | Filter as a list of strings or <code>None</code>\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | string | True | None |  | One hostname to match with <em>hostname\_filter</em>\. |
+| hostname_filter | any | True | None |  | Filter as a list of strings or <code>None</code>\. |
 
 ## Examples
 

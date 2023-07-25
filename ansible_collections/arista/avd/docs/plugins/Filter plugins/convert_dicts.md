@@ -14,11 +14,11 @@ Note \- if there is a non\-dictionary value with no secondary key provided\, it 
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | any | True | None | Dictionary to convert \- returned untouched if it is not a nested dictionary/list\. |
-| primary_key | string | optional | name | Name of primary key used when inserting outer dictionary keys into items\. |
-| secondary_key | string | optional | None | Name of secondary key used when inserting dictionary values which are list into items\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | any | True | None |  | Dictionary to convert \- returned untouched if it is not a nested dictionary/list\. |
+| primary_key | string | optional | name |  | Name of primary key used when inserting outer dictionary keys into items\. |
+| secondary_key | string | optional | None |  | Name of secondary key used when inserting dictionary values which are list into items\. |
 
 ## Examples
 

@@ -12,10 +12,10 @@ The filter will return an empty list if the value parsed to arista\.avd\.natural
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | any | True | None | List or dictionary |
-| sort_key | string | optional | None | Key to sort on when sorting a list of dictionaries |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | any | True | None |  | List or dictionary |
+| sort_key | string | optional | None |  | Key to sort on when sorting a list of dictionaries |
 
 ## Examples
 

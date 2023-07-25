@@ -12,14 +12,14 @@ its specific data structure\.
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| inventory | str | False | None | Optional YAML inventory file to parse\. If not set the loaded inventory will be parsed\. |
-| container_root | str | True | None | Ansible group name to consider to be Root of our topology\. |
-| configlet_dir | str | False | None | Directory where intended configurations are located\. |
-| configlet_prefix | str | False | AVD | Prefix to put on configlet\. |
-| destination | str | False | None | Optional path to save variable\. |
-| device_filter | list | False | ['all'] | Filter to apply intended mode on a set of configlet\. If not used\, then module only uses ADD mode\. device\_filter list devices that can be modified or deleted based on configlets entries\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| inventory | str | False | None |  | Optional YAML inventory file to parse\. If not set the loaded inventory will be parsed\. |
+| container_root | str | True | None |  | Ansible group name to consider to be Root of our topology\. |
+| configlet_dir | str | False | None |  | Directory where intended configurations are located\. |
+| configlet_prefix | str | False | AVD |  | Prefix to put on configlet\. |
+| destination | str | False | None |  | Optional path to save variable\. |
+| device_filter | list | False | ['all'] |  | Filter to apply intended mode on a set of configlet\. If not used\, then module only uses ADD mode\. device\_filter list devices that can be modified or deleted based on configlets entries\. |
 
 ## Examples
 

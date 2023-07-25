@@ -8,9 +8,9 @@ Removes <code>\:</code> and inserts new <code>\:</code> for each two characters\
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | string | True | None | Short ESI value as per AVD definition in eos\_designs\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | string | True | None |  | Short ESI value as per AVD definition in eos\_designs\. |
 
 ## Examples
 

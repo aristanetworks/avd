@@ -12,9 +12,9 @@ Within a single range\, prefixes \(ex\. Ethernet\, Eth\, Po\) are carried over t
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| _input | any | True | None | Range as string or list of ranges\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| _input | any | True | None |  | Range as string or list of ranges\. |
 
 ## Examples
 

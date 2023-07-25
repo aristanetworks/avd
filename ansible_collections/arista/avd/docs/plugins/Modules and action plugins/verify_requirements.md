@@ -13,10 +13,10 @@ The \`arista\.avd\.verify\_requirements\` module is an Ansible Action Plugin pro
 
 ## Parameters
 
-| Argument | Type | Required | Default | Description |
-| -------- | ---- | -------- | ------- | ----------- |
-| requirements | list | True | None | List of strings of python requirements with pip file syntax\. |
-| avd_ignore_requirements | bool | False | False | Boolean\, if set to True\, the play does not stop if any requirement error is detected\. |
+| Argument | Type | Required | Default | Value Restrictions | Description |
+| -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| requirements | list | True | None |  | List of strings of python requirements with pip file syntax\. |
+| avd_ignore_requirements | bool | False | False |  | Boolean\, if set to True\, the play does not stop if any requirement error is detected\. |
 
 ## Examples
 
