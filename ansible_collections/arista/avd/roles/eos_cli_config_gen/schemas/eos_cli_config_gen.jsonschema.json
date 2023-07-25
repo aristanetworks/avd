@@ -4040,6 +4040,13 @@
                     ]
                   },
                   "title": "Exporters"
+                },
+                "table_size": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 614400,
+                  "description": "Maximum number of entries in flow table.\n",
+                  "title": "Table Size"
                 }
               },
               "additionalProperties": false,
@@ -4230,6 +4237,10 @@
         "^_.+$": {}
       },
       "title": "Hardware Counters"
+    },
+    "hostname": {
+      "type": "string",
+      "title": "Hostname"
     },
     "interface_defaults": {
       "type": "object",
@@ -6265,6 +6276,47 @@
             "^_.+$": {}
           },
           "title": "Policy"
+        },
+        "event": {
+          "type": "object",
+          "properties": {
+            "storm_control": {
+              "type": "object",
+              "properties": {
+                "discards": {
+                  "type": "object",
+                  "properties": {
+                    "global": {
+                      "type": "boolean",
+                      "title": "Global"
+                    },
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 10,
+                      "maximum": 65535,
+                      "description": "Logging interval in seconds",
+                      "title": "Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Discards"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Storm Control"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Event"
         }
       },
       "additionalProperties": false,
@@ -6896,6 +6948,30 @@
         "^_.+$": {}
       }
     },
+    "management_accounts": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "object",
+          "properties": {
+            "policy": {
+              "type": "string",
+              "title": "Policy"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Password"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Management Accounts"
+    },
     "management_api_gnmi": {
       "type": "object",
       "properties": {
@@ -7426,6 +7502,88 @@
             "encryption_reversible": {
               "type": "string",
               "title": "Encryption Reversible"
+            },
+            "policies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "minimum": {
+                    "type": "object",
+                    "properties": {
+                      "digits": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Digits"
+                      },
+                      "length": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Length"
+                      },
+                      "lower": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Lower"
+                      },
+                      "special": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Special"
+                      },
+                      "upper": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Upper"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Minimum"
+                  },
+                  "maximum": {
+                    "type": "object",
+                    "properties": {
+                      "repetitive": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Repetitive"
+                      },
+                      "sequential": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Sequential"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Maximum"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Policies"
             }
           },
           "additionalProperties": false,
@@ -10443,8 +10601,7 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -16070,6 +16227,9 @@
           "title": "Segment Routing MPLS"
         }
       },
+      "required": [
+        "instance"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
@@ -17750,6 +17910,26 @@
                 "^_.+$": {}
               },
               "title": "Disable"
+            },
+            "egress": {
+              "type": "object",
+              "properties": {
+                "enable_default": {
+                  "type": "boolean",
+                  "description": "Enable egress sFlow by default.\n",
+                  "title": "Enable Default"
+                },
+                "unmodified": {
+                  "type": "boolean",
+                  "description": "Enable egress sFlow unmodified.\nPlatform dependent feature.\n",
+                  "title": "Unmodified"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Egress"
             }
           },
           "additionalProperties": false,

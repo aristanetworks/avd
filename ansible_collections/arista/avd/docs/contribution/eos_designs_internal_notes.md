@@ -79,7 +79,7 @@ The facts can be inspected in a file per device by running the `arista.avd.eos_d
 ```mermaid
 classDiagram
   direction LR
-  class eos_designs_facts["arista.avd.eos_designs_facts"]{
+  class eos_designs_facts{
     - Verify devices are in one fabric group
     - Read and template default role_vars
     - Read and validate Hostvars for all devices
@@ -89,7 +89,7 @@ classDiagram
     - Run "render" method on all EosDesignsFacts instances
     - Build facts from data returned by "render"
   }
-  class ActionBase["Ansible ActionBase"]{
+  class ActionBase{
   }
   class AvdSchemaTools{
   }
@@ -229,10 +229,9 @@ Source code:
 - [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/__init__.py)
   (Unfortunate naming. Base here refers to base configurations. Not a Base class.)
 - [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/__init__.py)
-- [AvdStructuredConfigCoreInterfaces](../../roles/eos_designs/python_modules/core_interfaces/__init__.py)
+- [AvdStructuredConfigCoreInterfacesAndL3Edge](../../roles/eos_designs/python_modules/core_interfaces_and_l3_edge/__init__.py)
 - [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/__init__.py)
 - [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/__init__.py)
-- [AvdStructuredConfigL3Edge](../../roles/eos_designs/python_modules/l3_edge/__init__.py)
 - [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/__init__.py)
 - [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/__init__.py)
 - [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/__init__.py)
@@ -246,30 +245,27 @@ classDiagram
   }
   class AvdStructuredConfigBase
   class AvdStructuredConfigConnectedEndpoints
-  class AvdStructuredConfigCoreInterfaces
+  class AvdStructuredConfigCoreInterfacesAndL3Edge
   class AvdStructuredConfigCustomStructuredConfiguration
   class AvdStructuredConfigInbandManagement
-  class AvdStructuredConfigL3Edge
   class AvdStructuredConfigMlag
   class AvdStructuredConfigNetworkServices
   class AvdStructuredConfigOverlay
   class AvdStructuredConfigUnderlay
   AvdFacts <|-- AvdStructuredConfigBase : extends
   AvdFacts <|-- AvdStructuredConfigConnectedEndpoints : extends
-  AvdFacts <|-- AvdStructuredConfigCoreInterfaces : extends
+  AvdFacts <|-- AvdStructuredConfigCoreInterfacesAndL3Edge : extends
   AvdFacts <|-- AvdStructuredConfigCustomStructuredConfiguration : extends
   AvdFacts <|-- AvdStructuredConfigInbandManagement : extends
-  AvdFacts <|-- AvdStructuredConfigL3Edge : extends
   AvdFacts <|-- AvdStructuredConfigMlag : extends
   AvdFacts <|-- AvdStructuredConfigNetworkServices : extends
   AvdFacts <|-- AvdStructuredConfigOverlay : extends
   AvdFacts <|-- AvdStructuredConfigUnderlay : extends
   AvdStructuredConfigBase --* SharedUtils
   AvdStructuredConfigConnectedEndpoints --* SharedUtils
-  AvdStructuredConfigCoreInterfaces --* SharedUtils
+  AvdStructuredConfigCoreInterfacesAndL3Edge --* SharedUtils
   AvdStructuredConfigCustomStructuredConfiguration --* SharedUtils
   AvdStructuredConfigInbandManagement --* SharedUtils
-  AvdStructuredConfigL3Edge --* SharedUtils
   AvdStructuredConfigMlag --* SharedUtils
   AvdStructuredConfigNetworkServices --* SharedUtils
   AvdStructuredConfigOverlay --* SharedUtils

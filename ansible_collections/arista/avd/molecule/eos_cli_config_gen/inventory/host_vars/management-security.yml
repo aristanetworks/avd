@@ -5,6 +5,17 @@ management_security:
     minimum_length: 17
     encryption_key_common: true
     encryption_reversible: aes-256-gcm
+    policies:
+      - name: AVD_POLICY
+        minimum:
+          digits: 1
+          length: 2
+          lower: 3
+          special: 4
+          upper: 5
+        maximum:
+          repetitive: 6
+          sequential: 7
   ssl_profiles:
     - name: tls-versions-profile
       tls_versions: "1.0 1.1"

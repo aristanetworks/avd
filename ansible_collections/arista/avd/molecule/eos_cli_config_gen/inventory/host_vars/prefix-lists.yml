@@ -23,6 +23,8 @@ prefix_lists:
       - sequence: 20
         action: "permit 192.168.254.0/24 eq 32"
 
+  # prefix_list without sequence_numbers
+  - name: PL-IPV4-LOOPBACKS
 
 ### IPv6 Prefix-lists ###
 ipv6_prefix_lists:

@@ -1,3 +1,4 @@
+hostname: RD-RT-ADMIN-SUBFIELD-L3LEAF6
 router_bgp:
   as: '65006'
   router_id: 192.168.255.6

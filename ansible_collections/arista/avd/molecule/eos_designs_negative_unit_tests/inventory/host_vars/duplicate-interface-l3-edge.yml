@@ -23,4 +23,7 @@ l3_edge:
       id: 2
       profile: profile2
 
-expected_error_message: "Duplicate interface name ethernet1 found while generating ethernet_interfaces for l3_edge peer: peer2, peer_interface: ethernet2. Description on duplicate interface: P2P_LINK_TO_peer1_ethernet1"
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under l3_edge p2p_link.
+  {'name': 'ethernet1', 'peer': 'peer2', 'peer_interface': 'ethernet2', 'description': 'P2P_LINK_TO_peer2_ethernet2'} conflicts with
+  {'name': 'ethernet1', 'peer': 'peer1', 'peer_interface': 'ethernet1', 'description': 'P2P_LINK_TO_peer1_ethernet1'}.

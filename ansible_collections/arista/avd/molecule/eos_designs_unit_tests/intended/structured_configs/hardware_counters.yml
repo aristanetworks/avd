@@ -1,3 +1,4 @@
+hostname: hardware_counters
 service_routing_protocols_model: multi-agent
 hardware_counters:
   features:

@@ -12,6 +12,7 @@
        or management_ssh is arista.avd.defined
        or management_tech_support is arista.avd.defined
        or ip_ssh_client_source_interfaces is arista.avd.defined
+       or management_accounts is arista.avd.defined
        or management_api_gnmi is arista.avd.defined
        or management_cvx is arista.avd.defined
        or management_console is arista.avd.defined
@@ -44,6 +45,8 @@
 {%     include 'documentation/management-tech-support.j2' %}
 {## IP SSH Client Source Interfaces #}
 {%     include 'documentation/ip-ssh-client-source-interfaces.j2' %}
+{## Management Accounts #}
+{%     include 'documentation/management-accounts.j2' %}
 {## Management API gNMI #}
 {%     include 'documentation/management-api-gnmi.j2' %}
 {## Management CVX #}

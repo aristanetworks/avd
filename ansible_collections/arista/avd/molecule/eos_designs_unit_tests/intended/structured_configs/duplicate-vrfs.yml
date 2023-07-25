@@ -1,3 +1,4 @@
+hostname: duplicate-vrfs
 router_bgp:
   as: '101'
   router_id: 192.168.255.101

@@ -98,6 +98,12 @@ You **must** define the `fabric_name` variable and it **must** match the Ansible
 roles/eos_designs/docs/tables/fabric-topology.md
 --8<--
 
+## Fabric IP Addressing
+
+--8<--
+roles/eos_designs/docs/tables/fabric-ip-addressing.md
+--8<--
+
 ## Node Type Variables
 
 The following tables provide information on the default node types that have been pre-defined in `eos_designs` for each design type.
@@ -140,7 +146,7 @@ AVD provides the capability to customize your node types, supporting a variety o
 ??? example "Default value for design `l3ls-evpn`"
 
     ```yaml
-    node_type:keys:
+    node_type_keys:
 
       - key: spine
         type: spine
@@ -178,7 +184,7 @@ AVD provides the capability to customize your node types, supporting a variety o
 ??? example "Default value for design `l2ls`"
 
     ```yaml
-    node_type:keys:
+    node_type_keys:
 
       - key: l3spine
         type: l3spine
@@ -212,7 +218,7 @@ AVD provides the capability to customize your node types, supporting a variety o
 ??? example "Default value for design `mpls`"
 
     ```yaml
-    node_type:keys:
+    node_type_keys:
 
       - key: p
         type: p
@@ -253,6 +259,102 @@ AVD provides the capability to customize your node types, supporting a variety o
 roles/eos_designs/docs/tables/node-type-keys.md
 --8<--
 
+### Context for ip_addressing templates
+
+To help calculate the custom IP addressing, the following contextual variables are available to the custom templates:
+
+router_id:
+
+- `{{ switch_id }}`
+- `{{ loopback_ipv4_pool }}`
+- `{{ loopback_ipv4_offset }}`
+- All group/hostvars
+
+mlag_ip_primary & mlag_ip_secondary:
+
+- `{{ mlag_primary_id }}`
+- `{{ mlag_secondary_id }}`
+- `{{ switch_data.combined.mlag_peer_ipv4_pool }}`
+- All group/hostvars
+
+mlag_l3_ip_primary & mlag_l3_ip_secondary:
+
+- `{{ mlag_primary_id }}`
+- `{{ mlag_secondary_id }}`
+- `{{ switch_data.combined.mlag_peer_l3_ipv4_pool }}`
+- All group/hostvars
+
+p2p_uplinks_ip & p2p_uplinks_peer_ip:
+
+- `{{ switch.uplink_ipv4_pool }}`
+- `{{ switch.id }}`
+- `{{ switch.max_uplink_switches }}`
+- `{{ switch.max_parallel_uplinks }}`
+- `{{ uplink_switch_index }}`
+- All group/hostvars
+
+vtep_ip_mlag:
+
+- `{{ switch_vtep_loopback_ipv4_pool }}`
+- `{{ mlag_primary_id }}`
+- `{{ loopback_ipv4_offset }}`
+- All group/hostvars
+
+vtep_ip:
+
+- `{{ switch_vtep_loopback_ipv4_pool }}`
+- `{{ switch_id }}`
+- `{{ loopback_ipv4_offset }}`
+- All group/hostvars
+
+While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
+the values are not part of the officially supported data models, and may change without notice.
+
+### Context for interface_descriptions templates
+
+To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
+
+underlay_ethernet_interfaces:
+
+- `{{ link.peer }}`
+- `{{ link.peer_interface }}`
+- `{{ link.type }} (underlay_p2p or underlay_l2)`
+- All group/hostvars
+
+underlay_port_channel_interfaces:
+
+- `{{ link.channel_description }}`
+- `{{ link.channel_group_id }}`
+- `{{ link.peer_channel_group_id }}`
+- All group/hostvars
+
+mlag_ethernet_interfaces:
+
+- `{{ mlag_interface }}`
+- `{{ mlag_peer }}`
+- All group/hostvars
+
+mlag_port_channel_interfaces:
+
+- `{{ mlag_interfaces }}`
+- `{{ mlag_peer }}`
+- All group/hostvars
+
+connected_endpoints_ethernet_interfaces:
+
+- `{{ peer }}`
+- `{{ peer_interface }}`
+- All group/hostvars
+
+connected_endpoints_port_channel_interfaces:
+
+- `{{ peer }}`
+- `{{ adapter_port_channel_description }}`
+- All group/hostvars
+
+While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
+the values are not part of the officially supported data models and may change without notice.
+
 ## Type setting
 
 - The `type:` variable needs to be defined for each device in the fabric.
@@ -290,6 +392,13 @@ roles/eos_designs/docs/tables/type-setting.md
 --8<--
 
 ## Default node types settings
+
+Node types can be defined statically on each node or in each group of nodes.  By leveraging `default_node_types`, regular expressions can be used to determine the node type based
+on the hostname.
+
+!!! warning
+    Please note that using the `default_node_types` functionality will cause certain tests in the eos_validate_state role to not be executed.
+    This functionality will be restored as part of a later update to eos_validate_state and this note will then be removed.
 
 --8<--
 roles/eos_designs/docs/tables/default-node-types.md
@@ -349,6 +458,9 @@ roles/eos_designs/docs/tables/node-type-uplink-configuration.md
 --8<--
 
 ### Node type L2 and MLAG configuration
+
+!!! tip
+    Alternate addressing schemes are available at [`fabric_ip_addressing`](#fabric-ip-addressing).
 
 --8<--
 roles/eos_designs/docs/tables/node-type-l2-mlag-configuration.md
@@ -918,7 +1030,7 @@ roles/eos_designs/docs/tables/connected-endpoints-keys.md
 
 ## Network Services
 
-The network services variabless provide an abstracted model to define network services across the fabric.
+The network services variables provide an abstracted model to define network services across the fabric.
 The network services are grouped by tenants. The definition of a tenant may vary between organizations. E.g. tenants can be organizations or departments.
 
 The filtering models defined under [Node type network services configuration](#node-type-network-services-configuration) allows

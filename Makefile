@@ -28,7 +28,7 @@ pyavd-test: ## Test pyavd python code
 	cd python-avd && $(MAKE) dep && tox
 
 .PHONY: pyavd-publish
-pyavd-build: ## Build and publish pyavd python package
+pyavd-publish: ## Build and publish pyavd python package
 	cd python-avd && $(MAKE) dep build publish
 
 #########################################
