@@ -8,11 +8,10 @@ Replace the input data by \"\<removed\>\" if the hide\_passwords parameter is tr
 
 ## Parameters
 
-  _input (True, raw, None)
-    Value to replace\.
-
-  hide_passwords (True, bool, None)
-    Flag to indicate whether or not the string should be replaced\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | raw | True | None | Value to replace\. |
+| hide_passwords | bool | True | None | Flag to indicate whether or not the string should be replaced\. |
 
 ## Examples
 
@@ -22,8 +21,9 @@ cli_with_hidden_password: "ip ospf authentication-key 7 {{ vlan_interface.ospf_a
 
 ## Return Values
 
-  _value (, string, )
-    The original input or \'\<removed\>\'
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | string | The original input or \'\<removed\>\' |
 
 ## Status
 

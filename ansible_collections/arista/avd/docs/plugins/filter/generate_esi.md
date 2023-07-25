@@ -8,11 +8,10 @@ Concatenates the given <em>esi\_prefix</em> and <em>short\_esi</em>\.
 
 ## Parameters
 
-  _input (True, string, None)
-    Short ESI value as per AVD definition in eos\_designs\.
-
-  esi_prefix (optional, string, 0000:0000:)
-    ESI prefix value\. Will be concatenated with the <em>short\_esi</em>\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | string | True | None | Short ESI value as per AVD definition in eos\_designs\. |
+| esi_prefix | string | optional | 0000:0000: | ESI prefix value\. Will be concatenated with the <em>short\_esi</em>\. |
 
 ## Examples
 
@@ -23,8 +22,9 @@ esi: "{{ short_esi | arista.avd.generate_esi('deaf:beed:') }}"
 
 ## Return Values
 
-  _value (, string, )
-    Concatenated string of <em>esi\_prefix</em> and <em>short\_esi</em> like <code>0000\:0000\:0303\:0202\:0101</code>
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | string | Concatenated string of <em>esi\_prefix</em> and <em>short\_esi</em> like <code>0000\:0000\:0303\:0202\:0101</code> |
 
 ## Status
 

@@ -12,16 +12,16 @@ Returns <code>\:white\_check\_mark\:</code> if input status string is <code>PASS
 
 ## Parameters
 
-  _input (True, string, None)
-    Text to convert to EMOJI\.
-
-  rendering (True, string, None)
-    Markdown Flavor to use for Emoji rendering\. Only \"github\" is supported\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | string | True | None | Text to convert to EMOJI\. |
+| rendering | string | True | None | Markdown Flavor to use for Emoji rendering\. Only \"github\" is supported\. |
 
 ## Return Values
 
-  _value (, string, )
-    Input value or github markdown emoji code\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | string | Input value or github markdown emoji code\. |
 
 ## Status
 

@@ -8,8 +8,9 @@ Provides the capability to generate a string representing ranges of VLANs or VNI
 
 ## Parameters
 
-  _input (True, list, None)
-    List of integers to compress into a range\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | list | True | None | List of integers to compress into a range\. |
 
 ## Examples
 
@@ -21,8 +22,9 @@ list2: "{{ [1,2,3,7,8] | arista.avd.list_compress }}" # -> "1-3,7-8"
 
 ## Return Values
 
-  _value (, string, )
-    Range string like \"1\-3\,7\-8\"
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | string | Range string like \"1\-3\,7\-8\" |
 
 ## Status
 

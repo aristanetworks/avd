@@ -14,14 +14,11 @@ Note \- if there is a non\-dictionary value with no secondary key provided\, it 
 
 ## Parameters
 
-  _input (True, any, None)
-    Dictionary to convert \- returned untouched if it is not a nested dictionary/list\.
-
-  primary_key (optional, string, name)
-    Name of primary key used when inserting outer dictionary keys into items\.
-
-  secondary_key (optional, string, None)
-    Name of secondary key used when inserting dictionary values which are list into items\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | any | True | None | Dictionary to convert \- returned untouched if it is not a nested dictionary/list\. |
+| primary_key | string | optional | name | Name of primary key used when inserting outer dictionary keys into items\. |
+| secondary_key | string | optional | None | Name of secondary key used when inserting dictionary values which are list into items\. |
 
 ## Examples
 
@@ -65,8 +62,9 @@ Note \- if there is a non\-dictionary value with no secondary key provided\, it 
 
 ## Return Values
 
-  _value (, any, )
-    Returns list of dictionaries or input variable untouched if not a nested dictionary/list\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | any | Returns list of dictionaries or input variable untouched if not a nested dictionary/list\. |
 
 ## Status
 

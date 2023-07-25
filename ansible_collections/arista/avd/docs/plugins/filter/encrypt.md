@@ -12,24 +12,13 @@ Note \- For now this filter only supports encryption from type <code>7</code> an
 
 ## Parameters
 
-  _input (True, string, None)
-    Clear text password to be encrypted\.
-
-  passwd_type (True, string, None)
-    Type of password to encrypt\.
-    <code>bgp</code> and <code>ospf\_simple</code> requires the <em>password</em> and <em>key</em> inputs\.
-    <code>ospf\_message\_digest</code> requires the <em>password</em>\, <em>key</em>\, <em>hash\_algorithm</em>\, <em>key\_id</em> inputs\.
-
-  key (True, string, None)
-    Encryption key\. The value depends on the type of password\.
-    For BGP passwords the key is the Neighbor IP or the BGP Peer Group Name in EOS\.
-    For OSPF passwords the key is the interface name \(e\.g\.\, <code>Ethernet1</code>\)\.
-
-  hash_algorithm (optional, string, None)
-    Hash algorithm to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>\.
-
-  key_id (optional, integer, None)
-    Key ID to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | string | True | None | Clear text password to be encrypted\. |
+| passwd_type | string | True | None | Type of password to encrypt\.<br><code>bgp</code> and <code>ospf\_simple</code> requires the <em>password</em> and <em>key</em> inputs\.<br><code>ospf\_message\_digest</code> requires the <em>password</em>\, <em>key</em>\, <em>hash\_algorithm</em>\, <em>key\_id</em> inputs\. |
+| key | string | True | None | Encryption key\. The value depends on the type of password\.<br>For BGP passwords the key is the Neighbor IP or the BGP Peer Group Name in EOS\.<br>For OSPF passwords the key is the interface name \(e\.g\.\, <code>Ethernet1</code>\)\. |
+| hash_algorithm | string | optional | None | Hash algorithm to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>\. |
+| key_id | integer | optional | None | Key ID to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>\. |
 
 ## Examples
 
@@ -59,8 +48,9 @@ ethernet_interfaces:
 
 ## Return Values
 
-  _value (, string, )
-    Encrypted EOS password string\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | string | Encrypted EOS password string\. |
 
 ## Status
 

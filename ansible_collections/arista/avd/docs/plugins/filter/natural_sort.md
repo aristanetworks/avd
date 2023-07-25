@@ -12,11 +12,10 @@ The filter will return an empty list if the value parsed to arista\.avd\.natural
 
 ## Parameters
 
-  _input (True, any, None)
-    List or dictionary
-
-  sort_key (optional, string, None)
-    Key to sort on when sorting a list of dictionaries
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | any | True | None | List or dictionary |
+| sort_key | string | optional | None | Key to sort on when sorting a list of dictionaries |
 
 ## Examples
 
@@ -31,8 +30,9 @@ empty_list_2: "{{ some_undefined_var | natural_sort }}" # -> []
 
 ## Return Values
 
-  _value (, list, )
-    Sorted list if the input was a list\. Sorted keys if the input was a dictionary\. Empty list if the input value was <code>None</code> or <code>undefined</code>\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | list | Sorted list if the input was a list\. Sorted keys if the input was a dictionary\. Empty list if the input value was <code>None</code> or <code>undefined</code>\. |
 
 ## Status
 

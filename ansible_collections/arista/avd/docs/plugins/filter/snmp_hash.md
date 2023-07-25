@@ -8,26 +8,19 @@ Key localization as described in RFC 2574\, section 2\.6 <b>ERROR while parsing<
 
 ## Parameters
 
-  _input (True, dictionary, None)
-    Dictionary with snmp passphrase details\.
-
-    passphrase (True, string, None)
-      The passphrase to localize\, if <em>priv</em> is not set it is the \"auth\" passphrase else it is the \"priv\" passphrase\.
-
-    auth (True, string, None)
-      Auth type
-
-    engine_id (True, string, None)
-      A hexadecimal string containing the engine\_id to be used to localize the passphrase
-
-    priv (optional, string, None)
-      Priv type
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | dictionary | True | None | Dictionary with snmp passphrase details\. |
+|   passphrase | string | True | None | The passphrase to localize\, if <em>priv</em> is not set it is the \"auth\" passphrase else it is the \"priv\" passphrase\. |
+|   auth | string | True | None | Auth type |
+|   engine_id | string | True | None | A hexadecimal string containing the engine\_id to be used to localize the passphrase |
+|   priv | string | optional | None | Priv type |
 
 ## Return Values
 
-  _value (, string, )
-    The localized key generated from the passphrase using <em>auth</em> type\.
-    If required the key is truncated to match the appropriate keylength for the <em>priv</em> type\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | string | The localized key generated from the passphrase using <em>auth</em> type\.<br>If required the key is truncated to match the appropriate keylength for the <em>priv</em> type\. |
 
 ## Status
 

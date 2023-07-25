@@ -8,8 +8,9 @@ Removes <code>\:</code> and inserts new <code>\:</code> for each two characters\
 
 ## Parameters
 
-  _input (True, string, None)
-    Short ESI value as per AVD definition in eos\_designs\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | string | True | None | Short ESI value as per AVD definition in eos\_designs\. |
 
 ## Examples
 
@@ -20,8 +21,9 @@ rt: "{{ short_esi | arista.avd.generate_route_target }}"
 
 ## Return Values
 
-  _value (, string, )
-    String based on route\-target format like 03\:03\:02\:02\:01\:01
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | string | String based on route\-target format like 03\:03\:02\:02\:01\:01 |
 
 ## Status
 

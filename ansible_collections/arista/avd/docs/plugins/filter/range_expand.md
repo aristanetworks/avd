@@ -12,8 +12,9 @@ Within a single range\, prefixes \(ex\. Ethernet\, Eth\, Po\) are carried over t
 
 ## Parameters
 
-  _input (True, any, None)
-    Range as string or list of ranges\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | any | True | None | Range as string or list of ranges\. |
 
 ## Examples
 
@@ -61,8 +62,9 @@ Within a single range\, prefixes \(ex\. Ethernet\, Eth\, Po\) are carried over t
 
 ## Return Values
 
-  _value (, list, )
-    List of strings from all ranges\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | list | List of strings from all ranges\. |
 
 ## Status
 

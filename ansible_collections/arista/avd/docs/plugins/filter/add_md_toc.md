@@ -8,16 +8,16 @@ Only for internal use\.
 
 ## Parameters
 
-  _input (True, string, None)
-    ID of AVD Schema\.
-
-  type (True, string, None)
-    Type of schema to convert to\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | string | True | None | ID of AVD Schema\. |
+| type | string | True | None | Type of schema to convert to\. |
 
 ## Return Values
 
-  _value (, any, )
-    Schema of the requested type\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | any | Schema of the requested type\. |
 
 ## Status
 

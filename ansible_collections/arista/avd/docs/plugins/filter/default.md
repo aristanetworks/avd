@@ -12,11 +12,10 @@ As a last resort\, the filter will return <code>None</code>\.
 
 ## Parameters
 
-  _input (True, any, None)
-    Default value to check\. Will be returned untouched if <code>not undefined</code> and <code>not None</code>\.
-
-  default_values (optional, any, None)
-    One or more default values which will be tested one by one and the first valid value will be used\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | any | True | None | Default value to check\. Will be returned untouched if <code>not undefined</code> and <code>not None</code>\. |
+| default_values | any | optional | None | One or more default values which will be tested one by one and the first valid value will be used\. |
 
 ## Examples
 
@@ -27,8 +26,9 @@ myvalue: "{{ variable | arista.avd.default(default_value_1, default_value_2) }}"
 
 ## Return Values
 
-  _value (, any, )
-    Input value if <code>not undefined</code> and <code>not None</code>\. Otherwise return first defined default value or <code>None</code>\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | any | Input value if <code>not undefined</code> and <code>not None</code>\. Otherwise return first defined default value or <code>None</code>\. |
 
 ## Status
 

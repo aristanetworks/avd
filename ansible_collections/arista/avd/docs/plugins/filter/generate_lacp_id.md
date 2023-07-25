@@ -8,8 +8,9 @@ Replaces <code>\:</code> with <code>\.</code>
 
 ## Parameters
 
-  _input (True, string, None)
-    Short ESI value as per AVD definition in eos\_designs\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | string | True | None | Short ESI value as per AVD definition in eos\_designs\. |
 
 ## Examples
 
@@ -20,8 +21,9 @@ lacp_id: "{{ short_esi | arista.avd.generate_lacp_id }}"
 
 ## Return Values
 
-  _value (, string, )
-    String based on LACP ID format like 0303\.0202\.0101
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | string | String based on LACP ID format like 0303\.0202\.0101 |
 
 ## Status
 
