@@ -6269,6 +6269,47 @@
             "^_.+$": {}
           },
           "title": "Policy"
+        },
+        "event": {
+          "type": "object",
+          "properties": {
+            "storm_control": {
+              "type": "object",
+              "properties": {
+                "discards": {
+                  "type": "object",
+                  "properties": {
+                    "global": {
+                      "type": "boolean",
+                      "title": "Global"
+                    },
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 10,
+                      "maximum": 65535,
+                      "description": "Logging interval in seconds",
+                      "title": "Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Discards"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Storm Control"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Event"
         }
       },
       "additionalProperties": false,
