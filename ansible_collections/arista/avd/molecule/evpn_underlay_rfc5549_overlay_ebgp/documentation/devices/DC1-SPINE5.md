@@ -216,6 +216,8 @@ vlan internal order ascending range 1006 1199
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
 | Ethernet1 | P2P_LINK_TO_DC1-LEAF3A_Ethernet1 | routed | - | - | default | 1500 | False | - | - | - | - |
 | Ethernet2 | P2P_LINK_TO_DC1-LEAF3B_Ethernet1 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF3A_Ethernet2 | routed | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-LEAF3B_Ethernet2 | routed | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -230,6 +232,20 @@ interface Ethernet1
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF3B_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
+!
+interface Ethernet3
+   description P2P_LINK_TO_DC1-LEAF3A_Ethernet2
+   no shutdown
+   mtu 1500
+   no switchport
+   ipv6 enable
+!
+interface Ethernet4
+   description P2P_LINK_TO_DC1-LEAF3B_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -373,6 +389,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ------------------ | --- | ---------- | --------- | ----------- |
 | Ethernet1 | default | UNDERLAY_PEERS | 65106 | - |
 | Ethernet2 | default | UNDERLAY_PEERS | 65106 | - |
+| Ethernet3 | default | UNDERLAY_PEERS | 65106 | - |
+| Ethernet4 | default | UNDERLAY_PEERS | 65106 | - |
 
 #### Router BGP EVPN Address Family
 
@@ -406,6 +424,8 @@ router bgp 65001
    neighbor UNDERLAY_PEERS maximum-routes 12000
    neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65106
    neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65106
+   neighbor interface Ethernet3 peer-group UNDERLAY_PEERS remote-as 65106
+   neighbor interface Ethernet4 peer-group UNDERLAY_PEERS remote-as 65106
    neighbor 2001:1::c peer group EVPN-OVERLAY-PEERS
    neighbor 2001:1::c remote-as 65106
    neighbor 2001:1::c description DC1-LEAF3A

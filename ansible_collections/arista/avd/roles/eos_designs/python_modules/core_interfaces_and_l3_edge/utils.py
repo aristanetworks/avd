@@ -212,6 +212,7 @@ class UtilsMixin:
             "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu),
             "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
             "eos_cli": p2p_link.get("raw_eos_cli"),
+            "struct_cfg": get(p2p_link, "structured_config"),
         }
 
         if (ip := get(p2p_link, "ip")) is not None:
@@ -246,6 +247,9 @@ class UtilsMixin:
             interface_cfg["mac_security"] = {
                 "profile": p2p_link["macsec_profile"],
             }
+
+        if (p2p_link_sflow := get(p2p_link, "sflow", default=self._p2p_links_sflow)) is not None:
+            interface_cfg["sflow"] = {"enable": p2p_link_sflow}
 
         if self.shared_utils.mpls_lsr and p2p_link.get("mpls_ip", True) is True:
             interface_cfg["mpls"] = {"ip": True}
@@ -308,3 +312,7 @@ class UtilsMixin:
                 "mode": get(p2p_link, "port_channel.mode", default="active"),
             },
         }
+
+    @cached_property
+    def _p2p_links_sflow(self) -> bool | None:
+        return get(self._hostvars, f"fabric_sflow.{self.data_model}")

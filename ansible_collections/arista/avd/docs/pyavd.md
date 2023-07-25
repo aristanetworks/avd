@@ -3,6 +3,11 @@
 !!! warning
     pyavd is still in the development phase. Please do not use.
 
+## Functions overview
+
+![Arista AVD Overview](_media/pyavd_functions_dark.svg#only-dark)
+![Arista AVD Overview](_media/pyavd_functions_light.svg#only-light)
+
 ## Installation
 
 ```sh

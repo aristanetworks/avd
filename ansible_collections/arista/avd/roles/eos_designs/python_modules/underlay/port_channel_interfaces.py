@@ -42,6 +42,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                 "link_tracking_groups": link.get("link_tracking_groups"),
                 "native_vlan": link.get("native_vlan"),
+                "sflow": link.get("sflow"),
             }
 
             if (trunk_groups := link.get("trunk_groups")) is not None:

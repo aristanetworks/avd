@@ -47,4 +47,10 @@ core_interfaces:
             interfaces: [ Ethernet12]
       profile: isis_bb_profile
 
-expected_error_message: "Duplicate interface name Ethernet1 found while generating ethernet_interfaces for core_interfaces with port-channel members, peer: core-2-ospf-ldp, peer_interface: Ethernet12. Description on duplicate interface: P2P_LINK_TO_peer1_Ethernet2"
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under
+  core_interfaces p2p_link port-Channel members.
+  {'name': 'Ethernet1', 'peer': 'core-2-ospf-ldp', 'peer_interface': 'Ethernet12', 'channel_group': {'id': 1, 'mode': 'active'},
+  'description': 'P2P_LINK_TO_core-2-ospf-ldp_Ethernet12', 'type': 'port-channel-member'}
+  conflicts with {'name': 'Ethernet1', 'peer': 'peer1', 'peer_interface': 'Ethernet2', 'channel_group': None,
+  'description': 'P2P_LINK_TO_peer1_Ethernet2', 'type': 'routed'}.

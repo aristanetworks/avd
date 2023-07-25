@@ -12,7 +12,7 @@ Arista Validated Designs (AVD) is an extensible data model that defines Arista's
 
 ## Reference designs
 
-- [L3LS VXLAN-EVPN, L2LS, and MPLS (beta)](https://avd.sh/en/stable/roles/eos_designs/index.html)
+- [L3LS VXLAN-EVPN, L2LS, and MPLS](https://avd.arista.com/stable/roles/eos_designs/index.html)
 
 ## AVD Ansible Collection
 
@@ -20,7 +20,7 @@ Arista Validated Designs (AVD) is an extensible data model that defines Arista's
 
 Full documentation for the collection:
 
-- [stable version](https://www.avd.sh/en/stable/)
+- [stable version](https://avd.arista.com/stable/)
 - [development version](https://www.avd.sh/en/devel/)
 
 ### Roles overview
@@ -41,11 +41,11 @@ This repository provides content for Arista's **arista.avd** collection. The fol
 
 ### Collection installation
 
-Ansible galaxy hosts all stable versions of the `arista.avd` collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.sh/en/stable/docs/installation/collection-installation.html).
+Ansible galaxy hosts all stable versions of the `arista.avd` collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.arista.com/stable/docs/installation/collection-installation.html).
 
 ### Examples
 
-- [Getting started](./docs/getting-started/intro-to-ansible-and-avd.md)
+- [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
 - [Arista NetDevOps GitHub repository](https://github.com/aristanetworks/netdevops-examples)
 
 ### Custom plugins & modules
@@ -56,7 +56,7 @@ This repository provides custom plugins for Arista's AVD collection:
 
 ## Additional resources
 
-- Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on ansible documentation.
+- Ansible [EOS modules](https://docs.ansible.com/ansible/latest/collections/arista/eos/index.html) on Ansible documentation
 - Ansible [CloudVision modules](https://cvp.avd.sh/en/stable/)
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
@@ -71,7 +71,7 @@ AVD version 4.x releases with full support from Arista TAC. If your organization
 
 ## Contributing
 
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](https://avd.sh/en/stable/docs/contribution/overview.html) for additional details.
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see [contribution guide](https://avd.arista.com/stable/docs/contribution/overview.html) for additional details.
 
 You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problems or submit enhancements.
 

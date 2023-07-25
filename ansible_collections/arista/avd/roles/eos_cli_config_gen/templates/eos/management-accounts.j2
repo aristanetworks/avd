@@ -1,0 +1,8 @@
+{# eos - management accounts #}
+{% if management_accounts is arista.avd.defined %}
+!
+management accounts
+{%     if management_accounts.password.policy is arista.avd.defined %}
+   password policy {{ management_accounts.password.policy }}
+{%     endif %}
+{% endif %}
