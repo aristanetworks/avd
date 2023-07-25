@@ -53,7 +53,7 @@ class TestConfigletBuildConfig:
 
     def test_get_configlet_invalid_source(self):
         output = get_configlet()
-        assert not output
+        assert output == {}
 
     def test_get_configlet_none_prefix(self):
         extension = "cfg"
