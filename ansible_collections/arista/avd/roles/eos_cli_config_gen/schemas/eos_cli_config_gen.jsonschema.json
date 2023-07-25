@@ -17337,6 +17337,11 @@
               "mpls_ldp_sync_default": {
                 "type": "boolean",
                 "title": "MPLS LDP Sync Default"
+              },
+              "eos_cli": {
+                "type": "string",
+                "description": "Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration",
+                "title": "EOS CLI"
               }
             },
             "additionalProperties": false,
