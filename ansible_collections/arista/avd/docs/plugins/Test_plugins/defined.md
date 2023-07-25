@@ -16,20 +16,13 @@ Compared to the builtin <code>is defined</code> test\, this test will also test 
 
 ## Parameters
 
-  _input (True, any, None)
-    Value to test
-
-  test_value (optional, any, None)
-    Value to match for in addition to defined and not none
-
-  var_type (optional, string, None)
-    Type or Class to test for
-
-  fail_action (optional, string, None)
-    Optional action if test fails to emit a Warning or Error
-
-  var_name (optional, string, None)
-    Optional string to use as variable name in warning or error messages
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | any | True | None | Value to test |
+| test_value | any | optional | None | Value to match for in addition to defined and not none |
+| var_type | string | optional | None | Type or Class to test for |
+| fail_action | string | optional | None | Optional action if test fails to emit a Warning or Error |
+| var_name | string | optional | None | Optional string to use as variable name in warning or error messages |
 
 ## Examples
 
@@ -47,8 +40,9 @@ test_result: "{{ my_dict.my_list[12].my_var is arista.avd.defined(fail_action='w
 
 ## Return Values
 
-  _value (, boolean, )
-    Returns <code>False</code> if the passed value is <code>Undefined</code> or <code>None</code> or if any of the optional checks fail\. Otherwise <code>True</code>\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | boolean | Returns <code>False</code> if the passed value is <code>Undefined</code> or <code>None</code> or if any of the optional checks fail\. Otherwise <code>True</code>\. |
 
 ## Status
 

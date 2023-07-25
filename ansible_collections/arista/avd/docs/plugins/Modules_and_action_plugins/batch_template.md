@@ -10,14 +10,11 @@ Destination file mode is hardcoded to 0o664\.
 
 ## Parameters
 
-  template (True, str, None)
-    Path to Jinja2 Template file
-
-  dest_format_string (True, str, None)
-    Format string used to specify target file for each item\. \'item\' is the current item from \'items\'\. Like \"mypath/\{item\}\.md\"
-
-  items (True, list, None)
-    List of strings\. Each list item is passed to \'dest\_format\_string\' as \'item\' and passed to templater as \'item\'
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| template | str | True | None | Path to Jinja2 Template file |
+| dest_format_string | str | True | None | Format string used to specify target file for each item\. \'item\' is the current item from \'items\'\. Like \"mypath/\{item\}\.md\" |
+| items | list | True | None | List of strings\. Each list item is passed to \'dest\_format\_string\' as \'item\' and passed to templater as \'item\' |
 
 ## Examples
 

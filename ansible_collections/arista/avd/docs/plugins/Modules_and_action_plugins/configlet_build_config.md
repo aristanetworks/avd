@@ -8,17 +8,12 @@ Build configuration to publish configlets to Cloudvision\.
 
 ## Parameters
 
-  configlet_dir (True, str, None)
-    Directory where configlets are located\.
-
-  configlet_prefix (True, str, None)
-    Prefix to append on configlet\.
-
-  destination (False, str, )
-    File where to save information\.
-
-  configlet_extension (False, str, conf)
-    File extension to look for\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| configlet_dir | str | True | None | Directory where configlets are located\. |
+| configlet_prefix | str | True | None | Prefix to append on configlet\. |
+| destination | str | False |  | File where to save information\. |
+| configlet_extension | str | False | conf | File extension to look for\. |
 
 ## Examples
 

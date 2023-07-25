@@ -54,18 +54,11 @@ The below requirements are needed on the host that executes this module.
 
 ## Parameters
 
-  paths (True, list, None)
-    List of relative paths\, relative to the inventory file\.
-    If path is a directory\, all the valid files inside are loaded in alphabetical order\.
-    If the environment variable is set\, it takes precedence over ansible\.cfg\.
-
-  stage (optional, any, inventory)
-    The stage during which executing the plugin\. It could be \'inventory\' or \'task\'
-    Given the expected usage of this plugin at the beginning of the run\. It is hardcoded to \'inventory\'
-
-  _valid_extensions (optional, list, ['.yml', '.yaml', '.json'])
-    Check all of these extensions when looking for \'variable\' files which should be YAML or JSON or vaulted versions of these\.
-    This affects vars\_files\, include\_vars\, inventory and vars plugins among others\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| paths | list | True | None | List of relative paths\, relative to the inventory file\.<br>If path is a directory\, all the valid files inside are loaded in alphabetical order\.<br>If the environment variable is set\, it takes precedence over ansible\.cfg\. |
+| stage | any | optional | inventory | The stage during which executing the plugin\. It could be \'inventory\' or \'task\'<br>Given the expected usage of this plugin at the beginning of the run\. It is hardcoded to \'inventory\' |
+| _valid_extensions | list | optional | ['.yml', '.yaml', '.json'] | Check all of these extensions when looking for \'variable\' files which should be YAML or JSON or vaulted versions of these\.<br>This affects vars\_files\, include\_vars\, inventory and vars plugins among others\. |
 
 ## Status
 

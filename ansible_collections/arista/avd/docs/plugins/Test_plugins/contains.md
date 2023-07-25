@@ -10,11 +10,10 @@ The test accepts either a single test\_value or a list of test\_values\.
 
 ## Parameters
 
-  _input (True, list, None)
-    List of items to test\.
-
-  test_value (optional, any, None)
-    Single item or list of items to test for in value\.
+| Argument | Type | Required | Default | Description |
+| -------- | ---- | -------- | ------- | ----------- |
+| _input | list | True | None | List of items to test\. |
+| test_value | any | optional | None | Single item or list of items to test for in value\. |
 
 ## Examples
 
@@ -29,9 +28,9 @@ vars:
 
 ## Return Values
 
-  _value (, boolean, )
-    Returns <code>False</code> if either the passed value or the test\_values are <code>Undefined</code> or <code>none</code>\.
-    Returns <code>True</code> if the passed list contains one or more of the supplied test\_values\. <code>False</code> otherwise\.
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| _value | boolean | Returns <code>False</code> if either the passed value or the test\_values are <code>Undefined</code> or <code>none</code>\.<br>Returns <code>True</code> if the passed list contains one or more of the supplied test\_values\. <code>False</code> otherwise\. |
 
 ## Status
 
