@@ -59,7 +59,6 @@ router_ospf:
           max: 300
       eos_cli: |
         area 5 not-so-stubby lsa type-7 convert type-5
-        network 3.2.4.1/8 area 3.2.4.1
 
     - id: 200
       vrf: ospf_zone
