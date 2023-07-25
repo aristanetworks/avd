@@ -4,7 +4,7 @@ Compute localized SNMP passphrases
 
 ## Synopsis
 
-Key localization as described in RFC 2574\, section 2\.6 <b>ERROR while parsing</b>: While parsing \"L\(https\://www\.rfc\-editor\.org/rfc/rfc2574\.html\#section\-2\.6\)\" at index 56\: Cannot find comma separating parameter 1 from the next one
+Key localization as described in [RFC 2574 section 2\.6](https://www.rfc-editor.org/rfc/rfc2574.html#section-2.6)
 
 ## Parameters
 

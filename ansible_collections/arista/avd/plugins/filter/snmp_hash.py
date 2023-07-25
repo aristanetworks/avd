@@ -19,7 +19,7 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "3.6.0"
 short_description: Compute localized SNMP passphrases
 description:
-  - Key localization as described in RFC 2574, section 2.6 L(https://www.rfc-editor.org/rfc/rfc2574.html#section-2.6)
+  - Key localization as described in L(RFC 2574 section 2.6,https://www.rfc-editor.org/rfc/rfc2574.html#section-2.6)
 positional: _input
 options:
   _input:
