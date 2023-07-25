@@ -4,7 +4,7 @@ from .vendor.eos_designs.eos_designs_facts import EosDesignsFacts
 from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils
 
 
-def get_avd_facts(all_hostvars: dict[str, dict]) -> dict[str, dict]:
+def get_avd_facts(all_inputs: dict[str, dict]) -> dict[str, dict]:
     """
     Build avd_facts using the AVD eos_designs_facts logic.
 
@@ -13,7 +13,7 @@ def get_avd_facts(all_hostvars: dict[str, dict]) -> dict[str, dict]:
     Note! No support for inline templating or jinja templates for descriptions or ip addressing
 
     Args:
-        all_hostvars: A dictionary where keys are hostnames and values are dictionaries of all variables per devices.
+        all_inputs: A dictionary where keys are hostnames and values are dictionaries of input variables per device.
             ```python
             {
                 "<hostname1>": dict,
@@ -33,7 +33,7 @@ def get_avd_facts(all_hostvars: dict[str, dict]) -> dict[str, dict]:
             ```
     """
 
-    avd_switch_facts_instances = _create_avd_switch_facts_instances(all_hostvars)
+    avd_switch_facts_instances = _create_avd_switch_facts_instances(all_inputs)
     avd_switch_facts = _render_avd_switch_facts(avd_switch_facts_instances)
     avd_overlay_peers, avd_topology_peers = _render_peer_facts(avd_switch_facts)
 
@@ -44,12 +44,12 @@ def get_avd_facts(all_hostvars: dict[str, dict]) -> dict[str, dict]:
     }
 
 
-def _create_avd_switch_facts_instances(all_hostvars: dict[str, dict]) -> dict:
+def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
     """
     Validate input variables and return dictionary of EosDesignsFacts instances per device.
 
     Args:
-        all_hostvars: A dictionary where keys are hostnames and values are dictionaries of all variables per devices.
+        all_inputs: A dictionary where keys are hostnames and values are dictionaries of input variables per device.
             ```python
             {
                 "<hostname1>": dict,
@@ -68,9 +68,10 @@ def _create_avd_switch_facts_instances(all_hostvars: dict[str, dict]) -> dict:
             }
             ```
     """
+
     avd_switch_facts = {}
-    for hostname, hostvars in all_hostvars.items():
-        # Set 'inventory_hostname' on the input hostvars, to keep compatability with Ansible focused code.
+    for hostname, hostvars in all_inputs.items():
+        # Set 'inventory_hostname' on the input variables, to keep compatability with Ansible focused code.
         # Add reference to dict "avd_switch_facts" to access EosDesignsFacts objects of other switches during rendering of one switch.
         mapped_hostvars = ChainMap(
             {"inventory_hostname": hostname, "avd_switch_facts": avd_switch_facts},

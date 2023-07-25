@@ -1,0 +1,125 @@
+---
+# Common AVD group variables
+
+fabric_name: SFLOW_TESTS
+
+mgmt_gateway: 192.168.0.1
+
+fabric_sflow:
+  uplinks: true
+  downlinks: true
+  endpoints: true
+  l3_edge: true
+  core_interfaces: true
+  mlag_interfaces: true
+
+# P2P links between spine switches.
+core_interfaces:
+  p2p_links:
+    - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
+      interfaces: [ Ethernet9, Ethernet9 ]
+      include_in_underlay_protocol: false
+      sflow: true
+    - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
+      interfaces: [ Ethernet10, Ethernet10 ]
+      include_in_underlay_protocol: false
+      sflow: false
+    - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
+      interfaces: [ Ethernet11, Ethernet11 ]
+      include_in_underlay_protocol: false
+
+
+# Testing the same as above with l3_edge
+l3_edge:
+  p2p_links:
+    - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
+      interfaces: [ Ethernet12, Ethernet12 ]
+      include_in_underlay_protocol: false
+      sflow: true
+    - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
+      interfaces: [ Ethernet13, Ethernet13 ]
+      include_in_underlay_protocol: false
+      sflow: false
+    - nodes: [ sflow-tests-spine1, sflow-tests-spine2 ]
+      interfaces: [ Ethernet14, Ethernet14 ]
+      include_in_underlay_protocol: false
+
+tenants:
+  - name: SFLOW
+    mac_vrf_vni_base: 10000
+    vrfs:
+      # VRF definitions inside the tenant.
+      - name: VRF1
+        # VRF VNI definition.
+        vrf_vni: 1
+        svis:
+          - id: 11
+            name: VLAN11
+            enabled: true
+            nodes:
+              - node: sflow-tests-leaf1
+                ip_address: 172.16.11.1/24
+              - node: sflow-tests-leaf2
+                ip_address: 172.17.11.1/24
+
+servers:
+  - name: single-interface-true
+    adapters:
+      - endpoint_ports: [ eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ sflow-tests-leaf1 ]
+        vlans: 11
+        mode: access
+        sflow: true
+
+  - name: port-channel-interface-true
+    adapters:
+      - endpoint_ports: [ PCI1, PCI2 ]
+        switch_ports: [ Ethernet11, Ethernet11 ]
+        switches: [ sflow-tests-leaf3, sflow-tests-leaf4 ]
+        vlans: 11
+        mode: access
+        spanning_tree_portfast: edge
+        sflow: true
+        port_channel:
+          mode: "on"
+
+  - name: single-interface-false
+    adapters:
+      - endpoint_ports: [ eth11 ]
+        switch_ports: [ Ethernet12 ]
+        switches: [ sflow-tests-leaf1 ]
+        vlans: 11
+        mode: access
+        sflow: false
+
+  - name: port-channel-interface-false
+    adapters:
+      - endpoint_ports: [ PCI11, PCI12 ]
+        switch_ports: [ Ethernet13, Ethernet13 ]
+        switches: [ sflow-tests-leaf3, sflow-tests-leaf4 ]
+        vlans: 11
+        mode: access
+        spanning_tree_portfast: edge
+        sflow: false
+        port_channel:
+          mode: "on"
+
+  - name: single-interface-no-definition
+    adapters:
+      - endpoint_ports: [ eth12 ]
+        switch_ports: [ Ethernet14 ]
+        switches: [ sflow-tests-leaf1 ]
+        vlans: 11
+        mode: access
+
+  - name: port-channel-interface-no-definition
+    adapters:
+      - endpoint_ports: [ PCI13, PCI14 ]
+        switch_ports: [ Ethernet15, Ethernet15 ]
+        switches: [ sflow-tests-leaf3, sflow-tests-leaf4 ]
+        vlans: 11
+        mode: access
+        spanning_tree_portfast: edge
+        port_channel:
+          mode: "on"

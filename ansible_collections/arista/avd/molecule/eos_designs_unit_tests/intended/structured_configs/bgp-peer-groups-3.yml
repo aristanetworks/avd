@@ -1,3 +1,4 @@
+hostname: bgp-peer-groups-3
 router_bgp:
   as: '65001'
   router_id: 192.168.255.114

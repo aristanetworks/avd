@@ -1,3 +1,4 @@
+hostname: ptp-tests-leaf1
 router_bgp:
   as: '65101'
   router_id: 10.254.1.1

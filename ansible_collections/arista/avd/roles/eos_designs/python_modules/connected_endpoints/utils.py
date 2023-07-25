@@ -227,3 +227,9 @@ class UtilsMixin:
             return get(adapter, "poe")
 
         return None
+
+    def _get_adapter_sflow(self, adapter: dict) -> dict | None:
+        if (adapter_sflow := get(adapter, "sflow", default=self.shared_utils.fabric_sflow_endpoints)) is not None:
+            return {"enable": adapter_sflow}
+
+        return None

@@ -6,13 +6,13 @@ from .vendor.eos_designs.get_structured_config import get_structured_config
 from .vendor.errors import AristaAvdError
 
 
-def get_device_structured_config(hostname: str, hostvars: dict, avd_facts: dict) -> dict:
+def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict) -> dict:
     """
     Build and return the AVD structured configuration for one device.
 
     Args:
         hostname: Hostname of device.
-        hostvars: Dictionary of variables passed to AVD `eos_designs` modules.
+        inputs: Dictionary with inputs for "eos_designs".
             Variables should be converted and validated according to AVD `eos_designs` schema first using `pyavd.validate_inputs`.
         avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
 
@@ -28,7 +28,7 @@ def get_device_structured_config(hostname: str, hostvars: dict, avd_facts: dict)
             "switch": avd_facts["avd_switch_facts"][hostname]["switch"],
         },
         avd_facts,
-        hostvars,
+        inputs,
     )
 
     # We do not validate input variables in this stage (done in "validate_inputs")
