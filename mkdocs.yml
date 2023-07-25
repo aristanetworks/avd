@@ -133,7 +133,7 @@ nav:
       - ISIS-LDP IPVPN: examples/isis-ldp-ipvpn/README.md
   - Installation:
       - Collection Installation: docs/installation/collection-installation.md
-  - Roles Documentation:
+  - Ansible Collection Roles Documentation:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
           - Role Configuration: roles/eos_designs/docs/role-configuration.md
@@ -152,11 +152,7 @@ nav:
       - eos_snapshot: roles/eos_snapshot/README.md
       - dhcp_provisioner: roles/dhcp_provisioner/README.md
       - build_output_folders: roles/build_output_folders/README.md
-  - Modules Documentation:
-      - Module Inventory to Containers: docs/modules/inventory_to_container.rst.md
-      - Module Configlet Build Configuration: docs/modules/configlet_build_config.rst.md
-      - AVD Plugins & Filters: plugins/README.md
-      - CloudVision Module Documentation: https://cvp.avd.sh/
+  - Ansible Collection Plugins Documentation: docs/plugins/
   - Contributing to AVD:
       - Overview: docs/contribution/overview.md
       - Setup Environment: docs/contribution/setup-environment.md

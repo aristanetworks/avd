@@ -32,14 +32,16 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "2.0"
 short_description: Test if a list contains one or more of the supplied values.
 description:
-  - The `arista.avd.contains` test will test if the passed list contains one or more of the supplied test_values.
+  - The M(arista.avd.contains) test will test if the passed list contains one or more of the supplied test_values.
   - The test accepts either a single test_value or a list of test_values.
 options:
   _input:
     description: List of items to test.
     type: list
+    required: true
   test_value:
-    description: single item or list of items to test for in value
+    description: Single item or list of items to test for in value.
+    default: None
 """
 
 EXAMPLES = """
@@ -47,12 +49,13 @@ vars:
   mylist: ["test", "test2"]
   item_is_in_my_list: "{{ mylist is arista.avd.contains("test") }}"
   any_item_is_in_my_list: "{{ mylist is arista.avd.contains(["test2", "test3"]) }}"
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) }}
 """
 
 RETURN = """
 _value:
   description:
-    - Returns V(False) if either the passed value or the test_values are `Undefined` or `none`.
+    - Returns V(False) if either the passed value or the test_values are C(Undefined) or C(none).
     - Returns V(True) if the passed list contains one or more of the supplied test_values. V(False) otherwise.
   type: boolean
 """

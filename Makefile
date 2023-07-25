@@ -1,8 +1,6 @@
 CURRENT_DIR = $(shell pwd)
 # option to run ansible-test sanity: must be either venv or docker (default is docker)
 ANSIBLE_TEST_MODE ?= docker
-# Root path for MKDOCS content
-WEBDOC_BUILD = ansible_collections/arista/avd/docs/_build
 MUFFET_TIMEOUT ?= 60
 
 .PHONY: help

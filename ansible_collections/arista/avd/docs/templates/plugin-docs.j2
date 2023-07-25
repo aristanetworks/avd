@@ -1,0 +1,139 @@
+{# Based on https://github.com/xlab-steampunk/ansible-doc-extractor/blob/master/src/ansible_doc_extractor/templates/module.md.j2 #}
+{% macro option_desc(opts, level) %}
+{%     for name, spec in opts.items() %}
+{%         set req = spec.required | default("optional") %}
+{%         set typ = spec.type | default("any") %}
+{%         set def_val = spec.default | default("None") %}
+{%         set description = spec.description %}
+
+  {{ "  " * level }}{{ name }} ({{ req }}, {{ typ }}, {{ def_val }})
+{%         for para in description %}
+    {{ "  " * level }}{{ para | md_ify }}
+{%         endfor %}
+{%         if spec.suboptions %}
+{{ option_desc(spec.suboptions, level + 1) }}
+{%         endif %}
+{%     endfor %}
+{% endmacro %}
+{% macro result_desc(results, level) %}
+{%     for name, spec in results.items() %}
+{%         set ret = spec.returned %}
+{%         set typ = spec.type | default("any") %}
+{%         set sample = spec.sample %}
+
+  {{ "  " * level }}{{ name }} ({{ ret }}, {{ typ }}, {{ sample }})
+{%         for desc_line in spec.description  %}
+    {{ "  " * level }}{{ desc_line | md_ify }}
+{%         endfor %}
+{%         if spec.contains %}
+{{ result_desc(spec.contains, level + 1) }}
+{%         endif %}
+{%     endfor %}
+{% endmacro %}
+{% if collection %}
+# {{ collection }}.{{ module }}
+{% else %}
+# arista.avd.{{ module }}
+{% endif %}
+{% if short_description %}
+
+{{ short_description | md_ify }}
+{% endif %}
+{% if description %}
+
+## Synopsis
+{%     for desc in description %}
+
+{{ desc | md_ify }}
+{%     endfor %}
+{% endif %}
+{% if requirements %}
+
+## Requirements
+
+The below requirements are needed on the host that executes this module.
+
+{%     for req in requirements %}
+- {{ req | md_ify }}
+{%     endfor %}
+{% endif %}
+{% if options %}
+
+## Parameters
+{{ option_desc(options, 0) -}}
+{% endif %}
+{% if notes %}
+
+## Notes
+
+{%     for note in notes %}
+   - {{ note | md_ify }}
+{%     endfor %}
+{% endif %}
+{% if seealso %}
+
+## See Also
+
+{%     for item in seealso %}
+{%         if item.module is defined and item.description is defined %}
+   :ref:`{{ item.module }}_module`
+       {{ item.description | md_ify }}
+{%         elif item.module is defined %}
+   :ref:`{{ item.module }}_module`
+      The official documentation on the **{{ item.module }}** module.
+{%         elif item.name is defined and item.link is defined and item.description is defined %}
+   `{{ item.name }} <{{ item.link }}>`_
+       {{ item.description | md_ify }}
+{%         elif item.ref is defined and item.description is defined %}
+   :ref:`{{ item.ref }}`
+       {{ item.description | md_ify }}
+{%         endif %}
+{%     endfor %}
+{% endif %}
+{% if examples %}
+
+## Examples
+
+```yaml
+{{ examples | trim }}
+```
+{% endif %}
+{% if returndocs %}
+
+## Return Values
+{{ result_desc(returndocs, 0) -}}
+{% endif %}
+
+## Status
+{% if deprecated %}
+
+- This {{ plugin_type }} will be removed in version
+  {{ deprecated['removed_in'] | default('') | string | md_ify }}.
+  *[deprecated]*
+
+{% else %}
+{%     set module_states = {
+     "preview": "not guaranteed to have a backwards compatible interface",
+     "stableinterface": "guaranteed to have backward compatible interface changes going forward",
+   }
+%}
+{%     if metadata %}
+{%         if metadata.status %}
+{%             for cur_state in metadata.status %}
+- This {{ plugin_type }} is {{ module_states[cur_state] }}. *[{{ cur_state }}]*
+{%             endfor %}
+{%         endif %}
+
+{%         if metadata.supported_by %}
+- This {{ plugin_type }} is maintained by {{ metadata.supported_by }}.
+{%         endif %}
+{%     endif %}
+{% endif %}
+{% if author is defined %}
+
+## Authors
+
+{%     for author_name in author %}
+- {{ author_name }}
+{%     endfor %}
+{% endif %}

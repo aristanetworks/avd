@@ -7,6 +7,8 @@ __metaclass__ = type
 
 DOCUMENTATION = """
     name: global_vars
+    collection: arista.avd
+    author: Arista Ansible Team (@aristanetworks)
     version_added: "4.0.0"
     short_description: Variable plugins to allow loading global_vars with less precedence than group_vars or host_vars
     requirements:
