@@ -2417,6 +2417,15 @@ keys:
                       min: 5000
                       max: 3600000
                       description: Template interval in milliseconds
+              table_size:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 614400
+                description: 'Maximum number of entries in flow table.
+
+                  '
         shutdown:
           type: bool
           default: false
@@ -3924,6 +3933,24 @@ keys:
                       type: str
                       valid_values:
                       - discard
+      event:
+        type: dict
+        keys:
+          storm_control:
+            type: dict
+            keys:
+              discards:
+                type: dict
+                keys:
+                  global:
+                    type: bool
+                  interval:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 10
+                    max: 65535
+                    description: Logging interval in seconds
   loopback_interfaces:
     type: list
     primary_key: name
@@ -4276,6 +4303,14 @@ keys:
                   items:
                     type: str
                     description: Name of Interface Group
+  management_accounts:
+    type: dict
+    keys:
+      password:
+        type: dict
+        keys:
+          policy:
+            type: str
   management_api_gnmi:
     type: dict
     keys:
@@ -4593,6 +4628,62 @@ keys:
             type: bool
           encryption_reversible:
             type: str
+          policies:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                minimum:
+                  type: dict
+                  keys:
+                    digits:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    length:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    lower:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    special:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    upper:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                maximum:
+                  type: dict
+                  keys:
+                    repetitive:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
+                    sequential:
+                      type: int
+                      min: 1
+                      max: 65535
+                      convert_types:
+                      - str
       ssl_profiles:
         type: list
         items:
@@ -9187,6 +9278,7 @@ keys:
     keys:
       instance:
         type: str
+        required: true
         description: ISIS Instance Name
       net:
         type: str
@@ -12129,6 +12221,12 @@ keys:
                 keys:
                   dscp_propagation_encapsulation:
                     type: bool
+                  ecn_propagation:
+                    type: bool
+                    description: 'Enable copying the ECN marking to/from encapsulated
+                      packets.
+
+                      '
                   map_dscp_to_traffic_class_decapsulation:
                     type: bool
               vlans:

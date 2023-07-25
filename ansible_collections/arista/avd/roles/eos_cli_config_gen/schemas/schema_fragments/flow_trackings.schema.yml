@@ -87,6 +87,14 @@ keys:
                       min: 5000
                       max: 3600000
                       description: Template interval in milliseconds
+              table_size:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 614400
+                description: |
+                  Maximum number of entries in flow table.
         shutdown:
           type: bool
           default: false
