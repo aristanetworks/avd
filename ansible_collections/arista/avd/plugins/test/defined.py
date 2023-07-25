@@ -29,8 +29,10 @@ from ansible.errors import AnsibleError
 from ansible.utils.display import Display
 from jinja2.runtime import Undefined
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
+---
 name: defined
+collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "2.0"
 short_description: Test if the value is not C(Undefined) or C(None).
@@ -61,7 +63,7 @@ options:
     description: Optional string to use as variable name in warning or error messages
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
 # Test if "my_var" is defined and not none:
 {% if my_var is arista.avd.defined %}
 ...
@@ -79,7 +81,8 @@ EXAMPLES = """
 # >>> [WARNING]: my_dict.my_list[12].my_var was expected but not set. Output may be incorrect or incomplete!
 """
 
-RETURN = """
+RETURN = r"""
+---
 _value:
   description:
     - Returns V(False) if the passed value is V(Undefined) or V(None) or if any of the optional checks fail. Otherwise V(True).

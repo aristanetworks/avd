@@ -1,4 +1,4 @@
-# .validate_and_template
+# arista.avd.validate_and_template
 
 Validate input data according to Schema\, render Jinja2 template and write result to a file\.
 
@@ -62,21 +62,19 @@ For Markdown files the plugin can also run md\_toc on the output before writing 
 ## Examples
 
 ```yaml
-
-    - name: Generate device documentation
-      tags: [build, provision, documentation]
-      arista.avd.validate_and_template:
-        template: "eos-device-documentation.j2"
-        dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-        mode: 0664
-        schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
-        conversion_mode: "{{ avd_data_conversion_mode }}"
-        validation_mode: "{{ avd_data_validation_mode }}"
-        add_md_toc: true
-        md_toc_skip_lines: 3
-      delegate_to: localhost
-      when: generate_device_documentation | arista.avd.default(true)
-
+- name: Generate device documentation
+  tags: [build, provision, documentation]
+  arista.avd.validate_and_template:
+    template: "eos-device-documentation.j2"
+    dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+    mode: 0664
+    schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
+    conversion_mode: "{{ avd_data_conversion_mode }}"
+    validation_mode: "{{ avd_data_validation_mode }}"
+    add_md_toc: true
+    md_toc_skip_lines: 3
+  delegate_to: localhost
+  when: generate_device_documentation | arista.avd.default(true)
 ```
 
 ## Status

@@ -19,6 +19,7 @@ The test accepts either a single test\_value or a list of test\_values\.
 ## Examples
 
 ```yaml
+---
 vars:
   mylist: ["test", "test2"]
   item_is_in_my_list: "{{ mylist is arista.avd.contains("test") }}"

@@ -5,6 +5,7 @@
 DOCUMENTATION = r"""
 ---
 module: set_vars
+collection: arista.avd
 version_added: "4.0.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Set vars as ansible_facts.

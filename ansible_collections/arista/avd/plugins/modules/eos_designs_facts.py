@@ -5,6 +5,7 @@
 DOCUMENTATION = r"""
 ---
 module: eos_designs_facts
+collection: arista.avd
 version_added: "3.5.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Set eos_designs facts
@@ -22,9 +23,9 @@ description:
     and python module in `arista.avd.eos_designs` to generate the `structured_configuration`.
 options:
   template_output:
-    description: |
-      If true the output data will be run through another jinja2 rendering before returning.
-      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+    description:
+      - If true the output data will be run through another jinja2 rendering before returning.
+        This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     required: false
     type: bool
   conversion_mode:
@@ -66,6 +67,7 @@ options:
 """
 
 EXAMPLES = r"""
+---
 - name: Set eos_designs facts
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:

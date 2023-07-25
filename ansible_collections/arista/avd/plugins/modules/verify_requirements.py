@@ -5,10 +5,11 @@
 DOCUMENTATION = r"""
 ---
 module: verify_requirements
+collection: arista.avd
 version_added: "4.0.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Verify Python requirements when running AVD
-description:
+description: |-
   The `arista.avd.verify_requirements` module is an Ansible Action Plugin providing the following capabilities
   - Display the current running version of the collection
   - Given a list of python requirements, verify if the installed libraries match these requirements
@@ -17,13 +18,13 @@ description:
   - Validate the running python version
 options:
   requirements:
-    description: |
+    description:
       - List of strings of python requirements with pip file syntax.
     required: true
     type: list
     elements: str
   avd_ignore_requirements:
-    description: |
+    description:
       - Boolean, if set to True, the play does not stop if any requirement error is detected.
     required: false
     default: false

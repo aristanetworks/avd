@@ -1,4 +1,4 @@
-# .configlet_build_config
+# arista.avd.configlet_build_config
 
 Build arista\.cvp\.configlet configuration\.
 
@@ -23,15 +23,13 @@ Build configuration to publish configlets to Cloudvision\.
 ## Examples
 
 ```yaml
-
-    # tasks file for configlet_build_config
-    - name: generate intended variables
-      tags: [build, provision]
-      configlet_build_config:
-        configlet_dir: '/path/to/configlets/folder/'
-        configlet_prefix: 'AVD_'
-        configlet_extension: 'cfg'
-
+# tasks file for configlet_build_config
+- name: generate intended variables
+  tags: [build, provision]
+  configlet_build_config:
+    configlet_dir: '/path/to/configlets/folder/'
+    configlet_prefix: 'AVD_'
+    configlet_extension: 'cfg'
 ```
 
 ## Status

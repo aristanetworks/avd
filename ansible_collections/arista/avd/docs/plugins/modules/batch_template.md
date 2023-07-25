@@ -1,4 +1,4 @@
-# .batch_template
+# arista.avd.batch_template
 
 Render Jinja2 template on multiple items and write result to individual files\.
 
@@ -22,18 +22,16 @@ Destination file mode is hardcoded to 0o664\.
 ## Examples
 
 ```yaml
-
-    - name: Output eos_cli_config_gen Documentation
-      tags: [eos_cli_config_gen]
-      delegate_to: localhost
-      run_once: true
-      arista.avd.batch_template:
-        template: avd_schema_documentation.j2
-        dest_format_str: "{{ role_documentation_dir }}/{item}.md"
-        items: "{{ documentation_schema | list }}"
-      vars:
-        documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"
-
+- name: Output eos_cli_config_gen Documentation
+  tags: [eos_cli_config_gen]
+  delegate_to: localhost
+  run_once: true
+  arista.avd.batch_template:
+    template: avd_schema_documentation.j2
+    dest_format_str: "{{ role_documentation_dir }}/{item}.md"
+    items: "{{ documentation_schema | list }}"
+  vars:
+    documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"
 ```
 
 ## Status

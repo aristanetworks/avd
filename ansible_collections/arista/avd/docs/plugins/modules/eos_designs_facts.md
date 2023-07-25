@@ -1,4 +1,4 @@
-# .eos_designs_facts
+# arista.avd.eos_designs_facts
 
 Set eos\_designs facts
 
@@ -21,8 +21,7 @@ The module is used in \`arista\.avd\.eos\_designs\` to set facts for devices\, w
 ## Parameters
 
   template_output (False, bool, None)
-    If true the output data will be run through another jinja2 rendering before returning\.
-This is to resolve any input values with inline jinja using variables/facts set by the input templates\.
+    If true the output data will be run through another jinja2 rendering before returning\. This is to resolve any input values with inline jinja using variables/facts set by the input templates\.
 
   conversion_mode (False, str, debug)
     Run data conversion in either \"error\"\, \"warning\"\, \"info\"\, \"debug\"\, \"quiet\" or \"disabled\" mode\.
@@ -53,21 +52,20 @@ This is to resolve any input values with inline jinja using variables/facts set 
 ## Examples
 
 ```yaml
+---
+- name: Set eos_designs facts
+  tags: [build, provision, facts]
+  arista.avd.eos_designs_facts:
+    schema_id: eos_designs
+  check_mode: False
+  run_once: True
 
-    - name: Set eos_designs facts
-      tags: [build, provision, facts]
-      arista.avd.eos_designs_facts:
-        schema_id: eos_designs
-      check_mode: False
-      run_once: True
-
-    - name: Set eos_designs facts per device
-      tags: [build, provision, facts]
-      ansible.builtin.set_fact:
-        switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
-      delegate_to: localhost
-      changed_when: false
-
+- name: Set eos_designs facts per device
+  tags: [build, provision, facts]
+  ansible.builtin.set_fact:
+    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
+  delegate_to: localhost
+  changed_when: false
 ```
 
 ## Status

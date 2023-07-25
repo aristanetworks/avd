@@ -35,6 +35,37 @@ The below requirements are needed on the host that executes this module.
     Check all of these extensions when looking for \'variable\' files which should be YAML or JSON or vaulted versions of these\.
     This affects vars\_files\, include\_vars\, inventory and vars plugins among others\.
 
+## Examples
+
+```yaml
+###
+### `ansible.cfg` only example ###
+
+# 1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+[defaults]
+vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+
+[vars_global_vars]
+paths = ../relative/path/to/my/global/vars/file/or/dir
+
+# 2. Run your playbook
+
+ansible-playbook -i inventory.yml playbook.yml
+
+###
+### `ansible.cfg` + environment variable example ###
+
+# 1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+[defaults]
+vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+
+# 2. Run your playbook
+
+ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml
+```
+
 ## Status
 
 ## Authors

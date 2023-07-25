@@ -26,8 +26,10 @@ __metaclass__ = type
 
 from jinja2.runtime import Undefined
 
-DOCUMENTATION = """
+DOCUMENTATION = r"""
+---
 name: contains
+collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "2.0"
 short_description: Test if a list contains one or more of the supplied values.
@@ -44,7 +46,8 @@ options:
     default: None
 """
 
-EXAMPLES = """
+EXAMPLES = r"""
+---
 vars:
   mylist: ["test", "test2"]
   item_is_in_my_list: "{{ mylist is arista.avd.contains("test") }}"
@@ -52,7 +55,8 @@ vars:
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) }}
 """
 
-RETURN = """
+RETURN = r"""
+---
 _value:
   description:
     - Returns V(False) if either the passed value or the test_values are C(Undefined) or C(none).

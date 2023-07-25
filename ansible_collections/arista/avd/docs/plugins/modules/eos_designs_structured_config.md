@@ -1,4 +1,4 @@
-# .eos_designs_structured_config
+# arista.avd.eos_designs_structured_config
 
 Generate AVD EOS Designs structured configuration
 
@@ -33,18 +33,18 @@ Return structured configuration as \"ansible\_facts\"
 
       strip_empty_keys (False, bool, True)
         Filter out keys from the generated output if value is null/none/undefined
-Only applies to templates\.
+        Only applies to templates\.
 
   dest (False, str, None)
     Destination path\. If set\, the output facts will also be written to this path\.
-Autodetects data format based on file suffix\. \'\.yml\'\, \'\.yaml\' \-\> YAML\, default \-\> JSON
+    Autodetects data format based on file suffix\. \'\.yml\'\, \'\.yaml\' \-\> YAML\, default \-\> JSON
 
   mode (False, str, None)
     File mode \(ex\. 0664\) for dest file\. See \'ansible\.builtin\.copy\' module for details\.
 
   template_output (False, bool, None)
     If true the output data will be run through another jinja2 rendering before returning\.
-This is to resolve any input values with inline jinja using variables/facts set by the input templates\.
+    This is to resolve any input values with inline jinja using variables/facts set by the input templates\.
 
   conversion_mode (False, str, debug)
     Run data conversion in either \"error\"\, \"warning\"\, \"info\"\, \"debug\"\, \"quiet\" or \"disabled\" mode\.
@@ -75,18 +75,17 @@ This is to resolve any input values with inline jinja using variables/facts set 
 ## Examples
 
 ```yaml
-
-    - name: Generate device configuration in structured format
-      arista.avd.eos_designs_structured_config:
-        templates:
-          - template: "custom_templates/custom_feature1.j2"
-          - template: "custom_templates/custom_feature2.j2"
-            options:
-              list_merge: replace
-              strip_empty_keys: false
-      check_mode: no
-      changed_when: False
-
+---
+- name: Generate device configuration in structured format
+  arista.avd.eos_designs_structured_config:
+    templates:
+      - template: "custom_templates/custom_feature1.j2"
+      - template: "custom_templates/custom_feature2.j2"
+        options:
+          list_merge: replace
+          strip_empty_keys: false
+  check_mode: no
+  changed_when: False
 ```
 
 ## Status
