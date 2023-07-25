@@ -14,6 +14,35 @@ from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools i
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtodocumentationschemaconverter import AvdToDocumentationSchemaConverter
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtojsonschemaconverter import AvdToJsonSchemaConverter
 
+DOCUMENTATION = r"""
+---
+name: add_md_toc
+collection: arista.avd
+author: Arista Ansible Team (@aristanetworks)
+version_added: "3.8"
+short_description: Convert AVD Schema to a chosen output format.
+description: Only for internal use.
+positional: _input
+options:
+  _input:
+    type: string
+    description: ID of AVD Schema.
+    required: true
+    choices: ["eos_cli_config_gen" , "eos_designs"]
+  type:
+    type: string
+    description: Type of schema to convert to.
+    required: true
+    choices: ["documentation_tables", "jsonschema"]
+"""
+
+RETURN = r"""
+---
+_value:
+  description: Schema of the requested type.
+  type: any
+"""
+
 
 def convert_schema(schema_id: str, type: str):
     """

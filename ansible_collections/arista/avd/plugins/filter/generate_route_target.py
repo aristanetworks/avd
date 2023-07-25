@@ -7,13 +7,33 @@ __metaclass__ = type
 
 import re
 
+DOCUMENTATION = r"""
+---
+name: generate_route_target
+collection: arista.avd
+author: Arista Ansible Team (@aristanetworks)
+version_added: "1.1"
+short_description: Transforms short_esi C(0303:0202:0101) to route-target format C(03:03:02:02:01:01)
+description: Removes C(:) and inserts new C(:) for each two characters.
+positional: _input
+options:
+  _input:
+    description: Short ESI value as per AVD definition in eos_designs.
+    type: string
+    required: true
+"""
 
-def generate_esi(esi_short, esi_prefix="0000:0000:"):
-    return esi_prefix + esi_short
+EXAMPLES = r"""
+---
+rt: "{{ short_esi | arista.avd.generate_route_target }}"
+"""
 
-
-def generate_lacp_id(esi_short):
-    return esi_short.replace(":", ".")
+RETURN = r"""
+---
+_value:
+  description: String based on route-target format like 03:03:02:02:01:01
+  type: string
+"""
 
 
 def generate_route_target(esi_short):
@@ -42,6 +62,4 @@ class FilterModule(object):
     def filters(self):
         return {
             "generate_route_target": generate_route_target,
-            "generate_lacp_id": generate_lacp_id,
-            "generate_esi": generate_esi,
         }

@@ -1,0 +1,36 @@
+# arista.avd.snmp_hash
+
+Compute localized SNMP passphrases
+
+## Synopsis
+
+Key localization as described in RFC 2574\, section 2\.6 <b>ERROR while parsing</b>: While parsing \"L\(https\://www\.rfc\-editor\.org/rfc/rfc2574\.html\#section\-2\.6\)\" at index 56\: Cannot find comma separating parameter 1 from the next one
+
+## Parameters
+
+  _input (True, dictionary, None)
+    Dictionary with snmp passphrase details\.
+
+    passphrase (True, string, None)
+      The passphrase to localize\, if <em>priv</em> is not set it is the \"auth\" passphrase else it is the \"priv\" passphrase\.
+
+    auth (True, string, None)
+      Auth type
+
+    engine_id (True, string, None)
+      A hexadecimal string containing the engine\_id to be used to localize the passphrase
+
+    priv (optional, string, None)
+      Priv type
+
+## Return Values
+
+  _value (, string, )
+    The localized key generated from the passphrase using <em>auth</em> type\.
+    If required the key is truncated to match the appropriate keylength for the <em>priv</em> type\.
+
+## Status
+
+## Authors
+
+- Arista Ansible Team (@aristanetworks)

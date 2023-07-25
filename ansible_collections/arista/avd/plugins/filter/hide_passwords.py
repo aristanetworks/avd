@@ -29,7 +29,7 @@ options:
 """
 
 EXAMPLES = r"""
-ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(true) }}
+cli_with_hidden_password: "ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(true) }}"
 """
 
 RETURN = r"""

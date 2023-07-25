@@ -26,8 +26,8 @@ DOCUMENTATION = r"""
 name: add_md_toc
 collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
-version_added: "2.0"
-requires:
+version_added: "3.2"
+requirements:
   - md_toc
 short_description: Parse the input MarkDown and add a Table of Contents between the toc_markers.
 description:
