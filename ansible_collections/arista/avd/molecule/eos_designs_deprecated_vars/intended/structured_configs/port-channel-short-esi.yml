@@ -26,36 +26,31 @@ ethernet_interfaces:
   channel_group:
     id: 10
     mode: active
+- name: Ethernet12
+  peer: server01_ESI
+  peer_interface: Eth6
+  peer_type: server
+  description: server01_ESI_Eth6
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 12
+    mode: active
 port_channel_interfaces:
 - name: Port-Channel10
   description: server01_ESI_PortChanne1
-  type: routed
+  type: switched
   shutdown: false
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0101
     route_target: 03:03:02:02:01:01
   lacp_id: 0303.0202.0101
-- name: Port-Channel10.111
-  type: l2dot1q
-  vlan_id: 111
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 111
-    network:
-      client: true
+- name: Port-Channel12
+  description: server01_ESI_PortChanne1
+  type: switched
+  shutdown: false
+  mtu: 1601
   evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0111
-    route_target: 03:03:02:02:01:11
-- name: Port-Channel10.222
-  type: l2dot1q
-  vlan_id: 222
-  encapsulation_vlan:
-    client:
-      dot1q:
-        vlan: 222
-    network:
-      client: true
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0222
-    route_target: 03:03:02:02:02:22
+    identifier: 0000:0000:0303:0202:0102
+    route_target: 03:03:02:02:01:02
+  lacp_id: 0303.0202.0102
