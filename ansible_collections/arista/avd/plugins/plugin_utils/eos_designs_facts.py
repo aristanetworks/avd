@@ -1830,7 +1830,7 @@ class EosDesignsFacts(AvdFacts):
         return None
 
     @cached_property
-    def overlay_routing_protocol_address_family(self):
+    def _overlay_routing_protocol_address_family(self):
         overlay_routing_protocol_address_family = get(self._hostvars, "overlay_routing_protocol_address_family", default="ipv4")
         if overlay_routing_protocol_address_family == "ipv6":
             if not (get(self._hostvars, "underlay_ipv6") is True and get(self._hostvars, "underlay_rfc5549") is True):
@@ -1941,11 +1941,11 @@ class EosDesignsFacts(AvdFacts):
         )
 
     @cached_property
-    def overlay_peering_address(self) -> str | None:
+    def _overlay_peering_address(self) -> str | None:
         if not self.underlay_router:
             return None
 
-        if self.overlay_routing_protocol_address_family == "ipv6":
+        if self._overlay_routing_protocol_address_family == "ipv6":
             return self.ipv6_router_id
 
         return self.router_id
@@ -1975,7 +1975,7 @@ class EosDesignsFacts(AvdFacts):
         if self.underlay_router is True:
             overlay_dict.update(
                 {
-                    "peering_address": self.overlay_peering_address,
+                    "peering_address": self._overlay_peering_address,
                     "evpn_mpls": evpn_mpls,
                 }
             )

@@ -2,7 +2,6 @@
 # Test that having underlay_ipv6 will not require
 # loopback_ipv6_pool for devices that are not underlay_router
 underlay_ipv6: true
-underlay_rfc5549: true
 
 # Test that having "overlay_routing_protocol_address_family: ipv6"
 # will not raise an error for devices that are not underlay_router (issue/2954)
