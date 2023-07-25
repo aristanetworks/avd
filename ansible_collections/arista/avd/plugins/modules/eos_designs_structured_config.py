@@ -5,7 +5,6 @@
 DOCUMENTATION = r"""
 ---
 module: eos_designs_structured_config
-collection: arista.avd
 version_added: "4.0.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Generate AVD EOS Designs structured configuration

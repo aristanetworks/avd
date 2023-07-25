@@ -12,7 +12,6 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: configlet_build_config
-collection: arista.avd
 version_added: "1.0.0"
 author: EMEA AS Team (@aristanetworks)
 short_description: Build arista.cvp.configlet configuration.

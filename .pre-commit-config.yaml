@@ -120,6 +120,13 @@ repos:
         types: [python]
         files: ansible_collections/arista/avd/plugins/modules/
 
+      - id: docs-plugin-filter
+        name: Build documentation for collection filter plugins
+        entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown ansible_collections/arista/avd/docs/plugins/filter/
+        language: system
+        types: [python]
+        files: ansible_collections/arista/avd/plugins/filter/
+
       - id: docs-plugin-test
         name: Build documentation for collection test plugins
         entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown ansible_collections/arista/avd/docs/plugins/test/

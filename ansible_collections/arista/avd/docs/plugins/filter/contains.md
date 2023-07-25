@@ -22,9 +22,9 @@ The test accepts either a single test\_value or a list of test\_values\.
 ---
 vars:
   mylist: ["test", "test2"]
-  item_is_in_my_list: "{{ mylist is arista.avd.contains('test') }}"
-  any_item_is_in_my_list: "{{ mylist is arista.avd.contains(['test2', 'test3']) }}"
-  platform_settings: "{{ platform_settings | selectattr('platforms', 'arista.avd.contains', switch_platform) }}"
+  item_is_in_my_list: "{{ mylist is arista.avd.contains("test") }}"
+  any_item_is_in_my_list: "{{ mylist is arista.avd.contains(["test2", "test3"]) }}"
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) }}
 ```
 
 ## Return Values

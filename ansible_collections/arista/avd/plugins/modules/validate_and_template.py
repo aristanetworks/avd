@@ -5,7 +5,6 @@
 DOCUMENTATION = r"""
 ---
 module: validate_and_template
-collection: arista.avd
 version_added: "3.8.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Validate input data according to Schema, render Jinja2 template and write result to a file.

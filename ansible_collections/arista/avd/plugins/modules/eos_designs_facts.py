@@ -5,7 +5,6 @@
 DOCUMENTATION = r"""
 ---
 module: eos_designs_facts
-collection: arista.avd
 version_added: "3.5.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Set eos_designs facts

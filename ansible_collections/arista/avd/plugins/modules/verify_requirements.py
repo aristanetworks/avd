@@ -5,7 +5,6 @@
 DOCUMENTATION = r"""
 ---
 module: verify_requirements
-collection: arista.avd
 version_added: "4.0.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Verify Python requirements when running AVD

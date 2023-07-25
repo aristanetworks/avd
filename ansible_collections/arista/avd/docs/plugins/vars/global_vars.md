@@ -14,6 +14,24 @@ Hidden files \(starting with \'\.\'\) and backup files \(ending with \'\~\'\) fi
 
 Only applies to inventory sources that are existing paths\.
 
+Examples\:
+\- <code>ansible\.cfg</code> only example
+  1\. Enable the plugin in <code>ansible\.cfg</code> \- DO NOT REMOVE <code>host\_group\_vars</code>\.
+    <code>\[defaults\]</code>
+    <code>vars\_plugins\_enabled \= arista\.avd\.global\_vars\, host\_group\_vars</code>
+    <code>\[vars\_global\_vars\]</code>
+    <code>paths \= \.\./relative/path/to/my/global/vars/file/or/dir</code>
+
+  2\. Run your playbook
+    <code>ansible\-playbook \-i inventory\.yml playbook\.yml</code>
+
+\- <code>ansible\.cfg</code> \+ environment variable example
+  1\. Enable the plugin in <code>ansible\.cfg</code> \- DO NOT REMOVE <code>host\_group\_vars</code>\.
+    <code>\[defaults\]</code>
+    <code>vars\_plugins\_enabled \= arista\.avd\.global\_vars\, host\_group\_vars</code>
+  2\. Run your playbook
+    <code>ARISTA\_AVD\_GLOBAL\_VARS\_PATHS\=\.\./relative/path/to/my/global/vars/file/or/dir ansible\-playbook \-i inventory\.yml playbook\.yml</code>
+
 ## Requirements
 
 The below requirements are needed on the host that executes this module.
@@ -34,37 +52,6 @@ The below requirements are needed on the host that executes this module.
   _valid_extensions (optional, list, ['.yml', '.yaml', '.json'])
     Check all of these extensions when looking for \'variable\' files which should be YAML or JSON or vaulted versions of these\.
     This affects vars\_files\, include\_vars\, inventory and vars plugins among others\.
-
-## Examples
-
-```yaml
-###
-### `ansible.cfg` only example ###
-
-# 1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
-
-[defaults]
-vars_plugins_enabled = arista.avd.global_vars, host_group_vars
-
-[vars_global_vars]
-paths = ../relative/path/to/my/global/vars/file/or/dir
-
-# 2. Run your playbook
-
-ansible-playbook -i inventory.yml playbook.yml
-
-###
-### `ansible.cfg` + environment variable example ###
-
-# 1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
-
-[defaults]
-vars_plugins_enabled = arista.avd.global_vars, host_group_vars
-
-# 2. Run your playbook
-
-ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml
-```
 
 ## Status
 

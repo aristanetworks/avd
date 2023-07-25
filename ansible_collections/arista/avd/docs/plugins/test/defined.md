@@ -35,20 +35,14 @@ Compared to the builtin <code>is defined</code> test\, this test will also test 
 
 ```yaml
 # Test if "my_var" is defined and not none:
-{% if my_var is arista.avd.defined %}
-...
-{% endif %}
+is_defined_and_not_none: "{{ my_var is arista.avd.defined }}"
 
 # Test if "my_var" is defined, not none and has value "something"
-{% if my_var is arista.avd.defined("something") %}
-...
-{% endif %}
+is_defined_and_set_to_something: "{{ my_var is arista.avd.defined('something') }}"
 
 # Test if "my_var" is defined and if not print a warning message with the variable name
-{% if my_dict.my_list[12].my_var is arista.avd.defined(fail_action='warning', var_name='my_dict.my_list[12].my_var' %}
-...
-{% endif %}
-# >>> [WARNING]: my_dict.my_list[12].my_var was expected but not set. Output may be incorrect or incomplete!
+test_result: "{{ my_dict.my_list[12].my_var is arista.avd.defined(fail_action='warning', var_name='my_dict.my_list[12].my_var' }}"
+# Output >>> [WARNING]: my_dict.my_list[12].my_var was expected but not set. Output may be incorrect or incomplete!
 ```
 
 ## Return Values

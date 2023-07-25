@@ -8,7 +8,6 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 name: global_vars
-collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "4.0.0"
 short_description: Variable plugins to allow loading global_vars with less precedence than group_vars or host_vars
@@ -20,6 +19,25 @@ description:
   - Files are restricted by extension to one of .yaml, .json, .yml or no extension.
   - Hidden files (starting with '.') and backup files (ending with '~') files are ignored.
   - Only applies to inventory sources that are existing paths.
+  - |-
+    Examples:
+    - C(ansible.cfg) only example
+      1. Enable the plugin in C(ansible.cfg) - DO NOT REMOVE C(host_group_vars).
+        C([defaults])
+        C(vars_plugins_enabled = arista.avd.global_vars, host_group_vars)
+        C([vars_global_vars])
+        C(paths = ../relative/path/to/my/global/vars/file/or/dir)
+
+      2. Run your playbook
+        C(ansible-playbook -i inventory.yml playbook.yml)
+
+    - C(ansible.cfg) + environment variable example
+      1. Enable the plugin in C(ansible.cfg) - DO NOT REMOVE C(host_group_vars).
+        C([defaults])
+        C(vars_plugins_enabled = arista.avd.global_vars, host_group_vars)
+      2. Run your playbook
+        C(ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml)
+
 options:
   paths:
     required: true
@@ -50,35 +68,6 @@ options:
         section: defaults
     type: list
     elements: string
-"""
-
-EXAMPLES = r"""
-###
-### `ansible.cfg` only example ###
-
-# 1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
-
-[defaults]
-vars_plugins_enabled = arista.avd.global_vars, host_group_vars
-
-[vars_global_vars]
-paths = ../relative/path/to/my/global/vars/file/or/dir
-
-# 2. Run your playbook
-
-ansible-playbook -i inventory.yml playbook.yml
-
-###
-### `ansible.cfg` + environment variable example ###
-
-# 1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
-
-[defaults]
-vars_plugins_enabled = arista.avd.global_vars, host_group_vars
-
-# 2. Run your playbook
-
-ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml
 """
 
 

@@ -5,7 +5,6 @@
 DOCUMENTATION = r"""
 ---
 module: batch_template
-collection: arista.avd
 version_added: "4.0.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Render Jinja2 template on multiple items and write result to individual files.

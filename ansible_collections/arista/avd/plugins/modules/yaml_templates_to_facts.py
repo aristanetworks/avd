@@ -5,7 +5,6 @@
 DOCUMENTATION = r"""
 ---
 module: yaml_templates_to_facts
-collection: arista.avd
 version_added: "1.0.0"
 author: EMEA AS Team (@aristanetworks)
 short_description: Set facts from YAML via Jinja2 templates

@@ -12,7 +12,6 @@ __metaclass__ = type
 DOCUMENTATION = r"""
 ---
 module: inventory_to_container
-collection: arista.avd
 version_added: "1.0.0"
 author: Ansible Arista Team (@aristanetworks)
 short_description: Transform information from inventory to arista.cvp collection
