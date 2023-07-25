@@ -21155,6 +21155,11 @@
                       "type": "boolean",
                       "title": "DSCP Propagation Encapsulation"
                     },
+                    "ecn_propagation": {
+                      "type": "boolean",
+                      "description": "Enable copying the ECN marking to/from encapsulated packets.\n",
+                      "title": "Ecn Propagation"
+                    },
                     "map_dscp_to_traffic_class_decapsulation": {
                       "type": "boolean",
                       "title": "Map DSCP To Traffic Class Decapsulation"
