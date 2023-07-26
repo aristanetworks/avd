@@ -11,6 +11,8 @@
   vars:
     scenario_dir: "{{ inventory_dir }}/.."
     pyavd_test_artifacts_dir: "{{ playbook_dir }}/../tests"
+    tacacs_key_set_as_play_var: "071B245F5A" ## setting dummy value to avoid error for key set in molecule playbook
+    string_set_as_play_var: "test of var set under play vars" ## setting dummy value to avoid error for key set in molecule playbook
   tasks:
     - name: Clear directory
       ansible.builtin.file:
