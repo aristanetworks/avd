@@ -1,7 +1,12 @@
-type: l2leaf
-l2leaf:
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
   nodes:
     - name: port-channel-short-esi
+      id: 101
+      bgp_as: 101
 
 servers:
   - name: server01_ESI
