@@ -38,4 +38,4 @@ keys:
   string_format_regex_interface:
     type: str
     formats:
-      - regex,Ethernet[0-9/.]+
+      - regex: Ethernet[0-9/.]+
