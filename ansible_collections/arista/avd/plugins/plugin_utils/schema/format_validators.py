@@ -48,12 +48,11 @@ def _validate_format_ipv6_cidr(instance: str, *args) -> bool:
 
 
 def _validate_format_regex(instance: str, *args) -> bool:
-    # Join multiple args in the case where regex contain , since we split on , for args.
-    regex = ",".join(args)
+    regex = args[0]
     try:
         return fullmatch(rf"{regex}", instance) is not None
     except re_error as e:
-        raise AristaAvdError("Unable to validate format {test_format}: Invalid format string") from e
+        raise AristaAvdError("Unable to validate format regex. Invalid regex string") from e
 
 
 FORMAT_VALIDATORS = {

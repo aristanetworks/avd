@@ -4881,7 +4881,7 @@ $defs:
             items:
               type: str
               formats:
-              - regex,Ethernet[\d/]+
+              - regex: Ethernet[\d/]+
           uplink_switch_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
@@ -4890,7 +4890,7 @@ $defs:
             items:
               type: str
               formats:
-              - regex,Ethernet[\d/]+
+              - regex: Ethernet[\d/]+
           uplink_switches:
             documentation_options:
               table: node-type-uplink-configuration
@@ -5067,7 +5067,7 @@ $defs:
             description: (4.4 hexadecimal).
             type: str
             formats:
-            - regex,[0-9a-f]{4}\.[0-9a-f]{4}
+            - regex: '[0-9a-f]{4}\.[0-9a-f]{4}'
           isis_maximum_paths:
             documentation_options:
               table: node-type-isis-configuration
@@ -5152,7 +5152,7 @@ $defs:
             description: Set VXLAN source interface.
             type: str
             formats:
-            - regex,Loopback[\d/]+
+            - regex: Loopback[\d/]+
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration

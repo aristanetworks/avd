@@ -128,9 +128,9 @@
                             "type": "array",
                             "minItems": 1,
                             "items": {
-                                "type": "string",
                                 "oneOf": [
                                     {
+                                        "type": "string",
                                         "enum": [
                                             "ipv4",
                                             "ipv4_cidr",
@@ -140,9 +140,15 @@
                                         ]
                                     },
                                     {
-                                        "$comment": "Take regex under formats. Regex is given like regex,<regex>",
-                                        "format": "regex",
-                                        "pattern": "^regex,.*$"
+                                        "type": "object",
+                                        "$comment": "Take regex as a type of format.",
+                                        "properties": {
+                                            "regex": {
+                                                "type": "string",
+                                                "format": "regex"
+                                            }
+                                        },
+                                        "additionalProperties": false
                                     }
                                 ]
                             }

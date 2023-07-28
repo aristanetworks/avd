@@ -171,14 +171,23 @@ def _formats_validator(validator, formats: list[str], instance: str, schema: dic
         # should not happen since meta schema requires at least 1 item
         return
 
-    for test_format in formats:
-        # Example a format like "regex,blah" uses regex validator with the argument "blah"
-        format_validator = test_format.split(",")[0].strip()
-        format_args = test_format.split(",")[1:]
-        if format_validator not in FORMAT_VALIDATORS:
-            raise AristaAvdError("Unable to validate format {test_format}: No validator found")
+    for strformat in formats:
+        # Most formats are a single string, but some are a dict where the key is the type and the value is the argument.
+        format_arg = None
 
-        if FORMAT_VALIDATORS[format_validator](instance, *format_args):
+        if isinstance(strformat, dict):
+            # Complex format with dict. Giving value as argument.
+            format_type = next(iter(strformat), None)
+            format_arg = next(iter(strformat.values()), None)
+        else:
+            # Simple format with string.
+            format_type = strformat
+
+        if format_type not in FORMAT_VALIDATORS:
+            raise AristaAvdError(f"Unable to validate format {strformat}: No validator found")
+
+        # Run format validator with argument (=None for simple formats)
+        if FORMAT_VALIDATORS[format_type](instance, format_arg):
             return
 
     yield jsonschema.ValidationError(f"'{instance}' does not match any of the required formats: {formats}")

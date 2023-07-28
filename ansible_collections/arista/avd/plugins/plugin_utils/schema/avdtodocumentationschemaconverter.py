@@ -376,7 +376,12 @@ class AvdToDocumentationSchemaConverter:
         if schema.get("formats") is not None:
             restrictions.append("Allowed formats:")
             for strformat in schema["formats"]:
-                restrictions.append(f"- {strformat}")
+                if isinstance(strformat, dict):
+                    # Complex format, unpack dict to string like {"regex": "<patters>"} -> "- regex: <pattern>".
+                    restrictions.append(f"- {next(iter(strformat), None)}: `{next(iter(strformat.values()), None)}`")
+                else:
+                    # Simple format, string
+                    restrictions.append(f"- {strformat}")
         if schema.get("dynamic_valid_values") is not None:
             schema.setdefault("valid_values", [])
             valid_value = f"<value(s) of {schema['dynamic_valid_values']}>"

@@ -118,16 +118,23 @@ class AvdToJsonSchemaConverter:
 
     def convert_formats(self, formats: str, parent_schema: dict) -> dict:
         FORMAT_MAP = {
-            "ipv4": lambda *args: {"format": "ipv4"},
-            "ipv6": lambda *args: {"format": "ipv6"},
-            "regex": lambda *args: {"format": "regex", "pattern": f"{','.join(args)}"},
+            "ipv4": {"format": "ipv4"},
+            "ipv6": {"format": "ipv6"},
+            "regex": lambda pattern: {"format": "regex", "pattern": f"{pattern}"},
         }
         oneof = []
-        for formatstr in formats:
-            formattype = formatstr.split(",")[0]
-            formatargs = formatstr.split(",")[1:]
-            if formattype in FORMAT_MAP:
-                oneof.append(FORMAT_MAP[formattype](*formatargs))
+        for strformat in formats:
+            if isinstance(strformat, dict):
+                # Complex format with dict. Giving value as argument.
+                format_type = next(iter(strformat), None)
+                format_arg = next(iter(strformat.values()), None)
+                if format_type in FORMAT_MAP:
+                    oneof.append(FORMAT_MAP[format_type](format_arg))
+
+            else:
+                # Simple format with no arguments.
+                if strformat in FORMAT_MAP:
+                    oneof.append(FORMAT_MAP[strformat])
 
         if oneof:
             return {"oneOf": oneof}
