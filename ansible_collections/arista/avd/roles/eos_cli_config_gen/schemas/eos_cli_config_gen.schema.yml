@@ -11152,11 +11152,8 @@ keys:
             source:
               type: str
               required: false
-              description: 'TCAM profile local source path. Used to read the TCAM
-                profile from a local path existing in the device.
-
-                The file can contain different TCAM profiles and the one used will
-                be defined by the "system" variable.'
+              description: TCAM profile local source path. Used to read the TCAM profile
+                from a local path existing on the device.
   terminal:
     type: dict
     display_name: Terminal Settings
