@@ -1604,7 +1604,11 @@
     },
     "ipv6_mgmt_gateway": {
       "type": "string",
-      "format": "ipv6",
+      "oneOf": [
+        {
+          "format": "ipv6"
+        }
+      ],
       "description": "OOB Management interface gateway in IPv6 format.\nUsed as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.",
       "title": "IPv6 Management Gateway"
     },
@@ -6396,7 +6400,11 @@
     },
     "underlay_ospf_area": {
       "type": "string",
-      "format": "ipv4",
+      "oneOf": [
+        {
+          "format": "ipv4"
+        }
+      ],
       "default": "0.0.0.0",
       "title": "Underlay OSPF Area"
     },

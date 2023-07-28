@@ -1,10 +1,9 @@
 from collections import ChainMap
 from copy import deepcopy
 
-from format_validators import FORMAT_VALIDATORS
-
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.schema.format_validators import FORMAT_VALIDATORS
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.refresolver import create_refresolver
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_all
 
@@ -210,7 +209,6 @@ class AvdValidator:
                 "formats": _formats_validator,
                 "max_length": jsonschema._validators.maxLength,
                 "min_length": jsonschema._validators.minLength,
-                "pattern": jsonschema._validators.pattern,
                 "items": jsonschema._validators.items,
                 "primary_key": _primary_key_validator,
                 "keys": _keys_validator,

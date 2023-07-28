@@ -57,13 +57,15 @@ $defs:
               table: node-type-common-configuration
             description: Node management interface IPv4 address.
             type: str
-            format: cidr
+            formats:
+              - ipv4_cidr
           ipv6_mgmt_ip:
             documentation_options:
               table: node-type-common-configuration
             description: Node management interface IPv6 address.
             type: str
-            format: cidr
+            formats:
+              - ipv6_cidr
           mgmt_interface:
             documentation_options:
               table: node-type-common-configuration
@@ -157,7 +159,8 @@ $defs:
               table: node-type-uplink-configuration
             description: IPv4 subnet to use to connect to uplink switches.
             type: str
-            format: ipv4_cidr
+            formats:
+              - ipv4_cidr
           uplink_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
@@ -169,7 +172,8 @@ $defs:
             type: list
             items:
               type: str
-              pattern: "Ethernet[\\d/]+"
+              formats:
+                - "regex,Ethernet[\\d/]+"
           uplink_switch_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
@@ -177,7 +181,8 @@ $defs:
             type: list
             items:
               type: str
-              pattern: "Ethernet[\\d/]+"
+              formats:
+                - "regex,Ethernet[\\d/]+"
           uplink_switches:
             documentation_options:
               table: node-type-uplink-configuration
@@ -301,7 +306,8 @@ $defs:
               table: node-type-isis-configuration
             description: (4.4 hexadecimal).
             type: str
-            pattern: "[0-9a-f]{4}\\.[0-9a-f]{4}"
+            formats:
+              - "regex,[0-9a-f]{4}\\.[0-9a-f]{4}"
           isis_maximum_paths:
             documentation_options:
               table: node-type-isis-configuration
@@ -331,13 +337,15 @@ $defs:
               table: node-type-loopback-vtep-configuration
             description: IPv4 subnet for Loopback0 allocation.
             type: str
-            format: ipv4_cidr
+            formats:
+              - ipv4_cidr
           vtep_loopback_ipv4_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
             description: IPv4 subnet for VTEP-Loopback allocation.
             type: str
-            format: ipv4_cidr
+            formats:
+              - ipv4_cidr
           loopback_ipv4_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -354,7 +362,8 @@ $defs:
               table: node-type-loopback-vtep-configuration
             description: IPv6 subnet for Loopback0 allocation.
             type: str
-            format: ipv6_cidr
+            formats:
+              - ipv6_cidr
           loopback_ipv6_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -371,7 +380,8 @@ $defs:
               table: node-type-loopback-vtep-configuration
             description: Set VXLAN source interface.
             type: str
-            pattern: "Loopback[\\d/]+"
+            formats:
+              - "regex,Loopback[\\d/]+"
           bgp_as:
             documentation_options:
               table: node-type-bgp-configuration
@@ -479,7 +489,8 @@ $defs:
                     ip_address:
                       description: Peering IP of remote Route Server.
                       type: str
-                      format: ipv4
+                      formats:
+                        - ipv4
                     bgp_as:
                       description: BGP ASN of remote Route Server.
                       type: str
@@ -556,7 +567,8 @@ $defs:
                     ip_address:
                       description: Peering IP of remote IPVPN Peer.
                       type: str
-                      format: ipv4
+                      formats:
+                        - ipv4
                       required: true
                     bgp_as:
                       description: BGP ASN of remote IPVPN Peer.
@@ -622,7 +634,8 @@ $defs:
               IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.
               Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
             type: str
-            format: ipv4_cidr
+            formats:
+              - ipv4_cidr
           mlag_peer_vlan:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -644,7 +657,8 @@ $defs:
               IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.
               Required when MLAG leafs present in topology.
             type: str
-            format: ipv4_cidr
+            formats:
+              - ipv4_cidr
           mlag_port_channel_id:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -685,7 +699,8 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: Virtual router mac address for anycast gateway.
             type: str
-            format: mac
+            formats:
+              - mac
           inband_mgmt_interface:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -726,7 +741,8 @@ $defs:
 
               This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
-            format: ipv4_cidr
+            formats:
+              - ipv4_cidr
           inband_mgmt_ip:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -739,7 +755,8 @@ $defs:
 
               This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
-            format: ipv4_cidr
+            formats:
+              - ipv4_cidr
           inband_mgmt_gateway:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -748,7 +765,8 @@ $defs:
 
               This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
-            format: ipv4
+            formats:
+              - ipv4
           inband_mgmt_description:
             documentation_options:
               table: node-type-inband-management-configuration

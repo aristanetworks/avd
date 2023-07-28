@@ -9,5 +9,6 @@ keys:
     type: str
     convert_types:
       - int
-    format: ipv4
+    formats:
+      - ipv4
     default: "0.0.0.0"

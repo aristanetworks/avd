@@ -37,7 +37,6 @@ class AvdToJsonSchemaConverter:
             "formats": self.convert_formats,
             "max_length": self.convert_max_length,
             "min_length": self.convert_min_length,
-            "pattern": self.convert_pattern,
             "default": self.convert_default,
             "items": self.convert_items,
             "keys": self.convert_keys,
@@ -149,9 +148,6 @@ class AvdToJsonSchemaConverter:
         if vartype == "list":
             return {"minItems": min}
         return {}
-
-    def convert_pattern(self, pattern: str, parent_schema: dict) -> dict:
-        return {"pattern": pattern}
 
     def convert_default(self, default, parent_schema: dict) -> dict:
         return {"default": default}

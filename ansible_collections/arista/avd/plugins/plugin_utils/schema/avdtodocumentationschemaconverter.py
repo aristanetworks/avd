@@ -374,7 +374,7 @@ class AvdToDocumentationSchemaConverter:
         if schema.get("max_length") is not None:
             restrictions.append(f"Max Length: {schema['max_length']}")
         if schema.get("formats") is not None:
-            restrictions.append("Required Formats:")
+            restrictions.append("Allowed formats:")
             for strformat in schema["formats"]:
                 restrictions.append(f"- {strformat}")
         if schema.get("dynamic_valid_values") is not None:
@@ -386,8 +386,6 @@ class AvdToDocumentationSchemaConverter:
             restrictions.append("Valid Values:")
             for valid_value in schema["valid_values"]:
                 restrictions.append(f"- {valid_value}")
-        if schema.get("pattern") is not None:
-            restrictions.append(f"Pattern: {schema['pattern']}")
 
         if restrictions:
             return "<br>".join(restrictions)

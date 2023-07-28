@@ -200,7 +200,8 @@ $defs:
               description: Will be enabled automatically if "evpn_l2_multicast" is enabled.
             source_address:
               type: str
-              format: ipv4
+              formats:
+                - ipv4
               description: Default IP address of Loopback0
             version:
               type: int
