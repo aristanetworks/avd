@@ -16,7 +16,7 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "1.1"
 short_description: Returns V(True) if the input hostname matches the I(hostname_filter).
 description:
-  - The filter matches if any of the filter strings are found in the given input hostname.
+  - The filter matches if any filter strings are found in the input hostname.
   - I(hostname_filter=["all"]) or I(hostname_filter=none) will match all hostnames.
 positional: _input
 options:

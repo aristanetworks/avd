@@ -16,7 +16,7 @@ name: default
 collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "2.0"
-short_description: Returns input value if defined and is not none. Otherwise return default value.
+short_description: Returns input value if defined and is not none. Otherwise, return default value.
 description: |-
   The M(arista.avd.default) filter can provide the same essential capability as the built-in C(default) filter.
   It will return the input value only if it's valid and, if not, provide a default value instead.
@@ -31,7 +31,7 @@ options:
     required: true
   default_values:
     type: any
-    description: One or more default values which will be tested one by one and the first valid value will be used.
+    description: One or more default values will be tested individually, and the first valid value will be used.
 """
 
 EXAMPLES = r"""
@@ -42,7 +42,7 @@ myvalue: "{{ variable | arista.avd.default(default_value_1, default_value_2) }}"
 RETURN = r"""
 ---
 _value:
-  description: Input value if C(not undefined) and C(not None). Otherwise return first defined default value or C(None).
+  description: Input value if C(not undefined) and C(not None). Otherwise, return the first defined default value or C(None).
   type: any
 """
 

@@ -10,9 +10,9 @@ The arista\.avd\.defined test also accepts an optional <em>test\_value</em> argu
 
 The optional <em>var\_type</em> argument can also be used to test if the variable is of the expected type\.
 
-Optionally the test can emit warnings or errors if the test fails\.
+Optionally\, the test can emit warnings or errors if the test fails\.
 
-Compared to the builtin <code>is defined</code> test\, this test will also test for <code>None</code> and can even test for a specific value or class\.
+Compared to the built\-in <code>is defined</code> test\, this test will also test for <code>None</code> and can even test for a specific value or class\.
 
 ## Parameters
 
@@ -21,8 +21,8 @@ Compared to the builtin <code>is defined</code> test\, this test will also test 
 | _input | any | True | None |  | Value to test |
 | test_value | any | optional | None |  | Value to match for in addition to defined and not none |
 | var_type | string | optional | None | Valid values:<br>- <code>float</code><br>- <code>int</code><br>- <code>str</code><br>- <code>list</code><br>- <code>dict</code><br>- <code>tuple</code><br>- <code>bool</code> | Type or Class to test for |
-| fail_action | string | optional | None | Valid values:<br>- <code>warning</code><br>- <code>error</code> | Optional action if test fails to emit a Warning or Error |
-| var_name | string | optional | None |  | Optional string to use as variable name in warning or error messages |
+| fail_action | string | optional | None | Valid values:<br>- <code>warning</code><br>- <code>error</code> | Optional action if a test fails to emit a Warning or Error |
+| var_name | string | optional | None |  | Optional string to use as a variable name in warning or error messages |
 
 ## Examples
 

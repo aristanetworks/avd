@@ -4,7 +4,7 @@ Returns <code>True</code> if the input hostname matches the <em>hostname\_filter
 
 ## Synopsis
 
-The filter matches if any of the filter strings are found in the given input hostname\.
+The filter matches if any filter strings are found in the input hostname\.
 
 <em>hostname\_filter\=\[\"all\"\]</em> or <em>hostname\_filter\=none</em> will match all hostnames\.
 

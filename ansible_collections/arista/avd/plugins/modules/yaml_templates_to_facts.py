@@ -74,7 +74,7 @@ options:
     type: str
   template_output:
     description:
-      - If true the output data will be run through another jinja2 rendering before returning.
+      - If true, the output data will be run through another jinja2 rendering before returning.
       - This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     required: false
     type: bool

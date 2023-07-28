@@ -23,14 +23,17 @@ description:
 positional: _input
 options:
   _input:
-    description: Dictionary with snmp passphrase details.
+    description: Dictionary with SNMP passphrase details.
     type: dictionary
     required: true
     suboptions:
       passphrase:
         type: string
         required: true
-        description: The passphrase to localize, if I(priv) is not set it is the "auth" passphrase else it is the "priv" passphrase.
+        description:
+          - The passphrase to localize.
+          - This is the "auth" passphrase when the I(priv) argument is not set.
+          - If I(priv) is set, it is the "priv" passphrase.
       auth:
         type: string
         description: Auth type

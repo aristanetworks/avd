@@ -32,7 +32,7 @@ options:
 RETURN = r"""
 ---
 _value:
-  description: Input value or github markdown emoji code.
+  description: Input value or GitHub Markdown emoji code.
   type: string
 """
 

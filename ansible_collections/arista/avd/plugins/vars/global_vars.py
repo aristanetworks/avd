@@ -12,12 +12,12 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "4.0.0"
 short_description: Variable plugins to allow loading global_vars with less precedence than group_vars or host_vars
 requirements:
-  - This plugin should run at the `inventory` stage (default) before all other variable plugins, to inject the variables before any group and host vars.
+  - This plugin should run at the `inventory` stage (default) before all other variable plugins to inject the variables before any group and host vars.
 description:
   - Loads variables from variable files specified in ansible.cfg or in the environment variable.
   - Assign the loaded variables to the 'all' inventory group.
-  - Files are restricted by extension to one of .yaml, .json, .yml or no extension.
-  - Hidden files (starting with '.') and backup files (ending with '~') files are ignored.
+  - Files are restricted by extension to one of .yaml, .json, .yml, or no extension.
+  - Hidden files (starting with '.') and backup files (ending with '~') are ignored.
   - Only applies to inventory sources that are existing paths.
   - HORIZONTALLINE
   - B(ansible.cfg only example)
@@ -47,20 +47,20 @@ options:
     env:
       - name: ARISTA_AVD_GLOBAL_VARS_PATHS
     description:
-      - List of relative paths, relative to the inventory file.
-      - If path is a directory, all the valid files inside are loaded in alphabetical order.
+      - List of relative paths relative to the inventory file.
+      - If path is a directory, all the valid files inside are loaded alphabetically.
       - If the environment variable is set, it takes precedence over ansible.cfg.
   stage:
     default: inventory
     choices: ["inventory"]
     description:
       - The stage during which executing the plugin. It could be 'inventory' or 'task'
-      - Given the expected usage of this plugin at the beginning of the run. It is hardcoded to 'inventory'
+      - Given the expected usage of this plugin at the beginning of the run. It is hard-coded to 'inventory'
   _valid_extensions:
     default: [".yml", ".yaml", ".json"]
     description:
-      - Check all of these extensions when looking for 'variable' files which should be YAML or JSON or vaulted versions of these.
-      - This affects vars_files, include_vars, inventory and vars plugins among others.
+      - Check all of these extensions when looking for 'variable' files, which should be YAML, JSON, or vaulted versions.
+      - This affects vars_files, include_vars, inventory, and vars plugins, among others.
     ini:
       - key: yaml_valid_extensions
         section: defaults

@@ -21,7 +21,7 @@ Returns <code>\:white\_check\_mark\:</code> if input status string is <code>PASS
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | string | Input value or github markdown emoji code\. |
+| _value | string | Input value or GitHub Markdown emoji code\. |
 
 ## Status
 

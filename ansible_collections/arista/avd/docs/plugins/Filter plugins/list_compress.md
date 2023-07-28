@@ -4,7 +4,7 @@ Compress a list of integers to a range string\.
 
 ## Synopsis
 
-Provides the capability to generate a string representing ranges of VLANs or VNIs
+Provides the capability to generate a string representing ranges of VLANs or VNIs\.
 
 ## Parameters
 

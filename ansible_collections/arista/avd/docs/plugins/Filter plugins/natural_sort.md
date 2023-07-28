@@ -4,7 +4,7 @@ Sort an input list with natural sorting\.
 
 ## Synopsis
 
-Provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally\.
+Provides the capability to sort a list or a dictionary of integers and strings that contain alphanumeric characters naturally\.
 When leveraged on a dictionary\, only the key value will be returned\.
 An optional \`sort\_key\` can be specified\, to sort on content of certain key if the items are dictionaries\.
 

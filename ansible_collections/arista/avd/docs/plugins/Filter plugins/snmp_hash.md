@@ -10,8 +10,8 @@ Key localization as described in [RFC 2574 section 2\.6](https://www.rfc-editor.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | dictionary | True | None |  | Dictionary with snmp passphrase details\. |
-|   passphrase | string | True | None |  | The passphrase to localize\, if <em>priv</em> is not set it is the \"auth\" passphrase else it is the \"priv\" passphrase\. |
+| _input | dictionary | True | None |  | Dictionary with SNMP passphrase details\. |
+|   passphrase | string | True | None |  | The passphrase to localize\.<br>This is the \"auth\" passphrase when the <em>priv</em> argument is not set\.<br>If <em>priv</em> is set\, it is the \"priv\" passphrase\. |
 |   auth | string | True | None | Valid values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha224</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Auth type |
 |   engine_id | string | True | None |  | A hexadecimal string containing the engine\_id to be used to localize the passphrase |
 |   priv | string | optional | None | Valid values:<br>- <code>des</code><br>- <code>aes</code><br>- <code>aes192</code><br>- <code>aes256</code> | Priv type |

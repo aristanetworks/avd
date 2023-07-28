@@ -40,8 +40,8 @@ description:
   - The M(arista.avd.defined) test returns C(False) if the passed value is C(Undefined) or C(None). Else it will return C(True).
   - The M(arista.avd.defined) test also accepts an optional I(test_value) argument to test if the value equals this.
   - The optional I(var_type) argument can also be used to test if the variable is of the expected type.
-  - Optionally the test can emit warnings or errors if the test fails.
-  - Compared to the builtin C(is defined) test, this test will also test for C(None) and can even test for a specific value or class.
+  - Optionally, the test can emit warnings or errors if the test fails.
+  - Compared to the built-in C(is defined) test, this test will also test for C(None) and can even test for a specific value or class.
 positional: _input
 options:
   _input:
@@ -56,11 +56,11 @@ options:
     choices: ['float', 'int', 'str', 'list', 'dict', 'tuple', 'bool']
   fail_action:
     type: string
-    description: Optional action if test fails to emit a Warning or Error
+    description: Optional action if a test fails to emit a Warning or Error
     choices: ['warning', 'error']
   var_name:
     type: string
-    description: Optional string to use as variable name in warning or error messages
+    description: Optional string to use as a variable name in warning or error messages
 """
 
 EXAMPLES = r"""

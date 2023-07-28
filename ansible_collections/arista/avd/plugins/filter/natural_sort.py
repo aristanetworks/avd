@@ -22,7 +22,7 @@ version_added: "1.0.0"
 short_description: Sort an input list with natural sorting.
 description:
   - |-
-      Provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally.
+      Provides the capability to sort a list or a dictionary of integers and strings that contain alphanumeric characters naturally.
       When leveraged on a dictionary, only the key value will be returned.
       An optional `sort_key` can be specified, to sort on content of certain key if the items are dictionaries.
   - The filter will return an empty list if the value parsed to M(arista.avd.natural_sort) is C(None) or C(undefined).

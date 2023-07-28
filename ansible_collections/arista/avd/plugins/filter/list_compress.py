@@ -20,7 +20,7 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "1.0"
 short_description: Compress a list of integers to a range string.
 description:
-  - Provides the capability to generate a string representing ranges of VLANs or VNIs
+  - Provides the capability to generate a string representing ranges of VLANs or VNIs.
 positional: _input
 options:
   _input:

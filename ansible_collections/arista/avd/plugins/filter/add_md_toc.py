@@ -29,19 +29,19 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "3.2"
 requirements:
   - md_toc
-short_description: Parse the input MarkDown and add a Table of Contents between the toc_markers.
+short_description: Parse the input Markdown and add a Table of Contents between the toc_markers.
 description:
   - The filter is used in M(arista.avd.eos_designs) to create a table of contents for Fabric Documentation.
   - The filter is also used in M(arista.avd.eos_cli_config_gen) to create a table of contents for Device Documentation.
 positional: _input
 options:
   _input:
-    description: MarkDown which will be processed.
+    description: Markdown to process.
     type: string
     required: true
   skip_lines:
     type: integer
-    description: Skip first x lines when parsing the input MarkDown.
+    description: Skip the first x lines when parsing the input Markdown.
     default: 0
   toc_levels:
     type: integer
@@ -49,7 +49,7 @@ options:
     default: 3
   toc_marker:
     type: string
-    description: TOC will be inserted or updated between two of these markers in the input MarkDown.
+    description: TOC will be inserted or updated between two of markers in the input Markdown.
     default: "<!-- toc -->"
 """
 
@@ -70,7 +70,7 @@ tasks:
 RETURN = r"""
 ---
 _value:
-  description: MarkDown with TOC inserted between the toc_markers.
+  description: Markdown with TOC inserted between the toc_markers.
   type: string
 """
 

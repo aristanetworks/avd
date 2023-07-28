@@ -9,8 +9,8 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "3.8.0"
 short_description: Encrypt supported EOS passwords
 description:
-  - The filter is used to encrypt clear text password into EOS passwords.
-  - To be used in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in C(eos_designs).
+  - The filter encrypts a clear text password into EOS passwords.
+  - To be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in C(eos_designs).
   - Note - For now this filter only supports encryption from type C(7) and not type C(8a) for OSPF and BGP passwords.
 positional: _input
 options:
@@ -30,8 +30,8 @@ options:
     type: string
     description:
       - Encryption key. The value depends on the type of password.
-      - For BGP passwords the key is the Neighbor IP or the BGP Peer Group Name in EOS.
-      - For OSPF passwords the key is the interface name (e.g., C(Ethernet1)).
+      - For BGP passwords, the key is the Neighbor IP or the BGP Peer Group Name in EOS.
+      - For OSPF passwords, the key is the interface name (e.g., C(Ethernet1)).
     required: true
   hash_algorithm:
     type: string

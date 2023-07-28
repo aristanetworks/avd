@@ -1,23 +1,49 @@
 # arista.avd.add_md_toc
 
-Convert AVD Schema to a chosen output format\.
+Parse the input Markdown and add a Table of Contents between the toc\_markers\.
 
 ## Synopsis
 
-Only for internal use\.
+The filter is used in arista\.avd\.eos\_designs to create a table of contents for Fabric Documentation\.
+
+The filter is also used in arista\.avd\.eos\_cli\_config\_gen to create a table of contents for Device Documentation\.
+
+## Requirements
+
+The below requirements are needed on the host that executes this module.
+
+- md\_toc
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None | Valid values:<br>- <code>eos_cli_config_gen</code><br>- <code>eos_designs</code> | ID of AVD Schema\. |
-| type | string | True | None | Valid values:<br>- <code>documentation_tables</code><br>- <code>jsonschema</code> | Type of schema to convert to\. |
+| _input | string | True | None |  | Markdown to process\. |
+| skip_lines | integer | optional | 0 |  | Skip the first x lines when parsing the input Markdown\. |
+| toc_levels | integer | optional | 3 |  | How many levels of headings will be included in the TOC\. |
+| toc_marker | string | optional | <!-- toc --> |  | TOC will be inserted or updated between two of markers in the input Markdown\. |
+
+## Examples
+
+```yaml
+---
+tasks:
+- name: Generate fabric documentation
+  tags: [build, provision, documentation]
+  run_once: true
+  delegate_to: localhost
+  check_mode: no
+  copy:
+    content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
+    dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
+    mode: 0664
+```
 
 ## Return Values
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | any | Schema of the requested type\. |
+| _value | string | Markdown with TOC inserted between the toc\_markers\. |
 
 ## Status
 
