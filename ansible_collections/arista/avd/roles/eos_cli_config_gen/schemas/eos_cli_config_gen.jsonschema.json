@@ -17337,6 +17337,11 @@
               "mpls_ldp_sync_default": {
                 "type": "boolean",
                 "title": "MPLS LDP Sync Default"
+              },
+              "eos_cli": {
+                "type": "string",
+                "description": "Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration",
+                "title": "EOS CLI"
               }
             },
             "additionalProperties": false,
@@ -21158,6 +21163,11 @@
                     "dscp_propagation_encapsulation": {
                       "type": "boolean",
                       "title": "DSCP Propagation Encapsulation"
+                    },
+                    "ecn_propagation": {
+                      "type": "boolean",
+                      "description": "Enable copying the ECN marking to/from encapsulated packets.\n",
+                      "title": "Ecn Propagation"
                     },
                     "map_dscp_to_traffic_class_decapsulation": {
                       "type": "boolean",

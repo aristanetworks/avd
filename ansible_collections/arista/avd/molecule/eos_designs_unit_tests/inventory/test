@@ -872,10 +872,11 @@ servers:
   - endpoint_ports:
     - Eth1
     - Eth2
+    ethernet_segment:
+      short_esi: 0303:0202:0101
     port_channel:
       description: PortChanne1
       mode: active
-      short_esi: 0303:0202:0101
     profile: TENANT_A_B
     switch_ports:
     - Ethernet10
