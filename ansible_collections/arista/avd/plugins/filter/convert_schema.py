@@ -16,7 +16,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtojsonschemac
 
 DOCUMENTATION = r"""
 ---
-name: add_md_toc
+name: convert_schema
 collection: arista.avd
 author: Arista Ansible Team (@aristanetworks)
 version_added: "3.8"
