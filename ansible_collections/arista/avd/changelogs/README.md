@@ -1,5 +1,6 @@
 # Changelog
 
+Update galaxy.yml with the target version
 Prepare changelog fragments and place them in `changelogs/fragments/` folder. Copy PR titles from GitHub Release Notes (auto generated) and search/replace to make the formatting fit.
 Check a previous fragments_backup for example.
 
