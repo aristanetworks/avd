@@ -47,7 +47,7 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 1.1.1.2
+  ip_address: 1.1.1.2/24
   gateway: 1.1.1.1
   type: oob
 tcam_profile:
