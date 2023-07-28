@@ -8,7 +8,7 @@ l2leaf:
   nodes:
     - name: mgmt_interface_dualstack
       ipv6_mgmt_ip: 0200::105/64
-      mgmt_ip: 192.168.200.105
+      mgmt_ip: 192.168.200.105/24
       id: 105
 
 ipv6_mgmt_destination_networks:

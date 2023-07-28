@@ -6,5 +6,5 @@ l2leaf:
   nodes:
     - name: mgmt_interface_platform
       platform: 7500R2
-      mgmt_ip: 1.1.1.2
+      mgmt_ip: 1.1.1.2/24
       id: 105

@@ -19,10 +19,10 @@ spine:
       nodes:
         - name: AUTO_NODE_TYPE_SPINE01
           id: 1
-          mgmt_ip: 192.168.203.10
+          mgmt_ip: 192.168.203.10/24
         - name: AUTO_NODE_TYPE_SPINE02
           id: 2
-          mgmt_ip: 192.168.203.11
+          mgmt_ip: 192.168.203.11/24
 l3leaf:
   defaults:
     platform: vEOS-LAB

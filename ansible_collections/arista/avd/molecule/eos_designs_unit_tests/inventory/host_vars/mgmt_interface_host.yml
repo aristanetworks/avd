@@ -7,5 +7,5 @@ l2leaf:
     - name: mgmt_interface_host
       platform: 7500R2
       mgmt_interface: MY_INTERFACE_HOST
-      mgmt_ip: 1.1.1.2
+      mgmt_ip: 1.1.1.2/24
       id: 104
