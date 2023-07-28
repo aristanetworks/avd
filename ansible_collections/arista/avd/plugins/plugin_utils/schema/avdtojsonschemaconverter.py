@@ -130,7 +130,9 @@ class AvdToJsonSchemaConverter:
             if formattype in FORMAT_MAP:
                 oneof.append(FORMAT_MAP[formattype](*formatargs))
 
-        return {"oneOf": oneof}
+        if oneof:
+            return {"oneOf": oneof}
+        return {}
 
     def convert_max_length(self, max: int, parent_schema: dict) -> dict:
         vartype = parent_schema["type"]
