@@ -17,10 +17,11 @@ cpes:
         switches:
           - SITE1-LER1
           - SITE1-LER2
+        ethernet_segment:
+          short_esi: 0303:0202:0101
         port_channel:
           description: EVPN-A-A-PortChannel
           mode: active
-          short_esi: 0303:0202:0101
           subinterfaces:
             - number: 111
               short_esi: 0303:0202:0111

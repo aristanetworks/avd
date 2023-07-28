@@ -1,0 +1,6 @@
+---
+root_dir: '{{ playbook_dir }}'
+is_for_test: true
+
+avd_data_validation_mode: "error"
+avd_data_conversion_mode: "info"
