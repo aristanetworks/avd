@@ -61,7 +61,7 @@ class TestAvdSchemaFormats:
         except Exception as e:
             assert False, f"avdschema.validate({VALID_DATA}) {e}"
 
-        assert avdschema.is_valid(VALID_DATA)
+        assert not list(avdschema.validate_schema(avdschema._schema))  # No errors yielded.
 
     @pytest.mark.parametrize("KEY, VALUE", INVALID_VALUES)
     def test_avd_schema_format_with_invalid_value(self, KEY, VALUE):

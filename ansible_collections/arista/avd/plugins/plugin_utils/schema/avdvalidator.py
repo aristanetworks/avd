@@ -190,7 +190,7 @@ def _formats_validator(validator, formats: list[str], instance: str, schema: dic
         if FORMAT_VALIDATORS[format_type](instance, format_arg):
             return
 
-    yield jsonschema.ValidationError(f"'{instance}' does not match any of the required formats: {formats}")
+    yield jsonschema.ValidationError(f"'{instance}' does not match any of the allowed formats: {formats}")
 
 
 class AvdValidator:
