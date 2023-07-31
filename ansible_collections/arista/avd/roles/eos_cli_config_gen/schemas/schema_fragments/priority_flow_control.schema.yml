@@ -22,7 +22,7 @@ keys:
               Action on stuck queue.
           timeout:
             type: str
-            pattern: "\\d+(\\.\\d{1,2})?"
+            pattern: "^\\d+(\\.\\d{1,2})?$"
             convert_types:
               - int
               - float
@@ -33,7 +33,7 @@ keys:
               Example: 0.01 or 60
           polling_interval:
             type: str
-            pattern: "\\d+(\\.\\d{1,3})?"
+            pattern: "^\\d+(\\.\\d{1,3})?$"
             convert_types:
               - int
               - float
@@ -43,7 +43,7 @@ keys:
               Example: 0.005 or 60
           recovery_time:
             type: str
-            pattern: "\\d+(\\.\\d{1,2})?"
+            pattern: "^\\d+(\\.\\d{1,2})?$"
             convert_types:
               - int
               - float

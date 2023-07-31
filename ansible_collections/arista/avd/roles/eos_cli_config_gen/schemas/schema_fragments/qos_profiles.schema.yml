@@ -188,7 +188,7 @@ keys:
                     timeout:
                       type: str
                       required: true
-                      pattern: "\\d+(\\.\\d{1,2})?"
+                      pattern: "^\\d+(\\.\\d{1,2})?$"
                       convert_types:
                         - int
                         - float
@@ -200,7 +200,7 @@ keys:
                     polling_interval:
                       type: str
                       required: true
-                      pattern: "auto|\\d+(\\.\\d{1,3})?"
+                      pattern: "^auto|\\d+(\\.\\d{1,3})?$"
                       convert_types:
                         - int
                         - float
@@ -212,7 +212,8 @@ keys:
                     recovery_time:
                       type: str
                       required: true
-                      pattern: "\\d+(\\.\\d)?"
+                      # pattern: "\\d+(\\.\\d{1,2})?"
+                      pattern: "^\\d+(\\.\\d{1,2})?$"
                       convert_types:
                         - int
                         - float

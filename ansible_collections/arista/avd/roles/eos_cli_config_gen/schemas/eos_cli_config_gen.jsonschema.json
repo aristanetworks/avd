@@ -10651,19 +10651,19 @@
             },
             "timeout": {
               "type": "string",
-              "pattern": "\\d+(\\.\\d{1,2})?",
+              "pattern": "^\\d+(\\.\\d{1,2})?$",
               "description": "Timeout in seconds after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 2 decimal point.\nExample: 0.01 or 60\n",
               "title": "Timeout"
             },
             "polling_interval": {
               "type": "string",
-              "pattern": "\\d+(\\.\\d{1,3})?",
+              "pattern": "^\\d+(\\.\\d{1,3})?$",
               "description": "Time interval in seconds at which the watchdog should poll the queues.\nThis should be decimal with up to 3 decimal point.\nExample: 0.005 or 60\n",
               "title": "Polling Interval"
             },
             "recovery_time": {
               "type": "string",
-              "pattern": "\\d+(\\.\\d{1,2})?",
+              "pattern": "^\\d+(\\.\\d{1,2})?$",
               "description": "Recovery-time in seconds after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 2 decimal point.\nExample: 0.01 or 60\n",
               "title": "Recovery Time"
             },
@@ -11248,19 +11248,19 @@
                     "properties": {
                       "timeout": {
                         "type": "string",
-                        "pattern": "\\d+(\\.\\d{1,2})?",
+                        "pattern": "^\\d+(\\.\\d{1,2})?$",
                         "description": "Timeout in seconds after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 2 decimal point\nExample: 0.01 or 60\n",
                         "title": "Timeout"
                       },
                       "polling_interval": {
                         "type": "string",
-                        "pattern": "auto|\\d+(\\.\\d{1,3})?",
+                        "pattern": "^auto|\\d+(\\.\\d{1,3})?$",
                         "description": "Time interval in seconds at which the watchdog should poll the queues.\nThis should be decimal with up to 3 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample: 0.005 or 60\n",
                         "title": "Polling Interval"
                       },
                       "recovery_time": {
                         "type": "string",
-                        "pattern": "\\d+(\\.\\d)?",
+                        "pattern": "^\\d+(\\.\\d{1,2})?$",
                         "description": "Recovery-time in seconds after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 2 decimal point.\nExample: 0.01 or 60\n",
                         "title": "Recovery Time"
                       },
