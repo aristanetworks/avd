@@ -150,7 +150,7 @@ jobs:
           - 'eos_cli_config_gen_deprecated_vars'
           - 'eos_cli_config_gen_negative_unit_tests'
         ansible_version:
-          - 'ansible-core>=2.12.6,<2.16.0,!=2.13.0'
+          - 'ansible-core>=2.12.6,<2.16.0,!=2.13.0 --upgrade'
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: 'eos_cli_config_gen'
@@ -189,7 +189,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['dhcp_configuration', 'dhcp_provisioning']
-        ansible_version: ['ansible-core>=2.12.6,<2.16.0,!=2.13.0']
+        ansible_version: ['ansible-core>=2.12.6,<2.16.0,!=2.13.0 --upgrade']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
@@ -238,15 +238,15 @@ jobs:
           - 'example-single-dc-l3ls'
           - 'example-dual-dc-l3ls'
         ansible_version:
-          - 'ansible-core>=2.12.6,<2.16.0,!=2.13.0'
+          - 'ansible-core>=2.12.6,<2.16.0,!=2.13.0 --upgrade'
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: 'eos_designs_unit_tests'
             ansible_version: 'ansible-core==2.12.6'
           - avd_scenario: 'eos_designs_unit_tests'
-            ansible_version: 'ansible-core>=2.13.1,<2.14.0'
+            ansible_version: 'ansible-core>=2.13.1,<2.14.0 --upgrade'
           - avd_scenario: 'eos_designs_unit_tests'
-            ansible_version: 'ansible-core>=2.14.0,<2.15.0'
+            ansible_version: 'ansible-core>=2.14.0,<2.15.0 --upgrade'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
@@ -280,7 +280,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['eos_config_deploy_cvp']
-        ansible_version: ['ansible-core==2.12.6', 'ansible-core>=2.12.6,<2.15.0,!=2.13.0']
+        ansible_version: ['ansible-core==2.12.6', 'ansible-core>=2.12.6,<2.15.0,!=2.13.0 --upgrade']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.cloudvision == 'true'
     steps:
