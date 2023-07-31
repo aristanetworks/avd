@@ -74,8 +74,8 @@ $defs:
           default: true
           description: |
             Redistribute the connected subnet for the MLAG iBGP peering per VRF into overlay BGP.
-            By default the iBGP peering subnet is redistrubuted into the overlay routing protocol per VRF.
-            Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a tenant will change this default to prevent redistrution of these subnets for all VRFs in the tenant.
+            By default the iBGP peering subnet is redistributed into the overlay routing protocol per VRF.
+            Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a tenant will change this default to prevent redistribution of these subnets for all VRFs in the tenant.
             This setting can be overridden per VRF.
         bgp_peer_groups:
           documentation_options:
@@ -320,7 +320,7 @@ $defs:
                 default: true
                 description: |
                   Redistribute the connected subnet for the MLAG iBGP peering per VRF into overlay BGP.
-                  By default the iBGP peering subnet is redistrubuted into the overlay routing protocol per VRF.
+                  By default the iBGP peering subnet is redistributed into the overlay routing protocol per VRF.
                   Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a VRF will change this default and/or override the tenant-wide setting.
               mlag_ibgp_peering_vlan:
                 type: int
