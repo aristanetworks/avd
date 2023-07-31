@@ -13,21 +13,7 @@ import re
 from ansible.errors import AnsibleFilterError
 
 
-def extend_range(one_range):
-    regex = r"(\(\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?\d+\-\d+)*)*\s*\))|([0-9]+\-[0-9]+)"
-
-    # (\( \))                                                                               matches starting and ending of parentheses
-    # ?:                                                                                    only group but do not remember the grouped part
-    #               (?:\d+)                                                                 matches 1 or more numbers Ex. 1, 21
-    #                         (?:\s*,\s*\d+)*                                               matches 0 or more apperance of "," and one or more numbers Ex. ,2,23
-    #                                        (?:,?\d+\-\d+)*                                matches 0 or more apperance of "," and one or more
-    #                                                                                                    numbers with range (-) Ex. ,2-4
-    #               (?:\d+)(?:(?:\s*,\s*\d+)*(?:,?\d+\-\d+)*)*                              matches values similar to 1 or 1,2,3 or 1,2-4
-    # group[0] (\(\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?\d+\-\d+)*)*\s*\))                       matches values similar to 1 or 1,2,3 or 1,2-4
-    #                                                                                                    inside parentheses Ex. (1,2) or (1,55-60)
-    # group[1]                                                        ([0-9]+\-[0-9]+)      matches range outside parentheses Ex. 1-5 or 33-46
-
-    range_sr = re.search(regex, one_range)
+def expand_parentheses(range_sr, one_range):
     groups = range_sr.groups()
     start_index, end_index = range_sr.start(), range_sr.end()
     replaced_list = []
@@ -36,50 +22,60 @@ def extend_range(one_range):
         ports_list = groups[0].replace("(", "").replace(")", "").split(",")
         for i in ports_list:
             replaced_list.append(one_range.replace(one_range[start_index:end_index], str(i), 1))
-    elif groups[1]:
+    return replaced_list
+
+
+def expand_hypen(range_sr, one_range):
+    groups = range_sr.groups()
+    start_index, end_index = range_sr.start(), range_sr.end()
+    replaced_list = []
+    if groups[0]:
         # To replace the values of range, Ex. 4-6
-        range_start, range_end = groups[1].split("-")
+        range_start, range_end = groups[0].split("-")
         for i in range(int(range_start), int(range_end) + 1):
             replaced_list.append(one_range.replace(one_range[start_index:end_index], str(i), 1))
     return replaced_list
 
 
-def range_expand(range_to_expand):
-    if not (isinstance(range_to_expand, list) or isinstance(range_to_expand, str)):
-        raise AnsibleFilterError(f"value must be of type list or str, got {type(range_to_expand)}")
+def range_expand(one_range, prefix=""):
+    if not (isinstance(one_range, list) or isinstance(one_range, str)):
+        raise AnsibleFilterError(f"value must be of type list or str, got {type(one_range)}")
 
     result = []
 
     # If we got a list, unpack it and run this function recursively
-    if isinstance(range_to_expand, list):
-        for r in range_to_expand:
-            result.extend(range_expand(r))
+    if isinstance(one_range, list):
+        for r in one_range:
+            result.extend(range_expand(r, prefix))
 
-    # Must be a str now
     else:
-        prefix = ""
-        # Replacing "," inside () with "&" so that below for loop won't split it.
-        range_to_expand = re.sub(r"\((.*?)\)", lambda match: match.group(0).replace(",", "&"), range_to_expand)
-        # Unpack list in string
-        for one_range in range_to_expand.split(","):
-            # Changing "&" back to ",".
-            one_range = re.sub(r"\((.*?)\)", lambda match: match.group(0).replace("&", ","), one_range)
-            if one_range is None:
-                continue
-            regex = r"([A-Za-z]+\s*)?(.*)"
-            sr = re.search(regex, one_range)
-            try:
-                prefix_group = sr.groups()
-                if prefix_group[0]:
-                    prefix = prefix_group[0]
-                else:
-                    one_range = prefix + one_range
-                result.extend(range_expand(extend_range(one_range)))
-            except AttributeError:
-                if one_range:
-                    result.extend([one_range])
-                else:
-                    result.extend(one_range)
+        # Must be a str now
+        if one_range is None:
+            return
+
+        regex = r"([A-Za-z]+\s*)?(.*)"
+        sr = re.search(regex, one_range)
+
+        prefix_group = sr.groups()
+        if prefix_group[0]:
+            prefix = prefix_group[0]
+        else:
+            one_range = prefix + one_range
+
+        if re.search(r",(?![^(]*\))", one_range):
+            # Split comma outside parentheses
+            result.extend(range_expand(re.split(r",(?![^(]*\))", one_range), prefix))
+        elif parentheses_sr := re.search(r"(\(\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)?\-\d+)*)*\s*\))", one_range):
+            # Expand parentheses
+            result.extend(range_expand(expand_parentheses(parentheses_sr, one_range), prefix))
+        elif hypen_sr := re.search(r"([0-9]+\-[0-9]+)", one_range):
+            # Expand hypen
+            result.extend(range_expand(expand_hypen(hypen_sr, one_range), prefix))
+        else:
+            if one_range:
+                result.extend([one_range])
+            else:
+                result.extend(one_range)
     return result
 
 
