@@ -41,7 +41,7 @@ options:
     description: File where to save information.
     required: false
     type: str
-    default: ''
+    default: None
   configlet_extension:
     description: File extension to look for.
     required: false
