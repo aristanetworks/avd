@@ -772,6 +772,13 @@ keys:
               max: 10
               convert_types:
                 - str
+            unauthorized:
+              type: dict
+              keys:
+                access_vlan_membership_egress:
+                  type: bool
+                native_vlan_membership_egress:
+                  type: bool
             eapol:
               type: dict
               keys:
