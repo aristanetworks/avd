@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphr
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 
 class AvdStructuredConfigBase(AvdFacts):
@@ -745,4 +745,49 @@ class AvdStructuredConfigBase(AvdFacts):
         platform_raw_eos_cli = get(self.shared_utils.platform_settings, "raw_eos_cli")
         if raw_eos_cli is not None or platform_raw_eos_cli is not None:
             return "\n".join(filter(None, [raw_eos_cli, platform_raw_eos_cli]))
+        return None
+
+    @cached_property
+    def _source_interfaces(self) -> dict:
+        return get(self._hostvars, "source_interfaces", default={})
+
+    @cached_property
+    def ip_radius_source_interfaces(self) -> list | None:
+        """
+        Parse source_interfaces.radius and return list of ip_radius_source_interfaces.
+
+        Raises errors for duplicate VRFs or missing interfaces.
+        """
+        if (radius := self._source_interfaces.get("radius")) is None:
+            return None
+
+        ip_radius_source_interfaces = []
+        if radius.get("mgmt_interface") is True:
+            # mgmt_interface is always set (defaults to "Management1") so no need for error handling.
+            ip_radius_source_interfaces.append(
+                {
+                    "name": self.shared_utils.mgmt_interface,
+                    "vrf": self.shared_utils.mgmt_interface_vrf,
+                }
+            )
+
+        if radius.get("inband_mgmt_interface") is True:
+            if self.shared_utils.inband_mgmt_interface is None:
+                raise AristaAvdMissingVariableError("Unable to configure IP radius source interface since 'inband_mgmt_interface' is not set.")
+
+            # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
+            inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
+            if get_item(ip_radius_source_interfaces, "vrf", inband_mgmt_vrf) is not None:
+                raise AristaAvdError(f"Unable to configure multiple IP radius source interfaces for the same VRF '{inband_mgmt_vrf}'.")
+
+            ip_radius_source_interfaces.append(
+                {
+                    "name": self.shared_utils.inband_mgmt_interface,
+                    "vrf": self.shared_utils.inband_mgmt_vrf,
+                }
+            )
+
+        if ip_radius_source_interfaces:
+            return ip_radius_source_interfaces
+
         return None

@@ -2278,6 +2278,38 @@ keys:
               type: str
               description: Cleartext passphrase so the recommendation is to use vault.
                 Requires 'priv' to be set.
+  source_interfaces:
+    documentation_options:
+      table: source-interfaces
+    type: dict
+    keys:
+      radius:
+        type: dict
+        description: 'Set Radius source interfaces based on other `eos_designs` settings.
+
+          By default, no source interfaces will be added. They can still be configured
+          manually using `ip_radius_source_interfaces` in `eos_cli_config_gen`.
+
+          EOS supports a single source interface per VRF, so an error will be raised
+          in case of conflicts.
+
+          Errors will also be raised if an interface is not found for a device.'
+        keys:
+          mgmt_interface:
+            type: bool
+            description: 'Set a Radius source interface with the `mgmt_interface`
+              for the device and the VRF set by `mgmt_interface_vrf`.
+
+              `mgmt_interface` is typically the out-of-band Management interface,
+              and can be set under the node settings, platform settings or as a group/host
+              var.'
+          inband_mgmt_interface:
+            type: bool
+            description: 'Add a Radius source interface with the `inband_mgmt_interface`
+              for the device and the VRF set by `inband_mgmt_vrf`.
+
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and
+              can be set under the node settings.'
   svi_profiles:
     type: list
     primary_key: profile
