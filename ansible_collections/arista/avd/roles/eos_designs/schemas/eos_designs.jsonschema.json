@@ -14560,6 +14560,27 @@
             "^_.+$": {}
           },
           "title": "Radius"
+        },
+        "tacacs": {
+          "type": "object",
+          "description": "Set Tacacs source interfaces based on other `eos_designs` settings.\nBy default, no source interfaces will be added. They can still be configured manually using `ip_tacacs_source_interfaces` in `eos_cli_config_gen`.\nEOS supports a single source interface per VRF, so an error will be raised in case of conflicts.\nErrors will also be raised if an interface is not found for a device.",
+          "properties": {
+            "mgmt_interface": {
+              "type": "boolean",
+              "description": "Set a Tacacs source interface with the `mgmt_interface` for the device and the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
+              "title": "Management Interface"
+            },
+            "inband_mgmt_interface": {
+              "type": "boolean",
+              "description": "Add a Tacacs source interface with the `inband_mgmt_interface` for the device and the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
+              "title": "Inband Management Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Tacacs"
         }
       },
       "additionalProperties": false,

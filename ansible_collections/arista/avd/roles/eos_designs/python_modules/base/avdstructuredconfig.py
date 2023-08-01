@@ -791,3 +791,44 @@ class AvdStructuredConfigBase(AvdFacts):
             return ip_radius_source_interfaces
 
         return None
+
+    @cached_property
+    def ip_tacacs_source_interfaces(self) -> list | None:
+        """
+        Parse source_interfaces.tacacs and return list of ip_tacacs_source_interfaces.
+
+        Raises errors for duplicate VRFs or missing interfaces.
+        """
+        if (tacacs := self._source_interfaces.get("tacacs")) is None:
+            return None
+
+        ip_tacacs_source_interfaces = []
+        if tacacs.get("mgmt_interface") is True:
+            # mgmt_interface is always set (defaults to "Management1") so no need for error handling.
+            ip_tacacs_source_interfaces.append(
+                {
+                    "name": self.shared_utils.mgmt_interface,
+                    "vrf": self.shared_utils.mgmt_interface_vrf,
+                }
+            )
+
+        if tacacs.get("inband_mgmt_interface") is True:
+            if self.shared_utils.inband_mgmt_interface is None:
+                raise AristaAvdMissingVariableError("Unable to configure IP tacacs source interface since 'inband_mgmt_interface' is not set.")
+
+            # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
+            inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
+            if get_item(ip_tacacs_source_interfaces, "vrf", inband_mgmt_vrf) is not None:
+                raise AristaAvdError(f"Unable to configure multiple IP tacacs source interfaces for the same VRF '{inband_mgmt_vrf}'.")
+
+            ip_tacacs_source_interfaces.append(
+                {
+                    "name": self.shared_utils.inband_mgmt_interface,
+                    "vrf": self.shared_utils.inband_mgmt_vrf,
+                }
+            )
+
+        if ip_tacacs_source_interfaces:
+            return ip_tacacs_source_interfaces
+
+        return None

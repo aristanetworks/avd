@@ -2310,6 +2310,33 @@ keys:
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
+      tacacs:
+        type: dict
+        description: 'Set Tacacs source interfaces based on other `eos_designs` settings.
+
+          By default, no source interfaces will be added. They can still be configured
+          manually using `ip_tacacs_source_interfaces` in `eos_cli_config_gen`.
+
+          EOS supports a single source interface per VRF, so an error will be raised
+          in case of conflicts.
+
+          Errors will also be raised if an interface is not found for a device.'
+        keys:
+          mgmt_interface:
+            type: bool
+            description: 'Set a Tacacs source interface with the `mgmt_interface`
+              for the device and the VRF set by `mgmt_interface_vrf`.
+
+              `mgmt_interface` is typically the out-of-band Management interface,
+              and can be set under the node settings, platform settings or as a group/host
+              var.'
+          inband_mgmt_interface:
+            type: bool
+            description: 'Add a Tacacs source interface with the `inband_mgmt_interface`
+              for the device and the VRF set by `inband_mgmt_vrf`.
+
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and
+              can be set under the node settings.'
   svi_profiles:
     type: list
     primary_key: profile
