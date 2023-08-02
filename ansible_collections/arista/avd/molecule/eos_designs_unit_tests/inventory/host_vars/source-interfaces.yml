@@ -15,6 +15,9 @@ source_interfaces:
   domain_lookup:
     mgmt_interface: true
     inband_mgmt_interface: true
+  http_client:
+    mgmt_interface: true
+    inband_mgmt_interface: true
   radius:
     mgmt_interface: true
     inband_mgmt_interface: true

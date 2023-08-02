@@ -838,3 +838,18 @@ class AvdStructuredConfigBase(AvdFacts):
             return {"source_interfaces": source_interfaces}
 
         return None
+
+    @cached_property
+    def ip_http_client_source_interfaces(self) -> list | None:
+        """
+        Parse source_interfaces.http_client and return list of source_interfaces.
+        """
+        if (inputs := self._source_interfaces.get("http_client")) is None:
+            return None
+
+        if source_interfaces := self._build_source_interfaces(
+            inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP HTTP Client"
+        ):
+            return source_interfaces
+
+        return None
