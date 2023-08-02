@@ -9,7 +9,7 @@ from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphr
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
 class AvdStructuredConfigBase(AvdFacts):
@@ -762,28 +762,26 @@ class AvdStructuredConfigBase(AvdFacts):
         source_interfaces = []
         if include_mgmt_interface:
             # mgmt_interface is always set (defaults to "Management1") so no need for error handling.
-            source_interfaces.append(
-                {
-                    "name": self.shared_utils.mgmt_interface,
-                    "vrf": self.shared_utils.mgmt_interface_vrf,
-                }
-            )
+            source_interface = {"name": self.shared_utils.mgmt_interface}
+            if self.shared_utils.mgmt_interface_vrf not in [None, "default"]:
+                source_interface["vrf"] = self.shared_utils.mgmt_interface_vrf
+            source_interfaces.append(source_interface)
 
         if include_inband_mgmt_interface:
             if self.shared_utils.inband_mgmt_interface is None:
                 raise AristaAvdMissingVariableError(f"Unable to configure {error_context} source-interface since 'inband_mgmt_interface' is not set.")
 
-            # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
-            inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
-            if get_item(source_interfaces, "vrf", inband_mgmt_vrf) is not None:
-                raise AristaAvdError(f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'.")
+            # Duplication check only needed if we inserted an entry above.
+            if source_interfaces:
+                # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
+                inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
+                if [source_interface for source_interface in source_interfaces if source_interface.get("vrf", "default") == inband_mgmt_vrf]:
+                    raise AristaAvdError(f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'.")
 
-            source_interfaces.append(
-                {
-                    "name": self.shared_utils.inband_mgmt_interface,
-                    "vrf": self.shared_utils.inband_mgmt_vrf,
-                }
-            )
+            source_interface = {"name": self.shared_utils.inband_mgmt_interface}
+            if self.shared_utils.inband_mgmt_vrf not in [None, "default"]:
+                source_interface["vrf"] = self.shared_utils.inband_mgmt_vrf
+            source_interfaces.append(source_interface)
 
         return source_interfaces
 
@@ -823,5 +821,20 @@ class AvdStructuredConfigBase(AvdFacts):
 
         if source_interfaces := self._build_source_interfaces(inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP SSH Client"):
             return source_interfaces
+
+        return None
+
+    @cached_property
+    def ip_domain_lookup(self) -> dict | None:
+        """
+        Parse source_interfaces.domain_lookup and return dict with nested source_interfaces list.
+        """
+        if (inputs := self._source_interfaces.get("domain_lookup")) is None:
+            return None
+
+        if source_interfaces := self._build_source_interfaces(
+            inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP Domain Lookup"
+        ):
+            return {"source_interfaces": source_interfaces}
 
         return None
