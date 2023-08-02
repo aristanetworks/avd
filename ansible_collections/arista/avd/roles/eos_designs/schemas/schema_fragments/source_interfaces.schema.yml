@@ -5,7 +5,7 @@ type: dict
 keys:
   source_interfaces:
     documentation_options:
-      table: source-interfaces
+      table: management-settings
     type: dict
     description: |-
       Configure source-interfaces based on the management interfaces set for other `eos_designs` data models.
