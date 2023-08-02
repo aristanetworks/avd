@@ -751,84 +751,77 @@ class AvdStructuredConfigBase(AvdFacts):
     def _source_interfaces(self) -> dict:
         return get(self._hostvars, "source_interfaces", default={})
 
-    @cached_property
-    def ip_radius_source_interfaces(self) -> list | None:
+    def _build_source_interfaces(self, include_mgmt_interface: bool, include_inband_mgmt_interface: bool, error_context: str) -> list:
         """
-        Parse source_interfaces.radius and return list of ip_radius_source_interfaces.
+        Return list of source interfaces with VRFs.
 
-        Raises errors for duplicate VRFs or missing interfaces.
+        Error context should be short and fit in "... configure {error_context} source-interface ..."
+
+        Raises errors for duplicate VRFs or missing interfaces with the given error context.
         """
-        if (radius := self._source_interfaces.get("radius")) is None:
-            return None
-
-        ip_radius_source_interfaces = []
-        if radius.get("mgmt_interface") is True:
+        source_interfaces = []
+        if include_mgmt_interface:
             # mgmt_interface is always set (defaults to "Management1") so no need for error handling.
-            ip_radius_source_interfaces.append(
+            source_interfaces.append(
                 {
                     "name": self.shared_utils.mgmt_interface,
                     "vrf": self.shared_utils.mgmt_interface_vrf,
                 }
             )
 
-        if radius.get("inband_mgmt_interface") is True:
+        if include_inband_mgmt_interface:
             if self.shared_utils.inband_mgmt_interface is None:
-                raise AristaAvdMissingVariableError("Unable to configure IP radius source interface since 'inband_mgmt_interface' is not set.")
+                raise AristaAvdMissingVariableError(f"Unable to configure {error_context} source-interface since 'inband_mgmt_interface' is not set.")
 
             # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
             inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
-            if get_item(ip_radius_source_interfaces, "vrf", inband_mgmt_vrf) is not None:
-                raise AristaAvdError(f"Unable to configure multiple IP radius source interfaces for the same VRF '{inband_mgmt_vrf}'.")
+            if get_item(source_interfaces, "vrf", inband_mgmt_vrf) is not None:
+                raise AristaAvdError(f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'.")
 
-            ip_radius_source_interfaces.append(
+            source_interfaces.append(
                 {
                     "name": self.shared_utils.inband_mgmt_interface,
                     "vrf": self.shared_utils.inband_mgmt_vrf,
                 }
             )
 
-        if ip_radius_source_interfaces:
-            return ip_radius_source_interfaces
+        return source_interfaces
+
+    @cached_property
+    def ip_radius_source_interfaces(self) -> list | None:
+        """
+        Parse source_interfaces.radius and return list of source_interfaces.
+        """
+        if (inputs := self._source_interfaces.get("radius")) is None:
+            return None
+
+        if source_interfaces := self._build_source_interfaces(inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP Radius"):
+            return source_interfaces
 
         return None
 
     @cached_property
     def ip_tacacs_source_interfaces(self) -> list | None:
         """
-        Parse source_interfaces.tacacs and return list of ip_tacacs_source_interfaces.
-
-        Raises errors for duplicate VRFs or missing interfaces.
+        Parse source_interfaces.tacacs and return list of source_interfaces.
         """
-        if (tacacs := self._source_interfaces.get("tacacs")) is None:
+        if (inputs := self._source_interfaces.get("tacacs")) is None:
             return None
 
-        ip_tacacs_source_interfaces = []
-        if tacacs.get("mgmt_interface") is True:
-            # mgmt_interface is always set (defaults to "Management1") so no need for error handling.
-            ip_tacacs_source_interfaces.append(
-                {
-                    "name": self.shared_utils.mgmt_interface,
-                    "vrf": self.shared_utils.mgmt_interface_vrf,
-                }
-            )
+        if source_interfaces := self._build_source_interfaces(inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP Tacacs"):
+            return source_interfaces
 
-        if tacacs.get("inband_mgmt_interface") is True:
-            if self.shared_utils.inband_mgmt_interface is None:
-                raise AristaAvdMissingVariableError("Unable to configure IP tacacs source interface since 'inband_mgmt_interface' is not set.")
+        return None
 
-            # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
-            inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
-            if get_item(ip_tacacs_source_interfaces, "vrf", inband_mgmt_vrf) is not None:
-                raise AristaAvdError(f"Unable to configure multiple IP tacacs source interfaces for the same VRF '{inband_mgmt_vrf}'.")
+    @cached_property
+    def ip_ssh_client_source_interfaces(self) -> list | None:
+        """
+        Parse source_interfaces.ssh_client and return list of source_interfaces.
+        """
+        if (inputs := self._source_interfaces.get("ssh_client")) is None:
+            return None
 
-            ip_tacacs_source_interfaces.append(
-                {
-                    "name": self.shared_utils.inband_mgmt_interface,
-                    "vrf": self.shared_utils.inband_mgmt_vrf,
-                }
-            )
-
-        if ip_tacacs_source_interfaces:
-            return ip_tacacs_source_interfaces
+        if source_interfaces := self._build_source_interfaces(inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP SSH Client"):
+            return source_interfaces
 
         return None

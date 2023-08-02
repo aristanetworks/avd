@@ -1,7 +1,7 @@
 type: l2leaf
 l2leaf:
   nodes:
-    - name: source-interface-radius-missing-inband-mgmt-interface
+    - name: source-interfaces-radius-missing-inband-mgmt-interface
       id: 1
       mgmt_ip: 192.168.0.2/24
       # inband_mgmt_ip: 10.20.30.40/24
@@ -14,4 +14,4 @@ source_interfaces:
     inband_mgmt_interface: true
 
 expected_error_message: >-
-  Unable to configure IP radius source interface since 'inband_mgmt_interface' is not set.
+  Unable to configure IP Radius source-interface since 'inband_mgmt_interface' is not set.

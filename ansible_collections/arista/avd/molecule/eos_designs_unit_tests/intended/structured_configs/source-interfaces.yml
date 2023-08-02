@@ -31,6 +31,11 @@ ip_tacacs_source_interfaces:
   vrf: MGMT
 - name: Vlan4092
   vrf: INBANDMGMT
+ip_ssh_client_source_interfaces:
+- name: Management1
+  vrf: MGMT
+- name: Vlan4092
+  vrf: INBANDMGMT
 ip_igmp_snooping:
   globally_enabled: true
 vlans:

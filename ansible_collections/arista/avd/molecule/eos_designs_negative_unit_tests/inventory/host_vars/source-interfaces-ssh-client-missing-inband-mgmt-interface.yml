@@ -1,7 +1,7 @@
 type: l2leaf
 l2leaf:
   nodes:
-    - name: source-interface-tacacs-missing-inband-mgmt-interface
+    - name: source-interfaces-ssh-client-missing-inband-mgmt-interface
       id: 1
       mgmt_ip: 192.168.0.2/24
       # inband_mgmt_ip: 10.20.30.40/24
@@ -9,9 +9,9 @@ l2leaf:
       # inband_mgmt_vrf: INBANDMGMT
 
 source_interfaces:
-  tacacs:
+  ssh_client:
     mgmt_interface: true
     inband_mgmt_interface: true
 
 expected_error_message: >-
-  Unable to configure IP tacacs source interface since 'inband_mgmt_interface' is not set.
+  Unable to configure IP SSH Client source-interface since 'inband_mgmt_interface' is not set.

@@ -1,7 +1,7 @@
 type: l2leaf
 l2leaf:
   nodes:
-    - name: source-interface-tacacs-duplicate-vrf
+    - name: source-interfaces-tacacs-duplicate-vrf
       id: 1
       mgmt_ip: 192.168.0.2/24
       inband_mgmt_ip: 10.20.30.40/24
@@ -16,4 +16,4 @@ source_interfaces:
     inband_mgmt_interface: true
 
 expected_error_message: >-
-  Unable to configure multiple IP tacacs source interfaces for the same VRF 'default'.
+  Unable to configure multiple IP Tacacs source-interfaces for the same VRF 'default'.
