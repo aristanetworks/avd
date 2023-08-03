@@ -5,12 +5,12 @@ evpn_vlan_aware_bundles: true
 type: l3leaf
 
 l3leaf:
-  defaults:     
-    # LOOPBACK AND VTEP MANAGEMENT 
+  defaults:
+    # LOOPBACK AND VTEP MANAGEMENT
     loopback_ipv4_pool: 10.10.0.0/24
     vtep_loopback_ipv4_pool: 10.11.0.0/24
     vtep_loopback: Loopback1
-    
+
     # Possibility to prevent configuration of Tenant VRFs and SVIs. This allows support for centralized routing.
     evpn_services_l2_only: true
 
