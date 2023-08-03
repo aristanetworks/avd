@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import ipaddress
 from functools import cached_property
+from itertools import groupby as itertools_groupby
 from re import fullmatch as re_fullmatch
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
@@ -9,7 +10,7 @@ from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_s
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item, groupby
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_item
 
 from .utils import UtilsMixin
 
@@ -374,6 +375,12 @@ class RouterBgpMixin(UtilsMixin):
     def _evpn_vlan_aware_bundles(self) -> bool:
         return get(self._hostvars, "evpn_vlan_aware_bundles", default=False)
 
+    def _get_vlan_aware_bundle_name(self, vlan: dict) -> str:
+        """
+        Return a string with the vlan-aware-bundle name for one VLAN
+        """
+        return vlan.get("evpn_vlan_bundle") or vlan.get("name")
+
     @cached_property
     def _router_bgp_vlan_aware_bundles(self) -> list | None:
         """
@@ -399,43 +406,13 @@ class RouterBgpMixin(UtilsMixin):
                     )
 
             # L2 Vlans per Tenant
-            # If multiple L2 Vlans share the same evpn_vlan_bundle name, they will be part of the same vlan-aware-bundle
-            l2vlans = list(tenant["l2vlans"])
-            l2vlans_no_bundle_definition = []
-            if len(l2vlans) > 0:
-                tmp_bundles = {}
-                for l2vlan in l2vlans:
-                    if "evpn_vlan_bundle" in l2vlan:
-                        # vlans which have evpn_vlan_bundle defined
-                        if l2vlan["evpn_vlan_bundle"] not in tmp_bundles:
-                            tmp_bundles[l2vlan["evpn_vlan_bundle"]] = {"vlans":[], "bundle_details":{}}
-                        
-                        if (len(tmp_bundles[l2vlan["evpn_vlan_bundle"]]["bundle_details"]) < 1) and ((self._router_bgp_vlans_vlan(l2vlan, tenant, vrf={})) is not None):
-                            # We are reusing the regular bgp vlan function so need to add vlan info  
-                            tmp_bundles[l2vlan["evpn_vlan_bundle"]]["bundle_details"] = self._router_bgp_vlans_vlan(l2vlan, tenant, vrf={})
-                            
-                        tmp_bundles[l2vlan["evpn_vlan_bundle"]]["vlans"].append(int(l2vlan["id"]))
-                    else:
-                        # populate list for l2vlans which don't have evpn_vlan_bundle defined, these will be bundled based on vlan name in a later section
-                        l2vlans_no_bundle_definition.append(l2vlan)
-                            
-                for bundle_name, values in tmp_bundles.items():
-                    bundle = {}       
-                    bundle["vlan"] = list_compress(values["vlans"])
-                    bundle["name"] = str(bundle_name)
-                    bundle.update(values["bundle_details"])
-                    append_if_not_duplicate(
-                        list_of_dicts=bundles,
-                        primary_key="name",
-                        new_dict=bundle,
-                        context="BGP VLAN-Aware Bundles defined under network services",
-                        context_keys=["name"],
-                    )            
-            
-            # If multiple L2 Vlans share the same name, they will be part of the same bundle
-            for bundle_name, l2vlans in groupby(l2vlans_no_bundle_definition, "name"):
+            # If multiple L2 Vlans share a evpn_vlan_bundle name, they will be part of the same vlan-aware-bundle else they use the vlan name as bundle name
+            bundle_groups = itertools_groupby(tenant["l2vlans"], self._get_vlan_aware_bundle_name)
+            for bundle_name, l2vlans in bundle_groups:
                 l2vlans = list(l2vlans)
                 if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant, vrf={})) is not None:
+                    # print (bundle_name)
+                    # print (l2vlans)
                     # We are reusing the regular bgp vlan function so need to add vlan info
                     bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
                     bundle = {"name": bundle_name, **bundle}

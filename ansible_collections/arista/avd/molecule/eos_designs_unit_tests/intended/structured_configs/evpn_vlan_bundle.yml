@@ -1,4 +1,4 @@
-hostname: evpn_l2vlan_bundle_definition
+hostname: evpn_vlan_bundle
 router_bgp:
   as: '65101'
   router_id: 10.10.0.3
@@ -36,8 +36,7 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: true
   vlan_aware_bundles:
-  - vlan: 50,60,2015-2016
-    name: bundle1
+  - name: bundle1
     tenant: FABRIC
     rd: 10.10.0.3:10050
     route_targets:
@@ -45,33 +44,7 @@ router_bgp:
       - 10050:10050
     redistribute_routes:
     - learned
-  - vlan: 2017-2019
-    name: bundle2
-    tenant: FABRIC
-    rd: 10.10.0.3:12017
-    route_targets:
-      both:
-      - 12017:12017
-    redistribute_routes:
-    - learned
-  - name: oracle_cluster_dev
-    tenant: FABRIC
-    rd: 10.10.0.3:12021
-    route_targets:
-      both:
-      - 12021:12021
-    redistribute_routes:
-    - learned
-    vlan: '2021'
-  - name: oracle_db_dev
-    tenant: FABRIC
-    rd: 10.10.0.3:12020
-    route_targets:
-      both:
-      - 12020:12020
-    redistribute_routes:
-    - learned
-    vlan: '2020'
+    vlan: 50,60
   - name: storage_prod
     tenant: StorageProd
     rd: 10.10.0.3:10010
@@ -130,27 +103,6 @@ vlans:
 - id: 60
   name: ipmi
   tenant: FABRIC
-- id: 2015
-  name: vmotion_prod
-  tenant: FABRIC
-- id: 2016
-  name: oracle_db_prod
-  tenant: FABRIC
-- id: 2017
-  name: oracle_cluster_prod
-  tenant: FABRIC
-- id: 2018
-  name: oracle_db_dev
-  tenant: FABRIC
-- id: 2019
-  name: oracle_cluster_dev
-  tenant: FABRIC
-- id: 2020
-  name: oracle_db_dev
-  tenant: FABRIC
-- id: 2021
-  name: oracle_cluster_dev
-  tenant: FABRIC
 - id: 10
   name: storage_prod
   tenant: StorageProd
@@ -161,7 +113,7 @@ ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
   Vxlan1:
-    description: evpn_l2vlan_bundle_definition_VTEP
+    description: evpn_vlan_bundle_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
@@ -170,20 +122,6 @@ vxlan_interface:
         vni: 10050
       - id: 60
         vni: 10060
-      - id: 2015
-        vni: 12015
-      - id: 2016
-        vni: 12016
-      - id: 2017
-        vni: 12017
-      - id: 2018
-        vni: 12018
-      - id: 2019
-        vni: 12019
-      - id: 2020
-        vni: 12020
-      - id: 2021
-        vni: 12021
       - id: 10
         vni: 10010
       - id: 20
