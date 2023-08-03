@@ -407,7 +407,8 @@ class RouterBgpMixin(UtilsMixin):
 
             # L2 Vlans per Tenant
             # If multiple L2 Vlans share a evpn_vlan_bundle name, they will be part of the same vlan-aware-bundle else they use the vlan name as bundle name
-            bundle_groups = itertools_groupby(tenant["l2vlans"], self._get_vlan_aware_bundle_name)
+            sorted_vlan_list = sorted(tenant["l2vlans"], key=self._get_vlan_aware_bundle_name)
+            bundle_groups = itertools_groupby(sorted_vlan_list, self._get_vlan_aware_bundle_name)
             for bundle_name, l2vlans in bundle_groups:
                 l2vlans = list(l2vlans)
                 if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant, vrf={})) is not None:
