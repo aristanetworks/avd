@@ -1,0 +1,18 @@
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: connected_endpoints_keys_key
+      id: 101
+      bgp_as: 101
+
+servers:
+  server01_ESI:
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2]
+        switch_ports: [ Ethernet10, Ethernet10]
+        switches: [ connected_endpoints_keys_key, Leaf1]
+        profile: TENANT_A_B

@@ -1,0 +1,13 @@
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  node_groups:
+    sflow-tests-leaf-mlag:
+      bgp_as: 65105
+      nodes:
+        node_type:
+          id: 5
+          mgmt_ip: 192.168.0.103/24

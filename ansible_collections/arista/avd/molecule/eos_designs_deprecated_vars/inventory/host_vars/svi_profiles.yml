@@ -1,0 +1,33 @@
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    id: 101
+    bgp_as: 101
+
+svi_profiles:
+  GENERIC:
+    mtu: 1560
+    enabled: true
+  GENERIC_FULL:
+    name: GENERIC Name
+    mtu: 1560
+    enabled: false
+    ip_address_virtual: 10.1.10.254/24
+  TEST_SVI_NODE_INHERIT:
+    name: Test the SVI and node config inheritance
+    mtu: 1560
+    enabled: false
+    ip_address_virtual: 10.4.13.254/24
+    ipv6_address_virtual: 2001:db8:413::1/64
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo101
+        source_vrf: TEST
+    nodes:
+      evpn_services_l2_only_false:
+        ip_address: 12.4.13.2/24
+        ipv6_address: 2012:db9:413::2/64
+        ip_virtual_router_addresses: [ "12.4.13.1" ]
+        ipv6_virtual_router_addresses: [ "2012:db9:413::1" ]
