@@ -412,8 +412,6 @@ class RouterBgpMixin(UtilsMixin):
             for bundle_name, l2vlans in bundle_groups:
                 l2vlans = list(l2vlans)
                 if (bundle := self._router_bgp_vlans_vlan(l2vlans[0], tenant, vrf={})) is not None:
-                    # print (bundle_name)
-                    # print (l2vlans)
                     # We are reusing the regular bgp vlan function so need to add vlan info
                     bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
                     bundle = {"name": bundle_name, **bundle}
