@@ -306,15 +306,6 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: 120-121
-  - name: Tenant_A_NFS
-    tenant: Tenant_A
-    rd: 192.168.255.22:20161
-    route_targets:
-      both:
-      - 20161:20161
-    redistribute_routes:
-    - learned
-    vlan: '161'
   - name: Tenant_A_VMOTION
     tenant: Tenant_A
     rd: 192.168.255.22:20160
@@ -324,6 +315,15 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '160'
+  - name: Tenant_A_NFS
+    tenant: Tenant_A
+    rd: 192.168.255.22:20161
+    route_targets:
+      both:
+      - 20161:20161
+    redistribute_routes:
+    - learned
+    vlan: '161'
   - name: Tenant_B_OP_Zone
     rd: 192.168.255.22:20
     route_targets:
