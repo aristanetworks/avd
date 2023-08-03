@@ -17,7 +17,7 @@ l3leaf:
   nodes:
     - name: evpn_l2vlan_bundle_definition
       id: 3
-      bgp_as: 65101 
+      bgp_as: 65101
       filter:
         tags: [fabric, ipmi, storageProd]
       #mgmt_ip: 10.83.30.101/22 #10.83.30.133/22

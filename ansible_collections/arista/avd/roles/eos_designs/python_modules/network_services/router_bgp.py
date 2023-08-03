@@ -401,7 +401,7 @@ class RouterBgpMixin(UtilsMixin):
             # L2 Vlans per Tenant
             # If multiple L2 Vlans share the same evpn_vlan_bundle name, they will be part of the same vlan-aware-bundle
             l2vlans = list(tenant["l2vlans"])
-            l2vlans_no_bundle_definition = list()
+            l2vlans_no_bundle_definition = []
             if len(l2vlans) > 0:
                 tmp_bundles = {}
                 for l2vlan in l2vlans:
