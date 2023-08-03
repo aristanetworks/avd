@@ -1,0 +1,190 @@
+hostname: evpn_l2vlan_bundle_definition
+router_bgp:
+  as: '65101'
+  router_id: 10.10.0.3
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  vlan_aware_bundles:
+  - vlan: 50,60,2015-2016
+    name: bundle1
+    tenant: FABRIC
+    rd: 10.10.0.3:10050
+    route_targets:
+      both:
+      - 10050:10050
+    redistribute_routes:
+    - learned
+  - vlan: 2017-2019
+    name: bundle2
+    tenant: FABRIC
+    rd: 10.10.0.3:12017
+    route_targets:
+      both:
+      - 12017:12017
+    redistribute_routes:
+    - learned
+  - name: oracle_cluster_dev
+    tenant: FABRIC
+    rd: 10.10.0.3:12021
+    route_targets:
+      both:
+      - 12021:12021
+    redistribute_routes:
+    - learned
+    vlan: '2021'
+  - name: oracle_db_dev
+    tenant: FABRIC
+    rd: 10.10.0.3:12020
+    route_targets:
+      both:
+      - 12020:12020
+    redistribute_routes:
+    - learned
+    vlan: '2020'
+  - name: storage_prod
+    tenant: StorageProd
+    rd: 10.10.0.3:10010
+    route_targets:
+      both:
+      - 10010:10010
+    redistribute_routes:
+    - learned
+    vlan: 10,20
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.10.0.3/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 10.11.0.3/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.0.0/24 eq 32
+  - sequence: 20
+    action: permit 10.11.0.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+vlans:
+- id: 50
+  name: ipmi
+  tenant: FABRIC
+- id: 60
+  name: ipmi
+  tenant: FABRIC
+- id: 2015
+  name: vmotion_prod
+  tenant: FABRIC
+- id: 2016
+  name: oracle_db_prod
+  tenant: FABRIC
+- id: 2017
+  name: oracle_cluster_prod
+  tenant: FABRIC
+- id: 2018
+  name: oracle_db_dev
+  tenant: FABRIC
+- id: 2019
+  name: oracle_cluster_dev
+  tenant: FABRIC
+- id: 2020
+  name: oracle_db_dev
+  tenant: FABRIC
+- id: 2021
+  name: oracle_cluster_dev
+  tenant: FABRIC
+- id: 10
+  name: storage_prod
+  tenant: StorageProd
+- id: 20
+  name: storage_prod
+  tenant: StorageProd
+ip_igmp_snooping:
+  globally_enabled: true
+vxlan_interface:
+  Vxlan1:
+    description: evpn_l2vlan_bundle_definition_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      vlans:
+      - id: 50
+        vni: 10050
+      - id: 60
+        vni: 10060
+      - id: 2015
+        vni: 12015
+      - id: 2016
+        vni: 12016
+      - id: 2017
+        vni: 12017
+      - id: 2018
+        vni: 12018
+      - id: 2019
+        vni: 12019
+      - id: 2020
+        vni: 12020
+      - id: 2021
+        vni: 12021
+      - id: 10
+        vni: 10010
+      - id: 20
+        vni: 10020

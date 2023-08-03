@@ -938,6 +938,12 @@ $defs:
                 type: bool
                 default: true
                 description: Extend this L2VLAN over VXLAN.
+              evpn_vlan_bundle:
+                type: str
+                description: |
+                  Define a vlan-aware-bundle name which should be used instead of the vlan name. If several vlans have the same evpn_vlan_bundle defined they will be grouped together.
+                  The RD and RT will be used from the lowest VLAN id defined in the same evpn_vlan_bundle.
+                  To use this option the global evpn_vlan_aware_bundles option must be set to true.
               trunk_groups:
                 type: list
                 items:
