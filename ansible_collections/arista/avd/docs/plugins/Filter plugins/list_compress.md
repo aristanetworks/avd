@@ -1,4 +1,7 @@
-# arista.avd.list_compress
+# list_compress
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.list_compress` when using this plugin.
 
 Compress a list of integers to a range string\.
 

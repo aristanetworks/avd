@@ -1,4 +1,7 @@
-# arista.avd.set_vars
+# set_vars
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.set_vars` when using this plugin.
 
 Set vars as ansible\_facts\.
 

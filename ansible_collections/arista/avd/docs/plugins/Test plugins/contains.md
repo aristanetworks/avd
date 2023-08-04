@@ -1,4 +1,7 @@
-# arista.avd.contains
+# contains
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.contains` when using this plugin.
 
 Test if a list contains one or more of the supplied values\.
 

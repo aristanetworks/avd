@@ -1,4 +1,7 @@
-# arista.avd.yaml_templates_to_facts
+# yaml_templates_to_facts
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.yaml_templates_to_facts` when using this plugin.
 
 Set facts from YAML via Jinja2 templates
 

@@ -1,4 +1,7 @@
-# arista.avd.configlet_build_config
+# configlet_build_config
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.configlet_build_config` when using this plugin.
 
 Build arista\.cvp\.configlet configuration\.
 

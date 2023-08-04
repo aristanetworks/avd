@@ -1,4 +1,7 @@
-# arista.avd.generate_route_target
+# generate_route_target
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.generate_route_target` when using this plugin.
 
 Transforms short\_esi <code>0303\:0202\:0101</code> to route\-target format <code>03\:03\:02\:02\:01\:01</code>
 

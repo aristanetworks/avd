@@ -1,4 +1,7 @@
-# arista.avd.eos_designs_structured_config
+# eos_designs_structured_config
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.eos_designs_structured_config` when using this plugin.
 
 Generate AVD EOS Designs structured configuration
 

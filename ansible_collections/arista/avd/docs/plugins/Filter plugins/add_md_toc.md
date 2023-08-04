@@ -1,4 +1,7 @@
-# arista.avd.add_md_toc
+# add_md_toc
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.add_md_toc` when using this plugin.
 
 Parse the input Markdown and add a Table of Contents between the toc\_markers\.
 

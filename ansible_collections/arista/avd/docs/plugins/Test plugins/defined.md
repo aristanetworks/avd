@@ -1,4 +1,7 @@
-# arista.avd.defined
+# defined
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.defined` when using this plugin.
 
 Test if the value is not <code>Undefined</code> or <code>None</code>\.
 

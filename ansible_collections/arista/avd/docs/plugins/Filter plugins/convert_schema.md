@@ -1,4 +1,7 @@
-# arista.avd.convert_schema
+# convert_schema
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.convert_schema` when using this plugin.
 
 Convert AVD Schema to a chosen output format\.
 

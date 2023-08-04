@@ -1,4 +1,7 @@
-# arista.avd.generate_esi
+# generate_esi
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.generate_esi` when using this plugin.
 
 Transforms short\_esi <code>0303\:0202\:0101</code> to EVPN ESI format <code>0000\:0000\:0303\:0202\:0101</code>
 

@@ -1,4 +1,7 @@
-# arista.avd.validate_and_template
+# validate_and_template
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.validate_and_template` when using this plugin.
 
 Validate input data according to Schema\, render Jinja2 template and write result to a file\.
 

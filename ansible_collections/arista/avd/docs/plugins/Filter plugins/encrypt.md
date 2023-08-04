@@ -1,4 +1,7 @@
-# arista.avd.encrypt
+# encrypt
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.encrypt` when using this plugin.
 
 Encrypt supported EOS passwords
 

@@ -1,4 +1,7 @@
-# arista.avd.batch_template
+# batch_template
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.batch_template` when using this plugin.
 
 Render Jinja2 template on multiple items and write result to individual files\.
 

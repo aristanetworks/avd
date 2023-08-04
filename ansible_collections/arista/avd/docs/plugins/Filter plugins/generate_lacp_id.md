@@ -1,4 +1,7 @@
-# arista.avd.generate_lacp_id
+# generate_lacp_id
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.generate_lacp_id` when using this plugin.
 
 Transforms short\_esi <code>0303\:0202\:0101</code> to LACP ID format <code>0303\.0202\.0101</code>
 

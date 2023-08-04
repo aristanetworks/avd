@@ -1,4 +1,7 @@
-# arista.avd.verify_requirements
+# verify_requirements
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.verify_requirements` when using this plugin.
 
 Verify Python requirements when running AVD
 

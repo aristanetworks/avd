@@ -1,4 +1,7 @@
-# arista.avd.hide_passwords
+# hide_passwords
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.hide_passwords` when using this plugin.
 
 Replace a value by \"\<removed\>\"
 

@@ -1,4 +1,7 @@
-# arista.avd.eos_designs_facts
+# eos_designs_facts
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.eos_designs_facts` when using this plugin.
 
 Set eos\_designs facts
 

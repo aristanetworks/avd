@@ -1,4 +1,7 @@
-# arista.avd.snmp_hash
+# snmp_hash
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.snmp_hash` when using this plugin.
 
 Compute localized SNMP passphrases
 

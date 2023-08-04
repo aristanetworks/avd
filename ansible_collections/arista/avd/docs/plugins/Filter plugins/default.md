@@ -1,4 +1,7 @@
-# arista.avd.default
+# default
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.default` when using this plugin.
 
 Returns input value if defined and is not none\. Otherwise\, return default value\.
 

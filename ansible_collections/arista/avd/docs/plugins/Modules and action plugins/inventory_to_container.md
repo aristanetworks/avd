@@ -1,4 +1,7 @@
-# arista.avd.inventory_to_container
+# inventory_to_container
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.inventory_to_container` when using this plugin.
 
 Transform information from inventory to arista\.cvp collection
 

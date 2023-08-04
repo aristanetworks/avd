@@ -42,11 +42,10 @@
 {%         endif %}
 {%     endfor %}
 {% endmacro %}
-{% if collection %}
-# {{ collection }}.{{ module }}
-{% else %}
-# arista.avd.{{ module }}
-{% endif %}
+# {{ module }}
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `{{ collection | default("arista.avd", true) ~ "." ~ module }}` when using this plugin.
 {% if short_description %}
 
 {{ short_description | md_ify }}

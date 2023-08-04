@@ -1,4 +1,7 @@
-# arista.avd.range_expand
+# range_expand
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.range_expand` when using this plugin.
 
 Expand a range of interfaces or list of ranges and return as a list of strings\.
 

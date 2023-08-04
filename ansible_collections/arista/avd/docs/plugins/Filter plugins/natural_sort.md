@@ -1,4 +1,7 @@
-# arista.avd.natural_sort
+# natural_sort
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.natural_sort` when using this plugin.
 
 Sort an input list with natural sorting\.
 

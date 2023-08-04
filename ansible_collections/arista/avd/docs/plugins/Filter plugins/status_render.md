@@ -1,4 +1,7 @@
-# arista.avd.status_render
+# status_render
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.status_render` when using this plugin.
 
 Convert Text to EMOJI code\.
 

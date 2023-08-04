@@ -1,4 +1,7 @@
-# arista.avd.is_in_filter
+# is_in_filter
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.is_in_filter` when using this plugin.
 
 Returns <code>True</code> if the input hostname matches the <em>hostname\_filter</em>\.
 

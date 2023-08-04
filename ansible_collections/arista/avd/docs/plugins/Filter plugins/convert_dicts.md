@@ -1,4 +1,7 @@
-# arista.avd.convert_dicts
+# convert_dicts
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.convert_dicts` when using this plugin.
 
 Convert a dictionary containing nested dictionaries to a list of dictionaries\.
 

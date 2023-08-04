@@ -1,4 +1,7 @@
-# arista.avd.global_vars
+# global_vars
+
+!!! note
+    Always use the FQCN (Fully Qualified Collection Name) `arista.avd.global_vars` when using this plugin.
 
 Variable plugins to allow loading global\_vars with less precedence than group\_vars or host\_vars
 
