@@ -1475,7 +1475,7 @@ keys:
                 convert_types:
                 - int
         ip_nat:
-          $ref: '#/$defs/interface_ip_nat'
+          $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -6164,7 +6164,7 @@ keys:
           type: str
           description: IPv4 address/mask
         ip_nat:
-          $ref: '#/$defs/interface_ip_nat'
+          $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -11615,7 +11615,7 @@ keys:
                 convert_types:
                 - int
         ip_nat:
-          $ref: '#/$defs/interface_ip_nat'
+          $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -12328,7 +12328,7 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
-            $ref: '#/$defs/interface_ip_nat_static'
+            $ref: eos_cli_config_gen#/$defs/interface_ip_nat_static
       source:
         type: dict
         keys:
@@ -12365,7 +12365,7 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
-            $ref: '#/$defs/interface_ip_nat_static'
+            $ref: eos_cli_config_gen#/$defs/interface_ip_nat_static
   interface_ip_nat_static:
     type: list
     primary_key: original_ip

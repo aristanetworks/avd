@@ -95,7 +95,7 @@ keys:
                 convert_types:
                   - int
         ip_nat:
-          $ref: "#/$defs/interface_ip_nat"
+          $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
         ipv6_address:
