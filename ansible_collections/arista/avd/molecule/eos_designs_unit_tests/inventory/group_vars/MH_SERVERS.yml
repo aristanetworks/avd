@@ -8,7 +8,7 @@ port_profiles:
 
   - profile: Tenant_ESI_Auto
     parent_profile: Tenant_X
-    port_channel:
+    ethernet_segment:
       short_esi: auto
 
   - profile: Tenant_X_LT
@@ -45,10 +45,11 @@ servers:
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ MH-LEAF1A, MH-LEAF1B ]
         profile: Tenant_X
+        ethernet_segment:
+          short_esi: 0001:1010:1010
         port_channel:
           description: PortChanne1
           mode: active
-          short_esi: 0001:1010:1010
 
   - name: server02
     rack: RackA
@@ -67,10 +68,11 @@ servers:
         switch_ports: [ Ethernet12, Ethernet12 ]
         switches: [ MH-LEAF1A, MH-LEAF1B ]
         profile: Tenant_X
+        ethernet_segment:
+          short_esi: auto
         port_channel:
           description: Auto-ESI PortChannel
           mode: active
-          short_esi: auto
 
   - name: server04_AUTO_ESI_Profile
     rack: RackA
@@ -90,10 +92,11 @@ servers:
         switch_ports: [ Ethernet14, Ethernet14 ]
         switches: [ MH-LEAF1A, MH-LEAF1B ]
         profile: Tenant_ESI_Auto
+        ethernet_segment:
+          short_esi: 010a:010a:010a
         port_channel:
           description: Auto-ESI PortChannel overridden on server
           mode: active
-          short_esi: 010a:010a:010a
 
   - name: server06_Single_Active_Port_Channel
     rack: RackA
@@ -116,8 +119,6 @@ servers:
         port_channel:
           description: Single-Active ESI with Manual DF
           mode: active
-          # This should be overridden by short_esi under ethernet_segment
-          short_esi: 0042:0042:0042
         ethernet_segment:
           short_esi: auto
           redundancy: single-active
@@ -169,8 +170,6 @@ servers:
         port_channel:
           description: Single-Active ESI with Manual DF
           mode: active
-          # This should be overridden by short_esi under ethernet_segment
-          short_esi: 0042:0042:0042
         ethernet_segment:
           short_esi: auto
           redundancy: single-active
@@ -203,8 +202,6 @@ servers:
         port_channel:
           description: Single-Active ESI with Manual DF
           mode: active
-          # This should be overridden by short_esi under ethernet_segment
-          short_esi: 0042:0042:0042
         ethernet_segment:
           short_esi: auto
           redundancy: single-active

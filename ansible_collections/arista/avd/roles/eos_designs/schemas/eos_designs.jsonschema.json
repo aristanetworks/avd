@@ -1036,7 +1036,8 @@
     },
     "cvp_instance_ip": {
       "type": "string",
-      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.",
+      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cvp_instance_ips</samp> instead.",
+      "deprecated": true,
       "title": "CVP Instance IP"
     },
     "cvp_instance_ips": {
@@ -3213,7 +3214,8 @@
               },
               "short_esi": {
                 "type": "string",
-                "description": "In format xxxx:xxxx:xxxx or \"auto\".",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.",
+                "deprecated": true,
                 "title": "Short Esi"
               },
               "lacp_fallback": {
@@ -4971,7 +4973,8 @@
               },
               "short_esi": {
                 "type": "string",
-                "description": "In format xxxx:xxxx:xxxx or \"auto\".",
+                "description": "In format xxxx:xxxx:xxxx or \"auto\".\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.",
+                "deprecated": true,
                 "title": "Short Esi"
               },
               "lacp_fallback": {

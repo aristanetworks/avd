@@ -76,6 +76,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;summary_lsa</samp>](## "router_ospf.process_ids.[].max_metric.router_lsa.summary_lsa") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;override_metric</samp>](## "router_ospf.process_ids.[].max_metric.router_lsa.summary_lsa.override_metric") | Integer |  |  | Min: 1<br>Max: 16777215 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_ldp_sync_default</samp>](## "router_ospf.process_ids.[].mpls_ldp_sync_default") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_ospf.process_ids.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration |
 
 === "YAML"
 
@@ -154,4 +155,5 @@
               summary_lsa:
                 override_metric: <int>
           mpls_ldp_sync_default: <bool>
+          eos_cli: <str>
     ```
