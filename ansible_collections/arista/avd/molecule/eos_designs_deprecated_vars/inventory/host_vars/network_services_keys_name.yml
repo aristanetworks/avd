@@ -1,68 +1,61 @@
 ---
-node_type_keys:
-  - key: pe
-    type: pe
-    mpls_lsr: true
-    default_mpls_overlay_role: client
-    default_evpn_role: client
-    network_services:
-      l1: true
-      l2: true
-      l3: true
-    default_overlay_routing_protocol: ibgp
-    default_overlay_address_families: [ evpn ]
-    default_evpn_encapsulation: mpls
-
 pe:
   defaults:
     loopback_ipv4_pool: 10.42.0.0/24
     bgp_as: 42
-  nodes:
-    - name: duplicate-l3-interfaces-network-services
-      id: 42
+    id: 42
 
-# type: pe
-# design:
-#   type: mpls
+type: pe
+design:
+  type: mpls
 
-# tenants:
-#   TENANT_B:
-#     bgp_peer_groups:
-#       Tenant_C_BGP_PEER_GROUP:
-#         remote_as: 666
-#         description: "Tenant C peer group"
-#         send_community: all
-#         next_hop_self: true
-#         maximum_routes: 1000
-    # vrfs:
-    #   TENANT_B_WAN:
-    #     vrf_id: 20
-    #     l3_interfaces:
-    #       - description: TENANT_B_SITE_3_OSPF
-    #         enabled: true
-    #         interfaces:
-    #           - Ethernet6.101
-    #         ip_addresses:
-    #           - 192.168.48.4/31
-    #         nodes:
-    #           - duplicate-l3-interfaces-network-services
-    #       - description: TENANT_B_SITE_5
-    #         enabled: true
-    #         # duplicate interfaces
-    #         interfaces:
-    #           - Ethernet6.101
-    #         ip_addresses:
-    #           - 192.168.48.2/31
-    #         nodes:
-    #           - duplicate-l3-interfaces-network-services
-    #     svis:
-    #       - id: 111
-    #         vni_override: 50111 #10111 would be the calculated value.
-    #         name: Tenant_A_OP_Zone_2
-    #         tags: ['opzone']
-    #         enabled: True
-    #         ip_address_virtual: 10.1.11.1/24
-    #         ip_helpers:
-    #           - ip_helper: 1.1.1.1
-    #             source_interface: lo100
-    #             source_vrf: MGMT
+tenants:
+  TENANT_B:
+    bgp_peer_groups:
+      Tenant_C_BGP_PEER_GROUP:
+        remote_as: 666
+        description: "Tenant C peer group"
+        send_community: all
+        next_hop_self: true
+        maximum_routes: 1000
+    l2vlans:
+      # L2 vlan as string
+      '160':
+        name: Tenant_A_VMOTION
+        tags: ['opzone']
+    vrfs:
+      TENANT_B_WAN:
+        vrf_id: 20
+        l3_interfaces:
+          - description: TENANT_B_SITE_3_OSPF
+            enabled: true
+            interfaces:
+              - Ethernet6.101
+            ip_addresses:
+              - 192.168.48.4/31
+            nodes:
+              - duplicate-l3-interfaces-network-services
+        svis:
+          111:
+            vni_override: 50111
+            name: Tenant_A_OP_Zone_2
+            tags: ['opzone']
+            enabled: True
+            ip_helpers:
+              1.1.1.1:
+                source_interface: lo100
+                source_vrf: MGMT
+            nodes:
+              DC1-LEAF2A:
+                ip_address: 10.3.11.2/24
+                ipv6_address: 2001:db8:311::2/64
+        bgp_peers:
+          1.1.1.1:
+            peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
+            description: test_description
+            nodes: [ DC1-BL2B ]
+            set_ipv4_next_hop: 1.1.1.1
+        ip_helpers:
+          1.1.1.1:
+            source_interface: lo100
+            source_vrf: MGMT
