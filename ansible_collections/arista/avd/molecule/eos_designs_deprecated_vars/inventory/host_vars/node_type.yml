@@ -4,6 +4,13 @@ l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.254.0/24
+    structured_config:
+      sflow:
+        vrfs:
+          OOB:
+            destinations:
+              192.168.200.10:
+              10.0.200.90:
   node_groups:
     sflow-tests-leaf-mlag:
       bgp_as: 65105

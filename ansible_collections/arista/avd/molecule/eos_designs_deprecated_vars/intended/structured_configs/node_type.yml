@@ -93,3 +93,9 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
+sflow:
+  vrfs:
+  - name: OOB
+    destinations:
+    - destination: 192.168.200.10
+    - destination: 10.0.200.90

@@ -19,7 +19,6 @@ tenants:
         next_hop_self: true
         maximum_routes: 1000
     l2vlans:
-      # L2 vlan as string
       '160':
         name: Tenant_A_VMOTION
         tags: ['opzone']
