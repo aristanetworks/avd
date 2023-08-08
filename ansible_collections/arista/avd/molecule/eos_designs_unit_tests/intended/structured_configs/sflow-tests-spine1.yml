@@ -126,6 +126,25 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+sflow:
+  destinations:
+  - destination: 10.10.10.10
+  - destination: 10.10.10.11
+    port: 1234
+  vrfs:
+  - name: sflowvrf
+    destinations:
+    - destination: 10.10.10.12
+    - destination: 10.10.10.14
+    - destination: 10.10.10.16
+    - destination: 10.10.10.17
+    source_interface: Loopback321
+  - name: MGMT
+    destinations:
+    - destination: 10.10.10.13
+    - destination: 10.10.10.14
+    - destination: 10.10.10.17
+    source_interface: Management1
 ethernet_interfaces:
 - name: Ethernet1
   peer: sflow-tests-leaf1

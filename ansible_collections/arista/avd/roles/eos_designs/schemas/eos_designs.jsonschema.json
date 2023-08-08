@@ -5033,6 +5033,93 @@
       "type": "string",
       "title": "Fabric Name"
     },
+    "fabric_sflow": {
+      "type": "object",
+      "description": "sFlow settings.\nConfigure destinations and default enabling of sFlow for varous interface types across the fabric.\nFor source-interfaces see \"source_interfaces.sflow\"",
+      "properties": {
+        "destinations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "string",
+                "description": "sFlow destination IP address",
+                "title": "Destination"
+              },
+              "port": {
+                "type": "integer",
+                "description": "Port number",
+                "title": "Port"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF Name.\nCan be used in combination with \"use_mgmt_interface_vrf\" and \"use_inband_mgmt_vrf\" to configure the destination under multiple VRFs.",
+                "title": "VRF"
+              },
+              "use_mgmt_interface_vrf": {
+                "type": "boolean",
+                "description": "Configure the destination under the VRF set with \"mgmt_interface_vrf\". Can be used in combination with \"vrf\" and \"use_inband_mgmt_vrf\" to configure the destination under multiple VRFs.",
+                "title": "Use Management Interface VRF"
+              },
+              "use_inband_mgmt_vrf": {
+                "type": "boolean",
+                "description": "Configure the destination under the VRF set with \"inband_mgmt_vrf\". Ignored if inband management is not configured for the device. Can be used in combination with \"vrf\" and \"use_mgmt_interface_vrf\" to configure the destination under multiple VRFs.",
+                "title": "Use Inband Management VRF"
+              }
+            },
+            "required": [
+              "destination"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Destinations"
+        },
+        "uplinks": {
+          "description": "Enable sFlow on all fabric uplinks.",
+          "type": "boolean",
+          "title": "Uplinks"
+        },
+        "downlinks": {
+          "description": "Enable sFlow on all fabric downlinks.",
+          "type": "boolean",
+          "title": "Downlinks"
+        },
+        "endpoints": {
+          "description": "Enable sFlow on all endpoints ports.",
+          "type": "boolean",
+          "title": "Endpoints"
+        },
+        "l3_edge": {
+          "description": "Enable sFlow on all p2p_links defined under l3_edge.",
+          "type": "boolean",
+          "title": "L3 Edge"
+        },
+        "core_interfaces": {
+          "description": "Enable sFlow on all p2p_links defined under core_interfaces.",
+          "type": "boolean",
+          "title": "Core Interfaces"
+        },
+        "mlag_interfaces": {
+          "description": "Enable sFlow on all MLAG peer interfaces.",
+          "type": "boolean",
+          "title": "MLAG Interfaces"
+        },
+        "structured_config": {
+          "type": "object",
+          "description": "Custom structured config added under sflow for eos_cli_config_gen",
+          "title": "Structured Config"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Fabric Sflow"
+    },
     "flow_tracking_settings": {
       "description": "Define the flow tracking parameters for this topology.",
       "type": "object",
@@ -21052,6 +21139,27 @@
             "^_.+$": {}
           },
           "title": "Radius"
+        },
+        "sflow": {
+          "type": "object",
+          "description": "sFlow source-interfaces.",
+          "properties": {
+            "mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure a sFlow source-interface with the interface set by `mgmt_interface` and the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
+              "title": "Management Interface"
+            },
+            "inband_mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure a sFlow source-interface with the interface set by `inband_mgmt_interface` and the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
+              "title": "Inband Management Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sflow"
         },
         "snmp": {
           "type": "object",

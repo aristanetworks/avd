@@ -798,3 +798,92 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             return source_interfaces
 
         return None
+
+    @cached_property
+    def sflow(self) -> dict | None:
+        """
+        Structured config for sFlow.
+
+        Covers:
+        - destinations
+        - source-interfaces based on source_interfaces.sflow
+        """
+        destinations = get(self._hostvars, "fabric_sflow.destinations")
+        source_interfaces_inputs = self._source_interfaces.get("sflow")
+
+        if destinations is None and source_interfaces_inputs is None:
+            return None
+
+        sflow = {}
+
+        # Using a temporary dict for VRFs
+        sflow_vrfs = {}
+
+        if destinations:
+            for destination in natural_sort(destinations, "destination"):
+                vrfs = set()
+                if (vrf := destination.get("vrf")) not in [None, "default"]:
+                    vrfs.add(vrf)
+                if destination.get("use_mgmt_interface_vrf") is True:
+                    vrfs.add(self.shared_utils.mgmt_interface_vrf)
+                if destination.get("use_inband_mgmt_vrf") is True and self.shared_utils.inband_mgmt_interface is not None:
+                    # self.shared_utils.inband_mgmt_vrf returns None for the default VRF, but here we need "default" to avoid duplicates.
+                    vrfs.add(self.shared_utils.inband_mgmt_vrf or "default")
+                if not vrfs and not (destination.get("use_inband_mgmt_vrf") is True):
+                    vrfs.add("default")
+                for vrf in vrfs:
+                    if vrf in [None, "default"]:
+                        sflow.setdefault("destinations", []).append(
+                            {
+                                "destination": destination.get("destination"),
+                                "port": destination.get("port"),
+                            }
+                        )
+                    else:
+                        sflow_vrfs.setdefault(vrf, {}).setdefault("destinations", []).append(
+                            {
+                                "destination": destination.get("destination"),
+                                "port": destination.get("port"),
+                            }
+                        )
+
+        if source_interfaces_inputs:
+            source_interfaces = self._build_source_interfaces(
+                source_interfaces_inputs.get("mgmt_interface", False), source_interfaces_inputs.get("inband_mgmt_interface", False), "sFlow"
+            )
+            # Unpack source_interfaces into the sflow data model
+            for source_interface in source_interfaces:
+                if (vrf := source_interface.get("vrf")) in [None, "default"]:
+                    # Default VRF source-interface
+                    sflow["source_interface"] = source_interface["name"]
+                else:
+                    # VRF source-interface
+                    sflow_vrfs.setdefault(vrf, {})["source_interface"] = source_interface["name"]
+
+        # convert sflow_vrfs dict into list and insert into sflow
+        if sflow_vrfs:
+            sflow["vrfs"] = [{"name": vrf_name, **vrf} for vrf_name, vrf in sflow_vrfs.items()]
+
+        sflow = strip_null_from_data(sflow)
+
+        if sflow:
+            return sflow
+
+        return None
+
+    @cached_property
+    def struct_cfgs(self) -> list[dict] | None:
+        """
+        Various structured_config keys.
+
+        Covers:
+        - fabric_sflow.structured_config inserted under sflow.*
+        """
+        struct_cfgs = []
+        if (struct_cfg := get(self._hostvars, "fabric_sflow.structured_config")) is not None:
+            struct_cfgs.append({"sflow": struct_cfg})
+
+        if struct_cfgs:
+            return struct_cfgs
+
+        return None

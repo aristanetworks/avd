@@ -17,6 +17,9 @@
     | [<samp>&nbsp;&nbsp;radius</samp>](## "source_interfaces.radius") | Dictionary |  |  |  | IP Radius source-interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "source_interfaces.radius.mgmt_interface") | Boolean |  |  |  | Configure an IP Radius source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.<br>`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_mgmt_interface</samp>](## "source_interfaces.radius.inband_mgmt_interface") | Boolean |  |  |  | Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.<br>`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings. |
+    | [<samp>&nbsp;&nbsp;sflow</samp>](## "source_interfaces.sflow") | Dictionary |  |  |  | sFlow source-interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "source_interfaces.sflow.mgmt_interface") | Boolean |  |  |  | Configure a sFlow source-interface with the interface set by `mgmt_interface` and the VRF set by `mgmt_interface_vrf`.<br>`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_mgmt_interface</samp>](## "source_interfaces.sflow.inband_mgmt_interface") | Boolean |  |  |  | Configure a sFlow source-interface with the interface set by `inband_mgmt_interface` and the VRF set by `inband_mgmt_vrf`.<br>`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings. |
     | [<samp>&nbsp;&nbsp;snmp</samp>](## "source_interfaces.snmp") | Dictionary |  |  |  | SNMP local-interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mgmt_interface</samp>](## "source_interfaces.snmp.mgmt_interface") | Boolean |  |  |  | Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.<br>`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;inband_mgmt_interface</samp>](## "source_interfaces.snmp.inband_mgmt_interface") | Boolean |  |  |  | Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.<br>`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings. |
@@ -66,6 +69,17 @@
         mgmt_interface: <bool>
 
         # Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+        # `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.
+        inband_mgmt_interface: <bool>
+
+      # sFlow source-interfaces.
+      sflow:
+
+        # Configure a sFlow source-interface with the interface set by `mgmt_interface` and the VRF set by `mgmt_interface_vrf`.
+        # `mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.
+        mgmt_interface: <bool>
+
+        # Configure a sFlow source-interface with the interface set by `inband_mgmt_interface` and the VRF set by `inband_mgmt_vrf`.
         # `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.
         inband_mgmt_interface: <bool>
 

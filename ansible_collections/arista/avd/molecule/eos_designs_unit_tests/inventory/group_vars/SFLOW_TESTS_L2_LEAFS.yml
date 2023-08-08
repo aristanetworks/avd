@@ -6,7 +6,7 @@ l2leaf:
     platform: vEOS-lab
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['sflow-tests-leaf3', 'sflow-tests-leaf4']
-
+    inband_mgmt_subnet: "10.254.254.0/24"
   nodes:
     - name: sflow-tests-l2-leaf1
       id: 1
@@ -22,3 +22,9 @@ l2leaf:
       uplink_switch_interfaces:
         - Ethernet17
         - Ethernet17
+
+# Overriding the global setting to get inband_mgmt for l2 leafs.
+source_interfaces:
+  sflow:
+    mgmt_interface: true
+    inband_mgmt_interface: true

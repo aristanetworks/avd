@@ -1198,6 +1198,71 @@ keys:
       in the Fabric, **must** be an inventory group name.
     type: str
     required: true
+  fabric_sflow:
+    documentation_options:
+      table: management-sflow-settings
+    type: dict
+    description: 'sFlow settings.
+
+      Configure destinations and default enabling of sFlow for varous interface types
+      across the fabric.
+
+      For source-interfaces see "source_interfaces.sflow"'
+    keys:
+      destinations:
+        type: list
+        items:
+          type: dict
+          keys:
+            destination:
+              type: str
+              required: true
+              description: sFlow destination IP address
+            port:
+              type: int
+              description: Port number
+              convert_types:
+              - str
+            vrf:
+              type: str
+              description: 'VRF Name.
+
+                Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf"
+                to configure the destination under multiple VRFs.'
+              convert_types:
+              - int
+            use_mgmt_interface_vrf:
+              type: bool
+              description: Configure the destination under the VRF set with "mgmt_interface_vrf".
+                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to
+                configure the destination under multiple VRFs.
+            use_inband_mgmt_vrf:
+              type: bool
+              description: Configure the destination under the VRF set with "inband_mgmt_vrf".
+                Ignored if inband management is not configured for the device. Can
+                be used in combination with "vrf" and "use_mgmt_interface_vrf" to
+                configure the destination under multiple VRFs.
+      uplinks:
+        description: Enable sFlow on all fabric uplinks.
+        type: bool
+      downlinks:
+        description: Enable sFlow on all fabric downlinks.
+        type: bool
+      endpoints:
+        description: Enable sFlow on all endpoints ports.
+        type: bool
+      l3_edge:
+        description: Enable sFlow on all p2p_links defined under l3_edge.
+        type: bool
+      core_interfaces:
+        description: Enable sFlow on all p2p_links defined under core_interfaces.
+        type: bool
+      mlag_interfaces:
+        description: Enable sFlow on all MLAG peer interfaces.
+        type: bool
+      structured_config:
+        type: dict
+        description: Custom structured config added under sflow for eos_cli_config_gen
   flow_tracking_settings:
     description: Define the flow tracking parameters for this topology.
     type: dict
@@ -3114,6 +3179,25 @@ keys:
             type: bool
             description: 'Configure an IP Radius source-interface with the interface
               set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and
+              can be set under the node settings.'
+      sflow:
+        type: dict
+        description: sFlow source-interfaces.
+        keys:
+          mgmt_interface:
+            type: bool
+            description: 'Configure a sFlow source-interface with the interface set
+              by `mgmt_interface` and the VRF set by `mgmt_interface_vrf`.
+
+              `mgmt_interface` is typically the out-of-band Management interface,
+              and can be set under the node settings, platform settings or as a group/host
+              var.'
+          inband_mgmt_interface:
+            type: bool
+            description: 'Configure a sFlow source-interface with the interface set
+              by `inband_mgmt_interface` and the VRF set by `inband_mgmt_vrf`.
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
