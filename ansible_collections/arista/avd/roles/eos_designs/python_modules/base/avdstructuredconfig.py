@@ -235,6 +235,7 @@ class AvdStructuredConfigBase(AvdFacts):
             else:
                  <updating as cvp_on_prem ip>
         """
+        # cvp_instance_ip will be removed in AVD5.0
         cvp_instance_ip = get(self._hostvars, "cvp_instance_ip")
         cvp_instance_ip_list = get(self._hostvars, "cvp_instance_ips", [])
         if cvp_instance_ip is not None:
