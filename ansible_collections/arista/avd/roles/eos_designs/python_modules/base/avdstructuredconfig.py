@@ -760,23 +760,24 @@ class AvdStructuredConfigBase(AvdFacts):
         Raises errors for duplicate VRFs or missing interfaces with the given error context.
         """
         source_interfaces = []
+
         if include_mgmt_interface:
-            # mgmt_interface is always set (defaults to "Management1") so no need for error handling.
+            # mgmt_interface is always set (defaults to "Management1") so no need for error handling missing interface.
             source_interface = {"name": self.shared_utils.mgmt_interface}
             if self.shared_utils.mgmt_interface_vrf not in [None, "default"]:
                 source_interface["vrf"] = self.shared_utils.mgmt_interface_vrf
             source_interfaces.append(source_interface)
 
         if include_inband_mgmt_interface:
+            # Check for missing interface
             if self.shared_utils.inband_mgmt_interface is None:
                 raise AristaAvdMissingVariableError(f"Unable to configure {error_context} source-interface since 'inband_mgmt_interface' is not set.")
 
-            # Duplication check only needed if we inserted an entry above.
-            if source_interfaces:
-                # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
-                inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
-                if [source_interface for source_interface in source_interfaces if source_interface.get("vrf", "default") == inband_mgmt_vrf]:
-                    raise AristaAvdError(f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'.")
+            # Check for duplicate VRF
+            # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
+            inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
+            if [source_interface for source_interface in source_interfaces if source_interface.get("vrf", "default") == inband_mgmt_vrf]:
+                raise AristaAvdError(f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'.")
 
             source_interface = {"name": self.shared_utils.inband_mgmt_interface}
             if self.shared_utils.inband_mgmt_vrf not in [None, "default"]:
