@@ -12,70 +12,65 @@ import re
 
 from ansible.errors import AnsibleFilterError
 
-
-def expand_parentheses(range_sr, one_range):
-    groups = range_sr.groups()
-    start_index, end_index = range_sr.start(), range_sr.end()
-    replaced_list = []
-    if groups[0]:
-        # To replace the values inside parenthesis, Ex. (2,3,4-6)
-        ports_list = groups[0].replace("(", "").replace(")", "").split(",")
-        for i in ports_list:
-            replaced_list.append(one_range.replace(one_range[start_index:end_index], str(i), 1))
-    return replaced_list
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.range_expand import expand_hyphen, expand_parentheses
 
 
-def expand_hypen(range_sr, one_range):
-    groups = range_sr.groups()
-    start_index, end_index = range_sr.start(), range_sr.end()
-    replaced_list = []
-    if groups[0]:
-        # To replace the values of range, Ex. 4-6
-        range_start, range_end = groups[0].split("-")
-        for i in range(int(range_start), int(range_end) + 1):
-            replaced_list.append(one_range.replace(one_range[start_index:end_index], str(i), 1))
-    return replaced_list
-
-
-def range_expand(one_range, prefix=""):
-    if not (isinstance(one_range, list) or isinstance(one_range, str)):
-        raise AnsibleFilterError(f"value must be of type list or str, got {type(one_range)}")
+def range_expand(range_to_expand, prefix=""):
+    if not (isinstance(range_to_expand, list) or isinstance(range_to_expand, str)):
+        raise AnsibleFilterError(f"value must be of type list or str, got {type(range_to_expand)}")
 
     result = []
 
     # If we got a list, unpack it and run this function recursively
-    if isinstance(one_range, list):
-        for r in one_range:
-            result.extend(range_expand(r, prefix))
+    if isinstance(range_to_expand, list):
+        for one_range in range_to_expand:
+            result.extend(range_expand(one_range, prefix))
 
     else:
         # Must be a str now
-        if one_range is None:
+        if range_to_expand is None:
             return
 
         regex = r"([A-Za-z]+\s*)?(.*)"
-        sr = re.search(regex, one_range)
+        sr = re.search(regex, range_to_expand)
 
         prefix_group = sr.groups()
         if prefix_group[0]:
             prefix = prefix_group[0]
         else:
-            one_range = prefix + one_range
+            range_to_expand = prefix + range_to_expand
 
-        if re.search(r",(?![^(]*\))", one_range):
+        regex_commas_outside_parentheses = r",(?![^(]*\))"
+        # Above regex matches all the commas "," outside parentheses.
+        # Except the case where there is no opening parentheses but closing parentheses is present [Example: ",4)"]
+        # It considers the comma inside the parentheses whereas it is actually outside.
+
+        regex_commas_inside_parentheses = r"(\(\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)?\-\d+)*)*\s*\))"
+        #                           (\( \))                                                              matches starting and ending of parentheses
+        #                           ?:                                                                   only group but do not remember the grouped part
+        #                                         (?:\d+)                                                matches 1 or more numbers Ex. 1, 21
+        #                                                   (?:\s*,\s*\d+)*                              matches 0 or more apperance of "," and one
+        #                                                                                                             or more numbers Ex. ,2,23
+        #                                                                  (?:,?\d+\-\d+)*               matches 0 or more apperance of "," and one or more
+        #                                                                                                             numbers with range (-) Ex. ,2-4
+        #                                         (?:\d+)(?:(?:\s*,\s*\d+)*(?:,?\d+\-\d+)*)*             matches values similar to 1 or 1,2,3 or 1,2-4
+        #                                   (\(\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?\d+\-\d+)*)*\s*\))       matches values similar to 1 or 1,2,3 or 1,2-4
+
+        regex_hyphen_range = r"([0-9]+\-[0-9]+)"
+        #                      ([0-9]+\-[0-9]+)                                                          matches range outside parentheses Ex. 1-5 or 33-46
+
+        if re.search(regex_commas_outside_parentheses, range_to_expand):
             # Split comma outside parentheses
-            result.extend(range_expand(re.split(r",(?![^(]*\))", one_range), prefix))
-        elif parentheses_sr := re.search(r"(\(\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)?\-\d+)*)*\s*\))", one_range):
+            result.extend(range_expand(re.split(regex_commas_outside_parentheses, range_to_expand), prefix))
+        elif parentheses_sr := re.search(regex_commas_inside_parentheses, range_to_expand):
             # Expand parentheses
-            result.extend(range_expand(expand_parentheses(parentheses_sr, one_range), prefix))
-        elif hypen_sr := re.search(r"([0-9]+\-[0-9]+)", one_range):
-            # Expand hypen
-            result.extend(range_expand(expand_hypen(hypen_sr, one_range), prefix))
+            result.extend(range_expand(expand_parentheses(parentheses_sr, range_to_expand), prefix))
+        elif hyphen_sr := re.search(regex_hyphen_range, range_to_expand):
+            # Expand hyphen
+            result.extend(range_expand(expand_hyphen(hyphen_sr, range_to_expand), prefix))
         else:
-            if one_range:
-                result.extend([one_range])
-            else:
-                result.extend(one_range)
+            if range_to_expand:
+                result.extend([range_to_expand])
     return result
 
 
