@@ -413,6 +413,13 @@ port_channel_interfaces:
           - original_ip: 3.0.0.1
             translated_ip: 4.0.0.1
 
+  - name: Port-Channel131
+    description: PTP in port-channel
+    mode: trunk
+    ptp:
+      enable: True
+      mpass: True
+
 # Children interfaces
 ethernet_interfaces:
   - name: Ethernet5

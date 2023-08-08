@@ -522,6 +522,8 @@ keys:
           keys:
             enable:
               type: bool
+            mpass:
+              type: bool
             announce:
               type: dict
               keys:

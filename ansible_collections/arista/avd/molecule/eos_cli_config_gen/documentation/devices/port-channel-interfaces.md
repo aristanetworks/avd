@@ -226,6 +226,7 @@ interface Ethernet50
 | Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
 | Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
+| Port-Channel131 | PTP in port-channel | switched | trunk | - | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q Interfaces
 
@@ -670,6 +671,13 @@ interface Port-Channel130
    ip nat source dynamic access-list ACL2 pool POOL2
    ip nat destination static 1.0.0.1 2.0.0.1
    ip nat destination dynamic access-list ACL1 pool POOL1
+!
+interface Port-Channel131
+   description PTP in port-channel
+   switchport
+   switchport mode trunk
+   ptp enable
+   ptp mpass
 ```
 
 ## BFD
