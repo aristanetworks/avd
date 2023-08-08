@@ -12,7 +12,6 @@ keys:
       keys:
         node_type:
           type: str
-          required: true
           description: Resulting node type when regex matches.
         match_hostnames:
           type: list

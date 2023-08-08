@@ -1044,7 +1044,6 @@ $defs:
           keys:
             group:
               type: str
-              required: true
               description: |
                 The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
                 The Node Group Name is also used for peer description on downstream switches' uplinks.
@@ -1064,5 +1063,4 @@ $defs:
           keys:
             name:
               type: str
-              required: true
               description: The Node Name is used as "hostname".

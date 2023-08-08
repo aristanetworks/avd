@@ -606,7 +606,6 @@ keys:
       keys:
         node_type:
           type: str
-          required: true
           description: Resulting node type when regex matches.
         match_hostnames:
           type: list
@@ -2516,7 +2515,6 @@ keys:
       type: dict
       keys:
         rp:
-          required: true
           type: str
           description: RP IPv4 address.
         nodes:
@@ -3279,7 +3277,6 @@ $defs:
         name:
           type: str
           description: Endpoint name will be used in the switchport description.
-          required: true
         rack:
           type: str
           description: Rack is used for documentation purposes only.
@@ -3352,7 +3349,6 @@ $defs:
           keys:
             name:
               type: str
-              required: true
               description: P2P pool name.
             ipv4_pool:
               type: str
@@ -3376,7 +3372,6 @@ $defs:
           keys:
             name:
               type: str
-              required: true
               description: P2P profile name. Any variable supported under p2p_links
                 can be inherited from a profile.
       p2p_links:
@@ -3403,7 +3398,6 @@ $defs:
       keys:
         name:
           type: str
-          required: true
           description: 'Specify a tenant name.
 
             Tenant provide a construct to group L3 VRFs and L2 VLANs.
@@ -5987,7 +5981,6 @@ $defs:
           keys:
             group:
               type: str
-              required: true
               description: 'The Node Group Name is used for MLAG domain unless set
                 with ''mlag_domain_id''.
 
@@ -6011,7 +6004,6 @@ $defs:
           keys:
             name:
               type: str
-              required: true
               description: The Node Name is used as "hostname".
   p2p_links:
     type: list
@@ -6164,7 +6156,6 @@ $defs:
                 keys:
                   node:
                     type: str
-                    required: true
                   interfaces:
                     type: list
                     description: List of node interfaces. Ex.- [ 'node1 interface1',

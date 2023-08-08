@@ -13,7 +13,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: VLAN interface name like "Vlan123"
         description:
           type: str
@@ -170,7 +169,6 @@ keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address
-                required: true
               vrf:
                 type: str
                 convert_types:

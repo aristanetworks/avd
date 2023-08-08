@@ -15,7 +15,6 @@ $defs:
       keys:
         name:
           type: str
-          required: true
           description: |
             Specify a tenant name.
             Tenant provide a construct to group L3 VRFs and L2 VLANs.

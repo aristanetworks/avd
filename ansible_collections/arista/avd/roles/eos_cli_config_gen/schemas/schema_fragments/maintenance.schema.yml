@@ -30,7 +30,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
             rate_monitoring:
               type: dict
               keys:
@@ -65,7 +64,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: BGP Profile Name
             initiator:
               type: dict
@@ -83,7 +81,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Unit Profile Name
             on_boot:
               type: dict
@@ -106,7 +103,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Unit Name
             quiesce:
               type: bool

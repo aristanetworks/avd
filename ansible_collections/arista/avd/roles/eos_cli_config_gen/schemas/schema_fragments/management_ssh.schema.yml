@@ -93,7 +93,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: VRF Name
               convert_types:
                 - int

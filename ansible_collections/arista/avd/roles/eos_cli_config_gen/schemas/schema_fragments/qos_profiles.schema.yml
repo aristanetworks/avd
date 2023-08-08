@@ -13,7 +13,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Profile-Name
         trust:
           type: str
@@ -55,7 +54,6 @@ keys:
                 type: int
                 convert_types:
                   - str
-                required: true
                 description: TX-Queue ID
               bandwidth_percent:
                 type: int
@@ -92,7 +90,6 @@ keys:
                 type: int
                 convert_types:
                   - str
-                required: true
                 description: UC TX queue ID
               bandwidth_percent:
                 type: int
@@ -129,7 +126,6 @@ keys:
                 type: int
                 convert_types:
                   - str
-                required: true
                 description: MC TX queue ID
               bandwidth_percent:
                 type: int

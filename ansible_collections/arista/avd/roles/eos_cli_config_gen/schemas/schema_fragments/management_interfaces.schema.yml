@@ -13,7 +13,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Management Interface Name
         description:
           type: str

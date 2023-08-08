@@ -19,7 +19,6 @@ keys:
       type: dict
       keys:
         rp:
-          required: true
           type: str
           description: RP IPv4 address.
         nodes:

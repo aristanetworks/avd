@@ -13,7 +13,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
         description:
           type: str
         logging:
@@ -590,7 +589,6 @@ keys:
             keys:
               ipv6_prefix:
                 type: str
-                required: true
               valid_lifetime:
                 type: str
                 convert_types:
@@ -669,7 +667,6 @@ keys:
                 type: int
                 convert_types:
                   - str
-                required: true
               hash_algorithm:
                 type: str
                 valid_values:

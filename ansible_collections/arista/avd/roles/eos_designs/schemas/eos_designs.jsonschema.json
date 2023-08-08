@@ -2414,13 +2414,13 @@
                 "title": "Prefix Size"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "P2P Links IP Pools"
         },
@@ -2621,13 +2621,13 @@
                           "title": "Interfaces"
                         }
                       },
-                      "required": [
-                        "node"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "node"
+                      ]
                     },
                     "title": "Nodes Child Interfaces"
                   }
@@ -2649,13 +2649,13 @@
                 "title": "Structured Config"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "P2P Links Profiles"
         },
@@ -2856,13 +2856,13 @@
                           "title": "Interfaces"
                         }
                       },
-                      "required": [
-                        "node"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "node"
+                      ]
                     },
                     "title": "Nodes Child Interfaces"
                   }
@@ -3046,8 +3046,8 @@
           }
         },
         "required": [
-          "node_type",
-          "match_hostnames"
+          "match_hostnames",
+          "node_type"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -3610,13 +3610,13 @@
                 "title": "Prefix Size"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "P2P Links IP Pools"
         },
@@ -3817,13 +3817,13 @@
                           "title": "Interfaces"
                         }
                       },
-                      "required": [
-                        "node"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "node"
+                      ]
                     },
                     "title": "Nodes Child Interfaces"
                   }
@@ -3845,13 +3845,13 @@
                 "title": "Structured Config"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "P2P Links Profiles"
         },
@@ -4052,13 +4052,13 @@
                           "title": "Interfaces"
                         }
                       },
-                      "required": [
-                        "node"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "node"
+                      ]
                     },
                     "title": "Nodes Child Interfaces"
                   }
@@ -4149,13 +4149,13 @@
             "title": "Shell"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Local Users"
     },
@@ -6436,13 +6436,13 @@
                           "title": "No Autoconfig Flag"
                         }
                       },
-                      "required": [
-                        "ipv6_prefix"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "ipv6_prefix"
+                      ]
                     },
                     "title": "IPv6 ND Prefixes"
                   },
@@ -6563,13 +6563,13 @@
                           "title": "Key"
                         }
                       },
-                      "required": [
-                        "id"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "id"
+                      ]
                     },
                     "title": "OSPF Message Digest Keys"
                   },
@@ -6656,9 +6656,6 @@
                     "title": "EOS CLI"
                   }
                 },
-                "required": [
-                  "name"
-                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
@@ -7140,13 +7137,13 @@
                       "title": "VRF"
                     }
                   },
-                  "required": [
-                    "ip_helper"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "ip_helper"
+                  ]
                 },
                 "title": "IP Helpers"
               },
@@ -7464,13 +7461,13 @@
                       "title": "No Autoconfig Flag"
                     }
                   },
-                  "required": [
-                    "ipv6_prefix"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "ipv6_prefix"
+                  ]
                 },
                 "title": "IPv6 ND Prefixes"
               },
@@ -7504,13 +7501,13 @@
                       "title": "Link Address"
                     }
                   },
-                  "required": [
-                    "address"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "address"
+                  ]
                 },
                 "title": "IPv6 DHCP Relay Destinations"
               },
@@ -7675,13 +7672,13 @@
                       "title": "Key"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 },
                 "title": "OSPF Message Digest Keys"
               },
@@ -8801,9 +8798,6 @@
                 "title": "EOS CLI"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -11766,13 +11760,13 @@
                           "title": "No Autoconfig Flag"
                         }
                       },
-                      "required": [
-                        "ipv6_prefix"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "ipv6_prefix"
+                      ]
                     },
                     "title": "IPv6 ND Prefixes"
                   },
@@ -11893,13 +11887,13 @@
                           "title": "Key"
                         }
                       },
-                      "required": [
-                        "id"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "id"
+                      ]
                     },
                     "title": "OSPF Message Digest Keys"
                   },
@@ -11986,9 +11980,6 @@
                     "title": "EOS CLI"
                   }
                 },
-                "required": [
-                  "name"
-                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
@@ -12470,13 +12461,13 @@
                       "title": "VRF"
                     }
                   },
-                  "required": [
-                    "ip_helper"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "ip_helper"
+                  ]
                 },
                 "title": "IP Helpers"
               },
@@ -12794,13 +12785,13 @@
                       "title": "No Autoconfig Flag"
                     }
                   },
-                  "required": [
-                    "ipv6_prefix"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "ipv6_prefix"
+                  ]
                 },
                 "title": "IPv6 ND Prefixes"
               },
@@ -12834,13 +12825,13 @@
                       "title": "Link Address"
                     }
                   },
-                  "required": [
-                    "address"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "address"
+                  ]
                 },
                 "title": "IPv6 DHCP Relay Destinations"
               },
@@ -13005,13 +12996,13 @@
                       "title": "Key"
                     }
                   },
-                  "required": [
-                    "id"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "id"
+                  ]
                 },
                 "title": "OSPF Message Digest Keys"
               },
@@ -14131,9 +14122,6 @@
                 "title": "EOS CLI"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -15546,13 +15534,13 @@
                             "title": "Link Address"
                           }
                         },
-                        "required": [
-                          "address"
-                        ],
                         "additionalProperties": false,
                         "patternProperties": {
                           "^_.+$": {}
-                        }
+                        },
+                        "required": [
+                          "address"
+                        ]
                       },
                       "title": "IPv6 DHCP Relay Destinations"
                     },
@@ -16157,9 +16145,6 @@
                       "title": "EOS CLI"
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -17183,13 +17168,13 @@
                       "title": "Link Address"
                     }
                   },
-                  "required": [
-                    "address"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "address"
+                  ]
                 },
                 "title": "IPv6 DHCP Relay Destinations"
               },
@@ -17794,9 +17779,6 @@
                 "title": "EOS CLI"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -18016,13 +17998,13 @@
             "title": "Access List Name"
           }
         },
-        "required": [
-          "rp"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "rp"
+        ]
       },
       "title": "Underlay Multicast RPs"
     },

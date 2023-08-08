@@ -140,7 +140,6 @@ $defs:
                 keys:
                   node:
                     type: str
-                    required: true
                   interfaces:
                     type: list
                     description: List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].

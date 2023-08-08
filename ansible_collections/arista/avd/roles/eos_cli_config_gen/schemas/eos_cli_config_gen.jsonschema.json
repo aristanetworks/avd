@@ -547,8 +547,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -559,8 +559,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -829,13 +829,13 @@
             "title": "BGP Maintenance Profiles"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "BGP Groups"
     },
@@ -1013,8 +1013,8 @@
           }
         },
         "required": [
-          "name",
-          "action"
+          "action",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -1230,13 +1230,13 @@
                 "title": "Cvvrf"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Clusters"
         },
@@ -1411,8 +1411,8 @@
           }
         },
         "required": [
-          "name",
-          "exec"
+          "exec",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -2168,13 +2168,13 @@
                   "title": "VRF"
                 }
               },
-              "required": [
-                "ip_helper"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "ip_helper"
+              ]
             },
             "title": "IP Helpers"
           },
@@ -2492,13 +2492,13 @@
                   "title": "No Autoconfig Flag"
                 }
               },
-              "required": [
-                "ipv6_prefix"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "ipv6_prefix"
+              ]
             },
             "title": "IPv6 ND Prefixes"
           },
@@ -2532,13 +2532,13 @@
                   "title": "Link Address"
                 }
               },
-              "required": [
-                "address"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "address"
+              ]
             },
             "title": "IPv6 DHCP Relay Destinations"
           },
@@ -2703,13 +2703,13 @@
                   "title": "Key"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "OSPF Message Digest Keys"
           },
@@ -3847,13 +3847,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Ethernet Interfaces"
     },
@@ -4141,13 +4141,13 @@
                 "title": "Serdes"
               }
             },
-            "required": [
-              "speed_group"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "speed_group"
+            ]
           },
           "title": "Speed Groups"
         }
@@ -4324,13 +4324,13 @@
             "title": "Interface Maintenance Profiles"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       }
     },
     "interface_profiles": {
@@ -4353,8 +4353,8 @@
           }
         },
         "required": [
-          "name",
-          "commands"
+          "commands",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -4542,13 +4542,13 @@
             "title": "Entries"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       }
     },
     "ip_access_lists_max_entries": {
@@ -4607,8 +4607,8 @@
           }
         },
         "required": [
-          "name",
-          "entries"
+          "entries",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -4649,13 +4649,13 @@
                 "title": "VRF"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Source Interfaces"
         }
@@ -4709,8 +4709,8 @@
           }
         },
         "required": [
-          "name",
-          "entries"
+          "entries",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -4761,8 +4761,8 @@
           }
         },
         "required": [
-          "name",
-          "entries"
+          "entries",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -4995,13 +4995,13 @@
                 "title": "Proxy"
               }
             },
-            "required": [
-              "id"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "id"
+            ]
           },
           "title": "VLANs"
         }
@@ -5444,8 +5444,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -5456,8 +5456,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -5541,8 +5541,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -5553,8 +5553,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -5594,8 +5594,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -5606,8 +5606,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -5723,24 +5723,24 @@
                       "title": "Untagged Forward"
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Protocols"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Forwarding Profiles"
         }
@@ -5838,13 +5838,13 @@
             "title": "Recovery Delay"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Link Tracking Groups"
     },
@@ -5990,13 +5990,13 @@
             "title": "Shell"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Local Users"
     },
@@ -6226,24 +6226,24 @@
                       "title": "Ports"
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Hosts"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         },
@@ -6271,13 +6271,13 @@
                         "title": "Action"
                       }
                     },
-                    "required": [
-                      "name"
-                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}
-                    }
+                    },
+                    "required": [
+                      "name"
+                    ]
                   },
                   "title": "Match Lists"
                 }
@@ -6461,13 +6461,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Loopback Interfaces"
     },
@@ -6507,13 +6507,13 @@
             "title": "Entries"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "MAC Access Lists"
     },
@@ -6736,13 +6736,13 @@
                 "title": "L2 Protocols"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Profiles"
         }
@@ -6820,13 +6820,13 @@
                 "title": "Shutdown"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Interface Profiles"
         },
@@ -6856,13 +6856,13 @@
                 "title": "Initiator"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "BGP Profiles"
         },
@@ -6894,13 +6894,13 @@
                 "title": "On Boot"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Unit Profiles"
         },
@@ -6950,13 +6950,13 @@
                 "title": "Groups"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Units"
         }
@@ -7249,13 +7249,13 @@
                 "title": "IPv6 Access Group"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Enable VRFs"
         },
@@ -7487,13 +7487,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Management Interfaces"
     },
@@ -7887,13 +7887,13 @@
                 "title": "Enable"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         },
@@ -8006,8 +8006,8 @@
                     }
                   },
                   "required": [
-                    "sequence",
-                    "match_regex"
+                    "match_regex",
+                    "sequence"
                   ],
                   "additionalProperties": false,
                   "patternProperties": {
@@ -8018,8 +8018,8 @@
               }
             },
             "required": [
-              "name",
-              "sequence_numbers"
+              "sequence_numbers",
+              "name"
             ],
             "additionalProperties": false,
             "patternProperties": {
@@ -8741,9 +8741,9 @@
                     }
                   },
                   "required": [
-                    "id",
                     "type",
-                    "endpoint"
+                    "endpoint",
+                    "id"
                   ],
                   "additionalProperties": false,
                   "patternProperties": {
@@ -8753,13 +8753,13 @@
                 "title": "Connectors"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Patches"
         }
@@ -8797,8 +8797,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "match"
+                "match",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -8809,8 +8809,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -10350,13 +10350,13 @@
                   "title": "No Autoconfig Flag"
                 }
               },
-              "required": [
-                "ipv6_prefix"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "ipv6_prefix"
+              ]
             },
             "title": "IPv6 ND Prefixes"
           },
@@ -10477,13 +10477,13 @@
                   "title": "Key"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "OSPF Message Digest Keys"
           },
@@ -10570,13 +10570,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Port Channel Interfaces"
     },
@@ -10607,8 +10607,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -10618,13 +10618,13 @@
             "title": "Sequence Numbers"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Prefix Lists"
     },
@@ -11033,13 +11033,13 @@
                   "title": "Comment"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "TX Queues"
           },
@@ -11090,13 +11090,13 @@
                   "title": "Comment"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "Uc TX Queues"
           },
@@ -11147,24 +11147,24 @@
                   "title": "Comment"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "Mc TX Queues"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "QOS Profiles"
     },
@@ -11547,8 +11547,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "type"
+                "type",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -11559,8 +11559,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -15875,13 +15875,13 @@
                 "title": "Routes"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -16358,8 +16358,8 @@
               }
             },
             "required": [
-              "source_prefix",
-              "limit"
+              "limit",
+              "source_prefix"
             ],
             "additionalProperties": false,
             "patternProperties": {
@@ -16428,13 +16428,13 @@
                       "title": "Name"
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Mesh Groups"
               },
@@ -16486,13 +16486,13 @@
                 "title": "Sa Filter"
               }
             },
-            "required": [
-              "ipv4_address"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "ipv4_address"
+            ]
           },
           "title": "Peers"
         },
@@ -16547,8 +16547,8 @@
                     }
                   },
                   "required": [
-                    "source_prefix",
-                    "limit"
+                    "limit",
+                    "source_prefix"
                   ],
                   "additionalProperties": false,
                   "patternProperties": {
@@ -16617,13 +16617,13 @@
                             "title": "Name"
                           }
                         },
-                        "required": [
-                          "name"
-                        ],
                         "additionalProperties": false,
                         "patternProperties": {
                           "^_.+$": {}
-                        }
+                        },
+                        "required": [
+                          "name"
+                        ]
                       },
                       "title": "Mesh Groups"
                     },
@@ -16675,24 +16675,24 @@
                       "title": "Sa Filter"
                     }
                   },
-                  "required": [
-                    "ipv4_address"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "ipv4_address"
+                  ]
                 },
                 "title": "Peers"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -17435,13 +17435,13 @@
                     "title": "Override"
                   }
                 },
-                "required": [
-                  "address"
-                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
-                }
+                },
+                "required": [
+                  "address"
+                ]
               },
               "title": "RP Addresses"
             },
@@ -17470,24 +17470,24 @@
                           "title": "Register Count"
                         }
                       },
-                      "required": [
-                        "address"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "address"
+                      ]
                     },
                     "title": "Other Anycast RP Addresses"
                   }
                 },
-                "required": [
-                  "address"
-                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
-                }
+                },
+                "required": [
+                  "address"
+                ]
               },
               "title": "Anycast RPs"
             }
@@ -17575,13 +17575,13 @@
                 "title": "IPv4"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -18193,13 +18193,13 @@
                 "title": "VRF"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Local Interfaces"
         },
@@ -18694,8 +18694,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -18706,8 +18706,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -19189,8 +19189,8 @@
           }
         },
         "required": [
-          "name",
-          "interface"
+          "interface",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -19724,13 +19724,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Tunnel Interfaces"
     },
@@ -20274,13 +20274,13 @@
                   "title": "Link Address"
                 }
               },
-              "required": [
-                "address"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "address"
+              ]
             },
             "title": "IPv6 DHCP Relay Destinations"
           },
@@ -20885,13 +20885,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "VLAN Interfaces"
     },
@@ -21047,13 +21047,13 @@
             "title": "Source Interface"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "VMTracer Sessions"
     },
@@ -21226,13 +21226,13 @@
                         "title": "Flood Vteps"
                       }
                     },
-                    "required": [
-                      "id"
-                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}
-                    }
+                    },
+                    "required": [
+                      "id"
+                    ]
                   },
                   "title": "VLANs"
                 },
@@ -21256,13 +21256,13 @@
                         "title": "Multicast Group"
                       }
                     },
-                    "required": [
-                      "name"
-                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}
-                    }
+                    },
+                    "required": [
+                      "name"
+                    ]
                   },
                   "title": "VRFs"
                 },
