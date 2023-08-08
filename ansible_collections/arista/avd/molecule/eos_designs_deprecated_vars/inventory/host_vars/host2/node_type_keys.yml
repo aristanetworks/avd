@@ -4,9 +4,9 @@ pe:
   defaults:
     loopback_ipv4_pool: 10.42.0.0/24
     bgp_as: 42
+    id: 42
   nodes:
     - name: node_type_keys
-      id: 42
 
 node_type_keys:
   pe:

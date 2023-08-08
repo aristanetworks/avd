@@ -4,3 +4,17 @@ is_for_test: true
 
 avd_data_validation_mode: "error"
 avd_data_conversion_mode: "info"
+
+fabric_name: test-hosts
+
+connected_endpoints_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+  load_balancers:
+    type: load_balancer
+  storage_arrays:
+    type: storage_array
