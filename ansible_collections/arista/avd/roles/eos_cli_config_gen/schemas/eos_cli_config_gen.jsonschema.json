@@ -19119,13 +19119,17 @@
               },
               "config": {
                 "type": "string",
-                "description": "TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.\nExample: \"{{ lookup('file', 'TCAM_TRAFFIC_POLICY.conf') }}\"",
+                "description": "TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.\nExample: \"{{ lookup('file', 'TCAM_TRAFFIC_POLICY.conf') }}\"\n",
                 "title": "Config"
+              },
+              "source": {
+                "type": "string",
+                "description": "TCAM profile local source path. Used to read the TCAM profile from a local path existing on the device.",
+                "title": "Source"
               }
             },
             "required": [
-              "name",
-              "config"
+              "name"
             ],
             "additionalProperties": false,
             "patternProperties": {
