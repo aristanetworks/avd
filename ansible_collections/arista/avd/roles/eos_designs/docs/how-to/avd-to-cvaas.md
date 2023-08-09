@@ -96,7 +96,7 @@ Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" 
 ```
 
 
-Once things are working it's a good idea to use Ansible Vault to encrypt your passwords.
+Once things are working it's a good idea to use Ansible Vault to encrypt your passwords in a production environment.
 
 ```text
 ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass'
