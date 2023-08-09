@@ -2037,6 +2037,13 @@ keys:
               max: 10
               convert_types:
               - str
+            unauthorized:
+              type: dict
+              keys:
+                access_vlan_membership_egress:
+                  type: bool
+                native_vlan_membership_egress:
+                  type: bool
             eapol:
               type: dict
               keys:
@@ -11146,11 +11153,18 @@ keys:
               description: Tcam-Profile Name
             config:
               type: str
-              required: true
+              required: false
               description: 'TCAM Profile Config. Since these can be very long, it
                 is often a good idea to import the config from a file.
 
-                Example: "{{ lookup(''file'', ''TCAM_TRAFFIC_POLICY.conf'') }}"'
+                Example: "{{ lookup(''file'', ''TCAM_TRAFFIC_POLICY.conf'') }}"
+
+                '
+            source:
+              type: str
+              required: false
+              description: TCAM profile local source path. Used to read the TCAM profile
+                from a local path existing on the device.
   terminal:
     type: dict
     display_name: Terminal Settings
