@@ -10,7 +10,7 @@ Account name: AVD
 Description: "Automation with AVD"
 Give a description under "Generated Service Account Token"
 Specify the "valid until" date.
-Make sure you copy the generated password since you only get one chance to see it.
+Make sure to copy the generated password. You only get view it once.
 Click "Save" to exit the dialogue box. 
 ```
 ![Figure: 2](../../../../media/account_settings.png)
@@ -30,25 +30,20 @@ DC1:
 ```text
 ansible_host: www.arista.io
 ansible_user: cvaas
-# Good until 1/24/2030
-# In a production environment make sure to use Ansible Vault.
+# Good until 1/24/2030 <update to experiation date of token>
+# While it is not required in a production environment it is advised to use Ansible Vault.
 
 ansible_ssh_pass: <super long password>
 ansible_connection: httpapi
 ansible_network_os: eos
 ansible_httpapi_use_ssl: True
-ansible_httpapi_validate_certs: False
+ansible_httpapi_validate_certs: True
 ansible_httpapi_port: 443
 ```
 
-A key point is that in my file I am using Ansible Vault. For testing/lab purposes you can just put the password that you generated in CVaaS in the "ansible_ssh_pass" field.
-
 ## Testing your setup.
 ```text
-root@6e3d94f50dca:/workspace# pwd
-/workspaces/avd-cvaas-integration/avd
 root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml
-Vault password: 
 
 PLAY [Playbook to demonstrate cv_container module.] *********************************************************************************************************************************
 
@@ -70,7 +65,7 @@ cvaas                      : ok=1    changed=0    unreachable=0    failed=0    s
     - arista.cvp
 
   tasks:
-    - name: "Gather CVaaS facts from {{inventory_hostname}}"
+    - name: "Gather CVaaS facts from {{ inventory_hostname }}"
       cv_facts:
       register: cvp_facts
 ```
