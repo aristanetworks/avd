@@ -57,6 +57,22 @@ PLAY RECAP *********************************************************************
 cvaas                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
 ```
 
+### Sample playbook cvaas_facts.yml
+```text
+---
+- name: Playbook to demonstrate cv_container module.
+  hosts: cvaas
+  connection: local
+  gather_facts: no
+  collections:
+    - arista.cvp
+
+  tasks:
+    - name: "Gather CVaaS facts from {{inventory_hostname}}"
+      cv_facts:
+      register: cvp_facts
+```
+
 If the playbook runs and doesn't error out you know you are now able to successfully talk to CVaaS.
 you can add -vvv at the end and see ansible display additional info about your CVaaS instance.
 
