@@ -1,0 +1,13 @@
+{# eos - ip telnet client source-interfaces #}
+{% if ip_telnet_client_source_interfaces is arista.avd.defined %}
+!
+{%     for ip_telnet_client_source_interface in ip_telnet_client_source_interfaces %}
+{%         if ip_telnet_client_source_interface.name is arista.avd.defined %}
+{%             set ip_telnet_client_cli = "ip telnet client source-interface " ~ ip_telnet_client_source_interface.name | capitalize %}
+{%             if ip_telnet_client_source_interface.vrf is arista.avd.defined %}
+{%                 set ip_telnet_client_cli = ip_telnet_client_cli ~ " vrf " ~ ip_telnet_client_source_interface.vrf %}
+{%             endif %}
+{{ ip_telnet_client_cli }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

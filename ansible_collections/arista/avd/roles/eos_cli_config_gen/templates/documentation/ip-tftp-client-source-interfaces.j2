@@ -1,0 +1,19 @@
+{# doc - ip tftp client source interfaces #}
+{% if ip_tftp_client_source_interfaces is arista.avd.defined %}
+
+### IP TFTP Client Source Interfaces
+
+#### IP TFTP Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+{%     for ip_tftp_client_source_interface in ip_tftp_client_source_interfaces | arista.avd.natural_sort %}
+| {{ ip_tftp_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_tftp_client_source_interface.name }} |
+{%     endfor %}
+
+#### IP TFTP Client Source Interfaces Device Configuration
+
+```eos
+{%     include 'eos/ip-tftp-client-source-interfaces.j2' %}
+```
+{% endif %}
