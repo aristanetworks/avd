@@ -1,8 +1,8 @@
-### The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CVaaS.
+# The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CVaaS.
 
 ![Figure: 1](../../../../media/create_account.png)
 
-### Within CVaaS navigate to:
+## Within CVaaS navigate to:
 ### Settings and Tools --> Access Control --> Service Accounts --> "New Service Account"
 
 ```text
@@ -15,7 +15,7 @@ Click "Save" to exit the dialogue box.
 ```
 ![Figure: 2](../../../../media/account_settings.png)
 
-### Add CVAAS to your Ansible inventory file:
+## Add CVAAS to your Ansible inventory file:
 
 ```text
 DC1:
@@ -25,7 +25,7 @@ DC1:
         cvaas:
 ```
 
-### Create a folder under group_vars named CVAAS and add a file "cvaas_auth.yml". Your file should look similar to this:
+## Create a folder under group_vars named CVAAS and add a file "cvaas_auth.yml". Your file should look similar to this:
 
 ```text
 ansible_host: www.arista.io
@@ -43,7 +43,7 @@ ansible_httpapi_port: 443
 
 A key point is that in my file I am using Ansible Vault. For testing/lab purposes you can just put the password that you generated in CVaaS in the "ansible_ssh_pass" field.
 
-### Testing your setup.
+## Testing your setup.
 ```text
 root@6e3d94f50dca:/workspace# pwd
 /workspaces/avd-cvaas-integration/avd
@@ -59,7 +59,7 @@ PLAY RECAP *********************************************************************
 cvaas                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
 ```
 
-### Sample playbook cvaas_facts.yml
+## Sample playbook cvaas_facts.yml
 ```text
 ---
 - name: Playbook to demonstrate cv_container module.
@@ -80,7 +80,7 @@ you can add -vvv to the end and see ansible display additional info about your C
 
 Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" playbook to push build out your containers, move devices to the proper container and then apply the generated config to the device.
 
-### Sample playbook cvaas_deploy.yml
+## Sample playbook cvaas_deploy.yml
 ```text
 ---
 - name: Configlet upload management
@@ -107,7 +107,7 @@ Once things are working it's a good idea to use Ansible Vault to encrypt your pa
 ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass'
 ```
 
-### Key points:
+## Key points:
 1. When creating the vault sometimes there will be an extra "%" sign at the end. Remove this.
 
           $ANSIBLE_VAULT;1.1;AES256
@@ -123,7 +123,7 @@ ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass'
 ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >> my_file.txt
 ```
 
-### Once Ansible Vault has been added to your config simply add --ask-vault-pass when running the playbook.
+## Once Ansible Vault has been added to your config simply add --ask-vault-pass when running the playbook.
 
 ```text
 root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml --ask-vault-pass
