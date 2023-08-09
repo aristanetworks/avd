@@ -41,7 +41,7 @@ ansible_httpapi_validate_certs: True
 ansible_httpapi_port: 443
 ```
 
-## Testing your setup.
+## Testing connectivity and authentication between AVD and CVaaS.
 ```text
 root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml
 
