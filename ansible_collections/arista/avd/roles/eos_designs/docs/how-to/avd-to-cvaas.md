@@ -1,4 +1,4 @@
-### The intended audience is someone who is familiar with AVD and also has a CVaaS setup and is now trying to push AVD changes through CVaaS.
+### The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CVaaS.
 
 ![Figure: 1](../../../../media/create_account.png)
 ```text
@@ -7,7 +7,7 @@ Settings and Tools --> Access Control --> Service Accounts --> "New Service Acco
 Account name: AVD
 Description: "Automation with AVD"
 Give a description under "Generated Service Account Token"
-Change the "valid until" date. I set mine until Jan 24th of 2030 and click Generate.
+Specify the "valid until" date.
 Make sure you copy the generated password since you only get one chance to see it.
 Click "Save" to exit the dialogue box. 
 ```
@@ -113,9 +113,9 @@ ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass'
           3535386333356537643233376630636265653566636531390a663433323033653736653939663861
           33313466646363643135353065346439326633326138636331333331333338393332653231643930
           6661353835373731350a303666343334626532313361376361656235323638646264656639653139
-          3437% <------------------Make sure to remove percent sign.
+          3437% <------------------Make sure to remove.
 
-2. Sometimes when creating your vault there will be so much output that you will overrun the buffer on your CLI window. In order to get around this I simply wrote the output to a file so that I could get the entire hash.
+2. Sometimes when creating your vault there will be so much output that you will overrun the buffer on your CLI window. In order to get around this you can simply write the output to a file and then open up the file to grab the hash.
 
 ```text
 ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >> my_file.txt
