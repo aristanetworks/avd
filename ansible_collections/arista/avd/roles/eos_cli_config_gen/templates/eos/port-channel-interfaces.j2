@@ -299,9 +299,6 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.ptp.enable is arista.avd.defined(true) %}
    ptp enable
 {%     endif %}
-{%     if port_channel_interface.ptp.mpass is arista.avd.defined(true) %}
-   ptp mpass
-{%     endif %}
 {%     if port_channel_interface.ptp.announce.interval is arista.avd.defined %}
    ptp announce interval {{ port_channel_interface.ptp.announce.interval }}
 {%     endif %}

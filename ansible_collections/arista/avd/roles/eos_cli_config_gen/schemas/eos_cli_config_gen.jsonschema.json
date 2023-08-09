@@ -10660,10 +10660,6 @@
                 "type": "boolean",
                 "title": "Enable"
               },
-              "mpass": {
-                "type": "boolean",
-                "title": "Mpass"
-              },
               "announce": {
                 "type": "object",
                 "properties": {
