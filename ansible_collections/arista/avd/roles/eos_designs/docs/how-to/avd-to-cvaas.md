@@ -30,7 +30,7 @@ DC1:
 ```text
 ansible_host: www.arista.io
 ansible_user: cvaas
-# Good until 1/24/2030 <update to experiation date of token>
+# Good until 1/24/2030 <update to experiation date of token that was generated in CVaaS>
 # While it is not required in a production environment it is advised to use Ansible Vault.
 
 ansible_ssh_pass: <super long password> (generated in CVP when AVD service account was created)
