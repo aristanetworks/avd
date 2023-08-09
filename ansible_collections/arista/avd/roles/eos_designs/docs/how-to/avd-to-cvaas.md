@@ -33,7 +33,7 @@ ansible_user: cvaas
 # Good until 1/24/2030 <update to experiation date of token>
 # While it is not required in a production environment it is advised to use Ansible Vault.
 
-ansible_ssh_pass: <super long password>
+ansible_ssh_pass: <super long password> (generated in CVP when AVD service account was created)
 ansible_connection: httpapi
 ansible_network_os: eos
 ansible_httpapi_use_ssl: True
