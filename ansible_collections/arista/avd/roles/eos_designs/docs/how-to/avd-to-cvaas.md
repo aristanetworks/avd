@@ -73,10 +73,31 @@ cvaas                      : ok=1    changed=0    unreachable=0    failed=0    s
       register: cvp_facts
 ```
 
-If the playbook runs and doesn't error out you know you are now able to successfully talk to CVaaS.
-you can add -vvv at the end and see ansible display additional info about your CVaaS instance.
+If the playbook runs and completes successfully you are now able to successfully talk to CVaaS.
+you can add -vvv to the end and see ansible display additional info about your CVaaS instance.
 
 Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" playbook to push build out your containers, move devices to the proper container and then apply the generated config to the device.
+
+### Sample playbook cvaas_deploy.yml
+```text
+---
+- name: Configlet upload management
+  hosts: cvaas
+  connection: local
+  gather_facts: no
+  tasks:
+
+  - name: "Uploading configlets to CVaaS"
+    import_role:
+      name: arista.avd.eos_config_deploy_cvp
+    vars:
+      container_root: 'DC1_FABRIC'
+      configlets_prefix: 'DC1'
+      state: present
+      cv_collection: v3
+      execute_tasks: false
+```
+
 
 Once things are working it's a good idea to use Ansible Vault to encrypt your passwords.
 
