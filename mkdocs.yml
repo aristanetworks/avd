@@ -141,6 +141,7 @@ nav:
           - How-To Guides:
               - Configuring PTP: roles/eos_designs/docs/how-to/ptp.md
               - Custom Structured Configuration: roles/eos_designs/docs/how-to/custom-structured-configuration.md
+              - Integrating AVD with CVaaS: roles/eos_designs/docs/how-to/avd-to-cvaas.md
       - eos_cli_config_gen:
           - Overview: roles/eos_cli_config_gen/README.md
           - Role Configuration: roles/eos_cli_config_gen/docs/role-configuration.md
