@@ -30,7 +30,7 @@ DC1:
 ```text
 ansible_host: www.arista.io
 ansible_user: cvaas
-# Good until 1/24/2030 <update to experiation date of token that was generated in CVaaS>
+# Good until 1/24/2030 <update to expiration date of token that was generated in CVaaS>
 # While it is not required in a production environment it is advised to use Ansible Vault.
 
 ansible_ssh_pass: <super long password> (generated in CVP when AVD service account was created)
@@ -70,10 +70,10 @@ cvaas                      : ok=1    changed=0    unreachable=0    failed=0    s
       register: cvp_facts
 ```
 
-If the playbook runs and completes successfully you are now able to successfully talk to CVaaS.
-you can add -vvv to the end and see ansible display additional info about your CVaaS instance.
+If the playbook runs and completes you have confirmed successful communication with CVaaS.
+Adding -vvv to increase verbosity will give you additional information regarding your CVaaS instance when running the cvaas_facts.yml playbook.
 
-Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" playbook to push build out your containers, move devices to the proper container and then apply the generated config to the device.
+Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" playbook to build out your containers, move devices to the proper container and then apply the generated config to the device.
 
 ## Sample playbook cvaas_deploy.yml
 ```text
