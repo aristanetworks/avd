@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP TELNET Client Source Interfaces](#ip-telnet-client-source-interfaces)
+  - [IP Telnet Client Source Interfaces](#ip-telnet-client-source-interfaces)
 
 ## Management
 
@@ -34,9 +34,9 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-### IP TELNET Client Source Interfaces
+### IP Telnet Client Source Interfaces
 
-#### IP TELNET Client Source Interfaces
+#### IP Telnet Client Source Interfaces
 
 | VRF | Source Interface Name |
 | --- | --------------- |
@@ -44,7 +44,7 @@ interface Management1
 | default | Loopback0 |
 | MGMT | Management0 |
 
-#### IP TELNET Client Source Interfaces Device Configuration
+#### IP Telnet Client Source Interfaces Device Configuration
 
 ```eos
 !

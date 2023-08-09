@@ -1,9 +1,9 @@
 {# doc - ip telnet client source interfaces #}
 {% if ip_telnet_client_source_interfaces is arista.avd.defined %}
 
-### IP TELNET Client Source Interfaces
+### IP Telnet Client Source Interfaces
 
-#### IP TELNET Client Source Interfaces
+#### IP Telnet Client Source Interfaces
 
 | VRF | Source Interface Name |
 | --- | --------------- |
@@ -11,7 +11,7 @@
 | {{ ip_telnet_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_telnet_client_source_interface.name }} |
 {%     endfor %}
 
-#### IP TELNET Client Source Interfaces Device Configuration
+#### IP Telnet Client Source Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/ip-telnet-client-source-interfaces.j2' %}
