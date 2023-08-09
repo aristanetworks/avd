@@ -5,7 +5,7 @@ is_for_test: true
 avd_data_validation_mode: "error"
 avd_data_conversion_mode: "info"
 
-fabric_name: test-hosts
+fabric_name: EOS_DESIGNS_DEPRECATED_VARS
 
 connected_endpoints_keys:
   servers:
