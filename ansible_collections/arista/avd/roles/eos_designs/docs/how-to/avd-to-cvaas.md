@@ -25,7 +25,7 @@ DC1:
         cvaas:
 ```
 
-## Create a folder under group_vars named CVAAS and add a file "cvaas_auth.yml". Your file should look similar to this:
+## Create a folder under group_vars named "CVAAS" and add a file named "cvaas_auth.yml". Your file should look similar to this:
 
 ```text
 ansible_host: www.arista.io
