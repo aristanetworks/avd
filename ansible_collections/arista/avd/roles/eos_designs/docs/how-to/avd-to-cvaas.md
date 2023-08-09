@@ -1,9 +1,11 @@
 ### The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CVaaS.
 
 ![Figure: 1](../../../../media/create_account.png)
-```text
-Settings and Tools --> Access Control --> Service Accounts --> "New Service Account"
 
+### Within CVaaS navigate to:
+### Settings and Tools --> Access Control --> Service Accounts --> "New Service Account"
+
+```text
 Account name: AVD
 Description: "Automation with AVD"
 Give a description under "Generated Service Account Token"
