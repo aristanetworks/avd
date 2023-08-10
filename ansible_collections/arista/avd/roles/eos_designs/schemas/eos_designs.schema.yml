@@ -3445,9 +3445,27 @@ $defs:
             By default an iBGP peering is configured per VRF between MLAG peers on
             separate VLANs.
 
-            Setting enable_mlag_ibgp_peering_vrfs: false under tenant will change
+            Setting `enable_mlag_ibgp_peering_vrfs` false under a tenant will change
             this default to prevent configuration of these peerings and VLANs for
             all VRFs in the tenant.
+
+            This setting can be overridden per VRF.
+
+            '
+        redistribute_mlag_ibgp_peering_vrfs:
+          documentation_options:
+            table: network-services-vrfs-settings
+          type: bool
+          default: true
+          description: 'Redistribute the connected subnet for the MLAG iBGP peering
+            per VRF into overlay BGP.
+
+            By default the iBGP peering subnet is redistributed into the overlay routing
+            protocol per VRF.
+
+            Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a tenant will
+            change this default to prevent redistribution of these subnets for all
+            VRFs in the tenant.
 
             This setting can be overridden per VRF.
 
@@ -3755,8 +3773,21 @@ $defs:
                   By default an iBGP peering is configured per VRF between MLAG peers
                   on separate VLANs.
 
-                  Setting enable_mlag_ibgp_peering_vrfs: false under vrf will change
-                  this default and/or override the tenant-wide setting.
+                  Setting `enable_mlag_ibgp_peering_vrfs: false` under a VRF will
+                  change this default and/or override the tenant-wide setting.
+
+                  '
+              redistribute_mlag_ibgp_peering_vrfs:
+                type: bool
+                default: true
+                description: 'Redistribute the connected subnet for the MLAG iBGP
+                  peering per VRF into overlay BGP.
+
+                  By default the iBGP peering subnet is redistributed into the overlay
+                  routing protocol per VRF.
+
+                  Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a VRF
+                  will change this default and/or override the tenant-wide setting.
 
                   '
               mlag_ibgp_peering_vlan:
