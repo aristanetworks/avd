@@ -39,9 +39,9 @@ snmp_server:
     - username: USER-WRITE
       authentication_level: auth
   vrfs:
-  - name: SNMPVRF
-    enable: true
   - name: default
+    enable: true
+  - name: SNMPVRF
     enable: true
 ip_igmp_snooping:
   globally_enabled: true

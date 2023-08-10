@@ -42,11 +42,11 @@ snmp_server:
   - host: 10.6.75.123
     version: 2c
     community: SNMP-COMMUNITY-2
-    vrf: SNMPVRF
+    vrf: MGMT
   - host: 10.6.75.123
     version: 2c
     community: SNMP-COMMUNITY-2
-    vrf: MGMT
+    vrf: SNMPVRF
   - host: 10.6.75.124
     version: '3'
     users:
@@ -60,11 +60,11 @@ snmp_server:
   - host: 10.6.75.127
     version: 2c
     community: SNMP-COMMUNITY-2
-    vrf: SNMPVRF
+    vrf: MGMT
   - host: 10.6.75.127
     version: 2c
     community: SNMP-COMMUNITY-2
-    vrf: MGMT
+    vrf: SNMPVRF
   - host: 10.6.75.128
     version: '3'
     users:

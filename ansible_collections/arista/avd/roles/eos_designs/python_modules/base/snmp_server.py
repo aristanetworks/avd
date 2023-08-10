@@ -180,13 +180,15 @@ class SnmpServerMixin(UtilsMixin):
                 # If no VRFs are defined (and we are not just ignoring missing mgmt config)
                 vrfs.add("default")
 
-            for vrf in vrfs:
-                if vrf != "default":
-                    # Add host with VRF field.
-                    snmp_hosts.append({**host, "vrf": vrf})
-                else:
-                    # Add host without VRF field
-                    snmp_hosts.append(host)
+            # Ensure default VRF is added first
+            if "default" in vrfs:
+                vrfs.remove("default")
+                # Add host without VRF field
+                snmp_hosts.append(host)
+
+            for vrf in natural_sort(vrfs):
+                # Add host with VRF field.
+                snmp_hosts.append({**host, "vrf": vrf})
 
         return snmp_hosts or None
 
@@ -236,4 +238,4 @@ class SnmpServerMixin(UtilsMixin):
             }
             replace_or_append_item(vrfs, "name", vrf)
 
-        return vrfs or None
+        return natural_sort(vrfs, "name") or None
