@@ -4,7 +4,6 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
 
 ## Management
 
@@ -32,25 +31,4 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
-```
-
-### IP HTTP Client Source Interfaces
-
-#### IP HTTP Client Source Interfaces
-
-| VRF | Source Interface Name |
-| --- | --------------- |
-| default | Loopback0 |
-| MGMT | Management0 |
-| default | Ethernet10 |
-
-#### IP HTTP Client Source Interfaces Device Configuration
-
-```eos
-!
-ip http client local-interface Loopback0 vrf default
-!
-ip http client local-interface Management0 vrf MGMT
-!
-ip http client local-interface Ethernet10
 ```

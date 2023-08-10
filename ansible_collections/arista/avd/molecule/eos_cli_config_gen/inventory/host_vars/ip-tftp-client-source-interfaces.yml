@@ -1,5 +1,6 @@
-## IP FTP CLIENT SOURCE INTERFACES ##
-ip_ftp_client_source_interfaces:
+## IP TFTP CLIENT SOURCE INTERFACES ##
+
+ip_tftp_client_source_interfaces:
   - name: Loopback0
     vrf: default
   - name: Management0

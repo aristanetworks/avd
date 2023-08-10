@@ -1,4 +1,4 @@
-# ip-ssh-client-source-interface
+# ip-telnet-client-source-interfaces
 
 ## Table of Contents
 
@@ -32,3 +32,23 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+#### IP Client Source Interfaces
+
+
+#### IP Telnet Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| default | Ethernet10 |
+| default | Loopback0 |
+| MGMT | Management0 |
+
+
+#### IP Client Source Interfaces Configuration
+
+```eos
+ip telnet client source-interface Loopback0 vrf default
+ip telnet client source-interface Management0 vrf MGMT
+ip telnet client source-interface Ethernet10
+ ```
+

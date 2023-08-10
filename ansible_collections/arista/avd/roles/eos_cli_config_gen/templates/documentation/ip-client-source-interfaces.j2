@@ -1,0 +1,69 @@
+{# doc - ip client source interfaces #}
+{% if ip_ftp_client_source_interfaces is arista.avd.defined or ip_http_client_source_interfaces is arista.avd.defined or ip_ssh_client_source_interfaces is arista.avd.defined or ip_telnet_client_source_interfaces is arista.avd.defined or ip_tftp_client_source_interfaces is arista.avd.defined %}
+#### IP Client Source Interfaces
+
+{%     if ip_ftp_client_source_interfaces is arista.avd.defined %}
+
+#### IP FTP Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+{%         for ip_ftp_client_source_interface in ip_ftp_client_source_interfaces | arista.avd.natural_sort %}
+| {{ ip_ftp_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_ftp_client_source_interface.name }} |
+{%         endfor %}
+
+{%     endif %}
+{%     if ip_http_client_source_interfaces is arista.avd.defined %}
+
+#### IP HTTP Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+{%         for ip_http_client_source_interface in ip_http_client_source_interfaces | arista.avd.natural_sort %}
+| {{ ip_http_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_http_client_source_interface.name }} |
+{%         endfor %}
+
+{%     endif %}
+{%     if ip_ssh_client_source_interfaces is arista.avd.defined %}
+
+#### IP SSH Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+{%         for ip_ssh_client_source_interface in ip_ssh_client_source_interfaces | arista.avd.natural_sort %}
+{%             if ip_ssh_client_source_interface.name is arista.avd.defined %}
+| {{ ip_ssh_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_ssh_client_source_interface.name | capitalize }} |
+{%             endif %}
+{%         endfor %}
+
+{%     endif %}
+{%     if ip_telnet_client_source_interfaces is arista.avd.defined %}
+
+#### IP Telnet Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+{%         for ip_telnet_client_source_interface in ip_telnet_client_source_interfaces | arista.avd.natural_sort %}
+| {{ ip_telnet_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_telnet_client_source_interface.name }} |
+{%         endfor %}
+
+{%     endif %}
+{%     if ip_tftp_client_source_interfaces is arista.avd.defined %}
+
+#### IP TFTP Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+{%         for ip_tftp_client_source_interface in ip_tftp_client_source_interfaces | arista.avd.natural_sort %}
+| {{ ip_tftp_client_source_interface.vrf | arista.avd.default('default') }} | {{ ip_tftp_client_source_interface.name }} |
+{%         endfor %}
+
+{%     endif %}
+
+#### IP Client Source Interfaces Configuration
+
+```eos
+{%     include 'eos/ip-client-source-interfaces.j2' %}
+ ```
+
+{% endif %}

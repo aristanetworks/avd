@@ -222,16 +222,8 @@
 {% include 'eos/ipv6-static-routes.j2' %}
 {# MPLS #}
 {% include 'eos/mpls.j2' %}
-{# ip ftp client source interfaces #}
-{% include 'eos/ip-ftp-client-source-interfaces.j2' %}
-{# ip http client source interfaces #}
-{% include 'eos/ip-http-client-source-interfaces.j2' %}
-{# ip ssh client source interfaces #}
-{% include 'eos/ip-ssh-client-source-interfaces.j2' %}
-{# ip telnet client source interfaces #}
-{% include 'eos/ip-telnet-client-source-interfaces.j2' %}
-{# ip tftp client source interfaces #}
-{% include 'eos/ip-tftp-client-source-interfaces.j2' %}
+{# ip client source interfaces #}
+{% include 'eos/ip-client-source-interfaces.j2' %}
 {# Object Tracking #}
 {% include 'eos/trackers.j2' %}
 {# ntp #}

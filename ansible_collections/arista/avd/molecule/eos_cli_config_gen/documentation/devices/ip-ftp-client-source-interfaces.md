@@ -1,10 +1,9 @@
-# ip_tftp_client_source_interfaces
+# ip-ftp-client-source-interfaces
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP TFTP Client Source Interfaces](#ip-tftp-client-source-interfaces)
 
 ## Management
 
@@ -33,10 +32,10 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+#### IP Client Source Interfaces
 
-### IP TFTP Client Source Interfaces
 
-#### IP TFTP Client Source Interfaces
+#### IP FTP Client Source Interfaces
 
 | VRF | Source Interface Name |
 | --- | --------------- |
@@ -44,11 +43,13 @@ interface Management1
 | default | Loopback0 |
 | MGMT | Management0 |
 
-#### IP TFTP Client Source Interfaces Device Configuration
+
+#### IP Client Source Interfaces Configuration
 
 ```eos
 !
-ip tftp client source-interface Loopback0 vrf default
-ip tftp client source-interface Management0 vrf MGMT
-ip tftp client source-interface Ethernet10
-```
+ip ftp client source-interface Loopback0 vrf default
+ip ftp client source-interface Management0 vrf MGMT
+ip ftp client source-interface Ethernet10
+ ```
+

@@ -5,6 +5,10 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [IP FTP Client Source Interfaces](#ip-ftp-client-source-interfaces)
+  - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
+  - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
+  - [IP Telnet Client Source Interfaces](#ip-telnet-client-source-interfaces)
+  - [IP TFTP Client Source Interfaces](#ip-tftp-client-source-interfaces)
 
 ## Management
 
@@ -44,11 +48,48 @@ interface Management1
 | default | Loopback0 |
 | MGMT | Management0 |
 
-#### IP FTP Client Source Interfaces Device Configuration
 
-```eos
-!
-ip ftp client source-interface Loopback0 vrf default
-ip ftp client source-interface Management0 vrf MGMT
-ip ftp client source-interface Ethernet10
-```
+### IP HTTP Client Source Interfaces
+
+#### IP HTTP Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| default | Loopback0 |
+| MGMT | Management0 |
+| default | Ethernet10 |
+
+
+### IP SSH Client Source Interfaces
+
+#### IP SSH Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| default | Ethernet10 |
+| default | Loopback0 |
+| MGMT | Management0 |
+
+
+### IP Telnet Client Source Interfaces
+
+#### IP Telnet Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| default | Ethernet10 |
+| default | Loopback0 |
+| MGMT | Management0 |
+
+
+
+### IP TFTP Client Source Interfaces
+
+#### IP TFTP Client Source Interfaces
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+| default | Ethernet10 |
+| default | Loopback0 |
+| MGMT | Management0 |
+
