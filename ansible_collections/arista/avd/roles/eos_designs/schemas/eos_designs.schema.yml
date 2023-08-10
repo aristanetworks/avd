@@ -2219,7 +2219,7 @@ keys:
       are not present in the network.'
   snmp_settings:
     documentation_options:
-      table: management-settings
+      table: management-snmp-settings
     type: dict
     description: 'SNMP settings
 
