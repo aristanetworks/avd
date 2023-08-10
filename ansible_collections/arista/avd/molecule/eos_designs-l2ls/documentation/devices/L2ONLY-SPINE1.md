@@ -254,6 +254,12 @@ interface Port-Channel3
    switchport
    switchport mode trunk
    switchport trunk group MLAG
+   ptp enable
+   ptp announce interval 0
+   ptp announce timeout 3
+   ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 ```
 
 ### VLAN Interfaces

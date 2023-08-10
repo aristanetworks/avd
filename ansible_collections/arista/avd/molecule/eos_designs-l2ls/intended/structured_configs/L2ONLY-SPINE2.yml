@@ -61,6 +61,15 @@ port_channel_interfaces:
   mode: trunk
   trunk_groups:
   - MLAG
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
 - name: Port-Channel1
   description: L2ONLY-LEAF1_Po1
   type: switched
