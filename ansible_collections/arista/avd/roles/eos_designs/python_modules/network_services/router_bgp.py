@@ -382,6 +382,17 @@ class RouterBgpMixin(UtilsMixin):
         return vlan.get("evpn_vlan_bundle") or vlan.get("name")
 
     @cached_property
+    def _get_first_evpn_vlan_bundle(self) -> dict | None:
+        """
+        Return first l2vlan where "evpn_vlan_bundle" is defined or None
+        """
+        for tenant in self._filtered_tenants:
+            for l2vlan in tenant["l2vlans"]:
+                if "evpn_vlan_bundle" in l2vlan:
+                    return l2vlan
+        return None
+
+    @cached_property
     def _router_bgp_vlan_aware_bundles(self) -> list | None:
         """
         Return structured config for router_bgp.vlan_aware_bundles
@@ -391,6 +402,12 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         if not self._evpn_vlan_aware_bundles:
+            first_evpn_vlan_bundle = self._get_first_evpn_vlan_bundle
+            if first_evpn_vlan_bundle is not None:
+                raise AristaAvdMissingVariableError(
+                    "Option 'evpn_vlan_aware_bundles' must be set to 'true' to be able to use 'evpn_vlan_bundle' option in l2vlans. "
+                    f"First occurence of 'evpn_vlan_bundle' seen for l2vlan {first_evpn_vlan_bundle['id']} in Tenant '{first_evpn_vlan_bundle['tenant']}'."
+                )
             return None
 
         bundles = []
