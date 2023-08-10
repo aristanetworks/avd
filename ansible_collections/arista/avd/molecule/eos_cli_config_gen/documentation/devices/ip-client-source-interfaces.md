@@ -1,14 +1,9 @@
-# ip_ftp_client_source_interfaces
+# ip-client-source-interfaces
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP FTP Client Source Interfaces](#ip-ftp-client-source-interfaces)
-  - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
-  - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
-  - [IP Telnet Client Source Interfaces](#ip-telnet-client-source-interfaces)
-  - [IP TFTP Client Source Interfaces](#ip-tftp-client-source-interfaces)
 
 ## Management
 
@@ -37,8 +32,8 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+#### IP Client Source Interfaces
 
-### IP FTP Client Source Interfaces
 
 #### IP FTP Client Source Interfaces
 
@@ -49,8 +44,6 @@ interface Management1
 | MGMT | Management0 |
 
 
-### IP HTTP Client Source Interfaces
-
 #### IP HTTP Client Source Interfaces
 
 | VRF | Source Interface Name |
@@ -59,8 +52,6 @@ interface Management1
 | MGMT | Management0 |
 | default | Ethernet10 |
 
-
-### IP SSH Client Source Interfaces
 
 #### IP SSH Client Source Interfaces
 
@@ -71,8 +62,6 @@ interface Management1
 | MGMT | Management0 |
 
 
-### IP Telnet Client Source Interfaces
-
 #### IP Telnet Client Source Interfaces
 
 | VRF | Source Interface Name |
@@ -82,9 +71,6 @@ interface Management1
 | MGMT | Management0 |
 
 
-
-### IP TFTP Client Source Interfaces
-
 #### IP TFTP Client Source Interfaces
 
 | VRF | Source Interface Name |
@@ -92,4 +78,26 @@ interface Management1
 | default | Ethernet10 |
 | default | Loopback0 |
 | MGMT | Management0 |
+
+
+#### IP Client Source Interfaces Configuration
+
+```eos
+!
+ip ftp client source-interface Loopback0 vrf default
+ip ftp client source-interface Management0 vrf MGMT
+ip ftp client source-interface Ethernet10
+ip http client local-interface Loopback0 vrf default
+ip http client local-interface Management0 vrf MGMT
+ip http client local-interface Ethernet10
+ip ssh client source-interface Ethernet10
+ip ssh client source-interface Loopback0 vrf default
+ip ssh client source-interface Management0 vrf MGMT
+ip telnet client source-interface Loopback0 vrf default
+ip telnet client source-interface Management0 vrf MGMT
+ip telnet client source-interface Ethernet10
+ip tftp client source-interface Loopback0 vrf default
+ip tftp client source-interface Management0 vrf MGMT
+ip tftp client source-interface Ethernet10
+ ```
 
