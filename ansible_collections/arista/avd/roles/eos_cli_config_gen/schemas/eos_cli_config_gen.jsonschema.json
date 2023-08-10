@@ -19128,13 +19128,13 @@
                 "title": "Source"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Profiles"
         }
