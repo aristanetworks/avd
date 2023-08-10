@@ -10,9 +10,9 @@ from .vendor.j2.filter.hide_passwords import hide_passwords
 from .vendor.j2.filter.list_compress import list_compress
 from .vendor.j2.filter.natural_sort import natural_sort
 from .vendor.j2.filter.password import decrypt, encrypt
-from .vendor.j2.filter.range_expand import range_expand
 from .vendor.j2.test.contains import contains
 from .vendor.j2.test.defined import defined
+from .vendor.utils.range_expand import range_expand_utils
 
 JINJA2_CUSTOM_FILTERS = {
     "arista.avd.default": default,
@@ -22,7 +22,7 @@ JINJA2_CUSTOM_FILTERS = {
     "arista.avd.hide_passwords": hide_passwords,
     "arista.avd.list_compress": list_compress,
     "arista.avd.natural_sort": natural_sort,
-    "arista.avd.range_expand": range_expand,
+    "arista.avd.range_expand": range_expand_utils,
 }
 JINJA2_CUSTOM_TESTS = {
     "arista.avd.defined": defined,
