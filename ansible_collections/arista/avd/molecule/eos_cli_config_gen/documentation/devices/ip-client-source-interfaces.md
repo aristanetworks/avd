@@ -34,51 +34,23 @@ interface Management1
 ```
 #### IP Client Source Interfaces
 
-
-#### IP FTP Client Source Interfaces
-
-| VRF | Source Interface Name |
-| --- | --------------- |
-| default | Ethernet10 |
-| default | Loopback0 |
-| MGMT | Management0 |
-
-
-#### IP HTTP Client Source Interfaces
-
-| VRF | Source Interface Name |
-| --- | --------------- |
-| default | Loopback0 |
-| MGMT | Management0 |
-| default | Ethernet10 |
-
-
-#### IP SSH Client Source Interfaces
-
-| VRF | Source Interface Name |
-| --- | --------------- |
-| default | Ethernet10 |
-| default | Loopback0 |
-| MGMT | Management0 |
-
-
-#### IP Telnet Client Source Interfaces
-
-| VRF | Source Interface Name |
-| --- | --------------- |
-| default | Ethernet10 |
-| default | Loopback0 |
-| MGMT | Management0 |
-
-
-#### IP TFTP Client Source Interfaces
-
-| VRF | Source Interface Name |
-| --- | --------------- |
-| default | Ethernet10 |
-| default | Loopback0 |
-| MGMT | Management0 |
-
+| IP Client | VRF | Source Interface Name |
+| --------- | --- | --------------------- |
+| FTP | default | Ethernet10 |
+| FTP | default | Loopback0 |
+| FTP | MGMT | Management0 |
+| HTTP | default | Loopback0 |
+| HTTP | MGMT | Management0 |
+| HTTP | default | Ethernet10 |
+| SSH | default | Ethernet10 |
+| SSH | default | Loopback0 |
+| SSH | MGMT | Management0 |
+| Telnet | default | Ethernet10 |
+| Telnet | default | Loopback0 |
+| Telnet | MGMT | Management0 |
+| TFTP | default | Ethernet10 |
+| TFTP | default | Loopback0 |
+| TFTP | MGMT | Management0 |
 
 #### IP Client Source Interfaces Configuration
 
