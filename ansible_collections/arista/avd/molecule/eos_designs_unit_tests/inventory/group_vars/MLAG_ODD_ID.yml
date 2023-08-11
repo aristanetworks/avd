@@ -12,6 +12,15 @@ l3leaf:
     platform: vEOS-LAB
     mlag_interfaces: [Ethernet5, Ethernet6]
   node_groups:
+    - group: MLAG_ODD_ID_L3BORDERLEAF1
+      bgp_as: 922
+      nodes:
+        - name: MLAG_ODD_ID_L3BORDERLEAF1A
+          id: 1
+          mgmt_ip: 192.168.201.114/24
+        - name: MLAG_ODD_ID_L3BORDERLEAF1B
+          id: 2
+          mgmt_ip: 192.168.201.115/24
     - group: MLAG_ODD_ID_L3LEAF1
       bgp_as: 923
       nodes:

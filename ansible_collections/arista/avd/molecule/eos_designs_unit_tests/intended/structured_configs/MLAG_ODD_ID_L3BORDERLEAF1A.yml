@@ -1,7 +1,7 @@
-hostname: MLAG_ODD_ID_L3LEAF1A
+hostname: MLAG_ODD_ID_L3BORDERLEAF1A
 router_bgp:
-  as: '923'
-  router_id: 192.168.255.35
+  as: '922'
+  router_id: 192.168.255.33
   bgp:
     default:
       ipv4_unicast: false
@@ -13,9 +13,9 @@ router_bgp:
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
-    remote_as: '923'
+    remote_as: '922'
     next_hop_self: true
-    description: MLAG_ODD_ID_L3LEAF1B
+    description: MLAG_ODD_ID_L3BORDERLEAF1B
     maximum_routes: 12000
     send_community: all
     route_map_in: RM-MLAG-PEER-IN
@@ -39,9 +39,9 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
   neighbors:
-  - ip_address: 10.10.224.3
+  - ip_address: 10.10.224.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    description: MLAG_ODD_ID_L3LEAF1B
+    description: MLAG_ODD_ID_L3BORDERLEAF1B
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -64,7 +64,7 @@ management_interfaces:
   description: oob_management
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.201.116/24
+  ip_address: 192.168.201.114/24
   gateway: null
   type: oob
 management_api_http:
@@ -89,16 +89,16 @@ vlan_interfaces:
   description: MLAG_PEER_L3_PEERING
   shutdown: false
   mtu: 9214
-  ip_address: 10.10.224.2/31
+  ip_address: 10.10.224.0/31
 - name: Vlan4094
   description: MLAG_PEER
   shutdown: false
-  ip_address: 10.10.255.2/31
+  ip_address: 10.10.255.0/31
   no_autostate: true
   mtu: 9214
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_MLAG_ODD_ID_L3LEAF1B_Po5
+  description: MLAG_PEER_MLAG_ODD_ID_L3BORDERLEAF1B_Po5
   type: switched
   shutdown: false
   mode: trunk
@@ -107,29 +107,29 @@ port_channel_interfaces:
   - MLAG
 ethernet_interfaces:
 - name: Ethernet5
-  peer: MLAG_ODD_ID_L3LEAF1B
+  peer: MLAG_ODD_ID_L3BORDERLEAF1B
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_MLAG_ODD_ID_L3LEAF1B_Ethernet5
+  description: MLAG_PEER_MLAG_ODD_ID_L3BORDERLEAF1B_Ethernet5
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
 - name: Ethernet6
-  peer: MLAG_ODD_ID_L3LEAF1B
+  peer: MLAG_ODD_ID_L3BORDERLEAF1B
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_MLAG_ODD_ID_L3LEAF1B_Ethernet6
+  description: MLAG_PEER_MLAG_ODD_ID_L3BORDERLEAF1B_Ethernet6
   type: port-channel-member
   shutdown: false
   channel_group:
     id: 5
     mode: active
 mlag_configuration:
-  domain_id: MLAG_ODD_ID_L3LEAF1
+  domain_id: MLAG_ODD_ID_L3BORDERLEAF1
   local_interface: Vlan4094
-  peer_address: 10.10.255.3
+  peer_address: 10.10.255.1
   peer_link: Port-Channel5
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
@@ -151,11 +151,11 @@ loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
-  ip_address: 192.168.255.35/32
+  ip_address: 192.168.255.33/32
 - name: Loopback1
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
-  ip_address: 192.168.254.33/32
+  ip_address: 192.168.254.32/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -172,7 +172,7 @@ ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
   Vxlan1:
-    description: MLAG_ODD_ID_L3LEAF1A_VTEP
+    description: MLAG_ODD_ID_L3BORDERLEAF1A_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
