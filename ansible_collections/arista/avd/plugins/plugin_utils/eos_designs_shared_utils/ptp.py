@@ -58,6 +58,11 @@ class PtpMixin:
         return get(self.switch_data_combined, "ptp.enabled", default=default_ptp_enabled) is True
 
     @cached_property
+    def mlag_ptp_enabled(self: SharedUtils) -> bool:
+        default_mlag_ptp = get(self.hostvars, "mlag_ptp")
+        return get(self.switch_data_combined, "mlag_ptp", default=default_mlag_ptp) is True
+
+    @cached_property
     def ptp_profile_name(self: SharedUtils) -> str:
         default_ptp_profile = get(self.hostvars, "ptp.profile", default="aes67-r16-2016")
         return get(self.switch_data_combined, "ptp.profile", default_ptp_profile)

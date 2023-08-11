@@ -5890,6 +5890,14 @@ $defs:
             description: MLAG Domain ID. If not set the node group name (Set with
               "group" key) will be used.
             type: str
+          mlag_ptp:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: Determine default behavior for configuring PTP on the MLAG
+              peer link port-channel when PTP is enabled. If not explicitly set, PTP
+              will not be enabled on the MLAG peer link port-channel.
+            type: bool
+            default: false
           spanning_tree_mode:
             documentation_options:
               table: node-type-l2-mlag-configuration
