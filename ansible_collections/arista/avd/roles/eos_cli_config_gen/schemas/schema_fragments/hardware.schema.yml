@@ -24,7 +24,6 @@ keys:
               type: int
               convert_types:
               - str
-              required: true
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g"

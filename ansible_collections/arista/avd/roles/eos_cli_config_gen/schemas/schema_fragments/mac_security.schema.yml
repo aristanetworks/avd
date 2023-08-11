@@ -30,7 +30,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Profile-Name
             cipher:
               type: str

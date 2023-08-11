@@ -16,7 +16,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: |
                 Source Interface
             vrf:

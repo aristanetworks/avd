@@ -13,7 +13,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
         description:
           type: str
         shutdown:
@@ -268,7 +267,6 @@ keys:
             keys:
               ip_helper:
                 type: str
-                required: true
               source_interface:
                 type: str
                 description: Source interface name
@@ -278,7 +276,7 @@ keys:
                 convert_types:
                   - int
         ip_nat:
-          $ref: "#/$defs/interface_ip_nat"
+          $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -300,7 +298,6 @@ keys:
             keys:
               ipv6_prefix:
                 type: str
-                required: true
               valid_lifetime:
                 type: str
                 convert_types:
@@ -322,7 +319,6 @@ keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address
-                required: true
               vrf:
                 type: str
                 convert_types:
@@ -414,7 +410,6 @@ keys:
                 type: int
                 convert_types:
                   - str
-                required: true
               hash_algorithm:
                 type: str
                 valid_values: ["md5", "sha1", "sha256", "sha384", "sha512"]

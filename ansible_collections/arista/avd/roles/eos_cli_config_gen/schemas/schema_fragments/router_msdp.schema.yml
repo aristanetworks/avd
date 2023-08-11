@@ -33,7 +33,6 @@ keys:
             source_prefix:
               type: str
               description: Source address prefix
-              required: true
             limit:
               type: int
               convert_types:
@@ -50,7 +49,6 @@ keys:
           keys:
             ipv4_address:
               type: str
-              required: true
               description: Peer IP Address
             default_peer:
               type: dict
@@ -82,7 +80,6 @@ keys:
                 keys:
                   name:
                     type: str
-                    required: true
                     description: Mesh group name
             keepalive:
               type: dict
@@ -119,7 +116,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: VRF name
               convert_types:
                 - int
@@ -150,7 +146,6 @@ keys:
                   source_prefix:
                     type: str
                     description: Source address prefix
-                    required: true
                   limit:
                     type: int
                     convert_types:
@@ -167,7 +162,6 @@ keys:
                 keys:
                   ipv4_address:
                     type: str
-                    required: true
                     description: Peer IP Address
                   default_peer:
                     type: dict
@@ -199,7 +193,6 @@ keys:
                       keys:
                         name:
                           type: str
-                          required: true
                           description: Mesh group name
                   keepalive:
                     type: dict

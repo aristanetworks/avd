@@ -22,7 +22,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Tcam-Profile Name
             config:
               type: str
