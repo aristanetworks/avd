@@ -97,3 +97,12 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
+ethernet_interfaces:
+- name: Ethernet10
+  peer: ROUTER01
+  peer_interface: Eth1
+  peer_type: router
+  port_profile: Tenant_X_LT
+  description: ROUTER01_Eth1
+  shutdown: false
+  type: switched

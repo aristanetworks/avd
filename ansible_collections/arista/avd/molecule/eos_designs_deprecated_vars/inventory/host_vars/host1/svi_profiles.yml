@@ -1,11 +1,5 @@
-type: l3leaf
-l3leaf:
-  defaults:
-    loopback_ipv4_pool: 192.168.255.0/24
-    vtep_loopback_ipv4_pool: 192.168.254.0/24
-    id: 101
-    bgp_as: 101
-
+# Testing "svi_profiles" as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
 svi_profiles:
   GENERIC:
     mtu: 1560
@@ -21,10 +15,14 @@ svi_profiles:
     enabled: false
     ip_address_virtual: 10.4.13.254/24
     ipv6_address_virtual: 2001:db8:413::1/64
+    # Testing "ip_helpers" as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
     ip_helpers:
       1.1.1.1:
         source_interface: lo101
         source_vrf: TEST
+    # Testing "nodes" as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
     nodes:
       evpn_services_l2_only_false:
         ip_address: 12.4.13.2/24

@@ -1,10 +1,5 @@
-type: spine
-spine:
-  defaults:
-    loopback_ipv4_pool: 192.168.255.0/24
-    bgp_as: 65000
-    id: 101
-
+# Testing "l3_edge.p2p_links_ip_pools" and "l3_edge.p2p_links_profiles" as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
 l3_edge:
   p2p_links_ip_pools:
     pool-leaf: 11.1.0.0/24

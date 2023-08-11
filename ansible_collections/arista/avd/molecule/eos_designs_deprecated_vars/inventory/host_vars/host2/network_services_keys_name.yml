@@ -1,14 +1,16 @@
 ---
+type: pe
+design:
+  type: mpls
+
 pe:
   defaults:
     loopback_ipv4_pool: 10.42.0.0/24
     bgp_as: 42
     id: 42
 
-type: pe
-design:
-  type: mpls
-
+# Testing "tenants" as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
 tenants:
   TENANT_B:
     bgp_peer_groups:
@@ -18,42 +20,47 @@ tenants:
         send_community: all
         next_hop_self: true
         maximum_routes: 1000
+    # Testing "l2vlans" as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
     l2vlans:
       '160':
         name: Tenant_A_VMOTION
         tags: ['opzone']
+    # Testing "vrfs" as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
     vrfs:
       TENANT_B_WAN:
         vrf_id: 20
-        l3_interfaces:
-          - description: TENANT_B_SITE_3_OSPF
-            enabled: true
-            interfaces:
-              - Ethernet6.101
-            ip_addresses:
-              - 192.168.48.4/31
-            nodes:
-              - duplicate-l3-interfaces-network-services
+      # Testing "svis" as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
         svis:
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
             tags: ['opzone']
             enabled: True
+            # Testing "ip_helpers" as dict of dict
+            # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
             ip_helpers:
               1.1.1.1:
                 source_interface: lo100
                 source_vrf: MGMT
+            # Testing "nodes" as dict of dict
+            # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
             nodes:
               DC1-LEAF2A:
                 ip_address: 10.3.11.2/24
                 ipv6_address: 2001:db8:311::2/64
+        # Testing "bgp_peers" as dict of dict
+        # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
         bgp_peers:
           1.1.1.1:
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
             description: test_description
             nodes: [ DC1-BL2B ]
             set_ipv4_next_hop: 1.1.1.1
+        # Testing "ip_helpers" as dict of dict
+        # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
         ip_helpers:
           1.1.1.1:
             source_interface: lo100
