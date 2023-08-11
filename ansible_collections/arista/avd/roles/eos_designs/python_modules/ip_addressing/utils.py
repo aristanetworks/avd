@@ -32,6 +32,10 @@ class UtilsMixin:
         return self.shared_utils.fabric_ip_addressing_mlag_algorithm
 
     @cached_property
+    def _fabric_ipaddress_vtep_algorithm(self: "AvdIpAddressing") -> str:
+        return self.shared_utils.fabric_ip_addressing_vtep_algorithm
+
+    @cached_property
     def _mlag_peer_ipv4_pool(self: "AvdIpAddressing") -> str:
         return self.shared_utils.mlag_peer_ipv4_pool
 

@@ -232,7 +232,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._mlag_primary_id + self._loopback_ipv4_offset
-        if self._fabric_ipaddress_mlag_algorithm == "odd_id":
+        if self._fabric_ipaddress_vtep_algorithm == "odd_id":
             offset = self._mlag_odd_id_based_offset + self._loopback_ipv4_offset
 
         return self._ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)
