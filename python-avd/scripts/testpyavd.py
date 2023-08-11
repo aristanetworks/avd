@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 
+from sys import path
 from timeit import repeat
+
+# Override global path to load pyavd from pwd instead of any installed version.
+path.insert(0, ".")
 
 print(
     repeat(
