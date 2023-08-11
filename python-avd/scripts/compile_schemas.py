@@ -4,7 +4,8 @@ from sys import path
 
 from yaml import safe_load
 
-path.append(".")
+# Override global path to load pyavd from pwd instead of any installed version.
+path.insert(0, ".")
 
 from pyavd.vendor.schema.default_schemas import DEFAULT_PICKLED_SCHEMAS, DEFAULT_SCHEMAS
 
