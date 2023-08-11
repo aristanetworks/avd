@@ -1831,8 +1831,11 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def overlay_routing_protocol_address_family(self):
+        if not self.underlay_router:
+            return None
+
         overlay_routing_protocol_address_family = get(self._hostvars, "overlay_routing_protocol_address_family", default="ipv4")
-        if overlay_routing_protocol_address_family == "ipv6" and self.underlay_router is True:
+        if overlay_routing_protocol_address_family == "ipv6":
             if not (get(self._hostvars, "underlay_ipv6") is True and get(self._hostvars, "underlay_rfc5549") is True):
                 raise AristaAvdError(
                     "'overlay_routing_protocol_address_family: ipv6' is only supported in combination with 'underlay_ipv6: True' and 'underlay_rfc5549: True'"
