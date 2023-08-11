@@ -212,7 +212,6 @@ keys:
                     recovery_time:
                       type: str
                       required: true
-                      # pattern: "\\d+(\\.\\d{1,2})?"
                       pattern: "^\\d+(\\.\\d{1,2})?$"
                       convert_types:
                         - int
