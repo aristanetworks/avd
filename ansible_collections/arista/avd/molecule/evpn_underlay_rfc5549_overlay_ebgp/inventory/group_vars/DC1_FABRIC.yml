@@ -156,8 +156,11 @@ l3leaf:
     - group: DC1_LEAF3
       # Testing RFC5549 with IPv6 overlay peers only
       bgp_as: 65106
-      uplink_interfaces: ['Ethernet1']
-      uplink_switches: ['DC1-SPINE5']
+      uplink_interfaces: ['Ethernet1', 'Ethernet2']
+      # Twice same uplink switch to repro an issue where
+      # all the bgp neighbor_interfaces are rendered twice
+      # because each uplink peer is parsed twice.
+      uplink_switches: ['DC1-SPINE5', 'DC1-SPINE5']
       loopback_ipv6_pool: 2001:1::/64
       loopback_ipv6_offset: 4
       nodes:
@@ -165,11 +168,11 @@ l3leaf:
           id: 8
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet1 ]
+          uplink_switch_interfaces: [ Ethernet1, Ethernet3 ]
         - name: DC1-LEAF3B
           id: 9
           mgmt_ip: 192.168.200.107/24
-          uplink_switch_interfaces: [ Ethernet2 ]
+          uplink_switch_interfaces: [ Ethernet2, Ethernet4 ]
     - group: DC1_LEAF4
       # Testing underlay IPv6 peers
       bgp_as: 65107

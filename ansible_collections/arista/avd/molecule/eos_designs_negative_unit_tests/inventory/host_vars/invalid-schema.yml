@@ -12,4 +12,4 @@ l3leaf:
       id: 1
 
 expected_error_message: >-
-  1 errors raised during conversion of input vars. 3 errors found during schema validation of input vars.
+  1 errors raised during conversion of input vars. 2 errors found during schema validation of input vars.

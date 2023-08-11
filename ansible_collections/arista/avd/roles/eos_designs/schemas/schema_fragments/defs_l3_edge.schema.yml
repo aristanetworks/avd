@@ -17,7 +17,6 @@ $defs:
           keys:
             name:
               type: str
-              required: true
               description: P2P pool name.
             ipv4_pool:
               type: str
@@ -41,7 +40,6 @@ $defs:
           keys:
             name:
               type: str
-              required: true
               description: P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
       p2p_links:
         type: list

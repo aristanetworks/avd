@@ -66,6 +66,10 @@ router_bgp:
     peer_group: UNDERLAY_PEERS
     remote_as: '65001'
     description: DC1-SPINE5_Ethernet1
+  - name: Ethernet2
+    peer_group: UNDERLAY_PEERS
+    remote_as: '65001'
+    description: DC1-SPINE5_Ethernet3
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -637,6 +641,15 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: spine
   description: P2P_LINK_TO_DC1-SPINE5_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ipv6_enable: true
+- name: Ethernet2
+  peer: DC1-SPINE5
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_DC1-SPINE5_Ethernet3
   shutdown: false
   mtu: 1500
   type: routed

@@ -270,6 +270,12 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.dot1x.reauthorization_request_limit is arista.avd.defined %}
    dot1x reauthorization request limit {{ ethernet_interface.dot1x.reauthorization_request_limit }}
 {%         endif %}
+{%         if ethernet_interface.dot1x.unauthorized.access_vlan_membership_egress is arista.avd.defined(true) %}
+   dot1x unauthorized access vlan membership egress
+{%         endif %}
+{%         if ethernet_interface.dot1x.unauthorized.native_vlan_membership_egress is arista.avd.defined(true) %}
+   dot1x unauthorized native vlan membership egress
+{%         endif %}
 {%         if ethernet_interface.dot1x.eapol is arista.avd.defined %}
 {%             if ethernet_interface.dot1x.eapol.disabled is arista.avd.defined(true) %}
    dot1x eapol disabled

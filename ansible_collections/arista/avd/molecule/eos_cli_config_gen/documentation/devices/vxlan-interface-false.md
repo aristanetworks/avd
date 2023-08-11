@@ -1,9 +1,11 @@
-# ethernet_interfaces
+# vxlan-interface-false
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Interfaces](#interfaces)
+  - [VXLAN Interface](#vxlan-interface)
 
 ## Management
 
@@ -31,4 +33,27 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+## Interfaces
+
+### VXLAN Interface
+
+#### VXLAN Interface Summary
+
+| Setting | Value |
+| ------- | ----- |
+| UDP port | 4789 |
+| Qos dscp propagation encapsulation | Disabled |
+| Qos ECN propagation | Disabled |
+| Qos map dscp to traffic-class decapsulation | Disabled |
+
+#### VXLAN Interface Device Configuration
+
+```eos
+!
+interface Vxlan1
+   no vxlan qos dscp propagation encapsulation
+   no vxlan qos ecn propagation
+   no vxlan qos map dscp to traffic-class decapsulation
 ```

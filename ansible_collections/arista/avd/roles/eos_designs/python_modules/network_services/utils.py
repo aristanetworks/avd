@@ -168,6 +168,15 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
         return vlan_id
 
+    def _mlag_ibgp_peering_redistribute(self, vrf, tenant) -> bool:
+        """
+        Returns True if MLAG IBGP Peering subnet should be redistributed for the given vrf/tenant.
+        False otherwise.
+
+        Does _not_ include checks if the peering is enabled at all, so that should be checked first.
+        """
+        return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), True) is True
+
     @cached_property
     def _configure_bgp_mlag_peer_group(self) -> bool:
         """

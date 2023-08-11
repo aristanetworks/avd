@@ -48,11 +48,11 @@ Sample: 666
 
 ##### Trackers Summary
 
-| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On |
-| ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- |
-| T1 | 3666 | 5666 | True | 0 |  |
-| T2 | - | - | False | 1 | Ethernet40 |
-| T3 | - | - | - | 4 | Ethernet41<br>Ethernet42<br>Port-Channel42 |
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
+| ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- | ---------- |
+| T1 | 3666 | 5666 | True | 0 |  | - |
+| T2 | - | - | False | 1 | Ethernet40 | 614400 |
+| T3 | - | - | - | 4 | Ethernet41<br>Ethernet42<br>Port-Channel42 | 100000 |
 
 ##### Exporters Summary
 
@@ -77,6 +77,7 @@ flow tracking sampled
    tracker T2
       exporter T2-E1
          collector 42.42.42.42
+      flow table size 614400 entries
    tracker T3
       exporter T3-E1
       exporter T3-E2
@@ -88,6 +89,7 @@ flow tracking sampled
          template interval 424242
       exporter T3-E4
          collector dead:beef::cafe
+      flow table size 100000 entries
    no shutdown
 ```
 

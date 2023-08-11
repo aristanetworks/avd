@@ -1,10 +1,10 @@
-# ip-ssh-client-source-interface
+# management-accounts
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
+  - [Management Accounts](#management-accounts)
 
 ## Management
 
@@ -34,21 +34,16 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-### IP SSH Client Source Interfaces
+### Management Accounts
 
-#### IP SSH Client Source Interfaces
+#### Password Policy
 
-| VRF | Source Interface Name |
-| --- | --------------- |
-| default | Ethernet10 |
-| default | Loopback0 |
-| MGMT | Management0 |
+The password policy set for management accounts is: AVD_POLICY
 
-#### IP SSH Client Source Interfaces Device Configuration
+#### Management Accounts Device Configuration
 
 ```eos
 !
-ip ssh client source-interface Ethernet10
-ip ssh client source-interface Loopback0 vrf default
-ip ssh client source-interface Management0 vrf MGMT
+management accounts
+   password policy AVD_POLICY
 ```

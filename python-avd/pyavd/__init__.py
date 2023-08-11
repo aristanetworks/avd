@@ -10,7 +10,7 @@ from .vendor.version import VERSION
 """ Library for running Arista Validated Designs (AVD) in Python
 """
 
-PYAVD_VERSION = "a4"
+PYAVD_VERSION = "a6"
 AVD_VERSION = VERSION.split("-", maxsplit=1)[0]
 
 if "-dev" in VERSION:

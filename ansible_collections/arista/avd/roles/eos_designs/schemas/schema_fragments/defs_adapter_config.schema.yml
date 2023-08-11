@@ -442,6 +442,10 @@ $defs:
           short_esi:
             type: str
             description: In format xxxx:xxxx:xxxx or "auto".
+            deprecation:
+              warning: true
+              remove_in_version: "5.0.0"
+              new_key: ethernet_segment.short_esi
           lacp_fallback:
             type: dict
             description: LACP fallback configuration.
@@ -517,10 +521,16 @@ $defs:
             description: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
           structured_config:
             type: dict
-            description: Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen.
+            description: Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
       structured_config:
         type: dict
-        description: Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.
+        description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+        documentation_options:
+          hide_keys: true
+        $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"

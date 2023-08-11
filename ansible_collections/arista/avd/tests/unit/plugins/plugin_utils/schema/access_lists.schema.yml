@@ -22,7 +22,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           display_name: access_list_name
         counters_per_entry:
           type: bool
@@ -37,7 +36,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 display_name: sequence_id
                 convert_types:
                   - str
