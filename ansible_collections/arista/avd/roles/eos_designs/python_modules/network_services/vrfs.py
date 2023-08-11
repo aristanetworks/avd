@@ -36,6 +36,7 @@ class VrfsMixin(UtilsMixin):
                 # MLAG IBGP Peering VLANs per VRF
                 if self._overlay_mlag_rfc5549 and self._mlag_ibgp_peering_enabled(vrf, tenant):
                     new_vrf["ip_routing_ipv6_interfaces"] = True
+                    new_vrf["ipv6_routing"] = True
                 else:
                     new_vrf["ip_routing"] = True
 

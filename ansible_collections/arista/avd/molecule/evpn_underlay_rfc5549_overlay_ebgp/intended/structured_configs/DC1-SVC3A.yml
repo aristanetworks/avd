@@ -383,30 +383,39 @@ vrfs:
   Tenant_A_APP_Zone:
     tenant: Tenant_A
     ip_routing_ipv6_interfaces: true
+    ipv6_routing: true
   Tenant_A_DB_Zone:
     tenant: Tenant_A
     ip_routing_ipv6_interfaces: true
+    ipv6_routing: true
   Tenant_A_OP_Zone:
     tenant: Tenant_A
     ip_routing_ipv6_interfaces: true
+    ipv6_routing: true
   Tenant_A_WAN_Zone:
     tenant: Tenant_A
     ip_routing_ipv6_interfaces: true
+    ipv6_routing: true
   Tenant_A_WEB_Zone:
     tenant: Tenant_A
     ip_routing_ipv6_interfaces: true
+    ipv6_routing: true
   Tenant_B_OP_Zone:
     tenant: Tenant_B
     ip_routing_ipv6_interfaces: true
+    ipv6_routing: true
   Tenant_B_WAN_Zone:
     tenant: Tenant_B
     ip_routing_ipv6_interfaces: true
+    ipv6_routing: true
   Tenant_C_OP_Zone:
     tenant: Tenant_C
     ip_routing_ipv6_interfaces: true
+    ipv6_routing: true
   Tenant_C_WAN_Zone:
     tenant: Tenant_C
     ip_routing_ipv6_interfaces: true
+    ipv6_routing: true
 management_interfaces:
   Management1:
     description: oob_management

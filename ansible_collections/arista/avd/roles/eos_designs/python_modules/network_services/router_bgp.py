@@ -184,6 +184,18 @@ class RouterBgpMixin(UtilsMixin):
                             ip_address = self._mlag_peer_ibgp_ip
 
                         bgp_vrf.setdefault("neighbors", {})[ip_address] = {"peer_group": self._peer_group_mlag_ipv4_underlay_peer_name}
+                        if self._underlay_rfc5549():
+                            bgp_vrf.setdefault("address_family_ipv4", {}).setdefault("neighbors", {}).update(
+                                {
+                                    ip_address: {
+                                        "next_hop": {
+                                            "address_family_ipv6": {
+                                                "enabled": False,
+                                            }
+                                        },
+                                    }
+                                }
+                            )
 
                 address_families = {}
                 for bgp_peer in vrf["bgp_peers"]:
