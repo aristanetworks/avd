@@ -5357,6 +5357,149 @@ keys:
             type: str
             convert_types:
             - int
+          mmu:
+            type: dict
+            description: 'Memory Management Unit settings.
+
+              '
+            keys:
+              active_profile:
+                type: str
+                description: 'The queue profile to be applied to the platform.
+
+                  '
+              queue_profiles:
+                type: list
+                primary_key: name
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                    multicast_queues:
+                      type: list
+                      primary_key: id
+                      convert_types:
+                      - dict
+                      items:
+                        type: dict
+                        keys:
+                          id:
+                            type: int
+                            convert_types:
+                            - str
+                            required: true
+                            min: 0
+                            max: 7
+                          unit:
+                            type: str
+                            valid_values:
+                            - bytes
+                            - cells
+                            description: 'Unit to be used for the reservation value.
+                              If not specified, default is bytes.
+
+                              '
+                          reserved:
+                            type: int
+                            convert_types:
+                            - str
+                            description: 'Amount of memory that should be reserved
+                              for this
+
+                              queue.
+
+                              '
+                          threshold:
+                            type: str
+                            convert_types:
+                            - int
+                            description: 'Dynamic Shared Memory threshold.
+
+                              '
+                          drop:
+                            type: dict
+                            keys:
+                              precedence:
+                                type: int
+                                valid_values:
+                                - 1
+                                - 2
+                                required: true
+                              threshold:
+                                type: str
+                                required: true
+                                convert_types:
+                                - int
+                                description: 'Drop Treshold. This value may also be
+                                  fractions.
+
+                                  Example: 7/8 or 3/4 or 1/2
+
+                                  '
+                    unicast_queues:
+                      type: list
+                      primary_key: id
+                      convert_types:
+                      - dict
+                      items:
+                        type: dict
+                        keys:
+                          id:
+                            type: int
+                            convert_types:
+                            - str
+                            required: true
+                            min: 0
+                            max: 7
+                          unit:
+                            type: str
+                            valid_values:
+                            - bytes
+                            - cells
+                            description: 'Unit to be used for the reservation value.
+                              If not specified, default is bytes.
+
+                              '
+                          reserved:
+                            type: int
+                            convert_types:
+                            - str
+                            description: 'Amount of memory that should be reserved
+                              for this
+
+                              queue.
+
+                              '
+                          threshold:
+                            type: str
+                            convert_types:
+                            - int
+                            description: 'Dynamic Shared Memory threshold.
+
+                              '
+                          drop:
+                            type: dict
+                            keys:
+                              precedence:
+                                type: int
+                                valid_values:
+                                - 1
+                                - 2
+                                required: true
+                              threshold:
+                                type: str
+                                required: true
+                                convert_types:
+                                - int
+                                description: 'Drop Treshold. This value may also be
+                                  fractions.
+
+                                  Example: 7/8 or 3/4 or 1/2
+
+                                  '
       sand:
         type: dict
         description: Most of the platform sand options are hardware dependant and
