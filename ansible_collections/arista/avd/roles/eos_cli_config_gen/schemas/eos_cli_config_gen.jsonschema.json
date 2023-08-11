@@ -10800,6 +10800,64 @@
       },
       "title": "Prefix Lists"
     },
+    "priority_flow_control": {
+      "type": "object",
+      "description": "Global Priority Flow Control settings.\n",
+      "properties": {
+        "all_off": {
+          "type": "boolean",
+          "description": "Disable PFC on all interfaces.\n",
+          "title": "All Off"
+        },
+        "watchdog": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "drop",
+                "no-drop"
+              ],
+              "description": "Action on stuck queue.\n",
+              "title": "Action"
+            },
+            "timeout": {
+              "type": "string",
+              "pattern": "^\\d+(\\.\\d{1,2})?$",
+              "description": "Timeout in seconds after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 2 decimal point.\nExample: 0.01 or 60\n",
+              "title": "Timeout"
+            },
+            "polling_interval": {
+              "type": "string",
+              "pattern": "^\\d+(\\.\\d{1,3})?$",
+              "description": "Time interval in seconds at which the watchdog should poll the queues.\nThis should be decimal with up to 3 decimal point.\nExample: 0.005 or 60\n",
+              "title": "Polling Interval"
+            },
+            "recovery_time": {
+              "type": "string",
+              "pattern": "^\\d+(\\.\\d{1,2})?$",
+              "description": "Recovery-time in seconds after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 2 decimal point.\nExample: 0.01 or 60\n",
+              "title": "Recovery Time"
+            },
+            "override_action_drop": {
+              "type": "boolean",
+              "description": "Override configured action on stuck queue to drop.",
+              "title": "Override Action Drop"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Watchdog"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Priority Flow Control"
+    },
     "prompt": {
       "type": "string",
       "title": "Prompt"
@@ -11315,7 +11373,7 @@
                 },
                 "comment": {
                   "type": "string",
-                  "description": "Text comment added to queue.",
+                  "description": "Text comment added to queue.\n",
                   "title": "Comment"
                 }
               },
@@ -11328,6 +11386,119 @@
               ]
             },
             "title": "Mc TX Queues"
+          },
+          "priority_flow_control": {
+            "type": "object",
+            "description": "Priority Flow Control settings\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "description": "Enable Priority Flow control.\n",
+                "title": "Enabled"
+              },
+              "watchdog": {
+                "type": "object",
+                "description": "Watchdog can detect stuck transmit queues.\n",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the watchdog on stuck transmit queues.\n",
+                    "title": "Enabled"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "drop",
+                      "notify-only"
+                    ],
+                    "description": "Override the default error-disable action to either drop\ntraffic on the stuck queue or notify-only\nwithout making any actions on the stuck queue.\n",
+                    "title": "Action"
+                  },
+                  "timer": {
+                    "type": "object",
+                    "description": "Timer thresholds whilst monitoring queues.\n",
+                    "properties": {
+                      "timeout": {
+                        "type": "string",
+                        "pattern": "^\\d+(\\.\\d{1,2})?$",
+                        "description": "Timeout in seconds after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 2 decimal point\nExample: 0.01 or 60\n",
+                        "title": "Timeout"
+                      },
+                      "polling_interval": {
+                        "type": "string",
+                        "pattern": "^auto|\\d+(\\.\\d{1,3})?$",
+                        "description": "Time interval in seconds at which the watchdog should poll the queues.\nThis should be decimal with up to 3 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample: 0.005 or 60\n",
+                        "title": "Polling Interval"
+                      },
+                      "recovery_time": {
+                        "type": "string",
+                        "pattern": "^\\d+(\\.\\d{1,2})?$",
+                        "description": "Recovery-time in seconds after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 2 decimal point.\nExample: 0.01 or 60\n",
+                        "title": "Recovery Time"
+                      },
+                      "forced": {
+                        "type": "boolean",
+                        "description": "Force recover any stuck queue(s) after the duration,\nirrespective of whether PFC frames are being\nreceived or not.\n",
+                        "title": "Forced"
+                      }
+                    },
+                    "required": [
+                      "timeout",
+                      "polling_interval",
+                      "recovery_time"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Timer"
+                  }
+                },
+                "required": [
+                  "enabled"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Watchdog"
+              },
+              "priorities": {
+                "type": "array",
+                "description": "Set the drop/no_drop on each queue\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "priority": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 7,
+                      "description": "Priority queue number (COS value)\n",
+                      "title": "Priority"
+                    },
+                    "no_drop": {
+                      "type": "boolean",
+                      "description": "Enable Priority Flow Control frames on this queue",
+                      "title": "No Drop"
+                    }
+                  },
+                  "required": [
+                    "priority",
+                    "no_drop"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Priorities"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Priority Flow Control"
           }
         },
         "additionalProperties": false,
