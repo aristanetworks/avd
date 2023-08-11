@@ -1831,6 +1831,9 @@ class EosDesignsFacts(AvdFacts):
 
     @cached_property
     def overlay_routing_protocol_address_family(self):
+        if not self.underlay_router:
+            return None
+
         overlay_routing_protocol_address_family = get(self._hostvars, "overlay_routing_protocol_address_family", default="ipv4")
         if overlay_routing_protocol_address_family == "ipv6":
             if not (get(self._hostvars, "underlay_ipv6") is True and get(self._hostvars, "underlay_rfc5549") is True):
@@ -1941,15 +1944,20 @@ class EosDesignsFacts(AvdFacts):
         )
 
     @cached_property
-    def overlay(self) -> dict:
+    def _overlay_peering_address(self) -> str | None:
+        if not self.underlay_router:
+            return None
+
+        if self.overlay_routing_protocol_address_family == "ipv6":
+            return self.ipv6_router_id
+
+        return self.router_id
+
+    @cached_property
+    def overlay(self) -> dict | None:
         """
         Returns a dictionary of overlay parameters to configure on the node.
         """
-        # Set overlay.peering_address to use
-        if self.overlay_routing_protocol_address_family == "ipv6":
-            peering_address = self.ipv6_router_id
-        else:
-            peering_address = self.router_id
         # Set overlay.evpn_vxlan and overlay.evpn_mpls to differentiate between VXLAN and MPLS use cases.
         evpn_vxlan = self._overlay_evpn and self.evpn_encapsulation == "vxlan"
         evpn_mpls = self._overlay_evpn and self.evpn_encapsulation == "mpls"
@@ -1957,7 +1965,7 @@ class EosDesignsFacts(AvdFacts):
         dpath = self._overlay_ipvpn_gateway and get(self._switch_data_combined, "ipvpn_gateway.enable_d_path", default=True)
 
         return {
-            "peering_address": peering_address,
+            "peering_address": self._overlay_peering_address,
             "ler": self._overlay_ler,
             "vtep": self._overlay_vtep,
             "evpn": self._overlay_evpn,
