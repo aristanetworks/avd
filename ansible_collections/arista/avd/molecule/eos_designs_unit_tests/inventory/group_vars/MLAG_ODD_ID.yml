@@ -2,6 +2,8 @@
 fabric_ip_addressing:
   mlag:
     algorithm: "odd_id"
+  vtep:
+    algorithm: "odd_id"
 l3leaf:
   defaults:
     mlag_peer_ipv4_pool: 10.10.255.0/24

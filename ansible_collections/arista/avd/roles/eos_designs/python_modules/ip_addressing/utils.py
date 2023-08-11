@@ -32,6 +32,10 @@ class UtilsMixin:
         return self.shared_utils.fabric_ip_addressing_mlag_algorithm
 
     @cached_property
+    def _fabric_ipaddress_vtep_algorithm(self: "AvdIpAddressing") -> str:
+        return self.shared_utils.fabric_ip_addressing_vtep_algorithm
+
+    @cached_property
     def _mlag_peer_ipv4_pool(self: "AvdIpAddressing") -> str:
         return self.shared_utils.mlag_peer_ipv4_pool
 
@@ -94,5 +98,24 @@ class UtilsMixin:
         odd_id = self._mlag_primary_id
         if odd_id % 2 == 0:
             odd_id = self._mlag_secondary_id
+
+        return int((odd_id - 1) / 2)
+
+    @cached_property
+    def _vtep_odd_id_based_offset(self: "AvdIpAddressing") -> int:
+        """
+        Return the subnet offset for an MLAG pair based on odd id
+
+        Requires a pair of odd and even IDs
+        """
+        if self.shared_utils.mlag:
+            # Verify a mix of odd and even IDs
+            if (self._mlag_primary_id % 2) == (self._mlag_secondary_id % 2):
+                raise AristaAvdError("VTEP compact addressing mode requires all MLAG pairs to have a single odd and even ID")
+            odd_id = self._mlag_primary_id
+            if odd_id % 2 == 0:
+                odd_id = self._mlag_secondary_id
+        else:
+            odd_id = self._id
 
         return int((odd_id - 1) / 2)

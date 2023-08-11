@@ -217,6 +217,14 @@ class MiscMixin:
         return get(self.hostvars, "fabric_ip_addressing.mlag.algorithm", default="first_id")
 
     @cached_property
+    def fabric_ip_addressing_vtep_algorithm(self: SharedUtils) -> str:
+        """
+        This method fetches the VTEP IP allocation algorithm value from host variables.
+        It defaults to 'first_id' if the variable is not defined.
+        """
+        return get(self.hostvars, "fabric_ip_addressing.vtep.algorithm", default="first_id")
+
+    @cached_property
     def fabric_sflow_uplinks(self: SharedUtils) -> bool | None:
         return get(self.hostvars, "fabric_sflow.uplinks")
 
