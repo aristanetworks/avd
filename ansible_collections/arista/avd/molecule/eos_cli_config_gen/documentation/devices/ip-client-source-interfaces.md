@@ -4,6 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+  - [IP Client Source Interfaces](#ip-client-source-interfaces)
 
 ## Management
 
@@ -32,7 +33,8 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
-#### IP Client Source Interfaces
+
+### IP Client Source Interfaces
 
 | IP Client | VRF | Source Interface Name |
 | --------- | --- | --------------------- |
@@ -72,4 +74,3 @@ ip tftp client source-interface Loopback0 vrf default
 ip tftp client source-interface Management0 vrf MGMT
 ip tftp client source-interface Ethernet10
  ```
-
