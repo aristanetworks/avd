@@ -1,8 +1,7 @@
 # The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CVaaS.
 
-![Figure: 1](../../../../media/create_account.png)
-
 ## Within CVaaS navigate to:
+
 ### Settings and Tools --> Access Control --> Service Accounts --> "New Service Account"
 
 ```text
@@ -13,8 +12,12 @@ Specify the "valid until" date.
 Make sure to copy the generated password. You only get view it once.
 Click "Save" to exit the dialogue box. 
 ```
-![Figure: 2](../../../../media/account_settings.png)
 
+![Figure: 1](../../../../media/serviceaccount1.png)
+![Figure: 2](../../../../media/serviceaccount2.png)
+![Figure: 3](../../../../media/serviceaccount3.png)
+
+> NOTE The name of the service account must match a username configured to be authorized on EOS, otherwise device interactive API calls might fail due to authorization denial.
 ## Add CVAAS to your Ansible inventory file:
 
 ```text
@@ -42,6 +45,7 @@ ansible_httpapi_port: 443
 ```
 
 ## Testing connectivity and authentication between AVD and CVaaS.
+
 ```text
 root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml
 
@@ -55,6 +59,7 @@ cvaas                      : ok=1    changed=0    unreachable=0    failed=0    s
 ```
 
 ## Sample playbook cvaas_facts.yml
+
 ```text
 ---
 - name: Playbook to demonstrate cv_container module.
@@ -76,6 +81,7 @@ Adding -vvv to increase verbosity will give you additional information regarding
 Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" playbook to build out your containers, move devices to the proper container and then apply the generated config to the device.
 
 ## Sample playbook cvaas_deploy.yml
+
 ```text
 ---
 - name: Configlet upload management
