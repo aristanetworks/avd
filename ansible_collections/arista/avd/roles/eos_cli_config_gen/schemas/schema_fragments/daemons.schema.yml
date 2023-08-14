@@ -15,7 +15,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Daemon Name
         exec:
           type: str

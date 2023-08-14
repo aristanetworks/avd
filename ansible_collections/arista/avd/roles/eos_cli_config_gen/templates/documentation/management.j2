@@ -18,7 +18,10 @@
        or management_console is arista.avd.defined
        or management_api_http is arista.avd.defined
        or management_api_models is arista.avd.defined
-       or ip_http_client_source_interfaces is arista.avd.defined %}
+       or ip_http_client_source_interfaces is arista.avd.defined
+       or ip_ftp_client_source_interfaces is arista.avd.defined
+       or ip_tftp_client_source_interfaces is arista.avd.defined
+       or ip_telnet_client_source_interfaces is arista.avd.defined %}
 
 ## Management
 {## Management Interface #}
@@ -43,8 +46,8 @@
 {%     include 'documentation/management-ssh.j2' %}
 {## Management Tech-Support #}
 {%     include 'documentation/management-tech-support.j2' %}
-{## IP SSH Client Source Interfaces #}
-{%     include 'documentation/ip-ssh-client-source-interfaces.j2' %}
+{## IP Client Source Interfaces #}
+{%     include 'documentation/ip-client-source-interfaces.j2' %}
 {## Management Accounts #}
 {%     include 'documentation/management-accounts.j2' %}
 {## Management API gNMI #}
@@ -57,6 +60,4 @@
 {%     include 'documentation/management-api-http.j2' %}
 {## Management API Models #}
 {%     include 'documentation/management-api-models.j2' %}
-{## IP HTTP Client Source Interfaces #}
-{%     include 'documentation/ip-http-client-source-interfaces.j2' %}
 {% endif %}

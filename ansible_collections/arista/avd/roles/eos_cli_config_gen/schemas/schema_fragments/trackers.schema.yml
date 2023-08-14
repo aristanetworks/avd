@@ -12,7 +12,6 @@ keys:
         name:
           type: str
           description: Name of tracker object
-          required: true
         interface:
           type: str
           description: Name of tracked interface

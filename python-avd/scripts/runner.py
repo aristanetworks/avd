@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 import argparse
+from sys import path
+
+# Override global path to load pyavd from pwd instead of any installed version.
+path.insert(0, ".")
 
 from pyavd.tools.multiprocess_runners import run_eos_cli_config_gen, run_eos_designs_facts, run_eos_designs_structured_configs
 from pyavd.tools.template_var_files import run_template_var_files

@@ -2,6 +2,7 @@ tenant_a:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
     mac_vrf_id_base: 20000
+    redistribute_mlag_ibgp_peering_vrfs: false
     vrfs:
       - name: Tenant_A_OP_Zone
         description: "Tenant_A_OP_Zone"
@@ -10,6 +11,7 @@ tenant_a:
         vtep_diagnostic:
           loopback: 100
           loopback_ip_range: 10.255.1.0/24
+        redistribute_mlag_ibgp_peering_vrfs: true
         svis:
           # SVI as string
           - id: '110'

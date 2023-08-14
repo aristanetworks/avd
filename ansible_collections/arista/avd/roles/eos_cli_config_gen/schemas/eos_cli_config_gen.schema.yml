@@ -320,7 +320,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Access-list Name
         counters_per_entry:
           type: bool
@@ -335,7 +334,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                 - str
@@ -517,7 +515,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Group Name
         vrf:
           type: str
@@ -621,7 +618,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Community-list Name
         action:
           type: str
@@ -723,7 +719,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Cluster Name
             cvaddrs:
               type: list
@@ -990,7 +985,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Daemon Name
         exec:
           type: str
@@ -1176,7 +1170,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
         description:
           type: str
         shutdown:
@@ -1465,7 +1458,6 @@ keys:
             keys:
               ip_helper:
                 type: str
-                required: true
               source_interface:
                 type: str
                 description: Source interface name
@@ -1475,7 +1467,7 @@ keys:
                 convert_types:
                 - int
         ip_nat:
-          $ref: '#/$defs/interface_ip_nat'
+          $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -1497,7 +1489,6 @@ keys:
             keys:
               ipv6_prefix:
                 type: str
-                required: true
               valid_lifetime:
                 type: str
                 convert_types:
@@ -1519,7 +1510,6 @@ keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address
-                required: true
               vrf:
                 type: str
                 convert_types:
@@ -1618,7 +1608,6 @@ keys:
                 type: int
                 convert_types:
                 - str
-                required: true
               hash_algorithm:
                 type: str
                 valid_values:
@@ -2037,6 +2026,13 @@ keys:
               max: 10
               convert_types:
               - str
+            unauthorized:
+              type: dict
+              keys:
+                access_vlan_membership_egress:
+                  type: bool
+                native_vlan_membership_egress:
+                  type: bool
             eapol:
               type: dict
               keys:
@@ -2480,7 +2476,6 @@ keys:
               type: int
               convert_types:
               - str
-              required: true
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g"
@@ -2620,7 +2615,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Interface-Group name
         interfaces:
           type: list
@@ -2647,7 +2641,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Interface-Profile Name
         commands:
           type: list
@@ -2668,7 +2661,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Access-list Name
         counters_per_entry:
           type: bool
@@ -2837,7 +2829,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: IP Community-list Name
         entries:
           type: list
@@ -2898,7 +2889,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: 'Source Interface
 
                 '
@@ -2918,7 +2908,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Community-list Name
         entries:
           type: list
@@ -2950,7 +2939,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Community-list Name
         entries:
           type: list
@@ -3071,7 +3059,6 @@ keys:
               type: int
               convert_types:
               - str
-              required: true
               description: VLAN ID
             enabled:
               type: bool
@@ -3373,7 +3360,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: IPv6 Access-list Name
         counters_per_entry:
           type: bool
@@ -3388,7 +3374,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                 - str
@@ -3426,7 +3411,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Prefix-list Name
         sequence_numbers:
           type: list
@@ -3439,7 +3423,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                 - str
@@ -3459,7 +3442,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Access-list Name
         counters_per_entry:
           type: bool
@@ -3474,7 +3456,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                 - str
@@ -3538,7 +3519,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
             protocols:
               type: list
               primary_key: name
@@ -3547,7 +3527,6 @@ keys:
                 keys:
                   name:
                     type: str
-                    required: true
                     valid_values:
                     - bfd per-link rfc-7130
                     - e-lmi
@@ -3602,7 +3581,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
         links_minimum:
           type: int
           min: 1
@@ -3673,7 +3651,6 @@ keys:
         name:
           description: Username
           type: str
-          required: true
         disabled:
           type: bool
           description: 'If true, the user will be removed and all other settings are
@@ -3882,7 +3859,6 @@ keys:
               type: str
               convert_types:
               - int
-              required: true
               description: VRF name
             source_interface:
               type: str
@@ -3897,7 +3873,6 @@ keys:
                 keys:
                   name:
                     type: str
-                    required: true
                     description: Syslog server name
                   protocol:
                     type: str
@@ -3927,7 +3902,6 @@ keys:
                   keys:
                     name:
                       type: str
-                      required: true
                       description: Match list
                     action:
                       type: str
@@ -3962,7 +3936,6 @@ keys:
         name:
           type: str
           description: Loopback interface name e.g. "Loopback0"
-          required: true
         description:
           type: str
         shutdown:
@@ -4035,7 +4008,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: MAC Access-list Name
         counters_per_entry:
           type: bool
@@ -4105,7 +4077,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Profile-Name
             cipher:
               type: str
@@ -4199,7 +4170,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
             rate_monitoring:
               type: dict
               keys:
@@ -4237,7 +4207,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: BGP Profile Name
             initiator:
               type: dict
@@ -4255,7 +4224,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Unit Profile Name
             on_boot:
               type: dict
@@ -4279,7 +4247,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Unit Name
             quiesce:
               type: bool
@@ -4480,7 +4447,6 @@ keys:
             name:
               description: VRF Name
               type: str
-              required: true
               convert_types:
               - int
             access_group:
@@ -4569,7 +4535,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Management Interface Name
         description:
           type: str
@@ -4843,7 +4808,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: VRF Name
               convert_types:
               - int
@@ -4896,7 +4860,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Match-list Name
             sequence_numbers:
               type: list
@@ -4909,7 +4872,6 @@ keys:
                 keys:
                   sequence:
                     type: int
-                    required: true
                     description: Sequence ID
                     convert_types:
                     - str
@@ -5314,7 +5276,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
             enabled:
               type: bool
             connectors:
@@ -5333,7 +5294,6 @@ keys:
                     type: str
                     convert_types:
                     - int
-                    required: true
                   type:
                     type: str
                     valid_values:
@@ -5366,7 +5326,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Peer-filter Name
         sequence_numbers:
           type: list
@@ -5379,7 +5338,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                 - str
@@ -5399,6 +5357,149 @@ keys:
             type: str
             convert_types:
             - int
+          mmu:
+            type: dict
+            description: 'Memory Management Unit settings.
+
+              '
+            keys:
+              active_profile:
+                type: str
+                description: 'The queue profile to be applied to the platform.
+
+                  '
+              queue_profiles:
+                type: list
+                primary_key: name
+                convert_types:
+                - dict
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                    multicast_queues:
+                      type: list
+                      primary_key: id
+                      convert_types:
+                      - dict
+                      items:
+                        type: dict
+                        keys:
+                          id:
+                            type: int
+                            convert_types:
+                            - str
+                            required: true
+                            min: 0
+                            max: 7
+                          unit:
+                            type: str
+                            valid_values:
+                            - bytes
+                            - cells
+                            description: 'Unit to be used for the reservation value.
+                              If not specified, default is bytes.
+
+                              '
+                          reserved:
+                            type: int
+                            convert_types:
+                            - str
+                            description: 'Amount of memory that should be reserved
+                              for this
+
+                              queue.
+
+                              '
+                          threshold:
+                            type: str
+                            convert_types:
+                            - int
+                            description: 'Dynamic Shared Memory threshold.
+
+                              '
+                          drop:
+                            type: dict
+                            keys:
+                              precedence:
+                                type: int
+                                valid_values:
+                                - 1
+                                - 2
+                                required: true
+                              threshold:
+                                type: str
+                                required: true
+                                convert_types:
+                                - int
+                                description: 'Drop Treshold. This value may also be
+                                  fractions.
+
+                                  Example: 7/8 or 3/4 or 1/2
+
+                                  '
+                    unicast_queues:
+                      type: list
+                      primary_key: id
+                      convert_types:
+                      - dict
+                      items:
+                        type: dict
+                        keys:
+                          id:
+                            type: int
+                            convert_types:
+                            - str
+                            required: true
+                            min: 0
+                            max: 7
+                          unit:
+                            type: str
+                            valid_values:
+                            - bytes
+                            - cells
+                            description: 'Unit to be used for the reservation value.
+                              If not specified, default is bytes.
+
+                              '
+                          reserved:
+                            type: int
+                            convert_types:
+                            - str
+                            description: 'Amount of memory that should be reserved
+                              for this
+
+                              queue.
+
+                              '
+                          threshold:
+                            type: str
+                            convert_types:
+                            - int
+                            description: 'Dynamic Shared Memory threshold.
+
+                              '
+                          drop:
+                            type: dict
+                            keys:
+                              precedence:
+                                type: int
+                                valid_values:
+                                - 1
+                                - 2
+                                required: true
+                              threshold:
+                                type: str
+                                required: true
+                                convert_types:
+                                - int
+                                description: 'Drop Treshold. This value may also be
+                                  fractions.
+
+                                  Example: 7/8 or 3/4 or 1/2
+
+                                  '
       sand:
         type: dict
         description: Most of the platform sand options are hardware dependant and
@@ -5566,7 +5667,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
         description:
           type: str
         logging:
@@ -6157,7 +6257,7 @@ keys:
           type: str
           description: IPv4 address/mask
         ip_nat:
-          $ref: '#/$defs/interface_ip_nat'
+          $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -6180,7 +6280,6 @@ keys:
             keys:
               ipv6_prefix:
                 type: str
-                required: true
               valid_lifetime:
                 type: str
                 convert_types:
@@ -6259,7 +6358,6 @@ keys:
                 type: int
                 convert_types:
                 - str
-                required: true
               hash_algorithm:
                 type: str
                 valid_values:
@@ -6318,7 +6416,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Prefix-list Name
         sequence_numbers:
           type: list
@@ -6330,7 +6427,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                 - str
@@ -6340,6 +6436,76 @@ keys:
                 description: 'Action as string
 
                   Example: "permit 10.255.0.0/27 eq 32"'
+  priority_flow_control:
+    type: dict
+    description: 'Global Priority Flow Control settings.
+
+      '
+    keys:
+      all_off:
+        type: bool
+        description: 'Disable PFC on all interfaces.
+
+          '
+      watchdog:
+        type: dict
+        keys:
+          action:
+            type: str
+            valid_values:
+            - drop
+            - no-drop
+            description: 'Action on stuck queue.
+
+              '
+          timeout:
+            type: str
+            pattern: ^\d+(\.\d{1,2})?$
+            convert_types:
+            - int
+            - float
+            description: 'Timeout in seconds after which port should be errdisabled
+              or
+
+              should start dropping on congested priorities.
+
+              This should be decimal with up to 2 decimal point.
+
+              Example: 0.01 or 60
+
+              '
+          polling_interval:
+            type: str
+            pattern: ^\d+(\.\d{1,3})?$
+            convert_types:
+            - int
+            - float
+            description: 'Time interval in seconds at which the watchdog should poll
+              the queues.
+
+              This should be decimal with up to 3 decimal point.
+
+              Example: 0.005 or 60
+
+              '
+          recovery_time:
+            type: str
+            pattern: ^\d+(\.\d{1,2})?$
+            convert_types:
+            - int
+            - float
+            description: 'Recovery-time in seconds after which stuck queue should
+
+              recover and start forwarding again.
+
+              This should be decimal with up to 2 decimal point.
+
+              Example: 0.01 or 60
+
+              '
+          override_action_drop:
+            type: bool
+            description: Override configured action on stuck queue to drop.
   prompt:
     type: str
   ptp:
@@ -6530,7 +6696,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Profile-Name
         trust:
           type: str
@@ -6577,7 +6742,6 @@ keys:
                 type: int
                 convert_types:
                 - str
-                required: true
                 description: TX-Queue ID
               bandwidth_percent:
                 type: int
@@ -6619,7 +6783,6 @@ keys:
                 type: int
                 convert_types:
                 - str
-                required: true
                 description: UC TX queue ID
               bandwidth_percent:
                 type: int
@@ -6661,7 +6824,6 @@ keys:
                 type: int
                 convert_types:
                 - str
-                required: true
                 description: MC TX queue ID
               bandwidth_percent:
                 type: int
@@ -6688,7 +6850,134 @@ keys:
                       '
               comment:
                 type: str
-                description: Text comment added to queue.
+                description: 'Text comment added to queue.
+
+                  '
+        priority_flow_control:
+          type: dict
+          description: 'Priority Flow Control settings
+
+            '
+          keys:
+            enabled:
+              type: bool
+              description: 'Enable Priority Flow control.
+
+                '
+            watchdog:
+              type: dict
+              description: 'Watchdog can detect stuck transmit queues.
+
+                '
+              keys:
+                enabled:
+                  type: bool
+                  required: true
+                  description: 'Enable the watchdog on stuck transmit queues.
+
+                    '
+                action:
+                  type: str
+                  valid_values:
+                  - drop
+                  - notify-only
+                  description: 'Override the default error-disable action to either
+                    drop
+
+                    traffic on the stuck queue or notify-only
+
+                    without making any actions on the stuck queue.
+
+                    '
+                timer:
+                  type: dict
+                  description: 'Timer thresholds whilst monitoring queues.
+
+                    '
+                  keys:
+                    timeout:
+                      type: str
+                      required: true
+                      pattern: ^\d+(\.\d{1,2})?$
+                      convert_types:
+                      - int
+                      - float
+                      description: 'Timeout in seconds after which port should be
+                        errdisabled or
+
+                        should start dropping on congested priorities.
+
+                        This should be decimal with up to 2 decimal point
+
+                        Example: 0.01 or 60
+
+                        '
+                    polling_interval:
+                      type: str
+                      required: true
+                      pattern: ^auto|\d+(\.\d{1,3})?$
+                      convert_types:
+                      - int
+                      - float
+                      description: 'Time interval in seconds at which the watchdog
+                        should poll the queues.
+
+                        This should be decimal with up to 3 decimal point or set
+
+                        to ''auto'' based on recovery_time and timeout values.
+
+                        Example: 0.005 or 60
+
+                        '
+                    recovery_time:
+                      type: str
+                      required: true
+                      pattern: ^\d+(\.\d{1,2})?$
+                      convert_types:
+                      - int
+                      - float
+                      description: 'Recovery-time in seconds after which stuck queue
+                        should
+
+                        recover and start forwarding again.
+
+                        This should be decimal with up to 2 decimal point.
+
+                        Example: 0.01 or 60
+
+                        '
+                    forced:
+                      type: bool
+                      description: 'Force recover any stuck queue(s) after the duration,
+
+                        irrespective of whether PFC frames are being
+
+                        received or not.
+
+                        '
+            priorities:
+              type: list
+              primary_key: priority
+              description: 'Set the drop/no_drop on each queue
+
+                '
+              items:
+                type: dict
+                keys:
+                  priority:
+                    type: int
+                    min: 0
+                    max: 7
+                    required: true
+                    convert_types:
+                    - str
+                    description: 'Priority queue number (COS value)
+
+                      '
+                  no_drop:
+                    type: bool
+                    required: true
+                    description: Enable Priority Flow Control frames on this queue
   queue_monitor_length:
     type: dict
     keys:
@@ -6879,7 +7168,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Route-map Name
         sequence_numbers:
           type: list
@@ -6892,7 +7180,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                 - str
@@ -7569,6 +7856,8 @@ keys:
               type: str
             route_map:
               type: str
+            include_leaked:
+              type: bool
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -8140,6 +8429,8 @@ keys:
                   type: str
                 route_map:
                   type: str
+                include_leaked:
+                  type: bool
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -8727,6 +9018,8 @@ keys:
                     type: str
                   route_map:
                     type: str
+                  include_leaked:
+                    type: bool
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -9240,7 +9533,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Destination-VRF
               convert_types:
               - int
@@ -9520,7 +9812,6 @@ keys:
             source_prefix:
               type: str
               description: Source address prefix
-              required: true
             limit:
               type: int
               convert_types:
@@ -9537,7 +9828,6 @@ keys:
           keys:
             ipv4_address:
               type: str
-              required: true
               description: Peer IP Address
             default_peer:
               type: dict
@@ -9569,7 +9859,6 @@ keys:
                 keys:
                   name:
                     type: str
-                    required: true
                     description: Mesh group name
             keepalive:
               type: dict
@@ -9606,7 +9895,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: VRF name
               convert_types:
               - int
@@ -9637,7 +9925,6 @@ keys:
                   source_prefix:
                     type: str
                     description: Source address prefix
-                    required: true
                   limit:
                     type: int
                     convert_types:
@@ -9654,7 +9941,6 @@ keys:
                 keys:
                   ipv4_address:
                     type: str
-                    required: true
                     description: Peer IP Address
                   default_peer:
                     type: dict
@@ -9686,7 +9972,6 @@ keys:
                       keys:
                         name:
                           type: str
-                          required: true
                           description: Mesh group name
                   keepalive:
                     type: dict
@@ -10122,7 +10407,6 @@ keys:
               keys:
                 address:
                   type: str
-                  required: true
                   description: RP Address
                 groups:
                   type: list
@@ -10154,7 +10438,6 @@ keys:
               keys:
                 address:
                   type: str
-                  required: true
                   description: Anycast RP Address
                 other_anycast_rp_addresses:
                   type: list
@@ -10166,7 +10449,6 @@ keys:
                     keys:
                       address:
                         type: str
-                        required: true
                         description: Other Anycast RP Address
                       register_count:
                         type: int
@@ -10181,7 +10463,6 @@ keys:
             name:
               type: str
               description: VRF Name
-              required: true
               convert_types:
               - int
             ipv4:
@@ -10563,7 +10844,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Interface name
             vrf:
               type: str
@@ -10880,7 +11160,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Access-list Name
         counters_per_entry:
           type: bool
@@ -10895,7 +11174,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                 - str
@@ -11142,15 +11420,21 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Tcam-Profile Name
             config:
               type: str
-              required: true
+              required: false
               description: 'TCAM Profile Config. Since these can be very long, it
                 is often a good idea to import the config from a file.
 
-                Example: "{{ lookup(''file'', ''TCAM_TRAFFIC_POLICY.conf'') }}"'
+                Example: "{{ lookup(''file'', ''TCAM_TRAFFIC_POLICY.conf'') }}"
+
+                '
+            source:
+              type: str
+              required: false
+              description: TCAM profile local source path. Used to read the TCAM profile
+                from a local path existing on the device.
   terminal:
     type: dict
     display_name: Terminal Settings
@@ -11172,7 +11456,6 @@ keys:
         name:
           type: str
           description: Name of tracker object
-          required: true
         interface:
           type: str
           description: Name of tracked interface
@@ -11415,7 +11698,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Tunnel Interface Name
         description:
           type: str
@@ -11519,7 +11801,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: VLAN interface name like "Vlan123"
         description:
           type: str
@@ -11601,7 +11882,7 @@ keys:
                 convert_types:
                 - int
         ip_nat:
-          $ref: '#/$defs/interface_ip_nat'
+          $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -11682,7 +11963,6 @@ keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address
-                required: true
               vrf:
                 type: str
                 convert_types:
@@ -12118,7 +12398,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Vmtracer Session Name
         url:
           type: str
@@ -12241,7 +12520,6 @@ keys:
                       type: int
                       convert_types:
                       - str
-                      required: true
                       description: VLAN ID
                     vni:
                       type: int
@@ -12265,7 +12543,6 @@ keys:
                   keys:
                     name:
                       type: str
-                      required: true
                       description: VRF Name
                       convert_types:
                       - int
@@ -12314,7 +12591,7 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
-            $ref: '#/$defs/interface_ip_nat_static'
+            $ref: eos_cli_config_gen#/$defs/interface_ip_nat_static
       source:
         type: dict
         keys:
@@ -12351,7 +12628,7 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
-            $ref: '#/$defs/interface_ip_nat_static'
+            $ref: eos_cli_config_gen#/$defs/interface_ip_nat_static
   interface_ip_nat_static:
     type: list
     primary_key: original_ip

@@ -27,7 +27,6 @@ keys:
             name:
               description: VRF Name
               type: str
-              required: true
               convert_types:
                 - int
             access_group:

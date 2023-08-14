@@ -1,6 +1,56 @@
 platform:
   trident:
     forwarding_table_partition: 2
+    mmu:
+      active_profile: mc_example_profile
+      queue_profiles:
+        - name: mc_example_profile
+          multicast_queues:
+            - id: 0
+              reserved: 0
+              drop:
+                precedence: 1
+                threshold: 3/4
+            - id: 1
+              unit: cells
+              threshold: 1/64
+              reserved: 0
+            - id: 7
+              unit: cells
+              threshold: 1/64
+              reserved: 0
+          unicast_queues:
+            - id: 1
+              unit: bytes
+              reserved: 0
+            - id: 2
+              threshold: 1/8
+              unit: cells
+              reserved: 0
+        - name: unused_profile
+          multicast_queues:
+            - id: 0
+              reserved: 0
+              drop:
+                precedence: 2
+                threshold: 1
+            - id: 1
+              unit: cells
+              threshold: 8
+              reserved: 0
+          unicast_queues:
+            - id: 1
+              drop:
+                precedence: 1
+                threshold: 1/8
+              unit: bytes
+              reserved: 0
+            - id: 2
+              threshold: 1/8
+              unit: cells
+              reserved: 0
+            - id: 7
+
   sand:
     qos_maps:
       - traffic_class: 0

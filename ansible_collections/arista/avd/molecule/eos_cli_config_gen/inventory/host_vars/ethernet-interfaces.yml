@@ -574,6 +574,9 @@ ethernet_interfaces:
           enabled: true
           timeout: 600
       reauthorization_request_limit: 2
+      unauthorized:
+        access_vlan_membership_egress: true
+        native_vlan_membership_egress: true
 
   - name: Ethernet46
     description: native-vlan-tag-precedence

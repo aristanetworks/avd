@@ -345,7 +345,8 @@ default_interfaces: # (5)!
     platforms: [ default ]
     uplink_interfaces: [ Ethernet1-2 ]
 
-cvp_instance_ip: 192.168.1.12 # (6)!
+cvp_instance_ips:
+  - 192.168.1.12 # (6)!
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
 terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 terminattr_disable_aaa: true

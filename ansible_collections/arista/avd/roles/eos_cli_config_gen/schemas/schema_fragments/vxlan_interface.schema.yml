@@ -78,7 +78,6 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      required: true
                       description: VLAN ID
                     vni:
                       type: int
@@ -102,7 +101,6 @@ keys:
                   keys:
                     name:
                       type: str
-                      required: true
                       description: VRF Name
                       convert_types:
                         - int

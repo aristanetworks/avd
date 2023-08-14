@@ -106,6 +106,7 @@ router_bgp:
         - '12:12'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -125,6 +126,7 @@ router_bgp:
         - '13:13'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -165,6 +167,7 @@ router_bgp:
         - 65000:789
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -184,6 +187,7 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 172.31.11.25
       peer_group: MLAG-PEERS
@@ -904,6 +908,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -925,6 +937,12 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.251.24/31
+  - sequence: 20
+    action: permit 172.31.11.24/31
 router_bfd:
   multihop:
     interval: 1200
