@@ -1,8 +1,12 @@
-# The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CVaaS.
+# How to integrate AVD with CVaaS
 
-## Within CVaaS navigate to:
+The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CloudVision-as-a-Service.
 
-### Settings and Tools --> Access Control --> Service Accounts --> "New Service Account"
+## Within CVaaS navigate to
+
+## Steps to create service accounts on CloudVision
+
+1. Go to Settings and Tools --> Access Control --> Service Accounts --> click `+ New Service Account`
 
 ```text
 Account name: AVD
@@ -18,7 +22,8 @@ Click "Save" to exit the dialogue box.
 ![Figure: 3](../../../../media/serviceaccount3.png)
 
 > NOTE The name of the service account must match a username configured to be authorized on EOS, otherwise device interactive API calls might fail due to authorization denial.
-## Add CVAAS to your Ansible inventory file:
+
+## Add CVAAS to your Ansible inventory file
 
 ```text
 DC1:
@@ -28,7 +33,9 @@ DC1:
         cvaas:
 ```
 
-## Create a folder under group_vars named "CVAAS" and add a file named "cvaas_auth.yml". Your file should look similar to this:
+## Adding group variables for the CVaaS instance
+
+Create a folder under `group_vars` named `CVAAS` and add a file named `cvaas_auth.yml`. Your file should look similar to this:
 
 ```text
 ansible_host: www.arista.io
@@ -44,7 +51,7 @@ ansible_httpapi_validate_certs: True
 ansible_httpapi_port: 443
 ```
 
-## Testing connectivity and authentication between AVD and CVaaS.
+## Testing connectivity and authentication between AVD and CVaaS
 
 ```text
 root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml
@@ -101,14 +108,14 @@ Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" 
       execute_tasks: false
 ```
 
-
 Once things are working it's a good idea to use Ansible Vault to encrypt your passwords in a production environment.
 
 ```text
 ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass'
 ```
 
-## Key points:
+## Key points
+
 1. When creating the vault sometimes there will be an extra "%" sign at the end. Remove this.
 
           $ANSIBLE_VAULT;1.1;AES256
@@ -124,7 +131,7 @@ ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass'
 ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >> my_file.txt
 ```
 
-## Once Ansible Vault has been added to your config simply add --ask-vault-pass when running the playbook.
+## Once Ansible Vault has been added to your config simply add --ask-vault-pass when running the playbook
 
 ```text
 root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml --ask-vault-pass
