@@ -60,6 +60,10 @@ keys:
                 keys:
                   dscp_propagation_encapsulation:
                     type: bool
+                  ecn_propagation:
+                    type: bool
+                    description: |
+                      Enable copying the ECN marking to/from encapsulated packets.
                   map_dscp_to_traffic_class_decapsulation:
                     type: bool
               vlans:
@@ -74,7 +78,6 @@ keys:
                       type: int
                       convert_types:
                         - str
-                      required: true
                       description: VLAN ID
                     vni:
                       type: int
@@ -98,7 +101,6 @@ keys:
                   keys:
                     name:
                       type: str
-                      required: true
                       description: VRF Name
                       convert_types:
                         - int

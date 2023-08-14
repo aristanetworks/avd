@@ -31,6 +31,11 @@
 {%     elif vxlan_interface.Vxlan1.vxlan.qos.dscp_propagation_encapsulation is arista.avd.defined(false) %}
 | Qos dscp propagation encapsulation | Disabled |
 {%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation is arista.avd.defined(true) %}
+| Qos ECN propagation | Enabled |
+{%     elif vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation is arista.avd.defined(false) %}
+| Qos ECN propagation | Disabled |
+{%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(true) %}
 | Qos map dscp to traffic-class decapsulation | Enabled |
 {%     elif vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(false) %}

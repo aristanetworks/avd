@@ -547,8 +547,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -559,8 +559,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -829,13 +829,13 @@
             "title": "BGP Maintenance Profiles"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "BGP Groups"
     },
@@ -1013,8 +1013,8 @@
           }
         },
         "required": [
-          "name",
-          "action"
+          "action",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -1230,13 +1230,13 @@
                 "title": "Cvvrf"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Clusters"
         },
@@ -1411,8 +1411,8 @@
           }
         },
         "required": [
-          "name",
-          "exec"
+          "exec",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -2168,13 +2168,13 @@
                   "title": "VRF"
                 }
               },
-              "required": [
-                "ip_helper"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "ip_helper"
+              ]
             },
             "title": "IP Helpers"
           },
@@ -2492,13 +2492,13 @@
                   "title": "No Autoconfig Flag"
                 }
               },
-              "required": [
-                "ipv6_prefix"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "ipv6_prefix"
+              ]
             },
             "title": "IPv6 ND Prefixes"
           },
@@ -2532,13 +2532,13 @@
                   "title": "Link Address"
                 }
               },
-              "required": [
-                "address"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "address"
+              ]
             },
             "title": "IPv6 DHCP Relay Destinations"
           },
@@ -2703,13 +2703,13 @@
                   "title": "Key"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "OSPF Message Digest Keys"
           },
@@ -3397,6 +3397,24 @@
                 "maximum": 10,
                 "title": "Reauthorization Request Limit"
               },
+              "unauthorized": {
+                "type": "object",
+                "properties": {
+                  "access_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Access VLAN Membership Egress"
+                  },
+                  "native_vlan_membership_egress": {
+                    "type": "boolean",
+                    "title": "Native VLAN Membership Egress"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unauthorized"
+              },
               "eapol": {
                 "type": "object",
                 "properties": {
@@ -3829,13 +3847,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Ethernet Interfaces"
     },
@@ -4040,6 +4058,13 @@
                     ]
                   },
                   "title": "Exporters"
+                },
+                "table_size": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 614400,
+                  "description": "Maximum number of entries in flow table.\n",
+                  "title": "Table Size"
                 }
               },
               "additionalProperties": false,
@@ -4116,13 +4141,13 @@
                 "title": "Serdes"
               }
             },
-            "required": [
-              "speed_group"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "speed_group"
+            ]
           },
           "title": "Speed Groups"
         }
@@ -4299,13 +4324,13 @@
             "title": "Interface Maintenance Profiles"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       }
     },
     "interface_profiles": {
@@ -4328,8 +4353,8 @@
           }
         },
         "required": [
-          "name",
-          "commands"
+          "commands",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -4517,13 +4542,13 @@
             "title": "Entries"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       }
     },
     "ip_access_lists_max_entries": {
@@ -4582,8 +4607,8 @@
           }
         },
         "required": [
-          "name",
-          "entries"
+          "entries",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -4624,13 +4649,13 @@
                 "title": "VRF"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Source Interfaces"
         }
@@ -4684,8 +4709,8 @@
           }
         },
         "required": [
-          "name",
-          "entries"
+          "entries",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -4736,8 +4761,8 @@
           }
         },
         "required": [
-          "name",
-          "entries"
+          "entries",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -4970,13 +4995,13 @@
                 "title": "Proxy"
               }
             },
-            "required": [
-              "id"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "id"
+            ]
           },
           "title": "VLANs"
         }
@@ -5419,8 +5444,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -5431,8 +5456,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -5516,8 +5541,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -5528,8 +5553,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -5569,8 +5594,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -5581,8 +5606,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -5698,24 +5723,24 @@
                       "title": "Untagged Forward"
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Protocols"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Forwarding Profiles"
         }
@@ -5813,13 +5838,13 @@
             "title": "Recovery Delay"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Link Tracking Groups"
     },
@@ -5965,13 +5990,13 @@
             "title": "Shell"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Local Users"
     },
@@ -6201,24 +6226,24 @@
                       "title": "Ports"
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Hosts"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         },
@@ -6246,13 +6271,13 @@
                         "title": "Action"
                       }
                     },
-                    "required": [
-                      "name"
-                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}
-                    }
+                    },
+                    "required": [
+                      "name"
+                    ]
                   },
                   "title": "Match Lists"
                 }
@@ -6269,6 +6294,47 @@
             "^_.+$": {}
           },
           "title": "Policy"
+        },
+        "event": {
+          "type": "object",
+          "properties": {
+            "storm_control": {
+              "type": "object",
+              "properties": {
+                "discards": {
+                  "type": "object",
+                  "properties": {
+                    "global": {
+                      "type": "boolean",
+                      "title": "Global"
+                    },
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 10,
+                      "maximum": 65535,
+                      "description": "Logging interval in seconds",
+                      "title": "Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Discards"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Storm Control"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Event"
         }
       },
       "additionalProperties": false,
@@ -6395,13 +6461,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Loopback Interfaces"
     },
@@ -6441,13 +6507,13 @@
             "title": "Entries"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "MAC Access Lists"
     },
@@ -6670,13 +6736,13 @@
                 "title": "L2 Protocols"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Profiles"
         }
@@ -6754,13 +6820,13 @@
                 "title": "Shutdown"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Interface Profiles"
         },
@@ -6790,13 +6856,13 @@
                 "title": "Initiator"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "BGP Profiles"
         },
@@ -6828,13 +6894,13 @@
                 "title": "On Boot"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Unit Profiles"
         },
@@ -6884,13 +6950,13 @@
                 "title": "Groups"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Units"
         }
@@ -6899,6 +6965,30 @@
       "patternProperties": {
         "^_.+$": {}
       }
+    },
+    "management_accounts": {
+      "type": "object",
+      "properties": {
+        "password": {
+          "type": "object",
+          "properties": {
+            "policy": {
+              "type": "string",
+              "title": "Policy"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Password"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Management Accounts"
     },
     "management_api_gnmi": {
       "type": "object",
@@ -7159,13 +7249,13 @@
                 "title": "IPv6 Access Group"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Enable VRFs"
         },
@@ -7397,13 +7487,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Management Interfaces"
     },
@@ -7430,6 +7520,88 @@
             "encryption_reversible": {
               "type": "string",
               "title": "Encryption Reversible"
+            },
+            "policies": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "minimum": {
+                    "type": "object",
+                    "properties": {
+                      "digits": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Digits"
+                      },
+                      "length": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Length"
+                      },
+                      "lower": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Lower"
+                      },
+                      "special": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Special"
+                      },
+                      "upper": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Upper"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Minimum"
+                  },
+                  "maximum": {
+                    "type": "object",
+                    "properties": {
+                      "repetitive": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Repetitive"
+                      },
+                      "sequential": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 65535,
+                        "title": "Sequential"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Maximum"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Policies"
             }
           },
           "additionalProperties": false,
@@ -7715,13 +7887,13 @@
                 "title": "Enable"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         },
@@ -7834,8 +8006,8 @@
                     }
                   },
                   "required": [
-                    "sequence",
-                    "match_regex"
+                    "match_regex",
+                    "sequence"
                   ],
                   "additionalProperties": false,
                   "patternProperties": {
@@ -7846,8 +8018,8 @@
               }
             },
             "required": [
-              "name",
-              "sequence_numbers"
+              "sequence_numbers",
+              "name"
             ],
             "additionalProperties": false,
             "patternProperties": {
@@ -8569,9 +8741,9 @@
                     }
                   },
                   "required": [
-                    "id",
                     "type",
-                    "endpoint"
+                    "endpoint",
+                    "id"
                   ],
                   "additionalProperties": false,
                   "patternProperties": {
@@ -8581,13 +8753,13 @@
                 "title": "Connectors"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Patches"
         }
@@ -8625,8 +8797,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "match"
+                "match",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -8637,8 +8809,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -8656,6 +8828,178 @@
             "forwarding_table_partition": {
               "type": "string",
               "title": "Forwarding Table Partition"
+            },
+            "mmu": {
+              "type": "object",
+              "description": "Memory Management Unit settings.\n",
+              "properties": {
+                "active_profile": {
+                  "type": "string",
+                  "description": "The queue profile to be applied to the platform.\n",
+                  "title": "Active Profile"
+                },
+                "queue_profiles": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "title": "Name"
+                      },
+                      "multicast_queues": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 7,
+                              "title": "ID"
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "bytes",
+                                "cells"
+                              ],
+                              "description": "Unit to be used for the reservation value. If not specified, default is bytes.\n",
+                              "title": "Unit"
+                            },
+                            "reserved": {
+                              "type": "integer",
+                              "description": "Amount of memory that should be reserved for this\nqueue.\n",
+                              "title": "Reserved"
+                            },
+                            "threshold": {
+                              "type": "string",
+                              "description": "Dynamic Shared Memory threshold.\n",
+                              "title": "Threshold"
+                            },
+                            "drop": {
+                              "type": "object",
+                              "properties": {
+                                "precedence": {
+                                  "type": "integer",
+                                  "enum": [
+                                    1,
+                                    2
+                                  ],
+                                  "title": "Precedence"
+                                },
+                                "threshold": {
+                                  "type": "string",
+                                  "description": "Drop Treshold. This value may also be fractions.\nExample: 7/8 or 3/4 or 1/2\n",
+                                  "title": "Threshold"
+                                }
+                              },
+                              "required": [
+                                "precedence",
+                                "threshold"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Drop"
+                            }
+                          },
+                          "required": [
+                            "id"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Multicast Queues"
+                      },
+                      "unicast_queues": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 7,
+                              "title": "ID"
+                            },
+                            "unit": {
+                              "type": "string",
+                              "enum": [
+                                "bytes",
+                                "cells"
+                              ],
+                              "description": "Unit to be used for the reservation value. If not specified, default is bytes.\n",
+                              "title": "Unit"
+                            },
+                            "reserved": {
+                              "type": "integer",
+                              "description": "Amount of memory that should be reserved for this\nqueue.\n",
+                              "title": "Reserved"
+                            },
+                            "threshold": {
+                              "type": "string",
+                              "description": "Dynamic Shared Memory threshold.\n",
+                              "title": "Threshold"
+                            },
+                            "drop": {
+                              "type": "object",
+                              "properties": {
+                                "precedence": {
+                                  "type": "integer",
+                                  "enum": [
+                                    1,
+                                    2
+                                  ],
+                                  "title": "Precedence"
+                                },
+                                "threshold": {
+                                  "type": "string",
+                                  "description": "Drop Treshold. This value may also be fractions.\nExample: 7/8 or 3/4 or 1/2\n",
+                                  "title": "Threshold"
+                                }
+                              },
+                              "required": [
+                                "precedence",
+                                "threshold"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Drop"
+                            }
+                          },
+                          "required": [
+                            "id"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          }
+                        },
+                        "title": "Unicast Queues"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "title": "Queue Profiles"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Mmu"
             }
           },
           "additionalProperties": false,
@@ -10178,13 +10522,13 @@
                   "title": "No Autoconfig Flag"
                 }
               },
-              "required": [
-                "ipv6_prefix"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "ipv6_prefix"
+              ]
             },
             "title": "IPv6 ND Prefixes"
           },
@@ -10305,13 +10649,13 @@
                   "title": "Key"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "OSPF Message Digest Keys"
           },
@@ -10398,13 +10742,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Port Channel Interfaces"
     },
@@ -10435,8 +10779,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -10446,15 +10790,73 @@
             "title": "Sequence Numbers"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Prefix Lists"
+    },
+    "priority_flow_control": {
+      "type": "object",
+      "description": "Global Priority Flow Control settings.\n",
+      "properties": {
+        "all_off": {
+          "type": "boolean",
+          "description": "Disable PFC on all interfaces.\n",
+          "title": "All Off"
+        },
+        "watchdog": {
+          "type": "object",
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "drop",
+                "no-drop"
+              ],
+              "description": "Action on stuck queue.\n",
+              "title": "Action"
+            },
+            "timeout": {
+              "type": "string",
+              "pattern": "^\\d+(\\.\\d{1,2})?$",
+              "description": "Timeout in seconds after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 2 decimal point.\nExample: 0.01 or 60\n",
+              "title": "Timeout"
+            },
+            "polling_interval": {
+              "type": "string",
+              "pattern": "^\\d+(\\.\\d{1,3})?$",
+              "description": "Time interval in seconds at which the watchdog should poll the queues.\nThis should be decimal with up to 3 decimal point.\nExample: 0.005 or 60\n",
+              "title": "Polling Interval"
+            },
+            "recovery_time": {
+              "type": "string",
+              "pattern": "^\\d+(\\.\\d{1,2})?$",
+              "description": "Recovery-time in seconds after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 2 decimal point.\nExample: 0.01 or 60\n",
+              "title": "Recovery Time"
+            },
+            "override_action_drop": {
+              "type": "boolean",
+              "description": "Override configured action on stuck queue to drop.",
+              "title": "Override Action Drop"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Watchdog"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Priority Flow Control"
     },
     "prompt": {
       "type": "string",
@@ -10861,13 +11263,13 @@
                   "title": "Comment"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "TX Queues"
           },
@@ -10918,13 +11320,13 @@
                   "title": "Comment"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "Uc TX Queues"
           },
@@ -10971,28 +11373,141 @@
                 },
                 "comment": {
                   "type": "string",
-                  "description": "Text comment added to queue.",
+                  "description": "Text comment added to queue.\n",
                   "title": "Comment"
                 }
               },
-              "required": [
-                "id"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "id"
+              ]
             },
             "title": "Mc TX Queues"
+          },
+          "priority_flow_control": {
+            "type": "object",
+            "description": "Priority Flow Control settings\n",
+            "properties": {
+              "enabled": {
+                "type": "boolean",
+                "description": "Enable Priority Flow control.\n",
+                "title": "Enabled"
+              },
+              "watchdog": {
+                "type": "object",
+                "description": "Watchdog can detect stuck transmit queues.\n",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable the watchdog on stuck transmit queues.\n",
+                    "title": "Enabled"
+                  },
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "drop",
+                      "notify-only"
+                    ],
+                    "description": "Override the default error-disable action to either drop\ntraffic on the stuck queue or notify-only\nwithout making any actions on the stuck queue.\n",
+                    "title": "Action"
+                  },
+                  "timer": {
+                    "type": "object",
+                    "description": "Timer thresholds whilst monitoring queues.\n",
+                    "properties": {
+                      "timeout": {
+                        "type": "string",
+                        "pattern": "^\\d+(\\.\\d{1,2})?$",
+                        "description": "Timeout in seconds after which port should be errdisabled or\nshould start dropping on congested priorities.\nThis should be decimal with up to 2 decimal point\nExample: 0.01 or 60\n",
+                        "title": "Timeout"
+                      },
+                      "polling_interval": {
+                        "type": "string",
+                        "pattern": "^auto|\\d+(\\.\\d{1,3})?$",
+                        "description": "Time interval in seconds at which the watchdog should poll the queues.\nThis should be decimal with up to 3 decimal point or set\nto 'auto' based on recovery_time and timeout values.\nExample: 0.005 or 60\n",
+                        "title": "Polling Interval"
+                      },
+                      "recovery_time": {
+                        "type": "string",
+                        "pattern": "^\\d+(\\.\\d{1,2})?$",
+                        "description": "Recovery-time in seconds after which stuck queue should\nrecover and start forwarding again.\nThis should be decimal with up to 2 decimal point.\nExample: 0.01 or 60\n",
+                        "title": "Recovery Time"
+                      },
+                      "forced": {
+                        "type": "boolean",
+                        "description": "Force recover any stuck queue(s) after the duration,\nirrespective of whether PFC frames are being\nreceived or not.\n",
+                        "title": "Forced"
+                      }
+                    },
+                    "required": [
+                      "timeout",
+                      "polling_interval",
+                      "recovery_time"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Timer"
+                  }
+                },
+                "required": [
+                  "enabled"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Watchdog"
+              },
+              "priorities": {
+                "type": "array",
+                "description": "Set the drop/no_drop on each queue\n",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "priority": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 7,
+                      "description": "Priority queue number (COS value)\n",
+                      "title": "Priority"
+                    },
+                    "no_drop": {
+                      "type": "boolean",
+                      "description": "Enable Priority Flow Control frames on this queue",
+                      "title": "No Drop"
+                    }
+                  },
+                  "required": [
+                    "priority",
+                    "no_drop"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Priorities"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Priority Flow Control"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "QOS Profiles"
     },
@@ -11375,8 +11890,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "type"
+                "type",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -11387,8 +11902,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -12416,6 +12931,10 @@
               "route_map": {
                 "type": "string",
                 "title": "Route Map"
+              },
+              "include_leaked": {
+                "type": "boolean",
+                "title": "Include Leaked"
               }
             },
             "additionalProperties": false,
@@ -13511,6 +14030,10 @@
                   "route_map": {
                     "type": "string",
                     "title": "Route Map"
+                  },
+                  "include_leaked": {
+                    "type": "boolean",
+                    "title": "Include Leaked"
                   }
                 },
                 "additionalProperties": false,
@@ -14599,6 +15122,10 @@
                     "route_map": {
                       "type": "string",
                       "title": "Route Map"
+                    },
+                    "include_leaked": {
+                      "type": "boolean",
+                      "title": "Include Leaked"
                     }
                   },
                   "additionalProperties": false,
@@ -15703,13 +16230,13 @@
                 "title": "Routes"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -16073,6 +16600,9 @@
           "title": "Segment Routing MPLS"
         }
       },
+      "required": [
+        "instance"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
@@ -16183,8 +16713,8 @@
               }
             },
             "required": [
-              "source_prefix",
-              "limit"
+              "limit",
+              "source_prefix"
             ],
             "additionalProperties": false,
             "patternProperties": {
@@ -16253,13 +16783,13 @@
                       "title": "Name"
                     }
                   },
-                  "required": [
-                    "name"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Mesh Groups"
               },
@@ -16311,13 +16841,13 @@
                 "title": "Sa Filter"
               }
             },
-            "required": [
-              "ipv4_address"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "ipv4_address"
+            ]
           },
           "title": "Peers"
         },
@@ -16372,8 +16902,8 @@
                     }
                   },
                   "required": [
-                    "source_prefix",
-                    "limit"
+                    "limit",
+                    "source_prefix"
                   ],
                   "additionalProperties": false,
                   "patternProperties": {
@@ -16442,13 +16972,13 @@
                             "title": "Name"
                           }
                         },
-                        "required": [
-                          "name"
-                        ],
                         "additionalProperties": false,
                         "patternProperties": {
                           "^_.+$": {}
-                        }
+                        },
+                        "required": [
+                          "name"
+                        ]
                       },
                       "title": "Mesh Groups"
                     },
@@ -16500,24 +17030,24 @@
                       "title": "Sa Filter"
                     }
                   },
-                  "required": [
-                    "ipv4_address"
-                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
-                  }
+                  },
+                  "required": [
+                    "ipv4_address"
+                  ]
                 },
                 "title": "Peers"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -17180,6 +17710,11 @@
               "mpls_ldp_sync_default": {
                 "type": "boolean",
                 "title": "MPLS LDP Sync Default"
+              },
+              "eos_cli": {
+                "type": "string",
+                "description": "Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration",
+                "title": "EOS CLI"
               }
             },
             "additionalProperties": false,
@@ -17255,13 +17790,13 @@
                     "title": "Override"
                   }
                 },
-                "required": [
-                  "address"
-                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
-                }
+                },
+                "required": [
+                  "address"
+                ]
               },
               "title": "RP Addresses"
             },
@@ -17290,24 +17825,24 @@
                           "title": "Register Count"
                         }
                       },
-                      "required": [
-                        "address"
-                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
-                      }
+                      },
+                      "required": [
+                        "address"
+                      ]
                     },
                     "title": "Other Anycast RP Addresses"
                   }
                 },
-                "required": [
-                  "address"
-                ],
                 "additionalProperties": false,
                 "patternProperties": {
                   "^_.+$": {}
-                }
+                },
+                "required": [
+                  "address"
+                ]
               },
               "title": "Anycast RPs"
             }
@@ -17395,13 +17930,13 @@
                 "title": "IPv4"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "VRFs"
         }
@@ -18013,13 +18548,13 @@
                 "title": "VRF"
               }
             },
-            "required": [
-              "name"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Local Interfaces"
         },
@@ -18514,8 +19049,8 @@
                 }
               },
               "required": [
-                "sequence",
-                "action"
+                "action",
+                "sequence"
               ],
               "additionalProperties": false,
               "patternProperties": {
@@ -18526,8 +19061,8 @@
           }
         },
         "required": [
-          "name",
-          "sequence_numbers"
+          "sequence_numbers",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -18939,18 +19474,22 @@
               },
               "config": {
                 "type": "string",
-                "description": "TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.\nExample: \"{{ lookup('file', 'TCAM_TRAFFIC_POLICY.conf') }}\"",
+                "description": "TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.\nExample: \"{{ lookup('file', 'TCAM_TRAFFIC_POLICY.conf') }}\"\n",
                 "title": "Config"
+              },
+              "source": {
+                "type": "string",
+                "description": "TCAM profile local source path. Used to read the TCAM profile from a local path existing on the device.",
+                "title": "Source"
               }
             },
-            "required": [
-              "name",
-              "config"
-            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
-            }
+            },
+            "required": [
+              "name"
+            ]
           },
           "title": "Profiles"
         }
@@ -19005,8 +19544,8 @@
           }
         },
         "required": [
-          "name",
-          "interface"
+          "interface",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -19540,13 +20079,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "Tunnel Interfaces"
     },
@@ -20090,13 +20629,13 @@
                   "title": "Link Address"
                 }
               },
-              "required": [
-                "address"
-              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
-              }
+              },
+              "required": [
+                "address"
+              ]
             },
             "title": "IPv6 DHCP Relay Destinations"
           },
@@ -20701,13 +21240,13 @@
             "title": "EOS CLI"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "VLAN Interfaces"
     },
@@ -20863,13 +21402,13 @@
             "title": "Source Interface"
           }
         },
-        "required": [
-          "name"
-        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "name"
+        ]
       },
       "title": "VMTracer Sessions"
     },
@@ -20998,6 +21537,11 @@
                       "type": "boolean",
                       "title": "DSCP Propagation Encapsulation"
                     },
+                    "ecn_propagation": {
+                      "type": "boolean",
+                      "description": "Enable copying the ECN marking to/from encapsulated packets.\n",
+                      "title": "Ecn Propagation"
+                    },
                     "map_dscp_to_traffic_class_decapsulation": {
                       "type": "boolean",
                       "title": "Map DSCP To Traffic Class Decapsulation"
@@ -21037,13 +21581,13 @@
                         "title": "Flood Vteps"
                       }
                     },
-                    "required": [
-                      "id"
-                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}
-                    }
+                    },
+                    "required": [
+                      "id"
+                    ]
                   },
                   "title": "VLANs"
                 },
@@ -21067,13 +21611,13 @@
                         "title": "Multicast Group"
                       }
                     },
-                    "required": [
-                      "name"
-                    ],
                     "additionalProperties": false,
                     "patternProperties": {
                       "^_.+$": {}
-                    }
+                    },
+                    "required": [
+                      "name"
+                    ]
                   },
                   "title": "VRFs"
                 },

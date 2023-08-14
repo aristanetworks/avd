@@ -145,7 +145,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| BLUE-C1 | 1.0.1.1:101 | static |
+| BLUE-C1 | 1.0.1.1:101 | static<br>ospf |
 | RED-C1 | 1.0.1.1:102 | - |
 | YELLOW-C1 | 1.0.1.1:103 | - |
 
@@ -180,6 +180,7 @@ router bgp 65001
    neighbor WELCOME_ROUTERS peer group
    neighbor WELCOME_ROUTERS remote-as 65001
    neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
+   redistribute ospf include leaked route-map RM-OSPF-TO-BGP
    redistribute static
    !
    address-family ipv4
@@ -213,6 +214,7 @@ router bgp 65001
       neighbor 101.0.3.7 bfd
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
+      redistribute ospf include leaked
       redistribute static
       !
       comment

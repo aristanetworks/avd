@@ -37,6 +37,9 @@ flow tracking {{ flow_tracking.type }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%         if tracker.table_size is arista.avd.defined %}
+      flow table size {{ tracker.table_size }} entries
+{%         endif %}
 {%     endfor %}
 {%     if flow_tracking.shutdown is arista.avd.defined(false) %}
    no shutdown

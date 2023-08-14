@@ -1,0 +1,32 @@
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: port-channel-short-esi
+      id: 101
+      bgp_as: 101
+
+servers:
+  - name: server01_ESI
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2]
+        switch_ports: [ Ethernet10, Ethernet10]
+        switches: [ port-channel-short-esi, Leaf1]
+        profile: TENANT_A_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+          short_esi: '0303:0202:0101'
+      - endpoint_ports: [ Eth6, Eth7 ]
+        switch_ports: [ Ethernet12, Ethernet12 ]
+        switches: [ port-channel-short-esi, DC1-LEAF2B ]
+        mtu: 1601
+        ethernet_segment:
+          short_esi: '0303:0202:0102'
+        port_channel:
+          description: PortChanne1
+          mode: active
+          short_esi: '0303:0202:0101'

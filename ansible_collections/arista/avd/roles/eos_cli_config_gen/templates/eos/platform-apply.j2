@@ -1,0 +1,5 @@
+{# eos - platform profile apply #}
+{% if platform.trident.mmu.active_profile is arista.avd.defined %}
+!
+platform trident mmu queue profile {{ platform.trident.mmu.active_profile }} apply
+{% endif %}

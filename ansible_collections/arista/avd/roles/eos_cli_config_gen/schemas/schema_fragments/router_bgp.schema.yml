@@ -537,6 +537,8 @@ keys:
               type: str
             route_map:
               type: str
+            include_leaked:
+              type: bool
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -1106,6 +1108,8 @@ keys:
                   type: str
                 route_map:
                   type: str
+                include_leaked:
+                  type: bool
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -1668,6 +1672,8 @@ keys:
                     type: str
                   route_map:
                     type: str
+                  include_leaked:
+                    type: bool
             aggregate_addresses:
               type: list
               primary_key: prefix

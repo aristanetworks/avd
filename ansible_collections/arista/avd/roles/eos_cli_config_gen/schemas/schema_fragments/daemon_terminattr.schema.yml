@@ -34,7 +34,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Cluster Name
             cvaddrs:
               type: list

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 from sys import path
 
-path.append(".")
+# Override global path to load pyavd from pwd instead of any installed version.
+path.insert(0, ".")
 
 from pyavd.constants import JINJA2_TEMPLATE_PATHS
 from pyavd.templater import Templar

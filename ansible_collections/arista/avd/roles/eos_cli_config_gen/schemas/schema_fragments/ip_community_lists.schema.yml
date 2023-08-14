@@ -17,7 +17,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: IP Community-list Name
         entries:
           type: list

@@ -175,6 +175,10 @@ class VlanInterfacesMixin(UtilsMixin):
         return vlan_interface_config
 
     def _get_vlan_interface_config_for_mlag_peering(self, vrf) -> dict:
+        """
+        Build config for MLAG peering SVI for the given SVI.
+        Called from vlan_interfaces and prefix_lists
+        """
         vlan_interface_config = {
             "tenant": vrf["tenant"],
             "type": "underlay_peering",

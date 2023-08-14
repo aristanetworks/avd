@@ -13,7 +13,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Peer-filter Name
         sequence_numbers:
           type: list
@@ -26,7 +25,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                   - str

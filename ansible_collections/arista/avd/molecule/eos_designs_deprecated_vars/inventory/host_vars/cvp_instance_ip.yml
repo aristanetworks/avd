@@ -1,0 +1,8 @@
+type: l2leaf
+l2leaf: {}
+
+cvp_instance_ips:
+  - 192.168.200.12
+  - 192.168.200.13
+
+cvp_instance_ip: 192.168.200.11

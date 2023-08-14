@@ -16,7 +16,6 @@ keys:
           keys:
             name:
               type: str
-              required: true
             enabled:
               type: bool
             connectors:
@@ -34,7 +33,6 @@ keys:
                     type: str
                     convert_types:
                     - int
-                    required: true
                   type:
                     type: str
                     valid_values:

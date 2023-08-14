@@ -29,7 +29,6 @@ keys:
               keys:
                 address:
                   type: str
-                  required: true
                   description: RP Address
                 groups:
                   type: list
@@ -61,7 +60,6 @@ keys:
               keys:
                 address:
                   type: str
-                  required: true
                   description: Anycast RP Address
                 other_anycast_rp_addresses:
                   type: list
@@ -73,7 +71,6 @@ keys:
                     keys:
                       address:
                         type: str
-                        required: true
                         description: Other Anycast RP Address
                       register_count:
                         type: int
@@ -88,7 +85,6 @@ keys:
             name:
               type: str
               description: VRF Name
-              required: true
               convert_types:
                 - int
             ipv4:

@@ -18,7 +18,6 @@ $defs:
         name:
           type: str
           description: Endpoint name will be used in the switchport description.
-          required: true
         rack:
           type: str
           description: Rack is used for documentation purposes only.

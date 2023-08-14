@@ -12,6 +12,8 @@ flow_trackings:
           mpls: true
         # no exporter
       - name: T2
+        # table size as string
+        table_size: "614400"
         record_export:
           # Should not be rendered
           mpls: false
@@ -22,6 +24,8 @@ flow_trackings:
               host: 42.42.42.42
               # no port
       - name: T3
+        # specify table size
+        table_size: 100000
         # two exporters
         exporters:
           - name: T3-E1

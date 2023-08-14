@@ -79,7 +79,6 @@ keys:
               type: str
               convert_types:
                 - int
-              required: true
               description: VRF name
             source_interface:
               type: str
@@ -94,7 +93,6 @@ keys:
                 keys:
                   name:
                     type: str
-                    required: true
                     description: Syslog server name
                   protocol:
                     type: str
@@ -122,8 +120,25 @@ keys:
                   keys:
                     name:
                       type: str
-                      required: true
                       description: Match list
                     action:
                       type: str
                       valid_values: ["discard"]
+      event:
+        type: dict
+        keys:
+          storm_control:
+            type: dict
+            keys:
+              discards:
+                type: dict
+                keys:
+                  global:
+                    type: bool
+                  interval:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 10
+                    max: 65535
+                    description: Logging interval in seconds
