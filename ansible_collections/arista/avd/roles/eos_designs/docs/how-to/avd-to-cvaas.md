@@ -10,7 +10,7 @@ Description: "Automation with AVD"
 Give a description under "Generated Service Account Token"
 Specify the "valid until" date.
 Make sure to copy the generated password. You only get view it once.
-Click "Save" to exit the dialogue box. 
+Click "Save" to exit the dialogue box.
 ```
 
 ![Figure: 1](../../../../media/serviceaccount1.png)
@@ -55,7 +55,7 @@ TASK [Gather CVaaS facts from cvaas] *******************************************
 ok: [cvaas]
 
 PLAY RECAP **************************************************************************************************************************************************************************
-cvaas                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0  
+cvaas                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
 
 ## Sample playbook cvaas_facts.yml
@@ -128,7 +128,7 @@ ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >
 
 ```text
 root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml --ask-vault-pass
-Vault password: 
+Vault password:
 
 PLAY [Playbook to demonstrate cv_container module.] **************************************************************************************************************************************************
 
@@ -136,5 +136,5 @@ TASK [Gather CVaaS facts from cvaas] *******************************************
 ok: [cvaas]
 
 PLAY RECAP *******************************************************************************************************************************************************************************************
-cvaas                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+cvaas                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 ```
