@@ -211,7 +211,7 @@ aaa authorization commands 10,15 default group tacacs+ local
 #### AAA Accounting Device Configuration
 
 ```eos
-aaa accounting exec console start-stop group TACACS
+aaa accounting exec console start-stop group TACACS logging
 aaa accounting commands all console start-stop group TACACS logging
 aaa accounting commands 0 console start-stop logging
 aaa accounting exec default start-stop group TACACS
