@@ -2,7 +2,6 @@ from glob import iglob
 from pathlib import Path
 
 import pytest
-
 from pyavd import get_avd_facts
 
 from ..utils import read_file, read_vars
