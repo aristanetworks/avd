@@ -20,6 +20,8 @@ keys:
               group:
                 description: Group Name
                 type: str
+              logging:
+                type: bool
           default:
             type: dict
             keys:
@@ -32,6 +34,8 @@ keys:
               group:
                 description: Group Name
                 type: str
+              logging:
+                type: bool
       system:
         type: dict
         keys:
