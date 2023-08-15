@@ -10,7 +10,7 @@
   hosts: all,!prompt ## Excluding prompt because the unsafe marker is lost during the export of hostvars.
   vars:
     scenario_dir: "{{ inventory_dir }}/.."
-    pyavd_test_artifacts_dir: "{{ playbook_dir }}/../tests"
+    pyavd_test_artifacts_dir: "{{ playbook_dir }}/../tests/artifacts"
     tacacs_key_set_as_play_var: "071B245F5A" ## setting dummy value to avoid error for key set in molecule playbook
     string_set_as_play_var: "test of var set under play vars" ## setting dummy value to avoid error for key set in molecule playbook
   tasks:
@@ -29,9 +29,6 @@
       run_once: true
       loop:
         - vars
-        - facts
-        - expected_configs
-        - expected_structured_configs
         - configs
         - structured_configs
       delegate_to: localhost
@@ -63,12 +60,18 @@
 
     - name: Copy structured_configs
       ansible.builtin.shell:
-        cmd: "cp -rT {{ scenario_dir }}/intended/structured_configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/expected_structured_configs/"
+        cmd: "cp -rT {{ scenario_dir }}/intended/structured_configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/structured_configs/"
       run_once: true
       delegate_to: localhost
 
     - name: Copy configs
       ansible.builtin.shell:
-        cmd: "cp -rT {{ scenario_dir }}/intended/configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/expected_configs/"
+        cmd: "cp -rT {{ scenario_dir }}/intended/configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/configs/"
+      run_once: true
+      delegate_to: localhost
+
+    - name: Copy documentation
+      ansible.builtin.shell:
+        cmd: "cp -rT {{ scenario_dir }}/documentation/devices/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/documentation/"
       run_once: true
       delegate_to: localhost

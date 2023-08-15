@@ -5,6 +5,7 @@ dependencies = [
     "jinja2>=3.0",
     "jsonschema>=4.5.1,<4.18",
     "deepmerge>=1.1.0",
+    "md-toc>=8.1.8",
 ]
 authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
 description="Arista validated designs"
@@ -35,10 +36,13 @@ requires = [
     "jinja2>=3.0",
     "jsonschema>=4.5.1,<4.18",
     "deepmerge>=1.1.0",
+    "md-toc>=8.1.8",
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
 ]
-build-backend = "setuptools.build_meta"
+# build-backend = "setuptools.build_meta"
+build-backend = "my-build-backend"
+backend-path = ["scripts"]
 
 [tool.setuptools]
 include-package-data = true

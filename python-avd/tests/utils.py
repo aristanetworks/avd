@@ -6,11 +6,15 @@ from sys import stdin
 from yaml import unsafe_load as yaml_load
 
 
-def read_vars(filename):
+def read_file(filename: str) -> str:
     if filename == "/dev/stdin" and stdin.isatty():
         print("Write variables in YAML or JSON format and end with ctrl+d to exit")
     with open(filename, "r", encoding="UTF-8") as file:
-        data = file.read()
+        return file.read()
+
+
+def read_vars(filename: str):
+    data = read_file(filename)
 
     try:
         return json_loads(data)
