@@ -29,8 +29,20 @@
 {{ aaa_accounting_commands_commands_console_cli }}
 {%         endfor %}
 {%     endif %}
-{%     if aaa_accounting.exec.default.type is arista.avd.defined and aaa_accounting.exec.default.group is arista.avd.defined %}
-aaa accounting exec default {{ aaa_accounting.exec.default.type }} group {{ aaa_accounting.exec.default.group }}{%if aaa_accounting.exec.default.logging is arista.avd.defined(true)%} logging{%endif%}
+{%     if aaa_accounting.exec.default.type is arista.avd.defined %}
+{%        set aaa_accounting_exec_default_cli = "aaa accounting exec default" %}
+{%        if aaa_accounting.exec.default.type is arista.avd.defined('none')%}
+{%           set aaa_accounting_exec_default_cli = aaa_accounting_exec_default_cli ~ " none"%}
+{{ aaa_accounting_exec_default_cli }}
+{%        else %}
+{%          if aaa_accounting.exec.default.group is arista.avd.defined %}
+{%             set aaa_accounting_exec_default_cli = aaa_accounting_exec_default_cli ~ " group " ~ aaa_accounting.exec.group %}
+{%          endif %}
+{%          if aaa_accounting.exec.default.logging is arista.avd.defined(true) %}
+{%              set aaa_accounting_exec_default_cli = aaa_accounting_exec_default_cli ~ " logging" %}
+{%           endif %}
+{%        endif %}
+{{ aaa_accounting_exec_default_cli }}
 {%     endif %}
 {%     if aaa_accounting.system.default.type is arista.avd.defined and aaa_accounting.system.default.group is arista.avd.defined %}
 aaa accounting system default {{ aaa_accounting.system.default.type }} group {{ aaa_accounting.system.default.group }}
