@@ -98,6 +98,17 @@ vxlan_interface:
       udp_port: 4789
       source_interface: Loopback1
 ethernet_interfaces:
+- name: Ethernet12
+  peer: server01_ESI
+  peer_interface: Eth1
+  peer_type: server
+  port_profile: TENANT_A_B
+  description: server01_ESI_Eth1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 12
+    mode: active
 - name: Ethernet10
   peer: ROUTER01
   peer_interface: Eth1
@@ -106,3 +117,14 @@ ethernet_interfaces:
   description: ROUTER01_Eth1
   shutdown: false
   type: switched
+port_channel_interfaces:
+- name: Port-Channel12
+  description: server01_ESI_PortChanne1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-111,210-211
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0101
+    route_target: 03:03:02:02:01:01
+  lacp_id: 0303.0202.0101

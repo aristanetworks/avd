@@ -3,8 +3,8 @@ servers:
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1, Eth2]
-        switch_ports: [ Ethernet10, Ethernet10]
-        switches: [ port-channel-short-esi, Leaf1]
+        switch_ports: [ Ethernet12, Ethernet12]
+        switches: [ host1, Leaf1]
         profile: TENANT_A_B
         # Testing "port_channel" with "short_esi"
         # "port_channel.short_esi" is deprecated in 4.0.0. To be removed in 5.0.0
