@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {% if overlay_loopback_description is not arista.avd.defined %}
 {%     if switch.mpls_overlay_role in ["server", "client"] %}
 {%         set overlay_loopback_description = "MPLS_Overlay_peering" %}

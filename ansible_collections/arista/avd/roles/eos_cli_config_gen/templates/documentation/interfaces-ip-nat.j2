@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - IP NAT interfaces #}
 {% set ip_nat = namespace(dst_dyn=[], src_dyn=[], dst_static=[], src_static=[]) %}
 {% for _intf in ip_nat_interfaces | arista.avd.natural_sort('name') %}

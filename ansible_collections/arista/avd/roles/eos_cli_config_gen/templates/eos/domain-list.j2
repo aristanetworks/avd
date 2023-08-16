@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - domain list #}
 {% if domain_list is arista.avd.defined %}
 {%     for domain in domain_list | arista.avd.natural_sort %}
