@@ -2,19 +2,18 @@
 
 The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CloudVision-as-a-Service.
 
-## A note on service accounts
-
-**IMPORTANT** The name of the service account must match a username configured to be authorized on EOS, otherwise device interactive API calls may fail due to authorization denial.
-When using service accounts, on ansible side the `ansible_user` variable must always be `cvaas` or `svc_account`.
-The `cvaas` and `svc_account` are special variable names to notify the client to switch to using service accounts instead of creating a session using the login API with username/password.
-When using service accounts the username is embedded into the token itself so it does not need to be passed in a separate HTTP header on the client side.
-For example when using service accounts we would have the following:
-
-- on the CV UI the username in Users page and Service Accounts page would be john.smith
-- on EOS in the running config there would be either a local user: `username john.smith privilege 15 role <roleName> <nopassword/secret>` or one in TACACS/RADIUS
-- on ansible side in inventory.yaml the `ansible_user` has to be set to `cvaas` or `svc_account`, e.g.:  `ansible_user: cvaas` or `ansible_user: svc_account`
+!!! info "Important"
+    The name of the service account created on CVaaS must match a username configured to be authorized on EOS,
+    otherwise device interactive API calls may fail due to authorization denial.
+    When using service accounts, on ansible side the `ansible_user` variable must always be `cvaas` or `svc_account`.
+    The `cvaas` and `svc_account` are special variable names to notify the client to switch to using service accounts instead of creating a session using the login API with username/password.
+    When using service accounts the username is embedded into the token itself so it does not need to be passed in a separate HTTP header on the client side.
+    For example when using service accounts we would have the following:
+    - on the CV UI the username in Users page and Service Accounts page would be john.smith
+    - on EOS in the running config there would be either a local user: `username john.smith privilege 15 role <roleName> <nopassword/secret>` or one in TACACS/RADIUS
+    - on ansible side in inventory.yaml the `ansible_user` has to be set to `cvaas` or `svc_account`, e.g.:  `ansible_user: cvaas` or `ansible_user: svc_account`
   and `ansible_password` will reference the service account token, e.g.: `"{{ lookup('file', '/tokens/cvaas.tok')}}"`
-- reference: [ansible-cvp authentication](https://cvp.avd.sh/en/stable/docs/how-to/cvp-authentication/)
+    - reference: [ansible-cvp authentication](https://cvp.avd.sh/en/stable/docs/how-to/cvp-authentication/)
 
 ## Steps to create service accounts on CloudVision
 
@@ -66,6 +65,8 @@ ansible_httpapi_use_ssl: True
 ansible_httpapi_validate_certs: True
 ansible_httpapi_port: 443
 ```
+
+Click [here](#ansible-vault) for instructions on how to setup Ansible Vault.
 
 ## Testing connectivity and authentication between AVD and CVaaS
 
@@ -126,6 +127,8 @@ Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" 
 
 !!! note
     For details on the supported inputs for `arista.avd.eos_config_deploy_cvp` see the [role documentation](../README.md)
+
+## Ansible Vault
 
 Once things are working it's a good idea to use Ansible Vault to encrypt your passwords in a production environment.
 
