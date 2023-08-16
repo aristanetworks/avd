@@ -1,7 +1,7 @@
 hostname: host2
 router_bgp:
-  as: '42'
-  router_id: 10.42.0.42
+  as: '102'
+  router_id: 10.42.0.102
   bgp:
     default:
       ipv4_unicast: false
@@ -21,7 +21,7 @@ router_bgp:
     bfd: true
     send_community: all
     maximum_routes: 0
-    remote_as: '42'
+    remote_as: '102'
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -58,7 +58,7 @@ loopback_interfaces:
 - name: Loopback0
   description: MPLS_Overlay_peering
   shutdown: false
-  ip_address: 10.42.0.42/32
+  ip_address: 10.42.0.102/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

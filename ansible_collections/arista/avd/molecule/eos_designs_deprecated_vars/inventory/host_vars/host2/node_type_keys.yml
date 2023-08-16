@@ -1,14 +1,5 @@
 # Testing "node_type_keys" as dict of dict
 # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
-type: pe
-design:
-  type: mpls
-
-pe:
-  defaults:
-    loopback_ipv4_pool: 10.42.0.0/24
-    bgp_as: 42
-    id: 42
 
 node_type_keys:
   pe:
