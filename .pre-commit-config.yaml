@@ -19,6 +19,7 @@ repos:
     hooks:
       - name: Check and insert license on Python files
         id: insert-license
+        exclude: ansible_collections/arista/avd/(plugins/module_utils|tests/unit(/module_utils|/modules|))/__init__.py
         files: .*\.py$
         args:
           - --license-filepath
