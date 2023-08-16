@@ -2,7 +2,19 @@
 
 The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CloudVision-as-a-Service.
 
-## Within CVaaS navigate to
+## A note on service accounts
+
+**IMPORTANT** The name of the service account must match a username configured to be authorized on EOS, otherwise device interactive API calls may fail due to authorization denial.
+When using service accounts, on ansible side the `ansible_user` variable must always be `cvaas` or `svc_account`.
+The `cvaas` and `svc_account` are special variable names to notify the client to switch to using service accounts instead of creating a session using the login API with username/password.
+When using service accounts the username is embedded into the token itself so it does not need to be passed in a separate HTTP header on the client side.
+For example when using service accounts we would have the following:
+
+- on the CV UI the username in Users page and Service Accounts page would be john.smith
+- on EOS in the running config there would be either a local user: `username john.smith privilege 15 role <roleName> <nopassword/secret>` or one in TACACS/RADIUS
+- on ansible side in inventory.yaml the `ansible_user` has to be set to `cvaas` or `svc_account`, e.g.:  `ansible_user: cvaas` or `ansible_user: svc_account`
+  and `ansible_password` will reference the service account token, e.g.: `"{{ lookup('file', '/tokens/cvaas.tok')}}"`
+- reference: [ansible-cvp authentication](https://cvp.avd.sh/en/stable/docs/how-to/cvp-authentication/)
 
 ## Steps to create service accounts on CloudVision
 
@@ -21,9 +33,13 @@ Click "Save" to exit the dialogue box.
 ![Figure: 2](../../../../media/serviceaccount2.png)
 ![Figure: 3](../../../../media/serviceaccount3.png)
 
-> NOTE The name of the service account must match a username configured to be authorized on EOS, otherwise device interactive API calls might fail due to authorization denial.
+!!! note
+    The name of the service account must match a username configured to be authorized on
+    EOS, otherwise device interactive API calls might fail due to authorization denial.
 
 ## Add CVAAS to your Ansible inventory file
+
+Below is an example, the CVaaS group should be added outside of any group targeted by the AVD `eos_designs` and `eos_cli_config_gen` roles.
 
 ```text
 DC1:
@@ -41,29 +57,15 @@ Create a folder under `group_vars` named `CVAAS` and add a file named `cvaas_aut
 ansible_host: www.arista.io
 ansible_user: cvaas
 # Good until 1/24/2030 <update to expiration date of token that was generated in CVaaS>
-# While it is not required in a production environment it is advised to use Ansible Vault.
+# It is advised to use Ansible Vault for storing the `ansible_password`.
 
-ansible_ssh_pass: <super long password> (generated in CVP when AVD service account was created)
+ansible_password: <service account token> (generated in CVP when AVD service account was created)
 ansible_connection: httpapi
 ansible_network_os: eos
 ansible_httpapi_use_ssl: True
 ansible_httpapi_validate_certs: True
 ansible_httpapi_port: 443
 ```
-
-### A note on service accounts
-
-**IMPORTANT** The name of the service account must match a username configured to be authorized on EOS, otherwise device interactive API calls may fail due to authorization denial.
-When using service accounts, on ansible side the `ansible_user` variable must always be `cvaas` or `svc_account`.
-The `cvaas` and `svc_account` are special variable names to notify the client to switch to using service accounts instead of creating a session using the login API with username/password.
-When using service accounts the username is embedded into the token itself so it does not need to be passed in a separate HTTP header on the client side.
-For example when using service accounts we would have the following:
-
-- on the CV UI the username in Users page and Service Accounts page would be john.smith
-- on EOS in the running config there would be either a local user: `username john.smith privilege 15 role <roleName> <nopassword/secret>` or one in TACACS/RADIUS
-- on ansible side in inventory.yaml the `ansible_user` has to be set to `cvaas` or `svc_account`, e.g.:  `ansible_user: cvaas` or `ansible_user: svc_account`
-  and `ansible_password` will reference the service account token, e.g.: `"{{ lookup('file', '/tokens/cvaas.tok')}}"`
-- reference: [ansible-cvp authentication](https://cvp.avd.sh/en/stable/docs/how-to/cvp-authentication/)
 
 ## Testing connectivity and authentication between AVD and CVaaS
 
@@ -92,7 +94,7 @@ cvaas                      : ok=1    changed=0    unreachable=0    failed=0    s
 
   tasks:
     - name: "Gather CVaaS facts from {{ inventory_hostname }}"
-      cv_facts:
+      arista.cvp.cv_facts_v3:
       register: cvp_facts
 ```
 
@@ -111,7 +113,7 @@ Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" 
   gather_facts: no
   tasks:
 
-  - name: "Uploading configlets to CVaaS"
+  - name: "Deploying configurations to CVaaS"
     import_role:
       name: arista.avd.eos_config_deploy_cvp
     vars:
@@ -122,40 +124,43 @@ Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" 
       execute_tasks: false
 ```
 
+!!! note
+    For details on the supported inputs for `arista.avd.eos_config_deploy_cvp` see the [role documentation](../README.md)
+
 Once things are working it's a good idea to use Ansible Vault to encrypt your passwords in a production environment.
 
-```text
-ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass'
-```
+    ```text
+    ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >> my_file.txt
+    ```
 
 ## Key points
 
 1. When creating the vault sometimes there will be an extra "%" sign at the end. Remove this.
 
-          $ANSIBLE_VAULT;1.1;AES256
-          31383837323464376439313531333639373431316433636361633239663632663331383264646639
-          3535386333356537643233376630636265653566636531390a663433323033653736653939663861
-          33313466646363643135353065346439326633326138636331333331333338393332653231643930
-          6661353835373731350a303666343334626532313361376361656235323638646264656639653139
-          3437% <------------------Make sure to remove.
+    $ANSIBLE_VAULT;1.1;AES256
+    31383837323464376439313531333639373431316433636361633239663632663331383264646639
+    3535386333356537643233376630636265653566636531390a663433323033653736653939663861
+    33313466646363643135353065346439326633326138636331333331333338393332653231643930
+    6661353835373731350a303666343334626532313361376361656235323638646264656639653139
+    3437% <------------------Make sure to remove.
 
 2. Sometimes when creating your vault there will be so much output that you will overrun the buffer on your CLI window. In order to get around this you can simply write the output to a file and then open up the file to grab the hash.
 
-```text
-ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >> my_file.txt
-```
+    ```text
+    ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >> my_file.txt
+    ```
 
-## Once Ansible Vault has been added to your config simply add --ask-vault-pass when running the playbook
+3. Once Ansible Vault has been added to your config simply add --ask-vault-pass when running the playbook
 
-```text
-root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml --ask-vault-pass
-Vault password:
-
-PLAY [Playbook to demonstrate cv_container module.] **************************************************************************************************************************************************
-
-TASK [Gather CVaaS facts from cvaas] *****************************************************************************************************************************************************************
-ok: [cvaas]
-
-PLAY RECAP *******************************************************************************************************************************************************************************************
-cvaas                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
-```
+    ```text
+    root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml --ask-vault-pass
+    Vault password:
+    PLAY [Playbook to demonstrate cv_container module.]
+    ***************************************************
+    TASK [Gather CVaaS facts from cvaas]
+    ***************************************************
+    ok: [cvaas]
+    PLAY RECAP
+    ***************************************************
+    cvaas                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+    ```

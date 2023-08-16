@@ -141,13 +141,14 @@ nav:
           - How-To Guides:
               - Configuring PTP: roles/eos_designs/docs/how-to/ptp.md
               - Custom Structured Configuration: roles/eos_designs/docs/how-to/custom-structured-configuration.md
-              - Integrating AVD with CVaaS: roles/eos_designs/docs/how-to/avd-to-cvaas.md
       - eos_cli_config_gen:
           - Overview: roles/eos_cli_config_gen/README.md
           - Role Configuration: roles/eos_cli_config_gen/docs/role-configuration.md
           - Input Variables: roles/eos_cli_config_gen/docs/input-variables.md
       - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
-      - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
+      - eos_config_deploy_cvp:
+          - Overview: roles/eos_config_deploy_cvp/README.md
+          - Integrating AVD with CVaaS: roles/eos_config_deploy_cvp/docs/avd-to-cvaas.md
       - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
       - eos_validate_state: roles/eos_validate_state/README.md
       - eos_snapshot: roles/eos_snapshot/README.md
