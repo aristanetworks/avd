@@ -441,12 +441,6 @@ jobs:
       needs.file-changes.outputs.eos_design == 'true' ||
       needs.file-changes.outputs.config_gen == 'true' ||
       needs.file-changes.outputs.pyavd == 'true'
-    strategy:
-      fail-fast: true
-      matrix:
-        python_version:
-          - "3.10"
-          - "3.11"
     steps:
       - name: 'Set environment variables'
         run: |
@@ -455,11 +449,12 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: "${{ matrix.python_version }}"
+          python-version: |
+            3.10
+            3.11
       - name: 'Install Python & Ansible requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install tox --upgrade
       - name: 'Run tox'
         working-directory: python-avd
         run: |
