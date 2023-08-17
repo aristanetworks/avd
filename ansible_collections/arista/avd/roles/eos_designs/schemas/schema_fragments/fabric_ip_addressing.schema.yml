@@ -37,7 +37,8 @@ keys:
               The offset is calculated using one of the following algorithms:
                 - first_id: `(mlag_primary_id - 1) * 2` where `mlag_primary_id` is the ID of the first node defined under the node_group.
                   This allocation method will skip every other /31 subnet making it less space efficient than `odd_id`.
-                - odd_id: `(odd_id - 1) / 2`. Requires the node_group to have a node with an odd ID and a node with an even ID.
+                - odd_id: `(odd_id - 1) / 2` where 'odd_id` is the id of the node in a node group that has an odd id.
+                  Requires all nodes of a node type to have IDs allocated in consecutive order and assumes that there will always be two nodes per node group.
             valid_values:
               - "first_id"
               - "odd_id"

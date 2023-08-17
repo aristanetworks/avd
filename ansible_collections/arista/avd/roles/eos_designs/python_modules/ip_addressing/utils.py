@@ -116,6 +116,12 @@ class UtilsMixin:
             if odd_id % 2 == 0:
                 odd_id = self._mlag_secondary_id
         else:
+            # Verify the node id of the standalone switch is an odd number
+            if self._id % 2 == 0:
+                raise AristaAvdError(
+                    "The VTEP IP allocation algorithm is set to odd_id which requires any non-MLAG VTEP id to be set to an odd number but"
+                    f" {self.shared_utils.hostname} has an id of {self.shared_utils.id}."
+                )
             odd_id = self._id
 
         return int((odd_id - 1) / 2)

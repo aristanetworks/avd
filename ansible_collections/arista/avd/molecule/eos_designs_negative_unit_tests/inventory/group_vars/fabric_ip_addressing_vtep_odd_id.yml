@@ -15,14 +15,19 @@ l3leaf:
     platform: vEOS-LAB
     mlag_interfaces: [Ethernet5, Ethernet6]
   node_groups:
-    - group: fabric_ip_addressing_vtep_odd_id
+    - group: fabric_ip_addressing_vtep_odd_id_1
+      mlag: false
       bgp_as: 923
       nodes:
         - name: vtep_odd_id_1
           id: 1
           mgmt_ip: 192.168.201.116/24
+    - group: fabric_ip_addressing_vtep_odd_id_2
+      mlag: false
+      bgp_as: 924
+      nodes:
         - name: vtep_odd_id_2
           id: 2
           mgmt_ip: 192.168.201.117/24
 
-expected_error_message: "The VTEP IP allocation algorithm is set to 'odd_id' which requires any non-MLAG VTEP's id to be set to an odd number but vtep_odd_id_2 has an id of 2."
+expected_error_message: "Unexpected failure during module execution: The VTEP IP allocation algorithm is set to odd_id which requires any non-MLAG VTEP id to be set to an odd number but vtep_odd_id_2 has an id of 2."
