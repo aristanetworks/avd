@@ -1,8 +1,10 @@
 ---
+fabric_name: fabric_ip_addressing_vtep_odd_id
+mlag_support: true
+type: l3leaf
 fabric_ip_addressing:
-  mlag:
+  vtep:
     algorithm: "odd_id"
-
 l3leaf:
   defaults:
     mlag_peer_ipv4_pool: 10.10.255.0/24
@@ -13,12 +15,14 @@ l3leaf:
     platform: vEOS-LAB
     mlag_interfaces: [Ethernet5, Ethernet6]
   node_groups:
-    - group: MLAG_ODD_ID_L3LEAF1
+    - group: fabric_ip_addressing_vtep_odd_id
       bgp_as: 923
       nodes:
-        - name: MLAG_ODD_ID_L3LEAF1A
-          id: 3
+        - name: vtep_odd_id_1
+          id: 1
           mgmt_ip: 192.168.201.116/24
-        - name: MLAG_ODD_ID_L3LEAF1B
-          id: 4
+        - name: vtep_odd_id_2
+          id: 2
           mgmt_ip: 192.168.201.117/24
+
+expected_error_message: "The VTEP IP allocation algorithm is set to 'odd_id' which requires any non-MLAG VTEP's id to be set to an odd number but vtep_odd_id_2 has an id of 2."

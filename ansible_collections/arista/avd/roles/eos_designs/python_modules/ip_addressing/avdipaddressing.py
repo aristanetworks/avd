@@ -253,6 +253,12 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
         offset = self._id + self._loopback_ipv4_offset
         if self._fabric_ipaddress_vtep_algorithm == "odd_id":
+            # Error out if user has selected odd_id algorithm and the node id is not an odd number
+            if self._id % 2 == 0:
+                raise AristaAvdError(
+                    "The VTEP IP allocation algorithm is set to 'odd_id' which requires any non-MLAG VTEP's id to be set to an odd number but"
+                    f" {self.shared_utils.hostname} has an id of {self._id}."
+                )
             offset = self._vtep_odd_id_based_offset + self._loopback_ipv4_offset
 
         return self._ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)

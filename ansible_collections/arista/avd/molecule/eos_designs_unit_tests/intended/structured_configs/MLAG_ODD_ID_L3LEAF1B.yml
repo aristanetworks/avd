@@ -155,7 +155,7 @@ loopback_interfaces:
 - name: Loopback1
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
-  ip_address: 192.168.254.33/32
+  ip_address: 192.168.254.35/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
