@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Git installation
 
 Using Git as the source of collections in Ansible provides an easy way to implement all the changes once they're part of the development branch without waiting for a new tagged version shipped to Ansible Galaxy.

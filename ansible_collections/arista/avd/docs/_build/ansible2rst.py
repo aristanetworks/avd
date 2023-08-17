@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# SKIP LICENSE INSERTION
 # (c) 2012, Jan-Piet Mens <jpmens () gmail.com>
 #
 # Ansible is free software: you can redistribute it and/or modify
