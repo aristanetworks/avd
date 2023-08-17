@@ -1,17 +1,21 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+
 from re import Match, search, split
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
 
-def expand_parentheses(range_sr: Match, range_to_expand: str) -> list:
+def expand_curly_brackets(range_sr: Match, range_to_expand: str) -> list:
     """
-    Replace content inside parentheses separated by commas(,) using regular
+    Replace content inside curly brackets separated by commas(,) using regular
     expressions and forms a new string with each comma separated element.
 
     Example
     -------
-    "Eth(1,2,3)" -> ["Eth1", "Eth2", "Eth3"]
-    "Eth(1,2-4)" -> ["Eth1", "Eth2-4"]
+    "Eth{1,2,3}" -> ["Eth1", "Eth2", "Eth3"]
+    "Eth{1,2-4}" -> ["Eth1", "Eth2-4"]
 
     Parameters
     ----------
@@ -24,12 +28,12 @@ def expand_parentheses(range_sr: Match, range_to_expand: str) -> list:
     -------
     list of replaced str
     """
-    groups = range_sr.groups()
+    group = range_sr.group("curly_brackets")
     start_index, end_index = range_sr.start(), range_sr.end()
     replaced_list = []
-    if groups[0]:
-        # To replace the values inside parenthesis, Ex. (2,3,4-6)
-        ports_list = groups[0].replace("(", "").replace(")", "").split(",")
+    if group:
+        # To replace the values inside curly brackets, Ex. (2,3,4-6)
+        ports_list = group.replace("{", "").replace("}", "").split(",")
         for port in ports_list:
             replaced_list.append(range_to_expand.replace(range_to_expand[start_index:end_index], str(port), 1))
     return replaced_list
@@ -55,12 +59,12 @@ def expand_hyphen(range_sr: Match, range_to_expand: str) -> list:
     -------
     list of replaced str
     """
-    groups = range_sr.groups()
+    group = range_sr.group("hyphen")
     start_index, end_index = range_sr.start(), range_sr.end()
     replaced_list = []
-    if groups[0]:
+    if group:
         # To replace the values of range, Ex. 4-6
-        range_start, range_end = groups[0].split("-")
+        range_start, range_end = group.split("-")
         for port_num in range(int(range_start), int(range_end) + 1):
             replaced_list.append(range_to_expand.replace(range_to_expand[start_index:end_index], str(port_num), 1))
     return replaced_list
@@ -75,8 +79,8 @@ def range_expand_utils(range_to_expand: str or list, prefix: str = "") -> list:
     Example
     -------
     "Eth2-4" -> ["Eth2", "Eth3", "Eth4"]
-    "Eth(1,2,3)" -> ["Eth1", "Eth2", "Eth3"],
-    "Ethernet(4,1-2)" -> ["Ethernet4", "Ethernet1", "Ethernet2"]
+    "Eth{1,2,3}" -> ["Eth1", "Eth2", "Eth3"],
+    "Ethernet{4,1-2}" -> ["Ethernet4", "Ethernet1", "Ethernet2"]
 
     Parameters
     ----------
@@ -113,34 +117,38 @@ def range_expand_utils(range_to_expand: str or list, prefix: str = "") -> list:
         else:
             range_to_expand = prefix + range_to_expand
 
-        regex_commas_outside_parentheses = r",(?![^(]*\))"
-        # Above regex matches all the commas "," outside parentheses.
-        # Except the case where there is no opening parentheses but closing parentheses is present [Example: ",4)"]
-        # It considers the comma inside the parentheses whereas it is actually outside.
+        regex_commas_outside_curly_brackets = r",(?![^{]*\})"
+        # Above regex matches all the commas "," outside curly brackets.
+        # Except the case where there is no opening curly bracket but closing curly bracket is present [Example: ",4}"]
+        # It considers the comma inside the curly brackets whereas it is actually outside.
 
-        regex_commas_inside_parentheses = r"(\(\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)?\-\d+)*)*\s*\))"
-        #                           (\( \))                                                              matches starting and ending of parentheses
-        #                           ?:                                                                   only group but do not remember the grouped part
-        #                                         (?:\d+)                                                matches 1 or more numbers Ex. 1, 21
-        #                                                   (?:\s*,\s*\d+)*                              matches 0 or more apperance of "," and one
-        #                                                                                                             or more numbers Ex. ,2,23
-        #                                                                  (?:,?\d+\-\d+)*               matches 0 or more apperance of "," and one or more
-        #                                                                                                             numbers with range (-) Ex. ,2-4
-        #                                         (?:\d+)(?:(?:\s*,\s*\d+)*(?:,?\d+\-\d+)*)*             matches values similar to 1 or 1,2,3 or 1,2-4
-        #                                   (\(\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?\d+\-\d+)*)*\s*\))       matches values similar to 1 or 1,2,3 or 1,2-4
+        regex_commas_inside_curly_brackets = r"(?P<curly_brackets>\{\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)+\-\d+)*)*\s*\})"
+        #     (\( \))                                                                         matches starting and ending of curly_brackets
+        #     ?P<curly_brackets>                                                              assigning name to the group.
+        #     ?:                                                                              only group but do not remember the grouped part
+        #                             (?:\d+)                                                 matches 1 or more numbers Ex. 1, 21
+        #                                    (?:\s*,\s*\d+)*                                  matches 0 or more apperance of "," and one
+        #                                                                                         or more numbers Ex. ,2,23
+        #                                                      (?:,?(?:\d+)+\-\d+)*           matches 0 or one apperance of "," and one or more
+        #                                                                                         numbers with range (-) Ex. ,2-4
+        #                             (?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)+\-\d+)*)*         matches values similar to 1 or 1,2,3 or 1,2-4
+        #                        \{\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)+\-\d+)*)*\s*\}    matches values similar to (1) or (1,2,3) or (1,2-4)
 
-        regex_hyphen_range = r"([0-9]+\-[0-9]+)"
-        #                      ([0-9]+\-[0-9]+)                                                          matches range outside parentheses Ex. 1-5 or 33-46
+        regex_hyphen_range = r"(?P<hyphen>[0-9]+\-[0-9]+)"
+        #                       ?P<hyphen>                                                    assigning name to the group.
+        #                                ([0-9]+\-[0-9]+)                                     matches range outside curly brackets Ex. 1-5 or 33-46
 
-        if search(regex_commas_outside_parentheses, range_to_expand):
-            # Split comma outside parentheses
-            result.extend(range_expand_utils(split(regex_commas_outside_parentheses, range_to_expand), prefix))
-        elif parentheses_sr := search(regex_commas_inside_parentheses, range_to_expand):
-            # Expand parentheses
-            result.extend(range_expand_utils(expand_parentheses(parentheses_sr, range_to_expand), prefix))
-        elif hyphen_sr := search(regex_hyphen_range, range_to_expand):
+        search_result = search(f"{regex_commas_inside_curly_brackets}|{regex_hyphen_range}", range_to_expand)
+
+        if search(regex_commas_outside_curly_brackets, range_to_expand):
+            # Split by comma outside curly brackets
+            result.extend(range_expand_utils(split(regex_commas_outside_curly_brackets, range_to_expand), prefix))
+        elif search_result and search_result.group("curly_brackets"):
+            # Expand curly brackets
+            result.extend(range_expand_utils(expand_curly_brackets(search_result, range_to_expand), prefix))
+        elif search_result and search_result.group("hyphen"):
             # Expand hyphen
-            result.extend(range_expand_utils(expand_hyphen(hyphen_sr, range_to_expand), prefix))
+            result.extend(range_expand_utils(expand_hyphen(search_result, range_to_expand), prefix))
         else:
             if range_to_expand:
                 result.extend([range_to_expand])
