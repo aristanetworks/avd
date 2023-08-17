@@ -4,7 +4,6 @@
 {%         set aaa_accounting_exec_console_cli = "aaa accounting exec console" %}
 {%         if aaa_accounting.exec.console.type is arista.avd.defined('none') %}
 {%             set aaa_accounting_exec_console_cli = aaa_accounting_exec_console_cli ~ " none" %}
-{{ aaa_accounting_exec_console_cli }}
 {%         else %}
 {%             set aaa_accounting_exec_console_cli = aaa_accounting_exec_console_cli ~ " " ~ aaa_accounting.exec.console.type %}
 {%             if aaa_accounting.exec.console.group is arista.avd.defined %}
@@ -34,7 +33,6 @@
 {%         set aaa_accounting_exec_default_cli = "aaa accounting exec default" %}
 {%         if aaa_accounting.exec.default.type is arista.avd.defined('none') %}
 {%             set aaa_accounting_exec_default_cli = aaa_accounting_exec_default_cli ~ " none" %}
-{{ aaa_accounting_exec_default_cli }}
 {%         else %}
 {%             set aaa_accounting_exec_default_cli = aaa_accounting_exec_default_cli ~ " " ~ aaa_accounting.exec.default.type %}
 {%             if aaa_accounting.exec.default.group is arista.avd.defined %}

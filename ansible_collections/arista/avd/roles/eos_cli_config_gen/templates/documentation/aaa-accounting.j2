@@ -8,7 +8,8 @@
 | Type | Commands | Record type | Group | Logging |
 | ---- | -------- | ----------- | ----- | ------- |
 {%     if aaa_accounting.exec.console.type is arista.avd.defined and aaa_accounting.exec.console.group is arista.avd.defined %}
-| Exec - Console | - | {{ aaa_accounting.exec.console.type }} | {{ aaa_accounting.exec.console.group }} | - |
+{%         set logging = aaa_accounting.exec.console.logging | arista.avd.default("False") %}
+| Exec - Console | - | {{ aaa_accounting.exec.console.type }} | {{ aaa_accounting.exec.console.group }} | {{logging}} |
 {%     endif %}
 {%     if aaa_accounting.commands.console is arista.avd.defined %}
 {%         for command_console in aaa_accounting.commands.console %}
@@ -20,7 +21,8 @@
 {%         endfor %}
 {%     endif %}
 {%     if aaa_accounting.exec.default.type is arista.avd.defined and aaa_accounting.exec.default.group is arista.avd.defined %}
-| Exec - Default | - | {{ aaa_accounting.exec.default.type }} | {{ aaa_accounting.exec.default.group }} | - |
+{%         set logging = aaa_accounting.exec.default.logging | arista.avd.default("False") %}
+| Exec - Default | - | {{ aaa_accounting.exec.default.type }} | {{ aaa_accounting.exec.default.group }} | {{ logging }} |
 {%     endif %}
 {%     if aaa_accounting.system.default.type is arista.avd.defined and aaa_accounting.system.default.group is arista.avd.defined  %}
 | System - Default | - | {{ aaa_accounting.system.default.type }} | {{ aaa_accounting.system.default.group }} | - |
