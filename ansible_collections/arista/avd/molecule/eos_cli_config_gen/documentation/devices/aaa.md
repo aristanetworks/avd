@@ -199,10 +199,10 @@ aaa authorization commands 10,15 default group tacacs+ local
 
 | Type | Commands | Record type | Group | Logging |
 | ---- | -------- | ----------- | ----- | ------- |
-| Exec - Console | - | start-stop | TACACS | - |
+| Exec - Console | - | start-stop | TACACS | True |
 | Commands - Console | all | start-stop | TACACS | True |
 | Commands - Console | 0 | start-stop |  -  | True |
-| Exec - Default | - | start-stop | TACACS | - |
+| Exec - Default | - | start-stop | TACACS | False |
 | System - Default | - | start-stop | TACACS | - |
 | Dot1x - Default  | - | start-stop | RADIUS | - |
 | Commands - Default | all | start-stop | TACACS | True |

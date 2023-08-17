@@ -14,7 +14,7 @@
 | ---- | -------- | ----------- | ----- | ------- |
 {%     if aaa_accounting.exec.console.type is arista.avd.defined and aaa_accounting.exec.console.group is arista.avd.defined %}
 {%         set logging = aaa_accounting.exec.console.logging | arista.avd.default("False") %}
-| Exec - Console | - | {{ aaa_accounting.exec.console.type }} | {{ aaa_accounting.exec.console.group }} | {{logging}} |
+| Exec - Console | - | {{ aaa_accounting.exec.console.type }} | {{ aaa_accounting.exec.console.group }} | {{ logging }} |
 {%     endif %}
 {%     if aaa_accounting.commands.console is arista.avd.defined %}
 {%         for command_console in aaa_accounting.commands.console %}
