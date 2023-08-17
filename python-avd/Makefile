@@ -105,7 +105,6 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini \
 		$(SCRIPTS_DIR)/export_test_vars.yml \
 		-e testdir=eos_cli_config_gen \
-		-e collections_paths="..:/usr/share/ansible/collections"
 		-f 10
 
 	rm -rf $(SCRIPTS_DIR)/inventory/
