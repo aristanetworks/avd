@@ -40,8 +40,7 @@ requires = [
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
 ]
-# build-backend = "setuptools.build_meta"
-build-backend = "my-build-backend"
+build-backend = "custom-build-backend"
 backend-path = ["scripts"]
 
 [tool.setuptools]
