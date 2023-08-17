@@ -12,7 +12,7 @@ The purpose of this tutorial is to review the steps required in order to integra
     - on the CV UI the username in Users page and Service Accounts page would be john.smith
     - on EOS in the running config there would be either a local user: `username john.smith privilege 15 role <roleName> <nopassword/secret>` or one in TACACS/RADIUS
     - on ansible side in inventory.yaml the `ansible_user` has to be set to `cvaas` or `svc_account`, e.g.:  `ansible_user: cvaas` or `ansible_user: svc_account`
-  and `ansible_password` will reference the service account token, e.g.: `"{{ lookup('file', '/tokens/cvaas.tok')}}"`
+      and `ansible_password` will reference the service account token, e.g.: `"{{ lookup('file', '/tokens/cvaas.tok')}}"`
     - reference: [ansible-cvp authentication](https://cvp.avd.sh/en/stable/docs/how-to/cvp-authentication/)
 
 ## Steps to create service accounts on CloudVision
@@ -40,7 +40,7 @@ Click "Save" to exit the dialogue box.
 
 Below is an example, the CVaaS group should be added outside of any group targeted by the AVD `eos_designs` and `eos_cli_config_gen` roles.
 
-```text
+```yaml
 DC1:
   children:
     CVAAS:
@@ -52,7 +52,7 @@ DC1:
 
 Create a folder under `group_vars` named `CVAAS` and add a file named `cvaas_auth.yml`. Your file should look similar to this:
 
-```text
+```yaml
 ansible_host: www.arista.io
 ansible_user: cvaas
 # Good until 1/24/2030 <update to expiration date of token that was generated in CVaaS>
@@ -70,43 +70,17 @@ Click [here](#ansible-vault) for instructions on how to setup Ansible Vault.
 
 ## Testing connectivity and authentication between AVD and CVaaS
 
-```text
-root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml
-
-PLAY [Playbook to demonstrate cv_container module.] *********************************************************************************************************************************
-
-TASK [Gather CVaaS facts from cvaas] ************************************************************************************************************************************************
-ok: [cvaas]
-
-PLAY RECAP **************************************************************************************************************************************************************************
-cvaas                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+```sh
+ansible -m arista.cvp.cv_facts_v3 cvaas
 ```
 
-## Sample playbook cvaas_facts.yml
-
-```text
----
-- name: Playbook to demonstrate cv_container module.
-  hosts: cvaas
-  connection: local
-  gather_facts: no
-  collections:
-    - arista.cvp
-
-  tasks:
-    - name: "Gather CVaaS facts from {{ inventory_hostname }}"
-      arista.cvp.cv_facts_v3:
-      register: cvp_facts
-```
-
-If the playbook runs and completes you have confirmed successful communication with CVaaS.
-Adding -vvv to increase verbosity will give you additional information regarding your CVaaS instance when running the cvaas_facts.yml playbook.
+If your ansible.cfg file does not specify an inventory file you will need to add `-i inventory.yml` to the command. If the ad-hoc command runs and completes you have confirmed successful communication with CVaaS.
 
 Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" playbook to build out your containers, move devices to the proper container and then apply the generated config to the device.
 
 ## Sample playbook cvaas_deploy.yml
 
-```text
+```yaml
 ---
 - name: Configlet upload management
   hosts: cvaas
@@ -132,30 +106,32 @@ Now that AVD is talking to the CVaaS service you can run the "cvaas_deploy.yml" 
 
 Once things are working it's a good idea to use Ansible Vault to encrypt your passwords in a production environment.
 
-    ```text
-    ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >> my_file.txt
-    ```
+```sh
+ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >> my_file.txt
+```
 
 ## Key points
 
 1. When creating the vault sometimes there will be an extra "%" sign at the end. Remove this.
 
+   ```text
     $ANSIBLE_VAULT;1.1;AES256
     31383837323464376439313531333639373431316433636361633239663632663331383264646639
     3535386333356537643233376630636265653566636531390a663433323033653736653939663861
     33313466646363643135353065346439326633326138636331333331333338393332653231643930
     6661353835373731350a303666343334626532313361376361656235323638646264656639653139
     3437% <------------------Make sure to remove.
+    ```
 
 2. Sometimes when creating your vault there will be so much output that you will overrun the buffer on your CLI window. In order to get around this you can simply write the output to a file and then open up the file to grab the hash.
 
-    ```text
+    ```sh
     ansible-vault encrypt_string '<super long password>' --name 'ansible_ssh_pass' >> my_file.txt
     ```
 
 3. Once Ansible Vault has been added to your config simply add --ask-vault-pass when running the playbook
 
-    ```text
+    ```sh
     root@6e3d94f50dca:/workspace# ansible-playbook playbooks/cvaas_facts.yml --ask-vault-pass
     Vault password:
     PLAY [Playbook to demonstrate cv_container module.]
