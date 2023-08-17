@@ -452,7 +452,7 @@ jobs:
           python-version: |
             3.10
             3.11
-      - name: 'Install Python & Ansible requirements'
+      - name: 'Install tox'
         run: |
           pip install tox --upgrade
       - name: 'Run tox'

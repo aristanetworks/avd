@@ -100,11 +100,12 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 
 ## Excluding prompt because the unsafe marker is lost during the export of hostvars.
 ## Excluding custom-templates since there is no jinja support in pyavd
-	ansible-playbook \
+	ANSIBLE_COLLECTIONS_PATHS="..:/usr/share/ansible/collections" ansible-playbook \
 		--limit 'all:!prompt:!custom-templates' \
 		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini \
 		$(SCRIPTS_DIR)/export_test_vars.yml \
 		-e testdir=eos_cli_config_gen \
+		-e collections_paths="..:/usr/share/ansible/collections"
 		-f 10
 
 	rm -rf $(SCRIPTS_DIR)/inventory/
@@ -115,7 +116,7 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 
 ## EOS_DESIGNS
 
-	ansible-playbook \
+	ANSIBLE_COLLECTIONS_PATHS="..:/usr/share/ansible/collections" ansible-playbook \
 		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml $(SCRIPTS_DIR)/export_test_vars.yml \
 		-e testdir=eos_designs_unit_tests \
 		-f 10
