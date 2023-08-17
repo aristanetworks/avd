@@ -51,6 +51,7 @@
         cmd: "cp -rT {{ scenario_dir }}/documentation/devices/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/documentation/"
       run_once: true
       delegate_to: localhost
+      when: lookup("ansible.builtin.first_found", scenario_dir ~ "/documentation/devices", skip=true)
 
     - name: Set fact with hostvars to force templating
       ansible.builtin.set_fact:
