@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from collections import ChainMap
 from copy import deepcopy
 
@@ -208,7 +211,7 @@ class AvdValidator:
                     "list": jsonschema._types.is_array,
                     "int": jsonschema._types.is_integer,
                 }
-            )
+            ),
             # version="0.1",
         )
 

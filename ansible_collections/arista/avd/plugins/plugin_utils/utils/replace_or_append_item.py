@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 def replace_or_append_item(list_of_dicts: list, key: str, replacement_dict: dict) -> int:
     """
     In-place replace or append one dictionary to a list of dictionaries by matching the given key
