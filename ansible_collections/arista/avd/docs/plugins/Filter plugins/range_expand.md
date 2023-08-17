@@ -3,21 +3,21 @@
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.range_expand` when using this plugin.
 
-Expand a range of interfaces or list of ranges and return as a list of strings\.
+Expand a range of interfaces or list of ranges and return as a list of strings.
 
 ## Synopsis
 
-Provides the capabilities to expand a range of interfaces or list of ranges and return as a list of strings\.
+Provides the capabilities to expand a range of interfaces or list of ranges and return as a list of strings.
 
-The filter supports VLANs\, interfaces\, modules\, sub\-interfaces\, and ranges are expanded at all levels\.
+The filter supports VLANs, interfaces, modules, sub\-interfaces, and ranges are expanded at all levels.
 
-Within a single range\, prefixes \(ex\. Ethernet\, Eth\, Po\) are carried over to items without prefixes \(see examples\)\.
+Within a single range, prefixes \(ex. Ethernet, Eth, Po\) are carried over to items without prefixes \(see examples\).
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | Range as string or list of ranges\. |
+| _input | any | True | None |  | Range as string or list of ranges. |
 
 ## Examples
 
@@ -67,7 +67,7 @@ Within a single range\, prefixes \(ex\. Ethernet\, Eth\, Po\) are carried over t
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | list | List of strings from all ranges\. |
+| _value | list | List of strings from all ranges. |
 
 ## Status
 

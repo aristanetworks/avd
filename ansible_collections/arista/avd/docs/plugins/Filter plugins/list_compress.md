@@ -3,17 +3,17 @@
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.list_compress` when using this plugin.
 
-Compress a list of integers to a range string\.
+Compress a list of integers to a range string.
 
 ## Synopsis
 
-Provides the capability to generate a string representing ranges of VLANs or VNIs\.
+Provides the capability to generate a string representing ranges of VLANs or VNIs.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | list | True | None |  | List of integers to compress into a range\. |
+| _input | list | True | None |  | List of integers to compress into a range. |
 
 ## Examples
 
@@ -27,7 +27,7 @@ list2: "{{ [1,2,3,7,8] | arista.avd.list_compress }}" # -> "1-3,7-8"
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | string | Range string like \"1\-3\,7\-8\" |
+| _value | string | Range string like \"1\-3,7\-8\" |
 
 ## Status
 

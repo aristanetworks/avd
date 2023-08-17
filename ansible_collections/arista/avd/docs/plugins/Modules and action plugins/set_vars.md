@@ -3,15 +3,15 @@
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.set_vars` when using this plugin.
 
-Set vars as ansible\_facts\.
+Set vars as ansible\_facts.
 
 ## Synopsis
 
-Set vars as ansible\_facts\.
+Set vars as ansible\_facts.
 
-Ansible will copy these into vars in the global namespace as well\.
+Ansible will copy these into vars in the global namespace as well.
 
-Arguments are treated as one dict so all arguments will be set as vars\.
+Arguments are treated as one dict so all arguments will be set as vars.
 
 ## Examples
 

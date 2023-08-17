@@ -3,25 +3,25 @@
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.convert_dicts` when using this plugin.
 
-Convert a dictionary containing nested dictionaries to a list of dictionaries\.
+Convert a dictionary containing nested dictionaries to a list of dictionaries.
 
 ## Synopsis
 
-The filter inserts the outer dictionary keys into each list item using the primary\_key \`name\` \(the key name is configurable\)\, and if there is a non\-dictionary value\, it inserts this value to secondary key \(the key name is configurable\)\, if <em>secondary\_key</em> is provided\.
+The filter inserts the outer dictionary keys into each list item using the primary\_key \`name\` \(the key name is configurable\), and if there is a non\-dictionary value, it inserts this value to secondary key \(the key name is configurable\), if <em>secondary\_key</em> is provided.
 
-This filter is intended for seamless data model migration from dictionaries to lists\.
+This filter is intended for seamless data model migration from dictionaries to lists.
 
-The filter can improve Ansible\'s processing performance when dealing with large dictionaries by converting them to lists of dictionaries\.
+The filter can improve Ansible\'s processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
 
-Note \- if there is a non\-dictionary value with no secondary key provided\, it will pass through untouched\.
+Note \- if there is a non\-dictionary value with no secondary key provided, it will pass through untouched.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | Dictionary to convert \- returned untouched if not a nested dictionary/list\. |
-| primary_key | string | optional | name |  | Name of the primary key used when inserting outer dictionary keys into items\. |
-| secondary_key | string | optional | None |  | Name of the secondary key used when inserting dictionary values which are list into items\. |
+| _input | any | True | None |  | Dictionary to convert \- returned untouched if not a nested dictionary/list. |
+| primary_key | string | optional | name |  | Name of the primary key used when inserting outer dictionary keys into items. |
+| secondary_key | string | optional | None |  | Name of the secondary key used when inserting dictionary values which are list into items. |
 
 ## Examples
 
@@ -67,7 +67,7 @@ Note \- if there is a non\-dictionary value with no secondary key provided\, it 
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | any | Returns list of dictionaries or input variable untouched if not a nested dictionary/list\. |
+| _value | any | Returns list of dictionaries or input variable untouched if not a nested dictionary/list. |
 
 ## Status
 

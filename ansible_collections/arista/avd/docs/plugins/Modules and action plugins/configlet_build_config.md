@@ -3,20 +3,20 @@
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.configlet_build_config` when using this plugin.
 
-Build arista\.cvp\.configlet configuration\.
+Build arista.cvp.configlet configuration.
 
 ## Synopsis
 
-Build configuration to publish configlets to Cloudvision\.
+Build configuration to publish configlets to Cloudvision.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| configlet_dir | str | True | None |  | Directory where configlets are located\. |
-| configlet_prefix | str | True | None |  | Prefix to append on configlet\. |
-| destination | str | False | None |  | File where to save information\. |
-| configlet_extension | str | False | conf |  | File extension to look for\. |
+| configlet_dir | str | True | None |  | Directory where configlets are located. |
+| configlet_prefix | str | True | None |  | Prefix to append on configlet. |
+| destination | str | False | None |  | File where to save information. |
+| configlet_extension | str | False | conf |  | File extension to look for. |
 
 ## Examples
 

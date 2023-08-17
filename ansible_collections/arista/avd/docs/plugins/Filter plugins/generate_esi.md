@@ -7,14 +7,14 @@ Transforms short\_esi <code>0303\:0202\:0101</code> to EVPN ESI format <code>000
 
 ## Synopsis
 
-Concatenates the given <em>esi\_prefix</em> and <em>short\_esi</em>\.
+Concatenates the given <em>esi\_prefix</em> and <em>short\_esi</em>.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | Short ESI value as per AVD definition in eos\_designs\. |
-| esi_prefix | string | optional | 0000:0000: |  | ESI prefix value\. Will be concatenated with the <em>short\_esi</em>\. |
+| _input | string | True | None |  | Short ESI value as per AVD definition in eos\_designs. |
+| esi_prefix | string | optional | 0000:0000: |  | ESI prefix value. Will be concatenated with the <em>short\_esi</em>. |
 
 ## Examples
 

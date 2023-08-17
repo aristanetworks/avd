@@ -7,13 +7,13 @@ Transforms short\_esi <code>0303\:0202\:0101</code> to route\-target format <cod
 
 ## Synopsis
 
-Removes <code>\:</code> and inserts new <code>\:</code> for each two characters\.
+Removes <code>\:</code> and inserts new <code>\:</code> for each two characters.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | Short ESI value as per AVD definition in eos\_designs\. |
+| _input | string | True | None |  | Short ESI value as per AVD definition in eos\_designs. |
 
 ## Examples
 

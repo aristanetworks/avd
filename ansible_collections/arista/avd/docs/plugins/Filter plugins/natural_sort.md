@@ -3,15 +3,15 @@
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.natural_sort` when using this plugin.
 
-Sort an input list with natural sorting\.
+Sort an input list with natural sorting.
 
 ## Synopsis
 
-Provides the capability to sort a list or a dictionary of integers and strings that contain alphanumeric characters naturally\.
-When leveraged on a dictionary\, only the key value will be returned\.
-An optional \`sort\_key\` can be specified\, to sort on content of certain key if the items are dictionaries\.
+Provides the capability to sort a list or a dictionary of integers and strings that contain alphanumeric characters naturally.
+When leveraged on a dictionary, only the key value will be returned.
+An optional \`sort\_key\` can be specified, to sort on content of certain key if the items are dictionaries.
 
-The filter will return an empty list if the value parsed to arista\.avd\.natural\_sort is <code>None</code> or <code>undefined</code>\.
+The filter will return an empty list if the value parsed to arista.avd.natural\_sort is <code>None</code> or <code>undefined</code>.
 
 ## Parameters
 
@@ -35,7 +35,7 @@ empty_list_2: "{{ some_undefined_var | natural_sort }}" # -> []
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | list | Sorted list if the input was a list\. Sorted keys if the input was a dictionary\. Empty list if the input value was <code>None</code> or <code>undefined</code>\. |
+| _value | list | Sorted list if the input was a list. Sorted keys if the input was a dictionary. Empty list if the input value was <code>None</code> or <code>undefined</code>. |
 
 ## Status
 

@@ -21,7 +21,7 @@
 {%         if spec.max %}
 {%             set _ = restrictions.append("Max value: <code>" ~ spec.max ~ "</code>") %}
 {%         endif %}
-{%         set description = spec.description | map("md_ify") | join("<br>") %}
+{%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
 | {{ "  " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
 {%         if spec.suboptions %}
 {{ option_desc(spec.suboptions, level + 1) -}}
@@ -35,7 +35,7 @@
 {%     endif %}
 {%     for name, spec in results.items() %}
 {%         set typ = spec.type | default("any") %}
-{%         set description = spec.description | map("md_ify") | join("<br>") %}
+{%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
 | {{ "  " * level }}{{ name }} | {{ typ }} | {{ description }} |
 {%         if spec.contains %}
 {{ result_desc(spec.contains, level + 1) -}}
@@ -48,14 +48,14 @@
     Always use the FQCN (Fully Qualified Collection Name) `{{ collection | default("arista.avd", true) ~ "." ~ module }}` when using this plugin.
 {% if short_description %}
 
-{{ short_description | md_ify }}
+{{ short_description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {% endif %}
 {% if description %}
 
 ## Synopsis
 {%     for desc in description %}
 
-{{ desc | md_ify }}
+{{ desc | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%     endfor %}
 {% endif %}
 {% if requirements %}
@@ -65,7 +65,7 @@
 The below requirements are needed on the host that executes this module.
 
 {%     for req in requirements %}
-- {{ req | md_ify }}
+- {{ req | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%     endfor %}
 {% endif %}
 {% if options %}
@@ -79,7 +79,7 @@ The below requirements are needed on the host that executes this module.
 ## Notes
 
 {%     for note in notes %}
-   - {{ note | md_ify }}
+   - {{ note | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%     endfor %}
 {% endif %}
 {% if seealso %}
@@ -89,16 +89,16 @@ The below requirements are needed on the host that executes this module.
 {%     for item in seealso %}
 {%         if item.module is defined and item.description is defined %}
    :ref:`{{ item.module }}_module`
-       {{ item.description | md_ify }}
+       {{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%         elif item.module is defined %}
    :ref:`{{ item.module }}_module`
       The official documentation on the **{{ item.module }}** module.
 {%         elif item.name is defined and item.link is defined and item.description is defined %}
    `{{ item.name }} <{{ item.link }}>`_
-       {{ item.description | md_ify }}
+       {{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%         elif item.ref is defined and item.description is defined %}
    :ref:`{{ item.ref }}`
-       {{ item.description | md_ify }}
+       {{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%         endif %}
 {%     endfor %}
 {% endif %}
@@ -121,7 +121,7 @@ The below requirements are needed on the host that executes this module.
 {% if deprecated %}
 
 - This {{ plugin_type }} will be removed in version
-  {{ deprecated['removed_in'] | default('') | string | md_ify }}.
+  {{ deprecated['removed_in'] | default('') | string | md_ify | replace("\.", ".") | replace("\,", ",") }}.
   *[deprecated]*
 
 {% else %}

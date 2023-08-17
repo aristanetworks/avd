@@ -3,23 +3,23 @@
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `arista.avd.decrypt` when using this plugin.
 
-Decrypt supported EOS passwords
+Decrypt supported EOS passwords.
 
 ## Synopsis
 
-The filter is used to decrypt supported EOS passwords into clear text\.
+The filter is used to decrypt supported EOS passwords into clear text.
 
-Note \- For now this filter only supports decryption from type <code>7</code> and not type <code>8a</code> for OSPF and BGP passwords\.
+Note \- For now this filter only supports decryption from type <code>7</code> and not type <code>8a</code> for OSPF and BGP passwords.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | Encrypted EOS password\. |
-| passwd_type | string | True | None | Valid values:<br>- <code>bgp</code><br>- <code>ospf_simple</code><br>- <code>ospf_message_digest</code> | Type of password to decrypt\.<br><code>bgp</code> and <code>ospf\_simple</code> requires the <em>password</em> and <em>key</em> inputs\.<br><code>ospf\_message\_digest</code> requires the <em>password</em>\, <em>key</em>\, <em>hash\_algorithm</em>\, <em>key\_id</em> inputs\. |
-| key | string | True | None |  | Encryption key\. The value depends on the type of password\.<br>For BGP passwords the key is the Neighbor IP or the BGP Peer Group Name in EOS\.<br>For OSPF passwords the key is the interface name \(e\.g\.\, <code>Ethernet1</code>\)\. |
-| hash_algorithm | string | optional | None | Valid values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Hash algorithm to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>\. |
-| key_id | integer | optional | None | Min value: <code>1</code><br>Max value: <code>255</code> | Key ID to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>\. |
+| _input | string | True | None |  | Encrypted EOS password. |
+| passwd_type | string | True | None | Valid values:<br>- <code>bgp</code><br>- <code>ospf_simple</code><br>- <code>ospf_message_digest</code> | Type of password to decrypt.<br><code>bgp</code> and <code>ospf\_simple</code> requires the <em>password</em> and <em>key</em> inputs.<br><code>ospf\_message\_digest</code> requires the <em>password</em>, <em>key</em>, <em>hash\_algorithm</em>, <em>key\_id</em> inputs. |
+| key | string | True | None |  | Encryption key. The value depends on the type of password.<br>For BGP passwords the key is the Neighbor IP or the BGP Peer Group Name in EOS.<br>For OSPF passwords the key is the interface name \(e.g., <code>Ethernet1</code>\). |
+| hash_algorithm | string | optional | None | Valid values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Hash algorithm to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>. |
+| key_id | integer | optional | None | Min value: <code>1</code><br>Max value: <code>255</code> | Key ID to use with <em>passwd\_type\=\"ospf\_message\_digest\"</em>. |
 
 ## Examples
 
@@ -39,7 +39,7 @@ cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='ospf_message
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| _value | string | Decrypted cleartext password\. |
+| _value | string | Decrypted cleartext password. |
 
 ## Status
 

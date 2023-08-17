@@ -13,8 +13,8 @@ Replace the input data by \"\<removed\>\" if the hide\_passwords parameter is tr
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | raw | True | None |  | Value to replace\. |
-| hide_passwords | bool | True | None |  | Flag to indicate whether or not the string should be replaced\. |
+| _input | raw | True | None |  | Value to replace. |
+| hide_passwords | bool | True | None |  | Flag to indicate whether or not the string should be replaced. |
 
 ## Examples
 
