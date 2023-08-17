@@ -33,6 +33,25 @@
         - structured_configs
       delegate_to: localhost
 
+    - name: Copy structured_configs
+      ansible.builtin.shell:
+        cmd: "cp -rT {{ scenario_dir }}/intended/structured_configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/structured_configs/"
+      run_once: true
+      delegate_to: localhost
+      when: lookup("ansible.builtin.first_found", scenario_dir ~ "/intended/structured_configs", skip=true)
+
+    - name: Copy configs
+      ansible.builtin.shell:
+        cmd: "cp -rT {{ scenario_dir }}/intended/configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/configs/"
+      run_once: true
+      delegate_to: localhost
+
+    - name: Copy documentation
+      ansible.builtin.shell:
+        cmd: "cp -rT {{ scenario_dir }}/documentation/devices/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/documentation/"
+      run_once: true
+      delegate_to: localhost
+
     - name: Set fact with hostvars to force templating
       ansible.builtin.set_fact:
         templated_hostvars: "{{ hostvars[inventory_hostname] }}"
@@ -57,21 +76,3 @@
           mgmt_interface: Management1
           mgmt_vrf: MGMT
           id: 6
-
-    - name: Copy structured_configs
-      ansible.builtin.shell:
-        cmd: "cp -rT {{ scenario_dir }}/intended/structured_configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/structured_configs/"
-      run_once: true
-      delegate_to: localhost
-
-    - name: Copy configs
-      ansible.builtin.shell:
-        cmd: "cp -rT {{ scenario_dir }}/intended/configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/configs/"
-      run_once: true
-      delegate_to: localhost
-
-    - name: Copy documentation
-      ansible.builtin.shell:
-        cmd: "cp -rT {{ scenario_dir }}/documentation/devices/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/documentation/"
-      run_once: true
-      delegate_to: localhost
