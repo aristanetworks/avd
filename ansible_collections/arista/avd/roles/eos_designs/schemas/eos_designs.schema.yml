@@ -861,9 +861,12 @@ keys:
           - str
           min: 1
           max: 1024
-          description: "\"id\" may also be used for vlan-aware-bundle RD/RT ID and
-            therefore should not overlap with l2vlan IDs which are not part of this
-            bundle. \nSee \"overlay_rd_type\" and \"overlay_rt_type\" for details.\n"
+          description: '"id" may also be used for vlan-aware-bundle RD/RT ID and therefore
+            should not overlap with l2vlan IDs which are not part of this bundle.
+
+            See "overlay_rd_type" and "overlay_rt_type" for details.
+
+            '
         rt_override:
           type: str
           convert_types:

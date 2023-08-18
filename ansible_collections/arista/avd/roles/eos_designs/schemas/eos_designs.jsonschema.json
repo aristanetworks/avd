@@ -3304,7 +3304,7 @@
             "type": "integer",
             "minimum": 1,
             "maximum": 1024,
-            "description": "\"id\" may also be used for vlan-aware-bundle RD/RT ID and therefore should not overlap with l2vlan IDs which are not part of this bundle. \nSee \"overlay_rd_type\" and \"overlay_rt_type\" for details.\n",
+            "description": "\"id\" may also be used for vlan-aware-bundle RD/RT ID and therefore should not overlap with l2vlan IDs which are not part of this bundle.\nSee \"overlay_rd_type\" and \"overlay_rt_type\" for details.\n",
             "title": "ID"
           },
           "rt_override": {
