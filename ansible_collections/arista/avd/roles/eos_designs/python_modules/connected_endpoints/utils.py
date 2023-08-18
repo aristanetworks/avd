@@ -58,9 +58,14 @@ class UtilsMixin:
 
                     filtered_adapters.append(adapter_settings)
 
-                connected_endpoint["adapters"] = filtered_adapters
-                connected_endpoint["type"] = connected_endpoints_key["type"]
-                filtered_connected_endpoints.append(connected_endpoint)
+                if filtered_adapters:
+                    filtered_connected_endpoints.append(
+                        {
+                            **connected_endpoint,
+                            "adapters": filtered_adapters,
+                            "type": connected_endpoints_key["type"],
+                        }
+                    )
 
         return filtered_connected_endpoints
 
