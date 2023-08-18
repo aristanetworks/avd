@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -235,7 +238,7 @@ class UtilsMixin:
                     {
                         "isis_enable": self.shared_utils.isis_instance_name,
                         "isis_metric": default(p2p_link.get("isis_metric"), self.shared_utils.isis_default_metric),
-                        "isis_network_point_to_point": (p2p_link.get("isis_network_type", "point-to-point") == "point-to-point"),
+                        "isis_network_point_to_point": p2p_link.get("isis_network_type", "point-to-point") == "point-to-point",
                         "isis_hello_padding": p2p_link.get("isis_hello_padding", True),
                         "isis_circuit_type": default(p2p_link.get("isis_circuit_type"), self.shared_utils.isis_default_circuit_type),
                         "isis_authentication_mode": p2p_link.get("isis_authentication_mode"),

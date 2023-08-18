@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # AVD Coding Style
 
 This page lists guidelines for developing Python code or Jinja2 templates in the AVD context. These rules apply to creating or updating any Python or Jinja2 file available in a `aristanetworks/ansible-avd` repository.
