@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # How to integrate AVD with CVaaS
 
 The purpose of this tutorial is to review the steps required in order to integrate AVD with Arista CloudVision-as-a-Service.
