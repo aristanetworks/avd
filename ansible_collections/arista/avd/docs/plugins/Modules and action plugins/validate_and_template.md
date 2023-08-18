@@ -11,9 +11,7 @@ The \`arista.avd.validate\_and\_template\` Action Plugin performs data conversio
 
 The converted data is then used to render a Jinja2 template and writing the result to a file.
 
-The Action Plugin supports different modes for conversion and validation, to either block the playbook or just warn the user if
-
-the input data is not valid.
+The Action Plugin supports different modes for conversion and validation, to either block the playbook or just warn the user if the input data is not valid.
 
 For Markdown files the plugin can also run md\_toc on the output before writing to the file.
 

@@ -7,11 +7,7 @@ Transform information from inventory to arista.cvp collection
 
 ## Synopsis
 
-Transform information from ansible inventory to be able to
-
-provision CloudVision Platform using arista.cvp collection and
-
-its specific data structure.
+Transform information from ansible inventory to be able to provision CloudVision Platform using arista.cvp collection and its specific data structure.
 
 ## Parameters
 

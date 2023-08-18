@@ -7,17 +7,14 @@ Generate AVD EOS Designs structured configuration
 
 ## Synopsis
 
-Validates input variables according to eos\_designs schema
+The \`arista.avd.eos\_designs\_facts\` module is an Ansible Action Plugin providing the following capabilities\:
 
-Generates structured configuration
-
-Optionally run any custom jinja2 YAML templates and merge result onto structured configuration
-
-Optionally run jinja2 templating the generated structured configuration
-
-Optionally write structured configuration to a JSON or YAML file
-
-Return structured configuration as \"ansible\_facts\"
+\- Validates input variables according to eos\_designs schema
+\- Generates structured configuration
+\- Optionally run any custom jinja2 YAML templates and merge result onto structured configuration
+\- Optionally run jinja2 templating the generated structured configuration
+\- Optionally write structured configuration to a JSON or YAML file
+\- Return structured configuration as \"ansible\_facts\"
 
 ## Parameters
 
