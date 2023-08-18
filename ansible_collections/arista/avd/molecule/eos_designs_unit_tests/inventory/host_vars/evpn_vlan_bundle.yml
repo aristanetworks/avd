@@ -39,3 +39,22 @@ tenants:
         name: ipmi
         tags: ['fabric']
         evpn_vlan_bundle: bundle1
+      - id: 70
+        name: vmotion
+        tags: ['ipmi']
+        evpn_vlan_bundle: bundle2
+      - id: 80
+        name: vstorage
+        tags: ['fabric']
+        evpn_vlan_bundle: bundle2
+
+evpn_vlan_bundles:
+  - name: bundle1
+    id: 1
+    bgp:
+      raw_eos_cli: |
+        vlan add 1000
+  - name: bundle2
+    id: 2
+    rt_override: 111
+    rd_override: 1.1.1.1:222

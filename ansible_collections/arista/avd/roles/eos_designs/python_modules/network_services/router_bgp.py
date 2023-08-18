@@ -386,17 +386,6 @@ class RouterBgpMixin(UtilsMixin):
         return vlan.get("evpn_vlan_bundle") or vlan.get("name")
 
     @cached_property
-    def _get_first_evpn_vlan_bundle(self) -> dict | None:
-        """
-        Return first l2vlan where "evpn_vlan_bundle" is defined or None
-        """
-        for tenant in self._filtered_tenants:
-            for l2vlan in tenant["l2vlans"]:
-                if "evpn_vlan_bundle" in l2vlan:
-                    return l2vlan
-        return None
-
-    @cached_property
     def _router_bgp_vlan_aware_bundles(self) -> list | None:
         """
         Return structured config for router_bgp.vlan_aware_bundles
@@ -406,12 +395,6 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         if not self._evpn_vlan_aware_bundles:
-            first_evpn_vlan_bundle = self._get_first_evpn_vlan_bundle
-            if first_evpn_vlan_bundle is not None:
-                raise AristaAvdMissingVariableError(
-                    "Option 'evpn_vlan_aware_bundles' must be set to 'true' to be able to use 'evpn_vlan_bundle' option in l2vlans. "
-                    f"First occurence of 'evpn_vlan_bundle' seen for l2vlan {first_evpn_vlan_bundle['id']} in Tenant '{first_evpn_vlan_bundle['tenant']}'."
-                )
             return None
 
         bundles = []
@@ -427,7 +410,7 @@ class RouterBgpMixin(UtilsMixin):
                     )
 
             # L2 Vlans per Tenant
-            # If multiple L2 Vlans share a evpn_vlan_bundle name, they will be part of the same vlan-aware-bundle else they use the vlan name as bundle name
+            # If multiple L2 Vlans share the same evpn_vlan_bundle name, they will be part of the same vlan-aware-bundle else they use the vlan name as bundle
             sorted_vlan_list = sorted(tenant["l2vlans"], key=self._get_vlan_aware_bundle_name)
             bundle_groups = itertools_groupby(sorted_vlan_list, self._get_vlan_aware_bundle_name)
             for bundle_name, l2vlans in bundle_groups:
@@ -436,13 +419,28 @@ class RouterBgpMixin(UtilsMixin):
                     # We are reusing the regular bgp vlan function so need to add vlan info
                     bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
                     bundle = {"name": bundle_name, **bundle}
-                    append_if_not_duplicate(
-                        list_of_dicts=bundles,
-                        primary_key="name",
-                        new_dict=bundle,
-                        context="BGP VLAN-Aware Bundles defined under network services",
-                        context_keys=["name"],
-                    )
+
+                    if "evpn_vlan_bundle" in l2vlans[0]:
+                        # If "evpn_vlan_bundle" in l2vlan bundle group, check if the referred name exists in the global evpn_vlan_bundles
+                        if (evpn_vlan_bundle := get_item(self._hostvars["evpn_vlan_bundles"], "name", l2vlans[0]["evpn_vlan_bundle"])) is not None:
+                            # override the settings from l2vlan
+                            bundle["rd"] = self.get_vlan_rd(evpn_vlan_bundle, tenant)
+                            bundle["route_targets"] = {"both": [self.get_vlan_rt(evpn_vlan_bundle, tenant)]}
+                            if (eos_cli := get(evpn_vlan_bundle, "bgp.raw_eos_cli")) is not None:
+                                bundle["eos_cli"] = eos_cli
+                        else:
+                            raise AristaAvdMissingVariableError(
+                                "The 'evpn_vlan_bundle' of the l2vlans must be defined in the global 'evpn_vlan_bundles' setting. First occurence seen for"
+                                f" l2vlan {l2vlans[0]['id']} in Tenant '{l2vlans[0]['tenant']}' and evpn_vlan_bundle '{l2vlans[0]['evpn_vlan_bundle']}'."
+                            )
+
+                append_if_not_duplicate(
+                    list_of_dicts=bundles,
+                    primary_key="name",
+                    new_dict=bundle,
+                    context="BGP VLAN-Aware Bundles defined under network services",
+                    context_keys=["name"],
+                )
 
         if bundles:
             return bundles

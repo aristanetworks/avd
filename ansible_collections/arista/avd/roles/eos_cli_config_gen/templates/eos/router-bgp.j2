@@ -472,6 +472,10 @@ router bgp {{ router_bgp.as }}
       no redistribute {{ no_redistribute_route }}
 {%         endfor %}
       vlan {{ vlan_aware_bundle.vlan }}
+{%         if vlan_aware_bundle.eos_cli is arista.avd.defined %}
+      !
+      {{ vlan_aware_bundle.eos_cli | indent(6, false) }}
+{%         endif %}
 {%     endfor %}
 {# bgp vpws services #}
 {%     if router_bgp.vpws is arista.avd.defined %}

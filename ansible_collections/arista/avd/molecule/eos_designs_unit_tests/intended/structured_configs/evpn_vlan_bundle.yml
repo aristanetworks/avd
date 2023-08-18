@@ -38,13 +38,25 @@ router_bgp:
   vlan_aware_bundles:
   - name: bundle1
     tenant: FABRIC
-    rd: 10.10.0.3:10050
+    rd: 10.10.0.3:10001
     route_targets:
       both:
-      - 10050:10050
+      - 10001:10001
     redistribute_routes:
     - learned
     vlan: 50,60
+    eos_cli: 'vlan add 1000
+
+      '
+  - name: bundle2
+    tenant: FABRIC
+    rd: 1.1.1.1:222
+    route_targets:
+      both:
+      - 111:111
+    redistribute_routes:
+    - learned
+    vlan: 70,80
   - name: storage_prod
     tenant: StorageProd
     rd: 10.10.0.3:10010
@@ -103,6 +115,12 @@ vlans:
 - id: 60
   name: ipmi
   tenant: FABRIC
+- id: 70
+  name: vmotion
+  tenant: FABRIC
+- id: 80
+  name: vstorage
+  tenant: FABRIC
 - id: 10
   name: storage_prod
   tenant: StorageProd
@@ -122,6 +140,10 @@ vxlan_interface:
         vni: 10050
       - id: 60
         vni: 10060
+      - id: 70
+        vni: 10070
+      - id: 80
+        vni: 10080
       - id: 10
         vni: 10010
       - id: 20

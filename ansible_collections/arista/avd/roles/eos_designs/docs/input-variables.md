@@ -112,29 +112,29 @@ To customize or create new node types, please refer to [node type customization]
 
 ### L3LS EVPN
 
-| Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
-| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                  |
-| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                  |
-| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                  | ✅   | ✅           | ✅                 |
-| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                 |
-| overlay_controller | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                  |
+| super_spine        | ✅              | p2p          | none              | ✘                  | ✘                  | ✘   | ✘           | ✘                  |
+| spine              | ✅              | p2p          | server            | ✘                  | ✘                  | ✘   | ✘           | ✘                  |
+| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                  | ✅   | ✅           | ✅                  |
+| l2leaf             | ✘              | port-channel | none              | ✅                  | ✘                  | ✘   | ✅           | ✅                  |
+| overlay_controller | ✅              | p2p          | server            | ✘                  | ✘                  | ✘   | ✘           | ✘                  |
 
 ### L2LS
 
-| Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
-| l3spine            | ✅              | p2p          | none              | ✅                  | ✅                  | ✘    | ✅           | ✅                  |
-| spine              | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                 |
-| leaf               | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                 |
+| Node Type Key | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| ------------- | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
+| l3spine       | ✅              | p2p          | none              | ✅                  | ✅                  | ✘   | ✅           | ✅                  |
+| spine         | ✘              | port-channel | none              | ✅                  | ✘                  | ✘   | ✅           | ✅                  |
+| leaf          | ✘              | port-channel | none              | ✅                  | ✘                  | ✘   | ✅           | ✅                  |
 
 ### MPLS
 
 | Node Type Key | Underlay Router | Uplink Type | Default Overlay Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| --------------| --------------- | ----------- | -------------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
-| p             | ✅              | p2p          | none                | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| rr            | ✅              | p2p          | server              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| pe            | ✅              | p2p          | client              | ✅                  | ✅                  | ✅   | ✘            | ✅                  |
+| ------------- | --------------- | ----------- | -------------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
+| p             | ✅              | p2p         | none                 | ✘                  | ✘                  | ✘   | ✘           | ✘                  |
+| rr            | ✅              | p2p         | server               | ✘                  | ✘                  | ✘   | ✘           | ✘                  |
+| pe            | ✅              | p2p         | client               | ✅                  | ✅                  | ✅   | ✘           | ✅                  |
 
 ## Node type customization
 
@@ -148,12 +148,12 @@ AVD provides the capability to customize your node types, supporting a variety o
     ```yaml
     node_type_keys:
 
-      - key: spine
+    - key: spine
         type: spine
         default_evpn_role: server
         default_ptp_priority1: 20
 
-      - key: l3leaf
+    - key: l3leaf
         type: l3leaf
         connected_endpoints: true
         default_evpn_role: client
@@ -164,7 +164,7 @@ AVD provides the capability to customize your node types, supporting a variety o
           l3: true
         vtep: true
 
-      - key: l2leaf
+    - key: l2leaf
         type: l2leaf
         connected_endpoints: true
         mlag_support: true
@@ -173,10 +173,10 @@ AVD provides the capability to customize your node types, supporting a variety o
         underlay_router: false
         uplink_type: port-channel
 
-      - key: super_spine
+    - key: super_spine
         type: super-spine
 
-      - key: overlay_controller
+    - key: overlay_controller
         type: overlay-controller
         default_evpn_role: server
     ```
@@ -186,7 +186,7 @@ AVD provides the capability to customize your node types, supporting a variety o
     ```yaml
     node_type_keys:
 
-      - key: l3spine
+    - key: l3spine
         type: l3spine
         connected_endpoints: true
         default_overlay_routing_protocol: none
@@ -196,7 +196,7 @@ AVD provides the capability to customize your node types, supporting a variety o
           l2: true
           l3: true
 
-      - key: spine
+    - key: spine
         type: spine
         connected_endpoints: true
         mlag_support: true
@@ -205,7 +205,7 @@ AVD provides the capability to customize your node types, supporting a variety o
         underlay_router: false
         uplink_type: port-channel
 
-      - key: leaf
+    - key: leaf
         type: leaf
         connected_endpoints: true
         mlag_support: true
@@ -220,14 +220,14 @@ AVD provides the capability to customize your node types, supporting a variety o
     ```yaml
     node_type_keys:
 
-      - key: p
+    - key: p
         type: p
         default_mpls_overlay_role: none
         default_overlay_routing_protocol: ibgp
         default_underlay_routing_protocol: isis-sr
         mpls_lsr: true
 
-      - key: pe
+    - key: pe
         type: pe
         connected_endpoints: true
         default_evpn_encapsulation: mpls
@@ -243,7 +243,7 @@ AVD provides the capability to customize your node types, supporting a variety o
           l2: true
           l3: true
 
-      - key: rr
+    - key: rr
         type: rr
         default_evpn_encapsulation: mpls
         default_evpn_role: server
@@ -532,14 +532,7 @@ roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 
 ??? example "Default interfaces example"
 
-    ```yaml
-    default_interfaces:
-      - types: [ spine, l3leaf ]
-        platforms: [ "7050[SC]X3", vEOS.*, default ]
-        uplink_interfaces: [ Ethernet49-54/1 ]
-        mlag_interfaces: [ Ethernet55-56/1 ]
-        downlink_interfaces: [ Ethernet1-32/1 ]
-    ```
+    ``yaml     default_interfaces:       - types: [ spine, l3leaf ]         platforms: [ "7050[SC]X3", vEOS.*, default ]         uplink_interfaces: [ Ethernet49-54/1 ]         mlag_interfaces: [ Ethernet55-56/1 ]         downlink_interfaces: [ Ethernet1-32/1 ]     ``
 
 --8<--
 roles/eos_designs/docs/tables/default-interfaces.md
@@ -596,7 +589,7 @@ The following underlay routing protocols are supported:
 - OSPF-LDP*.
 - none**.
 
-\* Only supported with core_interfaces data model.<br />
+\* Only supported with core_interfaces data model.`<br />`
 \** For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.
 
 ??? note "Details on `enable_trunk_groups`"
@@ -604,7 +597,7 @@ The following underlay routing protocols are supported:
 
     Changes:
 
-    - **Requires** Trunk Groups to be defined on all trunks towards connected endpoints
+    -**Requires** Trunk Groups to be defined on all trunks towards connected endpoints
     - `MLAG` Trunk Group will be configured on all vlans on MLAG switches
     - Use Trunk Groups for uplinks to L2 switches instead of "switchport trunk allow vlan" lists.
       - On the parent switch a Trunk Group with the name of the L2 switch will be assigned on all vlans
@@ -614,18 +607,17 @@ The following underlay routing protocols are supported:
 
     ![Figure: Enable Trunk Groups](../../../media/enable_trunk_groups.png)
 
-    While it is recommended for consistency to set `enable_trunk_groups` for all devices in the fabric,
+    While it is recommended for consistency to set`enable_trunk_groups` for all devices in the fabric,
     it can also be set in group_vars or host_vars since trunk-groups are only local to a switch.
 
     !!! warning
-        Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".
-        *All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.
+        Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.
         If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.
 
 ??? note "Details on `only_local_vlan_trunk_groups`"
     Enabling this feature will prevent unneeded trunk groups from being configured on vlans.
 
-    Using the figure under [Details on `enable_trunk_groups`](#details-on-enable_trunk_groups) as basis
+    Using the figure under[Details on `enable_trunk_groups`](#details-on-enable_trunk_groups) as basis
     enabling with feature would remove the unmatched trunk groups like this:
 
     ![Figure: Enable only_local_vlan_trunk_groups](../../../media/only_local_vlan_trunk_groups.png)
@@ -674,7 +666,7 @@ The following overlay routing protocols are supported:
 - HER (Head-End Replication)**
 - CVX (CloudVision eXchange)
 
-\* For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.<br />
+\* For use with design type "l2ls" or other designs where there is no requirement for a routing protocol for underlay and/or overlay on l3 devices.`<br />`
 \** By setting `overlay_routing_protocol:HER`, `eos_designs` will configure static VXLAN flood-lists instead of using a dynamic overlay protocol.
 
 --8<--
@@ -709,8 +701,8 @@ roles/eos_designs/docs/tables/cloudvision-settings.md
 
 AVD supports two different data models for defining connectivity to endpoints:
 
-- ["Connected Endpoints"](#connected-endpoints-settings) is an endpoint-centric model intended for servers or other use cases where most ports have unique configurations.
-- ["Network Ports"](#network-ports-settings) is a compact and port-centric model intended for configuration of generic port configurations on large ranges of ports.
+- [&#34;Connected Endpoints&#34;](#connected-endpoints-settings) is an endpoint-centric model intended for servers or other use cases where most ports have unique configurations.
+- [&#34;Network Ports&#34;](#network-ports-settings) is a compact and port-centric model intended for configuration of generic port configurations on large ranges of ports.
 
 Both data models share the same underlying implementation and can coexist without conflicts.
 If a switch port is defined in both "Connected Endpoints" and "Network Ports", the "Connected Endpoints" configuration will take precedence.
@@ -743,16 +735,16 @@ Both data models support variable inheritance from profiles defined under [`port
     ```yaml
     port_profiles:
 
-      - profile: VM_Servers
+    - profile: VM_Servers
         mode: trunk
         vlans: "110-111,120-121,130-131"
         spanning_tree_portfast: edge
 
-      - profile: MGMT
+    - profile: MGMT
         mode: access
         vlans: "110"
 
-      - profile: DB_Clusters
+    - profile: DB_Clusters
         mode: trunk
         vlans: "140-141"
 
@@ -761,13 +753,13 @@ Both data models support variable inheritance from profiles defined under [`port
         rack: RackB
         adapters:
 
-          # Single homed interface from E0 toward DC1-LEAF1A_Eth5
+    # Single homed interface from E0 toward DC1-LEAF1A_Eth5
           - endpoint_ports: [ E0 ]
             switch_ports: [ Ethernet5 ]
             switches: [ DC1-LEAF1A ]
             profile: MGMT
 
-          # MLAG dual-homed connection from E1 to DC1-LEAF2A_Eth10
+    # MLAG dual-homed connection from E1 to DC1-LEAF2A_Eth10
           #                            from E2 to DC1-LEAF2B_Eth10
           - endpoint_ports: [ E1, E2 ]
             switch_ports: [ Ethernet10, Ethernet10 ]
@@ -777,11 +769,11 @@ Both data models support variable inheritance from profiles defined under [`port
               description: PortChanne1
               mode: active
 
-      - name: server03
+    - name: server03
         rack: RackC
         adapters:
 
-          # MLAG dual-homed connection from E0 to DC1-SVC3A_Eth10
+    # MLAG dual-homed connection from E0 to DC1-SVC3A_Eth10
           #                            from E1 to DC1-SVC3B_Eth10
           - endpoint_ports: [ E0, E1 ]
             switch_ports: [ Ethernet10, Ethernet10 ]
@@ -816,77 +808,43 @@ Both data models support variable inheritance from profiles defined under [`port
 
 ??? example "Example with single attached endpoint"
 
-    Single attached interface from `E0` toward `DC1-LEAF1A` interface `Eth5`
+    Single attached interface from`E0` toward `DC1-LEAF1A` interface `Eth5`
 
-    ```yaml
-    servers:
-      - name: server01
-        rack: RackB
-        adapters:
-          - endpoint_ports: [ E0 ]
-            switch_ports: [ Ethernet5 ]
-            switches: [ DC1-LEAF1A ]
-            profile: MGMT
-    ```
+    ``yaml     servers:       - name: server01         rack: RackB         adapters:           - endpoint_ports: [ E0 ]             switch_ports: [ Ethernet5 ]             switches: [ DC1-LEAF1A ]             profile: MGMT     ``
 
 ??? example "Example with MLAG dual-attached endpoint"
 
     MLAG dual-homed connection:
 
-    - From `E0` to `DC1-SVC3A` interface `Eth10`
+    - From`E0` to `DC1-SVC3A` interface `Eth10`
     - From `E1` to `DC1-SVC3B` interface `Eth10`
 
-    ```yaml
-    servers:
-      - name: server01
-        rack: RackB
-        adapters:
-          - endpoint_ports: [ E0, E1 ]
-            switch_ports: [ Ethernet10, Ethernet10 ]
-            switches: [ DC1-SVC3A, DC1-SVC3B ]
-            profile: VM_Servers
-            port_channel:
-              description: PortChanne1
-              mode: active
-    ```
+    ``yaml     servers:       - name: server01         rack: RackB         adapters:           - endpoint_ports: [ E0, E1 ]             switch_ports: [ Ethernet10, Ethernet10 ]             switches: [ DC1-SVC3A, DC1-SVC3B ]             profile: VM_Servers             port_channel:               description: PortChanne1               mode: active     ``
 
 ??? example "Example with EVPN A/A ESI dual-attached endpoint"
 
-    To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
+    To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a`short_esi` key.
     `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
     Transformation from abstraction to network values is managed by a [filter_plugin](../../../plugins/README.md) and provides following result:
 
-    - *EVPN ESI*: 000:000:0303:0202:0101
+    -*EVPN ESI*: 000:000:0303:0202:0101
     - *LACP ID*: 0303.0202.0101
     - *Route Target*: 03:03:02:02:01:01
 
-    In addition, setting the `short_esi` key to `auto` generates the short_esi automatically using a hash of the following data elements:
+    In addition, setting the`short_esi` key to `auto` generates the short_esi automatically using a hash of the following data elements:
 
     - Port-Channel Interfaces: first two uplink switch hostnames, the ports on those switches, the corresponding endpoint ports and the channel-group ID.
     - Port-Channel Subinterface: first two uplink switch hostname, the ports on those switches, the corresponding endpoint ports, the channel-group ID and the subinterface number.
     - Ethernet Interfaces: first two uplink switch hostnames, the ports on those switches, the corresponding endpoint ports and the interface number.
 
-    It should be noted that arista.avd does not currently check for hash collisions when using `short_esi: auto` and while the risk of this happening is non-zero, it is small.
+    It should be noted that arista.avd does not currently check for hash collisions when using`short_esi: auto` and while the risk of this happening is non-zero, it is small.
 
     Active/Active multihoming connections:
 
-    - From `E0` to `DC1-SVC3A` interface `Eth10`
+    - From`E0` to `DC1-SVC3A` interface `Eth10`
     - From `E1` to `DC1-SVC4A` interface `Eth10`
 
-    ```yaml
-    servers:
-      - name: server01
-        rack: RackB
-        adapters:
-          - endpoint_ports: [ E0, E1 ]
-            switch_ports: [ Ethernet10, Ethernet10 ]
-            switches: [ DC1-SVC3A, DC1-SVC4A ]
-            profile: VM_Servers
-            port_channel:
-              description: PortChanne1
-              mode: active
-              short_esi: 0303:0202:0101
-    ```
+    ``yaml     servers:       - name: server01         rack: RackB         adapters:           - endpoint_ports: [ E0, E1 ]             switch_ports: [ Ethernet10, Ethernet10 ]             switches: [ DC1-SVC3A, DC1-SVC4A ]             profile: VM_Servers             port_channel:               description: PortChanne1               mode: active               short_esi: 0303:0202:0101     ``
 
 --8<--
 roles/eos_designs/docs/tables/connected-endpoints.md
@@ -915,13 +873,13 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
         spanning_tree_portfast: edge
         spanning_tree_bpdufilter: enabled
 
-      - profile: ap_with_port_channel
+    - profile: ap_with_port_channel
         parent_profile: common
         vlans: "101"
         port_channel:
           mode: active
 
-      - profile: pc
+    - profile: pc
         parent_profile: common
         vlans: "100"
 
@@ -936,14 +894,14 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
         profile: pc
         description: PCs
 
-      - switches:
+    - switches:
           - network-ports-tests-2$
         switch_ports:
           - Ethernet1-2
         profile: ap_with_port_channel
         description: AP1 with port_channel
 
-      - switches:
+    - switches:
           - network-ports-[est]{5}-.*
         switch_ports:
           - Ethernet3-4
@@ -954,48 +912,18 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
 
 ??? example "Example using network ports to configure multiple ports in the same port-channel"
 
-    When defining port-channels, all ranges defined under `switch_ports` will be expanded to individual port configurations
+    When defining port-channels, all ranges defined under`switch_ports` will be expanded to individual port configurations
     in a port-channel with one member. To configure multiple ports as members of the same port-channel, set the channel-id key manually
     like in this example:
 
-    ```yaml
-    # Network Ports
-    # By setting the channel_id key under port-channel, interfaces Ethernet3-4 will
-    # be configured under the same port-channel.
-    network_ports:
-      - switches:
-          - network-ports-tests-1
-        switch_ports:
-          - Ethernet3-4
-        description: Multiple interfaces in the same port-channel
-        port_channel:
-          mode: active
-          channel_id: 42
-    ```
+    ``yaml     # Network Ports     # By setting the channel_id key under port-channel, interfaces Ethernet3-4 will     # be configured under the same port-channel.     network_ports:       - switches:           - network-ports-tests-1         switch_ports:           - Ethernet3-4         description: Multiple interfaces in the same port-channel         port_channel:           mode: active           channel_id: 42     ``
 
     This will generate the following config:
 
-    ```shell
-    interface Port-Channel42
-      description Multiple interfaces in the same port-channel
-      no shutdown
-      switchport
-    !
-    !
-    interface Ethernet3
-      description Multiple interfaces in the same port-channel
-      no shutdown
-      channel-group 42 mode active
-    !
-    interface Ethernet4
-      description Multiple interfaces in the same port-channel
-      no shutdown
-      channel-group 42 mode active
-    !
-    ```
+    ``shell     interface Port-Channel42       description Multiple interfaces in the same port-channel       no shutdown       switchport     !     !     interface Ethernet3       description Multiple interfaces in the same port-channel       no shutdown       channel-group 42 mode active     !     interface Ethernet4       description Multiple interfaces in the same port-channel       no shutdown       channel-group 42 mode active     !     ``
 
     !!! tip
-        To leverage automatic channel-id computation and configure port-channel with multiple members, `connected_endpoints` should be used.
+        To leverage automatic channel-id computation and configure port-channel with multiple members,`connected_endpoints` should be used.
 
 --8<--
 roles/eos_designs/docs/tables/network-ports.md
@@ -1126,6 +1054,14 @@ Note: structured configuration is not merged recursively and will be taken direc
 
 --8<--
 roles/eos_designs/docs/tables/svi-profiles.md
+--8<--
+
+### EVPN VLAN aware bundles settings
+
+Optional VLAN aware bundles to share common settings for l2vlans which are supposed to use the same vlan-aware-bundle.
+
+--8<--
+roles/eos_designs/docs/tables/evpn_vlan_bundles.md
 --8<--
 
 ### Network services keys settings
