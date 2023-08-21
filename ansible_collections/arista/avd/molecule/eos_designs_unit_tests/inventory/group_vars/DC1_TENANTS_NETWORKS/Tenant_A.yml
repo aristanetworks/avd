@@ -165,8 +165,11 @@ tenant_a:
             nodes: [DC1-BL1A, DC1-BL1B]
             set_ipv4_next_hop: 123.1.1.1
             route_map_in: RM-123-1-1-10-IN
+            shutdown: true
+
             # we don't expect this in the output, next_hop takes precedence
             route_map_out: RM-123-1-1-10-OUT
+
             local_as: 123
           - ip_address: 123.1.1.11
             remote_as: 1234
