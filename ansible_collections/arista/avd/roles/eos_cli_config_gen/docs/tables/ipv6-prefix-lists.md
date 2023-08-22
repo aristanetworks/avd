@@ -17,8 +17,15 @@
 
     ```yaml
     ipv6_prefix_lists:
+
+        # Prefix-list Name
       - name: <str>
         sequence_numbers:
+
+            # Sequence ID
           - sequence: <int>
-            action: <str>
+
+            # Action as string
+            # Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"
+            action: <str; required>
     ```

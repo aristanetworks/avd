@@ -326,184 +326,338 @@
       - name: <str>
         description: <str>
         shutdown: <bool>
-        load_interval: <int>
+
+        # Interval in seconds for updating interface counters"
+        load_interval: <int; 0-600>
+
+        # Speed can be interface_speed or forced interface_speed or auto interface_speed
         speed: <str>
         mtu: <int>
+
+        # "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
         l2_mtu: <int>
+
+        # List of switchport vlans as string
+        # For a trunk port this would be a range like "1-200,300"
+        # For an access port this would be a single vlan "123"
         vlans: <str>
         native_vlan: <int>
+
+        # If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
         native_vlan_tag: <bool>
-        mode: <str>
+        mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
         phone:
-          trunk: <str>
-          vlan: <int>
+          trunk: <str; "tagged" | "tagged phone" | "untagged" | "untagged phone">
+          vlan: <int; 1-4094>
         l2_protocol:
+
+          # Vlan tag to configure on sub-interface
           encapsulation_dot1q_vlan: <int>
+
+          # L2 protocol forwarding profile
           forwarding_profile: <str>
         trunk_groups:
           - <str>
-        type: <str>
+
+        # l3dot1q and l2dot1q are used for sub-interfaces. The parent interface should be defined as routed.
+        # Interface will not be listed in device documentation, unless "type" is set.
+        type: <str; "routed" | "switched" | "l3dot1q" | "l2dot1q" | "port-channel-member">
         snmp_trap_link_change: <bool>
         address_locking:
+
+          # Enable address locking for IPv4
           ipv4: <bool>
+
+          # Enable address locking for IPv6
           ipv6: <bool>
         flowcontrol:
-          received: <str>
+          received: <str; "desired" | "on" | "off">
+
+        # VRF name
         vrf: <str>
         flow_tracker:
+
+          # Flow tracker name
           sampled: <str>
         error_correction_encoding:
-          enabled: <bool>
+          enabled: <bool; default=True>
           fire_code: <bool>
           reed_solomon: <bool>
         link_tracking_groups:
+
+            # Group name
           - name: <str>
-            direction: <str>
+            direction: <str; "upstream" | "downstream">
         evpn_ethernet_segment:
+
+          # EVPN Ethernet Segment Identifier (Type 1 format)
           identifier: <str>
-          redundancy: <str>
+          redundancy: <str; "all-active" | "single-active">
           designated_forwarder_election:
-            algorithm: <str>
-            preference_value: <int>
+            algorithm: <str; "modulus" | "preference">
+
+            # Preference_value is only used when "algorithm" is "preference"
+            preference_value: <int; 0-65535>
+
+            # Dont_preempt is only used when "algorithm" is "preference"
             dont_preempt: <bool>
             hold_time: <int>
             subsequent_hold_time: <int>
             candidate_reachability_required: <bool>
           mpls:
-            shared_index: <int>
+            shared_index: <int; 1-1024>
             tunnel_flood_filter_time: <int>
+
+          # EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
           route_target: <str>
+
+        # VLAN tag to configure on sub-interface
         encapsulation_dot1q_vlan: <int>
         encapsulation_vlan:
           client:
             dot1q:
+
+              # Client VLAN ID
               vlan: <int>
+
+              # Client Outer VLAN ID
               outer: <int>
+
+              # Client Inner VLAN ID
               inner: <int>
             unmatched: <bool>
+
+          # Network encapsulations are all optional and skipped if using client unmatched
           network:
             dot1q:
+
+              # Network VLAN ID
               vlan: <int>
+
+              # Network outer VLAN ID
               outer: <int>
+
+              # Network inner VLAN ID
               inner: <int>
             client: <bool>
-        vlan_id: <int>
+        vlan_id: <int; 1-4094>
+
+        # IPv4 address/mask
         ip_address: <str>
         ip_address_secondaries:
           - <str>
         ip_helpers:
           - ip_helper: <str>
+
+            # Source interface name
             source_interface: <str>
+
+            # VRF name
             vrf: <str>
         ip_nat:
           destination:
             dynamic:
               - access_list: <str>
                 comment: <str>
-                pool_name: <str>
-                priority: <int>
+                pool_name: <str; required>
+                priority: <int; 0-4294967295>
             static:
+
+                # 'access_list' and 'group' are mutual exclusive
               - access_list: <str>
                 comment: <str>
-                direction: <str>
-                group: <int>
+
+                # Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.
+                # EOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
+                direction: <str; "egress" | "ingress">
+
+                # 'access_list' and 'group' are mutual exclusive
+                group: <int; 1-65535>
+
+                # IPv4 address
                 original_ip: <str>
-                original_port: <int>
-                priority: <int>
-                protocol: <str>
-                translated_ip: <str>
-                translated_port: <int>
+                original_port: <int; 1-65535>
+                priority: <int; 0-4294967295>
+                protocol: <str; "udp" | "tcp">
+
+                # IPv4 address
+                translated_ip: <str; required>
+
+                # requires 'original_port'
+                translated_port: <int; 1-65535>
           source:
             dynamic:
               - access_list: <str>
                 comment: <str>
-                nat_type: <str>
+                nat_type: <str; "overload" | "pool" | "pool-address-only" | "pool-full-cone"; required>
+
+                # required if 'nat_type' is pool, pool-address-only or pool-full-cone
+                # ignored if 'nat_type' is overload
                 pool_name: <str>
-                priority: <int>
+                priority: <int; 0-4294967295>
             static:
+
+                # 'access_list' and 'group' are mutual exclusive
               - access_list: <str>
                 comment: <str>
-                direction: <str>
-                group: <int>
+
+                # Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.
+                # EOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
+                direction: <str; "egress" | "ingress">
+
+                # 'access_list' and 'group' are mutual exclusive
+                group: <int; 1-65535>
+
+                # IPv4 address
                 original_ip: <str>
-                original_port: <int>
-                priority: <int>
-                protocol: <str>
-                translated_ip: <str>
-                translated_port: <int>
+                original_port: <int; 1-65535>
+                priority: <int; 0-4294967295>
+                protocol: <str; "udp" | "tcp">
+
+                # IPv4 address
+                translated_ip: <str; required>
+
+                # requires 'original_port'
+                translated_port: <int; 1-65535>
         ipv6_enable: <bool>
         ipv6_address: <str>
+
+        # Link local IPv6 address/mask
         ipv6_address_link_local: <str>
         ipv6_nd_ra_disabled: <bool>
         ipv6_nd_managed_config_flag: <bool>
         ipv6_nd_prefixes:
           - ipv6_prefix: <str>
+
+            # Infinite or lifetime in seconds
             valid_lifetime: <str>
+
+            # Infinite or lifetime in seconds
             preferred_lifetime: <str>
             no_autoconfig_flag: <bool>
         ipv6_dhcp_relay_destinations:
+
+            # DHCP server's IPv6 address
           - address: <str>
             vrf: <str>
+
+            # Local interface to communicate with DHCP server - mutually exclusive to source_address
             local_interface: <str>
+
+            # Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface
             source_address: <str>
+
+            # Override the default link address specified in the relayed DHCP packet
             link_address: <str>
+
+        # Access list name
         access_group_in: <str>
+
+        # Access list name
         access_group_out: <str>
+
+        # IPv6 access list name
         ipv6_access_group_in: <str>
+
+        # IPv6 access list name
         ipv6_access_group_out: <str>
+
+        # MAC access list name
         mac_access_group_in: <str>
+
+        # MAC access list name
         mac_access_group_out: <str>
+
+        # Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
         multicast:
           ipv4:
             boundaries:
+
+                # ACL name or multicast IP subnet
               - boundary: <str>
                 out: <bool>
             static: <bool>
           ipv6:
             boundaries:
+
+                # ACL name or multicast IP subnet
               - boundary: <str>
             static: <bool>
         ospf_network_point_to_point: <bool>
         ospf_area: <str>
         ospf_cost: <int>
-        ospf_authentication: <str>
+        ospf_authentication: <str; "none" | "simple" | "message-digest">
+
+        # Encrypted password - only type 7 supported
         ospf_authentication_key: <str>
         ospf_message_digest_keys:
           - id: <int>
-            hash_algorithm: <str>
+            hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512">
+
+            # Encrypted password - only type 7 supported
             key: <str>
         pim:
           ipv4:
-            dr_priority: <int>
+            dr_priority: <int; 0-429467295>
             sparse_mode: <bool>
         mac_security:
           profile: <str>
         channel_group:
           id: <int>
-          mode: <str>
+          mode: <str; "on" | "active" | "passive">
+
+        # ISIS instance
         isis_enable: <str>
         isis_passive: <bool>
         isis_metric: <int>
         isis_network_point_to_point: <bool>
-        isis_circuit_type: <str>
+        isis_circuit_type: <str; "level-1-2" | "level-1" | "level-2">
         isis_hello_padding: <bool>
-        isis_authentication_mode: <str>
+        isis_authentication_mode: <str; "text" | "md5">
+
+        # Type-7 encrypted password
         isis_authentication_key: <str>
         poe:
-          disabled: <bool>
-          priority: <str>
+
+          # Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.
+          disabled: <bool; default=False>
+
+          # Prioritize a port's power in the event that one of the switch's power supplies loses power
+          priority: <str; "critical" | "high" | "medium" | "low">
+
+          # Set the PoE power behavior for a PoE port when the system is rebooted
           reboot:
-            action: <str>
+
+            # PoE action for interface
+            action: <str; "maintain" | "power-off">
+
+          # Set the PoE power behavior for a PoE port when the port goes down
           link_down:
-            action: <str>
-            power_off_delay: <int>
+
+            # PoE action for interface
+            action: <str; "maintain" | "power-off">
+
+            # Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.
+            power_off_delay: <int; 1-86400>
+
+          # Set the PoE power behavior for a PoE port when the port is admin down
           shutdown:
-            action: <str>
+
+            # PoE action for interface
+            action: <str; "maintain" | "power-off">
+
+          # Override the hardware-negotiated power limit using either wattage or a power class. Note that if using a power class, AVD will automatically convert the class value to the wattage value corresponding to that power class.
           limit:
-            class: <int>
+            class: <int; 0-8>
             watts: <str>
+
+            # Set to ignore hardware classification
             fixed: <bool>
+
+          # Disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.
           negotiation_lldp: <bool>
+
+          # Allow a subset of legacy devices to work with the PoE switch. Disabled by default in EOS because it can cause false positive detections.
           legacy_detect: <bool>
         ptp:
           enable: <bool>
@@ -511,26 +665,46 @@
             interval: <int>
             timeout: <int>
           delay_req: <int>
-          delay_mechanism: <str>
+          delay_mechanism: <str; "e2e" | "p2p">
           sync_message:
             interval: <int>
-          role: <str>
+          role: <str; "master" | "dynamic">
+
+          # VLAN can be 'all' or list of vlans as string
           vlan: <str>
-          transport: <str>
+          transport: <str; "ipv4" | "ipv6" | "layer2">
+
+        # Interface profile
         profile: <str>
         storm_control:
           all:
+
+            # Configure maximum storm-control level
             level: <str>
-            unit: <str>
+
+            # Optional field and is hardware dependant
+            unit: <str; "percent" | "pps"; default="percent">
           broadcast:
+
+            # Configure maximum storm-control level
             level: <str>
-            unit: <str>
+
+            # Optional field and is hardware dependant
+            unit: <str; "percent" | "pps"; default="percent">
           multicast:
+
+            # Configure maximum storm-control level
             level: <str>
-            unit: <str>
+
+            # Optional field and is hardware dependant
+            unit: <str; "percent" | "pps"; default="percent">
           unknown_unicast:
+
+            # Configure maximum storm-control level
             level: <str>
-            unit: <str>
+
+            # Optional field and is hardware dependant
+            unit: <str; "percent" | "pps"; default="percent">
         logging:
           event:
             link_status: <bool>
@@ -540,36 +714,46 @@
         lldp:
           transmit: <bool>
           receive: <bool>
+
+          # ZTP vlan number
           ztp_vlan: <int>
         trunk_private_vlan_secondary: <bool>
+
+        # List of vlans as string
         pvlan_mapping: <str>
         vlan_translations:
+
+            # List of vlans as string (only one vlan if direction is "both")
           - from: <str>
+
+            # VLAN ID
             to: <int>
-            direction: <str>
+            direction: <str; "in" | "out" | "both"; default="both">
         dot1x:
-          port_control: <str>
+          port_control: <str; "auto" | "force-authorized" | "force-unauthorized">
           port_control_force_authorized_phone: <bool>
           reauthentication: <bool>
           pae:
-            mode: <str>
+            mode: <str; "authenticator">
           authentication_failure:
-            action: <str>
-            allow_vlan: <int>
+            action: <str; "allow" | "drop">
+            allow_vlan: <int; 1-4094>
           host_mode:
-            mode: <str>
+            mode: <str; "multi-host" | "single-host">
             multi_host_authenticated: <bool>
           mac_based_authentication:
             enabled: <bool>
             always: <bool>
             host_mode_common: <bool>
           timeout:
-            idle_host: <int>
-            quiet_period: <int>
+            idle_host: <int; 10-65535>
+            quiet_period: <int; 1-65535>
+
+            # Value can be 60-4294967295 or 'server'
             reauth_period: <str>
             reauth_timeout_ignore: <bool>
-            tx_period: <int>
-          reauthorization_request_limit: <int>
+            tx_period: <int; 1-65535>
+          reauthorization_request_limit: <int; 1-10>
           unauthorized:
             access_vlan_membership_egress: <bool>
             native_vlan_membership_egress: <bool>
@@ -577,60 +761,99 @@
             disabled: <bool>
             authentication_failure_fallback_mba:
               enabled: <bool>
-              timeout: <int>
+              timeout: <int; 0-65535>
+
+        # QOS profile
         service_profile: <str>
         shape:
+
+          # Rate in kbps, pps or percent
+          # Supported options are platform dependent
+          # Examples:
+          # - "5000 kbps"
+          # - "1000 pps"
+          # - "20 percent"
           rate: <str>
         qos:
-          trust: <str>
+          trust: <str; "dscp" | "cos" | "disabled">
+
+          # DSCP value
           dscp: <int>
+
+          # COS value
           cos: <int>
-        spanning_tree_bpdufilter: <str>
-        spanning_tree_bpduguard: <str>
-        spanning_tree_guard: <str>
-        spanning_tree_portfast: <str>
+        spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
+        spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
+        spanning_tree_guard: <str; "loop" | "root" | "disabled">
+        spanning_tree_portfast: <str; "edge" | "network">
         vmtracer: <bool>
         priority_flow_control:
           enabled: <bool>
           priorities:
-            - priority: <int>
+            - priority: <int; 0-7>
               no_drop: <bool>
         bfd:
           echo: <bool>
+
+          # Interval in milliseconds
           interval: <int>
+
+          # Rate in milliseconds
           min_rx: <int>
-          multiplier: <int>
+          multiplier: <int; 3-50>
         service_policy:
           pbr:
+
+            # Policy Based Routing Policy-map name
             input: <str>
           qos:
-            input: <str>
+
+            # Quality of Service Policy-map name
+            input: <str; required>
         mpls:
           ip: <bool>
           ldp:
             interface: <bool>
             igp_sync: <bool>
         lacp_timer:
-          mode: <str>
-          multiplier: <int>
-        lacp_port_priority: <int>
+          mode: <str; "fast" | "normal">
+          multiplier: <int; 3-3000>
+        lacp_port_priority: <int; 0-65535>
         transceiver:
           media:
+
+            # Transceiver type
             override: <str>
         ip_proxy_arp: <bool>
         traffic_policy:
+
+          # Ingress traffic policy
           input: <str>
+
+          # Egress traffic policy
           output: <str>
         bgp:
+
+          # Name of session tracker
           session_tracker: <str>
+
+        # Key only used for documentation or validation purposes
         peer: <str>
+
+        # Key only used for documentation or validation purposes
         peer_interface: <str>
+
+        # Key only used for documentation or validation purposes
         peer_type: <str>
         sflow:
           enable: <bool>
           egress:
             enable: <bool>
             unmodified_enable: <bool>
+
+        # Key only used for documentation or validation purposes
         port_profile: <str>
+
+        # Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
         eos_cli: <str>
     ```

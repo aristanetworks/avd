@@ -44,35 +44,86 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # Required with eBGP.
         bgp_as: <str>
+
+        # List of EOS commands to apply to BGP daemon.
         bgp_defaults:
           - <str>
-        evpn_role: <str>
+
+        # Acting role in EVPN control plane.
+        # Default is set in node_type definition from node_type_keys.
+        evpn_role: <str; "client" | "server" | "none">
+
+        # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
         evpn_route_servers:
           - <str>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # Required with eBGP.
               bgp_as: <str>
+
+              # List of EOS commands to apply to BGP daemon.
               bgp_defaults:
                 - <str>
-              evpn_role: <str>
+
+              # Acting role in EVPN control plane.
+              # Default is set in node_type definition from node_type_keys.
+              evpn_role: <str; "client" | "server" | "none">
+
+              # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
               evpn_route_servers:
                 - <str>
+
+          # Required with eBGP.
           bgp_as: <str>
+
+          # List of EOS commands to apply to BGP daemon.
           bgp_defaults:
             - <str>
-          evpn_role: <str>
+
+          # Acting role in EVPN control plane.
+          # Default is set in node_type definition from node_type_keys.
+          evpn_role: <str; "client" | "server" | "none">
+
+          # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
           evpn_route_servers:
             - <str>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # Required with eBGP.
           bgp_as: <str>
+
+          # List of EOS commands to apply to BGP daemon.
           bgp_defaults:
             - <str>
-          evpn_role: <str>
+
+          # Acting role in EVPN control plane.
+          # Default is set in node_type definition from node_type_keys.
+          evpn_role: <str; "client" | "server" | "none">
+
+          # List of nodes acting as EVPN Route-Servers / Route-Reflectors.
           evpn_route_servers:
             - <str>
     ```

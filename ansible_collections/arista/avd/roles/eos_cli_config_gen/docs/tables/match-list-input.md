@@ -19,8 +19,14 @@
     ```yaml
     match_list_input:
       string:
+
+          # Match-list Name
         - name: <str>
           sequence_numbers:
+
+              # Sequence ID
             - sequence: <int>
-              match_regex: <str>
+
+              # Regular Expression
+              match_regex: <str; required>
     ```

@@ -42,33 +42,74 @@
 
     ```yaml
     ip_access_lists:
+
+        # Access-list Name
       - name: <str>
         counters_per_entry: <bool>
+
+        # ACL Entries
         entries:
+
+            # ACL entry sequence number.
           - sequence: <int>
+
+            # Comment up to 100 characters.
+            # If remark is defined, other keys in acl entry will be ignored.
             remark: <str>
-            action: <str>
+
+            # ACL action.
+            # Required for standard entry.
+            action: <str; "permit" | "deny">
+
+            # ip, tcp, udp, icmp or other protocol name or number.
+            # Required for standard entry.
             protocol: <str>
+
+            # any, A.B.C.D/E or A.B.C.D.
+            # A.B.C.D without a mask means host.
+            # Required for standard entry.
             source: <str>
-            source_ports_match: <str>
+            source_ports_match: <str; "eq" | "gt" | "lt" | "neq" | "range"; default="eq">
             source_ports:
               - <str>
+
+            # any, A.B.C.D/E or A.B.C.D.
+            # A.B.C.D without a mask means host.
+            # Required for standard entry.
             destination: <str>
-            destination_ports_match: <str>
+            destination_ports_match: <str; "eq" | "gt" | "lt" | "neq" | "range"; default="eq">
             destination_ports:
               - <str>
             tcp_flags:
               - <str>
+
+            # Match non-head fragment packets.
             fragments: <bool>
+
+            # Log matches against this rule.
             log: <bool>
-            ttl: <int>
-            ttl_match: <str>
+
+            # TTL value
+            ttl: <int; 0-254>
+            ttl_match: <str; "eq" | "gt" | "lt" | "neq"; default="eq">
+
+            # Message type name/number for ICMP packets.
             icmp_type: <str>
+
+            # Message code for ICMP packets.
             icmp_code: <str>
+
+            # nexthop-group name.
             nexthop_group: <str>
+
+            # Match packets in existing ICMP/UDP/TCP connections.
             tracked: <bool>
+
+            # DSCP value or name.
             dscp: <str>
             vlan_number: <int>
-            vlan_inner: <bool>
+            vlan_inner: <bool; default=False>
+
+            # 0x000-0xFFF VLAN mask.
             vlan_mask: <str>
     ```

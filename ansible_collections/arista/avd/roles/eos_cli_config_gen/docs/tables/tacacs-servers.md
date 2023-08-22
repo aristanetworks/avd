@@ -22,10 +22,14 @@
     ```yaml
     tacacs_servers:
       hosts:
+
+          # Host IP address or name
         - host: <str>
           vrf: <str>
+
+          # Encrypted key
           key: <str>
-          key_type: <str>
+          key_type: <str; "0" | "7" | "8a"; default="7">
           single_connection: <bool>
           timeout: <int>
       policy_unknown_mandatory_attribute_ignore: <bool>

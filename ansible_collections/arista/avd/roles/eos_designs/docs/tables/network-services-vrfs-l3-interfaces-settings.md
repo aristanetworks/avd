@@ -45,12 +45,30 @@
 
     ```yaml
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
       - name: <str>
+
+        # VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.
+        #
+        # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
+        # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+        #
+        # VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,
+        # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
+        # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
         vrfs:
           - name: <str>
+
+            # List of L3 interfaces.
+            # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
             l3_interfaces:
               - interfaces:
                   - <str>
+
+                # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                 encapsulation_dot1q_vlan:
                   - <int>
                 ip_addresses:
@@ -58,23 +76,43 @@
                 nodes:
                   - <str>
                 description: <str>
+
+                # "descriptions" has precedence over "description".
                 descriptions:
                   - <str>
                 enabled: <bool>
                 mtu: <int>
+
+                # OSPF interface configuration.
                 ospf:
                   enabled: <bool>
-                  point_to_point: <bool>
-                  area: <str>
+                  point_to_point: <bool; default=False>
+
+                  # OSPF area ID.
+                  area: <str; default="0">
+
+                  # OSPF link cost.
                   cost: <int>
-                  authentication: <str>
+                  authentication: <str; "simple" | "message-digest">
+
+                  # Password used with simple authentication.
                   simple_auth_key: <str>
                   message_digest_keys:
                     - id: <int>
-                      hash_algorithm: <str>
+                      hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
+
+                      # Key password.
                       key: <str>
+
+                # Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant
+                # Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.
+                # At least one RP address must be configured for EVPN PEG to be configured.
                 pim:
                   enabled: <bool>
+
+                # Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
                 structured_config: <dict>
+
+                # EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
                 raw_eos_cli: <str>
     ```

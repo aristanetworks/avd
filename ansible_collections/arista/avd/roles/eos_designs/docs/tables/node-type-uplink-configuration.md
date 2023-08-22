@@ -116,107 +116,326 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
+        # Useful in EVPN multhoming designs.
         link_tracking:
-          enabled: <bool>
-          groups:
+          enabled: <bool; default=False>
+
+          # Link Tracking Groups.
+          # By default a single group named "LT_GROUP1" is defined with default values.
+          # Any groups defined under "groups" will replace the default.
+          groups:  # default value: [{'name': 'LT_GROUP1'}]
+
+              # Tracking group name.
             - name: <str>
-              recovery_delay: <int>
-              links_minimum: <int>
+
+              # default -> platform_settings_mlag_reload_delay -> 300.
+              recovery_delay: <int; 0-3600>
+              links_minimum: <int; 1-100000>
+
+        # IPv4 subnet to use to connect to uplink switches.
         uplink_ipv4_pool: <str>
+
+        # Local uplink interfaces
+        # Each list item supports range syntax that can be expanded into a list of interfaces.
+        # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+        # Please note that default_interfaces are not defined by default, you should define these yourself.
         uplink_interfaces:
           - <str>
+
+        # Interfaces located on uplink switches.
         uplink_switch_interfaces:
           - <str>
         uplink_switches:
           - <str>
+
+        # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+        # interface_speed or forced interface_speed or auto interface_speed.
         uplink_interface_speed: <str>
+
+        # Maximum number of uplink switches.
+        # Changing this value may change IP Addressing on uplinks.
+        # Can be used to reserve IP space for future expansions.
         max_uplink_switches: <int>
+
+        # Number of parallel links towards uplink switches.
+        # Changing this value may change interface naming on uplinks (and corresponding downlinks).
+        # Can be used to reserve interfaces for future parallel uplinks.
         max_parallel_uplinks: <int>
-        uplink_bfd: <bool>
-        uplink_native_vlan: <int>
+
+        # Enable bfd on uplink interfaces.
+        uplink_bfd: <bool; default=False>
+
+        # Only applicable to switches with layer-2 port-channel uplinks.
+        # A suspended (disabled) vlan will be created in both ends of the link unless the vlan is defined under network services.
+        # By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+        uplink_native_vlan: <int; 1-4094>
+
+        # Enable PTP on all infrastructure links.
         uplink_ptp:
-          enable: <bool>
+          enable: <bool; default=False>
+
+        # Enable MacSec on all uplinks.
         uplink_macsec:
           profile: <str>
+
+        # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
+        # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
+        # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
+        # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+        # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
         uplink_structured_config: <dict>
+
+        # short_esi only valid for l2leaf devices using port-channel uplink.
+        # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
+        # < 0000:0000:0000 | auto >.
         short_esi: <str>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
+              # Useful in EVPN multhoming designs.
               link_tracking:
-                enabled: <bool>
-                groups:
+                enabled: <bool; default=False>
+
+                # Link Tracking Groups.
+                # By default a single group named "LT_GROUP1" is defined with default values.
+                # Any groups defined under "groups" will replace the default.
+                groups:  # default value: [{'name': 'LT_GROUP1'}]
+
+                    # Tracking group name.
                   - name: <str>
-                    recovery_delay: <int>
-                    links_minimum: <int>
+
+                    # default -> platform_settings_mlag_reload_delay -> 300.
+                    recovery_delay: <int; 0-3600>
+                    links_minimum: <int; 1-100000>
+
+              # IPv4 subnet to use to connect to uplink switches.
               uplink_ipv4_pool: <str>
+
+              # Local uplink interfaces
+              # Each list item supports range syntax that can be expanded into a list of interfaces.
+              # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+              # Please note that default_interfaces are not defined by default, you should define these yourself.
               uplink_interfaces:
                 - <str>
+
+              # Interfaces located on uplink switches.
               uplink_switch_interfaces:
                 - <str>
               uplink_switches:
                 - <str>
+
+              # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+              # interface_speed or forced interface_speed or auto interface_speed.
               uplink_interface_speed: <str>
+
+              # Maximum number of uplink switches.
+              # Changing this value may change IP Addressing on uplinks.
+              # Can be used to reserve IP space for future expansions.
               max_uplink_switches: <int>
+
+              # Number of parallel links towards uplink switches.
+              # Changing this value may change interface naming on uplinks (and corresponding downlinks).
+              # Can be used to reserve interfaces for future parallel uplinks.
               max_parallel_uplinks: <int>
-              uplink_bfd: <bool>
-              uplink_native_vlan: <int>
+
+              # Enable bfd on uplink interfaces.
+              uplink_bfd: <bool; default=False>
+
+              # Only applicable to switches with layer-2 port-channel uplinks.
+              # A suspended (disabled) vlan will be created in both ends of the link unless the vlan is defined under network services.
+              # By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+              uplink_native_vlan: <int; 1-4094>
+
+              # Enable PTP on all infrastructure links.
               uplink_ptp:
-                enable: <bool>
+                enable: <bool; default=False>
+
+              # Enable MacSec on all uplinks.
               uplink_macsec:
                 profile: <str>
+
+              # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
+              # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
+              # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
+              # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+              # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
               uplink_structured_config: <dict>
+
+              # short_esi only valid for l2leaf devices using port-channel uplink.
+              # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
+              # < 0000:0000:0000 | auto >.
               short_esi: <str>
+
+          # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
+          # Useful in EVPN multhoming designs.
           link_tracking:
-            enabled: <bool>
-            groups:
+            enabled: <bool; default=False>
+
+            # Link Tracking Groups.
+            # By default a single group named "LT_GROUP1" is defined with default values.
+            # Any groups defined under "groups" will replace the default.
+            groups:  # default value: [{'name': 'LT_GROUP1'}]
+
+                # Tracking group name.
               - name: <str>
-                recovery_delay: <int>
-                links_minimum: <int>
+
+                # default -> platform_settings_mlag_reload_delay -> 300.
+                recovery_delay: <int; 0-3600>
+                links_minimum: <int; 1-100000>
+
+          # IPv4 subnet to use to connect to uplink switches.
           uplink_ipv4_pool: <str>
+
+          # Local uplink interfaces
+          # Each list item supports range syntax that can be expanded into a list of interfaces.
+          # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+          # Please note that default_interfaces are not defined by default, you should define these yourself.
           uplink_interfaces:
             - <str>
+
+          # Interfaces located on uplink switches.
           uplink_switch_interfaces:
             - <str>
           uplink_switches:
             - <str>
+
+          # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+          # interface_speed or forced interface_speed or auto interface_speed.
           uplink_interface_speed: <str>
+
+          # Maximum number of uplink switches.
+          # Changing this value may change IP Addressing on uplinks.
+          # Can be used to reserve IP space for future expansions.
           max_uplink_switches: <int>
+
+          # Number of parallel links towards uplink switches.
+          # Changing this value may change interface naming on uplinks (and corresponding downlinks).
+          # Can be used to reserve interfaces for future parallel uplinks.
           max_parallel_uplinks: <int>
-          uplink_bfd: <bool>
-          uplink_native_vlan: <int>
+
+          # Enable bfd on uplink interfaces.
+          uplink_bfd: <bool; default=False>
+
+          # Only applicable to switches with layer-2 port-channel uplinks.
+          # A suspended (disabled) vlan will be created in both ends of the link unless the vlan is defined under network services.
+          # By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+          uplink_native_vlan: <int; 1-4094>
+
+          # Enable PTP on all infrastructure links.
           uplink_ptp:
-            enable: <bool>
+            enable: <bool; default=False>
+
+          # Enable MacSec on all uplinks.
           uplink_macsec:
             profile: <str>
+
+          # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
+          # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
+          # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
+          # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+          # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
           uplink_structured_config: <dict>
+
+          # short_esi only valid for l2leaf devices using port-channel uplink.
+          # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
+          # < 0000:0000:0000 | auto >.
           short_esi: <str>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
+          # Useful in EVPN multhoming designs.
           link_tracking:
-            enabled: <bool>
-            groups:
+            enabled: <bool; default=False>
+
+            # Link Tracking Groups.
+            # By default a single group named "LT_GROUP1" is defined with default values.
+            # Any groups defined under "groups" will replace the default.
+            groups:  # default value: [{'name': 'LT_GROUP1'}]
+
+                # Tracking group name.
               - name: <str>
-                recovery_delay: <int>
-                links_minimum: <int>
+
+                # default -> platform_settings_mlag_reload_delay -> 300.
+                recovery_delay: <int; 0-3600>
+                links_minimum: <int; 1-100000>
+
+          # IPv4 subnet to use to connect to uplink switches.
           uplink_ipv4_pool: <str>
+
+          # Local uplink interfaces
+          # Each list item supports range syntax that can be expanded into a list of interfaces.
+          # If uplink_interfaces is not defined, platform-specific defaults (defined under default_interfaces) will be used instead.
+          # Please note that default_interfaces are not defined by default, you should define these yourself.
           uplink_interfaces:
             - <str>
+
+          # Interfaces located on uplink switches.
           uplink_switch_interfaces:
             - <str>
           uplink_switches:
             - <str>
+
+          # Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
+          # interface_speed or forced interface_speed or auto interface_speed.
           uplink_interface_speed: <str>
+
+          # Maximum number of uplink switches.
+          # Changing this value may change IP Addressing on uplinks.
+          # Can be used to reserve IP space for future expansions.
           max_uplink_switches: <int>
+
+          # Number of parallel links towards uplink switches.
+          # Changing this value may change interface naming on uplinks (and corresponding downlinks).
+          # Can be used to reserve interfaces for future parallel uplinks.
           max_parallel_uplinks: <int>
-          uplink_bfd: <bool>
-          uplink_native_vlan: <int>
+
+          # Enable bfd on uplink interfaces.
+          uplink_bfd: <bool; default=False>
+
+          # Only applicable to switches with layer-2 port-channel uplinks.
+          # A suspended (disabled) vlan will be created in both ends of the link unless the vlan is defined under network services.
+          # By default the uplink will not have a native_vlan configured, so EOS defaults to vlan 1.
+          uplink_native_vlan: <int; 1-4094>
+
+          # Enable PTP on all infrastructure links.
           uplink_ptp:
-            enable: <bool>
+            enable: <bool; default=False>
+
+          # Enable MacSec on all uplinks.
           uplink_macsec:
             profile: <str>
+
+          # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
+          # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
+          # When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.
+          # "uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
+          # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
           uplink_structured_config: <dict>
+
+          # short_esi only valid for l2leaf devices using port-channel uplink.
+          # Setting short_esi to "auto" generates the short_esi automatically using a hash of configuration elements.
+          # < 0000:0000:0000 | auto >.
           short_esi: <str>
     ```

@@ -32,23 +32,45 @@
 
     ```yaml
     flow_trackings:
-      - type: <str>
-        sample: <int>
+
+        # Flow Tracking Type - only 'sampled' supported for now
+      - type: <str; "sampled">
+        sample: <int; 1-4294967295>
         trackers:
+
+            # Tracker Name
           - name: <str>
             record_export:
-              on_inactive_timeout: <int>
-              on_interval: <int>
+
+              # Flow record inactive export timeout in milliseconds
+              on_inactive_timeout: <int; 3000-900000>
+
+              # Flow record export interval in milliseconds
+              on_interval: <int; 1000-36000000>
+
+              # Export MPLS forwarding information
               mpls: <bool>
             exporters:
+
+                # Exporter Name
               - name: <str>
                 collector:
+
+                  # Collector IPv4 address or IPv6 address or fully qualified domain name
                   host: <str>
-                  port: <int>
+
+                  # Collector Port Number
+                  port: <int; 1-65535>
                 format:
                   ipfix_version: <int>
+
+                # Local Source Interface
                 local_interface: <str>
-                template_interval: <int>
-            table_size: <int>
-        shutdown: <bool>
+
+                # Template interval in milliseconds
+                template_interval: <int; 5000-3600000>
+
+            # Maximum number of entries in flow table.
+            table_size: <int; 1-614400>
+        shutdown: <bool; default=False>
     ```

@@ -19,12 +19,34 @@
 === "YAML"
 
     ```yaml
+
+    # Global Priority Flow Control settings.
     priority_flow_control:
+
+      # Disable PFC on all interfaces.
       all_off: <bool>
       watchdog:
-        action: <str>
+
+        # Action on stuck queue.
+        action: <str; "drop" | "no-drop">
+
+        # Timeout in seconds after which port should be errdisabled or
+        # should start dropping on congested priorities.
+        # This should be decimal with up to 2 decimal point.
+        # Example: 0.01 or 60
         timeout: <str>
+
+        # Time interval in seconds at which the watchdog should poll the queues.
+        # This should be decimal with up to 3 decimal point.
+        # Example: 0.005 or 60
         polling_interval: <str>
+
+        # Recovery-time in seconds after which stuck queue should
+        # recover and start forwarding again.
+        # This should be decimal with up to 2 decimal point.
+        # Example: 0.01 or 60
         recovery_time: <str>
+
+        # Override configured action on stuck queue to drop.
         override_action_drop: <bool>
     ```

@@ -105,98 +105,277 @@
 === "YAML"
 
     ```yaml
+
+    # Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
+    # Keys are the same used under SVIs. Keys defined under SVIs take precedence.
+    # Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
+    # 1. svi.nodes[inventory_hostname].structured_config
+    # 2. svi_profile.nodes[inventory_hostname].structured_config
+    # 3. svi_parent_profile.nodes[inventory_hostname].structured_config
+    # 4. svi.structured_config
+    # 5. svi_profile.structured_config
+    # 6. svi_parent_profile.structured_config
     svi_profiles:
+
+        # Profile name
       - profile: <str>
+
+        # Define node specific configuration, such as unique IP addresses.
+        # Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
         nodes:
+
+            # l3_leaf inventory hostname
           - node: <str>
+
+            # Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
+            # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled, overriding those individual settings.
             evpn_l2_multicast:
               enabled: <bool>
+
+            # Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.
             evpn_l3_multicast:
               enabled: <bool>
+
+            # Enable IGMP Snooping (Enabled by default on EOS).
             igmp_snooping_enabled: <bool>
             igmp_snooping_querier:
+
+              # Will be enabled automatically if evpn_l2_multicast is enabled.
               enabled: <bool>
+
+              # IPv4_address
+              # If not set, IP address of "Loopback0" will be used.
               source_address: <str>
-              version: <int>
+
+              # IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+              version: <int; 1 | 2 | 3>
+
+        # Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
+        # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled, overriding those individual settings.
         evpn_l2_multicast:
           enabled: <bool>
+
+        # Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.
         evpn_l3_multicast:
           enabled: <bool>
+
+        # Enable IGMP Snooping (Enabled by default on EOS).
         igmp_snooping_enabled: <bool>
         igmp_snooping_querier:
+
+          # Will be enabled automatically if evpn_l2_multicast is enabled.
           enabled: <bool>
+
+          # IPv4_address
+          # If not set, IP address of "Loopback0" will be used.
           source_address: <str>
-          version: <int>
+
+          # IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+          version: <int; 1 | 2 | 3>
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
       - name: <str>
+
+        # Enable EVPN L2 Multicast for all SVIs and l2vlans within Tenant.
+        # - Multicast group binding is created only for Multicast traffic. BULL traffic will use ingress-replication.
+        # - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
+        #   < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool > + < vlan_id - 1 > + < evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset >.
+        # - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
+        # - Enables `redistribute igmp` on the router bgp MAC VRF.
+        # - When evpn_l2_multicast.enabled is true for a VLAN or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
         evpn_l2_multicast:
           enabled: <bool>
+
+          # IPv4_address/Mask
           underlay_l2_multicast_group_ipv4_pool: <str>
           underlay_l2_multicast_group_ipv4_pool_offset: <int>
+
+        # Enable L3 Multicast for all SVIs and l3vlans within Tenant.
+        # - In the evpn-l3ls design type, this enables L3 EVPN Multicast (aka OISM)'.
+        # - Multicast group binding for VRF is created only for Multicast traffic. BULL traffic will use ingress-replication.
+        # - Configures binding between VXLAN, VLAN, and multicast group IPv4 address using the following formula:
+        #   < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool > + < vrf_vni - 1 > + < l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset >.
+        # - The recommendation is to assign a /20 block within the 232.0.0.0/8 Source-Specific Multicast range.
+        # - If enabled on an SVI using the anycast default gateway feature, a diagnostic loopback (see below) MUST be configured to source IGMP traffic.
+        # - Enables `evpn multicast` on the router bgp VRF.
+        # - When enabled on an SVI:
+        #      - If switch is part of an MLAG pair, enables "pim ipv4 sparse-mode" on the SVI.
+        #      - If switch is standalone or A-A MH, enables "ip igmp" on the SVI.
+        #      - If "ip address virtual" is configured, enables "pim ipv4 local-interface" and uses the diagnostic Loopback defined in the VRF
         evpn_l3_multicast:
           enabled: <bool>
-          evpn_underlay_l3_multicast_group_ipv4_pool: <str>
+
+          # IPv4_address/Mask
+          evpn_underlay_l3_multicast_group_ipv4_pool: <str; required>
           evpn_underlay_l3_multicast_group_ipv4_pool_offset: <int>
+
+          # For each group of nodes, allow configuration of EVPN PEG options.
+          # The first group of settings where the device's hostname is present in the 'nodes' list will be used.
           evpn_peg:
+
+              # A description will be applied to all nodes with RP addresses configured if not set.
             - nodes:
                 - <str>
+
+              # Enable EVPN PEG transit mode.
               transit: <bool>
+
+        # For each group of nodes, allow configuration of RP Addresses & associated groups.
         pim_rp_addresses:
+
+            # List of Rendevouz Points.
           - rps:
               - <str>
+
+            # Restrict configuration to specific nodes.
+            # Configuration Will be applied to all nodes if not set.
             nodes:
               - <str>
             groups:
               - <str>
+
+        # Enable IGMP snooping querier for each SVI/l2vlan within tenant, by default using IP address of Loopback 0.
+        # When enabled, IGMP snooping querier will only be configured on L3 devices, i.e., uplink_type: p2p.
         igmp_snooping_querier:
+
+          # Will be enabled automatically if "evpn_l2_multicast" is enabled.
           enabled: <bool>
+
+          # Default IP address of Loopback0
           source_address: <str>
-          version: <int>
+          version: <int; 1 | 2 | 3; default=2>
+
+        # VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.
+        #
+        # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
+        # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+        #
+        # VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,
+        # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
+        # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
         vrfs:
           - name: <str>
+
+            # Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled`.
+            # Allow override of `<network_services_key>.[].evpn_l3_multicast` node_settings.
             evpn_l3_multicast:
               enabled: <bool>
+
+              # For each group of nodes, allow configuration of EVPN PEG features.
               evpn_peg:
+
+                  # Restrict configuration to specific nodes.
+                  # Will apply to all nodes with RP addresses configured if not set.
                 - nodes:
                     - <str>
-                  transit: <bool>
+
+                  # Enable EVPN PEG transit mode.
+                  transit: <bool; default=False>
+
+            # For each group of nodes, allow configuration of RP Addresses & associated groups.
             pim_rp_addresses:
+
+                # A minimum of one RP must be specified.
               - rps:
                   - <str>
+
+                # Restrict configuration to specific nodes.
+                # Configuration Will be applied to all nodes if not set.
                 nodes:
                   - <str>
                 groups:
                   - <str>
+
+            # Explicitly extend all VLANs/VLAN-Aware Bundles inside the VRF to remote EVPN domains.
+            # Overrides `<network_services_key>.[].evpn_l2_multi_domain`.
             evpn_l2_multi_domain: <bool>
+
+            # List of SVIs.
+            # This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
             svis:
-              - id: <int>
+
+                # SVI interface id and VLAN id.
+              - id: <int; 1-4096>
+
+                # Define node specific configuration, such as unique IP addresses.
+                # Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
                 nodes:
+
+                    # l3_leaf inventory hostname
                   - node: <str>
+
+                    # Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
+                    # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled, overriding those individual settings.
                     evpn_l2_multicast:
                       enabled: <bool>
+
+                    # Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.
                     evpn_l3_multicast:
                       enabled: <bool>
+
+                    # Enable IGMP Snooping (Enabled by default on EOS).
                     igmp_snooping_enabled: <bool>
                     igmp_snooping_querier:
+
+                      # Will be enabled automatically if evpn_l2_multicast is enabled.
                       enabled: <bool>
+
+                      # IPv4_address
+                      # If not set, IP address of "Loopback0" will be used.
                       source_address: <str>
-                      version: <int>
+
+                      # IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                      version: <int; 1 | 2 | 3>
+
+                # Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
+                # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled, overriding those individual settings.
                 evpn_l2_multicast:
                   enabled: <bool>
+
+                # Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.
                 evpn_l3_multicast:
                   enabled: <bool>
+
+                # Enable IGMP Snooping (Enabled by default on EOS).
                 igmp_snooping_enabled: <bool>
                 igmp_snooping_querier:
+
+                  # Will be enabled automatically if evpn_l2_multicast is enabled.
                   enabled: <bool>
+
+                  # IPv4_address
+                  # If not set, IP address of "Loopback0" will be used.
                   source_address: <str>
-                  version: <int>
+
+                  # IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
+                  version: <int; 1 | 2 | 3>
+
+        # Define L2 network services organized by vlan id.
         l2vlans:
-          - id: <int>
+
+            # VLAN ID
+          - id: <int; 1-4094>
+
+            # Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
+            # When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding those individual settings.
             evpn_l2_multicast:
               enabled: <bool>
-            igmp_snooping_enabled: <bool>
+
+            # Activate or deactivate IGMP snooping.
+            igmp_snooping_enabled: <bool; default=True>
+
+            # Enable igmp snooping querier, by default using IP address of Loopback 0.
+            # When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.
             igmp_snooping_querier:
+
+              # Will be enabled automatically if evpn_l2_multicast is enabled.
               enabled: <bool>
+
+              # IPv4_address
+              # If not set, IP address of "Loopback0" will be used.
               source_address: <str>
-              version: <int>
+              version: <int; 1 | 2 | 3; default=2>
     ```

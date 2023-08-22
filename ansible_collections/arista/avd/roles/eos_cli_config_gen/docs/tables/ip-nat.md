@@ -50,24 +50,38 @@
 
     ```yaml
     ip_nat:
-      kernel_buffer_size: <int>
+
+      # Buffer size in MB
+      kernel_buffer_size: <int; 1-64>
       pools:
         - name: <str>
-          prefix_length: <int>
+          prefix_length: <int; 16-32; required>
           ranges:
-            - first_ip: <str>
-              last_ip: <str>
-              first_port: <int>
-              last_port: <int>
-          utilization_log_threshold: <int>
+
+              # IPv4 address
+            - first_ip: <str; required>
+
+              # IPv4 address
+              last_ip: <str; required>
+              first_port: <int; 1-65535>
+              last_port: <int; 1-65535>
+          utilization_log_threshold: <int; 1-100>
       synchronization:
         description: <str>
-        expiry_interval: <int>
+
+        # in seconds
+        expiry_interval: <int; 60-3600>
+
+        # EOS interface name
         local_interface: <str>
+
+        # IPv4 address
         peer_address: <str>
         port_range:
-          first_port: <int>
-          last_port: <int>
+          first_port: <int; 1024-65535>
+
+          # >= first_port
+          last_port: <int; 1024-65535>
           split_disabled: <bool>
         shutdown: <bool>
       translation:
@@ -76,15 +90,23 @@
           hash_field_source_ip: <bool>
         counters: <bool>
         low_mark:
-          percentage: <int>
-          host_percentage: <int>
+
+          # Used to render 'ip nat translation low-mark <percentage>'
+          percentage: <int; 1-99>
+
+          # Used to render 'ip nat translation low-mark <host_percentage> host'
+          host_percentage: <int; 1-99>
         max_entries:
-          limit: <int>
-          host_limit: <int>
+          limit: <int; 0-4294967295>
+          host_limit: <int; 0-4294967295>
           ip_limits:
+
+              # IPv4 address
             - ip: <str>
-              limit: <int>
+              limit: <int; 0-4294967295; required>
         timeouts:
-          - protocol: <str>
-            timeout: <int>
+          - protocol: <str; "tcp" | "udp">
+
+            # in seconds
+            timeout: <int; 0-4294967295; required>
     ```

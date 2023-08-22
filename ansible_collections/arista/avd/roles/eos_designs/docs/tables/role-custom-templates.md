@@ -17,8 +17,16 @@
 
     ```yaml
     eos_designs_custom_templates:
-      - template: <str>
+
+        # Template file.
+      - template: <str; required>
+
+        # Template options.
         options:
-          list_merge: <str>
-          strip_empty_keys: <bool>
+
+          # Merge strategy for lists.
+          list_merge: <str; default="append_rp">
+
+          # Filter out keys from the generated output if value is null/none/undefined.
+          strip_empty_keys: <bool; default=True>
     ```

@@ -15,10 +15,12 @@
 === "YAML"
 
     ```yaml
+
+    # BFD Multihop tuning.
     bfd_multihop: # (1)!
-      interval: <int>
-      min_rx: <int>
-      multiplier: <int>
+      interval: <int; 50-60000; required>
+      min_rx: <int; 50-60000; required>
+      multiplier: <int; 3-50; required>
     ```
 
     1. Default Value

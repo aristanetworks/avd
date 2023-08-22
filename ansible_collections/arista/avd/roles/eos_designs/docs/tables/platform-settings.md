@@ -37,20 +37,37 @@
     platform_settings: # (1)!
       - platforms:
           - <str>
+
+        # Only applied when evpn_multicast is true.
         trident_forwarding_table_partition: <str>
         reload_delay:
-          mlag: <int>
-          non_mlag: <int>
+
+          # In seconds.
+          mlag: <int; 0-86400>
+
+          # In seconds.
+          non_mlag: <int; 0-86400>
         tcam_profile: <str>
         lag_hardware_only: <bool>
         feature_support:
-          queue_monitor_length_notify: <bool>
-          interface_storm_control: <bool>
-          poe: <bool>
-          bgp_update_wait_install: <bool>
-          bgp_update_wait_for_convergence: <bool>
-        management_interface: <str>
+          queue_monitor_length_notify: <bool; default=True>
+          interface_storm_control: <bool; default=True>
+          poe: <bool; default=False>
+
+          # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
+          # Can be overridden by setting "bgp_update_wait_install" host/group_vars.
+          bgp_update_wait_install: <bool; default=True>
+
+          # Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+          # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
+          # Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
+          bgp_update_wait_for_convergence: <bool; default=True>
+        management_interface: <str; default="Management1">
+
+        # EOS CLI rendered directly on the root level of the final EOS configuration.
         raw_eos_cli: <str>
+
+    # Set Hardware Speed Groups per Platform.
     platform_speed_groups:
       - platform: <str>
         speeds:

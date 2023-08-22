@@ -98,87 +98,203 @@
     ```yaml
     l3_edge:
       p2p_links_ip_pools:
+
+          # P2P pool name.
         - name: <str>
+
+          # IPv4 address/Mask.
           ipv4_pool: <str>
-          prefix_size: <int>
+
+          # Subnet mask size.
+          prefix_size: <int; 8-31; default=31>
       p2p_links_profiles:
+
+          # P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
         - name: <str>
+
+          # Unique id per subnet_summary. Used to calculate ip addresses.
+          # Required with ip_pool. ID starting from 1.
           id: <int>
+
+          # The values can be speed or auto speed or forced speed.
           speed: <str>
+
+          # P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.
           ip_pool: <str>
+
+          # IPv4 address/Mask. Subnet used on this P2P link.
           subnet: <str>
+
+          # Specific IP addresses used on this P2P link.
           ip:
             - <str>
-          ipv6_enable: <bool>
+
+          # Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).
+          ipv6_enable: <bool; default=False>
+
+          # Nodes where this link should be configured.
           nodes:
             - <str>
+
+          # Interfaces where this link should be configured and Required unless using port-channels.
           interfaces:
             - <str>
+
+          # AS numbers for BGP.
+          # Required with bgp peering.
           as:
             - <str>
+
+          # Interface description.
           descriptions:
             - <str>
-          include_in_underlay_protocol: <bool>
-          isis_hello_padding: <bool>
+
+          # Add this interface to underlay routing protocol.
+          include_in_underlay_protocol: <bool; default=True>
+          isis_hello_padding: <bool; default=False>
           isis_metric: <int>
-          isis_circuit_type: <str>
-          isis_authentication_mode: <str>
+          isis_circuit_type: <str; "level-1" | "level-2" | "level-1-2">
+          isis_authentication_mode: <str; "md5" | "text">
+
+          # Type-7 encrypted password.
           isis_authentication_key: <str>
+
+          # MPLS parameters. Default value is true if switch.mpls_lsr is true.
           mpls_ip: <bool>
+
+          # MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
           mpls_ldp: <bool>
+
+          # MTU for this P2P link. Default value same as p2p_uplinks_mtu.
           mtu: <int>
-          bfd: <bool>
+
+          # Enable BFD (only considered for BGP).
+          bfd: <bool; default=False>
+
+          # PTP parameters.
           ptp:
-            enabled: <bool>
+
+            # Enable PTP.
+            enabled: <bool; default=False>
+
+          # Enable sFlow. Overrides `fabric_sflow` setting.
           sflow: <bool>
+
+          # QOS service profile.
           qos_profile: <str>
+
+          # MAC security profile.
           macsec_profile: <str>
+
+          # Port-channel parameters.
           port_channel:
-            mode: <str>
+            mode: <str; default="active">
             nodes_child_interfaces:
               - node: <str>
+
+                # List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].
                 interfaces:
                   - <str>
+
+          # EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
           raw_eos_cli: <str>
+
+          # Custom structured config for interfaces
+          # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
           structured_config: <dict>
       p2p_links:
+
+          # Nodes where this link should be configured.
         - nodes:
             - <str>
+
+          # P2P profile name. Profile defined under p2p_profiles.
           profile: <str>
+
+          # Unique id per subnet_summary. Used to calculate ip addresses.
+          # Required with ip_pool. ID starting from 1.
           id: <int>
+
+          # The values can be speed or auto speed or forced speed.
           speed: <str>
+
+          # P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link.
           ip_pool: <str>
+
+          # IPv4 address/Mask. Subnet used on this P2P link.
           subnet: <str>
+
+          # Specific IP addresses used on this P2P link.
           ip:
             - <str>
-          ipv6_enable: <bool>
+
+          # Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).
+          ipv6_enable: <bool; default=False>
+
+          # Interfaces where this link should be configured and Required unless using port-channels.
           interfaces:
             - <str>
+
+          # AS numbers for BGP.
+          # Required with bgp peering.
           as:
             - <str>
+
+          # Interface description.
           descriptions:
             - <str>
-          include_in_underlay_protocol: <bool>
-          isis_hello_padding: <bool>
+
+          # Add this interface to underlay routing protocol.
+          include_in_underlay_protocol: <bool; default=True>
+          isis_hello_padding: <bool; default=False>
           isis_metric: <int>
-          isis_circuit_type: <str>
-          isis_authentication_mode: <str>
+          isis_circuit_type: <str; "level-1" | "level-2" | "level-1-2">
+          isis_authentication_mode: <str; "md5" | "text">
+
+          # Type-7 encrypted password.
           isis_authentication_key: <str>
+
+          # MPLS parameters. Default value is true if switch.mpls_lsr is true.
           mpls_ip: <bool>
+
+          # MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
           mpls_ldp: <bool>
+
+          # MTU for this P2P link. Default value same as p2p_uplinks_mtu.
           mtu: <int>
-          bfd: <bool>
+
+          # Enable BFD (only considered for BGP).
+          bfd: <bool; default=False>
+
+          # PTP parameters.
           ptp:
-            enabled: <bool>
+
+            # Enable PTP.
+            enabled: <bool; default=False>
+
+          # Enable sFlow. Overrides `fabric_sflow` setting.
           sflow: <bool>
+
+          # QOS service profile.
           qos_profile: <str>
+
+          # MAC security profile.
           macsec_profile: <str>
+
+          # Port-channel parameters.
           port_channel:
-            mode: <str>
+            mode: <str; default="active">
             nodes_child_interfaces:
               - node: <str>
+
+                # List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].
                 interfaces:
                   - <str>
+
+          # EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
           raw_eos_cli: <str>
+
+          # Custom structured config for interfaces
+          # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
           structured_config: <dict>
     ```

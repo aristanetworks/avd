@@ -35,20 +35,30 @@
 
     ```yaml
     loopback_interfaces:
+
+        # Loopback interface name e.g. "Loopback0"
       - name: <str>
         description: <str>
         shutdown: <bool>
+
+        # VRF name
         vrf: <str>
+
+        # IPv4_address/Mask
         ip_address: <str>
         ip_address_secondaries:
           - <str>
         ipv6_enable: <bool>
+
+        # IPv6_address/Mask
         ipv6_address: <str>
         ip_proxy_arp: <bool>
         ospf_area: <str>
         mpls:
           ldp:
             interface: <bool>
+
+        # ISIS instance name
         isis_enable: <str>
         isis_passive: <bool>
         isis_metric: <int>
@@ -56,5 +66,7 @@
         node_segment:
           ipv4_index: <int>
           ipv6_index: <int>
+
+        # EOS CLI rendered directly on the loopback interface in the final EOS configuration
         eos_cli: <str>
     ```

@@ -23,7 +23,7 @@
       forwarding_profiles:
         - name: <str>
           protocols:
-            - name: <str>
+            - name: <str; "bfd per-link rfc-7130" | "e-lmi" | "isis" | "lacp" | "lldp" | "macsec" | "pause" | "stp">
               forward: <bool>
               tagged_forward: <bool>
               untagged_forward: <bool>

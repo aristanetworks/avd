@@ -52,45 +52,118 @@
 === "YAML"
 
     ```yaml
+
+    # Gives the ability to monitor and react to Syslog messages.
+    # Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
+    # customize the system behavior, and implement workarounds to problems discovered in the field.
     event_handlers:
+
+        # Event Handler Name
       - name: <str>
-        action_type: <str>
+        action_type: <str; "bash" | "increment" | "log">
+
+        # Command to execute
         action: <str>
+
+        # Event-handler delay in seconds
         delay: <int>
-        trigger: <str>
+
+        # Configure event trigger condition.
+        trigger: <str; "on-logging" | "on-startup-config">
+
+        # Regular expression to use for searching log messages. Required for on-logging trigger
         regex: <str>
-        asynchronous: <bool>
+
+        # Set the action to be non-blocking.
+        asynchronous: <bool; default=False>
+
+    # List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
+    # Replaces the default route.
     ipv6_mgmt_destination_networks:
       - <str>
+
+    # OOB Management interface gateway in IPv6 format.
+    # Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.
     ipv6_mgmt_gateway: <str>
     local_users:
+
+        # Username
       - name: <str>
+
+        # If true, the user will be removed and all other settings are ignored.
+        # Useful for removing the default "admin" user.
         disabled: <bool>
-        privilege: <int>
+
+        # Initial privilege level with local EXEC authorization.
+        privilege: <int; 0-15>
+
+        # EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"
         role: <str>
+
+        # SHA512 Hash of Password
+        # Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.
         sha512_password: <str>
+
+        # If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         no_password: <bool>
         ssh_key: <str>
-        shell: <str>
+
+        # Specify shell for the user
+        shell: <str; "/bin/bash" | "/bin/sh" | "/sbin/nologin">
+
+    # Default is HTTPS management eAPI enabled.
+    # The VRF is set to < mgmt_interface_vrf >.
     management_eapi:
-      enable_http: <bool>
-      enable_https: <bool>
+      enable_http: <bool; default=False>
+      enable_https: <bool; default=True>
       default_services: <bool>
+
+    # List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     name_servers:
       - <str>
+
+    # Set SNMP settings (optional).
     snmp_settings:
+
+      # SNMP contact.
       contact: <str>
-      location: <bool>
-      compute_local_engineid: <bool>
-      compute_local_engineid_source: <str>
-      compute_v3_user_localized_key: <bool>
+
+      # Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>".
+      location: <bool; default=False>
+
+      # Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
+      compute_local_engineid: <bool; default=False>
+
+      # `compute_local_engineid_source` supports:
+      # - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1
+      #   the string generated via the concatenation of the hostname plus the management IP.
+      #   {{ inventory_hostname }} + {{ switch.mgmt_ip }}.
+      # - `system_mac` generate the switch default engine id for AVD usage.
+      #   To use this, `system_mac_address` MUST be set for the device.
+      #   The formula is f5717f + system_mac_address + 00.
+      compute_local_engineid_source: <str; "hostname_and_ip" | "system_mac"; default="hostname_and_ip">
+
+      # Requires compute_local_engineid to be `true`.
+      # If enabled, the SNMPv3 passphrases for auth and priv are transformed using RFC 2574, matching the value they would take in EOS CLI.
+      # The algorithm requires a local engineId, which is unknown to AVD, hence the necessity to generate one beforehand.
+      compute_v3_user_localized_key: <bool; default=False>
       users:
+
+          # Username
         - name: <str>
+
+          # Configuration of the SNMP User Groups are currently only possible using `structured_config`.
           group: <str>
-          version: <str>
-          auth: <str>
+          version: <str; "v1" | "v2c" | "v3">
+          auth: <str; "md5" | "sha" | "sha256" | "sha384" | "sha512">
+
+          # Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
           auth_passphrase: <str>
-          priv: <str>
+          priv: <str; "des" | "aes" | "aes192" | "aes256">
+
+          # Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
           priv_passphrase: <str>
+
+    # Clock timezone like "CET" or "US/Pacific".
     timezone: <str>
     ```

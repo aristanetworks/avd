@@ -60,51 +60,130 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
-        evpn_services_l2_only: <bool>
+
+        # Possibility to prevent configuration of Tenant VRFs and SVIs.
+        # Override node definition "network_services_l3" from node_type_keys.
+        # This allows support for centralized routing.
+        evpn_services_l2_only: <bool; default=False>
+
+        # Filter L3 and L2 network services based on tenant and tags (and operation filter).
+        # If filter is not defined it will default to all.
         filter:
-          tenants:
+          tenants:  # default value: ['all']
             - <str>
-          tags:
+          tags:  # default value: ['all']
             - <str>
+
+          # List of tenants where VRFs will be configured even if VLANs are not included in tags.
+          # Useful for L3 "border" leaf.
           always_include_vrfs_in_tenants:
             - <str>
-          only_vlans_in_use: <bool>
-        igmp_snooping_enabled: <bool>
+
+          # Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+          # Note! This feature only considers configuration managed by eos_designs.
+          # This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+          only_vlans_in_use: <bool; default=False>
+
+        # Activate or deactivate IGMP snooping on device level.
+        igmp_snooping_enabled: <bool; default=True>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
-              evpn_services_l2_only: <bool>
+
+              # Possibility to prevent configuration of Tenant VRFs and SVIs.
+              # Override node definition "network_services_l3" from node_type_keys.
+              # This allows support for centralized routing.
+              evpn_services_l2_only: <bool; default=False>
+
+              # Filter L3 and L2 network services based on tenant and tags (and operation filter).
+              # If filter is not defined it will default to all.
               filter:
-                tenants:
+                tenants:  # default value: ['all']
                   - <str>
-                tags:
+                tags:  # default value: ['all']
                   - <str>
+
+                # List of tenants where VRFs will be configured even if VLANs are not included in tags.
+                # Useful for L3 "border" leaf.
                 always_include_vrfs_in_tenants:
                   - <str>
-                only_vlans_in_use: <bool>
-              igmp_snooping_enabled: <bool>
-          evpn_services_l2_only: <bool>
+
+                # Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+                # Note! This feature only considers configuration managed by eos_designs.
+                # This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+                only_vlans_in_use: <bool; default=False>
+
+              # Activate or deactivate IGMP snooping on device level.
+              igmp_snooping_enabled: <bool; default=True>
+
+          # Possibility to prevent configuration of Tenant VRFs and SVIs.
+          # Override node definition "network_services_l3" from node_type_keys.
+          # This allows support for centralized routing.
+          evpn_services_l2_only: <bool; default=False>
+
+          # Filter L3 and L2 network services based on tenant and tags (and operation filter).
+          # If filter is not defined it will default to all.
           filter:
-            tenants:
+            tenants:  # default value: ['all']
               - <str>
-            tags:
+            tags:  # default value: ['all']
               - <str>
+
+            # List of tenants where VRFs will be configured even if VLANs are not included in tags.
+            # Useful for L3 "border" leaf.
             always_include_vrfs_in_tenants:
               - <str>
-            only_vlans_in_use: <bool>
-          igmp_snooping_enabled: <bool>
+
+            # Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+            # Note! This feature only considers configuration managed by eos_designs.
+            # This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+            only_vlans_in_use: <bool; default=False>
+
+          # Activate or deactivate IGMP snooping on device level.
+          igmp_snooping_enabled: <bool; default=True>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
-          evpn_services_l2_only: <bool>
+
+          # Possibility to prevent configuration of Tenant VRFs and SVIs.
+          # Override node definition "network_services_l3" from node_type_keys.
+          # This allows support for centralized routing.
+          evpn_services_l2_only: <bool; default=False>
+
+          # Filter L3 and L2 network services based on tenant and tags (and operation filter).
+          # If filter is not defined it will default to all.
           filter:
-            tenants:
+            tenants:  # default value: ['all']
               - <str>
-            tags:
+            tags:  # default value: ['all']
               - <str>
+
+            # List of tenants where VRFs will be configured even if VLANs are not included in tags.
+            # Useful for L3 "border" leaf.
             always_include_vrfs_in_tenants:
               - <str>
-            only_vlans_in_use: <bool>
-          igmp_snooping_enabled: <bool>
+
+            # Only configure VLANs, SVIs, VRFs in use by connected endpoints or downstream L2 switches.
+            # Note! This feature only considers configuration managed by eos_designs.
+            # This excludes structured_config, custom_structured_configuration_, raw_eos_cli, eos_cli, custom templates, configlets etc.
+            only_vlans_in_use: <bool; default=False>
+
+          # Activate or deactivate IGMP snooping on device level.
+          igmp_snooping_enabled: <bool; default=True>
     ```

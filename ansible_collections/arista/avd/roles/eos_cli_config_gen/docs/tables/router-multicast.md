@@ -31,16 +31,24 @@
     router_multicast:
       ipv4:
         counters:
-          rate_period_decay: <int>
+
+          # Rate in seconds
+          rate_period_decay: <int; 0-600>
         routing: <bool>
-        multipath: <str>
-        software_forwarding: <str>
+        multipath: <str; "none" | "deterministic" | "deterministic color" | "deterministic router-id">
+        software_forwarding: <str; "kernel" | "sfe">
         rpf:
           routes:
-            - source_prefix: <str>
+
+              # Source address A.B.C.D or Source prefix A.B.C.D/E
+            - source_prefix: <str; required>
               destinations:
-                - nexthop: <str>
-                  distance: <int>
+
+                  # Next-hop IP address or interface name
+                - nexthop: <str; required>
+
+                  # Administrative distance for this route
+                  distance: <int; 1-255>
       vrfs:
         - name: <str>
           ipv4:

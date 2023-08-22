@@ -24,6 +24,8 @@
 === "YAML"
 
     ```yaml
+
+    # CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
     cvx:
       shutdown: <bool>
       peer_hosts:
@@ -31,10 +33,14 @@
       services:
         mcs:
           redis:
+
+            # Hashed password using the password_type
             password: <str>
-            password_type: <str>
+            password_type: <str; "0" | "7" | "8a"; default="7">
           shutdown: <bool>
+
+        # VXLAN Controller service
         vxlan:
           shutdown: <bool>
-          vtep_mac_learning: <str>
+          vtep_mac_learning: <str; "control-plane" | "data-plane">
     ```

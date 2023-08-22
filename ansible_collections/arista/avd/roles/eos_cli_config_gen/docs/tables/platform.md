@@ -47,34 +47,60 @@
     platform:
       trident:
         forwarding_table_partition: <str>
+
+        # Memory Management Unit settings.
         mmu:
+
+          # The queue profile to be applied to the platform.
           active_profile: <str>
           queue_profiles:
             - name: <str>
               multicast_queues:
-                - id: <int>
-                  unit: <str>
+                - id: <int; 0-7; required>
+
+                  # Unit to be used for the reservation value. If not specified, default is bytes.
+                  unit: <str; "bytes" | "cells">
+
+                  # Amount of memory that should be reserved for this
+                  # queue.
                   reserved: <int>
+
+                  # Dynamic Shared Memory threshold.
                   threshold: <str>
                   drop:
-                    precedence: <int>
-                    threshold: <str>
+                    precedence: <int; 1 | 2; required>
+
+                    # Drop Treshold. This value may also be fractions.
+                    # Example: 7/8 or 3/4 or 1/2
+                    threshold: <str; required>
               unicast_queues:
-                - id: <int>
-                  unit: <str>
+                - id: <int; 0-7; required>
+
+                  # Unit to be used for the reservation value. If not specified, default is bytes.
+                  unit: <str; "bytes" | "cells">
+
+                  # Amount of memory that should be reserved for this
+                  # queue.
                   reserved: <int>
+
+                  # Dynamic Shared Memory threshold.
                   threshold: <str>
                   drop:
-                    precedence: <int>
-                    threshold: <str>
+                    precedence: <int; 1 | 2; required>
+
+                    # Drop Treshold. This value may also be fractions.
+                    # Example: 7/8 or 3/4 or 1/2
+                    threshold: <str; required>
+
+      # Most of the platform sand options are hardware dependant and optional
       sand:
         qos_maps:
-          - traffic_class: <int>
-            to_network_qos: <int>
+          - traffic_class: <int; 0-7>
+            to_network_qos: <int; 0-63>
         lag:
           hardware_only: <bool>
           mode: <str>
         forwarding_mode: <str>
         multicast_replication:
-          default: <str>
+          default: <str; "ingress" | "egress">
     ```

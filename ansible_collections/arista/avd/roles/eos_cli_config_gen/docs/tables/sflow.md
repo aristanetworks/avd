@@ -46,27 +46,56 @@
     sflow:
       sample: <int>
       dangerous: <bool>
+
+      # Polling interval in seconds
       polling_interval: <int>
       vrfs:
         - name: <str>
           destinations:
+
+              # Sflow Destination IP Address
             - destination: <str>
+
+              # Port Number
               port: <int>
+
+          # Source IP Address.
+          # "source" and "source_interface" are mutually exclusive. If both are defined, "source_interface" takes precedence.
           source: <str>
+
+          # Source Interface
           source_interface: <str>
       destinations:
+
+          # Sflow Destination IP Address
         - destination: <str>
+
+          # Port Number
           port: <int>
+
+      # Source IP Address.
+      # "source" and "source_interface" are mutually exclusive. If both are defined, "source_interface" takes precedence.
       source: <str>
+
+      # Source Interface
       source_interface: <str>
       extensions:
+
+          # Extension Name
         - name: <str>
-          enabled: <bool>
+
+          # Enable or Disable Extension
+          enabled: <bool; required>
       interface:
         disable:
           default: <bool>
         egress:
+
+          # Enable egress sFlow by default.
           enable_default: <bool>
+
+          # Enable egress sFlow unmodified.
+          # Platform dependent feature.
           unmodified: <bool>
       run: <bool>
       hardware_acceleration:
@@ -74,5 +103,5 @@
         sample: <int>
         modules:
           - name: <str>
-            enabled: <bool>
+            enabled: <bool; default=True>
     ```

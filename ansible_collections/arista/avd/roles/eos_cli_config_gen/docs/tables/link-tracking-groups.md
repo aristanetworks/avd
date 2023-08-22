@@ -17,6 +17,6 @@
     ```yaml
     link_tracking_groups:
       - name: <str>
-        links_minimum: <int>
-        recovery_delay: <int>
+        links_minimum: <int; 1-100000>
+        recovery_delay: <int; 0-3600>
     ```

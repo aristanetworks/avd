@@ -143,19 +143,47 @@
 
     ```yaml
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
       - name: <str>
+
+        # List of BGP peer groups definitions.
+        # This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.
+        # Since BGP peer groups are configured at higher BGP level, shared between VRFs,
+        # peer_group names should not overlap between VRFs.
         bgp_peer_groups:
+
+            # BGP peer group name.
           - name: <str>
+
+            # Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+            # If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
             nodes:
               - <str>
+
+            # Key only used for documentation or validation purposes
             type: <str>
+
+            # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
             remote_as: <str>
+
+            # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
             local_as: <str>
             description: <str>
             shutdown: <bool>
+
+            # BGP AS-PATH options
             as_path:
+
+              # Replace AS number with local AS number
               remote_as_replace_out: <bool>
+
+              # Disable prepending own AS number to AS path
               prepend_own_disabled: <bool>
+
+            # Remove private AS numbers in outbound AS path
             remove_private_as:
               enabled: <bool>
               all: <bool>
@@ -163,77 +191,184 @@
             remove_private_as_ingress:
               enabled: <bool>
               replace_as: <bool>
+
+            # Peer-filter name
+            # note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+            # the new `listen_ranges` key above to avoid conflicts.
             peer_filter: <str>
             next_hop_unchanged: <bool>
+
+            # IP address or interface name
             update_source: <str>
             route_reflector_client: <bool>
             bfd: <bool>
-            ebgp_multihop: <int>
+
+            # Time-to-live in range of hops
+            ebgp_multihop: <int; 1-255>
             next_hop_self: <bool>
             password: <str>
             passive: <bool>
             default_originate:
               enabled: <bool>
               always: <bool>
+
+              # Route-map name
               route_map: <str>
+
+            # 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
             send_community: <str>
-            maximum_routes: <int>
+
+            # Maximum number of routes (0 means unlimited)
+            maximum_routes: <int; 0-4294967294>
+
+            # Maximum number of routes after which a warning is issued (0 means never warn) or
+            # Percentage of maximum number of routes at which to warn ("<1-100> percent")
             maximum_routes_warning_limit: <str>
             maximum_routes_warning_only: <bool>
             link_bandwidth:
               enabled: <bool>
+
+              # nn.nn(K|M|G) link speed in bits/second
               default: <str>
             allowas_in:
               enabled: <bool>
-              times: <int>
-            weight: <int>
+
+              # Number of local ASNs allowed in a BGP update
+              times: <int; 1-10>
+            weight: <int; 0-65535>
+
+            # BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
             timers: <str>
             rib_in_pre_policy_retain:
               enabled: <bool>
               all: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
+
+            # IP prefix range
+            # note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+            # the new `listen_ranges` key above to avoid conflicts.
             bgp_listen_range_prefix: <str>
             session_tracker: <str>
+
+        # VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.
+        #
+        # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
+        # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+        #
+        # VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,
+        # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
+        # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
         vrfs:
           - name: <str>
+
+            # List of BGP peer definitions.
+            # This will configure BGP neighbors inside the tenant VRF for peering with external devices.
+            # The configured peer will automatically be activated for ipv4 or ipv6 address family based on the ip address.
+            # Note, only ipv4 and ipv6 address families are currently supported in eos_designs.
+            # For other address families, use custom_structured configuration with eos_cli_config_gen.
             bgp_peers:
+
+                # IPv4_address or IPv6_address.
               - ip_address: <str>
+
+                # Peer group name.
                 peer_group: <str>
+
+                # Remote ASN.
                 remote_as: <int>
                 description: <str>
+
+                # Encrypted password.
                 password: <str>
+
+                # 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                 send_community: <str>
                 next_hop_self: <bool>
+
+                # BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>.
                 timers: <str>
-                maximum_routes: <int>
+
+                # Maximum number of routes (0 means unlimited).
+                maximum_routes: <int; 0-4294967294>
                 default_originate:
                   always: <bool>
                 update_source: <str>
-                ebgp_multihop: <int>
+
+                # Time-to-live in range of hops.
+                ebgp_multihop: <int; 1-255>
+
+                # Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                 nodes:
                   - <str>
+
+                # IPv4_address
+                # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
+                # Next hop takes precedence over route_map_out.
                 set_ipv4_next_hop: <str>
+
+                # IPv6_address
+                # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
+                # Next hop takes precedence over route_map_out.
                 set_ipv6_next_hop: <str>
+
+                # Route-map name.
                 route_map_out: <str>
+
+                # Route-map name.
                 route_map_in: <str>
+
+                # Prefix list name.
                 prefix_list_in: <str>
+
+                # Prefix list name.
                 prefix_list_out: <str>
+
+                # Local BGP ASN.
+                # eg. "65001.1200".
                 local_as: <str>
-                weight: <int>
+                weight: <int; 0-65535>
                 bfd: <bool>
+
+            # List of BGP peer groups definitions.
+            # This will configure BGP peer groups to be used inside the tenant VRF for peering with external devices.
+            # Since BGP peer groups are configured at higher BGP level, shared between VRFs,
+            # peer_group names should not overlap between VRFs.
             bgp_peer_groups:
+
+                # BGP peer group name.
               - name: <str>
+
+                # Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+                # If not set the peer-group is created on devices which have a bgp_peer mapped to the corresponding peer_group.
                 nodes:
                   - <str>
+
+                # Key only used for documentation or validation purposes
                 type: <str>
+
+                # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
                 remote_as: <str>
+
+                # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
                 local_as: <str>
                 description: <str>
                 shutdown: <bool>
+
+                # BGP AS-PATH options
                 as_path:
+
+                  # Replace AS number with local AS number
                   remote_as_replace_out: <bool>
+
+                  # Disable prepending own AS number to AS path
                   prepend_own_disabled: <bool>
+
+                # Remove private AS numbers in outbound AS path
                 remove_private_as:
                   enabled: <bool>
                   all: <bool>
@@ -241,36 +376,67 @@
                 remove_private_as_ingress:
                   enabled: <bool>
                   replace_as: <bool>
+
+                # Peer-filter name
+                # note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                # the new `listen_ranges` key above to avoid conflicts.
                 peer_filter: <str>
                 next_hop_unchanged: <bool>
+
+                # IP address or interface name
                 update_source: <str>
                 route_reflector_client: <bool>
                 bfd: <bool>
-                ebgp_multihop: <int>
+
+                # Time-to-live in range of hops
+                ebgp_multihop: <int; 1-255>
                 next_hop_self: <bool>
                 password: <str>
                 passive: <bool>
                 default_originate:
                   enabled: <bool>
                   always: <bool>
+
+                  # Route-map name
                   route_map: <str>
+
+                # 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
                 send_community: <str>
-                maximum_routes: <int>
+
+                # Maximum number of routes (0 means unlimited)
+                maximum_routes: <int; 0-4294967294>
+
+                # Maximum number of routes after which a warning is issued (0 means never warn) or
+                # Percentage of maximum number of routes at which to warn ("<1-100> percent")
                 maximum_routes_warning_limit: <str>
                 maximum_routes_warning_only: <bool>
                 link_bandwidth:
                   enabled: <bool>
+
+                  # nn.nn(K|M|G) link speed in bits/second
                   default: <str>
                 allowas_in:
                   enabled: <bool>
-                  times: <int>
-                weight: <int>
+
+                  # Number of local ASNs allowed in a BGP update
+                  times: <int; 1-10>
+                weight: <int; 0-65535>
+
+                # BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
                 timers: <str>
                 rib_in_pre_policy_retain:
                   enabled: <bool>
                   all: <bool>
+
+                # Inbound route-map name
                 route_map_in: <str>
+
+                # Outbound route-map name
                 route_map_out: <str>
+
+                # IP prefix range
+                # note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                # the new `listen_ranges` key above to avoid conflicts.
                 bgp_listen_range_prefix: <str>
                 session_tracker: <str>
     ```

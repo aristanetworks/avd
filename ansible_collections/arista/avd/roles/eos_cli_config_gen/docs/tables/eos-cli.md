@@ -12,5 +12,7 @@
 === "YAML"
 
     ```yaml
+
+    # Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration
     eos_cli: <str>
     ```

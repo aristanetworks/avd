@@ -18,11 +18,25 @@
 === "YAML"
 
     ```yaml
+
+    # List of IPv4 prefixes to configure as static routes towards the OOB Management interface gateway.
+    # Replaces the default route.
     mgmt_destination_networks:
       - <str>
+
+    # OOB Management interface gateway in IPv4 format.
+    # Used as next-hop for default gateway or static routes defined under 'mgmt_destination_networks'.
     mgmt_gateway: <str>
-    mgmt_interface: <str>
-    mgmt_interface_description: <str>
-    mgmt_interface_vrf: <str>
-    mgmt_vrf_routing: <bool>
+
+    # OOB Management interface.
+    mgmt_interface: <str; default="Management1">
+
+    # Management interface description.
+    mgmt_interface_description: <str; default="oob_management">
+
+    # OOB Management VRF.
+    mgmt_interface_vrf: <str; default="MGMT">
+
+    # Configure IP routing for the OOB Management VRF.
+    mgmt_vrf_routing: <bool; default=False>
     ```

@@ -28,19 +28,60 @@
 
     ```yaml
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
       - name: <str>
+
+        # Define L2 network services organized by vlan id.
         l2vlans:
-          - id: <int>
-            vni_override: <int>
+
+            # VLAN ID
+          - id: <int; 1-4094>
+
+            # By default the VNI will be derived from mac_vrf_vni_base.
+            # The vni_override, allows to override this value and statically define it.
+            vni_override: <int; 1-16777215>
+
+            # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+            # The rt_override allows us to override this value and statically define it.
+            # rt_override will default to vni_override if set.
+            #
+            # rt_override supports two formats:
+            #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+            #   - A full RT string with colon seperator which will override the full RT.
             rt_override: <str>
+
+            # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+            # The rt_override allows us to override this value and statically define it.
+            # rd_override will default to rt_override or vni_override if set.
+            #
+            # rd_override supports two formats:
+            #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+            #   - A full RD string with colon seperator which will override the full RD.
             rd_override: <str>
-            name: <str>
+
+            # VLAN name
+            name: <str; required>
+
+            # Tags leveraged for networks services filtering.
+            # Tags are matched against filter.tags defined under node type settings.
+            # Tags are also matched against the node_group name under node type settings.
             tags:
               - <str>
-            vxlan: <bool>
+
+            # Extend this L2VLAN over VXLAN.
+            vxlan: <bool; default=True>
             trunk_groups:
               - <str>
             bgp:
+
+              # Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
+              # This configuration will not be applied to vlan aware bundles.
               structured_config: <dict>
+
+              # EOS cli commands rendered on router_bgp.vlans.
+              # This configuration will not be applied to vlan aware bundles.
               raw_eos_cli: <str>
     ```

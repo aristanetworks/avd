@@ -18,6 +18,8 @@
     ```yaml
     name_server:
       source:
+
+        # VRF Name
         vrf: <str>
       nodes:
         - <str>

@@ -27,18 +27,24 @@
     ```yaml
     ptp:
       enabled: <bool>
-      profile: <str>
-      domain: <int>
-      auto_clock_identity: <bool>
+      profile: <str; "aes67" | "smpte2059-2" | "aes67-r16-2016"; default="aes67-r16-2016">
+      domain: <int; 0-255>
+      auto_clock_identity: <bool; default=True>
     ptp_profiles: # (1)!
+
+        # PTP profile.
       - profile: <str>
+
+        # PTP announce interval.
         announce:
-          interval: <int>
-          timeout: <int>
-        delay_req: <int>
+          interval: <int; -7-4>
+          timeout: <int; 2-255>
+        delay_req: <int; -7-8>
+
+        # PTP sync message interval.
         sync_message:
-          interval: <int>
-        transport: <str>
+          interval: <int; -7-3>
+        transport: <str; "ipv4">
     ```
 
     1. Default Value

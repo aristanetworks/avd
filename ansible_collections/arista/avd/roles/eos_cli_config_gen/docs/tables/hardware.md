@@ -19,8 +19,10 @@
     ```yaml
     hardware:
       access_list:
-        mechanism: <str>
+        mechanism: <str; "algomatch" | "none" | "tcam">
       speed_groups:
         - speed_group: <int>
+
+          # Serdes speed like "10g" or "25g"
           serdes: <str>
     ```

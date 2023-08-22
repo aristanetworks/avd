@@ -40,27 +40,51 @@
 
     ```yaml
     maintenance:
+
+      # Name of default Interface Profile
       default_interface_profile: <str>
+
+      # Name of default BGP Profile
       default_bgp_profile: <str>
+
+      # Name of default Unit Profile
       default_unit_profile: <str>
       interface_profiles:
         - name: <str>
           rate_monitoring:
+
+            # Load Interval in Seconds
             load_interval: <int>
+
+            # Threshold in kbps
             threshold: <int>
           shutdown:
+
+            # Max delay in seconds
             max_delay: <int>
       bgp_profiles:
+
+          # BGP Profile Name
         - name: <str>
           initiator:
+
+            # Route Map
             route_map_inout: <str>
       unit_profiles:
+
+          # Unit Profile Name
         - name: <str>
           on_boot:
-            duration: <int>
+
+            # On-boot in seconds
+            duration: <int; 300-3600>
       units:
+
+          # Unit Name
         - name: <str>
           quiesce: <bool>
+
+          # Name of Unit Profile
           profile: <str>
           groups:
             bgp_groups:

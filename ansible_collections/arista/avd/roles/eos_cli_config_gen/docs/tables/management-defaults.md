@@ -16,5 +16,5 @@
     ```yaml
     management_defaults:
       secret:
-        hash: <str>
+        hash: <str; "md5" | "sha512">
     ```

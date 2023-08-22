@@ -18,11 +18,28 @@
 === "YAML"
 
     ```yaml
+
+    # Communities and regexp entries MUST not be configured in the same community-list
     ip_community_lists:
+
+        # IP Community-list Name
       - name: <str>
         entries:
-          - action: <str>
+          - action: <str; "permit" | "deny"; required>
+
+            # If defined, a standard community-list will be configured.
+            # Supported community strings (case insensitive):
+            # - GSHUT
+            # - internet
+            # - local-as
+            # - no-advertise
+            # - no-export
+            # - <1-4294967040>
+            # - aa:nn
             communities:
               - <str>
+
+            # Regular Expression
+            # If defined, a regex community-list will be configured
             regexp: <str>
     ```

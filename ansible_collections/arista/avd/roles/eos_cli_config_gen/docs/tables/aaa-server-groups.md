@@ -18,9 +18,15 @@
 
     ```yaml
     aaa_server_groups:
+
+        # Group name
       - name: <str>
-        type: <str>
+        type: <str; "tacacs+" | "radius" | "ldap">
         servers:
+
+            # Hostname or IP address
           - server: <str>
+
+            # VRF name
             vrf: <str>
     ```

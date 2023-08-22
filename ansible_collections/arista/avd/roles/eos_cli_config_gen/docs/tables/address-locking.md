@@ -26,13 +26,25 @@
     address_locking:
       dhcp_servers_ipv4:
         - <str>
+
+      # Disable IP locking on configured ports
       disabled: <bool>
       leases:
-        - ip: <str>
-          mac: <str>
+
+          # IP address
+        - ip: <str; required>
+
+          # MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)
+          mac: <str; required>
       local_interface: <str>
       locked_address:
+
+        # Configure deauthorizing locked addresses upon MAC aging out
         expiration_mac_disabled: <bool>
+
+        # Configure enforcement for locked IPv4 addresses
         ipv4_enforcement_disabled: <bool>
+
+        # Configure enforcement for locked IPv6 addresses
         ipv6_enforcement_disabled: <bool>
     ```

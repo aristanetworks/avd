@@ -63,54 +63,104 @@
 
     ```yaml
     router_msdp:
+
+      # Interface to use for originator ID
       originator_id_local_interface: <str>
-      rejected_limit: <int>
+
+      # Maximum number of rejected SA messages allowed in cache
+      rejected_limit: <int; 0-40000>
       forward_register_packets: <bool>
-      connection_retry_interval: <int>
+      connection_retry_interval: <int; 1-65535>
       group_limits:
+
+          # Source address prefix
         - source_prefix: <str>
-          limit: <int>
+
+          # Limit for SAs matching the source address prefix
+          limit: <int; 0-40000; required>
       peers:
+
+          # Peer IP Address
         - ipv4_address: <str>
           default_peer:
             enabled: <bool>
+
+            # Prefix list to filter source of SA messages
             prefix_list: <str>
           local_interface: <str>
           description: <str>
+
+          # Disable the MSDP peer
           disabled: <bool>
-          sa_limit: <int>
+
+          # Maximum number of SA messages allowed in cache
+          sa_limit: <int; 0-40000>
           mesh_groups:
+
+              # Mesh group name
             - name: <str>
           keepalive:
-            keepalive_timer: <int>
-            hold_timer: <int>
+            keepalive_timer: <int; 1-65535; required>
+
+            # Must be greater than keepalive timer
+            hold_timer: <int; 1-65535; required>
           sa_filter:
+
+            # ACL to filter inbound SA messages
             in_list: <str>
+
+            # ACL to filter outbound SA messages
             out_list: <str>
       vrfs:
+
+          # VRF name
         - name: <str>
+
+          # Interface to use for originator ID
           originator_id_local_interface: <str>
-          rejected_limit: <int>
+
+          # Maximum number of rejected SA messages allowed in cache
+          rejected_limit: <int; 0-40000>
           forward_register_packets: <bool>
-          connection_retry_interval: <int>
+          connection_retry_interval: <int; 1-65535>
           group_limits:
+
+              # Source address prefix
             - source_prefix: <str>
-              limit: <int>
+
+              # Limit for SAs matching the source address prefix
+              limit: <int; 0-40000; required>
           peers:
+
+              # Peer IP Address
             - ipv4_address: <str>
               default_peer:
                 enabled: <bool>
+
+                # Prefix list to filter source of SA messages
                 prefix_list: <str>
               local_interface: <str>
               description: <str>
+
+              # Disable the MSDP peer
               disabled: <bool>
-              sa_limit: <int>
+
+              # Maximum number of SA messages allowed in cache
+              sa_limit: <int; 0-40000>
               mesh_groups:
+
+                  # Mesh group name
                 - name: <str>
               keepalive:
-                keepalive_timer: <int>
-                hold_timer: <int>
+                keepalive_timer: <int; 1-65535; required>
+
+                # Must be greater than keepalive timer
+                hold_timer: <int; 1-65535; required>
               sa_filter:
+
+                # ACL to filter inbound SA messages
                 in_list: <str>
+
+                # ACL to filter outbound SA messages
                 out_list: <str>
     ```

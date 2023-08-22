@@ -15,6 +15,10 @@
 
     ```yaml
     virtual_source_nat_vrfs:
+
+        # VRF Name
       - name: <str>
+
+        # IPv4 Address
         ip_address: <str>
     ```

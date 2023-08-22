@@ -19,6 +19,8 @@
 
     ```yaml
     bgp_groups:
+
+        # Group Name
       - name: <str>
         vrf: <str>
         neighbors:

@@ -30,6 +30,12 @@
       policy:
         local_default_role: <str>
       exec:
+
+        # Exec authorization method(s) as a string.
+        # Examples:
+        # - "group tacacs+ local"
+        # - "group MYGROUP none"
+        # - "group radius group MYGROUP local"
         default: <str>
       config_commands: <bool>
       serial_console: <bool>
@@ -37,8 +43,22 @@
         dot1x_additional_groups:
           - <str>
       commands:
+
+        # Command authorization method(s) as a string.
+        # Examples:
+        # - "group tacacs+ local"
+        # - "group MYGROUP none"
+        # - "group tacacs+ group MYGROUP local
         all_default: <str>
         privilege:
+
+            # Privilege level(s) 0-15
           - level: <str>
+
+            # Command authorization method(s) as a string.
+            # Examples:
+            # - "group tacacs+ local"
+            # - "group MYGROUP none"
+            # - "group tacacs+ group MYGROUP local"
             default: <str>
     ```

@@ -152,142 +152,350 @@
 === "YAML"
 
     ```yaml
+
+    # This should be applied to group_vars or host_vars where endpoints are connecting.
+    # `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
+    # The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `storage_arrays`.
     <connected_endpoints_keys.key>:
+
+        # Endpoint name will be used in the switchport description.
       - name: <str>
+
+        # Rack is used for documentation purposes only.
         rack: <str>
+
+        # A list of adapters, group by adapters leveraging the same port-profile.
         adapters:
+
+            # List of switch interfaces.
+            # The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
           - switch_ports:
               - <str>
+
+            # List of switches.
+            # The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
             switches:
               - <str>
+
+            # Endpoint ports is used for description, required unless description is set.
+            # The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.
+            # Each list item is one switchport.
             endpoint_ports:
               - <str>
+
+            # Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.
+            # If not specified will be auto.
             speed: <str>
+
+            # By default the description is built leveraging `<peer>_<peer_interface>`.
+            # When set this key will overide the default value on the physical ports.
             description: <str>
+
+            # Port-profile name to inherit configuration.
             profile: <str>
-            enabled: <bool>
-            mode: <str>
-            mtu: <int>
-            l2_mtu: <int>
-            native_vlan: <int>
-            native_vlan_tag: <bool>
+
+            # Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.
+            enabled: <bool; default=True>
+
+            # Interface mode.
+            mode: <str; "access" | "dot1q-tunnel" | "trunk" | "trunk phone">
+            mtu: <int; 68-65535>
+
+            # This should only be defined for platforms supporting the "l2 mtu" CLI command.
+            l2_mtu: <int; 68-9416>
+
+            # Native VLAN for a trunk port.
+            # If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+            native_vlan: <int; 1-4094>
+
+            # If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+            native_vlan_tag: <bool; default=False>
+
+            # Required with `enable_trunk_groups: true`.
+            # Trunk Groups are used for limiting VLANs on trunk ports to VLANs with the same Trunk Group.
             trunk_groups:
               - <str>
+
+            # Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for access ports.
             vlans: <str>
-            spanning_tree_portfast: <str>
-            spanning_tree_bpdufilter: <str>
-            spanning_tree_bpduguard: <str>
+            spanning_tree_portfast: <str; "edge" | "network">
+            spanning_tree_bpdufilter: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
+            spanning_tree_bpduguard: <str; "enabled" | "disabled" | "True" | "False" | "true" | "false">
             flowcontrol:
-              received: <str>
+              received: <str; "received" | "send" | "on">
+
+            # QOS profile name
             qos_profile: <str>
+
+            # The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.
+            # `ptp role master` is set to ensure control over the PTP topology.
             ptp:
-              enabled: <bool>
-              endpoint_role: <str>
-              profile: <str>
+              enabled: <bool; default=False>
+              endpoint_role: <str; "bmca" | "default" | "follower"; default="follower">
+              profile: <str; "aes67" | "aes67-r16-2016" | "smpte2059-2"; default="aes67-r16-2016">
+
+            # Configures sFlow on the interface. Overrides `fabric_sflow` setting.
             sflow: <bool>
+
+            # Configure the downstream interfaces of a respective Link Tracking Group.
+            # If `port_channel` is defined in an adapter, then the port-channel interface is configured to be the downstream.
+            # Else all the ethernet interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks.
             link_tracking:
               enabled: <bool>
+
+              # Tracking group name.
+              # The default group name is taken from fabric variable of the switch, `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+              # Optional if default link_tracking settings are configured on the node.
               name: <str>
+
+            # 802.1x
             dot1x:
-              port_control: <str>
+              port_control: <str; "auto" | "force-authorized" | "force-unauthorized">
               port_control_force_authorized_phone: <bool>
               reauthentication: <bool>
               pae:
-                mode: <str>
+                mode: <str; "authenticator">
               authentication_failure:
-                action: <str>
-                allow_vlan: <int>
+                action: <str; "allow" | "drop">
+                allow_vlan: <int; 1-4094>
               host_mode:
-                mode: <str>
+                mode: <str; "multi-host" | "single-host">
                 multi_host_authenticated: <bool>
               mac_based_authentication:
                 enabled: <bool>
                 always: <bool>
                 host_mode_common: <bool>
               timeout:
-                idle_host: <int>
-                quiet_period: <int>
+                idle_host: <int; 10-65535>
+                quiet_period: <int; 1-65535>
+
+                # Range 60-4294967295 or "server".
                 reauth_period: <str>
                 reauth_timeout_ignore: <bool>
-                tx_period: <int>
-              reauthorization_request_limit: <int>
+                tx_period: <int; 1-65535>
+              reauthorization_request_limit: <int; 1-10>
+
+            # Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
             poe:
-              disabled: <bool>
-              priority: <str>
+
+              # Disable PoE on a POE capable port. PoE is enabled on all ports that support it by default in EOS.
+              disabled: <bool; default=False>
+
+              # Prioritize a port's power in the event that one of the switch's power supplies loses power
+              priority: <str; "critical" | "high" | "medium" | "low">
+
+              # Set the PoE power behavior for a PoE port when the system is rebooted
               reboot:
-                action: <str>
+
+                # PoE action for interface
+                action: <str; "maintain" | "power-off">
+
+              # Set the PoE power behavior for a PoE port when the port goes down
               link_down:
-                action: <str>
-                power_off_delay: <int>
+
+                # PoE action for interface
+                action: <str; "maintain" | "power-off">
+
+                # Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.
+                power_off_delay: <int; 1-86400>
+
+              # Set the PoE power behavior for a PoE port when the port is admin down
               shutdown:
-                action: <str>
+
+                # PoE action for interface
+                action: <str; "maintain" | "power-off">
+
+              # Override the hardware-negotiated power limit using either wattage or a power class. Note that if using a power class, AVD will automatically convert the class value to the wattage value corresponding to that power class.
               limit:
-                class: <int>
+                class: <int; 0-8>
                 watts: <str>
+
+                # Set to ignore hardware classification
                 fixed: <bool>
+
+              # Disable to prevent port from negotiating power with powered devices over LLDP. Enabled by default in EOS.
               negotiation_lldp: <bool>
+
+              # Allow a subset of legacy devices to work with the PoE switch. Disabled by default in EOS because it can cause false positive detections.
               legacy_detect: <bool>
+
+            # Storm control settings applied on port toward the endpoint.
             storm_control:
               all:
+
+                # Configure maximum storm-control level.
                 level: <str>
-                unit: <str>
+
+                # Optional variable and is hardware dependent.
+                unit: <str; "percent" | "pps"; default="percent">
               broadcast:
+
+                # Configure maximum storm-control level.
                 level: <str>
-                unit: <str>
+
+                # Optional variable and is hardware dependent.
+                unit: <str; "percent" | "pps"; default="percent">
               multicast:
+
+                # Configure maximum storm-control level.
                 level: <str>
-                unit: <str>
+
+                # Optional variable and is hardware dependent.
+                unit: <str; "percent" | "pps"; default="percent">
               unknown_unicast:
+
+                # Configure maximum storm-control level.
                 level: <str>
-                unit: <str>
+
+                # Optional variable and is hardware dependent.
+                unit: <str; "percent" | "pps"; default="percent">
+
+            # Used to define switchports as source or destination for monitoring sessions.
             monitor_sessions:
-              - name: <str>
-                role: <str>
+
+                # Session name.
+              - name: <str; required>
+                role: <str; "source" | "destination">
                 source_settings:
-                  direction: <str>
+                  direction: <str; "rx" | "tx" | "both">
                   access_group:
-                    type: <str>
+                    type: <str; "ip" | "ipv6" | "mac">
+
+                    # ACL name.
                     name: <str>
                     priority: <int>
+
+                # Session settings are defined per session name.
+                # Different session_settings for the same session name will be combined/merged.
                 session_settings:
                   encapsulation_gre_metadata_tx: <bool>
+
+                  # Number of bytes to remove from header.
                   header_remove_size: <int>
                   access_group:
-                    type: <str>
+                    type: <str; "ip" | "ipv6" | "mac">
+
+                    # ACL name.
                     name: <str>
+
+                  # Ratelimit and unit as string.
+                  # Examples:
+                  #   "100000 bps"
+                  #   "100 kbps"
+                  #   "10 mbps"
                   rate_limit_per_ingress_chip: <str>
+
+                  # Ratelimit and unit as string.
+                  # Examples:
+                  #   "100000 bps"
+                  #   "100 kbps"
+                  #   "10 mbps"
                   rate_limit_per_egress_chip: <str>
                   sample: <int>
                   truncate:
                     enabled: <bool>
+
+                    # Size in bytes
                     size: <int>
+
+            # Settings for all or single-active EVPN multihoming.
             ethernet_segment:
-              short_esi: <str>
-              redundancy: <str>
-              designated_forwarder_algorithm: <str>
+
+              # In format xxxx:xxxx:xxxx or "auto".
+              # Define a manual short-esi (be careful using this on profiles) or set the value to "auto" to automatically generate the value.
+              # Please see the notes under "EVPN A/A ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+              short_esi: <str; required>
+
+              # If omitted, Port-Channels use the EOS default of all-active.
+              # If omitted, Ethernet interfaces are configured as single-active.
+              redundancy: <str; "all-active" | "single-active">
+
+              # Configure DF algorithm and preferences.
+              # - auto: Use preference-based algorithm and assign preference based on position of device in the 'switches' list,
+              #   e.g., assuming a list of three switches, this would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+              # - preference: Set preference for each switch manually using designated_forwarder_preferences key.
+              # - modulus: Use the default modulus-based algorithm.
+              # If omitted, Port-Channels use the EOS default of modulus.
+              # If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+              designated_forwarder_algorithm: <str; "auto" | "modulus" | "preference">
+
+              # Manual preference as described above, required only for preference algorithm.
               designated_forwarder_preferences:
                 - <str>
+
+              # Disable preemption for single-active forwarding when auto/manual DF preference is configured.
               dont_preempt: <bool>
+
+            # Used for port-channel adapter.
             port_channel:
-              mode: <str>
+
+              # Port-Channel Mode.
+              mode: <str; "active" | "passive" | "on">
+
+              # Port-Channel ID.
+              # If no channel_id is specified, an id is generated from the first switch port in the port channel.
               channel_id: <int>
+
+              # By default the description is built leveraging `<peer>` name or `adapter.description` when defined.
+              # When this key is defined, it will append its content to the physical port description.
               description: <str>
-              enabled: <bool>
+
+              # Port-Channel administrative state.
+              # Setting to false will set port to 'shutdown' in intended configuration.
+              enabled: <bool; default=True>
+
+              # In format xxxx:xxxx:xxxx or "auto".
               short_esi: <str>
+
+              # LACP fallback configuration.
               lacp_fallback:
-                mode: <str>
+
+                # Currently only static mode is supported.
+                mode: <str; "static">
+
+                # Timeout in seconds. EOS default is 90 seconds.
                 timeout: <int>
+
+              # LACP timer configuration. Applies only when Port-channel mode is not "on".
               lacp_timer:
-                mode: <str>
+
+                # LACP mode for interface members.
+                mode: <str; "normal" | "fast">
+
+                # Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
                 multiplier: <int>
+
+              # Port-Channel L2 Subinterfaces
+              # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+              # Setting short_esi: auto generates the short_esi automatically using a hash of configuration elements.
+              # Please see the notes under "EVPN A/A ESI dual-attached endpoint scenario" before setting short_esi: auto.
               subinterfaces:
+
+                  # Subinterface number
                 - number: <int>
+
+                  # In format xxxx:xxxx:xxxx or "auto"
+                  # Required for multihomed port-channels with subinterfaces
                   short_esi: <str>
-                  vlan_id: <int>
+
+                  # VLAN ID to bridge.
+                  # Default is subinterface number.
+                  vlan_id: <int; 1-4094>
+
+                  # Client VLAN ID encapsulation.
+                  # Default is subinterface number.
                   encapsulation_vlan:
-                    client_dot1q: <int>
+                    client_dot1q: <int; 1-4094>
+
+              # EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
               raw_eos_cli: <str>
+
+              # Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
               structured_config: <dict>
+
+            # EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
             raw_eos_cli: <str>
+
+            # Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
             structured_config: <dict>
     ```

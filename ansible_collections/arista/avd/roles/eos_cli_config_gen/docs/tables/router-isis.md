@@ -61,16 +61,24 @@
 
     ```yaml
     router_isis:
-      instance: <str>
+
+      # ISIS Instance Name
+      instance: <str; required>
+
+      # CLNS Address like "49.0001.0001.0000.0001.00"
       net: <str>
+
+      # IPv4 Address
       router_id: <str>
-      is_type: <str>
+      is_type: <str; "level-1" | "level-1-2" | "level-2">
       log_adjacency_changes: <bool>
       mpls_ldp_sync_default: <bool>
       timers:
         local_convergence:
           protected_prefixes: <bool>
-          delay: <int>
+
+          # Delay in milliseconds.
+          delay: <int; default=10000>
       advertise:
         passive_only: <bool>
       address_family:
@@ -78,28 +86,40 @@
       isis_af_defaults:
         - <str>
       redistribute_routes:
-        - source_protocol: <str>
+        - source_protocol: <str; "bgp" | "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
+
+          # Route-map name
           route_map: <str>
           include_leaked: <bool>
-          ospf_route_type: <str>
+
+          # ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'
+          ospf_route_type: <str; "external" | "internal" | "nssa-external">
       address_family_ipv4:
         enabled: <bool>
-        maximum_paths: <int>
+        maximum_paths: <int; 1-128>
         fast_reroute_ti_lfa:
-          mode: <str>
-          level: <str>
+          mode: <str; "link-protection" | "node-protection">
+          level: <str; "level-1" | "level-2">
+
+          # Shared Risk Link Group
           srlg:
             enable: <bool>
             strict: <bool>
         tunnel_source_labeled_unicast:
           enabled: <bool>
+
+          # Route Control Function
           rcf: <str>
       address_family_ipv6:
         enabled: <bool>
-        maximum_paths: <int>
+        maximum_paths: <int; 1-128>
         fast_reroute_ti_lfa:
-          mode: <str>
-          level: <str>
+          mode: <str; "link-protection" | "node-protection">
+
+          # Optional, default is to protect all levels
+          level: <str; "level-1" | "level-2">
+
+          # Shared Risk Link Group
           srlg:
             enable: <bool>
             strict: <bool>

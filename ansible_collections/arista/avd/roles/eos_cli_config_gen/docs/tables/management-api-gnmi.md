@@ -41,32 +41,76 @@
 
     ```yaml
     management_api_gnmi:
-      provider: <str>
+      provider: <str; default="eos-native">
       transport:
         grpc:
+
+            # Transport name
           - name: <str>
+
+            # SSL profile name
             ssl_profile: <str>
+
+            # VRF name is optional
             vrf: <str>
-            notification_timestamp: <str>
+
+            # Per the gNMI specification, the default timestamp field of a notification message is set to be
+            # the time at which the value of the underlying data source changes or when the reported event takes place.
+            # In order to facilitate integration in legacy environments oriented around polling style operations,
+            # an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.
+            notification_timestamp: <str; "send-time" | "last-change-time">
+
+            # ACL name
             ip_access_group: <str>
         grpc_tunnels:
+
+            # Transport name
           - name: <str>
+
+            # Operational status of the gRPC tunnel
             shutdown: <bool>
+
+            # Tunnel SSL profile name
             tunnel_ssl_profile: <str>
+
+            # gNMI SSL profile name
             gnmi_ssl_profile: <str>
+
+            # VRF name
             vrf: <str>
             destination:
-              address: <str>
-              port: <int>
+
+              # IP address or hostname
+              address: <str; required>
+
+              # TCP Port
+              port: <int; 1-65535; required>
             local_interface:
-              name: <str>
-              port: <int>
+
+              # Interface name
+              name: <str; required>
+
+              # TCP Port
+              port: <int; 1-65535; required>
             target:
+
+              # Use serial number as the Target ID
               use_serial_number: <bool>
+
+              # Target IDs as a list.
               target_ids:
                 - <str>
+
+      # These should not be mixed with the new keys above.
       enable_vrfs:
+
+          # VRF name
         - name: <str>
+
+          # Standard IPv4 ACL name
           access_group: <str>
+
+      # These should not be mixed with the new keys above.
+      # Octa activates `eos-native` provider and it is the only provider currently supported by EOS.
       octa: <dict>
     ```

@@ -156,147 +156,234 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
         ptp:
-          enabled: <bool>
-          profile: <str>
-          domain: <int>
-          priority1: <int>
-          priority2: <int>
-          auto_clock_identity: <bool>
+          enabled: <bool; default=False>
+          profile: <str; "aes67" | "smpte2059-2" | "aes67-r16-2016"; default="aes67-r16-2016">
+          domain: <int; 0-255; default=127>
+
+          # default -> automatically set based on node_type.
+          priority1: <int; 0-255>
+
+          # default -> (node_id modulus 256).
+          priority2: <int; 0-255>
+
+          # If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.
+          # default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).
+          auto_clock_identity: <bool; default=True>
+
+          # PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".
+          # By default the 3-byte prefix is "00:1C:73".
+          # This can be overridden if auto_clock_identity is set to true (which is the default).
           clock_identity_prefix: <str>
+
+          # Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".
           clock_identity: <str>
+
+          # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
+          # This can be set manually if required, for example, to a value of "10.1.2.3".
           source_ip: <str>
           ttl: <int>
-          forward_unicast: <bool>
+
+          # Enable PTP unicast forwarding.
+          forward_unicast: <bool; default=False>
           dscp:
             general_messages: <int>
             event_messages: <int>
           monitor:
-            enabled: <bool>
+            enabled: <bool; default=True>
             threshold:
-              offset_from_master: <int>
-              mean_path_delay: <int>
+              offset_from_master: <int; 0-1000000000; default=250>
+              mean_path_delay: <int; 0-1000000000; default=1500>
               drop:
-                offset_from_master: <int>
-                mean_path_delay: <int>
+                offset_from_master: <int; 0-1000000000>
+                mean_path_delay: <int; 0-1000000000>
             missing_message:
               intervals:
-                announce: <int>
-                follow_up: <int>
-                sync: <int>
+                announce: <int; 2-255>
+                follow_up: <int; 2-255>
+                sync: <int; 2-255>
               sequence_ids:
-                enabled: <bool>
-                announce: <int>
-                delay_resp: <int>
-                follow_up: <int>
-                sync: <int>
+                enabled: <bool; default=True>
+                announce: <int; 2-255; default=3>
+                delay_resp: <int; 2-255; default=3>
+                follow_up: <int; 2-255; default=3>
+                sync: <int; 2-255; default=3>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
               ptp:
-                enabled: <bool>
-                profile: <str>
-                domain: <int>
-                priority1: <int>
-                priority2: <int>
-                auto_clock_identity: <bool>
+                enabled: <bool; default=False>
+                profile: <str; "aes67" | "smpte2059-2" | "aes67-r16-2016"; default="aes67-r16-2016">
+                domain: <int; 0-255; default=127>
+
+                # default -> automatically set based on node_type.
+                priority1: <int; 0-255>
+
+                # default -> (node_id modulus 256).
+                priority2: <int; 0-255>
+
+                # If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.
+                # default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).
+                auto_clock_identity: <bool; default=True>
+
+                # PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".
+                # By default the 3-byte prefix is "00:1C:73".
+                # This can be overridden if auto_clock_identity is set to true (which is the default).
                 clock_identity_prefix: <str>
+
+                # Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".
                 clock_identity: <str>
+
+                # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
+                # This can be set manually if required, for example, to a value of "10.1.2.3".
                 source_ip: <str>
                 ttl: <int>
-                forward_unicast: <bool>
+
+                # Enable PTP unicast forwarding.
+                forward_unicast: <bool; default=False>
                 dscp:
                   general_messages: <int>
                   event_messages: <int>
                 monitor:
-                  enabled: <bool>
+                  enabled: <bool; default=True>
                   threshold:
-                    offset_from_master: <int>
-                    mean_path_delay: <int>
+                    offset_from_master: <int; 0-1000000000; default=250>
+                    mean_path_delay: <int; 0-1000000000; default=1500>
                     drop:
-                      offset_from_master: <int>
-                      mean_path_delay: <int>
+                      offset_from_master: <int; 0-1000000000>
+                      mean_path_delay: <int; 0-1000000000>
                   missing_message:
                     intervals:
-                      announce: <int>
-                      follow_up: <int>
-                      sync: <int>
+                      announce: <int; 2-255>
+                      follow_up: <int; 2-255>
+                      sync: <int; 2-255>
                     sequence_ids:
-                      enabled: <bool>
-                      announce: <int>
-                      delay_resp: <int>
-                      follow_up: <int>
-                      sync: <int>
+                      enabled: <bool; default=True>
+                      announce: <int; 2-255; default=3>
+                      delay_resp: <int; 2-255; default=3>
+                      follow_up: <int; 2-255; default=3>
+                      sync: <int; 2-255; default=3>
           ptp:
-            enabled: <bool>
-            profile: <str>
-            domain: <int>
-            priority1: <int>
-            priority2: <int>
-            auto_clock_identity: <bool>
+            enabled: <bool; default=False>
+            profile: <str; "aes67" | "smpte2059-2" | "aes67-r16-2016"; default="aes67-r16-2016">
+            domain: <int; 0-255; default=127>
+
+            # default -> automatically set based on node_type.
+            priority1: <int; 0-255>
+
+            # default -> (node_id modulus 256).
+            priority2: <int; 0-255>
+
+            # If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.
+            # default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).
+            auto_clock_identity: <bool; default=True>
+
+            # PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".
+            # By default the 3-byte prefix is "00:1C:73".
+            # This can be overridden if auto_clock_identity is set to true (which is the default).
             clock_identity_prefix: <str>
+
+            # Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".
             clock_identity: <str>
+
+            # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
+            # This can be set manually if required, for example, to a value of "10.1.2.3".
             source_ip: <str>
             ttl: <int>
-            forward_unicast: <bool>
+
+            # Enable PTP unicast forwarding.
+            forward_unicast: <bool; default=False>
             dscp:
               general_messages: <int>
               event_messages: <int>
             monitor:
-              enabled: <bool>
+              enabled: <bool; default=True>
               threshold:
-                offset_from_master: <int>
-                mean_path_delay: <int>
+                offset_from_master: <int; 0-1000000000; default=250>
+                mean_path_delay: <int; 0-1000000000; default=1500>
                 drop:
-                  offset_from_master: <int>
-                  mean_path_delay: <int>
+                  offset_from_master: <int; 0-1000000000>
+                  mean_path_delay: <int; 0-1000000000>
               missing_message:
                 intervals:
-                  announce: <int>
-                  follow_up: <int>
-                  sync: <int>
+                  announce: <int; 2-255>
+                  follow_up: <int; 2-255>
+                  sync: <int; 2-255>
                 sequence_ids:
-                  enabled: <bool>
-                  announce: <int>
-                  delay_resp: <int>
-                  follow_up: <int>
-                  sync: <int>
+                  enabled: <bool; default=True>
+                  announce: <int; 2-255; default=3>
+                  delay_resp: <int; 2-255; default=3>
+                  follow_up: <int; 2-255; default=3>
+                  sync: <int; 2-255; default=3>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
           ptp:
-            enabled: <bool>
-            profile: <str>
-            domain: <int>
-            priority1: <int>
-            priority2: <int>
-            auto_clock_identity: <bool>
+            enabled: <bool; default=False>
+            profile: <str; "aes67" | "smpte2059-2" | "aes67-r16-2016"; default="aes67-r16-2016">
+            domain: <int; 0-255; default=127>
+
+            # default -> automatically set based on node_type.
+            priority1: <int; 0-255>
+
+            # default -> (node_id modulus 256).
+            priority2: <int; 0-255>
+
+            # If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.
+            # default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).
+            auto_clock_identity: <bool; default=True>
+
+            # PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".
+            # By default the 3-byte prefix is "00:1C:73".
+            # This can be overridden if auto_clock_identity is set to true (which is the default).
             clock_identity_prefix: <str>
+
+            # Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".
             clock_identity: <str>
+
+            # By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.
+            # This can be set manually if required, for example, to a value of "10.1.2.3".
             source_ip: <str>
             ttl: <int>
-            forward_unicast: <bool>
+
+            # Enable PTP unicast forwarding.
+            forward_unicast: <bool; default=False>
             dscp:
               general_messages: <int>
               event_messages: <int>
             monitor:
-              enabled: <bool>
+              enabled: <bool; default=True>
               threshold:
-                offset_from_master: <int>
-                mean_path_delay: <int>
+                offset_from_master: <int; 0-1000000000; default=250>
+                mean_path_delay: <int; 0-1000000000; default=1500>
                 drop:
-                  offset_from_master: <int>
-                  mean_path_delay: <int>
+                  offset_from_master: <int; 0-1000000000>
+                  mean_path_delay: <int; 0-1000000000>
               missing_message:
                 intervals:
-                  announce: <int>
-                  follow_up: <int>
-                  sync: <int>
+                  announce: <int; 2-255>
+                  follow_up: <int; 2-255>
+                  sync: <int; 2-255>
                 sequence_ids:
-                  enabled: <bool>
-                  announce: <int>
-                  delay_resp: <int>
-                  follow_up: <int>
-                  sync: <int>
+                  enabled: <bool; default=True>
+                  announce: <int; 2-255; default=3>
+                  delay_resp: <int; 2-255; default=3>
+                  follow_up: <int; 2-255; default=3>
+                  sync: <int; 2-255; default=3>
     ```

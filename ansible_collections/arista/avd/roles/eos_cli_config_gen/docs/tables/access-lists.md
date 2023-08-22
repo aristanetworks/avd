@@ -18,9 +18,16 @@
 
     ```yaml
     access_lists:
+
+        # Access-list Name
       - name: <str>
         counters_per_entry: <bool>
         sequence_numbers:
+
+            # Sequence ID
           - sequence: <int>
-            action: <str>
+
+            # Action as string
+            # Example: "deny ip any any"
+            action: <str; required>
     ```

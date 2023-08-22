@@ -18,9 +18,27 @@
 
     ```yaml
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
       - name: <str>
-        mac_vrf_vni_base: <int>
-        mac_vrf_id_base: <int>
-        vlan_aware_bundle_number_base: <int>
-        evpn_l2_multi_domain: <bool>
+
+        # Base number for MAC VRF VXLAN Network Identifier (required with VXLAN).
+        # VXLAN VNI is derived from the base number with simple addition.
+        # i.e. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
+        mac_vrf_vni_base: <int; 0-16770000>
+
+        # If not set, "mac_vrf_vni_base" will be used.
+        # Base number for MAC VRF RD/RT ID (Required unless mac_vrf_vni_base is set)
+        # ID is derived from the base number with simple addition.
+        # i.e. mac_vrf_id_base = 10000, svi 100 = RD/RT 10100, svi 300 = RD/RT 10300.
+        mac_vrf_id_base: <int; 0-16770000>
+
+        # Base number for VLAN aware bundle RD/RT.
+        # The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.
+        vlan_aware_bundle_number_base: <int; default=0>
+
+        # Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.
+        evpn_l2_multi_domain: <bool; default=True>
     ```

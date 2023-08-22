@@ -36,27 +36,66 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # (4.4 hexadecimal).
         isis_system_id_prefix: <str>
+
+        # Number of path to configure in ECMP for ISIS.
         isis_maximum_paths: <int>
-        is_type: <str>
-        node_sid_base: <int>
+        is_type: <str; "level-1-2" | "level-1" | "level-2"; default="level-2">
+
+        # Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+        node_sid_base: <int; default=0>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # (4.4 hexadecimal).
               isis_system_id_prefix: <str>
+
+              # Number of path to configure in ECMP for ISIS.
               isis_maximum_paths: <int>
-              is_type: <str>
-              node_sid_base: <int>
+              is_type: <str; "level-1-2" | "level-1" | "level-2"; default="level-2">
+
+              # Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+              node_sid_base: <int; default=0>
+
+          # (4.4 hexadecimal).
           isis_system_id_prefix: <str>
+
+          # Number of path to configure in ECMP for ISIS.
           isis_maximum_paths: <int>
-          is_type: <str>
-          node_sid_base: <int>
+          is_type: <str; "level-1-2" | "level-1" | "level-2"; default="level-2">
+
+          # Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+          node_sid_base: <int; default=0>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # (4.4 hexadecimal).
           isis_system_id_prefix: <str>
+
+          # Number of path to configure in ECMP for ISIS.
           isis_maximum_paths: <int>
-          is_type: <str>
-          node_sid_base: <int>
+          is_type: <str; "level-1-2" | "level-1" | "level-2"; default="level-2">
+
+          # Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
+          node_sid_base: <int; default=0>
     ```

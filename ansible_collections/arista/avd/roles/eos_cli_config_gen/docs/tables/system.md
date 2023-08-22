@@ -25,7 +25,11 @@
     system:
       control_plane:
         tcp_mss:
+
+          # Segment size
           ipv4: <int>
+
+          # Segment size
           ipv6: <int>
         ipv4_access_groups:
           - acl_name: <str>

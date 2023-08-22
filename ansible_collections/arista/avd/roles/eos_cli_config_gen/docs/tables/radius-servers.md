@@ -16,7 +16,11 @@
 
     ```yaml
     radius_servers:
+
+        # Host IP address or name
       - host: <str>
         vrf: <str>
+
+        # Encrypted key
         key: <str>
     ```

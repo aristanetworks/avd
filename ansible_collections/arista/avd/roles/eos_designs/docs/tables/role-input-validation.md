@@ -30,23 +30,81 @@
 === "YAML"
 
     ```yaml
-    avd_data_conversion_mode: <str>
-    avd_data_validation_mode: <str>
+
+    # Conversion Mode for AVD input data conversion.
+    # Input data conversion will perform type conversion of input variables as defined in the schema.
+    # The type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
+    # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
+    # "disabled" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.
+    # "error" will produce error messages and fail the task.
+    # "warning" will produce warning messages.
+    # "info" will produce regular log messages.
+    # "debug" will produce hidden debug messages viewable with -v.
+    # "quiet" will not produce any messages
+    avd_data_conversion_mode: <str; "disabled" | "error" | "warning" | "info" | "debug" | "quiet"; default="debug">
+
+    # Validation Mode for AVD input data validation.
+    # Input data validation will validate the input variables according to the schema.
+    # During validation, messages will generated with information about the host(s) and key(s) which failed validation.
+    # "disabled" means that validation will not run.
+    # "error" will produce error messages and fail the task.
+    # "warning" will produce warning messages.
+    # "info" will produce regular log messages.
+    # "debug" will produce hidden debug messages viewable with -v.
+    avd_data_validation_mode: <str; "disabled" | "error" | "warning" | "info" | "debug"; default="warning">
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
       - name: <str>
+
+        # VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.
+        #
+        # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
+        # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+        #
+        # VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,
+        # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
+        # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
         vrfs:
           - name: <str>
+
+            # Custom structured config for eos_cli_config_gen.
             structured_config: <dict>
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # Custom structured config for eos_cli_config_gen.
         structured_config: <dict>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # Custom structured config for eos_cli_config_gen.
               structured_config: <dict>
+
+          # Custom structured config for eos_cli_config_gen.
           structured_config: <dict>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # Custom structured config for eos_cli_config_gen.
           structured_config: <dict>
     ```

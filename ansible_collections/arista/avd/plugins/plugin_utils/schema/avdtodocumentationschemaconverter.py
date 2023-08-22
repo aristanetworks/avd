@@ -216,6 +216,11 @@ class AvdToDocumentationSchemaConverter:
             return output
 
         row_indentation = " " * indentation
+
+        if (description := schema.get("description")) is not None:
+            output.append("")  # Add blank line above description to make it easier to see which var the description is covering.
+            output.extend([f"{row_indentation}# {line}".rstrip() for line in str(description).strip().split("\n")])
+
         if first_list_item_key:
             # Make an indentation of "    " into "  - " to show this is a list item in YAML format
             row_indentation = f"{row_indentation[:-2]}- "
@@ -224,6 +229,13 @@ class AvdToDocumentationSchemaConverter:
         var_type = schema.get("type")
 
         if var_type == "dict" and (schema_keys := self._get_keys(schema)) and not schema.get("documentation_options", {}).get("hide_keys"):
+            if (schema_default := schema.get("default")) is not None:
+                if len(schema_default) > 1:
+                    # TODO: Move annotation logic from template to here
+                    pass
+                else:
+                    row = f"{row}  # default value: {schema_default}"
+
             output.append(row)
             for key, childschema in schema_keys.items():
                 if table not in self._get_tables(childschema):
@@ -238,6 +250,13 @@ class AvdToDocumentationSchemaConverter:
                 )
                 output.extend(rows)
         elif var_type == "list" and (schema_items := schema.get("items")):
+            if (schema_default := schema.get("default")) is not None:
+                if len(schema_default) > 1:
+                    # TODO: Move annotation logic from template to here
+                    pass
+                else:
+                    row = f"{row}  # default value: {schema_default}"
+
             output.append(row)
             schema_items_type = schema_items.get("type")
             if schema_items_type == "dict" and "keys" in schema_items:
@@ -273,7 +292,35 @@ class AvdToDocumentationSchemaConverter:
                 row = f"{row_indentation}  - <{schema_items_type}>"
                 output.append(row)
         else:
-            row = f"{row} <{var_type}>"
+            row = f"{row} <{var_type}"  # Leaving < open
+            if (valid_values := schema.get("valid_values")) is not None:
+                if var_type == "str":
+                    valid_values = [f'"{value}"' for value in valid_values]
+                else:
+                    valid_values = [str(value) for value in valid_values]
+
+                row = f"{row}; {' | '.join(valid_values)}"
+
+            min = schema.get("min")
+            max = schema.get("max")
+            if min is not None or max is not None:
+                if min is not None and max is not None:
+                    row = f"{row}; {min}-{max}"
+                elif min is not None:
+                    row = f"{row}; >={min}"
+                elif max is not None:
+                    row = f"{row}; <={max}"
+
+            if (default := schema.get("default")) is not None:
+                if var_type == "str":
+                    default = f'"{default}"'
+
+                row = f"{row}; default={default}"
+
+            if schema.get("required") is True:
+                row = f"{row}; required"
+
+            row = f"{row}>"  # Add closing >
             output.append(row)
 
         return output

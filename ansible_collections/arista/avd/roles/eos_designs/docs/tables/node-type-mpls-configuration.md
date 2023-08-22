@@ -44,35 +44,86 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
-        mpls_overlay_role: <str>
+
+        # Set the default mpls overlay role.
+        # Acting role in overlay control plane.
+        mpls_overlay_role: <str; "client" | "server" | "none">
+
+        # Set the default overlay address families.
         overlay_address_families:
           - <str>
+
+        # List of inventory hostname acting as MPLS route-reflectors.
         mpls_route_reflectors:
           - <str>
+
+        # Set BGP cluster id.
         bgp_cluster_id: <str>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
-              mpls_overlay_role: <str>
+
+              # Set the default mpls overlay role.
+              # Acting role in overlay control plane.
+              mpls_overlay_role: <str; "client" | "server" | "none">
+
+              # Set the default overlay address families.
               overlay_address_families:
                 - <str>
+
+              # List of inventory hostname acting as MPLS route-reflectors.
               mpls_route_reflectors:
                 - <str>
+
+              # Set BGP cluster id.
               bgp_cluster_id: <str>
-          mpls_overlay_role: <str>
+
+          # Set the default mpls overlay role.
+          # Acting role in overlay control plane.
+          mpls_overlay_role: <str; "client" | "server" | "none">
+
+          # Set the default overlay address families.
           overlay_address_families:
             - <str>
+
+          # List of inventory hostname acting as MPLS route-reflectors.
           mpls_route_reflectors:
             - <str>
+
+          # Set BGP cluster id.
           bgp_cluster_id: <str>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
-          mpls_overlay_role: <str>
+
+          # Set the default mpls overlay role.
+          # Acting role in overlay control plane.
+          mpls_overlay_role: <str; "client" | "server" | "none">
+
+          # Set the default overlay address families.
           overlay_address_families:
             - <str>
+
+          # List of inventory hostname acting as MPLS route-reflectors.
           mpls_route_reflectors:
             - <str>
+
+          # Set BGP cluster id.
           bgp_cluster_id: <str>
     ```

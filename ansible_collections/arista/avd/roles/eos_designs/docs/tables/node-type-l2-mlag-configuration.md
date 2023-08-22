@@ -100,91 +100,294 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # Custom structured config applied to MLAG peer link port-channel id.
+        # Added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+        # Overrides the settings on the port-channel interface level.
+        # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_port_channel_structured_config: <dict>
+
+        # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+        # Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        # Overrides the settings on the vlan interface level.
+        # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_vlan_structured_config: <dict>
+
+        # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+        # Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        # Overrides the settings on the vlan interface level.
+        # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
         mlag_peer_l3_vlan_structured_config: <dict>
-        mlag: <bool>
-        mlag_dual_primary_detection: <bool>
-        mlag_ibgp_origin_incomplete: <bool>
+
+        # Enable / Disable auto MLAG, when two nodes are defined in node group.
+        mlag: <bool; default=True>
+
+        # Enable / Disable MLAG dual primary detection.
+        mlag_dual_primary_detection: <bool; default=False>
+
+        # Set origin of routes received from MLAG iBGP peer to incomplete.
+        # The purpose is to optimize routing for leaf loopbacks from spine perspective and
+        # avoid suboptimal routing via peerlink for control plane traffic.
+        mlag_ibgp_origin_incomplete: <bool; default=True>
+
+        # Each list item supports range syntax that can be expanded into a list of interfaces.
+        # Required when MLAG leafs are present in the topology.
         mlag_interfaces:
           - <str>
+
+        # Set MLAG interface speed.
+        # < interface_speed or forced interface_speed or auto interface_speed >.
         mlag_interfaces_speed: <str>
-        mlag_peer_l3_vlan: <int>
+
+        # Underlay L3 peering SVI interface id.
+        # If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.
+        mlag_peer_l3_vlan: <int; 0-4094; default=4093>
+
+        # IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.
+        # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
         mlag_peer_l3_ipv4_pool: <str>
-        mlag_peer_vlan: <int>
+
+        # MLAG Peer Link (control link) SVI interface id.
+        mlag_peer_vlan: <int; 1-4094; default=4094>
         mlag_peer_link_allowed_vlans: <str>
+
+        # IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+        # Required when MLAG leafs present in topology.
         mlag_peer_ipv4_pool: <str>
+
+        # If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.
+        # Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.
         mlag_port_channel_id: <int>
+
+        # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
         mlag_domain_id: <str>
-        spanning_tree_mode: <str>
-        spanning_tree_priority: <int>
-        spanning_tree_root_super: <bool>
+        spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
+        spanning_tree_priority: <int; default=32768>
+        spanning_tree_root_super: <bool; default=False>
+
+        # Virtual router mac address for anycast gateway.
         virtual_router_mac_address: <str>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # Custom structured config applied to MLAG peer link port-channel id.
+              # Added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+              # Overrides the settings on the port-channel interface level.
+              # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
               mlag_port_channel_structured_config: <dict>
+
+              # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+              # Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              # Overrides the settings on the vlan interface level.
+              # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
               mlag_peer_vlan_structured_config: <dict>
+
+              # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+              # Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+              # Overrides the settings on the vlan interface level.
+              # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
               mlag_peer_l3_vlan_structured_config: <dict>
-              mlag: <bool>
-              mlag_dual_primary_detection: <bool>
-              mlag_ibgp_origin_incomplete: <bool>
+
+              # Enable / Disable auto MLAG, when two nodes are defined in node group.
+              mlag: <bool; default=True>
+
+              # Enable / Disable MLAG dual primary detection.
+              mlag_dual_primary_detection: <bool; default=False>
+
+              # Set origin of routes received from MLAG iBGP peer to incomplete.
+              # The purpose is to optimize routing for leaf loopbacks from spine perspective and
+              # avoid suboptimal routing via peerlink for control plane traffic.
+              mlag_ibgp_origin_incomplete: <bool; default=True>
+
+              # Each list item supports range syntax that can be expanded into a list of interfaces.
+              # Required when MLAG leafs are present in the topology.
               mlag_interfaces:
                 - <str>
+
+              # Set MLAG interface speed.
+              # < interface_speed or forced interface_speed or auto interface_speed >.
               mlag_interfaces_speed: <str>
-              mlag_peer_l3_vlan: <int>
+
+              # Underlay L3 peering SVI interface id.
+              # If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.
+              mlag_peer_l3_vlan: <int; 0-4094; default=4093>
+
+              # IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.
+              # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
               mlag_peer_l3_ipv4_pool: <str>
-              mlag_peer_vlan: <int>
+
+              # MLAG Peer Link (control link) SVI interface id.
+              mlag_peer_vlan: <int; 1-4094; default=4094>
               mlag_peer_link_allowed_vlans: <str>
+
+              # IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+              # Required when MLAG leafs present in topology.
               mlag_peer_ipv4_pool: <str>
+
+              # If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.
+              # Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.
               mlag_port_channel_id: <int>
+
+              # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
               mlag_domain_id: <str>
-              spanning_tree_mode: <str>
-              spanning_tree_priority: <int>
-              spanning_tree_root_super: <bool>
+              spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
+              spanning_tree_priority: <int; default=32768>
+              spanning_tree_root_super: <bool; default=False>
+
+              # Virtual router mac address for anycast gateway.
               virtual_router_mac_address: <str>
+
+          # Custom structured config applied to MLAG peer link port-channel id.
+          # Added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+          # Overrides the settings on the port-channel interface level.
+          # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_port_channel_structured_config: <dict>
+
+          # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+          # Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+          # Overrides the settings on the vlan interface level.
+          # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_vlan_structured_config: <dict>
+
+          # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+          # Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+          # Overrides the settings on the vlan interface level.
+          # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config: <dict>
-          mlag: <bool>
-          mlag_dual_primary_detection: <bool>
-          mlag_ibgp_origin_incomplete: <bool>
+
+          # Enable / Disable auto MLAG, when two nodes are defined in node group.
+          mlag: <bool; default=True>
+
+          # Enable / Disable MLAG dual primary detection.
+          mlag_dual_primary_detection: <bool; default=False>
+
+          # Set origin of routes received from MLAG iBGP peer to incomplete.
+          # The purpose is to optimize routing for leaf loopbacks from spine perspective and
+          # avoid suboptimal routing via peerlink for control plane traffic.
+          mlag_ibgp_origin_incomplete: <bool; default=True>
+
+          # Each list item supports range syntax that can be expanded into a list of interfaces.
+          # Required when MLAG leafs are present in the topology.
           mlag_interfaces:
             - <str>
+
+          # Set MLAG interface speed.
+          # < interface_speed or forced interface_speed or auto interface_speed >.
           mlag_interfaces_speed: <str>
-          mlag_peer_l3_vlan: <int>
+
+          # Underlay L3 peering SVI interface id.
+          # If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.
+          mlag_peer_l3_vlan: <int; 0-4094; default=4093>
+
+          # IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.
+          # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
           mlag_peer_l3_ipv4_pool: <str>
-          mlag_peer_vlan: <int>
+
+          # MLAG Peer Link (control link) SVI interface id.
+          mlag_peer_vlan: <int; 1-4094; default=4094>
           mlag_peer_link_allowed_vlans: <str>
+
+          # IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+          # Required when MLAG leafs present in topology.
           mlag_peer_ipv4_pool: <str>
+
+          # If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.
+          # Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.
           mlag_port_channel_id: <int>
+
+          # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
           mlag_domain_id: <str>
-          spanning_tree_mode: <str>
-          spanning_tree_priority: <int>
-          spanning_tree_root_super: <bool>
+          spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
+          spanning_tree_priority: <int; default=32768>
+          spanning_tree_root_super: <bool; default=False>
+
+          # Virtual router mac address for anycast gateway.
           virtual_router_mac_address: <str>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # Custom structured config applied to MLAG peer link port-channel id.
+          # Added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+          # Overrides the settings on the port-channel interface level.
+          # "mlag_port_channel_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_port_channel_structured_config: <dict>
+
+          # Custom structured config applied to MLAG Peer Link (control link) SVI interface id.
+          # Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+          # Overrides the settings on the vlan interface level.
+          # "mlag_peer_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_vlan_structured_config: <dict>
+
+          # Custom structured config applied to MLAG underlay L3 peering SVI interface id.
+          # Added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+          # Overrides the settings on the vlan interface level.
+          # "mlag_peer_l3_vlan_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.
           mlag_peer_l3_vlan_structured_config: <dict>
-          mlag: <bool>
-          mlag_dual_primary_detection: <bool>
-          mlag_ibgp_origin_incomplete: <bool>
+
+          # Enable / Disable auto MLAG, when two nodes are defined in node group.
+          mlag: <bool; default=True>
+
+          # Enable / Disable MLAG dual primary detection.
+          mlag_dual_primary_detection: <bool; default=False>
+
+          # Set origin of routes received from MLAG iBGP peer to incomplete.
+          # The purpose is to optimize routing for leaf loopbacks from spine perspective and
+          # avoid suboptimal routing via peerlink for control plane traffic.
+          mlag_ibgp_origin_incomplete: <bool; default=True>
+
+          # Each list item supports range syntax that can be expanded into a list of interfaces.
+          # Required when MLAG leafs are present in the topology.
           mlag_interfaces:
             - <str>
+
+          # Set MLAG interface speed.
+          # < interface_speed or forced interface_speed or auto interface_speed >.
           mlag_interfaces_speed: <str>
-          mlag_peer_l3_vlan: <int>
+
+          # Underlay L3 peering SVI interface id.
+          # If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.
+          mlag_peer_l3_vlan: <int; 0-4094; default=4093>
+
+          # IP address pool used for MLAG underlay L3 peering. IP is derived from the node id.
+          # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
           mlag_peer_l3_ipv4_pool: <str>
-          mlag_peer_vlan: <int>
+
+          # MLAG Peer Link (control link) SVI interface id.
+          mlag_peer_vlan: <int; 1-4094; default=4094>
           mlag_peer_link_allowed_vlans: <str>
+
+          # IP address pool used for MLAG Peer Link (control link). IP is derived from the node id.
+          # Required when MLAG leafs present in topology.
           mlag_peer_ipv4_pool: <str>
+
+          # If not set, the mlag port-channel id is generated based on the digits of the first interface present in 'mlag_interfaces'.
+          # Valid port-channel id numbers are < 1-2000 > for EOS < 4.25.0F and < 1 - 999999 > for EOS >= 4.25.0F.
           mlag_port_channel_id: <int>
+
+          # MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
           mlag_domain_id: <str>
-          spanning_tree_mode: <str>
-          spanning_tree_priority: <int>
-          spanning_tree_root_super: <bool>
+          spanning_tree_mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
+          spanning_tree_priority: <int; default=32768>
+          spanning_tree_root_super: <bool; default=False>
+
+          # Virtual router mac address for anycast gateway.
           virtual_router_mac_address: <str>
     ```

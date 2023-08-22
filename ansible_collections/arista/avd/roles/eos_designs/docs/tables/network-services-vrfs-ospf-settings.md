@@ -82,75 +82,170 @@
 === "YAML"
 
     ```yaml
+
+    # Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
+    # Keys are the same used under SVIs. Keys defined under SVIs take precedence.
+    # Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
+    # 1. svi.nodes[inventory_hostname].structured_config
+    # 2. svi_profile.nodes[inventory_hostname].structured_config
+    # 3. svi_parent_profile.nodes[inventory_hostname].structured_config
+    # 4. svi.structured_config
+    # 5. svi_profile.structured_config
+    # 6. svi_parent_profile.structured_config
     svi_profiles:
+
+        # Profile name
       - profile: <str>
+
+        # Define node specific configuration, such as unique IP addresses.
+        # Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
         nodes:
+
+            # l3_leaf inventory hostname
           - node: <str>
+
+            # OSPF interface configuration.
             ospf:
               enabled: <bool>
-              point_to_point: <bool>
-              area: <str>
+              point_to_point: <bool; default=True>
+
+              # OSPF area ID.
+              area: <str; default="0">
+
+              # OSPF link cost.
               cost: <int>
-              authentication: <str>
+              authentication: <str; "simple" | "message-digest">
+
+              # Password used with simple authentication.
               simple_auth_key: <str>
               message_digest_keys:
                 - id: <int>
-                  hash_algorithm: <str>
+                  hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
+
+                  # Type 7 encrypted key.
                   key: <str>
+
+        # OSPF interface configuration.
         ospf:
           enabled: <bool>
-          point_to_point: <bool>
-          area: <str>
+          point_to_point: <bool; default=True>
+
+          # OSPF area ID.
+          area: <str; default="0">
+
+          # OSPF link cost.
           cost: <int>
-          authentication: <str>
+          authentication: <str; "simple" | "message-digest">
+
+          # Password used with simple authentication.
           simple_auth_key: <str>
           message_digest_keys:
             - id: <int>
-              hash_algorithm: <str>
+              hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
+
+              # Type 7 encrypted key.
               key: <str>
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
       - name: <str>
+
+        # VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.
+        #
+        # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
+        # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+        #
+        # VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,
+        # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
+        # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
         vrfs:
           - name: <str>
+
+            # Router OSPF configuration.
+            # This will create an OSPF routing instance in the tenant VRF. If there is no nodes definition, the OSPF instance will be
+            # created on all leafs where the VRF is deployed. This will also cause automatic OSPF redistribution into BGP unless
+            # explicitly turned off with "redistribute_ospf: false".
             ospf:
               enabled: <bool>
+
+              # If not set, "vrf_id" will be used.
               process_id: <int>
+
+              # If not set, switch router_id will be used.
               router_id: <str>
               max_lsa: <int>
-              bfd: <bool>
+              bfd: <bool; default=False>
               redistribute_bgp:
-                enabled: <bool>
+                enabled: <bool; default=True>
+
+                # Route-map name.
                 route_map: <str>
               redistribute_connected:
-                enabled: <bool>
+                enabled: <bool; default=False>
+
+                # Route-map name.
                 route_map: <str>
               nodes:
                 - <str>
-            redistribute_ospf: <bool>
+
+            # Non-selectively enabling or disabling redistribute ospf inside the VRF.
+            redistribute_ospf: <bool; default=True>
+
+            # List of SVIs.
+            # This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
             svis:
-              - id: <int>
+
+                # SVI interface id and VLAN id.
+              - id: <int; 1-4096>
+
+                # Define node specific configuration, such as unique IP addresses.
+                # Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
                 nodes:
+
+                    # l3_leaf inventory hostname
                   - node: <str>
+
+                    # OSPF interface configuration.
                     ospf:
                       enabled: <bool>
-                      point_to_point: <bool>
-                      area: <str>
+                      point_to_point: <bool; default=True>
+
+                      # OSPF area ID.
+                      area: <str; default="0">
+
+                      # OSPF link cost.
                       cost: <int>
-                      authentication: <str>
+                      authentication: <str; "simple" | "message-digest">
+
+                      # Password used with simple authentication.
                       simple_auth_key: <str>
                       message_digest_keys:
                         - id: <int>
-                          hash_algorithm: <str>
+                          hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
+
+                          # Type 7 encrypted key.
                           key: <str>
+
+                # OSPF interface configuration.
                 ospf:
                   enabled: <bool>
-                  point_to_point: <bool>
-                  area: <str>
+                  point_to_point: <bool; default=True>
+
+                  # OSPF area ID.
+                  area: <str; default="0">
+
+                  # OSPF link cost.
                   cost: <int>
-                  authentication: <str>
+                  authentication: <str; "simple" | "message-digest">
+
+                  # Password used with simple authentication.
                   simple_auth_key: <str>
                   message_digest_keys:
                     - id: <int>
-                      hash_algorithm: <str>
+                      hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
+
+                      # Type 7 encrypted key.
                       key: <str>
     ```

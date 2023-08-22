@@ -60,51 +60,142 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # Node is acting as EVPN Multi-Domain Gateway.
+        # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.
+        # Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
+        # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
         evpn_gateway:
+
+          # Define remote peers of the EVPN VXLAN Gateway.
+          # If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+          # If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
           remote_peers:
+
+              # Hostname of remote EVPN GW server.
             - hostname: <str>
+
+              # Peering IP of remote Route Server.
               ip_address: <str>
+
+              # BGP ASN of remote Route Server.
               bgp_as: <str>
+
+          # Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
           evpn_l2:
-            enabled: <bool>
+            enabled: <bool; default=False>
+
+          # Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
           evpn_l3:
-            enabled: <bool>
-            inter_domain: <bool>
+            enabled: <bool; default=False>
+            inter_domain: <bool; default=True>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # Node is acting as EVPN Multi-Domain Gateway.
+              # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.
+              # Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
+              # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
               evpn_gateway:
+
+                # Define remote peers of the EVPN VXLAN Gateway.
+                # If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+                # If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
                 remote_peers:
+
+                    # Hostname of remote EVPN GW server.
                   - hostname: <str>
+
+                    # Peering IP of remote Route Server.
                     ip_address: <str>
+
+                    # BGP ASN of remote Route Server.
                     bgp_as: <str>
+
+                # Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
                 evpn_l2:
-                  enabled: <bool>
+                  enabled: <bool; default=False>
+
+                # Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
                 evpn_l3:
-                  enabled: <bool>
-                  inter_domain: <bool>
+                  enabled: <bool; default=False>
+                  inter_domain: <bool; default=True>
+
+          # Node is acting as EVPN Multi-Domain Gateway.
+          # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.
+          # Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
+          # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
           evpn_gateway:
+
+            # Define remote peers of the EVPN VXLAN Gateway.
+            # If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+            # If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
             remote_peers:
+
+                # Hostname of remote EVPN GW server.
               - hostname: <str>
+
+                # Peering IP of remote Route Server.
                 ip_address: <str>
+
+                # BGP ASN of remote Route Server.
                 bgp_as: <str>
+
+            # Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
             evpn_l2:
-              enabled: <bool>
+              enabled: <bool; default=False>
+
+            # Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
             evpn_l3:
-              enabled: <bool>
-              inter_domain: <bool>
+              enabled: <bool; default=False>
+              inter_domain: <bool; default=True>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # Node is acting as EVPN Multi-Domain Gateway.
+          # New BGP peer-group is generated between EVPN GWs in different domains or between GWs and Route Servers.
+          # Name can be changed under "bgp_peer_groups.evpn_overlay_core" variable.
+          # L3 rechability for different EVPN GWs must be already in place, it is recommended to use DCI & L3 Edge if Route Servers and GWs are not defined under the same Ansible inventory.
           evpn_gateway:
+
+            # Define remote peers of the EVPN VXLAN Gateway.
+            # If the hostname can be found in the inventory, ip_address and BGP ASN will be automatically populated. Manual override takes precedence.
+            # If the peer's hostname can not be found in the inventory, ip_address and bgp_as must be defined.
             remote_peers:
+
+                # Hostname of remote EVPN GW server.
               - hostname: <str>
+
+                # Peering IP of remote Route Server.
                 ip_address: <str>
+
+                # BGP ASN of remote Route Server.
                 bgp_as: <str>
+
+            # Enable EVPN Gateway functionality for route-types 2 (MAC-IP) and 3 (IMET).
             evpn_l2:
-              enabled: <bool>
+              enabled: <bool; default=False>
+
+            # Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
             evpn_l3:
-              enabled: <bool>
-              inter_domain: <bool>
+              enabled: <bool; default=False>
+              inter_domain: <bool; default=True>
     ```

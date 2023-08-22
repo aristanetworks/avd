@@ -15,8 +15,12 @@
 === "YAML"
 
     ```yaml
+
+    # Set the Aboot password
     boot:
       secret:
-        hash_algorithm: <str>
+        hash_algorithm: <str; "md5" | "sha512"; default="sha512">
+
+        # Hashed Password
         key: <str>
     ```

@@ -16,7 +16,13 @@
 
     ```yaml
     trackers:
+
+        # Name of tracker object
       - name: <str>
-        interface: <str>
-        tracked_property: <str>
+
+        # Name of tracked interface
+        interface: <str; required>
+
+        # Property to track
+        tracked_property: <str; default="line-protocol">
     ```

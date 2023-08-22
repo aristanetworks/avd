@@ -58,51 +58,149 @@
 === "YAML"
 
     ```yaml
+
+    # Define Node Type Keys, to specify the properties of each node type in the fabric.
+    # This allows for complete customization of the fabric layout and functionality.
+    # `node_type_keys` should be defined in top level group_var for the fabric.
+    # The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
     node_type_keys:
       - key: <str>
+
+        # Type value matching this node_type_key.
         type: <str>
-        connected_endpoints: <bool>
-        default_evpn_role: <str>
-        default_ptp_priority1: <int>
-        default_underlay_routing_protocol: <str>
-        default_overlay_routing_protocol: <str>
-        default_mpls_overlay_role: <str>
+
+        # Are endpoints connected to this node type.
+        connected_endpoints: <bool; default=False>
+
+        # Default evpn_role. Can be overridden in topology vars.
+        default_evpn_role: <str; "none" | "client" | "server"; default="none">
+
+        # Default PTP priority 1
+        default_ptp_priority1: <int; 0-255; default=127>
+
+        # Set the default underlay routing_protocol.
+        # Can be overridden by setting "underlay_routing_protocol" host/group_vars.
+        default_underlay_routing_protocol: <str; "ebgp" | "ibgp" | "ospf" | "ospf-ldp" | "isis" | "isis-sr" | "isis-ldp" | "isis-sr-ldp" | "none"; default="ebgp">
+
+        # Set the default overlay routing_protocol.
+        # Can be overridden by setting "overlay_routing_protocol" host/group_vars.
+        default_overlay_routing_protocol: <str; "ebgp" | "ibgp" | "her" | "cvx" | "none"; default="ebgp">
+
+        # Set the default mpls overlay role.
+        # Acting role in overlay control plane.
+        default_mpls_overlay_role: <str; "client" | "server" | "none">
+
+        # Set the default overlay address families.
         default_overlay_address_families:
           - <str>
-        default_evpn_encapsulation: <str>
-        mlag_support: <bool>
+
+        # Set the default evpn encapsulation.
+        default_evpn_encapsulation: <str; "mpls" | "vxlan">
+
+        # Can this node type support mlag.
+        mlag_support: <bool; default=False>
+
+        # Will network services be deployed on this node type.
         network_services:
-          l1: <bool>
-          l2: <bool>
-          l3: <bool>
-        underlay_router: <bool>
-        uplink_type: <str>
-        vtep: <bool>
-        mpls_lsr: <bool>
+
+          # ??
+          l1: <bool; default=False>
+
+          # Vlans
+          l2: <bool; default=False>
+
+          # VRFs, SVIs (if l2 is true).
+          # Only supported with underlay_router.
+          l3: <bool; default=False>
+
+        # Is this node type a L3 device.
+        underlay_router: <bool; default=True>
+
+        # Uplinks must be p2p if "vtep" or "underlay_router" is true.
+        uplink_type: <str; "p2p" | "port-channel"; default="p2p">
+
+        # Is this switch an EVPN VTEP.
+        vtep: <bool; default=False>
+
+        # Is this switch an MPLS LSR.
+        mpls_lsr: <bool; default=False>
+
+        # Override ip_addressing templates.
         ip_addressing:
+
+          # Custom Python Module to import for IP addressing.
           python_module: <str>
+
+          # Name of Custom Python Class to import for IP addressing.
           python_class_name: <str>
+
+          # Path to Custom J2 template.
           router_id: <str>
+
+          # Path to Custom J2 template.
           router_id_ipv6: <str>
+
+          # Path to Custom J2 template.
           mlag_ip_primary: <str>
+
+          # Path to Custom J2 template.
           mlag_ip_secondary: <str>
+
+          # Path to Custom J2 template.
           mlag_l3_ip_primary: <str>
+
+          # Path to Custom J2 template.
           mlag_l3_ip_secondary: <str>
+
+          # Path to Custom J2 template.
           mlag_ibgp_peering_ip_primary: <str>
+
+          # Path to Custom J2 template.
           mlag_ibgp_peering_ip_secondary: <str>
+
+          # Path to Custom J2 template.
           p2p_uplinks_ip: <str>
+
+          # Path to Custom J2 template.
           p2p_uplinks_peer_ip: <str>
+
+          # Path to Custom J2 template.
           vtep_ip_mlag: <str>
+
+          # Path to Custom J2 template.
           vtep_ip: <str>
+
+        # Override interface_descriptions templates
+        # If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.
         interface_descriptions:
+
+          # Custom Python Module to import for interface descriptions.
           python_module: <str>
+
+          # Name of Custom Python Class to import for interface descriptions.
           python_class_name: <str>
+
+          # Path to Custom J2 template.
           underlay_ethernet_interfaces: <str>
+
+          # Path to Custom J2 template.
           underlay_port_channel_interfaces: <str>
+
+          # Path to Custom J2 template.
           mlag_ethernet_interfaces: <str>
+
+          # Path to Custom J2 template.
           mlag_port_channel_interfaces: <str>
+
+          # Path to Custom J2 template.
           connected_endpoints_ethernet_interfaces: <str>
+
+          # Path to Custom J2 template.
           connected_endpoints_port_channel_interfaces: <str>
+
+          # Path to Custom J2 template.
           overlay_loopback_interface: <str>
+
+          # Path to Custom J2 template.
           vtep_loopback_interface: <str>
     ```

@@ -23,8 +23,17 @@
       patches:
         - name: <str>
           enabled: <bool>
+
+          # Must have exactly two connectors to a patch of which at least one must be of type "interface"
           connectors:
             - id: <str>
-              type: <str>
-              endpoint: <str>
+              type: <str; "interface" | "pseudowire"; required>
+
+              # String with relevant endpoint depending on type.
+              # Examples:
+              # - "Ethernet1"
+              # - "Ethernet1 dot1q vlan 123"
+              # - "bgp vpws TENANT_A pseudowire VPWS_PW_1"
+              # - "ldp LDP_PW_1"
+              endpoint: <str; required>
     ```

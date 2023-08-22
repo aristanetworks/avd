@@ -20,6 +20,8 @@
 
     ```yaml
     interface_groups:
+
+        # Interface-Group name
       - name: <str>
         interfaces:
           - <str>

@@ -89,80 +89,264 @@
 
     ```yaml
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
       - name: <str>
+
+        # VRFs will only be configured on a node if any of the underlying objects like `svis` or `l3_interfaces` apply to the node.
+        #
+        # It is recommended to only define a VRF in one Tenant. If the same VRF name is used across multiple tenants and those tenants
+        # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+        #
+        # VRF "default" is partially supported under network-services. Currently the supported options for "default" vrf are route-target,
+        # route-distinguisher settings, structured_config, raw_eos_cli in bgp and SVIs are the only supported interface type.
+        # Vlan-aware-bundles are supported as well inside default vrf. OSPF is not supported currently.
         vrfs:
           - name: <str>
+
+            # List of SVIs.
+            # This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
             svis:
-              - id: <int>
-                name: <str>
+
+                # SVI interface id and VLAN id.
+              - id: <int; 1-4096>
+
+                # VLAN name.
+                name: <str; required>
+
+                # SVI profile name to apply.
+                # SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
                 profile: <str>
+
+                # Define node specific configuration, such as unique IP addresses.
+                # Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.
                 nodes:
+
+                    # l3_leaf inventory hostname
                   - node: <str>
+
+                    # VLAN name
                     name: <str>
+
+                    # Enable or disable interface
                     enabled: <bool>
+
+                    # SVI description. By default set to VLAN name.
                     description: <str>
+
+                    # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                     ip_address: <str>
+
+                    # IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                     ipv6_address: <str>
+
+                    # Explicitly enable/disable link-local IPv6 addressing.
                     ipv6_enable: <bool>
+
+                    # IPv4_address/Mask
+                    # IPv4 VXLAN Anycast IP address
+                    # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
                     ip_address_virtual: <str>
+
+                    # IPv6_address/Mask
+                    # ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
+                    # If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
                     ipv6_address_virtual: <str>
+
+                    # IPv6 VXLAN Anycast IP addresses
+                    # Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.
                     ipv6_address_virtuals:
                       - <str>
+
+                    # Secondary IPv4 VXLAN Anycast IP addresses
                     ip_address_virtual_secondaries:
                       - <str>
+
+                    # IPv4 VARP addresses.
+                    # Requires an IP address to be configured on the SVI.
+                    # If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence
+                    # _if_ there is an ip_address configured for the node.
                     ip_virtual_router_addresses:
                       - <str>
+
+                    # IPv6 VARP addresses.
+                    # Requires an IPv6 address to be configured on the SVI.
+                    # If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence
+                    # _if_ there is an ipv6_address configured for the node.
                     ipv6_virtual_router_addresses:
                       - <str>
+
+                    # IP helper for DHCP relay
                     ip_helpers:
+
+                        # IPv4 DHCP server IP
                       - ip_helper: <str>
+
+                        # Interface name to originate DHCP relay packets to DHCP server.
                         source_interface: <str>
+
+                        # VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
                         source_vrf: <str>
-                    vni_override: <int>
+
+                    # By default the VNI will be derived from "mac_vrf_vni_base".
+                    # The vni_override allows us to override this value and statically define it (optional).
+                    vni_override: <int; 1-16777215>
+
+                    # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+                    # The rt_override allows us to override this value and statically define it.
+                    # rt_override will default to vni_override if set.
+                    #
+                    # rt_override supports two formats:
+                    #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+                    #   - A full RT string with colon seperator which will override the full RT.
                     rt_override: <str>
+
+                    # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+                    # The rt_override allows us to override this value and statically define it.
+                    # rd_override will default to rt_override or vni_override if set.
+                    #
+                    # rd_override supports two formats:
+                    #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                    #   - A full RD string with colon seperator which will override the full RD.
                     rd_override: <str>
-                    tags:
+
+                    # Tags leveraged for networks services filtering.
+                    # Tags are matched against "filter.tags" defined under node type settings.
+                    # Tags are also matched against the "node_group" name under node type settings.
+                    tags:  # default value: ['all']
                       - <str>
                     trunk_groups:
                       - <str>
-                    vxlan: <bool>
+
+                    # Extend this SVI over VXLAN.
+                    vxlan: <bool; default=True>
+
+                    # Interface MTU.
                     mtu: <int>
                     bgp:
+
+                      # Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>]
+                      # This configuration will not be applied to vlan aware bundles
                       structured_config: <dict>
+
+                      # EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.
                       raw_eos_cli: <str>
+
+                    # EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                     raw_eos_cli: <str>
+
+                    # Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
                     structured_config: <dict>
+
+                # Enable or disable interface
                 enabled: <bool>
+
+                # SVI description. By default set to VLAN name.
                 description: <str>
+
+                # IPv4_address/Mask. Usually set under "nodes" to have unique IPv4 addresses per node.
                 ip_address: <str>
+
+                # IPv6_address/Mask. Usually set under "nodes" to have unique IPv6 addresses per node.
                 ipv6_address: <str>
+
+                # Explicitly enable/disable link-local IPv6 addressing.
                 ipv6_enable: <bool>
+
+                # IPv4_address/Mask
+                # IPv4 VXLAN Anycast IP address
+                # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
                 ip_address_virtual: <str>
+
+                # IPv6_address/Mask
+                # ipv6 address virtuals to configure VXLAN Anycast IP address (Optional)
+                # If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
                 ipv6_address_virtual: <str>
+
+                # IPv6 VXLAN Anycast IP addresses
+                # Conserves IPv6 addresses in VXLAN deployments as it doesn't require unique IPv6 addresses on each node.
                 ipv6_address_virtuals:
                   - <str>
+
+                # Secondary IPv4 VXLAN Anycast IP addresses
                 ip_address_virtual_secondaries:
                   - <str>
+
+                # IPv4 VARP addresses.
+                # Requires an IP address to be configured on the SVI.
+                # If ip_address_virtual is also set, ip_virtual_router_addresses will take precedence
+                # _if_ there is an ip_address configured for the node.
                 ip_virtual_router_addresses:
                   - <str>
+
+                # IPv6 VARP addresses.
+                # Requires an IPv6 address to be configured on the SVI.
+                # If ipv6_address_virtuals is also set, ipv6_virtual_router_addresses will take precedence
+                # _if_ there is an ipv6_address configured for the node.
                 ipv6_virtual_router_addresses:
                   - <str>
+
+                # IP helper for DHCP relay
                 ip_helpers:
+
+                    # IPv4 DHCP server IP
                   - ip_helper: <str>
+
+                    # Interface name to originate DHCP relay packets to DHCP server.
                     source_interface: <str>
+
+                    # VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
                     source_vrf: <str>
-                vni_override: <int>
+
+                # By default the VNI will be derived from "mac_vrf_vni_base".
+                # The vni_override allows us to override this value and statically define it (optional).
+                vni_override: <int; 1-16777215>
+
+                # By default the MAC VRF RT will be derived from mac_vrf_id_base + vlan_id.
+                # The rt_override allows us to override this value and statically define it.
+                # rt_override will default to vni_override if set.
+                #
+                # rt_override supports two formats:
+                #   - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).
+                #   - A full RT string with colon seperator which will override the full RT.
                 rt_override: <str>
+
+                # By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.
+                # The rt_override allows us to override this value and statically define it.
+                # rd_override will default to rt_override or vni_override if set.
+                #
+                # rd_override supports two formats:
+                #   - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
+                #   - A full RD string with colon seperator which will override the full RD.
                 rd_override: <str>
-                tags:
+
+                # Tags leveraged for networks services filtering.
+                # Tags are matched against "filter.tags" defined under node type settings.
+                # Tags are also matched against the "node_group" name under node type settings.
+                tags:  # default value: ['all']
                   - <str>
                 trunk_groups:
                   - <str>
-                vxlan: <bool>
+
+                # Extend this SVI over VXLAN.
+                vxlan: <bool; default=True>
+
+                # Interface MTU.
                 mtu: <int>
                 bgp:
+
+                  # Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>]
+                  # This configuration will not be applied to vlan aware bundles
                   structured_config: <dict>
+
+                  # EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration.
                   raw_eos_cli: <str>
+
+                # EOS CLI rendered directly on the VLAN interface in the final EOS configuration.
                 raw_eos_cli: <str>
+
+                # Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
                 structured_config: <dict>
     ```

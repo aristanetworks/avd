@@ -21,12 +21,28 @@
 
     ```yaml
     local_users:
+
+        # Username
       - name: <str>
+
+        # If true, the user will be removed and all other settings are ignored.
+        # Useful for removing the default "admin" user.
         disabled: <bool>
-        privilege: <int>
+
+        # Initial privilege level with local EXEC authorization.
+        privilege: <int; 0-15>
+
+        # EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"
         role: <str>
+
+        # SHA512 Hash of Password
+        # Must be the hash of the password. By default EOS salts the password with the username, so the simplest is to generate the hash on an EOS device using the same username.
         sha512_password: <str>
+
+        # If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         no_password: <bool>
         ssh_key: <str>
-        shell: <str>
+
+        # Specify shell for the user
+        shell: <str; "/bin/bash" | "/bin/sh" | "/sbin/nologin">
     ```

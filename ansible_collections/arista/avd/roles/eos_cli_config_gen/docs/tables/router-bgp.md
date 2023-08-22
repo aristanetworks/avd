@@ -609,54 +609,112 @@
 
     ```yaml
     router_bgp:
+
+      # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
       as: <str>
+
+      # In IP address format A.B.C.D
       router_id: <str>
       distance:
-        external_routes: <int>
-        internal_routes: <int>
-        local_routes: <int>
+        external_routes: <int; 1-255; required>
+        internal_routes: <int; 1-255; required>
+        local_routes: <int; 1-255; required>
       graceful_restart:
         enabled: <bool>
-        restart_time: <int>
-        stalepath_time: <int>
+
+        # Number of seconds
+        restart_time: <int; 1-3600>
+
+        # Number of seconds
+        stalepath_time: <int; 1-3600>
       graceful_restart_helper:
         enabled: <bool>
-        restart_time: <int>
+
+        # Number of seconds
+        # graceful-restart-help long-lived and restart-time are mutually exclusive in CLI.
+        # restart-time will take precedence if both are configured.
+        restart_time: <int; 1-100000000>
+
+        # graceful-restart-help long-lived and restart-time are mutually exclusive in CLI.
+        # restart-time will take precedence if both are configured.
         long_lived: <bool>
       maximum_paths:
-        paths: <int>
-        ecmp: <int>
+        paths: <int; 1-600; required>
+        ecmp: <int; 1-600; required>
       updates:
+
+        # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
         wait_for_convergence: <bool>
+
+        # Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+        # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
         wait_install: <bool>
+
+      # IP Address A.B.C.D
       bgp_cluster_id: <str>
+
+      # BGP command as string
       bgp_defaults:
         - <str>
       bgp:
         default:
+
+          # Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True).
           ipv4_unicast: <bool>
+
+          # Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False).
           ipv4_unicast_transport_ipv6: <bool>
         route_reflector_preserve_attributes:
           enabled: <bool>
           always: <bool>
         bestpath:
           d_path: <bool>
+
+      # Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
       listen_ranges:
+
+          # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
         - prefix: <str>
+
+          # Include router ID as part of peer filter
           peer_id_include_router_id: <bool>
+
+          # Peer group name
           peer_group: <str>
+
+          # Peer-filter name
+          # note: `peer_filter` or `remote_as` is required but mutually exclusive.
+          # If both are defined, `peer_filter` takes precedence
           peer_filter: <str>
+
+          # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
           remote_as: <str>
       peer_groups:
+
+          # Peer-group name
         - name: <str>
+
+          # Key only used for documentation or validation purposes
           type: <str>
+
+          # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
           remote_as: <str>
+
+          # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
           local_as: <str>
           description: <str>
           shutdown: <bool>
+
+          # BGP AS-PATH options
           as_path:
+
+            # Replace AS number with local AS number
             remote_as_replace_out: <bool>
+
+            # Disable prepending own AS number to AS path
             prepend_own_disabled: <bool>
+
+          # Remove private AS numbers in outbound AS path
           remove_private_as:
             enabled: <bool>
             all: <bool>
@@ -664,75 +722,139 @@
           remove_private_as_ingress:
             enabled: <bool>
             replace_as: <bool>
+
+          # Peer-filter name
+          # note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+          # the new `listen_ranges` key above to avoid conflicts.
           peer_filter: <str>
           next_hop_unchanged: <bool>
+
+          # IP address or interface name
           update_source: <str>
           route_reflector_client: <bool>
           bfd: <bool>
-          ebgp_multihop: <int>
+
+          # Time-to-live in range of hops
+          ebgp_multihop: <int; 1-255>
           next_hop_self: <bool>
           password: <str>
           passive: <bool>
           default_originate:
             enabled: <bool>
             always: <bool>
+
+            # Route-map name
             route_map: <str>
+
+          # 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
           send_community: <str>
-          maximum_routes: <int>
+
+          # Maximum number of routes (0 means unlimited)
+          maximum_routes: <int; 0-4294967294>
+
+          # Maximum number of routes after which a warning is issued (0 means never warn) or
+          # Percentage of maximum number of routes at which to warn ("<1-100> percent")
           maximum_routes_warning_limit: <str>
           maximum_routes_warning_only: <bool>
           link_bandwidth:
             enabled: <bool>
+
+            # nn.nn(K|M|G) link speed in bits/second
             default: <str>
           allowas_in:
             enabled: <bool>
-            times: <int>
-          weight: <int>
+
+            # Number of local ASNs allowed in a BGP update
+            times: <int; 1-10>
+          weight: <int; 0-65535>
+
+          # BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
           timers: <str>
           rib_in_pre_policy_retain:
             enabled: <bool>
             all: <bool>
+
+          # Inbound route-map name
           route_map_in: <str>
+
+          # Outbound route-map name
           route_map_out: <str>
+
+          # IP prefix range
+          # note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+          # the new `listen_ranges` key above to avoid conflicts.
           bgp_listen_range_prefix: <str>
           session_tracker: <str>
       neighbors:
         - ip_address: <str>
           peer_group: <str>
+
+          # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
           remote_as: <str>
+
+          # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
           local_as: <str>
+
+          # BGP AS-PATH options
           as_path:
+
+            # Replace AS number with local AS number
             remote_as_replace_out: <bool>
+
+            # Disable prepending own AS number to AS path
             prepend_own_disabled: <bool>
           description: <str>
           route_reflector_client: <bool>
           passive: <bool>
           shutdown: <bool>
+
+          # Source Interface
           update_source: <str>
           bfd: <bool>
-          weight: <int>
+          weight: <int; 0-65535>
+
+          # BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
           timers: <str>
+
+          # Inbound route-map name
           route_map_in: <str>
+
+          # Outbound route-map name
           route_map_out: <str>
           default_originate:
             enabled: <bool>
             always: <bool>
             route_map: <str>
+
+          # 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
           send_community: <str>
-          maximum_routes: <int>
+
+          # Maximum number of routes (0 means unlimited)
+          maximum_routes: <int; 0-4294967294>
+
+          # Maximum number of routes after which a warning is issued (0 means never warn) or
+          # Percentage of maximum number of routes at which to warn ("<1-100> percent")
           maximum_routes_warning_limit: <str>
           maximum_routes_warning_only: <bool>
           allowas_in:
             enabled: <bool>
-            times: <int>
-          ebgp_multihop: <int>
+
+            # Number of local ASNs allowed in a BGP update
+            times: <int; 1-10>
+
+          # Time-to-live in range of hops
+          ebgp_multihop: <int; 1-255>
           next_hop_self: <bool>
           link_bandwidth:
             enabled: <bool>
+
+            # nn.nn(K|M|G) link speed in bits/second
             default: <str>
           rib_in_pre_policy_retain:
             enabled: <bool>
             all: <bool>
+
+          # Remove private AS numbers in outbound AS path
           remove_private_as:
             enabled: <bool>
             all: <bool>
@@ -742,29 +864,49 @@
             replace_as: <bool>
           session_tracker: <str>
       neighbor_interfaces:
+
+          # Interface name
         - name: <str>
           remote_as: <str>
-          peer_group: <str>
+          peer_group: <str; default="Peer-group name">
           description: <str>
+
+          # Peer-filter name
           peer_filter: <str>
       aggregate_addresses:
+
+          # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
         - prefix: <str>
           advertise_only: <bool>
           as_set: <bool>
           summary_only: <bool>
+
+          # Route-map name
           attribute_map: <str>
+
+          # Route-map name
           match_map: <str>
       redistribute_routes:
         - source_protocol: <str>
           route_map: <str>
           include_leaked: <bool>
       vlan_aware_bundles:
+
+          # VLAN aware bundle name
         - name: <str>
+
+          # Key only used for documentation or validation purposes
           tenant: <str>
+
+          # Key only used for documentation or validation purposes
           description: <str>
+
+          # Route distinguisher
           rd: <str>
           rd_evpn_domain:
-            domain: <str>
+            domain: <str; "remote" | "all">
+
+            # Route distinguisher
             rd: <str>
           route_targets:
             both:
@@ -774,26 +916,36 @@
             export:
               - <str>
             import_evpn_domains:
-              - domain: <str>
+              - domain: <str; "remote" | "all">
                 route_target: <str>
             export_evpn_domains:
-              - domain: <str>
+              - domain: <str; "remote" | "all">
                 route_target: <str>
             import_export_evpn_domains:
-              - domain: <str>
+              - domain: <str; "remote" | "all">
                 route_target: <str>
           redistribute_routes:
             - <str>
           no_redistribute_routes:
             - <str>
+
+          # VLAN range as string. Example "100-200,300"
           vlan: <str>
       vlans:
         - id: <int>
+
+          # Key only used for documentation or validation purposes
           tenant: <str>
+
+          # Route distinguisher
           rd: <str>
           rd_evpn_domain:
-            domain: <str>
+            domain: <str; "remote" | "all">
+
+            # Route distinguisher
             rd: <str>
+
+          # Multiline EOS CLI rendered directly on the Router BGP, VLAN definition in the final EOS configuration
           eos_cli: <str>
           route_targets:
             both:
@@ -803,54 +955,82 @@
             export:
               - <str>
             import_evpn_domains:
-              - domain: <str>
+              - domain: <str; "remote" | "all">
                 route_target: <str>
             export_evpn_domains:
-              - domain: <str>
+              - domain: <str; "remote" | "all">
                 route_target: <str>
             import_export_evpn_domains:
-              - domain: <str>
+              - domain: <str; "remote" | "all">
                 route_target: <str>
           redistribute_routes:
             - <str>
           no_redistribute_routes:
             - <str>
       vpws:
+
+          # VPWS instance name
         - name: <str>
+
+          # Route distinguisher
           rd: <str>
           route_targets:
+
+            # Route Target
             import_export: <str>
           mpls_control_word: <bool>
           label_flow: <bool>
           mtu: <int>
           pseudowires:
+
+              # Pseudowire name
             - name: <str>
+
+              # Must match id_remote on other pe
               id_local: <int>
+
+              # Must match id_local on other pe
               id_remote: <int>
       address_family_evpn:
         domain_identifier: <str>
         neighbor_default:
-          encapsulation: <str>
+          encapsulation: <str; "vxlan" | "mpls">
+
+          # Source interface name
           next_hop_self_source_interface: <str>
           next_hop_self_received_evpn_routes:
             enable: <bool>
             inter_domain: <bool>
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
             domain_remote: <bool>
-            encapsulation: <str>
+            encapsulation: <str; "vxlan" | "mpls">
         evpn_hostflap_detection:
           enabled: <bool>
-          window: <int>
-          threshold: <int>
-          expiry_timeout: <int>
+
+          # Time (in seconds) to detect a MAC duplication issue
+          window: <int; 0-4294967295>
+
+          # Minimum number of MAC moves that indicate a MAC Duplication issue
+          threshold: <int; 0-4294967295>
+
+          # Time (in seconds) to purge a MAC duplication issue
+          expiry_timeout: <int; 0-4294967295>
         route:
-          import_match_failure_action: <str>
+          import_match_failure_action: <str; "discard">
       address_family_rtc:
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
             default_route_target:
@@ -858,64 +1038,120 @@
               encoding_origin_as_omit: <str>
       address_family_ipv4:
         networks:
+
+            # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
           - prefix: <str>
+
+            # Route-map name
             route_map: <str>
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
             default_originate:
               always: <bool>
+
+              # Route-map name
               route_map: <str>
             next_hop:
               address_family_ipv6:
-                enabled: <bool>
+                enabled: <bool; required>
                 originate: <bool>
               address_family_ipv6_originate: <bool>
+
+            # Inbound prefix-list name
             prefix_list_in: <str>
+
+            # Outbound prefix-list name
             prefix_list_out: <str>
         neighbors:
           - ip_address: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
+
+            # Inbound prefix-list name
             prefix_list_in: <str>
+
+            # Prefix-list name
             prefix_list_out: <str>
             default_originate:
               always: <bool>
               route_map: <str>
       address_family_ipv4_multicast:
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
         neighbors:
           - ip_address: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
         redistribute_routes:
           - source_protocol: <str>
             route_map: <str>
       address_family_ipv6:
         networks:
+
+            # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
           - prefix: <str>
+
+            # Route-map name
             route_map: <str>
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
+
+            # Inbound prefix-list name
             prefix_list_in: <str>
+
+            # Outbound prefix-list name
             prefix_list_out: <str>
         neighbors:
           - ip_address: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
+
+            # Inbound prefix-list name
             prefix_list_in: <str>
+
+            # Outbound prefix-list name
             prefix_list_out: <str>
         redistribute_routes:
           - source_protocol: <str>
@@ -924,81 +1160,121 @@
       address_family_ipv6_multicast:
         bgp:
           missing_policy:
-            direction_in_action: <str>
-            direction_out_action: <str>
+            direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+            direction_out_action: <str; "deny" | "deny-in-out" | "permit">
           additional_paths:
             receive: <bool>
         neighbors:
           - ip_address: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
         networks:
+
+            # IPv6 prefix "A:B:C:D:E:F:G:H/I"
           - prefix: <str>
             route_map: <str>
       address_family_flow_spec_ipv4:
         bgp:
           missing_policy:
-            direction_in_action: <str>
-            direction_out_action: <str>
+            direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+            direction_out_action: <str; "deny" | "deny-in-out" | "permit">
         neighbors:
           - ip_address: <str>
             activate: <bool>
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
       address_family_flow_spec_ipv6:
         bgp:
           missing_policy:
-            direction_in_action: <str>
-            direction_out_action: <str>
+            direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+            direction_out_action: <str; "deny" | "deny-in-out" | "permit">
         neighbors:
           - ip_address: <str>
             activate: <bool>
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
       address_family_vpn_ipv4:
         domain_identifier: <str>
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
         route:
-          import_match_failure_action: <str>
+          import_match_failure_action: <str; "discard">
         neighbors:
           - ip_address: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
         neighbor_default_encapsulation_mpls_next_hop_self:
           source_interface: <str>
       address_family_vpn_ipv6:
         domain_identifier: <str>
         peer_groups:
+
+            # Peer-group name
           - name: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
         route:
-          import_match_failure_action: <str>
+          import_match_failure_action: <str; "discard">
         neighbors:
           - ip_address: <str>
             activate: <bool>
+
+            # Inbound route-map name
             route_map_in: <str>
+
+            # Outbound route-map name
             route_map_out: <str>
         neighbor_default_encapsulation_mpls_next_hop_self:
           source_interface: <str>
       vrfs:
+
+          # VRF name
         - name: <str>
+
+          # Route distinguisher
           rd: <str>
           evpn_multicast: <bool>
+
+          # Enable per-AF EVPN multicast settings
           evpn_multicast_address_family:
             ipv4:
+
+              # Enable EVPN multicast transit mode
               transit: <bool>
           route_targets:
             import:
@@ -1009,26 +1285,57 @@
               - address_family: <str>
                 route_targets:
                   - <str>
+
+          # in IP address format A.B.C.D
           router_id: <str>
+
+          # BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
           timers: <str>
           networks:
+
+              # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
             - prefix: <str>
               route_map: <str>
           updates:
+
+            # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
             wait_for_convergence: <bool>
+
+            # Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+            # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
             wait_install: <bool>
+
+          # Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities
           listen_ranges:
+
+              # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
             - prefix: <str>
+
+              # Include router ID as part of peer filter
               peer_id_include_router_id: <bool>
+
+              # Peer-group name
               peer_group: <str>
+
+              # Peer-filter name
+              # note: `peer_filter`` or `remote_as` is required but mutually exclusive.
+              # If both are defined, peer_filter takes precedence
               peer_filter: <str>
+
+              # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               remote_as: <str>
           neighbors:
             - ip_address: <str>
+
+              # Peer-group name
               peer_group: <str>
+
+              # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               remote_as: <str>
               password: <str>
               passive: <bool>
+
+              # Remove private AS numbers in outbound AS path
               remove_private_as:
                 enabled: <bool>
                 all: <bool>
@@ -1036,41 +1343,76 @@
               remove_private_as_ingress:
                 enabled: <bool>
                 replace_as: <bool>
-              weight: <int>
+              weight: <int; 0-65535>
+
+              # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               local_as: <str>
+
+              # BGP AS-PATH options
               as_path:
+
+                # Replace AS number with local AS number
                 remote_as_replace_out: <bool>
+
+                # Disable prepending own AS number to AS path
                 prepend_own_disabled: <bool>
               description: <str>
               route_reflector_client: <bool>
-              ebgp_multihop: <int>
+
+              # Time-to-live in range of hops
+              ebgp_multihop: <int; 1-255>
               next_hop_self: <bool>
               shutdown: <bool>
               bfd: <bool>
+
+              # BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
               timers: <str>
               rib_in_pre_policy_retain:
                 enabled: <bool>
                 all: <bool>
+
+              # 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
               send_community: <str>
               maximum_routes: <int>
+
+              # Maximum number of routes after which a warning is issued (0 means never warn) or
+              # Percentage of maximum number of routes at which to warn ("<1-100> percent")
               maximum_routes_warning_limit: <str>
               maximum_routes_warning_only: <bool>
               allowas_in:
                 enabled: <bool>
-                times: <int>
+
+                # Number of local ASNs allowed in a BGP update
+                times: <int; 1-10>
               default_originate:
                 enabled: <bool>
                 always: <bool>
                 route_map: <str>
               update_source: <str>
+
+              # Inbound route-map name
               route_map_in: <str>
+
+              # Outbound route-map name
               route_map_out: <str>
+
+              # Inbound prefix-list name
               prefix_list_in: <str>
+
+              # Outbound prefix-list name
               prefix_list_out: <str>
           neighbor_interfaces:
+
+              # Interface name
             - name: <str>
+
+              # BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               remote_as: <str>
+
+              # Peer-group name
               peer_group: <str>
+
+              # Peer-filter name
               peer_filter: <str>
               description: <str>
           redistribute_routes:
@@ -1078,6 +1420,8 @@
               route_map: <str>
               include_leaked: <bool>
           aggregate_addresses:
+
+              # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
             - prefix: <str>
               advertise_only: <bool>
               as_set: <bool>
@@ -1087,8 +1431,8 @@
           address_family_ipv4:
             bgp:
               missing_policy:
-                direction_in_action: <str>
-                direction_out_action: <str>
+                direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+                direction_out_action: <str; "deny" | "deny-in-out" | "permit">
               additional_paths:
                 install: <bool>
                 install_ecmp_primary: <bool>
@@ -1097,25 +1441,35 @@
                   any: <bool>
                   backup: <bool>
                   ecmp: <bool>
-                  ecmp_limit: <int>
-                  limit: <int>
+
+                  # Amount of ECMP paths to send
+                  ecmp_limit: <int; 2-64>
+
+                  # Amount of paths to send
+                  limit: <int; 2-64>
             neighbors:
               - ip_address: <str>
                 activate: <bool>
+
+                # Inbound route-map name
                 route_map_in: <str>
+
+                # Outbound route-map name
                 route_map_out: <str>
                 next_hop:
                   address_family_ipv6:
-                    enabled: <bool>
+                    enabled: <bool; required>
                     originate: <bool>
             networks:
+
+                # IPv4 prefix "A.B.C.D/E"
               - prefix: <str>
                 route_map: <str>
           address_family_ipv6:
             bgp:
               missing_policy:
-                direction_in_action: <str>
-                direction_out_action: <str>
+                direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+                direction_out_action: <str; "deny" | "deny-in-out" | "permit">
               additional_paths:
                 install: <bool>
                 install_ecmp_primary: <bool>
@@ -1124,59 +1478,81 @@
                   any: <bool>
                   backup: <bool>
                   ecmp: <bool>
-                  ecmp_limit: <int>
-                  limit: <int>
+
+                  # Amount of ECMP paths to send
+                  ecmp_limit: <int; 2-64>
+
+                  # Amount of paths to send
+                  limit: <int; 2-64>
             neighbors:
               - ip_address: <str>
                 activate: <bool>
+
+                # Inbound route-map name
                 route_map_in: <str>
+
+                # Outbound route-map name
                 route_map_out: <str>
             networks:
+
+                # IPv6 prefix "A:B:C:D:E:F:G:H/I"
               - prefix: <str>
                 route_map: <str>
           address_family_ipv4_multicast:
             bgp:
               missing_policy:
-                direction_in_action: <str>
-                direction_out_action: <str>
+                direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+                direction_out_action: <str; "deny" | "deny-in-out" | "permit">
               additional_paths:
                 receive: <bool>
             neighbors:
               - ip_address: <str>
                 activate: <bool>
+
+                # Inbound route-map name
                 route_map_in: <str>
+
+                # Outbound route-map name
                 route_map_out: <str>
             networks:
+
+                # IPv6 prefix "A.B.C.D/E"
               - prefix: <str>
                 route_map: <str>
           address_family_ipv6_multicast:
             bgp:
               missing_policy:
-                direction_in_action: <str>
-                direction_out_action: <str>
+                direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+                direction_out_action: <str; "deny" | "deny-in-out" | "permit">
               additional_paths:
                 receive: <bool>
             neighbors:
               - ip_address: <str>
                 activate: <bool>
+
+                # Inbound route-map name
                 route_map_in: <str>
+
+                # Outbound route-map name
                 route_map_out: <str>
             networks:
+
+                # IPv6 prefix "A:B:C:D:E:F:G:H/I"
               - prefix: <str>
                 route_map: <str>
           address_family_flow_spec_ipv4:
             bgp:
               missing_policy:
-                direction_in_action: <str>
-                direction_out_action: <str>
+                direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+                direction_out_action: <str; "deny" | "deny-in-out" | "permit">
             neighbors:
               - ip_address: <str>
                 activate: <bool>
           address_family_flow_spec_ipv6:
             bgp:
               missing_policy:
-                direction_in_action: <str>
-                direction_out_action: <str>
+                direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+                direction_out_action: <str; "deny" | "deny-in-out" | "permit">
             neighbors:
               - ip_address: <str>
                 activate: <bool>
@@ -1184,25 +1560,39 @@
             - address_family: <str>
               bgp:
                 missing_policy:
-                  direction_in_action: <str>
-                  direction_out_action: <str>
+                  direction_in_action: <str; "deny" | "deny-in-out" | "permit">
+                  direction_out_action: <str; "deny" | "deny-in-out" | "permit">
                 additional_paths:
                   - <str>
               neighbors:
                 - ip_address: <str>
                   activate: <bool>
+
+                  # Inbound route-map name
                   route_map_in: <str>
+
+                  # Outbound route-map name
                   route_map_out: <str>
               peer_groups:
+
+                  # Peer-group name
                 - name: <str>
                   activate: <bool>
                   next_hop:
                     address_family_ipv6_originate: <bool>
               networks:
+
+                  # IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
                 - prefix: <str>
                   route_map: <str>
+
+          # Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
           eos_cli: <str>
       session_trackers:
+
+          # Name of session tracker
         - name: <str>
-          recovery_delay: <int>
+
+          # Recovery delay in seconds
+          recovery_delay: <int; 1-3600>
     ```

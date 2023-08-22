@@ -27,14 +27,24 @@
     radius_server:
       attribute_32_include_in_access_req:
         hostname: <bool>
+
+        # Specify the format of the NAS-Identifier. If 'hostname' is set, this is ignored.
         format: <str>
       dynamic_authorization:
-        port: <int>
+
+        # TCP Port
+        port: <int; 0-65535>
+
+        # Name of TLS profile
         tls_ssl_profile: <str>
       hosts:
+
+          # Host IP address or name
         - host: <str>
           vrf: <str>
-          timeout: <int>
-          retransmit: <int>
+          timeout: <int; 1-1000>
+          retransmit: <int; 0-100>
+
+          # Encrypted key
           key: <str>
     ```

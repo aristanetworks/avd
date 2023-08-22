@@ -14,5 +14,7 @@
 
     ```yaml
     design:
-      type: <str>
+
+      # By setting the design.type variable, the default node-types and templates described in these documents will be used.
+      type: <str; "l3ls-evpn" | "mpls" | "l2ls"; default="l3ls-evpn">
     ```

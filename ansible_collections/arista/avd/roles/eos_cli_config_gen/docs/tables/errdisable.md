@@ -26,5 +26,7 @@
       recovery:
         causes:
           - <str>
-        interval: <int>
+
+        # Interval in seconds
+        interval: <int; 30-86400; default=300>
     ```

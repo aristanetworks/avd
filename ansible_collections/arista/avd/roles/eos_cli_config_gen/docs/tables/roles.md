@@ -19,10 +19,18 @@
 
     ```yaml
     roles:
+
+        # Role name
       - name: <str>
         sequence_numbers:
+
+            # Sequence number
           - sequence: <int>
-            action: <str>
+            action: <str; "permit" | "deny">
+
+            # "config", "config-all", "exec" or mode key as string
             mode: <str>
+
+            # Command as string
             command: <str>
     ```

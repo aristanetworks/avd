@@ -13,6 +13,26 @@
 === "YAML"
 
     ```yaml
-    avd_data_conversion_mode: <str>
-    avd_data_validation_mode: <str>
+
+    # Conversion Mode for AVD input data conversion.
+    # Input data conversion will perform type conversion of input variables as defined in the schema.
+    # The type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
+    # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
+    # "disabled" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.
+    # "error" will produce error messages and fail the task.
+    # "warning" will produce warning messages.
+    # "info" will produce regular log messages.
+    # "debug" will produce hidden debug messages viewable with -v.
+    # "quiet" will not produce any messages
+    avd_data_conversion_mode: <str; "disabled" | "error" | "warning" | "info" | "debug" | "quiet"; default="debug">
+
+    # Validation Mode for AVD input data validation.
+    # Input data validation will validate the input variables according to the schema.
+    # During validation, messages will generated with information about the host(s) and key(s) which failed validation.
+    # "disabled" means that validation will not run.
+    # "error" will produce error messages and fail the task.
+    # "warning" will produce warning messages.
+    # "info" will produce regular log messages.
+    # "debug" will produce hidden debug messages viewable with -v.
+    avd_data_validation_mode: <str; "disabled" | "error" | "warning" | "info" | "debug"; default="warning">
     ```

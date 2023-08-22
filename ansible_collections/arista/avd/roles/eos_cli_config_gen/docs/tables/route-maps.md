@@ -26,15 +26,25 @@
 
     ```yaml
     route_maps:
+
+        # Route-map Name
       - name: <str>
         sequence_numbers:
+
+            # Sequence ID
           - sequence: <int>
-            type: <str>
+            type: <str; "permit" | "deny"; required>
             description: <str>
+
+            # List of "match" statements
             match:
               - <str>
+
+            # List of "set" statements
             set:
               - <str>
+
+            # Name of Sub-Route-map
             sub_route_map: <str>
             continue:
               enabled: <bool>

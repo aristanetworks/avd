@@ -72,63 +72,162 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+        # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
         ipvpn_gateway:
-          enabled: <bool>
-          evpn_domain_id: <str>
-          ipvpn_domain_id: <str>
-          enable_d_path: <bool>
-          maximum_routes: <int>
-          local_as: <str>
-          address_families:
+          enabled: <bool; required>
+
+          # Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+          evpn_domain_id: <str; default="65535:1">
+
+          # Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+          ipvpn_domain_id: <str; default="65535:2">
+
+          # Enable D-path for use with BGP bestpath selection algorithm.
+          enable_d_path: <bool; default=True>
+
+          # Maximum routes to accept from IPVPN remote peers.
+          maximum_routes: <int; default=0>
+
+          # Apply local-as to peering with IPVPN remote peers.
+          local_as: <str; default="none">
+
+          # IPVPN address families to enable for remote peers.
+          address_families:  # default value: ['vpn-ipv4']
             - <str>
           remote_peers:
-            - hostname: <str>
-              ip_address: <str>
-              bgp_as: <str>
+
+              # Hostname of remote IPVPN Peer.
+            - hostname: <str; required>
+
+              # Peering IP of remote IPVPN Peer.
+              ip_address: <str; required>
+
+              # BGP ASN of remote IPVPN Peer.
+              bgp_as: <str; required>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+              # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
               ipvpn_gateway:
-                enabled: <bool>
-                evpn_domain_id: <str>
-                ipvpn_domain_id: <str>
-                enable_d_path: <bool>
-                maximum_routes: <int>
-                local_as: <str>
-                address_families:
+                enabled: <bool; required>
+
+                # Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+                evpn_domain_id: <str; default="65535:1">
+
+                # Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+                ipvpn_domain_id: <str; default="65535:2">
+
+                # Enable D-path for use with BGP bestpath selection algorithm.
+                enable_d_path: <bool; default=True>
+
+                # Maximum routes to accept from IPVPN remote peers.
+                maximum_routes: <int; default=0>
+
+                # Apply local-as to peering with IPVPN remote peers.
+                local_as: <str; default="none">
+
+                # IPVPN address families to enable for remote peers.
+                address_families:  # default value: ['vpn-ipv4']
                   - <str>
                 remote_peers:
-                  - hostname: <str>
-                    ip_address: <str>
-                    bgp_as: <str>
+
+                    # Hostname of remote IPVPN Peer.
+                  - hostname: <str; required>
+
+                    # Peering IP of remote IPVPN Peer.
+                    ip_address: <str; required>
+
+                    # BGP ASN of remote IPVPN Peer.
+                    bgp_as: <str; required>
+
+          # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+          # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
           ipvpn_gateway:
-            enabled: <bool>
-            evpn_domain_id: <str>
-            ipvpn_domain_id: <str>
-            enable_d_path: <bool>
-            maximum_routes: <int>
-            local_as: <str>
-            address_families:
+            enabled: <bool; required>
+
+            # Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+            evpn_domain_id: <str; default="65535:1">
+
+            # Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+            ipvpn_domain_id: <str; default="65535:2">
+
+            # Enable D-path for use with BGP bestpath selection algorithm.
+            enable_d_path: <bool; default=True>
+
+            # Maximum routes to accept from IPVPN remote peers.
+            maximum_routes: <int; default=0>
+
+            # Apply local-as to peering with IPVPN remote peers.
+            local_as: <str; default="none">
+
+            # IPVPN address families to enable for remote peers.
+            address_families:  # default value: ['vpn-ipv4']
               - <str>
             remote_peers:
-              - hostname: <str>
-                ip_address: <str>
-                bgp_as: <str>
+
+                # Hostname of remote IPVPN Peer.
+              - hostname: <str; required>
+
+                # Peering IP of remote IPVPN Peer.
+                ip_address: <str; required>
+
+                # BGP ASN of remote IPVPN Peer.
+                bgp_as: <str; required>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # Node is acting as IP-VPN Gateway for EVPN to MPLS-IP-VPN Interworking. The BGP peer group used for this is "bgp_peer_groups.ipvpn_gateway_peers".
+          # L3 Reachability is required for this to work, the preferred method to establish underlay connectivity is to use core_interfaces.
           ipvpn_gateway:
-            enabled: <bool>
-            evpn_domain_id: <str>
-            ipvpn_domain_id: <str>
-            enable_d_path: <bool>
-            maximum_routes: <int>
-            local_as: <str>
-            address_families:
+            enabled: <bool; required>
+
+            # Domain ID to assign to EVPN address family for use with D-path. Format <nn>:<nn>.
+            evpn_domain_id: <str; default="65535:1">
+
+            # Domain ID to assign to IPVPN address families for use with D-path. Format <nn>:<nn>.
+            ipvpn_domain_id: <str; default="65535:2">
+
+            # Enable D-path for use with BGP bestpath selection algorithm.
+            enable_d_path: <bool; default=True>
+
+            # Maximum routes to accept from IPVPN remote peers.
+            maximum_routes: <int; default=0>
+
+            # Apply local-as to peering with IPVPN remote peers.
+            local_as: <str; default="none">
+
+            # IPVPN address families to enable for remote peers.
+            address_families:  # default value: ['vpn-ipv4']
               - <str>
             remote_peers:
-              - hostname: <str>
-                ip_address: <str>
-                bgp_as: <str>
+
+                # Hostname of remote IPVPN Peer.
+              - hostname: <str; required>
+
+                # Peering IP of remote IPVPN Peer.
+                ip_address: <str; required>
+
+                # BGP ASN of remote IPVPN Peer.
+                bgp_as: <str; required>
     ```

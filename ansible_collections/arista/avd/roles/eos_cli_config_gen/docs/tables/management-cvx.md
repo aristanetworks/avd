@@ -21,6 +21,10 @@
       shutdown: <bool>
       server_hosts:
         - <str>
+
+      # Interface name
       source_interface: <str>
+
+      # VRF Name
       vrf: <str>
     ```

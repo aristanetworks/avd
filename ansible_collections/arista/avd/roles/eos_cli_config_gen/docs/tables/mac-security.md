@@ -35,24 +35,28 @@
     ```yaml
     mac_security:
       license:
-        license_name: <str>
-        license_key: <str>
-      fips_restrictions: <bool>
+        license_name: <str; required>
+        license_key: <str; required>
+      fips_restrictions: <bool; required>
       profiles:
+
+          # Profile-Name
         - name: <str>
-          cipher: <str>
+          cipher: <str; "aes128-gcm" | "aes128-gcm-xpn" | "aes256-gcm" | "aes256-gcm-xpn">
           connection_keys:
             - id: <str>
               encrypted_key: <str>
               fallback: <bool>
           mka:
-            key_server_priority: <int>
+            key_server_priority: <int; 0-255>
             session:
-              rekey_period: <int>
+
+              # Rekey period in seconds
+              rekey_period: <int; 30-100000>
           sci: <bool>
           l2_protocols:
             ethernet_flow_control:
-              mode: <str>
+              mode: <str; "encrypt" | "bypass"; required>
             lldp:
-              mode: <str>
+              mode: <str; "bypass" | "bypass unauthorized"; required>
     ```

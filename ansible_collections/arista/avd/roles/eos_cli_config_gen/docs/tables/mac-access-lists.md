@@ -18,6 +18,8 @@
 
     ```yaml
     mac_access_lists:
+
+        # MAC Access-list Name
       - name: <str>
         counters_per_entry: <bool>
         entries:

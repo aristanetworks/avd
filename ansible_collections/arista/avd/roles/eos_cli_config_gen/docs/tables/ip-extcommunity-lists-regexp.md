@@ -17,8 +17,12 @@
 
     ```yaml
     ip_extcommunity_lists_regexp:
+
+        # Community-list Name
       - name: <str>
         entries:
-          - type: <str>
-            regexp: <str>
+          - type: <str; "permit" | "deny"; required>
+
+            # Regular Expression
+            regexp: <str; required>
     ```

@@ -43,37 +43,133 @@
 === "YAML"
 
     ```yaml
-    default_igmp_snooping_enabled: <bool>
+
+    # When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.
+    default_igmp_snooping_enabled: <bool; default=True>
     hardware_counters:
+
+      # This data model allows to configure the list of hardware counters feature
+      # available on Arista platforms.
+      #
+      # The `name` key accepts a list of valid_values which MUST be updated to support
+      # new feature as they are released in EOS.
+      #
+      # The available values of the different keys like 'direction' or 'address_type'
+      # are feature and hardware dependent and this model DOES NOT validate that the
+      # combinations are valid. It is the responsability of the user of this data model
+      # to make sure that the rendered CLI is accepted by the targeted device.
+      #
+      # Examples:
+      #
+      #   * Use:
+      #     ```yaml
+      #     hardware_counters:
+      #       features:
+      #         - name: ip
+      #           direction: out
+      #           layer3: true
+      #           units_packets: true
+      #     ```
+      #
+      #     to render:
+      #     ```eos
+      #     hardware counter feature ip out layer3 units packets
+      #     ```
+      #   * Use:
+      #     ```yaml
+      #     hardware_counters:
+      #       features:
+      #         - name: route
+      #           address_type: ipv4
+      #           vrf: test
+      #           prefix: 192.168.0.0/24
+      #     ```
+      #
+      #     to render:
+      #     ```eos
+      #     hardware counter feature route ipv4 vrf test 192.168.0.0/24
+      #     ```
       features:
-        - name: <str>
-          direction: <str>
-          address_type: <str>
+        - name: <str; "acl" | "decap-group" | "directflow" | "ecn" | "flow-spec" | "gre tunnel interface" | "ip" | "mpls interface" | "mpls lfib" | "mpls tunnel" | "multicast" | "nexthop" | "pbr" | "pdp" | "policing interface" | "qos" | "qos dual-rate-policer" | "route" | "routed-port" | "subinterface" | "tapagg" | "traffic-class" | "traffic-policy" | "vlan" | "vlan-interface" | "vni decap" | "vni encap" | "vtep decap" | "vtep encap">
+
+          # Most features support only 'in' and 'out'. Some like traffic-policy support 'cpu'.
+          # Some features DO NOT have any direction.
+          # This validation IS NOT made by the schemas.
+          direction: <str; "in" | "out" | "cpu">
+
+          # Supported only for the following features:
+          # - acl: [ipv4, ipv6, mac] if direction is 'out'
+          # - multicast: [ipv4, ipv6]
+          # - route: [ipv4, ipv6]
+          # This validation IS NOT made by the schemas.
+          address_type: <str; "ipv4" | "ipv6" | "mac">
+
+          # Supported only for the 'ip' feature
           layer3: <bool>
+
+          # Supported only for the 'route' feature.
+          # This validation IS NOT made by the schemas.
           vrf: <str>
+
+          # Supported only for the 'route' feature.
+          # Mandatory for the 'route' feature.
+          # This validation IS NOT made by the schemas.
           prefix: <str>
           units_packets: <bool>
+
+    # Internal vlan allocation order and range.
     internal_vlan_order: # (1)!
-      allocation: <str>
+      allocation: <str; "ascending" | "descending"; required>
       range:
-        beginning: <int>
-        ending: <int>
+
+        # First VLAN ID.
+        beginning: <int; 2-4094; required>
+
+        # Last VLAN ID.
+        ending: <int; 2-4094; required>
+
+    # MAC address-table aging time.
+    # Use to change the EOS default of 300.
     mac_address_table:
-      aging_time: <int>
+
+      # Aging time in seconds 10-1000000.
+      # Enter 0 to disable aging.
+      aging_time: <int; 0-1000000>
     queue_monitor_length:
-      enabled: <bool>
+      enabled: <bool; required>
+
+      # If True, `eos_designs` will configure `queue-monitor length notifying` according to the
+      # `platform_settings.[].feature_support.queue_monitor_length_notify` setting.
       notifying: <bool>
       default_thresholds:
-        high: <int>
+
+        # Default high threshold for Ethernet Interfaces.
+        high: <int; required>
+
+        # Default low threshold for Ethernet Interfaces.
+        # Low threshold support is platform dependent.
         low: <int>
+
+      # Logging interval in seconds
       log: <int>
       cpu:
         thresholds:
-          high: <int>
+          high: <int; required>
           low: <int>
+
+    # Redundancy for chassis platforms with dual supervisors | Optional.
     redundancy:
-      protocol: <str>
+      protocol: <str; "sso" | "rpr">
+
+    # Serial Number of the device.
+    # Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.
+    # "serial_number" can also be set directly under node type settings.
+    # If both are set, the value under node type settings takes precedence.
     serial_number: <str>
+
+    # Set to the same MAC address as available in "show version" on the device.
+    # "system_mac_address" can also be set under node type settings.
+    # If both are set, the value under node type settings takes precedence.
     system_mac_address: <str>
     ```
 

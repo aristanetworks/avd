@@ -19,7 +19,7 @@
 {%     set variable = row.variable | e | regex_replace('  ','&nbsp;&nbsp;') %}
 {%     if row.default is arista.avd.defined %}
 {%         if ("List" in row.type or "Dictionary" in row.type) and row.default | length > 1 %}
-{%             set _ = annotations.update({loop.index: {(row.variable | trim): row.default} | to_nice_yaml(indent=2)}) %}
+{%             set _ = annotations.update({(row.variable | trim): {(row.variable | trim): row.default} | to_nice_yaml(indent=2)}) %}
 {%             set default_value = "See (+) on YAML tab" %}
 {%         else %}
 {%             set default_value = "`" ~ row.default ~ "`" %}
@@ -37,9 +37,12 @@
     ```yaml
 {% set annotation_counter = [] %}
 {% for row in table.yaml %}
-{%     if loop.index in annotations %}
+{%     set variable = row | trim | replace(":", "") %}
+{%     if variable in annotations %}
 {%         set _ = annotation_counter.append(none) %}
     {{ row }}{{ (" # (" ~ annotation_counter | length ~ ")!") }}
+{%     elif row == "" %}
+
 {%     else %}
     {{ row }}
 {%     endif %}
@@ -47,7 +50,7 @@
     ```
 {% if annotations %}
 
-{%     for annotation_index, annotation in annotations.items() %}
+{%     for annotation in annotations.values() %}
     {{ loop.index }}. Default Value
 
         ```yaml

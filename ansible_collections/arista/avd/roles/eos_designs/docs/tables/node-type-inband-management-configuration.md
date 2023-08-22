@@ -64,55 +64,350 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # Pointer to interface used for inband management.
+        # All configuration must be done using other data models like network services or structured_config.
+        # 'inband_mgmt_interface' is only used to refer to this interface as source in various management protocol settings (future feature).
+        #
+        # On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
         inband_mgmt_interface: <str>
-        inband_mgmt_vlan: <int>
+
+        # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
+        # When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
+        # When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
+        inband_mgmt_vlan: <int; default=4092>
+
+        # Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+        # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP.
+        # This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+        # SVI IP address will be assigned as follows:
+        # virtual-router: <subnet> + 1
+        # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+        # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+        # l2leafs       : <subnet> + 3 + <l2leaf id>
+        # GW on l2leafs : <subnet> + 1
+        # Assign range larger than total l2leafs + 5
+        #
+        # Setting is ignored if 'inband_mgmt_ip' is set.
+        #
+        # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
         inband_mgmt_subnet: <str>
+
+        # IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+        # This overrides 'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
+        #
+        # If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+        # The VLAN and SVI on the parent switches must be created using network services data models.
+        #
+        # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
         inband_mgmt_ip: <str>
+
+        # Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
+        #
+        # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
         inband_mgmt_gateway: <str>
-        inband_mgmt_description: <str>
-        inband_mgmt_vlan_name: <str>
-        inband_mgmt_vrf: <str>
-        inband_mgmt_mtu: <int>
+
+        # Description configured on the Inband Management SVI.
+        #
+        # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+        inband_mgmt_description: <str; default="Inband Management">
+
+        # Name configured on the Inband Management VLAN.
+        # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+        inband_mgmt_vlan_name: <str; default="Inband Management">
+
+        # VRF configured on the Inband Management Interface.
+        # The VRF is created if not already created by other means.
+        # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+        inband_mgmt_vrf: <str; default="default">
+
+        # MTU configured on the Inband Management Interface.
+        # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+        inband_mgmt_mtu: <int; default=1500>
+
+        # Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+        # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP.
+        # This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+        # SVI IP address will be assigned as follows:
+        # virtual-router: <subnet> + 1
+        # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+        # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+        # l2leafs       : <subnet> + 3 + <l2leaf id>
+        # GW on l2leafs : <subnet> + 1
+        # Assign range larger than total l2leafs + 5
+        #
+        # Setting is ignored if 'inband_mgmt_ip' is set.
+        #
+        # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
         inband_management_subnet: <str>
-        inband_management_vlan: <int>
+
+        # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
+        # When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
+        # When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
+        inband_management_vlan: <int; default=4092>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # Pointer to interface used for inband management.
+              # All configuration must be done using other data models like network services or structured_config.
+              # 'inband_mgmt_interface' is only used to refer to this interface as source in various management protocol settings (future feature).
+              #
+              # On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
               inband_mgmt_interface: <str>
-              inband_mgmt_vlan: <int>
+
+              # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
+              # When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
+              # When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
+              inband_mgmt_vlan: <int; default=4092>
+
+              # Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+              # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP.
+              # This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+              # SVI IP address will be assigned as follows:
+              # virtual-router: <subnet> + 1
+              # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+              # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+              # l2leafs       : <subnet> + 3 + <l2leaf id>
+              # GW on l2leafs : <subnet> + 1
+              # Assign range larger than total l2leafs + 5
+              #
+              # Setting is ignored if 'inband_mgmt_ip' is set.
+              #
+              # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
               inband_mgmt_subnet: <str>
+
+              # IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+              # This overrides 'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
+              #
+              # If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+              # The VLAN and SVI on the parent switches must be created using network services data models.
+              #
+              # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
               inband_mgmt_ip: <str>
+
+              # Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
+              #
+              # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
               inband_mgmt_gateway: <str>
-              inband_mgmt_description: <str>
-              inband_mgmt_vlan_name: <str>
-              inband_mgmt_vrf: <str>
-              inband_mgmt_mtu: <int>
+
+              # Description configured on the Inband Management SVI.
+              #
+              # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+              inband_mgmt_description: <str; default="Inband Management">
+
+              # Name configured on the Inband Management VLAN.
+              # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+              inband_mgmt_vlan_name: <str; default="Inband Management">
+
+              # VRF configured on the Inband Management Interface.
+              # The VRF is created if not already created by other means.
+              # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+              inband_mgmt_vrf: <str; default="default">
+
+              # MTU configured on the Inband Management Interface.
+              # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+              inband_mgmt_mtu: <int; default=1500>
+
+              # Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+              # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP.
+              # This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+              # SVI IP address will be assigned as follows:
+              # virtual-router: <subnet> + 1
+              # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+              # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+              # l2leafs       : <subnet> + 3 + <l2leaf id>
+              # GW on l2leafs : <subnet> + 1
+              # Assign range larger than total l2leafs + 5
+              #
+              # Setting is ignored if 'inband_mgmt_ip' is set.
+              #
+              # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
               inband_management_subnet: <str>
-              inband_management_vlan: <int>
+
+              # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
+              # When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
+              # When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
+              inband_management_vlan: <int; default=4092>
+
+          # Pointer to interface used for inband management.
+          # All configuration must be done using other data models like network services or structured_config.
+          # 'inband_mgmt_interface' is only used to refer to this interface as source in various management protocol settings (future feature).
+          #
+          # On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
           inband_mgmt_interface: <str>
-          inband_mgmt_vlan: <int>
+
+          # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
+          # When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
+          # When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
+          inband_mgmt_vlan: <int; default=4092>
+
+          # Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+          # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP.
+          # This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+          # SVI IP address will be assigned as follows:
+          # virtual-router: <subnet> + 1
+          # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+          # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+          # l2leafs       : <subnet> + 3 + <l2leaf id>
+          # GW on l2leafs : <subnet> + 1
+          # Assign range larger than total l2leafs + 5
+          #
+          # Setting is ignored if 'inband_mgmt_ip' is set.
+          #
+          # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_subnet: <str>
+
+          # IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+          # This overrides 'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
+          #
+          # If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+          # The VLAN and SVI on the parent switches must be created using network services data models.
+          #
+          # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_ip: <str>
+
+          # Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
+          #
+          # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_gateway: <str>
-          inband_mgmt_description: <str>
-          inband_mgmt_vlan_name: <str>
-          inband_mgmt_vrf: <str>
-          inband_mgmt_mtu: <int>
+
+          # Description configured on the Inband Management SVI.
+          #
+          # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+          inband_mgmt_description: <str; default="Inband Management">
+
+          # Name configured on the Inband Management VLAN.
+          # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+          inband_mgmt_vlan_name: <str; default="Inband Management">
+
+          # VRF configured on the Inband Management Interface.
+          # The VRF is created if not already created by other means.
+          # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+          inband_mgmt_vrf: <str; default="default">
+
+          # MTU configured on the Inband Management Interface.
+          # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+          inband_mgmt_mtu: <int; default=1500>
+
+          # Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+          # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP.
+          # This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+          # SVI IP address will be assigned as follows:
+          # virtual-router: <subnet> + 1
+          # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+          # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+          # l2leafs       : <subnet> + 3 + <l2leaf id>
+          # GW on l2leafs : <subnet> + 1
+          # Assign range larger than total l2leafs + 5
+          #
+          # Setting is ignored if 'inband_mgmt_ip' is set.
+          #
+          # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_management_subnet: <str>
-          inband_management_vlan: <int>
+
+          # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
+          # When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
+          # When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
+          inband_management_vlan: <int; default=4092>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # Pointer to interface used for inband management.
+          # All configuration must be done using other data models like network services or structured_config.
+          # 'inband_mgmt_interface' is only used to refer to this interface as source in various management protocol settings (future feature).
+          #
+          # On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either 'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
           inband_mgmt_interface: <str>
-          inband_mgmt_vlan: <int>
+
+          # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
+          # When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
+          # When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
+          inband_mgmt_vlan: <int; default=4092>
+
+          # Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+          # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP.
+          # This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+          # SVI IP address will be assigned as follows:
+          # virtual-router: <subnet> + 1
+          # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+          # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+          # l2leafs       : <subnet> + 3 + <l2leaf id>
+          # GW on l2leafs : <subnet> + 1
+          # Assign range larger than total l2leafs + 5
+          #
+          # Setting is ignored if 'inband_mgmt_ip' is set.
+          #
+          # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_subnet: <str>
+
+          # IP address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+          # This overrides 'inband_mgmt_subnet', hence all behavior of 'inband_mgmt_subnet' is removed.
+          #
+          # If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+          # The VLAN and SVI on the parent switches must be created using network services data models.
+          #
+          # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_ip: <str>
+
+          # Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ip'. Otherwise gateway is derived from 'inband_mgmt_subnet' if set.
+          #
+          # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_mgmt_gateway: <str>
-          inband_mgmt_description: <str>
-          inband_mgmt_vlan_name: <str>
-          inband_mgmt_vrf: <str>
-          inband_mgmt_mtu: <int>
+
+          # Description configured on the Inband Management SVI.
+          #
+          # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+          inband_mgmt_description: <str; default="Inband Management">
+
+          # Name configured on the Inband Management VLAN.
+          # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+          inband_mgmt_vlan_name: <str; default="Inband Management">
+
+          # VRF configured on the Inband Management Interface.
+          # The VRF is created if not already created by other means.
+          # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+          inband_mgmt_vrf: <str; default="default">
+
+          # MTU configured on the Inband Management Interface.
+          # This setting is only applied on the devices where it is set, it does not automatically affect any parent/child devices configuration, so it must be set on each applicable node/node-group/node-type as needed.
+          inband_mgmt_mtu: <int; default=1500>
+
+          # Optional IP subnet assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+          # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP.
+          # This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+          # SVI IP address will be assigned as follows:
+          # virtual-router: <subnet> + 1
+          # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+          # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+          # l2leafs       : <subnet> + 3 + <l2leaf id>
+          # GW on l2leafs : <subnet> + 1
+          # Assign range larger than total l2leafs + 5
+          #
+          # Setting is ignored if 'inband_mgmt_ip' is set.
+          #
+          # This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
           inband_management_subnet: <str>
-          inband_management_vlan: <int>
+
+          # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
+          # When using 'inband_mgmt_subnet' the VLAN and SVIs will be created automatically on this switch as well as all 'uplink_switches'.
+          # When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and SVI on the parent switches must be created using network services data models.
+          inband_management_vlan: <int; default=4092>
     ```

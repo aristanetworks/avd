@@ -30,21 +30,49 @@
 
     ```yaml
     <network_services_keys.name>:
+
+        # Specify a tenant name.
+        # Tenant provide a construct to group L3 VRFs and L2 VLANs.
+        # Networks services can be filtered by tenant name.
       - name: <str>
+
+        # Pseudowire RT base, used to generate route targets for VPWS services.
+        # Avoid overlapping route target spaces between different services.
         pseudowire_rt_base: <int>
+
+        # Point to point services (pseudowires).
+        # Only supported for node types with "network_services.l1: true".
+        # By default this is only set for node type "pe" with "design.type: mpls"
         point_to_point_services:
+
+            # Pseudowire name
           - name: <str>
-            type: <str>
+            type: <str; "vpws-pseudowire"; default="vpws-pseudowire">
+
+            # Subinterfaces will create subinterfaces and additional pseudowires/patch panel config for each endpoint.
             subinterfaces:
+
+                # Subinterface number
               - number: <int>
+
+            # Pseudowire terminating endpoints. Must have exactly two items.
             endpoints:
-              - id: <int>
+
+                # Pseudowire ID on this endpoint.
+              - id: <int; required>
+
+                # Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint
                 nodes:
                   - <str>
+
+                # Interfaces patched to the pseudowire on this endpoints.
+                # The list of interfaces is mapped to the list of nodes, so they must have the same length.
                 interfaces:
                   - <str>
                 port_channel:
-                  mode: <str>
+                  mode: <str; "active" | "on">
                   short_esi: <str>
+
+            # Disable LLDP RX/TX on port mode pseudowire services.
             lldp_disable: <bool>
     ```

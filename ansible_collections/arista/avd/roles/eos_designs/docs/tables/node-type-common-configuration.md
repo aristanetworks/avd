@@ -84,75 +84,250 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # Unique identifier used for IP addressing and other algorithms.
         id: <int>
+
+        # Arista platform family.
         platform: <str>
+
+        # Leverage to document management interface mac address.
         mac_address: <str>
+
+        # System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+        # Set to the same MAC address as available in "show version" on the device.
+        # "system_mac_address" can also be set directly as a hostvar.
+        # If both are set, the setting under node type settings takes precedence.
         system_mac_address: <str>
+
+        # Set to the Serial Number of the device.
+        # Only used for documentation purpose in the fabric documentation and part of the structured_config.
+        # "serial_number" can also be set directly as a hostvar.
+        # If both are set, the setting under node type settings takes precedence.
         serial_number: <str>
+
+        # Rack that the switch is located in (only used in snmp_settings location).
         rack: <str>
+
+        # Node management interface IPv4 address.
         mgmt_ip: <str>
+
+        # Node management interface IPv6 address.
         ipv6_mgmt_ip: <str>
+
+        # Management Interface Name.
+        # Default -> platform_management_interface -> mgmt_interface -> "Management1".
         mgmt_interface: <str>
+
+        # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
+        # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
         lacp_port_id_range:
-          enabled: <bool>
-          size: <int>
-          offset: <int>
-        always_configure_ip_routing: <bool>
+          enabled: <bool; default=False>
+
+          # Recommended size > = number of ports in the switch.
+          size: <int; default=128>
+
+          # Offset is used to avoid overlapping port-id ranges of different switches.
+          # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
+          offset: <int; default=0>
+
+        # Force configuration of "ip routing" even on L2 devices.
+        # Use this to retain behavior of AVD versions below 4.0.0.
+        always_configure_ip_routing: <bool; default=False>
+
+        # EOS CLI rendered directly on the root level of the final EOS configuration.
         raw_eos_cli: <str>
+
+        # Custom structured config for eos_cli_config_gen.
         structured_config: <dict>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # Unique identifier used for IP addressing and other algorithms.
               id: <int>
+
+              # Arista platform family.
               platform: <str>
+
+              # Leverage to document management interface mac address.
               mac_address: <str>
+
+              # System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+              # Set to the same MAC address as available in "show version" on the device.
+              # "system_mac_address" can also be set directly as a hostvar.
+              # If both are set, the setting under node type settings takes precedence.
               system_mac_address: <str>
+
+              # Set to the Serial Number of the device.
+              # Only used for documentation purpose in the fabric documentation and part of the structured_config.
+              # "serial_number" can also be set directly as a hostvar.
+              # If both are set, the setting under node type settings takes precedence.
               serial_number: <str>
+
+              # Rack that the switch is located in (only used in snmp_settings location).
               rack: <str>
+
+              # Node management interface IPv4 address.
               mgmt_ip: <str>
+
+              # Node management interface IPv6 address.
               ipv6_mgmt_ip: <str>
+
+              # Management Interface Name.
+              # Default -> platform_management_interface -> mgmt_interface -> "Management1".
               mgmt_interface: <str>
+
+              # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
+              # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
               lacp_port_id_range:
-                enabled: <bool>
-                size: <int>
-                offset: <int>
-              always_configure_ip_routing: <bool>
+                enabled: <bool; default=False>
+
+                # Recommended size > = number of ports in the switch.
+                size: <int; default=128>
+
+                # Offset is used to avoid overlapping port-id ranges of different switches.
+                # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
+                offset: <int; default=0>
+
+              # Force configuration of "ip routing" even on L2 devices.
+              # Use this to retain behavior of AVD versions below 4.0.0.
+              always_configure_ip_routing: <bool; default=False>
+
+              # EOS CLI rendered directly on the root level of the final EOS configuration.
               raw_eos_cli: <str>
+
+              # Custom structured config for eos_cli_config_gen.
               structured_config: <dict>
+
+          # Unique identifier used for IP addressing and other algorithms.
           id: <int>
+
+          # Arista platform family.
           platform: <str>
+
+          # Leverage to document management interface mac address.
           mac_address: <str>
+
+          # System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+          # Set to the same MAC address as available in "show version" on the device.
+          # "system_mac_address" can also be set directly as a hostvar.
+          # If both are set, the setting under node type settings takes precedence.
           system_mac_address: <str>
+
+          # Set to the Serial Number of the device.
+          # Only used for documentation purpose in the fabric documentation and part of the structured_config.
+          # "serial_number" can also be set directly as a hostvar.
+          # If both are set, the setting under node type settings takes precedence.
           serial_number: <str>
+
+          # Rack that the switch is located in (only used in snmp_settings location).
           rack: <str>
+
+          # Node management interface IPv4 address.
           mgmt_ip: <str>
+
+          # Node management interface IPv6 address.
           ipv6_mgmt_ip: <str>
+
+          # Management Interface Name.
+          # Default -> platform_management_interface -> mgmt_interface -> "Management1".
           mgmt_interface: <str>
+
+          # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
+          # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
           lacp_port_id_range:
-            enabled: <bool>
-            size: <int>
-            offset: <int>
-          always_configure_ip_routing: <bool>
+            enabled: <bool; default=False>
+
+            # Recommended size > = number of ports in the switch.
+            size: <int; default=128>
+
+            # Offset is used to avoid overlapping port-id ranges of different switches.
+            # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
+            offset: <int; default=0>
+
+          # Force configuration of "ip routing" even on L2 devices.
+          # Use this to retain behavior of AVD versions below 4.0.0.
+          always_configure_ip_routing: <bool; default=False>
+
+          # EOS CLI rendered directly on the root level of the final EOS configuration.
           raw_eos_cli: <str>
+
+          # Custom structured config for eos_cli_config_gen.
           structured_config: <dict>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # Unique identifier used for IP addressing and other algorithms.
           id: <int>
+
+          # Arista platform family.
           platform: <str>
+
+          # Leverage to document management interface mac address.
           mac_address: <str>
+
+          # System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".
+          # Set to the same MAC address as available in "show version" on the device.
+          # "system_mac_address" can also be set directly as a hostvar.
+          # If both are set, the setting under node type settings takes precedence.
           system_mac_address: <str>
+
+          # Set to the Serial Number of the device.
+          # Only used for documentation purpose in the fabric documentation and part of the structured_config.
+          # "serial_number" can also be set directly as a hostvar.
+          # If both are set, the setting under node type settings takes precedence.
           serial_number: <str>
+
+          # Rack that the switch is located in (only used in snmp_settings location).
           rack: <str>
+
+          # Node management interface IPv4 address.
           mgmt_ip: <str>
+
+          # Node management interface IPv6 address.
           ipv6_mgmt_ip: <str>
+
+          # Management Interface Name.
+          # Default -> platform_management_interface -> mgmt_interface -> "Management1".
           mgmt_interface: <str>
+
+          # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
+          # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
           lacp_port_id_range:
-            enabled: <bool>
-            size: <int>
-            offset: <int>
-          always_configure_ip_routing: <bool>
+            enabled: <bool; default=False>
+
+            # Recommended size > = number of ports in the switch.
+            size: <int; default=128>
+
+            # Offset is used to avoid overlapping port-id ranges of different switches.
+            # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
+            offset: <int; default=0>
+
+          # Force configuration of "ip routing" even on L2 devices.
+          # Use this to retain behavior of AVD versions below 4.0.0.
+          always_configure_ip_routing: <bool; default=False>
+
+          # EOS CLI rendered directly on the root level of the final EOS configuration.
           raw_eos_cli: <str>
+
+          # Custom structured config for eos_cli_config_gen.
           structured_config: <dict>
     ```

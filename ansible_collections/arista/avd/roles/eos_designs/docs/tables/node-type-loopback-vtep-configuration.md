@@ -44,35 +44,114 @@
 
     ```yaml
     <node_type_keys.key>:
+
+      # Define variables for all nodes of this type.
       defaults:
+
+        # IPv4 subnet for Loopback0 allocation.
         loopback_ipv4_pool: <str>
+
+        # IPv4 subnet for VTEP-Loopback allocation.
         vtep_loopback_ipv4_pool: <str>
-        loopback_ipv4_offset: <int>
+
+        # Offset all assigned loopback IP addresses.
+        # Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.
+        # For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+        loopback_ipv4_offset: <int; default=0>
+
+        # IPv6 subnet for Loopback0 allocation.
         loopback_ipv6_pool: <str>
-        loopback_ipv6_offset: <int>
+
+        # Offset all assigned loopback IPv6 addresses.
+        # Required when the < loopback_ipv6_pool > is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.
+        # For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.
+        loopback_ipv6_offset: <int; default=0>
+
+        # Set VXLAN source interface.
         vtep_loopback: <str>
+
+      # Define variables related to all nodes part of this group.
       node_groups:
+
+          # The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
+          # The Node Group Name is also used for peer description on downstream switches' uplinks.
         - group: <str>
+
+          # Define variables per node.
           nodes:
+
+              # The Node Name is used as "hostname".
             - name: <str>
+
+              # IPv4 subnet for Loopback0 allocation.
               loopback_ipv4_pool: <str>
+
+              # IPv4 subnet for VTEP-Loopback allocation.
               vtep_loopback_ipv4_pool: <str>
-              loopback_ipv4_offset: <int>
+
+              # Offset all assigned loopback IP addresses.
+              # Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.
+              # For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+              loopback_ipv4_offset: <int; default=0>
+
+              # IPv6 subnet for Loopback0 allocation.
               loopback_ipv6_pool: <str>
-              loopback_ipv6_offset: <int>
+
+              # Offset all assigned loopback IPv6 addresses.
+              # Required when the < loopback_ipv6_pool > is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.
+              # For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.
+              loopback_ipv6_offset: <int; default=0>
+
+              # Set VXLAN source interface.
               vtep_loopback: <str>
+
+          # IPv4 subnet for Loopback0 allocation.
           loopback_ipv4_pool: <str>
+
+          # IPv4 subnet for VTEP-Loopback allocation.
           vtep_loopback_ipv4_pool: <str>
-          loopback_ipv4_offset: <int>
+
+          # Offset all assigned loopback IP addresses.
+          # Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.
+          # For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+          loopback_ipv4_offset: <int; default=0>
+
+          # IPv6 subnet for Loopback0 allocation.
           loopback_ipv6_pool: <str>
-          loopback_ipv6_offset: <int>
+
+          # Offset all assigned loopback IPv6 addresses.
+          # Required when the < loopback_ipv6_pool > is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.
+          # For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.
+          loopback_ipv6_offset: <int; default=0>
+
+          # Set VXLAN source interface.
           vtep_loopback: <str>
+
+      # Define variables per node.
       nodes:
+
+          # The Node Name is used as "hostname".
         - name: <str>
+
+          # IPv4 subnet for Loopback0 allocation.
           loopback_ipv4_pool: <str>
+
+          # IPv4 subnet for VTEP-Loopback allocation.
           vtep_loopback_ipv4_pool: <str>
-          loopback_ipv4_offset: <int>
+
+          # Offset all assigned loopback IP addresses.
+          # Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.
+          # For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
+          loopback_ipv4_offset: <int; default=0>
+
+          # IPv6 subnet for Loopback0 allocation.
           loopback_ipv6_pool: <str>
-          loopback_ipv6_offset: <int>
+
+          # Offset all assigned loopback IPv6 addresses.
+          # Required when the < loopback_ipv6_pool > is same for 2 different node_types (like spine and l3leaf) to avoid overlapping IPs.
+          # For example, set the minimum offset l3leaf.defaults.loopback_ipv6_offset: < total # spine switches > or vice versa.
+          loopback_ipv6_offset: <int; default=0>
+
+          # Set VXLAN source interface.
           vtep_loopback: <str>
     ```

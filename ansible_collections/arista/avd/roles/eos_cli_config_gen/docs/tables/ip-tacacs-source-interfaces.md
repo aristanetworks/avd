@@ -15,6 +15,8 @@
 
     ```yaml
     ip_tacacs_source_interfaces:
+
+        # Interface name
       - name: <str>
         vrf: <str>
     ```
