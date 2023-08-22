@@ -19,7 +19,6 @@
 === "YAML"
 
     ```yaml
-
     # Global Priority Flow Control settings.
     priority_flow_control:
 

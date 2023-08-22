@@ -66,7 +66,6 @@
 
         # EOS CLI rendered directly on the root level of the final EOS configuration.
         raw_eos_cli: <str>
-
     # Set Hardware Speed Groups per Platform.
     platform_speed_groups:
       - platform: <str>

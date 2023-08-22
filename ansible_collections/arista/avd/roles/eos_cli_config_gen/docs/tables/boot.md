@@ -15,7 +15,6 @@
 === "YAML"
 
     ```yaml
-
     # Set the Aboot password
     boot:
       secret:

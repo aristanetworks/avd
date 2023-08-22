@@ -18,7 +18,6 @@
 === "YAML"
 
     ```yaml
-
     # These keys are ignored if the name of the vrf is 'default'
     vrfs:
 

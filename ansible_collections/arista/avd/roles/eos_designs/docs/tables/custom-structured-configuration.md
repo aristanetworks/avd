@@ -14,7 +14,6 @@
 === "YAML"
 
     ```yaml
-
     # The List-merge strategy used when merging custom structured configurations.
     #
     # This applies to all vars prefixed by prefixes in `custom_structured_configuration_prefix`
@@ -38,7 +37,6 @@
     #   - Existing list items with the same "Primary key"-value will be updated.
     #   - New unique items will be prepended to the existing list.
     custom_structured_configuration_list_merge: <str; "replace" | "append" | "keep" | "prepend" | "append_rp" | "prepend_rp"; default="append_rp">
-
     # Custom EOS Structured Configuration keys can be set on any group or host_var level using the name
     # of the corresponding `eos_cli_config_gen` key prefixed with content of `custom_structured_configuration_prefix`.
     #

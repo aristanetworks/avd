@@ -15,7 +15,6 @@
 === "YAML"
 
     ```yaml
-
     # Uses hostname matches against a regular expression to determine the node type.
     default_node_types:
 

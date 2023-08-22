@@ -84,7 +84,6 @@
 === "YAML"
 
     ```yaml
-
     # Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
     # Keys are the same used under SVIs. Keys defined under SVIs take precedence.
     # Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:

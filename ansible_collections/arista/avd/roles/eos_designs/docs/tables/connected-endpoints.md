@@ -152,7 +152,6 @@
 === "YAML"
 
     ```yaml
-
     # This should be applied to group_vars or host_vars where endpoints are connecting.
     # `connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".
     # The default keys are `servers`, `firewalls`, `routers`, `load_balancers`, and `storage_arrays`.

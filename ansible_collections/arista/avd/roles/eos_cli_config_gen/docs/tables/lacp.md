@@ -19,7 +19,6 @@
 === "YAML"
 
     ```yaml
-
     # Set Link Aggregation Control Protocol (LACP) parameters.
     lacp:
 

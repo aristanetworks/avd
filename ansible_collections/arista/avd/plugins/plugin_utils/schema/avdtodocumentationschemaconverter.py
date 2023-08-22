@@ -218,7 +218,9 @@ class AvdToDocumentationSchemaConverter:
         row_indentation = " " * indentation
 
         if (description := schema.get("description")) is not None:
-            output.append("")  # Add blank line above description to make it easier to see which var the description is covering.
+            if indentation:
+                # If this is not the first line, add a blank line above description to make it easier to see which var the description is covering.
+                output.append("")
             output.extend([f"{row_indentation}# {line}".rstrip() for line in str(description).strip().split("\n")])
 
         if first_list_item_key:

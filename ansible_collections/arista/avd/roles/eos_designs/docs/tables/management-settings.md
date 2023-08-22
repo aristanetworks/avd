@@ -52,7 +52,6 @@
 === "YAML"
 
     ```yaml
-
     # Gives the ability to monitor and react to Syslog messages.
     # Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
     # customize the system behavior, and implement workarounds to problems discovered in the field.
@@ -76,12 +75,10 @@
 
         # Set the action to be non-blocking.
         asynchronous: <bool; default=False>
-
     # List of IPv6 prefixes to configure as static routes towards the OOB IPv6 Management interface gateway.
     # Replaces the default route.
     ipv6_mgmt_destination_networks:
       - <str>
-
     # OOB Management interface gateway in IPv6 format.
     # Used as next-hop for default gateway or static routes defined under 'ipv6_mgmt_destination_networks'.
     ipv6_mgmt_gateway: <str>
@@ -110,18 +107,15 @@
 
         # Specify shell for the user
         shell: <str; "/bin/bash" | "/bin/sh" | "/sbin/nologin">
-
     # Default is HTTPS management eAPI enabled.
     # The VRF is set to < mgmt_interface_vrf >.
     management_eapi:
       enable_http: <bool; default=False>
       enable_https: <bool; default=True>
       default_services: <bool>
-
     # List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     name_servers:
       - <str>
-
     # Set SNMP settings (optional).
     snmp_settings:
 
@@ -163,7 +157,6 @@
 
           # Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
           priv_passphrase: <str>
-
     # Clock timezone like "CET" or "US/Pacific".
     timezone: <str>
     ```

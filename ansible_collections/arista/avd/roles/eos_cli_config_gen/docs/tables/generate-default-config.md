@@ -12,7 +12,6 @@
 === "YAML"
 
     ```yaml
-
     # The `generate_default_config` knob allows to omit default EOS configuration.
     # This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
     #

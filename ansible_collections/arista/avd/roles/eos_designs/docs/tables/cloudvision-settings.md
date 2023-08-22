@@ -20,32 +20,27 @@
 === "YAML"
 
     ```yaml
-
     # On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.
     # If not set, TerminAttr will be configured with certificate based authentication:
     # - On-premise using token onboarding. Default token path is '/tmp/token'.
     # - CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.
     # Token must be copied to the device first.
     cvp_ingestauth_key: <str>
-
     # IPv4 address or DNS name for CloudVision.
     # This variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.
     cvp_instance_ip: <str>
-
     # List of IPv4 addresses or DNS names for CloudVision.
     # For on-premise CloudVision enter all the nodes of the cluster.
     # For CloudVision as a Service enter the DNS name of the instance.
     # `eos_designs` only supports one CloudVision cluster.
     cvp_instance_ips:
       - <str>
-
     # cvp_token_file is the path to the token file on the switch.
     # If not set the default locations for on-premise or CVaaS will be used.
     # See cvp_ingestauth_key for details.
     cvp_token_file: <str>
     terminattr_disable_aaa: <bool; default=False>
     terminattr_ingestexclude: <str; default="/Sysdb/cell/1/agent,/Sysdb/cell/2/agent">
-
     # Port number used for Terminattr connection to an on-premise CloudVision cluster.
     # The port number is always 443 when using CloudVision as a Service, so this value is ignored.
     terminattr_ingestgrpcurl_port: <int; default=9910>

@@ -56,7 +56,6 @@
 === "YAML"
 
     ```yaml
-
     # You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
     # Streaming to multiple clusters both on-prem and cloud service is supported.
     #

@@ -42,27 +42,22 @@
 === "YAML"
 
     ```yaml
-
     # Enable Trunk Group support across eos_designs.
     # Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".
     # *All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.
     # If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.
     # See "Details on enable_trunk_groups" below before enabling this feature.
     enable_trunk_groups: <bool; default=False>
-
     # A vlan can have many trunk_groups assigned.
     # To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,
     # this feature will only configure the vlan trunk groups matched with local connected_endpoints.
     # See "Details on only_local_vlan_trunk_groups" below.
     # Requires "enable_trunk_groups: true".
     only_local_vlan_trunk_groups: <bool; default=False>
-
     # Point to Point Links MTU.
     p2p_uplinks_mtu: <int; 68-65535; default=9214>
-
     # QOS Profile assigned on all infrastructure links.
     p2p_uplinks_qos_profile: <str>
-
     # - It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.
     #
     # ```yaml
@@ -89,28 +84,23 @@
       # Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set.
       uplink:
         name: <str; default="UPLINK">
-
     # Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.
     # This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return
     # all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.
     # Note this key is ignored when EVPN is configured.
     underlay_filter_peer_as: <bool; default=False>
-
     # Filter redistribution of connected into the underlay routing protocol.
     # Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.
     # Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.
     underlay_filter_redistribute_connected: <bool; default=True>
-
     # This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
     # Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.
     underlay_ipv6: <bool; default=False>
-
     # Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
     # Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
     # No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
     # The configuration is intended to be used as multicast underlay for EVPN OISM overlay.
     underlay_multicast: <bool; default=False>
-
     # If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured
     # with one of the following methods:
     # - Anycast RP using PIM (RFC4610).
@@ -119,7 +109,6 @@
     # NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".
     underlay_multicast_anycast_rp:
       mode: <str; "pim" | "msdp"; default="pim">
-
     # List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
     # The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).
     # If multiple nodes are configured under 'nodes' for the same RP address, they will be configured
@@ -149,11 +138,9 @@
 
         # Name of standard Access-List.
         access_list_name: <str>
-
     # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
     # Requires "underlay_routing_protocol: ebgp".
     underlay_rfc5549: <bool; default=False>
-
     # - The following underlay routing protocols are supported:
     #   - EBGP (default for l3ls-evpn)
     #   - OSPF.
@@ -165,7 +152,6 @@
     # - The variables should be applied to all devices in the fabric.
     # *Only supported with core_interfaces data model.
     underlay_routing_protocol: <str; "ebgp" | "ospf" | "isis" | "isis-sr" | "isis-ldp" | "isis-sr-ldp" | "ospf-ldp">
-
     # Enable PTP on all infrastructure links.
     uplink_ptp:
       enable: <bool; default=False>

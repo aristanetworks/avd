@@ -30,11 +30,9 @@
 
     ```yaml
     evpn_ebgp_gateway_inter_domain: <bool>
-
     # Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
     # Adapt the value for your specific topology.
     evpn_ebgp_gateway_multihop: <int; default=15>
-
     # Default of 3, the recommended value for a 3 stage spine and leaf topology.
     # Set to a higher value to allow for very large and complex topologies.
     evpn_ebgp_multihop: <int; default=3>
@@ -51,12 +49,10 @@
 
       # Time (in seconds) to purge a MAC duplication issue.
       expiry_timeout: <int>
-
     # Enable VPN import pruning (Min. EOS 4.24.2F).
     # The Route Target extended communities carried by incoming VPN paths will be examined.
     # If none of those Route Targets have been configured for import, the path will be immediately discarded.
     evpn_import_pruning: <bool; default=False>
-
     # General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must also be configured under the Network Services (tenants).
     # Requires "underlay_multicast: true" and IGMP snooping enabled globally (default).
     # For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.
@@ -66,22 +62,17 @@
     #   You can tune the settings by overridding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"
     #   Please contact an Arista representative for help with determining the appropriate values for your environment.
     evpn_multicast: <bool; default=False>
-
     # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F).
     # Requires use eBGP as overlay protocol.
     evpn_overlay_bgp_rtc: <bool; default=False>
-
     # Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
     # This is very useful in large-scale networks, where convergence will be quicker by not returning all updates received
     # from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
     evpn_prevent_readvertise_to_server: <bool; default=False>
-
     # Configure prefix for "short_esi" values.
     evpn_short_esi_prefix: <str; default="0000:0000:">
-
     # Enable vlan aware bundles for EVPN MAC-VRF.
     evpn_vlan_aware_bundles: <bool; default=False>
-
     # Should be set to mpls for evpn-mpls scenario.
     fabric_evpn_encapsulation: <str; "vxlan" | "mpls"; default="vxlan">
     ```

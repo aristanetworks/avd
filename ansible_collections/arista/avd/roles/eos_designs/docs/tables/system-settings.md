@@ -43,7 +43,6 @@
 === "YAML"
 
     ```yaml
-
     # When set to false, disables IGMP snooping at fabric level and overrides per vlan settings.
     default_igmp_snooping_enabled: <bool; default=True>
     hardware_counters:
@@ -116,7 +115,6 @@
           # This validation IS NOT made by the schemas.
           prefix: <str>
           units_packets: <bool>
-
     # Internal vlan allocation order and range.
     internal_vlan_order: # (1)!
       allocation: <str; "ascending" | "descending"; required>
@@ -127,7 +125,6 @@
 
         # Last VLAN ID.
         ending: <int; 2-4094; required>
-
     # MAC address-table aging time.
     # Use to change the EOS default of 300.
     mac_address_table:
@@ -156,17 +153,14 @@
         thresholds:
           high: <int; required>
           low: <int>
-
     # Redundancy for chassis platforms with dual supervisors | Optional.
     redundancy:
       protocol: <str; "sso" | "rpr">
-
     # Serial Number of the device.
     # Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.
     # "serial_number" can also be set directly under node type settings.
     # If both are set, the value under node type settings takes precedence.
     serial_number: <str>
-
     # Set to the same MAC address as available in "show version" on the device.
     # "system_mac_address" can also be set under node type settings.
     # If both are set, the value under node type settings takes precedence.

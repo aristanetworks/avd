@@ -18,7 +18,6 @@
 === "YAML"
 
     ```yaml
-
     # Communities and regexp entries MUST not be configured in the same community-list
     ip_community_lists:
 

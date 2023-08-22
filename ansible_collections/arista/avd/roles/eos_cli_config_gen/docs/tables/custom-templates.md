@@ -13,7 +13,6 @@
 === "YAML"
 
     ```yaml
-
     # - Custom templates can be added below the playbook directory.
     # - If a location above the directory is desired, a symbolic link can be used.
     # - Example under the `playbooks` directory create symbolic link with the following command:

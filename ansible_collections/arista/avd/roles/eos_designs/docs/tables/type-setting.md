@@ -12,7 +12,6 @@
 === "YAML"
 
     ```yaml
-
     # The `type:` variable needs to be defined for each device in the fabric.
     # This is leveraged to load the appropriate template to generate the configuration.
     type: <str; "<value(s) of node_type_keys.type>">

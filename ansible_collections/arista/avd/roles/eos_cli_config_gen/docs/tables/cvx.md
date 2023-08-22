@@ -24,7 +24,6 @@
 === "YAML"
 
     ```yaml
-
     # CVX server features are not supported on physical switches. See `management_cvx` for client configurations.
     cvx:
       shutdown: <bool>

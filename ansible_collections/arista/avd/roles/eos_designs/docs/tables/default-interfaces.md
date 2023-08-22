@@ -22,7 +22,6 @@
 === "YAML"
 
     ```yaml
-
     # Default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
     default_interfaces:
 

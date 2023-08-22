@@ -58,7 +58,6 @@
 === "YAML"
 
     ```yaml
-
     # Define Node Type Keys, to specify the properties of each node type in the fabric.
     # This allows for complete customization of the fabric layout and functionality.
     # `node_type_keys` should be defined in top level group_var for the fabric.

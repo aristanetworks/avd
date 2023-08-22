@@ -76,7 +76,6 @@
 === "YAML"
 
     ```yaml
-
     # SNMP settings
     snmp_server:
       engine_ids:

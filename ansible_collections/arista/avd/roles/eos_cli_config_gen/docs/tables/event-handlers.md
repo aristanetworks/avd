@@ -19,7 +19,6 @@
 === "YAML"
 
     ```yaml
-
     # Gives the ability to monitor and react to Syslog messages.
     # Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
     # customize the system behavior, and implement workarounds to problems discovered in the field.

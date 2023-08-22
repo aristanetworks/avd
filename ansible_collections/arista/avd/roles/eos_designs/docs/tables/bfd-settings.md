@@ -15,7 +15,6 @@
 === "YAML"
 
     ```yaml
-
     # BFD Multihop tuning.
     bfd_multihop: # (1)!
       interval: <int; 50-60000; required>

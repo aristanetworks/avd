@@ -13,7 +13,6 @@
 === "YAML"
 
     ```yaml
-
     # Control fabric documentation generation.
     eos_designs_documentation:
 

@@ -142,7 +142,6 @@
 === "YAML"
 
     ```yaml
-
     # Optional profiles to share common settings for connected_endpoints and/or network_ports.
     # Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
     port_profiles:

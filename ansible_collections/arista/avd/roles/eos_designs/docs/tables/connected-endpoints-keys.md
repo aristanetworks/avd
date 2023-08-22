@@ -15,7 +15,6 @@
 === "YAML"
 
     ```yaml
-
     # Endpoints connecting to the fabric can be grouped by using separate keys.
     # The keys can be customized to provide a better better organization or grouping of your data.
     # `connected_endpoints_keys` should be defined in the top level group_vars for the fabric.

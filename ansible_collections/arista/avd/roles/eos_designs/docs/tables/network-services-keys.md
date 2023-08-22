@@ -13,7 +13,6 @@
 === "YAML"
 
     ```yaml
-
     # Network Services can be grouped by using separate keys.
     # The keys can be customized to provide a better better organization or grouping of your data.
     # `network_services_keys` should be defined in the top level group_vars for the fabric.

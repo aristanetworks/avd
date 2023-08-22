@@ -12,7 +12,6 @@
 === "YAML"
 
     ```yaml
-
     # Multi-line string with one or more alias commands.
     #
     # Example:
