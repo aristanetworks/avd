@@ -101,6 +101,8 @@ RANGE_TO_EXPAND_VALID_VALUES = [
     ("eth1-5,{7,9,11-13}", ["eth1", "eth2", "eth3", "eth4", "eth5", "eth7", "eth9", "eth11", "eth12", "eth13"]),
     ("eth{7,9,11-13},21,26", ["eth7", "eth9", "eth11", "eth12", "eth13", "eth21", "eth26"]),
     (["eth{-2}"], ["eth{-2}"]),
+    ("eth{12,0-5},14", ["eth12", "eth0", "eth1", "eth2", "eth3", "eth4", "eth5", "eth14"]),
+    (["{10-15,2}", ["10", "11", "12", "13", "14", "15", "2"]]),
 ]
 
 f = FilterModule()

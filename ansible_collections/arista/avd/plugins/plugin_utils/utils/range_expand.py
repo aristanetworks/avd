@@ -122,21 +122,20 @@ def range_expand_utils(range_to_expand: str or list, prefix: str = "") -> list:
         # Except the case where there is no opening curly bracket but closing curly bracket is present [Example: ",4}"]
         # It considers the comma inside the curly brackets whereas it is actually outside.
 
-        regex_commas_inside_curly_brackets = r"(?P<curly_brackets>\{\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)+\-\d+)*)*\s*\})"
-        #     (\( \))                                                                         matches starting and ending of curly_brackets
-        #     ?P<curly_brackets>                                                              assigning name to the group.
-        #     ?:                                                                              only group but do not remember the grouped part
-        #                             (?:\d+)                                                 matches 1 or more numbers Ex. 1, 21
-        #                                    (?:\s*,\s*\d+)*                                  matches 0 or more apperance of "," and one
-        #                                                                                         or more numbers Ex. ,2,23
-        #                                                      (?:,?(?:\d+)+\-\d+)*           matches 0 or one apperance of "," and one or more
-        #                                                                                         numbers with range (-) Ex. ,2-4
-        #                             (?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)+\-\d+)*)*         matches values similar to 1 or 1,2,3 or 1,2-4
-        #                        \{\s*(?:\d+)(?:(?:\s*,\s*\d+)*(?:,?(?:\d+)+\-\d+)*)*\s*\}    matches values similar to (1) or (1,2,3) or (1,2-4)
+        regex_commas_inside_curly_brackets = r"(?P<curly_brackets>\{\s*\d+(?:(?:\s*,\s*\d+)*(?:\-\d+)*)*\s*\})"
+        #     (\( \))                                                                                   matches starting and ending of curly_brackets
+        #     ?P<curly_brackets>                                                                        assigning name to the group.
+        #     ?:                                                                                        only group but do not remember the grouped part
+        #                                                               \d+                             matches 1 or more numbers Ex. 1, 21
+        #                                                                    (?:\s*,\s*\d+)*            matches 0 or more apperance of "," and one
+        #                                                                                                   or more numbers Ex. ,2,23
+        #                                                                                    (?:\-\d+)* matches 0 or more numbers with range (-) Ex. -4
+        #                                           \d+(?:(?:\s*,\s*\d+)*(?:\-\d+)*)*                   matches values similar to 1 or 1,2,3 or 1,2-4
+        #                                       \{\s*\d+(?:(?:\s*,\s*\d+)*(?:\-\d+)*)*\s*\}             matches values similar to (1) or (1,2,3) or (1,2-4)
 
         regex_hyphen_range = r"(?P<hyphen>[0-9]+\-[0-9]+)"
-        #                       ?P<hyphen>                                                    assigning name to the group.
-        #                                ([0-9]+\-[0-9]+)                                     matches range outside curly brackets Ex. 1-5 or 33-46
+        #                       ?P<hyphen>                                                              assigning name to the group.
+        #                                ([0-9]+\-[0-9]+)                                               matches range outside curly brackets Ex. 1-5 or 33-46
 
         search_result = search(f"{regex_commas_inside_curly_brackets}|{regex_hyphen_range}", range_to_expand)
 
