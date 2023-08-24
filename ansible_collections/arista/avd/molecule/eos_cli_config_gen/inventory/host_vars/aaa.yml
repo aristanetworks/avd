@@ -95,6 +95,7 @@ aaa_accounting:
     default:
       type: start-stop
       group: TACACS
+      logging: true
   system:
     default:
       type: start-stop

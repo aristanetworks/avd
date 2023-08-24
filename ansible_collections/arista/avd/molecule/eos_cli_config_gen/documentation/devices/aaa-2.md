@@ -43,8 +43,8 @@ interface Management1
 
 | Type | Commands | Record type | Group | Logging |
 | ---- | -------- | ----------- | ----- | ------- |
-| Exec - Console | - | none |  -  | True |
-| Exec - Default | - | none |  -  | False |
+| Exec - Console | - | none | - | True |
+| Exec - Default | - | none | - | - |
 
 #### AAA Accounting Device Configuration
 
