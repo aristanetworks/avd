@@ -161,6 +161,7 @@ router_bgp:
       update_source: Loopback123
       ebgp_multihop: 3
       route_map_in: RM-123-1-1-10-IN
+      shutdown: true
       route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
       local_as: '123'
     - ip_address: 123.1.1.11
