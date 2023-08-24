@@ -14,6 +14,59 @@ repos:
       - id: check-merge-conflict
         exclude: ansible_collections/arista/avd/molecule
 
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.4
+    hooks:
+      - name: Check and insert license on Python files
+        id: insert-license
+        exclude: ansible_collections/arista/avd/(plugins/module_utils|tests/unit(/module_utils|/modules|))/__init__.py
+        files: .*\.py$
+        args:
+          - --license-filepath
+          - development/license-short.txt
+          - --use-current-year
+          - --allow-past-years
+          - --fuzzy-match-generates-todo
+          - --no-extra-eol
+
+      - name: Check and insert license on select YAML files
+        id: insert-license
+        files: ansible_collections/arista/avd/roles/.*/(handlers|schemas|tasks)/.*\.yml$
+        args:
+          - --license-filepath
+          - development/license-short.txt
+          - --use-current-year
+          - --allow-past-years
+          - --fuzzy-match-generates-todo
+          - --no-extra-eol
+
+      - name: Check and insert license on Jinja2 files
+        id: insert-license
+        files: .*\.j2$
+        exclude: ansible_collections/arista/avd/molecule.*
+        args:
+          - --license-filepath
+          - development/license-short.txt
+          - --use-current-year
+          - --allow-past-years
+          - --fuzzy-match-generates-todo
+          - --comment-style
+          - '{#||#}'
+          - --no-extra-eol
+
+      - name: Check and insert license on Markdown files
+        id: insert-license
+        files: .*\.md$
+        exclude: (ansible_collections/arista/avd/molecule|.github|ansible_collections/arista/avd/examples/.+/documentation/).*
+        args:
+          - --license-filepath
+          - development/license-short.txt
+          - --use-current-year
+          - --allow-past-years
+          - --fuzzy-match-generates-todo
+          - --comment-style
+          - '<!--|  ~|  -->'
+
   # - repo: https://github.com/pre-commit/mirrors-autopep8
   #   rev: 'v1.5.6'  # Use the sha / tag you want to point at
   #   hooks:
