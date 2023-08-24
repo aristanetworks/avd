@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 ---
 - name: Create required output directories
   tags: [eos_cli_config_gen]
@@ -19,10 +22,11 @@
   tags: [eos_cli_config_gen]
   run_once: true
   ansible.builtin.copy:
-    content: "{{ query('ansible.builtin.file', *schema_files) | map('from_yaml') | ansible.builtin.combine(recursive=True) | to_nice_yaml(indent=2, sort_keys=false) }}"
+    content: "{{ license_header ~ (query('ansible.builtin.file', *schema_files) | map('from_yaml') | ansible.builtin.combine(recursive=True) | to_nice_yaml(indent=2, sort_keys=false)) }}"
     dest: "{{ role_schema_path }}"
     mode: 0664
   vars:
+    license_header: "{{ '# ' ~ (lookup('ansible.builtin.file', role_path ~ '/../../../../../development/license-short.txt') | replace('\n', '\n# ')) ~ '\n' }}"
     schema_files: "{{ query('ansible.builtin.fileglob', role_schema_fragments_glob) | arista.avd.natural_sort }}"
 
 - name: Convert AVD Schema to JSON Schema
