@@ -829,6 +829,8 @@ $defs:
                       max: 65535
                     bfd:
                       type: bool
+                    shutdown:
+                      type: bool
               bgp:
                 type: dict
                 keys:
