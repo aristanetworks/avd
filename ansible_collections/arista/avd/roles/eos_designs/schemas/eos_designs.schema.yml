@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 $id: eos_designs
 type: dict
 allow_other_keys: true
@@ -4411,6 +4414,8 @@ $defs:
                       min: 0
                       max: 65535
                     bfd:
+                      type: bool
+                    shutdown:
                       type: bool
               bgp:
                 type: dict

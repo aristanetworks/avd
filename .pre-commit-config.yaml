@@ -29,6 +29,17 @@ repos:
           - --fuzzy-match-generates-todo
           - --no-extra-eol
 
+      - name: Check and insert license on select YAML files
+        id: insert-license
+        files: ansible_collections/arista/avd/roles/.*/(handlers|schemas|tasks)/.*\.yml$
+        args:
+          - --license-filepath
+          - development/license-short.txt
+          - --use-current-year
+          - --allow-past-years
+          - --fuzzy-match-generates-todo
+          - --no-extra-eol
+
       - name: Check and insert license on Jinja2 files
         id: insert-license
         files: .*\.j2$
