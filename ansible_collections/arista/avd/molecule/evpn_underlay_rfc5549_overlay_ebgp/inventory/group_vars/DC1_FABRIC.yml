@@ -95,7 +95,7 @@ l3leaf:
     filter:
       tenants: [ Tenant_A, Tenant_B, Tenant_C ]
       tags: [ opzone, web, app, db, vmotion, nfs ]
-    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    # mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # Not needed since we run rfc5549
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     - group: DC1_LEAF1
@@ -110,6 +110,8 @@ l3leaf:
           uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     - group: DC1_LEAF2
       bgp_as: 65102
+      # since this device is not using rfc5549 for overlay, we need mlag_peer_l3_ipv4_pool set specifically.
+      mlag_peer_l3_ipv4_pool: 10.255.251.0/24
       nodes:
         - name: DC1-LEAF2A
           id: 2
@@ -200,7 +202,7 @@ l2leaf:
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
-    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    # mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # Not needed since this is l2
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     - group: DC1_L2LEAF1
