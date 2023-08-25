@@ -393,6 +393,8 @@ jobs:
           pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
           pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
           ansible-galaxy collection install -r ansible_collections/arista/avd/collections.yml
+          pip install "ansible-lint==6.18"
+          pip install ansible-compat --upgrade
       - name: 'Run ansible-test integration test cases'
         run: |
           cd ansible_collections/arista/avd/
