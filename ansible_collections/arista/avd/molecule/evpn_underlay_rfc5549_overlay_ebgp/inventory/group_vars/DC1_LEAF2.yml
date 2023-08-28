@@ -6,4 +6,6 @@
 #     vrf <vrf_name>
 #        address-family ipv4
 #           no neighbor <mlag-peer-ip> next-hop address-family ipv6
+#
+# since this device is not using rfc5549 for overlay, we need mlag_peer_l3_ipv4_pool set specifically.
 overlay_mlag_rfc5549: false

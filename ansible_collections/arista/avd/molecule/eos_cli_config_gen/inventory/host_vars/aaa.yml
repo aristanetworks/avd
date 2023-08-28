@@ -91,9 +91,11 @@ aaa_accounting:
     console:
       type: start-stop
       group: TACACS
+      logging: true
     default:
       type: start-stop
       group: TACACS
+      logging: true
   system:
     default:
       type: start-stop

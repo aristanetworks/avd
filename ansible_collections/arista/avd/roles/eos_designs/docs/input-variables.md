@@ -691,6 +691,12 @@ roles/eos_designs/docs/tables/evpn-settings.md
 roles/eos_designs/docs/tables/management-settings.md
 --8<--
 
+### Source-interfaces settings
+
+--8<--
+roles/eos_designs/docs/tables/management-source-interfaces-settings.md
+--8<--
+
 ## System settings
 
 --8<--
