@@ -26,3 +26,13 @@ l2leaf:
         - Ethernet12
       ptp:
         enabled: true
+
+    - name: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
+      id: 3
+      uplink_switch_interfaces:
+        - Ethernet14
+        - Ethernet14
+      ptp:
+        enabled: true
+      uplink_ptp:
+        enable: false

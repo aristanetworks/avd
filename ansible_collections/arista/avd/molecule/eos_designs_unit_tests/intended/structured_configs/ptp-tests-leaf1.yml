@@ -179,6 +179,16 @@ ethernet_interfaces:
   channel_group:
     id: 12
     mode: active
+- name: Ethernet14
+  peer: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+  description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 14
+    mode: active
 - name: Ethernet13
   peer: bmca-endpoint
   peer_interface: eth1
@@ -259,6 +269,12 @@ port_channel_interfaces:
       interval: -3
     transport: ipv4
     enable: true
+- name: Port-Channel14
+  description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '11'
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
