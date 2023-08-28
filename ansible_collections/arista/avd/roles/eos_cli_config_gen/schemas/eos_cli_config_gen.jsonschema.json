@@ -12163,8 +12163,7 @@
             }
           },
           "required": [
-            "paths",
-            "ecmp"
+            "paths"
           ],
           "additionalProperties": false,
           "patternProperties": {
