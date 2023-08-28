@@ -2,9 +2,6 @@
 
 pod_name: L2LS_L2ONLY
 
-ptp:
-  enabled: true
-
 tenants:
   - name: L2LS_L2ONLY
     l2vlans:

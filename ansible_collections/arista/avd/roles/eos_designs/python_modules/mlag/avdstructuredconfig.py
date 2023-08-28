@@ -166,7 +166,7 @@ class AvdStructuredConfigMlag(AvdFacts):
         if (self.shared_utils.fabric_sflow_mlag_interfaces) is not None:
             port_channel_interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_mlag_interfaces}
 
-        if self.shared_utils.ptp_enabled and self.shared_utils.mlag_ptp_enabled:
+        if self.shared_utils.ptp_enabled and self.shared_utils.ptp_mlag:
             ptp_config = {}
             ptp_config.update(self.shared_utils.ptp_profile)
             ptp_config["enable"] = True

@@ -3,7 +3,6 @@
 ## Table of Contents
 
 - [Management](#management)
-  - [PTP](#ptp)
   - [Management API HTTP](#management-api-http)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
@@ -26,32 +25,6 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 
 ## Management
-
-### PTP
-
-#### PTP Summary
-
-| Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
-| -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
-| 00:1C:73:7f:00:02 | - | 127 | 2 | - | 127 | boundary | - |
-
-#### PTP Device Configuration
-
-```eos
-!
-ptp clock-identity 00:1C:73:7f:00:02
-ptp priority1 127
-ptp priority2 2
-ptp domain 127
-ptp mode boundary
-ptp monitor threshold offset-from-master 250
-ptp monitor threshold mean-path-delay 1500
-ptp monitor sequence-id
-ptp monitor threshold missing-message announce 3 sequence-ids
-ptp monitor threshold missing-message delay-resp 3 sequence-ids
-ptp monitor threshold missing-message follow-up 3 sequence-ids
-ptp monitor threshold missing-message sync 3 sequence-ids
-```
 
 ### Management API HTTP
 
@@ -176,12 +149,6 @@ interface Port-Channel1
    switchport
    switchport trunk allowed vlan 100
    switchport mode trunk
-   ptp enable
-   ptp announce interval 0
-   ptp announce timeout 3
-   ptp delay-req interval -3
-   ptp sync-message interval -3
-   ptp transport ipv4
 ```
 
 ## Routing
