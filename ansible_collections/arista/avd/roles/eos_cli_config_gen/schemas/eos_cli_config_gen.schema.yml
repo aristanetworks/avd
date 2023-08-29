@@ -23,6 +23,8 @@ keys:
               group:
                 description: Group Name
                 type: str
+              logging:
+                type: bool
           default:
             type: dict
             keys:
@@ -35,6 +37,8 @@ keys:
               group:
                 description: Group Name
                 type: str
+              logging:
+                type: bool
       system:
         type: dict
         keys:
@@ -7377,7 +7381,6 @@ keys:
             max: 600
           ecmp:
             type: int
-            required: true
             convert_types:
             - str
             min: 1
