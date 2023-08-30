@@ -1,0 +1,6 @@
+# Testing "platform_speed_groups" as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+platform_speed_groups:
+  7280R:
+    25G: [ 3, 2 ]
+    10G: [ 1, 2, 4 ]

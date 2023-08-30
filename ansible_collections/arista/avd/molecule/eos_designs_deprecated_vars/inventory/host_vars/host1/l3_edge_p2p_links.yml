@@ -1,0 +1,13 @@
+# Testing "l3_edge.p2p_links_ip_pools" and "l3_edge.p2p_links_profiles" as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+l3_edge:
+  p2p_links_ip_pools:
+    pool-leaf: 11.1.0.0/24
+    pool-spine: 11.1.1.0/24
+    pool-super-spine: 11.1.2.0/24
+  p2p_links_profiles:
+    generic-profile:
+      mtu: 1499
+      bfd: false
+      ptp:
+        enabled: true

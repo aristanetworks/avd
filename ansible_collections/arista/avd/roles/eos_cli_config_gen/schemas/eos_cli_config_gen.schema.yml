@@ -7381,7 +7381,6 @@ keys:
             max: 600
           ecmp:
             type: int
-            required: true
             convert_types:
             - str
             min: 1
