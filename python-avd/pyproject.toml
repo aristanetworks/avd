@@ -5,6 +5,7 @@ dependencies = [
     "jinja2>=3.0",
     "jsonschema>=4.5.1,<4.18",
     "deepmerge>=1.1.0",
+    "md-toc>=8.1.8",
 ]
 authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
 description="Arista validated designs"
@@ -35,10 +36,12 @@ requires = [
     "jinja2>=3.0",
     "jsonschema>=4.5.1,<4.18",
     "deepmerge>=1.1.0",
+    "md-toc>=8.1.8",
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
 ]
-build-backend = "setuptools.build_meta"
+build-backend = "custom-build-backend"
+backend-path = ["scripts"]
 
 [tool.setuptools]
 include-package-data = true
@@ -52,7 +55,7 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["pyavd*"]
-exclude = ["vendor_overrides*", "pyavd/tools*"]
+exclude = ["vendor_overrides*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
@@ -71,3 +74,4 @@ preview = true
 profile = "black"
 skip_gitignore = true
 line_length = 160
+known_third_party = ["pyavd"]
