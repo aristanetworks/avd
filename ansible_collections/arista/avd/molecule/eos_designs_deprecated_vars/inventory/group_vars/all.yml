@@ -4,3 +4,5 @@ is_for_test: true
 
 avd_data_validation_mode: "error"
 avd_data_conversion_mode: "info"
+
+fabric_name: EOS_DESIGNS_DEPRECATED_VARS
