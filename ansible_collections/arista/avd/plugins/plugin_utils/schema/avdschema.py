@@ -150,7 +150,7 @@ class AvdSchema:
             return AvdValidationError(error=error)
         if isinstance(error, jsonschema.SchemaError):
             return AvdSchemaError(error=error)
-        return AvdSchemaError(str(error))
+        return error
 
     def subschema(self, datapath: list):
         """
