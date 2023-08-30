@@ -1,0 +1,24 @@
+release_summary: |
+  Release 4.2.0 - See documentation on avd.arista.com for details.
+bugfixes:
+- Fix(eos_designs) - Fix schema for BGP peers to allow shutdown key (https://github.com/aristanetworks/ansible-avd/pull/3100)
+- Fix(eos_designs) - Don't require "mlag_peer_l3_ipv4_pool" with full rfc5549 (https://github.com/aristanetworks/ansible-avd/pull/3106)
+- Fix(eos_designs) - Ensure consistent ordering of underlay route-maps (https://github.com/aristanetworks/ansible-avd/pull/3105)
+minor_changes:
+- Doc - Insert license header in all source files (https://github.com/aristanetworks/ansible-avd/pull/3092)
+- Doc - Minor typo fixes on internal notes documentation (https://github.com/aristanetworks/ansible-avd/pull/3093)
+- Doc - avd to cvaas (https://github.com/aristanetworks/ansible-avd/pull/3089)
+- Doc - Add license header to YAML source files. (https://github.com/aristanetworks/ansible-avd/pull/3099)
+- Feat(eos_cli_config_gen) - add dot1x unauthorized access/native vlan membership egress to ethernet interfaces (https://github.com/aristanetworks/ansible-avd/pull/3073)
+- Feat(eos_cli_config_gen) - Allow TCAM profile local file configuration (https://github.com/aristanetworks/ansible-avd/pull/2833)
+- Feat(eos_cli_config_gen) - Add support for "include leaked" under BGP redistribution (https://github.com/aristanetworks/ansible-avd/pull/3071)
+- Feat(eos_cli_config_gen) - Add Trident MMU queue (https://github.com/aristanetworks/ansible-avd/pull/2835)
+- Feat(eos_cli_config_gen) - Add priority flow control to qos profile (https://github.com/aristanetworks/ansible-avd/pull/2796)
+- Feat(eos_cli_config_gen) - Add support for ftp/tftp/telnet client source interfaces (https://github.com/aristanetworks/ansible-avd/pull/3080)
+- Feat(eos_cli_config_gen) - Support accounting logging (https://github.com/aristanetworks/ansible-avd/pull/3091)
+- Feat(eos_designs) - Add control for redistribution of MLAG peering subnet (https://github.com/aristanetworks/ansible-avd/pull/3069)
+- Feat(eos_designs) - Validation of structured_config (https://github.com/aristanetworks/ansible-avd/pull/3077)
+- Feat(eos_designs) - Add support for setting source-interfaces for management protocols (https://github.com/aristanetworks/ansible-avd/pull/3072)
+- Bump - Add support for Ansible 2.15.x (https://github.com/aristanetworks/ansible-avd/pull/3070)
+- Refactor(eos_designs) - Deprecate cvp_instance_ip in favor of cvp_instance_ips (https://github.com/aristanetworks/ansible-avd/pull/3028)
+- Refactor(eos_designs) - Optimize connected endpoints temp data storage (https://github.com/aristanetworks/ansible-avd/pull/3094)

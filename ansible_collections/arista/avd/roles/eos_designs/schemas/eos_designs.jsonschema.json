@@ -14537,6 +14537,122 @@
       },
       "title": "Snmp Settings"
     },
+    "source_interfaces": {
+      "type": "object",
+      "description": "Configure source-interfaces based on the management interfaces set for other `eos_designs` data models.\nBy default, no source-interfaces will be configured. They can still be configured manually using `eos_cli_config_gen` and custom structured configuration.\nEOS supports a single source-interface per VRF, so an error will be raised in case of conflicts.\nErrors will also be raised if an interface is not found for a device.",
+      "properties": {
+        "domain_lookup": {
+          "type": "object",
+          "description": "IP Domain Lookup source-interfaces.",
+          "properties": {
+            "mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP Domain Lookup source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
+              "title": "Management Interface"
+            },
+            "inband_mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP Domain Lookup source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
+              "title": "Inband Management Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Domain Lookup"
+        },
+        "http_client": {
+          "type": "object",
+          "description": "IP HTTP Client source-interfaces.",
+          "properties": {
+            "mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP HTTP Client source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
+              "title": "Management Interface"
+            },
+            "inband_mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP HTTP Client source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
+              "title": "Inband Management Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "HTTP Client"
+        },
+        "radius": {
+          "type": "object",
+          "description": "IP Radius source-interfaces.",
+          "properties": {
+            "mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP Radius source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
+              "title": "Management Interface"
+            },
+            "inband_mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
+              "title": "Inband Management Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Radius"
+        },
+        "ssh_client": {
+          "type": "object",
+          "description": "IP SSH Client source-interfaces.",
+          "properties": {
+            "mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP SSH Client source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
+              "title": "Management Interface"
+            },
+            "inband_mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP SSH Client source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
+              "title": "Inband Management Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "SSH Client"
+        },
+        "tacacs": {
+          "type": "object",
+          "description": "IP Tacacs source-interfaces.",
+          "properties": {
+            "mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP Tacacs source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
+              "title": "Management Interface"
+            },
+            "inband_mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure an IP Tacacs source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
+              "title": "Inband Management Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Tacacs"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Source Interfaces"
+    },
     "svi_profiles": {
       "type": "array",
       "description": "Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.\nKeys are the same used under SVIs. Keys defined under SVIs take precedence.\nNote: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:\n1. svi.nodes[inventory_hostname].structured_config\n2. svi_profile.nodes[inventory_hostname].structured_config\n3. svi_parent_profile.nodes[inventory_hostname].structured_config\n4. svi.structured_config\n5. svi_profile.structured_config\n6. svi_parent_profile.structured_config\n",
