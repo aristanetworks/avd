@@ -62,8 +62,6 @@ copy-libs: ## Copy files from Ansible AVD collection
 	mv $(VENDOR_DIR)/eos_designs_* $(EOS_DESIGNS_MODULES_DIR)/
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.yml $(SCHEMAS_DIR)/
 
-	grep 'version:' ../ansible_collections/arista/avd/galaxy.yml | sed -e 's/version: \(.*\)/VERSION = "\1"/' > $(VENDOR_DIR)/version.py
-
 .PHONY: fix-libs
 fix-libs: ## Fix/remove various Ansible specifics things from python files
 	rm -f $(VENDOR_DIR)/schema/avdschematools.py
