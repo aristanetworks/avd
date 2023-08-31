@@ -20,9 +20,15 @@ RANGE_TO_EXPAND_VALID_VALUES = [
     (["Ethernet2-6", "Port-channel1-2"], ["Ethernet2", "Ethernet3", "Ethernet4", "Ethernet5", "Ethernet6", "Port-channel1", "Port-channel2"]),
     (["Ethernet1/1-2", "Eth1-2/3-5,5/1-2"], ["Ethernet1/1", "Ethernet1/2", "Eth1/3", "Eth1/4", "Eth1/5", "Eth2/3", "Eth2/4", "Eth2/5", "Eth5/1", "Eth5/2"]),
     (["Eth1.1,9-10.1", "Eth2.2-3", "Eth3/1-2.3-4"], ["Eth1.1", "Eth9.1", "Eth10.1", "Eth2.2", "Eth2.3", "Eth3/1.3", "Eth3/1.4", "Eth3/2.3", "Eth3/2.4"]),
-    ("1-3", ["1", "2", "3"]),
+    ("1-  3", ["1", "2", "3"]),
     (["1", "2", "3"], ["1", "2", "3"]),
-    ("vlan1-3", ["vlan1", "vlan2", "vlan3"]),
+    ("vlan1- 3", ["vlan1", "vlan2", "vlan3"]),
+    ("vlan1- 3 ", ["vlan1 ", "vlan2 ", "vlan3 "]),
+    ("Po{1- 3}", ["Po1", "Po2", "Po3"]),
+    ("Po{1- 3 }", ["Po1 ", "Po2 ", "Po3 "]),
+    ("1-3-5", ["1-3-5"]),
+    ("1 - 3 - 5", ["1 - 3 - 5"]),
+    ("1 -3", ["1", "2", "3"]),
     ("Et1-2/3-4/5-6", ["Et1/3/5", "Et1/3/6", "Et1/4/5", "Et1/4/6", "Et2/3/5", "Et2/3/6", "Et2/4/5", "Et2/4/6"]),
     ("65100.0", ["65100.0"]),
     ("65100.0-4", ["65100.0", "65100.1", "65100.2", "65100.3", "65100.4"]),
@@ -32,7 +38,7 @@ RANGE_TO_EXPAND_VALID_VALUES = [
     ),
     ("1-2.0-1", ["1.0", "1.1", "2.0", "2.1"]),
     ("Ethernet{1}", ["Ethernet1"]),
-    ("Ethernet{1,2,3}", ["Ethernet1", "Ethernet2", "Ethernet3"]),
+    ("Ethernet{1, 2,3 }", ["Ethernet1", "Ethernet 2", "Ethernet3 "]),
     ("Ethernet{1}/{4,5}", ["Ethernet1/4", "Ethernet1/5"]),
     ("{1,2}", ["1", "2"]),
     ("1,{2,3}/5", ["1", "2/5", "3/5"]),
@@ -42,8 +48,10 @@ RANGE_TO_EXPAND_VALID_VALUES = [
         "Eth{1,2",
         ["Eth{1", "Eth2"],
     ),
-    # ("Eth(1,2)/3,4)", ["Eth1/3", "Eth2/3", "Eth4)"]), # Exception need to fix regex_commas_outside_parentheses regex in range_expand
-    ("Eth{1,2}/3,4", ["Eth1/3", "Eth2/3", "Eth4"]),
+    # ("Eth{1,2}/3,4}", ["Eth1/3", "Eth2/3", "Eth4}"]), # Exception need to fix regex_commas_outside_parentheses regex in range_expand.
+    # ("1  -  2  -  3", ["1  -  2  -  3"]), # Exception for regex regex_hyphen_range (more than multiple one spaces not supported)
+    #                                               lookbehind does not support quantifier.
+    ("Eth{1, 2}/3, 4", ["Eth1/3", "Eth 2/3", "Eth 4"]),
     (
         "Eth{4}/{2-3}/{1,32}/4.{200-202,300}",
         [
@@ -93,15 +101,15 @@ RANGE_TO_EXPAND_VALID_VALUES = [
         ],
     ),
     (
-        ["Et {3,4,5}.1", "Et4/{3,4,5}.1", "Et5.200", "Et{4-6}.200"],
-        ["Et 3.1", "Et 4.1", "Et 5.1", "Et4/3.1", "Et4/4.1", "Et4/5.1", "Et5.200", "Et4.200", "Et5.200", "Et6.200"],
+        ["Et {3 ,4,5}.1", "Et4/{3,4,5}.1", "Et5.200", "Et{4-6}.200"],
+        ["Et 3 .1", "Et 4.1", "Et 5.1", "Et4/3.1", "Et4/4.1", "Et4/5.1", "Et5.200", "Et4.200", "Et5.200", "Et6.200"],
     ),
     ("{65000}.1", ["65000.1"]),
     (["Pt{600, 7000}/2.1", "Pt{ 600, 7000}/2.1", "Pt{600, 7000 }/2.1"], ["Pt600/2.1", "Pt 7000/2.1", "Pt 600/2.1", "Pt 7000/2.1", "Pt600/2.1", "Pt 7000 /2.1"]),
-    ("eth1-5,{7,9,11-13}", ["eth1", "eth2", "eth3", "eth4", "eth5", "eth7", "eth9", "eth11", "eth12", "eth13"]),
+    ("eth1- 5,{7,9, 11-13}", ["eth1", "eth2", "eth3", "eth4", "eth5", "eth7", "eth9", "eth 11", "eth 12", "eth 13"]),
     ("eth{7,9,11-13},21,26", ["eth7", "eth9", "eth11", "eth12", "eth13", "eth21", "eth26"]),
     (["eth{-2}"], ["eth{-2}"]),
-    ("eth{12,0-5},14", ["eth12", "eth0", "eth1", "eth2", "eth3", "eth4", "eth5", "eth14"]),
+    ("eth{12,0-5}, 14", ["eth12", "eth0", "eth1", "eth2", "eth3", "eth4", "eth5", "eth 14"]),
     (["{10-15,2}", ["10", "11", "12", "13", "14", "15", "2"]]),
 ]
 

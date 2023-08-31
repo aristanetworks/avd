@@ -1,6 +1,7 @@
 # Copyright (c) 2023 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
 
 from re import Match, search, split
 
@@ -70,7 +71,7 @@ def expand_hyphen(range_sr: Match, range_to_expand: str) -> list:
     return replaced_list
 
 
-def range_expand_utils(range_to_expand: str or list, prefix: str = "") -> list:
+def range_expand_utils(range_to_expand: str | list, prefix: str = "") -> list:
     """
     range_expand_utils recursively calls itself in order to expand the range in a
     string seperated by comma(,) or hyphen(-). It would also add a prefix to the
@@ -122,20 +123,28 @@ def range_expand_utils(range_to_expand: str or list, prefix: str = "") -> list:
         # Except the case where there is no opening curly bracket but closing curly bracket is present [Example: ",4}"]
         # It considers the comma inside the curly brackets whereas it is actually outside.
 
-        regex_commas_inside_curly_brackets = r"(?P<curly_brackets>\{\s*\d+(?:(?:\s*,\s*\d+)*(?:\-\d+)*)*\s*\})"
-        #     (\( \))                                                                                   matches starting and ending of curly_brackets
+        regex_commas_inside_curly_brackets = r"(?P<curly_brackets>\{\s*\d+\s*(?:-\s*\d+\s*)?(?:,\s*\d+\s*(?:-\s*\d+\s*)?)*})"
+        #     (\{} \})                                                                                  matches starting and ending of curly_brackets
         #     ?P<curly_brackets>                                                                        assigning name to the group.
         #     ?:                                                                                        only group but do not remember the grouped part
-        #                                                               \d+                             matches 1 or more numbers Ex. 1, 21
-        #                                                                    (?:\s*,\s*\d+)*            matches 0 or more apperance of "," and one
-        #                                                                                                   or more numbers Ex. ,2,23
-        #                                                                                    (?:\-\d+)* matches 0 or more numbers with range (-) Ex. -4
-        #                                           \d+(?:(?:\s*,\s*\d+)*(?:\-\d+)*)*                   matches values similar to 1 or 1,2,3 or 1,2-4
-        #                                       \{\s*\d+(?:(?:\s*,\s*\d+)*(?:\-\d+)*)*\s*\}             matches values similar to (1) or (1,2,3) or (1,2-4)
+        #                                                           \s*\d+\s*                           matches 1 or more numbers and spaces before and
+        #                                                                                                   after it, Ex. 1 or 21
+        #                                                                    (?:-\s*\d+\s*)?            matches 0 or one apperance of hyphen followed by
+        #                                                                                                   a number and spaces between them, Ex. -3 or - 4
+        #                                                           (?:,\s*\d+\s*(?:-\s*\d+\s*)?)*      matches 0 or more apperance of comma followed by
+        #                                                                                                   number and spaces in between, along with hyphen
+        #                                                                                                       followed by a number and spaces between
+        #                                                                                                           them, Ex. ,1 , 3-5,7-11
+        #                                \{\s*\d+\s*(?:-\s*\d+\s*)?(?:,\s*\d+\s*(?:-\s*\d+\s*)?)*}      matches values similar to {1} or {1,2,3} or {1, 2-4}
 
-        regex_hyphen_range = r"(?P<hyphen>[0-9]+\-[0-9]+)"
+        regex_hyphen_range = r"(?P<hyphen>(?<!-\s)(?<!-)(\d+\s*\-\s*\d+)(?!\s*-\s*))"
         #                       ?P<hyphen>                                                              assigning name to the group.
-        #                                ([0-9]+\-[0-9]+)                                               matches range outside curly brackets Ex. 1-5 or 33-46
+        #                                (?<!-\s)(?<!-)                                                 negative lookbehind for hyphen and hyphen with single
+        #                                                                                                   space to avoid cases like 2-3-4-6 or 2 -3- 4
+        #                                               (\d+\s*\-\s*\d+)                                matches number followed by hyphen followed by number
+        #                                                                                                   and spaces between them, EX. 1-2 or 1 -3 or 66- 89
+        #                                                               (?!\s*-\s*)                     negative lookahead for hyphen and spaces around it to
+        #                                                                                                   avoid cases like 2-3-4-6 or 2 -3- 4
 
         search_result = search(f"{regex_commas_inside_curly_brackets}|{regex_hyphen_range}", range_to_expand)
 
