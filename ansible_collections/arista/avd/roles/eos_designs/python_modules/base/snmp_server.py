@@ -99,7 +99,7 @@ class SnmpServerMixin(UtilsMixin):
             get(self.shared_utils.switch_data_combined, "rack"),
             self.shared_utils.hostname,
         ]
-        location_elements = [location for location in location_elements if location is not None]
+        location_elements = [location for location in location_elements if location not in [None, ""]]
         return " ".join(location_elements)
 
     def _snmp_users(self, snmp_settings: dict, engine_ids: dict | None) -> list | None:
@@ -226,7 +226,7 @@ class SnmpServerMixin(UtilsMixin):
 
         # Initialize a set with all vrfs (Catching None value with or [])
         vrfs = get(snmp_settings, "vrfs", default=[])
-        if (enable_mgmt_interface_vrf := snmp_settings.get("enable_mgmt_interface_vrf")) is not None and has_mgmt_ip:
+        if has_mgmt_ip and (enable_mgmt_interface_vrf := snmp_settings.get("enable_mgmt_interface_vrf")) is not None:
             vrf = {
                 "name": self.shared_utils.mgmt_interface_vrf,
                 "enable": enable_mgmt_interface_vrf,
