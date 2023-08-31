@@ -703,6 +703,7 @@ roles/eos_designs/docs/tables/management-settings.md
 
 --8<--
 roles/eos_designs/docs/tables/management-source-interfaces-settings.md
+--8<--
 
 ### SNMP settings
 
