@@ -8,25 +8,16 @@ from .get_device_structured_config import get_device_structured_config
 from .validate_inputs import validate_inputs
 from .validate_structured_config import validate_structured_config
 from .validation_result import ValidationResult
-from .vendor.version import VERSION
 
 """ Library for running Arista Validated Designs (AVD) in Python
 """
 
-PYAVD_VERSION = "a6"
-AVD_VERSION = VERSION.split("-", maxsplit=1)[0]
-
-if "-dev" in VERSION:
-    DEV_VERSION = f"-dev{VERSION.split('-dev')[1]}"
-if "-rc" in VERSION:
-    DEV_VERSION = f"-dev{VERSION.split('-rc')[1]}"
-else:
-    DEV_VERSION = ""
+PYAVD_PRERELEASE = "b1"  # Set this to aN or bN for alpha and beta releases of pyavd itself. Empty string when pyavd is released.
 
 __author__ = "Arista Networks"
 __copyright__ = "Copyright 2023 Arista Networks"
 __license__ = "Apache 2.0"
-__version__ = f"{AVD_VERSION}{PYAVD_VERSION}{DEV_VERSION}"
+__version__ = "4.3.0b1"
 
 __all__ = [
     "get_avd_facts",

@@ -1,4 +1,4 @@
-hostname: port-channel-short-esi
+hostname: host1
 router_bgp:
   as: '101'
   router_id: 192.168.255.101
@@ -37,6 +37,18 @@ router_bgp:
       activate: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.12:9910
+  - 192.168.200.13:9910
+  - 192.168.200.11:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
 vlan_internal_order:
   allocation: ascending
   range:
@@ -81,12 +93,12 @@ ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
   Vxlan1:
-    description: port-channel-short-esi_VTEP
+    description: host1_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
 ethernet_interfaces:
-- name: Ethernet10
+- name: Ethernet12
   peer: server01_ESI
   peer_interface: Eth1
   peer_type: server
@@ -95,9 +107,9 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 10
+    id: 12
     mode: active
-- name: Ethernet12
+- name: Ethernet13
   peer: server01_ESI
   peer_interface: Eth6
   peer_type: server
@@ -105,18 +117,28 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 12
+    id: 13
     mode: active
+- name: Ethernet10
+  peer: ROUTER01
+  peer_interface: Eth1
+  peer_type: router
+  port_profile: Tenant_X_LT
+  description: ROUTER01_Eth1
+  shutdown: false
+  type: switched
 port_channel_interfaces:
-- name: Port-Channel10
+- name: Port-Channel12
   description: server01_ESI_PortChanne1
   type: switched
   shutdown: false
+  mode: trunk
+  vlans: 110-111,210-211
   evpn_ethernet_segment:
     identifier: 0000:0000:0303:0202:0101
     route_target: 03:03:02:02:01:01
   lacp_id: 0303.0202.0101
-- name: Port-Channel12
+- name: Port-Channel13
   description: server01_ESI_PortChanne1
   type: switched
   shutdown: false
