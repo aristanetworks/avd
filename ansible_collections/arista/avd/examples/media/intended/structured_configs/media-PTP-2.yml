@@ -1,4 +1,3 @@
-hostname: media-PTP-2
 router_bgp:
   as: '65402'
   router_id: 10.255.3.2
