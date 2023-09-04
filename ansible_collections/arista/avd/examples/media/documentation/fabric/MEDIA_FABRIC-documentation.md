@@ -49,8 +49,6 @@
 | media_leaf | blue-leaf2 | Ethernet2 | media_spine | blue-spine1 | Ethernet4 |
 | media_spine | blue-spine1 | Ethernet5 | ptp_leaf | media-PTP-1 | Ethernet2 |
 | media_spine | blue-spine1 | Ethernet6 | ptp_leaf | media-PTP-2 | Ethernet2 |
-| ptp_leaf | media-PTP-1 | Ethernet3 | ptp_leaf | media-PTP-2 | Ethernet3 |
-| ptp_leaf | media-PTP-1 | Ethernet4 | ptp_leaf | media-PTP-2 | Ethernet4 |
 
 ## Fabric IP Allocation
 

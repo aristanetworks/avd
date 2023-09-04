@@ -2,7 +2,7 @@
 # Port Profiles
 # Common settings inherited to network_ports
 port_profiles:
-  AMBER_111:
+  - profile: AMBER_111
     mode: access
     enabled: false
     vlans: "111"
@@ -11,7 +11,7 @@ port_profiles:
     ptp:
       enabled: true
 
-  AMBER_112:
+  - profile: AMBER_112
     mode: access
     enabled: false
     vlans: "112"
@@ -20,7 +20,7 @@ port_profiles:
     ptp:
       enabled: true
 
-  BLUE_211:
+  - profile: BLUE_211
     mode: access
     enabled: false
     vlans: "211"
@@ -29,7 +29,7 @@ port_profiles:
     ptp:
       enabled: true
 
-  BLUE_212:
+  - profile: BLUE_212
     mode: access
     enabled: false
     vlans: "212"

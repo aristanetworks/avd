@@ -17,14 +17,14 @@ media_leaf:
       priority2: 2
 
   nodes:
-    blue-leaf1:
+    - name: blue-leaf1
       id: 1
       bgp_as: 65201
       mgmt_ip: 172.16.1.211/24
       filter:
         tags: [ blue-leaf1 ]
 
-    blue-leaf2:
+    - name: blue-leaf2
       id: 2
       bgp_as: 65202
       mgmt_ip: 172.16.1.212/24

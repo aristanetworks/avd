@@ -13,7 +13,7 @@ ptp_leaf:
       tenants: [ ptp ]
 
   nodes:
-    media-PTP-1:
+    - name: media-PTP-1
       id: 1
       bgp_as: 65401
       mgmt_ip: 172.16.3.101/24
@@ -23,7 +23,7 @@ ptp_leaf:
         - Ethernet5
         - Ethernet5
 
-    media-PTP-2:
+    - name: media-PTP-2
       id: 2
       bgp_as: 65402
       mgmt_ip: 172.16.3.102/24

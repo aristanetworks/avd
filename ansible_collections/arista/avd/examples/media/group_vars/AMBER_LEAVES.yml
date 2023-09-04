@@ -17,14 +17,14 @@ media_leaf:
       priority2: 1
 
   nodes:
-    amber-leaf1:
+    - name: amber-leaf1
       id: 1
       bgp_as: 65101
       mgmt_ip: 172.16.1.111/24
       filter:
         tags: [ amber-leaf1 ]
 
-    amber-leaf2:
+    - name: amber-leaf2
       id: 2
       bgp_as: 65102
       mgmt_ip: 172.16.1.112/24
