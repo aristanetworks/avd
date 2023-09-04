@@ -2,6 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from keyword import iskeyword
+from textwrap import indent
 
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 
@@ -62,9 +63,6 @@ class AvdToPydanticConverter:
                     base_class_elements.append(self.generate_class_name(ref_element))
                     recursive_function("/".join(_ref[ref_index + 1]))
 
-    def indent_block(self, block: str) -> str:
-        return "\n".join(f"{self.INDENTATION}{line}".rstrip() for line in f"{block}".splitlines())
-
     def generate_class(self, class_key: str, schema: dict) -> tuple[str, str]:
         if schema.get("type") != "dict":
             # Ignore if not dict
@@ -86,7 +84,7 @@ class AvdToPydanticConverter:
             # which must be added to the output above the attributes referring to it.
             field, subclass = self.generate_field(key, subschema)
             if subclass:
-                subclasses.append(self.indent_block(subclass))
+                subclasses.append(indent(subclass, self.INDENTATION))
                 # Insert an extra blank line after each subclass
                 subclasses.append("")
             if field:
