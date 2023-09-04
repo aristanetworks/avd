@@ -11,3 +11,5 @@ media_leaf,blue-leaf2,Ethernet1,10.255.255.9/31,media_spine,blue-spine1,Ethernet
 media_leaf,blue-leaf2,Ethernet2,10.255.255.11/31,media_spine,blue-spine1,Ethernet4,10.255.255.10/31
 media_spine,blue-spine1,Ethernet5,10.255.253.2/31,ptp_leaf,media-PTP-1,Ethernet2,10.255.253.3/31
 media_spine,blue-spine1,Ethernet6,10.255.253.6/31,ptp_leaf,media-PTP-2,Ethernet2,10.255.253.7/31
+ptp_leaf,media-PTP-1,Ethernet3,,ptp_leaf,media-PTP-2,Ethernet3,
+ptp_leaf,media-PTP-1,Ethernet4,,ptp_leaf,media-PTP-2,Ethernet4,

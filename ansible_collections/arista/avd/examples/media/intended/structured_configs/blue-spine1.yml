@@ -1,3 +1,4 @@
+hostname: blue-spine1
 router_bgp:
   as: '65200'
   router_id: 10.255.2.1
