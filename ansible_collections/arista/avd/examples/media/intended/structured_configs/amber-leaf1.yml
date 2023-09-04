@@ -1,3 +1,4 @@
+hostname: amber-leaf1
 router_bgp:
   as: '65101'
   router_id: 10.255.1.2
@@ -31,7 +32,7 @@ router_bgp:
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.90.227.1
+  gateway: 172.16.1.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 router_multicast:
@@ -68,7 +69,7 @@ management_interfaces:
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.111/24
-  gateway: 10.90.227.1
+  gateway: 172.16.1.1
   type: oob
 management_api_http:
   enable_vrfs:

@@ -10,6 +10,6 @@ media_spine:
       tenants: [ amber ]
 
   nodes:
-    amber-spine1:
+    - name: amber-spine1
       id: 1
       mgmt_ip: 172.16.1.11/24

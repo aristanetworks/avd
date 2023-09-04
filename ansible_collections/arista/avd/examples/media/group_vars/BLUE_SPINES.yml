@@ -10,6 +10,6 @@ media_spine:
       tenants: [ blue ]
 
   nodes:
-    blue-spine1:
+    - name: blue-spine1
       id: 1
       mgmt_ip: 172.16.1.21/24

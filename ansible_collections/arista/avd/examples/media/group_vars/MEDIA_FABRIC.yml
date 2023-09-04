@@ -29,7 +29,7 @@ fabric_name: "MEDIA_FABRIC"
 # - Disable VTEP and MLAG on leaf switches
 # - Set default_ptp_priority1 for "media_leaf" as this is only set by default for "l3leaf"
 node_type_keys:
-  ptp_leaf:
+  - key: ptp_leaf
     type: ptp_leaf
     default_overlay_routing_protocol: none
     connected_endpoints: true
@@ -37,7 +37,7 @@ node_type_keys:
       l2: true
       l3: true
     default_ptp_priority1: 10
-  media_spine:
+  - key: media_spine
     type: media_spine
     default_overlay_routing_protocol: none
     connected_endpoints: true
@@ -45,7 +45,7 @@ node_type_keys:
       l2: true
       l3: true
     default_ptp_priority1: 20
-  media_leaf:
+  - key: media_leaf
     type: media_leaf
     default_overlay_routing_protocol: none
     connected_endpoints: true
@@ -80,16 +80,26 @@ p2p_uplinks_mtu: 1500
 
 # Set default uplink and downlink interfaces based on node type
 default_interfaces:
-  - types: [ media_spine ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-2 ]
-    downlink_interfaces: [ Ethernet1-8 ]
-  - types: [ media_leaf ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-4 ]
-  - types: [ ptp_leaf ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-2 ]
+  - types:
+      - media_spine
+    platforms:
+      - default
+    uplink_interfaces:
+      - Ethernet1-2
+    downlink_interfaces:
+      - Ethernet1-8
+  - types:
+      - media_leaf
+    platforms:
+      - default
+    uplink_interfaces:
+      - Ethernet1-4
+  - types:
+      - ptp_leaf
+    platforms:
+      - default
+    uplink_interfaces:
+      - Ethernet1-2
 
 daemon_terminattr:
   # Uncomment below if using CVaaS
@@ -151,9 +161,11 @@ core_interfaces:
   p2p_links:
     - id: 1
       # Nodes where this link should be configured
-      nodes: [ media-PTP-1, media-PTP-2 ]
+      nodes:
+        - media-PTP-1, media-PTP-2
       # Interfaces where this link should be configured | Required unless using port-channels
-      interfaces: [ Ethernet3, Ethernet3 ]
+      interfaces:
+        - Ethernet3, Ethernet3
       # Enable PTP
       ptp:
         enabled: true
@@ -161,9 +173,11 @@ core_interfaces:
       include_in_underlay_protocol: false
     - id: 2
       # Nodes where this link should be configured
-      nodes: [ media-PTP-1, media-PTP-2 ]
+      nodes:
+        - media-PTP-1, media-PTP-2
       # Interfaces where this link should be configured | Required unless using port-channels
-      interfaces: [ Ethernet4, Ethernet4 ]
+      interfaces:
+        - Ethernet4, Ethernet4
       # Enable PTP
       ptp:
         enabled: true
