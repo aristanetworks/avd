@@ -1,3 +1,4 @@
+hostname: media-PTP-2
 router_bgp:
   as: '65402'
   router_id: 10.255.3.2
@@ -135,6 +136,40 @@ ethernet_interfaces:
   pim:
     ipv4:
       sparse_mode: true
+- name: Ethernet3
+  peer: media-PTP-1
+  peer_interface: Ethernet3
+  peer_type: ptp_leaf
+  description: P2P_LINK_TO_media-PTP-1_Ethernet3
+  type: routed
+  shutdown: false
+  mtu: 1500
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
+- name: Ethernet4
+  peer: media-PTP-1
+  peer_interface: Ethernet4
+  peer_type: ptp_leaf
+  description: P2P_LINK_TO_media-PTP-1_Ethernet4
+  type: routed
+  shutdown: false
+  mtu: 1500
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
 - name: Ethernet6
   peer: Routed Endpoints
   peer_type: network_port

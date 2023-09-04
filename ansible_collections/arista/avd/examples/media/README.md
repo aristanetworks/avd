@@ -434,7 +434,7 @@ The following section specifies variables that generate configuration to be appl
 fabric_name: MEDIA_FABRIC # (1)!
 
 node_type_keys: # (2)!
-  ptp_leaf:
+  - key: ptp_leaf
     type: ptp_leaf
     default_overlay_routing_protocol: none
     connected_endpoints: true
@@ -442,7 +442,7 @@ node_type_keys: # (2)!
       l2: true
       l3: true
     default_ptp_priority1: 10
-  media_spine:
+  - key: media_spine
     type: media_spine
     default_overlay_routing_protocol: none
     connected_endpoints: true
@@ -450,7 +450,7 @@ node_type_keys: # (2)!
       l2: true
       l3: true
     default_ptp_priority1: 20
-  media_leaf:
+  - key: media_leaf
     type: media_leaf
     default_overlay_routing_protocol: none
     connected_endpoints: true
@@ -476,16 +476,26 @@ bgp_peer_groups: # (4)!
 p2p_uplinks_mtu: 1500 # (5)!
 
 default_interfaces: # (6)!
-  - types: [ media_spine ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-2 ]
-    downlink_interfaces: [ Ethernet1-8 ]
-  - types: [ media_leaf ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-4 ]
-  - types: [ ptp_leaf ]
-    platforms: [ default ]
-    uplink_interfaces: [ Ethernet1-2 ]
+  - types:
+      - media_spine
+    platforms:
+      - default
+    uplink_interfaces:
+      - Ethernet1-2
+    downlink_interfaces:
+      - Ethernet1-8
+  - types:
+      - media_leaf
+    platforms:
+      - default
+    uplink_interfaces:
+      - Ethernet1-4
+  - types:
+      - ptp_leaf
+    platforms:
+      - default
+    uplink_interfaces:
+      - Ethernet1-2
 
 daemon_terminattr: # (7)!
   cvaddrs:
@@ -598,14 +608,14 @@ media_leaf:
       priority2: 1
 
   nodes: # (10)!
-    amber-leaf1:
+    - name: amber-leaf1
       id: 1 # (11)!
       bgp_as: 65101 # (12)!
       mgmt_ip: 172.16.1.111/24 # (13)!
       filter:
         tags: [ amber-leaf1 ]
 
-    amber-leaf2:
+    - name: amber-leaf2
       id: 2
       bgp_as: 65102
       mgmt_ip: 172.16.1.112/24
@@ -634,11 +644,11 @@ The `ansible-avd-examples/media/group_vars/NETWORK_SERVICES.yml` file defines Al
 ```yaml title="NETWORK_SERVICES.yml"
 ---
 tenants: # (1)!
-  amber:
+  - name: amber
     vrfs: # (2)!
-      default:
+      - name: default
         svis: # (3)!
-          111:
+          - id: 111
             name: VLAN111 # (4)!
             enabled: true
             tags: [ amber-leaf1 ] # (5)!
@@ -648,7 +658,7 @@ tenants: # (1)!
             ip_helpers:
               10.252.4.253:
 
-          112:
+          - id: 112
             name: VLAN112
             enabled: true
             tags: [ amber-leaf2 ]
@@ -657,36 +667,36 @@ tenants: # (1)!
                 ip_address: 10.10.112.1/24
             ip_helpers:
               10.252.4.253:
-  blue:
+  - name: blue
     vrfs:
-      default:
+      - name: default
         svis:
-          211:
+          - id: 211
             name: VLAN211
             enabled: true
             tags: [ blue-leaf1 ]
             nodes:
               - node: blue-leaf1
                 ip_address: 10.10.211.1/24
-          212:
+          - id: 212
             name: VLAN212
             enabled: true
             tags: [ blue-leaf2 ]
             nodes:
               - node: blue-leaf2
                 ip_address: 10.10.212.1/24
-  ptp:
+  - name: ptp
     vrfs:
-      default:
+      - name: default
         svis:
-          131:
+          - id: 131
             name: VLAN131
             enabled: true
             tags: [ media-PTP-1 ]
             nodes:
               - node: media-PTP-1
                 ip_address: 10.10.131.1/24
-          132:
+          - id: 132
             name: VLAN132
             enabled: true
             tags: [ media-PTP-2 ]

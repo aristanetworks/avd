@@ -160,29 +160,42 @@ ntp:
 core_interfaces:
   p2p_links:
     - id: 1
-      # Nodes where this link should be configured
-      nodes:
-        - media-PTP-1, media-PTP-2
-      # Interfaces where this link should be configured | Required unless using port-channels
-      interfaces:
-        - Ethernet3, Ethernet3
-      # Enable PTP
+      nodes: [ media-PTP-1, media-PTP-2 ]
+      interfaces: [ Ethernet3, Ethernet3 ]
       ptp:
         enabled: true
-      # Do not add this interface to underlay routing protocol
       include_in_underlay_protocol: false
     - id: 2
-      # Nodes where this link should be configured
-      nodes:
-        - media-PTP-1, media-PTP-2
-      # Interfaces where this link should be configured | Required unless using port-channels
-      interfaces:
-        - Ethernet4, Ethernet4
-      # Enable PTP
+      nodes: [ media-PTP-1, media-PTP-2 ]
+      interfaces: [ Ethernet4, Ethernet4 ]
       ptp:
         enabled: true
-      # Do not add this interface to underlay routing protocol
       include_in_underlay_protocol: false
+
+    # - id: 1
+    #   # Nodes where this link should be configured
+    #   nodes:
+    #     - media-PTP-1, media-PTP-2
+    #   # Interfaces where this link should be configured | Required unless using port-channels
+    #   interfaces:
+    #     - Ethernet3, Ethernet3
+    #   # Enable PTP
+    #   ptp:
+    #     enabled: true
+    #   # Do not add this interface to underlay routing protocol
+    #   include_in_underlay_protocol: false
+    # - id: 2
+    #   # Nodes where this link should be configured
+    #   nodes:
+    #     - media-PTP-1, media-PTP-2
+    #   # Interfaces where this link should be configured | Required unless using port-channels
+    #   interfaces:
+    #     - Ethernet4, Ethernet4
+    #   # Enable PTP
+    #   ptp:
+    #     enabled: true
+    #   # Do not add this interface to underlay routing protocol
+    #   include_in_underlay_protocol: false
 
 # -------------------------------------------------- VALIDATE STATE --------------------------------------------------
 # configure playbook to ingnore errors and continue testing.
