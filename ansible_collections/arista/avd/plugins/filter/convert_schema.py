@@ -8,7 +8,6 @@ __metaclass__ = type
 from ansible.errors import AnsibleFilterError
 from ansible.utils.display import Display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschema import AvdSchema
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtodocumentationschemaconverter import AvdToDocumentationSchemaConverter
@@ -79,16 +78,25 @@ def convert_schema(schema_id: str, type: str):
         raise AnsibleFilterError("Invalid schema!")
 
     if type == "documentation_tables":
-        return AvdToDocumentationSchemaConverter(avdschema).convert_schema_to_tables()
+        try:
+            return AvdToDocumentationSchemaConverter(avdschema).convert_schema_to_tables()
+        except Exception as e:
+            raise AnsibleFilterError(repr(e)) from e
 
     elif type == "jsonschema":
-        return AvdToJsonSchemaConverter(avdschema).convert_schema()
+        try:
+            return AvdToJsonSchemaConverter(avdschema).convert_schema()
+        except Exception as e:
+            raise AnsibleFilterError(repr(e)) from e
 
     elif type == "pydantic":
-        return AvdToPydanticConverter(avdschema).convert_schema(root_key=schema_id)
+        try:
+            return AvdToPydanticConverter(avdschema).convert_schema(root_key=schema_id)
+        except Exception as e:
+            raise AnsibleFilterError(repr(e)) from e
 
     else:
-        raise AristaAvdError(f"Filter arista.avd.convert_schema requires type 'documentation_tables' or 'jsonschema'. Got {type}")
+        raise AnsibleFilterError(f"Filter arista.avd.convert_schema requires type 'documentation_tables' or 'jsonschema'. Got {type}")
 
 
 class FilterModule(object):

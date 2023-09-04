@@ -70,15 +70,20 @@ def _ref_on_child(validator, ref, child_schema: dict):
     """
     scope, ref_schema = validator.resolver.resolve(ref)
     ref_schema = deepcopy(ref_schema)
-    child_schema.pop("$ref", None)
+    # Remove $ref from schema but store it in a list of refs for use in pydantic converter.
+    child_schema.setdefault("$refs", []).append(child_schema.pop("$ref", None))
     merge(child_schema, ref_schema, same_key_strategy="use_existing")
     # Resolve new refs inherited from the first ref.
     if "$ref" in child_schema:
         _ref_on_child(validator, child_schema["$ref"], child_schema)
 
 
+def _ref(validator, ref: dict, resolved_schema: dict, schema: dict):
+    _ref_on_child(validator, ref, resolved_schema)
+
+
 class AvdSchemaResolver:
-    def __new__(cls, schema, store):
+    def __new__(cls, schema, store, recursive: bool = True):
         """
         AvdSchemaResolver is used to resolve $ref in AVD Schemas.
 
@@ -93,13 +98,21 @@ class AvdSchemaResolver:
         if JSONSCHEMA_IMPORT_ERROR:
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
 
-        ValidatorClass = jsonschema.validators.create(
-            meta_schema=store["avd_meta_schema"],
-            validators={
-                "items": _items,
-                "keys": _keys,
-                "dynamic_keys": _dynamic_keys,
-            },
-        )
+        if recursive:
+            ValidatorClass = jsonschema.validators.create(
+                meta_schema=store["avd_meta_schema"],
+                validators={
+                    "items": _items,
+                    "keys": _keys,
+                    "dynamic_keys": _dynamic_keys,
+                },
+            )
+        else:
+            ValidatorClass = jsonschema.validators.create(
+                meta_schema=store["avd_meta_schema"],
+                validators={
+                    "$ref": _ref,
+                },
+            )
 
         return ValidatorClass(schema, resolver=create_refresolver(schema, store))

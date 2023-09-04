@@ -22,7 +22,7 @@ keys:
       5. svi_profile.structured_config
       6. svi_parent_profile.structured_config
     items:
-      $ref: "#/$defs/svi"
+      $ref: "eos_designs#/$defs/svi"
       type: dict
       keys:
         profile:
