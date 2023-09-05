@@ -382,7 +382,7 @@ class RouterBgpMixin(UtilsMixin):
     def _evpn_vlan_aware_bundles(self) -> bool:
         return get(self._hostvars, "evpn_vlan_aware_bundles", default=False)
 
-    def _get_vlan_aware_bundle_name(self, vlan: dict) -> str:
+    def _get_vlan_aware_bundle_name(self, vlan: dict) -> str | None:
         """
         Return a string with the vlan-aware-bundle name for one VLAN
         """
@@ -437,13 +437,13 @@ class RouterBgpMixin(UtilsMixin):
                                 f" l2vlan {l2vlans[0]['id']} in Tenant '{l2vlans[0]['tenant']}' and evpn_vlan_bundle '{l2vlans[0]['evpn_vlan_bundle']}'."
                             )
 
-                append_if_not_duplicate(
-                    list_of_dicts=bundles,
-                    primary_key="name",
-                    new_dict=bundle,
-                    context="BGP VLAN-Aware Bundles defined under network services",
-                    context_keys=["name"],
-                )
+                    append_if_not_duplicate(
+                        list_of_dicts=bundles,
+                        primary_key="name",
+                        new_dict=bundle,
+                        context="BGP VLAN-Aware Bundles defined under network services",
+                        context_keys=["name"],
+                    )
 
         if bundles:
             return bundles
