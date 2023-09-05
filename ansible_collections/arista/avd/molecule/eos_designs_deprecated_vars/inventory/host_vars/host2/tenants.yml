@@ -24,11 +24,23 @@ tenants:
       # Testing "svis" as dict of dict
       # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
         svis:
+          110:
+            vni_override: 50110
+            name: Tenant_A_OP_Zone_1
+            enabled: True
+            # Testing ipv6_address_virtual alone
+            # ipv6_address_virtual deprecated in 4.0.0. To be removed in 5.0.0
+            ipv6_address_virtual: 2001:db8:413::1/64
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
             tags: ['opzone']
             enabled: True
+            # Testing ipv6_address_virtual in combination with the new ipv6_address_virtuals to see that both are configured
+            # ipv6_address_virtual deprecated in 4.0.0. To be removed in 5.0.0
+            ipv6_address_virtual: 2001:db8:310::1/64
+            ipv6_address_virtuals:
+              - 2001:db8:311::1/64
             # Testing "ip_helpers" as dict of dict
             # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
             ip_helpers:
