@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_lacp_id, generate_route_target
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -62,6 +63,19 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     "route_target": generate_route_target(short_esi),
                 }
                 port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
+
+            # PTP
+            if get(link, "ptp.enable") is True:
+                ptp_config = {}
+
+                # Apply PTP profile config if using the new ptp config style
+                if self.shared_utils.ptp_enabled:
+                    ptp_config.update(self.shared_utils.ptp_profile)
+
+                ptp_config["enable"] = True
+                ptp_config.pop("profile", None)
+
+                port_channel_interface["ptp"] = ptp_config
 
             # Structured Config
             port_channel_interface["struct_cfg"] = link.get("structured_config")
