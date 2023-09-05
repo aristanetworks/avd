@@ -50,6 +50,7 @@ vrfs:
 - name: TENANT_B_WAN
   tenant: TENANT_B
   ip_routing: true
+  ipv6_routing: true
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -77,6 +78,9 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 vlans:
+- id: 110
+  name: Tenant_A_OP_Zone_1
+  tenant: TENANT_B
 - id: 111
   name: Tenant_A_OP_Zone_2
   tenant: TENANT_B
@@ -85,13 +89,30 @@ vlans:
   tenant: TENANT_B
 ip_igmp_snooping:
   globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
+- name: Vlan110
+  tenant: TENANT_B
+  description: Tenant_A_OP_Zone_1
+  shutdown: false
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:db8:413::1/64
+  vrf: TENANT_B_WAN
+  ip_helpers:
+  - ip_helper: 1.1.1.1
+    source_interface: lo100
+    vrf: MGMT
 - name: Vlan111
   tenant: TENANT_B
   tags:
   - opzone
   description: Tenant_A_OP_Zone_2
   shutdown: false
+  ipv6_enable: true
+  ipv6_address_virtuals:
+  - 2001:db8:310::1/64
+  - 2001:db8:311::1/64
   vrf: TENANT_B_WAN
   ip_helpers:
   - ip_helper: 1.1.1.1
