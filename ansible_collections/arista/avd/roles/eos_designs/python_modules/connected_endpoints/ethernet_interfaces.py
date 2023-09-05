@@ -94,7 +94,10 @@ class EthernetInterfacesMixin(UtilsMixin):
         # check lengths of lists
         nodes_length = len(adapter["switches"])
         if len(adapter["switch_ports"]) != nodes_length or ("descriptions" in adapter and len(adapter["descriptions"]) != nodes_length):
-            raise AristaAvdError("Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter.")
+            raise AristaAvdError(
+                f"Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter. Check configuration for {peer}, adapter"
+                f" switch_ports {adapter['switch_ports']}."
+            )
 
         # if 'descriptions' is set, it is preferred
         if (interface_descriptions := adapter.get("descriptions")) is not None:
