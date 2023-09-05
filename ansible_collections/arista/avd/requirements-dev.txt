@@ -20,3 +20,4 @@ jsonschema>=4.5.1,<4.18
 deepmerge>=1.1.0
 isort==5.12.0
 black==22.8.0
+tox

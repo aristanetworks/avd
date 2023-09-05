@@ -66,6 +66,9 @@ jobs:
               - 'ansible_collections/arista/avd/**/*.md'
               - 'ansible_collections/arista/avd/README.md'
               - 'ansible_collections/arista/avd/**/*.schema.yml'
+            pyavd:
+              - 'python_avd/*'
+              - 'python_avd/**/*'
   # ----------------------------------- #
   # Pre Commit code validation
   # ----------------------------------- #
@@ -426,3 +429,33 @@ jobs:
         with:
           name: importer-logs
           path: ./importer_result.json
+
+  # ----------------------------------- #
+  # Test of pyavd
+  # ----------------------------------- #
+  pyavd:
+    name: Test pyavd
+    runs-on: ubuntu-latest
+    needs: [ pre_commit ]
+    if: |
+      needs.file-changes.outputs.eos_design == 'true' ||
+      needs.file-changes.outputs.config_gen == 'true' ||
+      needs.file-changes.outputs.pyavd == 'true'
+    steps:
+      - name: 'Set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - name: Set up Python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: |
+            3.10
+            3.11
+      - name: 'Install tox'
+        run: |
+          pip install tox --upgrade
+      - name: 'Run tox'
+        working-directory: python-avd
+        run: |
+          tox
