@@ -3,10 +3,8 @@
   hosts: MEDIA_FABRIC
   connection: httpapi
   gather_facts: false
-  collections:
-    - arista.avd
 
   tasks:
-    - name: validate states on EOS devices
+    - name: Validate states on EOS devices
       ansible.builtin.import_role:
         name: arista.avd.eos_validate_state
