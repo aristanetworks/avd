@@ -433,7 +433,7 @@ class RouterBgpMixin(UtilsMixin):
                                 bundle["eos_cli"] = eos_cli
                         else:
                             raise AristaAvdMissingVariableError(
-                                "The 'evpn_vlan_bundle' of the l2vlans must be defined in the global 'evpn_vlan_bundles' setting. First occurence seen for"
+                                "The 'evpn_vlan_bundle' of the l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for"
                                 f" l2vlan {l2vlans[0]['id']} in Tenant '{l2vlans[0]['tenant']}' and evpn_vlan_bundle '{l2vlans[0]['evpn_vlan_bundle']}'."
                             )
 
