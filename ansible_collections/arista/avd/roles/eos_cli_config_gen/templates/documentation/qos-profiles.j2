@@ -113,6 +113,8 @@ QOS Profile: **{{ profile.name }}**
 {%                     set type = "Multicast" %}
 | {{ mc_tx_queue.id }} | {{ type }} | False | - | - | - |
 {%                 endfor %}
+{%             endif %}
+{%         endif %}
 {%         if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
 
 **Priority Flow Control**
