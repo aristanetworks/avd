@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - router bgp #}
 {% if router_bgp.as is arista.avd.defined %}
 !
@@ -382,6 +387,9 @@ router bgp {{ router_bgp.as }}
 {%     for redistribute_route in router_bgp.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
 {%         if redistribute_route.source_protocol is arista.avd.defined %}
 {%             set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
+{%             if redistribute_route.include_leaked is arista.avd.defined %}
+{%                 set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
+{%             endif %}
 {%             if redistribute_route.route_map is arista.avd.defined %}
 {%                 set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
 {%             endif %}
@@ -802,6 +810,9 @@ router bgp {{ router_bgp.as }}
 {%         for redistribute_route in router_bgp.address_family_ipv6.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
 {%             if redistribute_route.source_protocol is arista.avd.defined %}
 {%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
+{%                 if redistribute_route.include_leaked is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
+{%                 endif %}
 {%                 if redistribute_route.route_map is arista.avd.defined %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
 {%                 endif %}
@@ -1156,6 +1167,9 @@ router bgp {{ router_bgp.as }}
 {%         for redistribute_route in vrf.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
 {%             if redistribute_route.source_protocol is arista.avd.defined %}
 {%                 set redistribute_route_cli = "redistribute " ~ redistribute_route.source_protocol %}
+{%                 if redistribute_route.include_leaked is arista.avd.defined %}
+{%                     set redistribute_route_cli = redistribute_route_cli ~ " include leaked" %}
+{%                 endif %}
 {%                 if redistribute_route.route_map is arista.avd.defined %}
 {%                     set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ redistribute_route.route_map %}
 {%                 endif %}

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
@@ -134,13 +137,28 @@ class AvdToDocumentationSchemaConverter:
             if table not in self._get_tables(childschema):
                 # Skip key if none of the underlying keys have the relevant table
                 continue
-            built_table["table"].extend(self.build_table_row(var_name=key, schema=childschema, indentation=0, var_path=[], table=table))
+            built_table["table"].extend(
+                self.build_table_row(
+                    var_name=key,
+                    schema=childschema,
+                    indentation=0,
+                    var_path=[],
+                    table=table,
+                )
+            )
             built_table["yaml"].extend(self.build_yaml_row(var_name=key, schema=childschema, indentation=0, table=table))
 
         return built_table
 
     def build_table_row(
-        self, var_name: str, schema: dict, indentation: int, var_path: list, table: str, parent_schema: dict = None, first_list_item_key: bool = False
+        self,
+        var_name: str,
+        schema: dict,
+        indentation: int,
+        var_path: list,
+        table: str,
+        parent_schema: dict = None,
+        first_list_item_key: bool = False,
     ):
         output = []
 
@@ -183,7 +201,14 @@ class AvdToDocumentationSchemaConverter:
 
         return output
 
-    def build_yaml_row(self, var_name: str, schema: dict, indentation: int, table: str, first_list_item_key: bool = False):
+    def build_yaml_row(
+        self,
+        var_name: str,
+        schema: dict,
+        indentation: int,
+        table: str,
+        first_list_item_key: bool = False,
+    ):
         output = []
 
         deprecation_label = get_deprecation(schema)[0]
@@ -198,7 +223,7 @@ class AvdToDocumentationSchemaConverter:
         row = f"{row_indentation}{var_name}:"
         var_type = schema.get("type")
 
-        if var_type == "dict" and (schema_keys := self._get_keys(schema)):
+        if var_type == "dict" and (schema_keys := self._get_keys(schema)) and not schema.get("documentation_options", {}).get("hide_keys"):
             output.append(row)
             for key, childschema in schema_keys.items():
                 if table not in self._get_tables(childschema):
@@ -287,6 +312,12 @@ class AvdToDocumentationSchemaConverter:
 
     def keys(self, schema: dict, indentation: int, var_path: list, table: str):
         output = []
+
+        if schema.get("documentation_options", {}).get("hide_keys"):
+            # Skip documenting the keys.
+            # Used for not including all of eos_cli_config_gen for structured_config keys.
+            return output
+
         schema_keys = self._get_keys(schema)
 
         for key, childschema in schema_keys.items():

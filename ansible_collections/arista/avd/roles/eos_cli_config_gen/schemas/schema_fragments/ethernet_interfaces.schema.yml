@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -13,7 +16,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
         description:
           type: str
         shutdown:
@@ -268,7 +270,6 @@ keys:
             keys:
               ip_helper:
                 type: str
-                required: true
               source_interface:
                 type: str
                 description: Source interface name
@@ -278,7 +279,7 @@ keys:
                 convert_types:
                   - int
         ip_nat:
-          $ref: "#/$defs/interface_ip_nat"
+          $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -300,7 +301,6 @@ keys:
             keys:
               ipv6_prefix:
                 type: str
-                required: true
               valid_lifetime:
                 type: str
                 convert_types:
@@ -322,7 +322,6 @@ keys:
               address:
                 type: str
                 description: DHCP server's IPv6 address
-                required: true
               vrf:
                 type: str
                 convert_types:
@@ -414,7 +413,6 @@ keys:
                 type: int
                 convert_types:
                   - str
-                required: true
               hash_algorithm:
                 type: str
                 valid_values: ["md5", "sha1", "sha256", "sha384", "sha512"]
@@ -772,6 +770,13 @@ keys:
               max: 10
               convert_types:
                 - str
+            unauthorized:
+              type: dict
+              keys:
+                access_vlan_membership_egress:
+                  type: bool
+                native_vlan_membership_egress:
+                  type: bool
             eapol:
               type: dict
               keys:

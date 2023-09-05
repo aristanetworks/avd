@@ -1,0 +1,61 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  priority_flow_control:
+    type: dict
+    description: |
+      Global Priority Flow Control settings.
+    keys:
+      all_off:
+        type: bool
+        description: |
+          Disable PFC on all interfaces.
+      watchdog:
+        type: dict
+        keys:
+          action:
+            type: str
+            valid_values: ["drop", "no-drop"]
+            description: |
+              Action on stuck queue.
+          timeout:
+            type: str
+            pattern: "^\\d+(\\.\\d{1,2})?$"
+            convert_types:
+              - int
+              - float
+            description: |
+              Timeout in seconds after which port should be errdisabled or
+              should start dropping on congested priorities.
+              This should be decimal with up to 2 decimal point.
+              Example: 0.01 or 60
+          polling_interval:
+            type: str
+            pattern: "^\\d+(\\.\\d{1,3})?$"
+            convert_types:
+              - int
+              - float
+            description: |
+              Time interval in seconds at which the watchdog should poll the queues.
+              This should be decimal with up to 3 decimal point.
+              Example: 0.005 or 60
+          recovery_time:
+            type: str
+            pattern: "^\\d+(\\.\\d{1,2})?$"
+            convert_types:
+              - int
+              - float
+            description: |
+              Recovery-time in seconds after which stuck queue should
+              recover and start forwarding again.
+              This should be decimal with up to 2 decimal point.
+              Example: 0.01 or 60
+          override_action_drop:
+            type: bool
+            description: |
+              Override configured action on stuck queue to drop.

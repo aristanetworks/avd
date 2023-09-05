@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -36,8 +39,8 @@ class UtilsMixin:
         if self.shared_utils.underlay_filter_peer_as is False:
             return []
 
-        # using set comprehension with `{}`
-        return list({link["peer_bgp_as"] for link in self._underlay_links if link["type"] == "underlay_p2p"})
+        # using set comprehension with `{}` to remove duplicates and then run natural_sort to convert to list.
+        return natural_sort({link["peer_bgp_as"] for link in self._underlay_links if link["type"] == "underlay_p2p"})
 
     @cached_property
     def _underlay_links(self) -> list:

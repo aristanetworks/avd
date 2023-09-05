@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Input variables for eos_designs
 
 This document describes the supported input variables for the role `arista.avd.eos_designs`.
@@ -691,6 +697,12 @@ roles/eos_designs/docs/tables/evpn-settings.md
 
 --8<--
 roles/eos_designs/docs/tables/management-settings.md
+--8<--
+
+### Source-interfaces settings
+
+--8<--
+roles/eos_designs/docs/tables/management-source-interfaces-settings.md
 --8<--
 
 ## System settings

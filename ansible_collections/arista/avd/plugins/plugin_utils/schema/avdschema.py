@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from copy import deepcopy
@@ -147,7 +150,7 @@ class AvdSchema:
             return AvdValidationError(error=error)
         if isinstance(error, jsonschema.SchemaError):
             return AvdSchemaError(error=error)
-        return AvdSchemaError(str(error))
+        return error
 
     def subschema(self, datapath: list):
         """

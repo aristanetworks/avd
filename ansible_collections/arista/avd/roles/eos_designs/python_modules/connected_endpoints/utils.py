@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -55,9 +58,14 @@ class UtilsMixin:
 
                     filtered_adapters.append(adapter_settings)
 
-                connected_endpoint["adapters"] = filtered_adapters
-                connected_endpoint["type"] = connected_endpoints_key["type"]
-                filtered_connected_endpoints.append(connected_endpoint)
+                if filtered_adapters:
+                    filtered_connected_endpoints.append(
+                        {
+                            **connected_endpoint,
+                            "adapters": filtered_adapters,
+                            "type": connected_endpoints_key["type"],
+                        }
+                    )
 
         return filtered_connected_endpoints
 

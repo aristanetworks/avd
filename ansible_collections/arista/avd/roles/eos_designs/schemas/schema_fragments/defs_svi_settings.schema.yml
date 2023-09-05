@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -261,8 +264,11 @@ $defs:
           structured_config:
             type: dict
             description: |
-              Structured configuration and EOS CLI commands rendered on router_bgp.vlans.
+              Structured configuration and EOS CLI commands rendered on router_bgp.vlans.[id=<vlan>]
               This configuration will not be applied to vlan aware bundles
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/"
           raw_eos_cli:
             type: str
             description: |
@@ -274,4 +280,7 @@ $defs:
       structured_config:
         type: dict
         description: |
-          Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen.
+          Custom structured config added under vlan_interfaces.[name=<interface>] for eos_cli_config_gen.
+        documentation_options:
+          hide_keys: true
+        $ref: "eos_cli_config_gen#/keys/vlan_interfaces/items/"

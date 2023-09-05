@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from pickle import HIGHEST_PROTOCOL, dump
 from sys import path
 
 from yaml import safe_load
 
-path.append(".")
+# Override global path to load pyavd from pwd instead of any installed version.
+path.insert(0, ".")
 
 from pyavd.vendor.schema.default_schemas import DEFAULT_PICKLED_SCHEMAS, DEFAULT_SCHEMAS
 

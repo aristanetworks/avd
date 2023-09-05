@@ -5,7 +5,7 @@ VENDOR = vendor
 VENDOR_DIR = $(PACKAGE_DIR)/$(VENDOR)
 VENDOR_IMPORT = $(PACKAGE_DIR).$(VENDOR)
 J2_DIR = $(VENDOR_DIR)/j2
-TESTS_ARTIFACTS = $(CURRENT_DIR)/tests
+TESTS_ARTIFACTS = $(CURRENT_DIR)/tests/artifacts
 TOOLS_DIR = $(PACKAGE_DIR)/tools
 SCRIPTS_DIR = $(CURRENT_DIR)/scripts
 EOS_CLI_CONFIG_GEN_TEMPLATE_DIR = $(VENDOR_DIR)/templates
@@ -21,14 +21,14 @@ help: ## Display help message
 dep: copy-libs fix-libs ## Copy and Fix Ansible AVD python files
 
 .PHONY: test-dep
-test-dep: copy-test-data fix-test-data ## Copy and Fix Ansible AVD test files
+test-dep: copy-test-data ## Copy and Fix Ansible AVD test files
 
 .PHONY: clean
 clean: ## Delete vendor dir
 	rm -rf $(VENDOR_DIR)
 
 .PHONY: build
-build: ## Build pyavd package, (Note: Run make dep first)
+build: ## Build pyavd package
 	pip3 install build
 	rm -rf $(CURRENT_DIR)/build/ $(CURRENT_DIR)/dist/ $(CURRENT_DIR)/pyavd.egg-info/
 	python3 -m build --wheel
@@ -62,11 +62,10 @@ copy-libs: ## Copy files from Ansible AVD collection
 	mv $(VENDOR_DIR)/eos_designs_* $(EOS_DESIGNS_MODULES_DIR)/
 	cp -r $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.yml $(SCHEMAS_DIR)/
 
-	grep 'version:' ../ansible_collections/arista/avd/galaxy.yml | sed -e 's/version: \(.*\)/VERSION = "\1"/' > $(VENDOR_DIR)/version.py
-
 .PHONY: fix-libs
 fix-libs: ## Fix/remove various Ansible specifics things from python files
 	rm -f $(VENDOR_DIR)/schema/avdschematools.py
+
 	find $(PACKAGE_DIR) -name '__pycache__' -exec rm -rf {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e 's/^from __future__ import.*/from __future__ import annotations/g' {} +
 	find $(PACKAGE_DIR) -name '*.py' -exec sed -i -e '/^__metaclass__ = type/d' {} +
@@ -99,7 +98,7 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 
 ## Excluding prompt because the unsafe marker is lost during the export of hostvars.
 ## Excluding custom-templates since there is no jinja support in pyavd
-	ansible-playbook \
+	ANSIBLE_COLLECTIONS_PATHS="..:/usr/share/ansible/collections" ansible-playbook \
 		--limit 'all:!prompt:!custom-templates' \
 		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_cli_config_gen/inventory/hosts.ini \
 		$(SCRIPTS_DIR)/export_test_vars.yml \
@@ -109,58 +108,20 @@ copy-test-data: ## Copy inventory files from AVD collection Molecule scenario.
 	rm -rf $(SCRIPTS_DIR)/inventory/
 
 ## Remove excluded tests
-	rm $(TESTS_ARTIFACTS)/eos_cli_config_gen/expected_configs/prompt.cfg
-	rm $(TESTS_ARTIFACTS)/eos_cli_config_gen/expected_configs/custom-templates.cfg
+	rm $(TESTS_ARTIFACTS)/eos_cli_config_gen/configs/prompt.cfg
+	rm $(TESTS_ARTIFACTS)/eos_cli_config_gen/configs/custom-templates.cfg
 
 ## EOS_DESIGNS
 
-	ansible-playbook \
+	ANSIBLE_COLLECTIONS_PATHS="..:/usr/share/ansible/collections" ansible-playbook \
 		-i $(ANSIBLE_AVD_DIR)/ansible_collections/arista/avd/molecule/eos_designs_unit_tests/inventory/hosts.yml $(SCRIPTS_DIR)/export_test_vars.yml \
 		-e testdir=eos_designs_unit_tests \
 		-f 10
 
 ## Remove tests with custom templates
 	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/vars/CUSTOM-TEMPLATES*.json
-	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/expected_structured_configs/CUSTOM-TEMPLATES*.yml
-	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/expected_configs/CUSTOM-TEMPLATES*.cfg
+	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/structured_configs/CUSTOM-TEMPLATES*.yml
+	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/configs/CUSTOM-TEMPLATES*.cfg
 	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/vars/CUSTOM-PYTHON_MODULES*.json
-	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/expected_structured_configs/CUSTOM-PYTHON_MODULES*.yml
-	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/expected_configs/CUSTOM-PYTHON_MODULES*.cfg
-
-.PHONY: fix-test-data
-fix-test-data: ## Update inventory files from AVD collection Molecule scenario.
-
-## Remove blank line in empty template result (some weird ansible behavior)
-	echo -n '' > $(TESTS_ARTIFACTS)/eos_cli_config_gen/expected_configs/generate-default-config.cfg
-
-.PHONY: test-0
-test-0: ## Run tests by parsing test inputs and comparing with expected configs
-	$(SCRIPTS_DIR)/runner.py --eos_cli_config_gen \
-		--device_varfiles '$(TESTS_ARTIFACTS)/eos_cli_config_gen/vars/*' \
-		--cfgfiles $(TESTS_ARTIFACTS)/eos_cli_config_gen/configs/
-	diff -q $(TESTS_ARTIFACTS)/eos_cli_config_gen/expected_configs/ $(TESTS_ARTIFACTS)/eos_cli_config_gen/configs/
-
-.PHONY: test-1
-test-1: ## Run tests by parsing test inputs and comparing with expected configs
-	$(SCRIPTS_DIR)/runner.py --eos_designs_facts \
-		--factsfile '$(TESTS_ARTIFACTS)/eos_designs_unit_tests/facts/eos_designs_facts.yml' \
-		--device_varfiles '$(TESTS_ARTIFACTS)/eos_designs_unit_tests/vars/*'
-
-.PHONY: test-2
-test-2: ## Run tests by parsing test inputs and comparing with expected structured configs
-	$(SCRIPTS_DIR)/runner.py --eos_designs_structured_configs \
-		--factsfile '$(TESTS_ARTIFACTS)/eos_designs_unit_tests/facts/eos_designs_facts.yml' \
-		--device_varfiles '$(TESTS_ARTIFACTS)/eos_designs_unit_tests/vars/*' \
-		--struct_cfgfiles $(TESTS_ARTIFACTS)/eos_designs_unit_tests/structured_configs
-	diff -q $(TESTS_ARTIFACTS)/eos_designs_unit_tests/expected_structured_configs/ $(TESTS_ARTIFACTS)/eos_designs_unit_tests/structured_configs/
-
-.PHONY: test-3
-test-3: ## Run tests by parsing test inputs and comparing with expected configs
-	$(SCRIPTS_DIR)/runner.py --eos_cli_config_gen \
-		--device_varfiles '$(TESTS_ARTIFACTS)/eos_designs_unit_tests/vars/*' \
-		--struct_cfgfiles '$(TESTS_ARTIFACTS)/eos_designs_unit_tests/structured_configs' \
-		--cfgfiles $(TESTS_ARTIFACTS)/eos_designs_unit_tests/configs
-	diff -q $(TESTS_ARTIFACTS)/eos_designs_unit_tests/expected_configs/ $(TESTS_ARTIFACTS)/eos_designs_unit_tests/configs/
-
-.PHONY: test
-test: test-0 test-1 test-2 test-3
+	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/structured_configs/CUSTOM-PYTHON_MODULES*.yml
+	rm $(TESTS_ARTIFACTS)/eos_designs_unit_tests/configs/CUSTOM-PYTHON_MODULES*.cfg

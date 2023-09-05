@@ -1,5 +1,0 @@
-ethernet_interfaces:
-  - name: Ethernet1
-    description: hello world
-    ip_address: 10.10.10.10/24
-    type: routed

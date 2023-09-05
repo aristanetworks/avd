@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -175,6 +178,10 @@ class VlanInterfacesMixin(UtilsMixin):
         return vlan_interface_config
 
     def _get_vlan_interface_config_for_mlag_peering(self, vrf) -> dict:
+        """
+        Build config for MLAG peering SVI for the given SVI.
+        Called from vlan_interfaces and prefix_lists
+        """
         vlan_interface_config = {
             "tenant": vrf["tenant"],
             "type": "underlay_peering",

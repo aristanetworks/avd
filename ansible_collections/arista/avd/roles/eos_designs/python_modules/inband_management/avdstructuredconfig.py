@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -106,7 +109,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
 
         sequence_numbers = [
             {
-                "sequence": ((index + 1) * 10),
+                "sequence": (index + 1) * 10,
                 "action": f"permit {subnet}",
             }
             for index, subnet in enumerate(self._inband_management_parent_vlans.values())

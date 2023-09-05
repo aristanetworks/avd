@@ -1,0 +1,33 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - global priority flow control #}
+{% if priority_flow_control is arista.avd.defined %}
+
+### Priority Flow Control
+
+#### Global Settings
+{%     if priority_flow_control.all_off is arista.avd.defined(true) %}
+
+Priority Flow Control is **Off** on all interfaces.
+{%     endif %}
+{%     if priority_flow_control.watchdog is arista.avd.defined %}
+{%         set action = priority_flow_control.watchdog.action | arista.avd.default('errdisable') %}
+{%         set timeout = priority_flow_control.watchdog.timeout | arista.avd.default('-') %}
+{%         set recovery = priority_flow_control.watchdog.recovery_time | arista.avd.default('-') %}
+{%         set polling = priority_flow_control.watchdog.polling_interval | arista.avd.default('-') %}
+{%         set override = priority_flow_control.watchdog.override_action_drop | arista.avd.default('false') %}
+
+**Priority Flow Control watchdog settings**
+
+| Action | Timeout | Recovery | Polling | Override Action Drop |
+| ------ | ------- | -------- | ------- |
+| {{ action }} | {{ timeout }} | {{ recovery }} | {{ polling }} | {{ override }} |
+{%     endif %}
+
+```eos
+{%     include 'eos/priority-flow-control.j2' %}
+```
+{% endif %}

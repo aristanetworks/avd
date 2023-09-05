@@ -1466,13 +1466,15 @@ svi_profiles:
   name: GENERIC Name
   profile: GENERIC_FULL
 - enabled: false
-  ipv6_address_virtual: 2001:db8:451::1/64
+  ipv6_address_virtuals:
+  - 2001:db8:451::1/64
   mtu: 1560
   name: GENERIC Name V6
   profile: GENERIC_FULL_V6
 - enabled: false
   ip_address_virtual: 10.4.12.254/24
-  ipv6_address_virtual: 2001:db8:412::1/64
+  ipv6_address_virtuals:
+  - 2001:db8:412::1/64
   ipv6_enable: false
   mtu: 1560
   name: GENERIC DUAL STACK v4 and v6
@@ -1483,7 +1485,8 @@ svi_profiles:
   - ip_helper: 1.1.1.1
     source_interface: lo101
     source_vrf: TEST
-  ipv6_address_virtual: 2001:db8:413::1/64
+  ipv6_address_virtuals:
+  - 2001:db8:413::1/64
   mtu: 1560
   name: Test the SVI and node config inheritance
   nodes:
@@ -2033,7 +2036,8 @@ tenant_d:
     - enabled: true
       id: 410
       ip_address_virtual: 10.3.10.1/24
-      ipv6_address_virtual: 2001:db8:310::1/64
+      ipv6_address_virtuals:
+      - 2001:db8:310::1/64
       ipv6_address_virtuals:
       - 2001:db8:311::1/64
       - 2001:db8:312::1/64
@@ -2096,7 +2100,8 @@ tenant_d:
     svis:
     - enabled: true
       id: 450
-      ipv6_address_virtual: 2001:db8:355::1/64
+      ipv6_address_virtuals:
+      - 2001:db8:355::1/64
       name: Tenant_D_v6_WAN_Zone_1
       tags:
       - v6wan

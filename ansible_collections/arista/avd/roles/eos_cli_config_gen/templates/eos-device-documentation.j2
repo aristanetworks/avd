@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# context used to hide password and keys #}
 {% set hide_passwords = eos_cli_config_gen_documentation.hide_passwords | arista.avd.default(true) %}
 # {{ hostname | arista.avd.default(inventory_hostname) }}
@@ -88,6 +93,8 @@
 {% include 'documentation/traffic-policies.j2' %}
 {# Quality Of Service #}
 {% include 'documentation/quality-of-service.j2' %}
+{# Priority Flow Control #}
+{% include 'documentation/priority-flow-control.j2' %}
 {# Maintenance Mode #}
 {% include 'documentation/maintenance-mode.j2' %}
 {# EOS CLI #}

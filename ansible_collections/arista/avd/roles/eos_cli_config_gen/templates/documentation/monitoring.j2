@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# SFlow Interfaces #}
 {% set sflow_interfaces = [] %}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
