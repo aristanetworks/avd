@@ -116,16 +116,21 @@ class UplinksMixin:
                 uplink["type"] = "underlay_p2p"
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
+
                 if self.shared_utils.uplink_bfd:
                     uplink["bfd"] = True
+
                 if self.shared_utils.uplink_ptp is not None:
                     uplink["ptp"] = self.shared_utils.uplink_ptp
                 elif self.shared_utils.ptp_enabled:
                     uplink["ptp"] = {"enable": True}
+
                 if self.shared_utils.uplink_macsec is not None:
                     uplink["mac_security"] = self.shared_utils.uplink_macsec
+
                 if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
                     uplink["underlay_multicast"] = True
+
                 if self.shared_utils.underlay_rfc5549:
                     uplink["ipv6_enable"] = True
                 else:
@@ -168,6 +173,11 @@ class UplinksMixin:
 
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
+
+                if self.shared_utils.uplink_ptp is not None:
+                    uplink["ptp"] = self.shared_utils.uplink_ptp
+                elif self.shared_utils.ptp_enabled:
+                    uplink["ptp"] = {"enable": True}
 
                 if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
                     # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
