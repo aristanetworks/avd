@@ -381,6 +381,9 @@ $defs:
             convert_types:
               - str
             default: 0
+          vtep:
+            type: bool
+            description: Override VTEP setting inherited from node_type_keys
           vtep_loopback:
             documentation_options:
               table: node-type-loopback-vtep-configuration

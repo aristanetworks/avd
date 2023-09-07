@@ -122,4 +122,6 @@ class NodeTypeMixin:
         vtep set based on
         node_type_keys.<node_type_key>.vtep
         """
+        if get(self.switch_data_combined, "vtep") is not None:
+            return get(self.switch_data_combined, "vtep")
         return get(self.node_type_key_data, "vtep", default=False)

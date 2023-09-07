@@ -18,6 +18,7 @@ l3leaf:
         - name: MLAG_ODD_ID_L3LEAF1A
           id: 3
           mgmt_ip: 192.168.201.116/24
+          vtep: false
         - name: MLAG_ODD_ID_L3LEAF1B
           id: 4
           mgmt_ip: 192.168.201.117/24
