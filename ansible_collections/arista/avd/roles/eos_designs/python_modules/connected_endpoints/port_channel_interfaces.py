@@ -129,7 +129,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             ),
             "type": port_channel_type,
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
-            "mtu": adapter.get("mtu"),
+            "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "service_profile": adapter.get("qos_profile"),
             "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             "ptp": self._get_adapter_ptp(adapter),

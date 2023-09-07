@@ -41,6 +41,15 @@ keys:
           type: str
         lag_hardware_only:
           type: bool
+        default_interface_mtu:
+          type: int
+          convert_types:
+            - str
+          description: |
+            Default interface MTU configured on EOS under "interface defaults".
+            Takes precedence over the root key 'default_interface_mtu'.
+          min: 68
+          max: 65535
         feature_support:
           type: dict
           keys:
@@ -53,6 +62,13 @@ keys:
             poe:
               type: bool
               default: false
+            per_interface_mtu:
+              type: bool
+              default: true
+              description: |
+                Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
+                Effectively this means that all settings regarding inteface MTU will be ignored if this is false.
+                Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "interface_default_mtu"
             bgp_update_wait_install:
               type: bool
               default: true
