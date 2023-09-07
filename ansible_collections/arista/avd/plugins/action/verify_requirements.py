@@ -70,14 +70,8 @@ def _validate_python_requirements(requirements: list, result: dict) -> bool:
         "parsing_failed": [],
     }
 
-    def _remove_inline_comment(raw_req: str) -> str:
-        """
-        Remove trailing comments if present
-        """
-        return raw_req.split(" # ")[0]
-
     # Remove the comments
-    requirements = [_remove_inline_comment(req) for req in requirements if req[0] != "#"]
+    requirements = [req.split(" # ")[0] for req in requirements if req[0] != "#"]
     for raw_req in requirements:
         try:
             req = Requirement(raw_req)
