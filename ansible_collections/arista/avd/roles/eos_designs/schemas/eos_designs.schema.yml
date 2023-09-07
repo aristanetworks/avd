@@ -841,7 +841,7 @@ keys:
     default: false
   evpn_vlan_bundles:
     documentation_options:
-      table: evpn_vlan_bundles
+      table: evpn-vlan-bundles
     type: list
     primary_key: name
     convert_types:
@@ -851,10 +851,9 @@ keys:
       keys:
         name:
           type: str
-          description: 'Specify a EVPN vlan-aware-bundle name.
+          description: 'Specify an EVPN vlan-aware-bundle name.
 
-            A EVPN vlan-aware-bundle provide a construct to group L2 VLANs and define
-            common settings.
+            EVPN vlan-aware-bundles group L2 VLANs and define common settings.
 
             '
         id:
@@ -862,10 +861,8 @@ keys:
           required: true
           convert_types:
           - str
-          min: 1
-          max: 1024
-          description: '"id" may also be used for vlan-aware-bundle RD/RT ID and therefore
-            should not overlap with l2vlan IDs which are not part of this bundle.
+          description: '"id" may be used for vlan-aware-bundle RD/RT ID so it should
+            not overlap with l2vlan IDs which are not part of this bundle.
 
             See "overlay_rd_type" and "overlay_rt_type" for details.
 
@@ -4751,9 +4748,10 @@ $defs:
                 description: Extend this L2VLAN over VXLAN.
               evpn_vlan_bundle:
                 type: str
-                description: 'Name of the evpn_vlan_bundles to inherit configuration.
+                description: 'Name of a bundle defined under ''evpn_vlan_bundles''
+                  to inherit configuration.
 
-                  To use this option the global "evpn_vlan_aware_bundles" option must
+                  To use this option the common "evpn_vlan_aware_bundles" option must
                   be set to true.
 
                   '

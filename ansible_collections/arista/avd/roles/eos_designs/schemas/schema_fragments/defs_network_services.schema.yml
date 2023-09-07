@@ -969,8 +969,8 @@ $defs:
               evpn_vlan_bundle:
                 type: str
                 description: |
-                  Name of the evpn_vlan_bundles to inherit configuration.
-                  To use this option the global "evpn_vlan_aware_bundles" option must be set to true.
+                  Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+                  To use this option the common "evpn_vlan_aware_bundles" option must be set to true.
               trunk_groups:
                 type: list
                 items:

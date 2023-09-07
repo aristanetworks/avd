@@ -3297,14 +3297,12 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Specify a EVPN vlan-aware-bundle name.\nA EVPN vlan-aware-bundle provide a construct to group L2 VLANs and define common settings.\n",
+            "description": "Specify an EVPN vlan-aware-bundle name.\nEVPN vlan-aware-bundles group L2 VLANs and define common settings.\n",
             "title": "Name"
           },
           "id": {
             "type": "integer",
-            "minimum": 1,
-            "maximum": 1024,
-            "description": "\"id\" may also be used for vlan-aware-bundle RD/RT ID and therefore should not overlap with l2vlan IDs which are not part of this bundle.\nSee \"overlay_rd_type\" and \"overlay_rt_type\" for details.\n",
+            "description": "\"id\" may be used for vlan-aware-bundle RD/RT ID so it should not overlap with l2vlan IDs which are not part of this bundle.\nSee \"overlay_rd_type\" and \"overlay_rt_type\" for details.\n",
             "title": "ID"
           },
           "rt_override": {
