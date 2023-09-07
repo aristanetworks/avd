@@ -8,6 +8,7 @@ from collections import ChainMap
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, replace_or_append_item
 
@@ -90,6 +91,20 @@ class EthernetInterfacesMixin(UtilsMixin):
         channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
         short_esi = self._get_short_esi(adapter, channel_group_id)
 
+        # check lengths of lists
+        nodes_length = len(adapter["switches"])
+        if len(adapter["switch_ports"]) != nodes_length or ("descriptions" in adapter and len(adapter["descriptions"]) != nodes_length):
+            raise AristaAvdError(
+                f"Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter. Check configuration for {peer}, adapter"
+                f" switch_ports {adapter['switch_ports']}."
+            )
+
+        # if 'descriptions' is set, it is preferred
+        if (interface_descriptions := adapter.get("descriptions")) is not None:
+            interface_description = interface_descriptions[node_index]
+        else:
+            interface_description = adapter.get("description")
+
         # Common ethernet_interface settings
         ethernet_interface = {
             "name": adapter["switch_ports"][node_index],
@@ -97,7 +112,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             "peer_interface": peer_interface,
             "peer_type": connected_endpoint["type"],
             "port_profile": adapter.get("profile"),
-            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, adapter.get("description")),
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, interface_description),
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
             "eos_cli": adapter.get("raw_eos_cli"),
