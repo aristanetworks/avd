@@ -64,6 +64,13 @@ def test__validate_python_version(mocked_version, expected_return):
             id="valid version",
         ),
         pytest.param(
+            1,
+            "4.3",
+            "4.2 # inline comment",
+            True,
+            id="requirement with inline comment",
+        ),
+        pytest.param(
             2,
             "4.0",
             "4.2",

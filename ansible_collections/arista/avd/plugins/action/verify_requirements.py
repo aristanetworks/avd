@@ -70,10 +70,17 @@ def _validate_python_requirements(requirements: list, result: dict) -> bool:
         "parsing_failed": [],
     }
 
+    def _remove_inline_comment(raw_req: str) -> str:
+        """
+        Remove trailing comments if present
+        """
+        return raw_req.split(" # ")[0]
+
     # Remove the comments
-    requirements = [req for req in requirements if req[0] != "#"]
+    requirements = [_remove_inline_comment(req) for req in requirements if req[0] != "#"]
     for raw_req in requirements:
         try:
+            raw_req = _remove_inline_comment(raw_req)
             req = Requirement(raw_req)
         except InvalidRequirement as exc:
             raise AristaAvdError(f"Wrong format for requirement {raw_req}") from exc
