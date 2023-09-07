@@ -227,7 +227,7 @@ interface Port-Channel1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4092 | Inband Management | default | 1500 | False |
+| Vlan4092 | Inband Management | default | - | False |
 
 ##### IPv4
 
@@ -242,7 +242,6 @@ interface Port-Channel1
 interface Vlan4092
    description Inband Management
    no shutdown
-   mtu 1500
    ip address 172.21.210.4/24
 ```
 

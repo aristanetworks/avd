@@ -126,7 +126,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet5
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.10.9/31
@@ -136,7 +135,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet4
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.10.11/31
@@ -146,7 +144,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet3
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.10.13/31

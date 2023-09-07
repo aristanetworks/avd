@@ -70,6 +70,5 @@ vlan_interfaces:
 - name: Vlan4092
   description: Inband Management
   shutdown: false
-  mtu: 1500
   ip_address: 172.21.210.4/24
   type: inband_mgmt

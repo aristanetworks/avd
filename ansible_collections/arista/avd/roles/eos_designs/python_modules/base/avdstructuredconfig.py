@@ -364,9 +364,7 @@ class AvdStructuredConfigBase(AvdFacts):
         """
         if self.shared_utils.default_interface_mtu is not None:
             return {
-                "interface_defaults": {
-                    "mtu": self.shared_utils.default_interface_mtu,
-                }
+                "mtu": self.shared_utils.default_interface_mtu,
             }
         return None
 
