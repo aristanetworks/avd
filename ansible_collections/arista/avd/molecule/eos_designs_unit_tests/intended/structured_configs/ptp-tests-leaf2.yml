@@ -214,6 +214,27 @@ port_channel_interfaces:
       interval: -3
     transport: ipv4
     enable: true
+- name: Port-Channel11
+  description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '11'
+  mlag: 11
+- name: Port-Channel12
+  description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '11'
+  mlag: 12
+- name: Port-Channel14
+  description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: '11'
+  mlag: 14
 ethernet_interfaces:
 - name: Ethernet9
   peer: ptp-tests-leaf1
@@ -321,36 +342,6 @@ ethernet_interfaces:
     transport: ipv4
     enable: true
     role: master
-<<<<<<< HEAD
-port_channel_interfaces:
-- name: Port-Channel11
-  description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Po1
-  type: switched
-  shutdown: false
-  mode: trunk
-  vlans: '11'
-- name: Port-Channel12
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Po1
-  type: switched
-  shutdown: false
-  mode: trunk
-  vlans: '11'
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-- name: Port-Channel14
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Po1
-  type: switched
-  shutdown: false
-  mode: trunk
-  vlans: '11'
-=======
 mlag_configuration:
   domain_id: ptp-test-leaf
   local_interface: Vlan4094
@@ -372,7 +363,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
->>>>>>> 3c6749228 (limit pr to only cover mlag case and rename var)
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
