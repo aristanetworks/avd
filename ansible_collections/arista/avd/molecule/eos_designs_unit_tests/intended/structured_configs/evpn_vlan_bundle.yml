@@ -37,11 +37,10 @@ router_bgp:
       activate: true
   vlan_aware_bundles:
   - name: bundle1
-    tenant: FABRIC
-    rd: 10.10.0.3:10001
+    rd: 10.10.0.3:201
     route_targets:
       both:
-      - 10001:10001
+      - 201:201
     redistribute_routes:
     - learned
     vlan: 50,60
@@ -49,11 +48,10 @@ router_bgp:
 
       '
   - name: bundle2
-    tenant: FABRIC
     rd: 1.1.1.1:222
     route_targets:
       both:
-      - 111:111
+      - 202:111
     redistribute_routes:
     - learned
     vlan: 70,80

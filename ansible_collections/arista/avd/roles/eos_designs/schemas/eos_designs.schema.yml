@@ -889,6 +889,13 @@ keys:
             be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni
             (see 'overlay_rd_type' for details).\n  - A full RD string with colon
             seperator which will override the full RD.\n"
+        evpn_l2_multi_domain:
+          type: bool
+          description: 'Explicitly extend VLAN-Aware Bundle to remote EVPN domains.
+
+            Overrides `<network_services_key>.[].evpn_l2_multi_domain`.
+
+            '
         bgp:
           type: dict
           keys:
@@ -1592,6 +1599,9 @@ keys:
       - `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware
       Bundles with SVIs.
 
+      - `<overlay_loopback>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles
+      defined under ''evpn_vlan_bundles''.
+
       - `<overlay_loopback>:<vrf_id>` for VRFs.
 
 
@@ -1744,6 +1754,9 @@ keys:
       - `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base +
       vrf_id>` for VLAN-Aware Bundles with SVIs.
 
+      - `<vlan_aware_bundle_number_base + id>:<vlan_aware_bundle_number_base + id>`
+      for VLAN-Aware Bundles defined under ''evpn_vlan_bundles''.
+
       - `<vrf_id>:<vrf_id>` for VRFs.
 
 
@@ -1766,12 +1779,15 @@ keys:
           of RT):
 
           - ''vrf_id'' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id` for
-          VLANs and `(vrf_id or vrf_vni)` for VRFs.
+          VLANs, `(vrf_id or vrf_vni)` for VRFs and `id` for bundles defined under
+          ''evpn_vlan_bundles''.
 
           - ''vrf_vni'' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id` for
-          VLANs and `(vrf_vni or vrf_id)` for VRFs.
+          VLANs, `(vrf_vni or vrf_id)` for VRFs and `id` for bundles defined under
+          ''evpn_vlan_bundles''.
 
-          - ''id'' means `vlan_id` for VLANs and `(vrf_id or vrf_vni)` for VRFs.
+          - ''id'' means `vlan_id` for VLANs, `(vrf_id or vrf_vni)` for VRFs and `id`
+          for bundles defined under ''evpn_vlan_bundles''.
 
           - ''bgp_as'' means the AS number of the device.
 
@@ -1782,6 +1798,9 @@ keys:
 
           The ''vrf_id'' and ''vrf_vni'' methods can be overridden per VLAN if either
           ''rt_override'' or ''vni_override'' is set (preferred in this order).
+
+          The ''vrf_id'', ''vrf_vni'' and ''id'' methods can be overridden per bundle
+          defined under `evpn_vlan_bundles` using ''rt_override''.
 
           '
         default: vrf_id
