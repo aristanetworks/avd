@@ -260,6 +260,7 @@ class AvdStructuredConfigMlag(AvdFacts):
         Return structured config for router bgp
 
         Peer group and underlay MLAG iBGP peering is created only for BGP underlay.
+        For other underlay protocols the MLAG peer-group may be created as part of the network services logic.
         """
 
         if not (self.shared_utils.mlag_l3 is True and self.shared_utils.underlay_bgp):
@@ -270,9 +271,6 @@ class AvdStructuredConfigMlag(AvdFacts):
         router_bgp = self._router_bgp_mlag_peer_group()
 
         # Underlay MLAG peering
-        if not self.shared_utils.underlay_bgp:
-            return strip_empties_from_dict(router_bgp)
-
         if self.shared_utils.underlay_rfc5549:
             vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.mlag_peer_vlan)
             neighbor_interface_name = f"Vlan{vlan}"
