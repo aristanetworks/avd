@@ -120,8 +120,8 @@ class NodeTypeMixin:
     def vtep(self: SharedUtils) -> bool:
         """
         vtep set based on
+        <node_type_key>.nodes.[].vtep and
         node_type_keys.<node_type_key>.vtep
         """
-        if get(self.switch_data_combined, "vtep") is not None:
-            return get(self.switch_data_combined, "vtep")
-        return get(self.node_type_key_data, "vtep", default=False)
+        default_vtep = get(self.node_type_key_data, "vtep")
+        return get(self.switch_data_combined, "vtep", default=default_vtep) is True
