@@ -5334,6 +5334,8 @@ $defs:
           vtep:
             type: bool
             description: Override VTEP setting inherited from node_type_keys
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
           vtep_loopback:
             documentation_options:
               table: node-type-loopback-vtep-configuration
