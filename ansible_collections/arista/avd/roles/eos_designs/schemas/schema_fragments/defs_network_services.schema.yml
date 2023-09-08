@@ -277,7 +277,6 @@ $defs:
                 type: int
                 convert_types:
                   - str
-                min: 1
                 description: |
                   Required if "vrf_vni" is not set.
                   "vrf_id" is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.
