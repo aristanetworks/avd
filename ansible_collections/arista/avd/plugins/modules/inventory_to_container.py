@@ -16,9 +16,7 @@ version_added: "1.0.0"
 author: Ansible Arista Team (@aristanetworks)
 short_description: Transform information from inventory to arista.cvp collection
 description:
-  - Transform information from ansible inventory to be able to
-  - provision CloudVision Platform using arista.cvp collection and
-  - its specific data structure.
+  - Transform information from ansible inventory to be able to provision CloudVision Platform using arista.cvp collection and its specific data structure.
 options:
   inventory:
     description: Optional YAML inventory file to parse. If not set the loaded inventory will be parsed.

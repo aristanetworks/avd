@@ -5,15 +5,14 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-from ansible_collections.arista.avd.plugins.filter.esi_management import FilterModule, generate_esi, generate_lacp_id, generate_route_target
+from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
+from ansible_collections.arista.avd.plugins.filter.generate_lacp_id import generate_lacp_id
+from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.tests.unit.filters.filter_utils import convert_esi_short_to_route_target_format
 
 ESI_SHORT = "0303:0202:0101"
 ESI_PREFIX = "1111:1111"
 ESI_SHORT_1 = "0404:0202:0101"
-
-
-f = FilterModule()
 
 
 class TestEsiManagementFilter:
@@ -38,10 +37,3 @@ class TestEsiManagementFilter:
         assert resp == route_target_format_esi
         resp1 = generate_route_target(None)
         assert resp1 is None
-
-    def test_esi_management_filter(self):
-        resp = f.filters()
-        assert isinstance(resp, dict)
-        assert "generate_route_target" in resp.keys()
-        assert "generate_lacp_id" in resp.keys()
-        assert "generate_esi" in resp.keys()

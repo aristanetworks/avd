@@ -6,6 +6,37 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 
+DOCUMENTATION = r"""
+---
+name: status_render
+collection: arista.avd
+author: Arista Ansible Team (@aristanetworks)
+version_added: "1.1.1"
+short_description: Convert Text to EMOJI code.
+description:
+  - Returns the input value unless I(rendering) is set to "github".
+  - Returns C(:x:) if input status string is C(FAIL) and I(rendering) is set to "github".
+  - Returns C(:white_check_mark:) if input status string is C(PASS) and I(rendering) is set to "github".
+positional: _input
+options:
+  _input:
+    description: Text to convert to EMOJI.
+    type: string
+    required: true
+  rendering:
+    description: Markdown Flavor to use for Emoji rendering. Only "github" is supported.
+    type: string
+    required: true
+"""
+
+RETURN = r"""
+---
+_value:
+  description: Input value or GitHub Markdown emoji code.
+  type: string
+"""
+
+
 class FilterModule(object):
     # STATIC EMOJI CODE
     GH_CODE = {}
