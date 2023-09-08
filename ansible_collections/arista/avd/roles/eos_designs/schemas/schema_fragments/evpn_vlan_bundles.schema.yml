@@ -18,6 +18,8 @@ keys:
       keys:
         name:
           type: str
+          convert_types:
+            - int
           description: |
             Specify an EVPN vlan-aware-bundle name.
             EVPN vlan-aware-bundles group L2 VLANs and define common settings.
