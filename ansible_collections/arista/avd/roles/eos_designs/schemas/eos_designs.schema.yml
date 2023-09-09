@@ -1829,7 +1829,7 @@ keys:
           - str
           description: 'Default interface MTU configured on EOS under "interface defaults".
 
-            Takes precedence over the root key ''default_interface_mtu''.
+            Takes precedence over the root key "default_interface_mtu".
 
             '
           min: 68
@@ -1852,7 +1852,7 @@ keys:
               description: 'Support for configuration of per interface MTU for p2p
                 links, MLAG SVIs and Network Services.
 
-                Effectively this means that all settings regarding inteface MTU will
+                Effectively this means that all settings regarding interface MTU will
                 be ignored if this is false.
 
                 Platforms without support for per interface MTU can use a single default
