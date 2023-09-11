@@ -2065,6 +2065,7 @@ keys:
         - aes67-r16-2016
         default: aes67-r16-2016
       domain:
+        type: int
         $ref: eos_cli_config_gen#/keys/ptp/keys/domain
       auto_clock_identity:
         type: bool
@@ -3172,10 +3173,13 @@ $defs:
                 default: percent
                 description: Optional variable and is hardware dependent.
           broadcast:
+            type: dict
             $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
           multicast:
+            type: dict
             $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
           unknown_unicast:
+            type: dict
             $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
       monitor_sessions:
         type: list

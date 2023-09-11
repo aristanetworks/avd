@@ -569,6 +569,7 @@ keys:
           type: str
           description: IPv4 address/mask
         ip_nat:
+          type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool

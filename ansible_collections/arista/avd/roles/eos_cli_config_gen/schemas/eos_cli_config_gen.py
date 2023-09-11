@@ -11,10 +11,12 @@ class EosCliConfigGen(BaseModel):
             class Console(BaseModel):
                 type: str | None = Field(default=None)
                 group: str | None = Field(default=None)
+                logging: bool | None = Field(default=None)
 
             class Default(BaseModel):
                 type: str | None = Field(default=None)
                 group: str | None = Field(default=None)
+                logging: bool | None = Field(default=None)
 
             console: Console | None = Field(default=None)
             default: Default | None = Field(default=None)
@@ -2456,7 +2458,7 @@ class EosCliConfigGen(BaseModel):
 
         class MaximumPaths(BaseModel):
             paths: int = Field(default=None)
-            ecmp: int = Field(default=None)
+            ecmp: int | None = Field(default=None)
 
         class Updates(BaseModel):
             wait_for_convergence: bool | None = Field(default=None)

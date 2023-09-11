@@ -1,0 +1,1315 @@
+{
+    "$defs": {
+        "AvdSchemaBool": {
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "const": "bool",
+                    "title": "Type"
+                },
+                "convert_types": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/schema__metaschema__meta_schema_model__AvdSchemaBool__ConvertType"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Convert Types"
+                },
+                "default": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Default"
+                },
+                "valid_values": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "boolean"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Valid Values"
+                },
+                "display_name": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DisplayName"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Description"
+                },
+                "required": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Required"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "dynamic_valid_values": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DynamicValidValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "deprecation": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Deprecation"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "$ref": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/FieldRef"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "documentation_options": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DocumentationOptions"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "AvdSchemaBool",
+            "type": "object"
+        },
+        "AvdSchemaDict": {
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "const": "dict",
+                    "title": "Type"
+                },
+                "default": {
+                    "anyOf": [
+                        {
+                            "type": "object"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Default"
+                },
+                "keys": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": {
+                                "discriminator": {
+                                    "mapping": {
+                                        "bool": "#/$defs/AvdSchemaBool",
+                                        "dict": "#/$defs/AvdSchemaDict",
+                                        "int": "#/$defs/AvdSchemaInt",
+                                        "list": "#/$defs/AvdSchemaList",
+                                        "str": "#/$defs/AvdSchemaStr"
+                                    },
+                                    "propertyName": "type"
+                                },
+                                "oneOf": [
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaInt"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaBool"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaStr"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaList"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaDict"
+                                    }
+                                ]
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Keys"
+                },
+                "dynamic_keys": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": {
+                                "discriminator": {
+                                    "mapping": {
+                                        "bool": "#/$defs/AvdSchemaBool",
+                                        "dict": "#/$defs/AvdSchemaDict",
+                                        "int": "#/$defs/AvdSchemaInt",
+                                        "list": "#/$defs/AvdSchemaList",
+                                        "str": "#/$defs/AvdSchemaStr"
+                                    },
+                                    "propertyName": "type"
+                                },
+                                "oneOf": [
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaInt"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaBool"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaStr"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaList"
+                                    },
+                                    {
+                                        "$ref": "#/$defs/AvdSchemaDict"
+                                    }
+                                ]
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Dynamic Keys"
+                },
+                "allow_other_keys": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": false,
+                    "title": "Allow Other Keys"
+                },
+                "display_name": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DisplayName"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Description"
+                },
+                "required": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Required"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "deprecation": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Deprecation"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "$ref": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/FieldRef"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "documentation_options": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DocumentationOptionsDict"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "AvdSchemaDict",
+            "type": "object"
+        },
+        "AvdSchemaInt": {
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "const": "int",
+                    "title": "Type"
+                },
+                "convert_types": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/schema__metaschema__meta_schema_model__AvdSchemaInt__ConvertType"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Convert Types"
+                },
+                "default": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Default"
+                },
+                "max": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Max"
+                },
+                "min": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Min"
+                },
+                "valid_values": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "integer"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Valid Values"
+                },
+                "display_name": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DisplayName"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Description"
+                },
+                "required": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Required"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "dynamic_valid_values": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DynamicValidValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "deprecation": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Deprecation"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "$ref": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/FieldRef"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "documentation_options": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DocumentationOptions"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "AvdSchemaInt",
+            "type": "object"
+        },
+        "AvdSchemaList": {
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "const": "list",
+                    "title": "Type"
+                },
+                "convert_types": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/schema__metaschema__meta_schema_model__AvdSchemaList__ConvertType"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Convert Types"
+                },
+                "default": {
+                    "anyOf": [
+                        {
+                            "items": {},
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Default"
+                },
+                "items": {
+                    "anyOf": [
+                        {
+                            "discriminator": {
+                                "mapping": {
+                                    "bool": "#/$defs/AvdSchemaBool",
+                                    "dict": "#/$defs/AvdSchemaDict",
+                                    "int": "#/$defs/AvdSchemaInt",
+                                    "list": "#/$defs/AvdSchemaList",
+                                    "str": "#/$defs/AvdSchemaStr"
+                                },
+                                "propertyName": "type"
+                            },
+                            "oneOf": [
+                                {
+                                    "$ref": "#/$defs/AvdSchemaInt"
+                                },
+                                {
+                                    "$ref": "#/$defs/AvdSchemaBool"
+                                },
+                                {
+                                    "$ref": "#/$defs/AvdSchemaStr"
+                                },
+                                {
+                                    "$ref": "#/$defs/AvdSchemaList"
+                                },
+                                {
+                                    "$ref": "#/$defs/AvdSchemaDict"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Items"
+                },
+                "min_length": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Min Length"
+                },
+                "max_length": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Max Length"
+                },
+                "primary_key": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Primary Key"
+                },
+                "secondary_key": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Secondary Key"
+                },
+                "display_name": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DisplayName"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Description"
+                },
+                "required": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Required"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "deprecation": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Deprecation"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "$ref": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/FieldRef"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "documentation_options": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DocumentationOptions"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "AvdSchemaList",
+            "type": "object"
+        },
+        "AvdSchemaStr": {
+            "additionalProperties": false,
+            "properties": {
+                "type": {
+                    "const": "str",
+                    "title": "Type"
+                },
+                "convert_to_lower_case": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": false,
+                    "title": "Convert To Lower Case"
+                },
+                "convert_types": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/schema__metaschema__meta_schema_model__AvdSchemaStr__ConvertType"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Convert Types"
+                },
+                "default": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Default"
+                },
+                "format": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Format"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "max_length": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Max Length"
+                },
+                "min_length": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Min Length"
+                },
+                "pattern": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Pattern"
+                },
+                "valid_values": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Valid Values"
+                },
+                "display_name": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DisplayName"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Description"
+                },
+                "required": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Required"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "dynamic_valid_values": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DynamicValidValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "deprecation": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Deprecation"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "$ref": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/FieldRef"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "documentation_options": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DocumentationOptions"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "title": "AvdSchemaStr",
+            "type": "object"
+        },
+        "Deprecation": {
+            "properties": {
+                "warning": {
+                    "default": true,
+                    "title": "Warning",
+                    "type": "boolean"
+                },
+                "new_key": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "New Key"
+                },
+                "removed": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": false,
+                    "title": "Removed"
+                },
+                "remove_in_version": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Remove In Version"
+                },
+                "remove_after_date": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Remove After Date"
+                },
+                "url": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Url"
+                }
+            },
+            "title": "Deprecation",
+            "type": "object"
+        },
+        "DisplayName": {
+            "description": "Free text display name for forms and documentation (single line)",
+            "title": "DisplayName",
+            "type": "string"
+        },
+        "DocumentationOptions": {
+            "additionalProperties": false,
+            "description": "Special options used for generating documentation",
+            "properties": {
+                "table": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Table"
+                }
+            },
+            "title": "DocumentationOptions",
+            "type": "object"
+        },
+        "DocumentationOptionsDict": {
+            "additionalProperties": false,
+            "description": "Special options used for generating documentation for dicts",
+            "properties": {
+                "table": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Table"
+                },
+                "hide_keys": {
+                    "anyOf": [
+                        {
+                            "type": "boolean"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Hide Keys"
+                }
+            },
+            "title": "DocumentationOptionsDict",
+            "type": "object"
+        },
+        "DynamicValidValues": {
+            "description": "Path to variable under the parent dictionary containing valid values. Variable path use dot-notation and variable path must be relative to the parent dictionary. If an element of the variable path is a list, every list item will be unpacked. Note that this is building the schema from values in the _data_ being validated!",
+            "title": "DynamicValidValues",
+            "type": "string"
+        },
+        "FieldDefs": {
+            "additionalProperties": {
+                "discriminator": {
+                    "mapping": {
+                        "bool": "#/$defs/AvdSchemaBool",
+                        "dict": "#/$defs/AvdSchemaDict",
+                        "int": "#/$defs/AvdSchemaInt",
+                        "list": "#/$defs/AvdSchemaList",
+                        "str": "#/$defs/AvdSchemaStr"
+                    },
+                    "propertyName": "type"
+                },
+                "oneOf": [
+                    {
+                        "$ref": "#/$defs/AvdSchemaInt"
+                    },
+                    {
+                        "$ref": "#/$defs/AvdSchemaBool"
+                    },
+                    {
+                        "$ref": "#/$defs/AvdSchemaStr"
+                    },
+                    {
+                        "$ref": "#/$defs/AvdSchemaList"
+                    },
+                    {
+                        "$ref": "#/$defs/AvdSchemaDict"
+                    }
+                ]
+            },
+            "title": "FieldDefs",
+            "type": "object"
+        },
+        "FieldRef": {
+            "title": "FieldRef",
+            "type": "string"
+        },
+        "Format": {
+            "enum": [
+                "ipv4",
+                "ipv4_cidr",
+                "ipv6",
+                "ipv6_cidr",
+                "ip",
+                "cidr",
+                "mac"
+            ],
+            "title": "Format",
+            "type": "string"
+        },
+        "Required": {
+            "description": "Key is required",
+            "title": "Required",
+            "type": "boolean"
+        },
+        "schema__metaschema__meta_schema_model__AvdSchemaBool__ConvertType": {
+            "enum": [
+                "int",
+                "str"
+            ],
+            "title": "ConvertType",
+            "type": "string"
+        },
+        "schema__metaschema__meta_schema_model__AvdSchemaInt__ConvertType": {
+            "enum": [
+                "bool",
+                "str",
+                "float"
+            ],
+            "title": "ConvertType",
+            "type": "string"
+        },
+        "schema__metaschema__meta_schema_model__AvdSchemaList__ConvertType": {
+            "enum": [
+                "dict",
+                "list",
+                "str"
+            ],
+            "title": "ConvertType",
+            "type": "string"
+        },
+        "schema__metaschema__meta_schema_model__AvdSchemaStr__ConvertType": {
+            "enum": [
+                "bool",
+                "int",
+                "float"
+            ],
+            "title": "ConvertType",
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "description": "Arista AVD Schema",
+    "properties": {
+        "type": {
+            "const": "dict",
+            "title": "Type"
+        },
+        "default": {
+            "anyOf": [
+                {
+                    "type": "object"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Default"
+        },
+        "keys": {
+            "anyOf": [
+                {
+                    "additionalProperties": {
+                        "discriminator": {
+                            "mapping": {
+                                "bool": "#/$defs/AvdSchemaBool",
+                                "dict": "#/$defs/AvdSchemaDict",
+                                "int": "#/$defs/AvdSchemaInt",
+                                "list": "#/$defs/AvdSchemaList",
+                                "str": "#/$defs/AvdSchemaStr"
+                            },
+                            "propertyName": "type"
+                        },
+                        "oneOf": [
+                            {
+                                "$ref": "#/$defs/AvdSchemaInt"
+                            },
+                            {
+                                "$ref": "#/$defs/AvdSchemaBool"
+                            },
+                            {
+                                "$ref": "#/$defs/AvdSchemaStr"
+                            },
+                            {
+                                "$ref": "#/$defs/AvdSchemaList"
+                            },
+                            {
+                                "$ref": "#/$defs/AvdSchemaDict"
+                            }
+                        ]
+                    },
+                    "type": "object"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Keys"
+        },
+        "dynamic_keys": {
+            "anyOf": [
+                {
+                    "additionalProperties": {
+                        "discriminator": {
+                            "mapping": {
+                                "bool": "#/$defs/AvdSchemaBool",
+                                "dict": "#/$defs/AvdSchemaDict",
+                                "int": "#/$defs/AvdSchemaInt",
+                                "list": "#/$defs/AvdSchemaList",
+                                "str": "#/$defs/AvdSchemaStr"
+                            },
+                            "propertyName": "type"
+                        },
+                        "oneOf": [
+                            {
+                                "$ref": "#/$defs/AvdSchemaInt"
+                            },
+                            {
+                                "$ref": "#/$defs/AvdSchemaBool"
+                            },
+                            {
+                                "$ref": "#/$defs/AvdSchemaStr"
+                            },
+                            {
+                                "$ref": "#/$defs/AvdSchemaList"
+                            },
+                            {
+                                "$ref": "#/$defs/AvdSchemaDict"
+                            }
+                        ]
+                    },
+                    "type": "object"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Dynamic Keys"
+        },
+        "allow_other_keys": {
+            "anyOf": [
+                {
+                    "type": "boolean"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": false,
+            "title": "Allow Other Keys"
+        },
+        "display_name": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/DisplayName"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "description": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Description"
+        },
+        "required": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Required"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "deprecation": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Deprecation"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "$ref": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/FieldRef"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "documentation_options": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/DocumentationOptionsDict"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        },
+        "$schema": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "$Schema"
+        },
+        "$id": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "$Id"
+        },
+        "$defs": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/FieldDefs"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null
+        }
+    },
+    "required": [
+        "type"
+    ],
+    "title": "AristaAvdSchema",
+    "type": "object"
+}

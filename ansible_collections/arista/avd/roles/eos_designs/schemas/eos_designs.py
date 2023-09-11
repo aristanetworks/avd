@@ -788,6 +788,33 @@ class EosDesigns(BaseModel):
         compute_v3_user_localized_key: bool = Field(default=False)
         users: list[UsersItem] | None = Field(default=None)
 
+    class SourceInterfaces(BaseModel):
+        class DomainLookup(BaseModel):
+            mgmt_interface: bool | None = Field(default=None)
+            inband_mgmt_interface: bool | None = Field(default=None)
+
+        class HttpClient(BaseModel):
+            mgmt_interface: bool | None = Field(default=None)
+            inband_mgmt_interface: bool | None = Field(default=None)
+
+        class Radius(BaseModel):
+            mgmt_interface: bool | None = Field(default=None)
+            inband_mgmt_interface: bool | None = Field(default=None)
+
+        class SshClient(BaseModel):
+            mgmt_interface: bool | None = Field(default=None)
+            inband_mgmt_interface: bool | None = Field(default=None)
+
+        class Tacacs(BaseModel):
+            mgmt_interface: bool | None = Field(default=None)
+            inband_mgmt_interface: bool | None = Field(default=None)
+
+        domain_lookup: DomainLookup | None = Field(default=None)
+        http_client: HttpClient | None = Field(default=None)
+        radius: Radius | None = Field(default=None)
+        ssh_client: SshClient | None = Field(default=None)
+        tacacs: Tacacs | None = Field(default=None)
+
     class SviProfilesItem(BaseModel):
         class NodesItem(BaseModel):
             class IpHelpersItem(BaseModel):
@@ -1118,6 +1145,7 @@ class EosDesigns(BaseModel):
     serial_number: str | None = Field(default=None)
     shutdown_interfaces_towards_undeployed_peers: bool = Field(default=False)
     snmp_settings: SnmpSettings | None = Field(default=None)
+    source_interfaces: SourceInterfaces | None = Field(default=None)
     svi_profiles: list[SviProfilesItem] | None = Field(default=None)
     system_mac_address: str | None = Field(default=None)
     terminattr_disable_aaa: bool = Field(default=False)
