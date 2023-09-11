@@ -5329,6 +5329,13 @@ $defs:
             convert_types:
             - str
             default: 0
+          vtep:
+            type: bool
+            description: 'Node is configured as a VTEP when applicable based on ''overlay_routing_protocol''.
+
+              Overrides VTEP setting inherited from node_type_keys.'
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
           vtep_loopback:
             documentation_options:
               table: node-type-loopback-vtep-configuration
