@@ -1856,7 +1856,7 @@ keys:
                 be ignored if this is false.
 
                 Platforms without support for per interface MTU can use a single default
-                interface MTU setting. Set this via "interface_default_mtu"
+                interface MTU setting. Set this via "default_interface_mtu"
 
                 '
             bgp_update_wait_install:
