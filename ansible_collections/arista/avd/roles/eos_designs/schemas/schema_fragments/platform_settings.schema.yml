@@ -68,7 +68,7 @@ keys:
               description: |
                 Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                 Effectively this means that all settings regarding interface MTU will be ignored if this is false.
-                Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "interface_default_mtu"
+                Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"
             bgp_update_wait_install:
               type: bool
               default: true
