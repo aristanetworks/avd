@@ -358,6 +358,17 @@ class AvdStructuredConfigBase(AvdFacts):
         return None
 
     @cached_property
+    def interface_defaults(self) -> dict | None:
+        """
+        interface_defaults set based on default_interface_mtu
+        """
+        if self.shared_utils.default_interface_mtu is not None:
+            return {
+                "mtu": self.shared_utils.default_interface_mtu,
+            }
+        return None
+
+    @cached_property
     def snmp_server(self) -> dict | None:
         """
         snmp_server set based on snmp_settings data-model, using various snmp_settings information.

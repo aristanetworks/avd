@@ -143,7 +143,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             ethernet_interface.update(
                 {
                     "type": "switched",
-                    "mtu": adapter.get("mtu"),
+                    "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
                     "l2_mtu": adapter.get("l2_mtu"),
                     "mode": adapter.get("mode"),
                     "vlans": adapter.get("vlans"),

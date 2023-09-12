@@ -190,3 +190,7 @@ class PlatformMixin:
     @cached_property
     def platform_settings_feature_support_poe(self) -> bool:
         return get(self.platform_settings, "feature_support.poe", default=False) is True
+
+    @cached_property
+    def platform_settings_feature_support_per_interface_mtu(self) -> bool:
+        return get(self.platform_settings, "feature_support.per_interface_mtu", default=True) is True

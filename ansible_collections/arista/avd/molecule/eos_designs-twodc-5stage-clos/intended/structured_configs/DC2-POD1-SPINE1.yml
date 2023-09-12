@@ -126,7 +126,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -138,7 +137,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -150,7 +148,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -162,7 +159,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -175,7 +171,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5
   type: routed
   shutdown: false
-  mtu: 1500
   ip_address: 11.1.1.19/31
 loopback_interfaces:
 - name: Loopback0

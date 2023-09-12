@@ -94,6 +94,8 @@ platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
+    feature_support:
+      per_interface_mtu: false # Removes mtu command from all interfaces
 
 custom_structured_configuration_list_merge: 'append'
 

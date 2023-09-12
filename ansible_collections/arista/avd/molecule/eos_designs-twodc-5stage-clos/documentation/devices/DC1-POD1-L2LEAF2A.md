@@ -303,8 +303,8 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
+| Vlan4094 | MLAG_PEER | default | - | False |
 
 ##### IPv4
 
@@ -320,13 +320,11 @@ interface Port-Channel3
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
-   mtu 1500
    ip address 172.21.110.5/24
 !
 interface Vlan4094
    description MLAG_PEER
    no shutdown
-   mtu 1500
    no autostate
    ip address 172.20.110.2/31
 ```
