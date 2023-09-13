@@ -53,7 +53,7 @@ def render_schema_field(target_table: str | None, schema: AvdSchemaField) -> boo
         # print("mismatching table", target_table, schema._table)
         return False
 
-    if len(schema._path) == 1 and schema._key and schema._key.replace("_", "-") != target_table:
+    if not schema._table and len(schema._path) == 1 and schema._key and schema._key.replace("_", "-") != target_table:
         # This is a root key and the target_table mismatches a hyphen variant of the key name.
         # print("mismatching rootkey", target_table, schema._key.replace("_", "-"))
         return False
