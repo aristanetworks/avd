@@ -32,39 +32,67 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "maintenance.units.[].profile") | String |  |  |  | Name of Unit Profile<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "maintenance.units.[].groups") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_groups</samp>](## "maintenance.units.[].groups.bgp_groups") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "maintenance.units.[].groups.bgp_groups.[].&lt;str&gt;") | String |  |  |  | Name of BGP Group<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "maintenance.units.[].groups.bgp_groups.[]") | String |  |  |  | Name of BGP Group<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_groups</samp>](## "maintenance.units.[].groups.interface_groups") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "maintenance.units.[].groups.interface_groups.[].&lt;str&gt;") | String |  |  |  | Name of Interface Group |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "maintenance.units.[].groups.interface_groups.[]") | String |  |  |  | Name of Interface Group |
 
 === "YAML"
 
     ```yaml
     maintenance:
+
+      # Name of default Interface Profile
       default_interface_profile: <str>
+
+      # Name of default BGP Profile
       default_bgp_profile: <str>
+
+      # Name of default Unit Profile
       default_unit_profile: <str>
       interface_profiles:
-        - name: <str>
+        - name: <str; required; unique>
           rate_monitoring:
+
+            # Load Interval in Seconds
             load_interval: <int>
+
+            # Threshold in kbps
             threshold: <int>
           shutdown:
+
+            # Max delay in seconds
             max_delay: <int>
       bgp_profiles:
-        - name: <str>
+
+          # BGP Profile Name
+        - name: <str; required; unique>
           initiator:
+
+            # Route Map
             route_map_inout: <str>
       unit_profiles:
-        - name: <str>
+
+          # Unit Profile Name
+        - name: <str; required; unique>
           on_boot:
-            duration: <int>
+
+            # On-boot in seconds
+            duration: <int; 300-3600>
       units:
-        - name: <str>
+
+          # Unit Name
+        - name: <str; required; unique>
           quiesce: <bool>
+
+          # Name of Unit Profile
           profile: <str>
           groups:
             bgp_groups:
+
+                # Name of BGP Group
               - <str>
             interface_groups:
+
+                # Name of Interface Group
               - <str>
     ```

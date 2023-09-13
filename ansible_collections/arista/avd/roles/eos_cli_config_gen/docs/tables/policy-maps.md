@@ -32,20 +32,39 @@
 
     ```yaml
     policy_maps:
+
+      # PBR Policy-Maps
       pbr:
-        - name: <str>
+
+          # Policy-Map Name
+        - name: <str; required; unique>
           classes:
-            - name: <str>
+
+              # Class Name
+            - name: <str; required; unique>
               index: <int>
+
+              # 'drop' and 'set' are mutually exclusive
               drop: <bool>
+
+              # Set Nexthop
+              # 'drop' and 'set' are mutually exclusive
               set:
                 nexthop:
+
+                  # IPv4 or IPv6 Address
                   ip_address: <str>
                   recursive: <bool>
+
+      # QOS Policy-Maps
       qos:
-        - name: <str>
+
+          # Policy-Map Name
+        - name: <str; required; unique>
           classes:
-            - name: <str>
+
+              # Class Name
+            - name: <str; required; unique>
               set:
                 cos: <int>
                 dscp: <str>

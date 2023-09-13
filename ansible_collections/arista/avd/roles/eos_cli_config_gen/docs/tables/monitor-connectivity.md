@@ -42,22 +42,31 @@
       interval: <int>
       interface_sets:
         - name: <str>
+
+          # Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+          # Multiple interface ranges can be specified separated by ","
           interfaces: <str>
       local_interfaces: <str>
       hosts:
+
+          # Host Name
         - name: <str>
           description: <str>
           ip: <str>
           local_interfaces: <str>
           url: <str>
       vrfs:
-        - name: <str>
+
+          # VRF Name
+        - name: <str; required; unique>
           description: <str>
           interface_sets:
             - name: <str>
               interfaces: <str>
           local_interfaces: <str>
           hosts:
+
+              # Host name
             - name: <str>
               description: <str>
               ip: <str>

@@ -18,9 +18,16 @@
 
     ```yaml
     ipv6_access_lists:
-      - name: <str>
+
+        # IPv6 Access-list Name
+      - name: <str; required; unique>
         counters_per_entry: <bool>
-        sequence_numbers:
-          - sequence: <int>
-            action: <str>
+        sequence_numbers: # required
+
+            # Sequence ID
+          - sequence: <int; required; unique>
+
+            # Action as string
+            # Example: "deny ipv6 any any"
+            action: <str; required>
     ```

@@ -18,11 +18,16 @@
 === "YAML"
 
     ```yaml
+    # These keys are ignored if the name of the vrf is 'default'
     vrfs:
-      - name: <str>
+
+        # VRF Name
+      - name: <str; required; unique>
         description: <str>
         ip_routing: <bool>
         ipv6_routing: <bool>
         ip_routing_ipv6_interfaces: <bool>
+
+        # Key only used for documentation or validation purposes
         tenant: <str>
     ```

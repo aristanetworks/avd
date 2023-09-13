@@ -20,3 +20,8 @@ STORE = {
     "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_SCHEMA,
     "eos_designs": EOS_DESIGNS_SCHEMA,
 }
+
+SCHEMA_PATHS = {
+    "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_SCHEMA_PATH,
+    "eos_designs": EOS_DESIGNS_SCHEMA_PATH,
+}

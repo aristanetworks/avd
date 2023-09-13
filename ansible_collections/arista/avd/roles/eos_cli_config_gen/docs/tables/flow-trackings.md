@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>flow_trackings</samp>](## "flow_trackings") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- type</samp>](## "flow_trackings.[].type") | String | Required, Unique |  | Valid Values:<br>- sampled | Flow Tracking Type - only 'sampled' supported for now |
+    | [<samp>&nbsp;&nbsp;- type</samp>](## "flow_trackings.[].type") | String | Required, Unique |  | Valid Values:<br>- <code>sampled</code> | Flow Tracking Type - only 'sampled' supported for now |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "flow_trackings.[].sample") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trackers</samp>](## "flow_trackings.[].trackers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "flow_trackings.[].trackers.[].name") | String | Required, Unique |  |  | Tracker Name |
@@ -32,23 +32,45 @@
 
     ```yaml
     flow_trackings:
-      - type: <str>
-        sample: <int>
+
+        # Flow Tracking Type - only 'sampled' supported for now
+      - type: <str; "sampled"; required; unique>
+        sample: <int; 1-4294967295>
         trackers:
-          - name: <str>
+
+            # Tracker Name
+          - name: <str; required; unique>
             record_export:
-              on_inactive_timeout: <int>
-              on_interval: <int>
+
+              # Flow record inactive export timeout in milliseconds
+              on_inactive_timeout: <int; 3000-900000>
+
+              # Flow record export interval in milliseconds
+              on_interval: <int; 1000-36000000>
+
+              # Export MPLS forwarding information
               mpls: <bool>
             exporters:
-              - name: <str>
+
+                # Exporter Name
+              - name: <str; required; unique>
                 collector:
+
+                  # Collector IPv4 address or IPv6 address or fully qualified domain name
                   host: <str>
-                  port: <int>
+
+                  # Collector Port Number
+                  port: <int; 1-65535>
                 format:
                   ipfix_version: <int>
+
+                # Local Source Interface
                 local_interface: <str>
-                template_interval: <int>
-            table_size: <int>
-        shutdown: <bool>
+
+                # Template interval in milliseconds
+                template_interval: <int; 5000-3600000>
+
+            # Maximum number of entries in flow table.
+            table_size: <int; 1-614400>
+        shutdown: <bool; default=False>
     ```

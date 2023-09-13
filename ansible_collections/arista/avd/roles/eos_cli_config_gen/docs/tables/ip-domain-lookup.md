@@ -17,6 +17,8 @@
     ```yaml
     ip_domain_lookup:
       source_interfaces:
-        - name: <str>
+
+          # Source Interface
+        - name: <str; required; unique>
           vrf: <str>
     ```

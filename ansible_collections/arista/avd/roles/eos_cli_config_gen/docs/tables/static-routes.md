@@ -22,13 +22,23 @@
 
     ```yaml
     static_routes:
+
+        # VRF Name
       - vrf: <str>
+
+        # IPv4_network/Mask
         destination_address_prefix: <str>
         interface: <str>
+
+        # IPv4 Address
         gateway: <str>
+
+        # Track next-hop using BFD
         track_bfd: <bool>
-        distance: <int>
-        tag: <int>
+        distance: <int; 1-255>
+        tag: <int; 0-4294967295>
+
+        # Description
         name: <str>
-        metric: <int>
+        metric: <int; 0-4294967295>
     ```

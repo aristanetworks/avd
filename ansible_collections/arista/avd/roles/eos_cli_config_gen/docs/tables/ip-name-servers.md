@@ -16,7 +16,13 @@
 
     ```yaml
     ip_name_servers:
+
+        # IPv4 or IPv6 address for DNS server
       - ip_address: <str>
+
+        # VRF Name
         vrf: <str>
-        priority: <int>
+
+        # Priority value (lower is first)
+        priority: <int; 0-4>
     ```

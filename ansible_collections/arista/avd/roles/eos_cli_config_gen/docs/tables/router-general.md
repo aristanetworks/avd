@@ -26,15 +26,25 @@
     ```yaml
     router_general:
       router_id:
+
+        # IPv4 Address
         ipv4: <str>
+
+        # IPv6 Address
         ipv6: <str>
-      nexthop_fast_failover: <bool>
+      nexthop_fast_failover: <bool; default=False>
       vrfs:
-        - name: <str>
+
+          # Destination-VRF
+        - name: <str; required; unique>
           leak_routes:
             - source_vrf: <str>
+
+              # Route-Map Policy
               subscribe_policy: <str>
           routes:
             dynamic_prefix_lists:
+
+                # Dynamic Prefix List Name
               - name: <str>
     ```

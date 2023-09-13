@@ -26,13 +26,27 @@
     management_api_http:
       enable_http: <bool>
       enable_https: <bool>
+
+      # SSL Profile Name
       https_ssl_profile: <str>
+
+      # Enable default services: capi-doc and tapagg
       default_services: <bool>
       enable_vrfs:
-        - name: <str>
+
+          # VRF Name
+        - name: <str; required; unique>
+
+          # Standard IPv4 ACL name
           access_group: <str>
+
+          # Standard IPv6 ACL name
           ipv6_access_group: <str>
       protocol_https_certificate:
+
+        # Name of certificate; private key must also be specified
         certificate: <str>
+
+        # Name of private key; certificate must also be specified
         private_key: <str>
     ```

@@ -15,6 +15,11 @@
 
     ```yaml
     community_lists:
-      - name: <str>
-        action: <str>
+
+        # Community-list Name
+      - name: <str; required; unique>
+
+        # Action as string
+        # Example: "permit GSHUT 65123:123"
+        action: <str; required>
     ```

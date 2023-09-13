@@ -16,7 +16,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "management_interfaces.[].ip_address") | String |  |  |  | IPv4_address/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "management_interfaces.[].ipv6_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "management_interfaces.[].ipv6_address") | String |  |  |  | IPv6_address/Mask |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "management_interfaces.[].type") | String |  | `oob` | Valid Values:<br>- oob<br>- inband | For documentation purposes only |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "management_interfaces.[].type") | String |  | `oob` | Valid Values:<br>- <code>oob</code><br>- <code>inband</code> | For documentation purposes only |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;gateway</samp>](## "management_interfaces.[].gateway") | String |  |  |  | IPv4 address of default gateway in management VRF |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_gateway</samp>](## "management_interfaces.[].ipv6_gateway") | String |  |  |  | IPv6 address of default gateway in management VRF |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "management_interfaces.[].mac_address") | String |  |  |  | MAC address |
@@ -26,17 +26,35 @@
 
     ```yaml
     management_interfaces:
-      - name: <str>
+
+        # Management Interface Name
+      - name: <str; required; unique>
         description: <str>
         shutdown: <bool>
         mtu: <int>
+
+        # VRF Name
         vrf: <str>
+
+        # IPv4_address/Mask
         ip_address: <str>
         ipv6_enable: <bool>
+
+        # IPv6_address/Mask
         ipv6_address: <str>
-        type: <str>
+
+        # For documentation purposes only
+        type: <str; "oob" | "inband"; default="oob">
+
+        # IPv4 address of default gateway in management VRF
         gateway: <str>
+
+        # IPv6 address of default gateway in management VRF
         ipv6_gateway: <str>
+
+        # MAC address
         mac_address: <str>
+
+        # Multiline EOS CLI rendered directly on the management interface in the final EOS configuration
         eos_cli: <str>
     ```

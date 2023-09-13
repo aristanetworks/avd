@@ -15,6 +15,8 @@
 
     ```yaml
     ip_ssh_client_source_interfaces:
+
+        # Interface Name
       - name: <str>
-        vrf: <str>
+        vrf: <str; default="default">
     ```

@@ -12,7 +12,7 @@
     | [<samp>&nbsp;&nbsp;edge_port</samp>](## "spanning_tree.edge_port") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bpdufilter_default</samp>](## "spanning_tree.edge_port.bpdufilter_default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bpduguard_default</samp>](## "spanning_tree.edge_port.bpduguard_default") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;mode</samp>](## "spanning_tree.mode") | String |  |  | Valid Values:<br>- mstp<br>- rstp<br>- rapid-pvst<br>- none |  |
+    | [<samp>&nbsp;&nbsp;mode</samp>](## "spanning_tree.mode") | String |  |  | Valid Values:<br>- <code>mstp</code><br>- <code>rstp</code><br>- <code>rapid-pvst</code><br>- <code>none</code> |  |
     | [<samp>&nbsp;&nbsp;bpduguard_rate_limit</samp>](## "spanning_tree.bpduguard_rate_limit") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "spanning_tree.bpduguard_rate_limit.default") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "spanning_tree.bpduguard_rate_limit.count") | Integer |  |  |  | Maximum number of BPDUs per timer interval |
@@ -41,24 +41,41 @@
       edge_port:
         bpdufilter_default: <bool>
         bpduguard_default: <bool>
-      mode: <str>
+      mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
       bpduguard_rate_limit:
         default: <bool>
+
+        # Maximum number of BPDUs per timer interval
         count: <int>
       rstp_priority: <int>
       mst:
         pvst_border: <bool>
         configuration:
           name: <str>
+
+          # 0-65535
           revision: <int>
           instances:
-            - id: <int>
+
+              # Instance ID
+            - id: <int; required; unique>
+
+              # "< vlan_id >, < vlan_id >-< vlan_id >"
+              # Example: 15,16,17,18
               vlans: <str>
       mst_instances:
-        - id: <str>
+
+          # Instance ID
+        - id: <str; required; unique>
           priority: <int>
+
+      # "< vlan_id >, < vlan_id >-< vlan_id >"
+      # Example: 105,202,505-506
       no_spanning_tree_vlan: <str>
       rapid_pvst_instances:
-        - id: <str>
+
+          # "< vlan_id >, < vlan_id >-< vlan_id >"
+          # Example: 105,202,505-506
+        - id: <str; required; unique>
           priority: <int>
     ```

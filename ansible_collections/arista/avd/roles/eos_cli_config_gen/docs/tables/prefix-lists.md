@@ -17,8 +17,15 @@
 
     ```yaml
     prefix_lists:
-      - name: <str>
+
+        # Prefix-list Name
+      - name: <str; required; unique>
         sequence_numbers:
-          - sequence: <int>
-            action: <str>
+
+            # Sequence ID
+          - sequence: <int; required; unique>
+
+            # Action as string
+            # Example: "permit 10.255.0.0/27 eq 32"
+            action: <str; required>
     ```

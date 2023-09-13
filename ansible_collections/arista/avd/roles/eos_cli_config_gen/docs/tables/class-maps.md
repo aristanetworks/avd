@@ -26,15 +26,29 @@
     ```yaml
     class_maps:
       pbr:
-        - name: <str>
+
+          # Class-Map Name
+        - name: <str; required; unique>
           ip:
+
+            # Standard Access-List Name
             access_group: <str>
       qos:
-        - name: <str>
+
+          # Class-Map Name
+        - name: <str; required; unique>
+
+          # VLAN value(s) or range(s) of VLAN values
           vlan: <int>
+
+          # CoS value(s) or range(s) of CoS values
           cos: <int>
           ip:
+
+            # IPv4 Access-List Name
             access_group: <str>
           ipv6:
+
+            # IPv6 Access-List Name
             access_group: <str>
     ```

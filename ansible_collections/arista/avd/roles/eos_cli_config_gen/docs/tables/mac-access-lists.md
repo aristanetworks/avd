@@ -18,7 +18,9 @@
 
     ```yaml
     mac_access_lists:
-      - name: <str>
+
+        # MAC Access-list Name
+      - name: <str; required; unique>
         counters_per_entry: <bool>
         entries:
           - sequence: <int>
