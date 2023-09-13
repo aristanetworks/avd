@@ -101,7 +101,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -113,7 +112,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -189,7 +187,6 @@ vlan_interfaces:
 - name: Vlan4092
   description: Inband Management
   shutdown: false
-  mtu: 1500
   ip_address: 172.21.210.2/24
   ip_virtual_router_addresses:
   - 172.21.210.1

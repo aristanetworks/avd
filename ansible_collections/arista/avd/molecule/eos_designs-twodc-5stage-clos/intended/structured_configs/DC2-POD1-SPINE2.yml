@@ -91,7 +91,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -103,7 +102,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -115,7 +113,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet2
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -127,7 +124,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet2
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -140,7 +136,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4
   type: routed
   shutdown: false
-  mtu: 1498
   ip_address: 200.200.200.201/24
   ptp:
     enable: true

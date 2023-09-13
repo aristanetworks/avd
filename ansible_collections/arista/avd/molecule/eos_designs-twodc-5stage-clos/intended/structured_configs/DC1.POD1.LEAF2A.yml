@@ -346,7 +346,6 @@ vlan_interfaces:
   shutdown: false
   ip_address: 172.20.110.2/31
   no_autostate: true
-  mtu: 1500
 - name: Vlan110
   tenant: Tenant_A
   tags:
@@ -416,7 +415,6 @@ vlan_interfaces:
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT
   shutdown: false
-  mtu: 1500
   ip_address: 172.21.110.2/24
   ip_virtual_router_addresses:
   - 172.21.110.1
@@ -514,7 +512,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -528,7 +525,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -562,7 +558,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -576,7 +571,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -591,7 +585,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6
   type: routed
   shutdown: false
-  mtu: 1500
   ip_address: 100.100.100.101/24
 - name: Ethernet16
   peer: server-1

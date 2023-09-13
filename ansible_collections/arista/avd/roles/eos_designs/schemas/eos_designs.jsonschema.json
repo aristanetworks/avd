@@ -9435,6 +9435,13 @@
             "type": "boolean",
             "title": "LAG Hardware Only"
           },
+          "default_interface_mtu": {
+            "type": "integer",
+            "description": "Default interface MTU configured on EOS under \"interface defaults\".\nTakes precedence over the root key \"default_interface_mtu\".\n",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "Default Interface MTU"
+          },
           "feature_support": {
             "type": "object",
             "properties": {
@@ -9452,6 +9459,12 @@
                 "type": "boolean",
                 "default": false,
                 "title": "PoE"
+              },
+              "per_interface_mtu": {
+                "type": "boolean",
+                "default": true,
+                "description": "Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.\nEffectively this means that all settings regarding interface MTU will be ignored if this is false.\nPlatforms without support for per interface MTU can use a single default interface MTU setting. Set this via \"default_interface_mtu\"\n",
+                "title": "Per Interface MTU"
               },
               "bgp_update_wait_install": {
                 "type": "boolean",

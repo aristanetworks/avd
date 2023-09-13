@@ -88,7 +88,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -102,7 +101,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -116,7 +114,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -130,7 +127,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -144,7 +140,6 @@ ethernet_interfaces:
   peer_type: overlay-controller
   description: P2P_LINK_TO_DC1-RS1_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.10.0/31
@@ -155,7 +150,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet4
   type: routed
   shutdown: false
-  mtu: 1499
   ip_address: 11.1.2.0/31
   mac_security:
     profile: MACSEC_PROFILE
