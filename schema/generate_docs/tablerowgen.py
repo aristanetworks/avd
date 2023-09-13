@@ -250,7 +250,11 @@ class TableRowGenStr(TableRowGenBase):
         if self.schema.format is not None:
             restrictions.append(f"Format: {self.schema.format}")
         if self.schema.convert_to_lower_case:
-            restrictions.append("Value is converted to lower case")
+            # TODO: Remove legacy output
+            if LEGACY_OUTPUT:
+                restrictions.append("Value is converted to lower case")
+            else:
+                restrictions.append("Value is converted to lower case.")
 
         if base_restrictions := super().render_restrictions():
             restrictions.extend(base_restrictions.split("<br>"))
