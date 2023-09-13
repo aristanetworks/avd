@@ -43,7 +43,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ip</samp>](## "ip_nat.translation.max_entries.ip_limits.[].ip") | String | Required, Unique |  |  | IPv4 address |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "ip_nat.translation.max_entries.ip_limits.[].limit") | Integer | Required |  | Min: 0<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;timeouts</samp>](## "ip_nat.translation.timeouts") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- protocol</samp>](## "ip_nat.translation.timeouts.[].protocol") | String | Required, Unique |  | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- protocol</samp>](## "ip_nat.translation.timeouts.[].protocol") | String | Required, Unique |  | Valid Values:<br>- tcp<br>- udp |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "ip_nat.translation.timeouts.[].timeout") | Integer | Required |  | Min: 0<br>Max: 4294967295 | in seconds |
 
 === "YAML"

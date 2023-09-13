@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "lldp.vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;receive_packet_tagged_drop</samp>](## "lldp.receive_packet_tagged_drop") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;tlvs</samp>](## "lldp.tlvs") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "lldp.tlvs.[].name") | String | Required, Unique |  | Valid Values:<br>- <code>link-aggregation</code><br>- <code>management-address</code><br>- <code>max-frame-size</code><br>- <code>med</code><br>- <code>port-description</code><br>- <code>port-vlan</code><br>- <code>power-via-mdi</code><br>- <code>system-capabilities</code><br>- <code>system-description</code><br>- <code>system-name</code><br>- <code>vlan-name</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "lldp.tlvs.[].name") | String | Required, Unique |  | Valid Values:<br>- link-aggregation<br>- management-address<br>- max-frame-size<br>- med<br>- port-description<br>- port-vlan<br>- power-via-mdi<br>- system-capabilities<br>- system-description<br>- system-name<br>- vlan-name |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmit</samp>](## "lldp.tlvs.[].transmit") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;run</samp>](## "lldp.run") | Boolean |  |  |  |  |
 

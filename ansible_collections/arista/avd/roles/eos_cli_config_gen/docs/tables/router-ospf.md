@@ -42,7 +42,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_information_originate</samp>](## "router_ospf.process_ids.[].default_information_originate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_ospf.process_ids.[].default_information_originate.always") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "router_ospf.process_ids.[].default_information_originate.metric") | Integer |  |  | Min: 1<br>Max: 65535 | Metric for default route |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric_type</samp>](## "router_ospf.process_ids.[].default_information_originate.metric_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | OSPF metric type for default route |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric_type</samp>](## "router_ospf.process_ids.[].default_information_originate.metric_type") | Integer |  |  | Valid Values:<br>- 1<br>- 2 | OSPF metric type for default route |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;summary_addresses</samp>](## "router_ospf.process_ids.[].summary_addresses") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- prefix</samp>](## "router_ospf.process_ids.[].summary_addresses.[].prefix") | String | Required, Unique |  |  | Summary Prefix Address |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tag</samp>](## "router_ospf.process_ids.[].summary_addresses.[].tag") | Integer |  |  |  |  |
@@ -65,12 +65,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_ospf.process_ids.[].areas.[].filter.networks") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "router_ospf.process_ids.[].areas.[].filter.networks.[]") | String |  |  |  | IPv4 Prefix |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_ospf.process_ids.[].areas.[].filter.prefix_list") | String |  |  |  | Prefix-List Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "router_ospf.process_ids.[].areas.[].type") | String |  | `normal` | Valid Values:<br>- <code>normal</code><br>- <code>stub</code><br>- <code>nssa</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "router_ospf.process_ids.[].areas.[].type") | String |  | `normal` | Valid Values:<br>- normal<br>- stub<br>- nssa |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_summary</samp>](## "router_ospf.process_ids.[].areas.[].no_summary") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_only</samp>](## "router_ospf.process_ids.[].areas.[].nssa_only") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_information_originate</samp>](## "router_ospf.process_ids.[].areas.[].default_information_originate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "router_ospf.process_ids.[].areas.[].default_information_originate.metric") | Integer |  |  | Min: 1<br>Max: 65535 | Metric for default route |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric_type</samp>](## "router_ospf.process_ids.[].areas.[].default_information_originate.metric_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | OSPF metric type for default route |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric_type</samp>](## "router_ospf.process_ids.[].areas.[].default_information_originate.metric_type") | Integer |  |  | Valid Values:<br>- 1<br>- 2 | OSPF metric type for default route |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum_paths</samp>](## "router_ospf.process_ids.[].maximum_paths") | Integer |  |  | Min: 1<br>Max: 128 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_metric</samp>](## "router_ospf.process_ids.[].max_metric") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_lsa</samp>](## "router_ospf.process_ids.[].max_metric.router_lsa") | Dictionary |  |  |  |  |

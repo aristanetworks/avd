@@ -137,6 +137,7 @@ class YamlLineGenBase(ABC):
             value = self.schema.type
         else:
             value = "; ".join(field for field in value_fields if field)
+
         if self.schema._key:
             key = f"{self.schema._key}: "
         else:
@@ -363,6 +364,10 @@ class YamlLineGenDict(YamlLineGenBase):
         properties = "; ".join(field for field in properties_fields if field)
         if properties:
             properties = f" # {properties}"
+
+        # TODO: Remove legacy output
+        if LEGACY_OUTPUT:
+            properties = ""
 
         if self.schema.documentation_options is not None and self.schema.documentation_options.hide_keys:
             # Add <dict> when we don't generate yaml for child keys.

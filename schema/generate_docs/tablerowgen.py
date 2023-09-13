@@ -13,6 +13,8 @@ from .utils import render_schema_field
 if TYPE_CHECKING:
     from ..metaschema.meta_schema_model import AvdSchemaField
 
+LEGACY_OUTPUT = True
+
 
 class TableRow(BaseModel):
     """
@@ -71,7 +73,11 @@ class TableRowGenBase(ABC):
 
         i = "&nbsp;"  # Indentation character
         if self.schema._is_first_list_key:
-            return i * (indentation_count - 2) + "-" + " "  # Using space as last indentation to match legacy behavior
+            # TODO: Remove legacy output
+            if LEGACY_OUTPUT:
+                return i * (indentation_count - 2) + "-" + " "  # Using space as last indentation to match legacy behavior
+            else:
+                return i * (indentation_count - 2) + "-" + i
 
         return i * indentation_count
 
@@ -189,7 +195,11 @@ class TableRowGenBase(ABC):
 
         if valid_values:
             restrictions.append("Valid Values:")
-            restrictions.extend(f"- <code>{valid_value}</code>" for valid_value in valid_values)
+            # TODO: Remove legacy output
+            if LEGACY_OUTPUT:
+                restrictions.extend(f"- {valid_value}" for valid_value in valid_values)
+            else:
+                restrictions.extend(f"- <code>{valid_value}</code>" for valid_value in valid_values)
 
         return "<br>".join(restrictions) or None
 
