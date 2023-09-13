@@ -18,7 +18,7 @@
     ```yaml
     ip_extcommunity_lists_regexp:
       - name: <str>
-        entries: # required
+        entries:
           - type: <str>
             regexp: <str>
     ```

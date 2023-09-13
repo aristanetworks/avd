@@ -23,7 +23,7 @@
       patches:
         - name: <str>
           enabled: <bool>
-          connectors: # 2-2 items
+          connectors:
             - id: <str>
               type: <str>
               endpoint: <str>

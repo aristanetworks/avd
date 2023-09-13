@@ -18,7 +18,7 @@
     ```yaml
     ipv6_prefix_lists:
       - name: <str>
-        sequence_numbers: # required
+        sequence_numbers:
           - sequence: <int>
             action: <str>
     ```

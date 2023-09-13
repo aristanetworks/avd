@@ -20,7 +20,7 @@
     match_list_input:
       string:
         - name: <str>
-          sequence_numbers: # required
+          sequence_numbers:
             - sequence: <int>
               match_regex: <str>
     ```

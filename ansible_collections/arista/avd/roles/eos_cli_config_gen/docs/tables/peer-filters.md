@@ -18,7 +18,7 @@
     ```yaml
     peer_filters:
       - name: <str>
-        sequence_numbers: # required
+        sequence_numbers:
           - sequence: <int>
             match: <str>
     ```

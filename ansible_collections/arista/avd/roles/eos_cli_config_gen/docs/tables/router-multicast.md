@@ -38,7 +38,7 @@
         rpf:
           routes:
             - source_prefix: <str>
-              destinations: # required
+              destinations:
                 - nexthop: <str>
                   distance: <int>
       vrfs:

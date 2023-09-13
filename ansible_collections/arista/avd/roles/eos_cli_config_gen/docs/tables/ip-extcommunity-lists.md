@@ -18,7 +18,7 @@
     ```yaml
     ip_extcommunity_lists:
       - name: <str>
-        entries: # required
+        entries:
           - type: <str>
             extcommunities: <str>
     ```

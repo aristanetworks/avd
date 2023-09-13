@@ -308,6 +308,10 @@ class YamlLineGenList(YamlLineGenBase):
         if properties:
             properties = f" # {properties}"
 
+        # TODO: Remove legacy output
+        if LEGACY_OUTPUT:
+            properties = ""
+
         yield YamlLine(
             line=f"{self.get_indentation()}{self.schema._key}:{properties}",
             annotation=self.get_annotation(),

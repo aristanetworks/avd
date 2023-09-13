@@ -20,7 +20,7 @@
     ipv6_access_lists:
       - name: <str>
         counters_per_entry: <bool>
-        sequence_numbers: # required
+        sequence_numbers:
           - sequence: <int>
             action: <str>
     ```

@@ -13,6 +13,6 @@
 === "YAML"
 
     ```yaml
-    network_services_keys: # default=[{'name': 'tenants'}]
+    network_services_keys:
       - name: <str>
     ```

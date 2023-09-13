@@ -125,10 +125,15 @@ class TableRowGenBase(ABC):
         Renders markdown for "key" field including mouse-over and deprecation label with color.
         """
         path = ".".join(self.schema._path)
+
         if self.schema._key:
             key = self.schema._key
         else:
             key = f"&lt;{self.schema.type}&gt;"
+
+            # TODO: Remove legacy output
+            if LEGACY_OUTPUT:
+                path += f".{key}"
 
         return f'[<samp>{self.get_indentation()}{key}</samp>](## "{path}"){self.get_deprecation_label()}'
 
