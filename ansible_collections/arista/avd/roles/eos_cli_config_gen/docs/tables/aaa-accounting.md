@@ -43,46 +43,30 @@
     aaa_accounting:
       exec:
         console:
-          type: <str; "none" | "start-stop" | "stop-only">
-
-          # Group Name
+          type: <str>
           group: <str>
           logging: <bool>
         default:
-          type: <str; "none" | "start-stop" | "stop-only">
-
-          # Group Name
+          type: <str>
           group: <str>
           logging: <bool>
       system:
         default:
-          type: <str; "none" | "start-stop" | "stop-only">
-
-          # Group Name
+          type: <str>
           group: <str>
       dot1x:
         default:
-          type: <str; "start-stop" | "stop-only">
-
-          # Group Name
+          type: <str>
           group: <str>
       commands:
         console:
-
-            # Privelege level 'all' or 0-15
           - commands: <str>
-            type: <str; "none" | "start-stop" | "stop-only">
-
-            # Group Name
+            type: <str>
             group: <str>
             logging: <bool>
         default:
-
-            # Privelege level 'all' or 0-15
           - commands: <str>
-            type: <str; "none" | "start-stop" | "stop-only">
-
-            # Group Name
+            type: <str>
             group: <str>
             logging: <bool>
     ```

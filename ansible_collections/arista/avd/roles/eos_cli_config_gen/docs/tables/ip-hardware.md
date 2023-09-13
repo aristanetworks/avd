@@ -20,5 +20,5 @@
       fib:
         optimize:
           prefixes:
-            profile: <str; "internet" | "urpf-internet">
+            profile: <str>
     ```

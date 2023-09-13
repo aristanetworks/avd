@@ -13,9 +13,6 @@
 === "YAML"
 
     ```yaml
-    # Search list of DNS domains
     domain_list:
-
-        # Domain name
       - <str>
     ```

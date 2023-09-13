@@ -21,19 +21,10 @@
     ```yaml
     patch_panel:
       patches:
-        - name: <str; required; unique>
+        - name: <str>
           enabled: <bool>
-
-          # Must have exactly two connectors to a patch of which at least one must be of type "interface"
           connectors: # 2-2 items
-            - id: <str; required; unique>
-              type: <str; "interface" | "pseudowire"; required>
-
-              # String with relevant endpoint depending on type.
-              # Examples:
-              # - "Ethernet1"
-              # - "Ethernet1 dot1q vlan 123"
-              # - "bgp vpws TENANT_A pseudowire VPWS_PW_1"
-              # - "ldp LDP_PW_1"
-              endpoint: <str; required>
+            - id: <str>
+              type: <str>
+              endpoint: <str>
     ```

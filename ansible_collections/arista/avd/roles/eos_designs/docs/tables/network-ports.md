@@ -18,25 +18,9 @@
 
     ```yaml
     network_ports:
-
-        # Regex matching the full hostname of one or more switches.
-        # The regular expression must match the full hostname.
       - switches:
           - <str>
-
-        # List of ranges using AVD range_expand syntax.
-        # For example:
-
-        # switch_ports:
-        #   - Ethernet1
-        #   - Ethernet2-48
-
-        # All switch_ports ranges are expanded into individual port configurations.
-
-        # For more details and examples of the `range_expand` syntax, see the [arista.avd.range_expand documentation](../../../plugins/README.md#range_expand-filter)
         switch_ports:
           - <str>
-
-        # Description to be used on all ports.
         description: <str>
     ```

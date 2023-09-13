@@ -46,41 +46,37 @@
 
     ```yaml
     ptp:
-      mode: <str; "boundary" | "transparent">
+      mode: <str>
       forward_unicast: <bool>
-
-      # The clock-id in xx:xx:xx:xx:xx:xx format
       clock_identity: <str>
       source:
-
-        # Source IP
         ip: <str>
-      priority1: <int; 0-255>
-      priority2: <int; 0-255>
-      ttl: <int; 1-254>
-      domain: <int; 0-255>
+      priority1: <int>
+      priority2: <int>
+      ttl: <int>
+      domain: <int>
       message_type:
         general:
           dscp: <int>
         event:
           dscp: <int>
       monitor:
-        enabled: <bool; default=True>
+        enabled: <bool>
         threshold:
-          offset_from_master: <int; 0-1000000000>
-          mean_path_delay: <int; 0-1000000000>
+          offset_from_master: <int>
+          mean_path_delay: <int>
           drop:
-            offset_from_master: <int; 0-1000000000>
-            mean_path_delay: <int; 0-1000000000>
+            offset_from_master: <int>
+            mean_path_delay: <int>
         missing_message:
           intervals:
-            announce: <int; 2-255>
-            follow_up: <int; 2-255>
-            sync: <int; 2-255>
+            announce: <int>
+            follow_up: <int>
+            sync: <int>
           sequence_ids:
             enabled: <bool>
-            announce: <int; 2-255>
-            delay_resp: <int; 2-255>
-            follow_up: <int; 2-255>
-            sync: <int; 2-255>
+            announce: <int>
+            delay_resp: <int>
+            follow_up: <int>
+            sync: <int>
     ```

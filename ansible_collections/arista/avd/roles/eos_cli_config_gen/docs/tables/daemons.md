@@ -15,13 +15,8 @@
 === "YAML"
 
     ```yaml
-    # This will add a daemon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus.
     daemons:
-
-        # Daemon Name
-      - name: <str; required; unique>
-
-        # command to run as a daemon
-        exec: <str; required>
-        enabled: <bool; default=True>
+      - name: <str>
+        exec: <str>
+        enabled: <bool>
     ```

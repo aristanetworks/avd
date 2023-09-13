@@ -22,23 +22,13 @@
 
     ```yaml
     vlans:
-
-        # VLAN ID
-      - id: <int; required; unique>
-
-        # VLAN Name
+      - id: <int>
         name: <str>
-        state: <str; "active" | "suspend">
+        state: <str>
         trunk_groups:
-
-            # Trunk Group Name
           - <str>
         private_vlan:
-          type: <str; "community" | "isolated">
-
-          # Primary VLAN ID
+          type: <str>
           primary_vlan: <int>
-
-        # Key only used for documentation or validation purposes
         tenant: <str>
     ```

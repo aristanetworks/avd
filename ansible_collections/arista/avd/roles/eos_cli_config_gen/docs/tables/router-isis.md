@@ -61,76 +61,45 @@
 
     ```yaml
     router_isis:
-
-      # ISIS Instance Name
-      instance: <str; required>
-
-      # CLNS Address like "49.0001.0001.0000.0001.00"
+      instance: <str>
       net: <str>
-
-      # IPv4 Address
       router_id: <str>
-      is_type: <str; "level-1" | "level-1-2" | "level-2">
+      is_type: <str>
       log_adjacency_changes: <bool>
       mpls_ldp_sync_default: <bool>
       timers:
         local_convergence:
           protected_prefixes: <bool>
-
-          # Delay in milliseconds.
-          delay: <int; default=10000>
+          delay: <int>
       advertise:
         passive_only: <bool>
       address_family:
-
-          # Address Family
-          # This key is deprecated.
-          # Support will be removed in AVD version 5.0.0.
-          # Use <samp>address_family_ipv4.enabled or address_family_ipv6.enabled</samp> instead.
-        - <str; "ipv4" | "ipv6" | "ipv4 unicast" | "ipv6 unicast">
+        - <str>
       isis_af_defaults:
-
-          # EOS CLI rendered under the address families
-          # Example "maximum-paths 64"
-          # This key is deprecated.
-          # Support will be removed in AVD version 5.0.0.
-          # Use <samp>address_family_ipv4/address_family_ipv6</samp> instead.
         - <str>
       redistribute_routes:
-        - source_protocol: <str; "bgp" | "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
-
-          # Route-map name
+        - source_protocol: <str>
           route_map: <str>
           include_leaked: <bool>
-
-          # ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'
-          ospf_route_type: <str; "external" | "internal" | "nssa-external">
+          ospf_route_type: <str>
       address_family_ipv4:
         enabled: <bool>
-        maximum_paths: <int; 1-128>
+        maximum_paths: <int>
         fast_reroute_ti_lfa:
-          mode: <str; "link-protection" | "node-protection">
-          level: <str; "level-1" | "level-2">
-
-          # Shared Risk Link Group
+          mode: <str>
+          level: <str>
           srlg:
             enable: <bool>
             strict: <bool>
         tunnel_source_labeled_unicast:
           enabled: <bool>
-
-          # Route Control Function
           rcf: <str>
       address_family_ipv6:
         enabled: <bool>
-        maximum_paths: <int; 1-128>
+        maximum_paths: <int>
         fast_reroute_ti_lfa:
-          mode: <str; "link-protection" | "node-protection">
-
-          # Optional, default is to protect all levels
-          level: <str; "level-1" | "level-2">
-
-          # Shared Risk Link Group
+          mode: <str>
+          level: <str>
           srlg:
             enable: <bool>
             strict: <bool>

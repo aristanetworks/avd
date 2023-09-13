@@ -14,5 +14,5 @@
 
     ```yaml
     management_console:
-      idle_timeout: <int; 0-86400>
+      idle_timeout: <int>
     ```

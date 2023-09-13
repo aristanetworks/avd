@@ -14,7 +14,5 @@
 
     ```yaml
     redundancy:
-
-      # Redundancy Protocol
       protocol: <str>
     ```

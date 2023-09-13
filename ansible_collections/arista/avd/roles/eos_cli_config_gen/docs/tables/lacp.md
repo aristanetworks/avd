@@ -19,25 +19,12 @@
 === "YAML"
 
     ```yaml
-    # Set Link Aggregation Control Protocol (LACP) parameters.
     lacp:
-
-      # LACP port-ID range configuration.
       port_id:
         range:
-
-          # Minimum LACP port-ID range.
           begin: <int>
-
-          # Maximum LACP port-ID range.
           end: <int>
-
-      # Set LACPDU rate limit options.
       rate_limit:
-
-        # Enable LACPDU rate limiting by default on all ports.
         default: <bool>
-
-      # Set local system LACP priority.
-      system_priority: <int; 0-65535>
+      system_priority: <int>
     ```

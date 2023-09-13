@@ -22,11 +22,9 @@
     errdisable:
       detect:
         causes:
-          - <str; "acl" | "arp-inspection" | "dot1x" | "link-change" | "tapagg" | "xcvr-misconfigured" | "xcvr-overheat" | "xcvr-power-unsupported">
+          - <str>
       recovery:
         causes:
-          - <str; "arp-inspection" | "bpduguard" | "dot1x" | "hitless-reload-down" | "lacp-rate-limit" | "link-flap" | "no-internal-vlan" | "portchannelguard" | "portsec" | "speed-misconfigured" | "tap-port-init" | "tapagg" | "uplink-failure-detection" | "xcvr-misconfigured" | "xcvr-overheat" | "xcvr-power-unsupported" | "xcvr-unsupported">
-
-        # Interval in seconds
-        interval: <int; 30-86400; default=300>
+          - <str>
+        interval: <int>
     ```

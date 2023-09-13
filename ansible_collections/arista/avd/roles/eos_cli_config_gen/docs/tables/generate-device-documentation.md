@@ -12,5 +12,5 @@
 === "YAML"
 
     ```yaml
-    generate_device_documentation: <bool; default=True>
+    generate_device_documentation: <bool>
     ```

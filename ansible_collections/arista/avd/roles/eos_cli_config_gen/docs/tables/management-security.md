@@ -52,55 +52,33 @@
     management_security:
       entropy_source: <str>
       password:
-        minimum_length: <int; 1-32>
+        minimum_length: <int>
         encryption_key_common: <bool>
         encryption_reversible: <str>
         policies:
-          - name: <str; required; unique>
+          - name: <str>
             minimum:
-              digits: <int; 1-65535>
-              length: <int; 1-65535>
-              lower: <int; 1-65535>
-              special: <int; 1-65535>
-              upper: <int; 1-65535>
+              digits: <int>
+              length: <int>
+              lower: <int>
+              special: <int>
+              upper: <int>
             maximum:
-              repetitive: <int; 1-65535>
-              sequential: <int; 1-65535>
+              repetitive: <int>
+              sequential: <int>
       ssl_profiles:
         - name: <str>
-
-          # List of allowed TLS versions as string
-          # Examples:
-          #   - "1.0"
-          #   - "1.0 1.1"
           tls_versions: <str>
-
-          # cipher_list syntax follows the openssl cipher strings format.
-          # Colon (:) separated list of allowed ciphers as a string
           cipher_list: <str>
           trust_certificate:
-
-            # List of trust certificate names
-            # Examples:
-            #   - test1.crt
-            #   - test2.crt
             certificates:
               - <str>
             requirement:
               basic_constraint_ca: <bool>
-
-              # Enforce hostname to be FQDN without wildcard.
               hostname_fqdn: <bool>
             policy_expiry_date_ignore: <bool>
-
-            # Use system-supplied trust certificates.
             system: <bool>
           chain_certificate:
-
-            # List of chain certificate names
-            # Examples:
-            #   - chain1.crt
-            #   - chain2.crt
             certificates:
               - <str>
             requirement:

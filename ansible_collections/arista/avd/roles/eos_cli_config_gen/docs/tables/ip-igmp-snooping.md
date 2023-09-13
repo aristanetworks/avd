@@ -45,17 +45,13 @@
 
     ```yaml
     ip_igmp_snooping:
-
-      # Activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
-      globally_enabled: <bool; default=True>
+      globally_enabled: <bool>
       robustness_variable: <int>
       restart_query_interval: <int>
       interface_restart_query: <int>
       fast_leave: <bool>
       querier:
         enabled: <bool>
-
-        # IP Address
         address: <str>
         query_interval: <int>
         max_response_time: <int>
@@ -66,14 +62,10 @@
         version: <int>
       proxy: <bool>
       vlans:
-
-          # VLAN ID
-        - id: <int; required; unique>
+        - id: <int>
           enabled: <bool>
           querier:
             enabled: <bool>
-
-            # IP Address
             address: <str>
             query_interval: <int>
             max_response_time: <int>
@@ -84,7 +76,5 @@
             version: <int>
           max_groups: <int>
           fast_leave: <bool>
-
-          # Global proxy settings should be enabled before enabling per-vlan
           proxy: <bool>
     ```

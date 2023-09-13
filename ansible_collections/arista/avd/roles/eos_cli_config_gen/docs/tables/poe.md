@@ -17,16 +17,8 @@
 
     ```yaml
     poe:
-
-      # Set the global PoE power behavior for PoE ports when the system is rebooted.
       reboot:
-
-        # PoE action for interface. By default in EOS, reboot action is set to power-off.
-        action: <str; "power-off" | "maintain">
-
-      # Set the global PoE power behavior for PoE ports when ports are admin down
+        action: <str>
       interface_shutdown:
-
-        # PoE action for interface. By default in EOS, interface shutdown action is set to maintain.
-        action: <str; "power-off" | "maintain">
+        action: <str>
     ```

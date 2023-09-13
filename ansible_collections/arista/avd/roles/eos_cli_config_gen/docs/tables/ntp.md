@@ -36,45 +36,25 @@
     ```yaml
     ntp:
       local_interface:
-
-        # Source interface
         name: <str>
-
-        # VRF name
         vrf: <str>
       servers:
-
-          # IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org
         - name: <str>
           burst: <bool>
           iburst: <bool>
-          key: <int; 1-65535>
-
-          # Source interface
+          key: <int>
           local_interface: <str>
-
-          # Value of maxpoll between 3 - 17 (Logarithmic)
-          maxpoll: <int; 3-17>
-
-          # Value of minpoll between 3 - 17 (Logarithmic)
-          minpoll: <int; 3-17>
+          maxpoll: <int>
+          minpoll: <int>
           preferred: <bool>
-          version: <int; 1-4>
-
-          # VRF name
+          version: <int>
           vrf: <str>
       authenticate: <bool>
       authenticate_servers_only: <bool>
       authentication_keys:
-
-          # Key identifier
-        - id: <int; 1-65534; required; unique>
-          hash_algorithm: <str; "md5" | "sha1">
-
-          # Obfuscated key
+        - id: <int>
+          hash_algorithm: <str>
           key: <str>
-          key_type: <str; "0" | "7" | "8a">
-
-      # List of trusted-keys as string ex. 10-12,15
+          key_type: <str>
       trusted_keys: <str>
     ```

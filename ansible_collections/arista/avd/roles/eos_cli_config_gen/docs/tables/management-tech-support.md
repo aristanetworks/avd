@@ -21,14 +21,8 @@
     management_tech_support:
       policy_show_tech_support:
         exclude_commands:
-
-            # Command to exclude from tech-support
           - command: <str>
-
-            # The supported values for type are platform dependent.
-            type: <str; "text" | "json"; default="text">
+            type: <str>
         include_commands:
-
-            # Command to include in tech-support
           - command: <str>
     ```

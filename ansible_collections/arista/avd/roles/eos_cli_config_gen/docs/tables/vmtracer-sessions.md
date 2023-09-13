@@ -19,13 +19,9 @@
 
     ```yaml
     vmtracer_sessions:
-
-        # Vmtracer Session Name
-      - name: <str; required; unique>
+      - name: <str>
         url: <str>
         username: <str>
-
-        # Type 7 Password Hash
         password: <str>
         autovlan_disable: <bool>
         source_interface: <str>

@@ -26,31 +26,15 @@
 
     ```yaml
     route_maps:
-
-        # Route-map Name
-      - name: <str; required; unique>
+      - name: <str>
         sequence_numbers: # required
-
-            # Sequence ID
-          - sequence: <int; required; unique>
-            type: <str; "permit" | "deny"; required>
+          - sequence: <int>
+            type: <str>
             description: <str>
-
-            # List of "match" statements
             match:
-
-                # Match as string
-                # Example: "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
               - <str>
-
-            # List of "set" statements
             set:
-
-                # Set as string
-                # Example: "origin incomplete"
               - <str>
-
-            # Name of Sub-Route-map
             sub_route_map: <str>
             continue:
               enabled: <bool>

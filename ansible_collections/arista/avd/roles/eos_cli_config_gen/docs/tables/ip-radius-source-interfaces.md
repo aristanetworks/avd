@@ -15,10 +15,6 @@
 
     ```yaml
     ip_radius_source_interfaces:
-
-        # Interface Name
       - name: <str>
-
-        # VRF Name
         vrf: <str>
     ```

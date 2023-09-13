@@ -39,24 +39,17 @@
       segment_routing:
         colored_tunnel_rib: <bool>
         policy_endpoints:
-
-            # IPv4 or IPv6 address
           - address: <str>
             colors:
-              - value: <int; required; unique>
+              - value: <int>
                 binding_sid: <int>
                 description: <str>
                 name: <str>
-
-                # IPv4 address or 32 bit integer
                 sbfd_remote_discriminator: <str>
                 path_group:
                   - preference: <int>
-                    explicit_null: <str; "ipv4" | "ipv6" | "ipv4 ipv6" | "none">
+                    explicit_null: <str>
                     segment_list:
-
-                        # Label Stack as string.
-                        # Example: "100 2000 30"
                       - label_stack: <str>
                         weight: <int>
                         index: <int>

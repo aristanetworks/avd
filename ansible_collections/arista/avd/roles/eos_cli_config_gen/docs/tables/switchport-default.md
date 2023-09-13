@@ -18,11 +18,9 @@
 
     ```yaml
     switchport_default:
-      mode: <str; "routed" | "access">
+      mode: <str>
       phone:
-        cos: <int; 0-7>
-        trunk: <str; "tagged" | "untagged">
-
-        # VLAN ID
-        vlan: <int; 1-4094>
+        cos: <int>
+        trunk: <str>
+        vlan: <int>
     ```

@@ -18,18 +18,9 @@
 
     ```yaml
     tcam_profile:
-
-      # TCAM profile name to activate
       system: <str>
       profiles:
-
-          # Tcam-Profile Name
-        - name: <str; required; unique>
-
-          # TCAM Profile Config. Since these can be very long, it is often a good idea to import the config from a file.
-          # Example: "{{ lookup('file', 'TCAM_TRAFFIC_POLICY.conf') }}"
+        - name: <str>
           config: <str>
-
-          # TCAM profile local source path. Used to read the TCAM profile from a local path existing on the device.
           source: <str>
     ```

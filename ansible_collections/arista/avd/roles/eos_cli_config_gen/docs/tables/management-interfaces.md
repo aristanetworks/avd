@@ -26,35 +26,17 @@
 
     ```yaml
     management_interfaces:
-
-        # Management Interface Name
-      - name: <str; required; unique>
+      - name: <str>
         description: <str>
         shutdown: <bool>
         mtu: <int>
-
-        # VRF Name
         vrf: <str>
-
-        # IPv4_address/Mask
         ip_address: <str>
         ipv6_enable: <bool>
-
-        # IPv6_address/Mask
         ipv6_address: <str>
-
-        # For documentation purposes only
-        type: <str; "oob" | "inband"; default="oob">
-
-        # IPv4 address of default gateway in management VRF
+        type: <str>
         gateway: <str>
-
-        # IPv6 address of default gateway in management VRF
         ipv6_gateway: <str>
-
-        # MAC address
         mac_address: <str>
-
-        # Multiline EOS CLI rendered directly on the management interface in the final EOS configuration
         eos_cli: <str>
     ```

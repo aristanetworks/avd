@@ -12,6 +12,5 @@
 === "YAML"
 
     ```yaml
-    # Limit ACL entries defined under the `ip_access_lists`.
     ip_access_lists_max_entries: <int>
     ```

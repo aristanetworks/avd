@@ -181,338 +181,172 @@
 
     ```yaml
     vlan_interfaces:
-
-        # VLAN interface name like "Vlan123"
-      - name: <str; required; unique>
+      - name: <str>
         description: <str>
         shutdown: <bool>
-
-        # VRF name
         vrf: <str>
-
-        # In seconds
-        arp_aging_timeout: <int; 1-65535>
-        arp_cache_dynamic_capacity: <int; 0-4294967295>
+        arp_aging_timeout: <int>
+        arp_cache_dynamic_capacity: <int>
         arp_gratuitous_accept: <bool>
         arp_monitor_mac_address: <bool>
         ip_proxy_arp: <bool>
         ip_directed_broadcast: <bool>
-
-        # IPv4_address/Mask
         ip_address: <str>
         ip_address_secondaries:
-
-            # IPv4_address/Mask
           - <str>
         ip_virtual_router_addresses:
-
-            # IPv4 address or IPv4_address/Mask
           - <str>
-
-        # IPv4_address/Mask
         ip_address_virtual: <str>
         ip_address_virtual_secondaries:
-
-            # IPv4_address/Mask
           - <str>
         ip_igmp: <bool>
-        ip_igmp_version: <int; 1-3>
-
-        # List of DHCP servers
+        ip_igmp_version: <int>
         ip_helpers:
-
-            # IP address or hostname of DHCP server
-          - ip_helper: <str; required; unique>
-
-            # Interface used as source for forwarded DHCP packets
+          - ip_helper: <str>
             source_interface: <str>
-
-            # VRF where DHCP server can be reached
             vrf: <str>
         ip_nat:
           destination:
             dynamic:
-              - access_list: <str; required; unique>
-                comment: <str>
-                pool_name: <str; required>
-                priority: <int; 0-4294967295>
-            static:
-
-                # 'access_list' and 'group' are mutual exclusive
               - access_list: <str>
                 comment: <str>
-
-                # Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.
-                # EOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
-                direction: <str; "egress" | "ingress">
-
-                # 'access_list' and 'group' are mutual exclusive
-                group: <int; 1-65535>
-
-                # IPv4 address
-                original_ip: <str; required; unique>
-                original_port: <int; 1-65535>
-                priority: <int; 0-4294967295>
-                protocol: <str; "udp" | "tcp">
-
-                # IPv4 address
-                translated_ip: <str; required>
-
-                # requires 'original_port'
-                translated_port: <int; 1-65535>
+                pool_name: <str>
+                priority: <int>
+            static:
+              - access_list: <str>
+                comment: <str>
+                direction: <str>
+                group: <int>
+                original_ip: <str>
+                original_port: <int>
+                priority: <int>
+                protocol: <str>
+                translated_ip: <str>
+                translated_port: <int>
           source:
             dynamic:
-              - access_list: <str; required; unique>
-                comment: <str>
-                nat_type: <str; "overload" | "pool" | "pool-address-only" | "pool-full-cone"; required>
-
-                # required if 'nat_type' is pool, pool-address-only or pool-full-cone
-                # ignored if 'nat_type' is overload
-                pool_name: <str>
-                priority: <int; 0-4294967295>
-            static:
-
-                # 'access_list' and 'group' are mutual exclusive
               - access_list: <str>
                 comment: <str>
-
-                # Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.
-                # EOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
-                direction: <str; "egress" | "ingress">
-
-                # 'access_list' and 'group' are mutual exclusive
-                group: <int; 1-65535>
-
-                # IPv4 address
-                original_ip: <str; required; unique>
-                original_port: <int; 1-65535>
-                priority: <int; 0-4294967295>
-                protocol: <str; "udp" | "tcp">
-
-                # IPv4 address
-                translated_ip: <str; required>
-
-                # requires 'original_port'
-                translated_port: <int; 1-65535>
+                nat_type: <str>
+                pool_name: <str>
+                priority: <int>
+            static:
+              - access_list: <str>
+                comment: <str>
+                direction: <str>
+                group: <int>
+                original_ip: <str>
+                original_port: <int>
+                priority: <int>
+                protocol: <str>
+                translated_ip: <str>
+                translated_port: <int>
         ipv6_enable: <bool>
-
-        # IPv6_address/Mask
         ipv6_address: <str>
-
-        # IPv6_address/Mask
-        # If both "ipv6_address_virtual" and "ipv6_address_virtuals" are set, all addresses will be configured
-        # This key is deprecated.
-        # Support will be removed in AVD version 5.0.0.
-        # Use <samp>ipv6_address_virtuals</samp> instead.
         ipv6_address_virtual: <str>
-
-        # The new "ipv6_address_virtuals" key support multiple virtual ipv6 addresses.
         ipv6_address_virtuals:
-
-            # IPv6_address/Mask
           - <str>
-
-        # IPv6_address/Mask
         ipv6_address_link_local: <str>
-
-        # "ipv6_virtual_router_address" should not be mixed with
-        # the new "ipv6_virtual_router_addresses" key below to avoid conflicts.
-        # This key is deprecated.
-        # Support will be removed in AVD version 5.0.0.
-        # Use <samp>ipv6_virtual_router_addresses</samp> instead.
         ipv6_virtual_router_address: <str>
-
-        # Improved "VARPv6" data model to support multiple VARPv6 addresses.
         ipv6_virtual_router_addresses:
-
-            # IPv6 address or IPv6_address/Mask
           - <str>
         ipv6_nd_ra_disabled: <bool>
         ipv6_nd_managed_config_flag: <bool>
         ipv6_nd_prefixes:
-
-            # IPv6_address/Mask
-          - ipv6_prefix: <str; required; unique>
-
-            # In seconds <0-4294967295> or infinite
+          - ipv6_prefix: <str>
             valid_lifetime: <str>
-
-            # In seconds <0-4294967295> or infinite
             preferred_lifetime: <str>
             no_autoconfig_flag: <bool>
         ipv6_dhcp_relay_destinations:
-
-            # DHCP server's IPv6 address
-          - address: <str; required; unique>
+          - address: <str>
             vrf: <str>
-
-            # Local interface to communicate with DHCP server - mutually exclusive to source_address
             local_interface: <str>
-
-            # Source IPv6 address to communicate with DHCP server - mutually exclusive to local_interface
             source_address: <str>
-
-            # Override the default link address specified in the relayed DHCP packet
             link_address: <str>
-
-        # IPv4 access-list name
         access_group_in: <str>
-
-        # IPv4 access-list name
         access_group_out: <str>
-
-        # IPv6 access-list name
         ipv6_access_group_in: <str>
-
-        # IPv6 access-list name
         ipv6_access_group_out: <str>
         multicast:
           ipv4:
-
-            # Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
             boundaries:
-
-                # IPv4 access-list name or IPv4 multicast group prefix with mask
-              - boundary: <str; required; unique>
+              - boundary: <str>
                 out: <bool>
             source_route_export:
-              enabled: <bool; required>
-              administrative_distance: <int; 1-255>
+              enabled: <bool>
+              administrative_distance: <int>
             static: <bool>
           ipv6:
-
-            # Boundaries can be either 1 ACL or a list of multicast IP address_range(s)/prefix but not combination of both
             boundaries:
-
-                # IPv6 access-list name or IPv6 multicast group prefix with mask
-              - boundary: <str; required; unique>
+              - boundary: <str>
             source_route_export:
-              enabled: <bool; required>
-              administrative_distance: <int; 1-255>
+              enabled: <bool>
+              administrative_distance: <int>
             static: <bool>
         ospf_network_point_to_point: <bool>
         ospf_area: <str>
         ospf_cost: <int>
-        ospf_authentication: <str; "none" | "simple" | "message-digest">
-
-        # Encrypted password used for simple authentication
+        ospf_authentication: <str>
         ospf_authentication_key: <str>
-
-        # Keys used for message-digest authentication
         ospf_message_digest_keys:
-          - id: <int; required; unique>
-            hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512">
-
-            # Encrypted password
+          - id: <int>
+            hash_algorithm: <str>
             key: <str>
         pim:
           ipv4:
-            dr_priority: <int; 0-429467295>
+            dr_priority: <int>
             sparse_mode: <bool>
             local_interface: <str>
-
-        # ISIS instance name
         isis_enable: <str>
         isis_passive: <bool>
         isis_metric: <int>
         isis_network_point_to_point: <bool>
         mtu: <int>
         no_autostate: <bool>
-
-        # Improved "vrrp" data model to support multiple VRRP IDs
         vrrp_ids:
-
-            # VRID
-          - id: <int; required; unique>
-
-            # Instance priority
+          - id: <int>
             priority_level: <int>
             advertisement:
-
-              # Interval in seconds
               interval: <int>
             preempt:
-              enabled: <bool; required>
+              enabled: <bool>
               delay:
-
-                # Minimum preempt delay in seconds
                 minimum: <int>
-
-                # Reload preempt delay in seconds
                 reload: <int>
             timers:
               delay:
-
-                # Delay after reload in seconds.
                 reload: <int>
             tracked_object:
-
-                # Tracked object name
-              - name: <str; required; unique>
-
-                # Decrement VRRP priority by 1-254
-                decrement: <int; 1-254>
+              - name: <str>
+                decrement: <int>
                 shutdown: <bool>
             ipv4:
-
-              # Virtual IPv4 address
-              address: <str; required>
-              version: <int; 2 | 3>
+              address: <str>
+              version: <int>
             ipv6:
-
-              # Virtual IPv6 address
-              address: <str; required>
-
-        # "vrrp" should not be mixed with the new "vrrp_ids" key above to avoid conflicts.
-        # This key is deprecated.
-        # Support will be removed in AVD version 5.0.0.
-        # Use <samp>vrrp_ids</samp> instead.
+              address: <str>
         vrrp:
-
-          # Virtual Router ID
           virtual_router: <str>
-
-          # Instance priority
           priority: <int>
           advertisement_interval: <int>
           preempt_delay_minimum: <int>
-
-          # Virtual IPv4 address
           ipv4: <str>
-
-          # Virtual IPv6 address
           ipv6: <str>
         ip_attached_host_route_export:
-          enabled: <bool; required>
-          distance: <int; 1-255>
+          enabled: <bool>
+          distance: <int>
         bfd:
           echo: <bool>
-
-          # Rate in milliseconds
           interval: <int>
-
-          # Minimum RX hold time in milliseconds
           min_rx: <int>
-          multiplier: <int; 3-50>
+          multiplier: <int>
         service_policy:
           pbr:
-
-            # Name of policy-map used for policy based routing
             input: <str>
-
-        # List of VLANs as string
         pvlan_mapping: <str>
-
-        # Key only used for documentation or validation purposes
         tenant: <str>
-
-        # Key only used for documentation or validation purposes
         tags:
           - <str>
-
-        # Key only used for documentation or validation purposes
         type: <str>
-
-        # Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration
         eos_cli: <str>
     ```

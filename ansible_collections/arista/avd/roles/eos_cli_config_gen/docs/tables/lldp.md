@@ -30,7 +30,7 @@
       vrf: <str>
       receive_packet_tagged_drop: <str>
       tlvs:
-        - name: <str; "link-aggregation" | "management-address" | "max-frame-size" | "med" | "port-description" | "port-vlan" | "power-via-mdi" | "system-capabilities" | "system-description" | "system-name" | "vlan-name"; required; unique>
+        - name: <str>
           transmit: <bool>
       run: <bool>
     ```

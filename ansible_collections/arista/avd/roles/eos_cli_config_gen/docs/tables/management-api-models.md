@@ -19,8 +19,8 @@
     ```yaml
     management_api_models:
       providers:
-        - name: <str; "sysdb" | "smash">
+        - name: <str>
           paths:
             - path: <str>
-              disabled: <bool; default=False>
+              disabled: <bool>
     ```

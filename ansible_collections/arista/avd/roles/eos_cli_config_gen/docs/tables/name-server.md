@@ -16,13 +16,8 @@
 === "YAML"
 
     ```yaml
-    # This key is deprecated.
-    # Support will be removed in AVD version v5.0.0.
-    # Use <samp>ip_name_servers</samp> instead.
     name_server:
       source:
-
-        # VRF Name
         vrf: <str>
       nodes:
         - <str>

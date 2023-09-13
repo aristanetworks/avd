@@ -17,12 +17,8 @@
 
     ```yaml
     vlan_internal_order:
-      allocation: <str; "ascending" | "descending"; required>
+      allocation: <str>
       range: # required
-
-        # First VLAN ID.
-        beginning: <int; 2-4094; required>
-
-        # Last VLAN ID.
-        ending: <int; 2-4094; required>
+        beginning: <int>
+        ending: <int>
     ```

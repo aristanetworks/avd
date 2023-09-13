@@ -19,12 +19,10 @@
 
     ```yaml
     mac_address_table:
-
-      # Aging time in seconds
       aging_time: <int>
       notification_host_flap:
         logging: <bool>
         detection:
-          window: <int; 2-300>
-          moves: <int; 2-10>
+          window: <int>
+          moves: <int>
     ```

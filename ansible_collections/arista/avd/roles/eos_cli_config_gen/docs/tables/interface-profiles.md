@@ -16,12 +16,7 @@
 
     ```yaml
     interface_profiles:
-
-        # Interface-Profile Name
-      - name: <str; required; unique>
+      - name: <str>
         commands: # required
-
-            # EOS CLI interface command
-            # Example: "switchport mode access"
           - <str>
     ```

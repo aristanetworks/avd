@@ -20,13 +20,7 @@
     management_cvx:
       shutdown: <bool>
       server_hosts:
-
-          # IP or hostname
         - <str>
-
-      # Interface name
       source_interface: <str>
-
-      # VRF Name
       vrf: <str>
     ```

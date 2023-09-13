@@ -34,31 +34,19 @@
       mode:
         exclusive:
           enabled: <bool>
-
-          # Profile Name
           profile: <str>
           no_errdisable:
-
-              # Interface name e.g Ethernet1, Port-Channel1
             - <str>
       encapsulation_dot1br_strip: <bool>
       encapsulation_vn_tag_strip: <bool>
       protocol_lldp_trap: <bool>
-
-      # Allowed truncation_size values vary depending on the platform
       truncation_size: <int>
       mac:
-
-        # mac.timestamp.replace_source_mac and mac.timestamp.header.format are mutually exclsuive. If both are defined, replace_source_mac takes precedence
         timestamp:
           replace_source_mac: <bool>
           header:
-            format: <str; "48-bit" | "64-bit">
-
-            # EtherType
+            format: <str>
             eth_type: <int>
-
-        # mac.fcs_append and mac.fcs_error are mutually exclusive. If both are defined, mac.fcs_append takes precedence
         fcs_append: <bool>
-        fcs_error: <str; "correct" | "discard" | "pass-through">
+        fcs_error: <str>
     ```

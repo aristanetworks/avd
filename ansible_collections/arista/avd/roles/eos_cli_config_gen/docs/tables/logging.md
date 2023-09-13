@@ -45,64 +45,36 @@
 
     ```yaml
     logging:
-
-      # Console logging severity level
-      console: <str; "debugging" | "informational" | "notifications" | "warnings" | "errors" | "critical" | "alerts" | "emergencies" | "disabled">
-
-      # Monitor logging severity level
-      monitor: <str; "debugging" | "informational" | "notifications" | "warnings" | "errors" | "critical" | "alerts" | "emergencies" | "disabled">
+      console: <str>
+      monitor: <str>
       buffered:
-        size: <int; 10-2147483647>
-
-        # Buffer logging severity level
-        level: <str; "alerts" | "critical" | "debugging" | "emergencies" | "errors" | "informational" | "notifications" | "warnings" | "disabled">
-
-      # Trap logging severity level
-      trap: <str; "alerts" | "critical" | "debugging" | "emergencies" | "errors" | "informational" | "notifications" | "system" | "warnings" | "disabled">
+        size: <int>
+        level: <str>
+      trap: <str>
       synchronous:
-
-        # Synchronous logging severity level
-        level: <str; "alerts" | "all" | "critical" | "debugging" | "emergencies" | "errors" | "informational" | "notifications" | "warnings" | "disabled"; default="critical">
+        level: <str>
       format:
-
-        # Timestamp format
-        timestamp: <str; "high-resolution" | "traditional" | "traditional timezone" | "traditional year" | "traditional timezone year" | "traditional year timezone">
-
-        # Hostname format
-        hostname: <str; "fqdn" | "ipv4">
-
-        # Add sequence numbers to log messages
+        timestamp: <str>
+        hostname: <str>
         sequence_numbers: <bool>
-      facility: <str; "auth" | "cron" | "daemon" | "kern" | "local0" | "local1" | "local2" | "local3" | "local4" | "local5" | "local6" | "local7" | "lpr" | "mail" | "news" | "sys9" | "sys10" | "sys11" | "sys12" | "sys13" | "sys14" | "syslog" | "user" | "uucp">
-
-      # Source Interface Name
+      facility: <str>
       source_interface: <str>
       vrfs:
-
-          # VRF name
-        - name: <str; required; unique>
-
-          # Source interface name
+        - name: <str>
           source_interface: <str>
           hosts:
-
-              # Syslog server name
-            - name: <str; required; unique>
-              protocol: <str; "tcp" | "udp"; default="udp">
+            - name: <str>
+              protocol: <str>
               ports:
                 - <int>
       policy:
         match:
           match_lists:
-
-              # Match list
-            - name: <str; required; unique>
-              action: <str; "discard">
+            - name: <str>
+              action: <str>
       event:
         storm_control:
           discards:
             global: <bool>
-
-            # Logging interval in seconds
-            interval: <int; 10-65535>
+            interval: <int>
     ```

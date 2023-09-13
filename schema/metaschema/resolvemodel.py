@@ -46,8 +46,9 @@ def merge_schema_from_ref(schema: dict) -> dict:
     if "$ref" not in schema:
         return schema
 
+    schema = deepcopy(schema)
     ref = schema.pop("$ref")
-    ref_schema = merge_schema_from_ref(deepcopy(get_schema_from_ref(ref)))
+    ref_schema = merge_schema_from_ref(get_schema_from_ref(ref))
     if ref_schema["type"] != schema["type"]:
         raise ValueError(
             f"Incompatible schema types from ref '{ref}' ref type '{ref_schema['type']}' schema type '{schema['type']}'\nschema: {schema}\nref_schema:"

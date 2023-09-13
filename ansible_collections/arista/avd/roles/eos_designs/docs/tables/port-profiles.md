@@ -14,14 +14,7 @@
 === "YAML"
 
     ```yaml
-    # Optional profiles to share common settings for connected_endpoints and/or network_ports.
-    # Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
     port_profiles:
-
-        # Port profile name.
-      - profile: <str; required; unique>
-
-        # Parent profile is optional.
-        # Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
+      - profile: <str>
         parent_profile: <str>
     ```

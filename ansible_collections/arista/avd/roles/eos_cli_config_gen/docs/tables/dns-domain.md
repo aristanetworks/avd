@@ -12,6 +12,5 @@
 === "YAML"
 
     ```yaml
-    # Domain Name
     dns_domain: <str>
     ```

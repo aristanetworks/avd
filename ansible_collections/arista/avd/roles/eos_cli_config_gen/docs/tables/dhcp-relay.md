@@ -17,8 +17,6 @@
     ```yaml
     dhcp_relay:
       servers:
-
-          # Server IP or Hostname
         - <str>
       tunnel_requests_disabled: <bool>
     ```

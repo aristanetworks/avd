@@ -15,15 +15,8 @@
 === "YAML"
 
     ```yaml
-    # This key is deprecated.
-    # Support will be removed in AVD version v5.0.0.
-    # Use <samp>radius_server.hosts</samp> instead.
     radius_servers:
-
-        # Host IP address or name
       - host: <str>
         vrf: <str>
-
-        # Encrypted key
         key: <str>
     ```

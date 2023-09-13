@@ -12,16 +12,5 @@
 === "YAML"
 
     ```yaml
-    # The `generate_default_config` knob allows to omit default EOS configuration.
-    # This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
-
-    # The following commands will be omitted when `generate_default_config` is set to `false`:
-
-    # - RANCID Content Type
-    # - Hostname
-    # - Default configuration for `aaa`
-    # - Default configuration for `enable password`
-    # - Transceiver qsfp default mode
-    # - End of configuration delimiter
-    generate_default_config: <bool; default=True>
+    generate_default_config: <bool>
     ```

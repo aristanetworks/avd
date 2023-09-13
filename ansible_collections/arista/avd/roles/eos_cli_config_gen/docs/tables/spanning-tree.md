@@ -41,41 +41,24 @@
       edge_port:
         bpdufilter_default: <bool>
         bpduguard_default: <bool>
-      mode: <str; "mstp" | "rstp" | "rapid-pvst" | "none">
+      mode: <str>
       bpduguard_rate_limit:
         default: <bool>
-
-        # Maximum number of BPDUs per timer interval
         count: <int>
       rstp_priority: <int>
       mst:
         pvst_border: <bool>
         configuration:
           name: <str>
-
-          # 0-65535
           revision: <int>
           instances:
-
-              # Instance ID
-            - id: <int; required; unique>
-
-              # "< vlan_id >, < vlan_id >-< vlan_id >"
-              # Example: 15,16,17,18
+            - id: <int>
               vlans: <str>
       mst_instances:
-
-          # Instance ID
-        - id: <str; required; unique>
+        - id: <str>
           priority: <int>
-
-      # "< vlan_id >, < vlan_id >-< vlan_id >"
-      # Example: 105,202,505-506
       no_spanning_tree_vlan: <str>
       rapid_pvst_instances:
-
-          # "< vlan_id >, < vlan_id >-< vlan_id >"
-          # Example: 105,202,505-506
-        - id: <str; required; unique>
+        - id: <str>
           priority: <int>
     ```

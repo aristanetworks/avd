@@ -23,23 +23,14 @@
 
     ```yaml
     queue_monitor_length:
-      enabled: <bool; required>
+      enabled: <bool>
       default_thresholds:
-
-        # Default high threshold for Ethernet Interfaces.
-        high: <int; required>
-
-        # Default low threshold for Ethernet Interfaces.
-        # Low threshold support is platform dependent.
+        high: <int>
         low: <int>
-
-      # Logging interval in seconds
       log: <int>
-
-      # Should only be used for platforms supporting the "queue-monitor length notifying" CLI
       notifying: <bool>
       cpu:
         thresholds:
-          high: <int; required>
+          high: <int>
           low: <int>
     ```

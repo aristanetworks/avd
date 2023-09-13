@@ -17,12 +17,8 @@
 
     ```yaml
     ip_extcommunity_lists_regexp:
-
-        # Community-list Name
-      - name: <str; required; unique>
+      - name: <str>
         entries: # required
-          - type: <str; "permit" | "deny"; required>
-
-            # Regular Expression
-            regexp: <str; required>
+          - type: <str>
+            regexp: <str>
     ```

@@ -17,13 +17,8 @@
 
     ```yaml
     ip_extcommunity_lists:
-
-        # Community-list Name
-      - name: <str; required; unique>
+      - name: <str>
         entries: # required
-          - type: <str; "permit" | "deny"; required>
-
-            # Communities as string
-            # Example: "65000:65000"
-            extcommunities: <str; required>
+          - type: <str>
+            extcommunities: <str>
     ```

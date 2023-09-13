@@ -24,7 +24,5 @@
         name: <str>
         shutdown: <bool>
         server_hosts:
-
-            # IP or hostname
           - <str>
     ```

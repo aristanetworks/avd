@@ -44,49 +44,33 @@
     ```yaml
     router_pim_sparse_mode:
       ipv4:
-
-        # Enable/Disable BFD
         bfd: <bool>
-
-        # IPv4 Prefix associated with SSM
         ssm_range: <str>
         rp_addresses:
-
-            # RP Address
-          - address: <str; required; unique>
+          - address: <str>
             groups:
               - <str>
             access_lists:
               - <str>
-            priority: <int; 0-255>
-            hashmask: <int; 0-32>
+            priority: <int>
+            hashmask: <int>
             override: <bool>
         anycast_rps:
-
-            # Anycast RP Address
-          - address: <str; required; unique>
+          - address: <str>
             other_anycast_rp_addresses:
-
-                # Other Anycast RP Address
-              - address: <str; required; unique>
+              - address: <str>
                 register_count: <int>
       vrfs:
-
-          # VRF Name
-        - name: <str; required; unique>
+        - name: <str>
           ipv4:
-
-            # Enable/Disable BFD
             bfd: <bool>
             rp_addresses:
-
-                # RP Address
-              - address: <str; required>
+              - address: <str>
                 groups:
                   - <str>
                 access_lists:
                   - <str>
-                priority: <int; 0-255>
-                hashmask: <int; 0-32>
+                priority: <int>
+                hashmask: <int>
                 override: <bool>
     ```

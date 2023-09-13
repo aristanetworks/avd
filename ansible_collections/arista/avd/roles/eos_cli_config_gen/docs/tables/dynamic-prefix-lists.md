@@ -18,17 +18,9 @@
 
     ```yaml
     dynamic_prefix_lists:
-
-        # Dynamic prefix-list name
       - name: <str>
-
-        # Route-map name
         match_map: <str>
         prefix_list:
-
-          # Prefix-list name
           ipv4: <str>
-
-          # Prefix-list name
           ipv6: <str>
     ```

@@ -12,5 +12,5 @@
 === "YAML"
 
     ```yaml
-    service_routing_protocols_model: <str; "multi-agent" | "ribd">
+    service_routing_protocols_model: <str>
     ```

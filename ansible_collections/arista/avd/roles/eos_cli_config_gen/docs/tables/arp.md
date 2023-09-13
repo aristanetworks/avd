@@ -16,7 +16,5 @@
     ```yaml
     arp:
       aging:
-
-        # Timeout in seconds
-        timeout_default: <int; 60-65535>
+        timeout_default: <int>
     ```

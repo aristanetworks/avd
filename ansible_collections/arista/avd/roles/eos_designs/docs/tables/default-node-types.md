@@ -15,15 +15,8 @@
 === "YAML"
 
     ```yaml
-    # Uses hostname matches against a regular expression to determine the node type.
     default_node_types:
-
-        # Resulting node type when regex matches.
-      - node_type: <str; required; unique>
-
-        # Regular expressions to match against hostnames.
+      - node_type: <str>
         match_hostnames: # required
-
-            # Regex needs to match full hostname (i.e. is bounded by ^ and $ elements).
-          - <str; required>
+          - <str>
     ```

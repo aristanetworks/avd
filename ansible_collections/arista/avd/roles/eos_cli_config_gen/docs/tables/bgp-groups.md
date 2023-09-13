@@ -19,14 +19,10 @@
 
     ```yaml
     bgp_groups:
-
-        # Group Name
-      - name: <str; required; unique>
+      - name: <str>
         vrf: <str>
         neighbors:
           - <str>
         bgp_maintenance_profiles:
-
-            # Profile Name
           - <str>
     ```

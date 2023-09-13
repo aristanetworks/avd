@@ -20,15 +20,11 @@
 
     ```yaml
     as_path:
-      regex_mode: <str; "asn" | "string">
+      regex_mode: <str>
       access_lists:
-
-          # Access List Name
         - name: <str>
           entries:
-            - type: <str; "permit" | "deny">
-
-              # Regex To Match
+            - type: <str>
               match: <str>
-              origin: <str; "any" | "egp" | "igp" | "incomplete"; default="any">
+              origin: <str>
     ```

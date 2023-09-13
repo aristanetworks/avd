@@ -78,118 +78,61 @@
         counter_per_interface: <bool>
       field_sets:
         ipv4:
-
-            # IPv4 Prefix Field Set Name
-          - name: <str; required; unique>
+          - name: <str>
             prefixes:
-
-                # IPv4 Prefix
               - <str>
         ipv6:
-
-            # IPv6 Prefix Field Set Name
-          - name: <str; required; unique>
+          - name: <str>
             prefixes:
-
-                # IPv6 Prefix
               - <str>
         ports:
-
-            # L4 Port Field Set Name
-          - name: <str; required; unique>
-
-            # Example: '10,20,80,440-450'
+          - name: <str>
             port_range: <str>
       policies:
-
-          # Traffic Policy Name
-        - name: <str; required; unique>
+        - name: <str>
           matches:
-
-              # Traffic Policy Item
-            - name: <str; required; unique>
-              type: <str; "ipv4" | "ipv6">
+            - name: <str>
+              type: <str>
               source:
                 prefixes:
-
-                    # IP address or prefix
                   - <str>
-
-                # Field-set prefix lists
                 prefix_lists:
                   - <str>
               destination:
                 prefixes:
-
-                    # IP address or prefix
                   - <str>
-
-                # Field-set prefix lists
                 prefix_lists:
                   - <str>
-
-              # TTL range
               ttl: <str>
-
-              # The 'fragment' command is not supported when 'source port'
-              # or 'destination port' command is configured
               fragment:
-
-                # Fragment offset range
                 offset: <str>
               protocols:
-                - protocol: <str; required; unique>
-
-                  # Port range
+                - protocol: <str>
                   src_port: <str>
-
-                  # Port range
                   dst_port: <str>
-
-                  # L4 port range field set
                   src_field: <str>
-
-                  # L4 port range field set
                   dst_field: <str>
                   flags:
-                    - <str; "established" | "initial">
+                    - <str>
                   icmp_type:
                     - <str>
               actions:
                 dscp: <int>
-
-                # Traffic class ID
                 traffic_class: <int>
-
-                # Counter name
                 count: <str>
                 drop: <bool>
-
-                # Only supported when action is set to drop
                 log: <bool>
           default_actions:
             ipv4:
               dscp: <int>
-
-              # Traffic class ID
               traffic_class: <int>
-
-              # Counter name
               count: <str>
               drop: <bool>
-
-              # Only supported when action is set to drop
               log: <bool>
             ipv6:
               dscp: <int>
-
-              # Traffic class ID
               traffic_class: <int>
-
-              # Counter name
               count: <str>
               drop: <bool>
-
-              # Only supported when action is set to drop
               log: <bool>
     ```

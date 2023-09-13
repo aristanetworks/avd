@@ -19,14 +19,8 @@
     ```yaml
     match_list_input:
       string:
-
-          # Match-list Name
-        - name: <str; required; unique>
+        - name: <str>
           sequence_numbers: # required
-
-              # Sequence ID
-            - sequence: <int; required; unique>
-
-              # Regular Expression
-              match_regex: <str; required>
+            - sequence: <int>
+              match_regex: <str>
     ```

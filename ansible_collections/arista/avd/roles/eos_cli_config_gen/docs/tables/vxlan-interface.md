@@ -48,58 +48,33 @@
       Vxlan1:
         description: <str>
         vxlan:
-
-          # Source Interface Name
           source_interface: <str>
-
-          # Client to CVX Controllers
           controller_client:
             enabled: <bool>
           mlag_source_interface: <str>
           udp_port: <int>
-
-          # "mlag-system-id" or ethernet_address (H.H.H)
           virtual_router_encapsulation_mac_address: <str>
           bfd_vtep_evpn:
             interval: <int>
             min_rx: <int>
-            multiplier: <int; 3-50>
+            multiplier: <int>
             prefix_list: <str>
-
-          # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in "DSCP Trust" mode.
-          # !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
           qos:
             dscp_propagation_encapsulation: <bool>
-
-            # Enable copying the ECN marking to/from encapsulated packets.
             ecn_propagation: <bool>
             map_dscp_to_traffic_class_decapsulation: <bool>
           vlans:
-
-              # VLAN ID
-            - id: <int; required; unique>
+            - id: <int>
               vni: <int>
-
-              # IP Multicast Group Address
               multicast_group: <str>
               flood_vteps:
-
-                  # Remote VTEP IP Address
                 - <str>
           vrfs:
-
-              # VRF Name
-            - name: <str; required; unique>
+            - name: <str>
               vni: <int>
-
-              # IP Multicast Group Address
               multicast_group: <str>
           flood_vteps:
-
-              # Remote VTEP IP Address
             - <str>
           flood_vtep_learned_data_plane: <bool>
-
-        # Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.
         eos_cli: <str>
     ```

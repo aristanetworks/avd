@@ -15,8 +15,6 @@
 
     ```yaml
     ip_http_client_source_interfaces:
-
-        # Interface Name
       - name: <str>
         vrf: <str>
     ```

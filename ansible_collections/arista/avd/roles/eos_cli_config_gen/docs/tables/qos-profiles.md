@@ -59,117 +59,50 @@
 
     ```yaml
     qos_profiles:
-
-        # Profile-Name
-      - name: <str; required; unique>
-        trust: <str; "cos" | "dscp" | "disabled">
+      - name: <str>
+        trust: <str>
         cos: <int>
         dscp: <int>
         shape:
-
-          # Supported options are platform dependent
-          # Example: "< rate > kbps", "1-100 percent", "< rate > pps"
           rate: <str>
         service_policy:
           type:
-
-            # Policy-map name
             qos_input: <str>
         tx_queues:
-
-            # TX-Queue ID
-          - id: <int; required; unique>
+          - id: <int>
             bandwidth_percent: <int>
             bandwidth_guaranteed_percent: <int>
-            priority: <str; "priority strict" | "no priority">
+            priority: <str>
             shape:
-
-              # Supported options are platform dependent
-              # Example: "< rate > kbps", "1-100 percent", "< rate > pps"
               rate: <str>
-
-            # Text comment added to queue.
             comment: <str>
         uc_tx_queues:
-
-            # UC TX queue ID
-          - id: <int; required; unique>
+          - id: <int>
             bandwidth_percent: <int>
             bandwidth_guaranteed_percent: <int>
-            priority: <str; "priority strict" | "no priority">
+            priority: <str>
             shape:
-
-              # Supported options are platform dependent
-              # Example: "< rate > kbps", "1-100 percent", "< rate > pps"
               rate: <str>
-
-            # Text comment added to queue.
             comment: <str>
         mc_tx_queues:
-
-            # MC TX queue ID
-          - id: <int; required; unique>
+          - id: <int>
             bandwidth_percent: <int>
             bandwidth_guaranteed_percent: <int>
-            priority: <str; "priority strict" | "no priority">
+            priority: <str>
             shape:
-
-              # Supported options are platform dependent
-              # Example: "< rate > kbps", "1-100 percent", "< rate > pps"
               rate: <str>
-
-            # Text comment added to queue.
             comment: <str>
-
-        # Priority Flow Control settings
         priority_flow_control:
-
-          # Enable Priority Flow control.
           enabled: <bool>
-
-          # Watchdog can detect stuck transmit queues.
           watchdog:
-
-            # Enable the watchdog on stuck transmit queues.
-            enabled: <bool; required>
-
-            # Override the default error-disable action to either drop
-            # traffic on the stuck queue or notify-only
-            # without making any actions on the stuck queue.
-            action: <str; "drop" | "notify-only">
-
-            # Timer thresholds whilst monitoring queues.
+            enabled: <bool>
+            action: <str>
             timer:
-
-              # Timeout in seconds after which port should be errdisabled or
-              # should start dropping on congested priorities.
-              # This should be decimal with up to 2 decimal point
-              # Example: 0.01 or 60
-              timeout: <str; required>
-
-              # Time interval in seconds at which the watchdog should poll the queues.
-              # This should be decimal with up to 3 decimal point or set
-              # to 'auto' based on recovery_time and timeout values.
-              # Example: 0.005 or 60
-              polling_interval: <str; required>
-
-              # Recovery-time in seconds after which stuck queue should
-              # recover and start forwarding again.
-              # This should be decimal with up to 2 decimal point.
-              # Example: 0.01 or 60
-              recovery_time: <str; required>
-
-              # Force recover any stuck queue(s) after the duration,
-              # irrespective of whether PFC frames are being
-              # received or not.
+              timeout: <str>
+              polling_interval: <str>
+              recovery_time: <str>
               forced: <bool>
-
-          # Set the drop/no_drop on each queue
           priorities:
-
-              # Priority queue number (COS value)
-            - priority: <int; 0-7; required; unique>
-
-              # Enable Priority Flow Control frames on this queue
-              no_drop: <bool; required>
+            - priority: <int>
+              no_drop: <bool>
     ```

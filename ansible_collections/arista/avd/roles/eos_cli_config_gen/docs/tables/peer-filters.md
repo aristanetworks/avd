@@ -17,15 +17,8 @@
 
     ```yaml
     peer_filters:
-
-        # Peer-filter Name
-      - name: <str; required; unique>
+      - name: <str>
         sequence_numbers: # required
-
-            # Sequence ID
-          - sequence: <int; required; unique>
-
-            # Match as string
-            # Example: "as-range 1-100 result accept"
-            match: <str; required>
+          - sequence: <int>
+            match: <str>
     ```

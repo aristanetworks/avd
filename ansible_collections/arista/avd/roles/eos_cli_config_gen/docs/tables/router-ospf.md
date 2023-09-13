@@ -88,126 +88,77 @@
     ```yaml
     router_ospf:
       process_ids:
-
-          # OSPF Process ID
-        - id: <int; required; unique>
-
-          # VRF Name for OSPF Process
+        - id: <int>
           vrf: <str>
           passive_interface_default: <bool>
-
-          # IPv4 Address
           router_id: <str>
           distance:
-            external: <int; 1-255>
-            inter_area: <int; 1-255>
-            intra_area: <int; 1-255>
+            external: <int>
+            inter_area: <int>
+            intra_area: <int>
           log_adjacency_changes_detail: <bool>
           network_prefixes:
-            - ipv4_prefix: <str; required; unique>
+            - ipv4_prefix: <str>
               area: <str>
           bfd_enable: <bool>
           bfd_adjacency_state_any: <bool>
           no_passive_interfaces:
-
-              # Interface Name
             - <str>
           distribute_list_in:
             route_map: <str>
           max_lsa: <int>
           timers:
             lsa:
-
-              # Min interval in msecs between accepting the same LSA
-              rx_min_interval: <int; 0-600000>
+              rx_min_interval: <int>
               tx_delay:
-
-                # Delay to generate first occurrence of LSA in msecs
-                initial: <int; 0-600000>
-
-                # Min delay between originating the same LSA in msecs
-                min: <int; 1-600000>
-
-                # 1-600000 Maximum delay between originating the same LSA in msec
-                max: <int; 1-600000>
+                initial: <int>
+                min: <int>
+                max: <int>
             spf_delay:
-
-              # Initial SPF schedule delay in msecs
-              initial: <int; 0-600000>
-
-              # Min Hold time between two SPFs in msecs
-              min: <int; 0-65535000>
-
-              # Max wait time between two SPFs in msecs
-              max: <int; 0-65535000>
+              initial: <int>
+              min: <int>
+              max: <int>
           default_information_originate:
             always: <bool>
-
-            # Metric for default route
-            metric: <int; 1-65535>
-
-            # OSPF metric type for default route
-            metric_type: <int; 1 | 2>
+            metric: <int>
+            metric_type: <int>
           summary_addresses:
-
-              # Summary Prefix Address
-            - prefix: <str; required; unique>
+            - prefix: <str>
               tag: <int>
               attribute_map: <str>
               not_advertise: <bool>
           redistribute:
             static:
-
-              # Route Map Name
               route_map: <str>
               include_leaked: <bool>
             connected:
-
-              # Route Map Name
               route_map: <str>
               include_leaked: <bool>
             bgp:
-
-              # Route Map Name
               route_map: <str>
               include_leaked: <bool>
-
-          # Bandwidth in mbps
           auto_cost_reference_bandwidth: <int>
           areas:
-            - id: <str; required; unique>
+            - id: <str>
               filter:
                 networks:
-
-                    # IPv4 Prefix
                   - <str>
-
-                # Prefix-List Name
                 prefix_list: <str>
-              type: <str; "normal" | "stub" | "nssa"; default="normal">
+              type: <str>
               no_summary: <bool>
               nssa_only: <bool>
               default_information_originate:
-
-                # Metric for default route
-                metric: <int; 1-65535>
-
-                # OSPF metric type for default route
-                metric_type: <int; 1 | 2>
-          maximum_paths: <int; 1-128>
+                metric: <int>
+                metric_type: <int>
+          maximum_paths: <int>
           max_metric:
             router_lsa:
               external_lsa:
-                override_metric: <int; 1-16777215>
+                override_metric: <int>
               include_stub: <bool>
-
-              # "wait-for-bgp" or Integer 5-86400
-              # Example: "wait-for-bgp" Or "222"
               on_startup: <str>
               summary_lsa:
-                override_metric: <int; 1-16777215>
+                override_metric: <int>
           mpls_ldp_sync_default: <bool>
-
-          # Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration
           eos_cli: <str>
     ```

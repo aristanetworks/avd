@@ -19,27 +19,12 @@
 === "YAML"
 
     ```yaml
-    # Gives the ability to monitor and react to Syslog messages.
-    # Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,
-    # customize the system behavior, and implement workarounds to problems discovered in the field.
     event_handlers:
-
-        # Event Handler Name
-      - name: <str; required; unique>
-        action_type: <str; "bash" | "increment" | "log">
-
-        # Command to execute
+      - name: <str>
+        action_type: <str>
         action: <str>
-
-        # Event-handler delay in seconds
         delay: <int>
-
-        # Configure event trigger condition.
-        trigger: <str; "on-logging" | "on-startup-config">
-
-        # Regular expression to use for searching log messages. Required for on-logging trigger
+        trigger: <str>
         regex: <str>
-
-        # Set the action to be non-blocking.
-        asynchronous: <bool; default=False>
+        asynchronous: <bool>
     ```

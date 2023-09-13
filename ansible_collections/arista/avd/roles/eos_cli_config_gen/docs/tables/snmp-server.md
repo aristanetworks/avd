@@ -76,137 +76,69 @@
 === "YAML"
 
     ```yaml
-    # SNMP settings
     snmp_server:
       engine_ids:
-
-        # Engine ID in hexadecimal
         local: <str>
         remotes:
-
-            # Remote engine ID in hexadecimal
           - id: <str>
-
-            # Hostname or IP of remote engine
             address: <str>
             udp_port: <int>
-
-      # SNMP contact
       contact: <str>
-
-      # SNMP location
       location: <str>
       communities:
-
-          # Community name
-        - name: <str; required; unique>
-          access: <str; "ro" | "rw">
+        - name: <str>
+          access: <str>
           access_list_ipv4:
-
-            # IPv4 access list name
             name: <str>
           access_list_ipv6:
-
-            # IPv6 access list name
             name: <str>
           view: <str>
       ipv4_acls:
-
-          # IPv4 access list name
         - name: <str>
           vrf: <str>
       ipv6_acls:
-
-          # IPv6 access list name
         - name: <str>
           vrf: <str>
       local_interfaces:
-
-          # Interface name
-        - name: <str; required; unique>
+        - name: <str>
           vrf: <str>
       views:
-
-          # SNMP view name
         - name: <str>
           mib_family_name: <str>
           included: <bool>
-          # This key is deprecated.
-          # Support will be removed in AVD version 5.0.0.
-          # Use <samp>mib_family_name</samp> instead.
           MIB_family_name: <str>
       groups:
-
-          # Group name
         - name: <str>
-          version: <str; "v1" | "v2c" | "v3">
-          authentication: <str; "auth" | "noauth" | "priv">
-
-          # Read view
+          version: <str>
+          authentication: <str>
           read: <str>
-
-          # Write view
           write: <str>
-
-          # Notify view
           notify: <str>
       users:
-
-          # Username
         - name: <str>
-
-          # Group name
           group: <str>
-
-          # Hostname or ip of remote engine
-          # The remote_address and udp_port are used for remote users
           remote_address: <str>
-
-          # udp_port will not be used if no remote_address is configured
           udp_port: <int>
-          version: <str; "v1" | "v2c" | "v3">
-
-          # Engine ID in hexadecimal for localizing auth and/or priv
+          version: <str>
           localized: <str>
-
-          # Hash algorithm
           auth: <str>
-
-          # Hashed authentication passphrase if localized is used else cleartext authentication passphrase
           auth_passphrase: <str>
-
-          # Encryption algorithm
           priv: <str>
-
-          # Hashed privacy passphrase if localized is used else cleartext privacy passphrase
           priv_passphrase: <str>
       hosts:
-
-          # Host IP address or name
         - host: <str>
           vrf: <str>
-          version: <str; "1" | "2c" | "3">
-
-          # Community name
+          version: <str>
           community: <str>
           users:
             - username: <str>
-              authentication_level: <str; "auth" | "noauth" | "priv">
+              authentication_level: <str>
       traps:
-
-        # Enable or disable all snmp-traps
-        enable: <bool; default=False>
+        enable: <bool>
         snmp_traps:
-
-            # Enable or disable specific snmp-traps and their sub_traps
-            # Examples:
-            # - "bgp"
-            # - "bgp established"
           - name: <str>
-            enabled: <bool; default=True>
+            enabled: <bool>
       vrfs:
-
-          # VRF name
-        - name: <str; required; unique>
+        - name: <str>
           enable: <bool>
     ```

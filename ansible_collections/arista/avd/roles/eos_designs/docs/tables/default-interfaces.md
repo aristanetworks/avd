@@ -22,35 +22,15 @@
 === "YAML"
 
     ```yaml
-    # Default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
     default_interfaces:
-
-        # List of node type keys.
       - types: # required
           - <str>
-
-        # List of platform families.
-        # This is defined as a Python regular expression that matches the full platform type.
         platforms: # required
-
-            # Arista platform family regular expression.
           - <str>
-
-        # List of uplink interfaces or uplink interface ranges.
         uplink_interfaces:
-
-            # Interface range or interface.
           - <str>
-
-        # List of MLAG interfaces or MLAG interface ranges.
         mlag_interfaces:
-
-            # Interface range or interface.
           - <str>
-
-        # List of downlink interfaces or downlink interface ranges.
         downlink_interfaces:
-
-            # Interface range or interface.
           - <str>
     ```

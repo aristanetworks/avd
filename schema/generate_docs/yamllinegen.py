@@ -15,6 +15,8 @@ from .utils import render_schema_field
 if TYPE_CHECKING:
     from ..metaschema.meta_schema_model import AvdSchemaField
 
+LEGACY_OUTPUT = True
+
 
 class YamlLine(BaseModel):
     """
@@ -87,8 +89,11 @@ class YamlLineGenBase(ABC):
             if schema._path:
                 # Only render this field when there is a path (not the root dict), but always render children.
 
-                yield from self.render_description()
-                yield from self.render_deprecation_description()
+                # TODO: Remove legacy output
+                if not LEGACY_OUTPUT:
+                    yield from self.render_description()
+                    yield from self.render_deprecation_description()
+
                 yield from self.render_field()
 
             yield from self.render_children()
@@ -127,7 +132,11 @@ class YamlLineGenBase(ABC):
             self.get_default(),
             self.get_required(),
         ]
-        value = "; ".join(field for field in value_fields if field)
+        # TODO: Remove legacy output
+        if LEGACY_OUTPUT:
+            value = self.schema.type
+        else:
+            value = "; ".join(field for field in value_fields if field)
         if self.schema._key:
             key = f"{self.schema._key}: "
         else:

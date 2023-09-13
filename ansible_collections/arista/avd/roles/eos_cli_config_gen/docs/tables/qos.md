@@ -23,16 +23,10 @@
     qos:
       map:
         cos:
-
-            # Example: "0 1 to traffic-class 1"
           - <str>
         dscp:
-
-            # Example: "8 9 10 to traffic-class 1"
           - <str>
         traffic_class:
-
-            # Example: "1 to dscp 32"
           - <str>
       rewrite_dscp: <bool>
     ```

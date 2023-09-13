@@ -14,7 +14,5 @@
 
     ```yaml
     eos_cli_config_gen_configuration:
-
-      # Replace the input data using the `hide_passwords` filter in the Jinja2 templates by '<removed>' in the configruation if true
-      hide_passwords: <bool; default=False>
+      hide_passwords: <bool>
     ```

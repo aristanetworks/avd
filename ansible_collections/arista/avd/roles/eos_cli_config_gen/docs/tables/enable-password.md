@@ -15,9 +15,6 @@
 
     ```yaml
     enable_password:
-      hash_algorithm: <str; "md5" | "sha512">
-
-      # Must be the hash of the password using the specified algorithm.
-      # By default EOS salts the password, so the simplest is to generate the hash on an EOS device.
+      hash_algorithm: <str>
       key: <str>
     ```

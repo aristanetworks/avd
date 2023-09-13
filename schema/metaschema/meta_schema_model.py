@@ -65,8 +65,10 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
     @property
     def _table(self) -> str | None:
-        if self.documentation_options is not None:
-            return self.documentation_options.table
+        schema = self._resolved_model
+
+        if schema.documentation_options is not None:
+            return schema.documentation_options.table
 
     @property
     def _path(self) -> list[str]:

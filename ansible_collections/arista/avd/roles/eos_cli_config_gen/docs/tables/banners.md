@@ -15,10 +15,6 @@
 
     ```yaml
     banners:
-
-      # Multiline string ending with EOF on the last line
       login: <str>
-
-      # Multiline string ending with EOF on the last line
       motd: <str>
     ```

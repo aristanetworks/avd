@@ -30,34 +30,11 @@
     ```yaml
     aaa_authentication:
       login:
-
-        # Login authentication method(s) as a string.
-        # Examples:
-        # - "group tacacs+ local"
-        # - "group MYGROUP none"
-        # - "group radius group MYGROUP local"
         default: <str>
-
-        # Console authentication method(s) as a string.
-        # Examples:
-        # - "group tacacs+ local"
-        # - "group MYGROUP none"
-        # - "group radius group MYGROUP local"
         console: <str>
       enable:
-
-        # Enable authentication method(s) as a string.
-        # Examples:
-        # - "group tacacs+ local"
-        # - "group MYGROUP none"
-        # - "group radius group MYGROUP local"
         default: <str>
       dot1x:
-
-        # 802.1x authentication method(s) as a string.
-        # Examples:
-        # - "group radius"
-        # - "group MYGROUP group radius"
         default: <str>
       policies:
         on_failure_log: <bool>
@@ -65,7 +42,7 @@
         local:
           allow_nopassword: <bool>
         lockout:
-          failure: <int; 1-255>
-          duration: <int; 1-4294967295>
-          window: <int; 1-4294967295>
+          failure: <int>
+          duration: <int>
+          window: <int>
     ```

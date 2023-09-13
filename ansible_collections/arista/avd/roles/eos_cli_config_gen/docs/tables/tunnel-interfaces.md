@@ -33,54 +33,24 @@
 
     ```yaml
     tunnel_interfaces:
-
-        # Tunnel Interface Name
-      - name: <str; required; unique>
+      - name: <str>
         description: <str>
         shutdown: <bool>
-        mtu: <int; 68-65535>
-
-        # VRF Name
+        mtu: <int>
         vrf: <str>
-
-        # IPv4_address/Mask
         ip_address: <str>
         ipv6_enable: <bool>
-
-        # IPv6_address/Mask
         ipv6_address: <str>
-
-        # IPv4 ACL Name for ingress
         access_group_in: <str>
-
-        # IPv4 ACL Name for egress
         access_group_out: <str>
-
-        # IPv6 ACL Name for ingress
         ipv6_access_group_in: <str>
-
-        # IPv6 ACL Name for egress
         ipv6_access_group_out: <str>
         tcp_mss_ceiling:
-
-          # Segment Size for IPv4
-          ipv4: <int; 64-65495>
-
-          # Segment Size for IPv6
-          ipv6: <int; 64-65475>
-
-          # Optional direction ('ingress', 'egress')  for tcp mss ceiling
-          direction: <str; "ingress" | "egress">
-
-        # Tunnel Source Interface Name
+          ipv4: <int>
+          ipv6: <int>
+          direction: <str>
         source_interface: <str>
-
-        # IPv4 or IPv6 Address Tunnel Destination
         destination: <str>
-
-        # Enable Path MTU Discovery On Tunnel
         path_mtu_discovery: <bool>
-
-        # Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.
         eos_cli: <str>
     ```

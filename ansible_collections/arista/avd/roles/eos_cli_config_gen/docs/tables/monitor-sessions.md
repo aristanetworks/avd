@@ -34,51 +34,25 @@
 
     ```yaml
     monitor_sessions:
-
-        # Session Name
-      - name: <str; required>
+      - name: <str>
         sources:
-
-            # Interface name, range or comma separated list
           - name: <str>
-            direction: <str; "rx" | "tx" | "both">
+            direction: <str>
             access_group:
-              type: <str; "ip" | "ipv6" | "mac">
-
-              # ACL Name
+              type: <str>
               name: <str>
               priority: <int>
         destinations:
-
-            # 'cpu' or interface name, range or comma separated list
           - <str>
         encapsulation_gre_metadata_tx: <bool>
-
-        # Number of bytes to remove from header
         header_remove_size: <int>
         access_group:
-          type: <str; "ip" | "ipv6" | "mac">
-
-          # ACL Name
+          type: <str>
           name: <str>
-
-        # Ratelimit and unit as string.
-        # Examples:
-        #   "100000 bps"
-        #   "100 kbps"
-        #   "10 mbps"
         rate_limit_per_ingress_chip: <str>
-
-        # Ratelimit and unit as string.
-        # Examples:
-        #   "100000 bps"
-        #   "100 kbps"
-        #   "10 mbps"
         rate_limit_per_egress_chip: <str>
         sample: <int>
         truncate:
           enabled: <bool>
-
-          # Size in bytes
           size: <int>
     ```

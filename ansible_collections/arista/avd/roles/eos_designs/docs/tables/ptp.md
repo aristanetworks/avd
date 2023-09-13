@@ -18,7 +18,7 @@
     ```yaml
     ptp:
       enabled: <bool>
-      profile: <str; "aes67" | "smpte2059-2" | "aes67-r16-2016"; default="aes67-r16-2016">
-      domain: <int; 0-255>
-      auto_clock_identity: <bool; default=True>
+      profile: <str>
+      domain: <int>
+      auto_clock_identity: <bool>
     ```

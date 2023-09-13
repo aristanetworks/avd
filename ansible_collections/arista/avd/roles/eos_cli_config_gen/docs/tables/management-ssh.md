@@ -38,57 +38,27 @@
     ```yaml
     management_ssh:
       access_groups:
-
-          # Standard ACL Name
         - name: <str>
-
-          # VRF Name
           vrf: <str>
       ipv6_access_groups:
-
-          # Standard ACL Name
         - name: <str>
-
-          # VRF Name
           vrf: <str>
-
-      # Idle timeout in minutes
-      idle_timeout: <int; 0-86400>
-
-      # Cryptographic ciphers for SSH to use
+      idle_timeout: <int>
       cipher:
         - <str>
-
-      # Cryptographic key exchange methods for SSH to use
       key_exchange:
         - <str>
-
-      # Cryptographic MAC algorithms for SSH to use
       mac:
         - <str>
       hostkey:
-
-        # SSH host key settings
         server:
           - <str>
-
-      # Enable SSH daemon
       enable: <bool>
       connection:
-
-        # Maximum total number of SSH sessions to device
-        limit: <int; 1-100>
-
-        # Maximum number of SSH sessions to device from a single host
-        per_host: <int; 1-20>
+        limit: <int>
+        per_host: <int>
       vrfs:
-
-          # VRF Name
-        - name: <str; required; unique>
-
-          # Enable SSH in VRF
+        - name: <str>
           enable: <bool>
-
-      # SSH daemon log level
       log_level: <str>
     ```

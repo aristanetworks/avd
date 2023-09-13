@@ -33,43 +33,21 @@
     platform_settings: # (1)!
       - platforms:
           - <str>
-
-        # Only applied when evpn_multicast is true.
         trident_forwarding_table_partition: <str>
         reload_delay:
-
-          # In seconds.
-          mlag: <int; 0-86400>
-
-          # In seconds.
-          non_mlag: <int; 0-86400>
+          mlag: <int>
+          non_mlag: <int>
         tcam_profile: <str>
         lag_hardware_only: <bool>
-
-        # Default interface MTU configured on EOS under "interface defaults".
-        # Takes precedence over the root key "default_interface_mtu".
-        default_interface_mtu: <int; 68-65535>
+        default_interface_mtu: <int>
         feature_support:
-          queue_monitor_length_notify: <bool; default=True>
-          interface_storm_control: <bool; default=True>
-          poe: <bool; default=False>
-
-          # Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
-          # Effectively this means that all settings regarding interface MTU will be ignored if this is false.
-          # Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"
-          per_interface_mtu: <bool; default=True>
-
-          # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
-          # Can be overridden by setting "bgp_update_wait_install" host/group_vars.
-          bgp_update_wait_install: <bool; default=True>
-
-          # Do not advertise reachability to a prefix until that prefix has been installed in hardware.
-          # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
-          # Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
-          bgp_update_wait_for_convergence: <bool; default=True>
-        management_interface: <str; default="Management1">
-
-        # EOS CLI rendered directly on the root level of the final EOS configuration.
+          queue_monitor_length_notify: <bool>
+          interface_storm_control: <bool>
+          poe: <bool>
+          per_interface_mtu: <bool>
+          bgp_update_wait_install: <bool>
+          bgp_update_wait_for_convergence: <bool>
+        management_interface: <str>
         raw_eos_cli: <str>
     ```
 

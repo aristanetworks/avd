@@ -24,7 +24,5 @@
         interface_disabled_default: <bool>
         router_id: <str>
         shutdown: <bool>
-
-        # Interface Name
         transport_address_interface: <str>
     ```

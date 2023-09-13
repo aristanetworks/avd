@@ -20,19 +20,11 @@
 
     ```yaml
     interface_groups:
-
-        # Interface-Group name
-      - name: <str; required; unique>
+      - name: <str>
         interfaces:
-
-            # Interface Name
           - <str>
         bgp_maintenance_profiles:
-
-            # Name of BGP Maintenance Profile
           - <str>
         interface_maintenance_profiles:
-
-            # Name of Interface Maintenance Profile
           - <str>
     ```
