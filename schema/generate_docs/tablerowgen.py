@@ -176,9 +176,12 @@ class TableRowGenBase(ABC):
         descriptions = []
         if self.schema.description:
             descriptions.append(self.schema.description.replace("\n", "<br>"))
+        description = " ".join(descriptions)
+
         if deprecation := self.get_deprecation_description():
-            descriptions.append(deprecation)
-        return " ".join(descriptions) or None
+            description += deprecation
+
+        return description or None
 
     def render_children(self) -> Generator[TableRow]:
         """Noop for classes without children. Overload in subclasses for dict and list."""
