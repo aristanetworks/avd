@@ -58,10 +58,10 @@ def render_schema_field(target_table: str | None, schema: AvdSchemaField) -> boo
         # print("mismatching rootkey", target_table, schema._key.replace("_", "-"))
         return False
 
-    if schema._descendant_tables and target_table not in schema._descendant_tables:
-        # Some descendant key has the target_table set, so this one should be rendered to show the path.
-        # print("no descendents", target_table, schema._descendant_tables)
-        return False
+    # if schema._descendant_tables and target_table not in schema._descendant_tables:
+    #     # Some descendant key has the target_table set, so this one should be rendered to show the path.
+    #     print("no descendents", target_table, schema._descendant_tables)
+    #     return False
 
     # Render the key if none of the above match.
     # The key is likely just a child of something else

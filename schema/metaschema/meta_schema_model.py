@@ -384,7 +384,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
 
         if self.dynamic_keys is not None:
             for key, childschema in self.dynamic_keys.items():
-                childschema._key = key
+                childschema._key = f"<{key}>"
                 childschema._parent_schema = self
                 # if hasattr(childschema, "update_child_info"):
                 #     childschema.update_child_info()

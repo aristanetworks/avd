@@ -7,13 +7,17 @@ from .generate_docs.utils import list_tables
 from .metaschema.meta_schema_model import AristaAvdSchema
 from .metaschema.resolvemodel import merge_schema_from_ref
 
-# output_dir = SCHEMA_PATHS["eos_designs"].parents[1].joinpath("docs/tables")
+# Tshoot 1
 # schema = AristaAvdSchema(**STORE["eos_designs"])
+# print(get_md_tabs(schema, "network-services"))
+
+# Tshoot table_names
 # table_names = list_tables(schema)
 # # print(table_names)
 # files = list(output_dir.glob("*.md"))
 # print([file.name.removesuffix(".md") for file in files if file.name.removesuffix(".md") not in table_names])
 # print(len(files), len(table_names))
+
 
 for schema_name, schema_path in SCHEMA_PATHS.items():
     if schema_name not in STORE:
