@@ -9,7 +9,7 @@ from .metaschema.meta_schema_model import AristaAvdSchema
 # Tshoot 1
 
 # schema = AristaAvdSchema(**STORE["eos_designs"])
-# print(get_md_tabs(schema, "connected-endpoints"))
+# print(get_md_tabs(schema, "node-type-bgp-configuration"))
 
 # Tshoot table_names
 # table_names = list_tables(schema)
