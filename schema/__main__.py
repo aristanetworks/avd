@@ -5,11 +5,11 @@ from .constants import SCHEMA_PATHS, STORE
 from .generate_docs.mdtabsgen import get_md_tabs
 from .generate_docs.utils import list_tables
 from .metaschema.meta_schema_model import AristaAvdSchema
-from .metaschema.resolvemodel import merge_schema_from_ref
 
 # Tshoot 1
+
 # schema = AristaAvdSchema(**STORE["eos_designs"])
-# print(get_md_tabs(schema, "network-services"))
+# print(get_md_tabs(schema, "connected-endpoints"))
 
 # Tshoot table_names
 # table_names = list_tables(schema)
@@ -23,8 +23,7 @@ for schema_name, schema_path in SCHEMA_PATHS.items():
     if schema_name not in STORE:
         raise KeyError(f"Invalid schema name '{schema_name}'")
 
-    resolved_schema = merge_schema_from_ref(STORE[schema_name])
-    schema = AristaAvdSchema(**resolved_schema)
+    schema = AristaAvdSchema(**STORE[schema_name])
     table_names = sorted(list_tables(schema))
     output_dir = schema_path.parents[1].joinpath("docs/tables")
     for table_name in table_names:

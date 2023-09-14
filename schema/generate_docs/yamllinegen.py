@@ -214,15 +214,11 @@ class YamlLineGenBase(ABC):
         if self.needs_annotation_for_default_value:
             return yaml.dump({self.schema._key: self.schema.default}, indent=2)
 
-    def render_children(self) -> Generator[YamlLine]:
-        """Noop for classes without children. Overload in subclasses for dict and list."""
-        yield from []
-
     def get_restrictions(self) -> str | None:
         """
         Returns restrictions as inline semicolon separated strings.
 
-        Only covers generic restrictions. Should be overloaded in type specific subclasses.
+        Only covers generic restrictions. Should be overridden in type specific subclasses.
         """
         restrictions = []
         valid_values = []
@@ -242,6 +238,10 @@ class YamlLineGenBase(ABC):
             restrictions.append(" | ".join(valid_values))
 
         return "; ".join(restrictions) or None
+
+    def render_children(self) -> Generator[YamlLine]:
+        """Noop for classes without children. Override in subclasses for dict and list."""
+        yield from []
 
 
 class YamlLineGenBool(YamlLineGenBase):
@@ -311,6 +311,10 @@ class YamlLineGenList(YamlLineGenBase):
         # TODO: Remove legacy output
         if LEGACY_OUTPUT:
             properties = ""
+
+        if self.schema.items is None:
+            # Add <list> when we don't have the items schema.
+            properties = f" <list>{properties}"
 
         yield YamlLine(
             line=f"{self.get_indentation()}{self.schema._key}:{properties}",

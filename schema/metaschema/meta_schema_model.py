@@ -13,10 +13,14 @@ from pydantic import BaseModel, ConfigDict, Field, RootModel, constr
 from schema.generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
 
 from ..generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBool, TableRowGenDict, TableRowGenInt, TableRowGenList, TableRowGenStr
-from .resolvemodel import resolve_model
+from .resolvemodel import merge_schema_from_ref
 
 
 class AvdSchemaBaseModel(BaseModel, ABC):
+    def __init__(self, **data):
+        """Override BaseModel __init__ to expand any schema."""
+        super().__init__(**merge_schema_from_ref(data))
+
     class Deprecation(BaseModel):
         warning: bool = True
         """Emit deprecation warning if key is set"""
@@ -59,16 +63,10 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     def _descendant_tables(self) -> set[str]:
         return set()
 
-    @cached_property
-    def _resolved_model(self) -> AvdSchemaField:
-        return resolve_model(self)
-
     @property
     def _table(self) -> str | None:
-        schema = self._resolved_model
-
-        if schema.documentation_options is not None:
-            return schema.documentation_options.table
+        if self.documentation_options is not None:
+            return self.documentation_options.table
 
     @property
     def _path(self) -> list[str]:
@@ -89,11 +87,9 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         """
         Yields "TableRow"s to be used in schema docs.
         The function is called recursively inside the YamlLineGen classes for passing children.
-
-        Uses the resolve_model function to generate based on the the fully resolved schema.
         """
         yield from self._table_row_generator().generate_table_rows(
-            schema=self._resolved_model,
+            schema=self,
             target_table=target_table,
         )
 
@@ -104,11 +100,9 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         """
         Yields "YamlLine"s to be used in schema docs.
         The function is called recursively inside the YamlLineGen classes for passing children.
-
-        Uses the resolve_model function to generate based on the the fully resolved schema.
         """
         yield from self._yaml_line_generator().generate_yaml_lines(
-            schema=self._resolved_model,
+            schema=self,
             target_table=target_table,
         )
 
@@ -266,14 +260,13 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
     @cached_property
     def _descendant_tables(self) -> set[str]:
-        schema = self._resolved_model
-        if schema.items is None:
+        if self.items is None:
             return set()
 
         descendant_tables = set()
-        if schema.items._table:
-            descendant_tables.add(schema.items._table)
-        descendant_tables.update(schema.items._descendant_tables)
+        if self.items._table:
+            descendant_tables.add(self.items._table)
+        descendant_tables.update(self.items._descendant_tables)
 
         return descendant_tables
 
@@ -349,15 +342,14 @@ class AvdSchemaDict(AvdSchemaBaseModel):
 
     @cached_property
     def _descendant_tables(self) -> set[str]:
-        schema = self._resolved_model
         descendant_tables = set()
-        if schema.keys:
-            for childschema in schema.keys.values():
+        if self.keys:
+            for childschema in self.keys.values():
                 if childschema._table:
                     descendant_tables.add(childschema._table)
                 descendant_tables.update(childschema._descendant_tables)
-        if schema.dynamic_keys:
-            for childschema in schema.keys.values():
+        if self.dynamic_keys:
+            for childschema in self.keys.values():
                 if childschema._table:
                     descendant_tables.add(childschema._table)
                 descendant_tables.update(childschema._descendant_tables)

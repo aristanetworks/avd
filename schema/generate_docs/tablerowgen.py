@@ -184,14 +184,14 @@ class TableRowGenBase(ABC):
         return description or None
 
     def render_children(self) -> Generator[TableRow]:
-        """Noop for classes without children. Overload in subclasses for dict and list."""
+        """Noop for classes without children. Override in subclasses for dict and list."""
         yield from []
 
     def render_restrictions(self) -> str | None:
         """
         Renders markdown for "restrictions" field as a multiline text compatible with a markdown table cell.
 
-        Only covers generic restrictions. Should be overloaded in type specific subclasses.
+        Only covers generic restrictions. Should be overridden in type specific subclasses.
         """
         restrictions = []
         valid_values = []
