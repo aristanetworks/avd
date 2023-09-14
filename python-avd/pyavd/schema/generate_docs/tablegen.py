@@ -16,6 +16,6 @@ def get_table(schema: AristaAvdSchema, target_table: str | None = None) -> str:
     Returns one markdown table either containing all keys of the given schema or only a subset if "table_name" is set.
     """
     lines = [*TABLE_HEADER]
-    lines.extend(str(row) for row in schema.generate_table_rows(target_table=target_table))
+    lines.extend(str(row) for row in schema._generate_table_rows(target_table=target_table))
     lines.append("")  # Add final newline
     return "\n".join(lines)

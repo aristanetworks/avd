@@ -310,11 +310,11 @@ class TableRowGenList(TableRowGenBase):
 
         if getattr(self.schema.items, "keys", None):
             for child_schema in self.schema.items.keys.values():
-                yield from child_schema.generate_table_rows(
+                yield from child_schema._generate_table_rows(
                     target_table=self.target_table,
                 )
         else:
-            yield from self.schema.items.generate_table_rows(
+            yield from self.schema.items._generate_table_rows(
                 target_table=self.target_table,
             )
 
@@ -330,12 +330,12 @@ class TableRowGenDict(TableRowGenBase):
 
         if self.schema.keys:
             for child_schema in self.schema.keys.values():
-                yield from child_schema.generate_table_rows(
+                yield from child_schema._generate_table_rows(
                     target_table=self.target_table,
                 )
 
         if self.schema.dynamic_keys:
             for child_schema in self.schema.dynamic_keys.values():
-                yield from child_schema.generate_table_rows(
+                yield from child_schema._generate_table_rows(
                     target_table=self.target_table,
                 )

@@ -348,11 +348,11 @@ class YamlLineGenList(YamlLineGenBase):
 
         if getattr(self.schema.items, "keys", None):
             for child_schema in self.schema.items.keys.values():
-                yield from child_schema.generate_yaml_lines(
+                yield from child_schema._generate_yaml_lines(
                     target_table=self.target_table,
                 )
         else:
-            yield from self.schema.items.generate_yaml_lines(
+            yield from self.schema.items._generate_yaml_lines(
                 target_table=self.target_table,
             )
 
@@ -401,12 +401,12 @@ class YamlLineGenDict(YamlLineGenBase):
 
         if self.schema.keys:
             for child_schema in self.schema.keys.values():
-                yield from child_schema.generate_yaml_lines(
+                yield from child_schema._generate_yaml_lines(
                     target_table=self.target_table,
                 )
 
         if self.schema.dynamic_keys:
             for child_schema in self.schema.dynamic_keys.values():
-                yield from child_schema.generate_yaml_lines(
+                yield from child_schema._generate_yaml_lines(
                     target_table=self.target_table,
                 )

@@ -14,33 +14,64 @@ from ..generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBo
 from ..generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
 from .resolvemodel import merge_schema_from_ref
 
-KEY_PATTERN_WITH_UPPERCASE = r"^[a-zA-Z][a-zA-Z0-9_]*$"
+"""
+This module provides Pydantic models (classes) representing the meta-schema of the AVD Schema.
+
+Each variable in the schema is called a field, and for each type of field we have a corrosponding Pydantic model:
+- AvdSchemaInt
+- AvdSchemaBool
+- AvdSchemaStr
+- AvdSchemaList
+- AvdSchemaDict
+
+The alias "AvdSchemaField" is a union of of all the models above, and can be used as easy type hint for any field type.
+
+All the type-specific Pydantic models inherit the common base class "AvdSchemaBaseModel", and have local overrides
+as needed. For example it is only "AvdSchemaList" and "AvdSchemaDict" that needs to parse child fields.
+
+The overall schema is covered by the class "AristaAvdSchema" which inherits from a "AvdSchemaDict" since the root of the schema is a dict.
+"""
+
+
 KEY_PATTERN = r"^[a-z][a-z0-9_]*$"
+"""Common pattern to match legal key strings"""
 DYNAMIC_KEY_PATTERN = r"^[a-z][a-z0-9_.]*$"
+"""Common pattern to match legal dynamic key strings"""
+KEY_PATTERN_WITH_UPPERCASE = r"^[a-zA-Z][a-zA-Z0-9_]*$"
+"""This is a temporary pattern allowing uppercase keys too"""
 
 
 class AvdSchemaBaseModel(BaseModel, ABC):
-    def __init__(self, **data):
-        """Override BaseModel __init__ to expand any schema."""
-        super().__init__(**merge_schema_from_ref(data))
+    """
+    Base class for AvdSchema fields.
 
+    Contains nested models and common fields that applies to all subclasses.
+
+    Also covers internal properties and methods used for documentation generation.
+    All these are prefixed with underscore.
+    """
+
+    # Common nested models used by common fields
     class Deprecation(BaseModel):
-        warning: bool = True
-        """Emit deprecation warning if key is set"""
-        new_key: str | None = None
-        """Relative path to new key"""
-        removed: bool | None = False
-        """Support for this key has been removed"""
-        remove_in_version: str | None = None
-        """Version in which the key will be removed"""
-        remove_after_date: str | None = None
-        """Date after which the key will be removed in the next major version"""
-        url: str | None = None
-        """URL detailing the deprecation and migration guidelines"""
+        """Deprecation settings"""
 
-    model_config = ConfigDict(
-        extra="forbid",
-    )
+        warning: bool = True
+        """Emit deprecation warning if key is set."""
+        new_key: str | None = None
+        """Relative path to new key."""
+        removed: bool | None = False
+        """Support for this key has been removed."""
+        remove_in_version: str | None = None
+        """Version in which the key will be removed."""
+        remove_after_date: str | None = None
+        """Date after which the key will be removed in the next major version."""
+        url: str | None = None
+        """URL detailing the deprecation and migration guidelines."""
+
+    # Pydantic config option to forbid keys in the inputs that are not covered by the model
+    model_config = ConfigDict(extra="forbid")
+
+    # Common field properties
     display_name: str | None = Field(None, pattern=r"^[^\n]+$")
     """Free text display name for forms and documentation (single line)"""
     description: Annotated[str, constr(min_length=1)] | None = None
@@ -51,87 +82,111 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     field_ref: str | None = Field(None, alias="$ref")
     """
     Reference to Sub Schema using JSON Path.
-    Example 'eos_designs#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the eos_designs schema
+    Example 'eos_designs#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the eos_designs schema.
     """
     documentation_options: DocumentationOptions | None = None
+    """Schema field options used for controlling documentation generation"""
 
+    # Type of schema docs generators to use for this schema field.
     _table_row_generator: type[TableRowGenBase]
     _yaml_line_generator: type[YamlLineGenBase]
+
+    # Internal properties used by schema docs generators
     _key: str | None = None
     _parent_schema: AvdSchemaField | None = None
     _is_primary_key: bool = False
     _is_first_list_key: bool = False
 
+    def __init__(self, **data):
+        """
+        Overrides BaseModel.__init__(**data) to expand any $ref in the input schema.
+        The $ref expansion _only_ covers this field.
+        Any $ref on child fields are expanded as they are initialized by Pydantic since they are based on this base class.
+        """
+        super().__init__(**merge_schema_from_ref(data))
+
     @cached_property
     def _descendant_tables(self) -> set[str]:
+        """
+        Descendant tables are used for schema docs to identify if a key should be included in a certain table.
+
+        Descendant tables should return all table names from fields below this field. Not the field itself.
+
+        There are no descendant tables on most fields so the base class returns an empty set. Overridden on list and dict.
+        """
         return set()
 
     @cached_property
     def _table(self) -> str | None:
-        """Return table name. Either set directly on this field, inherited from parent or default key name for root keys"""
+        """
+        Return the name of the schema documentation table where this field should be included.
+
+        The table name can be derived from several sources depending on the position and configuration of the field.
+        In order the sources are:
+        - Statically defined under "documentation_options.table".
+        - Inherit from parent schema if available.
+        - None if this is the root dict.
+          This means that the first level of keys - called root keys - will not find a parent table.
+        - Root keys will default to a hyphen variant of their key name.
+
+        Most fields will inherit from parent schema.
+        """
         if self.documentation_options is not None and self.documentation_options.table:
             return self.documentation_options.table
 
-        # No local table, so use the _table from the parent_schema.
+        # No local table, so use the _table from the parent_schema if available.
         if self._parent_schema and self._parent_schema._table:
             return self._parent_schema._table
 
+        # No table for the root dict
         if not self._path:
-            # No table for the root dict
             return None
 
+        # This should never happen, since only the root key should be without a parent_schema.
         if len(self._path) != 1:
-            # This should never happen, since only the root key should be without a parent_schema.
             raise NotImplementedError("Something went wrong in _table", self._path)
 
-        # This is a root key the default table is the key with hyphens
+        # This is a root key the default table is the key with hyphens and removing <,>
         return self._key.replace("<", "").replace(">", "").replace("_", "-")
 
-    @property
+    @cached_property
     def _path(self) -> list[str]:
+        """
+        Returns the variable path for this field to be used in schema docs.
+        Like "rootkey.subkey.list.[].mykey".
+        """
+        # The root dict has no path
         if self._parent_schema is None:
-            # The root dict
             return []
 
+        # A list item has no key, so add "[]" to the parent schema for representing the list-item
         if not self._key:
-            # A list item
             return self._parent_schema._path + ["[]"]
 
+        # Add the key to the parent path
         return self._parent_schema._path + [self._key]
 
-    def generate_table_rows(
-        self,
-        target_table: str | None = None,
-    ) -> Generator[TableRow]:
+    def _generate_table_rows(self, target_table: str | None = None) -> Generator[TableRow]:
         """
         Yields "TableRow"s to be used in schema docs.
-        The function is called recursively inside the YamlLineGen classes for passing children.
+        The function is called recursively inside the YamlLineGen classes for parsing children.
         """
-        yield from self._table_row_generator().generate_table_rows(
-            schema=self,
-            target_table=target_table,
-        )
+        yield from self._table_row_generator().generate_table_rows(schema=self, target_table=target_table)
 
-    def generate_yaml_lines(
-        self,
-        target_table: str | None = None,
-    ) -> Generator[YamlLine]:
+    def _generate_yaml_lines(self, target_table: str | None = None) -> Generator[YamlLine]:
         """
         Yields "YamlLine"s to be used in schema docs.
-        The function is called recursively inside the YamlLineGen classes for passing children.
+        The function is called recursively inside the YamlLineGen classes for parsing children.
         """
-        yield from self._yaml_line_generator().generate_yaml_lines(
-            schema=self,
-            target_table=target_table,
-        )
+        yield from self._yaml_line_generator().generate_yaml_lines(schema=self, target_table=target_table)
 
 
 class DocumentationOptions(BaseModel):
-    """Special options used for generating documentation"""
+    """Schema field options used for controlling documentation generation"""
 
-    model_config = ConfigDict(
-        extra="forbid",
-    )
+    # Pydantic config option to forbid keys in the inputs that are not covered by the model
+    model_config = ConfigDict(extra="forbid")
+
     table: str | None = None
     """
     Setting 'table' will allow for custom grouping of schema fields in the documentation.
@@ -142,7 +197,7 @@ class DocumentationOptions(BaseModel):
 
 
 class DocumentationOptionsDict(DocumentationOptions):
-    """Special options used for generating documentation for dicts"""
+    """Extra schema field options used for controlling documentation generation for dicts"""
 
     hide_keys: bool | None = None
     """
@@ -152,18 +207,30 @@ class DocumentationOptionsDict(DocumentationOptions):
 
 
 class AvdSchemaInt(AvdSchemaBaseModel):
+    """
+    Pydantic model for AvdSchema fields of type "int".
+
+    Contains fields that applies to this type specifically. Other fields are inherited from the base class.
+
+    Also covers internal properties and methods used for documentation generation.
+    All these are prefixed with underscore.
+    """
+
     class ConvertType(str, Enum):
         bool = "bool"
         str = "str"
         float = "float"
 
+    # Field properties
     type: Literal["int"]
     convert_types: List[ConvertType] | None = None
-    """List of types to auto-convert from. For 'int' auto-conversion is supported from 'bool' and 'str'"""
+    """List of types to auto-convert from. For 'int' auto-conversion is supported from 'bool', 'str' and 'float'"""
     default: int | None = None
     """Default value"""
-    max: int | None = None
     min: int | None = None
+    """Minimum value"""
+    max: int | None = None
+    """Maximum value"""
     valid_values: List[int] | None = None
     """List of valid values"""
     dynamic_valid_values: str | None = None
@@ -174,18 +241,29 @@ class AvdSchemaInt(AvdSchemaBaseModel):
     Note that this is building the schema from values in the _data_ being validated!
     """
 
+    # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenInt
     _yaml_line_generator = YamlLineGenInt
 
 
 class AvdSchemaBool(AvdSchemaBaseModel):
+    """
+    Pydantic model for AvdSchema fields of type "bool".
+
+    Contains fields that applies to this type specifically. Other fields are inherited from the base class.
+
+    Also covers internal properties and methods used for documentation generation.
+    All these are prefixed with underscore.
+    """
+
     class ConvertType(str, Enum):
         int = "int"
         str = "str"
 
+    # Field properties
     type: Literal["bool"]
     convert_types: List[ConvertType] | None = None
-    """List of types to auto-convert from.\n\nFor 'bool' auto-conversion is supported from 'int' and 'str'"""
+    """List of types to auto-convert from. For 'bool' auto-conversion is supported from 'int' and 'str'"""
     default: bool | None = None
     """Default value"""
     valid_values: List[bool] | None = None
@@ -198,11 +276,21 @@ class AvdSchemaBool(AvdSchemaBaseModel):
     Note that this is building the schema from values in the _data_ being validated!
     """
 
+    # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenBool
     _yaml_line_generator = YamlLineGenBool
 
 
 class AvdSchemaStr(AvdSchemaBaseModel):
+    """
+    Pydantic model for AvdSchema fields of type "str".
+
+    Contains fields that applies to this type specifically. Other fields are inherited from the base class.
+
+    Also covers internal properties and methods used for documentation generation.
+    All these are prefixed with underscore.
+    """
+
     class ConvertType(str, Enum):
         bool = "bool"
         int = "int"
@@ -217,6 +305,7 @@ class AvdSchemaStr(AvdSchemaBaseModel):
         cidr = "cidr"
         mac = "mac"
 
+    # Field properties
     type: Literal["str"]
     convert_to_lower_case: bool | None = False
     """Convert string value to lower case before performing validation"""
@@ -225,8 +314,11 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     default: str | None = None
     """Default value"""
     format: Format | None = None
-    max_length: int | None = None
+    """String format"""
     min_length: int | None = None
+    """Mininmum string length"""
+    max_length: int | None = None
+    """Maximum string length"""
     pattern: str | None = None
     """
     A regular expression which will be matched on the variable value.
@@ -243,16 +335,27 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     Note that this is building the schema from values in the _data_ being validated!
     """
 
+    # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenStr
     _yaml_line_generator = YamlLineGenStr
 
 
 class AvdSchemaList(AvdSchemaBaseModel):
+    """
+    Pydantic model for AvdSchema fields of type "list".
+
+    Contains fields that applies to this type specifically. Other fields are inherited from the base class.
+
+    Also covers internal properties and methods used for documentation generation.
+    All these are prefixed with underscore.
+    """
+
     class ConvertType(str, Enum):
         dict = "dict"
         list = "list"
         str = "str"
 
+    # Field properties
     type: Literal["list"]
     convert_types: List[ConvertType] | None = None
     """
@@ -265,7 +368,9 @@ class AvdSchemaList(AvdSchemaBaseModel):
     items: Annotated[AvdSchemaField, Field(discriminator="type")] | None = None
     """Schema for list items"""
     min_length: int | None = None
+    """Minimum list items"""
     max_length: int | None = None
+    """Maximum list items"""
     primary_key: str | None = Field(None, pattern=KEY_PATTERN)
     """
     Name of a primary key in a list of dictionaries.
@@ -274,11 +379,17 @@ class AvdSchemaList(AvdSchemaBaseModel):
     secondary_key: str | None = Field(None, pattern=KEY_PATTERN)
     """Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."""
 
+    # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenList
     _yaml_line_generator = YamlLineGenList
 
     @cached_property
     def _descendant_tables(self) -> set[str]:
+        """
+        Descendant tables are used for schema docs to identify if a key should be included in a certain table.
+
+        Descendant tables returns all table names from fields below this field. Not the field itself.
+        """
         if self.items is None:
             return set()
 
@@ -289,16 +400,15 @@ class AvdSchemaList(AvdSchemaBaseModel):
         return descendant_tables
 
     def model_post_init(self, __context: Any) -> None:
-        """our update_child_info to set internal properties"""
-        self.update_child_info()
-        return super().model_post_init(__context)
-
-    def update_child_info(self) -> None:
         """
-        Set internal properties on child schema (if set):
+        Overrides BaseModel.model_post_init().
+        Runs after this model including all child models have been initilized.
+
+        Sets internal properties on child schema (if set):
             - _parent_schema
             - _is_first_list_key (except for dict)
-        Set internal properties on grandchild schemas if child schema is a dict:
+
+        Sets internal properties on grandchild schemas if child schema is a dict:
             - _is_primary_key
             - _is_first_list_key
         """
@@ -318,8 +428,11 @@ class AvdSchemaList(AvdSchemaBaseModel):
             else:
                 self.items._is_first_list_key = True
 
+        return super().model_post_init(__context)
+
 
 class AvdSchemaDict(AvdSchemaBaseModel):
+    # Field properties
     type: Literal["dict"]
     default: dict[str, Any] | None = None
     """Default value"""
@@ -347,6 +460,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     field_id: str | None = Field(None, alias="$id")
     field_defs: dict[constr(pattern=KEY_PATTERN), Annotated[AvdSchemaField, Field(discriminator="type")]] = Field(None, alias="$defs")
 
+    # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenDict
     _yaml_line_generator = YamlLineGenDict
 

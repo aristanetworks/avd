@@ -13,7 +13,7 @@ def get_yaml(schema: AristaAvdSchema, target_table: str | None = None) -> str:
     """
     lines = []
     annotations = []
-    for yamlline in schema.generate_yaml_lines(target_table=target_table):
+    for yamlline in schema._generate_yaml_lines(target_table=target_table):
         if yamlline.annotation is not None:
             annotation_number = len(annotations) + 1
             annotations.append(yamlline.render_annotation(annotation_number))
