@@ -12,9 +12,6 @@ if TYPE_CHECKING:
 def list_tables(schema: AristaAvdSchema) -> set[str]:
     """
     Returns list of tables to render.
-
-    - Checks every root key for it's own table, and if not defined it adds a default table name using the key.
-    - Scans every root key for decendant tables.
     """
     return schema._descendant_tables
 

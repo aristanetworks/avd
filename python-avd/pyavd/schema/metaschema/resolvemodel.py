@@ -19,6 +19,7 @@ def merge_schema_from_ref(schema: dict) -> dict:
     ref = schema.pop("$ref")
     ref_schema = merge_schema_from_ref(get_schema_from_ref(ref))
     if ref_schema["type"] != schema["type"]:
+        # TODO: Consider if this should be a pyavd specific error
         raise ValueError(
             f"Incompatible schema types from ref '{ref}' ref type '{ref_schema['type']}' schema type '{schema['type']}'\nschema: {schema}\nref_schema:"
             f" {ref_schema})"
