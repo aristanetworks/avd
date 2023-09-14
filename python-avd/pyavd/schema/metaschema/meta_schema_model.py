@@ -10,9 +10,8 @@ from typing import Annotated, Any, Generator, List, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, RootModel, constr
 
-from schema.generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
-
 from ..generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBool, TableRowGenDict, TableRowGenInt, TableRowGenList, TableRowGenStr
+from ..generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
 from .resolvemodel import merge_schema_from_ref
 
 
@@ -67,17 +66,14 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     def _table(self) -> str | None:
         """Return table name. Either set directly on this field, inherited from parent or default key name for root keys"""
         if self.documentation_options is not None and self.documentation_options.table:
-            # print("static table", self.documentation_options.table)
             return self.documentation_options.table
 
         # No local table, so use the _table from the parent_schema.
         if self._parent_schema and self._parent_schema._table:
-            # print("parent table", self._parent_schema._table)
             return self._parent_schema._table
 
         if not self._path:
             # No table for the root dict
-            print("root dict", self._key)
             return None
 
         if len(self._path) != 1:
@@ -85,7 +81,6 @@ class AvdSchemaBaseModel(BaseModel, ABC):
             raise NotImplementedError("Something went wrong in _table", self._path)
 
         # This is a root key the default table is the key with hyphens
-        print("root key", self._key)
         return self._key.replace("<", "").replace(">", "").replace("_", "-")
 
     @property

@@ -6,13 +6,11 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.default import default
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-from ansible_collections.arista.avd.schemas.avd_switch_facts.avd_switch_facts import AvdfactsSwitch
 
 from .snmp_server import SnmpServerMixin
 
@@ -201,7 +199,7 @@ class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
             return None
 
         router_multicast = {"ipv4": {"routing": True}}
-        if self.switch.evpn_multicast is True:
+        if get(self._hostvars, "switch.evpn_multicast") is True:
             router_multicast["ipv4"]["software_forwarding"] = "sfe"
 
         return router_multicast

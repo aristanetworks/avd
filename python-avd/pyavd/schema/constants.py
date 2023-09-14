@@ -5,9 +5,9 @@ from pathlib import Path
 
 from yaml import safe_load
 
-EOS_DESIGNS_SCHEMA_PATH = Path(__file__).parents[1].joinpath("ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.yml")
+EOS_DESIGNS_SCHEMA_PATH = Path(__file__).parents[3].joinpath("ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.yml")
 EOS_CLI_CONFIG_GEN_SCHEMA_PATH = (
-    Path(__file__).parents[1].joinpath("ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml")
+    Path(__file__).parents[3].joinpath("ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml")
 )
 
 with open(EOS_CLI_CONFIG_GEN_SCHEMA_PATH, encoding="UTF-8") as file:

@@ -562,6 +562,7 @@ class EosDesigns(BaseModel):
             queue_monitor_length_notify: bool = Field(default=True)
             interface_storm_control: bool = Field(default=True)
             poe: bool = Field(default=False)
+            per_interface_mtu: bool = Field(default=True)
             bgp_update_wait_install: bool = Field(default=True)
             bgp_update_wait_for_convergence: bool = Field(default=True)
 
@@ -570,6 +571,7 @@ class EosDesigns(BaseModel):
         reload_delay: ReloadDelay | None = Field(default=None)
         tcam_profile: str | None = Field(default=None)
         lag_hardware_only: bool | None = Field(default=None)
+        default_interface_mtu: int | None = Field(default=None)
         feature_support: FeatureSupport | None = Field(default=None)
         management_interface: str = Field(default="Management1")
         raw_eos_cli: str | None = Field(default=None)

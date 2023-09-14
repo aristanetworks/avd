@@ -36,17 +36,3 @@
     content: "{{ role_name | arista.avd.convert_schema(type='jsonschema') | to_nice_json(indent=2, sort_keys=false) }}"
     dest: "{{ role_schema_json_schema_path }}"
     mode: 0664
-
-- name: Convert AVD Schema to Pydantic Classes
-  tags: [eos_designs]
-  run_once: true
-  ansible.builtin.copy:
-    content: "{{ role_name | arista.avd.convert_schema(type='pydantic') }}"
-    dest: "{{ role_schema_pydantic_path }}"
-    mode: 0664
-
-- name: Run black formatting on generated Pydantic Class file
-  tags: [eos_designs]
-  run_once: true
-  ansible.builtin.shell:
-    cmd: "black {{ role_schema_pydantic_path }}"
