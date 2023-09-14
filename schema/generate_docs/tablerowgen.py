@@ -135,6 +135,9 @@ class TableRowGenBase(ABC):
             if LEGACY_OUTPUT:
                 path += f".{key}"
 
+        if LEGACY_OUTPUT:
+            path = path.replace("<", "&lt;").replace(">", "&gt;")
+
         return f'[<samp>{self.get_indentation()}{key}</samp>](## "{path}"){self.get_deprecation_label()}'
 
     def render_type(self) -> str:
