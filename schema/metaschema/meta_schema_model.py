@@ -63,10 +63,30 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     def _descendant_tables(self) -> set[str]:
         return set()
 
-    @property
+    @cached_property
     def _table(self) -> str | None:
-        if self.documentation_options is not None:
+        """Return table name. Either set directly on this field, inherited from parent or default key name for root keys"""
+        if self.documentation_options is not None and self.documentation_options.table:
+            # print("static table", self.documentation_options.table)
             return self.documentation_options.table
+
+        # No local table, so use the _table from the parent_schema.
+        if self._parent_schema and self._parent_schema._table:
+            # print("parent table", self._parent_schema._table)
+            return self._parent_schema._table
+
+        if not self._path:
+            # No table for the root dict
+            print("root dict", self._key)
+            return None
+
+        if len(self._path) != 1:
+            # This should never happen, since only the root key should be without a parent_schema.
+            raise NotImplementedError("Something went wrong in _table", self._path)
+
+        # This is a root key the default table is the key with hyphens
+        print("root key", self._key)
+        return self._key.replace("<", "").replace(">", "").replace("_", "-")
 
     @property
     def _path(self) -> list[str]:
@@ -264,8 +284,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
             return set()
 
         descendant_tables = set()
-        if self.items._table:
-            descendant_tables.add(self.items._table)
+        descendant_tables.add(self.items._table)
         descendant_tables.update(self.items._descendant_tables)
 
         return descendant_tables
@@ -342,13 +361,11 @@ class AvdSchemaDict(AvdSchemaBaseModel):
         descendant_tables = set()
         if self.keys:
             for childschema in self.keys.values():
-                if childschema._table:
-                    descendant_tables.add(childschema._table)
+                descendant_tables.add(childschema._table)
                 descendant_tables.update(childschema._descendant_tables)
         if self.dynamic_keys:
-            for childschema in self.keys.values():
-                if childschema._table:
-                    descendant_tables.add(childschema._table)
+            for childschema in self.dynamic_keys.values():
+                descendant_tables.add(childschema._table)
                 descendant_tables.update(childschema._descendant_tables)
 
         return descendant_tables

@@ -9,11 +9,13 @@ from .metaschema.meta_schema_model import AristaAvdSchema
 # Tshoot 1
 
 # schema = AristaAvdSchema(**STORE["eos_designs"])
-# print(get_md_tabs(schema, "node-type-bgp-configuration"))
+# schema_path = SCHEMA_PATHS["eos_designs"]
+# # print(get_md_tabs(schema, "node-type-bgp-configuration"))
 
-# Tshoot table_names
+# # Tshoot table_names
 # table_names = list_tables(schema)
 # # print(table_names)
+# output_dir = schema_path.parents[1].joinpath("docs/tables")
 # files = list(output_dir.glob("*.md"))
 # print([file.name.removesuffix(".md") for file in files if file.name.removesuffix(".md") not in table_names])
 # print(len(files), len(table_names))

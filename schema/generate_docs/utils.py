@@ -16,24 +16,25 @@ def list_tables(schema: AristaAvdSchema) -> set[str]:
     - Checks every root key for it's own table, and if not defined it adds a default table name using the key.
     - Scans every root key for decendant tables.
     """
-    table_names = set()
+    return schema._descendant_tables
+    # table_names = set()
 
-    if schema.keys:
-        for key, childschema in schema.keys.items():
-            if childschema._table is not None:
-                table_names.add(childschema._table)
-            else:
-                table_names.add(key.replace("_", "-"))
-            table_names.update(childschema._descendant_tables)
-    if schema.dynamic_keys:
-        for key, childschema in schema.dynamic_keys.items():
-            if childschema._table is not None:
-                table_names.add(childschema._table)
-            else:
-                table_names.add(key.replace("_", "-"))
-            table_names.update(childschema._descendant_tables)
+    # if schema.keys:
+    #     for key, childschema in schema.keys.items():
+    #         if childschema._table is not None:
+    #             table_names.add(childschema._table)
+    #         else:
+    #             table_names.add(key.replace("_", "-"))
+    #         table_names.update(childschema._descendant_tables)
+    # if schema.dynamic_keys:
+    #     for key, childschema in schema.dynamic_keys.items():
+    #         if childschema._table is not None:
+    #             table_names.add(childschema._table)
+    #         else:
+    #             table_names.add(key.replace("_", "-"))
+    #         table_names.update(childschema._descendant_tables)
 
-    return table_names
+    # return table_names
 
 
 def render_schema_field(target_table: str | None, schema: AvdSchemaField) -> bool:
@@ -45,18 +46,28 @@ def render_schema_field(target_table: str | None, schema: AvdSchemaField) -> boo
     if target_table is None:
         # Always render a field if there is no target table.
         # Without a target table all keys should be included.
-        print("no target_table")
+        # print("no target_table")
         return True
 
-    if schema._table and target_table != schema._table and target_table not in schema._descendant_tables:
-        # Target table mismatches specifically set table name AND is not ind any descendant tables.
-        print("mismatching table", target_table, schema._table)
+    if target_table in schema._descendant_tables:
+        # Always render the field if a descendant field has the target table
+        # print("descending table found", schema._key)
+        return True
+
+    if schema._is_primary_key:
+        # Always render the field if it is the primary key in a list of dicts.
+        # print("primary_key found", schema._key)
+        return True
+
+    if schema._table and target_table != schema._table:
+        # Target table mismatches specifically set table name.
+        # print("mismatching table", target_table, schema._table)
         return False
 
-    if not schema._table and len(schema._path) == 1 and schema._key and schema._key.replace("_", "-") != target_table:
-        # This is a root key and the target_table mismatches a hyphen variant of the key name.
-        print("mismatching rootkey", target_table, schema._key.replace("_", "-"))
-        return False
+    # if not schema._table and len(schema._path) == 1 and schema._key and schema._key.replace("_", "-") != target_table:
+    #     # This is a root key and the target_table mismatches a hyphen variant of the key name.
+    #     # print("mismatching rootkey", target_table, schema._key.replace("_", "-"))
+    #     return False
 
     # if schema._descendant_tables and target_table not in schema._descendant_tables:
     #     # Some descendant key has the target_table set, so this one should be rendered to show the path.
@@ -65,5 +76,5 @@ def render_schema_field(target_table: str | None, schema: AvdSchemaField) -> boo
 
     # Render the key if none of the above match.
     # The key is likely just a child of something else
-    print("allowed key", schema._key)
+    # print("allowed key", schema._key)
     return True
