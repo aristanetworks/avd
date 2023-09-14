@@ -8,11 +8,15 @@ from enum import Enum
 from functools import cached_property
 from typing import Annotated, Any, Generator, List, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, RootModel, constr
+from pydantic import BaseModel, ConfigDict, Field, constr
 
 from ..generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBool, TableRowGenDict, TableRowGenInt, TableRowGenList, TableRowGenStr
 from ..generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
 from .resolvemodel import merge_schema_from_ref
+
+KEY_PATTERN_WITH_UPPERCASE = r"^[a-zA-Z][a-zA-Z0-9_]*$"
+KEY_PATTERN = r"^[a-z][a-z0-9_]*$"
+DYNAMIC_KEY_PATTERN = r"^[a-z][a-z0-9_.]*$"
 
 
 class AvdSchemaBaseModel(BaseModel, ABC):
@@ -262,12 +266,12 @@ class AvdSchemaList(AvdSchemaBaseModel):
     """Schema for list items"""
     min_length: int | None = None
     max_length: int | None = None
-    primary_key: str | None = Field(None, pattern=r"^[a-z][a-z0-9_]*$")
+    primary_key: str | None = Field(None, pattern=KEY_PATTERN)
     """
     Name of a primary key in a list of dictionaries.
     The configured key is implicitly required and must have unique values between the list elements.
     """
-    secondary_key: str | None = Field(None, pattern=r"^[a-z][a-z0-9_]*$")
+    secondary_key: str | None = Field(None, pattern=KEY_PATTERN)
     """Name of a secondary key, which is used with `convert_types:[dict]` in case of values not being dictionaries."""
 
     _table_row_generator = TableRowGenList
@@ -319,20 +323,15 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     type: Literal["dict"]
     default: dict[str, Any] | None = None
     """Default value"""
-    keys: dict[
-        # TODO: Allowing upper case until we have deprecated and removed the remaining upper case vars.
-        Annotated[str, constr(pattern=r"^[a-zA-Z][a-zA-Z0-9_]*$")],
-        Annotated[AvdSchemaField, Field(discriminator="type")],
-    ] | None = None
+
+    # TODO: Change pattern to KEY_PATTERN once we have removed all upper case keys from the schema
+    keys: dict[constr(pattern=KEY_PATTERN_WITH_UPPERCASE), Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
     """
     Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.
     `keyname` must use snake_case.
     `schema` is the schema for each key. This is a recursive schema, so the value must conform to AVD Schema.
     """
-    dynamic_keys: dict[
-        Annotated[str, constr(pattern=r"^[a-z][a-z0-9_.]*$")],
-        Annotated[AvdSchemaField, Field(discriminator="type")],
-    ] | None = None
+    dynamic_keys: dict[constr(pattern=DYNAMIC_KEY_PATTERN), Annotated[AvdSchemaField, Field(discriminator="type")]] | None = None
     """
     Dictionary of dynamic dictionary-keys in the format `{<variable.path>: {<schema>}}`.
     `variable.path` is a variable path using dot-notation and pointing to a variable under the parent dictionary containing dictionary-keys.
@@ -346,7 +345,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
 
     field_schema: str | None = Field(None, alias="$schema")
     field_id: str | None = Field(None, alias="$id")
-    field_defs: FieldDefs | None = Field(None, alias="$defs")
+    field_defs: dict[constr(pattern=KEY_PATTERN), Annotated[AvdSchemaField, Field(discriminator="type")]] = Field(None, alias="$defs")
 
     _table_row_generator = TableRowGenDict
     _yaml_line_generator = YamlLineGenDict
@@ -385,20 +384,6 @@ class AvdSchemaDict(AvdSchemaBaseModel):
             for key, childschema in self.dynamic_keys.items():
                 childschema._key = f"<{key}>"
                 childschema._parent_schema = self
-
-
-class FieldDefs(RootModel):
-    root: dict[
-        Annotated[str, constr(pattern=r"^[a-z][a-z0-9_]*$")],
-        Annotated[AvdSchemaField, Field(discriminator="type")],
-    ] = Field(...)
-    """Storage for reusable schema fragments"""
-
-    def __iter__(self):
-        return iter(self.root)
-
-    def __getitem__(self, item):
-        return self.root[item]
 
 
 class AristaAvdSchema(AvdSchemaDict):
