@@ -377,7 +377,7 @@ class YamlLineGenDict(YamlLineGenBase):
         if LEGACY_OUTPUT:
             properties = ""
 
-        if self.schema.documentation_options is not None and self.schema.documentation_options.hide_keys:
+        if not self.schema.keys or (self.schema.documentation_options is not None and self.schema.documentation_options.hide_keys):
             # Add <dict> when we don't generate yaml for child keys.
             properties = f" <dict>{properties}"
 

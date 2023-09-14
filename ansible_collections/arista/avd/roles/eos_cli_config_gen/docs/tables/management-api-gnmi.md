@@ -68,5 +68,5 @@
       enable_vrfs:
         - name: <str>
           access_group: <str>
-      octa:
+      octa: <dict>
     ```
