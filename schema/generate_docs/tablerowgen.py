@@ -127,7 +127,7 @@ class TableRowGenBase(ABC):
         path = ".".join(self.schema._path)
 
         if self.schema._key:
-            key = self.schema._key
+            key = self.schema._key.replace("<", "&lt;").replace(">", "&gt;")
         else:
             key = f"&lt;{self.schema.type}&gt;"
 

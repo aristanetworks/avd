@@ -300,9 +300,6 @@ class AvdSchemaList(AvdSchemaBaseModel):
             else:
                 self.items._is_first_list_key = True
 
-            # if hasattr(self.items, "update_child_info"):
-            #     self.items.update_child_info()
-
 
 class AvdSchemaDict(AvdSchemaBaseModel):
     type: Literal["dict"]
@@ -371,15 +368,11 @@ class AvdSchemaDict(AvdSchemaBaseModel):
             for key, childschema in self.keys.items():
                 childschema._key = key
                 childschema._parent_schema = self
-                # if hasattr(childschema, "update_child_info"):
-                #     childschema.update_child_info()
 
         if self.dynamic_keys is not None:
             for key, childschema in self.dynamic_keys.items():
                 childschema._key = f"<{key}>"
                 childschema._parent_schema = self
-                # if hasattr(childschema, "update_child_info"):
-                #     childschema.update_child_info()
 
 
 class FieldDefs(RootModel):
