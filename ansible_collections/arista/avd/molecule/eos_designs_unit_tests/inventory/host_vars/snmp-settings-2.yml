@@ -13,7 +13,7 @@ l2leaf:
 
 snmp_settings:
   enable_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
-  enable_mgmt_interface_vrf: true # This one should not be in the output, since this host has no inband mgmt
+  enable_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
   vrfs:
     - name: SNMPVRF
       enable: true
@@ -32,12 +32,12 @@ snmp_settings:
     - host: 10.6.75.127
       vrf: SNMPVRF
       use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
-      use_mgmt_interface_vrf: true # This one should not be in the output, since this host has no inband mgmt
+      use_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
       version: 2c
       community: SNMP-COMMUNITY-2
     - host: 10.6.75.128
       use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
-      use_mgmt_interface_vrf: true # This one should not be in the output, since this host has no inband mgmt
+      use_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
       version: 3
       users:
         - username: USER-WRITE
