@@ -6,7 +6,7 @@ from __future__ import annotations
 from abc import ABC
 from enum import Enum
 from functools import cached_property
-from typing import Annotated, Any, Generator, List, Literal
+from typing import Annotated, Any, ClassVar, Generator, List, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, constr
 
@@ -47,7 +47,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
     Contains nested models and common fields that applies to all subclasses.
 
-    Also covers internal properties and methods used for documentation generation.
+    Also covers internal attributes and methods used for documentation generation.
     All these are prefixed with underscore.
     """
 
@@ -91,19 +91,32 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     _table_row_generator: type[TableRowGenBase]
     _yaml_line_generator: type[YamlLineGenBase]
 
-    # Internal properties used by schema docs generators
+    # Internal attributes used by schema docs generators
     _key: str | None = None
     _parent_schema: AvdSchemaField | None = None
     _is_primary_key: bool = False
     _is_first_list_key: bool = False
 
-    def __init__(self, **data):
+    # Signal to __init__ if the $ref in the schema should be resolved before initilizing the pydantic model.
+    _resolve_schema: ClassVar[bool] = True
+
+    def __init__(self, resolve_schema: bool | None = None, **data):
         """
-        Overrides BaseModel.__init__(**data) to expand any $ref in the input schema.
+        Overrides BaseModel.__init__(**data).
+        Takes a kwarg "resolve_schema" which controls if all subclasses of AvdSchemaBaseModel should expand any $ref in the input schema.
+
         The $ref expansion _only_ covers this field.
         Any $ref on child fields are expanded as they are initialized by Pydantic since they are based on this base class.
         """
-        super().__init__(**merge_schema_from_ref(data))
+
+        # Setting the resolve_schema attribute on the class, so all sub-classes will inherit this automatically.
+        if resolve_schema is not None:
+            AvdSchemaBaseModel._resolve_schema = resolve_schema
+
+        if self._resolve_schema:
+            data = merge_schema_from_ref(data)
+
+        super().__init__(**data)
 
     @cached_property
     def _descendant_tables(self) -> set[str]:
@@ -207,7 +220,7 @@ class AvdSchemaInt(AvdSchemaBaseModel):
 
     Contains fields that applies to this type specifically. Other fields are inherited from the base class.
 
-    Also covers internal properties and methods used for documentation generation.
+    Also covers internal attributes and methods used for documentation generation.
     All these are prefixed with underscore.
     """
 
@@ -247,7 +260,7 @@ class AvdSchemaBool(AvdSchemaBaseModel):
 
     Contains fields that applies to this type specifically. Other fields are inherited from the base class.
 
-    Also covers internal properties and methods used for documentation generation.
+    Also covers internal attributes and methods used for documentation generation.
     All these are prefixed with underscore.
     """
 
@@ -282,7 +295,7 @@ class AvdSchemaStr(AvdSchemaBaseModel):
 
     Contains fields that applies to this type specifically. Other fields are inherited from the base class.
 
-    Also covers internal properties and methods used for documentation generation.
+    Also covers internal attributes and methods used for documentation generation.
     All these are prefixed with underscore.
     """
 
@@ -299,6 +312,9 @@ class AvdSchemaStr(AvdSchemaBaseModel):
         ip = "ip"
         cidr = "cidr"
         mac = "mac"
+
+        def __str__(self):
+            return self.value
 
     # AvdSchema field properties
     type: Literal["str"]
@@ -341,7 +357,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
     Contains fields that applies to this type specifically. Other fields are inherited from the base class.
 
-    Also covers internal properties and methods used for documentation generation.
+    Also covers internal attributes and methods used for documentation generation.
     All these are prefixed with underscore.
     """
 
@@ -399,11 +415,11 @@ class AvdSchemaList(AvdSchemaBaseModel):
         Overrides BaseModel.model_post_init().
         Runs after this model including all child models have been initilized.
 
-        Sets internal properties on child schema (if set):
+        Sets Internal attributes on child schema (if set):
             - _parent_schema
             - _is_first_list_key (except for dict)
 
-        Sets internal properties on grandchild schemas if child schema is a dict:
+        Sets Internal attributes on grandchild schemas if child schema is a dict:
             - _is_primary_key
             - _is_first_list_key
         """
@@ -432,7 +448,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
 
     Contains fields that applies to this type specifically. Other fields are inherited from the base class.
 
-    Also covers internal properties and methods used for documentation generation.
+    Also covers internal attributes and methods used for documentation generation.
     All these are prefixed with underscore.
     """
 
@@ -495,7 +511,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
         Overrides BaseModel.model_post_init().
         Runs after this model including all child models have been initilized.
 
-        Set internal properties on child schemas:
+        Set Internal attributes on child schemas:
             - _key
             - _parent_schema
         """
@@ -519,7 +535,7 @@ class AristaAvdSchema(AvdSchemaDict):
     This is the schema root dict class providing specific fields and overrides of AvdSchemaDict.
     """
 
-    # Internal properties used by schema docs generators
+    # Internal attributes used by schema docs generators
     @cached_property
     def _table(self) -> str | None:
         """
