@@ -184,7 +184,7 @@ class TestAvdSchema:
         for id in DEFAULT_SCHEMAS:
             if id == "avd_meta_schema":
                 continue
-            test_schema["keys"][id] = {"$ref": f"{id}#/"}
+            test_schema["keys"][id] = {"type": "dict", "$ref": f"{id}#/"}
 
         avdschema = AvdSchema(test_schema)
         for id in DEFAULT_SCHEMAS:
