@@ -131,7 +131,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
         Most fields will inherit from parent schema.
         """
-        if self.documentation_options is not None and self.documentation_options.table:
+        if self.documentation_options and self.documentation_options.table:
             return self.documentation_options.table
 
         # No local table, so use the _table from the parent_schema if available.
@@ -164,6 +164,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         Yields "TableRow"s to be used in schema docs.
         The function is called recursively inside the YamlLineGen classes for parsing children.
         """
+        # Using the Type of table row generator set in the subclass attribute _table_row_generator
         yield from self._table_row_generator().generate_table_rows(schema=self, target_table=target_table)
 
     def _generate_yaml_lines(self, target_table: str | None = None) -> Generator[YamlLine]:
@@ -171,6 +172,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         Yields "YamlLine"s to be used in schema docs.
         The function is called recursively inside the YamlLineGen classes for parsing children.
         """
+        # Using the Type of yaml line generator set in the subclass attribute _yaml_line_generator
         yield from self._yaml_line_generator().generate_yaml_lines(schema=self, target_table=target_table)
 
 
@@ -383,7 +385,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
         Descendant tables returns all table names from fields below this field. Not the field itself.
         """
-        if self.items is None:
+        if not self.items:
             return set()
 
         descendant_tables = set()
@@ -405,7 +407,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
             - _is_primary_key
             - _is_first_list_key
         """
-        if self.items is not None:
+        if self.items:
             self.items._parent_schema = self
             if isinstance(self.items, AvdSchemaDict) and self.items.keys:
                 first_key = True
@@ -497,12 +499,12 @@ class AvdSchemaDict(AvdSchemaBaseModel):
             - _key
             - _parent_schema
         """
-        if self.keys is not None:
+        if self.keys:
             for key, childschema in self.keys.items():
                 childschema._key = key
                 childschema._parent_schema = self
 
-        if self.dynamic_keys is not None:
+        if self.dynamic_keys:
             for key, childschema in self.dynamic_keys.items():
                 childschema._key = f"<{key}>"
                 childschema._parent_schema = self

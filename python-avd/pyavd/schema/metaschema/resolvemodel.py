@@ -12,6 +12,13 @@ from ..constants import STORE
 
 
 def merge_schema_from_ref(schema: dict) -> dict:
+    """
+    Returns a copy of the schema with any $ref resolved.
+
+    If the referenced schema also has a $ref, that too will be resolved.
+
+    Any child schemas will _not_ be resolved.
+    """
     if "$ref" not in schema:
         return schema
 
@@ -31,7 +38,11 @@ def merge_schema_from_ref(schema: dict) -> dict:
 
 @lru_cache
 def get_schema_from_ref(ref: str) -> dict:
-    # print(f"Resolving ref '{ref}'")
+    """
+    Returns the schema found in the schema store using the given absolute ref.
+
+    The ref is in the style "schema_name#/path/to/schema/element"
+    """
     if "#" not in ref:
         raise ValueError("Missing # in ref")
 
@@ -48,13 +59,17 @@ def get_schema_from_ref(ref: str) -> dict:
     return ref_schema
 
 
-def walk_schema(schema: dict, path: list[str]) -> dict:
+def walk_schema(schema: dict, path: list[str]) -> dict | None:
+    """
+    Paths the dictionary along the given path. Empty steps are ignored.
+
+    If the path is invalid it will return None, sso the calling function can raise an error with the original schema ref.
+    """
     if not path:
         return schema
 
     step = path.pop(0)
     if step == "":
-        # print(f"Ignoring empty step in path '{path}'")
         return walk_schema(schema, path)
 
     if step in schema:

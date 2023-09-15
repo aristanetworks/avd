@@ -85,7 +85,7 @@ class YamlLineGenBase(ABC):
             # Skip removed keys from YAML
             return
 
-        if render_schema_field(target_table, schema):
+        if render_schema_field(schema, target_table):
             if schema._path:
                 # Only render this field when there is a path (not the root dict), but always render children.
 
@@ -115,7 +115,7 @@ class YamlLineGenBase(ABC):
 
     @property
     def is_removed(self) -> bool:
-        if self.schema.deprecation is not None and self.schema.deprecation.removed:
+        if self.schema.deprecation and self.schema.deprecation.removed:
             return True
 
         return False
@@ -166,15 +166,15 @@ class YamlLineGenBase(ABC):
 
         descriptions = ["This key is deprecated."]
 
-        if self.schema.deprecation.remove_in_version is not None:
+        if self.schema.deprecation.remove_in_version:
             descriptions.append(f"Support will be removed in AVD version {self.schema.deprecation.remove_in_version}.")
-        elif self.schema.deprecation.remove_after_date is not None:
+        elif self.schema.deprecation.remove_after_date:
             descriptions.append(f"Support will be removed in the first major AVD version released after {self.schema.deprecation.remove_after_date}.")
 
-        if self.schema.deprecation.new_key is not None:
+        if self.schema.deprecation.new_key:
             descriptions.append(f"Use <samp>{self.schema.deprecation.new_key}</samp> instead.")
 
-        if self.schema.deprecation.url is not None:
+        if self.schema.deprecation.url:
             descriptions.append(f"See [here]({self.schema.deprecation.url}) for details.")
 
         indentation = self.get_indentation(honor_first_list_key=False)
@@ -222,10 +222,10 @@ class YamlLineGenBase(ABC):
         """
         restrictions = []
         valid_values = []
-        if getattr(self.schema, "dynamic_valid_values", None) is not None:
+        if getattr(self.schema, "dynamic_valid_values", None):
             valid_values.append(f"<value(s) of {self.schema.dynamic_valid_values}>")
 
-        if getattr(self.schema, "valid_values", None) is not None:
+        if getattr(self.schema, "valid_values", None):
             valid_values.extend(self.schema.valid_values)
 
         if valid_values:
@@ -377,7 +377,7 @@ class YamlLineGenDict(YamlLineGenBase):
         if LEGACY_OUTPUT:
             properties = ""
 
-        if not self.schema.keys or (self.schema.documentation_options is not None and self.schema.documentation_options.hide_keys):
+        if not self.schema.keys or (self.schema.documentation_options and self.schema.documentation_options.hide_keys):
             # Add <dict> when we don't generate yaml for child keys.
             properties = f" <dict>{properties}"
 
@@ -394,7 +394,7 @@ class YamlLineGenDict(YamlLineGenBase):
     def render_children(self) -> Generator[YamlLine]:
         """yields TableRow from each child class"""
 
-        if self.schema.documentation_options is not None and self.schema.documentation_options.hide_keys:
+        if self.schema.documentation_options and self.schema.documentation_options.hide_keys:
             # Skip generating table fields for children, if "hide_keys" is set.
             # print(f"Skipping path {self.path} since hide_keys is set")
             return

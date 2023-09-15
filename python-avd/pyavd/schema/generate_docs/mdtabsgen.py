@@ -9,6 +9,13 @@ from .yamlgen import get_yaml
 
 
 def get_md_tabs(schema: AristaAvdSchema, target_table: str | None = None) -> str:
+    """
+    Generate the content of a markdown file with mkdocs tabs containing documentation
+    of of the schema optionally filtered using "target_table".
+
+    - Table tab contains a markdown table.
+    - YAML tab contains a markdown code block with YAML.
+    """
     return f"""\
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.

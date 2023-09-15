@@ -36,7 +36,10 @@ class TableRow(BaseModel):
 class TableRowGenBase(ABC):
     """
     Base class to be used with schema pydantic models.
-    Provides the method "generate_table_rows" to build documentation tables
+
+    Provides the method "generate_table_rows" used to build schema documentation tables.
+
+    Sub-classed per schema type to generate type-specific documentation.
     """
 
     def generate_table_rows(
@@ -44,10 +47,16 @@ class TableRowGenBase(ABC):
         schema: AvdSchemaField,
         target_table: str | None = None,
     ) -> Generator[TableRow]:
+        """
+        Yields TableRow for this schema field if the field is part of the given target_table.
+
+        Recursively walks children if applicable (only for lists and dicts)
+        """
         self.schema = schema
         self.target_table = target_table
 
-        if render_schema_field(target_table, schema):
+        # The render_schema_field function contains all the logic to device wether this field should be part of the target_table or not.
+        if render_schema_field(schema, target_table):
             if schema._path:
                 # Only render this field when there is a path (not the root dict), but always render children.
 
@@ -82,6 +91,9 @@ class TableRowGenBase(ABC):
         return i * indentation_count
 
     def get_deprecation_label(self) -> str | None:
+        """
+        Returns None or a markdown formatted colored string with the deprecation status.
+        """
         if self.schema.deprecation is None:
             return ""
 
@@ -93,6 +105,9 @@ class TableRowGenBase(ABC):
         return f' <span style="color:red">{label}</span>'
 
     def get_deprecation_description(self) -> str | None:
+        """
+        Returns None or a markdown formatted colored string with the deprecation description.
+        """
         if self.schema.deprecation is None:
             return ""
 
@@ -104,17 +119,17 @@ class TableRowGenBase(ABC):
             descriptions.append("This key is deprecated.")
             removed_verb = "will be"
 
-        if self.schema.deprecation.remove_in_version is not None:
+        if self.schema.deprecation.remove_in_version:
             descriptions.append(f"Support {removed_verb} removed in AVD version {self.schema.deprecation.remove_in_version}.")
-        elif self.schema.deprecation.remove_after_date is not None:
+        elif self.schema.deprecation.remove_after_date:
             descriptions.append(f"Support {removed_verb} removed in the first major AVD version released after {self.schema.deprecation.remove_after_date}.")
         elif self.schema.deprecation.removed:
             descriptions.append("Support was removed in AVD.")
 
-        if self.schema.deprecation.new_key is not None:
+        if self.schema.deprecation.new_key:
             descriptions.append(f"Use <samp>{self.schema.deprecation.new_key}</samp> instead.")
 
-        if self.schema.deprecation.url is not None:
+        if self.schema.deprecation.url:
             descriptions.append(f"See [here]({self.schema.deprecation.url}) for details.")
 
         description = " ".join(descriptions)
@@ -198,10 +213,10 @@ class TableRowGenBase(ABC):
         """
         restrictions = []
         valid_values = []
-        if getattr(self.schema, "dynamic_valid_values", None) is not None:
+        if getattr(self.schema, "dynamic_valid_values", None):
             valid_values.append(f"<value(s) of {self.schema.dynamic_valid_values}>")
 
-        if getattr(self.schema, "valid_values", None) is not None:
+        if getattr(self.schema, "valid_values", None):
             valid_values.extend(self.schema.valid_values)
 
         if valid_values:
@@ -281,7 +296,7 @@ class TableRowGenList(TableRowGenBase):
             "list": "List",
         }
         field_type = type_converters[self.schema.type]
-        if self.schema.items is not None:
+        if self.schema.items:
             field_type += f", items: {type_converters[self.schema.items.type]}"
 
         return field_type
@@ -323,9 +338,8 @@ class TableRowGenDict(TableRowGenBase):
     def render_children(self) -> Generator[TableRow]:
         """yields TableRow from each child class"""
 
-        if self.schema.documentation_options is not None and self.schema.documentation_options.hide_keys:
+        if self.schema.documentation_options and self.schema.documentation_options.hide_keys:
             # Skip generating table fields for children, if "hide_keys" is set.
-            # print(f"Skipping path {self.path} since hide_keys is set")
             return
 
         if self.schema.keys:

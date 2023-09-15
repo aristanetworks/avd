@@ -16,34 +16,31 @@ def list_tables(schema: AristaAvdSchema) -> set[str]:
     return schema._descendant_tables
 
 
-def render_schema_field(target_table: str | None, schema: AvdSchemaField) -> bool:
-    """Returns boolean indicating whether this field should be rendered in the targeted table"""
+def render_schema_field(schema: AvdSchemaField, target_table: str | None) -> bool:
+    """
+    Returns boolean indicating whether this field should be rendered in the targeted table
+
+    - The root dict is always rendered.
+    - Render keys with matching _table
+    - Always render the ancestors of a field included in the table.
+    - Always render primary keys in list of dicts.
+    """
     if not schema._path:
         # Always render the root dict. Actually the root dict will not be rendered as a field, but we need this to render the children.
         return True
 
-    if target_table is None:
-        # Always render a field if there is no target table.
-        # Without a target table all keys should be included.
-        # print("no target_table")
-        return True
-
-    if target_table in schema._descendant_tables:
-        # Always render the field if a descendant field has the target table
-        # print("descending table found", schema._key)
+    if target_table == schema._table:
+        # Target table matches the field table name.
         return True
 
     if schema._is_primary_key:
         # Always render the field if it is the primary key in a list of dicts.
-        # print("primary_key found", schema._key)
         return True
 
-    if schema._table and target_table != schema._table:
-        # Target table mismatches specifically set table name.
-        # print("mismatching table", target_table, schema._table)
-        return False
+    # Keeping this check at the end, since _descendant_tables is a recursive function that can be "expensive"
+    if target_table in schema._descendant_tables:
+        # Always render the field if a descendant field has the target table
+        return True
 
-    # Render the key if none of the above match.
-    # The key is likely just a child of something else
-    # print("allowed key", schema._key)
-    return True
+    # Do not render the key if none of the above match.
+    return False
