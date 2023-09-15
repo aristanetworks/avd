@@ -138,10 +138,6 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         if self._parent_schema and self._parent_schema._table:
             return self._parent_schema._table
 
-        # No table for the root dict
-        if not self._path:
-            return None
-
         # This should never happen, since only the root key should be without a parent_schema.
         if len(self._path) != 1:
             raise NotImplementedError("Something went wrong in _table", self._path)
@@ -153,11 +149,8 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     def _path(self) -> list[str]:
         """
         Returns the variable path for this field to be used in schema docs.
-        Like "rootkey.subkey.list.[].mykey".
+        Like "rootkey.subkey.[].mykey".
         """
-        # The root dict has no path
-        if self._parent_schema is None:
-            return []
 
         # A list item has no key, so add "[]" to the parent schema for representing the list-item
         if not self._key:
@@ -221,7 +214,7 @@ class AvdSchemaInt(AvdSchemaBaseModel):
         str = "str"
         float = "float"
 
-    # Field properties
+    # AvdSchema field properties
     type: Literal["int"]
     convert_types: List[ConvertType] | None = None
     """List of types to auto-convert from. For 'int' auto-conversion is supported from 'bool', 'str' and 'float'"""
@@ -260,7 +253,7 @@ class AvdSchemaBool(AvdSchemaBaseModel):
         int = "int"
         str = "str"
 
-    # Field properties
+    # AvdSchema field properties
     type: Literal["bool"]
     convert_types: List[ConvertType] | None = None
     """List of types to auto-convert from. For 'bool' auto-conversion is supported from 'int' and 'str'"""
@@ -305,7 +298,7 @@ class AvdSchemaStr(AvdSchemaBaseModel):
         cidr = "cidr"
         mac = "mac"
 
-    # Field properties
+    # AvdSchema field properties
     type: Literal["str"]
     convert_to_lower_case: bool | None = False
     """Convert string value to lower case before performing validation"""
@@ -355,7 +348,7 @@ class AvdSchemaList(AvdSchemaBaseModel):
         list = "list"
         str = "str"
 
-    # Field properties
+    # AvdSchema field properties
     type: Literal["list"]
     convert_types: List[ConvertType] | None = None
     """
@@ -432,7 +425,16 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
 
 class AvdSchemaDict(AvdSchemaBaseModel):
-    # Field properties
+    """
+    Pydantic model for AvdSchema fields of type "dict".
+
+    Contains fields that applies to this type specifically. Other fields are inherited from the base class.
+
+    Also covers internal properties and methods used for documentation generation.
+    All these are prefixed with underscore.
+    """
+
+    # AvdSchema field properties
     type: Literal["dict"]
     default: dict[str, Any] | None = None
     """Default value"""
@@ -455,10 +457,13 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     allow_other_keys: bool | None = False
     """Allow keys in the dictionary which are not defined in the schema."""
     documentation_options: DocumentationOptionsDict | None = None
-
+    """Schema field options used for controlling documentation generation"""
     field_schema: str | None = Field(None, alias="$schema")
+    """Schema name used when exporting to JSON schema"""
     field_id: str | None = Field(None, alias="$id")
+    """Schema ID used when exporting to JSON schema"""
     field_defs: dict[constr(pattern=KEY_PATTERN), Annotated[AvdSchemaField, Field(discriminator="type")]] = Field(None, alias="$defs")
+    """Storage for reusable schema fragments"""
 
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenDict
@@ -466,6 +471,11 @@ class AvdSchemaDict(AvdSchemaBaseModel):
 
     @cached_property
     def _descendant_tables(self) -> set[str]:
+        """
+        Descendant tables are used for schema docs to identify if a key should be included in a certain table.
+
+        Descendant tables returns all table names from fields below this field. Not the field itself.
+        """
         descendant_tables = set()
         if self.keys:
             for childschema in self.keys.values():
@@ -479,12 +489,10 @@ class AvdSchemaDict(AvdSchemaBaseModel):
         return descendant_tables
 
     def model_post_init(self, __context: Any) -> None:
-        """our update_child_info to set internal properties"""
-        self.update_child_info()
-        return super().model_post_init(__context)
-
-    def update_child_info(self) -> None:
         """
+        Overrides BaseModel.model_post_init().
+        Runs after this model including all child models have been initilized.
+
         Set internal properties on child schemas:
             - _key
             - _parent_schema
@@ -499,10 +507,35 @@ class AvdSchemaDict(AvdSchemaBaseModel):
                 childschema._key = f"<{key}>"
                 childschema._parent_schema = self
 
+        return super().model_post_init(__context)
+
 
 class AristaAvdSchema(AvdSchemaDict):
-    """Arista AVD Schema"""
+    """
+    Arista AVD Schema.
+
+    This is the schema root dict class providing specific fields and overrides of AvdSchemaDict.
+    """
+
+    # Internal properties used by schema docs generators
+    @cached_property
+    def _table(self) -> str | None:
+        """
+        Return the name of the schema documentation table where this field should be included.
+
+        The table name is not applicable to the root schema so we return None
+        """
+        return None
+
+    @cached_property
+    def _path(self) -> list[str]:
+        """
+        Returns the variable path for this field to be used in schema docs.
+
+        The root dict has an empty path.
+        """
+        return []
 
 
 AvdSchemaField = AvdSchemaInt | AvdSchemaBool | AvdSchemaStr | AvdSchemaList | AvdSchemaDict
-"""Alias for any of the AvdSchema types"""
+"""Alias for any of the AvdSchema field types"""
