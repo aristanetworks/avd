@@ -146,6 +146,8 @@ nav:
           - Overview: roles/eos_cli_config_gen/README.md
           - Role Configuration: roles/eos_cli_config_gen/docs/role-configuration.md
           - Input Variables: roles/eos_cli_config_gen/docs/input-variables.md
+          - How-To Guides:
+              - Custom Templates: roles/eos_cli_config_gen/docs/how-to/custom-templates.md
       - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
       - eos_config_deploy_cvp:
           - Overview: roles/eos_config_deploy_cvp/README.md
