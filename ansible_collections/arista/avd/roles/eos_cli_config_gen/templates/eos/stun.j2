@@ -1,0 +1,28 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - stun #}
+{% if stun is arista.avd.defined or stun is arista.avd.defined or stun is arista.avd.defined %}
+!
+{% endif %}
+{# stun #}
+stun
+{% if stun.server is avd.defined %}
+  server
+  {% if stun.server.local_interface is avd.defined %}
+  local-interface {{ stun.server.local_interface }}
+  {% endif %}
+  {% if stun.client is avd.defined %}
+  client
+  {% endif %}
+  {% for server in stun.client %}
+    {% if server.server_profile is avd.defined %}
+    server_profile {{ server.server_profile }}
+    {% endif %}
+    {% if server.ip_address is avd.defined %}
+    ip address {{ server.ip_address }}
+    {% endif %}
+  {% endfor %}
+{% endif %}

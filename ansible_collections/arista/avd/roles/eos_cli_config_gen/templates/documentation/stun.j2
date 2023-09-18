@@ -1,0 +1,40 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - stun #}
+{% if stun.server is arista.avd.defined %}
+
+### STUN server
+
+#### STUN Local server 
+
+| local_interface |
+{% if stuns.server.local_interface is defined %}
+{{ stuns.server.local_interface }}
+{%             endif %}
+{%     endif %}
+
+### STUN Client 
+
+#### STUN servers
+
+
+{% if stun.client is arista.avd.defined %}
+| server_profile | ip_address |
+  {% for server in stun.client %}
+    {% if server.server_profile is avd.defined %}
+    server_profile {{ server.server_profile }}
+    {% endif %}
+    {% if server.ip_address is avd.defined %}
+    ip address {{ server.ip_address }}
+    {% endif %}
+  {% endfor %}
+{%     endif %}
+#### Stun device configuration
+
+```eos
+{%     include 'eos/stun.j2' %}
+```
+{% endif %}
