@@ -11,18 +11,18 @@
 stun
 {% if stun.server is avd.defined %}
   server
-  {% if stun.server.local_interface is avd.defined %}
+  {%     if stun.server.local_interface is avd.defined %}
   local-interface {{ stun.server.local_interface }}
-  {% endif %}
-  {% if stun.client is avd.defined %}
+  {%     endif %}
+  {%     if stun.client is avd.defined %}
   client
-  {% endif %}
-  {% for server in stun.client %}
-    {% if server.server_profile is avd.defined %}
+  {%     endif %}
+  {%     for server in stun.client %}
+    {%         if server.server_profile is avd.defined %}
     server_profile {{ server.server_profile }}
-    {% endif %}
-    {% if server.ip_address is avd.defined %}
+    {%         endif %}
+    {%         if server.ip_address is avd.defined %}
     ip address {{ server.ip_address }}
-    {% endif %}
-  {% endfor %}
+    {%         endif %}
+  {%     endfor %}
 {% endif %}
