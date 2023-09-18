@@ -384,9 +384,9 @@ class RouterBgpMixin(UtilsMixin):
 
     def _get_vlan_aware_bundle_name(self, vlan: dict) -> str | None:
         """
-        Return a string with the vlan-aware-bundle name for one VLAN
+        Return a string with the vlan-aware-bundle name for one VLAN. They wiil be prefixed to make them not overlap.
         """
-        return_value = vlan.get("name")
+        return_value = "!" + str(vlan.get("name"))
         if vlan.get("evpn_vlan_bundle") is not None:
             return_value = "_" + str(vlan.get("evpn_vlan_bundle"))
         return return_value
@@ -464,7 +464,7 @@ class RouterBgpMixin(UtilsMixin):
 
                     # We are reusing the regular bgp vlan function so need to add vlan info
                     bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
-                    bundle = {"name": bundle_name, **bundle}
+                    bundle = {"name": str(bundle_name).replace("!", ""), **bundle}
 
                 append_if_not_duplicate(
                     list_of_dicts=bundles,
