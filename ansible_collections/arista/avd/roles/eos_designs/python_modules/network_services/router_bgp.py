@@ -386,7 +386,10 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return a string with the vlan-aware-bundle name for one VLAN
         """
-        return vlan.get("evpn_vlan_bundle") or vlan.get("name")
+        return_value = vlan.get("name")
+        if vlan.get("evpn_vlan_bundle") is not None:
+            return_value = "_" + str(vlan.get("evpn_vlan_bundle"))
+        return return_value
 
     @cached_property
     def _router_bgp_vlan_aware_bundles(self) -> list | None:
@@ -423,10 +426,10 @@ class RouterBgpMixin(UtilsMixin):
                     # using the settings under the given evpn_vlan_bundle only.
 
                     # check if the referred name exists in the global evpn_vlan_bundles
-                    if (evpn_vlan_bundle := get_item(self._hostvars["evpn_vlan_bundles"], "name", l2vlans[0]["evpn_vlan_bundle"])) is None:
+                    if (evpn_vlan_bundle := get_item(self._hostvars["evpn_vlan_bundles"], "name", l2vlans[0]["evpn_vlan_bundle"].replace("_", ""))) is None:
                         raise AristaAvdMissingVariableError(
-                            "The 'evpn_vlan_bundle' of the l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for"
-                            f" l2vlan {l2vlans[0]['id']} in Tenant '{l2vlans[0]['tenant']}' and evpn_vlan_bundle '{l2vlans[0]['evpn_vlan_bundle']}'."
+                            "The 'evpn_vlan_bundle' of the l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for l2vlan"
+                            f" {l2vlans[0]['id']} in Tenant '{l2vlans[0]['tenant']}' and evpn_vlan_bundle '{l2vlans[0]['evpn_vlan_bundle'].replace('_','')}'."
                         )
 
                     if (
