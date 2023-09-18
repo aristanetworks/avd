@@ -24,9 +24,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS MH-L2LEAF1A
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -63,6 +60,9 @@ management_api_http:
 link_tracking_groups:
 - name: l2leaf-server02
   recovery_delay: 300
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS MH-L2LEAF1A
 ethernet_interfaces:
 - name: Ethernet1
   peer: MH-LEAF2A

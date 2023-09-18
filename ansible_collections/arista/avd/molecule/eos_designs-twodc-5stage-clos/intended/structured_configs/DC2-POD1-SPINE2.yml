@@ -57,8 +57,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-snmp_server:
-  location: TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-SPINE2
 spanning_tree:
   mode: none
 local_users:
@@ -84,6 +82,8 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1009\n  description Loopback created from raw_eos_cli under spine defaults in DC2 POD1\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-SPINE2
 ethernet_interfaces:
 - name: Ethernet1
   peer: DC2-SUPER-SPINE1

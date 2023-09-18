@@ -193,9 +193,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_true
 local_users:
 - name: admin
   disabled: true
@@ -216,6 +213,9 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS evpn_services_l2_only_true
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
