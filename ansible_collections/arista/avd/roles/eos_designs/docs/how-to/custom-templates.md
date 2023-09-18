@@ -13,7 +13,9 @@ For example, the user may require additional structured configuration variables 
 
 ## Create a Custom Template
 
-Custom templates should be written in Jinja2 and can utilize Jinja2 features such as variable substitution.
+Custom templates should be written in Jinja2.
+
+For details on how to create Jinja2 templates, see [Templating Jinja2](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html#templating-jinja2)
 
 For example:
 ```jinja2
@@ -59,7 +61,7 @@ This happens automatically via the `eos_designs_custom_templates` line that is p
 
 <!-- ![Figure 1: /eos_designs/tasks/main.yml](../../../media/eos_designs_tasks_main_yml.png) -->
 
-<div style="text-align:center">
+<div style="text-align:center; width:600px">
   <img src="../../../../media/eos_designs_tasks_main_yml.png" />
 </div>
 
