@@ -1,10 +1,10 @@
 ### stun
 ---
 stun:
-  server: 
-    local_interface: ethernet1 
+  server:
+    local_interface: ethernet1
   client:
-    - server_profile: server1 
+    - server_profile: server1
       ip_address: 1.2.3.4
     - server_profile: server2
       ip_address: 2.3.4.5
