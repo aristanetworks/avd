@@ -4,35 +4,34 @@
  that can be found in the LICENSE file.
 #}
 {# doc - stun #}
-{% if stun.server is arista.avd.defined %}
+{% if stun is arista.avd.defined %}
 
-### STUN server
+### STUN
+{%     if stun.client is arista.avd.defined %}
 
-#### STUN Local server
+#### STUN Client
+{%         if stun.client.server_profiles is arista.avd.defined %}
+##### STUN Client server-profiles
+
+| server_profile | ip_address |
+{%             for server_profile in stun.client.server_profiles %}
+| {{ server_profile.name }} | {{ server_profile.ip_address }}|   
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if stun.server is arista.avd.defined %}
+
+#### STUN server
+{%         if stun.server.local_interface is arista.avd.defined %}
+
+##### STUN Local server
 
 | local_interface |
-{%     if stus.server.local_interface is defined %}
 {{ stun.server.local_interface }}
+{%         endif %}
 {%     endif %}
 
-### STUN Client
-
-#### STUN servers
-
-{%     if stun.client is arista.avd.defined %}
-| server_profile | ip_address |
-  {%         for server in stun.client %}
-    {%             if server.server_profile is arista.avd.defined %}
-    server_profile {{ server.server_profile }}
-    {%             endif %}
-    {%             if server.ip_address is arista.avd.defined %}
-    ip address {{ server.ip_address }}
-    {%             endif %}
-  {%         endfor %}
-{%     endif %}
-#### Stun device configuration
+#### STUN Device Configuration
 
 ```eos
 {%     include 'eos/stun.j2' %}
-```
-{% endif %}
