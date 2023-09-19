@@ -295,6 +295,8 @@
 {% include 'eos/management-api-models.j2' %}
 {# management security #}
 {% include 'eos/management-security.j2' %}
+{% include 'eos/stun.j2' %}
+{# EOS CLI #}
 {# 802.1x Global #}
 {% include 'eos/dot1x.j2' %}
 {# management ssh #}
@@ -304,8 +306,6 @@
 {# platform apply #}
 {% include 'eos/platform-apply.j2' %}
 {# stun #}
-{% include 'eos/stun.j2' %}
-{# EOS CLI #}
 {% include 'eos/eos-cli.j2' %}
 {# custom templates #}
 {% include 'eos/custom-templates.j2' %}

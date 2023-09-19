@@ -4,25 +4,21 @@
  that can be found in the LICENSE file.
 #}
 {# eos - stun #}
-{% if stun is arista.avd.defined or stun is arista.avd.defined or stun is arista.avd.defined %}
-!
-{% endif %}
-{# stun #}
-stun
 {% if stun.server is arista.avd.defined %}
-  server
-  {%     if stun.server.local_interface is arista.avd.defined %}
-  local-interface {{ stun.server.local_interface }}
-  {%     endif %}
-  {%     if stun.client is arista.avd.defined %}
-  client
-  {%     endif %}
-  {%     for server in stun.client %}
-    {%         if server.server_profile is arista.avd.defined %}
-    server_profile {{ server.server_profile }}
-    {%         endif %}
-    {%         if server.ip_address is arista.avd.defined %}
-    ip address {{ server.ip_address }}
-    {%         endif %}
-  {%     endfor %}
+stun
+   server
+{%     if stun.server.local_interface is arista.avd.defined %}
+      local-interface {{ stun.server.local_interface }}
+{%     endif %}
+{%     if stun.client is arista.avd.defined %}
+client
+{%         for server in stun.client %}
+{%             if server.server_profile is arista.avd.defined %}
+   server_profile {{ server.server_profile }}
+{%             endif %}
+{%             if server.ip_address is arista.avd.defined %}
+      ip address {{ server.ip_address }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {% endif %}
