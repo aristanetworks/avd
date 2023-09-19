@@ -22,10 +22,10 @@
 {%     if stun.client is arista.avd.defined %}
 | server_profile | ip_address |
   {%         for server in stun.client %}
-    {%             if server.server_profile is avd.defined %}
+    {%             if server.server_profile is arista.avd.defined %}
     server_profile {{ server.server_profile }}
     {%             endif %}
-    {%             if server.ip_address is avd.defined %}
+    {%             if server.ip_address is arista.avd.defined %}
     ip address {{ server.ip_address }}
     {%             endif %}
   {%         endfor %}

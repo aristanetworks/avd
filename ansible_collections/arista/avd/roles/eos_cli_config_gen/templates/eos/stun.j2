@@ -9,19 +9,19 @@
 {% endif %}
 {# stun #}
 stun
-{% if stun.server is avd.defined %}
+{% if stun.server is arista.avd.defined %}
   server
-  {%     if stun.server.local_interface is avd.defined %}
+  {%     if stun.server.local_interface is arista.avd.defined %}
   local-interface {{ stun.server.local_interface }}
   {%     endif %}
-  {%     if stun.client is avd.defined %}
+  {%     if stun.client is arista.avd.defined %}
   client
   {%     endif %}
   {%     for server in stun.client %}
-    {%         if server.server_profile is avd.defined %}
+    {%         if server.server_profile is arista.avd.defined %}
     server_profile {{ server.server_profile }}
     {%         endif %}
-    {%         if server.ip_address is avd.defined %}
+    {%         if server.ip_address is arista.avd.defined %}
     ip address {{ server.ip_address }}
     {%         endif %}
   {%     endfor %}
