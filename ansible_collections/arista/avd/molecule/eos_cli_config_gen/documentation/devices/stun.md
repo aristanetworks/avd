@@ -58,9 +58,9 @@ ethernet1
 ```eos
 stun
    client
-      server_profile server1
+      server-profile server1
          ip address 1.2.3.4
-      server_profile server2
+      server-profile server2
          ip address 2.3.4.5
    server
       local-interface ethernet1
