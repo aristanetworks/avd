@@ -11,13 +11,11 @@ stun
       local-interface {{ stun.server.local_interface }}
 {%     endif %}
 {%     if stun.client is arista.avd.defined %}
-client
-{%         for server in stun.client %}
-{%             if server.server_profile is arista.avd.defined %}
-   server_profile {{ server.server_profile }}
-{%             endif %}
+   client
+{%         for profile in stun.client.server_profiles | arista.avd,default([]) %}
+      server_profile {{ profile.name }}
 {%             if server.ip_address is arista.avd.defined %}
-      ip address {{ server.ip_address }}
+         ip address {{ profile.ip_address }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
