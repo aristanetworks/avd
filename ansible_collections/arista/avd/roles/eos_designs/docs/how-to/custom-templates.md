@@ -25,12 +25,6 @@ _structured_configuration_variable_name: structured_configuration_variable_value
 At runtime, `eos_designs` searches for custom templates in several locations, therefore, custom templates should be saved in one of these locations:
 
 ```commandline
-~/.ansible/collections/ansible_collections/arista/avd/roles/eos_designs/templates/templates/<template name>
-~/.ansible/collections/ansible_collections/arista/avd/roles/eos_designs/templates/<template name>
-~/.ansible/collections/ansible_collections/arista/avd/roles/eos_designs/<template name>
-~/.ansible/collections/ansible_collections/arista/avd/roles/eos_designs/tasks/templates/templates/<template name>
-~/.ansible/collections/ansible_collections/arista/avd/roles/eos_designs/tasks/templates/<template name>
-~/.ansible/collections/ansible_collections/arista/avd/roles/eos_designs/tasks/<template name>
 <path to users AVD implementation>/playbooks/templates/templates/<template name>
 <path to users AVD implementation>/playbooks/templates/<template name>
 <path to users AVD implementation>/playbooks/<template name>

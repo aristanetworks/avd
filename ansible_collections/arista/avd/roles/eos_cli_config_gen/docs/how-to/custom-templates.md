@@ -14,11 +14,20 @@ Custom templates should be written in Jinja2.
 
 For details on how to create Jinja2 templates, see [Templating Jinja2](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html#templating-jinja2)
 
-Custom templates can utilize any AVD variable for variable substitution including additional structured configuration variables created by a custom template in the `eos_designs` role. For details on how to create additional structured configuration variables see [Custom Templates for eos_designs](../../../eos_designs/docs/how-to/custom-templates.md) 
+Custom templates can utilize variables defined by all the AVD variable definition mechanisms. For more details see the explanation in [Custom Structured Configuration](../../../eos_designs/docs/how-to/custom-structured-configuration.md)
 
-## Adding the Custom Template to groupvars
+If the required variable is not available by any of these mechanisms, it can be defined using a custom template in the `eos_designs` role. For more details see [Custom Templates for eos_designs](../../../eos_designs/docs/how-to/custom-templates.md) 
 
-For the custom template to be automatically discovered and rendered by `eos_cli_config_gen`, a variable that references the template should be added to `groupvars`.
+At runtime, `eos_cli_config_gen` searches for custom templates in the following location, therefore, custom templates should be saved here:
+
+```commandline
+<path to users AVD implementation>/playbooks/templates/<template name>
+```
+The "templates" folder does not exist by default so will need to be created.
+
+## Adding the Custom Template to group vars
+
+For the custom template to be automatically discovered and rendered by `eos_cli_config_gen`, a variable that references the template should be added to the inventory group vars.
 
 The format of the variable should be as follows:
 ```yaml
