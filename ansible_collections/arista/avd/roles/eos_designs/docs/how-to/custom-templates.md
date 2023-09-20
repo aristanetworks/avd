@@ -35,9 +35,9 @@ The "templates" folders do not exist by default so will need to be created if th
 
 As with any AVD variable, additional structured configuration variables will be subject to validation against the schema. Because they are custom variables, additional structured configuration variables will not be included in the existing schema and will therefore produce warning messages. To bypass validation, custom variables should start with an underscore.
 
-## Adding the Custom Template to groupvars
+## Adding the Custom Template to group vars
 
-For the custom template to be automatically discovered and rendered by `eos_designs`, a variable that references the template should be added to `groupvars`.
+For the custom template to be automatically discovered and rendered by `eos_designs`, a variable that references the template should be added to the inventory group vars.
 
 The format of the variable should be as follows:
 ```yaml
