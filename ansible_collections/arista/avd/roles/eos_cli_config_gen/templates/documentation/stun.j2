@@ -7,11 +7,12 @@
 {% if stun is arista.avd.defined %}
 
 ## STUN
-
-#### STUN Client server-profiles
-
 {%     if stun.client is arista.avd.defined %}
+
+### STUN Client
 {%         if stun.client.server_profiles is arista.avd.defined %}
+
+#### Server Profiles
 
 | Server Profile | IP adress |
 | -------------- | --------- |
@@ -35,4 +36,5 @@
 
 ```eos
 {%     include 'eos/stun.j2' %}
+```
 {% endif %}

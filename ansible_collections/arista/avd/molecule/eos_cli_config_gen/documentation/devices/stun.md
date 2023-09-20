@@ -5,6 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [STUN](#stun)
+  - [STUN Client](#stun-client)
   - [STUN Server](#stun-server)
 
 ## Management
@@ -37,8 +38,9 @@ interface Management1
 
 ## STUN
 
-#### STUN Client server-profiles
+### STUN Client
 
+#### Server Profiles
 
 | Server Profile | IP adress |
 | -------------- | --------- |
@@ -55,8 +57,11 @@ ethernet1
 
 ```eos
 stun
-   server
-      local-interface ethernet1
    client
       server_profile server1
+         ip address 1.2.3.4
       server_profile server2
+         ip address 2.3.4.5
+   server
+      local-interface ethernet1
+```
