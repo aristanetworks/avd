@@ -12,7 +12,7 @@ stun
 {%     endif %}
 {%     if stun.client is arista.avd.defined %}
    client
-{%         for profile in stun.client.server_profiles | arista.avd,default([]) %}
+{%         for profile in stun.client.server_profiles | arista.avd.default([]) %}
       server_profile {{ profile.name }}
 {%             if server.ip_address is arista.avd.defined %}
          ip address {{ profile.ip_address }}

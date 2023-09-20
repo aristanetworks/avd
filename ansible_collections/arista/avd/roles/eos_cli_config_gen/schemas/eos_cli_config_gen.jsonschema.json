@@ -19138,6 +19138,64 @@
       },
       "title": "Static Routes"
     },
+    "stun": {
+      "type": "object",
+      "properties": {
+        "client": {
+          "type": "object",
+          "properties": {
+            "server_profiles": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Server Profiles"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Client"
+        },
+        "server": {
+          "type": "object",
+          "properties": {
+            "local_interface": {
+              "type": "string",
+              "title": "Local Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Server"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Stun"
+    },
     "switchport_default": {
       "type": "object",
       "properties": {

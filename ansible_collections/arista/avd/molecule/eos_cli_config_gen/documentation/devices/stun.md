@@ -4,7 +4,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [STUN](#stun)
+- [STUN](#stun)
+  - [STUN Server](#stun-server)
 
 ## Management
 
@@ -34,15 +35,20 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-### STUN
+## STUN
 
-#### STUN Client
+#### STUN Client server-profiles
 
-#### STUN server
 
-##### STUN Local server
+| Server Profile | IP adress |
+| -------------- | --------- |
+| server1 | 1.2.3.4|
+| server2 | 2.3.4.5|
 
-| local_interface |
+### STUN Server
+
+| Server local interface |
+| ---------------------- |
 ethernet1
 
 #### STUN Device Configuration
@@ -51,8 +57,6 @@ ethernet1
 stun
    server
       local-interface ethernet1
-client
-   server_profile server1
-      ip address 1.2.3.4
-   server_profile server2
-      ip address 2.3.4.5
+   client
+      server_profile server1
+      server_profile server2

@@ -7,13 +7,14 @@
 {% if stun is arista.avd.defined %}
 
 ## STUN
-{%     if stun.client is arista.avd.defined %}
 
-### STUN Client
-{%         if stun.client.server_profiles is arista.avd.defined %}
 #### STUN Client server-profiles
 
-| server_profile | ip_address |
+{%     if stun.client is arista.avd.defined %}
+{%         if stun.client.server_profiles is arista.avd.defined %}
+
+| Server Profile | IP adress |
+| -------------- | --------- |
 {%             for server_profile in stun.client.server_profiles %}
 | {{ server_profile.name }} | {{ server_profile.ip_address }}|
 {%             endfor %}
@@ -22,9 +23,10 @@
 {%     if stun.server is arista.avd.defined %}
 
 ### STUN Server
-{%         if stun.server.local_interface is arista.avd.defined %}
 
-| local_interface |
+| Server local interface |
+| ---------------------- |
+{%         if stun.server.local_interface is arista.avd.defined %}
 {{ stun.server.local_interface }}
 {%         endif %}
 {%     endif %}
