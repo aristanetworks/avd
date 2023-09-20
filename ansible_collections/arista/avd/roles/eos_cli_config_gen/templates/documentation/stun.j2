@@ -6,12 +6,12 @@
 {# doc - stun #}
 {% if stun is arista.avd.defined %}
 
-### STUN
+## STUN
 {%     if stun.client is arista.avd.defined %}
 
-#### STUN Client
+### STUN Client
 {%         if stun.client.server_profiles is arista.avd.defined %}
-##### STUN Client server-profiles
+#### STUN Client server-profiles
 
 | server_profile | ip_address |
 {%             for server_profile in stun.client.server_profiles %}
@@ -21,10 +21,8 @@
 {%     endif %}
 {%     if stun.server is arista.avd.defined %}
 
-#### STUN server
+### STUN Server
 {%         if stun.server.local_interface is arista.avd.defined %}
-
-##### STUN Local server
 
 | local_interface |
 {{ stun.server.local_interface }}
