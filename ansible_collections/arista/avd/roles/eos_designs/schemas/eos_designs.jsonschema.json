@@ -15199,7 +15199,7 @@
                 },
                 "evpn_l2_multicast": {
                   "type": "object",
-                  "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\n",
+                  "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\nRequires `evpn_multicast` to also be set to `true`.\n",
                   "properties": {
                     "enabled": {
                       "type": "boolean",
@@ -15214,7 +15214,7 @@
                 },
                 "evpn_l3_multicast": {
                   "type": "object",
-                  "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\n",
+                  "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\nRequires `evpn_multicast` to also be set to `true`.\n",
                   "properties": {
                     "enabled": {
                       "type": "boolean",
@@ -16833,7 +16833,7 @@
           },
           "evpn_l2_multicast": {
             "type": "object",
-            "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\n",
+            "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\nRequires `evpn_multicast` to also be set to `true`.\n",
             "properties": {
               "enabled": {
                 "type": "boolean",
@@ -16848,7 +16848,7 @@
           },
           "evpn_l3_multicast": {
             "type": "object",
-            "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\n",
+            "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\nRequires `evpn_multicast` to also be set to `true`.\n",
             "properties": {
               "enabled": {
                 "type": "boolean",
