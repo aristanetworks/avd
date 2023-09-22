@@ -11,9 +11,18 @@ keys:
     keys:
       client:
         type: dict
+        description: |
+          "If a device is a client"
         keys:
           server_profiles:
             type: list
+            description: |
+              Enable Server profiles need to reference the name of the profile and IP address
+              Examples:
+              - "server-profile profile1
+                    ip addres 1.1.1.1"
+              - "server-profile profile2
+                    ip addres 2.2.2.2"
             primary_key: name
             items:
               type: dict
@@ -24,6 +33,10 @@ keys:
                   type: str
       server:
         type: dict
+        description: |
+          "If a device is a server typically this device just needs to reference a interface with a IP address and also is typically the route reflector."
         keys:
           local_interface:
             type: str
+            description: |
+              "This is typically the ethernet interface that is connected to the wan. ie ethernet1"

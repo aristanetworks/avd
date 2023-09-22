@@ -19143,9 +19143,11 @@
       "properties": {
         "client": {
           "type": "object",
+          "description": "\"If a device is a client\"\n",
           "properties": {
             "server_profiles": {
               "type": "array",
+              "description": "Enable Server profiles need to reference the name of the profile and IP address\nExamples:\n- \"server-profile profile1\n      ip addres 1.1.1.1\"\n- \"server-profile profile2\n      ip addres 2.2.2.2\"\n",
               "items": {
                 "type": "object",
                 "properties": {
@@ -19177,9 +19179,11 @@
         },
         "server": {
           "type": "object",
+          "description": "\"If a device is a server typically this device just needs to reference a interface with a IP address and also is typically the route reflector.\"\n",
           "properties": {
             "local_interface": {
               "type": "string",
+              "description": "\"This is typically the ethernet interface that is connected to the wan. ie ethernet1\"",
               "title": "Local Interface"
             }
           },

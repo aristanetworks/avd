@@ -7,6 +7,7 @@
 - [STUN](#stun)
   - [STUN Client](#stun-client)
   - [STUN Server](#stun-server)
+  - [STUN Device Configuration](#stun-device-configuration)
 
 ## Management
 
@@ -44,16 +45,16 @@ interface Management1
 
 | Server Profile | IP adress |
 | -------------- | --------- |
-| server1 | 1.2.3.4|
-| server2 | 2.3.4.5|
+| server1 | 1.2.3.4 |
+| server2 | 2.3.4.5 |
 
 ### STUN Server
 
 | Server local interface |
 | ---------------------- |
-ethernet1
+| ethernet1 |
 
-#### STUN Device Configuration
+### STUN Device Configuration
 
 ```eos
 stun
