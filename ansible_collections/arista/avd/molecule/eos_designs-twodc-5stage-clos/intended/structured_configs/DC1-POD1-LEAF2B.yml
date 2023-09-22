@@ -297,8 +297,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-snmp_server:
-  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2B
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -341,6 +339,8 @@ management_api_http:
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback
   created from raw_eos_cli under VRF Common_VRF\n"
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2B
 vlans:
 - id: 4094
   tenant: system

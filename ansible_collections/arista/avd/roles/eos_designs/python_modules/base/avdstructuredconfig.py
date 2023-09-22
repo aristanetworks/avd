@@ -4,18 +4,31 @@
 from __future__ import annotations
 
 from functools import cached_property
-from hashlib import sha1
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from .snmp_server import SnmpServerMixin
 
-class AvdStructuredConfigBase(AvdFacts):
+
+class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
+    """
+    The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
+
+    "get_structured_config" imports, instantiates and run the .render() method on the class.
+    .render() runs all class methods not starting with _ and of type @cached property and inserts the returned data into
+    a dict with the name of the method as key. This means that each key in the final dict corresponds to a method.
+
+    The Class uses AvdFacts, as the base class, to inherit the _hostvars, keys and other attributes.
+    Other methods are included as "Mixins" to make the files more managable.
+
+    The order of the @cached_properties methods imported from Mixins will also control the order in the output.
+    """
+
     @cached_property
     def hostname(self) -> str:
         return self.shared_utils.hostname
@@ -369,91 +382,6 @@ class AvdStructuredConfigBase(AvdFacts):
         return None
 
     @cached_property
-    def snmp_server(self) -> dict | None:
-        """
-        snmp_server set based on snmp_settings data-model, using various snmp_settings information.
-
-        if snmp_settings.compute_local_engineid is True we will use sha1 to create a
-        unique local_engine_id value based on hostname and mgmt_ip facts.
-
-        If user.version is set to 'v3', compute_local_engineid and compute_v3_user_localized_key are set to 'True'
-        we will use hash_passphrase filter to create an instance of hashlib._hashlib.HASH corresponding to the auth_type
-        value based on various snmp_settings.users information.
-        """
-        if (snmp_settings := get(self._hostvars, "snmp_settings")) is None:
-            return None
-
-        snmp_server = {}
-
-        local_engine_id = None
-
-        if snmp_settings.get("compute_local_engineid") is True:
-            compute_source = get(snmp_settings, "compute_local_engineid_source", default="hostname_and_ip")
-            if compute_source == "hostname_and_ip":
-                local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.mgmt_ip}".encode("utf-8")).hexdigest()
-            elif compute_source == "system_mac":
-                if self.shared_utils.system_mac_address is None:
-                    raise AristaAvdMissingVariableError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
-                # the default engine id on switches is derived as per the following formula
-                local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
-            else:
-                # Unknown mode
-                raise AristaAvdError(
-                    f"'{compute_source}' is not a valid value to compute the engine ID, accepted values are 'hostname_and_ip' and 'system_mac'"
-                )
-
-            snmp_server["engine_ids"] = {"local": local_engine_id}
-
-        if (contact := snmp_settings.get("contact")) is not None:
-            snmp_server["contact"] = contact
-
-        if snmp_settings.get("location") is not None:
-            location_elements = [
-                get(self._hostvars, "fabric_name"),
-                self.shared_utils.dc_name,
-                self.shared_utils.pod_name,
-                get(self.shared_utils.switch_data_combined, "rack"),
-                self.shared_utils.hostname,
-            ]
-            location_elements = [location for location in location_elements if location is not None]
-            snmp_location = " ".join(location_elements)
-            snmp_server["location"] = snmp_location
-
-        users = snmp_settings.get("users")
-        if users is not None:
-            snmp_server["users"] = []
-            for user in users:
-                version = get(user, "version")
-                user_dict = {"name": get(user, "name"), "group": get(user, "group"), "version": version}
-                compute_v3_user_localized_key = snmp_settings.get("compute_v3_user_localized_key")
-                if version == "v3":
-                    if local_engine_id is not None and compute_v3_user_localized_key is True:
-                        user_dict["localized"] = local_engine_id
-
-                    auth = user.get("auth")
-                    auth_passphrase = user.get("auth_passphrase")
-                    if auth is not None and auth_passphrase is not None:
-                        user_dict["auth"] = auth
-                        if local_engine_id is not None and compute_v3_user_localized_key is True:
-                            hash_filter = {"passphrase": auth_passphrase, "auth": auth, "engine_id": local_engine_id}
-                            user_dict["auth_passphrase"] = hash_passphrase(hash_filter)
-                        else:
-                            user_dict["auth_passphrase"] = auth_passphrase
-
-                        priv = user.get("priv")
-                        priv_passphrase = user.get("priv_passphrase")
-                        if priv is not None and priv_passphrase is not None:
-                            user_dict["priv"] = priv
-                            if local_engine_id is not None and compute_v3_user_localized_key is True:
-                                hash_filter.update({"passphrase": priv_passphrase, "priv": priv})
-                                user_dict["priv_passphrase"] = hash_passphrase(hash_filter)
-                            else:
-                                user_dict["priv_passphrase"] = priv_passphrase
-                snmp_server["users"].append(user_dict)
-
-        return snmp_server
-
-    @cached_property
     def spanning_tree(self) -> dict | None:
         """
         spanning_tree set based on spanning_tree_root_super, spanning_tree_mode
@@ -764,45 +692,6 @@ class AvdStructuredConfigBase(AvdFacts):
         if raw_eos_cli is not None or platform_raw_eos_cli is not None:
             return "\n".join(filter(None, [raw_eos_cli, platform_raw_eos_cli]))
         return None
-
-    @cached_property
-    def _source_interfaces(self) -> dict:
-        return get(self._hostvars, "source_interfaces", default={})
-
-    def _build_source_interfaces(self, include_mgmt_interface: bool, include_inband_mgmt_interface: bool, error_context: str) -> list:
-        """
-        Return list of source interfaces with VRFs.
-
-        Error context should be short and fit in "... configure {error_context} source-interface ..."
-
-        Raises errors for duplicate VRFs or missing interfaces with the given error context.
-        """
-        source_interfaces = []
-
-        if include_mgmt_interface:
-            # mgmt_interface is always set (defaults to "Management1") so no need for error handling missing interface.
-            source_interface = {"name": self.shared_utils.mgmt_interface}
-            if self.shared_utils.mgmt_interface_vrf not in [None, "default"]:
-                source_interface["vrf"] = self.shared_utils.mgmt_interface_vrf
-            source_interfaces.append(source_interface)
-
-        if include_inband_mgmt_interface:
-            # Check for missing interface
-            if self.shared_utils.inband_mgmt_interface is None:
-                raise AristaAvdMissingVariableError(f"Unable to configure {error_context} source-interface since 'inband_mgmt_interface' is not set.")
-
-            # Check for duplicate VRF
-            # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
-            inband_mgmt_vrf = self.shared_utils.inband_mgmt_vrf or "default"
-            if [source_interface for source_interface in source_interfaces if source_interface.get("vrf", "default") == inband_mgmt_vrf]:
-                raise AristaAvdError(f"Unable to configure multiple {error_context} source-interfaces for the same VRF '{inband_mgmt_vrf}'.")
-
-            source_interface = {"name": self.shared_utils.inband_mgmt_interface}
-            if self.shared_utils.inband_mgmt_vrf not in [None, "default"]:
-                source_interface["vrf"] = self.shared_utils.inband_mgmt_vrf
-            source_interfaces.append(source_interface)
-
-        return source_interfaces
 
     @cached_property
     def ip_radius_source_interfaces(self) -> list | None:

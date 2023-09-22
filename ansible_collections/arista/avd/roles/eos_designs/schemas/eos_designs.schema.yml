@@ -2294,9 +2294,13 @@ keys:
       are not present in the network.'
   snmp_settings:
     documentation_options:
-      table: management-settings
+      table: management-snmp-settings
     type: dict
-    description: Set SNMP settings (optional).
+    description: 'SNMP settings
+
+      For SNMP local-interfaces see "source_interfaces.snmp"
+
+      Configuration of remote SNMP engine IDs are currently only possible using `structured_config`.'
     keys:
       contact:
         type: str
@@ -2306,6 +2310,26 @@ keys:
         default: false
         description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name>
           <switch_rack> <inventory_hostname>".
+      vrfs:
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/vrfs
+        type: list
+        description: 'Enable/disable SNMP for one or more VRFs.
+
+          Can be used in combination with "enable_mgmt_interface_vrf" and "enable_inband_mgmt_vrf".'
+      enable_mgmt_interface_vrf:
+        type: bool
+        description: 'Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
+
+          Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for the device.
+
+          Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".'
+      enable_inband_mgmt_vrf:
+        type: bool
+        description: 'Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
+
+          Ignored if inband management is not configured for the device.
+
+          Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".'
       compute_local_engineid:
         type: bool
         default: false
@@ -2339,6 +2363,9 @@ keys:
           '
       users:
         type: list
+        description: 'Configuration of local SNMP users.
+
+          Configuration of remote SNMP users are currently only possible using `structured_config`.'
         items:
           type: dict
           keys:
@@ -2347,10 +2374,7 @@ keys:
               description: Username
             group:
               type: str
-              description: 'Configuration of the SNMP User Groups are currently only
-                possible using `structured_config`.
-
-                '
+              description: Group name
             version:
               type: str
               valid_values:
@@ -2380,6 +2404,49 @@ keys:
               type: str
               description: Cleartext passphrase so the recommendation is to use vault.
                 Requires 'priv' to be set.
+      hosts:
+        type: list
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/hosts
+        items:
+          type: dict
+          keys:
+            host:
+              $ref: eos_cli_config_gen#/keys/snmp_server/keys/hosts/items/keys/host
+            vrf:
+              type: str
+              description: 'VRF Name.
+
+                Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf"
+                to configure the SNMP host under multiple VRFs.'
+              convert_types:
+              - int
+            use_mgmt_interface_vrf:
+              type: bool
+              description: Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+                Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the
+                device, so if the host is only configured with this VRF, the host
+                will not be configured at all. Can be used in combination with "vrf"
+                and "use_inband_mgmt_vrf" to configure the SNMP host under multiple
+                VRFs.
+            use_inband_mgmt_vrf:
+              type: bool
+              description: Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+                Ignored if inband management is not configured for the device, so
+                if the host is only configured with this VRF, the host will not be
+                configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
+                to configure the SNMP host under multiple VRFs.
+      communities:
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
+      ipv4_acls:
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls
+      ipv6_acls:
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls
+      views:
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
+      groups:
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/groups
+      traps:
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/traps
   source_interfaces:
     documentation_options:
       table: management-source-interfaces-settings
@@ -2449,6 +2516,25 @@ keys:
             type: bool
             description: 'Configure an IP Radius source-interface with the interface
               set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and
+              can be set under the node settings.'
+      snmp:
+        type: dict
+        description: SNMP local-interfaces.
+        keys:
+          mgmt_interface:
+            type: bool
+            description: 'Configure a SNMP local-interface with the interface set
+              by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
+
+              `mgmt_interface` is typically the out-of-band Management interface,
+              and can be set under the node settings, platform settings or as a group/host
+              var.'
+          inband_mgmt_interface:
+            type: bool
+            description: 'Configure a SNMP local-interface with the interface set
+              by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
