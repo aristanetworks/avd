@@ -12,7 +12,7 @@ l3leaf:
     # Possibility to prevent configuration of Tenant VRFs and SVIs. This allows support for centralized routing.
     evpn_services_l2_only: true
   nodes:
-    - name: failure_evpn_vlan_bundle
+    - name: failure-duplicate-evpn-vlan-bundle-name
       id: 3
       bgp_as: 65101
       filter:
@@ -23,7 +23,7 @@ tenants:
     mac_vrf_vni_base: 10000
     l2vlans:
       - id: 10
-        name: storage_prod
+        name: bundle1 # Notice this is the same name the evpn_vlan_bundle.
         tags: ['storageProd']
       - id: 20
         name: storage_prod
@@ -38,11 +38,13 @@ tenants:
       - id: 60
         name: ipmi
         tags: ['fabric']
-        evpn_vlan_bundle: bundle2
+        evpn_vlan_bundle: bundle1
 
 evpn_vlan_bundles:
   - name: bundle1
     id: 1
 
 expected_error_message: >-
-  The 'evpn_vlan_bundle' of the l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for l2vlan 60 in Tenant 'FABRIC' and evpn_vlan_bundle 'bundle2'.
+  Found duplicate objects with conflicting data while generating configuration for BGP VLAN-Aware Bundles defined under network services.
+  {'name': 'bundle1', 'rd': '10.10.0.3:10010', 'route_targets': {'both': ['10010:10010']}, 'tenant': 'StorageProd', 'vlan': '10'}
+  conflicts with {'name': 'bundle1', 'rd': '10.10.0.3:1', 'route_targets': {'both': ['1:1']}, 'tenant': None, 'vlan': '50,60'}.

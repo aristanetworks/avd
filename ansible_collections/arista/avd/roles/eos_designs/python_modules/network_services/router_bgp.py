@@ -382,14 +382,13 @@ class RouterBgpMixin(UtilsMixin):
     def _evpn_vlan_aware_bundles(self) -> bool:
         return get(self._hostvars, "evpn_vlan_aware_bundles", default=False)
 
-    def _get_vlan_aware_bundle_name(self, vlan: dict) -> str | None:
+    def _get_vlan_aware_bundle_name_tuple(self, vlan: dict) -> tuple[str, bool] | None:
         """
-        Return a string with the vlan-aware-bundle name for one VLAN. They wiil be prefixed to make them not overlap.
+        Return a tuple with string with the vlan-aware-bundle name for one VLAN and a boolean saying if this is a evpn_vlan_bundle.
         """
-        return_value = "!" + str(vlan.get("name"))
         if vlan.get("evpn_vlan_bundle") is not None:
-            return_value = "_" + str(vlan.get("evpn_vlan_bundle"))
-        return return_value
+            return (str(vlan.get("evpn_vlan_bundle")), True)
+        return (str(vlan.get("name")), False)
 
     @cached_property
     def _router_bgp_vlan_aware_bundles(self) -> list | None:
@@ -417,16 +416,17 @@ class RouterBgpMixin(UtilsMixin):
 
             # L2 Vlans per Tenant
             # If multiple L2 Vlans share the same evpn_vlan_bundle name, they will be part of the same vlan-aware-bundle else they use the vlan name as bundle
-            sorted_vlan_list = sorted(tenant["l2vlans"], key=self._get_vlan_aware_bundle_name)
-            bundle_groups = itertools_groupby(sorted_vlan_list, self._get_vlan_aware_bundle_name)
-            for bundle_name, l2vlans in bundle_groups:
+            sorted_vlan_list = sorted(tenant["l2vlans"], key=self._get_vlan_aware_bundle_name_tuple)
+            bundle_groups = itertools_groupby(sorted_vlan_list, self._get_vlan_aware_bundle_name_tuple)
+            for vlan_aware_bundle_name_tuple, l2vlans in bundle_groups:
+                bundle_name, is_evpn_vlan_bundle = vlan_aware_bundle_name_tuple
                 l2vlans = list(l2vlans)
-                if "evpn_vlan_bundle" in l2vlans[0]:
+                if is_evpn_vlan_bundle:
                     # If "evpn_vlan_bundle" in l2vlan bundle group, we use the same logic for rd/rt as VRFs
                     # using the settings under the given evpn_vlan_bundle only.
 
                     # check if the referred name exists in the global evpn_vlan_bundles
-                    if (evpn_vlan_bundle := get_item(self._hostvars["evpn_vlan_bundles"], "name", l2vlans[0]["evpn_vlan_bundle"].replace("_", ""))) is None:
+                    if (evpn_vlan_bundle := get_item(self._hostvars["evpn_vlan_bundles"], "name", bundle_name)) is None:
                         raise AristaAvdMissingVariableError(
                             "The 'evpn_vlan_bundle' of the l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for l2vlan"
                             f" {l2vlans[0]['id']} in Tenant '{l2vlans[0]['tenant']}' and evpn_vlan_bundle '{l2vlans[0]['evpn_vlan_bundle'].replace('_','')}'."
@@ -464,7 +464,7 @@ class RouterBgpMixin(UtilsMixin):
 
                     # We are reusing the regular bgp vlan function so need to add vlan info
                     bundle["vlan"] = list_compress([int(l2vlan["id"]) for l2vlan in l2vlans])
-                    bundle = {"name": str(bundle_name).replace("!", ""), **bundle}
+                    bundle = {"name": bundle_name, **bundle}
 
                 append_if_not_duplicate(
                     list_of_dicts=bundles,
