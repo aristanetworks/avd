@@ -2337,6 +2337,7 @@ keys:
           type: dict
           keys:
             host:
+              type: str
               $ref: eos_cli_config_gen#/keys/snmp_server/keys/hosts/items/keys/host
             vrf:
               type: str
@@ -2362,16 +2363,22 @@ keys:
                 configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
                 to configure the SNMP host under multiple VRFs.
       communities:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
       ipv4_acls:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls
       ipv6_acls:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls
       views:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
       groups:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/groups
       traps:
+        type: dict
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/traps
   source_interfaces:
     documentation_options:
