@@ -17,7 +17,7 @@
 | Server Profile | IP adress |
 | -------------- | --------- |
 {%             for server_profile in stun.client.server_profiles %}
-| {{ server_profile.name }} | {{ server_profile.ip_address }}|
+| {{ server_profile.name }} | {{ server_profile.ip_address }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
