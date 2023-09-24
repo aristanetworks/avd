@@ -24,7 +24,7 @@ _structured_configuration_variable_name: structured_configuration_variable_value
 
 At runtime, `eos_designs` searches for custom templates in several locations, therefore, custom templates should be saved in one of these locations:
 
-```commandline
+```text
 <path to users AVD implementation>/playbooks/templates/templates/<template name>
 <path to users AVD implementation>/playbooks/templates/<template name>
 <path to users AVD implementation>/playbooks/<template name>
@@ -56,6 +56,5 @@ This happens automatically via the `eos_designs_custom_templates` line that is p
 <!-- ![Figure 1: /eos_designs/tasks/main.yml](../../../media/eos_designs_tasks_main_yml.png) -->
 
 <div style="text-align:center; width:600px">
-  <img src="../../../../media/eos_designs_tasks_main_yml.png" />
+  <img src="../../../../media/eos_designs_tasks_main_yml.png" alt="screen shot of main.yml file" />
 </div>
-

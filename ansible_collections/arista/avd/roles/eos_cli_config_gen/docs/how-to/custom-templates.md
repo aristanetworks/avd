@@ -20,7 +20,7 @@ If the required variable is not available by any of these mechanisms, it can be 
 
 At runtime, `eos_cli_config_gen` searches for custom templates in the following location, therefore, custom templates should be saved here:
 
-```commandline
+```text
 <path to users AVD implementation>/playbooks/templates/<template name>
 ```
 The "templates" folder does not exist by default so will need to be created.
@@ -43,7 +43,7 @@ This happens automatically as part of the `Generate eos intended configuration` 
 <!-- ![Figure 1: /eos_cli_config_gen/templates/eos-intended-config.j2](../../../media/main_yml.png) -->
 
 <div style="text-align:left; width:500px">
-  <img src="../../../../media/main_yml.png" />
+  <img src="../../../../media/main_yml.png" alt="screen shot of main.yml file" />
 </div>
 
 
@@ -52,5 +52,5 @@ This task renders the main `eos-intended-config.j2` template which has multiple 
 <!-- ![Figure 2: /eos_cli_config_gen/templates/eos-intended-config.j2](../../../media/eos-intended-config.png) -->
 
 <div style="text-align:left; width:400px">
-  <img src="../../../../media/eos-intended-config.png" />
+  <img src="../../../../media/eos-intended-config.png" alt="screen shot of snippet of main template" />
 </div>
