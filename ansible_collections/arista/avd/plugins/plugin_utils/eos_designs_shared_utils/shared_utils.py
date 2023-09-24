@@ -1,6 +1,10 @@
 # Copyright (c) 2023 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from .bgp_peer_groups import BgpPeerGroupsMixin
 from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
 from .inband_management import InbandManagementMixin
@@ -19,6 +23,9 @@ from .routing import RoutingMixin
 from .switch_data import SwitchDataMixin
 from .underlay import UnderlayMixin
 from .utils import UtilsMixin
+
+if TYPE_CHECKING:
+    from ansible_collections.arista.avd.roles.eos_designs.python_modules.pool_manager import AvdPoolManager
 
 
 class SharedUtils(
@@ -56,6 +63,7 @@ class SharedUtils(
     The class cannot be overriden.
     """
 
-    def __init__(self, hostvars: dict, templar) -> None:
+    def __init__(self, hostvars: dict, templar, pool_manager: AvdPoolManager | None = None) -> None:
         self.hostvars = hostvars
         self.templar = templar
+        self.pool_manager = pool_manager

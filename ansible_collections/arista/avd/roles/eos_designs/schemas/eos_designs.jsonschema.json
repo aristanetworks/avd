@@ -9632,6 +9632,44 @@
       "type": "string",
       "title": "Pod Name"
     },
+    "pool_manager": {
+      "description": "Pool Manager used for automatic assignment of pool values.",
+      "type": "object",
+      "properties": {
+        "activate": {
+          "type": "boolean",
+          "default": false,
+          "description": "Activate the pool manager for all supported pools.\nCan be overridden per pool.",
+          "title": "Activate"
+        },
+        "id": {
+          "type": "object",
+          "description": "Automatic assignement of Node ID",
+          "properties": {
+            "activate": {
+              "type": "boolean",
+              "description": "Activate the pool manager for ID pools.\nOverrides the activation on pool manager.",
+              "title": "Activate"
+            },
+            "path": {
+              "type": "string",
+              "description": "Path to file to use for storing ID pool data.\nBy default the path is \"intended/data/<fabric_name>-ids.yml\".",
+              "title": "Path"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "ID"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Pool Manager"
+    },
     "port_profiles": {
       "type": "array",
       "description": "Optional profiles to share common settings for connected_endpoints and/or network_ports.\nKeys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.\n",

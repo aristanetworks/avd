@@ -1186,6 +1186,12 @@ See the [Configuring PTP](how-to/ptp.md) how-to for details.
 roles/eos_designs/docs/tables/ptp.md
 --8<--
 
+## Pool Manager
+
+--8<--
+roles/eos_designs/docs/tables/pool-manager.md
+--8<--
+
 ## Custom Structured Configuration
 
 See the [Custom Structured Configuration](how-to/custom-structured-configuration.md) how-to for details.

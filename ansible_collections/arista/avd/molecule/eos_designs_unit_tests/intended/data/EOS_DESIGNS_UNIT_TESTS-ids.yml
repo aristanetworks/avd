@@ -1,0 +1,8 @@
+id_pools:
+- dc_name: null
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  ids:
+  - hostname: pool_manager_id
+    id: 1
+  pod_name: null
+  type: spine
