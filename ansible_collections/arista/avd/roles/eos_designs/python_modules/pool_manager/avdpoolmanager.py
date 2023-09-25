@@ -28,23 +28,58 @@ class AvdPoolManager:
 
     def __init__(self, output_dir: str):
         self.output_dir = Path(output_dir)
+        self.id_files: set[Path] = set()
         self.changed_id_files: set[Path] = set()
+
+    def remove_stale_assignments(self):
+        """
+        Walk through all pools and in-place remove stale assignments and empty pools.
+
+        An assigment is deemed stale if "accessed" is not True.
+        The "accessed" field is also removed from the pool data.
+
+        Updates self.changed_id_files if any objects were removed from self.id_pool_data.
+
+        Note: This method is called from save_updated_pools and should _not_ be called manually.
+        """
+        for id_file in self.id_files:
+            id_data = self.id_pool_data(id_file)
+            for id_pool in id_data["id_pools"]:
+                # Remove id_assignments that were not accesses using "last_accessed".
+                id_assignments_count = len(id_pool["id_assignments"])
+                id_pool["id_assignments"] = [id_assignment for id_assignment in id_pool["id_assignments"] if id_assignment.pop("accessed", False)]
+                if id_assignments_count != len(id_pool["id_assignments"]):
+                    self.changed_id_files.add(id_file)
+
+            # Remove pools if there are no assignments left.
+            id_pools_count = len(id_data["id_pools"])
+            id_data["id_pools"] = [id_pool for id_pool in id_data["id_pools"] if id_pool["id_assignments"]]
+            if id_pools_count != len(id_data["id_pools"]):
+                self.changed_id_files.add(id_file)
 
     def save_updated_pools(self):
         """
-        Save cached data for any files marked as changed.
+        Save cached data for all changed files.
+
+        Calls self.remove_stale_assignments first to ensure we save the cleaned data.
+
         Data is sorted to ensure a consistent layout.
         """
+        self.remove_stale_assignments()
         for id_file in self.changed_id_files:
             id_data = self.id_pool_data(id_file)
+            for id_pool in id_data["id_pools"]:
+                # Sort id_assignments on "id".
+                id_pool["id_assignments"] = natural_sort(id_pool["id_assignments"], "id")
+
             id_data["id_pools"] = natural_sort(id_data["id_pools"], "type")
             id_data["id_pools"] = natural_sort(id_data["id_pools"], "pod_name")
             id_data["id_pools"] = natural_sort(id_data["id_pools"], "dc_name")
             id_data["id_pools"] = natural_sort(id_data["id_pools"], "fabric_name")
-            for id_pool in id_data["id_pools"]:
-                id_pool["id_assignments"] = natural_sort(id_pool["id_assignments"], "id")
             id_file.write_text(dump(id_data, Dumper=AnsibleDumper), encoding="UTF-8")
         self.id_pool_data.cache_clear()
+        self.changed_id_files = set()
+        self.id_files = set()
 
     @lru_cache
     def id_pool_data(self, id_file: Path) -> dict:
@@ -59,12 +94,29 @@ class AvdPoolManager:
         if not isinstance(id_data, dict) or not isinstance(id_data.get("id_pools"), list):
             raise AristaAvdError(f"Invalid ID pool manager data when reading {id_file}. Expecting {'id_pools': []}")
 
+        # Since we assigned a new ID, we have to mark the id pool as changed to have it saved once the build is done.
+        self.id_files.add(id_file)
+
         return id_data
 
     def get_id(self, shared_utils: SharedUtils) -> int | None:
         """
-        Returns the ID of this device if found in the pool.
-        If not found a new entry is inserted and returned.
+        Returns the ID of one node if found in the pool.
+        Otherwise a new entry is inserted into the pool and the ID is returned.
+
+        The pools are dynamically built and matched on the following device data:
+        - Fabric Name (from 'shared_utils.hostvars.fabric_name')
+        - DC Name (from `shared_utils.dc_name`)
+        - POD Name (from `shared_utils.pod_name`)
+        - Node type (from `shared_utils.type`)
+
+        Each pool will assign first available ID starting from 1.
+
+        Args:
+            shared_utils: Instance of SharedUtils initialized for one device.
+
+        Returns:
+            Node ID
         """
         fabric_name = get(shared_utils.hostvars, "fabric_name", required=True)
         default_id_file_path = f"{self.output_dir}/data/{fabric_name}-id_assignments.yml"
@@ -95,6 +147,7 @@ class AvdPoolManager:
 
         if id_assignment := get_item(id_pool["id_assignments"], "hostname", shared_utils.hostname):
             # Found an ID, so return quickly.
+            id_assignment["accessed"] = True
             return id_assignment["id"]
 
         pool_sorted_on_id = sorted(id_pool["id_assignments"], key=lambda x: x.get("id"))
@@ -102,6 +155,7 @@ class AvdPoolManager:
         id_assignment = {
             "id": first_available_id,
             "hostname": shared_utils.hostname,
+            "accessed": True,
         }
         id_pool["id_assignments"].append(id_assignment)
 

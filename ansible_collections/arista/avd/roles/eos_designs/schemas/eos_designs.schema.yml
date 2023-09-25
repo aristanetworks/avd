@@ -2037,7 +2037,28 @@ keys:
           Can be overridden per pool.'
       id:
         type: dict
-        description: Automatic assignement of Node ID
+        description: 'Automatic assignement of Node ID.
+
+
+          The pools are dynamically built and matched on the following device data:
+
+          - `fabric_name`
+
+          - `dc_name`
+
+          - `pod_name`
+
+          - `type`
+
+          Note: This means changing any of these fields may renumber the devices!
+
+
+          Each pool will assign first available ID starting from 1.
+
+
+          Stale entries will be removed from each pool automatically on every run.
+
+          A stale entry is any entry not accessed during the run.'
         keys:
           activate:
             type: bool
@@ -2048,7 +2069,11 @@ keys:
             type: str
             description: 'Path to file to use for storing ID pool data.
 
-              By default the path is "intended/data/<fabric_name>-ids.yml".'
+              By default the path is "intended/data/<fabric_name>-ids.yml".
+
+
+              Note: Since stale entries are removed per run, each fabric should be
+              using it''s own file.'
   port_profiles:
     type: list
     primary_key: profile

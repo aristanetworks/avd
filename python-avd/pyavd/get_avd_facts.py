@@ -1,13 +1,19 @@
 # Copyright (c) 2023 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
+
 from collections import ChainMap
+from typing import TYPE_CHECKING
 
 from .vendor.eos_designs.eos_designs_facts import EosDesignsFacts
 from .vendor.eos_designs.eos_designs_shared_utils import SharedUtils
 
+if TYPE_CHECKING:
+    from . import AvdPoolManager
 
-def get_avd_facts(all_inputs: dict[str, dict]) -> dict[str, dict]:
+
+def get_avd_facts(all_inputs: dict[str, dict], pool_manager: AvdPoolManager | None = None) -> dict[str, dict]:
     """
     Build avd_facts using the AVD eos_designs_facts logic.
 
@@ -25,6 +31,9 @@ def get_avd_facts(all_inputs: dict[str, dict]) -> dict[str, dict]:
             }
             ```
 
+        id_pool_data: An instance of pyavd.AvdPoolManager or subclass hereof implementing ".get_id(shared_utils: SharedUtils)".
+            Used for dynamic ID allocations using the "pool_manager" feature.
+
     Returns:
         Nested dictionary with various internal "facts". The full dict must be given as argument to `pyavd.get_device_structured_config`:
             ```python
@@ -36,7 +45,7 @@ def get_avd_facts(all_inputs: dict[str, dict]) -> dict[str, dict]:
             ```
     """
 
-    avd_switch_facts_instances = _create_avd_switch_facts_instances(all_inputs)
+    avd_switch_facts_instances = _create_avd_switch_facts_instances(all_inputs, pool_manager=pool_manager)
     avd_switch_facts = _render_avd_switch_facts(avd_switch_facts_instances)
     avd_overlay_peers, avd_topology_peers = _render_peer_facts(avd_switch_facts)
 
@@ -47,7 +56,7 @@ def get_avd_facts(all_inputs: dict[str, dict]) -> dict[str, dict]:
     }
 
 
-def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
+def _create_avd_switch_facts_instances(all_inputs: dict[str, dict], pool_manager: AvdPoolManager) -> dict:
     """
     Validate input variables and return dictionary of EosDesignsFacts instances per device.
 
@@ -82,7 +91,7 @@ def _create_avd_switch_facts_instances(all_inputs: dict[str, dict]) -> dict:
         )
 
         # Initialize SharedUtils class to be passed to each python_module below.
-        shared_utils = SharedUtils(hostvars=mapped_hostvars, templar=None)
+        shared_utils = SharedUtils(hostvars=mapped_hostvars, templar=None, pool_manager=pool_manager)
 
         # Notice templar is set as None, so any calls to jinja templates will fail with Nonetype has no "_loader" attribute
         avd_switch_facts[hostname] = {"switch": EosDesignsFacts(hostvars=mapped_hostvars, shared_utils=shared_utils)}
