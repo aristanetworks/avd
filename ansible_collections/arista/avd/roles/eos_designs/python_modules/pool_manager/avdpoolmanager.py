@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from yaml import dump, safe_load
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
@@ -30,8 +31,19 @@ class AvdPoolManager:
         self.changed_id_files: set[Path] = set()
 
     def save_updated_pools(self):
+        """
+        Save cached data for any files marked as changed.
+        Data is sorted to ensure a consistent layout.
+        """
         for id_file in self.changed_id_files:
-            id_file.write_text(dump(self.id_pool_data(id_file), Dumper=AnsibleDumper), encoding="UTF-8")
+            id_data = self.id_pool_data(id_file)
+            id_data["id_pools"] = natural_sort(id_data["id_pools"], "type")
+            id_data["id_pools"] = natural_sort(id_data["id_pools"], "pod_name")
+            id_data["id_pools"] = natural_sort(id_data["id_pools"], "dc_name")
+            id_data["id_pools"] = natural_sort(id_data["id_pools"], "fabric_name")
+            for id_pool in id_data["id_pools"]:
+                id_pool["id_assignments"] = natural_sort(id_pool["id_assignments"], "id")
+            id_file.write_text(dump(id_data, Dumper=AnsibleDumper), encoding="UTF-8")
         self.id_pool_data.cache_clear()
 
     @lru_cache
@@ -88,8 +100,8 @@ class AvdPoolManager:
         pool_sorted_on_id = sorted(id_pool["id_assignments"], key=lambda x: x.get("id"))
         first_available_id = next((index for index, id_assignment in enumerate(pool_sorted_on_id + [{"id": 0}], 1) if id_assignment["id"] != index))
         id_assignment = {
-            "hostname": shared_utils.hostname,
             "id": first_available_id,
+            "hostname": shared_utils.hostname,
         }
         id_pool["id_assignments"].append(id_assignment)
 
