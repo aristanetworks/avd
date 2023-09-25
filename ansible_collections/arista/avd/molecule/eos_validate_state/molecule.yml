@@ -1,0 +1,40 @@
+---
+scenario:
+  converge_sequence:
+    - create
+    - converge
+  test_sequence:
+    - create
+    - converge
+    - idempotence
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: dc1-leaf1a
+    # image: avdteam/base:3.8-v2.0
+    # pre_build_image: true
+    managed: false
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+      duplicate_dict_key: error
+      gathering: explicit
+  inventory:
+    links:
+      group_vars: 'inventory/group_vars/'
+  ansible_args:
+    - --inventory
+    - ${MOLECULE_SCENARIO_DIRECTORY}/inventory/inventory.yml
+    - --extra-vars
+    - "avd_data_validation_mode=error"
+    - --extra-vars
+    - "avd_data_conversion_mode=error"
+    - --tags=anta
+verifier:
+  name: ansible

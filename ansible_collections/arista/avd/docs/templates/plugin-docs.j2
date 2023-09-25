@@ -90,7 +90,7 @@ The below requirements are needed on the host that executes this module.
 ## Notes
 
 {%     for note in notes %}
-   - {{ note | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- {{ note | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%     endfor %}
 {% endif %}
 {% if seealso %}
@@ -143,12 +143,13 @@ The below requirements are needed on the host that executes this module.
 %}
 {%     if metadata %}
 {%         if metadata.status %}
+
 {%             for cur_state in metadata.status %}
 - This {{ plugin_type }} is {{ module_states[cur_state] }}. *[{{ cur_state }}]*
 {%             endfor %}
 {%         endif %}
-
 {%         if metadata.supported_by %}
+
 - This {{ plugin_type }} is maintained by {{ metadata.supported_by }}.
 {%         endif %}
 {%     endif %}

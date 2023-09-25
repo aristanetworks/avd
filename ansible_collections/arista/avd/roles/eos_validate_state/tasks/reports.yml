@@ -9,6 +9,7 @@
   arista.avd.yaml_templates_to_facts:
     templates:
       - template: generate_state_report_results.j2
+      - template: generate_anta_report_results.j2
   delegate_to: localhost
   run_once: true
   tags:
@@ -22,6 +23,8 @@
     mode: 0664
   delegate_to: localhost
   run_once: true
+  # When running with 'anta' tag we want to generate a report with all tests NOT RUN as preview
+  check_mode: "{{ not 'anta' in ansible_run_tags }}"
   when: "validation_role.validation_report_csv | arista.avd.default(true)"
   tags:
     - always
@@ -34,6 +37,8 @@
     mode: 0664
   delegate_to: localhost
   run_once: true
+  # When running with 'anta' tag we want to generate a report with all tests NOT RUN as preview
+  check_mode: "{{ not 'anta' in ansible_run_tags }}"
   when: "validation_role.validation_report_md | arista.avd.default(true)"
   tags:
     - always
