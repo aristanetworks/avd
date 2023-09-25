@@ -40,6 +40,12 @@ keys:
             - str
           description: |
             "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
+        l2_mru:
+          type: int
+          convert_types:
+            - str
+          description: |
+            "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
         vlans:
           type: str
           convert_types:

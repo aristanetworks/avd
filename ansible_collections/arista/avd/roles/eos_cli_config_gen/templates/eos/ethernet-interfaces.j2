@@ -56,6 +56,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.l2_mtu is arista.avd.defined %}
    l2 mtu {{ ethernet_interface.l2_mtu }}
 {%     endif %}
+{%     if ethernet_interface.l2_mru is arista.avd.defined %}
+   l2 mru {{ ethernet_interface.l2_mru }}
+{%     endif %}
 {%     if ethernet_interface.bgp.session_tracker is arista.avd.defined %}
    bgp session tracker {{ ethernet_interface.bgp.session_tracker }}
 {%     endif %}
