@@ -165,6 +165,11 @@ def range_expand(range_to_expand):
                     def expand_subinterfaces(interface_string):
                         result = []
                         if last_subinterface is not None:
+                            if first_subinterface > last_subinterface:
+                                raise AnsibleFilterError(
+                                    f"Range {one_range} could not be expended because first subinterface {first_subinterface} is bigger than last subinterface"
+                                    f" {last_subinterface} in the range."
+                                )
                             for subinterface in range(first_subinterface, last_subinterface + 1):
                                 result.append(f"{interface_string}.{subinterface}")
                         else:
@@ -173,6 +178,11 @@ def range_expand(range_to_expand):
 
                     def expand_interfaces(interface_string):
                         result = []
+                        if first_interface > last_interface:
+                            raise AnsibleFilterError(
+                                f"Range {one_range} could not be expended because first interface {first_interface} is bigger than last interface"
+                                f" {last_interface} in the range."
+                            )
                         for interface in range(first_interface, last_interface + 1):
                             for res in expand_subinterfaces(f"{interface_string}{interface}"):
                                 result.append(res)
@@ -181,6 +191,11 @@ def range_expand(range_to_expand):
                     def expand_parent_interfaces(interface_string):
                         result = []
                         if last_parent_interface:
+                            if first_parent_interface > last_parent_interface:
+                                raise AnsibleFilterError(
+                                    f"Range {one_range} could not be expended because first interface {first_parent_interface} is bigger than last interface"
+                                    f" {last_parent_interface} in the range."
+                                )
                             for parent_interface in range(first_parent_interface, last_parent_interface + 1):
                                 for res in expand_interfaces(f"{interface_string}{parent_interface}/"):
                                     result.append(res)
@@ -192,6 +207,11 @@ def range_expand(range_to_expand):
                     def expand_module(interface_string):
                         result = []
                         if last_module:
+                            if first_module > last_module:
+                                raise AnsibleFilterError(
+                                    f"Range {one_range} could not be expended because first module {first_module} is bigger than last module {last_module} in"
+                                    " the range."
+                                )
                             for module in range(first_module, last_module + 1):
                                 for res in expand_parent_interfaces(f"{interface_string}{module}/"):
                                     result.append(res)
