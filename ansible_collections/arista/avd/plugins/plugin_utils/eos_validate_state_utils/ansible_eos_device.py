@@ -32,7 +32,7 @@ class AnsibleEOSDevice(AntaDevice):
     """
 
     def __init__(self, name: str, connection: ConnectionBase, tags: list = None) -> None:
-        super().__init__(name, tags)
+        super().__init__(name, tags, disable_cache=False)
         if hasattr(connection, "httpapi") and connection._network_os in ["arista.eos.eos", "eos"]:
             self._connection = connection
         else:
