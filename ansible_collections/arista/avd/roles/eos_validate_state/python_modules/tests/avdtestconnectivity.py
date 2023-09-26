@@ -47,7 +47,13 @@ class AvdTestP2PIPReachability(AvdTestBase):
                     get(ethernet_interface, var, required=True)
 
                 peer_ethernet_interfaces = get(self.hostvars, f"{ethernet_interface['peer']}.ethernet_interfaces", required=True)
-                peer_interface = get_item(peer_ethernet_interfaces, "name", ethernet_interface["peer_interface"], required=True)
+                peer_interface = get_item(
+                    peer_ethernet_interfaces,
+                    "name",
+                    ethernet_interface["peer_interface"],
+                    required=True,
+                    var_name=f"name: {ethernet_interface['peer_interface']}",
+                )
                 peer_interface_ip = get(peer_interface, "ip_address", required=True)
 
                 if ethernet_interface["type"] == "routed":
@@ -145,7 +151,7 @@ class AvdTestLoopback0Reachability(AvdTestBase):
 
             if node_type == "l3leaf":
                 loopback_interfaces = get(self.hostvars[self.device_name], "loopback_interfaces", required=True)
-                loopback0 = get_item(loopback_interfaces, "name", "Loopback0", required=True)
+                loopback0 = get_item(loopback_interfaces, "name", "Loopback0", required=True, var_name="name: Loopback0")
                 src_ip = get(loopback0, "ip_address", required=True)
 
                 for dst_node, dst_ip in self.loopback0_mapping:
@@ -225,7 +231,7 @@ class AvdTestLLDPTopology(AvdTestBase):
                     }
                 )
             except AristaAvdMissingVariableError as e:
-                LOGGER.info("Variable '%s' is missing. Please validate the Ethernet interfaces data model of this host.", str(e))
+                LOGGER.warning("Variable '%s' is missing. Please validate the Ethernet interfaces data model of this host.", str(e))
                 continue
 
         return {self.anta_module: anta_tests}

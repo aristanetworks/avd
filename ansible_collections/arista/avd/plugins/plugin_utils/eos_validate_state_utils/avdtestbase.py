@@ -3,10 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import logging
 from functools import cached_property
 from ipaddress import ip_interface
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+
+LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestBase:
@@ -58,17 +62,28 @@ class AvdTestBase:
                 - "loopback0_mapping": a list of tuples where each tuple contains a hostname and its Loopback0 IP address.
                 - "vtep_mapping": a list of tuples where each tuple contains a hostname and its VTEP IP address if `Vxlan1` is the source_interface.
         """
-        results = {}
+        results = {"loopback0_mapping": [], "vtep_mapping": []}
 
         for host in self.hostvars:
-            loopback_interfaces = get(self.hostvars, f"{host};loopback_interfaces", [], separator=";")
-            vtep_interface = get(self.hostvars, f"{host};vxlan_interface;Vxlan1;vxlan;source_interface", separator=";")
-
+            loopback_interfaces = get(self.hostvars, f"{host}..loopback_interfaces", [], separator="..")
             for loopback_interface in loopback_interfaces:
                 # TODO Add more conditions here to avoid using type `l3leaf` in connectivity tests; router_id or update_source maybe?
                 if loopback_interface["name"] == "Loopback0":
-                    results.setdefault("loopback0_mapping", []).append((host, str(ip_interface(loopback_interface["ip_address"]).ip)))
-                if vtep_interface == loopback_interface["name"]:
-                    results.setdefault("vtep_mapping", []).append((host, str(ip_interface(loopback_interface["ip_address"]).ip)))
+                    try:
+                        loopback_ip = get(loopback_interface, "ip_address", required=True)
+                        results["loopback0_mapping"].append((host, str(ip_interface(loopback_ip).ip)))
+                    except AristaAvdMissingVariableError as e:
+                        LOGGER.warning("Variable '%s' is missing. Please validate the Loopback interfaces data model of this host.", str(e))
+                        continue
+
+            vtep_interface = get(self.hostvars, f"{host}..vxlan_interface..Vxlan1..vxlan..source_interface", separator="..")
+            if vtep_interface is not None:
+                try:
+                    loopback_interface = get_item(loopback_interfaces, "name", vtep_interface, required=True, var_name=f"name: {vtep_interface}")
+                    loopback_ip = get(loopback_interface, "ip_address", required=True)
+                    results["vtep_mapping"].append((host, str(ip_interface(loopback_ip).ip)))
+                except AristaAvdMissingVariableError as e:
+                    LOGGER.warning("Variable '%s' is missing. Please validate the Loopback interfaces data model of this host.", str(e))
+                    continue
 
         return results
