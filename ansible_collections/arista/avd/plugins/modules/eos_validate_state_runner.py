@@ -14,20 +14,17 @@ version_added: "4.4.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Leverage ANTA for eos_validate_state role
 description:
-  - |-
-    The `arista.avd.eos_validate_state_runner` module is an Ansible Action Plugin leveraging the ANTA test
+  - The C(arista.avd.eos_validate_state_runner) module is an Ansible Action Plugin leveraging the ANTA test
     framework to validate that the generated structured configurations by AVD are applied to the devices and
     that the deployed network is working correctly.
-  - This plugin expects that the structued_configs of each device is present in hostvars, otherwise no test
-    will be generated.
+  - This plugin expects that the structued_configs of each device is present in hostvars, otherwise no test will be generated.
   - |-
     The plugin provides the following capabilities:
-      - Generate a per-device test catalog based on the structured_configs
-      - Run the generated tests against each device and generate a report in Markdown and CSV format.
-      - When using check_mode, only generate the test catalog and generate a report to preview what would
-        tests be run against each device
-      - Dumping the per-device catalog to a file.
-      - Backward compatibility with existing ansible tags behavior for eos_validate_state to filter categories of tests.
+        - Generate a per-device test catalog based on the structured_configs
+        - Run the generated tests against each device and generate a report in Markdown and CSV format.
+        - When using check_mode, only generate the test catalog and generate a report to preview what would tests be run against each device
+        - Dumping the per-device catalog to a file.
+        - Backward compatibility with existing ansible tags behavior for eos_validate_state to filter categories of tests.
 options:
   logging_level:
     description: Controls the log level for the ANTA library. If unset, the Action plugin will set it to "WARNING"
@@ -41,7 +38,7 @@ options:
     default: false
   device_catalog_output_dir:
     description:
-      - When `save_catalog` is True, this is the directory where the device catalogs will be saved.
+      - When C(save_catalog) is True, this is the directory where the device catalogs will be saved.
       - Required if I(save_catalog=True)
     type: str
   skipped_test:
@@ -53,7 +50,7 @@ seealso:
     description: ANTA documentation
     link: https://anta.ninja
 notes:
-  - '`check_mode` is supported for this module and allows to generate a Test Report without running the tests.'
+  - C(check_mode) is supported for this module and allows to generate a Test Report without running the tests.
 """
 
 EXAMPLES = r"""

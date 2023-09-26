@@ -47,8 +47,6 @@ cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='ospf_message
 | ---- | ---- | ----------- |
 | _value | string | Decrypted cleartext password. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

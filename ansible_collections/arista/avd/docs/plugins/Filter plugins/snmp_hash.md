@@ -31,8 +31,6 @@ Key localization as described in [RFC 2574 section 2.6](https://www.rfc-editor.o
 | ---- | ---- | ----------- |
 | _value | string | The localized key generated from the passphrase using <em>auth</em> type.<br>If required the key is truncated to match the appropriate keylength for the <em>priv</em> type. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

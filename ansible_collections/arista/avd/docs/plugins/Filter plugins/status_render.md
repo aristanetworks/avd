@@ -32,8 +32,6 @@ Returns <code>\:white\_check\_mark\:</code> if input status string is <code>PASS
 | ---- | ---- | ----------- |
 | _value | string | Input value or GitHub Markdown emoji code. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

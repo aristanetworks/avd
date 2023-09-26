@@ -55,8 +55,6 @@ The \`arista.avd.eos\_designs\_facts\` module is an Ansible Action Plugin provid
   changed_when: False
 ```
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

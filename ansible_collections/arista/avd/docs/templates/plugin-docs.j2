@@ -120,17 +120,13 @@ The below requirements are needed on the host that executes this module.
 
 {%     for item in seealso %}
 {%         if item.module is defined and item.description is defined %}
-   :ref:`{{ item.module }}_module`
-       {{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- :ref:`{{ item.module }}_module<br>{{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%         elif item.module is defined %}
-   :ref:`{{ item.module }}_module`
-      The official documentation on the **{{ item.module }}** module.
+- :ref:`{{ item.module }}_module`<br>The official documentation on the **{{ item.module }}** module.
 {%         elif item.name is defined and item.link is defined and item.description is defined %}
-   `{{ item.name }} <{{ item.link }}>`_
-       {{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- {{ item.name }}: [{{ item.link }}]({{ item.link }})<br>{{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%         elif item.ref is defined and item.description is defined %}
-   :ref:`{{ item.ref }}`
-       {{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- :ref:`{{ item.ref }}`<br>{{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%         endif %}
 {%     endfor %}
 {% endif %}
@@ -147,33 +143,6 @@ The below requirements are needed on the host that executes this module.
 ## Return Values
 
 {{ result_desc(returndocs, 0) -}}
-{% endif %}
-
-## Status
-{% if deprecated %}
-
-- This {{ plugin_type }} will be removed in version
-  {{ deprecated['removed_in'] | default('') | string | md_ify | replace("\.", ".") | replace("\,", ",") }}.
-  *[deprecated]*
-
-{% else %}
-{%     set module_states = {
-     "preview": "not guaranteed to have a backwards compatible interface",
-     "stableinterface": "guaranteed to have backward compatible interface changes going forward",
-   }
-%}
-{%     if metadata %}
-{%         if metadata.status %}
-
-{%             for cur_state in metadata.status %}
-- This {{ plugin_type }} is {{ module_states[cur_state] }}. *[{{ cur_state }}]*
-{%             endfor %}
-{%         endif %}
-{%         if metadata.supported_by %}
-
-- This {{ plugin_type }} is maintained by {{ metadata.supported_by }}.
-{%         endif %}
-{%     endif %}
 {% endif %}
 {% if author is defined %}
 

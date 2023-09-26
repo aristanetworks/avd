@@ -41,8 +41,6 @@ not_found_1: "{{ 'myhostname' | arista.avd.is_in_filter(['myhost1', 'MYhostname'
 | ---- | ---- | ----------- |
 | _value | boolean | <code>True</code> if the input hostname matches the <em>hostname\_filter</em>. Otherwise <code>False</code> |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

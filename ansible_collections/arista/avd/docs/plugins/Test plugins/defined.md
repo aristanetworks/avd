@@ -53,8 +53,6 @@ test_result: "{{ my_dict.my_list[12].my_var is arista.avd.defined(fail_action='w
 | ---- | ---- | ----------- |
 | _value | boolean | Returns <code>False</code> if the passed value is <code>Undefined</code> or <code>None</code> or if any of the optional checks fail. Otherwise <code>True</code>. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

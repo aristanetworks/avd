@@ -65,8 +65,6 @@ Set facts from YAML produced by Jinja2 templates
   changed_when: False
 ```
 
-## Status
-
 ## Authors
 
 - EMEA AS Team (@aristanetworks)
