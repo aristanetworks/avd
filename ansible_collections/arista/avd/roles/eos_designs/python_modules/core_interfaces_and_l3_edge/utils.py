@@ -212,7 +212,7 @@ class UtilsMixin:
             "description": get(p2p_link, "data.description", default=default_description),
             "type": "routed",
             "shutdown": False,
-            "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu),
+            "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu) if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
             "eos_cli": p2p_link.get("raw_eos_cli"),
             "struct_cfg": get(p2p_link, "structured_config"),

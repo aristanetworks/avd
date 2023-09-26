@@ -140,9 +140,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet5 | routed | - | 172.17.10.1/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6 | routed | - | 172.17.10.3/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet4 | routed | - | 172.17.10.5/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet5 | routed | - | 172.17.10.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6 | routed | - | 172.17.10.3/31 | default | - | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet4 | routed | - | 172.17.10.5/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -151,7 +151,6 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet5
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.17.10.1/31
    service-profile QOS-PROFILE
@@ -159,7 +158,6 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.17.10.3/31
    service-profile QOS-PROFILE
@@ -167,7 +165,6 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet4
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.17.10.5/31
    service-profile QOS-PROFILE

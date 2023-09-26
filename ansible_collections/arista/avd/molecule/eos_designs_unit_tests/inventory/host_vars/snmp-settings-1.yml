@@ -1,0 +1,119 @@
+---
+# Minimum config to only test the specific feature.
+# This tests the general snmp_settings, excluding the tests for location, localize, engine id since that is tested in other files.
+# This tests the SNMP hosts ignoring inband management VRF.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-settings-1
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+mgmt_interface_vrf: MGMT
+mgmt_gateway: 10.10.10.1
+
+snmp_settings:
+  contact: example@example.com
+  location: false
+
+  enable_inband_mgmt_vrf: true # This one should not be in the output, since this host has no inband mgmt
+  enable_mgmt_interface_vrf: true
+  vrfs:
+    - name: default
+      enable: false
+  users:
+    - name: usertest-auth-priv
+      group: usergroup
+      version: v3
+      auth: sha
+      auth_passphrase: clearauth # to get from vault in real life
+      priv: aes192
+      priv_passphrase: clearpriv # to get from vault in real life
+
+  hosts:
+    - host: 10.6.75.121
+      vrf: SNMPVRF
+      version: 1
+      community: SNMP-COMMUNITY-1
+    - host: 10.6.75.123
+      vrf: SNMPVRF
+      use_mgmt_interface_vrf: true
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    - host: 10.6.75.124
+      use_mgmt_interface_vrf: true
+      version: 3
+      users:
+        - username: USER-WRITE
+          authentication_level: auth
+    - host: 10.6.75.125
+      vrf: SNMPVRF
+      use_inband_mgmt_vrf: true
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    - host: 10.6.75.126 # This one should not be in the output, since this host has no inband mgmt
+      use_inband_mgmt_vrf: true
+      version: 3
+      users:
+        - username: USER-WRITE
+          authentication_level: auth
+    - host: 10.6.75.127
+      vrf: SNMPVRF
+      use_inband_mgmt_vrf: true
+      use_mgmt_interface_vrf: true
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    - host: 10.6.75.128
+      use_inband_mgmt_vrf: true
+      use_mgmt_interface_vrf: true
+      version: 3
+      users:
+        - username: USER-WRITE
+          authentication_level: auth
+
+  communities: # Copied from eos_cli_config_gen, since we pass this through 1:1
+    - name: SNMP-COMMUNITY-1
+      access: ro
+      access_list_ipv4:
+        name: onur
+    - name: SNMP-COMMUNITY-2
+      access: rw
+      access_list_ipv4:
+        name: SNMP-MGMT
+      access_list_ipv6:
+        name: SNMP-MGMT
+      view: VW-READ
+    - name: SNMP-COMMUNITY-3
+
+  ipv4_acls: # Copied from eos_cli_config_gen, since we pass this through 1:1
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur
+
+  ipv6_acls: # Copied from eos_cli_config_gen, since we pass this through 1:1
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur_v6
+
+  views: # Copied from eos_cli_config_gen, since we pass this through 1:1
+    - name: VW-WRITE
+      mib_family_name: iso
+      included: true
+    - name: VW-READ
+      mib_family_name: iso
+      included: true
+
+  groups: # Copied from eos_cli_config_gen, since we pass this through 1:1
+    - name: GRP-READ-ONLY
+      version: v3
+      authentication: priv
+      read: v3read
+    - name: GRP-READ-WRITE
+      version: v3
+      authentication: auth
+      read: v3read
+      write: v3write
+
+  traps: # Copied from eos_cli_config_gen, since we pass this through 1:1
+    enable: true

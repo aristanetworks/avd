@@ -118,8 +118,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-snmp_server:
-  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-SPINE1
 spanning_tree:
   mode: none
 local_users:
@@ -136,6 +134,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-SPINE1
 ethernet_interfaces:
 - name: Ethernet1
   peer: DC1-SUPER-SPINE1
@@ -143,7 +143,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -157,7 +156,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -171,7 +169,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -185,7 +182,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -199,7 +195,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet1
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -213,7 +208,6 @@ ethernet_interfaces:
   peer_type: overlay-controller
   description: P2P_LINK_TO_DC1-RS1_Ethernet2
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.10.2/31
@@ -223,7 +217,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet11
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
@@ -237,7 +230,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE

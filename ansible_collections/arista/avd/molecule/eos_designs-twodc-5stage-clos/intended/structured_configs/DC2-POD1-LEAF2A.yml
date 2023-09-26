@@ -66,8 +66,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-snmp_server:
-  location: TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF2A
 spanning_tree:
   mode: rstp
   rstp_priority: 4096
@@ -94,6 +92,8 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF2A
 ethernet_interfaces:
 - name: Ethernet1
   peer: DC2-POD1-SPINE1
@@ -101,7 +101,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -113,7 +112,6 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -189,7 +187,6 @@ vlan_interfaces:
 - name: Vlan4092
   description: Inband Management
   shutdown: false
-  mtu: 1500
   ip_address: 172.21.210.2/24
   ip_virtual_router_addresses:
   - 172.21.210.1
