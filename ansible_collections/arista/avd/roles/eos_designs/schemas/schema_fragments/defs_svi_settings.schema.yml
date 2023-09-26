@@ -159,6 +159,7 @@ $defs:
         description: |
           Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
           When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, "igmp snooping" and "igmp snooping querier" will always be enabled, overriding those individual settings.
+          Requires `evpn_multicast` to also be set to `true`.
         keys:
           enabled:
             type: bool
@@ -168,6 +169,7 @@ $defs:
         type: dict
         description: |
           Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.
+          Requires `evpn_multicast` to also be set to `true`.
         keys:
           enabled:
             type: bool
