@@ -66,7 +66,7 @@ def get_anta_results(
     device_name: str,
     hostvars: dict,
     connection: ConnectionBase,
-    anta_logging: str,
+    logging_level: str,
     skipped_tests: dict,
     ansible_tags: dict | None = None,
     save_catalog_name: str | None = None,
@@ -80,7 +80,7 @@ def get_anta_results(
                    when using Ansible, this is the equivalent of `task_vars['hostvars']`
       connection (Connection): The connection to the device
                                when using Ansible, this is the `self._connection` of the module
-      anta_logging (str): The level at which ANTA should be logging
+      logging_level (str): The level at which ANTA should be logging
       skipped_tests (dict): A dictionary of tests to skip
       ansible_tags (dict): An optional dictionary containing the tags to maintain legacy filtering behavior for
                            `eos_validate_state`. This is ignored is `skipped_tests` is set.
@@ -92,7 +92,7 @@ def get_anta_results(
         raise AristaAvdError("AVD could not import the required 'anta' Python library")
 
     # Setup ANTA logging
-    setup_logging(level=anta_logging)
+    setup_logging(level=logging_level)
 
     if skipped_tests:
         LOGGER.warning("The variable 'skipped_tests' has been set. Ansible tags are ignored for filtering tests.")

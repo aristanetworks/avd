@@ -14,6 +14,6 @@
       ansible.builtin.import_role:
         name: arista.avd.eos_validate_state
       vars:
-        anta_save_catalog: true
+        save_catalog: true
       # Force check_mode
       check_mode: true

@@ -27,12 +27,12 @@ class ActionModule(ActionBase):
 
         validation_result, new_module_args = self.validate_argument_spec(
             argument_spec={
-                "anta_logging": {"type": "str", "default": "WARNING"},
-                "anta_save_catalog": {"type": "bool", "defaut": False},
+                "logging_level": {"type": "str", "default": "WARNING"},
+                "save_catalog": {"type": "bool", "defaut": False},
                 "device_catalog_output_dir": {"type": "str"},
                 "skipped_tests": {"type": "dict"},
             },
-            required_if=[("anta_save_catalog", True, ["device_catalog_output_dir"])],
+            required_if=[("save_catalog", True, ["device_catalog_output_dir"])],
         )
 
         result = super().run(tmp, task_vars)
@@ -45,8 +45,8 @@ class ActionModule(ActionBase):
         setup_module_logging(hostname, result)
 
         # Get task arguments
-        anta_logging = new_module_args["anta_logging"]
-        save_catalog = new_module_args["anta_save_catalog"]
+        logging_level = new_module_args["logging_level"]
+        save_catalog = new_module_args["save_catalog"]
         skipped_tests = new_module_args.get("skipped_tests", {})
         if save_catalog is True:
             eos_validate_state_dir = new_module_args["device_catalog_output_dir"]
@@ -68,7 +68,7 @@ class ActionModule(ActionBase):
                 device_name=hostname,
                 hostvars=hostvars,
                 connection=ansible_connection,
-                anta_logging=anta_logging,
+                logging_level=logging_level,
                 skipped_tests=skipped_tests,
                 ansible_tags=ansible_tags,
                 save_catalog_name=save_catalog_name,

@@ -20,7 +20,8 @@ description:
     that the deployed network is working correctly.
   - This plugin expects that the structued_configs of each device is present in hostvars, otherwise no test
     will be generated.
-  - The plugin provides the following capabilities:
+  - |-
+    The plugin provides the following capabilities:
       - Generate a per-device test catalog based on the structured_configs
       - Run the generated tests against each device and generate a report in Markdown and CSV format.
       - When using check_mode, only generate the test catalog and generate a report to preview what would
@@ -28,23 +29,23 @@ description:
       - Dumping the per-device catalog to a file.
       - Backward compatibility with existing ansible tags behavior for eos_validate_state to filter categories of tests.
 options:
-  anta_logging:
+  logging_level:
     description: Controls the log level for the ANTA library. If unset, the Action plugin will set it to "WARNING"
     required: false
-    type: string
+    type: str
     choices: ["CRITICAL", "ERROR", "WARNING", "INFO", "DEBUG"]
     default: "WARNING"
-  anta_save_catalog:
+  save_catalog:
     description: A boolean to indicate whether or not the catalog should be saved for each device.
     type: bool
     default: false
   device_catalog_output_dir:
     description:
-      - When `anta_save_catalog` is True, this is the directory where the device catalogs will be saved.
-      - Required if I(anta_save_catalog=True)
+      - When `save_catalog` is True, this is the directory where the device catalogs will be saved.
+      - Required if I(save_catalog=True)
     type: str
   skipped_test:
-    desription:
+    description:
       - A dictionary to indicate skipped tests.
     type: dict
 seealso:
@@ -58,8 +59,8 @@ notes:
 EXAMPLES = r"""
 - name: Run eos_validate_state_runner leveraging ANTA
   arista.avd.eos_validate_state_runner:
-    anta_logging: ERROR
-    anta_save_catalog: True
+    logging_level: ERROR
+    save_catalog: True
     eos_validate_state_dir: "/tmp"
     skipped_tests: {"BGP"}
   register: anta_results

@@ -5,8 +5,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from anta.loader import parse_catalog
-from deepmerge import always_merger
 from yaml import Dumper, dump, safe_load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
@@ -14,6 +12,20 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDum
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import AVD_TEST_CLASSES
 
 from .get_eos_validate_state_vars import get_eos_validate_state_vars
+
+try:
+    from anta.loader import parse_catalog
+
+    HAS_ANTA = True
+except ImportError:
+    HAS_ANTA = False
+
+try:
+    from deepmerge import always_merger
+
+    HAS_DEEPMERGE = True
+except ImportError:
+    HAS_DEEPMERGE = False
 
 if TYPE_CHECKING:
     from .avdtestbase import AvdTestBase
@@ -38,6 +50,11 @@ class Catalog:
             custom_catalog (dict): An optional dictionary representing an ANTA Catalog
             custom_catalog_path (str): An optional string representing a path to an Anta Catalog
         """
+        if not HAS_ANTA:
+            raise AristaAvdError("AVD could not import the required 'anta' Python library")
+        if not HAS_DEEPMERGE:
+            raise AristaAvdError("AVD could not import the required 'deepmerge' Python library")
+
         self.device_name = device_name
         self.hostvars = hostvars
         self.skipped_tests = skipped_tests
