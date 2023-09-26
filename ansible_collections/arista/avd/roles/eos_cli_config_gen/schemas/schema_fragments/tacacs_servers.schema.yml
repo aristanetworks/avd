@@ -9,6 +9,10 @@ keys:
   tacacs_servers:
     type: dict
     keys:
+      timeout:
+        type: int
+        convert_types:
+          - str
       hosts:
         type: list
         items:

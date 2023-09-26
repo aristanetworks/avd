@@ -19278,6 +19278,10 @@
     "tacacs_servers": {
       "type": "object",
       "properties": {
+        "timeout": {
+          "type": "integer",
+          "title": "Timeout"
+        },
         "hosts": {
           "type": "array",
           "items": {

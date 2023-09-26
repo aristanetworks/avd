@@ -8,6 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>tacacs_servers</samp>](## "tacacs_servers") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;timeout</samp>](## "tacacs_servers.timeout") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "tacacs_servers.hosts") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- host</samp>](## "tacacs_servers.hosts.[].host") | String |  |  |  | Host IP address or name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "tacacs_servers.hosts.[].vrf") | String |  |  |  |  |
@@ -21,6 +22,7 @@
 
     ```yaml
     tacacs_servers:
+      timeout: <int>
       hosts:
         - host: <str>
           vrf: <str>
