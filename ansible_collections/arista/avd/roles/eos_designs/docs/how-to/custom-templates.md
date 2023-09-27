@@ -15,7 +15,7 @@ For example, the user may require additional structured configuration variables 
 
 Custom templates should be written in Jinja2.
 
-For details on how to create Jinja2 templates, see [Templating Jinja2](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html#templating-jinja2)
+For details on how to create Jinja2 templates, see [Templating Jinja2](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html#templating-jinja2).
 
 For example:
 
@@ -23,7 +23,7 @@ For example:
 _structured_configuration_variable_name: structured_configuration_variable_value {{ some_variable }}
 ```
 
-At runtime, `eos_designs` searches for custom templates in several locations, therefore, custom templates should be saved in one of these locations:
+At runtime, `eos_designs` searches for custom templates in several locations; therefore, custom templates should be saved in one of these locations:
 
 ```text
 <path to users AVD implementation>/playbooks/templates/templates/<template name>
@@ -35,7 +35,7 @@ The "templates" folders do not exist by default, so they will need to be created
 
 ### Variable Validation
 
-As with any AVD variable, additional structured configuration variables will be subject to validation against the schema. Because they are custom variables, additional structured configuration variables will not be included in the existing schema and will therefore produce warning messages. To bypass validation, custom variables should start with an underscore.
+As with any AVD variable, additional structured configuration variables will be subject to validation against the schema. Because they are custom variables, additional structured configuration variables will not be included in the existing schema and will produce warning messages. Custom variables should start with an underscore if you would like to bypass validation.
 
 ## Adding the Custom Template to group vars
 
@@ -51,7 +51,7 @@ eos_designs_custom_templates:
       strip_empty_keys: false
 ```
 
-For more details, see [Custom Templates](https://avd.arista.com/4.3/roles/eos_designs/docs/role-configuration.html#custom-templates)
+For more details, see [Custom Templates](https://avd.arista.com/4.3/roles/eos_designs/docs/role-configuration.html#custom-templates).
 
 ## Adding the Custom Template to the `eos-designs` Role
 
