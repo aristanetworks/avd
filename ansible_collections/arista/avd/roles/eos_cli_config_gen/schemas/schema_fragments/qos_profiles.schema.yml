@@ -128,7 +128,7 @@ keys:
                               Random-detect ECN maximum mark probability.
                           weight:
                             type: int
-                            min: 1
+                            min: 0
                             max: 15
                             convert_types:
                               - str
@@ -217,7 +217,7 @@ keys:
                               Random-detect ECN maximum mark probability.
                           weight:
                             type: int
-                            min: 1
+                            min: 0
                             max: 15
                             convert_types:
                               - str

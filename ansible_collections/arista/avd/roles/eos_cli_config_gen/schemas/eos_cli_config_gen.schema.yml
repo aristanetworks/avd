@@ -2309,8 +2309,6 @@ keys:
                             description: 'Indicate the units to be used for the threshold
                               values.
 
-                              This should be one of segments, byte, kbytes, mbytes.
-
                               '
                           min:
                             type: int
@@ -2340,18 +2338,14 @@ keys:
                             - str
                             description: 'Set the random-detect ecn max-mark-probability.
 
-                              The value should be between 1 and 100.
-
                               '
                           weight:
                             type: int
-                            min: 1
+                            min: 0
                             max: 15
                             convert_types:
                             - str
                             description: 'Set the random-detect ecn weight.
-
-                              Enter a value between 1 and 15
 
                               '
         tx_queues:
@@ -2394,8 +2388,6 @@ keys:
                             description: 'Indicate the units to be used for the threshold
                               values.
 
-                              This should be one of segments, byte, kbytes, mbytes.
-
                               '
                           min:
                             type: int
@@ -2425,18 +2417,14 @@ keys:
                             - str
                             description: 'Set the random-detect ecn max-mark-probability.
 
-                              The value should be between 1 and 100.
-
                               '
                           weight:
                             type: int
-                            min: 1
+                            min: 0
                             max: 15
                             convert_types:
                             - str
                             description: 'Set the random-detect ecn weight.
-
-                              Enter a value between 1 and 15
 
                               '
         eos_cli:
@@ -7029,7 +7017,7 @@ keys:
                               '
                           weight:
                             type: int
-                            min: 1
+                            min: 0
                             max: 15
                             convert_types:
                             - str
@@ -7132,7 +7120,7 @@ keys:
                               '
                           weight:
                             type: int
-                            min: 1
+                            min: 0
                             max: 15
                             convert_types:
                             - str
