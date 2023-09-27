@@ -4,11 +4,11 @@
 from pyavd import get_avd_facts
 
 
-def test_get_avd_facts(all_inputs: dict):
+def test_get_avd_facts(all_inputs: dict, pool_manager):
     """
     Test get_avd_facts
     """
-    avd_facts = get_avd_facts(all_inputs)
+    avd_facts = get_avd_facts(all_inputs, pool_manager=pool_manager)
 
     assert isinstance(avd_facts, dict)
     assert "avd_switch_facts" in avd_facts.keys()
@@ -18,3 +18,6 @@ def test_get_avd_facts(all_inputs: dict):
     assert isinstance(avd_facts["avd_overlay_peers"], dict)
     assert "avd_topology_peers" in avd_facts.keys()
     assert isinstance(avd_facts["avd_topology_peers"], dict)
+
+    # Ensure that the we did not change any data from the preloaded id pool data.
+    assert len(pool_manager.changed_id_files) == 0
