@@ -1,9 +1,11 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
-from typing import NoReturn
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
 
 from .utils import UtilsMixin
 
@@ -15,7 +17,7 @@ class VrfsMixin(UtilsMixin):
     """
 
     @cached_property
-    def vrfs(self) -> dict | None:
+    def vrfs(self) -> list | None:
         """
         Return structured config for vrfs.
 
@@ -25,30 +27,42 @@ class VrfsMixin(UtilsMixin):
         all Tenants deployed on this device.
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
-        vrfs = {}
+        vrfs = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_name = vrf["name"]
                 if vrf_name == "default":
                     continue
 
-                if vrf_name in vrfs:
-                    self._raise_duplicate_vrf_error(vrf_name, tenant["name"], vrfs[vrf_name])
-
                 new_vrf = {
+                    "name": vrf_name,
                     "tenant": tenant["name"],
-                    "ip_routing": True,
                 }
+
+                # MLAG IBGP Peering VLANs per VRF
+                if self.shared_utils.overlay_mlag_rfc5549 and self._mlag_ibgp_peering_enabled(vrf, tenant):
+                    new_vrf["ip_routing_ipv6_interfaces"] = True
+                    new_vrf["ipv6_routing"] = True
+                else:
+                    new_vrf["ip_routing"] = True
+
                 if self._has_ipv6(vrf):
                     new_vrf["ipv6_routing"] = True
 
                 if "description" in vrf:
                     new_vrf["description"] = vrf["description"]
 
-                vrfs[vrf_name] = new_vrf
+                append_if_not_duplicate(
+                    list_of_dicts=vrfs,
+                    primary_key="name",
+                    new_dict=new_vrf,
+                    context="VRFs defined under network services",
+                    context_keys=["name", "tenant"],
+                    ignore_keys={"tenant"},
+                )
 
         if vrfs:
             return vrfs
@@ -72,10 +86,3 @@ class VrfsMixin(UtilsMixin):
                 return True
 
         return False
-
-    def _raise_duplicate_vrf_error(self, vrf_name: str, tenant_name: str, duplicate_vrf_config: dict) -> NoReturn:
-        msg = f"Duplicate VRF '{vrf_name}' found in Tenant '{tenant_name}'."
-        if (duplicate_vlan_tenant := duplicate_vrf_config["tenant"]) != tenant_name:
-            msg = f"{msg} Other VRF is in Tenant '{duplicate_vlan_tenant}'."
-
-        raise AristaAvdError(msg)

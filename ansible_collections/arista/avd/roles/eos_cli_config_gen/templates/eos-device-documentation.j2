@@ -1,5 +1,13 @@
-# {{ inventory_hostname }}
-# Table of Contents
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# context used to hide password and keys #}
+{% set hide_passwords = eos_cli_config_gen_documentation.hide_passwords | arista.avd.default(true) %}
+# {{ hostname | arista.avd.default(inventory_hostname) }}
+
+## Table of Contents
 
 <!-- toc -->
 <!-- toc -->
@@ -9,6 +17,8 @@
 {% include 'documentation/cvx.j2' %}
 {# Authentication #}
 {% include 'documentation/authentication.j2' %}
+{# Address Locking #}
+{% include 'documentation/address-locking.j2' %}
 {# Management Security #}
 {% include 'documentation/management-security.j2' %}
 {# Prompt #}
@@ -31,6 +41,8 @@
 {% include 'documentation/mlag-configuration.j2' %}
 {# LLDP #}
 {% include 'documentation/lldp.j2' %}
+{# L2 Protocol forwarding #}
+{% include 'documentation/l2-protocol-forwarding.j2' %}
 {# LACP #}
 {% include 'documentation/lacp.j2' %}
 {# Spanning Tree #}
@@ -57,6 +69,8 @@
 {% include 'documentation/filters.j2' %}
 {# dot1x #}
 {% include 'documentation/dot1x.j2' %}
+{# poe #}
+{% include 'documentation/poe.j2' %}
 {# ACL #}
 {% include 'documentation/acl.j2' %}
 {# VRF Instances #}
@@ -69,6 +83,8 @@
 {% include 'documentation/router-l2-vpn.j2' %}
 {# IP DHCP Relay #}
 {% include 'documentation/ip-dhcp-relay.j2' %}
+{# IP NAT #}
+{% include 'documentation/ip-nat.j2' %}
 {# Errdisable #}
 {% include 'documentation/errdisable.j2' %}
 {# MACsec #}
@@ -77,6 +93,8 @@
 {% include 'documentation/traffic-policies.j2' %}
 {# Quality Of Service #}
 {% include 'documentation/quality-of-service.j2' %}
+{# Priority Flow Control #}
+{% include 'documentation/priority-flow-control.j2' %}
 {# Maintenance Mode #}
 {% include 'documentation/maintenance-mode.j2' %}
 {# EOS CLI #}

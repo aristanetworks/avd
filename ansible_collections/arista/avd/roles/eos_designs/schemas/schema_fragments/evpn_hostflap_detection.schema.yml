@@ -1,0 +1,34 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  evpn_hostflap_detection:
+    documentation_options:
+      table: evpn-settings
+    type: dict
+    keys:
+      enabled:
+        description: If set to false it will disable EVPN host-flap detection.
+        type: bool
+        default: true
+      threshold:
+        description: Minimum number of MAC moves that indicate a MAC duplication issue.
+        type: int
+        convert_types:
+          - str
+        default: 5
+      window:
+        description: Time (in seconds) to detect a MAC duplication issue.
+        type: int
+        convert_types:
+          - str
+        default: 180
+      expiry_timeout:
+        description: Time (in seconds) to purge a MAC duplication issue.
+        type: int
+        convert_types:
+          - str

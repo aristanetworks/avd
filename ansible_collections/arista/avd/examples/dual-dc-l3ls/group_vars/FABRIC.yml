@@ -21,18 +21,18 @@ ansible_httpapi_validate_certs: false
 fabric_name: FABRIC
 
 # Define underlay and overlay routing protocol to be used
-underlay_routing_protocol: EBGP
-overlay_routing_protocol: EBGP
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp
 
 # Local users
 local_users:
   # Define a new user, which is called "ansible"
-  ansible:
+  - name: ansible
     privilege: 15
     role: network-admin
     # Password set to "ansible". Same string as the device generates when configuring a username.
     sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
-  admin:
+  - name: admin
     privilege: 15
     role: network-admin
     no_password: true
@@ -52,24 +52,40 @@ bgp_peer_groups:
 # p2p_uplinks_mtu: 1500
 p2p_uplinks_mtu: 1500
 
+# Define default interfaces
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ vEOS-lab ]
+    uplink_interfaces: [ Ethernet1-2 ]
+    downlink_interfaces: [ Ethernet1-8 ]
+  - types: [ l3leaf ]
+    platforms: [ vEOS-lab ]
+    uplink_interfaces: [ Ethernet1-8 ]
+    mlag_interfaces: [ Ethernet3-4 ]
+    downlink_interfaces: [ Ethernet8, Ethernet8 ]
+  - types: [ l2leaf ]
+    platforms: [ vEOS-lab ]
+    uplink_interfaces: [ Ethernet1-2 ]
+
 # L3 Edge port definitions. This can be any port in the entire Fabric, where IP interfaces are defined.
 l3_edge:
-  # Define a new IP pool that will be used to asign IP addreses to L3 Edge interfaces.
+  # Define a new IP pool that will be used to assign IP addresses to L3 Edge interfaces.
   p2p_links_ip_pools:
-    DCI_IP_pool: 172.100.100.0/24
+    - name: DCI_IP_pool
+      ipv4_pool: 172.100.100.0/24
   # Define a new link profile which will match the IP pool, the used ASNs and include the defined interface into underlay routing
   p2p_links_profiles:
-    DCI_profile:
+    - name: DCI_profile
       ip_pool: DCI_IP_pool
       as: [65102, 65202]
       include_in_underlay_protocol: true
   # Define each P2P L3 link and link the nodes, the interfaces and the profile used.
   p2p_links:
-  - id: 1
-    nodes: [dc1-leaf2a, dc2-leaf2a]
-    interfaces: [Ethernet6, Ethernet6]
-    profile: DCI_profile
-  - id: 2
-    nodes: [dc1-leaf2b, dc2-leaf2b]
-    interfaces: [Ethernet6, Ethernet6]
-    profile: DCI_profile
+    - id: 1
+      nodes: [dc1-leaf2a, dc2-leaf2a]
+      interfaces: [Ethernet6, Ethernet6]
+      profile: DCI_profile
+    - id: 2
+      nodes: [dc1-leaf2b, dc2-leaf2b]
+      interfaces: [Ethernet6, Ethernet6]
+      profile: DCI_profile

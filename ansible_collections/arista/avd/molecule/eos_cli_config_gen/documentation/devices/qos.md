@@ -1,5 +1,6 @@
 # qos
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -14,26 +15,27 @@
   - [QOS Class Maps](#qos-class-maps)
   - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)
+  - [Priority Flow Control](#priority-flow-control)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -43,13 +45,13 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
@@ -60,13 +62,13 @@ interface Management1
 
 *Inherited from Port-Channel Interface
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -77,6 +79,7 @@ interface Ethernet1
    ip address 172.31.255.1/31
    qos trust dscp
    qos dscp 48
+   service-policy type qos input pmap_test1
    service-profile test
 !
 interface Ethernet3
@@ -104,17 +107,17 @@ interface Ethernet7
    service-profile qprof_testwithpolicy
 ```
 
-## Port-Channel Interfaces
+### Port-Channel Interfaces
 
-### Port-Channel Interfaces Summary
+#### Port-Channel Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
-### Port-Channel Interfaces Device Configuration
+#### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
@@ -128,27 +131,28 @@ interface Port-Channel3
    qos trust cos
    qos cos 2
    service-profile experiment
+   service-policy type qos input pmap_test1
 ```
 
-# ACL
+## ACL
 
-## Extended Access-lists
+### Extended Access-lists
 
-### Extended Access-lists Summary
+#### Extended Access-lists Summary
 
-#### acl_qos_tc0_v4
+##### acl_qos_tc0_v4
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit ip any 192.0.2.0/29 |
 
-#### acl_qos_tc5_v4
+##### acl_qos_tc5_v4
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit ip any any dscp ef |
 
-### Extended Access-lists Device Configuration
+#### Extended Access-lists Device Configuration
 
 ```eos
 !
@@ -159,23 +163,23 @@ ip access-list acl_qos_tc5_v4
    10 permit ip any any dscp ef
 ```
 
-## IPv6 Extended Access-lists
+### IPv6 Extended Access-lists
 
-### IPv6 Extended Access-lists Summary
+#### IPv6 Extended Access-lists Summary
 
-#### acl_qos_tc0_v6
+##### acl_qos_tc0_v6
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit ipv6 any any dscp cs1 |
 
-#### acl_qos_tc5_v6
+##### acl_qos_tc5_v6
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit ipv6 any 2001:db8::/48 |
 
-### IPv6 Extended Access-lists Device Configuration
+#### IPv6 Extended Access-lists Device Configuration
 
 ```eos
 !
@@ -186,15 +190,15 @@ ipv6 access-list acl_qos_tc5_v6
    10 permit ipv6 any 2001:db8::/48
 ```
 
-# Quality Of Service
+## Quality Of Service
 
-## QOS
+### QOS
 
-### QOS Summary
+#### QOS Summary
 
 QOS rewrite DSCP: **enabled**
 
-#### QOS Mappings
+##### QOS Mappings
 
 
 | COS to Traffic Class mappings |
@@ -216,7 +220,7 @@ QOS rewrite DSCP: **enabled**
 | 2 4 5 to cos 7 |
 | 6 to tx-queue 2 |
 
-### QOS Device Configuration
+#### QOS Device Configuration
 
 ```eos
 !
@@ -231,9 +235,9 @@ qos map traffic-class 2 4 5 to cos 7
 qos map traffic-class 6 to tx-queue 2
 ```
 
-## QOS Class Maps
+### QOS Class Maps
 
-### QOS Class Maps Summary
+#### QOS Class Maps Summary
 
 | Name | Field | Value |
 | ---- | ----- | ----- |
@@ -242,7 +246,7 @@ qos map traffic-class 6 to tx-queue 2
 | cmap_tc5_v4 | acl | acl_qos_tc5_v4 |
 | cmap_tc5_v6 | - | - |
 
-### Class-maps Device Configuration
+#### Class-maps Device Configuration
 
 ```eos
 !
@@ -259,9 +263,9 @@ class-map type qos match-any cmap_tc5_v6
    match ipv6 access-group acl_qos_tc5_v6
 ```
 
-## QOS Policy Maps
+### QOS Policy Maps
 
-### QOS Policy Maps Summary
+#### QOS Policy Maps Summary
 
 **pmap_test1**
 
@@ -273,7 +277,7 @@ class-map type qos match-any cmap_tc5_v6
 | cmap_tc0_v6 | traffic_class | 0 |
 | class-default | traffic_class | 1 |
 
-### QOS Policy Maps configuration
+#### QOS Policy Maps configuration
 
 ```eos
 !
@@ -294,9 +298,9 @@ policy-map type quality-of-service pmap_test1
       set traffic-class 1
 ```
 
-## QOS Profiles
+### QOS Profiles
 
-### QOS Profiles Summary
+#### QOS Profiles Summary
 
 
 QOS Profile: **experiment**
@@ -309,12 +313,12 @@ QOS Profile: **experiment**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 3 | All | 30 | no priority | - |
-| 4 | All | 10 | - | - |
-| 5 | All | 40 | - | - |
-| 7 | All | 30 | - | 40 percent |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 3 | All | 30 | no priority | - | - |
+| 4 | All | 10 | - | - | - |
+| 5 | All | 40 | - | - | - |
+| 7 | All | 30 | - | 40 percent | - |
 
 QOS Profile: **no_qos_trust**
 
@@ -334,11 +338,11 @@ QOS Profile: **qprof_testwithpolicy**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 0 | All | 1 | - | - |
-| 1 | All | 80 | - | - |
-| 5 | All | 19 | no priority | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 0 | All | 1 | - | - | - |
+| 1 | All | 80 | - | - | - |
+| 5 | All | 19 | no priority | - | Multi-line comment<br>here. |
 
 QOS Profile: **test**
 
@@ -350,11 +354,42 @@ QOS Profile: **test**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 1 | All | 50 | no priority | - |
-| 2 | All | 10 | priority strict | - |
-| 4 | All | 10 | - | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | All | 50 | no priority | - | - |
+| 2 | All | 10 | priority strict | - | - |
+| 4 | All | 10 | - | - | - |
+
+QOS Profile: **test_with_pfc**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | pmap_test1 |
+
+**TX Queues**
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 0 | All | 1 | - | - | - |
+| 1 | All | 80 | - | - | - |
+| 5 | All | 19 | no priority | - | - |
+
+**Priority Flow Control**
+
+Priority Flow Control is **enabled**.
+
+| Priority | Action |
+| -------- | ------ |
+| 0 | no-drop |
+| 1 | drop |
+
+**Priority Flow Control watchdog settings**
+
+| Enabled | Action | Timeout | Recovery | Polling |
+| ------- | ------ | ------- | -------- | ------- |
+| True | drop | 0.05 | 1.11 | auto |
 
 QOS Profile: **uc_mc_queues_test**
 
@@ -366,16 +401,16 @@ QOS Profile: **uc_mc_queues_test**
 
 **TX Queues**
 
-| TX queue | Type | Bandwidth | Priority | Shape Rate |
-| -------- | ---- | --------- | -------- | ---------- |
-| 1 | Unicast | 50 | no priority | - |
-| 2 | Unicast | 10 | priority strict | - |
-| 4 | Unicast | 10 | - | - |
-| 1 | Multicast | 50 | no priority | - |
-| 2 | Multicast | 10 | priority strict | - |
-| 4 | Multicast | 10 | - | - |
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | Unicast | 50 | no priority | - | Test no priority |
+| 2 | Unicast | 10 | priority strict | - | - |
+| 4 | Unicast | 10 | - | - | Test guaranteed percent |
+| 1 | Multicast | 50 | no priority | - | - |
+| 2 | Multicast | 10 | priority strict | - | Test strict priority |
+| 4 | Multicast | 10 | - | - | Test guaranteed percent |
 
-### QOS Profile Device Configuration
+#### QOS Profile Device Configuration
 
 ```eos
 !
@@ -413,6 +448,8 @@ qos profile qprof_testwithpolicy
       bandwidth percent 80
    !
    tx-queue 5
+      !! Multi-line comment
+      !! here.
       bandwidth percent 19
       no priority
 !
@@ -432,9 +469,30 @@ qos profile test
    tx-queue 4
       bandwidth guaranteed percent 10
 !
+qos profile test_with_pfc
+   service-policy type qos input pmap_test1
+   !
+   tx-queue 0
+      bandwidth percent 1
+   !
+   tx-queue 1
+      bandwidth percent 80
+   !
+   tx-queue 5
+      bandwidth percent 19
+      no priority
+   !
+   priority-flow-control on
+   priority-flow-control priority 0 no-drop
+   priority-flow-control priority 1 drop
+   priority-flow-control pause watchdog
+   priority-flow-control pause watchdog port action drop
+   priority-flow-control pause watchdog port timer timeout 0.05 polling-interval auto recovery-time 1.11 forced
+!
 qos profile uc_mc_queues_test
    !
    uc-tx-queue 1
+      !! Test no priority
       bandwidth percent 50
       no priority
    !
@@ -443,6 +501,7 @@ qos profile uc_mc_queues_test
       priority strict
    !
    uc-tx-queue 4
+      !! Test guaranteed percent
       bandwidth guaranteed percent 10
    !
    mc-tx-queue 1
@@ -450,17 +509,40 @@ qos profile uc_mc_queues_test
       no priority
    !
    mc-tx-queue 2
+      !! Test strict priority
       bandwidth percent 10
       priority strict
    !
    mc-tx-queue 4
+      !! Test guaranteed percent
       bandwidth guaranteed percent 10
 ```
 
-### QOS Interfaces
+#### QOS Interfaces
 
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |
 | Ethernet1 | dscp | 48 | - | - |
 | Ethernet6 | cos | - | 2 | - |
 | Port-Channel3 | cos | - | 2 | - |
+
+### Priority Flow Control
+
+#### Global Settings
+
+Priority Flow Control is **Off** on all interfaces.
+
+**Priority Flow Control watchdog settings**
+
+| Action | Timeout | Recovery | Polling | Override Action Drop |
+| ------ | ------- | -------- | ------- |
+| no-drop | 0.05 | 1.22 | 10.001 | False |
+
+```eos
+!
+priority-flow-control all off
+priority-flow-control pause watchdog action no-drop
+priority-flow-control pause watchdog default timeout 0.05
+priority-flow-control pause watchdog default polling-interval 10.001
+priority-flow-control pause watchdog default recovery-time 1.22
+```

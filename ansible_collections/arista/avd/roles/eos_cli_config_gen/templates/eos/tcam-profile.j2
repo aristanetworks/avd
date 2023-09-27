@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - tcam profile #}
 {% if tcam_profile is arista.avd.defined %}
 !
@@ -5,7 +10,11 @@ hardware tcam
 {%     if tcam_profile.profiles is arista.avd.defined %}
 {%         for profile in tcam_profile.profiles | arista.avd.natural_sort('name') %}
    profile {{ profile.name }}
+{%             if profile.config is arista.avd.defined %}
 {{ profile.config }}
+{%             elif profile.source is arista.avd.defined %}
+      source {{ profile.source }}
+{%             endif %}
    !
 {%         endfor %}
 {%     endif %}

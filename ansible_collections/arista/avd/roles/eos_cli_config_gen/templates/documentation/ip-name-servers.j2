@@ -1,0 +1,28 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip name servers #}
+{% if ip_name_servers is arista.avd.defined or name_server is arista.avd.defined %}
+
+### IP Name Servers
+
+#### IP Name Servers Summary
+
+| Name Server | VRF | Priority |
+| ----------- | --- | -------- |
+{%     for name_server in ip_name_servers | arista.avd.default([]) %}
+| {{ name_server.ip_address }} | {{ name_server.vrf | arista.avd.default('-') }} | {{ name_server.priority | arista.avd.default('-') }} |
+{%     endfor %}
+{# legacy data model to be removed in AVD 5.0.0 #}
+{%     for node in name_server.nodes | arista.avd.default([]) %}
+| {{ node }} | {{ name_server.source.vrf | arista.avd.default('-') }} | - |
+{%     endfor %}
+
+#### IP Name Servers Device Configuration
+
+```eos
+{%     include 'eos/ip-name-servers.j2' %}
+```
+{% endif %}

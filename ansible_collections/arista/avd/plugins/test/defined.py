@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 #
 # arista.avd.defined
 #
@@ -25,6 +28,60 @@ __metaclass__ = type
 from ansible.errors import AnsibleError
 from ansible.utils.display import Display
 from jinja2.runtime import Undefined
+
+DOCUMENTATION = r"""
+---
+name: defined
+collection: arista.avd
+author: Arista Ansible Team (@aristanetworks)
+version_added: "2.0"
+short_description: Test if the value is not C(Undefined) or C(None).
+description:
+  - The M(arista.avd.defined) test returns C(False) if the passed value is C(Undefined) or C(None). Else it will return C(True).
+  - The M(arista.avd.defined) test also accepts an optional I(test_value) argument to test if the value equals this.
+  - The optional I(var_type) argument can also be used to test if the variable is of the expected type.
+  - Optionally, the test can emit warnings or errors if the test fails.
+  - Compared to the built-in C(is defined) test, this test will also test for C(None) and can even test for a specific value or class.
+positional: _input
+options:
+  _input:
+    description: Value to test
+    required: true
+  test_value:
+    description: Value to match for in addition to defined and not none
+    default: None
+  var_type:
+    type: string
+    description: Type or Class to test for
+    choices: ['float', 'int', 'str', 'list', 'dict', 'tuple', 'bool']
+  fail_action:
+    type: string
+    description: Optional action if a test fails to emit a Warning or Error
+    choices: ['warning', 'error']
+  var_name:
+    type: string
+    description: Optional string to use as a variable name in warning or error messages
+"""
+
+EXAMPLES = r"""
+# Test if "my_var" is defined and not none:
+is_defined_and_not_none: "{{ my_var is arista.avd.defined }}"
+
+# Test if "my_var" is defined, not none and has value "something"
+is_defined_and_set_to_something: "{{ my_var is arista.avd.defined('something') }}"
+
+# Test if "my_var" is defined and if not print a warning message with the variable name
+test_result: "{{ my_dict.my_list[12].my_var is arista.avd.defined(fail_action='warning', var_name='my_dict.my_list[12].my_var' }}"
+# Output >>> [WARNING]: my_dict.my_list[12].my_var was expected but not set. Output may be incorrect or incomplete!
+"""
+
+RETURN = r"""
+---
+_value:
+  description:
+    - Returns V(False) if the passed value is V(Undefined) or V(None) or if any of the optional checks fail. Otherwise V(True).
+  type: boolean
+"""
 
 
 def defined(value, test_value=None, var_type=None, fail_action=None, var_name=None, run_tests=False):

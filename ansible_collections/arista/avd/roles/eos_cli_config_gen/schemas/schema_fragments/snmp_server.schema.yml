@@ -1,11 +1,12 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
   snmp_server:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     description: SNMP settings
     keys:
@@ -15,7 +16,7 @@ keys:
           local:
             type: str
             convert_types:
-            - int
+              - int
             description: |
               Engine ID in hexadecimal
           remotes:
@@ -26,7 +27,7 @@ keys:
                 id:
                   type: str
                   convert_types:
-                  - int
+                    - int
                   description: |
                     Remote engine ID in hexadecimal
                 address:
@@ -36,7 +37,7 @@ keys:
                 udp_port:
                   type: int
                   convert_types:
-                  - str
+                    - str
       contact:
         type: str
         description: SNMP contact
@@ -47,7 +48,7 @@ keys:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -81,6 +82,8 @@ keys:
               description: IPv4 access list name
             vrf:
               type: str
+              convert_types:
+                - int
       ipv6_acls:
         type: list
         items:
@@ -91,20 +94,23 @@ keys:
               description: IPv6 access list name
             vrf:
               type: str
+              convert_types:
+                - int
       local_interfaces:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
             name:
               type: str
-              required: true
               description: Interface name
             vrf:
               type: str
+              convert_types:
+                - int
       views:
         type: list
         items:
@@ -113,10 +119,16 @@ keys:
             name:
               type: str
               description: SNMP view name
-            MIB_family_name:
+            mib_family_name:
               type: str
             included:
               type: bool
+            MIB_family_name:
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: mib_family_name
+              type: str
       groups:
         type: list
         items:
@@ -159,7 +171,7 @@ keys:
             udp_port:
               type: int
               convert_types:
-              - str
+                - str
               description: |
                 udp_port will not be used if no remote_address is configured
             version:
@@ -168,7 +180,7 @@ keys:
             localized:
               type: str
               convert_types:
-              - int
+                - int
               description: |
                 Engine ID in hexadecimal for localizing auth and/or priv
             auth:
@@ -197,10 +209,12 @@ keys:
               description: Host IP address or name
             vrf:
               type: str
+              convert_types:
+                - int
             version:
               type: str
               convert_types:
-              - int
+                - int
               valid_values: ["1", "2c", "3"]
             community:
               type: str
@@ -240,11 +254,14 @@ keys:
                   default: true
       vrfs:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+                - int
             enable:
               type: bool

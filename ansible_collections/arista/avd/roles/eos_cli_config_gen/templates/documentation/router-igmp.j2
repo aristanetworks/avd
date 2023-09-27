@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - router igmp #}
 {% if router_igmp is arista.avd.defined %}
 
-## Router IGMP
+### Router IGMP
 
-### Router IGMP Summary
+#### Router IGMP Summary
 
 | Settings | Value |
 | -------- | ----- |
@@ -11,7 +16,7 @@
 | SSM Aware | {{ router_igmp.ssm_aware }} |
 {%     endif %}
 
-### Router IGMP Device Configuration
+#### Router IGMP Device Configuration
 
 ```eos
 {%     include 'eos/router-igmp.j2' %}

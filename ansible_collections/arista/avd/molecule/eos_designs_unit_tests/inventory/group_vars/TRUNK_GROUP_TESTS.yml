@@ -66,26 +66,47 @@ tenants:
         name: l2vlan399_without_trunk_groups
         tags: [ TRUNK_GROUP_TESTS_L3LEAF1, TRUNK_GROUP_TESTS_L2LEAF1 ]
 
+  - name: TENANT_WITH_DUPLICATE_VLANS
+    # Extra tenant with duplicate vlan numbers.
+    # This is to verify that "filter.only_vlans_in_use" properly filter on trunk_groups when there might be overlapping vlan numbers.
+    # Since "filter.only_vlans_in_use" are only configured on some devices, we have to filter this tenant away on the remaning switches.
+    # If not, there will be a duplicate vlan error (tested and verified offline).
+    # So in the end the vlans here are not configured anywhere, but will trigger duplicate checks if filtering is not implemented properly on trunk groups
+    mac_vrf_vni_base: 20000
+    vrfs:
+      - name: DUPLICATE_TG_200
+        vrf_vni: 200
+        svis:
+          - id: 200
+            name: duplicate svi200_with_trunk_groups not in use. Should not get configured anywhere
+            enabled: True
+            ip_address_virtual: 10.22.0.1/24
+            trunk_groups: [ TG_NOT_MATCHING_ANY_SERVERS ]
+    l2vlans:
+      - id: 210
+        name: duplicate l2vlan210_with_trunk_groups not in use. Should not get configured anywhere
+        trunk_groups: [ TG_NOT_MATCHING_ANY_SERVERS ]
+
 servers:
-  server_with_tg_100:
+  - name: server_with_tg_100
     adapters:
-      - server_ports: [ Nic1 ]
+      - endpoint_ports: [ Nic1 ]
         switch_ports: [ Ethernet11 ]
         switches: [ trunk-group-tests-l3leaf1a ]
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_100 ]
         mode: trunk
         enabled: true
-  server_with_tg_200:
+  - name: server_with_tg_200
     adapters:
-      - server_ports: [ Nic1, Nic2, Nic3 ]
+      - endpoint_ports: [ Nic1, Nic2, Nic3 ]
         switch_ports: [ Ethernet12, Ethernet12, Ethernet12 ]
         switches: [ trunk-group-tests-l2leaf1b, trunk-group-tests-l2leaf3, trunk-group-tests-l2leaf4 ]
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_200 ]
         mode: trunk
         enabled: true
-  server_with_tg_300:
+  - name: server_with_tg_300
     adapters:
-      - server_ports: [ Nic1, Nic2, Nic3, Nic4 ]
+      - endpoint_ports: [ Nic1, Nic2, Nic3, Nic4 ]
         switch_ports: [ Ethernet13, Ethernet13, Ethernet13, Ethernet13 ]
         switches: [ trunk-group-tests-l3leaf1a, trunk-group-tests-l3leaf1b, trunk-group-tests-l2leaf1a, trunk-group-tests-l2leaf1b ]
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_300 ]

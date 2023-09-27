@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - community lists #}
 {% if community_lists is arista.avd.defined %}
 
-## Community-lists
+### Community-lists
 
-### Community-lists Summary
+#### Community-lists Summary
 
 | Name | Action |
 | -------- | ------ |
@@ -11,7 +16,7 @@
 | {{ community_list.name }} | {{ community_list.action }} |
 {%     endfor %}
 
-### Community-lists Device Configuration
+#### Community-lists Device Configuration
 
 ```eos
 {%     include 'eos/community-lists.j2' %}

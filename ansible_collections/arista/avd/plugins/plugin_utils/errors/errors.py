@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 try:
     import jsonschema
 except ImportError as imp_exc:
@@ -79,4 +82,12 @@ class AvdDeprecationWarning(AristaAvdError):
             messages.append(f"See {url} for details.")
 
         self.message = " ".join(messages)
+        super().__init__(self.message)
+
+
+class AristaAvdDuplicateDataError(AristaAvdError):
+    def __init__(self, context: str, context_item_a: str, context_item_b: str):
+        self.message = (
+            f"Found duplicate objects with conflicting data while generating configuration for {context}. {context_item_a} conflicts with {context_item_b}."
+        )
         super().__init__(self.message)

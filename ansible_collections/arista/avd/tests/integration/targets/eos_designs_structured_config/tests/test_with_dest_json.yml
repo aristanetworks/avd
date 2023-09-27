@@ -1,0 +1,23 @@
+- name: Test with dest and changed
+  ignore_errors: no
+  register: result
+  arista.avd.eos_designs_structured_config:
+    dest: "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.json"
+
+- name: Compare actual output with expected output
+  ansible.builtin.shell: diff "{{ expected_output_dir }}/eos_designs_structured_config_test_with_dest.json" "{{ actual_output_dir }}/eos_designs_structured_config_test_with_dest.json"
+  failed_when: diff_output.rc
+  register: diff_output
+  delegate_to: localhost
+
+- name: Set expected_ansible_facts variable
+  ansible.builtin.include_vars:
+    name: expected_ansible_facts
+    file: "{{ expected_output_dir }}/eos_designs_structured_config_ansible_facts.yml"
+
+- name: Validate result
+  ansible.builtin.assert:
+    that:
+      - result is success
+      - result.ansible_facts is defined
+      - result.ansible_facts == expected_ansible_facts

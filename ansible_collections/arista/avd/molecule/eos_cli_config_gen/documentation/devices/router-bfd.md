@@ -1,30 +1,31 @@
 # router-bfd
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,29 +35,29 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# BFD
+## BFD
 
-## Router BFD
+### Router BFD
 
-### Router BFD Singlehop Summary
+#### Router BFD Singlehop Summary
 
 | Interval | Minimum RX | Multiplier |
 | -------- | ---------- | ---------- |
 | 900 | 900 | 50 |
 
-### Router BFD Multihop Summary
+#### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD SBFD Summary
+#### Router BFD SBFD Summary
 
 | Initiator Interval | Initiator Multiplier | Reflector Minimum RX | Reflector Local-Discriminator |
 | ------------------ | -------------------- | -------------------- | ----------------------------- |
 | 500 | 3 | 600 | 155.1.3.1 |
 
-### Router BFD Device Configuration
+#### Router BFD Device Configuration
 
 ```eos
 !

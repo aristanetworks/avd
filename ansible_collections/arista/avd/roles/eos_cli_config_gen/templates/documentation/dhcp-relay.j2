@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - dhcp relay #}
 {% if dhcp_relay is arista.avd.defined %}
 
-# DHCP Relay
+## DHCP Relay
 
-## DHCP Relay Summary
+### DHCP Relay Summary
 {%     if dhcp_relay.tunnel_requests_disabled is arista.avd.defined(true) %}
 
 - DHCP Relay is disabled for tunnelled requests
@@ -20,7 +25,7 @@
 {%         endfor %}
 {%     endif %}
 
-## DHCP Relay Configuration
+### DHCP Relay Configuration
 
 ```eos
 {%     include 'eos/dhcp-relay.j2' %}

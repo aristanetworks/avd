@@ -1,0 +1,24 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - management accounts #}
+{% if management_accounts is arista.avd.defined %}
+
+### Management Accounts
+
+#### Password Policy
+
+{%     if management_accounts.password.policy is arista.avd.defined %}
+The password policy set for management accounts is: {{ management_accounts.password.policy }}
+{%     else %}
+No specific password policy is set for management accounts.
+{%     endif %}
+
+#### Management Accounts Device Configuration
+
+```eos
+{%     include 'eos/management-accounts.j2' %}
+```
+{% endif %}

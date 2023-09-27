@@ -1,12 +1,18 @@
-# Git Installation
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
 
-Using Git as source of collection in Ansible provides an easy way to implement all the changes once they're part of the development branch without waiting for a new tagged version shipped to ansible-galaxy.
+# Git installation
 
-## Use Git as source of collection
+Using Git as the source of collections in Ansible provides an easy way to implement all the changes once they're part of the development branch without waiting for a new tagged version shipped to Ansible Galaxy.
 
-In this setup, Git repository will be used by Ansible as collection. It's useful when working on feature development as we can change Git branch and test code live.
+## Use Git as the source of collection
 
-### Get repository locally
+In this setup, the Git repository will be used by Ansible as a collection. It's useful when working on feature development as we can change the Git branch and test code live.
+
+### Clone the remote repository
 
 ```shell
 # Clone repository
@@ -20,7 +26,7 @@ cd ansible-avd
 
 In your project, update your `ansible.cfg` file to point **collection_paths** to your local version of ansible-avd
 
-- Get full path to your newly cloned AVD repository.
+- Get the full path to your newly cloned AVD repository.
 
 ```shell
 # Get your current location
@@ -28,7 +34,7 @@ $ pwd
 /path/to/ansible/avd/collection_repository
 ```
 
-- Configure your project to use AVD repository as source of collections:
+- Configure your project to use the AVD repository as a source of collections:
 
 ```ini
 # Update your ansible.cfg in your playbook project
@@ -41,7 +47,7 @@ collections_paths = /path/to/ansible/avd/collection_repository
 
 ## Build & install collection from Git
 
-In this approach, an Ansible collection package is built from current Git version and installed locally.
+This approach uses an Ansible collection package built from the current Git version and installed locally.
 
 ### Clone repository
 

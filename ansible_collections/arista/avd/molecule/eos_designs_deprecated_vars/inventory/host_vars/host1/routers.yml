@@ -1,0 +1,10 @@
+# Testing "routers" as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+routers:
+  ROUTER01:
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ host1 ]
+        profile: Tenant_X_LT

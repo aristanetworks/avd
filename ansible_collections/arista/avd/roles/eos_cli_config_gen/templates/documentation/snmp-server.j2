@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - snmp server #}
 {% if snmp_server is arista.avd.defined %}
 
-## SNMP
+### SNMP
 
-### SNMP Configuration Summary
+#### SNMP Configuration Summary
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
@@ -27,7 +32,7 @@
 {%     endif %}
 {%     if snmp_server.engine_ids is arista.avd.defined %}
 
-### SNMP EngineID Configuration
+#### SNMP EngineID Configuration
 
 | Type | EngineID (Hex) | IP | Port |
 | ---- | -------------- | -- | ---- |
@@ -43,7 +48,7 @@
 {%     endif %}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
 
-### SNMP ACLs
+#### SNMP ACLs
 | IP | ACL | VRF |
 | -- | --- | --- |
 {%         for acl in snmp_server.ipv4_acls %}
@@ -57,7 +62,7 @@
 {%     endif %}
 {%     if snmp_server.local_interfaces is arista.avd.defined %}
 
-### SNMP Local Interfaces
+#### SNMP Local Interfaces
 
 | Local Interface | VRF |
 | --------------- | --- |
@@ -67,7 +72,7 @@
 {%     endif %}
 {%     if snmp_server.vrfs is arista.avd.defined %}
 
-### SNMP VRF Status
+#### SNMP VRF Status
 
 | VRF | Status |
 | --- | ------ |
@@ -82,7 +87,7 @@
 {%     endif %}
 {%     if snmp_server.hosts is arista.avd.defined %}
 
-### SNMP Hosts Configuration
+#### SNMP Hosts Configuration
 
 | Host | VRF | Community | Username | Authentication level | SNMP Version |
 | ---- |---- | --------- | -------- | -------------------- | ------------ |
@@ -100,20 +105,20 @@
 {%                     endfor %}
 {%                 elif host.community is arista.avd.defined
                         and host.version | arista.avd.default('2c') | string in ['1', '2c'] %}
-| {{ row_host }} | {{ row_vrf }} | {{ host.community }} | - | - | {{ host.version | arista.avd.default('2c') }} |
+| {{ row_host }} | {{ row_vrf }} | {{ host.community | arista.avd.hide_passwords(hide_passwords) }} | - | - | {{ host.version | arista.avd.default('2c') }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.views is arista.avd.defined %}
 
-### SNMP Views Configuration
+#### SNMP Views Configuration
 
 | View | MIB Family Name | Status |
 | ---- | --------------- | ------ |
 {%         for view in snmp_server.views %}
 {%             set row_view = view.name | arista.avd.default('default') %}
-{%             set row_mib_family_name = view.MIB_family_name | arista.avd.default('-') %}
+{%             set row_mib_family_name = view.mib_family_name | arista.avd.default(view.MIB_family_name, '-') %}
 {%             if view.included | arista.avd.default(false) %}
 {%                 set row_status = 'Included' %}
 {%             else %}
@@ -124,7 +129,7 @@
 {%     endif %}
 {%     if snmp_server.communities is arista.avd.defined %}
 
-### SNMP Communities
+#### SNMP Communities
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
@@ -133,12 +138,12 @@
 {%             set access_list_ipv4 = community.access_list_ipv4.name | arista.avd.default("-") %}
 {%             set access_list_ipv6 = community.access_list_ipv6.name | arista.avd.default("-") %}
 {%             set view = community.view | arista.avd.default("-") %}
-| {{ community.name }} | {{ access }} | {{ access_list_ipv4 }} | {{ access_list_ipv6 }} | {{ view }} |
+| {{ community.name | arista.avd.hide_passwords(hide_passwords) }} | {{ access }} | {{ access_list_ipv4 }} | {{ access_list_ipv6 }} | {{ view }} |
 {%         endfor %}
 {%     endif %}
 {%     if snmp_server.groups is arista.avd.defined %}
 
-### SNMP Groups Configuration
+#### SNMP Groups Configuration
 
 | Group | SNMP Version | Authentication | Read | Write | Notify |
 | ----- | ------------ | -------------- | ---- | ----- | ------ |
@@ -154,7 +159,7 @@
 {%     endif %}
 {%     if snmp_server.users is arista.avd.defined %}
 
-### SNMP Users Configuration
+#### SNMP Users Configuration
 
 | User | Group | Version | Authentication | Privacy | Remote Address | Remote Port | Engine ID |
 | ---- | ----- | ------- | -------------- | ------- | -------------- | ----------- | --------- |
@@ -171,7 +176,7 @@
 {%         endfor %}
 {%     endif %}
 
-### SNMP Device Configuration
+#### SNMP Device Configuration
 
 ```eos
 {%     include 'eos/snmp-server.j2' %}

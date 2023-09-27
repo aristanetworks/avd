@@ -1,0 +1,25 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  network_services_keys:
+    type: list
+    primary_key: name
+    convert_types:
+      - dict
+    description: |
+      Network Services can be grouped by using separate keys.
+      The keys can be customized to provide a better better organization or grouping of your data.
+      `network_services_keys` should be defined in the top level group_vars for the fabric.
+      The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+    default:
+      - "name": "tenants"

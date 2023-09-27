@@ -1,0 +1,15 @@
+fabric_name: fabric_invalid_schema
+
+type: l2leaf
+l2leaf:
+  nodes:
+    - node: invalid-schema # <--- Key should have been "name"
+      id: 1
+
+l3leaf:
+  nodes:
+    some-other-node: # <--- dict of dicts will be converted but raise an error since avd_data_conversion_mode == "error"
+      id: 1
+
+expected_error_message: >-
+  1 errors raised during conversion of input vars. 2 errors found during schema validation of input vars.

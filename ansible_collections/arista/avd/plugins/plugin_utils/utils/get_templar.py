@@ -1,5 +1,13 @@
-from ansible.plugins.action import ActionBase
-from ansible.template import Templar
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ansible.plugins.action import ActionBase
+    from ansible.template import Templar
 
 from .compile_searchpath import compile_searchpath
 

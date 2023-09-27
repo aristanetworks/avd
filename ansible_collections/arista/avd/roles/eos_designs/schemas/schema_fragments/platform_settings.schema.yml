@@ -1,0 +1,178 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  platform_settings:
+    documentation_options:
+      table: platform-settings
+    type: list
+    items:
+      type: dict
+      keys:
+        platforms:
+          type: list
+          items:
+            type: str
+        trident_forwarding_table_partition:
+          type: str
+          description: Only applied when evpn_multicast is true.
+        reload_delay:
+          type: dict
+          keys:
+            mlag:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 86400
+              description: In seconds.
+            non_mlag:
+              type: int
+              convert_types:
+                - str
+              min: 0
+              max: 86400
+              description: In seconds.
+        tcam_profile:
+          type: str
+        lag_hardware_only:
+          type: bool
+        default_interface_mtu:
+          type: int
+          convert_types:
+            - str
+          description: |
+            Default interface MTU configured on EOS under "interface defaults".
+            Takes precedence over the root key "default_interface_mtu".
+          min: 68
+          max: 65535
+        feature_support:
+          type: dict
+          keys:
+            queue_monitor_length_notify:
+              type: bool
+              default: true
+            interface_storm_control:
+              type: bool
+              default: true
+            poe:
+              type: bool
+              default: false
+            per_interface_mtu:
+              type: bool
+              default: true
+              description: |
+                Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
+                Effectively this means that all settings regarding interface MTU will be ignored if this is false.
+                Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"
+            bgp_update_wait_install:
+              type: bool
+              default: true
+              description: |
+                Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
+                Can be overridden by setting "bgp_update_wait_install" host/group_vars.
+            bgp_update_wait_for_convergence:
+              type: bool
+              default: true
+              description: |
+                Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+                This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
+                Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
+        management_interface:
+          type: str
+          default: Management1
+        raw_eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the root level of the final EOS configuration.
+    default:
+      - platforms:
+          - default
+        feature_support:
+          queue_monitor_length_notify: false
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+      - platforms:
+          - 7050X3
+          - 720XP
+          - 722XP
+        feature_support:
+          queue_monitor_length_notify: false
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+        trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
+      - platforms:
+          - 7280R
+          - 7280R2
+          - 7020R
+        lag_hardware_only: true
+        reload_delay:
+          mlag: 900
+          non_mlag: 1020
+        tcam_profile: vxlan-routing
+      - platforms:
+          - 7280R3
+        reload_delay:
+          mlag: 900
+          non_mlag: 1020
+      - platforms:
+          - 7500R
+          - 7500R2
+        lag_hardware_only: true
+        management_interface: Management0
+        reload_delay:
+          mlag: 900
+          non_mlag: 1020
+        tcam_profile: vxlan-routing
+      - platforms:
+          - 7500R3
+          - 7800R3
+        management_interface: Management0
+        reload_delay:
+          mlag: 900
+          non_mlag: 1020
+      - platforms:
+          - 7368X4
+        management_interface: Management0
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+      - platforms:
+          - 7300X3
+        management_interface: Management0
+        reload_delay:
+          mlag: 1200
+          non_mlag: 1320
+        trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
+      - platforms:
+          - VEOS
+          - VEOS-LAB
+          - vEOS
+          - vEOS-lab
+        feature_support:
+          bgp_update_wait_for_convergence: false
+          bgp_update_wait_install: false
+          interface_storm_control: false
+          queue_monitor_length_notify: false
+        reload_delay:
+          mlag: 300
+          non_mlag: 330
+      - platforms:
+          - CEOS
+          - cEOS
+          - ceos
+          - cEOSLab
+        feature_support:
+          bgp_update_wait_for_convergence: false
+          bgp_update_wait_install: false
+          interface_storm_control: false
+          queue_monitor_length_notify: false
+        management_interface: Management0
+        reload_delay:
+          mlag: 300
+          non_mlag: 330

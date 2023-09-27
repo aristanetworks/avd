@@ -1,10 +1,13 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from .utils import UtilsMixin
 
@@ -21,7 +24,7 @@ class PatchPanelMixin(UtilsMixin):
         Return structured config for patch_panel
         """
 
-        if not self._network_services_l1:
+        if not self.shared_utils.network_services_l1:
             return None
 
         patches = []
@@ -33,10 +36,10 @@ class PatchPanelMixin(UtilsMixin):
                 if subifs := point_to_point_service.get("subinterfaces", []):
                     subifs = [subif for subif in subifs if subif.get("number") is not None]
                 for endpoint in point_to_point_service.get("endpoints", []):
-                    if self._hostname not in endpoint.get("nodes", []):
+                    if self.shared_utils.hostname not in endpoint.get("nodes", []):
                         continue
 
-                    node_index = list(endpoint["nodes"]).index(self._hostname)
+                    node_index = list(endpoint["nodes"]).index(self.shared_utils.hostname)
                     interface = endpoint["interfaces"][node_index]
                     if get(endpoint, "port_channel.mode") in ["active", "on"]:
                         channel_group_id = "".join(re.findall(r"\d", interface))
@@ -63,7 +66,13 @@ class PatchPanelMixin(UtilsMixin):
                                         "endpoint": f"bgp vpws {tenant['name']} pseudowire {point_to_point_service['name']}_{subif['number']}",
                                     }
                                 )
-                            patches.append(patch)
+                            append_if_not_duplicate(
+                                list_of_dicts=patches,
+                                primary_key="name",
+                                new_dict=patch,
+                                context="Patches defined under point_to_point_services",
+                                context_keys=["name"],
+                            )
                     else:
                         patch = {
                             "name": f"{point_to_point_service['name']}",
@@ -84,7 +93,13 @@ class PatchPanelMixin(UtilsMixin):
                                     "endpoint": f"bgp vpws {tenant['name']} pseudowire {point_to_point_service['name']}",
                                 }
                             )
-                        patches.append(patch)
+                        append_if_not_duplicate(
+                            list_of_dicts=patches,
+                            primary_key="name",
+                            new_dict=patch,
+                            context="Patches defined under point_to_point_services",
+                            context_keys=["name"],
+                        )
 
         if patches:
             return {"patches": patches}

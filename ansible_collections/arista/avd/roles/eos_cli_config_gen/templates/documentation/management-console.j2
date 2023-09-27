@@ -1,15 +1,20 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - management console #}
 {% if management_console is arista.avd.defined %}
 
-## Management Console
+### Management Console
 {%     if management_console.idle_timeout is arista.avd.defined %}
 
-### Management Console Timeout
+#### Management Console Timeout
 
 Management Console Timeout is set to **{{ management_console.idle_timeout }}** minutes.
 {%     endif %}
 
-### Management Console Configuration
+#### Management Console Configuration
 
 ```eos
 {%     include 'eos/management-console.j2' %}

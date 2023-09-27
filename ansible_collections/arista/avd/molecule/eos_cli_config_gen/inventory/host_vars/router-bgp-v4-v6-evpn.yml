@@ -8,17 +8,17 @@ router_bgp:
     - distance bgp 20 200 200
     - maximum-paths 4 ecmp 4
   peer_groups:
-    IPV4-UNDERLAY:
+    - name: IPV4-UNDERLAY
       remote_as: 65000
       password: "dt5J2fw8tymeDFPyoYLB3w=="
       maximum_routes: 12000
       send_community: all
-    IPV6-UNDERLAY:
+    - name: IPV6-UNDERLAY
       remote_as: 65000
       password: "WkH9/oj4atEwv2MgOprY8A=="
       maximum_routes: 12000
       send_community: all
-    EVPN-OVERLAY:
+    - name: EVPN-OVERLAY
       remote_as: 65000
       next_hop_unchanged: true
       update_source: Loopback0
@@ -27,103 +27,103 @@ router_bgp:
       password: "MY+KbyJy4kSu+X/blnVwsg=="
       send_community: all
       maximum_routes: 0
-    IPV4-UNDERLAY-MLAG:
+    - name: IPV4-UNDERLAY-MLAG
       remote_as: 65100
       next_hop_self: true
       password: "46jF9S9T7v5RRceVzhrlBg=="
       maximum_routes: 12000
       send_community: all
-    IPV6-UNDERLAY-MLAG:
+    - name: IPV6-UNDERLAY-MLAG
       remote_as: 65100
       next_hop_self: true
       password: "CXS0NveSYzQRmm6SRGp42w=="
       maximum_routes: 12000
       send_community: all
   neighbors:
-    10.50.2.1:
+    - ip_address: 10.50.2.1
       peer_group: IPV4-UNDERLAY
-    10.50.2.3:
+    - ip_address: 10.50.2.3
       peer_group: IPV4-UNDERLAY
-    10.50.2.5:
+    - ip_address: 10.50.2.5
       peer_group: IPV4-UNDERLAY
-    10.50.64.11:
+    - ip_address: 10.50.64.11
       peer_group: EVPN-OVERLAY
-    10.50.64.12:
+    - ip_address: 10.50.64.12
       peer_group: EVPN-OVERLAY
-    10.50.64.13:
+    - ip_address: 10.50.64.13
       peer_group: EVPN-OVERLAY
-    169.254.252.1:
+    - ip_address: 169.254.252.1
       peer_group: IPV4-UNDERLAY-MLAG
-    fe80::b%Vl4094:
+    - ip_address: fe80::b%Vl4094
       peer_group: IPV6-UNDERLAY-MLAG
-    1b11:3a00:22b0:0088::1:
+    - ip_address: 1b11:3a00:22b0:0088::1
       peer_group: IPV6-UNDERLAY
-    1b11:3a00:22b0:0088::3:
+    - ip_address: 1b11:3a00:22b0:0088::3
       peer_group: IPV6-UNDERLAY
-    1b11:3a00:22b0:0088::5:
+    - ip_address: 1b11:3a00:22b0:0088::5
       peer_group: IPV6-UNDERLAY
-    1.1.1.1:
+    - ip_address: 1.1.1.1
       remote_as: 1
       shutdown: false
       description: TEST
   redistribute_routes:
-    connected:
+    - source_protocol: connected
       route_map: RM-CONN-2-BGP
-    static:
+    - source_protocol: static
       route_map: RM-STATIC-2-BGP
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY:
+      - name: EVPN-OVERLAY
         route_map_in: RM-HIDE-AS-PATH
         route_map_out: RM-HIDE-AS-PATH
         activate: true
   address_family_ipv4:
     peer_groups:
-      IPV4-UNDERLAY:
+      - name: IPV4-UNDERLAY
         activate: true
         route_map_in: RM-HIDE-AS-PATH
         route_map_out: RM-HIDE-AS-PATH
-      IPV4-UNDERLAY-MLAG:
+      - name: IPV4-UNDERLAY-MLAG
         activate: true
   address_family_ipv4_multicast:
     peer_groups:
-      IPV4-UNDERLAY:
+      - name: IPV4-UNDERLAY
         activate: true
-      IPV4-UNDERLAY-MLAG:
+      - name: IPV4-UNDERLAY-MLAG
         activate: true
     redistribute_routes:
-      attached-host:
+      - source_protocol: attached-host
   address_family_ipv6:
     peer_groups:
-      IPV6-UNDERLAY:
+      - name: IPV6-UNDERLAY
         activate: true
         route_map_in: RM-HIDE-AS-PATH
         route_map_out: RM-HIDE-AS-PATH
-      IPV6-UNDERLAY-MLAG:
+      - name: IPV6-UNDERLAY-MLAG
         activate: true
   vlans:
-    24:
+    - id: 24
       rd: "10.50.64.15:10024"
       route_targets:
         both:
           - "1:10024"
       redistribute_routes:
         - learned
-    41:
+    - id: 41
       rd: "10.50.64.15:10041"
       route_targets:
         both:
           - "1:10041"
       redistribute_routes:
         - learned
-    42:
+    - id: 42
       rd: "10.50.64.15:10042"
       route_targets:
         both:
           - "1:10042"
       redistribute_routes:
         - learned
-    65:
+    - id: 65
       rd: "10.50.64.15:10065"
       route_targets:
         both:
@@ -131,23 +131,27 @@ router_bgp:
       redistribute_routes:
         - learned
   vrfs:
-    Tenant_A:
+    - name: Tenant_A
       rd: "10.50.64.15:30001"
       route_targets:
         import:
-          evpn:
-            - "1:30001"
+          - address_family: evpn
+            route_targets:
+              - "1:30001"
         export:
-          evpn:
-            - "1:30001"
+          - address_family: evpn
+            route_targets:
+              - "1:30001"
       redistribute_routes:
-        connected:
-    Tenant_B:
+        - source_protocol: connected
+    - name: Tenant_B
       rd: "10.50.64.15:30002"
       route_targets:
         import:
-          evpn:
-            - 1:30002
+          - address_family: evpn
+            route_targets:
+              - 1:30002
         export:
-          evpn:
-            - 1:30002
+          - address_family: evpn
+            route_targets:
+              - 1:30002

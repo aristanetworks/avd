@@ -1,11 +1,12 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
   daemon_terminattr:
-    documentation_options:
-      filename: data_model/Monitoring
     type: dict
     description: |
       You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance.
@@ -30,13 +31,12 @@ keys:
           Multiple CloudVision clusters
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
             name:
               type: str
-              required: true
               description: Cluster Name
             cvaddrs:
               type: list
@@ -54,7 +54,7 @@ keys:
               keys:
                 method:
                   type: str
-                  valid_values: ["token", "token-secure", "key"]
+                  valid_values: ["token", "token-secure", "key", "certs"]
                 key:
                   type: str
                 token_file:
@@ -62,6 +62,21 @@ keys:
                   description: |
                     Token file path
                     e.g. "/tmp/token"
+                cert_file:
+                  type: str
+                  description: |
+                    Client certificate file path
+                    e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
+                ca_file:
+                  type: str
+                  description: |
+                    CA certificate file path (on-prem only)
+                    e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
+                key_file:
+                  type: str
+                  description: |
+                    Client certificate key file path
+                    e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
             cvobscurekeyfile:
               type: bool
               description: |
@@ -75,10 +90,16 @@ keys:
               type: str
               description: |
                 Set source IP address in case of in-band managament
+            cvsourceintf:
+              type: str
+              description: |
+                Set source interface in case of in-band managament. Available as of TerminAttr v1.23.0
             cvvrf:
               type: str
               description: |
                 The VRF to use to connect to CloudVision
+              convert_types:
+                - int
       cvauth:
         type: dict
         description: |
@@ -86,7 +107,7 @@ keys:
         keys:
           method:
             type: str
-            valid_values: ["token", "token-secure", "key"]
+            valid_values: ["token", "token-secure", "key", "certs"]
           key:
             type: str
           token_file:
@@ -94,6 +115,21 @@ keys:
             description: |
               Token file path
               e.g. "/tmp/token"
+          cert_file:
+            type: str
+            description: |
+              Client certificate file path
+              e.g. "/persist/secure/ssl/terminattr/primary/certs/client.crt"
+          ca_file:
+            type: str
+            description: |
+              CA certificate file path (on-prem only)
+              e.g. "/persist/secure/ssl/terminattr/primary/certs/ca.crt"
+          key_file:
+            type: str
+            description: |
+              Client certificate key file path
+              e.g. "/persist/secure/ssl/terminattr/primary/keys/client.key"
       cvobscurekeyfile:
         type: bool
         description: |
@@ -107,14 +143,20 @@ keys:
         type: str
         description: |
           Set source IP address in case of in-band managament
+      cvsourceintf:
+        type: str
+        description: |
+          Set source interface in case of in-band managament
       cvvrf:
         type: str
         description: |
           The VRF to use to connect to CloudVision
+        convert_types:
+          - int
       cvgnmi:
         type: bool
         description: |
-          Stream states from EOS GNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
+          Stream states from EOS gNMI servers (Openconfig) to CloudVision. Available as of TerminAttr v1.13.1
       disable_aaa:
         type: bool
         description: |
@@ -174,24 +216,3 @@ keys:
         description: |
           The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
           There is no need to change the compression scheme.
-      ingestauth_key:
-        type: str
-        description: |
-          Deprecated key. Use `cvauth` instead.
-      ingestgrpcurl:
-        type: dict
-        description: |
-          Deprecated key. Use `cvaddrs` instead.
-        keys:
-          ips:
-            type: list
-            items:
-              type: str
-          port:
-            type: int
-            convert_types:
-            - str
-      ingestvrf:
-        description: |
-          Deprecated key. Use `cvvrf` instead.
-        type: str

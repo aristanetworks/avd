@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - class maps #}
 {% if class_maps.qos is arista.avd.defined %}
 
-## QOS Class Maps
+### QOS Class Maps
 
-### QOS Class Maps Summary
+#### QOS Class Maps Summary
 
 | Name | Field | Value |
 | ---- | ----- | ----- |
@@ -25,7 +30,7 @@
 | {{ class_map.name }} | {{ row.type }} | {{ row.value }} |
 {%     endfor %}
 
-### Class-maps Device Configuration
+#### Class-maps Device Configuration
 
 ```eos
 {%     include 'eos/class-maps.j2' %}

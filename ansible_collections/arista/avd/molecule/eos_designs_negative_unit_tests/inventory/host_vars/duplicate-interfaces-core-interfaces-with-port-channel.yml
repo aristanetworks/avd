@@ -1,0 +1,56 @@
+---
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: duplicate-interfaces-core-interfaces-with-port-channel
+      id: 42
+
+type: l3leaf
+
+core_interfaces:
+
+  p2p_links_profiles:
+    - name: isis_bb_profile
+      speed: "forced 1000full"
+      mtu: 1500
+      isis_hello_padding: false
+      isis_metric: 60
+      ip_pool: underlay_pool
+      isis_circuit_type: level-2
+      ipv6_enable: true
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
+
+  p2p_links:
+
+    # Unnumbered link
+    - nodes: [ duplicate-interfaces-core-interfaces-with-port-channel, peer1]
+      id: 1
+      interfaces: [ Ethernet1, Ethernet2 ]
+      profile: isis_bb_profile
+      ip: ["unnumbered loopback0", "unnumbered loopback0"]
+
+    # core Port-Channel
+    - nodes: [ duplicate-interfaces-core-interfaces-with-port-channel, core-2-ospf-ldp ]
+      id: 9
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          # duplicate interface name
+          - node: duplicate-interfaces-core-interfaces-with-port-channel
+            interfaces: [ Ethernet1 ]
+          - node: core-2-ospf-ldp
+            interfaces: [ Ethernet12]
+      profile: isis_bb_profile
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under
+  core_interfaces p2p_link port-Channel members.
+  {'name': 'Ethernet1', 'peer': 'core-2-ospf-ldp', 'peer_interface': 'Ethernet12', 'channel_group': {'id': 1, 'mode': 'active'},
+  'description': 'P2P_LINK_TO_core-2-ospf-ldp_Ethernet12', 'type': 'port-channel-member'}
+  conflicts with {'name': 'Ethernet1', 'peer': 'peer1', 'peer_interface': 'Ethernet2', 'channel_group': None,
+  'description': 'P2P_LINK_TO_peer1_Ethernet2', 'type': 'routed'}.

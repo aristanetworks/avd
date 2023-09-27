@@ -1,30 +1,31 @@
 # sflow
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,11 +35,11 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Monitoring
+## Monitoring
 
-## SFlow
+### SFlow
 
-### SFlow Summary
+#### SFlow Summary
 
 | VRF | SFlow Source | SFlow Destination | Port |
 | --- | ------------ | ----------------- | ---- |
@@ -65,11 +66,13 @@ sFlow is enabled.
 
 sFlow is disabled on all interfaces by default.
 
+Unmodified egress sFlow is enabled on all interfaces by default.
+
 sFlow hardware acceleration is enabled.
 
 sFlow hardware accelerated Sample Rate: 1024
 
-### SFlow Hardware Accelerated Modules
+#### SFlow Hardware Accelerated Modules
 
 | Module | Acceleration Enabled |
 | ------ | -------------------- |
@@ -77,7 +80,7 @@ sFlow hardware accelerated Sample Rate: 1024
 | Linecard2 | True |
 | Linecard3 | False |
 
-### SFlow Extensions
+#### SFlow Extensions
 
 | Extension | Enabled |
 | --------- | ------- |
@@ -86,7 +89,7 @@ sFlow hardware accelerated Sample Rate: 1024
 | switch | False |
 | tunnel | False |
 
-### SFlow Device Configuration
+#### SFlow Device Configuration
 
 ```eos
 !
@@ -111,6 +114,7 @@ sflow extension router
 no sflow extension switch
 no sflow extension tunnel
 sflow interface disable default
+sflow interface egress unmodified enable default
 sflow run
 sflow hardware acceleration
 sflow hardware acceleration sample 1024

@@ -1,0 +1,26 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  underlay_multicast_anycast_rp:
+    documentation_options:
+      table: fabric-settings
+    type: dict
+    description: |
+      If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured
+      with one of the following methods:
+      - Anycast RP using PIM (RFC4610).
+      - Anycast RP using MSDP (RFC4611).
+
+      NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".
+    keys:
+      mode:
+        type: str
+        valid_values:
+          - pim
+          - msdp
+        default: pim

@@ -24,13 +24,13 @@ l2leaf:
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
   node_groups:
-    UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1:
+    - group: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1
       nodes:
-        UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A:
+        - name: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A
           id: 1
           mgmt_ip: 192.168.201.201/24
           uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
-        UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B:
+        - name: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B
           id: 2
           mgmt_ip: 192.168.201.201/24
           uplink_switch_interfaces: [ Ethernet6, Ethernet6 ]

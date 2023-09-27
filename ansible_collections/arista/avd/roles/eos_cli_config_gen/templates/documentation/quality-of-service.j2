@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {% set ethernet_interfaces_qos = [] %}
 {% set port_channel_interfaces_qos = [] %}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
@@ -19,7 +24,7 @@
        or ethernet_interfaces_qos | length > 0 is arista.avd.defined
        or port_channel_interfaces_qos | length > 0 %}
 
-# Quality Of Service
+## Quality Of Service
 {## QOS #}
 {%     include 'documentation/qos.j2' %}
 {## QOS Class Maps #}

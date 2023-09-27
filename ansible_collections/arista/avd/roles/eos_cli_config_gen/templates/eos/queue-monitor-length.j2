@@ -1,7 +1,21 @@
-{# eos - queue monitor lenght #}
-{% if queue_monitor_length is arista.avd.defined and queue_monitor_length.enabled is not arista.avd.defined(false) %}
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - queue monitor length #}
+{% if queue_monitor_length.enabled is arista.avd.defined(true) %}
 !
 queue-monitor length
+{%     if queue_monitor_length.default_thresholds.high is arista.avd.defined %}
+{%         set default_thresholds_cli = "queue-monitor length default threshold" %}
+{%         if queue_monitor_length.default_thresholds.low is arista.avd.defined %}
+{%             set default_thresholds_cli = default_thresholds_cli ~ "s " ~ queue_monitor_length.default_thresholds.high ~ " " ~ queue_monitor_length.default_thresholds.low %}
+{%         else %}
+{%             set default_thresholds_cli = default_thresholds_cli ~ " " ~ queue_monitor_length.default_thresholds.high %}
+{%         endif %}
+{{ default_thresholds_cli }}
+{%     endif %}
 {%     if queue_monitor_length.log is arista.avd.defined %}
 queue-monitor length log {{ queue_monitor_length.log }}
 {%     endif %}

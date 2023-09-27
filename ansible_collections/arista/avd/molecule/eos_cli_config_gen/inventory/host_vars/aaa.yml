@@ -11,7 +11,8 @@ tacacs_servers:
       single_connection: false
     - host: 10.10.10.158
       vrf: default
-      key: 071B245F5A
+      # Testing of play_vars in eos_cli_config_gen
+      key: "{{ tacacs_key_set_as_play_var }}"
       key_type: 7
     - host: 10.10.10.159
       vrf: default
@@ -19,15 +20,16 @@ tacacs_servers:
       key_type: 8a
 
 ### Radius Servers
-radius_servers:
-  - host: 10.10.10.157
-    vrf: mgt
-    key: 071B245F5A
-  - host: 10.10.10.249
-    key: 071B245F5A
-  - host: 10.10.10.158
-    vrf: default
-    key: 071B245F5A
+radius_server:
+  hosts:
+    - host: 10.10.10.157
+      vrf: mgt
+      key: 071B245F5A
+    - host: 10.10.10.249
+      key: 071B245F5A
+    - host: 10.10.10.158
+      vrf: default
+      key: 071B245F5A
 
 ### AAA Server Groups
 aaa_server_groups:
@@ -43,7 +45,6 @@ aaa_server_groups:
       - server: 192.168.10.157
         vrf: mgt
       - server: 10.10.10.248
-
 
 ## AAA Authentication
 aaa_authentication:
@@ -90,9 +91,11 @@ aaa_accounting:
     console:
       type: start-stop
       group: TACACS
+      logging: true
     default:
       type: start-stop
       group: TACACS
+      logging: true
   system:
     default:
       type: start-stop
@@ -126,15 +129,15 @@ aaa_root:
 
 ### Local Users ###
 local_users:
-  admin:
+  - name: admin
     privilege: 15
     role: network-admin
     no_password: true
-  ansible:
+  - name: ansible
     privilege: 15
     role: network-admin
     sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
-  cvpadmin:
+  - name: cvpadmin
     privilege: 15
     role: network-admin
     sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0

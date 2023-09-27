@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - local users #}
 {% if local_users is arista.avd.defined %}
 !
@@ -13,8 +18,11 @@ no {{ local_user_cli }}
 {%         if local_user.role is arista.avd.defined %}
 {%             set local_user_cli = local_user_cli ~ " role " ~ local_user.role %}
 {%         endif %}
+{%         if local_user.shell is arista.avd.defined %}
+{%             set local_user_cli = local_user_cli ~ " shell " ~ local_user.shell %}
+{%         endif %}
 {%         if local_user.sha512_password is arista.avd.defined %}
-{%             set local_user_cli = local_user_cli ~ " secret sha512 " ~ local_user.sha512_password %}
+{%             set local_user_cli = local_user_cli ~ " secret sha512 " ~ local_user.sha512_password | arista.avd.hide_passwords(hide_passwords) %}
 {%         elif local_user.no_password is arista.avd.defined(true) %}
 {%             set local_user_cli = local_user_cli ~ " nopassword" %}
 {%         endif %}

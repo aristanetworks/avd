@@ -1,13 +1,18 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - management tech support #}
 {% if management_tech_support is arista.avd.defined %}
 
-## Management Tech-Support
+### Management Tech-Support
 {%     if management_tech_support.policy_show_tech_support is arista.avd.defined %}
 
-### Policy
+#### Policy
 {%         if management_tech_support.policy_show_tech_support.exclude_commands is arista.avd.defined %}
 
-#### Exclude Commands
+##### Exclude Commands
 
 | Command | Type |
 | ------- | ---- |
@@ -19,7 +24,7 @@
 {%         endif %}
 {%         if management_tech_support.policy_show_tech_support.include_commands is arista.avd.defined %}
 
-#### Include Commands
+##### Include Commands
 
 | Command |
 | ------- |
@@ -31,7 +36,7 @@
 {%         endif %}
 {%     endif %}
 
-### Policy Configuration
+#### Policy Configuration
 
 ```eos
 {%     include 'eos/management-tech-support.j2' %}

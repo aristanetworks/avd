@@ -1,11 +1,16 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - ethernet interfaces #}
 {% if ethernet_interfaces is arista.avd.defined %}
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
@@ -16,7 +21,7 @@
                                                                       arista.avd.convert_dicts('name') |
                                                                       selectattr('name', 'arista.avd.defined', port_channel_interface_name) |
                                                                       first %}
-{%             if port_channel_interface.type is not defined or port_channel_interface.type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
+{%             if port_channel_interface.type | arista.avd.default('switched') == 'switched' %}
 {%                 set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                 set mode = port_channel_interface.mode | arista.avd.default("access") %}
 {%                 set vlans = port_channel_interface.vlans | arista.avd.default('-') %}
@@ -38,7 +43,7 @@
 {%                 endif %}
 | {{ ethernet_interface.name }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
 {%             endif %}
-{%         elif ethernet_interface.type is not defined or ethernet_interface.type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
+{%         elif ethernet_interface.type | arista.avd.default('switched') == 'switched' %}
 {%             set description = ethernet_interface.description | arista.avd.default("-") %}
 {%             set mode = ethernet_interface.mode | arista.avd.default("access") %}
 {%             set vlans = ethernet_interface.vlans | arista.avd.default('-') %}
@@ -76,7 +81,7 @@
 {%     endfor %}
 {%     if encapsulation_dot1q_interfaces | length > 0 %}
 
-#### Encapsulation Dot1q Interfaces
+##### Encapsulation Dot1q Interfaces
 
 | Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
 | --------- | ----------- | -----| ------- | -------------- |
@@ -90,7 +95,7 @@
 {%     endif %}
 {%     if flexencap_interfaces | length > 0 %}
 
-#### Flexible Encapsulation Interfaces
+##### Flexible Encapsulation Interfaces
 
 | Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
 | --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
@@ -121,7 +126,7 @@
 {%     endfor %}
 {%     if ethernet_interface_pvlan.configured == true %}
 
-#### Private VLAN
+##### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
 | --------- | ------------- | ----------------|
@@ -145,7 +150,7 @@
 {%     endfor %}
 {%     if ethernet_interface_vlan_xlate.configured == true %}
 
-#### VLAN Translations
+##### VLAN Translations
 
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
@@ -169,7 +174,7 @@
 {%     endfor %}
 {%     if link_tracking_interfaces | length > 0 %}
 
-#### Link Tracking Groups
+##### Link Tracking Groups
 
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
@@ -190,7 +195,7 @@
 {%     endfor %}
 {%     if multicast_interfaces | length > 0 %}
 
-#### Multicast Routing
+##### Multicast Routing
 
 | Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
 | --------- | ---------- | --------------------- | -------------------- |
@@ -242,7 +247,7 @@
 {%     endfor %}
 {%     if ethernet_interface_ipv4.configured == true or port_channel_interface_ipv4.configured == true %}
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
@@ -283,6 +288,9 @@
 {%     if port_channel_interface_ipv4.configured == true %}
 *Inherited from Port-Channel Interface
 {%     endif %}
+{# IP NAT Documentation #}
+{%     set ip_nat_interfaces = ethernet_interfaces %}
+{%     include 'documentation/interfaces-ip-nat.j2' %}
 {# IPv6 #}
 {%     set ethernet_interface_ipv6 = namespace() %}
 {%     set ethernet_interface_ipv6.configured = false %}
@@ -306,7 +314,7 @@
 {%     endfor %}
 {%     if ethernet_interface_ipv6.configured == true or port_channel_interface_ipv6.configured == true %}
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
@@ -378,7 +386,7 @@
 {%     endfor %}
 {%     if ethernet_interfaces_isis | length > 0 or port_channel_interfaces_isis | length > 0 %}
 
-#### ISIS
+##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
@@ -443,9 +451,9 @@
 {%     endfor %}
 {%     if evpn_es_ethernet_interfaces | length > 0 %}
 
-#### EVPN Multihoming
+##### EVPN Multihoming
 
-##### EVPN Multihoming Summary
+####### EVPN Multihoming Summary
 
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
@@ -457,7 +465,7 @@
 {%         endfor %}
 {%         if evpn_dfe_ethernet_interfaces | length > 0 %}
 
-##### Designated Forwarder Election Summary
+####### Designated Forwarder Election Summary
 
 | Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
 | --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
@@ -474,7 +482,7 @@
 {%         endif %}
 {%         if evpn_mpls_ethernet_interfaces | length > 0 %}
 
-##### EVPN-MPLS summary
+####### EVPN-MPLS summary
 
 | Interface | Shared Index | Tunnel Flood Filter Time |
 | --------- | ------------ | ------------------------ |
@@ -493,7 +501,7 @@
 {%     endfor %}
 {%     if err_cor_enc_intfs | length > 0 %}
 
-#### Error Correction Encoding Interfaces
+##### Error Correction Encoding Interfaces
 
 | Interface | Enabled |
 | --------- | ------- |
@@ -520,7 +528,7 @@
 {%     endfor %}
 {%     if priority_intfs | length > 0 %}
 
-### Priority Flow Control
+#### Priority Flow Control
 
 | Interface | PFC | Priority | Drop/No_drop |
 {%         for priority_intf in priority_intfs %}
@@ -536,7 +544,7 @@
 {%         endfor %}
 {%     endif %}
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 {%     include 'eos/ethernet-interfaces.j2' %}

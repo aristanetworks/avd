@@ -1,0 +1,51 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - ip nat part 2 (pools, synchronization) #}
+{% if ip_nat is arista.avd.defined %}
+!
+{%     for pool in ip_nat.pools | arista.avd.default([]) %}
+{%         if pool.name is arista.avd.defined and pool.prefix_length is arista.avd.defined %}
+ip nat pool {{ pool.name }} prefix-length {{ pool.prefix_length }}
+{%             for range in pool.ranges | arista.avd.default([]) %}
+{%                 set range_cli = 'range ' ~ range.first_ip ~ ' ' ~ range.last_ip %}
+{%                 if range.first_port is arista.avd.defined and range.last_port is arista.avd.defined %}
+{%                     set range_cli = range_cli ~ ' ' ~ range.first_port ~ ' ' ~ range.last_port %}
+{%                 endif %}
+   {{ range_cli }}
+{%             endfor %}
+{%             if pool.utilization_log_threshold is arista.avd.defined %}
+   utilization threshold {{ pool.utilization_log_threshold }} action log
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{%     if ip_nat.synchronization is arista.avd.defined %}
+ip nat synchronization
+{%         if ip_nat.synchronization.description is arista.avd.defined %}
+   description {{ ip_nat.synchronization.description }}
+{%         endif %}
+{%         if ip_nat.synchronization.expiry_interval is arista.avd.defined %}
+   expiry-interval {{ ip_nat.synchronization.expiry_interval }}
+{%         endif %}
+{%         if ip_nat.synchronization.shutdown | arista.avd.default(false) %}
+   shutdown
+{%         endif %}
+{%         if ip_nat.synchronization.peer_address is arista.avd.defined %}
+   peer-address {{ ip_nat.synchronization.peer_address }}
+{%         endif %}
+{%         if ip_nat.synchronization.local_interface is arista.avd.defined %}
+   local-interface {{ ip_nat.synchronization.local_interface }}
+{%         endif %}
+{%         if ip_nat.synchronization.port_range is arista.avd.defined %}
+{%             if ip_nat.synchronization.port_range.first_port is arista.avd.defined and
+                       ip_nat.synchronization.port_range.last_port is arista.avd.defined %}
+   port-range {{ ip_nat.synchronization.port_range.first_port }} {{ ip_nat.synchronization.port_range.last_port }}
+{%             endif %}
+{%             if ip_nat.synchronization.port_range.split_disabled | arista.avd.default(false)  %}
+   port-range split disabled
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endif %}

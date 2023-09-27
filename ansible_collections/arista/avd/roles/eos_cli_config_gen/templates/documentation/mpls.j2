@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - mpls #}
 {% set mpls_configured = namespace(ethernet_interfaces=false, loopback_interfaces=false, port_channel_interfaces=false) %}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
@@ -17,7 +22,7 @@
 {% endfor %}
 {% if mpls is arista.avd.defined or mpls_configured.ethernet_interfaces or mpls_configured.loopback_interfaces or mpls_configured.port_channel_interfaces %}
 
-# MPLS
+## MPLS
 {## MPLS and LDP #}
 {%     include 'documentation/mpls-and-ldp.j2' %}
 {## MPLS Interfaces #}

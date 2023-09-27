@@ -1,0 +1,30 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  fabric_ip_addressing:
+    type: dict
+    keys:
+      mlag:
+        type: dict
+        keys:
+          algorithm:
+            type: str
+            default: "first_id"
+            description: |
+              This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.
+              Each MLAG link will have a /31 subnet with each subnet allocated from the relevant MLAG pool via a calculated offset.
+              The offset is calculated using one of the following algorithms:
+                - first_id: `(mlag_primary_id - 1) * 2` where `mlag_primary_id` is the ID of the first node defined under the node_group.
+                  This allocation method will skip every other /31 subnet making it less space efficient than `odd_id`.
+                - odd_id: `(odd_id - 1) / 2`. Requires the node_group to have a node with an odd ID and a node with an even ID.
+                - same_subnet: the offset will always be zero.
+                  This allocation method will cause every MLAG link to be addressed with the same /31 subnet.
+            valid_values:
+              - "first_id"
+              - "odd_id"
+              - "same_subnet"

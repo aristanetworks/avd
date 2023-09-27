@@ -1,0 +1,22 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  evpn_multicast:
+    documentation_options:
+      table: evpn-settings
+    type: bool
+    description: |
+      General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must also be configured under the Network Services (tenants).
+      Requires "underlay_multicast: true" and IGMP snooping enabled globally (default).
+      For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.
+      Warning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP
+        The Following default platform setting will be configured: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+        All forwarding agents will be restarted when this configuration is applied.
+        You can tune the settings by overriding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"
+        Please contact an Arista representative for help with determining the appropriate values for your environment.
+    default: false

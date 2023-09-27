@@ -1,0 +1,24 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  management_eapi:
+    documentation_options:
+      table: management-settings
+    description: |
+      Default is HTTPS management eAPI enabled.
+      The VRF is set to < mgmt_interface_vrf >.
+    type: dict
+    keys:
+      enable_http:
+        type: bool
+        default: False
+      enable_https:
+        type: bool
+        default: True
+      default_services:
+        type: bool

@@ -1,0 +1,96 @@
+hostname: connected_endpoints
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ip_igmp_snooping:
+  globally_enabled: true
+ethernet_interfaces:
+- name: Ethernet4
+  peer: OLD_SW-1/4
+  peer_type: server
+  description: PHYSICAL_PORT_DESCRIPTION
+  shutdown: false
+  type: switched
+- name: Ethernet5
+  peer: OLD_SW-1/5
+  peer_type: server
+  description: OLD_SW-1/5
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 5
+    mode: active
+- name: Ethernet6
+  peer: OLD_SW-1/5
+  peer_type: server
+  description: OLD_SW-1/5
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 5
+    mode: active
+- name: Ethernet7
+  peer: OLD_SW-1/6
+  peer_type: server
+  description: PHYSICAL_PORT_DESCRIPTION
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 7
+    mode: active
+- name: Ethernet8
+  peer: OLD_SW-1/6
+  peer_type: server
+  description: PHYSICAL_PORT_DESCRIPTION
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 7
+    mode: active
+- name: Ethernet9
+  peer: SERVER_WITH_PLAYVAR_DESCRIPTION
+  peer_type: server
+  description: test of var set under play vars
+  shutdown: false
+  type: switched
+- name: Ethernet10
+  peer: OLD_SW-1/7
+  peer_type: server
+  description: PHYSICAL_PORT_DESCRIPTION_1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 10
+    mode: active
+- name: Ethernet11
+  peer: OLD_SW-1/7
+  peer_type: server
+  description: PHYSICAL_PORT_DESCRIPTION_2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 10
+    mode: active
+port_channel_interfaces:
+- name: Port-Channel5
+  description: OLD_SW-1/5_PORT_CHANNEL_DESCRIPTION
+  type: switched
+  shutdown: false
+- name: Port-Channel7
+  description: PHYSICAL_PORT_DESCRIPTION_PORT_CHANNEL_DESCRIPTION
+  type: switched
+  shutdown: false
+- name: Port-Channel10
+  description: OLD_SW-1/7_PORT_CHANNEL_DESCRIPTION
+  type: switched
+  shutdown: false

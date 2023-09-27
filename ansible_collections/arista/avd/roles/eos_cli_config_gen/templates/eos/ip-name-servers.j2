@@ -1,0 +1,25 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - ip name servers #}
+{% for name_server in ip_name_servers | arista.avd.natural_sort('ip_address') %}
+{%     set name_server_cli = "ip name-server" %}
+{%     if name_server.vrf is arista.avd.defined %}
+{%         set name_server_cli = name_server_cli ~ " vrf " ~ name_server.vrf %}
+{%     endif %}
+{%     set name_server_cli = name_server_cli ~ " " ~ name_server.ip_address %}
+{%     if name_server.priority is arista.avd.defined %}
+{%         set name_server_cli = name_server_cli ~ " priority " ~ name_server.priority %}
+{%     endif %}
+{{ name_server_cli }}
+{% endfor %}
+{# legacy data model to be removed in AVD v5.0.0 #}
+{% for node in name_server.nodes | arista.avd.natural_sort %}
+{%     if name_server.source.vrf is arista.avd.defined %}
+ip name-server vrf {{ name_server.source.vrf }} {{ node }}
+{%     else %}
+ip name-server {{ node }}
+{%     endif %}
+{% endfor %}

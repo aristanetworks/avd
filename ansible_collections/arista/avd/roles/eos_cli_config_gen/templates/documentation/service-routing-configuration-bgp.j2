@@ -1,6 +1,12 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - service routing configuration bgp #}
 {% if service_routing_configuration_bgp is arista.avd.defined %}
-## Service Routing Configuration BGP
+
+### Service Routing Configuration BGP
 
 {%     if service_routing_configuration_bgp.no_equals_default is arista.avd.defined(true) %}
 BGP no equals default enabled

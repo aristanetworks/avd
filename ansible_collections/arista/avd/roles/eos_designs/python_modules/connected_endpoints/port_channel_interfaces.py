@@ -1,13 +1,18 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
 from collections import ChainMap
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_lacp_id, generate_route_target
+from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
+from ansible_collections.arista.avd.plugins.filter.generate_lacp_id import generate_lacp_id
+from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from .utils import UtilsMixin
 
@@ -19,11 +24,15 @@ class PortChannelInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def port_channel_interfaces(self) -> dict | None:
+    def port_channel_interfaces(self) -> list | None:
         """
-        Return structured config for ethernet_interfaces
+        Return structured config for port_channel_interfaces
+
+        Duplicate checks following these rules:
+        - Silently ignore duplicate port-channels if they contain _exactly_ the same configuration
+        - Raise a duplicate error for any other duplicate port-channel interface
         """
-        port_channel_interfaces = {}
+        port_channel_interfaces = []
         for connected_endpoint in self._filtered_connected_endpoints:
             for adapter in connected_endpoint["adapters"]:
                 if get(adapter, "port_channel.mode") is None:
@@ -33,7 +42,15 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_interfaces[port_channel_interface_name] = self._get_port_channel_interface_cfg(adapter, channel_group_id, connected_endpoint)
+                port_channel_config = self._get_port_channel_interface_cfg(adapter, port_channel_interface_name, channel_group_id, connected_endpoint)
+                append_if_not_duplicate(
+                    list_of_dicts=port_channel_interfaces,
+                    primary_key="name",
+                    new_dict=port_channel_config,
+                    context="Port-channel Interfaces defined under connected_endpoints",
+                    context_keys=["name"],
+                )
+
                 if (subinterfaces := get(adapter, "port_channel.subinterfaces")) is None:
                     continue
 
@@ -42,7 +59,16 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         continue
 
                     port_channel_subinterface_name = f"Port-Channel{channel_group_id}.{subinterface['number']}"
-                    port_channel_interfaces[port_channel_subinterface_name] = self._get_port_channel_subinterface_cfg(subinterface, adapter, channel_group_id)
+                    port_channel_subinterface_config = self._get_port_channel_subinterface_cfg(
+                        subinterface, adapter, port_channel_subinterface_name, channel_group_id
+                    )
+                    append_if_not_duplicate(
+                        list_of_dicts=port_channel_interfaces,
+                        primary_key="name",
+                        new_dict=port_channel_subinterface_config,
+                        context="Port-channel Interfaces defined under connected_endpoints",
+                        context_keys=["name"],
+                    )
 
         for network_port in self._filtered_network_ports:
             if get(network_port, "port_channel.mode") is None:
@@ -60,7 +86,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 tmp_network_port = ChainMap(
                     {
                         "switch_ports": [ethernet_interface_name, ""],
-                        "switches": [self._hostname, ""],
+                        "switches": [self.shared_utils.hostname, ""],
                     },
                     network_port,
                 )
@@ -69,8 +95,13 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(tmp_network_port, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_interfaces[port_channel_interface_name] = self._get_port_channel_interface_cfg(
-                    tmp_network_port, channel_group_id, connected_endpoint
+                port_channel_config = self._get_port_channel_interface_cfg(tmp_network_port, port_channel_interface_name, channel_group_id, connected_endpoint)
+                append_if_not_duplicate(
+                    list_of_dicts=port_channel_interfaces,
+                    primary_key="name",
+                    new_dict=port_channel_config,
+                    context="Port-channel Interfaces defined under connected_endpoints",
+                    context_keys=["name"],
                 )
 
         if port_channel_interfaces:
@@ -78,24 +109,31 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         return None
 
-    def _get_port_channel_interface_cfg(self, adapter: dict, channel_group_id: int, connected_endpoint: dict) -> dict:
+    def _get_port_channel_interface_cfg(self, adapter: dict, port_channel_interface_name: str, channel_group_id: int, connected_endpoint: dict) -> dict:
         """
         Return structured_config for one port_channel_interface
         """
+
         peer = connected_endpoint["name"]
+        adapter_description = get(adapter, "description")
         adapter_port_channel_description = get(adapter, "port_channel.description")
         port_channel_type = "routed" if get(adapter, "port_channel.subinterfaces") else "switched"
         port_channel_mode = get(adapter, "port_channel.mode")
-        node_index = adapter["switches"].index(self._hostname)
+        node_index = adapter["switches"].index(self.shared_utils.hostname)
 
         # Common port_channel_interface settings
         port_channel_interface = {
-            "description": self._avd_interface_descriptions.connected_endpoints_port_channel_interfaces(peer, adapter_port_channel_description),
+            "name": port_channel_interface_name,
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_port_channel_interfaces(
+                peer, adapter_description, adapter_port_channel_description
+            ),
             "type": port_channel_type,
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
-            "mtu": adapter.get("mtu"),
+            "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "service_profile": adapter.get("qos_profile"),
             "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
+            "ptp": self._get_adapter_ptp(adapter),
+            "sflow": self._get_adapter_sflow(adapter),
             "eos_cli": get(adapter, "port_channel.raw_eos_cli"),
             "struct_cfg": get(adapter, "port_channel.structured_config"),
         }
@@ -124,7 +162,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
 
         # Set MLAG ID on port-channel if connection is multi-homed and this switch is running MLAG
-        elif self._mlag and len(set(adapter["switches"])) > 1:
+        elif self.shared_utils.mlag and len(set(adapter["switches"])) > 1:
             port_channel_interface["mlag"] = channel_group_id
 
         # LACP Fallback
@@ -138,12 +176,13 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
         return strip_null_from_data(port_channel_interface)
 
-    def _get_port_channel_subinterface_cfg(self, subinterface: dict, adapter: dict, channel_group_id: int) -> dict:
+    def _get_port_channel_subinterface_cfg(self, subinterface: dict, adapter: dict, port_channel_subinterface_name: str, channel_group_id: int) -> dict:
         """
         Return structured_config for one port_channel_interface (subinterface)
         """
         # Common port_channel_interface settings
         port_channel_interface = {
+            "name": port_channel_subinterface_name,
             "type": "l2dot1q",
             "vlan_id": subinterface.get("vlan_id", subinterface["number"]),
             "encapsulation_vlan": {
@@ -163,7 +202,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             short_esi := self._get_short_esi(adapter, channel_group_id, short_esi=subinterface.get("short_esi"), hash_extra_value=str(subinterface["number"]))
         ) is not None:
             port_channel_interface["evpn_ethernet_segment"] = {
-                "identifier": generate_esi(short_esi, self._evpn_short_esi_prefix),
+                "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
                 "route_target": generate_route_target(short_esi),
             }
 

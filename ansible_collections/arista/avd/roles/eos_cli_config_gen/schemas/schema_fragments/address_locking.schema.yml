@@ -1,0 +1,46 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  address_locking:
+    type: dict
+    keys:
+      dhcp_servers_ipv4:
+        type: list
+        items:
+          type: str
+          description: DHCP server IPv4 address
+      disabled:
+        type: bool
+        description: Disable IP locking on configured ports
+      leases:
+        type: list
+        items:
+          type: dict
+          keys:
+            ip:
+              type: str
+              required: true
+              description: IP address
+            mac:
+              type: str
+              required: true
+              description: MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)
+      local_interface:
+        type: str
+      locked_address:
+        type: dict
+        keys:
+          expiration_mac_disabled:
+            type: bool
+            description: Configure deauthorizing locked addresses upon MAC aging out
+          ipv4_enforcement_disabled:
+            type: bool
+            description: Configure enforcement for locked IPv4 addresses
+          ipv6_enforcement_disabled:
+            type: bool
+            description: Configure enforcement for locked IPv6 addresses

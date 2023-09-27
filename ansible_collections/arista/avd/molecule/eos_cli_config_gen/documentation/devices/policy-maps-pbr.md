@@ -1,30 +1,31 @@
 # policy-maps-pbr
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Routing](#routing)
   - [PBR Policy Maps](#pbr-policy-maps)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -34,13 +35,13 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Routing
+## Routing
 
-## PBR Policy Maps
+### PBR Policy Maps
 
-### PBR Policy Maps Summary
+#### PBR Policy Maps Summary
 
-#### POLICY_DROP_THEN_NEXTHOP
+##### POLICY_DROP_THEN_NEXTHOP
 
 | Class | Index | Drop | Nexthop | Recursive |
 | ----- | ----- | ---- | ------- | --------- |
@@ -48,7 +49,7 @@ interface Management1
 | CLASS_NEXTHOP | 20 | - | 172.30.1.2 | True |
 | NO_ACTION | - | - | - | - |
 
-### PBR Policy Maps Configuration
+#### PBR Policy Maps Configuration
 
 ```eos
 !

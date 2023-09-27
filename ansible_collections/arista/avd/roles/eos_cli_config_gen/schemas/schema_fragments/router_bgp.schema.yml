@@ -1,11 +1,12 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
   router_bgp:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       as:
@@ -21,18 +22,21 @@ keys:
         keys:
           external_routes:
             type: int
+            required: true
             convert_types:
               - str
             min: 1
             max: 255
           internal_routes:
             type: int
+            required: true
             convert_types:
               - str
             min: 1
             max: 255
           local_routes:
             type: int
+            required: true
             convert_types:
               - str
             min: 1
@@ -81,6 +85,7 @@ keys:
         keys:
           paths:
             type: int
+            required: true
             convert_types:
               - str
             min: 1
@@ -96,8 +101,13 @@ keys:
         keys:
           wait_for_convergence:
             type: bool
+            description: |
+              Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
           wait_install:
             type: bool
+            description: |
+               Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+               This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
       bgp_cluster_id:
         type: str
         description: IP Address A.B.C.D
@@ -109,6 +119,22 @@ keys:
       bgp:
         type: dict
         keys:
+          default:
+            type: dict
+            keys:
+              ipv4_unicast:
+                type: bool
+                description: Default activation of IPv4 unicast address-family on all IPv4 neighbors (EOS default = True).
+              ipv4_unicast_transport_ipv6:
+                type: bool
+                description: Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False).
+          route_reflector_preserve_attributes:
+            type: dict
+            keys:
+              enabled:
+                type: bool
+              always:
+                type: bool
           bestpath:
             type: dict
             keys:
@@ -169,6 +195,16 @@ keys:
               type: str
             shutdown:
               type: bool
+            as_path:
+              type: dict
+              description: BGP AS-PATH options
+              keys:
+                remote_as_replace_out:
+                  type: bool
+                  description: Replace AS number with local AS number
+                prepend_own_disabled:
+                  type: bool
+                  description: Disable prepending own AS number to AS path
             remove_private_as:
               type: dict
               description: Remove private AS numbers in outbound AS path
@@ -190,8 +226,12 @@ keys:
               type: str
               description: |
                 Peer-filter name
-                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0
-                These should not be mixed with the new `listen_ranges` key above to avoid conflicts.
+                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                the new `listen_ranges` key above to avoid conflicts.
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
             next_hop_unchanged:
               type: bool
             update_source:
@@ -212,6 +252,8 @@ keys:
               type: bool
             password:
               type: str
+            passive:
+              type: bool
             default_originate:
               type: dict
               keys:
@@ -287,8 +329,14 @@ keys:
               type: str
               description: |
                 IP prefix range
-                note: `bgp_listen_range_prefix` and `peer_filter` will be deprecated in AVD v4.0
-                These should not be mixed with the new `listen_ranges` key above to avoid conflicts.
+                note: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with
+                the new `listen_ranges` key above to avoid conflicts.
+              deprecation:
+                warning: true
+                remove_in_version: 5.0.0
+                new_key: listen_ranges
+            session_tracker:
+              type: str
       neighbors:
         type: list
         primary_key: ip_address
@@ -311,9 +359,21 @@ keys:
               description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
               convert_types:
                 - int
+            as_path:
+              type: dict
+              description: BGP AS-PATH options
+              keys:
+                remote_as_replace_out:
+                  type: bool
+                  description: Replace AS number with local AS number
+                prepend_own_disabled:
+                  type: bool
+                  description: Disable prepending own AS number to AS path
             description:
               type: str
             route_reflector_client:
+              type: bool
+            passive:
               type: bool
             shutdown:
               type: bool
@@ -418,6 +478,8 @@ keys:
                   type: bool
                 replace_as:
                   type: bool
+            session_tracker:
+              type: str
       neighbor_interfaces:
         type: list
         primary_key: name
@@ -477,6 +539,8 @@ keys:
               type: str
             route_map:
               type: str
+            include_leaked:
+              type: bool
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -572,6 +636,9 @@ keys:
               description: VLAN range as string. Example "100-200,300"
               convert_types:
                 - int
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on the Router BGP, VLAN-aware-bundle definition in the final EOS configuration
       vlans:
         type: list
         primary_key: id
@@ -717,8 +784,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-              - int
           neighbor_default:
             type: dict
             keys:
@@ -866,8 +931,21 @@ keys:
                 next_hop:
                   type: dict
                   keys:
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        originate:
+                          type: bool
                     address_family_ipv6_originate:
                       type: bool
+                      deprecation:
+                        warning: true
+                        removed: false
+                        new_key: address_family_ipv6
+                        remove_in_version: 5.0.0
                 prefix_list_in:
                   type: str
                   description: Inbound prefix-list name
@@ -1035,13 +1113,175 @@ keys:
                   type: str
                 route_map:
                   type: str
+                include_leaked:
+                  type: bool
+      address_family_ipv6_multicast:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                      - "deny"
+                      - "deny-in-out"
+                      - "permit"
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                      - "deny"
+                      - "deny-in-out"
+                      - "permit"
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+          networks:
+            type: list
+            primary_key: prefix
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                prefix:
+                  type: str
+                  description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
+                route_map:
+                  type: str
+      address_family_flow_spec_ipv4:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                      - "deny"
+                      - "deny-in-out"
+                      - "permit"
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                      - "deny"
+                      - "deny-in-out"
+                      - "permit"
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+      address_family_flow_spec_ipv6:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                      - "deny"
+                      - "deny-in-out"
+                      - "permit"
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                      - "deny"
+                      - "deny-in-out"
+                      - "permit"
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+          peer_groups:
+            type: list
+            primary_key: name
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
       address_family_vpn_ipv4:
         type: dict
         keys:
           domain_identifier:
             type: str
-            convert_types:
-              - int
           peer_groups:
             type: list
             primary_key: name
@@ -1096,8 +1336,6 @@ keys:
         keys:
           domain_identifier:
             type: str
-            convert_types:
-              - int
           peer_groups:
             type: list
             primary_key: name
@@ -1158,6 +1396,8 @@ keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+                - int
             rd:
               type: str
               description: Route distinguisher
@@ -1225,6 +1465,18 @@ keys:
                     description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I"
                   route_map:
                     type: str
+            updates:
+              type: dict
+              keys:
+                wait_for_convergence:
+                  type: bool
+                  description: |
+                    Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
+                wait_install:
+                  type: bool
+                  description: |
+                    Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+                    This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
             listen_ranges:
               type: list
               description: |
@@ -1272,6 +1524,8 @@ keys:
                       - int
                   password:
                     type: str
+                  passive:
+                    type: bool
                   remove_private_as:
                     type: dict
                     description: Remove private AS numbers in outbound AS path
@@ -1300,8 +1554,20 @@ keys:
                     description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
                     convert_types:
                       - int
+                  as_path:
+                    type: dict
+                    description: BGP AS-PATH options
+                    keys:
+                      remote_as_replace_out:
+                        type: bool
+                        description: Replace AS number with local AS number
+                      prepend_own_disabled:
+                        type: bool
+                        description: Disable prepending own AS number to AS path
                   description:
                     type: str
+                  route_reflector_client:
+                    type: bool
                   ebgp_multihop:
                     type: int
                     min: 1
@@ -1411,6 +1677,8 @@ keys:
                     type: str
                   route_map:
                     type: str
+                  include_leaked:
+                    type: bool
             aggregate_addresses:
               type: list
               primary_key: prefix
@@ -1432,11 +1700,374 @@ keys:
                     type: str
                   match_map:
                     type: str
+            address_family_ipv4:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                    additional_paths:
+                      type: dict
+                      keys:
+                        install:
+                          type: bool
+                        install_ecmp_primary:
+                          type: bool
+                        receive:
+                          type: bool
+                        send:
+                          type: dict
+                          keys:
+                            any:
+                              type: bool
+                            backup:
+                              type: bool
+                            ecmp:
+                              type: bool
+                            ecmp_limit:
+                              type: int
+                              description: Amount of ECMP paths to send
+                              convert_types:
+                                - str
+                              min: 2
+                              max: 64
+                            limit:
+                              type: int
+                              description: Amount of paths to send
+                              convert_types:
+                                - str
+                              min: 2
+                              max: 64
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name
+                      next_hop:
+                        type: dict
+                        keys:
+                          address_family_ipv6:
+                            type: dict
+                            keys:
+                              enabled:
+                                type: bool
+                                required: true
+                              originate:
+                                type: bool
+                networks:
+                  type: list
+                  primary_key: prefix
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv4 prefix "A.B.C.D/E"
+                      route_map:
+                        type: str
+            address_family_ipv6:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                    additional_paths:
+                      type: dict
+                      keys:
+                        install:
+                          type: bool
+                        install_ecmp_primary:
+                          type: bool
+                        receive:
+                          type: bool
+                        send:
+                          type: dict
+                          keys:
+                            any:
+                              type: bool
+                            backup:
+                              type: bool
+                            ecmp:
+                              type: bool
+                            ecmp_limit:
+                              type: int
+                              description: Amount of ECMP paths to send
+                              convert_types:
+                                - str
+                              min: 2
+                              max: 64
+                            limit:
+                              type: int
+                              description: Amount of paths to send
+                              convert_types:
+                                - str
+                              min: 2
+                              max: 64
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name
+                networks:
+                  type: list
+                  primary_key: prefix
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
+                      route_map:
+                        type: str
+            address_family_ipv4_multicast:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                    additional_paths:
+                      type: dict
+                      keys:
+                        receive:
+                          type: bool
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name
+                networks:
+                  type: list
+                  primary_key: prefix
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv6 prefix "A.B.C.D/E"
+                      route_map:
+                        type: str
+            address_family_ipv6_multicast:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                    additional_paths:
+                      type: dict
+                      keys:
+                        receive:
+                          type: bool
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+                      route_map_in:
+                        type: str
+                        description: Inbound route-map name
+                      route_map_out:
+                        type: str
+                        description: Outbound route-map name
+                networks:
+                  type: list
+                  primary_key: prefix
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      prefix:
+                        type: str
+                        description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
+                      route_map:
+                        type: str
+            address_family_flow_spec_ipv4:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
+            address_family_flow_spec_ipv6:
+              type: dict
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    missing_policy:
+                      type: dict
+                      keys:
+                        direction_in_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                        direction_out_action:
+                          type: str
+                          valid_values:
+                            - "deny"
+                            - "deny-in-out"
+                            - "permit"
+                neighbors:
+                  type: list
+                  primary_key: ip_address
+                  convert_types:
+                    - dict
+                  items:
+                    type: dict
+                    keys:
+                      ip_address:
+                        type: str
+                      activate:
+                        type: bool
             address_families:
               type: list
               primary_key: address_family
               convert_types:
                 - dict
+              deprecation:
+                warning: true
+                new_key: address_family_*
+                remove_in_version: v5.0.0
               items:
                 type: dict
                 keys:
@@ -1517,3 +2148,19 @@ keys:
               type: str
               description: |
                 Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
+      session_trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of session tracker
+            recovery_delay:
+              type: int
+              description: Recovery delay in seconds
+              convert_types:
+                - str
+              min: 1
+              max: 3600

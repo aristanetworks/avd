@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - as path #}
 {% if as_path.access_lists is arista.avd.defined %}
 
-## AS Path Lists
+### AS Path Lists
 
-### AS Path Lists Summary
+#### AS Path Lists Summary
 {%     if as_path.regex_mode is arista.avd.defined %}
 
 AS Path Regex Mode is **{{ as_path.regex_mode }}**.
@@ -21,7 +26,7 @@ AS Path Regex Mode is **{{ as_path.regex_mode }}**.
 {%         endif %}
 {%     endfor %}
 
-### AS Path Lists configuration
+#### AS Path Lists configuration
 
 ```eos
 {%     include 'eos/as-path.j2' %}

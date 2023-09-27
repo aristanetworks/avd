@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -21,7 +24,7 @@ class Ipv6StaticRoutesMixin(UtilsMixin):
         - static routes added automatically for VARPv6 with prefixes
         """
 
-        if not self._network_services_l3:
+        if not self.shared_utils.network_services_l3:
             return None
 
         ipv6_static_routes = []
@@ -30,7 +33,10 @@ class Ipv6StaticRoutesMixin(UtilsMixin):
                 for static_route in vrf["ipv6_static_routes"]:
                     static_route["vrf"] = vrf["name"]
                     static_route.pop("nodes", None)
-                    ipv6_static_routes.append(static_route)
+
+                    # Ignore duplicate items in case of duplicate VRF definitions across multiple tenants.
+                    if static_route not in ipv6_static_routes:
+                        ipv6_static_routes.append(static_route)
 
         if ipv6_static_routes:
             return ipv6_static_routes

@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Arista AVD Plugins
 
 ## Plugin Filters
@@ -119,13 +125,13 @@ The module is used in `eos_designs` to create a table of contents for Fabric Doc
 To use this filter:
 
 ```jinja2
-{{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->') }}
+{{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=3, toc_marker='<!-- toc -->') }}
 ```
 
 | Argument | description | type | optional | default value |
 | -------- | ----------- | ---- | -------- | ------------- |
 | skip_lines | Skip first x lines when parsing MD file | Integer | True | 0 |
-| toc_levels | How many levels of headings will be included in the TOC | Integer | True | 2 |
+| toc_levels | How many levels of headings will be included in the TOC | Integer | True | 3 |
 | toc_marker | TOC will be inserted or updated between two of these markers in the MD file | String | True | `"<!-- toc -->"`
 
 **example:**
@@ -176,34 +182,83 @@ To use this filter:
 !!! note
     This isn't using the same range syntax as EOS for modular or break-out ports. For example, on EOS `et1/1-2/4` gives you `et1/1, et1/2, et1/3, et1/4, et2/1, et2/2, et2/3, et2/4` on a fixed switch, but a different result on a modular switch depending on the module types. In AVD, the same range would be `et1-2/1-4`.
 
-#### Password filters
+### Password filters
 
 The `arista.avd.encrypt` and `arista.avd.decrypt` filters are used to encrypt or decrypt supported passwords.
 
 To use these filters:
 
 ```jinja
-{{ <var_with_clear_text_password> | encrypt(passwd_type=<type>, key=<encryption_key>) }}
-{{ <var_with_encrypted_password> | decrypt(passwd_type=<type>, key=<encryption_key>) }}
+{{ <var_with_clear_text_password> | arista.avd.encrypt(passwd_type=<type>, key=<encryption_key>) }}
+{{ <var_with_encrypted_password> | arista.avd.decrypt(passwd_type=<type>, key=<encryption_key>) }}
 ```
 
 Supported types:
 
 - bgp
+- ospf_simple
+- ospf_message_digest
 
-##### BGP passwords
+!!! Note
+For now this filter only supports encryption and decryption to type `7` and not type `8a` for OSPF and BGP passwords
 
-BGP password are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
+#### BGP passwords
 
-An example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+BGP passwords are encrypted/decrypted based on the Neighbor IP or the BGP Peer Group Name in EOS.
+
+Example usage for `arista.avd.encrypt` filter for BGP is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
 
 **example:**
 
 ```jinja
 bgp_peer_groups:
   ipv4_underlay_peers:
-      name: IPv4-UNDERLAY-PEERS
-          password: "{{ bgp_vault_password | encrypt(passwd_type="bgp", key="IPv4-UNDERLAY-PEERS") }}"
+    name: IPv4-UNDERLAY-PEERS
+      password: "{{ bgp_vault_password | arista.avd.encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
+```
+
+#### OSPF passwords
+
+OSPF passwords are encrypted/decrypted based on the interface name (e.g., Ethernet1), and for message-digest-key, the hash algorithm (in the list [md5, sha1, sha256, sha384, sha512]) and the key ID (between 1 and 255).
+
+The filter provides two types for OSPF:
+
+- `ospf_simple` for simple authentication, which requires only the password and the interface name as key inputs.
+- `ospf_message_digest` for message digest keys which requires the password, the interface name as the key, the hash algorithm, and the key id as input.
+
+Example usage for `arista.avd.encrypt` filter for OSPF is to use it in conjunction with Ansible Vault to be able to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+
+**examples:**
+
+- Simple authentication
+
+    ```jinja
+    ethernet_interfaces:
+      - name: Ethernet1:
+        ospf_authentication: simple
+        ospf_authentication_key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_simple', key='Ethernet1') }}"
+    ```
+
+- Message Digest Keys
+
+    ```jinja
+    ethernet_interfaces:
+      - name: Ethernet1:
+        ospf_authentication: message-digest
+        ospf_message_digest_keys:
+          - id: 1
+            hash_algorithm: md5
+            key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
+    ```
+
+### Hide Passwords filter
+
+This filter gives the capabilities to replace a value rendered in a Jinja Template by the string `<removed>` just like in an EOS `show run sanitized`.
+
+**example:**
+
+```jinja
+ip ospf authentication-key 7 {{ vlan_interface.ospf_authentication_key | arista.avd.hide_passwords(true) }}
 ```
 
 ## Plugin Tests
@@ -338,6 +393,66 @@ switch:
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 ```
 
+## Vars Plugins
+
+### arista.avd.global_vars
+
+Loads variables from variable files specified in ansible.cfg or environment variable. Assign the loaded variables to the 'all' inventory group. Files are restricted by extension to one of .yaml, .json, .yml or no extension. Hidden files (starting with '.') and backup files (ending with '~') are ignored. Only applies to inventory sources that are existing paths.
+
+The `arista.avd.global_vars` vars plugin should run at the `inventory` stage (default) before all other variable plugins, to inject the variables before any group and host vars.
+
+**parameters:**
+
+```yaml
+- paths:
+        List of relative paths, relative to the inventory file.
+        If path is a directory, all the valid files inside are loaded in alphabetical order.
+        If the environment variable is set, it takes precedence over ansible.cfg.
+        set_via:
+          env:
+          - name: ARISTA_AVD_GLOBAL_VARS_PATHS
+          ini:
+          - key: paths
+            section: vars_global_vars
+        elements: string
+        type: list
+```
+
+**examples:**
+
+#### `ansible.cfg` only example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+
+    [vars_global_vars]
+    paths = ../relative/path/to/my/global/vars/file/or/dir
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ansible-playbook -i inventory.yml playbook.yml
+    ```
+
+##### `ansible.cfg` + environement variable example
+
+1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
+
+    ```ini
+    [defaults]
+    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
+    ```
+
+2. Run your playbook
+
+    ```shell
+    ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml
+    ```
+
 ## Modules
 
 ### Inventory to CloudVision Containers
@@ -449,31 +564,39 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 
 ### YAML Templates to Facts
 
+!!! Note
+
+    This plugin is no longer used by `eos_designs`. It is still being used by `eos_validate_state`.
+    This plugin may be deprecated in a future version of this collection and later removed.
+
 The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin providing the following capabilities:
 
-- Set Facts based on one or more Jinja2 templates producing YAML output.
+- Set Facts based on one or more Jinja2 templates or Python Classes producing YAML output.
 - Recursively combining templates' output to allow templates to update overlapping parts of the data models.
 - Facts set by one template will be accessible by the following templates.
 - Returned facts can be set below a specific `root_key`.
 - Facts returned templates can be stripped for `null` values to avoid overwriting previous set facts.
 
-The module is used in `eos_designs` to generate the `structured_configuration` based on all the `eos_designs` templates.
-
 The module arguments are:
 
 ```yaml
 - arista.avd.yaml_templates_to_facts:
-    root_key: < optional root_key name >
-    templates:
-        # Path to template file
-      - template: "< template file >"
-        options:
+    # Run data conversion in either "error", "warning", "info", "debug", "quiet" or "disabled" mode.
+    # Conversion will perform type conversion of input variables as defined in the schema.
+    # Conversion is intended to help the user to identify minor # issues with the input data,
+    # while still allowing the data to be validated.
+    # During conversion, messages will be generated with information about the host(s) and key(s) which required conversion.
+    #
+    # "conversion_mode: disabled" means that conversion will not run.
+    # "conversion_mode: error" will produce error messages and fail the task.
+    # "conversion_mode: warning" will produce warning messages.
+    # "conversion_mode: info" will produce regular log messages.
+    # "conversion_mode: debug" will produce hidden messages viewable with -v.
+    # "conversion_mode: quiet" will not produce any messages.
+    conversion_mode: < error | warning | info | debug (default) | quiet | disabled >
 
-          # Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.
-          list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
-
-          # Filter out keys from the generated output if value is null/none/undefined
-          strip_empty_keys: < true (default) | false >
+    # Export cProfile data to a file ex. "eos_designs_structured_config-{{inventory_hostname}}"
+    cprofile_file: < filename >
 
     # Output list 'avd_yaml_templates_to_facts_debug' with timestamps of each performed action.
     debug: < true | false (default) >
@@ -482,34 +605,84 @@ The module arguments are:
     # Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
     dest: < path >
 
+    # File mode (ex. 0664) for dest file. See 'ansible.builtin.copy' module for details.
+    mode: < string >
+
+    # AVD Schema for output data. Used for automatic merge of data.
+    output_schema: < schema as dict >
+
+    # ID of AVD Schema for output data. Used for automatic merge of data.
+    output_schema_id: < eos_cli_config_gen | eos_designs >
+
+    # Root key under which the facts will be defined. If not set the facts well be set directly on root level.
+    root_key: < root_key name >
+
+    # Schema conforming to "AVD Meta Schema". Either schema or schema_id must be set.
+    schema: < schema as dict >
+
+    # ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
+    schema_id: < eos_cli_config_gen | eos_designs >
+
+    # Set "switch" fact from on "avd_switch_facts.<inventory_hostname>.switch"
+    set_switch_fact: < true (default) | false >
+
+    templates:
+      - # Python module to import Either template or python_module must be set.
+        python_module: "< python module name >"
+        # Name of Python Class to import (default: AvdStructuredConfig)
+        python_class_name: "< Python Class Name | default: AvdStructuredConfig >"
+        # Template file. Either template or python_module must be set.
+        template: "< template file >"
+        options:
+
+          # Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.
+          list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
+
+          # Filter out keys from the generated output if the value is null/none/undefined
+          strip_empty_keys: < true (default) | false >
+
     # If true the output data will be run through another jinja2 rendering before returning.
     # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     template_output: < true | false (default) >
 
-    # Export cProfile data to a file ex. "eos_designs_structured_config-{{inventory_hostname}}"
-    cprofile_file: < filename >
+    # Run validation in either "error", "warning", "info", "debug" or "disabled" mode.
+    # Validation will validate the input variables according to the schema.
+    # During validation, messages will be generated with information
+    # about the host(s) and key(s) which failed validation.
+    #
+    # "validation_mode: disabled" means that validation will not run.
+    # "validation_mode: error" will produce error messages and fail the task.
+    # "validation_mode: warning" will produce warning messages.
+    # "validation_mode: info" will produce regular log messages.
+    # "validation_mode: debug" will produce hidden messages viewable with -v.
+    validation_mode: < error | warning (default) | info | debug | disabled >
 ```
 
 **example:**
 
 ```yaml
-- name: Set AVD facts
-  tags: [build, provision]
+- name: Generate device configuration in structured format
   arista.avd.yaml_templates_to_facts:
-    templates: "{{ templates.facts }}"
+    root_key: structured_config
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    templates:
+      - python_module: "ansible_collections.arista.avd.roles.eos_designs.python_modules.base"
+        python_class_name: "AvdStructuredConfig"
+      - template: "mlag/main.j2"
+      - template: "designs/underlay/main.j2"
+      - template: "designs/overlay/main.j2"
+      - template: "l3_edge/main.j2"
+      - template: "designs/network_services/main.j2"
+      - template: "connected_endpoints/main.j2"
+      - template: "custom-structured-configuration-from-var.j2"
+        options:
+          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          strip_empty_keys: false
+    schema_id: eos_designs
+    output_schema_id: eos_cli_config_gen
   delegate_to: localhost
   check_mode: no
   changed_when: False
-
-- name: Generate device configuration in structured format
-  tags: [build, provision]
-  arista.avd.yaml_templates_to_facts:
-    templates: "{{ templates.structured_config }}"
-    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
-    template_output: True
-  delegate_to: localhost
-  check_mode: no
-  register: structured_config
 ```
 
 Role default variables applied to this example:
@@ -548,77 +721,6 @@ templates:
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
-```
-
-### EOS Designs Facts
-
-The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
-
-- Set `avd_switch_facts` fact containing both `switch` facts per host.
-- Set `avd_topology_peers` fact containing a list of downlink switches per host. This list is built based on the `uplink_switches` from all other hosts.
-- Set `avd_overlay_peers` fact containing a list of EVPN or MPLS overlay peers per host. This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
-- The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices, so all devices can lookup values of any other device without using the slower `hostvars`.
-- The facts can also be copied to the "root" `switch` in a task run per device (see example below).
-
-The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by Jinja templates in `arista.avd.eos_designs` to generate the `structured_configuration`.
-
-The module arguments are:
-
-```yaml
-- eos_designs_facts:
-    # Calculate and set 'avd_switch_facts.<devices>.switch', 'avd_overlay_peers' and 'avd_topology_peers' facts
-    avd_switch_facts: < True | False >
-
-    # Export cProfile data to a file ex. "eos_designs_facts-{{inventory_hostname}}.prof"
-    cprofile_file: < filename >
-```
-
-The output data model is:
-
-```yaml
-ansible_facts:
-  avd_switch_facts:
-    <switch_1>:
-      switch:
-        < switch.* facts used by eos_designs >
-    <switch_2>:
-      ...
-  avd_topology_peers:
-    <uplink_switch_1>:
-      - <downlink_switch_1>
-      - <downlink_switch_2>
-      - <downlink_switch_3>
-    <uplink_switch_1>:
-      ...
-  avd_overlay_peers:
-    <route_server_1>:
-      - <route_server_client_1>
-      - <route_server_client_2>
-      - <route_server_client_3>
-    <route_server_2>:
-      - <route_server_client_1>
-      - <route_server_client_2>
-      - <route_server_client_3>
-```
-
-The facts can be inspected in a file per device by running the `arista.avd.eos_designs` role with `--tags facts,debug`.
-
-**example playbook:**
-
-```yaml
-- name: Set eos_designs facts
-  tags: [build, provision, facts]
-  arista.avd.eos_designs_facts:
-    avd_switch_facts: True
-  check_mode: False
-  run_once: True
-
-- name: Set eos_designs facts per device
-  tags: [build, provision, facts]
-  ansible.builtin.set_fact:
-    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
-  delegate_to: localhost
-  changed_when: False
 ```
 
 ### Validate and Template
@@ -662,6 +764,7 @@ The module arguments are:
   # Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
   # During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
   # conversion_mode:disabled means that conversion will not run.
+  # conversion_mode:error will produce error messages and fail the task.
   # conversion_mode:warning will produce warning messages.
   # conversion_mode:info will produce regular log messages.
   # conversion_mode:debug will produce hidden messages viewable with -v.
@@ -695,4 +798,185 @@ Example:
     md_toc_skip_lines: 3
   delegate_to: localhost
   when: generate_device_documentation | arista.avd.default(true)
+```
+
+### Batch Template
+
+The `arista.avd.batch_template`  Action Plugin performs templating of one template for multiple "items".
+
+Results are written to individual files named using format string passed to the plugin. Destination file mode is hardcoded to 0o664.
+
+```yaml
+options:
+  template:
+    description: Path to Jinja2 Template file
+    required: true
+    type: str
+  dest_format_str:
+    description: Format string used to specify target file for each item. 'item' is the current item from 'items'. Like "mypath/{item}.md"
+    required: true
+    type: str
+  items:
+    description: List of strings. Each list item is passed to 'dest_format_str' as 'item' and passed to templater as 'item'
+    required: true
+    type: list
+    elements: str
+
+Example:
+
+```yaml
+- name: Output eos_cli_config_gen Documentation
+  tags: [eos_cli_config_gen]
+  delegate_to: localhost
+  run_once: true
+  arista.avd.batch_template:
+    template: avd_schema_documentation.j2
+    dest_format_str: "{{ role_documentation_dir }}/{item}.md"
+    items: "{{ documentation_schema | list }}"
+  vars:
+    documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"
+```
+
+### Verify Requirements
+
+The `arista.avd.verify_requirements` module is an Ansible Action Plugin providing the following capabilities:
+
+- Display the current running version of the collection.
+- Given a list of python requirements, verify if the installed libraries match these requirements.
+- Validate the ansible version against collection requirements.
+- Validate the collection requirements against the collection requirements.
+- Validate the running python version.
+
+A task is added to every `eos_*` role in the collection but the Verify Requirement task will run only once per playbook when multiple roles are used.
+
+Added in: version 4.0.0 of arista.avd
+
+Module options (= is mandatory):
+
+```yaml
+# Boolean, if set to True, the play does not stop if any requirement error is detected | Optional
+avd_ignore_requirements: <bool | default false>
+
+# List of strings of python requirements with pip file syntax | Required
+requirements: <list of str>
+```
+
+Example:
+
+```yaml
+- name: Verify collection requirements
+  arista.avd.verify_requirements:
+    requirements:
+      - Jinja2 >= 2.9
+      - paramiko == 2.7.1
+  check_mode: false
+  run_once: true
+```
+
+Example output (with debug):
+
+```text
+TASK [arista.avd.eos_designs : Verify Requirements] ********************************************************************************************************************************
+AVD version v4.0.0-dev5-25-g0233492b5
+{
+    "ansible": {
+        "collection": {
+            "name": "arista.avd",
+            "path": "/tmp/ansible-avd/ansible_collections",
+            "version": "v4.0.0-dev5-25-g0233492b5"
+        },
+        "ansible_version": "2.14.2",
+        "requires_ansible": "!=2.13.0,<2.15.0,>=2.12.6",
+        "collection_requirements": {
+            "not_found": {},
+            "valid": {
+                "arista.cvp": {
+                    "installed": "3.6.1",
+                    "required_version": null
+                },
+                "arista.eos": {
+                    "installed": "6.0.0",
+                    "required_version": null
+                },
+                "ansible.utils": {
+                    "installed": "2.9.0",
+                    "required_version": ">=2.9.0"
+                }
+            },
+            "mismatched": {},
+            "parsing_failed": []
+        }
+    },
+    "python": {
+        "python_version_info": {
+            "major": 3,
+            "minor": 10,
+            "micro": 3,
+            "releaselevel": "final",
+            "serial": 0
+        },
+        "python_path": [
+            "/tmp/.pyenv/versions/3.10.3/envs/ansible-avd/bin",
+            "/tmp/.pyenv/versions/3.10.3/lib/python310.zip",
+            "/tmp/.pyenv/versions/3.10.3/lib/python3.10",
+            "/tmp/.pyenv/versions/3.10.3/lib/python3.10/lib-dynload",
+            "/tmp/.pyenv/versions/3.10.3/envs/ansible-avd/lib/python3.10/site-packages"
+        ],
+        "python_requirements": {
+            "not_found": {},
+            "valid": {
+                "netaddr": {
+                    "installed": "0.8.0",
+                    "required_version": ">=0.7.19"
+                },
+                "Jinja2": {
+                    "installed": "3.1.2",
+                    "required_version": ">=2.11.3"
+                },
+                "treelib": {
+                    "installed": "1.6.1",
+                    "required_version": ">=1.5.5"
+                },
+                "cvprac": {
+                    "installed": "1.2.2",
+                    "required_version": ">=1.0.7"
+                },
+                "paramiko": {
+                    "installed": "3.0.0",
+                    "required_version": ">=2.7.1"
+                },
+                "jsonschema": {
+                    "installed": "4.17.3",
+                    "required_version": ">=4.5.1"
+                },
+                "requests": {
+                    "installed": "2.28.2",
+                    "required_version": ">=2.25.1"
+                },
+                "PyYAML": {
+                    "installed": "5.4.1",
+                    "required_version": ">=5.4.1"
+                },
+                "md-toc": {
+                    "installed": "8.1.8",
+                    "required_version": ">=7.1.0"
+                },
+                "deepmerge": {
+                    "installed": "1.1.0",
+                    "required_version": ">=1.1.0"
+                },
+                "cryptography": {
+                    "installed": "39.0.0",
+                    "required_version": ">=38.0.4"
+                },
+                "packaging": {
+                    "installed": "23.0",
+                    "required_version": ">=21.3"
+                }
+            },
+            "mismatched": {},
+            "parsing_failed": []
+        }
+    }
+}
 ```

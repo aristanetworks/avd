@@ -1,3 +1,4 @@
+hostname: SITE1-LSR1
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -13,23 +14,24 @@ vlan_internal_order:
 spanning_tree:
   mode: none
 vrfs:
-- ip_routing: false
-  name: MGMT
+- name: MGMT
+  ip_routing: false
 management_interfaces:
-- description: oob_management
+- name: Management1
+  description: oob_management
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.200.101/24
   gateway: 192.168.200.5
   type: oob
-  name: Management1
 management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
 eos_cli: "management security\n   password encryption-key common\n"
 loopback_interfaces:
-- description: LSR_Router_ID
+- name: Loopback0
+  description: LSR_Router_ID
   shutdown: false
   ip_address: 100.70.0.1/32
   ipv6_address: 2000:1234:ffff:ffff::1/128
@@ -41,19 +43,17 @@ loopback_interfaces:
   node_segment:
     ipv4_index: 301
     ipv6_index: 301
-  name: Loopback0
 router_isis:
   instance: CORE
   log_adjacency_changes: true
   net: 49.0001.0000.0000.0001.00
   router_id: 100.70.0.1
   is_type: level-2
-  address_family:
-  - ipv4 unicast
-  - ipv6 unicast
-  isis_af_defaults:
-  - maximum-paths 4
-  - fast-reroute ti-lfa mode link-protection
+  address_family_ipv4:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
   mpls_ldp_sync_default: true
   timers:
     local_convergence:
@@ -61,6 +61,11 @@ router_isis:
       protected_prefixes: true
   advertise:
     passive_only: true
+  address_family_ipv6:
+    enabled: true
+    maximum_paths: 4
+    fast_reroute_ti_lfa:
+      mode: link-protection
   segment_routing_mpls:
     router_id: 100.70.0.1
     enabled: true
@@ -72,7 +77,8 @@ mpls:
     shutdown: false
     transport_address_interface: Loopback0
 ethernet_interfaces:
-- peer: SITE1-LER1
+- name: Ethernet1
+  peer: SITE1-LER1
   peer_interface: Ethernet1
   peer_type: pe
   description: P2P_LINK_TO_SITE1-LER1_Ethernet1
@@ -97,8 +103,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-  name: Ethernet1
-- peer: SITE1-RR1
+- name: Ethernet4
+  peer: SITE1-RR1
   peer_interface: Ethernet4
   peer_type: rr
   description: P2P_LINK_TO_SITE1-RR1_Ethernet4
@@ -123,8 +129,8 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-  name: Ethernet4
-- peer: SITE2-LSR1
+- name: Ethernet3
+  peer: SITE2-LSR1
   peer_interface: Ethernet3
   peer_type: p
   description: P2P_LINK_TO_SITE2-LSR1_Ethernet3
@@ -149,4 +155,3 @@ ethernet_interfaces:
       interface: true
       igp_sync: true
   speed: forced 40gfull
-  name: Ethernet3

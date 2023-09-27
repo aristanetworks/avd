@@ -1,11 +1,12 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
   local_users:
-    documentation_options:
-      filename: data_model/Authentication
     type: list
     primary_key: name
     convert_types:
@@ -16,7 +17,6 @@ keys:
         name:
           description: Username
           type: str
-          required: true
         disabled:
           type: bool
           description: |
@@ -26,7 +26,7 @@ keys:
           type: int
           convert_types:
           - str
-          min: 1
+          min: 0
           max: 15
           description: |
             Initial privilege level with local EXEC authorization.
@@ -45,3 +45,11 @@ keys:
             If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         ssh_key:
           type: str
+        shell:
+          type: str
+          description: |
+            Specify shell for the user
+          valid_values:
+          - /bin/bash
+          - /bin/sh
+          - /sbin/nologin

@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - management api http #}
 {% if management_api_http is arista.avd.defined %}
 !
@@ -33,10 +38,10 @@ management api http-commands
 {%         endif %}
 {%     endfor %}
 {%     if management_api_http.protocol_https_certificate.certificate is arista.avd.defined and management_api_http.protocol_https_certificate.private_key is arista.avd.defined %}
-   protocol_https_certificate
-   {{ management_api_http.protocol_https_certificate.certificate }}
-   EOF
-   {{ management_api_http.protocol_https_certificate.private_key }}
-   EOF
+   protocol https certificate
+{{ management_api_http.protocol_https_certificate.certificate }}
+EOF
+{{ management_api_http.protocol_https_certificate.private_key }}
+EOF
 {%     endif %}
 {% endif %}

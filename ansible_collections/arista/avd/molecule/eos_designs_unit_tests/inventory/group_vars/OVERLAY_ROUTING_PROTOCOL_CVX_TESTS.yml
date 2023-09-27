@@ -1,0 +1,66 @@
+---
+default_node_types:
+  - match_hostnames:
+      - OVERLAY_ROUTING_PROTOCOL_CVX_SERVER.*
+    node_type: cvxserver
+  - match_hostnames:
+      - OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF.*
+    node_type: l3leaf
+
+
+dc_name: OVERLAY_ROUTING_PROTOCOL_CVX_TESTS
+
+overlay_routing_protocol: CVX
+overlay_cvx_servers: [OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1, OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2]
+
+node_type_keys:
+  - key: cvxserver
+    type: cvxserver
+    underlay_router: false
+  - key: l3leaf
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    default_ptp_priority1: 30
+
+cvxserver:
+  nodes:
+    - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1
+      id: 1
+      mgmt_ip: 192.168.254.254/23
+    - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2
+      id: 2
+      mgmt_ip: 192.168.254.255/23
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.254.0/24
+    vtep_loopback_ipv4_pool: 192.168.253.0/24
+  nodes:
+    - name: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1
+      bgp_as: 65001
+      id: 1
+    - name: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF2
+      bgp_as: 65002
+      id: 2
+
+tenants:
+  - name: TEST
+    mac_vrf_vni_base: 11000
+    # Notice VRFs are not configured under interface vxlan1 when running with CVX.
+    vrfs:
+      - name: TEST
+        # vrf_id: 1
+        svis:
+          - id: 3910
+            name: SVI_3910
+
+    l2vlans:
+      - id: 2910
+        name: L2VLAN_2910
+      - id: 2911
+        name: L2VLAN_2911

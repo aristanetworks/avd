@@ -1,0 +1,11 @@
+---
+### 802.1x Global ###
+# this needs to be in another test than dot1x host because
+# we verify that PR 2764 is not happenign again
+dot1x:
+  system_auth_control: true
+  protocol_lldp_bypass: true
+  dynamic_authorization: true
+  radius_av_pair:
+    service_type: true
+    framed_mtu: 1500

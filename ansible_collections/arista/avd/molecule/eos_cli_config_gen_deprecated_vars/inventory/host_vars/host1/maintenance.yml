@@ -1,0 +1,49 @@
+### Maintenance ###
+
+maintenance:
+  default_interface_profile: IP1
+  default_bgp_profile: BP1
+  default_unit_profile: UP1
+  # Testing interface_profiles as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  interface_profiles:
+    IP1:
+      rate_monitoring:
+        load_interval: 10
+        threshold: 500
+      shutdown:
+        max_delay: 300
+  # Testing bgp_profiles as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  bgp_profiles:
+    BP1:
+      initiator:
+        route_map_inout: RM-MAINTENANCE
+    BP2:
+      initiator:
+        route_map_inout: RM-MAINTENANCE2
+    BP3:
+      initiator:
+        route_map_inout: RM-MAINTENANCE3
+  # Testing unit_profiles as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  unit_profiles:
+    UP1:
+      on_boot:
+        duration: 900
+    UP2:
+      on_boot:
+        duration: 600
+  # Testing units as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  units:
+    UNIT1:
+      profile: UP1
+      groups:
+        bgp_groups:
+          - BGP_GROUP_1
+          - BGP_GROUP_2
+        interface_groups:
+          - INTERFACE_GROUP_1
+    # Adding a unit with no profile for issue/2488
+    System:

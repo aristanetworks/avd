@@ -5,7 +5,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    SNMP_AUTOGEN_ENGINEID:
+    - name: SNMP_AUTOGEN_ENGINEID
       id: 43
 
 mgmt_interface_vrf: MGMT
@@ -44,7 +44,7 @@ snmp_settings:
     - name: usertest-v2c
       group: usergroup
       version: v2c # v2c so the passphrases are not needed
-      auth: useless
+      auth: md5
       auth_passphrase: clearauth # to get from vault in real life
-      priv: useless
+      priv: des
       priv_passphrase: clearpriv # to get from vault in real life

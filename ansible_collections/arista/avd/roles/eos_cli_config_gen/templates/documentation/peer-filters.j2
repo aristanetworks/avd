@@ -1,12 +1,17 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - peer filters #}
 {% if peer_filters is arista.avd.defined %}
 
-## Peer Filters
+### Peer Filters
 
-### Peer Filters Summary
+#### Peer Filters Summary
 {%     for peer_filter in peer_filters | arista.avd.natural_sort('name') %}
 
-#### {{ peer_filter.name }}
+##### {{ peer_filter.name }}
 
 | Sequence | Match |
 | -------- | ----- |
@@ -15,7 +20,7 @@
 {%         endfor %}
 {%     endfor %}
 
-### Peer Filters Device Configuration
+#### Peer Filters Device Configuration
 
 ```eos
 {%     include 'eos/peer-filters.j2' %}

@@ -1,15 +1,20 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - clock #}
 {% if clock is arista.avd.defined %}
 
-## Clock Settings
+### Clock Settings
 {%     if clock.timezone is arista.avd.defined %}
 
-### Clock Timezone Settings
+#### Clock Timezone Settings
 
 Clock Timezone is set to **{{ clock.timezone }}**.
 {%     endif %}
 
-### Clock Configuration
+#### Clock Configuration
 
 ```eos
 {%     include 'eos/clock.j2' %}

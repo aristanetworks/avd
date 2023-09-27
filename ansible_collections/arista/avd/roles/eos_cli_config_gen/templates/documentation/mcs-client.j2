@@ -1,7 +1,12 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - mcs client #}
 {% if mcs_client is arista.avd.defined %}
 
-## MCS client Summary
+### MCS client Summary
 {%     if mcs_client.shutdown is arista.avd.defined(true) %}
 
 MCS client is shutdown
@@ -23,7 +28,7 @@ MCS client is enabled
 | {{ secondary }} | {{ servers }} | {{ enabled }} |
 {%     endif %}
 
-### MCS client configuration
+#### MCS client configuration
 
 ```eos
 {%     include 'eos/mcs-client.j2' %}

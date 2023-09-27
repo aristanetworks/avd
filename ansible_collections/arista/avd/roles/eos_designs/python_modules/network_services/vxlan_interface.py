@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -5,9 +8,8 @@ from typing import NoReturn
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, unique
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
 
 from .utils import UtilsMixin
 
@@ -21,7 +23,6 @@ class VxlanInterfaceMixin(UtilsMixin):
     # Set type hints for Attributes of the main class as needed
     _hostvars: dict
     _filtered_tenants: list[dict]
-    _avd_ip_addressing: AvdIpAddressing
 
     @cached_property
     def vxlan_interface(self) -> dict | None:
@@ -33,42 +34,60 @@ class VxlanInterfaceMixin(UtilsMixin):
         This function also detects duplicate VNIs and raise an error in case of duplicates between
         all Network Services deployed on this device.
         """
-        if not self._overlay_vtep:
+        if not self.shared_utils.overlay_vtep:
             return None
 
         vxlan = {
             "udp_port": 4789,
         }
-        vtep_loopback = get(self._hostvars, "switch.vtep_loopback", required=True)
-        if get(self._hostvars, "switch.multi_vtep") is True:
+        if self._multi_vtep:
             vxlan["source_interface"] = "Loopback0"
-            vxlan["mlag_source_interface"] = vtep_loopback
+            vxlan["mlag_source_interface"] = self.shared_utils.vtep_loopback
         else:
-            vxlan["source_interface"] = vtep_loopback
+            vxlan["source_interface"] = self.shared_utils.vtep_loopback
 
-        if self._mlag_l3 and self._network_services_l3 and self._overlay_evpn:
+        if self.shared_utils.mlag_l3 and self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn:
             vxlan["virtual_router_encapsulation_mac_address"] = "mlag-system-id"
 
-        if self._overlay_routing_protocol == "her" and self._overlay_her_flood_list_per_vni is False:
+        if self.shared_utils.overlay_her and self._overlay_her_flood_list_per_vni is False:
             vxlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get("common", [])))
 
-        vlans = {}
-        vrfs = {}
-        # vnis is a dict of {<vni>: <tenant>}. Only used to detect duplicates.
-        vnis = {}
+        if self.shared_utils.overlay_cvx:
+            vxlan["controller_client"] = {"enabled": True}
+
+        vlans = []
+        vrfs = []
+        # vnis is a list of dicts only used for duplication checks across multiple types of objects all having "vni" as a key.
+        vnis = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if vlan := self._get_vxlan_interface_config_for_vlan(svi, tenant):
-                        vlan_id = int(svi["id"])
-                        if (vni := vlan["vni"]) in vnis:
-                            self._raise_duplicate_vni_error(vni, f"SVI '{vlan_id} in vrf '{vrf['name']}'", tenant["name"], vnis[vni])
+                        # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
+                        # This is necessary to find duplicate VNIs across multiple object types.
+                        append_if_not_duplicate(
+                            list_of_dicts=vnis,
+                            primary_key="vni",
+                            new_dict=vlan,
+                            context="VXLAN VNIs for SVIs",
+                            context_keys=["id", "name", "vni"],
+                        )
+                        # Here we append to the actual list of VRFs, so duplication check is on the VLAN ID here.
+                        append_if_not_duplicate(
+                            list_of_dicts=vlans,
+                            primary_key="id",
+                            new_dict=vlan,
+                            context="VXLAN VNIs for SVIs",
+                            context_keys=["id", "vni"],
+                        )
 
-                        vnis[vni] = tenant["name"]
-                        vlans[vlan_id] = vlan
-
-                if self._network_services_l3 and self._overlay_evpn:
+                if self.shared_utils.network_services_l3 and self.shared_utils.overlay_evpn_vxlan:
                     vrf_name = vrf["name"]
+
+                    # Only configure VNI for VRF if the VRF is EVPN enabled
+                    if "evpn" not in vrf.get("address_families", ["evpn"]):
+                        continue
+
                     vni = default(
                         vrf.get("vrf_vni"),
                         vrf.get("vrf_id"),
@@ -76,12 +95,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                     if vni is not None:
                         # Silently ignore if we cannot set a VNI
                         # This is legacy behavior so we will leave stricter enforcement to the schema
-                        if vni in vnis:
-                            self._raise_duplicate_vni_error(vni, f"VRF '{vrf_name}'", tenant["name"], vnis[vni])
-
-                        vnis[vni] = tenant["name"]
-                        vrfs[vrf_name] = {"vni": vni}
-
+                        vrf_data = {"name": vrf_name, "vni": vni}
                         if get(vrf, "_evpn_l3_multicast_enabled"):
                             underlay_l3_multicast_group_ipv4_pool = get(
                                 tenant,
@@ -93,16 +107,45 @@ class VxlanInterfaceMixin(UtilsMixin):
                                 tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0
                             )
                             offset = vni - 1 + underlay_l3_mcast_group_ipv4_pool_offset
-                            vrfs[vrf_name]["multicast_group"] = self._avd_ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+                            vrf_data["multicast_group"] = self.shared_utils.ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+
+                        # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
+                        # This is necessary to find duplicate VNIs across multiple object types.
+                        append_if_not_duplicate(
+                            list_of_dicts=vnis,
+                            primary_key="vni",
+                            new_dict=vrf_data,
+                            context="VXLAN VNIs for VRFs",
+                            context_keys=["id", "name", "vni"],
+                        )
+                        # Here we append to the actual list of VRFs, so duplication check is on the VRF here.
+                        append_if_not_duplicate(
+                            list_of_dicts=vrfs,
+                            primary_key="name",
+                            new_dict=vrf_data,
+                            context="VXLAN VNIs for VRFs",
+                            context_keys=["name", "vni"],
+                        )
 
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._get_vxlan_interface_config_for_vlan(l2vlan, tenant):
-                    vlan_id = int(l2vlan["id"])
-                    if (vni := vlan["vni"]) in vnis:
-                        self._raise_duplicate_vni_error(vni, f"L2VLAN '{vlan_id}'", tenant["name"], vnis[vni])
-
-                    vnis[vni] = tenant["name"]
-                    vlans[vlan_id] = vlan
+                    # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
+                    # This is necessary to find duplicate VNIs across multiple object types.
+                    append_if_not_duplicate(
+                        list_of_dicts=vnis,
+                        primary_key="vni",
+                        new_dict=vlan,
+                        context="VXLAN VNIs for VLANs",
+                        context_keys=["id", "name", "vni"],
+                    )
+                    # Here we append to the actual list of VRFs, so duplication check is on the VLAN ID here.
+                    append_if_not_duplicate(
+                        list_of_dicts=vlans,
+                        primary_key="id",
+                        new_dict=vlan,
+                        context="VXLAN VNIs for L2VLANs",
+                        context_keys=["id", "vni"],
+                    )
 
         if vlans:
             vxlan["vlans"] = vlans
@@ -112,7 +155,7 @@ class VxlanInterfaceMixin(UtilsMixin):
 
         return {
             "Vxlan1": {
-                "description": f"{self._hostname}_VTEP",
+                "description": f"{self.shared_utils.hostname}_VTEP",
                 "vxlan": vxlan,
             }
         }
@@ -127,8 +170,8 @@ class VxlanInterfaceMixin(UtilsMixin):
         if vlan.get("vxlan") is False:
             return {}
 
-        vxlan_interface_vlan = {}
         vlan_id = int(vlan["id"])
+        vxlan_interface_vlan = {"id": vlan_id}
         if (vni_override := vlan.get("vni_override")) is not None:
             vxlan_interface_vlan["vni"] = int(vni_override)
         else:
@@ -145,9 +188,9 @@ class VxlanInterfaceMixin(UtilsMixin):
             )
             underlay_l2_multicast_group_ipv4_pool_offset = get(tenant, "evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset", default=0)
             offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
-            vxlan_interface_vlan["multicast_group"] = self._avd_ip_addressing._ip(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
+            vxlan_interface_vlan["multicast_group"] = self.shared_utils.ip_addressing._ip(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
 
-        if self._overlay_routing_protocol == "her" and self._overlay_her_flood_list_per_vni:
+        if self.shared_utils.overlay_her and self._overlay_her_flood_list_per_vni:
             vxlan_interface_vlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get(vlan_id, [])))
 
         return vxlan_interface_vlan
@@ -175,34 +218,42 @@ class VxlanInterfaceMixin(UtilsMixin):
         """
         overlay_her_flood_lists = {}
         overlay_her_flood_list_scope = get(self._hostvars, "overlay_her_flood_list_scope")
-        if overlay_her_flood_list_scope == "dc":
-            scope = get(self._hostvars, "dc_name", required=True, org_key="With 'overlay_her_flood_list_scope: dc', 'dc_name'")
-        else:
-            scope = get(self._hostvars, "fabric_name", required=True)
 
-        peers = get(self._hostvars, f"groups..{scope}", separator="..", required=True)
-        avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
-        for peer in peers:
-            if peer == self._hostname:
+        if overlay_her_flood_list_scope == "dc" and self.shared_utils.dc_name is None:
+            raise AristaAvdMissingVariableError("'dc_name' is required with 'overlay_her_flood_list_scope: dc'")
+
+        for peer in self.shared_utils.all_fabric_devices:
+            if peer == self.shared_utils.hostname:
                 continue
-            if (vtep_ip := get(avd_switch_facts, f"{peer}..switch..vtep_ip", separator="..")) is None:
+
+            peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
+
+            if overlay_her_flood_list_scope == "dc" and peer_facts.get("dc_name") != self.shared_utils.dc_name:
                 continue
+
+            if (vtep_ip := peer_facts.get("vtep_ip")) is None:
+                continue
+
             if not self._overlay_her_flood_list_per_vni:
                 # Use common flood list
                 overlay_her_flood_lists.setdefault("common", []).append(vtep_ip)
                 continue
 
             # Use flood lists per vlan
-            peer_vlans = get(avd_switch_facts, f"{peer}..switch..vlans", separator="..", default=[])
+            peer_vlans = peer_facts.get("vlans", [])
             peer_vlans_list = range_expand(peer_vlans)
             for vlan in peer_vlans_list:
                 overlay_her_flood_lists.setdefault(int(vlan), []).append(vtep_ip)
 
         return overlay_her_flood_lists
 
-    def _raise_duplicate_vni_error(self, vni: int, context: str, tenant_name: str, duplicate_vni_tenant: str) -> NoReturn:
-        msg = f"Duplicate VXLAN VNI '{vni}' found in Tenant '{tenant_name}' during configuration of {context}."
-        if duplicate_vni_tenant != tenant_name:
-            msg = f"{msg} Other VNI is in Tenant '{duplicate_vni_tenant}'."
+    def _raise_duplicate_vni_error(self, vni: int, context: str, tenant: str, duplicate_vni_tenant: str) -> NoReturn:
+        msg = f"Duplicate VXLAN VNI '{vni}' found in Tenant(s) '{tenant}' during configuration of {context}."
+        if duplicate_vni_tenant != tenant:
+            msg = f"{msg} Other VNI is in Tenant(s) '{duplicate_vni_tenant}'."
 
         raise AristaAvdError(msg)
+
+    @cached_property
+    def _multi_vtep(self) -> bool:
+        return self.shared_utils.mlag is True and self._evpn_multicast is True

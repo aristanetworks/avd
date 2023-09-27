@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - tacacs servers #}
 {% if tacacs_servers.hosts is arista.avd.defined %}
 
-## TACACS Servers
-
 ### TACACS Servers
+
+#### TACACS Servers
 
 | VRF | TACACS Servers | Single-Connection |
 | --- | -------------- | ----------------- |
@@ -16,7 +21,7 @@
 Policy unknown-mandatory-attribute ignore is configured
 
 {%     endif %}
-### TACACS Servers Device Configuration
+#### TACACS Servers Device Configuration
 
 ```eos
 {%     include 'eos/tacacs-servers.j2' %}

@@ -1,14 +1,16 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 import ipaddress
 from collections import ChainMap
-from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+from .utils import UtilsMixin
 
 
-class AvdIpAddressing(AvdFacts):
-
+class AvdIpAddressing(AvdFacts, UtilsMixin):
     """
     Class used to render IP addresses either from custom Jinja2 templates or using default Python Logic
 
@@ -34,98 +36,60 @@ class AvdIpAddressing(AvdFacts):
 
     def _template(self, template_path, **kwargs):
         template_vars = ChainMap(kwargs, self._hostvars)
-        return self.template_var(template_path, template_vars)
+        return self.shared_utils.template_var(template_path, template_vars)
 
-    @cached_property
-    def _mlag_primary_id(self) -> int:
-        return int(get(self._hostvars, "switch.mlag_switch_ids.primary", required=True))
+    def _mlag_ip(self, pool: str, ip_offset: int) -> str:
+        """
+        Different addressing algorithms:
+            - first_id: offset from pool is `(mlag_primary_id - 1) * 2`
+            - odd_id: offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID
+            - same_subnet: offset from pool is always 0. All MLAG pairs will be the same /31. Requires pool to be a /31
+        """
+        if self._fabric_ipaddress_mlag_algorithm == "odd_id":
+            offset = self._mlag_odd_id_based_offset
+            return self._ip(pool, 31, offset, ip_offset)
 
-    @cached_property
-    def _mlag_secondary_id(self) -> int:
-        return int(get(self._hostvars, "switch.mlag_switch_ids.secondary", required=True))
+        if self._fabric_ipaddress_mlag_algorithm == "same_subnet":
+            pool_network = ipaddress.ip_network(pool, strict=False)
+            if pool_network.prefixlen != 31:
+                raise AristaAvdError("MLAG same_subnet addressing requires the pool to be a /31")
+            return self._ip(pool, 31, 0, ip_offset)
 
-    @cached_property
-    def _mlag_peer_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.mlag_peer_ipv4_pool", required=True)
-
-    @cached_property
-    def _mlag_peer_l3_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.mlag_peer_l3_ipv4_pool", required=True)
-
-    @cached_property
-    def _uplink_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.uplink_ipv4_pool", required=True)
-
-    @cached_property
-    def _id(self) -> int:
-        return int(get(self._hostvars, "switch.id", required=True))
-
-    @cached_property
-    def _max_uplink_switches(self) -> int:
-        return int(get(self._hostvars, "switch.max_uplink_switches", required=True))
-
-    @cached_property
-    def _max_parallel_uplinks(self) -> int:
-        return int(get(self._hostvars, "switch.max_parallel_uplinks", required=True))
-
-    @cached_property
-    def _loopback_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.loopback_ipv4_pool", required=True)
-
-    @cached_property
-    def _loopback_ipv4_offset(self) -> int:
-        return get(self._hostvars, "switch.loopback_ipv4_offset", required=True)
-
-    @cached_property
-    def _loopback_ipv6_pool(self) -> str:
-        return get(self._hostvars, "switch.loopback_ipv6_pool", required=True)
-
-    @cached_property
-    def _loopback_ipv6_offset(self) -> int:
-        return get(self._hostvars, "switch.loopback_ipv6_offset", required=True)
-
-    @cached_property
-    def _vtep_loopback_ipv4_pool(self) -> str:
-        return get(self._hostvars, "switch.vtep_loopback_ipv4_pool", required=True)
+        # Use default first_id
+        offset = self._mlag_primary_id - 1
+        return self._ip(pool, 31, offset, ip_offset)
 
     def mlag_ibgp_peering_ip_primary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """
         Return IP for L3 Peerings in VRFs for MLAG Primary
-
-        Default offset from pool is `(mlag_primary_id - 1) * 2`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_ibgp_peering_ip_primary"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ibgp_peering_ip_primary"):
             return self._template(
                 template_path,
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(mlag_ibgp_peering_ipv4_pool, 31, offset, 0)
+        return self._mlag_ip(mlag_ibgp_peering_ipv4_pool, 0)
 
     def mlag_ibgp_peering_ip_secondary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """
         Return IP for L3 Peerings in VRFs for MLAG Secondary
-
-        Default offset from pool is `((mlag_primary_id - 1) * 2) + 1`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_ibgp_peering_ip_secondary"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ibgp_peering_ip_secondary"):
             return self._template(
                 template_path,
                 vrf={"mlag_ibgp_peering_ipv4_pool": mlag_ibgp_peering_ipv4_pool},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(mlag_ibgp_peering_ipv4_pool, 31, offset, 1)
+        return self._mlag_ip(mlag_ibgp_peering_ipv4_pool, 1)
 
     def mlag_ip_primary(self) -> str:
         """
         Return IP for MLAG Primary
 
-        Default pool is "switch.mlag_peer_ipv4_pool"
-        Default offset from pool is `(mlag_primary_id - 1) * 2`
+        Default pool is "mlag_peer_ipv4_pool"
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_ip_primary"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ip_primary"):
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -133,17 +97,15 @@ class AvdIpAddressing(AvdFacts):
                 switch_data={"combined": {"mlag_peer_ipv4_pool": self._mlag_peer_ipv4_pool}},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(self._mlag_peer_ipv4_pool, 31, offset, 0)
+        return self._mlag_ip(self._mlag_peer_ipv4_pool, 0)
 
     def mlag_ip_secondary(self) -> str:
         """
         Return IP for MLAG Secondary
 
-        Default pool is "switch.mlag_peer_ipv4_pool"
-        Default offset from pool is `((mlag_primary_id - 1) * 2) + 1`
+        Default pool is "mlag_peer_ipv4_pool"
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_ip_secondary"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("mlag_ip_secondary"):
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -151,17 +113,15 @@ class AvdIpAddressing(AvdFacts):
                 switch_data={"combined": {"mlag_peer_ipv4_pool": self._mlag_peer_ipv4_pool}},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(self._mlag_peer_ipv4_pool, 31, offset, 1)
+        return self._mlag_ip(self._mlag_peer_ipv4_pool, 1)
 
     def mlag_l3_ip_primary(self) -> str:
         """
         Return IP for L3 Peerings for MLAG Primary
 
-        Default pool is "switch.mlag_peer_l3_ipv4_pool"
-        Default offset from pool is `(mlag_primary_id - 1) * 2`
+        Default pool is "mlag_peer_l3_ipv4_pool"
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_l3_ip_primary"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_primary"):
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -169,17 +129,15 @@ class AvdIpAddressing(AvdFacts):
                 switch_data={"combined": {"mlag_peer_l3_ipv4_pool": self._mlag_peer_l3_ipv4_pool}},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(self._mlag_peer_l3_ipv4_pool, 31, offset, 0)
+        return self._mlag_ip(self._mlag_peer_l3_ipv4_pool, 0)
 
     def mlag_l3_ip_secondary(self) -> str:
         """
         Return IP for L3 Peerings for MLAG Secondary
 
-        Default pool is "switch.mlag_peer_l3_ipv4_pool"
-        Default offset from pool is `((mlag_primary_id - 1) * 2) + 1`
+        Default pool is "mlag_peer_l3_ipv4_pool"
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.mlag_l3_ip_secondary"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("mlag_l3_ip_secondary"):
             return self._template(
                 template_path,
                 mlag_primary_id=self._mlag_primary_id,
@@ -187,18 +145,17 @@ class AvdIpAddressing(AvdFacts):
                 switch_data={"combined": {"mlag_peer_l3_ipv4_pool": self._mlag_peer_l3_ipv4_pool}},
             )
 
-        offset = self._mlag_primary_id - 1
-        return self._ip(self._mlag_peer_l3_ipv4_pool, 31, offset, 1)
+        return self._mlag_ip(self._mlag_peer_l3_ipv4_pool, 1)
 
     def p2p_uplinks_ip(self, uplink_switch_index: int) -> str:
         """
         Return Child IP for P2P Uplinks
 
-        Default pool is "switch.uplink_ipv4_pool"
-        Default offset from pool is `((switch.id - 1) * 2 * switch.max_uplink_switches * switch.max_parallel_uplinks) + (uplink_switch_index * 2) + 1`
+        Default pool is "uplink_ipv4_pool"
+        Default offset from pool is `((id - 1) * 2 * max_uplink_switches * max_parallel_uplinks) + (uplink_switch_index * 2) + 1`
         """
         uplink_switch_index = int(uplink_switch_index)
-        if template_path := get(self._hostvars, "switch.ip_addressing.p2p_uplinks_ip"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("p2p_uplinks_ip"):
             return self._template(
                 template_path,
                 uplink_switch_index=uplink_switch_index,
@@ -211,11 +168,11 @@ class AvdIpAddressing(AvdFacts):
         """
         Return Parent IP for P2P Uplinks
 
-        Default pool is "switch.uplink_ipv4_pool"
-        Default offset from pool is `((switch.id - 1) * 2 * switch.max_uplink_switches * switch.max_parallel_uplinks) + (uplink_switch_index * 2)`
+        Default pool is "uplink_ipv4_pool"
+        Default offset from pool is `((id - 1) * 2 * max_uplink_switches * max_parallel_uplinks) + (uplink_switch_index * 2)`
         """
         uplink_switch_index = int(uplink_switch_index)
-        if template_path := get(self._hostvars, "switch.ip_addressing.p2p_uplinks_peer_ip"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("p2p_uplinks_peer_ip"):
             return self._template(
                 template_path,
                 uplink_switch_index=uplink_switch_index,
@@ -228,10 +185,10 @@ class AvdIpAddressing(AvdFacts):
         """
         Return IP address for Router ID
 
-        Default pool is "switch.loopback_ipv4_pool"
-        Default offset from pool is `switch.id + switch.loopback_ipv4_offset`
+        Default pool is "loopback_ipv4_pool"
+        Default offset from pool is `id + loopback_ipv4_offset`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.router_id"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("router_id"):
             return self._template(
                 template_path,
                 switch_id=self._id,
@@ -246,10 +203,10 @@ class AvdIpAddressing(AvdFacts):
         """
         Return IPv6 address for Router ID
 
-        Default pool is "switch.loopback_ipv6_pool"
-        Default offset from pool is `switch.id + switch.loopback_ipv6_offset`
+        Default pool is "loopback_ipv6_pool"
+        Default offset from pool is `id + loopback_ipv6_offset`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.ipv6_router_id"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("ipv6_router_id"):
             return self._template(
                 template_path,
                 switch_id=self._id,
@@ -264,10 +221,10 @@ class AvdIpAddressing(AvdFacts):
         """
         Return IP address for VTEP for MLAG Leaf
 
-        Default pool is "switch.vtep_loopback_ipv4_pool"
-        Default offset from pool is `mlag_primary_id + switch.loopback_ipv4_offset`
+        Default pool is "vtep_loopback_ipv4_pool"
+        Default offset from pool is `mlag_primary_id + loopback_ipv4_offset`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.vtep_ip_mlag"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("vtep_ip_mlag"):
             return self._template(
                 template_path,
                 switch_id=self._id,
@@ -284,10 +241,10 @@ class AvdIpAddressing(AvdFacts):
         """
         Return IP address for VTEP for MLAG Leaf
 
-        Default pool is "switch.vtep_loopback_ipv4_pool"
-        Default offset from pool is `switch.id + switch.loopback_ipv4_offset`
+        Default pool is "vtep_loopback_ipv4_pool"
+        Default offset from pool is `id + loopback_ipv4_offset`
         """
-        if template_path := get(self._hostvars, "switch.ip_addressing.vtep_ip"):
+        if template_path := self.shared_utils.ip_addressing_templates.get("vtep_ip"):
             return self._template(
                 template_path,
                 switch_id=self._id,

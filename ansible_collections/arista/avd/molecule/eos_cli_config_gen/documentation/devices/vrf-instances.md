@@ -1,5 +1,6 @@
 # vrf-instances
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -10,25 +11,25 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -38,19 +39,20 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-# Routing
-## IP Routing
+## Routing
 
-### IP Routing Summary
+### IP Routing
+
+#### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | False |
-| MGMT | false |
-| TENANT_A_PROJECT01 | true |
-| TENANT_A_PROJECT02 | true |
+| MGMT | False |
+| TENANT_A_PROJECT01 | True |
+| TENANT_A_PROJECT02 | True |
 
-### IP Routing Device Configuration
+#### IP Routing Device Configuration
 
 ```eos
 no ip routing vrf MGMT
@@ -58,9 +60,9 @@ ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
 ```
 
-## IPv6 Routing
+### IPv6 Routing
 
-### IPv6 Routing Summary
+#### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
@@ -69,9 +71,9 @@ ip routing vrf TENANT_A_PROJECT02
 | TENANT_A_PROJECT01 | false |
 | TENANT_A_PROJECT02 | false |
 
-# VRF Instances
+## VRF Instances
 
-## VRF Instances Summary
+### VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
@@ -79,7 +81,7 @@ ip routing vrf TENANT_A_PROJECT02
 | TENANT_A_PROJECT01 | enabled |
 | TENANT_A_PROJECT02 | enabled |
 
-## VRF Instances Device Configuration
+### VRF Instances Device Configuration
 
 ```eos
 !

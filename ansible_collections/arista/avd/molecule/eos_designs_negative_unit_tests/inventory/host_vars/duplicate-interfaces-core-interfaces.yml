@@ -1,0 +1,41 @@
+---
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: duplicate-interfaces-core-interfaces
+      id: 42
+
+type: l3leaf
+
+core_interfaces:
+  p2p_links_profiles:
+    - name: isis_bb_profile
+      speed: "forced 1000full"
+      mtu: 1500
+      isis_hello_padding: false
+      isis_metric: 60
+      ip_pool: underlay_pool
+      isis_circuit_type: level-2
+      ipv6_enable: true
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
+
+  p2p_links:
+    - nodes: [ duplicate-interfaces-core-interfaces, peer1]
+      id: 1
+      interfaces: [ Ethernet1, Ethernet2 ]
+      profile: isis_bb_profile
+
+    # Link w/o bb profile
+    - nodes: [ duplicate-interfaces-core-interfaces, peer2]
+      id: 2
+      interfaces: [ Ethernet1, Ethernet3 ]
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under core_interfaces p2p_link.
+  {'name': 'Ethernet1', 'peer': 'peer2', 'peer_interface': 'Ethernet3', 'description': 'P2P_LINK_TO_peer2_Ethernet3', 'mtu': 9214} conflicts with
+  {'name': 'Ethernet1', 'peer': 'peer1', 'peer_interface': 'Ethernet2', 'description': 'P2P_LINK_TO_peer1_Ethernet2', 'mtu': 1500}.

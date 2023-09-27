@@ -1,0 +1,29 @@
+---
+underlay_filter_peer_as: true
+
+l3leaf:
+  defaults:
+    evpn_role: none
+  nodes:
+    - name: UNDERLAY_FILTER_PEER_AS_L3LEAF1
+      bgp_as: 65001
+      uplink_switches: [ UNDERLAY_FILTER_PEER_AS_SPINE1, UNDERLAY_FILTER_PEER_AS_SPINE2 ]
+      uplink_interfaces: [ Ethernet1, Ethernet2 ]
+      uplink_switch_interfaces: [ Ethernet1, Ethernet1]
+      loopback_ipv4_pool: 192.168.255.0/24
+      loopback_ipv4_offset: 2
+      vtep_loopback_ipv4_pool: 192.168.254.0/24
+      uplink_ipv4_pool: 192.168.0.0/24
+      virtual_router_mac_address: 00:11:22:33:44:55
+      id: 1
+
+spine:
+  defaults:
+    evpn_role: none
+    loopback_ipv4_pool: 192.168.255.0/24
+    bgp_as: 65000
+  nodes:
+    - name: UNDERLAY_FILTER_PEER_AS_SPINE1
+      id: 1
+    - name: UNDERLAY_FILTER_PEER_AS_SPINE2
+      id: 2

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -18,7 +21,10 @@ class RouterBfdMixin(UtilsMixin):
         """
         return structured config for router_bfd
         """
-        if self._bfd_multihop is None:
+        if self.shared_utils.bfd_multihop is None:
             return None
 
-        return strip_empties_from_dict({"multihop": self._bfd_multihop})
+        if self.shared_utils.overlay_cvx:
+            return None
+
+        return strip_empties_from_dict({"multihop": self.shared_utils.bfd_multihop})

@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - sflow #}
 {% if sflow is arista.avd.defined or sflow_interfaces | length > 0 %}
 
-## SFlow
+### SFlow
 
-### SFlow Summary
+#### SFlow Summary
 {%     if ((sflow.vrfs is arista.avd.defined) or (sflow.destinations is arista.avd.defined) or (sflow.source_interface is arista.avd.defined)) %}
 
 | VRF | SFlow Source | SFlow Destination | Port |
@@ -54,6 +59,13 @@ sFlow is disabled.
 
 sFlow is disabled on all interfaces by default.
 {%     endif %}
+{%     if sflow.interface.egress.enable_default is arista.avd.defined(true) and sflow.interface.egress.unmodified is arista.avd.defined(false) %}
+
+Egress sFlow is enabled on all interfaces by default.
+{%     elif sflow.interface.egress.enable_default is arista.avd.defined(true) and sflow.interface.egress.unmodified is arista.avd.defined(true) %}
+
+Unmodified egress sFlow is enabled on all interfaces by default.
+{%     endif %}
 {%     if sflow.hardware_acceleration.enabled is arista.avd.defined(true) %}
 
 sFlow hardware acceleration is enabled.
@@ -64,7 +76,7 @@ sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
 {%     endif %}
 {%     if sflow.hardware_acceleration.modules is arista.avd.defined and sflow.hardware_acceleration.modules | length > 0 %}
 
-### SFlow Hardware Accelerated Modules
+#### SFlow Hardware Accelerated Modules
 
 | Module | Acceleration Enabled |
 | ------ | -------------------- |
@@ -76,7 +88,7 @@ sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
 {%     endif %}
 {%     if sflow.extensions is arista.avd.defined %}
 
-### SFlow Extensions
+#### SFlow Extensions
 
 | Extension | Enabled |
 | --------- | ------- |
@@ -86,7 +98,7 @@ sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
 {%     endif %}
 {%     if sflow_interfaces | length > 0 %}
 
-### SFlow Interfaces
+#### SFlow Interfaces
 
 | Interface | Ingress Enabled | Egress Enabled |
 | --------- | --------------- | -------------- |
@@ -102,7 +114,7 @@ sFlow hardware accelerated Sample Rate: {{ sflow.hardware_acceleration.sample }}
 {%     endif %}
 {%     if sflow is arista.avd.defined %}
 
-### SFlow Device Configuration
+#### SFlow Device Configuration
 
 ```eos
 {%         include 'eos/sflow.j2' %}

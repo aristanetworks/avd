@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - logging #}
 {% if logging is arista.avd.defined %}
 
-## Logging
+### Logging
 
-### Logging Servers and Features Summary
+#### Logging Servers and Features Summary
 
 | Type | Level |
 | -----| ----- |
@@ -68,7 +73,7 @@
 **Syslog facility value:** {{ logging.facility }}
 {%     endif %}
 
-### Logging Servers and Features Device Configuration
+#### Logging Servers and Features Device Configuration
 
 ```eos
 {%     include 'eos/logging.j2' %}

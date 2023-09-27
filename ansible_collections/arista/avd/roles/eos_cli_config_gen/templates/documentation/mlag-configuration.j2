@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - mlag configuration #}
 {% if mlag_configuration is arista.avd.defined %}
 
-# MLAG
+## MLAG
 
-## MLAG Summary
+### MLAG Summary
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
@@ -23,7 +28,7 @@ Dual primary recovery delay for NON-MLAG interfaces is {{ mlag_configuration.dua
 Dual primary detection is disabled.
 {%     endif %}
 
-## MLAG Device Configuration
+### MLAG Device Configuration
 
 ```eos
 {%     include 'eos/mlag-configuration.j2' %}

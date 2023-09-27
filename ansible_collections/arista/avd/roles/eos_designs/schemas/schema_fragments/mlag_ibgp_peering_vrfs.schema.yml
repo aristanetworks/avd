@@ -1,0 +1,25 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  mlag_ibgp_peering_vrfs:
+    documentation_options:
+      table: overlay-settings
+    type: dict
+    description: |
+      On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering (required when there are MLAG leafs in topology).
+      The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + (vrf_id or vrf_vni) - 1.
+      Depending on the values of vrf_id / vrf_vni it may be required to adjust the base_vlan to avoid overlaps or invalid vlan ids.
+      The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.
+    keys:
+      base_vlan:
+        type: int
+        convert_types:
+          - str
+        min: 1
+        max: 4093
+        default: 3000

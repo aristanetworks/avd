@@ -1,0 +1,77 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - poe #}
+{% set POE_CLASS_MAP = {0: "15.40", 1: "4.00", 2: "7.00", 3: "15.40", 4: "30.00", 5: "45.00", 6: "60.00", 7: "75.00", 8: "90.00"} %}
+{% set poe_global_defaults = namespace(reboot_action="-", interface_shutdown_action="-", lldp_negotiate="-") %}
+{% set ethernet_interfaces_poe = [] %}
+{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%     if ethernet_interface.poe is arista.avd.defined %}
+{%         do ethernet_interfaces_poe.append(ethernet_interface) %}
+{%     endif %}
+{% endfor %}
+{% if (poe is arista.avd.defined) or (ethernet_interfaces_poe | length > 0) %}
+
+## Power Over Ethernet (PoE)
+
+### PoE Summary
+{%     if poe is arista.avd.defined %}
+
+#### PoE Global
+
+| Reboot Action | Shutdown Action | LLDP Negotiation |
+| ------------------- | -------------------- | ----------------------|
+{# Get global poe settings for defaults #}
+{%         set poe_global_defaults.reboot_action = poe.reboot.action | arista.avd.default(poe_global_defaults.reboot_action) %}
+{%         set poe_global_defaults.interface_shutdown_action = poe.interface_shutdown.action | arista.avd.default(poe_global_defaults.interface_shutdown_action) %}
+{#         get lldp transmit power via mdi #}
+{%         if lldp.tlvs is arista.avd.defined %}
+{%             for tlv in lldp.tlvs if tlv.name == 'power-via-mdi' %}
+{%                 set poe_global_defaults.lldp_negotiate = tlv.transmit %}
+{%             endfor %}
+{%         endif %}
+| {{ poe_global_defaults.reboot_action }} | {{ poe_global_defaults.interface_shutdown_action }} | {{ poe_global_defaults.lldp_negotiate }} |
+{%     endif %}
+{%     if ethernet_interfaces_poe | length > 0 %}
+
+#### PoE Interfaces
+
+| Interface | PoE Enabled | Priority | Limit | Reboot Action | Link Down Action | Shutdown Action | LLDP Negotiation | Legacy Detection |
+| --------- | --------- | --------- | ----------- | ----------- | ----------- | ----------- | --------- | --------- |
+{%         for ethernet_interface in ethernet_interfaces_poe | arista.avd.natural_sort('name') %}
+{%             set poe = ethernet_interface.poe %}
+{%             set enabled = not (poe.disabled | arista.avd.default(false)) %}
+{%             set priority = poe.priority | arista.avd.default("-") %}
+{%             set limit = "-" %}
+{%             if poe.limit is arista.avd.defined %}
+{%                 if poe.limit.class is arista.avd.defined %}
+{%                     set limit = POE_CLASS_MAP[poe.limit.class] ~ ' watts' %}
+{%                 elif poe.limit.watts is arista.avd.defined %}
+{%                     set limit = "%.2f" | format(poe.limit.watts | float) ~ ' watts' %}
+{%                 endif %}
+{%                 if limit != '-' and poe.limit.fixed is arista.avd.defined(true) %}
+{%                     set limit = limit ~ ' (fixed)' %}
+{%                 endif %}
+{%             endif %}
+{%             set reboot_action = poe.reboot.action | arista.avd.default(poe_global_defaults.reboot_action) %}
+{%             set link_down_action = poe.link_down.action | arista.avd.default("-") %}
+{%             if poe.link_down.action is arista.avd.defined('power-off') and poe.link_down.power_off_delay is arista.avd.defined %}
+{%                 set link_down_action = link_down_action ~ ' (delayed ' ~ poe.link_down.power_off_delay ~ ' seconds)' %}
+{%             endif %}
+{%             set shutdown_action = poe.shutdown.action | arista.avd.default(poe_global_defaults.interface_shutdown_action) %}
+{%             set negotiation_lldp = poe.negotiation_lldp | arista.avd.default(poe_global_defaults.lldp_negotiate) %}
+{%             set legacy_detect = poe.legacy_detect | arista.avd.default("-") %}
+| {{ ethernet_interface.name }} | {{ enabled }} | {{ priority }} | {{ limit }} | {{ reboot_action }} | {{ link_down_action }} | {{ shutdown_action }} | {{ negotiation_lldp }} | {{ legacy_detect }} |
+{%         endfor %}
+{%     endif %}
+{% endif %}
+{% if poe is arista.avd.defined %}
+
+### PoE Device Configuration
+
+```eos
+{%     include 'eos/poe.j2' %}
+```
+{% endif %}

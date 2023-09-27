@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - aaa authorization #}
 {% if aaa_authorization is arista.avd.defined %}
 
-## AAA Authorization
+### AAA Authorization
 
-### AAA Authorization Summary
+#### AAA Authorization Summary
 
 | Type | User Stores |
 | ---- | ----------- |
@@ -29,7 +34,7 @@ Authorization for serial console is enabled.
 {%     endif %}
 {%     if aaa_authorization.commands.privilege is arista.avd.defined or aaa_authorization.commands.all_default is arista.avd.defined %}
 
-### AAA Authorization Privilege Levels Summary
+#### AAA Authorization Privilege Levels Summary
 
 | Privilege Level | User Stores |
 | --------------- | ----------- |
@@ -43,7 +48,7 @@ Authorization for serial console is enabled.
 {%         endfor %}
 {%     endif %}
 
-### AAA Authorization Device Configuration
+#### AAA Authorization Device Configuration
 
 ```eos
 {%     include 'eos/aaa-authorization.j2' %}

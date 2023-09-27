@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - lacp #}
 {% if lacp is arista.avd.defined %}
 
-# LACP
+## LACP
 
-## LACP Summary
+### LACP Summary
 
 | Port-id range | Rate-limit default | System-priority |
 | ------------- | ------------------ | --------------- |
@@ -14,7 +19,7 @@
 {%     endif %}
 | {{ row_range }} | {{ lacp.rate_limit.default | arista.avd.default('-') }} | {{ lacp.system_priority | arista.avd.default('-') }} |
 
-## LACP Device Configuration
+### LACP Device Configuration
 
 ```eos
 {%     include 'eos/lacp.j2' %}

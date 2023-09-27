@@ -1,0 +1,60 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  radius_server:
+    type: dict
+    keys:
+      attribute_32_include_in_access_req:
+        type: dict
+        keys:
+          hostname:
+            type: bool
+          format:
+            type: str
+            description: Specify the format of the NAS-Identifier. If 'hostname' is set, this is ignored.
+      dynamic_authorization:
+        type: dict
+        keys:
+          port:
+            type: int
+            min: 0
+            max: 65535
+            convert_types:
+              - str
+            description: TCP Port
+          tls_ssl_profile:
+            type: str
+            description: Name of TLS profile
+      hosts:
+        type: list
+        primary_key: host
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+              description: Host IP address or name
+            vrf:
+              type: str
+              convert_types:
+                - int
+            timeout:
+              type: int
+              min: 1
+              max: 1000
+              convert_types:
+                - str
+            retransmit:
+              type: int
+              min: 0
+              max: 100
+              convert_types:
+                - str
+            key:
+              type: str
+              description: Encrypted key

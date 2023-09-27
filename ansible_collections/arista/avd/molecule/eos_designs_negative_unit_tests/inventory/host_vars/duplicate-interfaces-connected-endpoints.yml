@@ -1,0 +1,31 @@
+---
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: duplicate-interfaces-connected-endpoints
+      id: 42
+
+type: l3leaf
+
+servers:
+  - name: server01_ES1
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ duplicate-interfaces-connected-endpoints ]
+
+  - name: server02
+    adapters:
+      - endpoint_ports: [ Eth2 ]
+        switch_ports: [ Ethernet10 ]
+        switches: [ duplicate-interfaces-connected-endpoints ]
+
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Ethernet Interfaces defined under connected_endpoints.
+  {'name': 'Ethernet10', 'peer_interface': 'Eth2', 'description': 'server02_Eth2', 'peer': 'server02'} conflicts with
+  {'name': 'Ethernet10', 'peer_interface': 'Eth1', 'description': 'server01_ES1_Eth1', 'peer': 'server01_ES1'}.

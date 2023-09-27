@@ -1,0 +1,17 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  evpn_prevent_readvertise_to_server:
+    documentation_options:
+      table: evpn-settings
+    description: |
+      Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
+      This is very useful in large-scale networks, where convergence will be quicker by not returning all updates received
+      from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
+    type: bool
+    default: false

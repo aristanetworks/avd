@@ -1,0 +1,23 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{% if l2_protocol is arista.avd.defined %}
+!
+l2-protocol
+{%     for profile in l2_protocol.forwarding_profiles | arista.avd.natural_sort('name') %}
+   forwarding profile {{ profile.name }}
+{%         for protocol in profile.protocols %}
+{%             if protocol.forward is arista.avd.defined(true) %}
+      {{ protocol.name }} forward
+{%             endif %}
+{%             if protocol.tagged_forward is arista.avd.defined(true) %}
+      {{ protocol.name }} tagged forward
+{%             endif %}
+{%             if protocol.untagged_forward is arista.avd.defined(true) %}
+      {{ protocol.name }} untagged forward
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

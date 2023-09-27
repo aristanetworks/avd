@@ -1,0 +1,28 @@
+### QOS Profiles ###
+
+# Testing qos_profiles as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+qos_profiles:
+  test:
+    trust: dscp
+    dscp: 46
+    shape:
+      rate: 80 percent
+    # Testing tx_queues as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    tx_queues:
+      1:
+        bandwidth_percent: 50
+        priority: 'no priority'
+    # Testing uc_tx_queues as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    uc_tx_queues:
+      2:
+        bandwidth_percent: 50
+        priority: 'no priority'
+    # Testing mc_tx_queues as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    mc_tx_queues:
+      3:
+        bandwidth_percent: 50
+        priority: 'no priority'

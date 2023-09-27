@@ -1,0 +1,12 @@
+### Radius Servers
+
+# Testing radius_servers deprecated in 4.0.0. To be removed in 5.0.0
+radius_servers:
+  - host: 10.10.10.157
+    vrf: mgt
+    key: 071B245F5A
+  - host: 10.10.10.249
+    key: 071B245F5A
+  - host: 10.10.10.158
+    vrf: default
+    key: 071B245F5A

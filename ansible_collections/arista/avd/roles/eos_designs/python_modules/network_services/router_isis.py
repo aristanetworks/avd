@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -22,9 +25,9 @@ class RouterIsisMixin(UtilsMixin):
         """
 
         if (
-            self._network_services_l3
+            self.shared_utils.network_services_l3
             and self._vrf_default_ipv4_static_routes["redistribute_in_underlay"]
-            and self._underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]
+            and self.shared_utils.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]
         ):
             return {"redistribute_routes": [{"source_protocol": "static"}]}
 

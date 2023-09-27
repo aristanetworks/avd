@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - dynamic prefix lists #}
 {% if dynamic_prefix_lists is arista.avd.defined %}
 
-## Dynamic Prefix-lists
+### Dynamic Prefix-lists
 
-### Dynamic Prefix-lists Summary
+#### Dynamic Prefix-lists Summary
 
 | Dynamic Prefix-List Name | Match Map | IPv4 Prefix-list | IPv6 Prefix-list |
 | ------------------------ | --------- | ---------------- | ---------------- |
@@ -11,7 +16,7 @@
 | {{ dynamic_prefix_list.name }} | {{ dynamic_prefix_list.match_map }} | {{ dynamic_prefix_list.prefix_list.ipv4 | arista.avd.default('-') }} | {{ dynamic_prefix_list.prefix_list.ipv6 | arista.avd.default('-') }} |
 {%     endfor %}
 
-### Dynamic Prefix-lists Device Configuration
+#### Dynamic Prefix-lists Device Configuration
 
 ```eos
 {%     include 'eos/dynamic-prefix-lists.j2' %}

@@ -1,0 +1,13 @@
+### Prefix Lists ###
+
+# Testing prefix_lists as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    # Testing sequence_numbers as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    sequence_numbers:
+      10:
+        action: "permit 192.168.255.0/24 eq 32"
+      20:
+        action: "permit 192.168.254.0/24 eq 32"

@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - mac security #}
 {% if mac_security is arista.avd.defined %}
 
-# MACsec
+## MACsec
 
-## MACsec Summary
+### MACsec Summary
 
 {%     if mac_security.license is arista.avd.defined %}
 License is installed.
@@ -15,7 +20,7 @@ License is not installed.
 FIPS restrictions enabled.
 {%     endif %}
 
-### MACsec Profiles Summary
+#### MACsec Profiles Summary
 {%     if mac_security.profiles is arista.avd.defined %}
 {%         for profile in mac_security.profiles | arista.avd.natural_sort('name') %}
 
@@ -34,13 +39,12 @@ Settings:
 Keys:
 
 {%             if profile.connection_keys is arista.avd.defined %}
-| Key ID | Encrypted (Type 7) Key | Fallback |
-| ------ | ---------------------- | -------- |
+| Key ID | Fallback |
+| ------ |  -------- |
 {%                 for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
 {%                     if connection_key.encrypted_key is arista.avd.defined %}
-{%                         set encrypted_key = connection_key.encrypted_key %}
 {%                         set fallback = connection_key.fallback | arista.avd.default('-') %}
-| {{ connection_key.id }} | {{ encrypted_key }} | {{ fallback }} |
+| {{ connection_key.id }} | {{ fallback }} |
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
@@ -60,7 +64,7 @@ L2 Protocols:
 {%         endfor %}
 {%     endif %}
 
-## MACsec Device Configuration
+### MACsec Device Configuration
 
 ```eos
 {%     include 'eos/mac-security.j2' %}

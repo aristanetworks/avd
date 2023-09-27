@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - static routes #}
 {% if static_routes is arista.avd.defined %}
 
-## Static Routes
+### Static Routes
 
-### Static Routes Summary
+#### Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
@@ -25,7 +30,7 @@
 | {{ vrf }} | {{ static_route.destination_address_prefix }} | {{ gateway }} | {{ interface }} | {{ distance }} | {{ tag }} | {{ name }} | {{ metric }} |
 {%     endfor %}
 
-### Static Routes Device Configuration
+#### Static Routes Device Configuration
 
 ```eos
 {%     include 'eos/static-routes.j2' %}

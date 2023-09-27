@@ -23,6 +23,10 @@ changelog:
       - 'rn: CI(plugins)'
       - 'rn: Test(requirements)'
       - 'rn: CI(requirements)'
+      - 'rn: Test(eos_designs|eos_cli_config_gen)'
+      - 'rn: CI(eos_designs|eos_cli_config_gen)'
+      - 'rn: Test(eos_cli_config_gen|eos_designs)'
+      - 'rn: CI(eos_cli_config_gen|eos_designs)'
       - 'rn: Test'
       - 'rn: CI'
   categories:
@@ -39,6 +43,8 @@ changelog:
         - 'rn: Feat(eos_validate_state)!'
         - 'rn: Feat(plugins)!'
         - 'rn: Feat(requirements)!'
+        - 'rn: Feat(eos_designs|eos_cli_config_gen)!'
+        - 'rn: Feat(eos_cli_config_gen|eos_designs)!'
         - 'rn: Fix(build_output_folders)!'
         - 'rn: Fix(cvp_configlet_upload)!'
         - 'rn: Fix(dhcp_provisioner)!'
@@ -50,6 +56,8 @@ changelog:
         - 'rn: Fix(eos_validate_state)!'
         - 'rn: Fix(plugins)!'
         - 'rn: Fix(requirements)!'
+        - 'rn: Fix(eos_designs|eos_cli_config_gen)!'
+        - 'rn: Fix(eos_cli_config_gen|eos_designs)!'
         - 'rn: Cut(build_output_folders)!'
         - 'rn: Cut(cvp_configlet_upload)!'
         - 'rn: Cut(dhcp_provisioner)!'
@@ -61,6 +69,8 @@ changelog:
         - 'rn: Cut(eos_validate_state)!'
         - 'rn: Cut(plugins)!'
         - 'rn: Cut(requirements)!'
+        - 'rn: Cut(eos_designs|eos_cli_config_gen)!'
+        - 'rn: Cut(eos_cli_config_gen|eos_designs)!'
         - 'rn: Revert(build_output_folders)!'
         - 'rn: Revert(cvp_configlet_upload)!'
         - 'rn: Revert(dhcp_provisioner)!'
@@ -72,6 +82,8 @@ changelog:
         - 'rn: Revert(eos_validate_state)!'
         - 'rn: Revert(plugins)!'
         - 'rn: Revert(requirements)!'
+        - 'rn: Revert(eos_designs|eos_cli_config_gen)!'
+        - 'rn: Revert(eos_cli_config_gen|eos_designs)!'
         - 'rn: Refactor(build_output_folders)!'
         - 'rn: Refactor(cvp_configlet_upload)!'
         - 'rn: Refactor(dhcp_provisioner)!'
@@ -83,6 +95,8 @@ changelog:
         - 'rn: Refactor(eos_validate_state)!'
         - 'rn: Refactor(plugins)!'
         - 'rn: Refactor(requirements)!'
+        - 'rn: Refactor(eos_designs|eos_cli_config_gen)!'
+        - 'rn: Refactor(eos_cli_config_gen|eos_designs)!'
         - 'rn: Bump(build_output_folders)!'
         - 'rn: Bump(cvp_configlet_upload)!'
         - 'rn: Bump(dhcp_provisioner)!'
@@ -94,6 +108,8 @@ changelog:
         - 'rn: Bump(eos_validate_state)!'
         - 'rn: Bump(plugins)!'
         - 'rn: Bump(requirements)!'
+        - 'rn: Bump(eos_designs|eos_cli_config_gen)!'
+        - 'rn: Bump(eos_cli_config_gen|eos_designs)!'
         - 'rn: Feat!'
         - 'rn: Fix!'
         - 'rn: Cut!'
@@ -106,6 +122,10 @@ changelog:
     - title: Fixed issues in eos_designs
       labels:
         - 'rn: Fix(eos_designs)'
+    - title: Fixed issues in both eos_designs and eos_cli_config_gen
+      labels:
+        - 'rn: Fix(eos_cli_config_gen|eos_designs)'
+        - 'rn: Fix(eos_designs|eos_cli_config_gen)'
     - title: Other Fixed issues
       labels:
         - 'rn: Fix(build_output_folders)'
@@ -131,6 +151,8 @@ changelog:
         - 'rn: Doc(eos_validate_state)'
         - 'rn: Doc(plugins)'
         - 'rn: Doc(requirements)'
+        - 'rn: Doc(eos_designs|eos_cli_config_gen)'
+        - 'rn: Doc(eos_cli_config_gen|eos_designs)'
         - 'rn: Doc'
     - title: New features and enhancements in eos_cli_config_gen
       labels:
@@ -138,6 +160,10 @@ changelog:
     - title: New features and enhancements in eos_designs
       labels:
         - 'rn: Feat(eos_designs)'
+    - title: New features and enhancement in both eos_designs and eos_cli_config_gen
+      labels:
+        - 'rn: Feat(eos_cli_config_gen|eos_designs)'
+        - 'rn: Feat(eos_designs|eos_cli_config_gen)'
     - title: Other new features and enhancements
       labels:
         - 'rn: Feat(build_output_folders)'

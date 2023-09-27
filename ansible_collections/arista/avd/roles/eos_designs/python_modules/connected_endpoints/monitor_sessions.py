@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -84,7 +87,7 @@ class MonitorSessionsMixin(UtilsMixin):
 
                 # Monitor session on Ethernet interface
                 for node_index, node_name in enumerate(adapter["switches"]):
-                    if node_name != self._hostname:
+                    if node_name != self.shared_utils.hostname:
                         continue
 
                     ethernet_interface_name = adapter["switch_ports"][node_index]

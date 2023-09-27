@@ -1,0 +1,32 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  underlay_routing_protocol:
+    documentation_options:
+      table: fabric-settings
+    type: str
+    convert_to_lower_case: true
+    description: |
+      - The following underlay routing protocols are supported:
+        - EBGP (default for l3ls-evpn)
+        - OSPF.
+        - ISIS.
+        - ISIS-SR*.
+        - ISIS-LDP*.
+        - ISIS-SR-LDP*.
+        - OSPF-LDP*.
+      - The variables should be applied to all devices in the fabric.
+      *Only supported with core_interfaces data model.
+    valid_values:
+      - "ebgp"
+      - "ospf"
+      - "isis"
+      - "isis-sr"
+      - "isis-ldp"
+      - "isis-sr-ldp"
+      - "ospf-ldp"

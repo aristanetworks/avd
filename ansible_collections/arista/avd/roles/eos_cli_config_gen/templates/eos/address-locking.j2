@@ -1,0 +1,31 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - address locking #}
+{% if address_locking is arista.avd.defined %}
+!
+address locking
+{%     if address_locking.disabled is arista.avd.defined(true) %}
+   disabled
+{%     endif %}
+{%     if address_locking.local_interface is arista.avd.defined %}
+   local-interface {{ address_locking.local_interface }}
+{%     endif %}
+{%     for ip in address_locking.dhcp_servers_ipv4 | arista.avd.natural_sort %}
+   dhcp server ipv4 {{ ip }}
+{%     endfor %}
+{%     for lease in address_locking.leases | arista.avd.natural_sort('ip') %}
+   lease {{ lease.ip }} mac {{ lease.mac }}
+{%     endfor %}
+{%     if address_locking.locked_address.expiration_mac_disabled is arista.avd.defined(true) %}
+   locked-address expiration mac disabled
+{%     endif %}
+{%     if address_locking.locked_address.ipv4_enforcement_disabled is arista.avd.defined(true) %}
+   locked-address ipv4 enforcement disabled
+{%     endif %}
+{%     if address_locking.locked_address.ipv6_enforcement_disabled is arista.avd.defined(true) %}
+   locked-address ipv6 enforcement disabled
+{%     endif %}
+{% endif %}

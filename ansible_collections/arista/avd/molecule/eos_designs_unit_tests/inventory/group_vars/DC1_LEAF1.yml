@@ -1,4 +1,15 @@
 ---
+bgp_default_ipv4_unicast: true
+
+# Test to honor platform settings of vEOS-LAB
+bgp_update_wait_install: true
+bgp_update_wait_for_convergence: true
+
+# test updating graceful restart timers
+bgp_graceful_restart:
+  enabled: true
+  restart_time: 500
+
 overlay_rd_type:
 #   # admin_subfield: < "overlay_loopback" | "vtep_loopback" | "leaf_asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
   admin_subfield: 1.1.1.1

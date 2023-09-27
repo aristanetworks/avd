@@ -1,0 +1,15 @@
+### Interface Groups ###
+
+# Testing interface_groups as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+interface_groups:
+  SFP_Interface_Group:
+    interfaces:
+      - Ethernet10-20
+      - Ethernet30-48
+
+  QSFP_Interface_Group:
+    interfaces:
+      - Ethernet1,5
+    interface_maintenance_profiles:
+      - uplink-interfaces

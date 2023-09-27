@@ -1,0 +1,32 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: source-interfaces
+      id: 1
+      mgmt_ip: 192.168.0.2/24
+      inband_mgmt_ip: 10.20.30.40/24
+      inband_mgmt_gateway: 10.20.30.1
+      inband_mgmt_vrf: INBANDMGMT
+
+# Testing that the generated source interfaces do not contain the VRF if VRF "default"
+mgmt_interface_vrf: default
+
+source_interfaces:
+  domain_lookup:
+    mgmt_interface: true
+    inband_mgmt_interface: true
+  http_client:
+    mgmt_interface: true
+    inband_mgmt_interface: true
+  radius:
+    mgmt_interface: true
+    inband_mgmt_interface: true
+  snmp:
+    mgmt_interface: true
+    inband_mgmt_interface: true
+  ssh_client:
+    mgmt_interface: true
+    inband_mgmt_interface: true
+  tacacs:
+    mgmt_interface: true
+    inband_mgmt_interface: true

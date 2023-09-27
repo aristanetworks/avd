@@ -1,0 +1,170 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  bgp_peer_groups:
+    documentation_options:
+      table: bgp-settings
+    description: |
+      Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
+      Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
+    type: dict
+    keys:
+      ipv4_underlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: IPv4-UNDERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: False
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+      mlag_ipv4_underlay_peer:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: MLAG-IPv4-UNDERLAY-PEER
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: False
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+      evpn_overlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: EVPN-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+      evpn_overlay_core:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: EVPN-OVERLAY-CORE
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+      mpls_overlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: MPLS-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+      rr_overlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: RR-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+      ipvpn_gateway_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: IPVPN-GATEWAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: True
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+      IPv4_UNDERLAY_PEERS:
+        type: dict
+        deprecation:
+          warning: true
+          new_key: bgp_peer_groups.ipv4_underlay_peers
+          removed: true
+          remove_in_version: "4.0.0"
+      MLAG_IPv4_UNDERLAY_PEER:
+        type: dict
+        deprecation:
+          warning: true
+          new_key: bgp_peer_groups.mlag_ipv4_underlay_peer
+          removed: true
+          remove_in_version: "4.0.0"
+      EVPN_OVERLAY_PEERS:
+        type: dict
+        deprecation:
+          warning: true
+          new_key: bgp_peer_groups.evpn_overlay_peers
+          removed: true
+          remove_in_version: "4.0.0"

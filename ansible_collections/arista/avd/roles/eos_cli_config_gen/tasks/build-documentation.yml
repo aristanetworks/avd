@@ -1,44 +1,27 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 ---
 - name: Recreate required output directories
   tags: [eos_cli_config_gen]
   delegate_to: localhost
   run_once: true
   block:
-    - name: "Cleanup {{ role_documentation_dir }}"
+    - name: "Cleanup {{ role_documentation_dir }}/tables"
       ansible.builtin.file:
-        path: "{{ role_documentation_dir }}"
+        path: "{{ role_documentation_dir }}/tables"
         state: absent
-    - name: "Create {{ role_documentation_dir }}"
+    - name: "Create {{ role_documentation_dir }}/tables"
       ansible.builtin.file:
-        path: "{{ role_documentation_dir }}"
+        path: "{{ role_documentation_dir }}/tables"
         state: directory
         mode: 0775
-    - name: "Create {{ role_documentation_dir }}"
-      ansible.builtin.file:
-        path: "{{ role_documentation_dir }}/inputs"
-        state: directory
-        mode: 0775
-    - name: "Create {{ role_documentation_dir }}"
-      ansible.builtin.file:
-        path: "{{ role_documentation_dir }}/data_model"
-        state: directory
-        mode: 0775
-
-- name: Import and Convert eos_cli_config_gen schema
-  tags: [eos_cli_config_gen]
-  ansible.builtin.set_fact:
-    role_documentation_schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml | arista.avd.convert_schema(type='documentation') }}"
-
-# - debug:
-#     msg: "{{ role_documentation_schema }}"
 
 - name: Output eos_cli_config_gen Documentation
   tags: [eos_cli_config_gen]
-  ansible.builtin.template:
-    src: avd_schema_documentation.j2
-    dest: "{{ role_documentation_dir ~ '/' ~ documentation_file.filename ~ '.md'  }}"
-    mode: 0664
-  loop: "{{ role_documentation_schema }}"
-  loop_control:
-    loop_var: documentation_file
-    label: "{{ documentation_file.filename }}"
+  arista.avd.batch_template:
+    template: "{{ role_path }}/../../docs/templates/avd_schema_table.j2"
+    dest_format_str: "{{ role_documentation_dir ~ '/tables/{item}' ~ '.md'  }}"
+    items: "{{ documentation_schema | list }}"
+  vars:
+    documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation_tables') }}"

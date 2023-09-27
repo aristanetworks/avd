@@ -4,7 +4,7 @@ mgmt_gateway: 1.1.1.1
 l2leaf:
   defaults:
   nodes:
-    mgmt_interface_host:
+    - name: mgmt_interface_host
       platform: 7500R2
       mgmt_interface: MY_INTERFACE_HOST
       mgmt_ip: 1.1.1.2

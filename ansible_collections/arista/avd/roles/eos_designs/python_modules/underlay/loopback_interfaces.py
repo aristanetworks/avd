@@ -1,7 +1,11 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
@@ -14,62 +18,76 @@ class LoopbackInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def loopback_interfaces(self) -> dict | None:
+    def loopback_interfaces(self) -> list | None:
         """
         Return structured config for loopback_interfaces
         """
-        if self._underlay_router is not True:
+        if not self.shared_utils.underlay_router:
             return None
 
-        loopback_interfaces = {}
+        loopback_interfaces = []
         # Loopback 0
         loopback0 = {
-            "description": self._avd_interface_descriptions.overlay_loopback_interface(get(self._hostvars, "overlay_loopback_description")),
+            "name": "Loopback0",
+            "description": self.shared_utils.interface_descriptions.overlay_loopback_interface(get(self._hostvars, "overlay_loopback_description")),
             "shutdown": False,
-            "ip_address": f"{self._router_id}/32",
+            "ip_address": f"{self.shared_utils.router_id}/32",
         }
 
-        if self._ipv6_router_id is not None:
-            loopback0["ipv6_address"] = f"{self._ipv6_router_id}/128"
+        if self.shared_utils.ipv6_router_id is not None:
+            loopback0["ipv6_address"] = f"{self.shared_utils.ipv6_router_id}/128"
 
-        if self._underlay_ospf is True:
-            loopback0["ospf_area"] = self._underlay_ospf_area
+        if self.shared_utils.underlay_ospf:
+            loopback0["ospf_area"] = self.shared_utils.underlay_ospf_area
 
-        if self._underlay_ldp is True:
+        if self.shared_utils.underlay_ldp:
             loopback0["mpls"] = {"ldp": {"interface": True}}
 
-        if self._underlay_isis is True:
-            isis_config = {"isis_enable": self._isis_instance_name, "isis_passive": True}
-            if self._underlay_sr is True:
+        if self.shared_utils.underlay_isis:
+            isis_config = {"isis_enable": self.shared_utils.isis_instance_name, "isis_passive": True}
+            if self.shared_utils.underlay_sr:
                 isis_config["node_segment"] = {"ipv4_index": self._node_sid}
-                if self._underlay_ipv6 is True:
+                if self.shared_utils.underlay_ipv6:
                     isis_config["node_segment"].update({"ipv6_index": self._node_sid})
 
             loopback0.update(isis_config)
 
         loopback0 = {key: value for key, value in loopback0.items() if value is not None}
 
-        loopback_interfaces["Loopback0"] = loopback0
+        loopback_interfaces.append(loopback0)
 
         # VTEP loopback
-        if self._overlay_vtep is True and self._vtep_loopback.lower() != "loopback0":
+        if self.shared_utils.overlay_vtep is True and self.shared_utils.vtep_loopback.lower() != "loopback0":
             vtep_loopback = {
-                "description": self._avd_interface_descriptions.vtep_loopback_interface(),
+                "name": self.shared_utils.vtep_loopback,
+                "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(),
                 "shutdown": False,
-                "ip_address": f"{self._vtep_ip}/32",
+                "ip_address": f"{self.shared_utils.vtep_ip}/32",
             }
 
-            if self._network_services_l3 is True and self._vtep_vvtep_ip is not None:
-                vtep_loopback["ip_address_secondaries"] = [self._vtep_vvtep_ip]
+            if self.shared_utils.network_services_l3 is True and self.shared_utils.vtep_vvtep_ip is not None:
+                vtep_loopback["ip_address_secondaries"] = [self.shared_utils.vtep_vvtep_ip]
 
-            if self._underlay_ospf is True:
-                vtep_loopback["ospf_area"] = self._underlay_ospf_area
+            if self.shared_utils.underlay_ospf is True:
+                vtep_loopback["ospf_area"] = self.shared_utils.underlay_ospf_area
 
-            if self._underlay_isis is True:
-                vtep_loopback.update({"isis_enable": self._isis_instance_name, "isis_passive": True})
+            if self.shared_utils.underlay_isis is True:
+                vtep_loopback.update({"isis_enable": self.shared_utils.isis_instance_name, "isis_passive": True})
 
             vtep_loopback = {key: value for key, value in vtep_loopback.items() if value is not None}
 
-            loopback_interfaces[self._vtep_loopback] = vtep_loopback
+            loopback_interfaces.append(vtep_loopback)
+
+        # Underlay Multicast RP Loopbacks
+        if self.shared_utils.underlay_multicast_rp_interfaces is not None:
+            for underlay_multicast_rp_interface in self.shared_utils.underlay_multicast_rp_interfaces:
+                loopback_interfaces.append(underlay_multicast_rp_interface)
 
         return loopback_interfaces
+
+    @cached_property
+    def _node_sid(self):
+        if self.shared_utils.id is None:
+            raise AristaAvdMissingVariableError(f"'id' is not set on '{self.shared_utils.hostname}' and is required to set node SID")
+        node_sid_base = int(get(self.shared_utils.switch_data_combined, "node_sid_base", 0))
+        return self.shared_utils.id + node_sid_base

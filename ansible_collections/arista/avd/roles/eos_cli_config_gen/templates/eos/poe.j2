@@ -1,0 +1,16 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - poe #}
+{% if poe.reboot.action is arista.avd.defined('maintain') or  poe.interface_shutdown.action is arista.avd.defined('power-off') %}
+!
+poe
+{%     if poe.reboot.action is arista.avd.defined('maintain') %}
+   reboot action {{ poe.reboot.action }}
+{%     endif %}
+{%     if poe.interface_shutdown.action is arista.avd.defined('power-off') %}
+   interface shutdown action {{ poe.interface_shutdown.action }}
+{%     endif %}
+{% endif %}

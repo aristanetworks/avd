@@ -1,0 +1,15 @@
+fabric_name: fabric_missing_mlag_peer
+
+type: l2leaf
+l2leaf:
+  node_groups:
+    - group: mlag_group
+      mlag_peer_ipv4_pool: 192.168.1.0/24
+      mlag_interfaces: [Ethernet1, Ethernet2]
+      nodes:
+        - name: missing-mlag-peer
+          id: 1
+        - name: some-missing-device
+          id: 2
+
+expected_error_message: "Facts not found for node 'some-missing-device'. Something in the input vars is pointing to this node. Check that 'some-missing-device' is in the inventory and is part of the group set by 'fabric_name'. Node is required but was not found for host 'missing-mlag-peer'"

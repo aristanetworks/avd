@@ -1,17 +1,6 @@
-# Copyright 2021 Arista Networks
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# Copyright (c) 2021-2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 
 DOCUMENTATION = r"""
 ---
@@ -23,10 +12,10 @@ description:
   - The `arista.avd.validate_and_template` Action Plugin performs data conversions and validation according to the supplied Schema.
   - The converted data is then used to render a Jinja2 template and writing the result to a file.
   - The Action Plugin supports different modes for conversion and validation, to either block the playbook or just warn the user if
-  - the input data is not valid.
+    the input data is not valid.
   - For Markdown files the plugin can also run md_toc on the output before writing to the file.
 options:
-  ansible.builtin.template:
+  template:
     description: Path to Jinja2 Template file
     required: true
     type: str
@@ -39,9 +28,14 @@ options:
     required: false
     type: str
   schema:
-    description: Schema conforming to "AVD Meta Schema"
-    required: true
+    description: Schema conforming to "AVD Meta Schema". Either schema or schema_id must be set.
+    required: false
     type: dict
+  schema_id:
+    description: ID of Schema conforming to "AVD Meta Schema".  Either schema or schema_id must be set.
+    required: false
+    type: str
+    choices: [ "eos_cli_config_gen", "eos_designs" ]
   add_md_toc:
     description: Run md_toc on the output before writing to the file.
     required: false
@@ -58,6 +52,7 @@ options:
       - Conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
       - During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
       - conversion_mode:disabled means that conversion will not run.
+      - conversion_mode:error will produce error messages and fail the task.
       - conversion_mode:warning will produce warning messages.
       - conversion_mode:info will produce regular log messages.
       - conversion_mode:debug will produce hidden messages viewable with -v.

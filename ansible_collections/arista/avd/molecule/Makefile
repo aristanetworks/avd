@@ -20,20 +20,6 @@ converge: ## Execute molecule CONVERGE sequence. By default eos_cli_config_gen. 
 	cd .. && \
 	molecule converge --scenario-name $(MOLECULE) -- $(ANSIBLE_OPTIONS)
 
-.PHONY: cli-4.0-schema
-cli-4.0-schema: ## Execute molecule scenarios for eos_cli_config_gen 4.0 schema updates.
-	cd .. && \
-	molecule converge --scenario-name eos_cli_config_gen -- $(ANSIBLE_OPTIONS)
-	cd .. && \
-	molecule converge --scenario-name eos_cli_config_gen_v4.0 -- $(ANSIBLE_OPTIONS)
-
-.PHONY: designs-4.0-schema
-designs-4.0-schema: ## Execute molecule scenarios for eos_designs 4.0 schema updates.
-	cd .. && \
-	molecule converge --scenario-name eos_designs_unit_tests -- $(ANSIBLE_OPTIONS)
-	cd .. && \
-	molecule converge --scenario-name eos_designs_unit_tests_v4.0 -- $(ANSIBLE_OPTIONS)
-
 .PHONY: refresh-facts
 refresh-facts: ## Run all molecule scenarios
 	@while read -r MOLECULE_SCENARIO; do \

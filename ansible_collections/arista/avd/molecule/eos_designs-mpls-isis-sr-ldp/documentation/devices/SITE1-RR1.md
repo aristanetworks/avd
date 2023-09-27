@@ -1,5 +1,6 @@
 # SITE1-RR1
-# Table of Contents
+
+## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -30,25 +31,25 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [EOS CLI](#eos-cli)
 
-# Management
+## Management
 
-## Management Interfaces
+### Management Interfaces
 
-### Management Interfaces Summary
+#### Management Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 10.30.30.108/24 | 192.168.200.5 |
 
-#### IPv6
+##### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | - | - |
 
-### Management Interfaces Device Configuration
+#### Management Interfaces Device Configuration
 
 ```eos
 !
@@ -59,21 +60,21 @@ interface Management1
    ip address 10.30.30.108/24
 ```
 
-## Management API HTTP
+### Management API HTTP
 
-### Management API HTTP Summary
+#### Management API HTTP Summary
 
 | HTTP | HTTPS | Default Services |
 | ---- | ----- | ---------------- |
 | False | True | - |
 
-### Management API VRF Access
+#### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-### Management API HTTP Configuration
+#### Management API HTTP Configuration
 
 ```eos
 !
@@ -85,66 +86,66 @@ management api http-commands
       no shutdown
 ```
 
-# Spanning Tree
+## Spanning Tree
 
-## Spanning Tree Summary
+### Spanning Tree Summary
 
 STP mode: **none**
 
-## Spanning Tree Device Configuration
+### Spanning Tree Device Configuration
 
 ```eos
 !
 spanning-tree mode none
 ```
 
-# Internal VLAN Allocation Policy
+## Internal VLAN Allocation Policy
 
-## Internal VLAN Allocation Policy Summary
+### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-## Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
 vlan internal order ascending range 1006 1199
 ```
 
-# Interfaces
+## Interfaces
 
-## Ethernet Interfaces
+### Ethernet Interfaces
 
-### Ethernet Interfaces Summary
+#### Ethernet Interfaces Summary
 
-#### L2
+##### L2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet4 | P2P_LINK_TO_SITE1-LSR1_Ethernet4 | routed | - | 100.64.48.7/31 | default | 9178 | False | - | - |
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
 | Ethernet4 | P2P_LINK_TO_SITE1-LSR1_Ethernet4 | routed | - | - | default | 9178 | False | - | - | - | - |
 
-#### ISIS
+##### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 | Ethernet4 | - | CORE | 60 | point-to-point | level-2 | False | md5 |
 
-### Ethernet Interfaces Device Configuration
+#### Ethernet Interfaces Device Configuration
 
 ```eos
 !
@@ -165,34 +166,34 @@ interface Ethernet4
    no isis hello padding
    isis network point-to-point
    isis authentication mode md5
-   isis authentication key 7 asdadjiwtelogkkdng
+   isis authentication key 7 <removed>
    link-debounce time 1000
 
 ```
 
-## Loopback Interfaces
+### Loopback Interfaces
 
-### Loopback Interfaces Summary
+#### Loopback Interfaces Summary
 
-#### IPv4
+##### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | MPLS_Overlay_peering | default | 100.70.0.8/32 |
 
-#### IPv6
+##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | MPLS_Overlay_peering | default | 2000:1234:ffff:ffff::8/128 |
 
-#### ISIS
+##### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | --------- | ------------- | ----------- | -------------- |
 | Loopback0 | CORE | - | passive |
 
-### Loopback Interfaces Device Configuration
+#### Loopback Interfaces Device Configuration
 
 ```eos
 !
@@ -208,8 +209,9 @@ interface Loopback0
    node-segment ipv6 index 108
 ```
 
-# Routing
-## Service Routing Protocols Model
+## Routing
+
+### Service Routing Protocols Model
 
 Multi agent routing protocol model enabled
 
@@ -217,16 +219,17 @@ Multi agent routing protocol model enabled
 !
 service routing protocols model multi-agent
 ```
-## IP Routing
 
-### IP Routing Summary
+### IP Routing
+
+#### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
-| MGMT | false |
+| MGMT | False |
 
-### IP Routing Device Configuration
+#### IP Routing Device Configuration
 
 ```eos
 !
@@ -234,47 +237,46 @@ ip routing
 no ip routing vrf MGMT
 ```
 
-## IPv6 Routing
+### IPv6 Routing
 
-### IPv6 Routing Summary
+#### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | True |
 | MGMT | false |
 
-### IPv6 Routing Device Configuration
+#### IPv6 Routing Device Configuration
 
 ```eos
 !
 ipv6 unicast-routing
 ```
 
-## Static Routes
+### Static Routes
 
-### Static Routes Summary
+#### Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
-### Static Routes Device Configuration
+#### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```
 
-## Router ISIS
+### Router ISIS
 
-### Router ISIS Summary
+#### Router ISIS Summary
 
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
 | Net-ID | 49.0001.0000.0002.0008.00 |
 | Type | level-1-2 |
-| Address Family | ipv4 unicast, ipv6 unicast |
 | Router-ID | 100.70.0.8 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
@@ -282,20 +284,36 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
 
-### ISIS Interfaces Summary
+#### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
 | Ethernet4 | CORE | 60 | point-to-point |
 | Loopback0 | CORE | - | passive |
 
-### ISIS Segment-routing Node-SID
+#### ISIS Segment-routing Node-SID
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
 | Loopback0 | 108 | 108 |
 
-### Router ISIS Device Configuration
+#### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+
+#### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+
+#### Router ISIS Device Configuration
 
 ```eos
 !
@@ -311,6 +329,7 @@ router isis CORE
    address-family ipv4 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection
+   !
    address-family ipv6 unicast
       maximum-paths 4
       fast-reroute ti-lfa mode link-protection
@@ -319,9 +338,9 @@ router isis CORE
       no shutdown
 ```
 
-## Router BGP
+### Router BGP
 
-### Router BGP Summary
+#### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
@@ -333,16 +352,15 @@ router isis CORE
 
 | BGP Tuning |
 | ---------- |
-| no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | bgp route-reflector preserve-attributes always |
+| update wait-install |
+| no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
-### Router BGP Peer Groups
+#### Router BGP Peer Groups
 
-#### MPLS-OVERLAY-PEERS
+##### MPLS-OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -354,7 +372,7 @@ router isis CORE
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### RR-OVERLAY-PEERS
+##### RR-OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -365,74 +383,73 @@ router isis CORE
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-### BGP Neighbors
+#### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- |
-| 100.70.0.5 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS |
-| 100.70.0.6 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS |
-| 100.70.0.7 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS |
-| 100.70.0.9 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
+| 100.70.0.5 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - |
+| 100.70.0.6 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - |
+| 100.70.0.7 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - |
+| 100.70.0.9 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - |
 
-### Router BGP EVPN Address Family
+#### Router BGP EVPN Address Family
 
-#### EVPN Peer Groups
+##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
 | MPLS-OVERLAY-PEERS | True | default |
 | RR-OVERLAY-PEERS | True | default |
 
-#### EVPN Neighbor Default Encapsulation
+##### EVPN Neighbor Default Encapsulation
 
 | Neighbor Default Encapsulation | Next-hop-self Source Interface |
 | ------------------------------ | ------------------------------ |
 | mpls | - |
 
-### Router BGP VPN-IPv4 Address Family
+#### Router BGP VPN-IPv4 Address Family
 
-#### VPN-IPv4 Peer Groups
-
-| Peer Group | Activate | Route-map In | Route-map Out |
-| ---------- | -------- | ------------ | ------------- |
-| MPLS-OVERLAY-PEERS | True | - | - |
-| RR-OVERLAY-PEERS | True | - | - |
-
-### Router BGP VPN-IPv6 Address Family
-
-#### VPN-IPv6 Peer Groups
+##### VPN-IPv4 Peer Groups
 
 | Peer Group | Activate | Route-map In | Route-map Out |
 | ---------- | -------- | ------------ | ------------- |
 | MPLS-OVERLAY-PEERS | True | - | - |
 | RR-OVERLAY-PEERS | True | - | - |
 
-### Router BGP Device Configuration
+#### Router BGP VPN-IPv6 Address Family
+
+##### VPN-IPv6 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+| MPLS-OVERLAY-PEERS | True | - | - |
+| RR-OVERLAY-PEERS | True | - | - |
+
+#### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65000
    router-id 100.70.0.8
-   bgp cluster-id 1.1.1.1
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
-   bgp route-reflector preserve-attributes always
    maximum-paths 4 ecmp 4
+   update wait-install
+   no bgp default ipv4-unicast
+   bgp cluster-id 1.1.1.1
+   distance bgp 20 200 200
+   bgp route-reflector preserve-attributes always
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
    neighbor MPLS-OVERLAY-PEERS update-source Loopback0
    neighbor MPLS-OVERLAY-PEERS route-reflector-client
    neighbor MPLS-OVERLAY-PEERS bfd
-   neighbor MPLS-OVERLAY-PEERS password 7 SHsTgDgjVUU5a9blyxSt3Q==
+   neighbor MPLS-OVERLAY-PEERS password 7 <removed>
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
    neighbor RR-OVERLAY-PEERS peer group
    neighbor RR-OVERLAY-PEERS remote-as 65000
    neighbor RR-OVERLAY-PEERS update-source Loopback0
    neighbor RR-OVERLAY-PEERS bfd
-   neighbor RR-OVERLAY-PEERS password 7 04FdfTXWrEfpDTUc3mlSjg==
+   neighbor RR-OVERLAY-PEERS password 7 <removed>
    neighbor RR-OVERLAY-PEERS send-community
    neighbor RR-OVERLAY-PEERS maximum-routes 0
    neighbor 100.70.0.5 peer group MPLS-OVERLAY-PEERS
@@ -462,17 +479,17 @@ router bgp 65000
       neighbor RR-OVERLAY-PEERS activate
 ```
 
-# BFD
+## BFD
 
-## Router BFD
+### Router BFD
 
-### Router BFD Multihop Summary
+#### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Device Configuration
+#### Router BFD Device Configuration
 
 ```eos
 !
@@ -480,11 +497,11 @@ router bfd
    multihop interval 300 min-rx 300 multiplier 3
 ```
 
-# MPLS
+## MPLS
 
-## MPLS and LDP
+### MPLS and LDP
 
-### MPLS and LDP Summary
+#### MPLS and LDP Summary
 
 | Setting | Value |
 | -------- | ---- |
@@ -494,7 +511,7 @@ router bfd
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
 
-### MPLS and LDP Configuration
+#### MPLS and LDP Configuration
 
 ```eos
 !
@@ -507,29 +524,29 @@ mpls ldp
    transport-address interface Loopback0
 ```
 
-## MPLS Interfaces
+### MPLS Interfaces
 
 | Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
 | --------- | --------------- | ----------- | -------- |
 | Ethernet4 | True | True | True |
 | Loopback0 | - | True | - |
 
-# VRF Instances
+## VRF Instances
 
-## VRF Instances Summary
+### VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | disabled |
 
-## VRF Instances Device Configuration
+### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance MGMT
 ```
 
-# EOS CLI
+## EOS CLI
 
 ```eos
 !

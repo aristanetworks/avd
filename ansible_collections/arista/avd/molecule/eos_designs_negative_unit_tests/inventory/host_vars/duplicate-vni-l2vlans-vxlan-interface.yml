@@ -1,0 +1,35 @@
+---
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: duplicate-vni-l2vlans-vxlan-interface
+      id: 42
+
+type: l3leaf
+
+tenants:
+  - name: Tenant_A
+    mac_vrf_vni_base: 10000
+    mac_vrf_id_base: 20000
+    vrfs:
+      - name: Tenant_A_OP_Zone
+        description: "Tenant_A_OP_Zone"
+        vrf_vni: 10
+        vrf_id: 9
+        svis:
+          - id: 111
+            vni_override: 10001
+            name: Tenant_A_OP_Zone_2
+
+  - name: Tenant_B
+    mac_vrf_vni_base: 10000
+    mac_vrf_id_base: 20000
+    l2vlans:
+      - id: 1   # calculated vni would be 10001 (duplicate)
+        name: vlan
+
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for VXLAN VNIs for VLANs. {'id': 1, 'name': None, 'vni': 10001} conflicts with {'id': 111, 'name': None, 'vni': 10001}."

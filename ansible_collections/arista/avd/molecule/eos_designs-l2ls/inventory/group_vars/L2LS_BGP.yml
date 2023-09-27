@@ -5,11 +5,11 @@ pod_name: L2LS_BGP
 underlay_routing_protocol: ebgp
 
 tenants:
-  L2LS_BGP:
+  - name: L2LS_BGP
     vrfs:
-      default:
+      - name: default
         svis:
-          100:
+          - id: 100
             name: SVI_100
             ip_address_virtual: 10.1.100.1/24
             enabled: true

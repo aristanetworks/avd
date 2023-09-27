@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -8,11 +11,11 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 CUSTOM_STRUCTURED_CONFIGURATION_EXEMPT_KEYS = ["custom_structured_configuration_prefix", "custom_structured_configuration_list_merge"]
 
 
-class AvdStructuredConfig(AvdFacts):
+class AvdStructuredConfigCustomStructuredConfiguration(AvdFacts):
     """
-    The AvdStructuredConfig Class is imported by "yaml_templates_to_facts" to render parts of the structured config.
+    The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
 
-    "yaml_templates_to_facts" imports, instantiates and run the .render() method on the class.
+    "get_structured_config" imports, instantiates and run the .render() method on the class.
 
     The Class uses AvdFacts, as the base class, to inherit _hostvars other attributes.
     """
@@ -22,7 +25,7 @@ class AvdStructuredConfig(AvdFacts):
         """
         Reads custom_structured_configuration_prefix from hostvars and converts to list if necessary
         """
-        custom_structured_configuration_prefix = get(self._hostvars, "custom_structured_configuration_prefix", default=[])
+        custom_structured_configuration_prefix = get(self._hostvars, "custom_structured_configuration_prefix", default=["custom_structured_configuration_"])
         if not isinstance(custom_structured_configuration_prefix, list):
             return [custom_structured_configuration_prefix]
 
@@ -48,7 +51,7 @@ class AvdStructuredConfig(AvdFacts):
         return struct_cfgs
 
     def _struct_cfg(self) -> list:
-        if (struct_cfg := self._hostvars.pop("struct_cfg", None)) is not None:
+        if (struct_cfg := get(self.shared_utils.switch_data_combined, "structured_config")) is not None:
             return [struct_cfg]
 
         return []
@@ -128,7 +131,10 @@ class AvdStructuredConfig(AvdFacts):
 
         return [
             {
-                str(key)[len(prefix) :]: self._hostvars[key]
+                # Disable black to prevent whitespace before colon PEP8 E203
+                # fmt: off
+                str(key)[len(prefix):]: self._hostvars[key]
+                # fmt: on
                 for key in self._hostvars
                 if str(key).startswith(prefix) and key not in CUSTOM_STRUCTURED_CONFIGURATION_EXEMPT_KEYS
             }
@@ -141,7 +147,7 @@ class AvdStructuredConfig(AvdFacts):
 
         This method returns a list of dicts with structured_configuration.
 
-        yaml_templates_to_facts will merge this list into a single dict.
+        get_structured_config will merge this list into a single dict.
         """
 
         struct_cfgs = self._struct_cfg()

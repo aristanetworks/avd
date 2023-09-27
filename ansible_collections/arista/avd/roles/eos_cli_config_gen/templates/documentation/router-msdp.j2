@@ -1,6 +1,11 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {% if router_msdp is arista.avd.defined %}
 
-## Router MSDP
+### Router MSDP
 {%     set msdp_info = namespace(peers = []) %}
 {%     for peer in router_msdp.peers | arista.avd.default([]) %}
 {%         do msdp_info.peers.append(peer) %}
@@ -13,7 +18,7 @@
 {%     endfor %}
 {%     if msdp_info.peers | length > 0 %}
 
-### Router MSDP Peers
+#### Router MSDP Peers
 
 | Peer Address | Disabled | VRF | Default-peer | Default-peer Prefix List | Mesh Groups | Local Interface | Description | Inbound SA Filter | Outbound SA Filter |
 | ------------ | -------- | --- | ------------ | ------------------------ | ----------- | --------------- | ----------- | ----------------- | ------------------ |
@@ -29,7 +34,7 @@
 {%         endfor %}
 {%     endif %}
 
-### Router MSDP Device Configuration
+#### Router MSDP Device Configuration
 
 ```eos
 {%     include 'eos/router-msdp.j2' %}

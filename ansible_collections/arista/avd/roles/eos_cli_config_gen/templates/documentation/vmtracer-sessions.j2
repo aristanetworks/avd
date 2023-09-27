@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - vmtracer sessions #}
 {% if vmtracer_sessions is arista.avd.defined %}
 
-## VM Tracer Sessions
+### VM Tracer Sessions
 
-### VM Tracer Summary
+#### VM Tracer Summary
 
 | Session | URL | Username | Autovlan | Source Interface |
 | ------- | --- | -------- | -------- | ---------------- |
@@ -16,7 +21,7 @@
 | {{ session.name }} | {{ url }} | {{ session.username | arista.avd.default('-') }} | {{ autovlan | arista.avd.default('enabled') }} | {{ source_interface }} |
 {%     endfor %}
 
-### VM Tracer Device Configuration
+#### VM Tracer Device Configuration
 
 ```eos
 {%     include 'eos/vmtracer-sessions.j2' %}

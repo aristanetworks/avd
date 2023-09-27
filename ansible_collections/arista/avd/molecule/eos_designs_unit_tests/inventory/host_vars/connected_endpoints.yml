@@ -1,0 +1,48 @@
+loopback_ipv4_pool: 192.168.0.0/24
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: connected_endpoints
+
+servers:
+  # single port override physical port description
+  - name: OLD_SW-1/4
+    adapters:
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet4]
+        description: "PHYSICAL_PORT_DESCRIPTION"
+  # port-channel provide port-channel description
+  - name: OLD_SW-1/5
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet5, Ethernet6]
+        port_channel:
+          mode: "active"
+          description: "PORT_CHANNEL_DESCRIPTION"
+  # port-channel provide physical and port-channel descriptions
+  - name: OLD_SW-1/6
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet7, Ethernet8]
+        description: "PHYSICAL_PORT_DESCRIPTION"
+        port_channel:
+          mode: "active"
+          description: "PORT_CHANNEL_DESCRIPTION"
+  # Testing of play_vars in eos_designs_structured_config
+  # Single port override physical port description with play_var
+  - name: SERVER_WITH_PLAYVAR_DESCRIPTION
+    adapters:
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet9]
+        description: "{{ string_set_as_play_var }}"
+  # port-channel provide physical and individual port-channel descriptions
+  - name: OLD_SW-1/7
+    adapters:
+      - switches: [connected_endpoints, connected_endpoints]
+        switch_ports: [Ethernet10, Ethernet11]
+        descriptions: ["PHYSICAL_PORT_DESCRIPTION_1", "PHYSICAL_PORT_DESCRIPTION_2"]
+        port_channel:
+          mode: "active"
+          description: "PORT_CHANNEL_DESCRIPTION"

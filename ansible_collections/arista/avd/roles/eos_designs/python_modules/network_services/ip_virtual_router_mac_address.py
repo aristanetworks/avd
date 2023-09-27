@@ -1,8 +1,9 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
-
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -18,8 +19,7 @@ class IpVirtualRouterMacAddressMixin(UtilsMixin):
         """
         Return structured config for ip_virtual_router_mac_address
         """
-        if self._network_services_l2 and self._network_services_l3:
-            mac = get(self._hostvars, "switch.virtual_router_mac_address", required=True, org_key="virtual_router_mac_address")
-            return str(mac).lower()
+        if self.shared_utils.network_services_l2 and self.shared_utils.network_services_l3 and self.shared_utils.virtual_router_mac_address is not None:
+            return str(self.shared_utils.virtual_router_mac_address).lower()
 
         return None

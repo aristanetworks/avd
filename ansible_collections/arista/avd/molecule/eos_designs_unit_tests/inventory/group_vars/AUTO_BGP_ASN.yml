@@ -10,73 +10,72 @@ l3leaf:
     uplink_interfaces: []
     uplink_switches: []
     uplink_ipv4_pool: 172.31.255.0/24
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+    bgp_defaults: ['distance bgp 20 200 200']
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
-    virtual_router_mac_address: 00:dc:00:00:00:0a
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
     mlag_peer_ipv4_pool: 10.255.252.0/24
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
     bgp_as: 65101-65110
   node_groups:
-    AUTO_BGP_ASN_LEAF1_AA:
+    - group: AUTO_BGP_ASN_LEAF1_AA
       mlag: false
       nodes:
-        AUTO_BGP_ASN_LEAF1A:
+        - name: AUTO_BGP_ASN_LEAF1A
           id: 1
           mgmt_ip: 192.168.202.105/24
-        AUTO_BGP_ASN_LEAF1B:
+        - name: AUTO_BGP_ASN_LEAF1B
           id: 2
           mgmt_ip: 192.168.202.106/24
-    AUTO_BGP_ASN_LEAF2_STANDALONE:
+    - group: AUTO_BGP_ASN_LEAF2_STANDALONE
       nodes:
-        AUTO_BGP_ASN_LEAF2:
+        - name: AUTO_BGP_ASN_LEAF2
           id: 3
           mgmt_ip: 192.168.202.107/24
-    AUTO_BGP_ASN_LEAF3_MLAG:
+    - group: AUTO_BGP_ASN_LEAF3_MLAG
       nodes:
-        AUTO_BGP_ASN_LEAF3A:
+        - name: AUTO_BGP_ASN_LEAF3A
           id: 5
           mgmt_ip: 192.168.202.109/24
-        AUTO_BGP_ASN_LEAF3B:
+        - name: AUTO_BGP_ASN_LEAF3B
           id: 6
           mgmt_ip: 192.168.202.110/24
-    AUTO_BGP_ASN_LEAF4_MLAG_OVERRIDE:
+    - group: AUTO_BGP_ASN_LEAF4_MLAG_OVERRIDE
       bgp_as: 65222
       nodes:
-        AUTO_BGP_ASN_LEAF4A:
+        - name: AUTO_BGP_ASN_LEAF4A
           id: 7
           mgmt_ip: 192.168.202.111/24
-        AUTO_BGP_ASN_LEAF4B:
+        - name: AUTO_BGP_ASN_LEAF4B
           id: 8
           mgmt_ip: 192.168.202.112/24
-    AUTO_BGP_ASN_LEAF5_NODE_OVERRIDE:
+    - group: AUTO_BGP_ASN_LEAF5_NODE_OVERRIDE
       nodes:
-        AUTO_BGP_ASN_LEAF5A:
+        - name: AUTO_BGP_ASN_LEAF5A
           id: 9
           bgp_as: 65333
           mgmt_ip: 192.168.202.113/24
-    AUTO_BGP_ASN_LEAF5_4BYTE_DOTZERO:
+    - group: AUTO_BGP_ASN_LEAF5_4BYTE_DOTZERO
       bgp_as: 65222.0
       nodes:
-        AUTO_BGP_ASN_LEAF7A:
+        - name: AUTO_BGP_ASN_LEAF7A
           id: 11
           mgmt_ip: 192.168.202.115/24
-        AUTO_BGP_ASN_LEAF7B:
+        - name: AUTO_BGP_ASN_LEAF7B
           id: 12
           mgmt_ip: 192.168.202.116/24
-    AUTO_BGP_ASN_LEAF5_4BYTE_RANGE:
+    - group: AUTO_BGP_ASN_LEAF5_4BYTE_RANGE
       bgp_as: 65222.0-100
       mlag: false
       nodes:
-        AUTO_BGP_ASN_LEAF8A:
+        - name: AUTO_BGP_ASN_LEAF8A
           id: 13
           mgmt_ip: 192.168.202.117/24
-        AUTO_BGP_ASN_LEAF8B:
+        - name: AUTO_BGP_ASN_LEAF8B
           id: 14
           mgmt_ip: 192.168.202.118/24
 
   nodes:
-    AUTO_BGP_UNGROUPED_LEAF6:
+    - name: AUTO_BGP_UNGROUPED_LEAF6
       id: 10
       mgmt_ip: 192.168.202.114/24

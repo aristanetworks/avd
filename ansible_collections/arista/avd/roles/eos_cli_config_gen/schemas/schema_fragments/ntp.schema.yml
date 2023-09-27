@@ -1,11 +1,12 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
   ntp:
-    documentation_options:
-      filename: data_model/Management
     type: dict
     keys:
       local_interface:
@@ -17,6 +18,8 @@ keys:
           vrf:
             type: str
             description: VRF name
+            convert_types:
+              - int
       servers:
         type: list
         items:
@@ -34,7 +37,7 @@ keys:
               min: 1
               max: 65535
               convert_types:
-              - str
+                - str
             local_interface:
               type: str
               description: Source interface
@@ -43,14 +46,14 @@ keys:
               min: 3
               max: 17
               convert_types:
-              - str
+                - str
               description: Value of maxpoll between 3 - 17 (Logarithmic)
             minpoll:
               type: int
               min: 3
               max: 17
               convert_types:
-              - str
+                - str
               description: Value of minpoll between 3 - 17 (Logarithmic)
             preferred:
               type: bool
@@ -59,10 +62,12 @@ keys:
               min: 1
               max: 4
               convert_types:
-              - str
+                - str
             vrf:
               type: str
               description: VRF name
+              convert_types:
+                - int
       authenticate:
         type: bool
       authenticate_servers_only:
@@ -71,7 +76,7 @@ keys:
         type: list
         primary_key: id
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -80,7 +85,7 @@ keys:
               min: 1
               max: 65534
               convert_types:
-              - str
+                - str
               description: Key identifier
             hash_algorithm:
               type: str
@@ -91,7 +96,7 @@ keys:
             key_type:
               type: str
               convert_types:
-              - int
+                - int
               valid_values: ["0", "7", "8a"]
       trusted_keys:
         type: str

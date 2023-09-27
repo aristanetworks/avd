@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - bfd #}
 {% set ethernet_interface_bfd = namespace(configured=false) %}
 {% set port_channel_interface_bfd = namespace(configured=false) %}
@@ -26,7 +31,7 @@
 {% endfor %}
 {% if router_bfd is arista.avd.defined or ethernet_interface_bfd.configured or port_channel_interface_bfd.configured or vlan_interface_bfd.configured %}
 
-# BFD
+## BFD
 {## Router BFD #}
 {%     include 'documentation/router-bfd.j2' %}
 {## BFD Interfaces #}

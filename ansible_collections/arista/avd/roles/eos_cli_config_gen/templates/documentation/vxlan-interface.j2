@@ -1,15 +1,23 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# j2lint: disable=V1 #}
 {# doc - vxlan interface #}
 {% if vxlan_interface.Vxlan1 is arista.avd.defined %}
 
-## VXLAN Interface
+### VXLAN Interface
 
-### VXLAN Interface Summary
+#### VXLAN Interface Summary
 
 | Setting | Value |
 | ------- | ----- |
 {%     if vxlan_interface.Vxlan1.vxlan.source_interface is arista.avd.defined %}
 | Source Interface | {{ vxlan_interface.Vxlan1.vxlan.source_interface }} |
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.controller_client.enabled is arista.avd.defined %}
+| Controller Client | {{ vxlan_interface.Vxlan1.vxlan.controller_client.enabled }} |
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.mlag_source_interface is arista.avd.defined %}
 | MLAG Source Interface | {{ vxlan_interface.Vxlan1.vxlan.mlag_source_interface }} |
@@ -27,6 +35,11 @@
 | Qos dscp propagation encapsulation | Enabled |
 {%     elif vxlan_interface.Vxlan1.vxlan.qos.dscp_propagation_encapsulation is arista.avd.defined(false) %}
 | Qos dscp propagation encapsulation | Disabled |
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation is arista.avd.defined(true) %}
+| Qos ECN propagation | Enabled |
+{%     elif vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation is arista.avd.defined(false) %}
+| Qos ECN propagation | Disabled |
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(true) %}
 | Qos map dscp to traffic-class decapsulation | Enabled |
@@ -49,7 +62,7 @@
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vlans is arista.avd.defined %}
 
-#### VLAN to VNI, Flood List and Multicast Group Mappings
+##### VLAN to VNI, Flood List and Multicast Group Mappings
 
 | VLAN | VNI | Flood List | Multicast Group |
 | ---- | --- | ---------- | --------------- |
@@ -66,7 +79,7 @@
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vrfs is arista.avd.defined %}
 
-#### VRF to VNI and Multicast Group Mappings
+##### VRF to VNI and Multicast Group Mappings
 
 | VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
@@ -78,14 +91,14 @@
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.flood_vteps is arista.avd.defined %}
 
-#### Default Flood List
+##### Default Flood List
 
 | Default Flood List |
 | ------------------ |
 | {{ vxlan_interface.Vxlan1.vxlan.flood_vteps | join('<br/>') }} |
 {%     endif %}
 
-### VXLAN Interface Device Configuration
+#### VXLAN Interface Device Configuration
 
 ```eos
 {%     include 'eos/vxlan-interface.j2' %}

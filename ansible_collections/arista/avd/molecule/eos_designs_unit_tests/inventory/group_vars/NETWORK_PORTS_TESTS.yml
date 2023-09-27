@@ -48,26 +48,56 @@ network_ports:
       - Ethernet5-6
     description: "N: blah"
 
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet7-10
+    description: "Checking port-channels"
+    port_channel:
+      channel_id: 42
+      mode: "active"
+
+  # The next entries are used to test the duplicate check feature together with the
+  # CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT below.
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet11-14
+    description: Base config which may be overwritten
+
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet12
+    description: Config overwriting base config
+
+servers:
+  - name: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
+    adapters:
+      - endpoint_ports: [Eth42]
+        switch_ports: [Ethernet14]
+        switches: [network-ports-tests.1]
+
 # Only creating network services required to test the filter "only_vlans_in_use" combined with network ports
 tenants:
-  TEST:
+  - name: TEST
     l2vlans:
       # Vlan 100 will be configured on both devices since it is in use
-      100:
+      - id: 100
         name: VLAN100_ON_L2LEAF_1_AND_2
       # Vlan 200 will only be configured on L2LEAF_1 since it is not in use
-      200:
+      - id: 200
         name: VLAN200_ON_L2LEAF_1_ONLY
 
 l2leaf:
   node_groups:
-    mlag:
+    - group: mlag
       mlag_peer_ipv4_pool: 10.255.252.0/24
       mlag_interfaces: ["Ethernet10/1"]
       nodes:
-        network-ports-tests.1:
+        - name: network-ports-tests.1
           id: 1
-        network-ports-tests-2:
+        - name: network-ports-tests-2
           filter:
             only_vlans_in_use: true
           id: 2

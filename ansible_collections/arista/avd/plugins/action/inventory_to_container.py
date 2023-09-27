@@ -1,4 +1,7 @@
-from __future__ import absolute_import, annotations, division, print_function
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
@@ -9,16 +12,28 @@ from ansible.inventory.host import Host
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase
+from ansible.utils.display import Display
 
 # Root container on CloudVision.
 # Shall not be changed unless CloudVision changes it in the core.
 CVP_ROOT_CONTAINER = "Tenant"
 
+display = Display()
+
 
 class ActionModule(ActionBase):
+    def _maybe_convert_device_filter(self):
+        # Converting string device filter to list
+        device_filter = self._task.args.get("device_filter")
+        if device_filter is not None and not isinstance(device_filter, list):
+            display.debug(f"device_filter must be of type list, got '{device_filter}' of type {type(device_filter)} instead. Converting...")
+            self._task.args["device_filter"] = [device_filter]
+
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
             task_vars = {}
+
+        self._maybe_convert_device_filter()
 
         module_args = self._task.args.copy()
 
@@ -29,7 +44,8 @@ class ActionModule(ActionBase):
             result["cvp_topology"] = self.build_cvp_topology_from_inventory(task_vars, module_args)
 
         # Write vars to file if set by user
-        if (destination := module_args.get("destination")) is not None:
+        destination = module_args.get("destination")
+        if destination is not None:
             # file should only contain subset of result data, so we build a smaller dict
             file_data_keys = ["cvp_configlets", "cvp_topology"]
             file_data = {key: result[key] for key in file_data_keys if key in result}
@@ -77,11 +93,11 @@ class ActionModule(ActionBase):
 
         return cvp_topology
 
-    def get_group_data(self, group: Group, device_filter: list[str], all_groups_from_root: set[Group] = None, parent_container: str = None) -> dict:
+    def get_group_data(self, group: Group, device_filter: list, all_groups_from_root: set = None, parent_container: str = None) -> dict:
         # Find parent container if not set
         if parent_container is None:
             # Only evaluate parent_groups which are part of all_groups_from_root. A group can have multiple parents.
-            parent_groups: set[Group] = set(group.parent_groups).intersection(all_groups_from_root)
+            parent_groups: set = set(group.parent_groups).intersection(all_groups_from_root)
             # Ensure that we have only one parent group. Otherwise we cannot build a tree.
             if len(parent_groups) > 1:
                 raise AnsibleActionFail(

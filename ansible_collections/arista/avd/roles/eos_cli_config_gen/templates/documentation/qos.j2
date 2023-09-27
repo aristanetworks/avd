@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - qos #}
 {% if qos is arista.avd.defined %}
 
-## QOS
+### QOS
 
-### QOS Summary
+#### QOS Summary
 
 {%     if qos.rewrite_dscp is arista.avd.defined(true) %}
 QOS rewrite DSCP: **enabled**
@@ -12,7 +17,7 @@ QOS rewrite DSCP: **disabled**
 {%     endif %}
 
 {%     if qos.map is arista.avd.defined %}
-#### QOS Mappings
+##### QOS Mappings
 
 {%         if qos.map.cos is arista.avd.defined %}
 
@@ -42,7 +47,7 @@ QOS rewrite DSCP: **disabled**
 {%         endif %}
 {%     endif %}
 
-### QOS Device Configuration
+#### QOS Device Configuration
 
 ```eos
 {%     include 'eos/qos.j2' %}

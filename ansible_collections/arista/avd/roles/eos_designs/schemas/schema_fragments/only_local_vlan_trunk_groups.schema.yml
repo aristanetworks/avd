@@ -1,0 +1,19 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  only_local_vlan_trunk_groups:
+    documentation_options:
+      table: fabric-settings
+    type: bool
+    description: |
+      A vlan can have many trunk_groups assigned.
+      To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,
+      this feature will only configure the vlan trunk groups matched with local connected_endpoints.
+      See "Details on only_local_vlan_trunk_groups" below.
+      Requires "enable_trunk_groups: true".
+    default: false

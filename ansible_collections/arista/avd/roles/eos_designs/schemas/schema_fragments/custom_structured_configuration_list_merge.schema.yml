@@ -1,0 +1,43 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  custom_structured_configuration_list_merge:
+    documentation_options:
+      table: custom-structured-configuration
+    type: str
+    description: |
+      The List-merge strategy used when merging custom structured configurations.
+
+      This applies to all vars prefixed by prefixes in `custom_structured_configuration_prefix`
+      and all data under the various `structured_config` options.
+
+      The available list merge strategies:
+      - `replace`:
+        - Any list will be replaced with the list defined in custom structured configurations.
+      - `append`:
+        - Existing list items with the same "Primary key"-value will be updated.
+        - New items will be appended to the existing list (including duplicates).
+      - `keep`:
+        - Only set list if there is no existing list or existing list is `None`.
+      - `prepend`:
+        - Existing list items with the same "Primary key"-value will be updated.
+        - New items will be prepended to the existing list (including duplicates).
+      - `append_rp`:
+        - Existing list items with the same "Primary key"-value will be updated.
+        - New unique items will be appended to the existing list.
+      - `prepend_rp`:
+        - Existing list items with the same "Primary key"-value will be updated.
+        - New unique items will be prepended to the existing list.
+    valid_values:
+      - replace
+      - append
+      - keep
+      - prepend
+      - append_rp
+      - prepend_rp
+    default: "append_rp"

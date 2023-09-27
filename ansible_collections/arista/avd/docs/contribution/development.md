@@ -1,10 +1,16 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Development Tips & Tricks
 
 ## Overview
 
 Two methods can be used to get Ansible up and running quickly with all the requirements to leverage ansible-avd: a Python Virtual Environment or a Docker container.
 
-The best way to use the development files is to copy them to the root directory where you have your repositories cloned. For example, see the file/folder structure below.
+The best way to use the development files is to copy them to the root directory where your repositories are cloned. For example, see the file/folder structure below.
 
 ```shell
 ├── git_projects
@@ -15,7 +21,7 @@ The best way to use the development files is to copy them to the root directory 
 │   ├── Makefile
 ```
 
-## Build local environment
+## Build a local environment
 
 Please refer to [Setup environment page](./setup-environment.md)
 
@@ -23,7 +29,7 @@ Once installed, use `dev-start` command to bring up all the required containers:
 
 - An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) for AVD documentation listening on port `localhost:8000`
 - An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) or CVP documentation listening on port `localhost:8001`
-- An [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) with a pseudo terminal connected to shell for Ansible execution
+- An [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) with a pseudo-terminal connected to a shell for Ansible execution
 
 ## Docker tips
 
@@ -83,14 +89,14 @@ Removing development_webdoc_1  ... done
 
 [pre-commit](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. Pointing these issues out before code review allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
 
-Repository implements following hooks:
+Repository implements the following hooks:
 
-- `trailing-whitespace`: Fix trailing whitespace. If found, commit is stopped, and you must rerun the commit process.
+- `trailing-whitespace`: Fix trailing whitespace. If found, the commit is stopped, and you must rerun the commit process.
 - `end-of-file-fixer`: Like `trailing-whitespace`, this hook fixes the wrong end of the file and stops your commit.
 - `check-yaml`: Checks that all YAML files are valid.
-- `check-added-large-files`: Check if there is no large file included in the repository.
+- `check-added-large-files`: Check if no large file is included in the repository.
 - `check-merge-conflict`: Validate there is no `MERGE` syntax related to an invalid merge process.
-- `pylint`: Run python linting with settings defined in [pylintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc).
+- `pylint`: Run Python linting with settings defined in [pylintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc).
 - `yamllint`: Validate all YAML files using configuration from [yamllintrc](https://github.com/aristanetworks/ansible-avd/blob/devel/.github/yamllintrc).
 - `ansible-lint`: Validate YAML files with Ansible proven practices, patters, and behaviors.
 - `Flake8`: Style guide enforcement for Python code base.
@@ -127,10 +133,10 @@ Check for ansible-lint errors............................................Passed
 [INFO] Restored changes from /Users/xxx/.cache/pre-commit/patch1590742434.
 ```
 
-Command will automatically detect changed files using `git status` and run tests according their type.
+The command will automatically detect changed files using `git status` and run tests according to their type.
 
 !!! note
-    This process is also implemented in project CI to ensure code quality and compliance with Ansible development process.
+    This process is also implemented in project CI to ensure code quality and compliance with the Ansible development process.
 
 ### Configure Git hook
 
@@ -141,11 +147,11 @@ $ pre-commit install
 pre-commit installed at .git/hooks/pre-commit
 ```
 
-To remove installation, use `uninstall` option.
+To remove the installation, use the `uninstall` option.
 
 ### Check 404 links
 
-To validate documentation, you should check for *not found* links in your local version of the documentation. This test requires to run mkdocs container as explained in [installation documentation](./setup-environment.md).
+To validate documentation, you should check for *not found* links in your local version of the documentation. This test requires running the mkdocs container as explained in [installation documentation](./setup-environment.md).
 
 In a shell, run the following make command. It starts a container in the AVD documentation network and leverages [`muffet`](https://github.com/raviqqe/muffet) tool to check for any 404 HTTP codes:
 

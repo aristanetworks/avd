@@ -1,8 +1,11 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get
 
 from .utils import UtilsMixin
 
@@ -19,26 +22,37 @@ class IpIgmpSnoopingMixin(UtilsMixin):
         Return structured config for ip_igmp_snooping
         """
 
-        if not self._network_services_l2:
+        if not self.shared_utils.network_services_l2:
             return None
 
         ip_igmp_snooping = {}
-        igmp_snooping_enabled = get(self._hostvars, "switch.igmp_snooping_enabled", required=True)
+        igmp_snooping_enabled = self.shared_utils.igmp_snooping_enabled
         ip_igmp_snooping["globally_enabled"] = igmp_snooping_enabled
         if not (igmp_snooping_enabled is True):
             return ip_igmp_snooping
 
-        vlans = {}
+        vlans = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if vlan := self._ip_igmp_snooping_vlan(svi, tenant):
-                        vlan_id = int(svi["id"])
-                        vlans[vlan_id] = vlan
+                        append_if_not_duplicate(
+                            list_of_dicts=vlans,
+                            primary_key="id",
+                            new_dict=vlan,
+                            context=f"IGMP snooping for SVIs in VRF '{vrf['name']}'",
+                            context_keys=["id"],
+                        )
+
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._ip_igmp_snooping_vlan(l2vlan, tenant):
-                    vlan_id = int(l2vlan["id"])
-                    vlans[vlan_id] = vlan
+                    append_if_not_duplicate(
+                        list_of_dicts=vlans,
+                        primary_key="id",
+                        new_dict=vlan,
+                        context="IGMP snooping for L2VLANs",
+                        context_keys=["id"],
+                    )
 
         if vlans:
             ip_igmp_snooping["vlans"] = vlans
@@ -59,7 +73,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             get(vlan, "evpn_l2_multicast.enabled"),
             get(tenant, "evpn_l2_multicast.enabled"),
         )
-        if self._overlay_vtep and evpn_l2_multicast_enabled is True:
+        if self.shared_utils.overlay_vtep and evpn_l2_multicast_enabled is True:
             # Leaving igmp_snooping_enabled unset, to avoid extra line of config as we already check
             # that global igmp snooping is enabled and igmp snooping is required for evpn_l2_multicast.
 
@@ -69,7 +83,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
 
         else:
             igmp_snooping_enabled = vlan.get("igmp_snooping_enabled")
-            if self._network_services_l3 and self._uplink_type == "p2p":
+            if self.shared_utils.network_services_l3 and self.shared_utils.uplink_type == "p2p":
                 igmp_snooping_querier_enabled = default(
                     igmp_snooping_querier.get("enabled"),
                     tenant_igmp_snooping_querier.get("enabled"),
@@ -83,7 +97,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             ip_igmp_snooping_vlan["querier"] = {"enabled": igmp_snooping_querier_enabled}
             # TODO: The if below should be uncommented when we have settled the behavioral change
             # if svi_igmp_snooping_querier_enabled is True:
-            address = default(igmp_snooping_querier.get("source_address"), tenant_igmp_snooping_querier.get("source_address"), self._router_id)
+            address = default(igmp_snooping_querier.get("source_address"), tenant_igmp_snooping_querier.get("source_address"), self.shared_utils.router_id)
             if address is not None:
                 ip_igmp_snooping_vlan["querier"]["address"] = address
 
@@ -93,5 +107,8 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             )
             if version is not None:
                 ip_igmp_snooping_vlan["querier"]["version"] = version
+
+        if ip_igmp_snooping_vlan:
+            return {"id": int(vlan["id"]), **ip_igmp_snooping_vlan}
 
         return ip_igmp_snooping_vlan

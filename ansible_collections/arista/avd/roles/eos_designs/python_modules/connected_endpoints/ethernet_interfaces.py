@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -5,8 +8,9 @@ from collections import ChainMap
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, replace_or_append_item
 
 from .utils import UtilsMixin
 
@@ -18,19 +22,21 @@ class EthernetInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def ethernet_interfaces(self) -> dict | None:
+    def ethernet_interfaces(self) -> list | None:
         """
         Return structured config for ethernet_interfaces
-        """
-        ethernet_interfaces = {}
-        for connected_endpoint in self._filtered_connected_endpoints:
-            for adapter in connected_endpoint["adapters"]:
-                for node_index, node_name in enumerate(adapter["switches"]):
-                    if node_name != self._hostname:
-                        continue
 
-                    ethernet_interface_name = adapter["switch_ports"][node_index]
-                    ethernet_interfaces[ethernet_interface_name] = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+        Duplicate checks following these rules:
+        - Silently overwrite duplicate network_ports with other network_ports.
+        - Silently overwrite duplicate network_ports with connected_endpoints.
+        - Do NOT overwrite connected_endpoints with other connected_endpoints. Instead we raise a duplicate error.
+        """
+
+        ethernet_interfaces = []
+
+        # List of ethernet_interfaces used for duplicate checks.
+
+        non_overwritable_ethernet_interfaces = []
 
         for network_port in self._filtered_network_ports:
             connected_endpoint = {
@@ -42,11 +48,29 @@ class EthernetInterfacesMixin(UtilsMixin):
                 tmp_network_port = ChainMap(
                     {
                         "switch_ports": [ethernet_interface_name],
-                        "switches": [self._hostname],
+                        "switches": [self.shared_utils.hostname],
                     },
                     network_port,
                 )
-                ethernet_interfaces[ethernet_interface_name] = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
+                ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
+                replace_or_append_item(ethernet_interfaces, "name", ethernet_interface)
+
+        for connected_endpoint in self._filtered_connected_endpoints:
+            for adapter in connected_endpoint["adapters"]:
+                for node_index, node_name in enumerate(adapter["switches"]):
+                    if node_name != self.shared_utils.hostname:
+                        continue
+
+                    ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+                    append_if_not_duplicate(
+                        list_of_dicts=non_overwritable_ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_interface,
+                        context="Ethernet Interfaces defined under connected_endpoints",
+                        context_keys=["name", "peer_interface"],
+                    )
+
+                    replace_or_append_item(ethernet_interfaces, "name", ethernet_interface)
 
         if ethernet_interfaces:
             return ethernet_interfaces
@@ -60,7 +84,6 @@ class EthernetInterfacesMixin(UtilsMixin):
         peer = connected_endpoint["name"]
         endpoint_ports: list = default(
             adapter.get("endpoint_ports"),
-            adapter.get("server_ports"),
             [],
         )
         peer_interface = endpoint_ports[node_index] if node_index < len(endpoint_ports) else None
@@ -68,47 +91,74 @@ class EthernetInterfacesMixin(UtilsMixin):
         channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
         short_esi = self._get_short_esi(adapter, channel_group_id)
 
+        # check lengths of lists
+        nodes_length = len(adapter["switches"])
+        if len(adapter["switch_ports"]) != nodes_length or ("descriptions" in adapter and len(adapter["descriptions"]) != nodes_length):
+            raise AristaAvdError(
+                f"Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter. Check configuration for {peer}, adapter"
+                f" switch_ports {adapter['switch_ports']}."
+            )
+
+        # if 'descriptions' is set, it is preferred
+        if (interface_descriptions := adapter.get("descriptions")) is not None:
+            interface_description = interface_descriptions[node_index]
+        else:
+            interface_description = adapter.get("description")
+
         # Common ethernet_interface settings
-        # TODO: avoid generating redundant structured config for port-channel members
         ethernet_interface = {
+            "name": adapter["switch_ports"][node_index],
             "peer": peer,
             "peer_interface": peer_interface,
             "peer_type": connected_endpoint["type"],
-            "description": self._avd_interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface),
+            "port_profile": adapter.get("profile"),
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, interface_description),
             "speed": adapter.get("speed"),
-            "mtu": adapter.get("mtu"),
-            "l2_mtu": adapter.get("l2_mtu"),
-            "type": "switched",
             "shutdown": not adapter.get("enabled", True),
-            "mode": adapter.get("mode"),
-            "vlans": adapter.get("vlans"),
-            "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
-            "native_vlan_tag": adapter.get("native_vlan_tag"),
-            "native_vlan": adapter.get("native_vlan"),
-            "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
-            "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
-            "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
-            "storm_control": self._get_adapter_storm_control(adapter),
-            "service_profile": adapter.get("qos_profile"),
-            "dot1x": adapter.get("dot1x"),
-            "ptp": self._get_adapter_ptp(adapter),
             "eos_cli": adapter.get("raw_eos_cli"),
             "struct_cfg": adapter.get("structured_config"),
         }
 
         # Port-channel member
         if (port_channel_mode := get(adapter, "port_channel.mode")) is not None:
-            ethernet_interface["channel_group"] = {
-                "id": channel_group_id,
-                "mode": port_channel_mode,
-            }
+            ethernet_interface.update(
+                {
+                    "type": "port-channel-member",
+                    "channel_group": {
+                        "id": channel_group_id,
+                        "mode": port_channel_mode,
+                    },
+                }
+            )
             if get(adapter, "port_channel.lacp_fallback.mode") == "static":
                 ethernet_interface["lacp_port_priority"] = 8192 if node_index == 0 else 32768
+            if port_channel_mode != "on" and get(adapter, "port_channel.lacp_timer") is not None:
+                ethernet_interface["lacp_timer"] = {
+                    "mode": get(adapter, "port_channel.lacp_timer.mode"),
+                    "multiplier": get(adapter, "port_channel.lacp_timer.multiplier"),
+                }
 
         # NOT a port-channel member
         else:
             ethernet_interface.update(
                 {
+                    "type": "switched",
+                    "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
+                    "l2_mtu": adapter.get("l2_mtu"),
+                    "mode": adapter.get("mode"),
+                    "vlans": adapter.get("vlans"),
+                    "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
+                    "native_vlan_tag": adapter.get("native_vlan_tag"),
+                    "native_vlan": adapter.get("native_vlan"),
+                    "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
+                    "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
+                    "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
+                    "storm_control": self._get_adapter_storm_control(adapter),
+                    "service_profile": adapter.get("qos_profile"),
+                    "dot1x": adapter.get("dot1x"),
+                    "poe": self._get_adapter_poe(adapter),
+                    "ptp": self._get_adapter_ptp(adapter),
+                    "sflow": self._get_adapter_sflow(adapter),
                     "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
                         adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
                     ),

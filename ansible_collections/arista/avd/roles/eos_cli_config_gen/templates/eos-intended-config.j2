@@ -1,4 +1,11 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# Device Configuration #}
+{# context used to hide password and keys #}
+{% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(false) %}
 {% include 'eos/rancid-content-type.j2' %}
 {# System Boot Configuration #}
 {% include 'eos/boot.j2' %}
@@ -46,6 +53,8 @@
 {% include 'eos/queue-monitor-length.j2' %}
 {# lldp #}
 {% include 'eos/lldp.j2' %}
+{# l2 protocol forwarding #}
+{% include 'eos/l2-protocol-forwarding.j2' %}
 {# lacp #}
 {% include 'eos/lacp.j2' %}
 {# logging #}
@@ -58,12 +67,16 @@
 {% include 'eos/as-path.j2' %}
 {# macsec #}
 {% include 'eos/mac-security.j2' %}
+{# IP NAT - Part 1#}
+{% include 'eos/ip-nat-part1.j2' %}
+{# platform - trident#}
+{% include 'eos/platform-trident.j2' %}
 {# hostname #}
 {% include 'eos/hostname.j2' %}
 {# domain lookup #}
 {% include 'eos/ip-domain-lookup.j2' %}
-{# name servers #}
-{% include 'eos/name-server.j2' %}
+{# ip name servers #}
+{% include 'eos/ip-name-servers.j2' %}
 {# dns domain #}
 {% include 'eos/dns-domain.j2' %}
 {# domain-list #}
@@ -72,10 +85,14 @@
 {% include 'eos/trackers.j2' %}
 {# ntp #}
 {% include 'eos/ntp.j2' %}
+{# poe #}
+{% include 'eos/poe.j2' %}
 {# ptp #}
 {% include 'eos/ptp.j2' %}
 {# radius servers #}
 {% include 'eos/radius-servers.j2' %}
+{# radius server #}
+{% include 'eos/radius-server.j2' %}
 {# router l2-vpn#}
 {% include 'eos/router-l2-vpn.j2' %}
 {# sflow #}
@@ -106,6 +123,8 @@
 {% include 'eos/local-users.j2' %}
 {# roles #}
 {% include 'eos/roles.j2' %}
+{# address locking #}
+{% include 'eos/address-locking.j2' %}
 {# Tap Aggregation #}
 {% include 'eos/tap-aggregation.j2' %}
 {# clock #}
@@ -170,8 +189,6 @@
 {% include 'eos/ip-routing-vrfs.j2' %}
 {# IPv6 Unicast Routing #}
 {% include 'eos/ipv6-unicast-routing.j2' %}
-{# eos - IP Routing IPv6 Interfaces #}
-{% include 'eos/ip-routing-ipv6-interfaces.j2' %}
 {# eos - IPv6 Unicast Routing VRFs #}
 {% include 'eos/ipv6-unicast-routing-vrfs.j2' %}
 {# eos - IPv6 ICMP Redirect #}
@@ -182,6 +199,8 @@
 {% include 'eos/monitor-sessions.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
+{# eos - priority flow control #}
+{% include 'eos/priority-flow-control.j2' %}
 {# Community-lists #}
 {% include 'eos/community-lists.j2' %}
 {# Community-lists, improved data model #}
@@ -208,6 +227,8 @@
 {% include 'eos/static-routes.j2' %}
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
+{# IP NAT - Part 2#}
+{% include 'eos/ip-nat-part2.j2' %}
 {# QOS class-map #}
 {% include 'eos/class-maps.j2' %}
 {# PBR policy-map #}
@@ -256,10 +277,10 @@
 {% include 'eos/traffic-policies.j2' %}
 {# banner #}
 {% include 'eos/banners.j2' %}
-{# ip http client source interfaces #}
-{% include 'eos/ip-http-client-source-interfaces.j2' %}
-{# ip ssh client source interfaces #}
-{% include 'eos/ip-ssh-client-source-interfaces.j2' %}
+{# ip client source interfaces #}
+{% include 'eos/ip-client-source-interfaces.j2' %}
+{# management accounts #}
+{% include 'eos/management-accounts.j2' %}
 {# management api http #}
 {% include 'eos/management-api-http.j2' %}
 {# management console #}
@@ -280,6 +301,8 @@
 {% include 'eos/management-ssh.j2' %}
 {# management tech-support #}
 {% include 'eos/management-tech-support.j2' %}
+{# platform apply #}
+{% include 'eos/platform-apply.j2' %}
 {# EOS CLI #}
 {% include 'eos/eos-cli.j2' %}
 {# custom templates #}

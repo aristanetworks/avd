@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - ptp #}
 {% if ptp is arista.avd.defined %}
 
-## PTP
+### PTP
 
-### PTP Summary
+#### PTP Summary
 
 | Clock ID | Source IP | Priority 1 | Priority 2 | TTL | Domain | Mode | Forward Unicast |
 | -------- | --------- | ---------- | ---------- | --- | ------ | ---- | --------------- |
@@ -17,7 +22,7 @@
 {%     set forward_unicast = ptp.forward_unicast | arista.avd.default('-') %}
 | {{ clock_id }} | {{ sip }} | {{ pri1 }} | {{ pri2 }} | {{ ttl }} | {{ domain }} | {{ mode }} | {{ forward_unicast }} |
 
-### PTP Device Configuration
+#### PTP Device Configuration
 
 ```eos
 {%     include 'eos/ptp.j2' %}

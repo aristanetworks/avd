@@ -1,0 +1,78 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ptp_profiles:
+    documentation_options:
+      table: ptp
+    type: list
+    items:
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: PTP profile.
+        announce:
+          type: dict
+          description: PTP announce interval.
+          keys:
+            interval:
+              type: int
+              convert_types:
+                - str
+              min: -7
+              max: 4
+            timeout:
+              type: int
+              convert_types:
+                - str
+              min: 2
+              max: 255
+        delay_req:
+          type: int
+          convert_types:
+            - str
+          min: -7
+          max: 8
+        sync_message:
+          type: dict
+          description: PTP sync message interval.
+          keys:
+            interval:
+              type: int
+              convert_types:
+                - str
+              min: -7
+              max: 3
+        transport:
+          type: str
+          valid_values: ["ipv4"]
+    default:
+      - announce:
+          interval: 0
+          timeout: 3
+        delay_req: -3
+        profile: aes67-r16-2016
+        sync_message:
+          interval: -3
+        transport: ipv4
+      - announce:
+          interval: -2
+          timeout: 3
+        delay_req: -4
+        profile: smpte2059-2
+        sync_message:
+          interval: -4
+        transport: ipv4
+      - announce:
+          interval: 2
+          timeout: 3
+        delay_req: 0
+        profile: aes67
+        sync_message:
+          interval: 0
+        transport: ipv4

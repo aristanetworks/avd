@@ -1,9 +1,14 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - aaa server groups #}
 {% if aaa_server_groups is arista.avd.defined %}
 
-## AAA Server Groups
+### AAA Server Groups
 
-### AAA Server Groups Summary
+#### AAA Server Groups Summary
 
 | Server Group Name | Type  | VRF | IP address |
 | ------------------| ----- | --- | ---------- |
@@ -14,7 +19,7 @@
 {%         endfor %}
 {%     endfor %}
 
-### AAA Server Groups Device Configuration
+#### AAA Server Groups Device Configuration
 
 ```eos
 {%     include 'eos/aaa-server-groups.j2' %}

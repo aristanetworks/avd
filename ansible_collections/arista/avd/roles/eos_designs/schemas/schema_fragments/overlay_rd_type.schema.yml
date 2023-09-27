@@ -1,0 +1,83 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  overlay_rd_type:
+    documentation_options:
+      table: overlay-settings
+    type: dict
+    description: |
+      Configuration options for the Administrator subfield (first part of RD) and the Assigned Number subfield (second part of RD).
+
+      By default Route Distinguishers (RD) are set to:
+      - `<overlay_loopback>:<mac_vrf_id_base + vlan_id or mac_vrf_vni_base + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.
+      - `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.
+      - `<overlay_loopback>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.
+      - `<overlay_loopback>:<vrf_id>` for VRFs.
+
+      Note:
+      RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+      When using loopback or 32-bit ASN/number the assigned number can only be a 16-bit number. This may be a problem with large VNIs.
+      For 16-bit ASN/number the assigned number can be a 32-bit number.
+    keys:
+      admin_subfield:
+        type: str
+        convert_types:
+          - int
+        description: |
+          The method for deriving RD Administrator subfield (first part of RD):
+          - 'overlay_loopback_ip' means the IP address of Loopback0.
+          - 'vtep_loopback' means the IP address of the VTEP loopback interface.
+          - 'bgp_as' means the AS number of the device.
+          - 'switch_id' means the 'id' value of the device.
+          - Any <IPv4 Address> without mask.
+          - Integer between <0-65535>.
+          - Integer between <0-4294967295>.
+        default: overlay_loopback_ip
+      admin_subfield_offset:
+        type: str
+        convert_types:
+          - int
+        description: |
+          Offset can only be used if admin_subfield is an integer between <0-4294967295> or 'switch_id'.
+          Total value of admin_subfield + admin_subfield_offset must be <= 4294967295.
+      vrf_admin_subfield:
+        type: str
+        convert_types:
+          - int
+        description: |
+          The method for deriving RD Administrator subfield (first part of RD) for VRF services:
+          - 'overlay_loopback_ip' means the IP address of Loopback0.
+          - 'vtep_loopback' means the IP address of the VTEP loopback interface.
+          - 'bgp_as' means the AS number of the device.
+          - 'switch_id' means the 'id' value of the device.
+          - Any <IPv4 Address> without mask.
+          - Integer between <0-65535>.
+          - Integer between <0-4294967295>.
+
+          'vrf_admin_subfield' takes precedence for VRF RDs if set. Otherwise the 'admin_subfield' value will be used.
+      vrf_admin_subfield_offset:
+        type: str
+        convert_types:
+          - int
+        description: |
+          Offset can only be used if 'vrf_admin_subfield' is an integer between <0-4294967295> or 'switch_id'.
+          Total value of 'vrf_admin_subfield' + 'vrf_admin_subfield_offset' must be <= 4294967295.
+      vlan_assigned_number_subfield:
+        type: str
+        valid_values:
+          - mac_vrf_id
+          - mac_vrf_vni
+          - vlan_id
+        default: mac_vrf_id
+        description: |
+          The method for deriving RD Assigned Number subfield for VLAN services (second part of RD):
+          - 'mac_vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id`.
+          - 'mac_vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id`.
+          - 'vlan_id' will only use the 'vlan_id' and ignores all base values.
+
+          These methods can be overridden per VLAN if either 'rd_override', 'rt_override' or 'vni_override' is set (preferred in this order).

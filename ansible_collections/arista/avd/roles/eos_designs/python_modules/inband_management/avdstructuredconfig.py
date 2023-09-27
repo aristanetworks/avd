@@ -1,221 +1,210 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 from ipaddress import ip_network
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
+from ansible_collections.arista.avd.plugins.plugin_utils.errors.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
-class AvdStructuredConfig(AvdFacts):
-    def __init__(self, hostvars, templar):
-        super().__init__(hostvars, templar)
-
+class AvdStructuredConfigInbandManagement(AvdFacts):
     @cached_property
-    def _inband_management_role(self) -> str:
-        if (inband_management_role := get(self._hostvars, "switch.inband_management_role")) is not None:
-            return inband_management_role
+    def vlans(self) -> list | None:
+        if not self._inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
+            return None
 
-        if self._inband_management_data:
-            return "parent"
-
-    @cached_property
-    def _inband_management_vlan(self) -> int:
-        return get(self._hostvars, "switch.inband_management_vlan", required=True)
-
-    @cached_property
-    def _inband_management_interface(self) -> str:
-        return get(self._hostvars, "switch.inband_management_interface", required=True)
-
-    @cached_property
-    def _inband_management_ip(self) -> str:
-        return get(self._hostvars, "switch.inband_management_ip", required=True)
-
-    @cached_property
-    def _p2p_uplinks_mtu(self) -> int:
-        return get(self._hostvars, "p2p_uplinks_mtu", required=True)
-
-    @cached_property
-    def _inband_management_gateway(self) -> str:
-        return get(self._hostvars, "switch.inband_management_gateway", required=True)
-
-    @cached_property
-    def _hostname(self) -> str:
-        return get(self._hostvars, "switch.hostname", required=True)
-
-    @cached_property
-    def _mlag(self) -> bool:
-        return get(self._hostvars, "switch.mlag") is True
-
-    @cached_property
-    def _mlag_role(self) -> str | None:
-        return get(self._hostvars, "switch.mlag_role")
-
-    @cached_property
-    def vlans(self) -> dict | None:
         vlan_cfg = {
             "tenant": "system",
-            "name": "L2LEAF_INBAND_MGMT",
+            "name": self.shared_utils.inband_mgmt_vlan_name,
         }
 
-        if self._inband_management_role == "child":
-            return {self._inband_management_vlan: vlan_cfg}
+        if self.shared_utils.configure_inband_mgmt:
+            return [{"id": self.shared_utils.inband_mgmt_vlan, **vlan_cfg}]
 
-        if self._inband_management_role == "parent":
-            return {vlan: vlan_cfg for vlan in self._inband_management_data["vlans"]}
+        if self._inband_management_parent_vlans:
+            return [{"id": svi, **vlan_cfg} for svi in self._inband_management_parent_vlans]
 
         return None
 
     @cached_property
-    def management_interfaces(self) -> dict | None:
-        if self._inband_management_role != "child":
+    def vlan_interfaces(self) -> list | None:
+        """
+        VLAN interfaces can be our own management interface and/or SVIs created on behalf of child switches using us as uplink_switch.
+        """
+        if not self._inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
             return None
 
-        return {
-            self._inband_management_interface: {
-                "description": "L2LEAF_INBAND_MGMT",
-                "shutdown": False,
-                "mtu": self._p2p_uplinks_mtu,
-                "ip_address": self._inband_management_ip,
-                "gateway": self._inband_management_gateway,
-                "type": "inband",
-            }
-        }
+        if self.shared_utils.configure_inband_mgmt:
+            return [self.get_local_inband_mgmt_interface_cfg()]
+
+        if self._inband_management_parent_vlans:
+            return [self.get_parent_svi_cfg(vlan, subnet) for vlan, subnet in self._inband_management_parent_vlans.items()]
 
     @cached_property
-    def static_routes(self) -> dict | None:
-        if self._inband_management_role != "child":
+    def static_routes(self) -> list | None:
+        if not self.shared_utils.configure_inband_mgmt or self.shared_utils.inband_mgmt_gateway is None:
             return None
 
         return [
+            strip_empties_from_dict(
+                {
+                    "destination_address_prefix": "0.0.0.0/0",
+                    "gateway": self.shared_utils.inband_mgmt_gateway,
+                    "vrf": self.shared_utils.inband_mgmt_vrf,
+                }
+            )
+        ]
+
+    @cached_property
+    def vrfs(self) -> list | None:
+        if self.shared_utils.inband_mgmt_vrf is None:
+            return None
+
+        if not self._inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
+            return None
+
+        return [{"name": self.shared_utils.inband_mgmt_vrf}]
+
+    @cached_property
+    def ip_virtual_router_mac_address(self) -> str | None:
+        if not self._inband_management_parent_vlans:
+            return None
+
+        if self.shared_utils.virtual_router_mac_address is None:
+            raise AristaAvdMissingVariableError("'virtual_router_mac_address' must be set for inband management parent.")
+        return str(self.shared_utils.virtual_router_mac_address).lower()
+
+    @cached_property
+    def router_bgp(self) -> dict | None:
+        if not self._inband_management_parent_vlans:
+            return None
+
+        if self.shared_utils.inband_mgmt_vrf is not None:
+            return None
+
+        if not self.shared_utils.underlay_bgp:
+            return None
+
+        return {"redistribute_routes": [{"source_protocol": "attached-host"}]}
+
+    @cached_property
+    def prefix_lists(self) -> list | None:
+        if not self._inband_management_parent_vlans:
+            return None
+
+        if self.shared_utils.inband_mgmt_vrf is not None:
+            return None
+
+        if not self.shared_utils.underlay_bgp:
+            return None
+
+        if not self.shared_utils.underlay_filter_redistribute_connected:
+            return None
+
+        sequence_numbers = [
             {
-                "destination_address_prefix": "0.0.0.0/0",
-                "gateway": self._inband_management_gateway,
+                "sequence": (index + 1) * 10,
+                "action": f"permit {subnet}",
+            }
+            for index, subnet in enumerate(self._inband_management_parent_vlans.values())
+        ]
+        return [
+            {
+                "name": "PL-L2LEAF-INBAND-MGMT",
+                "sequence_numbers": sequence_numbers,
             }
         ]
 
     @cached_property
-    def _inband_management_data(self) -> dict:
-        vlans = []
-        subnets = []
-        peers = get(self._hostvars, f"avd_topology_peers..{self._hostname}", separator="..", default=[])
-        avd_switch_facts = get(self._hostvars, "avd_switch_facts", required=True)
-        for peer in peers:
-            if self._hostname not in get(avd_switch_facts, f"{peer}..switch..inband_management_parents", separator="..", default=[]):
-                continue
-
-            if (subnet := get(avd_switch_facts, f"{peer}..switch..inband_management_subnet", separator="..", required=True)) in subnets:
-                continue
-
-            subnets.append(subnet)
-            vlans.append(get(avd_switch_facts, f"{peer}..switch..inband_management_vlan", separator="..", required=True))
-
-        if not subnets:
-            return {}
-
-        return {
-            "vlans": vlans,
-            "subnets": subnets,
-        }
-
-    @cached_property
-    def vlan_interfaces(self) -> dict | None:
-        if self._inband_management_role != "parent":
+    def route_maps(self) -> list | None:
+        if not self._inband_management_parent_vlans:
             return None
 
-        if not self._inband_management_data["subnets"]:
+        if self.shared_utils.inband_mgmt_vrf is not None:
             return None
 
-        vlan_interfaces = {}
-        for index, subnet in enumerate(self._inband_management_data["subnets"]):
-            vlan = self._inband_management_data["vlans"][index]
-            vlan_interface_name = f"Vlan{vlan}"
-            vlan_interfaces[vlan_interface_name] = self._get_svi_cfg(subnet)
-
-        return vlan_interfaces
-
-    def _get_svi_cfg(self, subnet) -> dict:
-        subnet = ip_network(subnet, strict=False)
-        hosts = list(subnet.hosts())
-        prefix = str(subnet.prefixlen)
-
-        if self._mlag and self._mlag_role == "secondary":
-            ip_address = f"{str(hosts[2])}/{prefix}"
-        else:
-            ip_address = f"{str(hosts[1])}/{prefix}"
-
-        return {
-            "description": "L2LEAF_INBAND_MGMT",
-            "shutdown": False,
-            "mtu": self._p2p_uplinks_mtu,
-            "ip_address": ip_address,
-            "ip_virtual_router_addresses": [str(hosts[0])],
-            "ip_attached_host_route_export": {
-                "distance": 19,
-            },
-        }
-
-    @cached_property
-    def ip_virtual_router_mac_address(self) -> str | None:
-        if self._inband_management_role != "parent":
+        if not self.shared_utils.underlay_bgp:
             return None
 
-        return str(get(self._hostvars, "switch.virtual_router_mac_address", required=True)).lower()
-
-    @cached_property
-    def _underlay_bgp(self) -> bool:
-        return get(self._hostvars, "switch.underlay.bgp") is True
-
-    @cached_property
-    def router_bgp(self) -> dict | None:
-        if self._inband_management_role != "parent":
+        if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
-        if not self._underlay_bgp:
-            return None
-
-        return {
-            "redistribute_routes": {
-                "attached-host": {},
-            }
-        }
-
-    @cached_property
-    def prefix_lists(self) -> dict | None:
-        if self._inband_management_role != "parent":
-            return None
-
-        if not self._underlay_bgp:
-            return None
-
-        sequence_numbers = {
-            ((index + 1) * 10): {
-                "action": f"permit {subnet}",
-            }
-            for index, subnet in enumerate(self._inband_management_data["subnets"])
-        }
-        return {
-            "PL-L2LEAF-INBAND-MGMT": {
-                "sequence_numbers": sequence_numbers,
-            }
-        }
-
-    @cached_property
-    def route_maps(self) -> dict | None:
-        if self._inband_management_role != "parent":
-            return None
-
-        if not self._underlay_bgp:
-            return None
-
-        return {
-            "RM-CONN-2-BGP": {
-                "sequence_numbers": {
-                    # sequence 10 is set in underlay so avoid setting it here
-                    20: {
+        return [
+            {
+                "name": "RM-CONN-2-BGP",
+                "sequence_numbers": [
+                    {
+                        # sequence 10 is set in underlay so avoid setting it here
+                        "sequence": 20,
                         "type": "permit",
                         "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"],
                     }
+                ],
+            }
+        ]
+
+    @cached_property
+    def _inband_management_parent_vlans(self) -> dict:
+        if not self.shared_utils.underlay_router:
+            return {}
+
+        svis = {}
+        subnets = []
+        peers = natural_sort(get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[]))
+        for peer in peers:
+            peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
+            if (vlan := peer_facts.get("inband_mgmt_vlan")) is None:
+                continue
+
+            if (subnet := peer_facts.get("inband_mgmt_subnet")) in subnets:
+                continue
+
+            subnets.append(subnet)
+            svis[vlan] = subnet
+
+        return svis
+
+    def get_local_inband_mgmt_interface_cfg(self) -> dict:
+        return strip_empties_from_dict(
+            {
+                "name": self.shared_utils.inband_mgmt_interface,
+                "description": self.shared_utils.inband_mgmt_description,
+                "shutdown": False,
+                "mtu": self.shared_utils.inband_mgmt_mtu,
+                "vrf": self.shared_utils.inband_mgmt_vrf,
+                "ip_address": self.shared_utils.inband_mgmt_ip,
+                "type": "inband_mgmt",
+            }
+        )
+
+    def get_parent_svi_cfg(self, vlan: int, subnet: str) -> dict:
+        network = ip_network(subnet, strict=False)
+
+        if self.shared_utils.mlag_role == "secondary":
+            ip = str(network[3])
+        else:
+            ip = str(network[2])
+        ip_address = f"{ip}/{network.prefixlen}"
+        gateway = str(network[1])
+
+        return strip_empties_from_dict(
+            {
+                "name": f"Vlan{vlan}",
+                "description": self.shared_utils.inband_mgmt_description,
+                "shutdown": False,
+                "mtu": self.shared_utils.inband_mgmt_mtu,
+                "vrf": self.shared_utils.inband_mgmt_vrf,
+                "ip_address": ip_address,
+                "ip_virtual_router_addresses": [gateway],
+                "ip_attached_host_route_export": {
+                    "enabled": True,
+                    "distance": 19,
                 },
             }
-        }
+        )

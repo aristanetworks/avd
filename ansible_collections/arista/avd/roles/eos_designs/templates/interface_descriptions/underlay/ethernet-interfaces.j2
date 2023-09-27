@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# j2lint: disable=jinja-statements-delimiter #}
 {%- if link.type is arista.avd.defined('underlay_p2p') -%}
 P2P_LINK_TO_{{ link.peer | upper }}_{{ link.peer_interface }}

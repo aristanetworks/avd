@@ -1,0 +1,8 @@
+---
+underlay_routing_protocol: isis-sr-ldp
+
+# ISIS params - testing protection node on core-3 - link is test on core-1
+isis_ti_lfa:
+  enabled: true
+  protection: node
+  local_convergence_delay: 15000

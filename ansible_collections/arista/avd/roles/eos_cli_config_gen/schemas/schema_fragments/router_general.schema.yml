@@ -1,11 +1,12 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
   router_general:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     display_name: Router General configuration
     keys:
@@ -31,8 +32,9 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: Destination-VRF
+              convert_types:
+                - int
             leak_routes:
               type: list
               items:
@@ -40,6 +42,8 @@ keys:
                 keys:
                   source_vrf:
                     type: str
+                    convert_types:
+                      - int
                   subscribe_policy:
                     type: str
                     description: Route-Map Policy

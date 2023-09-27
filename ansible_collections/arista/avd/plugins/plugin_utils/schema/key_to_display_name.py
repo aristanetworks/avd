@@ -1,8 +1,12 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 WORDLIST = {
     "aaa": "AAA",
     "af": "AF",
     "api": "API",
     "arp": "ARP",
+    "avd": "AVD",
     "bfd": "BFD",
     "bgp": "BGP",
     "cli": "CLI",
@@ -20,6 +24,7 @@ WORDLIST = {
     "eos": "EOS",
     "evpn": "EVPN",
     "fcs": "FCS",
+    "gnmi": "gNMI",
     "http": "HTTP",
     "icmp": "ICMP",
     "id": "ID",
@@ -40,6 +45,7 @@ WORDLIST = {
     "l2": "L2",
     "mac": "MAC",
     "mcs": "MCS",
+    "mgmt": "Management",
     "mib": "MIB",
     "mka": "MKA",
     "mlag": "MLAG",
@@ -50,7 +56,9 @@ WORDLIST = {
     "ospf": "OSPF",
     "pae": "PAE",
     "pbr": "PBR",
+    "pes": "PEs",
     "pim": "PIM",
+    "poe": "PoE",
     "ptp": "PTP",
     "pvlan": "PVLAN",
     "qos": "QOS",
@@ -68,6 +76,7 @@ WORDLIST = {
     "srlg": "SRLG",
     "ssh": "SSH",
     "ssl": "SSL",
+    "svi": "SVI",
     "tcam": "TCAM",
     "tcp": "TCP",
     "terminattr": "TerminAttr",

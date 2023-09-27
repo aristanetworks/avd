@@ -12,14 +12,13 @@ l3leaf:
     mlag_interfaces: ['Ethernet11', 'Ethernet12']
     mlag_peer_ipv4_pool: 10.254.1.64/27
     mlag_peer_l3_ipv4_pool: 10.254.1.96/27
-    virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
     ptp:
       enabled: true
 
   nodes:
-    ptp-tests-leaf1:
+    - name: ptp-tests-leaf1
       id: 1
       bgp_as: 65101
       mgmt_ip: 192.168.0.101/24
@@ -29,7 +28,7 @@ l3leaf:
       ptp:
         clock_identity: "11:11:11:11:11:11"
 
-    ptp-tests-leaf2:
+    - name: ptp-tests-leaf2
       id: 2
       bgp_as: 65102
       mgmt_ip: 192.168.0.102/24
@@ -60,5 +59,5 @@ l3leaf:
               delay_resp: 12
               follow_up: 13
               sync: 14
-        priority1: 1
-        priority2: 2
+        priority1: 40
+        priority2: 1

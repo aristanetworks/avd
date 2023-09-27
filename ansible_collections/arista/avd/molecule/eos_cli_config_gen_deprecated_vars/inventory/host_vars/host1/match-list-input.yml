@@ -1,0 +1,14 @@
+### Match List Input ###
+
+match_list_input:
+  # Testing string as dict of dict
+  # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+  string:
+    molecule:
+      # Testing sequence_numbers as dict of dict
+      # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+      sequence_numbers:
+        10:
+          match_regex: "^.*MOLECULE.*$"
+        20:
+          match_regex: "^.*TESTING.*$"

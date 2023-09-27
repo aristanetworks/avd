@@ -1,15 +1,17 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
   router_isis:
-    documentation_options:
-      filename: data_model/Routing
     type: dict
     keys:
       instance:
         type: str
+        required: true
         description: ISIS Instance Name
       net:
         type: str
@@ -56,6 +58,10 @@ keys:
             - "ipv4 unicast"
             - "ipv6 unicast"
           description: Address Family
+          deprecation:
+            warning: true
+            new_key: address_family_ipv4.enabled or address_family_ipv6.enabled
+            remove_in_version: "5.0.0"
       isis_af_defaults:
         type: list
         items:
@@ -63,6 +69,10 @@ keys:
           description: |
             EOS CLI rendered under the address families
             Example "maximum-paths 64"
+          deprecation:
+            warning: true
+            new_key: address_family_ipv4/address_family_ipv6
+            remove_in_version: "5.0.0"
       redistribute_routes:
         type: list
         items:
@@ -93,6 +103,8 @@ keys:
       address_family_ipv4:
         type: dict
         keys:
+          enabled:
+            type: bool
           maximum_paths:
             type: int
             convert_types:
@@ -131,6 +143,8 @@ keys:
       address_family_ipv6:
         type: dict
         keys:
+          enabled:
+            type: bool
           maximum_paths:
             type: int
             convert_types:
@@ -179,6 +193,3 @@ keys:
                   type: int
                   convert_types:
                     - str
-      no_passive_interfaces:
-        type: list
-        description: Unused key - to be removed from eos_designs.

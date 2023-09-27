@@ -1,8 +1,13 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_lacp_id, generate_route_target
+from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
+from ansible_collections.arista.avd.plugins.filter.generate_lacp_id import generate_lacp_id
+from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
@@ -15,11 +20,11 @@ class PortChannelInterfacesMixin(UtilsMixin):
     """
 
     @cached_property
-    def port_channel_interfaces(self) -> dict | None:
+    def port_channel_interfaces(self) -> list | None:
         """
         Return structured config for port_channel_interfaces
         """
-        port_channel_interfaces = {}
+        port_channel_interfaces = []
         port_channel_list = []
         for link in self._underlay_links:
             if link["type"] != "underlay_l2":
@@ -33,15 +38,17 @@ class PortChannelInterfacesMixin(UtilsMixin):
             port_channel_name = f"Port-Channel{link['channel_group_id']}"
 
             port_channel_interface = {
-                "description": self._avd_interface_descriptions.underlay_port_channel_interfaces(
+                "name": port_channel_name,
+                "description": self.shared_utils.interface_descriptions.underlay_port_channel_interfaces(
                     link["peer"], link["peer_channel_group_id"], link.get("channel_description")
                 ),
                 "type": "switched",
                 "shutdown": False,
                 "mode": "trunk",
-                "service_profile": get(self._hostvars, "p2p_uplinks_qos_profile"),
+                "service_profile": self.shared_utils.p2p_uplinks_qos_profile,
                 "link_tracking_groups": link.get("link_tracking_groups"),
                 "native_vlan": link.get("native_vlan"),
+                "sflow": link.get("sflow"),
             }
 
             if (trunk_groups := link.get("trunk_groups")) is not None:
@@ -49,15 +56,28 @@ class PortChannelInterfacesMixin(UtilsMixin):
             elif (vlans := link.get("vlans")) is not None:
                 port_channel_interface["vlans"] = vlans
 
-            if self._mlag is True:
+            if self.shared_utils.mlag is True:
                 port_channel_interface["mlag"] = int(link.get("channel_group_id"))
 
             if (short_esi := link.get("short_esi")) is not None:
                 port_channel_interface["evpn_ethernet_segment"] = {
-                    "identifier": generate_esi(short_esi, self._evpn_short_esi_prefix),
+                    "identifier": generate_esi(short_esi, self.shared_utils.evpn_short_esi_prefix),
                     "route_target": generate_route_target(short_esi),
                 }
                 port_channel_interface["lacp_id"] = generate_lacp_id(short_esi)
+
+            # PTP
+            if get(link, "ptp.enable") is True:
+                ptp_config = {}
+
+                # Apply PTP profile config if using the new ptp config style
+                if self.shared_utils.ptp_enabled:
+                    ptp_config.update(self.shared_utils.ptp_profile)
+
+                ptp_config["enable"] = True
+                ptp_config.pop("profile", None)
+
+                port_channel_interface["ptp"] = ptp_config
 
             # Structured Config
             port_channel_interface["struct_cfg"] = link.get("structured_config")
@@ -65,7 +85,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             # Remove None values
             port_channel_interface = {key: value for key, value in port_channel_interface.items() if value is not None}
 
-            port_channel_interfaces[port_channel_name] = port_channel_interface
+            port_channel_interfaces.append(port_channel_interface)
 
         if port_channel_interfaces:
             return port_channel_interfaces

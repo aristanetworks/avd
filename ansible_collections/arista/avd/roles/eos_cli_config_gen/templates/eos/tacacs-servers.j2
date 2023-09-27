@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - tacacs servers #}
 {% if tacacs_servers is arista.avd.defined %}
 !
@@ -17,7 +22,7 @@
 {%             set host_cli = host_cli ~ " timeout " ~ host.timeout %}
 {%         endif %}
 {%         if host.key is arista.avd.defined %}
-{%             set host_cli = host_cli ~ " key " ~ host.key_type | arista.avd.default('7') ~ ' ' ~ host.key %}
+{%             set host_cli = host_cli ~ " key " ~ host.key_type | arista.avd.default('7') ~ ' ' ~ host.key | arista.avd.hide_passwords(hide_passwords) %}
 {%         endif %}
 {{ host_cli }}
 {%     endfor %}

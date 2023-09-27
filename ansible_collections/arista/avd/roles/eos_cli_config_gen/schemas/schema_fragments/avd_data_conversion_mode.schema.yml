@@ -1,0 +1,25 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  avd_data_conversion_mode:
+    documentation_options:
+      table: role-input-validation
+    type: str
+    valid_values: ["disabled", "error", "warning", "info", "debug", "quiet"]
+    default: "debug"
+    description: |
+       Conversion Mode for AVD input data conversion.
+       Input data conversion will perform type conversion of input variables as defined in the schema.
+       The type conversion is intended to help the user to identify minor issues with the input data, while still allowing the data to be validated.
+       During conversion, messages will generated with information about the host(s) and key(s) which required conversion.
+       "disabled" means that conversion will not run - avoid this since conversion is also handling data deprecation and upgrade.
+       "error" will produce error messages and fail the task.
+       "warning" will produce warning messages.
+       "info" will produce regular log messages.
+       "debug" will produce hidden debug messages viewable with -v.
+       "quiet" will not produce any messages

@@ -1,0 +1,17 @@
+---
+type: spine
+
+spine:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65200
+
+  nodes:
+    - name: sflow-tests-spine1
+      id: 1
+      mgmt_ip: 192.168.0.11/24
+
+    - name: sflow-tests-spine2
+      id: 2
+      mgmt_ip: 192.168.0.21/24

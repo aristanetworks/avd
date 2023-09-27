@@ -1,4 +1,20 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 ---
+
+- name: Verify Requirements
+  tags: [always, avd_req]
+  delegate_to: localhost
+  when: avd_requirements is not defined
+  arista.avd.verify_requirements:
+    requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
+  vars:
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
+  run_once: true
+  register: avd_requirements
+
 # tasks file for cvp_configlet_upload
 - name: Generate intended variables
   tags: [build, provision, apply]

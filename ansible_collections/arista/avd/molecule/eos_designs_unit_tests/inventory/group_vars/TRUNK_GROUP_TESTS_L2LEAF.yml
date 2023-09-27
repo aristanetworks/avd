@@ -11,17 +11,19 @@ l2leaf:
     # Testing regular trunk groups behavior
     # Vlans are filtered with tags using node_group name
     # enable_trunk_groups: true is set in TRUNK_GROUP_TESTS.yml
-    TRUNK_GROUP_TESTS_L2LEAF1:
+    - group: TRUNK_GROUP_TESTS_L2LEAF1
       filter:
         tags: []
+        # Since this group does not have filter.only_vlans_in_use, we have to avoid the TENANT_WITH_DUPLICATE_VLANS tenant.
+        tenants: [TRUNK_GROUP_TESTS]
       nodes:
-        trunk-group-tests-l2leaf1a:
+        - name: trunk-group-tests-l2leaf1a
           id: 1
           uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
 
         # Testing "only_local_vlan_trunk_groups: true" set in hostvars to see that only
         # locally used trunk-groups are set on vlans even without "filter.only_vlans_in_use: true"
-        trunk-group-tests-l2leaf1b:
+        - name: trunk-group-tests-l2leaf1b
           id: 2
           uplink_switch_interfaces: [ Ethernet2, Ethernet2 ]
 
@@ -34,7 +36,7 @@ l2leaf:
     # trunk group for l2leaf assigned.
     # Also Testing "only_local_vlan_trunk_groups: true" set in hostvars to see
     # that only TG_200 and UPLINK are set on vlans 2xx
-    trunk-group-tests-l2leaf3:
+    - name: trunk-group-tests-l2leaf3
       id: 3
       uplink_switch_interfaces: [ Ethernet5, Ethernet5 ]
       filter:
@@ -43,7 +45,7 @@ l2leaf:
     # This leaf is uplinked to parent which _do_ have "only_vlans_in_use: true"
     # The uplink port_channel should still only permit the active vlans (vlans 2xx) since only the relevant vlans get
     # trunk group for l2leaf assigned.
-    trunk-group-tests-l2leaf4:
+    - name: trunk-group-tests-l2leaf4
       id: 4
       uplink_switches: [ trunk-group-tests-l3leaf2a, trunk-group-tests-l3leaf2b ]
       uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]

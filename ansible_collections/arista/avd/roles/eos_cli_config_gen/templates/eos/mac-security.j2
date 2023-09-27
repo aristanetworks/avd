@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - mac security #}
 {% if mac_security is arista.avd.defined %}
 !
@@ -16,7 +21,7 @@ mac security
 {%         endif %}
 {%         for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
 {%             if connection_key.encrypted_key is arista.avd.defined %}
-{%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key %}
+{%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key | arista.avd.hide_passwords(hide_passwords) %}
 {%                 if connection_key.fallback is arista.avd.defined %}
 {%                     set key_cli = key_cli ~ " fallback" %}
 {%                 endif %}

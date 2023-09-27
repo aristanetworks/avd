@@ -1,0 +1,20 @@
+---
+# Minimum config to only test the specific feature.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: duplicate-vlans-l2vlans
+      id: 1
+
+tenants:
+  - name: TenantA
+    l2vlans:
+      - id: 1
+        name: vlan
+  - name: TenantB
+    l2vlans:
+      - id: 1
+        name: duplicate_vlan
+
+expected_error_message: "Found duplicate objects with conflicting data while generating configuration for L2VLANs. {'id': 1, 'name': 'duplicate_vlan', 'tenant': 'TenantB'} conflicts with {'id': 1, 'name': 'vlan', 'tenant': 'TenantA'}."

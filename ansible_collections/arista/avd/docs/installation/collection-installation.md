@@ -1,9 +1,15 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Collection installation
 
 ## Installation workflow
 
 - Install [Python](https://www.python.org/downloads/) **3.8** or later
-- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.12.6** to **2.14.x** excluding **2.13.0**
+- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.12.6** to **2.15.x** excluding **2.13.0**
 !!! note
     Excluded version **2.13.0** has an issue in `ansible-core`, which is [fixed](https://github.com/ansible/ansible/blob/v2.13.1/changelogs/CHANGELOG-v2.13.rst#bugfixes) in **2.13.1**. Plugin loader will now load config data for plugin by name instead of by file to avoid issues with the same file being loaded under different names (Fully-Qualified-Collection-Name + short-name).
 - Install [arista.avd](#install-collection-from-ansible-galaxy) collection

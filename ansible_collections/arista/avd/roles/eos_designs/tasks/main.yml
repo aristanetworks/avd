@@ -1,15 +1,18 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 ---
-- name: "Collection {{ ansible_collection_name }} version {{ version }}{{ ('(git ' ~ git_tag ~ ')') if git_tag }} loaded from {{ collection_path }}"
-  tags: [always, avd_version]
-  ansible.builtin.set_fact:
-    avd_collection_version: version
+- name: Verify Requirements
+  tags: [always, avd_req]
+  delegate_to: localhost
+  when: avd_requirements is not defined
+  arista.avd.verify_requirements:
+    requirements: "{{ lookup('file', requirements_path ~ '/requirements.txt').splitlines() }}"
+    avd_ignore_requirements: "{{ avd_ignore_requirements | default(false) }}"
   vars:
-    versions: "{{ lookup('pipe', 'ansible-galaxy collection list -p ' ~ collection_path ~ ' --format yaml ' ~ ansible_collection_name) | from_yaml }}"
-    collection_path: "{{ (role_path | split('/'))[0:-4] | join('/') }}"
-    version: "{{ versions[collection_path][ansible_collection_name].version | default('Unknown') }}"
-    git_tag: "{{ lookup('pipe', 'git -C ' ~ collection_path ~ ' describe --tags --always 2>/dev/null', errors='ignore') }}"
+    requirements_path: "{{ (role_path | split('/'))[0:-2] | join('/') }}"
   run_once: true
-  failed_when: false
+  register: avd_requirements
 
 - name: Create required output directories if not present
   tags: [build, provision]
@@ -29,18 +32,10 @@
     avd_switch_facts: true
     #cprofile_file: "eos_designs_facts.prof"
     template_output: true
-    schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
   check_mode: false
   run_once: true
-
-- name: Set eos_designs facts per device
-  tags: [build, provision, facts]
-  ansible.builtin.set_fact:
-    switch: "{{ avd_switch_facts[inventory_hostname].switch }}"
-  delegate_to: localhost
-  changed_when: false
 
 - name: Generate YAML file with hostvars (only for debugging)
   tags: [debug, never]
@@ -53,15 +48,13 @@
 
 - name: Generate device configuration in structured format
   tags: [build, provision]
-  arista.avd.yaml_templates_to_facts:
-    templates: "{{ templates.structured_config }}"
+  arista.avd.eos_designs_structured_config:
+    eos_designs_custom_templates: "{{ eos_designs_custom_templates | arista.avd.default([]) }}"
     dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
     #cprofile_file: "structured-{{inventory_hostname}}.prof"
     template_output: true
-    schema: "{{ lookup('ansible.builtin.file', role_schema_path) | from_yaml }}"
     conversion_mode: "{{ avd_data_conversion_mode }}"
     validation_mode: "{{ avd_data_validation_mode }}"
-    output_schema: "{{ lookup('ansible.builtin.file', structured_config_schema_path) | from_yaml }}"
   delegate_to: localhost
   check_mode: false
   register: structured_config
@@ -98,7 +91,9 @@
 
 - name: Remove avd_switch_facts
   tags: [build, provision, facts, remove_avd_switch_facts]
-  ansible.builtin.set_fact:
+  arista.avd.set_vars:
     avd_switch_facts: null
+    avd_overlay_peers: null
+    avd_topology_peers: null
   run_once: true
   check_mode: false

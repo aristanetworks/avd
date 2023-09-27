@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # AVD and Ansible Overview
 
 ## Day 1 Operation (i.e. provisioning a network from scratch)
@@ -214,13 +220,7 @@ spine:
     bgp_as: 65100
     # BGP configuration for fine tuning
     bgp_defaults:
-      # The two following commands must not be enabled when using vEOS-lab
-      # - update wait-for-convergence
-      # - update wait-install
-      - no bgp default ipv4-unicast
       - distance bgp 20 200 200
-      - graceful-restart restart-time 300
-      - graceful-restart
 
   # Definition of nodes contained in this group.
   # Specific configuration of device must take place under the node definition. Each node inherites all values defined under 'defaults'
@@ -447,7 +447,6 @@ If you want to push to switches in the entire fabric using CloudVision and your 
         configlets_prefix: 'AVD'
         execute_tasks: false
         state: present
-        cv_collection: v3
 ```
 
 You would execute it using the same command:

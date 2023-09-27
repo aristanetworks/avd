@@ -1,0 +1,61 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  interface_ip_nat_static:
+    type: list
+    primary_key: original_ip
+    items:
+      type: dict
+      keys:
+        access_list:
+          type: str
+          description: "'access_list' and 'group' are mutual exclusive"
+        comment:
+          type: str
+        direction:
+          type: str
+          valid_values: [egress, ingress]
+          description: |
+            Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.
+            EOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
+        group:
+          type: int
+          convert_types:
+            - str
+          min: 1
+          max: 65535
+          description: "'access_list' and 'group' are mutual exclusive"
+        original_ip:
+          type: str
+          description: IPv4 address
+        original_port:
+          type: int
+          convert_types:
+            - str
+          min: 1
+          max: 65535
+        priority:
+          type: int
+          convert_types:
+            - str
+          min: 0
+          max: 4294967295
+        protocol:
+          type: str
+          valid_values: [udp, tcp]
+        translated_ip:
+          type: str
+          required: true
+          description: IPv4 address
+        translated_port:
+          type: int
+          convert_types:
+            - str
+          min: 1
+          max: 65535
+          description: "requires 'original_port'"
