@@ -27,9 +27,9 @@ Each variable in the schema is called a field, and for each type of field we hav
 The alias "AvdSchemaField" is a union of of all the models above, and can be used as easy type hint for any field type.
 
 All the type-specific Pydantic models inherit the common base class "AvdSchemaBaseModel", and have local overrides
-as needed. For example it is only "AvdSchemaList" and "AvdSchemaDict" that needs to parse child fields.
+as needed. For example, only "AvdSchemaList" and "AvdSchemaDict" need to parse child fields.
 
-The overall schema is covered by the class "AristaAvdSchema" which inherits from a "AvdSchemaDict" since the root of the schema is a dict.
+The overall schema is covered by the class "AristaAvdSchema" which inherits from "AvdSchemaDict" since the root of the schema is a dict.
 """
 
 
@@ -144,8 +144,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         In order the sources are:
         - Statically defined under "documentation_options.table".
         - Inherit from parent schema if available.
-        - None if this is the root dict.
-          This means that the first level of keys - called root keys - will not find a parent table.
+        - None if this is the root dict. This means that the first level of keys - called root keys - will not find a parent table.
         - Root keys will default to a hyphen variant of their key name.
 
         Most fields will inherit from parent schema.
