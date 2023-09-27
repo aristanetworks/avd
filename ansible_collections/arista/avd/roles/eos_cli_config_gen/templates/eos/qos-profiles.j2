@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - qos profiles #}
 {% for profile in qos_profiles | arista.avd.natural_sort('name') %}
 !
@@ -81,4 +86,38 @@ qos profile {{ profile.name }}
       shape rate {{ mc_tx_queue.shape.rate }}
 {%         endif %}
 {%     endfor %}
+{%     if profile.priority_flow_control is arista.avd.defined %}
+{%         if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
+   !
+   priority-flow-control on
+{%         elif profile.priority_flow_control.enabled is arista.avd.defined(false) %}
+   !
+   no priority-flow-control
+{%         endif %}
+{%         for priority_block in profile.priority_flow_control.priorities | arista.avd.natural_sort('priority') %}
+{%             if priority_block.priority is arista.avd.defined %}
+{%                 if priority_block.no_drop is arista.avd.defined(true) %}
+   priority-flow-control priority {{ priority_block.priority }} no-drop
+{%                 elif priority_block.no_drop is arista.avd.defined(false) %}
+   priority-flow-control priority {{ priority_block.priority }} drop
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%         if profile.priority_flow_control.watchdog.enabled is arista.avd.defined(true) %}
+   priority-flow-control pause watchdog
+{%             if profile.priority_flow_control.watchdog.action is arista.avd.defined %}
+   priority-flow-control pause watchdog port action {{ profile.priority_flow_control.watchdog.action }}
+{%             endif %}
+{%             if profile.priority_flow_control.watchdog.timer.timeout is arista.avd.defined %}
+{%                 set pfc_command = "priority-flow-control pause watchdog port timer" %}
+{%                 set pfc_command = pfc_command ~ " timeout " ~ profile.priority_flow_control.watchdog.timer.timeout %}
+{%                 set pfc_command = pfc_command ~ " polling-interval " ~ profile.priority_flow_control.watchdog.timer.polling_interval %}
+{%                 set pfc_command = pfc_command ~ " recovery-time " ~ profile.priority_flow_control.watchdog.timer.recovery_time %}
+{%                 if profile.priority_flow_control.watchdog.timer.forced is arista.avd.defined(true) %}
+{%                     set pfc_command = pfc_command ~ " forced" %}
+{%                 endif %}
+{%             endif %}
+   {{ pfc_command }}
+{%         endif %}
+{%     endif %}
 {% endfor %}

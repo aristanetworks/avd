@@ -1,18 +1,13 @@
 [project]
 name="pyavd"
-dynamic = ["version"]
-dependencies = [
-    "jinja2>=3.0",
-    "jsonschema>=4.5.1,<4.18",
-    "deepmerge>=1.1.0",
-]
+dynamic = ["version", "dependencies", "optional-dependencies"]
 authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
 description="Arista validated designs"
 readme = "README.md"
 license = { file = "pyavd/LICENSE" }
 classifiers = [
     "Operating System :: OS Independent",
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.10",
@@ -21,7 +16,6 @@ classifiers = [
     "Topic :: Software Development :: Testing",
 ]
 keywords = ["pyavd"]
-
 requires-python = ">=3.10"
 
 [project.urls]
@@ -30,15 +24,17 @@ repository = "https://github.com/aristanetworks/ansible-avd"
 
 [build-system]
 requires = [
-    "setuptools>=61.2",
+    "setuptools>=66.1",
     "wheel",
     "jinja2>=3.0",
     "jsonschema>=4.5.1,<4.18",
     "deepmerge>=1.1.0",
+    "md-toc>=8.1.8",
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
 ]
-build-backend = "setuptools.build_meta"
+build-backend = "custom-build-backend"
+backend-path = ["scripts"]
 
 [tool.setuptools]
 include-package-data = true
@@ -52,10 +48,12 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["pyavd*"]
-exclude = ["vendor_overrides*", "pyavd/tools*"]
+exclude = ["vendor_overrides*"]
 
 [tool.setuptools.dynamic]
 version = {attr = "pyavd.__version__"}
+dependencies = {file = ["requirements.txt"]}
+optional-dependencies = {"mdtoc" = { file = ["requirements-mdtoc.txt"] }}
 
 [tool.black]
 line-length = 160
@@ -71,3 +69,4 @@ preview = true
 profile = "black"
 skip_gitignore = true
 line_length = 160
+known_third_party = ["pyavd"]

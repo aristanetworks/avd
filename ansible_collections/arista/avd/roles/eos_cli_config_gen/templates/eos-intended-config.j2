@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# Device Configuration #}
 {# context used to hide password and keys #}
 {% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(false) %}
@@ -64,6 +69,8 @@
 {% include 'eos/mac-security.j2' %}
 {# IP NAT - Part 1#}
 {% include 'eos/ip-nat-part1.j2' %}
+{# platform - trident#}
+{% include 'eos/platform-trident.j2' %}
 {# hostname #}
 {% include 'eos/hostname.j2' %}
 {# domain lookup #}
@@ -192,6 +199,8 @@
 {% include 'eos/monitor-sessions.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
+{# eos - priority flow control #}
+{% include 'eos/priority-flow-control.j2' %}
 {# Community-lists #}
 {% include 'eos/community-lists.j2' %}
 {# Community-lists, improved data model #}
@@ -268,10 +277,10 @@
 {% include 'eos/traffic-policies.j2' %}
 {# banner #}
 {% include 'eos/banners.j2' %}
-{# ip http client source interfaces #}
-{% include 'eos/ip-http-client-source-interfaces.j2' %}
-{# ip ssh client source interfaces #}
-{% include 'eos/ip-ssh-client-source-interfaces.j2' %}
+{# ip client source interfaces #}
+{% include 'eos/ip-client-source-interfaces.j2' %}
+{# management accounts #}
+{% include 'eos/management-accounts.j2' %}
 {# management api http #}
 {% include 'eos/management-api-http.j2' %}
 {# management console #}
@@ -292,6 +301,8 @@
 {% include 'eos/management-ssh.j2' %}
 {# management tech-support #}
 {% include 'eos/management-tech-support.j2' %}
+{# platform apply #}
+{% include 'eos/platform-apply.j2' %}
 {# EOS CLI #}
 {% include 'eos/eos-cli.j2' %}
 {# custom templates #}

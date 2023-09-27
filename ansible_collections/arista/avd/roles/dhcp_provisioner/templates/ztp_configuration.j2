@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# HEADER -- LOGIC implementation #}
 {% set cvp_instance_ip = 'cvp_instance_ip is unset - please set' %}
 {% if hostvars[groups[fabric_group][0]]['cvp_instance_ips'] is arista.avd.defined %}
@@ -62,21 +67,21 @@ ztp:
 {% for node_type in node_types | arista.avd.natural_sort %}
     # {{ node_type }}
 {# For NODE GROUPS entries #}
-{%     for node_group in node_types[node_type]['node_groups'] | arista.avd.natural_sort %}
-{%         for node in node_types[node_type]['node_groups'][node_group]['nodes'] | arista.avd.natural_sort %}
-{%             if node_types[node_type]['node_groups'][node_group]['nodes'][node].mac_address is arista.avd.defined %}
-    - name: {{ node }}
-      mac: '{{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mac_address }}'
-      ip4: {{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mgmt_ip | ansible.utils.ipaddr('address') }}
+{%     for node_group in node_types[node_type]['node_groups'] | arista.avd.convert_dicts('group') | arista.avd.natural_sort('group') %}
+{%         for node in node_group['nodes'] | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%             if node.mac_address is arista.avd.defined %}
+    - name: {{ node.name }}
+      mac: '{{ node.mac_address }}'
+      ip4: {{ node.mgmt_ip | ansible.utils.ipaddr('address') }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
 {# For NODES List #}
-{%     for node in node_types[node_type]['nodes'] | arista.avd.natural_sort %}
-{%         if node_types[node_type]['nodes'][node].mac_address is arista.avd.defined %}
-    - name: {{ node }}
-      mac: '{{ node_types[node_type]['nodes'][node].mac_address }}'
-      ip4: {{ node_types[node_type]['nodes'][node].mgmt_ip | ansible.utils.ipaddr('address') }}
+{%     for node in node_types[node_type]['nodes'] | arista.avd.convert_dicts('name') | arista.avd.natural_sort('name') %}
+{%         if node.mac_address is arista.avd.defined %}
+    - name: {{ node.name }}
+      mac: '{{ node.mac_address }}'
+      ip4: {{ node.mgmt_ip | ansible.utils.ipaddr('address') }}
 {%         endif %}
 {%     endfor %}
 {% endfor %}

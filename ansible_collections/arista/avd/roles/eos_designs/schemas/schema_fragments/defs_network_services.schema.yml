@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -15,7 +18,6 @@ $defs:
       keys:
         name:
           type: str
-          required: true
           description: |
             Specify a tenant name.
             Tenant provide a construct to group L3 VRFs and L2 VLANs.
@@ -65,7 +67,17 @@ $defs:
           description: |
             MLAG iBGP peering per VRF.
             By default an iBGP peering is configured per VRF between MLAG peers on separate VLANs.
-            Setting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.
+            Setting `enable_mlag_ibgp_peering_vrfs` false under a tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.
+            This setting can be overridden per VRF.
+        redistribute_mlag_ibgp_peering_vrfs:
+          documentation_options:
+            table: network-services-vrfs-settings
+          type: bool
+          default: true
+          description: |
+            Redistribute the connected subnet for the MLAG iBGP peering per VRF into overlay BGP.
+            By default the iBGP peering subnet is redistributed into the overlay routing protocol per VRF.
+            Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a tenant will change this default to prevent redistribution of these subnets for all VRFs in the tenant.
             This setting can be overridden per VRF.
         bgp_peer_groups:
           documentation_options:
@@ -304,7 +316,14 @@ $defs:
                 description: |
                   MLAG iBGP peering per VRF.
                   By default an iBGP peering is configured per VRF between MLAG peers on separate VLANs.
-                  Setting enable_mlag_ibgp_peering_vrfs: false under vrf will change this default and/or override the tenant-wide setting.
+                  Setting `enable_mlag_ibgp_peering_vrfs: false` under a VRF will change this default and/or override the tenant-wide setting.
+              redistribute_mlag_ibgp_peering_vrfs:
+                type: bool
+                default: true
+                description: |
+                  Redistribute the connected subnet for the MLAG iBGP peering per VRF into overlay BGP.
+                  By default the iBGP peering subnet is redistributed into the overlay routing protocol per VRF.
+                  Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a VRF will change this default and/or override the tenant-wide setting.
               mlag_ibgp_peering_vlan:
                 type: int
                 convert_types:
@@ -606,8 +625,10 @@ $defs:
                           type: bool
                     structured_config:
                       type: dict
-                      description: |
-                        Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.
+                      description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+                      documentation_options:
+                        hide_keys: true
+                      $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
                     raw_eos_cli:
                       type: str
                       description: |
@@ -808,6 +829,8 @@ $defs:
                       max: 65535
                     bfd:
                       type: bool
+                    shutdown:
+                      type: bool
               bgp:
                 type: dict
                 keys:
@@ -817,8 +840,10 @@ $defs:
                       EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration.
                   structured_config:
                     type: dict
-                    description: |
-                      Custom structured config added under router_bgp.vrfs.<vrf> for eos_cli_config_gen.
+                    description: Custom structured config added under router_bgp.vrfs.[name=<vrf>] for eos_cli_config_gen.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/"
               bgp_peer_groups:
                 documentation_options:
                   table: network-services-vrfs-bgp-settings
@@ -870,6 +895,9 @@ $defs:
               structured_config:
                 type: dict
                 description: Custom structured config for eos_cli_config_gen.
+                documentation_options:
+                  hide_keys: true
+                $ref: "eos_cli_config_gen#/"
         l2vlans:
           documentation_options:
             table: network-services-l2vlans-settings
@@ -992,8 +1020,11 @@ $defs:
                   structured_config:
                     type: dict
                     description: |
-                      Structured configuration for eos_cli_config_gen rendered on router_bgp.vlans.
+                      Custom structured config added under router_bgp.vlans.[id=<vlan>] for eos_cli_config_gen.
                       This configuration will not be applied to vlan aware bundles.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vlans/items/"
                   raw_eos_cli:
                     type: str
                     description: |

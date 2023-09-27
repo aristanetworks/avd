@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - flow trackings #}
 {% for flow_tracking in flow_trackings | arista.avd.default([]) %}
 !
@@ -36,6 +41,9 @@ flow tracking {{ flow_tracking.type }}
          template interval {{ exporter.template_interval }}
 {%                 endif %}
 {%             endfor %}
+{%         endif %}
+{%         if tracker.table_size is arista.avd.defined %}
+      flow table size {{ tracker.table_size }} entries
 {%         endif %}
 {%     endfor %}
 {%     if flow_tracking.shutdown is arista.avd.defined(false) %}

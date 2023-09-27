@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -26,7 +29,10 @@ keys:
             default: False
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       mlag_ipv4_underlay_peer:
         type: dict
         keys:
@@ -42,7 +48,10 @@ keys:
             default: False
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       evpn_overlay_peers:
         type: dict
         keys:
@@ -58,7 +67,10 @@ keys:
             default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       evpn_overlay_core:
         type: dict
         keys:
@@ -74,7 +86,10 @@ keys:
             default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       mpls_overlay_peers:
         type: dict
         keys:
@@ -90,7 +105,10 @@ keys:
             default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       rr_overlay_peers:
         type: dict
         keys:
@@ -106,7 +124,10 @@ keys:
             default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       ipvpn_gateway_peers:
         type: dict
         keys:
@@ -122,7 +143,10 @@ keys:
             default: True
           structured_config:
             type: dict
-            description: Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen.
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:

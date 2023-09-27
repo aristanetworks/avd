@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - router general #}
 {% if router_general is arista.avd.defined %}
 
@@ -14,7 +19,7 @@
 
 - Nexthop fast fail-over is enabled.
 {%     endif %}
-{%     if router_general.vrfs | arista.avd.default([]) | selectattr('leak_routes','arista.avd.defined') %}
+{%     if router_general.vrfs | arista.avd.default([]) | selectattr('leak_routes','arista.avd.defined') | list %}
 
 #### VRF Route leaking
 
@@ -28,7 +33,7 @@
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
-{%     if router_general.vrfs | arista.avd.default([]) | selectattr('routes.dynamic_prefix_lists','arista.avd.defined') %}
+{%     if router_general.vrfs | arista.avd.default([]) | selectattr('routes.dynamic_prefix_lists','arista.avd.defined') | list %}
 
 #### VRF Routes Dynamic Prefix-lists
 

@@ -1,10 +1,12 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.underlay.utils import UtilsMixin
 
 
@@ -93,17 +95,13 @@ class RouterBgpMixin(UtilsMixin):
                 if self.shared_utils.underlay_filter_peer_as is True:
                     neighbor["route_map_out"] = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
 
-                if (found_neighbor := get_item(neighbors, "ip_address", link["peer_ip_address"])) is None:
-                    neighbors.append(neighbor)
-                else:
-                    if found_neighbor == neighbor:
-                        # Same neighbor information twice in the input data. So not duplicate IPs.
-                        continue
-
-                    raise AristaAvdError(
-                        f"Duplicate ip_address {link['peer_ip_address']} found while generating BGP neighbor configuration for {link['peer']},"
-                        f" {link['peer_interface']}. Duplicate IP of {found_neighbor['description']}"
-                    )
+                append_if_not_duplicate(
+                    list_of_dicts=neighbors,
+                    primary_key="ip_address",
+                    new_dict=neighbor,
+                    context="IP address defined under BGP neighbor for underlay",
+                    context_keys=["ip_address", "peer_group"],
+                )
 
             if neighbors:
                 router_bgp["neighbors"] = neighbors

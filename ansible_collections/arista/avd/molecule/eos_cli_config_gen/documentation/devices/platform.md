@@ -44,7 +44,30 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| forwarding_table_partition | 2 |
+| Forwarding Table Partition | 2 |
+| MMU Applied Profile | mc_example_profile |
+
+#### Trident MMU QUEUE PROFILES
+
+**mc_example_profile**
+
+| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
+| ---- | ------------ | --------- | -------- | --------------- |
+| Unicast | 1 | - | 0 bytes | - |
+| Unicast | 2 | 1/8 | 0 cells | - |
+| Multicast | 0 | - | 0 bytes | - |
+| Multicast | 1 | 1/64 | 0 cells | - |
+| Multicast | 7 | 1/64 | 0 cells | - |
+
+**unused_profile**
+
+| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
+| ---- | ------------ | --------- | -------- | --------------- |
+| Unicast | 1 | - | 0 bytes | - |
+| Unicast | 2 | 1/8 | 0 cells | - |
+| Unicast | 7 | - | - bytes | - |
+| Multicast | 0 | - | 0 bytes | - |
+| Multicast | 1 | 8 | 0 cells | - |
 
 #### Platform Sand Summary
 

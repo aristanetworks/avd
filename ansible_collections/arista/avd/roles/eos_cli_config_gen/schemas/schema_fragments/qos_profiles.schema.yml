@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -13,7 +16,6 @@ keys:
       keys:
         name:
           type: str
-          required: true
           description: Profile-Name
         trust:
           type: str
@@ -55,7 +57,6 @@ keys:
                 type: int
                 convert_types:
                   - str
-                required: true
                 description: TX-Queue ID
               bandwidth_percent:
                 type: int
@@ -92,7 +93,6 @@ keys:
                 type: int
                 convert_types:
                   - str
-                required: true
                 description: UC TX queue ID
               bandwidth_percent:
                 type: int
@@ -129,7 +129,6 @@ keys:
                 type: int
                 convert_types:
                   - str
-                required: true
                 description: MC TX queue ID
               bandwidth_percent:
                 type: int
@@ -154,3 +153,98 @@ keys:
                 type: str
                 description: |
                   Text comment added to queue.
+        priority_flow_control:
+          type: dict
+          description: |
+            Priority Flow Control settings
+          keys:
+            enabled:
+              type: bool
+              description: |
+                Enable Priority Flow control.
+            watchdog:
+              type: dict
+              description: |
+                Watchdog can detect stuck transmit queues.
+              keys:
+                enabled:
+                  type: bool
+                  required: true
+                  description: |
+                    Enable the watchdog on stuck transmit queues.
+                action:
+                  type: str
+                  valid_values: ["drop", "notify-only"]
+                  description: |
+                    Override the default error-disable action to either drop
+                    traffic on the stuck queue or notify-only
+                    without making any actions on the stuck queue.
+                timer:
+                  type: dict
+                  description: |
+                    Timer thresholds whilst monitoring queues.
+                  keys:
+                    timeout:
+                      type: str
+                      required: true
+                      pattern: "^\\d+(\\.\\d{1,2})?$"
+                      convert_types:
+                        - int
+                        - float
+                      description: |
+                        Timeout in seconds after which port should be errdisabled or
+                        should start dropping on congested priorities.
+                        This should be decimal with up to 2 decimal point
+                        Example: 0.01 or 60
+                    polling_interval:
+                      type: str
+                      required: true
+                      pattern: "^auto|\\d+(\\.\\d{1,3})?$"
+                      convert_types:
+                        - int
+                        - float
+                      description: |
+                        Time interval in seconds at which the watchdog should poll the queues.
+                        This should be decimal with up to 3 decimal point or set
+                        to 'auto' based on recovery_time and timeout values.
+                        Example: 0.005 or 60
+                    recovery_time:
+                      type: str
+                      required: true
+                      pattern: "^\\d+(\\.\\d{1,2})?$"
+                      convert_types:
+                        - int
+                        - float
+                      description: |
+                        Recovery-time in seconds after which stuck queue should
+                        recover and start forwarding again.
+                        This should be decimal with up to 2 decimal point.
+                        Example: 0.01 or 60
+                    forced:
+                      type: bool
+                      description: |
+                        Force recover any stuck queue(s) after the duration,
+                        irrespective of whether PFC frames are being
+                        received or not.
+            priorities:
+              type: list
+              primary_key: priority
+              description: |
+                Set the drop/no_drop on each queue
+              items:
+                type: dict
+                keys:
+                  priority:
+                    type: int
+                    min: 0
+                    max: 7
+                    required: true
+                    convert_types:
+                      - str
+                    description: |
+                      Priority queue number (COS value)
+                  no_drop:
+                    type: bool
+                    required: true
+                    description: |
+                      Enable Priority Flow Control frames on this queue

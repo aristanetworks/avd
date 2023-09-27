@@ -95,7 +95,7 @@ l3leaf:
     filter:
       tenants: [ Tenant_A, Tenant_B, Tenant_C ]
       tags: [ opzone, web, app, db, vmotion, nfs ]
-    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    # mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # Not needed since we run rfc5549
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     - group: DC1_LEAF1
@@ -110,6 +110,8 @@ l3leaf:
           uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     - group: DC1_LEAF2
       bgp_as: 65102
+      # since this device is not using rfc5549 for overlay, we need mlag_peer_l3_ipv4_pool set specifically.
+      mlag_peer_l3_ipv4_pool: 10.255.251.0/24
       nodes:
         - name: DC1-LEAF2A
           id: 2
@@ -156,8 +158,11 @@ l3leaf:
     - group: DC1_LEAF3
       # Testing RFC5549 with IPv6 overlay peers only
       bgp_as: 65106
-      uplink_interfaces: ['Ethernet1']
-      uplink_switches: ['DC1-SPINE5']
+      uplink_interfaces: ['Ethernet1', 'Ethernet2']
+      # Twice same uplink switch to repro an issue where
+      # all the bgp neighbor_interfaces are rendered twice
+      # because each uplink peer is parsed twice.
+      uplink_switches: ['DC1-SPINE5', 'DC1-SPINE5']
       loopback_ipv6_pool: 2001:1::/64
       loopback_ipv6_offset: 4
       nodes:
@@ -165,11 +170,11 @@ l3leaf:
           id: 8
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
-          uplink_switch_interfaces: [ Ethernet1 ]
+          uplink_switch_interfaces: [ Ethernet1, Ethernet3 ]
         - name: DC1-LEAF3B
           id: 9
           mgmt_ip: 192.168.200.107/24
-          uplink_switch_interfaces: [ Ethernet2 ]
+          uplink_switch_interfaces: [ Ethernet2, Ethernet4 ]
     - group: DC1_LEAF4
       # Testing underlay IPv6 peers
       bgp_as: 65107
@@ -197,7 +202,7 @@ l2leaf:
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
-    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    # mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # Not needed since this is l2
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     - group: DC1_L2LEAF1

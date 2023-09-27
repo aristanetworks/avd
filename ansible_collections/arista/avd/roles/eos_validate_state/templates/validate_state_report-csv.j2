@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# AVD State Validation Report - CSV #}
 test_id,node,test_category,test_description,test,result,failure_reason
 {% for report_entry in eos_validate_state_report | arista.avd.default([]) %}

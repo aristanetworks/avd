@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Arista Cloudvision Ansible Modules
 
 <div id="mastertoc::" class="toctree" data-caption="Project Documentation" data-maxdepth="1">

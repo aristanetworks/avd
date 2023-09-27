@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -79,7 +82,6 @@ keys:
               type: str
               convert_types:
                 - int
-              required: true
               description: VRF name
             source_interface:
               type: str
@@ -94,7 +96,6 @@ keys:
                 keys:
                   name:
                     type: str
-                    required: true
                     description: Syslog server name
                   protocol:
                     type: str
@@ -122,8 +123,25 @@ keys:
                   keys:
                     name:
                       type: str
-                      required: true
                       description: Match list
                     action:
                       type: str
                       valid_values: ["discard"]
+      event:
+        type: dict
+        keys:
+          storm_control:
+            type: dict
+            keys:
+              discards:
+                type: dict
+                keys:
+                  global:
+                    type: bool
+                  interval:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 10
+                    max: 65535
+                    description: Logging interval in seconds

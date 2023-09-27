@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -5,9 +8,8 @@ from collections import ChainMap
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, replace_or_append_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, replace_or_append_item
 
 from .utils import UtilsMixin
 
@@ -59,14 +61,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                         continue
 
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
-                    if (found_eth_interface := get_item(non_overwritable_ethernet_interfaces, "name", ethernet_interface["name"])) is not None:
-                        raise AristaAvdError(
-                            f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoint:"
-                            f" {connected_endpoint['name']}, endpoint_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
-                            f" {found_eth_interface['description']}"
-                        )
+                    append_if_not_duplicate(
+                        list_of_dicts=non_overwritable_ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_interface,
+                        context="Ethernet Interfaces defined under connected_endpoints",
+                        context_keys=["name", "peer_interface"],
+                    )
 
-                    non_overwritable_ethernet_interfaces.append(ethernet_interface)
                     replace_or_append_item(ethernet_interfaces, "name", ethernet_interface)
 
         if ethernet_interfaces:

@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - platform #}
 {% if platform is arista.avd.defined %}
 
@@ -11,9 +16,29 @@
 
 | Settings | Value |
 | -------- | ----- |
-{%             for tridentsetting in platform.trident | arista.avd.natural_sort %}
-| {{ tridentsetting }} | {{ platform.trident[tridentsetting] }} |
-{%             endfor %}
+{%             if platform.trident.forwarding_table_partition is arista.avd.defined %}
+| Forwarding Table Partition | {{ platform.trident.forwarding_table_partition }} |
+{%             endif %}
+{%             if platform.trident.mmu.active_profile is arista.avd.defined %}
+| MMU Applied Profile | {{ platform.trident.mmu.active_profile }} |
+{%             endif %}
+{%             if platform.trident.mmu.queue_profiles is arista.avd.defined %}
+
+#### Trident MMU QUEUE PROFILES
+{%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
+
+**{{ profile.name }}**
+
+| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
+| ---- | ------------ | --------- | -------- | --------------- |
+{%                     for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
+| Unicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
+{%                     endfor %}
+{%                     for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
+| Multicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
+{%                     endfor %}
+{%                 endfor %}
+{%             endif %}
 {%         endif %}
 {%         if platform.sand is arista.avd.defined %}
 

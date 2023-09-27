@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -55,9 +58,14 @@ class UtilsMixin:
 
                     filtered_adapters.append(adapter_settings)
 
-                connected_endpoint["adapters"] = filtered_adapters
-                connected_endpoint["type"] = connected_endpoints_key["type"]
-                filtered_connected_endpoints.append(connected_endpoint)
+                if filtered_adapters:
+                    filtered_connected_endpoints.append(
+                        {
+                            **connected_endpoint,
+                            "adapters": filtered_adapters,
+                            "type": connected_endpoints_key["type"],
+                        }
+                    )
 
         return filtered_connected_endpoints
 
@@ -94,7 +102,7 @@ class UtilsMixin:
 
         # short_esi is only set when called from sub-interface port-channels.
         if short_esi is None:
-            # Setting short_esi under port_channel will be deprecated in AVD4.0
+            # Setting short_esi under port_channel will be removed in AVD5.0
             port_channel_short_esi = get(adapter, "port_channel.short_esi")
             if (short_esi := get(adapter, "ethernet_segment.short_esi", default=port_channel_short_esi)) is None:
                 return None

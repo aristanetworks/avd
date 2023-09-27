@@ -1,0 +1,10 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - platform profile apply #}
+{% if platform.trident.mmu.active_profile is arista.avd.defined %}
+!
+platform trident mmu queue profile {{ platform.trident.mmu.active_profile }} apply
+{% endif %}

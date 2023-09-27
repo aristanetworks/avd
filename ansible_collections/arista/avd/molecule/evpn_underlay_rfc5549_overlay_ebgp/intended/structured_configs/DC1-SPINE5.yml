@@ -53,6 +53,14 @@ router_bgp:
     peer_group: UNDERLAY_PEERS
     remote_as: '65106'
     description: DC1-LEAF3B_Ethernet1
+  - name: Ethernet3
+    peer_group: UNDERLAY_PEERS
+    remote_as: '65106'
+    description: DC1-LEAF3A_Ethernet2
+  - name: Ethernet4
+    peer_group: UNDERLAY_PEERS
+    remote_as: '65106'
+    description: DC1-LEAF3B_Ethernet2
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -134,6 +142,24 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF3B_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ipv6_enable: true
+- name: Ethernet3
+  peer: DC1-LEAF3A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-LEAF3A_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ipv6_enable: true
+- name: Ethernet4
+  peer: DC1-LEAF3B
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-LEAF3B_Ethernet2
   shutdown: false
   mtu: 1500
   type: routed

@@ -12,8 +12,8 @@ tenant_d:
             tags: ['v6opzone']
             enabled: True
             ip_address_virtual: 10.3.10.1/24
-            ipv6_address_virtual: 2001:db8:310::1/64
             ipv6_address_virtuals:
+              - 2001:db8:310::1/64
               - 2001:db8:311::1/64
               - 2001:db8:312::1/64
           - id: 411
@@ -98,7 +98,8 @@ tenant_d:
             name: Tenant_D_v6_WAN_Zone_1
             tags: ['v6wan']
             enabled: True
-            ipv6_address_virtual: 2001:db8:355::1/64
+            ipv6_address_virtuals:
+              - 2001:db8:355::1/64
           - id: 451
             name: Tenant_D_v6_WAN_Zone_2
             tags: ['v6wan']

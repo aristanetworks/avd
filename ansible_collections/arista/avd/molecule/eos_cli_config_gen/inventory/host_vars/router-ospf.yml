@@ -57,6 +57,8 @@ router_ospf:
           initial: 100
           min: 200
           max: 300
+      eos_cli: |
+        area 5 not-so-stubby lsa type-7 convert type-5
 
     - id: 200
       vrf: ospf_zone

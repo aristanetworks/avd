@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # AVD example for a single data center using L3LS
 
 ## Introduction
@@ -345,7 +351,8 @@ default_interfaces: # (5)!
     platforms: [ default ]
     uplink_interfaces: [ Ethernet1-2 ]
 
-cvp_instance_ip: 192.168.1.12 # (6)!
+cvp_instance_ips:
+  - 192.168.1.12 # (6)!
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
 terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 terminattr_disable_aaa: true

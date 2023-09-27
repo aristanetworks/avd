@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -17,7 +20,6 @@ $defs:
           keys:
             name:
               type: str
-              required: true
               description: P2P pool name.
             ipv4_pool:
               type: str
@@ -41,7 +43,6 @@ $defs:
           keys:
             name:
               type: str
-              required: true
               description: P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
       p2p_links:
         type: list

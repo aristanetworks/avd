@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import ipaddress
@@ -186,6 +189,7 @@ class RouterBgpMixin(UtilsMixin):
 
                     continue
 
+                # Regular VRF handling (not "default" with EVPN)
                 bgp_vrf = {
                     "name": vrf_name,
                     "router_id": self.shared_utils.router_id,
@@ -198,6 +202,9 @@ class RouterBgpMixin(UtilsMixin):
                 }
                 # MLAG IBGP Peering VLANs per VRF
                 if (vlan_id := self._mlag_ibgp_peering_vlan_vrf(vrf, tenant)) is not None:
+                    if not self._mlag_ibgp_peering_redistribute(vrf, tenant):
+                        bgp_vrf["redistribute_routes"][0]["route_map"] = "RM-CONN-2-BGP-VRFS"
+
                     if self.shared_utils.underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
                         interface_name = f"Vlan{vlan_id}"
                         bgp_vrf.setdefault("neighbor_interfaces", []).append(

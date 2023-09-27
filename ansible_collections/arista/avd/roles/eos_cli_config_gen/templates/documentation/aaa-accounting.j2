@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - aaa accounting #}
 {% if aaa_accounting is arista.avd.defined %}
 
@@ -7,8 +12,10 @@
 
 | Type | Commands | Record type | Group | Logging |
 | ---- | -------- | ----------- | ----- | ------- |
-{%     if aaa_accounting.exec.console.type is arista.avd.defined and aaa_accounting.exec.console.group is arista.avd.defined %}
-| Exec - Console | - | {{ aaa_accounting.exec.console.type }} | {{ aaa_accounting.exec.console.group }} | - |
+{%     if aaa_accounting.exec.console.type is arista.avd.defined  %}
+{%         set aaa_accounting_logging = aaa_accounting.exec.console.logging | arista.avd.default("-") %}
+{%         set aaa_accounting_group = aaa_accounting.exec.console.group | arista.avd.default("-") %}
+| Exec - Console | - | {{ aaa_accounting.exec.console.type }} | {{ aaa_accounting_group }} | {{ aaa_accounting_logging }} |
 {%     endif %}
 {%     if aaa_accounting.commands.console is arista.avd.defined %}
 {%         for command_console in aaa_accounting.commands.console %}
@@ -19,8 +26,10 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if aaa_accounting.exec.default.type is arista.avd.defined and aaa_accounting.exec.default.group is arista.avd.defined %}
-| Exec - Default | - | {{ aaa_accounting.exec.default.type }} | {{ aaa_accounting.exec.default.group }} | - |
+{%     if aaa_accounting.exec.default.type is arista.avd.defined  %}
+{%         set aaa_accounting_logging = aaa_accounting.exec.default.logging | arista.avd.default("-") %}
+{%         set aaa_accounting_group = aaa_accounting.exec.default.group | arista.avd.default("-") %}
+| Exec - Default | - | {{ aaa_accounting.exec.default.type }} | {{ aaa_accounting_group }} | {{ aaa_accounting_logging }} |
 {%     endif %}
 {%     if aaa_accounting.system.default.type is arista.avd.defined and aaa_accounting.system.default.group is arista.avd.defined  %}
 | System - Default | - | {{ aaa_accounting.system.default.type }} | {{ aaa_accounting.system.default.group }} | - |

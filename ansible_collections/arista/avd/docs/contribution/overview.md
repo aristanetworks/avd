@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Arista Validated Design Development
 
 **Arista Validated Design (AVD)** is maintained as a [GitHub project](https://github.com/aristanetworks/ansible-avd) under the Apache 2 license. Users are encouraged to submit GitHub issues for feature requests and bug reports.

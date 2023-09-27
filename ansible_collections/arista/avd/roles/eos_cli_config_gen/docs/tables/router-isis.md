@@ -1,9 +1,14 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>router_isis</samp>](## "router_isis") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;instance</samp>](## "router_isis.instance") | String |  |  |  | ISIS Instance Name |
+    | [<samp>&nbsp;&nbsp;instance</samp>](## "router_isis.instance") | String | Required |  |  | ISIS Instance Name |
     | [<samp>&nbsp;&nbsp;net</samp>](## "router_isis.net") | String |  |  |  | CLNS Address like "49.0001.0001.0000.0001.00" |
     | [<samp>&nbsp;&nbsp;router_id</samp>](## "router_isis.router_id") | String |  |  |  | IPv4 Address |
     | [<samp>&nbsp;&nbsp;is_type</samp>](## "router_isis.is_type") | String |  |  | Valid Values:<br>- level-1<br>- level-1-2<br>- level-2 |  |

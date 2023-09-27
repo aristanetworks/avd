@@ -1,9 +1,11 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
 
 from .utils import UtilsMixin
 
@@ -30,18 +32,13 @@ class EthernetInterfacesMixin(UtilsMixin):
                 # Remove None values
                 ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
-                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
-                    ethernet_interfaces.append(ethernet_interface)
-                else:
-                    if found_eth_interface == ethernet_interface:
-                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
-                        continue
-
-                    raise AristaAvdError(
-                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for {self.data_model} peer:"
-                        f" {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
-                        f" {found_eth_interface['description']}"
-                    )
+                append_if_not_duplicate(
+                    list_of_dicts=ethernet_interfaces,
+                    primary_key="name",
+                    new_dict=ethernet_interface,
+                    context=f"Ethernet Interfaces defined under {self.data_model} p2p_link",
+                    context_keys=["name", "peer", "peer_interface"],
+                )
 
             # Port-Channel members
             for member in p2p_link["data"]["port_channel_members"]:
@@ -51,18 +48,13 @@ class EthernetInterfacesMixin(UtilsMixin):
                 # Remove None values
                 ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
 
-                if (found_eth_interface := get_item(ethernet_interfaces, "name", ethernet_interface["name"])) is None:
-                    ethernet_interfaces.append(ethernet_interface)
-                else:
-                    if found_eth_interface == ethernet_interface:
-                        # Same ethernet_interface information twice in the input data. So not duplicate interface name.
-                        continue
-
-                    raise AristaAvdError(
-                        f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for {self.data_model} with"
-                        f" port-channel members, peer: {ethernet_interface['peer']}, peer_interface: {ethernet_interface['peer_interface']}. Description on"
-                        f" duplicate interface: {found_eth_interface['description']}"
-                    )
+                append_if_not_duplicate(
+                    list_of_dicts=ethernet_interfaces,
+                    primary_key="name",
+                    new_dict=ethernet_interface,
+                    context=f"Ethernet Interfaces defined under {self.data_model} p2p_link port-Channel members",
+                    context_keys=["name", "peer", "peer_interface"],
+                )
 
         if ethernet_interfaces:
             return ethernet_interfaces

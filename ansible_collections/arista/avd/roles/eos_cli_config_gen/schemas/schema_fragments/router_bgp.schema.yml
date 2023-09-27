@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -89,7 +92,6 @@ keys:
             max: 600
           ecmp:
             type: int
-            required: true
             convert_types:
               - str
             min: 1
@@ -537,6 +539,8 @@ keys:
               type: str
             route_map:
               type: str
+            include_leaked:
+              type: bool
       vlan_aware_bundles:
         type: list
         primary_key: name
@@ -1106,6 +1110,8 @@ keys:
                   type: str
                 route_map:
                   type: str
+                include_leaked:
+                  type: bool
       address_family_ipv6_multicast:
         type: dict
         keys:
@@ -1668,6 +1674,8 @@ keys:
                     type: str
                   route_map:
                     type: str
+                  include_leaked:
+                    type: bool
             aggregate_addresses:
               type: list
               primary_key: prefix

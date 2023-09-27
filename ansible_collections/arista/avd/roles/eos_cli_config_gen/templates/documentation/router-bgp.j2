@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - router bgp #}
 {% if router_bgp is arista.avd.defined %}
 
@@ -529,7 +534,7 @@
 {%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort('name') %}
 {%         if router_bgp.address_family_evpn is arista.avd.defined and router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
 {%             set address_family_evpn_peer_group = router_bgp.address_family_evpn.peer_groups | arista.avd.default([]) |
-                                                                      selectattr('name', 'arista.avd.defined', peer_group.name) %}
+                                                                      selectattr('name', 'arista.avd.defined', peer_group.name) | list %}
 {%             if address_family_evpn_peer_group[0].domain_remote is arista.avd.defined(true) %}
 {%                 do evpn_gw_config.peer_groups.append(peer_group.name) %}
 {%                 set evpn_gw_config.configured = true %}
@@ -632,19 +637,19 @@
 {%             set route_distinguisher = vlan_aware_bundle.rd | arista.avd.default("-") %}
 {%             set vlans = vlan_aware_bundle.vlan | arista.avd.default("-") %}
 {%             if vlan_aware_bundle.route_targets.both is arista.avd.defined or vlan_aware_bundle.route_targets.import_export_evpn_domains is arista.avd.defined %}
-{%                 set both_route_target = vlan_aware_bundle.route_targets.both | arista.avd.default([]) %}
+{%                 set both_route_target = vlan_aware_bundle.route_targets.both | arista.avd.default([]) | list %}
 {%                 for rt in vlan_aware_bundle.route_targets.import_export_evpn_domains | arista.avd.natural_sort %}
 {%                     do both_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
 {%             if vlan_aware_bundle.route_targets.import is arista.avd.defined or vlan_aware_bundle.route_targets.import_evpn_domains is arista.avd.defined %}
-{%                 set import_route_target = vlan_aware_bundle.route_targets.import | arista.avd.default([]) %}
+{%                 set import_route_target = vlan_aware_bundle.route_targets.import | arista.avd.default([]) | list %}
 {%                 for rt in vlan_aware_bundle.route_targets.import_evpn_domains | arista.avd.natural_sort %}
 {%                     do import_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
 {%             if vlan_aware_bundle.route_targets.export is arista.avd.defined or vlan_aware_bundle.route_targets.export_evpn_domains is arista.avd.defined %}
-{%                 set export_route_target = vlan_aware_bundle.route_targets.export | arista.avd.default([]) %}
+{%                 set export_route_target = vlan_aware_bundle.route_targets.export | arista.avd.default([]) | list %}
 {%                 for rt in vlan_aware_bundle.route_targets.export_evpn_domains | arista.avd.natural_sort  %}
 {%                     do export_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
@@ -664,19 +669,19 @@
 {%         for vlan in router_bgp.vlans | arista.avd.natural_sort('id') %}
 {%             set route_distinguisher = vlan.rd | arista.avd.default("-") %}
 {%             if vlan.route_targets.both is arista.avd.defined or vlan.route_targets.import_export_evpn_domains is arista.avd.defined %}
-{%                 set both_route_target = vlan.route_targets.both | arista.avd.default([]) %}
+{%                 set both_route_target = vlan.route_targets.both | arista.avd.default([]) | list %}
 {%                 for rt in vlan.route_targets.import_export_evpn_domains | arista.avd.natural_sort %}
 {%                     do both_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
 {%             if vlan.route_targets.import is arista.avd.defined or vlan.route_targets.import_evpn_domains is arista.avd.defined %}
-{%                 set import_route_target = vlan.route_targets.import | arista.avd.default([]) %}
+{%                 set import_route_target = vlan.route_targets.import | arista.avd.default([]) | list %}
 {%                 for rt in vlan.route_targets.import_evpn_domains | arista.avd.natural_sort %}
 {%                     do import_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
 {%             endif %}
 {%             if vlan.route_targets.export is arista.avd.defined or vlan.route_targets.export_evpn_domains is arista.avd.defined %}
-{%                 set export_route_target = vlan.route_targets.export | arista.avd.default([]) %}
+{%                 set export_route_target = vlan.route_targets.export | arista.avd.default([]) | list %}
 {%                 for rt in vlan.route_targets.export_evpn_domains | arista.avd.natural_sort  %}
 {%                     do export_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
 {%                 endfor %}
@@ -710,7 +715,7 @@
 
 #### Router BGP VRFs
 
-{%         if router_bgp.vrfs | selectattr('evpn_multicast', 'arista.avd.defined', true) %}
+{%         if router_bgp.vrfs | selectattr('evpn_multicast', 'arista.avd.defined', true) | list %}
 | VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
 | --- | ------------------- | ------------ | -------------- |
 {%         else %}
@@ -725,7 +730,7 @@
 {%             set multicast_out = [] %}
 {%             do multicast_out.append("IPv4: " ~ multicast) %}
 {%             do multicast_out.append("Transit: " ~ multicast_transit) %}
-{%             if router_bgp.vrfs | selectattr('evpn_multicast', 'arista.avd.defined', true) %}
+{%             if router_bgp.vrfs | selectattr('evpn_multicast', 'arista.avd.defined', true) | list %}
 | {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} | {{ multicast_out | join("<br>") }} |
 {%             else %}
 | {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} |

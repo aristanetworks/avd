@@ -2,6 +2,7 @@ tenant_a:
   - name: Tenant_A
     mac_vrf_vni_base: 10000
     mac_vrf_id_base: 20000
+    redistribute_mlag_ibgp_peering_vrfs: false
     vrfs:
       - name: Tenant_A_OP_Zone
         description: "Tenant_A_OP_Zone"
@@ -10,6 +11,7 @@ tenant_a:
         vtep_diagnostic:
           loopback: 100
           loopback_ip_range: 10.255.1.0/24
+        redistribute_mlag_ibgp_peering_vrfs: true
         svis:
           # SVI as string
           - id: '110'
@@ -163,6 +165,7 @@ tenant_a:
             nodes: [DC1-BL1A, DC1-BL1B]
             set_ipv4_next_hop: 123.1.1.1
             route_map_in: RM-123-1-1-10-IN
+            shutdown: true
             # we don't expect this in the output, next_hop takes precedence
             route_map_out: RM-123-1-1-10-OUT
             local_as: 123

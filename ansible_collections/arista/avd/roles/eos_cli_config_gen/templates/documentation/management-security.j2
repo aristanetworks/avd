@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - management security #}
 {% if management_security is arista.avd.defined %}
 
@@ -92,6 +97,22 @@
 {%                 endif %}
 | {{ chain_certs }} | {{ requirement }} |
 {%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if management_security.password.policies is arista.avd.defined %}
+
+### Password Policies
+| Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
+|-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
+{%         for policy in management_security.password.policies | arista.avd.natural_sort('name') %}
+{%             set min_digits = policy.minimum.digits if policy.minimum.digits is arista.avd.defined else 'N/A' %}
+{%             set min_length = policy.minimum.length if policy.minimum.length is arista.avd.defined else 'N/A' %}
+{%             set min_lower = policy.minimum.lower if policy.minimum.lower is arista.avd.defined else 'N/A' %}
+{%             set min_special = policy.minimum.special if policy.minimum.special is arista.avd.defined else 'N/A' %}
+{%             set min_upper = policy.minimum.upper if policy.minimum.upper is arista.avd.defined else 'N/A' %}
+{%             set max_repetitive = policy.maximum.repetitive if policy.maximum.repetitive is arista.avd.defined else 'N/A' %}
+{%             set max_sequential = policy.maximum.sequential if policy.maximum.sequential is arista.avd.defined else 'N/A' %}
+| {{ policy.name }} | > {{ min_digits }} | > {{ min_length }} | > {{ min_lower }} | > {{ min_special }} | > {{ min_upper }} | < {{ max_repetitive }} | < {{ max_sequential }} |
 {%         endfor %}
 {%     endif %}
 

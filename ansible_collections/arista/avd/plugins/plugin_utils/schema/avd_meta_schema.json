@@ -1,4 +1,5 @@
 {
+    "$comment": "Copyright (c) 2023 Arista Networks, Inc. Use of this source code is governed by the Apache License 2.0 that can be found in the LICENSE file.",
     "$schema": "https://json-schema.org/draft-07/schema",
     "$id": "https://avd.sh/development/schema-schema.json",
     "$defs": {
@@ -265,7 +266,7 @@
                         "required": { "$ref": "#/$defs/required" },
                         "deprecation": { "$ref": "#/$defs/deprecation" },
                         "$ref": { "$ref": "#/$defs/$ref" },
-                        "documentation_options": { "$ref": "#/$defs/documentation_options" },
+                        "documentation_options": { "$ref": "#/$defs/documentation_options_dict" },
                         "$schema": { "type": "string" },
                         "$id": { "type": "string" },
                         "$defs": { "$ref": "#/$defs/$defs" }
@@ -311,6 +312,18 @@
                 "table": {
                     "type": "string",
                     "description": "Setting 'table' will allow for custom grouping of schema fields in the documentation.\nBy default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.\nIf 'table' is set on a 'child' key, all 'ancestor' keys are automatically included in the table so the full path is visible.\nThe 'table' option is inherited to all child keys, unless specifically set on the child."
+                }
+            },
+            "additionalProperties": false
+        },
+        "documentation_options_dict": {
+            "type": "object",
+            "description": "Special options used for generating documentation",
+            "properties": {
+                "table": { "$ref": "#/$defs/documentation_options/properties/table" },
+                "hide_keys": {
+                    "type": "boolean",
+                    "description": "Prevent keys of the dict from being displayed in the generated documentation.\nThis is used for structured_config where we wish to avoid displaying the full eos_cli_config_gen schema everywhere."
                 }
             },
             "additionalProperties": false

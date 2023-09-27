@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - ethernet interfaces #}
 {% set POE_CLASS_MAP = {0: "15.40", 1: "4.00", 2: "7.00", 3: "15.40", 4: "30.00", 5: "45.00", 6: "60.00", 7: "75.00", 8: "90.00"} %}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
@@ -269,6 +274,12 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
 {%         if ethernet_interface.dot1x.reauthorization_request_limit is arista.avd.defined %}
    dot1x reauthorization request limit {{ ethernet_interface.dot1x.reauthorization_request_limit }}
+{%         endif %}
+{%         if ethernet_interface.dot1x.unauthorized.access_vlan_membership_egress is arista.avd.defined(true) %}
+   dot1x unauthorized access vlan membership egress
+{%         endif %}
+{%         if ethernet_interface.dot1x.unauthorized.native_vlan_membership_egress is arista.avd.defined(true) %}
+   dot1x unauthorized native vlan membership egress
 {%         endif %}
 {%         if ethernet_interface.dot1x.eapol is arista.avd.defined %}
 {%             if ethernet_interface.dot1x.eapol.disabled is arista.avd.defined(true) %}

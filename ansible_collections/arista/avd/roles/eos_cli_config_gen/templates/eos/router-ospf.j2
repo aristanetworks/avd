@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - router ospf #}
 {% for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
 !
@@ -199,5 +204,8 @@ router ospf {{ process_id.id }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
+{%     endif %}
+{%     if process_id.eos_cli is arista.avd.defined %}
+   {{ process_id.eos_cli | indent(3, false) }}
 {%     endif %}
 {% endfor %}

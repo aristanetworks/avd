@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # Input variables for eos_cli_config_gen
 
 This document describes the supported input variables for the role `arista.avd.eos_cli_config_gen`.
@@ -445,6 +451,12 @@ roles/eos_cli_config_gen/docs/tables/ip-name-servers.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-ssh-client-source-interfaces.md
+--8<--
+
+### Management accounts
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/management-accounts.md
 --8<--
 
 ### Management API HTTP

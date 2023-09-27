@@ -1,9 +1,14 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
 === "Table"
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>cvp_ingestauth_key</samp>](## "cvp_ingestauth_key") | String |  |  |  | On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.<br>If not set, TerminAttr will be configured with certificate based authentication:<br>- On-premise using token onboarding. Default token path is '/tmp/token'.<br>- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.<br>Token must be copied to the device first. |
-    | [<samp>cvp_instance_ip</samp>](## "cvp_instance_ip") | String |  |  |  | IPv4 address or DNS name for CloudVision.<br>This variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance. |
+    | [<samp>cvp_instance_ip</samp>](## "cvp_instance_ip") <span style="color:red">deprecated</span> | String |  |  |  | IPv4 address or DNS name for CloudVision.<br>This variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.<span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cvp_instance_ips</samp> instead.</span> |
     | [<samp>cvp_instance_ips</samp>](## "cvp_instance_ips") | List, items: String |  |  |  | List of IPv4 addresses or DNS names for CloudVision.<br>For on-premise CloudVision enter all the nodes of the cluster.<br>For CloudVision as a Service enter the DNS name of the instance.<br>`eos_designs` only supports one CloudVision cluster.<br> |
     | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "cvp_instance_ips.[].&lt;str&gt;") | String |  |  |  | IPv4 address or DNS name for CloudVision |
     | [<samp>cvp_token_file</samp>](## "cvp_token_file") | String |  |  |  | cvp_token_file is the path to the token file on the switch.<br>If not set the default locations for on-premise or CVaaS will be used.<br>See cvp_ingestauth_key for details. |

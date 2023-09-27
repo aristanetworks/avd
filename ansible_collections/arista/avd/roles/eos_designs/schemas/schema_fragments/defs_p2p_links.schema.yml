@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -140,7 +143,6 @@ $defs:
                 keys:
                   node:
                     type: str
-                    required: true
                   interfaces:
                     type: list
                     description: List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].
@@ -151,4 +153,10 @@ $defs:
           description: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
         structured_config:
           type: dict
-          description: Custom structured config for interfaces
+          documentation_options:
+            hide_keys: true
+          description: |-
+            Custom structured config for interfaces
+            Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+          # Schema ref not implemented since we do not know which of the schemas to look at.
+          # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"

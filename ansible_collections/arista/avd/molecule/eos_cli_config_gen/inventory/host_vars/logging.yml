@@ -42,3 +42,8 @@ logging:
           ports:
             - 100
             - 200
+  event:
+    storm_control:
+      discards:
+        global: true
+        interval: 10

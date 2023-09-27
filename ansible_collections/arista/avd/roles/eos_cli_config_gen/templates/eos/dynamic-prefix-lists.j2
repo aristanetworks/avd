@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - dynamic prefix lists #}
 {% for dynamic_prefix_list in dynamic_prefix_lists | arista.avd.natural_sort('name') if dynamic_prefix_list.name is arista.avd.defined and dynamic_prefix_list.match_map is arista.avd.defined %}
 !

@@ -1,0 +1,31 @@
+# Testing "svi_profiles" as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+svi_profiles:
+  GENERIC:
+    mtu: 1560
+    enabled: true
+  GENERIC_FULL:
+    name: GENERIC Name
+    mtu: 1560
+    enabled: false
+    ip_address_virtual: 10.1.10.254/24
+  TEST_SVI_NODE_INHERIT:
+    name: Test the SVI and node config inheritance
+    mtu: 1560
+    enabled: false
+    ip_address_virtual: 10.4.13.254/24
+    ipv6_address_virtual: 2001:db8:413::1/64
+    # Testing "ip_helpers" as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo101
+        source_vrf: TEST
+    # Testing "nodes" as dict of dict
+    # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+    nodes:
+      evpn_services_l2_only_false:
+        ip_address: 12.4.13.2/24
+        ipv6_address: 2012:db9:413::2/64
+        ip_virtual_router_addresses: [ "12.4.13.1" ]
+        ipv6_virtual_router_addresses: [ "2012:db9:413::1" ]

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -42,8 +45,21 @@ class ActionModule(ActionBase):
 
         # Build data from hostvars and role default vars
         hostname = task_vars["inventory_hostname"]
-        self.data = self._templar.template(self._task._role.get_default_vars())
-        self.data.update(task_vars["hostvars"].get(hostname))
+
+        # Read ansible variables and perform templating to support inline jinja2
+        for var in task_vars:
+            if str(var).startswith(("ansible", "molecule", "hostvars", "vars", "avd_switch_facts")):
+                continue
+            if self._templar.is_template(task_vars[var]):
+                # Var contains a jinja2 template.
+                try:
+                    task_vars[var] = self._templar.template(task_vars[var], fail_on_undefined=False)
+                except Exception as e:
+                    raise AnsibleActionFail(f"Exception during templating of task_var '{var}'") from e
+
+        if not isinstance(task_vars, dict):
+            # Corner case for ansible-test where the passed task_vars is a nested chain-map
+            task_vars = dict(task_vars)
 
         # Load schema tools and perform conversion and validation
         avdschematools = AvdSchemaTools(
@@ -55,7 +71,7 @@ class ActionModule(ActionBase):
             validation_mode=validation_mode,
             plugin_name=task_vars["ansible_role_name"],
         )
-        result.update(avdschematools.convert_and_validate_data(self.data))
+        result.update(avdschematools.convert_and_validate_data(task_vars))
 
         # Template to file
         # Update result from Ansible "copy" operation (setting 'changed' flag accordingly)
@@ -68,7 +84,7 @@ class ActionModule(ActionBase):
         # Get updated templar instance to be passed along to our simplified "templater"
         templar = get_templar(self, task_vars)
 
-        output = template(self.templatefile, self.data, templar)
+        output = template(self.templatefile, task_vars, templar)
         if self.add_md_toc:
             output = add_md_toc(output, skip_lines=self.md_toc_skip_lines)
 

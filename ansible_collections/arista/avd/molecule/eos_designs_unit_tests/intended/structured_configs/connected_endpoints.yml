@@ -57,6 +57,12 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
+- name: Ethernet9
+  peer: SERVER_WITH_PLAYVAR_DESCRIPTION
+  peer_type: server
+  description: test of var set under play vars
+  shutdown: false
+  type: switched
 port_channel_interfaces:
 - name: Port-Channel5
   description: OLD_SW-1/5_PORT_CHANNEL_DESCRIPTION
