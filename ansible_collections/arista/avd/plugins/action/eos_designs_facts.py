@@ -9,6 +9,7 @@ import cProfile
 import pstats
 
 from ansible.errors import AnsibleActionFail
+from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
@@ -83,7 +84,7 @@ class ActionModule(ActionBase):
                 avd_topology_peers.setdefault(peer, []).append(host)
 
         # Save any updated pools.
-        pool_manager.save_updated_pools()
+        pool_manager.save_updated_pools(Dumper=AnsibleDumper)
 
         result["ansible_facts"] = {
             "avd_switch_facts": avd_switch_facts,

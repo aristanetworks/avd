@@ -7,8 +7,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from ansible.parsing.yaml.dumper import AnsibleDumper
-from yaml import dump, safe_load
+from yaml import SafeDumper, dump, safe_load
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
@@ -62,7 +61,7 @@ class AvdPoolManager:
             if id_pools_count != len(id_data["id_pools"]):
                 self.changed_id_files.add(id_file)
 
-    def save_updated_pools(self):
+    def save_updated_pools(self, Dumper=SafeDumper):
         """
         Save cached data for all changed files.
 
@@ -81,7 +80,7 @@ class AvdPoolManager:
             id_data["id_pools"] = natural_sort(id_data["id_pools"], "pod_name")
             id_data["id_pools"] = natural_sort(id_data["id_pools"], "dc_name")
             id_data["id_pools"] = natural_sort(id_data["id_pools"], "fabric_name")
-            id_file.write_text(FILE_HEADER + dump(id_data, Dumper=AnsibleDumper), encoding="UTF-8")
+            id_file.write_text(FILE_HEADER + dump(id_data, Dumper=Dumper), encoding="UTF-8")
         self.id_pool_data.cache_clear()
         self.changed_id_files = set()
         self.id_files = set()
