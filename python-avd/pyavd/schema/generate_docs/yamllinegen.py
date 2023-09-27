@@ -123,7 +123,7 @@ class YamlLineGenBase(ABC):
         # Build semicolon seperated list of field properties.
         value_fields = [
             self.schema.type,
-            self.get_restrictions(),
+            self.render_restrictions(),
             self.get_default(),
             self.get_required(),
         ]
@@ -206,9 +206,15 @@ class YamlLineGenBase(ABC):
         if self.needs_annotation_for_default_value:
             return yaml.dump({self.schema._key: self.schema.default}, indent=2)
 
-    def get_restrictions(self) -> str | None:
+    def render_restrictions(self) -> str | None:
         """
         Returns restrictions as inline semicolon separated strings.
+        """
+        return "; ".join(self.get_restrictions()) or None
+
+    def get_restrictions(self) -> list:
+        """
+        Returns a list of restrictions.
 
         Only covers generic restrictions. Should be overridden in type specific subclasses.
         """
@@ -229,7 +235,7 @@ class YamlLineGenBase(ABC):
 
             restrictions.append(" | ".join(valid_values))
 
-        return "; ".join(restrictions) or None
+        return restrictions
 
     def render_children(self) -> Generator[YamlLine]:
         """Noop for classes without children. Override in subclasses for dict and list."""
@@ -241,10 +247,9 @@ class YamlLineGenBool(YamlLineGenBase):
 
 
 class YamlLineGenInt(YamlLineGenBase):
-    def get_restrictions(self) -> str | None:
+    def get_restrictions(self) -> list:
         """
-        Returns restrictions as inline semicolon separated strings.
-
+        Returns a list of restrictions.
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -256,17 +261,15 @@ class YamlLineGenInt(YamlLineGenBase):
             elif self.schema.max is not None:
                 restrictions.append(f"<={self.schema.max}")
 
-        if base_restrictions := super().get_restrictions():
-            restrictions.extend(base_restrictions.split("; "))
+        restrictions.extend(super().get_restrictions())
 
-        return "; ".join(restrictions) or None
+        return restrictions
 
 
 class YamlLineGenStr(YamlLineGenBase):
-    def get_restrictions(self) -> str | None:
+    def get_restrictions(self) -> list:
         """
-        Returns restrictions as inline semicolon separated strings.
-
+        Returns a list of restrictions.
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -278,10 +281,9 @@ class YamlLineGenStr(YamlLineGenBase):
             elif self.schema.max_length is not None:
                 restrictions.append(f"length <={self.schema.max_length}")
 
-        if base_restrictions := super().get_restrictions():
-            restrictions.extend(base_restrictions.split("; "))
+        restrictions.extend(super().get_restrictions())
 
-        return "; ".join(restrictions) or None
+        return restrictions
 
 
 class YamlLineGenList(YamlLineGenBase):
@@ -292,7 +294,7 @@ class YamlLineGenList(YamlLineGenBase):
 
         # Build semicolon seperated list of field properties.
         properties_fields = [
-            self.get_restrictions(),
+            self.render_restrictions(),
             self.get_default(),
             self.get_required(),
         ]
@@ -313,10 +315,9 @@ class YamlLineGenList(YamlLineGenBase):
             annotation=self.get_annotation(),
         )
 
-    def get_restrictions(self) -> str | None:
+    def get_restrictions(self) -> list:
         """
-        Returns restrictions as inline semicolon separated strings.
-
+        Returns a list of restrictions.
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -328,10 +329,9 @@ class YamlLineGenList(YamlLineGenBase):
             elif self.schema.max_length is not None:
                 restrictions.append(f"<={self.schema.max_length} items")
 
-        if base_restrictions := super().get_restrictions():
-            restrictions.extend(base_restrictions.split("; "))
+        restrictions.extend(super().get_restrictions())
 
-        return "; ".join(restrictions) or None
+        return restrictions
 
     def render_children(self) -> Generator[YamlLine]:
         """yields TableRow from each child class"""
@@ -357,7 +357,7 @@ class YamlLineGenDict(YamlLineGenBase):
 
         # Build semicolon seperated list of field properties.
         properties_fields = [
-            self.get_restrictions(),
+            self.render_restrictions(),
             self.get_default(),
             self.get_required(),
         ]

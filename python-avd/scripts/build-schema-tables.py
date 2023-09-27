@@ -11,7 +11,6 @@ path.insert(0, str(Path(__file__).parents[1].joinpath("pyavd")))
 
 from schema.constants import SCHEMA_PATHS, STORE
 from schema.generate_docs.mdtabsgen import get_md_tabs
-from schema.generate_docs.utils import list_tables
 from schema.metaschema.meta_schema_model import AristaAvdSchema
 
 for schema_name, schema_path in SCHEMA_PATHS.items():
@@ -19,7 +18,7 @@ for schema_name, schema_path in SCHEMA_PATHS.items():
         raise KeyError(f"Invalid schema name '{schema_name}'")
 
     schema = AristaAvdSchema(**STORE[schema_name])
-    table_names = sorted(list_tables(schema))
+    table_names = sorted(schema._descendant_tables)
     output_dir = schema_path.parents[1].joinpath("docs/tables")
     for table_name in table_names:
         print(f"Building table: {table_name} from schema {schema_name}")

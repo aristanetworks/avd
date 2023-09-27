@@ -212,7 +212,12 @@ class TableRowGenBase(ABC):
     def render_restrictions(self) -> str | None:
         """
         Renders markdown for "restrictions" field as a multiline text compatible with a markdown table cell.
+        """
+        return "<br>".join(self.get_restrictions()) or None
 
+    def get_restrictions(self) -> list:
+        """
+        Returns a list of field restrictions to be rendered in the docs.
         Only covers generic restrictions. Should be overridden in type specific subclasses.
         """
         restrictions = []
@@ -231,7 +236,7 @@ class TableRowGenBase(ABC):
             else:
                 restrictions.extend(f"- <code>{valid_value}</code>" for valid_value in valid_values)
 
-        return "<br>".join(restrictions) or None
+        return restrictions
 
 
 class TableRowGenBool(TableRowGenBase):
@@ -239,10 +244,9 @@ class TableRowGenBool(TableRowGenBase):
 
 
 class TableRowGenInt(TableRowGenBase):
-    def render_restrictions(self) -> str | None:
+    def get_restrictions(self) -> list:
         """
-        Renders markdown for "restrictions" field as a multiline text compatible with a markdown table cell.
-
+        Returns a list of field restrictions to be rendered in the docs.
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -251,17 +255,15 @@ class TableRowGenInt(TableRowGenBase):
         if self.schema.max is not None:
             restrictions.append(f"Max: {self.schema.max}")
 
-        if base_restrictions := super().render_restrictions():
-            restrictions.extend(base_restrictions.split("<br>"))
+        restrictions.extend(super().get_restrictions())
 
-        return "<br>".join(restrictions) or None
+        return restrictions
 
 
 class TableRowGenStr(TableRowGenBase):
-    def render_restrictions(self) -> str | None:
+    def get_restrictions(self) -> list:
         """
-        Renders markdown for "restrictions" field as a multiline text compatible with a markdown table cell.
-
+        Returns a list of field restrictions to be rendered in the docs.
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -278,13 +280,12 @@ class TableRowGenStr(TableRowGenBase):
             else:
                 restrictions.append("Value is converted to lower case.")
 
-        if base_restrictions := super().render_restrictions():
-            restrictions.extend(base_restrictions.split("<br>"))
+        restrictions.extend(super().get_restrictions())
 
         if self.schema.pattern is not None:
             restrictions.append(f"Pattern: {self.schema.pattern}")
 
-        return "<br>".join(restrictions) or None
+        return restrictions
 
 
 class TableRowGenList(TableRowGenBase):
@@ -305,10 +306,9 @@ class TableRowGenList(TableRowGenBase):
 
         return field_type
 
-    def render_restrictions(self) -> str | None:
+    def get_restrictions(self) -> list:
         """
-        Renders markdown for "restrictions" field as a multiline text compatible with a markdown table cell.
-
+        Returns a list of field restrictions to be rendered in the docs.
         Leverages common restrictions from base class.
         """
         restrictions = []
@@ -317,10 +317,9 @@ class TableRowGenList(TableRowGenBase):
         if self.schema.max_length is not None:
             restrictions.append(f"Max Length: {self.schema.max_length}")
 
-        if base_restrictions := super().render_restrictions():
-            restrictions.extend(base_restrictions.split("<br>"))
+        restrictions.extend(super().get_restrictions())
 
-        return "<br>".join(restrictions) or None
+        return restrictions
 
     def render_children(self) -> Generator[TableRow]:
         """yields TableRow from each child class"""
