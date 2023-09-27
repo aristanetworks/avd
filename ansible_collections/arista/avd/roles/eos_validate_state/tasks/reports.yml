@@ -12,6 +12,7 @@
       - template: generate_anta_report_results.j2
   delegate_to: localhost
   run_once: true
+  changed_when: false # yaml_template_to_facts always return changes in that case which break idempotency falsely
   tags:
     - always
     - report
