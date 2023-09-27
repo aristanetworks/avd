@@ -26,7 +26,7 @@
   tags:
     - always
 
-- name: Include device intended structure configuration variables
+- name: Include device intended structured configuration variables
   ansible.builtin.include_vars: "{{ filename }}"
   delegate_to: localhost
   when: structured_config is not defined and lookup('first_found', filename, skip=True, errors='ignore')
