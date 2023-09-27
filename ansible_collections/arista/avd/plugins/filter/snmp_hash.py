@@ -11,6 +11,54 @@ import hashlib
 
 from ansible.errors import AnsibleFilterError
 
+DOCUMENTATION = r"""
+---
+name: snmp_hash
+collection: arista.avd
+author: Arista Ansible Team (@aristanetworks)
+version_added: "3.6.0"
+short_description: Compute localized SNMP passphrases
+description:
+  - Key localization as described in L(RFC 2574 section 2.6,https://www.rfc-editor.org/rfc/rfc2574.html#section-2.6)
+positional: _input
+options:
+  _input:
+    description: Dictionary with SNMP passphrase details.
+    type: dictionary
+    required: true
+    suboptions:
+      passphrase:
+        type: string
+        required: true
+        description:
+          - The passphrase to localize.
+          - This is the "auth" passphrase when the I(priv) argument is not set.
+          - If I(priv) is set, it is the "priv" passphrase.
+      auth:
+        type: string
+        description: Auth type
+        choices: ["md5", "sha", "sha224", "sha256", "sha384", "sha512"]
+        required: true
+      engine_id:
+        type: string
+        description: A hexadecimal string containing the engine_id to be used to localize the passphrase
+        required: true
+      priv:
+        type: string
+        description: Priv type
+        choices: ["des", "aes", "aes192", "aes256"]
+"""
+
+
+RETURN = r"""
+---
+_value:
+  description:
+    - The localized key generated from the passphrase using I(auth) type.
+    - If required the key is truncated to match the appropriate keylength for the I(priv) type.
+  type: string
+"""
+
 PRIV_KEY_LENGTH = {"des": 128, "aes": 128, "aes192": 192, "aes256": 256}
 
 

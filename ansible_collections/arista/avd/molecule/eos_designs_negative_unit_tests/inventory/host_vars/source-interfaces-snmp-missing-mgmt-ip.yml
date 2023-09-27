@@ -1,0 +1,17 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: source-interfaces-snmp-missing-mgmt-ip
+      id: 1
+      # mgmt_ip: 192.168.0.2/24
+      # inband_mgmt_ip: 10.20.30.40/24
+      # inband_mgmt_gateway: 10.20.30.1
+      # inband_mgmt_vrf: INBANDMGMT
+
+source_interfaces:
+  snmp:
+    mgmt_interface: true
+    inband_mgmt_interface: true
+
+expected_error_message: >-
+  Unable to configure SNMP source-interface since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set.

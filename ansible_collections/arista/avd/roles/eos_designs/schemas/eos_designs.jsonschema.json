@@ -3363,7 +3363,7 @@
     },
     "evpn_multicast": {
       "type": "boolean",
-      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" or \"evpn_l3_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
+      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" or \"evpn_l3_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
       "default": false,
       "title": "EVPN Multicast"
     },
@@ -9490,6 +9490,13 @@
             "type": "boolean",
             "title": "LAG Hardware Only"
           },
+          "default_interface_mtu": {
+            "type": "integer",
+            "description": "Default interface MTU configured on EOS under \"interface defaults\".\nTakes precedence over the root key \"default_interface_mtu\".\n",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "Default Interface MTU"
+          },
           "feature_support": {
             "type": "object",
             "properties": {
@@ -9507,6 +9514,12 @@
                 "type": "boolean",
                 "default": false,
                 "title": "PoE"
+              },
+              "per_interface_mtu": {
+                "type": "boolean",
+                "default": true,
+                "description": "Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.\nEffectively this means that all settings regarding interface MTU will be ignored if this is false.\nPlatforms without support for per interface MTU can use a single default interface MTU setting. Set this via \"default_interface_mtu\"\n",
+                "title": "Per Interface MTU"
               },
               "bgp_update_wait_install": {
                 "type": "boolean",
@@ -14544,7 +14557,7 @@
     },
     "snmp_settings": {
       "type": "object",
-      "description": "Set SNMP settings (optional).",
+      "description": "SNMP settings\nFor SNMP local-interfaces see \"source_interfaces.snmp\"\nConfiguration of remote SNMP engine IDs are currently only possible using `structured_config`.",
       "properties": {
         "contact": {
           "type": "string",
@@ -14556,6 +14569,42 @@
           "default": false,
           "description": "Set SNMP location. Formatted as \"<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>\".",
           "title": "Location"
+        },
+        "vrfs": {
+          "type": "array",
+          "description": "Enable/disable SNMP for one or more VRFs.\nCan be used in combination with \"enable_mgmt_interface_vrf\" and \"enable_inband_mgmt_vrf\".",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "Name"
+              },
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
+        },
+        "enable_mgmt_interface_vrf": {
+          "type": "boolean",
+          "description": "Enable/disable SNMP for the VRF set with \"mgmt_interface_vrf\".\nIgnored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device.\nCan be used in combination with \"vrfs\" and \"enable_inband_mgmt_vrf\".",
+          "title": "Enable Management Interface VRF"
+        },
+        "enable_inband_mgmt_vrf": {
+          "type": "boolean",
+          "description": "Enable/disable SNMP for the VRF set with \"inband_mgmt_vrf\".\nIgnored if inband management is not configured for the device.\nCan be used in combination with \"vrfs\" and \"enable_mgmt_interface_vrf\".",
+          "title": "Enable Inband Management VRF"
         },
         "compute_local_engineid": {
           "type": "boolean",
@@ -14581,6 +14630,7 @@
         },
         "users": {
           "type": "array",
+          "description": "Configuration of local SNMP users.\nConfiguration of remote SNMP users are currently only possible using `structured_config`.",
           "items": {
             "type": "object",
             "properties": {
@@ -14591,7 +14641,7 @@
               },
               "group": {
                 "type": "string",
-                "description": "Configuration of the SNMP User Groups are currently only possible using `structured_config`.\n",
+                "description": "Group name",
                 "title": "Group"
               },
               "version": {
@@ -14641,6 +14691,306 @@
             }
           },
           "title": "Users"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "description": "Host IP address or name",
+                "title": "Host"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF Name.\nCan be used in combination with \"use_mgmt_interface_vrf\" and \"use_inband_mgmt_vrf\" to configure the SNMP host under multiple VRFs.",
+                "title": "VRF"
+              },
+              "use_mgmt_interface_vrf": {
+                "type": "boolean",
+                "description": "Configure the SNMP host under the VRF set with \"mgmt_interface_vrf\". Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all. Can be used in combination with \"vrf\" and \"use_inband_mgmt_vrf\" to configure the SNMP host under multiple VRFs.",
+                "title": "Use Management Interface VRF"
+              },
+              "use_inband_mgmt_vrf": {
+                "type": "boolean",
+                "description": "Configure the SNMP host under the VRF set with \"inband_mgmt_vrf\". Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all. Can be used in combination with \"vrf\" and \"use_mgmt_interface_vrf\" to configure the SNMP host under multiple VRFs.",
+                "title": "Use Inband Management VRF"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "1",
+                  "2c",
+                  "3"
+                ],
+                "title": "Version"
+              },
+              "community": {
+                "type": "string",
+                "description": "Community name",
+                "title": "Community"
+              },
+              "users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "title": "Username"
+                    },
+                    "authentication_level": {
+                      "type": "string",
+                      "enum": [
+                        "auth",
+                        "noauth",
+                        "priv"
+                      ],
+                      "title": "Authentication Level"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Users"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Hosts"
+        },
+        "communities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Community name",
+                "title": "Name"
+              },
+              "access": {
+                "type": "string",
+                "enum": [
+                  "ro",
+                  "rw"
+                ],
+                "title": "Access"
+              },
+              "access_list_ipv4": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv4 access list name",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Access List IPv4"
+              },
+              "access_list_ipv6": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv6 access list name",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Access List IPv6"
+              },
+              "view": {
+                "type": "string",
+                "title": "View"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Communities"
+        },
+        "ipv4_acls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "IPv4 access list name",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "IPv4 Acls"
+        },
+        "ipv6_acls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "IPv6 access list name",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "IPv6 Acls"
+        },
+        "views": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "SNMP view name",
+                "title": "Name"
+              },
+              "mib_family_name": {
+                "type": "string",
+                "title": "MIB Family Name"
+              },
+              "included": {
+                "type": "boolean",
+                "title": "Included"
+              },
+              "MIB_family_name": {
+                "type": "string",
+                "title": "MIB Family Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Views"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Group name",
+                "title": "Name"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "v1",
+                  "v2c",
+                  "v3"
+                ],
+                "title": "Version"
+              },
+              "authentication": {
+                "type": "string",
+                "enum": [
+                  "auth",
+                  "noauth",
+                  "priv"
+                ],
+                "title": "Authentication"
+              },
+              "read": {
+                "type": "string",
+                "description": "Read view",
+                "title": "Read"
+              },
+              "write": {
+                "type": "string",
+                "description": "Write view",
+                "title": "Write"
+              },
+              "notify": {
+                "type": "string",
+                "description": "Notify view",
+                "title": "Notify"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Groups"
+        },
+        "traps": {
+          "type": "object",
+          "properties": {
+            "enable": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable or disable all snmp-traps\n",
+              "title": "Enable"
+            },
+            "snmp_traps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Enable or disable specific snmp-traps and their sub_traps\nExamples:\n- \"bgp\"\n- \"bgp established\"\n",
+                    "title": "Name"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Snmp Traps"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Traps"
         }
       },
       "additionalProperties": false,
@@ -14715,6 +15065,27 @@
             "^_.+$": {}
           },
           "title": "Radius"
+        },
+        "snmp": {
+          "type": "object",
+          "description": "SNMP local-interfaces.",
+          "properties": {
+            "mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
+              "title": "Management Interface"
+            },
+            "inband_mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
+              "title": "Inband Management Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Snmp"
         },
         "ssh_client": {
           "type": "object",
@@ -14940,7 +15311,7 @@
                 },
                 "evpn_l2_multicast": {
                   "type": "object",
-                  "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\n",
+                  "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\nRequires `evpn_multicast` to also be set to `true`.\n",
                   "properties": {
                     "enabled": {
                       "type": "boolean",
@@ -14955,7 +15326,7 @@
                 },
                 "evpn_l3_multicast": {
                   "type": "object",
-                  "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\n",
+                  "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\nRequires `evpn_multicast` to also be set to `true`.\n",
                   "properties": {
                     "enabled": {
                       "type": "boolean",
@@ -16574,7 +16945,7 @@
           },
           "evpn_l2_multicast": {
             "type": "object",
-            "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\n",
+            "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\nRequires `evpn_multicast` to also be set to `true`.\n",
             "properties": {
               "enabled": {
                 "type": "boolean",
@@ -16589,7 +16960,7 @@
           },
           "evpn_l3_multicast": {
             "type": "object",
-            "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\n",
+            "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\nRequires `evpn_multicast` to also be set to `true`.\n",
             "properties": {
               "enabled": {
                 "type": "boolean",

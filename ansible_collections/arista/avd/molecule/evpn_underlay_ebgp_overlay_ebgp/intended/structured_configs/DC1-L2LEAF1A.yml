@@ -27,9 +27,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-snmp_server:
-  contact: example@example.com
-  location: DC1_FABRIC rackE DC1-L2LEAF1A
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -60,6 +57,9 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+snmp_server:
+  contact: example@example.com
+  location: DC1_FABRIC rackE DC1-L2LEAF1A
 vlans:
 - id: 4091
   tenant: system

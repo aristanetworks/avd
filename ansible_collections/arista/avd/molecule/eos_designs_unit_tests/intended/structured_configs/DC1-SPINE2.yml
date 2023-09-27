@@ -179,9 +179,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS DC1-SPINE2
 spanning_tree:
   mode: none
 local_users:
@@ -218,6 +215,9 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS DC1-SPINE2
 ethernet_interfaces:
 - name: Ethernet1/1/1
   peer: DC1-LEAF1A

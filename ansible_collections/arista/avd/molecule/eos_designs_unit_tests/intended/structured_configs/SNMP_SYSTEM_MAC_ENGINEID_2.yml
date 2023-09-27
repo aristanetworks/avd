@@ -5,6 +5,13 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
 snmp_server:
   engine_ids:
     local: f5717f1234567890ab00
@@ -32,12 +39,5 @@ snmp_server:
   - name: usertest-v2c
     group: usergroup
     version: v2c
-vrfs:
-- name: MGMT
-  ip_routing: false
-management_api_http:
-  enable_vrfs:
-  - name: MGMT
-  enable_https: true
 ip_igmp_snooping:
   globally_enabled: true

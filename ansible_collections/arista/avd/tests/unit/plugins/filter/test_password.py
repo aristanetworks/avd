@@ -9,18 +9,17 @@ from contextlib import nullcontext as does_not_raise
 
 import pytest
 
-from ansible_collections.arista.avd.plugins.filter.password import (
-    FilterModule,
+from ansible_collections.arista.avd.plugins.filter.decrypt import decrypt
+from ansible_collections.arista.avd.plugins.filter.encrypt import encrypt
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.password_utils.password import (
     bgp_decrypt,
     bgp_encrypt,
-    decrypt,
-    encrypt,
     ospf_message_digest_decrypt,
     ospf_message_digest_encrypt,
     ospf_simple_decrypt,
     ospf_simple_encrypt,
 )
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 
 ##########
 # BGP
@@ -62,9 +61,6 @@ BGP_MOLECULE_PASSWORDS_TEST = [
     ("RR-OVERLAY-PEERS", "arista123", "04FdfTXWrEfpDTUc3mlSjg=="),
     ("MLAG_PEER", "arista123", "arwUnrq9ydqIhjfTwRhAlg=="),
 ]
-
-
-f = FilterModule()
 
 
 @pytest.mark.parametrize("key, password, expected", BGP_INPUT_DICT_ENCRYPT_EXPECTED)
@@ -230,16 +226,3 @@ def test_decrypt(password, passwd_type, key, kwargs, expected_raise):
     """
     with expected_raise:
         decrypt(password, passwd_type=passwd_type, key=key, **kwargs)
-
-
-def test_password_module():
-    """
-    Assert:
-      * encrypt
-      * decrypt
-    filters are part of the module
-    """
-    resp = f.filters()
-    assert isinstance(resp, dict)
-    assert "encrypt" in resp.keys()
-    assert "decrypt" in resp.keys()

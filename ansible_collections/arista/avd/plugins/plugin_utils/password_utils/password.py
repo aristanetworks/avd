@@ -2,10 +2,11 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 """
-Encrypt / Decrypt filters
+Used by Encrypt / Decrypt filters
 """
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.password_utils import cbc_decrypt, cbc_encrypt
+
+from .password_utils import cbc_decrypt, cbc_encrypt
 
 
 def _validate_password_and_key(password: str, key: str) -> None:
@@ -159,47 +160,3 @@ def bgp_decrypt(password: str, key) -> str:
         return cbc_decrypt(key, data).decode()
     except Exception as exc:
         raise AristaAvdError("BGP password decryption failed - check the input parameters") from exc
-
-
-##############
-# GENERIC
-##############
-METHODS_DIR = {
-    "bgp": (bgp_encrypt, bgp_decrypt),
-    "ospf_simple": (ospf_simple_encrypt, ospf_simple_decrypt),
-    "ospf_message_digest": (ospf_message_digest_encrypt, ospf_message_digest_decrypt),
-}
-
-
-def encrypt(value, passwd_type=None, key=None, **kwargs) -> str:
-    """
-    Umbrella function to execute the correct encrypt method based on the input type
-    """
-    if not passwd_type:
-        raise AristaAvdMissingVariableError("type keyword must be present to use this test")
-    try:
-        encrypt_method = METHODS_DIR[passwd_type][0]
-    except KeyError as exc:
-        raise AristaAvdError(f"Type {passwd_type} is not supported for the encrypt filter") from exc
-    return encrypt_method(str(value), key=key, **kwargs)
-
-
-def decrypt(value, passwd_type=None, key=None, **kwargs) -> str:
-    """
-    Umbrella function to execute the correct decrypt method based on the input type
-    """
-    if not passwd_type:
-        raise AristaAvdMissingVariableError("type keyword must be present to use this test")
-    try:
-        decrypt_method = METHODS_DIR[passwd_type][1]
-    except KeyError as exc:
-        raise AristaAvdError(f"Type {passwd_type} is not supported for the decrypt filter") from exc
-    return decrypt_method(str(value), key=key, **kwargs)
-
-
-class FilterModule(object):
-    def filters(self):
-        return {
-            "encrypt": encrypt,
-            "decrypt": decrypt,
-        }

@@ -163,13 +163,13 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet2 | routed | - | 172.16.11.3/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.11.67/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet2 | routed | - | 172.17.110.2/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet2 | routed | - | 172.17.110.10/31 | default | 1500 | False | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet2 | routed | - | 172.17.110.18/31 | default | 1500 | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet12 | routed | - | 172.17.110.14/31 | default | 1500 | False | - | - |
-| Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet12 | routed | - | 172.17.110.22/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet2 | routed | - | 172.16.11.3/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.11.67/31 | default | - | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet2 | routed | - | 172.17.110.2/31 | default | - | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet2 | routed | - | 172.17.110.10/31 | default | - | False | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet2 | routed | - | 172.17.110.18/31 | default | - | False | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet12 | routed | - | 172.17.110.14/31 | default | - | False | - | - |
+| Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet12 | routed | - | 172.17.110.22/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -178,7 +178,6 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet2
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.11.3/31
@@ -188,7 +187,6 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet2
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.11.67/31
@@ -198,7 +196,6 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet2
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.2/31
@@ -208,7 +205,6 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet2
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.10/31
@@ -218,7 +214,6 @@ interface Ethernet4
 interface Ethernet5
    description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet2
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.18/31
@@ -228,7 +223,6 @@ interface Ethernet5
 interface Ethernet7
    description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet12
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.14/31
@@ -238,7 +232,6 @@ interface Ethernet7
 interface Ethernet8
    description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet12
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.22/31
