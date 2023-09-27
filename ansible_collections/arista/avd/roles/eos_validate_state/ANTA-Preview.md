@@ -12,7 +12,7 @@
 
 ## Known limitations
 
-- List of known limitations
+- Loose mode is no longer supported in ANTA mode.
 
 ## How to run eos_validate_state in ANTA mode
 
