@@ -110,7 +110,7 @@ class AvdTestBGP(AvdTestBase):
         if (
             service_routing_protocols_model := get(self.hostvars[self.device_name], "service_routing_protocols_model")
         ) is None or service_routing_protocols_model != "multi-agent":
-            LOGGER.info(
+            LOGGER.warning(
                 "Variable 'service_routing_protocols_model' is missing from structured_config or is NOT set to 'multi-agent'. %s is skipped.",
                 self.__class__.__name__,
             )

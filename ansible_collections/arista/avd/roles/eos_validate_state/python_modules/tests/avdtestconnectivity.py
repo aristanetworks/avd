@@ -231,7 +231,7 @@ class AvdTestLLDPTopology(AvdTestBase):
                     }
                 )
             except AristaAvdMissingVariableError as e:
-                LOGGER.warning("Variable '%s' is missing. Please validate the Ethernet interfaces data model of this host.", str(e))
+                LOGGER.info("Variable '%s' is missing. Please validate the Ethernet interfaces data model of this host.", str(e))
                 continue
 
         return {self.anta_module: anta_tests}
