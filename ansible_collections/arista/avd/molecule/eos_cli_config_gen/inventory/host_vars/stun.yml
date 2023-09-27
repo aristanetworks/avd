@@ -5,7 +5,8 @@ stun:
     local_interface: ethernet1
   client:
     server_profiles:
-      - name: server1
-        ip_address: 1.2.3.4
+      # The servers are on purpose not in order in order to test the sorting
       - name: server2
         ip_address: 2.3.4.5
+      - name: server1
+        ip_address: 1.2.3.4
