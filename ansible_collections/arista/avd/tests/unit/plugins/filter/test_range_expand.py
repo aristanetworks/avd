@@ -16,25 +16,25 @@ RANGE_TO_EXPAND_INVALID_VALUES = [
     pytest.param(
         "Ethernet4-2",
         AnsibleFilterError,
-        "Range Ethernet4-2 could not be expended because first interface 4 is bigger than last interface 2 in the range.",
+        "Range Ethernet4-2 could not be expanded because the first interface 4 is larger than last interface 2 in the range.",
         id="Wrong interface range",
     ),
     pytest.param(
         "Ethernet1,51-3/2",
         AnsibleFilterError,
-        "Range 51-3/2 could not be expended because first module 51 is bigger than last module 3 in the range.",
+        "Range 51-3/2 could not be expanded because the first module 51 is larger than last module 3 in the range.",
         id="Wrong module range",
     ),
     pytest.param(
         "Ethernet1.42-21",
         AnsibleFilterError,
-        "Range Ethernet1.42-21 could not be expended because first subinterface 42 is bigger than last subinterface 21 in the range.",
+        "Range Ethernet1.42-21 could not be expanded because the first subinterface 42 is larger than last subinterface 21 in the range.",
         id="Wrong subinterface range",
     ),
     pytest.param(
         "Ethernet4/2-1/4",
         AnsibleFilterError,
-        "Range Ethernet4/2-1/4 could not be expended because first interface 2 is bigger than last interface 1 in the range.",
+        "Range Ethernet4/2-1/4 could not be expanded because the first interface 2 is larger than last interface 1 in the range.",
         id="Wrong parent interface range",
     ),
 ]
