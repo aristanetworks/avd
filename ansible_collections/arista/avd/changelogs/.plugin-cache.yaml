@@ -42,4 +42,4 @@ plugins:
   strategy: {}
   test: {}
   vars: {}
-version: 3.8.6
+version: 3.8.7

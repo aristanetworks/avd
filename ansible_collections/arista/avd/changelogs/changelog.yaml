@@ -708,3 +708,23 @@ releases:
     fragments:
     - v3.8.6.yml
     release_date: '2023-05-12'
+  3.8.7:
+    changes:
+      bugfixes:
+      - Doc - update links to specific version by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/3039)
+      - Fix - Cap requirement on jsonschema in 3.8.x train by @gmuloc in (https://github.com/aristanetworks/ansible-avd/pull/3160)
+      - Fix(eos_cli_config_gen) - Ensure unique VRF names in schemas (#2878) by @carlbuchmann
+        in (https://github.com/aristanetworks/ansible-avd/pull/3037)
+      - Fix(eos_config_deploy_cvp) - Avoid duplicate AVD configlet (#3124) by @carlbuchmann
+        in (https://github.com/aristanetworks/ansible-avd/pull/3166)
+      - Fix(eos_designs) - Ignore "overlay_routing_protocol_address_family ipv6" on
+        l2leaf (#2955) by @Vibhu-gslab in (https://github.com/aristanetworks/ansible-avd/pull/3043)
+      - Fix(eos_designs) - Remove EVPN related config if VRF 'default' is not EVPN
+        enabled (#2888) by @Shivani-chourasiya in (https://github.com/aristanetworks/ansible-avd/pull/3041)
+      - Fix(eos_designs) - bgp_mesh_pes (#2899) by @carlbuchmann in (https://github.com/aristanetworks/ansible-avd/pull/3038)
+      release_summary: 'Release 3.8.7 - See documentation on avd.arista.com for details.
+
+        '
+    fragments:
+    - v3.8.7.yml
+    release_date: '2023-09-26'
