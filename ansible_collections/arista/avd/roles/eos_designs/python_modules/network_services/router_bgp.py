@@ -470,7 +470,9 @@ class RouterBgpMixin(UtilsMixin):
                     list_of_dicts=bundles,
                     primary_key="name",
                     new_dict=bundle,
-                    context="BGP VLAN-Aware Bundles defined under network services",
+                    context=(
+                        "BGP VLAN-Aware Bundles defined under network services. A common reason is a l2vlan name is overlapping with a evpn_vlan_bundle name"
+                    ),
                     context_keys=["name"],
                 )
 
