@@ -372,11 +372,11 @@ QOS Profile: **test**
 
 **ECN Configuration**
 
-| TX queue | Type | ECN Enabled | Min Threshold | Max Threshold | Max Mark Probability |
+| TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
-| 1 | All | False | -  | -  | - |
-| 2 | All | True | 320 kbytes | 320 kbytes | 90 |
-| 4 | All | True | 320 segments | 320 segments | - |
+| 1 | All | -  | -  | - |
+| 2 | All | 320 kbytes | 320 kbytes | 90 |
+| 4 | All | 320 segments | 320 segments | - |
 
 QOS Profile: **test_with_pfc**
 
@@ -430,14 +430,14 @@ QOS Profile: **uc_mc_queues_test**
 
 **ECN Configuration**
 
-| TX queue | Type | ECN Enabled | Min Threshold | Max Threshold | Max Mark Probability |
+| TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
-| 1 | Unicast | False | -  | -  | - |
-| 2 | Unicast | False | 320 kbytes | 320 kbytes | 90 |
-| 4 | Unicast | False | 320 segments | 320 segments | - |
-| 1 | Multicast | False | - | - | - |
-| 2 | Multicast | False | - | - | - |
-| 4 | Multicast | False | - | - | - |
+| 1 | Unicast | -  | -  | - |
+| 2 | Unicast | 320 kbytes | 320 kbytes | 90 |
+| 4 | Unicast | 320 segments | 320 segments | - |
+| 1 | Multicast | - | - | - |
+| 2 | Multicast | - | - | - |
+| 4 | Multicast | - | - | - |
 
 #### QOS Profile Device Configuration
 

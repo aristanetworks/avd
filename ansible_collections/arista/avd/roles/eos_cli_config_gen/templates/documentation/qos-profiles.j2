@@ -84,34 +84,32 @@ QOS Profile: **{{ profile.name }}**
 
 **ECN Configuration**
 
-| TX queue | Type | ECN Enabled | Min Threshold | Max Threshold | Max Mark Probability |
+| TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
 {%             if profile.tx_queues is arista.avd.defined %}
 {%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "All" %}
-{%                     set enabled = tx_queue.random_detect.ecn.threshold.units is arista.avd.defined() %}
 {%                     set min = tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
 {%                     set max = tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
 {%                     set prob = tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
 {%                     set units = tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
-| {{ tx_queue.id }} | {{ type }} | {{ enabled }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
+| {{ tx_queue.id }} | {{ type }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
 {%                 endfor %}
 {%             endif %}
 {%             if profile.uc_tx_queues is arista.avd.defined %}
 {%                 for uc_tx_queue in profile.uc_tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "Unicast" %}
-{%                     set enabled = tx_queue.random_detect.ecn.threshold.units is arista.avd.defined() %}
 {%                     set min = uc_tx_queue.random_detect.ecn.threshold.min | arista.avd.default("-") %}
 {%                     set max = uc_tx_queue.random_detect.ecn.threshold.max | arista.avd.default("-") %}
 {%                     set prob = uc_tx_queue.random_detect.ecn.threshold.max_probability | arista.avd.default("-") %}
 {%                     set units = uc_tx_queue.random_detect.ecn.threshold.units | arista.avd.default("") %}
-| {{ uc_tx_queue.id }} | {{ type }} | {{ enabled }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
+| {{ uc_tx_queue.id }} | {{ type }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
 {%                 endfor %}
 {%             endif %}
 {%             if profile.mc_tx_queues is arista.avd.defined %}
 {%                 for mc_tx_queue in profile.mc_tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "Multicast" %}
-| {{ mc_tx_queue.id }} | {{ type }} | False | - | - | - |
+| {{ mc_tx_queue.id }} | {{ type }} | - | - | - |
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
