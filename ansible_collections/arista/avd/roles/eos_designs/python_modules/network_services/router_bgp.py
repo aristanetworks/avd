@@ -429,7 +429,7 @@ class RouterBgpMixin(UtilsMixin):
                     if (evpn_vlan_bundle := get_item(self._hostvars["evpn_vlan_bundles"], "name", bundle_name)) is None:
                         raise AristaAvdMissingVariableError(
                             "The 'evpn_vlan_bundle' of the l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for l2vlan"
-                            f" {l2vlans[0]['id']} in Tenant '{l2vlans[0]['tenant']}' and evpn_vlan_bundle '{l2vlans[0]['evpn_vlan_bundle'].replace('_','')}'."
+                            f" {l2vlans[0]['id']} in Tenant '{l2vlans[0]['tenant']}' and evpn_vlan_bundle '{l2vlans[0]['evpn_vlan_bundle']}'."
                         )
 
                     if (
