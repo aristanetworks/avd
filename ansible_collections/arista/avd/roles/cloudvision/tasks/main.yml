@@ -21,7 +21,7 @@
       - ansible_host != inventory_hostname
     fail_msg: "It appears this role was not called with delegated_to for {{ inventory_hostname }}. Refer to documentation about why this might be an issue."
     quiet: True
-  ignore_errors: True
+  failed_when: False
 
 - name: "Update tags on CVP"
   arista.cvp.cv_tag_v3:
