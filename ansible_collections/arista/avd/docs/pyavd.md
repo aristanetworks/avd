@@ -113,9 +113,4 @@ md-toc>=8.1.8
     options:
       show_root_toc_entry: false
       paths: ../../../../python-avd
-
-::: pyavd.validation_result
-    options:
-      show_root_toc_entry: false
-      paths: ../../../../python-avd
 <!-- TODO: Add docs for AvdPoolManager, but it is not possible today since it is under the vendored code.-->
