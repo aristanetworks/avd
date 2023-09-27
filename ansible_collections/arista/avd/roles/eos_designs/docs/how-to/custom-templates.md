@@ -18,6 +18,7 @@ Custom templates should be written in Jinja2.
 For details on how to create Jinja2 templates, see [Templating Jinja2](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_templating.html#templating-jinja2)
 
 For example:
+
 ```jinja2
 _structured_configuration_variable_name: structured_configuration_variable_value {{ some_variable }}
 ```
@@ -29,6 +30,7 @@ At runtime, `eos_designs` searches for custom templates in several locations, th
 <path to users AVD implementation>/playbooks/templates/<template name>
 <path to users AVD implementation>/playbooks/<template name>
 ```
+
 The "templates" folders do not exist by default so will need to be created if that is the location chosen by the user.
 
 ### Variable Validation
@@ -40,6 +42,7 @@ As with any AVD variable, additional structured configuration variables will be 
 For the custom template to be automatically discovered and rendered by `eos_designs`, a variable that references the template should be added to the inventory group vars.
 
 The format of the variable should be as follows:
+
 ```yaml
 eos_designs_custom_templates:
   - template: custom_template.j2
@@ -47,6 +50,7 @@ eos_designs_custom_templates:
       list_merge: prepend
       strip_empty_keys: false
 ```
+
 For more details, see [Custom Templates](https://avd.arista.com/4.3/roles/eos_designs/docs/role-configuration.html#custom-templates)
 
 ## Adding the Custom Template to the `eos-designs` Role
