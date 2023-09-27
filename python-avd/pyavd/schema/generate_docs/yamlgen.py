@@ -8,7 +8,7 @@ from ..metaschema.meta_schema_model import AristaAvdSchema
 
 def get_yaml(schema: AristaAvdSchema, target_table: str | None = None) -> str:
     """
-    Returns one markdown codeblock with yaml either containing all keys of the given schema or only a subset if "table_name" is set.
+    Returns one markdown codeblock with YAML either containing all keys of the given schema or only a subset if "target_table" is set.
     Also adds foot notes for use with mkdocs codeblock annotations as required.
     """
     lines = []

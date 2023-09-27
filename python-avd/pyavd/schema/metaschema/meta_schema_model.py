@@ -95,7 +95,13 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     _key: str | None = None
     _parent_schema: AvdSchemaField | None = None
     _is_primary_key: bool = False
+    """
+    Primary keys are always included in the documentation tables if any other key of the same dict is present.
+    """
     _is_first_list_key: bool = False
+    """
+    Simple types or the first key of a dict contained in a list will be rendered with a hyphen as part of the indentation.
+    """
 
     # Signal to __init__ if the $ref in the schema should be resolved before initilizing the pydantic model.
     _resolve_schema: ClassVar[bool] = True
@@ -153,7 +159,7 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
         # This should never happen, since only the root key should be without a parent_schema.
         if len(self._path) != 1:
-            raise NotImplementedError("Something went wrong in _table", self._path)
+            raise ValueError("Something went wrong in _table", self._path)
 
         # This is a root key the default table is the key with hyphens and removing <,>
         return self._key.replace("<", "").replace(">", "").replace("_", "-")

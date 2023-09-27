@@ -20,13 +20,13 @@ LEGACY_OUTPUT = True
 
 class YamlLine(BaseModel):
     """
-    Dataclass for one table row.
+    Dataclass for one YAML line (and any associated descriptions).
     Content of line is yaml formatted so it should be rendered in a code block.
     The field may need an mkdocs code block annotation link to show large default values.
-    If so the content of the annotation is put into .annotation.
+    If so the content of the annotation is stored in the 'annotation' attribute.
 
     Since annotation numbers must be tracked across all yaml lines, it is up to the caller
-    to give us to annotation number at rendering time.
+    to provide the annotation number at rendering time.
 
     The annotation link can be rendered with .render_annotation_link(annotation_number).
     The annotation foot note can be rendered with .render_annotation(annotation_number).
@@ -62,9 +62,7 @@ class YamlLine(BaseModel):
 
         Like: " # (123)!"
         """
-        if self.annotation is None:
-            return ""
-        return f" # ({annotation_number})!"
+        return "" if self.annotation is None else f" # ({annotation_number})!"
 
 
 class YamlLineGenBase(ABC):
@@ -115,10 +113,7 @@ class YamlLineGenBase(ABC):
 
     @property
     def is_removed(self) -> bool:
-        if self.schema.deprecation and self.schema.deprecation.removed:
-            return True
-
-        return False
+        return self.schema.deprecation and self.schema.deprecation.removed
 
     def render_field(self) -> Generator[YamlLine]:
         """
@@ -138,10 +133,7 @@ class YamlLineGenBase(ABC):
         else:
             value = "; ".join(field for field in value_fields if field)
 
-        if self.schema._key:
-            key = f"{self.schema._key}: "
-        else:
-            key = ""
+        key = f"{self.schema._key}: " if self.schema._key else ""
 
         yield YamlLine(
             line=f"{self.get_indentation()}{key}<{value}>",
@@ -381,10 +373,7 @@ class YamlLineGenDict(YamlLineGenBase):
             # Add <dict> when we don't generate yaml for child keys.
             properties = f" <dict>{properties}"
 
-        if self.schema._key:
-            key = f"{self.schema._key}:"
-        else:
-            key = ""
+        key = f"{self.schema._key}:" if self.schema._key else ""
 
         yield YamlLine(
             line=f"{self.get_indentation()}{key}{properties}",

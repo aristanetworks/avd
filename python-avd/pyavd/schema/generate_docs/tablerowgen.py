@@ -55,7 +55,7 @@ class TableRowGenBase(ABC):
         self.schema = schema
         self.target_table = target_table
 
-        # The render_schema_field function contains all the logic to device wether this field should be part of the target_table or not.
+        # The render_schema_field function contains all the logic to device whether this field should be part of the target_table or not.
         if render_schema_field(schema, target_table):
             if schema._path:
                 # Only render this field when there is a path (not the root dict), but always render children.
@@ -74,6 +74,14 @@ class TableRowGenBase(ABC):
     def get_indentation(self) -> str:
         """
         Indentation is two spaces for dicts and 4 spaces for lists (so the hyphen will be indented 2)
+
+        For the variable {"my":{"random":{"list":[<str>]}}} the schema._path would be ["my", "random", "list", []].
+        The indentation would be 4*2-2+2 = 8 spaces. Since all items are simple values (not a dict with keys)
+        we replace the second to last space with a hyphen for yaml style lists.
+
+        For the variable {"my":{"random":{"list":[{"key": <value>}]}}} the schema._path would be ["my", "random", "list", [], "key"].
+        The indentation would be 5*2-2 = 8 spaces.
+        For the first key in the dict we replace the second to last space with a hyphen for yaml style lists.
         """
         indentation_count = len(self.schema._path) * 2 - 2
         if not self.schema._key:
@@ -97,10 +105,7 @@ class TableRowGenBase(ABC):
         if self.schema.deprecation is None:
             return ""
 
-        if self.schema.deprecation.removed:
-            label = "removed"
-        else:
-            label = "deprecated"
+        label = "removed" if self.schema.deprecation.removed else "deprecated"
 
         return f' <span style="color:red">{label}</span>'
 
@@ -109,7 +114,7 @@ class TableRowGenBase(ABC):
         Returns None or a markdown formatted colored string with the deprecation description.
         """
         if self.schema.deprecation is None:
-            return ""
+            return None
 
         descriptions = []
         if self.schema.deprecation.removed:
@@ -194,12 +199,11 @@ class TableRowGenBase(ABC):
         descriptions = []
         if self.schema.description:
             descriptions.append(self.schema.description.replace("\n", "<br>"))
-        description = " ".join(descriptions)
 
         if deprecation := self.get_deprecation_description():
-            description += deprecation
+            descriptions.append(deprecation)
 
-        return description or None
+        return "".join(descriptions) or None
 
     def render_children(self) -> Generator[TableRow]:
         """Noop for classes without children. Override in subclasses for dict and list."""

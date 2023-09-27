@@ -6,19 +6,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from ..metaschema.meta_schema_model import AristaAvdSchema, AvdSchemaField
-
-
-def list_tables(schema: AristaAvdSchema) -> set[str]:
-    """
-    Returns list of tables to render.
-    """
-    return schema._descendant_tables
+    from ..metaschema.meta_schema_model import AvdSchemaField
 
 
 def render_schema_field(schema: AvdSchemaField, target_table: str | None) -> bool:
     """
-    Returns boolean indicating whether this field should be rendered in the targeted table
+    Returns boolean indicating whether this field should be rendered in the targeted table.
 
     - The root dict is always rendered.
     - Render keys with matching _table
