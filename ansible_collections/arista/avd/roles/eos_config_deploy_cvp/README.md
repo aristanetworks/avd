@@ -73,7 +73,7 @@ For a complete list of authentication options available with CloudVision Ansible
 - **`configlets_prefix`**: Prefix to use for configlet on CV side. Default: `AVD-{{ fabric_name }}-`.
 - **`device_filter`**: Filter to target a specific set of devices on CV side. Default: `all`. It can be either a string or a list of strings.
 - **`device_apply_mode`**: `strict` / `loose`. Set how configlets are attached/detached on device. If set to strict, all configlets and image bundles not listed in your vars are detached. Default: `loose`.
-- **`device_inventory_mode`**: `strict` / `loose`. Define how missing devices are handled. "loose" will ignore missing devices. "strict" will fail on any missing device. Default: `strict`. **NOTE**: This option requires `arista.cvp` collection version >= 3.7.0.
+- **`device_inventory_mode`**: `strict` / `loose`. Define how missing devices are handled. "loose" will ignore missing devices. "strict" will fail on any missing device. Default: `strict`. **NOTE**: This option requires `arista.cvp` collection version >= 3.8.0.
 - **`device_search_key`**: `fqdn` / `hostname` / `serialNumber`. Key name to use to look for device in CloudVision. Default: `hostname`.
 - **`state`**: `present` / `absent`. Support creation or cleanup topology on CV server. Default: `present`.
 - **`execute_tasks`**:  `true` / `false`. Support automatically executing pending tasks. Default: `false`.
