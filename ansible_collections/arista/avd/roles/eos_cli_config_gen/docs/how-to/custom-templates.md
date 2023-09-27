@@ -16,13 +16,14 @@ For details on how to create Jinja2 templates, see [Templating Jinja2](https://d
 
 Custom templates can utilize variables defined by all the AVD variable definition mechanisms. For more details see the explanation in [Custom Structured Configuration](../../../eos_designs/docs/how-to/custom-structured-configuration.md)
 
-If the required variable is not available by any of these mechanisms, it can be defined using a custom template in the `eos_designs` role. For more details see [Custom Templates for eos_designs](../../../eos_designs/docs/how-to/custom-templates.md) 
+If the required variable is not available by any of these mechanisms, it can be defined using a custom template in the `eos_designs` role. For more details see [Custom Templates for eos_designs](../../../eos_designs/docs/how-to/custom-templates.md)
 
 At runtime, `eos_cli_config_gen` searches for custom templates in the following location, therefore, custom templates should be saved here:
 
 ```text
 <path to users AVD implementation>/playbooks/templates/<template name>
 ```
+
 The "templates" folder does not exist by default so will need to be created.
 
 ## Adding the Custom Template to group vars
@@ -30,10 +31,12 @@ The "templates" folder does not exist by default so will need to be created.
 For the custom template to be automatically discovered and rendered by `eos_cli_config_gen`, a variable that references the template should be added to the inventory group vars.
 
 The format of the variable should be as follows:
+
 ```yaml
 custom_templates:
   - custom_template_name.j2
 ```
+
 For more details, see [Extensibility with Custom Templates](https://avd.sh/en/stable/roles/eos_cli_config_gen/docs/role-configuration.html#extensibility-with-custom-templates)
 
 ## Adding the Custom Template to the `eos_cli_config_gen` Role
@@ -45,7 +48,6 @@ This happens automatically as part of the `Generate eos intended configuration` 
 <div style="text-align:left; width:500px">
   <img src="../../../../media/main_yml.png" alt="screen shot of main.yml file" />
 </div>
-
 
 This task renders the main `eos-intended-config.j2` template which has multiple include statements. One of these include statements pertains to custom templates and causes any custom templates to be included in the rendering process.
 
