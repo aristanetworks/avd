@@ -1,0 +1,27 @@
+{
+    "build": {
+        "dockerfile": "./Dockerfile",
+        "context": ".",
+        "args": {
+            "FROM_IMAGE": "${localEnv:FROM_IMAGE}",
+            "FROM_VARIANT": "${localEnv:FROM_VARIANT}"
+        }
+    },
+
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2":{
+            // do not install zsh to the base to check size diff
+            "installZsh": true,
+            "installOhMyZsh": true,
+            "configureZshAsDefaultShell": true,
+            "username": "${localEnv:USERNAME}",
+            "userUid": "${localEnv:UID}",
+            "userGid": "${localEnv:GID}",
+            // do not update packages to reduce build time
+            "upgradePackages": "false"
+        }
+    },
+
+	// Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "${localEnv:USERNAME}"
+}

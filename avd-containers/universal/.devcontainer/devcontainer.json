@@ -1,0 +1,50 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+	"name": "avd-universal",
+	"build": {
+        "dockerfile": "./Dockerfile",
+        "context": ".",
+        "args": {
+            "FROM_IMAGE": "${localEnv:FROM_IMAGE}",
+            "FROM_VARIANT": "${localEnv:FROM_VARIANT}",
+            "AVD_VERSION": "${localEnv:AVD_VERSION}",
+            "ANSIBLE_CORE_VERSION": "${localEnv:ANSIBLE_CORE_VERSION}",
+            "USERNAME": "${localEnv:USERNAME}"
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2.3.0": {
+            "version": "latest"
+        },
+        // add sshd to support gh cli codespace cp
+        "ghcr.io/devcontainers/features/sshd:1": {
+            "version": "latest"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // git essentials
+                "piotrpalarz.vscode-gitignore-generator",
+                "mhutchie.git-graph",
+                "eamodio.gitlens",
+                "donjayamanne.githistory",
+                // spell checker
+                "streetsidesoftware.code-spell-checker",
+                // errors and highlighters
+                "mechatroner.rainbow-csv",
+                // excalidraw
+                "pomdtr.excalidraw-editor",
+                // markdown
+                "yzhang.markdown-all-in-one",
+                "bierner.markdown-checkbox",
+                "DavidAnson.vscode-markdownlint",
+                // various tools
+                "tuxtina.json2yaml",
+                "vscode-icons-team.vscode-icons",
+                "mutantdino.resourcemonitor"
+            ]
+        }
+    }
+}
