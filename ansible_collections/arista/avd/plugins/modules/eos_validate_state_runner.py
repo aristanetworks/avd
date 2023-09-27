@@ -45,6 +45,7 @@ options:
     description:
       - A list of dictionaries containing the key
     type: list
+    elements: dict
     suboptions:
       category:
         type: str
