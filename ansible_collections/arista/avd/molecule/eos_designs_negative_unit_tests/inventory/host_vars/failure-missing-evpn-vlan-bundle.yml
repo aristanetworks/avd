@@ -1,0 +1,39 @@
+# Enable vlan aware bundles
+evpn_vlan_aware_bundles: true
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    # LOOPBACK AND VTEP MANAGEMENT
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+    # Possibility to prevent configuration of Tenant VRFs and SVIs. This allows support for centralized routing.
+    evpn_services_l2_only: true
+  nodes:
+    - name: failure-missing-evpn-vlan-bundle
+      id: 3
+      bgp_as: 65101
+      filter:
+        tags: [fabric, ipmi, storageProd]
+
+tenants:
+  - name: FABRIC
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 50
+        name: ipmi
+        tags: ['ipmi']
+        evpn_vlan_bundle: bundle1
+      - id: 60
+        name: ipmi
+        tags: ['fabric']
+        evpn_vlan_bundle: bundle2
+
+evpn_vlan_bundles:
+  - name: bundle1
+    id: 1
+
+expected_error_message: >-
+  The 'evpn_vlan_bundle' of the l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurence seen for l2vlan 60 in Tenant 'FABRIC' and evpn_vlan_bundle 'bundle2'.
