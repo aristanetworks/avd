@@ -53,7 +53,7 @@
 #####################################
 
 - name: Run ansible assert tests
-  ansible.builtin.include_tasks: "ansible tests.yml"
+  ansible.builtin.include_tasks: "ansible_tests.yml"
   when: not use_anta
   tags:
     - always
