@@ -8,8 +8,10 @@ from functools import partial
 from json import JSONDecodeError, loads
 from logging import getLogger
 
-from ansible.errors import AnsibleError
+from ansible.errors import AnsibleConnectionFailure
 from ansible.plugins.connection import ConnectionBase
+
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
 logger = getLogger(__name__)
 
@@ -17,7 +19,7 @@ try:
     from anta import __DEBUG__
     from anta.device import AntaDevice
     from anta.models import AntaCommand
-    from anta.tools.misc import exc_to_str
+    from anta.tools.misc import anta_log_exception
 
     HAS_ANTA = True
 except ImportError:
@@ -40,8 +42,9 @@ class AnsibleEOSDevice(AntaDevice):
         elif hasattr(connection, "httpapi") and connection._network_os in ["arista.eos.eos", "eos"]:
             self._connection = connection
         else:
-            raise AnsibleError(
-                f"Error while instantiating {self.__class__.__name__}: The provided Ansible connection does not use EOS HttpApi plugin {connection.__dict__}"
+            raise AristaAvdError(
+                f"Error while instantiating {self.__class__.__name__}. The provided Ansible connection does not use EOS HttpApi plugin:"
+                f" {connection.__dict__.get('_load_name')}"
             )
 
     def __eq__(self, other: object) -> bool:
@@ -75,8 +78,9 @@ class AnsibleEOSDevice(AntaDevice):
         Args:
             command: the command to collect
 
-        Raises:
-            AnsibleError: Raises an error if the send request failed.
+        If `send_request` fails, Ansible will raise an error per the logging handler
+        and the task will fail for this device. No need to re-raise the exception to ANTA
+        as it is handled here and we want to avoid duplicate error logs.
         """
         if self.check_mode:
             logger.info("_collect was called in check_mode, doing nothing")
@@ -98,24 +102,21 @@ class AnsibleEOSDevice(AntaDevice):
             command.output = loads(response) if command.ofmt == "json" else response
             logger.debug("%s: %s", self.name, command)
 
-        except ConnectionError as e:
-            message = f"Cannot connect to device {self.name}: {exc_to_str(e)}"
-            logger.error(message)
+        except AnsibleConnectionFailure as e:
+            message = f"Connection failed while collecting command '{command.command}'"
+            anta_log_exception(e, message, logger)
             command.failed = e
-            raise AnsibleError(message) from e
+            return
         except JSONDecodeError:
             # Even if the outformat is 'json' send_request() sometimes returns a non-valid JSON depending on the output content
             # https://github.com/ansible-collections/arista.eos/blob/main/plugins/httpapi/eos.py#L194
             command.output = {"messages": [response]}
         except Exception as e:
-            message = f"Exception raised while collecting command '{command.command}' on device {self.name}"
-            if __DEBUG__:
-                logger.exception(message)
-            else:
-                logger.error("%s: %s", message, exc_to_str(e))
+            message = f"Exception raised while collecting command '{command.command}'"
+            anta_log_exception(e, message, logger)
             command.failed = e
             logger.debug(command)
-            raise AnsibleError(message) from e
+            return
 
     async def refresh(self) -> None:
         """
@@ -123,26 +124,32 @@ class AnsibleEOSDevice(AntaDevice):
 
         This coroutine must update the following attributes of AnsibleEOSDevice:
         - is_online: When a device IP is reachable and a port can be open
-        - established: When a command execution succeeds
+        - established: When a command execution succeeded
         - hw_model: The hardware model of the device
 
-        Raises:
-          AnsibleError: Raises an error if the get_device_info() failed.
+        If `get_device_info()` fails, Ansible will raise an error per the logging handler
+        and the task will fail for this device. No need to re-raise the exception to ANTA
+        as it is handled here and we want to avoid duplicate error logs.
         """
-        logger.debug("Refreshing device %s", self.name)
+        logger.info("Refreshing device %s", self.name)
         if self.check_mode:
             logger.info("refresh was called in check_mode, doing nothing")
             return
 
         try:
             device_info = self._connection.get_device_info()
-        except ConnectionError as e:
-            message = f"Connection error raised while getting the device information: {exc_to_str(e)}"
-            logger.error(message)
-            raise AnsibleError(message) from e
+        except AnsibleConnectionFailure as e:
+            message = "Connection failed while getting the device information"
+            anta_log_exception(e, message, logger)
+            return
+        except Exception as e:
+            message = "Exception raised while getting the device information"
+            anta_log_exception(e, message, logger)
+            return
+
         self.is_online = self._connection._connected
         if self.is_online:
             self.hw_model = device_info["network_os_model"]
         else:
-            logger.warning("Could not connect to device %s", self.name)
+            logger.error("Could not connect to the device")
         self.established = bool(self.is_online and self.hw_model)
