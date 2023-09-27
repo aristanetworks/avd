@@ -3,4 +3,4 @@
 # tag generation for a single device.
 # This host should not have any tags generated, and should be skipped
 # by the `arista.avd.cloudvision` role.
-avd_generate_cloudvision_tags: False
+cloudvision_tags: False

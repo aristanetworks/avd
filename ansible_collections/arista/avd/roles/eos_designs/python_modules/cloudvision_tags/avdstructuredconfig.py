@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -66,7 +69,7 @@ class AvdStructuredConfigTags(AvdFacts):
         """
         Generate the data structure `cloudvision_tags`.
         """
-        if not get(self._hostvars, "avd_generate_cloudvision_tags", False):
+        if not get(self._hostvars, "cloudvision_tags", False):
             # We do not want to define this datastructure if the feature is not
             # enabled
             return
@@ -82,7 +85,7 @@ class AvdStructuredConfigTags(AvdFacts):
                     f"The CloudVision tag name {custom_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
                 )
 
-        for generate_tag in get(self._hostvars, "cloudvision_tags_device_generate", []):
+        for generate_tag in get(self._hostvars, "cloudvision_tags_generate_device", []):
             value = get(self._hostvars, generate_tag["field"], None)
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(
@@ -160,7 +163,7 @@ class AvdStructuredConfigTags(AvdFacts):
     def _interface_tags(self, link) -> list:
         tags = []
 
-        for generate_tag in get(self._hostvars, "cloudvision_tags_interface_generate", []):
+        for generate_tag in get(self._hostvars, "cloudvision_tags_generate_interface", []):
             value = get(link, generate_tag["field"])
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(

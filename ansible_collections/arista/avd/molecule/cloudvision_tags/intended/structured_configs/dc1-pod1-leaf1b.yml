@@ -1,3 +1,4 @@
+hostname: dc1-pod1-leaf1b
 router_bgp:
   as: '65102'
   router_id: 10.255.0.4
