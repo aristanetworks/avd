@@ -1,4 +1,4 @@
-hostname: pool_manager_id
+hostname: fabric_numbering_id
 router_bgp:
   as: '65001'
   router_id: 192.168.0.1

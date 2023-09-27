@@ -53,11 +53,10 @@ class MiscMixin:
         if isinstance(get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch", separator=".."), dict):
             return get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch..id", separator="..")
 
-        pool_manager_activate = get(self.hostvars, "pool_manager.activate", False)
-        if get(self.hostvars, "pool_manager.id.activate", default=pool_manager_activate) and isinstance(self.pool_manager, AvdPoolManager):
+        if get(self.hostvars, "fabric_numbering.id.algorithm") == "pool_manager" and isinstance(self.pool_manager, AvdPoolManager):
             return self.pool_manager.get_id(self)
 
-        # Last resort we return nothign and calling functions may raise.
+        # Last resort we return None and calling functions may raise.
         return None
 
     @cached_property
@@ -93,14 +92,7 @@ class MiscMixin:
     @cached_property
     def igmp_snooping_enabled(self: SharedUtils) -> bool:
         default_igmp_snooping_enabled = get(self.hostvars, "default_igmp_snooping_enabled", default=True)
-        return (
-            get(
-                self.switch_data_combined,
-                "igmp_snooping_enabled",
-                default=default_igmp_snooping_enabled,
-            )
-            is True
-        )
+        return get(self.switch_data_combined, "igmp_snooping_enabled", default=default_igmp_snooping_enabled) is True
 
     @cached_property
     def only_local_vlan_trunk_groups(self: SharedUtils) -> bool:
@@ -113,10 +105,7 @@ class MiscMixin:
         Fabric Topology data model system_mac_address ->
             Host variable var system_mac_address ->
         """
-        return default(
-            get(self.switch_data_combined, "system_mac_address"),
-            get(self.hostvars, "system_mac_address"),
-        )
+        return default(get(self.switch_data_combined, "system_mac_address"), get(self.hostvars, "system_mac_address"))
 
     @cached_property
     def uplink_switches(self: SharedUtils) -> list:
@@ -133,10 +122,7 @@ class MiscMixin:
         Fabric Topology data model serial_number ->
             Host variable var serial_number
         """
-        return default(
-            get(self.switch_data_combined, "serial_number"),
-            get(self.hostvars, "serial_number"),
-        )
+        return default(get(self.switch_data_combined, "serial_number"), get(self.hostvars, "serial_number"))
 
     @cached_property
     def max_parallel_uplinks(self: SharedUtils) -> int:
@@ -150,11 +136,7 @@ class MiscMixin:
         """
         max_uplink_switches will default to the length of uplink_switches
         """
-        return get(
-            self.switch_data_combined,
-            "max_uplink_switches",
-            default=len(self.uplink_switches),
-        )
+        return get(self.switch_data_combined, "max_uplink_switches", default=len(self.uplink_switches))
 
     @cached_property
     def p2p_uplinks_mtu(self: SharedUtils) -> int | None:
@@ -208,11 +190,7 @@ class MiscMixin:
         NOTE: This method is called _before_ any schema validation, since we need to resolve network_services_keys dynamically
         """
         DEFAULT_NETWORK_SERVICES_KEYS = [{"name": "tenants"}]
-        network_services_keys = get(
-            self.hostvars,
-            "network_services_keys",
-            default=DEFAULT_NETWORK_SERVICES_KEYS,
-        )
+        network_services_keys = get(self.hostvars, "network_services_keys", default=DEFAULT_NETWORK_SERVICES_KEYS)
         network_services_keys = [entry for entry in network_services_keys if entry.get("name") is not None and self.hostvars.get(entry["name"]) is not None]
         return natural_sort(network_services_keys, "name")
 
@@ -285,8 +263,4 @@ class MiscMixin:
     @cached_property
     def default_interface_mtu(self: SharedUtils) -> int | None:
         default_default_interface_mtu = get(self.hostvars, "default_interface_mtu")
-        return get(
-            self.platform_settings,
-            "default_interface_mtu",
-            default=default_default_interface_mtu,
-        )
+        return get(self.platform_settings, "default_interface_mtu", default=default_default_interface_mtu)

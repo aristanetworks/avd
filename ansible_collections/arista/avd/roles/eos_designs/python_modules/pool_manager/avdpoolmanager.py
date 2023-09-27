@@ -124,8 +124,8 @@ class AvdPoolManager:
             Node ID
         """
         fabric_name = get(shared_utils.hostvars, "fabric_name", required=True)
-        default_id_file_path = f"{self.output_dir}/data/{fabric_name}-ids.yml"
-        id_file = Path(get(shared_utils.hostvars, "pool_manager.id.path", default=default_id_file_path))
+        default_id_file = f"{self.output_dir}/data/{fabric_name}-ids.yml"
+        id_file = Path(get(shared_utils.hostvars, "fabric_numbering.id.pools_file", default=default_id_file))
         id_data = self.id_pool_data(id_file)
 
         id_pool = None

@@ -6,6 +6,6 @@ spine:
     loopback_ipv4_pool: 192.168.0.0/24
     # id: 1 will be set by pool_manager
 
-pool_manager:
+fabric_numbering:
   id:
-    activate: true
+    algorithm: pool_manager

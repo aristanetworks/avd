@@ -3336,6 +3336,41 @@
       "type": "string",
       "title": "Fabric Name"
     },
+    "fabric_numbering": {
+      "description": "Automatic assignment of numbers for settings like Node ID.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "object",
+          "description": "Assignement of Node ID.",
+          "properties": {
+            "algorithm": {
+              "type": "string",
+              "enum": [
+                "pool_manager"
+              ],
+              "description": "If set, IDs will be automatically assigned using the configured algorithm unless statically configured under the node settings.\n\n- \"pool_manager\" will activate the pool manager for ID pools.\n\n  The pools are dynamically built and matched on the following device data:\n  - `fabric_name`\n  - `dc_name`\n  - `pod_name`\n  - `type`\n\n  Note: This means changing any of these fields may renumber the devices!\n\n  Each pool will assign the first available ID starting from 1.\n\n  Stale entries will be reclaimed from each pool automatically after every run.\n  A stale entry is an entry that was not accessed during the run.",
+              "title": "Algorithm"
+            },
+            "pools_file": {
+              "type": "string",
+              "description": "Path to file to use for storing ID pool data when using \"pool_manager\" as algorithm.\nBy default the path is \"intended/data/<fabric_name>-ids.yml\".\n\nNote: Since the pool manager will remove stale entries after every run, each fabric should be using it's own file.",
+              "title": "Pools File"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "ID"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Fabric Numbering"
+    },
     "hardware_counters": {
       "type": "object",
       "properties": {
@@ -9631,44 +9666,6 @@
       "description": "POD Name is used in:\n- Fabric Documentation (Optional, falls back to dc_name and then to fabric_name)\n- SNMP Location: `snmp_settings.location` (Optional)\n- VRF Loopbacks: `vtep_diagnostic.loopback_ip_pools.pod` (Required)\n\nRecommended to be common between Spines and Leafs within a POD (One l3ls topology).\n",
       "type": "string",
       "title": "Pod Name"
-    },
-    "pool_manager": {
-      "description": "Pool Manager used for automatic assignment of pool values.",
-      "type": "object",
-      "properties": {
-        "activate": {
-          "type": "boolean",
-          "default": false,
-          "description": "Activate the pool manager for all supported pools.\nCan be overridden per pool.",
-          "title": "Activate"
-        },
-        "id": {
-          "type": "object",
-          "description": "Automatic assignement of Node ID.\n\nThe pools are dynamically built and matched on the following device data:\n- `fabric_name`\n- `dc_name`\n- `pod_name`\n- `type`\nNote: This means changing any of these fields may renumber the devices!\n\nEach pool will assign first available ID starting from 1.\n\nStale entries will be removed from each pool automatically on every run.\nA stale entry is any entry not accessed during the run.",
-          "properties": {
-            "activate": {
-              "type": "boolean",
-              "description": "Activate the pool manager for ID pools.\nOverrides the activation on pool manager.",
-              "title": "Activate"
-            },
-            "path": {
-              "type": "string",
-              "description": "Path to file to use for storing ID pool data.\nBy default the path is \"intended/data/<fabric_name>-ids.yml\".\n\nNote: Since stale entries are removed per run, each fabric should be using it's own file.",
-              "title": "Path"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "ID"
-        }
-      },
-      "additionalProperties": false,
-      "patternProperties": {
-        "^_.+$": {}
-      },
-      "title": "Pool Manager"
     },
     "port_profiles": {
       "type": "array",

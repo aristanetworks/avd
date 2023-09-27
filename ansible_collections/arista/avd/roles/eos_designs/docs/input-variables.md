@@ -110,6 +110,12 @@ roles/eos_designs/docs/tables/fabric-topology.md
 roles/eos_designs/docs/tables/fabric-ip-addressing.md
 --8<--
 
+## Fabric Numbering
+
+--8<--
+roles/eos_designs/docs/tables/fabric-numbering.md
+--8<--
+
 ## Node Type Variables
 
 The following tables provide information on the default node types that have been pre-defined in `eos_designs` for each design type.
@@ -1184,12 +1190,6 @@ See the [Configuring PTP](how-to/ptp.md) how-to for details.
 
 --8<--
 roles/eos_designs/docs/tables/ptp.md
---8<--
-
-## Pool Manager
-
---8<--
-roles/eos_designs/docs/tables/pool-manager.md
 --8<--
 
 ## Custom Structured Configuration
