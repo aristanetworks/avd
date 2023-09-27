@@ -1,8 +1,18 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
+  cloudvision_tags:
+    documentation_options:
+      table: cloudvision-tags
+    type: bool
+    default: False
+    description: |
+        Enable the generation of CloudVision tags that can be applied using the `cloudvision` role. If not defined, the value is assumed to be False and no tags are generated.
   cloudvision_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
@@ -14,11 +24,11 @@ keys:
       - "spine"
       - "core"
       - "edge"
-  cloudvision_tags_interface_generate:
+  cloudvision_tags_generate_interface:
     documentation_options:
       table: cloudvision-tags
     description: |
-      List of device tags that should be generated from
+      List of interface tags that should be generated from
       structured configuration.
     type: list
     items:
@@ -36,7 +46,7 @@ keys:
           required: true
           type: str
 
-  cloudvision_tags_device_generate:
+  cloudvision_tags_generate_device:
     documentation_options:
       table: cloudvision-tags
     description: |

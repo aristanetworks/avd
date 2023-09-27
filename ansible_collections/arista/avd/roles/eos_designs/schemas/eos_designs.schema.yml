@@ -67,14 +67,6 @@ keys:
       "info" will produce regular log messages.
 
       "debug" will produce hidden debug messages viewable with -v.'
-  avd_generate_cloudvision_tags:
-    documentation_options:
-      table: cloudvision-tags
-    type: bool
-    default: false
-    description: Enable the generation of CloudVision tags that can be applied using
-      the `cloudvision` role. If not defined, the value is assumed to be False and
-      no tags are generated.
   bfd_multihop:
     documentation_options:
       table: bfd-settings
@@ -365,6 +357,105 @@ keys:
       table: bgp-settings
     type: bool
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_for_convergence
+  cloudvision_tags:
+    documentation_options:
+      table: cloudvision-tags
+    type: bool
+    default: false
+    description: 'Enable the generation of CloudVision tags that can be applied using
+      the `cloudvision` role. If not defined, the value is assumed to be False and
+      no tags are generated.
+
+      '
+  cloudvision_tags_topology_type:
+    documentation_options:
+      table: cloudvision-tags
+    description: 'Device type that CloudVision should use when generating the Topology.
+
+      '
+    type: str
+    valid_values:
+    - leaf
+    - spine
+    - core
+    - edge
+  cloudvision_tags_generate_interface:
+    documentation_options:
+      table: cloudvision-tags
+    description: 'List of interface tags that should be generated from
+
+      structured configuration.
+
+      '
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          description: 'Tag name to be assigned to generated tags.
+
+            '
+          convert_to_lower_case: true
+          required: true
+          type: str
+        field:
+          description: 'Sturctured config field/key path to be used to find the value
+            for the tag. Dot notation is supported to reference values inside dictionaries.
+
+            '
+          required: true
+          type: str
+  cloudvision_tags_generate_device:
+    documentation_options:
+      table: cloudvision-tags
+    description: 'List of device tags that should be generated from
+
+      structured configuration.
+
+      '
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          description: 'Tag name to be assigned to generated tags.
+
+            '
+          convert_to_lower_case: true
+          required: true
+          type: str
+        field:
+          description: 'Sturctured config field/key path to be used to find the value
+            for the tag. Dot notation is supported to reference values inside dictionaries.
+
+            '
+          required: true
+          type: str
+  cloudvision_tags_device_custom:
+    documentation_options:
+      table: cloudvision-tags
+    description: 'List of user defined tags and their values to be applied to this
+
+      device on CVP.
+
+      '
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          description: 'Tag name to be assigned to generated tag.
+
+            '
+          required: true
+          type: str
+          convert_to_lower_case: true
+        value:
+          description: 'Value to be assigned to the tag.
+
+            '
+          required: true
+          type: str
   connected_endpoints_keys:
     documentation_options:
       table: connected-endpoints-keys
@@ -528,95 +619,6 @@ keys:
     items:
       type: str
       description: IPv4 address or DNS name for CloudVision
-  cloudvision_tags_topology_type:
-    documentation_options:
-      table: cloudvision-tags
-    description: 'Device type that CloudVision should use when generating the Topology.
-
-      '
-    type: str
-    valid_values:
-    - leaf
-    - spine
-    - core
-    - edge
-  cloudvision_tags_interface_generate:
-    documentation_options:
-      table: cloudvision-tags
-    description: 'List of device tags that should be generated from
-
-      structured configuration.
-
-      '
-    type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: 'Tag name to be assigned to generated tags.
-
-            '
-          convert_to_lower_case: true
-          required: true
-          type: str
-        field:
-          description: 'Sturctured config field/key path to be used to find the value
-            for the tag. Dot notation is supported to reference values inside dictionaries.
-
-            '
-          required: true
-          type: str
-  cloudvision_tags_device_generate:
-    documentation_options:
-      table: cloudvision-tags
-    description: 'List of device tags that should be generated from
-
-      structured configuration.
-
-      '
-    type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: 'Tag name to be assigned to generated tags.
-
-            '
-          convert_to_lower_case: true
-          required: true
-          type: str
-        field:
-          description: 'Sturctured config field/key path to be used to find the value
-            for the tag. Dot notation is supported to reference values inside dictionaries.
-
-            '
-          required: true
-          type: str
-  cloudvision_tags_device_custom:
-    documentation_options:
-      table: cloudvision-tags
-    description: 'List of user defined tags and their values to be applied to this
-
-      device on CVP.
-
-      '
-    type: list
-    items:
-      type: dict
-      keys:
-        name:
-          description: 'Tag name to be assigned to generated tag.
-
-            '
-          required: true
-          type: str
-          convert_to_lower_case: true
-        value:
-          description: 'Value to be assigned to the tag.
-
-            '
-          required: true
-          type: str
   cvp_token_file:
     documentation_options:
       table: cloudvision-settings
