@@ -31,7 +31,7 @@ At runtime, `eos_designs` searches for custom templates in several locations, th
 <path to users AVD implementation>/playbooks/<template name>
 ```
 
-The "templates" folders do not exist by default so will need to be created if that is the location chosen by the user.
+The "templates" folders do not exist by default, so they will need to be created if the user chooses that location.
 
 ### Variable Validation
 
