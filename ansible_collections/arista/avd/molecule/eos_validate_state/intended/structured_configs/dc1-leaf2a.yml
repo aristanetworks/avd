@@ -72,7 +72,7 @@ router_bgp:
     peer_group: EVPN-OVERLAY-CORE
     description: dc2-leaf2a
     remote_as: '65202'
-  - ip_address: 172.100.100.1
+  - ip_address: 192.168.100.1
     remote_as: '65202'
     description: dc2-leaf2a
     peer_group: IPv4-UNDERLAY-PEERS
@@ -430,7 +430,7 @@ ethernet_interfaces:
   type: routed
   shutdown: false
   mtu: 1500
-  ip_address: 172.100.100.0/31
+  ip_address: 192.168.100.0/31
 - name: Ethernet5
   peer: dc1-leaf2-server1
   peer_interface: PCI1

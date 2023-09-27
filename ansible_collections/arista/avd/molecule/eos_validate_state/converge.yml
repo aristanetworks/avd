@@ -8,7 +8,6 @@
     - name: Generate AVD Structured Configurations and Fabric Documentation
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
-
     - name: Test eos_validate_state
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:

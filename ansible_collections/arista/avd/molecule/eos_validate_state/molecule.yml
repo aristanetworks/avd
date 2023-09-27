@@ -35,7 +35,8 @@ provisioner:
     - "avd_data_validation_mode=error"
     - --extra-vars
     - "avd_data_conversion_mode=error"
-    - --tags=anta
+    - --tags=anta,build
+    - --skip-tags=documentation
     - -vvv
 verifier:
   name: ansible
