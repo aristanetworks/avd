@@ -74,15 +74,6 @@ jobs:
       - name: Checkout code ✅
         uses: actions/checkout@v3
 
-      - name: Check if avd-base needs to be built 🤔
-        uses: dorny/paths-filter@v2
-        id: devcontainer-filter
-        with:
-          filters: |
-            workflows:
-              - 'avd-containers/${{ inputs.container_name }}/.devcontainer/**'
-              - '.github/workflows/**'
-
       # build image tags based on Python version and AVD version (if defined)
       # if container_tags is not defined, then image_tags will be auto-generated
       # if container_tags is latest, it will be added to auto-generated image_tags
@@ -145,17 +136,14 @@ jobs:
       #     fi
       
       - name: setup QEMU for multi-arch builds 🏗️
-        if: steps.devcontainer-filter.outputs.workflows == 'true'
         uses: docker/setup-qemu-action@v2
         with:
           platforms: ${{ inputs.platform }}
 
       - name: setup Docker buildX for multi-arch builds 🏗️
-        if: steps.devcontainer-filter.outputs.workflows == 'true'
         uses: docker/setup-buildx-action@v2
 
       - name: Login to Docker Hub 🗝️
-        if: steps.devcontainer-filter.outputs.workflows == 'true'
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
@@ -163,7 +151,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pre-build dev container image 🔨
-        if: steps.devcontainer-filter.outputs.workflows == 'true'
         uses: devcontainers/ci@v0.3
         env:
           FROM_IMAGE: ${{ steps.generate-from-parameters.outputs.from_image }}
