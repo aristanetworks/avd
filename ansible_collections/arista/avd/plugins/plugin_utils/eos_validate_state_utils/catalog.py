@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from yaml import Dumper, dump, safe_load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper, get_item
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import AVD_TEST_CLASSES
 
 from .get_eos_validate_state_vars import get_eos_validate_state_vars
@@ -46,7 +46,7 @@ class Catalog:
             device_name (str): The device for which this catalog is built
             hostvars (dict): A dictionnary that contains a key for each device with a value of the structured_config
                          when using Ansible, this is the equivalent of `task_vars['hostvars']`
-            skipped_tests (dict): Dictionary of AVD test classes to be skipped.
+            skipped_tests (list[dict]): Dictionary of AVD test classes to be skipped.
             custom_catalog (dict): An optional dictionary representing an ANTA Catalog
             custom_catalog_path (str): An optional string representing a path to an Anta Catalog
         """
@@ -113,8 +113,8 @@ class Catalog:
 
         for avd_test_class in AVD_TEST_CLASSES:
             # Check if the whole class is to be skipped
-            # TODO - need to explain the syntax of this dictionary with care
-            if avd_test_class.__name__ in self.skipped_tests and self.skipped_tests[avd_test_class.__name__] is None:
+            class_skip_config = get_item(self.skipped_tests, "category", avd_test_class.__name__)
+            if class_skip_config is not None and not class_skip_config.get("tests"):
                 continue
 
             # Initialize the test class
@@ -122,8 +122,7 @@ class Catalog:
             generated_tests = eos_validate_state_module.render()
 
             # Remove the individual tests that are to be skipped
-            # TODO - this should be possuble to simplify this
-            if (avd_test_class_skipped_tests := self.skipped_tests.get(avd_test_class.__name__)) is not None:
+            if class_skip_config is not None and (avd_test_class_skipped_tests := class_skip_config.get("tests")) is not None:
                 for anta_tests in generated_tests.values():
                     anta_tests[:] = [test for test in anta_tests if list(test.keys())[0] not in avd_test_class_skipped_tests]
 

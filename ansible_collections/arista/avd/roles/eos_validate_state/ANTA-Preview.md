@@ -110,16 +110,20 @@ eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name
 # Only support default and github
 validate_state_markdown_flavor: "default"
 
-# The variable `skipped_tests` can be used for running/skipping tests
+# The variable `skipped_tests` can be used for running/skipping tests categories
 
 skipped_tests:
-    AvdTestHardware:
+  - category: AvdTestHardware
 
-# You can also decide to skip specific subtests (ANTA test) for more granularity
+# You can also decide to skip specific subtests (ANTA test name) for more granularity
 
 skipped_tests:
-    AvdTestHardware:
-        - VerifyTransceiversTemperature
+  - category: AvdTestBGP
+    tests:
+      - VerifyRoutingProtocolModel
+  - category: AvdTestHardware
+    tests:
+      - VerifyEnvironmentCooling
 
 # Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
 fabric_name: "all"
@@ -132,7 +136,6 @@ accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.d
 
 # Allow different states for fans
 accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok']) }}"
-
 
 # Generate CSV results file
 validation_report_csv: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"

@@ -60,7 +60,7 @@ class AnsibleEOSDevice(AntaDevice):
         if __DEBUG__:
             yield "_connection", connection_vars
 
-    async def collect(self, command: AntaCommand) -> AntaCommand:
+    async def _collect(self, command: AntaCommand) -> AntaCommand:
         """
         Collect device command result using Ansible HttpApi connection plugin.
 

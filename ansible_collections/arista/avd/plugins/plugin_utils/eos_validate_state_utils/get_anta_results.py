@@ -33,31 +33,31 @@ except ImportError:
 LOGGER = logging.getLogger(__name__)
 
 
-def _get_skipped_tests_from_tags(run_tags: list, skip_tags: tuple) -> dict:
+def _get_skipped_tests_from_tags(run_tags: list, skip_tags: tuple) -> list[dict]:
     """
     Arguments:
       run_tags (list): List of run_tags used to run the playbook.
       skip_tags (tuple): Tuple of skip_tags used to run the playbook.
 
     Returns:
-      result (dict): Dictionary of class names to skip.
+      result (list[dict]): List of dictionary containing the categories to skip
     """
-    result = {}
+    result = []
     for cls, cls_info in AVD_TEST_CLASSES.items():
         class_legacy_tags = set(cls_info["legacy_ansible_tags"])
 
         if "never" in class_legacy_tags:
             other_tags = class_legacy_tags - {"never"}
             if not other_tags.intersection(set(run_tags)):
-                result[cls.__name__] = None
+                result.append({"category": cls.__name__})
                 continue
 
         if class_legacy_tags.intersection(set(skip_tags)):
-            result[cls.__name__] = None
+            result.append({"category": cls.__name__})
             continue
 
         if run_tags and not class_legacy_tags.intersection(set(run_tags)):
-            result[cls.__name__] = None
+            result.append({"category": cls.__name__})
 
     return result
 
@@ -81,7 +81,7 @@ def get_anta_results(
       connection (Connection): The connection to the device
                                when using Ansible, this is the `self._connection` of the module
       logging_level (str): The level at which ANTA should be logging
-      skipped_tests (dict): A dictionary of tests to skip
+      skipped_tests (list[dict]): A list of dictionary
       ansible_tags (dict): An optional dictionary containing the tags to maintain legacy filtering behavior for
                            `eos_validate_state`. This is ignored is `skipped_tests` is set.
       save_catalog_name (bool): When set, the generated catalog is saved to a file using this name.

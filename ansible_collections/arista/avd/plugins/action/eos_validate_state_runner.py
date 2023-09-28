@@ -85,7 +85,7 @@ class ActionModule(ActionBase):
             "logging_level": {"type": "str", "default": "WARNING"},
             "save_catalog": {"type": "bool", "defaut": False},
             "device_catalog_output_dir": {"type": "str"},
-            "skipped_tests": {"type": "dict"},
+            "skipped_tests": {"type": "list", "suboptions": {"category": {"type": "str"}, "tests": {"type": "list", "elements": "str"}}},
         }
         required_if = [("save_catalog", True, ["device_catalog_output_dir"])]
 

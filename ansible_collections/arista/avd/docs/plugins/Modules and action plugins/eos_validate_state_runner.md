@@ -34,7 +34,9 @@ The plugin provides the following capabilities\:
 | logging_level | str | False | WARNING | Valid values:<br>- <code>CRITICAL</code><br>- <code>ERROR</code><br>- <code>WARNING</code><br>- <code>INFO</code><br>- <code>DEBUG</code> | Controls the log level for the ANTA library. If unset, the Action plugin will set it to \"WARNING\" |
 | save_catalog | bool | optional | False |  | A boolean to indicate whether or not the catalog should be saved for each device. |
 | device_catalog_output_dir | str | optional | None |  | When <code>save\_catalog</code> is True, this is the directory where the device catalogs will be saved.<br>Required if <em>save\_catalog\=True</em> |
-| skipped_test | dict | optional | None |  | A dictionary to indicate skipped tests. |
+| skipped_tests | list | optional | None |  | A list of dictionaries containing the key |
+|   category | str | optional | None |  | The name of one of the AvdTest categories \(e.g., <code>AvdTestHardware</code>\) |
+|   tests | list | optional | None |  | A list of test in the category \(e.g, <code>VerifyRoutingProtocolModel</code> for <code>AvdTestBGP</code>\) |
 
 ## Notes
 
@@ -52,7 +54,11 @@ The plugin provides the following capabilities\:
     logging_level: ERROR
     save_catalog: True
     eos_validate_state_dir: "/tmp"
-    skipped_tests: {"BGP"}
+    skipped_tests:
+      - category: AvdTestHardware
+      - category: AvdTestBGP
+        tests:
+          - VerifyRoutingProtocolModel
   register: anta_results
 ```
 

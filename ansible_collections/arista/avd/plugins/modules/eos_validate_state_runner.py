@@ -41,10 +41,18 @@ options:
       - When C(save_catalog) is True, this is the directory where the device catalogs will be saved.
       - Required if I(save_catalog=True)
     type: str
-  skipped_test:
+  skipped_tests:
     description:
-      - A dictionary to indicate skipped tests.
-    type: dict
+      - A list of dictionaries containing the key
+    type: list
+    suboptions:
+      category:
+        type: str
+        description: The name of one of the AvdTest categories (e.g., C(AvdTestHardware))
+      tests:
+        type: list
+        elements: str
+        description: A list of test in the category (e.g, C(VerifyRoutingProtocolModel) for C(AvdTestBGP))
 seealso:
   - name: ANTA website
     description: ANTA documentation
@@ -59,6 +67,10 @@ EXAMPLES = r"""
     logging_level: ERROR
     save_catalog: True
     eos_validate_state_dir: "/tmp"
-    skipped_tests: {"BGP"}
+    skipped_tests:
+      - category: AvdTestHardware
+      - category: AvdTestBGP
+        tests:
+          - VerifyRoutingProtocolModel
   register: anta_results
 """
