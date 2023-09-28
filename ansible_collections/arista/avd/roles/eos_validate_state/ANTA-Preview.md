@@ -34,7 +34,7 @@
 
 ## How to run eos_validate_state in ANTA mode
 
-- Install anta v0.9.0 or: `pip install anta>=v0.9.0`
+- Install anta v0.9.0: `pip install anta==v0.9.0`
 
 - Run eos_validate_state playbook with `anta` tag i.e `--tags anta`.
 
