@@ -1,5 +1,6 @@
 ### Tacacs+ Servers
 tacacs_servers:
+  timeout: 10
   hosts:
     - host: 10.10.10.157
       vrf: mgt

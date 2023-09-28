@@ -74,6 +74,8 @@ username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9s
 | default | 10.10.10.158 | False |
 | default | 10.10.10.159 | False |
 
+Timeout: 10 seconds
+
 #### TACACS Servers Device Configuration
 
 ```eos
@@ -82,6 +84,7 @@ tacacs-server host 10.10.10.157 single-connection vrf mgt key 7 <removed>
 tacacs-server host 10.10.10.158 key 7 <removed>
 tacacs-server host 10.10.10.159 key 8a <removed>
 tacacs-server host 10.10.10.249 timeout 23 key 7 <removed>
+tacacs-server timeout 10
 ```
 
 ### RADIUS Server
