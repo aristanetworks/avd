@@ -8267,6 +8267,10 @@ keys:
               description: VLAN range as string. Example "100-200,300"
               convert_types:
               - int
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on the Router BGP,
+                VLAN-aware-bundle definition in the final EOS configuration
       vlans:
         type: list
         primary_key: id

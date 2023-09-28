@@ -13526,6 +13526,11 @@
                 "type": "string",
                 "description": "VLAN range as string. Example \"100-200,300\"",
                 "title": "VLAN"
+              },
+              "eos_cli": {
+                "type": "string",
+                "description": "Multiline EOS CLI rendered directly on the Router BGP, VLAN-aware-bundle definition in the final EOS configuration",
+                "title": "EOS CLI"
               }
             },
             "additionalProperties": false,
