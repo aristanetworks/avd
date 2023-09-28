@@ -3880,7 +3880,8 @@
                                 "segments",
                                 "bytes",
                                 "kbytes",
-                                "mbytes"
+                                "mbytes",
+                                "milliseconds"
                               ],
                               "description": "Indicate the units to be used for the threshold values.\n",
                               "title": "Units"
@@ -3981,7 +3982,8 @@
                                 "segments",
                                 "bytes",
                                 "kbytes",
-                                "mbytes"
+                                "mbytes",
+                                "milliseconds"
                               ],
                               "description": "Indicate the units to be used for the threshold values.\n",
                               "title": "Units"
@@ -11535,7 +11537,8 @@
                                 "segments",
                                 "bytes",
                                 "kbytes",
-                                "mbytes"
+                                "mbytes",
+                                "milliseconds"
                               ],
                               "description": "Units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.\n",
                               "title": "Units"
@@ -11670,7 +11673,8 @@
                                 "segments",
                                 "bytes",
                                 "kbytes",
-                                "mbytes"
+                                "mbytes",
+                                "milliseconds"
                               ],
                               "description": "Unit to be used for the threshold values.\n",
                               "title": "Units"

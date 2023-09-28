@@ -128,6 +128,13 @@ qos_profiles:
         bandwidth_percent: 50
         priority: 'no priority'
         comment: "Test no priority"
+        random_detect:
+          ecn:
+            threshold:
+              units: milliseconds
+              min: 3
+              max: 9
+              max_probability: 90
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'

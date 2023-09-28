@@ -432,7 +432,7 @@ QOS Profile: **uc_mc_queues_test**
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
-| 1 | Unicast | -  | -  | - |
+| 1 | Unicast | 3 milliseconds | 9 milliseconds | 90 |
 | 2 | Unicast | 320 kbytes | 320 kbytes | 90 |
 | 4 | Unicast | 320 segments | 320 segments | - |
 | 1 | Multicast | - | - | - |
@@ -526,6 +526,7 @@ qos profile uc_mc_queues_test
       !! Test no priority
       bandwidth percent 50
       no priority
+      random-detect ecn minimum-threshold 3 milliseconds maximum-threshold 9 milliseconds max-mark-probability 90
    !
    uc-tx-queue 2
       bandwidth percent 10

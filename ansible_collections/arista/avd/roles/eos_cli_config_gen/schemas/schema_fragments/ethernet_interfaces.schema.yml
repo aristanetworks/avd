@@ -1010,7 +1010,7 @@ keys:
                           units:
                             required: true
                             type: str
-                            valid_values: ["segments", "bytes", "kbytes", "mbytes"]
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
                             description: |
                               Indicate the units to be used for the threshold values.
                           min:
@@ -1078,7 +1078,7 @@ keys:
                           units:
                             type: str
                             required: true
-                            valid_values: ["segments", "bytes", "kbytes", "mbytes"]
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
                             description: |
                               Indicate the units to be used for the threshold values.
                           min:

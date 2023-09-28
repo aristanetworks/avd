@@ -2306,6 +2306,7 @@ keys:
                             - bytes
                             - kbytes
                             - mbytes
+                            - milliseconds
                             description: 'Indicate the units to be used for the threshold
                               values.
 
@@ -2385,6 +2386,7 @@ keys:
                             - bytes
                             - kbytes
                             - mbytes
+                            - milliseconds
                             description: 'Indicate the units to be used for the threshold
                               values.
 
@@ -6983,6 +6985,7 @@ keys:
                             - bytes
                             - kbytes
                             - mbytes
+                            - milliseconds
                             description: 'Units to be used for the threshold values.
 
                               This should be one of segments, byte, kbytes, mbytes.
@@ -7088,6 +7091,7 @@ keys:
                             - bytes
                             - kbytes
                             - mbytes
+                            - milliseconds
                             description: 'Unit to be used for the threshold values.
 
                               '
