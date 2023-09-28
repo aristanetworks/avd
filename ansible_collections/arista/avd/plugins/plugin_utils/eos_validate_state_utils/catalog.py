@@ -11,8 +11,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper, get_item
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import AVD_TEST_CLASSES
 
-from .get_eos_validate_state_vars import get_eos_validate_state_vars
-
 try:
     from anta.loader import parse_catalog
 
@@ -108,9 +106,6 @@ class Catalog:
         """
         default_catalog = {}
 
-        # TODO maybe it should require device_name
-        eos_validate_state_vars = get_eos_validate_state_vars(self.hostvars)
-
         for avd_test_class in AVD_TEST_CLASSES:
             # Check if the whole class is to be skipped
             class_skip_config = get_item(self.skipped_tests, "category", avd_test_class.__name__)
@@ -118,7 +113,7 @@ class Catalog:
                 continue
 
             # Initialize the test class
-            eos_validate_state_module: AvdTestBase = avd_test_class(hostvars=self.hostvars, custom_data=eos_validate_state_vars, device_name=self.device_name)
+            eos_validate_state_module: AvdTestBase = avd_test_class(device_name=self.device_name, hostvars=self.hostvars)
             generated_tests = eos_validate_state_module.render()
 
             # Remove the individual tests that are to be skipped

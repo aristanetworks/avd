@@ -93,10 +93,6 @@ class AvdTestInbandReachability(AvdTestBase):
             LOGGER.info("'management_interfaces' is missing from structured_config. %s is skipped.", self.__class__.__name__)
             return None
 
-        if not hasattr(self, "loopback0_mapping"):
-            LOGGER.info("'loopback0_mapping' is not set. %s is skipped.", self.__class__.__name__)
-            return None
-
         for management_interface in management_interfaces:
             if management_interface["type"] == "inband":
                 for dst_node, dst_ip in self.loopback0_mapping:
@@ -132,10 +128,6 @@ class AvdTestLoopback0Reachability(AvdTestBase):
 
         """
         anta_tests = []
-
-        if not hasattr(self, "loopback0_mapping"):
-            LOGGER.info("'loopback0_mapping' is not set. %s is skipped.", self.__class__.__name__)
-            return None
 
         # To be removed once 'l3leaf' check is removed
         if (node_type := get(self.hostvars[self.device_name], "type")) is None:

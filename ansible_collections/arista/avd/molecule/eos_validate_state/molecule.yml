@@ -2,9 +2,12 @@
 scenario:
   converge_sequence:
     - create
+    - prepare
     - converge
   test_sequence:
+    - destroy # to trigger prepare
     - create
+    - prepare
     - converge
     - idempotence
   cleanup_sequence:
@@ -31,11 +34,7 @@ provisioner:
   ansible_args:
     - --inventory
     - ${MOLECULE_SCENARIO_DIRECTORY}/inventory/inventory.yml
-    - --extra-vars
-    - "avd_data_validation_mode=error"
-    - --extra-vars
-    - "avd_data_conversion_mode=error"
-    - --tags=anta,build
-    - --skip-tags=documentation
+    - --tags=anta
+    - --skip-tags=documentation,debug
 verifier:
   name: ansible

@@ -5,14 +5,12 @@
   vars:
     root_dir: '{{ playbook_dir }}'
   tasks:
-    - name: Generate AVD Structured Configurations and Fabric Documentation
-      ansible.builtin.import_role:
-        name: arista.avd.eos_designs
     - name: Test eos_validate_state
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.eos_validate_state
+      # Save catalogs
       vars:
         save_catalog: true
-      # Force check_mode
+      # Force check_mode for validate_state
       check_mode: true

@@ -51,10 +51,6 @@ class AvdTestRoutingTable(AvdTestBase):
                     )
                     processed_ips.add(ip)
 
-        if not hasattr(self, "loopback0_mapping") or not hasattr(self, "vtep_mapping"):
-            LOGGER.info("'loopback0_mapping' or 'vtep_mapping' is not set. %s is skipped.", self.__class__.__name__)
-            return None
-
         if (node_type := get(self.hostvars[self.device_name], "type")) is None:
             LOGGER.info("'type' is missing from structured_config. %s is skipped.", self.__class__.__name__)
             return None
