@@ -65,7 +65,7 @@ class ActionModule(ActionBase):
 
         strict_mode = self._task.args.get("strict_mode")
         if not isinstance(strict_mode, bool):
-            raise AnsibleActionFail(f"'eos_validate_state_validation_mode_loose' must be a boolean, got {strict_mode}.")
+            raise AnsibleActionFail(f"'strict_mode' must be a boolean, got {strict_mode}.")
 
         # Fetching ansible tags for backward compatibility
         ansible_tags = {
