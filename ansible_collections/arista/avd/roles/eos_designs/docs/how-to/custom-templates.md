@@ -9,7 +9,7 @@
 With Custom Templates for the `eos_designs` role, the user can create additional structured configuration variables that would otherwise not be created by the built-in templates.
 These additional variables will then be available for use by other AVD roles.
 
-For example, the user may require additional structured configuration variables to render a custom template the user has created for the `eos-cli-config-gen` role.
+For example, the user may require additional structured configuration variables to render a custom template the user has created for the `eos_cli_config_gen` role.
 
 ## Create a Custom Template
 
