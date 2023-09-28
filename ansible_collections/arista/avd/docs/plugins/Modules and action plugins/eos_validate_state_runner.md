@@ -24,6 +24,7 @@ The plugin provides the following capabilities\:
     \- Generate a per\-device test catalog based on the structured\_configs
     \- Run the generated tests against each device and generate a report in Markdown and CSV format.
     \- When using check\_mode, only generate the test catalog and generate a report to preview what would tests be run against each device
+    \- When using strict\_mode, if any command collection fails, the task for the device will fail. Consequently, no report will be generated for that device.
     \- Dumping the per\-device catalog to a file.
     \- Backward compatibility with existing ansible tags behavior for eos\_validate\_state to filter categories of tests.
 
@@ -33,6 +34,7 @@ The plugin provides the following capabilities\:
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | logging_level | str | False | WARNING | Valid values:<br>- <code>CRITICAL</code><br>- <code>ERROR</code><br>- <code>WARNING</code><br>- <code>INFO</code><br>- <code>DEBUG</code> | Controls the log level for the ANTA library. If unset, the Action plugin will set it to \"WARNING\" |
 | save_catalog | bool | optional | False |  | A boolean to indicate whether or not the catalog should be saved for each device. |
+| strict_mode | bool | optional | False |  | A boolean to indicate whether or not strict mode is activated for command collections. |
 | device_catalog_output_dir | str | optional | None |  | When <code>save\_catalog</code> is True, this is the directory where the device catalogs will be saved.<br>Required if <em>save\_catalog\=True</em> |
 | skipped_tests | list | optional | None |  | A list of dictionaries containing the categories and tests to skip<br>The keys for the dictionnary are <code>categories</code> and <code>tests</code>. |
 |     category | str | True | None |  | The name of one of the AvdTest categories. e.g., <code>AvdTestHardware</code> |
@@ -53,6 +55,7 @@ The plugin provides the following capabilities\:
   arista.avd.eos_validate_state_runner:
     logging_level: ERROR
     save_catalog: True
+    strict_mode: True
     eos_validate_state_dir: "/tmp"
     skipped_tests:
       - category: AvdTestHardware

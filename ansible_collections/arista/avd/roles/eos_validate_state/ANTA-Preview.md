@@ -31,7 +31,12 @@
 - Hardware tests are now collapsed.
 - Some description of tests have been updated to be more precise.
 - Sorting of the test results is now done per device as opposed to per category.
--
+
+### Strict mode introduction
+
+- A new `strict_mode` option has been introduced:
+  - **Enabled (True):** If any command collection fails, the task for the device will fail in Ansible, stopping the play. Consequently, no report will be generated for that device.
+  - **Disabled (False, default):** The play continues even if a command collection fails, but the test associated with the failed command will be marked as FAIL in the `eos_validate_state` report.
 
 ## How to run eos_validate_state in ANTA mode
 
@@ -55,8 +60,6 @@
 - You have the option to save the test catalog generate by the role for each device in the `intended/test_catalogs` folder by setting the variable `save_catalog` to `true`.
 
 ## Test Categories
-
-note:
 
 - AvdTestHardware (Ansible tags: `hardware`, `platform_information`)
   - VerifyEnvironmentPower: Validate environment power supplies status.
@@ -128,12 +131,10 @@ eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name
 validate_state_markdown_flavor: "default"
 
 # The variable `skipped_tests` can be used for running/skipping tests categories
-
 skipped_tests:
   - category: AvdTestHardware
 
 # You can also decide to skip specific subtests (ANTA test name) for more granularity
-
 skipped_tests:
   - category: AvdTestBGP
     tests:
@@ -164,17 +165,20 @@ validation_report_md: "{{ validation_role.validation_report_md | arista.avd.defa
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 
 # Variable to enable ANTA eos_validate_state
-# Default to false as ANTA is currently preview
+# Defaults to false as ANTA is currently preview
 use_anta: false
 # Whether or not to save each device test catalog to 'test_catalogs_dir'
 # Used only when 'use_anta' is set to true
 save_catalog: false
 # Which tests to skip when using ANTA.
-# If set, legacy tags are ignored
+# If set, Ansible tags are ignored
 skipped_tests: []
 # Logging level for the ANTA libraries
 # Default is warning
 logging_level: "WARNING"
+# Activate strict mode for command collection errors
+# Defaults to false
+strict_mode: false
 ```
 
 ## Example Playbook

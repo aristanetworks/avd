@@ -7,8 +7,10 @@ from asyncio import get_event_loop
 from functools import partial
 from json import JSONDecodeError, loads
 from logging import getLogger
+from urllib.error import HTTPError
 
 from ansible.errors import AnsibleConnectionFailure
+from ansible.module_utils.connection import ConnectionError
 from ansible.plugins.connection import ConnectionBase
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
@@ -33,9 +35,28 @@ class AnsibleEOSDevice(AntaDevice):
     Implementation of an AntaDevice using Ansible HttpApi plugin for EOS.
     """
 
-    def __init__(self, name: str, connection: ConnectionBase, tags: list = None, check_mode: bool = False) -> None:
+    def __init__(self, name: str, connection: ConnectionBase, tags: list = None, check_mode: bool = False, strict_mode: bool = False) -> None:
+        """
+        Initialize an instance of the AnsibleEOSDevice class.
+
+        Args:
+            name (str): Name of the AnsibleEOSDevice instance.
+            connection (ConnectionBase): An instance of Ansible ConnectionBase. It must utilize the EOS HttpApi plugin to manage the device's connection.
+            tags (list, optional): A list of tags associated with the device. Defaults to None.
+            check_mode (bool, optional): If True, initializes the class in check mode. Defaults to False.
+            strict_mode (bool, optional): If set to True, the task will fail when any command collection attempt fails. Defaults to False.
+
+        Attributes:
+            check_mode (bool): Flag indicating if the class is operating in check mode.
+            strict_mode (bool): Flag indicating the operational mode of the class regarding command collection failure behavior.
+            _connection (ConnectionBase): An instance of ConnectionBase using the EOS HttpApi plugin for device connection management.
+
+        Raises:
+            AristaAvdError: Raised if the provided Ansible connection does not use the EOS HttpApi plugin.
+        """
         super().__init__(name, tags, disable_cache=False)
         self.check_mode = check_mode
+        self.strict_mode = strict_mode
         # In check_mode we don't care that we cannot connect to the device
         if self.check_mode:
             self._connection = connection
@@ -59,7 +80,7 @@ class AnsibleEOSDevice(AntaDevice):
 
     def __rich_repr__(self):
         """
-        Implements Rich Repr Protocol
+        Implementation of Rich Repr Protocol
         https://rich.readthedocs.io/en/stable/pretty.html#rich-repr-protocol
         """
         connection_vars = vars(self._connection)
@@ -78,9 +99,13 @@ class AnsibleEOSDevice(AntaDevice):
         Args:
             command: the command to collect
 
-        If `send_request` fails, Ansible will raise an error per the logging handler
-        and the task will fail for this device. No need to re-raise the exception to ANTA
-        as it is handled here and we want to avoid duplicate error logs.
+        If there is an exception while collecting the command and strict mode is activated,
+        Ansible will raise an error per the logger handler and the task will fail for this device,
+        stopping the Ansible play.
+
+        If strict mode is disabled (False), the exception will be propagated and handled in ANTA.
+        That means ANTA will set the test result to 'error', the play will continue and the test
+        will be marked as FAIL in the eos_validate_state report.
         """
         if self.check_mode:
             logger.info("_collect was called in check_mode, doing nothing")
@@ -102,21 +127,20 @@ class AnsibleEOSDevice(AntaDevice):
             command.output = loads(response) if command.ofmt == "json" else response
             logger.debug("%s: %s", self.name, command)
 
-        except AnsibleConnectionFailure as e:
-            message = f"Connection failed while collecting command '{command.command}'"
-            anta_log_exception(e, message, logger)
-            command.failed = e
-            return
         except JSONDecodeError:
             # Even if the outformat is 'json' send_request() sometimes returns a non-valid JSON depending on the output content
             # https://github.com/ansible-collections/arista.eos/blob/main/plugins/httpapi/eos.py#L194
             command.output = {"messages": [response]}
+
         except Exception as e:
-            message = f"Exception raised while collecting command '{command.command}'"
-            anta_log_exception(e, message, logger)
+            message = f"Command '{command.command}' failed"
             command.failed = e
             logger.debug(command)
-            return
+
+            if self.strict_mode:
+                anta_log_exception(e, message, logger)
+            else:
+                raise e.__class__(f"{message}: {str(e)}") from e
 
     async def refresh(self) -> None:
         """
@@ -127,29 +151,26 @@ class AnsibleEOSDevice(AntaDevice):
         - established: When a command execution succeeded
         - hw_model: The hardware model of the device
 
-        If `get_device_info()` fails, Ansible will raise an error per the logging handler
-        and the task will fail for this device. No need to re-raise the exception to ANTA
-        as it is handled here and we want to avoid duplicate error logs.
+        On `get_device_info()` failure:
+        - The exception is caught and logged locally
+        - The exception won't be propagated to ANTA
+        - The task will fail per the logger handler and the play for the device will stop
         """
-        logger.info("Refreshing device %s", self.name)
+        logger.debug("Refreshing device %s", self.name)
         if self.check_mode:
             logger.info("refresh was called in check_mode, doing nothing")
             return
 
         try:
             device_info = self._connection.get_device_info()
-        except AnsibleConnectionFailure as e:
-            message = "Connection failed while getting the device information"
+        except (AnsibleConnectionFailure, HTTPError) as e:
+            message = "Failed to connect to device"
             anta_log_exception(e, message, logger)
-            return
-        except Exception as e:
-            message = "Exception raised while getting the device information"
+        except ConnectionError as e:
+            message = "Error while getting the device information"
             anta_log_exception(e, message, logger)
-            return
-
-        self.is_online = self._connection._connected
-        if self.is_online:
-            self.hw_model = device_info["network_os_model"]
         else:
-            logger.error("Could not connect to the device")
+            self.is_online = self._connection.connected
+            self.hw_model = device_info["network_os_model"]
+
         self.established = bool(self.is_online and self.hw_model)
