@@ -9,8 +9,8 @@
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
       vars:
-         avd_data_validation_mode: error
-         avd_data_conversion_mode: error
+        avd_data_validation_mode: error
+        avd_data_conversion_mode: error
       # This is terrible but that's the best I can do with molecule and our
       # roles disjointed tags
       tags: always
