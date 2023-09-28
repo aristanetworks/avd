@@ -10,15 +10,19 @@
 
 #### TACACS Servers
 
-| VRF | TACACS Servers | Single-Connection |
-| --- | -------------- | ----------------- |
+| VRF | TACACS Servers | Single-Connection | Timeout |
+| --- | -------------- | ----------------- | ------- |
 {%     for host in tacacs_servers.hosts %}
 {%         set vrf = host.vrf | arista.avd.default('default') %}
-| {{ vrf }} | {{ host.host }} | {{ host.single_connection | default(false) }} |
+| {{ vrf }} | {{ host.host }} | {{ host.single_connection | default(false) }} | {{ host.timeout | arista.avd.default("-") }} |
 {%     endfor %}
 
 {%     if tacacs_servers.policy_unknown_mandatory_attribute_ignore is arista.avd.defined and tacacs_servers.policy_unknown_mandatory_attribute_ignore == true %}
 Policy unknown-mandatory-attribute ignore is configured
+
+{%     endif %}
+{%     if tacacs_servers.timeout is arista.avd.defined %}
+Global timeout: {{ tacacs_servers.timeout }} seconds
 
 {%     endif %}
 #### TACACS Servers Device Configuration

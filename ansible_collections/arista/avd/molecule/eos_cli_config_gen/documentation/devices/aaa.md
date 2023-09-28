@@ -67,14 +67,14 @@ username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9s
 
 #### TACACS Servers
 
-| VRF | TACACS Servers | Single-Connection |
-| --- | -------------- | ----------------- |
-| mgt | 10.10.10.157 | True |
-| default | 10.10.10.249 | False |
-| default | 10.10.10.158 | False |
-| default | 10.10.10.159 | False |
+| VRF | TACACS Servers | Single-Connection | Timeout |
+| --- | -------------- | ----------------- | ------- |
+| mgt | 10.10.10.157 | True | - |
+| default | 10.10.10.249 | False | 23 |
+| default | 10.10.10.158 | False | - |
+| default | 10.10.10.159 | False | - |
 
-Timeout: 10 seconds
+Global timeout: 10 seconds
 
 #### TACACS Servers Device Configuration
 

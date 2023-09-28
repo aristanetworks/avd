@@ -19280,6 +19280,9 @@
       "properties": {
         "timeout": {
           "type": "integer",
+          "description": "Timeout in seconds",
+          "minimum": 1,
+          "maximum": 1000,
           "title": "Timeout"
         },
         "hosts": {
@@ -19317,6 +19320,9 @@
               },
               "timeout": {
                 "type": "integer",
+                "description": "Timeout in seconds",
+                "minimum": 1,
+                "maximum": 1000,
                 "title": "Timeout"
               }
             },
