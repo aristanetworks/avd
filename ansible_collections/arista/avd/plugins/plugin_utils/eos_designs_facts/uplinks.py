@@ -50,6 +50,14 @@ class UplinksMixin:
         )
 
     @cached_property
+    def _uplink_port_channel_id(self: EosDesignsFacts) -> str | None:
+        return get(self.shared_utils.switch_data_combined, "uplink_port_channel_id")
+
+    @cached_property
+    def _uplink_switch_port_channel_id(self: EosDesignsFacts) -> str | None:
+        return get(self.shared_utils.switch_data_combined, "uplink_switch_port_channel_id")
+
+    @cached_property
     def _uplink_switch_interfaces(self: EosDesignsFacts) -> list:
         uplink_switch_interfaces = default(
             get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces"),
@@ -163,6 +171,8 @@ class UplinksMixin:
             uplink_interfaces = self._uplink_interfaces
             uplink_switches = self.shared_utils.uplink_switches
             uplink_switch_interfaces = self._uplink_switch_interfaces
+            uplink_port_channel_id = self._uplink_port_channel_id
+            uplink_switch_port_channel_id = self._uplink_switch_port_channel_id
             for uplink_index, uplink_interface in enumerate(uplink_interfaces):
                 if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                     # Invalid length of input variables. Skipping
@@ -203,11 +213,23 @@ class UplinksMixin:
 
                 if self.shared_utils.mlag_role == "secondary":
                     mlag_peer_switch_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
-                    uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_interfaces[0]))
-                    uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_switch_interfaces[0]))
+                    if mlag_peer_switch_facts._uplink_port_channel_id is not None:
+                        uplink["channel_group_id"] = str(mlag_peer_switch_facts._uplink_port_channel_id)
+                    else:
+                        uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_interfaces[0]))
+                    if mlag_peer_switch_facts._uplink_switch_port_channel_id is not None:
+                        uplink["peer_channel_group_id"] = str(mlag_peer_switch_facts._uplink_switch_port_channel_id)
+                    else:
+                        uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_switch_interfaces[0]))
                 else:
-                    uplink["channel_group_id"] = "".join(re.findall(r"\d", uplink_interfaces[0]))
-                    uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", uplink_switch_interfaces[0]))
+                    if uplink_port_channel_id is not None:
+                        uplink["channel_group_id"] = str(uplink_port_channel_id)
+                    else:
+                        uplink["channel_group_id"] = "".join(re.findall(r"\d", uplink_interfaces[0]))
+                    if uplink_switch_port_channel_id is not None:
+                        uplink["peer_channel_group_id"] = str(uplink_switch_port_channel_id)
+                    else:
+                        uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", uplink_switch_interfaces[0]))
 
                 # Remove vlans if upstream switch does not have them #}
                 if self.shared_utils.enable_trunk_groups:
