@@ -11233,18 +11233,15 @@ keys:
           max: 4294967295
   stun:
     type: dict
+    description: STUN configuration
     keys:
       client:
         type: dict
-        description: '"If a device is a client"
-
-          '
+        description: STUN client settings
         keys:
           server_profiles:
             type: list
-            description: "Enable Server profiles need to reference the name of the
-              profile and IP address\nExamples:\n- \"server-profile profile1\n      ip
-              addres 1.1.1.1\"\n- \"server-profile profile2\n      ip addres 2.2.2.2\"\n"
+            description: List of server profiles for the client
             primary_key: name
             items:
               type: dict
@@ -11255,16 +11252,10 @@ keys:
                   type: str
       server:
         type: dict
-        description: '"If a device is a server typically this device just needs to
-          reference a interface with a IP address and also is typically the route
-          reflector."
-
-          '
+        description: STUN server settings
         keys:
           local_interface:
             type: str
-            description: '"This is typically the ethernet interface that is connected
-              to the wan. ie ethernet1"'
   switchport_default:
     type: dict
     keys:
