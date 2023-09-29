@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 ---
 #####################################
-##  Run legacy eos_validate_state  ##
+##  Run ansible eos_validate_state  ##
 #####################################
 
 - name: Generate variables for testing
@@ -42,7 +42,7 @@
     - hardware
 
 ############################################
-## Load tasks for legacy validation tests ##
+## Load tasks for ansible validation tests ##
 ############################################
 
 - name: Load Hardware validation tasks

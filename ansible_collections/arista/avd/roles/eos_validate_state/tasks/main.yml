@@ -49,11 +49,11 @@
     - always
 
 #####################################
-##  Run legacy eos_validate_state  ##
+##  Run ansible assert eos_validate_state  ##
 #####################################
 
-- name: Run legacy tests
-  ansible.builtin.include_tasks: "legacy_tests.yml"
+- name: Run ansible assert tests
+  ansible.builtin.include_tasks: "ansible tests.yml"
   when: not use_anta
   tags:
     - always
