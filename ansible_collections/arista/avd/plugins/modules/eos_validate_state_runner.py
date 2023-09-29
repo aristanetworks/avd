@@ -44,7 +44,7 @@ options:
   skipped_tests:
     description:
       - A list of dictionaries containing the categories and tests to skip
-      - The keys for the dictionnary are: C(categories) and C(tests).
+      - The keys for the dictionnary are C(categories) and C(tests).
     type: list
     elements: dict
     suboptions:

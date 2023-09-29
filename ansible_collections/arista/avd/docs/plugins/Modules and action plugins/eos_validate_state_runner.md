@@ -34,7 +34,7 @@ The plugin provides the following capabilities\:
 | logging_level | str | False | WARNING | Valid values:<br>- <code>CRITICAL</code><br>- <code>ERROR</code><br>- <code>WARNING</code><br>- <code>INFO</code><br>- <code>DEBUG</code> | Controls the log level for the ANTA library. If unset, the Action plugin will set it to \"WARNING\" |
 | save_catalog | bool | optional | False |  | A boolean to indicate whether or not the catalog should be saved for each device. |
 | device_catalog_output_dir | str | optional | None |  | When <code>save\_catalog</code> is True, this is the directory where the device catalogs will be saved.<br>Required if <em>save\_catalog\=True</em> |
-| skipped_tests | list | optional | None |  | A list of dictionaries containing the categories and tests to skip<br>The keys for the dictionnary are |
+| skipped_tests | list | optional | None |  | A list of dictionaries containing the categories and tests to skip<br>The keys for the dictionnary are <code>categories</code> and <code>tests</code>. |
 |     category | str | True | None |  | The name of one of the AvdTest categories. e.g., <code>AvdTestHardware</code> |
 |     tests | list | optional | None |  | A list of tests in the category. e.g, <code>VerifyRoutingProtocolModel</code> for <code>AvdTestBGP</code> |
 
