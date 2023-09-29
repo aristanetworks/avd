@@ -54,7 +54,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.connected_endpoints_port_channel_interfaces") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.overlay_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.vtep_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cloudvision_tags_topology_type</samp>](## "node_type_keys.[].cloudvision_tags_topology_type") | String |  |  | Valid Values:<br>- leaf<br>- spine<br>- core<br>- edge | Type that CloudVision should use when generating the Topology.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "node_type_keys.[].cv_tags_topology_type") | String |  |  | Valid Values:<br>- leaf<br>- spine<br>- core<br>- edge | Type that CloudVision should use when generating the Topology.<br> |
 
 === "YAML"
 
@@ -106,5 +106,5 @@
           connected_endpoints_port_channel_interfaces: <str>
           overlay_loopback_interface: <str>
           vtep_loopback_interface: <str>
-        cloudvision_tags_topology_type: <str>
+        cv_tags_topology_type: <str>
     ```

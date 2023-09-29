@@ -6,10 +6,10 @@
 
 # CloudVision Tags
 
-If  `avd_generate_cloudvision_tags` is set to `True`, `arista.avd.eos_designs` can generate CloudVision Tags that can be applied to interfaces and/or devices. These tags can be used during Topology generateion, or used in searches/filters to select devices based on tags values.
+If  `cv_tags_enabled` is set to `True`, `arista.avd.eos_designs` can generate CloudVision Tags that can be applied to interfaces and/or devices. These tags can be used during Topology generateion, or used in searches/filters to select devices based on tags values.
 
 !!! note
-    - **By default this new feature is turned off. Set `avd_generate_cloudvision_tags: True` in the Fabric to enable this feature.**
+    - **By default this new feature is turned off. Set `cv_tags_enabled: True` in the Fabric to enable this feature.**
     - **These tags would need to be applied to CloudVision using the [`arista.avd.cloudvision`](../../../cloudvision/README.md) role.**
 
 ## Available Input Variables
@@ -31,19 +31,19 @@ It will attempt to generate what are called 'hints' for the following fields. Th
 | `topology_hint_pod` | The pod to which the devices belongs. | `pod_name` |
 | `topology_hint_rack` | The physical rack in which the device is located. | `rack` defined on `node` or `node_group` |
 
-The `topology_hint_type` for a particular node can be overriden by defining the `cloudvision_tags_topology_type` as per the below table.
+The `topology_hint_type` for a particular node can be overriden by defining the `cv_tags_topology_type` as per the below table.
 
 ??? example "Example: Overriding default topology type"
 
     ```yaml
       # This should be defined in host_vars or group_vars for the devices
       # we want to affect
-      cloudvision_tags_topology_type: edge
+      cv_tags_topology_type: edge
     ```
 
 ## CloudVision Custom Tags
 
-It is possible to assing custom Tags and values to devices. Depending where the key `cloudvision_tags_device_custom` is defined, the tag can be generated for a whole group or only a single device.
+It is possible to assing custom Tags and values to devices. Depending where the key `cv_tags_device_custom` is defined, the tag can be generated for a whole group or only a single device.
 
 !!! warning
     **Tag names cannot have the name of any existing system tags on CloudVision. System tags cannot be emanded with this approach.**
@@ -53,7 +53,7 @@ It is possible to assing custom Tags and values to devices. Depending where the 
     ```yaml
       # This should be defined in host_vars or group_vars for the devices
       # we want to affect
-      cloudvision_tags_device_custom:
+      cv_tags_device_custom:
         - name: custom_tag
           value: custom_value_leaf1a
     ```
@@ -83,13 +83,13 @@ can be defined as the value for a tag. This allows for tags to be generated with
       # interface name on the peer device.
       # If the keys `peer` or `peer_interface` are not found in the structured_config
       # the respective tags will not be created.
-      cloudvision_tags_interface_generate:
+      cv_tags_generate_interface:
         - field: peer
           name: peer_device_name
         - field: peer_interface
           name: peer_device_interface
 
-      cloudvision_tags_device_generate:
+      cv_tags_generate_device:
         # Each EOS device will have tag called 'ip_routing' which will
         # have a value of 'True' if ip_routing is enabled on the device.
         - field: ip_routing

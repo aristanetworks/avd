@@ -50,14 +50,14 @@ bgp_peer_groups:
 # p2p_uplinks_mtu: 1500
 p2p_uplinks_mtu: 1500
 
-cloudvision_tags: True
+cv_tags_enabled: True
 
-cloudvision_tags_generate_interface:
+cv_tags_generate_interface:
   - field: peer
     name: peer_device_name
   - field: peer_interface
     name: peer_device_interface
 
-cloudvision_tags_generate_device:
+cv_tags_generate_device:
   - field: ip_routing
     name: layer3_routing

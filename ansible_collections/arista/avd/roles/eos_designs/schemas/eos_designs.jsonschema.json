@@ -2294,107 +2294,6 @@
       "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\n",
       "title": "BGP Update Wait For Convergence"
     },
-    "cloudvision_tags": {
-      "type": "boolean",
-      "default": false,
-      "description": "Enable the generation of CloudVision tags that can be applied using the `cloudvision` role. If not defined, the value is assumed to be False and no tags are generated.\n",
-      "title": "Cloudvision Tags"
-    },
-    "cloudvision_tags_topology_type": {
-      "description": "Device type that CloudVision should use when generating the Topology.\n",
-      "type": "string",
-      "enum": [
-        "leaf",
-        "spine",
-        "core",
-        "edge"
-      ],
-      "title": "Cloudvision Tags Topology Type"
-    },
-    "cloudvision_tags_generate_interface": {
-      "description": "List of interface tags that should be generated from\nstructured configuration.\n",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Tag name to be assigned to generated tags.\n",
-            "type": "string",
-            "title": "Name"
-          },
-          "field": {
-            "description": "Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\n",
-            "type": "string",
-            "title": "Field"
-          }
-        },
-        "required": [
-          "name",
-          "field"
-        ],
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        }
-      },
-      "title": "Cloudvision Tags Generate Interface"
-    },
-    "cloudvision_tags_generate_device": {
-      "description": "List of device tags that should be generated from\nstructured configuration.\n",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Tag name to be assigned to generated tags.\n",
-            "type": "string",
-            "title": "Name"
-          },
-          "field": {
-            "description": "Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\n",
-            "type": "string",
-            "title": "Field"
-          }
-        },
-        "required": [
-          "name",
-          "field"
-        ],
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        }
-      },
-      "title": "Cloudvision Tags Generate Device"
-    },
-    "cloudvision_tags_device_custom": {
-      "description": "List of user defined tags and their values to be applied to this\ndevice on CVP.\n",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "Tag name to be assigned to generated tag.\n",
-            "type": "string",
-            "title": "Name"
-          },
-          "value": {
-            "description": "Value to be assigned to the tag.\n",
-            "type": "string",
-            "title": "Value"
-          }
-        },
-        "required": [
-          "name",
-          "value"
-        ],
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        }
-      },
-      "title": "Cloudvision Tags Device Custom"
-    },
     "connected_endpoints_keys": {
       "description": "Endpoints connecting to the fabric can be grouped by using separate keys.\nThe keys can be customized to provide a better better organization or grouping of your data.\n`connected_endpoints_keys` should be defined in the top level group_vars for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.\n",
       "type": "array",
@@ -3026,6 +2925,107 @@
         "custom_structured_configuration_"
       ],
       "title": "Custom Structured Configuration Prefix"
+    },
+    "cv_tags_enabled": {
+      "type": "boolean",
+      "default": false,
+      "description": "Enable the generation of CloudVision tags that can be applied using the `cloudvision` role. If not defined, the value is assumed to be False and no tags are generated.\n",
+      "title": "Cv Tags Enabled"
+    },
+    "cv_tags_topology_type": {
+      "description": "Device type that CloudVision should use when generating the Topology.\n",
+      "type": "string",
+      "enum": [
+        "leaf",
+        "spine",
+        "core",
+        "edge"
+      ],
+      "title": "Cv Tags Topology Type"
+    },
+    "cv_tags_generate_interface": {
+      "description": "List of interface tags that should be generated from\nstructured configuration.\n",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Tag name to be assigned to generated tags.\n",
+            "type": "string",
+            "title": "Name"
+          },
+          "field": {
+            "description": "Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\n",
+            "type": "string",
+            "title": "Field"
+          }
+        },
+        "required": [
+          "name",
+          "field"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Cv Tags Generate Interface"
+    },
+    "cv_tags_generate_device": {
+      "description": "List of device tags that should be generated from\nstructured configuration.\n",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Tag name to be assigned to generated tags.\n",
+            "type": "string",
+            "title": "Name"
+          },
+          "field": {
+            "description": "Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\n",
+            "type": "string",
+            "title": "Field"
+          }
+        },
+        "required": [
+          "name",
+          "field"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Cv Tags Generate Device"
+    },
+    "cv_tags_device_custom": {
+      "description": "List of user defined tags and their values to be applied to this\ndevice on CVP.\n",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "Tag name to be assigned to generated tag.\n",
+            "type": "string",
+            "title": "Name"
+          },
+          "value": {
+            "description": "Value to be assigned to the tag.\n",
+            "type": "string",
+            "title": "Value"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Cv Tags Device Custom"
     },
     "cvp_ingestauth_key": {
       "type": "string",
@@ -9321,7 +9321,7 @@
             },
             "title": "Interface Descriptions"
           },
-          "cloudvision_tags_topology_type": {
+          "cv_tags_topology_type": {
             "description": "Type that CloudVision should use when generating the Topology.\n",
             "type": "string",
             "enum": [
@@ -9330,7 +9330,7 @@
               "core",
               "edge"
             ],
-            "title": "Cloudvision Tags Topology Type"
+            "title": "Cv Tags Topology Type"
           }
         },
         "additionalProperties": false,
