@@ -47,9 +47,11 @@
 
   Example: `ansible-playbook playbooks/fabric-validate.yaml --tags routing_table`
 
-- You can now run the eos_validate_state role in check_mode. This will produce a report of tests that will be performed.
+- You can now run the eos_validate_state role in check_mode. This will produce a report of tests that will be performed without running the tests on your network.
 
   Example: `ansible-playbook playbooks/fabric-validate.yaml --check`
+
+- You have the option to save the test catalog generate by the role for each device in the `intended/test_catalogs` folder by setting the variable `save_catalog` to `true`.
 
 ## Test Categories
 

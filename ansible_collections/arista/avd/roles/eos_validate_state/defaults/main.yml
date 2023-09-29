@@ -43,6 +43,8 @@ accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok'])
 # Print only FAILED tests
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 
+avd_structured_config_file_format: "yml"
+
 # Variable to enable ANTA eos_validate_state
 # Default to false as ANTA is currently preview
 use_anta: false
