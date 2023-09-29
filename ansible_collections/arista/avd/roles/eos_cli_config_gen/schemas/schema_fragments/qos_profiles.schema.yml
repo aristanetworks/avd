@@ -99,7 +99,7 @@ keys:
                             required: true
                             type: str
                             valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
-                            description: |
+                            description: |-
                               Units to be used for the threshold values.
                               This should be one of segments, byte, kbytes, mbytes.
                           min:
@@ -108,33 +108,28 @@ keys:
                             min: 1
                             convert_types:
                               - str
-                            description: |
-                              Random-detect ECN minimum-threshold
+                            description: Random-detect ECN minimum-threshold
                           max:
                             type: int
                             required: true
                             min: 1
                             convert_types:
                               - str
-                            description: |
-                              Random-detect ECN maximum-threshold
+                            description: Random-detect ECN maximum-threshold
                           max_probability:
                             type: int
                             min: 1
                             max: 100
                             convert_types:
                               - str
-                            description: |
-                              Random-detect ECN maximum mark probability.
+                            description: Random-detect ECN maximum mark probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
                             convert_types:
                               - str
-                            description: |
-                              Random-detect ECN weight.
-
+                            description: Random-detect ECN weight.
         uc_tx_queues:
           type: list
           primary_key: id
@@ -180,8 +175,7 @@ keys:
                     keys:
                       count:
                         type: bool
-                        description: |
-                          Enable counter for random-detect ECNs
+                        description: Enable counter for random-detect ECNs
                       threshold:
                         type: dict
                         keys:
@@ -189,41 +183,35 @@ keys:
                             required: true
                             type: str
                             valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
-                            description: |
-                              Unit to be used for the threshold values.
+                            description: Unit to be used for the threshold values.
                           min:
                             type: int
                             required: true
                             min: 1
                             convert_types:
                               - str
-                            description: |
-                              Random-detect ECN minimum-threshold.
+                            description: Random-detect ECN minimum-threshold.
                           max:
                             type: int
                             required: true
                             min: 1
                             convert_types:
                               - str
-                            description: |
-                              Random-detect ECN maximum-threshold.
+                            description: Random-detect ECN maximum-threshold.
                           max_probability:
                             type: int
                             min: 1
                             max: 100
                             convert_types:
                               - str
-                            description: |
-                              Random-detect ECN maximum mark probability.
+                            description: Random-detect ECN maximum mark probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
                             convert_types:
                               - str
-                            description: |
-                              Random-detect ecn weight.
-
+                            description: Random-detect ECN weight.
         mc_tx_queues:
           type: list
           primary_key: id

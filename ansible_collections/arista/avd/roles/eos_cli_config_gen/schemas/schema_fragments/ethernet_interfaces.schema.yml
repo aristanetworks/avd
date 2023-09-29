@@ -1002,8 +1002,7 @@ keys:
                     keys:
                       count:
                         type: bool
-                        description: |
-                          Enable counter for random-detect ECNs
+                        description: Enable counter for random-detect ECNs
                       threshold:
                         type: dict
                         keys:
@@ -1011,8 +1010,7 @@ keys:
                             required: true
                             type: str
                             valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
-                            description: |
-                              Indicate the units to be used for the threshold values.
+                            description: Indicate the units to be used for the threshold values.
                           min:
                             type: int
                             required: true
@@ -1020,8 +1018,7 @@ keys:
                             max: 256000000
                             convert_types:
                               - str
-                            description: |
-                              Set the random-detect ecn minimum-threshold
+                            description: Set the random-detect ECN minimum-threshold
                           max:
                             type: int
                             required: true
@@ -1029,24 +1026,21 @@ keys:
                               - str
                             min: 1
                             max: 256000000
-                            description: |
-                              Set the random-detect ecn maximum-threshold
+                            description: Set the random-detect ECN maximum-threshold
                           max_probability:
                             type: int
                             min: 1
                             max: 100
                             convert_types:
                               - str
-                            description: |
-                              Set the random-detect ecn max-mark-probability.
+                            description: Set the random-detect ECN max-mark-probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
                             convert_types:
                               - str
-                            description: |
-                              Set the random-detect ecn weight.
+                            description: Set the random-detect ECN weight.
         tx_queues:
           type: list
           primary_key: id
@@ -1070,8 +1064,7 @@ keys:
                     keys:
                       count:
                         type: bool
-                        description: |
-                          Enable counter for random-detect ECNs
+                        description: Enable counter for random-detect ECNs
                       threshold:
                         type: dict
                         keys:
@@ -1079,16 +1072,14 @@ keys:
                             type: str
                             required: true
                             valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
-                            description: |
-                              Indicate the units to be used for the threshold values.
+                            description: Indicate the units to be used for the threshold values.
                           min:
                             type: int
                             min: 1
                             max: 256000000
                             convert_types:
                               - str
-                            description: |
-                              Set the random-detect ecn minimum-threshold
+                            description: Set the random-detect ECN minimum-threshold
                           max:
                             type: int
                             required: true
@@ -1096,8 +1087,7 @@ keys:
                               - str
                             min: 1
                             max: 256000000
-                            description: |
-                              Set the random-detect ecn maximum-threshold
+                            description: Set the random-detect ECN maximum-threshold
                           max_probability:
                             type: int
                             required: true
@@ -1105,16 +1095,14 @@ keys:
                             max: 100
                             convert_types:
                               - str
-                            description: |
-                              Set the random-detect ecn max-mark-probability.
+                            description: Set the random-detect ECN max-mark-probability.
                           weight:
                             type: int
                             min: 0
                             max: 15
                             convert_types:
                               - str
-                            description: |
-                              Set the random-detect ecn weight.
+                            description: Set the random-detect ECN weight.
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
