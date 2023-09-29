@@ -1003,7 +1003,7 @@
       },
       "title": "Clock"
     },
-    "cloudvision_tags": {
+    "cv_tags": {
       "type": "object",
       "properties": {
         "device_tags": {
@@ -1081,7 +1081,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Cloudvision Tags"
+      "title": "Cv Tags"
     },
     "community_lists": {
       "type": "array",

@@ -27,10 +27,10 @@
   arista.cvp.cv_tag_v3:
     tags:
       - device: "{{ inventory_hostname }}"
-        device_tags: "{{ cloudvision_tags.device_tags }}"
-        interface_tags: "{{ cloudvision_tags.interface_tags }}"
+        device_tags: "{{ cv_tags.device_tags }}"
+        interface_tags: "{{ cv_tags.interface_tags }}"
     mode: assign
     auto_create: true
   when:
     - is_deployed is not arista.avd.defined(false)
-    - cloudvision_tags is arista.avd.defined
+    - cv_tags is arista.avd.defined

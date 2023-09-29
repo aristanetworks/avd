@@ -6,7 +6,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  cloudvision_tags:
+  cv_tags:
     type: dict
     keys:
       device_tags:
