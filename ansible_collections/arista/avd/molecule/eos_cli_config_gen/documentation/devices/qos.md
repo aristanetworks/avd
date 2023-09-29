@@ -410,6 +410,41 @@ QOS Profile: **uc_mc_queues_test**
 | 2 | Multicast | 10 | priority strict | - | Test strict priority |
 | 4 | Multicast | 10 | - | - | Test guaranteed percent |
 
+QOS Profile: **wred_queues_test**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | - |
+
+**TX Queues**
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | All | 50 | no priority | - | Test no priority |
+| 2 | All | 10 | priority strict | - | - |
+| 4 | All | 10 | - | - | Test guaranteed percent |
+| 1 | Multicast | 50 | no priority | - | - |
+| 2 | Multicast | 10 | priority strict | - | Test strict priority |
+| 4 | Multicast | 10 | - | - | Test guaranteed percent |
+
+QOS Profile: **wred_uc_queues_test**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | - |
+
+**TX Queues**
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | Unicast | 50 | no priority | - | Test no priority |
+| 2 | Unicast | 10 | priority strict | - | - |
+| 4 | Unicast | 10 | - | - | Test guaranteed percent |
+
 #### QOS Profile Device Configuration
 
 ```eos
@@ -516,6 +551,55 @@ qos profile uc_mc_queues_test
    mc-tx-queue 4
       !! Test guaranteed percent
       bandwidth guaranteed percent 10
+!
+qos profile wred_queues_test
+   !
+   tx-queue 1
+      !! Test no priority
+      bandwidth percent 50
+      no priority
+      random-detect drop minimum-threshold 1 kbytes maximum-threshold 10 kbytes
+   !
+   tx-queue 2
+      bandwidth percent 10
+      priority strict
+      random-detect drop drop-precedence 2  minimum-threshold 2 kbytes maximum-threshold 200 kbytes
+   !
+   tx-queue 4
+      !! Test guaranteed percent
+      bandwidth guaranteed percent 10
+      random-detect drop minimum-threshold 1 kbytes maximum-threshold 10 kbytes max-mark-probability 90
+   !
+   mc-tx-queue 1
+      bandwidth percent 50
+      no priority
+   !
+   mc-tx-queue 2
+      !! Test strict priority
+      bandwidth percent 10
+      priority strict
+   !
+   mc-tx-queue 4
+      !! Test guaranteed percent
+      bandwidth guaranteed percent 10
+!
+qos profile wred_uc_queues_test
+   !
+   uc-tx-queue 1
+      !! Test no priority
+      bandwidth percent 50
+      no priority
+      random-detect drop minimum-threshold 1 microseconds maximum-threshold 10 microseconds
+   !
+   uc-tx-queue 2
+      bandwidth percent 10
+      priority strict
+      random-detect drop drop-precedence 1  minimum-threshold 2 milliseconds maximum-threshold 20 milliseconds
+   !
+   uc-tx-queue 4
+      !! Test guaranteed percent
+      bandwidth guaranteed percent 10
+      random-detect drop minimum-threshold 1 microseconds maximum-threshold 10 microseconds max-mark-probability 90
 ```
 
 #### QOS Interfaces

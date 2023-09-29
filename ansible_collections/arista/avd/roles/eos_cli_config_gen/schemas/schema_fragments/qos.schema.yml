@@ -32,3 +32,22 @@ keys:
                 Example: "1 to dscp 32"
       rewrite_dscp:
         type: bool
+      random_detect:
+        type: dict
+        description: Global random-detect settings
+        keys:
+          drop:
+            type: dict
+            description: Global ECN Configuration
+            keys:
+              allow_non_ect:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      Allow non-ect and set drop-precedence 1 in a policy map simultaneously.
+                      Check which command is required for your platform.
+                  chip_based:
+                    type: bool
+                    description: Allow non-ect chip-based.

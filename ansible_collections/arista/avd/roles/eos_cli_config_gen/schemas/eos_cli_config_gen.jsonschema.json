@@ -11149,6 +11149,48 @@
         "rewrite_dscp": {
           "type": "boolean",
           "title": "Rewrite DSCP"
+        },
+        "random_detect": {
+          "type": "object",
+          "description": "Global random-detect settings",
+          "properties": {
+            "drop": {
+              "type": "object",
+              "description": "Global ECN Configuration",
+              "properties": {
+                "allow_non_ect": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Allow non-ect and set drop-precedence 1 in a policy map simultaneously.\nCheck which command is required for your platform.",
+                      "title": "Enabled"
+                    },
+                    "chip_based": {
+                      "type": "boolean",
+                      "description": "Allow non-ect chip-based.",
+                      "title": "Chip Based"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Allow Non Ect"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Drop"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Random Detect"
         }
       },
       "additionalProperties": false,
@@ -11269,6 +11311,81 @@
                   "type": "string",
                   "description": "Text comment added to queue.\n",
                   "title": "Comment"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "drop": {
+                      "description": "Set WRED parameters",
+                      "type": "object",
+                      "properties": {
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "microseconds",
+                                "milliseconds"
+                              ],
+                              "description": "Units to be used for the threshold values.",
+                              "title": "Units"
+                            },
+                            "drop_precedence": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 2,
+                              "description": "Specify Drop Precendence value",
+                              "title": "Drop Precedence"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "WRED maximum mark probability.",
+                              "title": "Max Probability"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Drop"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
                 }
               },
               "additionalProperties": false,
@@ -11326,6 +11443,81 @@
                   "type": "string",
                   "description": "Text comment added to queue.\n",
                   "title": "Comment"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "drop": {
+                      "description": "Set WRED parameters",
+                      "type": "object",
+                      "properties": {
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "microseconds",
+                                "milliseconds"
+                              ],
+                              "description": "Units to be used for the threshold values.",
+                              "title": "Units"
+                            },
+                            "drop_precedence": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 2,
+                              "description": "Specify Drop Precendence value",
+                              "title": "Drop Precedence"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "WRED maximum mark probability.",
+                              "title": "Max Probability"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Drop"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
                 }
               },
               "additionalProperties": false,

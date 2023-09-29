@@ -125,6 +125,81 @@ qos_profiles:
       - id: 4
         bandwidth_guaranteed_percent: 10
         comment: "Test guaranteed percent"
+  - name: wred_queues_test
+    tx_queues:
+      - id: 1
+        bandwidth_percent: 50
+        priority: 'no priority'
+        comment: "Test no priority"
+        random_detect:
+          drop:
+            threshold:
+              units: kbytes
+              min: 1
+              max: 10
+      - id: 2
+        bandwidth_percent: 10
+        priority: 'priority strict'
+        random_detect:
+          drop:
+            threshold:
+              drop_precedence: 2
+              units: kbytes
+              min: 2
+              max: 200
+      - id: 4
+        bandwidth_guaranteed_percent: 10
+        comment: "Test guaranteed percent"
+        random_detect:
+          drop:
+            threshold:
+              units: kbytes
+              min: 1
+              max: 10
+              max_probability: 90
+    mc_tx_queues:
+      - id: 1
+        bandwidth_percent: 50
+        priority: 'no priority'
+      - id: 2
+        bandwidth_percent: 10
+        priority: 'priority strict'
+        comment: "Test strict priority"
+      - id: 4
+        bandwidth_guaranteed_percent: 10
+        comment: "Test guaranteed percent"
+  - name: wred_uc_queues_test
+    uc_tx_queues:
+      - id: 1
+        bandwidth_percent: 50
+        priority: 'no priority'
+        comment: "Test no priority"
+        random_detect:
+          drop:
+            threshold:
+              units: "microseconds"
+              min: 1
+              max: 10
+      - id: 2
+        bandwidth_percent: 10
+        priority: 'priority strict'
+        random_detect:
+          drop:
+            threshold:
+              drop_precedence: 1
+              units: "milliseconds"
+              min: 2
+              max: 20
+      - id: 4
+        bandwidth_guaranteed_percent: 10
+        comment: "Test guaranteed percent"
+        random_detect:
+          drop:
+            threshold:
+              units: "microseconds"
+              min: 1
+              max: 10
+              max_probability: 90
 
 policy_maps:
   qos:
