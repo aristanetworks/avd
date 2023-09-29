@@ -41,7 +41,7 @@
 
   This can be set for instance in your group_vars or under the task in your playbook.
 
-  Not providing the `anta` tag will run the current `eos_validate_state` leveraging Ansible asserts.
+  If you `use_anta=false` which is the default, the current version of `eos_validate_state` leveraging Ansible asserts will be run.
 
 - Legacy Ansible tags are supported if you want to run/skip tests:
 
