@@ -57,6 +57,7 @@ interface Management1
 ### STUN Device Configuration
 
 ```eos
+!
 stun
    client
       server-profile server1
