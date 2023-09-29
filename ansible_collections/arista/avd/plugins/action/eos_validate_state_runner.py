@@ -48,16 +48,15 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(f"'logging_level' must be a string in {VALID_VALUES}, got {logging_level}")
 
         save_catalog = self._task.args.get("save_catalog")
-        if not save_catalog or not isinstance(save_catalog, bool):
+        if not isinstance(save_catalog, bool):
             raise AnsibleActionFail(f"'save_catalog' must be a boolean, got {save_catalog}.")
 
-        if save_catalog is True:
-            device_catalog_output_dir = self._task.args.get("device_catalog_output_dir")
-            if not device_catalog_output_dir:
+        save_catalog_name = None
+        if save_catalog:
+            if device_catalog_output_dir := self._task.args.get("device_catalog_output_dir"):
+                save_catalog_name = f"{device_catalog_output_dir}/{hostname}-catalog.yml"
+            else:
                 raise AnsibleActionFail("'device_catalog_output_dir' must be set when 'save_catalog' is True.")
-            save_catalog_name = f"{device_catalog_output_dir}/{hostname}-catalog.yml"
-        else:
-            save_catalog_name = None
 
         skipped_tests = self._task.args.get("skipped_tests", [])
         # TODO once we have pydantic, check the list elements

@@ -2,12 +2,9 @@
 scenario:
   converge_sequence:
     - create
-    - prepare
     - converge
   test_sequence:
-    - destroy # to trigger prepare
     - create
-    - prepare
     - converge
     - idempotence
   cleanup_sequence:
