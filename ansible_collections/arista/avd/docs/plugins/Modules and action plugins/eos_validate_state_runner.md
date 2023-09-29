@@ -12,18 +12,18 @@
 !!! warning "This module is in **preview** mode"
     This module is not guaranteed to have a backwards compatible interface.
 
-Leverage ANTA for eos\_validate\_state role
+Leverage ANTA for eos\_validate\_state role.
 
 ## Synopsis
 
 The <code>arista.avd.eos\_validate\_state\_runner</code> module is an Ansible Action Plugin leveraging the ANTA test framework to validate that the generated structured configurations by AVD are applied to the devices and that the deployed network is working correctly.
 
-This plugin expects that the structued\_configs of each device is present in hostvars, otherwise no test will be generated.
+This plugin expects that the structued\_configs of each device are present in hostvars, otherwise no test will be generated.
 
 The plugin provides the following capabilities\:
     \- Generate a per\-device test catalog based on the structured\_configs
     \- Run the generated tests against each device and generate a report in Markdown and CSV format.
-    \- When using check\_mode, only generate the test catalog and generate a report to preview what would tests be run against each device
+    \- When using check\_mode, only generate the test catalog and generate a report to preview what tests would be run against each device.
     \- Dumping the per\-device catalog to a file.
     \- Backward compatibility with existing ansible tags behavior for eos\_validate\_state to filter categories of tests.
 
