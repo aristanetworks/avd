@@ -85,7 +85,7 @@ QOS Profile: **{{ profile.name }}**
 **ECN Configuration**
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
-| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
+| -------- | ---- | ------------- | ------------- | -------------------- |
 {%             if profile.tx_queues is arista.avd.defined %}
 {%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "All" %}
