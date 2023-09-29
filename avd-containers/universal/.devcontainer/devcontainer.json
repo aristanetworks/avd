@@ -8,7 +8,7 @@
         "args": {
             "FROM_IMAGE": "${localEnv:FROM_IMAGE}",
             "FROM_VARIANT": "${localEnv:FROM_VARIANT}",
-            "AVD_VERSION": "${localEnv:AVD_VERSION}",
+            "ANSIBLE_INSTALL_LOCATION": "${localEnv:ANSIBLE_INSTALL_LOCATION}",
             "ANSIBLE_CORE_VERSION": "${localEnv:ANSIBLE_CORE_VERSION}",
             "USERNAME": "${localEnv:USERNAME}"
         }

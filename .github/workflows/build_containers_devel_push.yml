@@ -17,14 +17,14 @@ jobs:
 
     strategy:
       matrix:
-        container: [base]
+        container_name: [base]
         python_version: ["3.9", "3.10", "3.11"]
         include:
           - python_version: "3.11"
-            container_tags: devel
+            container_tags: latest
 
     with:
-      container_name: ${{ matrix.container }}
+      container_name: ${{ matrix.container_name }}
       python_version: ${{ matrix.python_version }}
       container_tags: ${{ matrix.container_tags }}
 
@@ -36,16 +36,13 @@ jobs:
 
     strategy:
       matrix:
-        container: [dev, universal]
+        container_name: [universal]
         python_version: ["3.9", "3.10", "3.11"]
         include:
-          - container: universal
-            avd_version: "4.1.0"
           - python_version: "3.11"
             container_tags: latest
 
     with:
-      container_name: ${{ matrix.container }}
-      avd_version: ${{ matrix.avd_version }}
+      container_name: ${{ matrix.container_name }}
       python_version: ${{ matrix.python_version }}
       container_tags: ${{ matrix.container_tags }}

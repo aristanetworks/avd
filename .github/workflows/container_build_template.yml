@@ -39,13 +39,6 @@ on:
       from_variant:
         required: false
         type: string
-      # avd_version, e.g. 4.1.0
-      avd_version:
-        required: false
-        type: string
-      avd_pip_install:
-        required: false
-        type: string
       username:
         required: false
         type: string
@@ -74,7 +67,7 @@ jobs:
       - name: Checkout code ✅
         uses: actions/checkout@v3
 
-      # build image tags based on Python version and AVD version (if defined)
+      # build image tags based on Python version and branch name/tag
       # if container_tags is not defined, then image_tags will be auto-generated
       # if container_tags is latest, it will be added to auto-generated image_tags
       # if container_tags is defined and not latest, it will be used as is
@@ -82,17 +75,17 @@ jobs:
         id: build-tags
         run: |
           if [ -z "${{ inputs.container_tags }}" ]; then
-            if [ -z "${{ inputs.avd_version }}" ]; then
+            if [ "${{ inputs.container_name }}" == "base" ]; then
               echo "image_tags=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
             else
-              echo "image_tags=python${{ inputs.python_version }}-avd${{ inputs.avd_version }}" >> $GITHUB_OUTPUT
+              echo "image_tags=python${{ inputs.python_version }}-avd-${{ github.ref_name }}" >> $GITHUB_OUTPUT
             fi
           else
             if [ "${{ inputs.container_tags }}" == "latest" ]; then
-              if [ -z "${{ inputs.avd_version }}" ]; then
+              if [ "${{ inputs.container_name }}" == "base" ]; then
                 echo "image_tags=latest,python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
               else
-                echo "image_tags=latest,python${{ inputs.python_version }}-avd${{ inputs.avd_version }}" >> $GITHUB_OUTPUT
+                echo "image_tags=latest,python${{ inputs.python_version }}-avd-${{ github.ref_name }}" >> $GITHUB_OUTPUT
               fi
             else
               echo "image_tags=${{ inputs.container_tags }}" >> $GITHUB_OUTPUT
@@ -113,7 +106,7 @@ jobs:
               echo "from_image=${{ inputs.from_image }}" >> $GITHUB_OUTPUT
               echo "from_variant=${{ inputs.python_version }}-slim-bullseye" >> $GITHUB_OUTPUT
             else
-              echo "from_image=ghcr.io/ankudinov/avd-devcontainer/base" >> $GITHUB_OUTPUT
+              echo "from_image=ghcr.io/${{ github.repository }}/base" >> $GITHUB_OUTPUT
               echo "from_variant=python${{ inputs.python_version }}" >> $GITHUB_OUTPUT
             fi
           else
@@ -124,16 +117,14 @@ jobs:
       - name: find ansible-core version 🔥
         id: find-ansible-core-version
         run: |
-          ANSIBLE_CORE_VERSION=$(cat requirements-dev.txt| grep ansible-core)
+          ANSIBLE_CORE_VERSION=$(cat ansible_collections/arista/avd/requirements-dev.txt| grep ansible-core)
           echo "ansible_core_version=$ANSIBLE_CORE_VERSION" >> $GITHUB_OUTPUT
 
-      # - name: Copy shared files 📁
-      #   if: steps.devcontainer-filter.outputs.workflows == 'true'
-      #   run: |
-      #     cp -r container-shared/slim-bullseye/* avd-containers/${{ inputs.container_name }}/.devcontainer/
-      #     if [ ${{ inputs.avd_version }} ]; then
-      #       cat avd-containers/${{ inputs.container_name }}/.devcontainer/Dockerfile.plus >> avd-containers/${{ inputs.container_name }}/.devcontainer/Dockerfile
-      #     fi
+      - name: find ansible install location
+        id: find-ansible-install-location
+        run: |
+          ANSIBLE_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git#/ansible_collections/arista/avd/,${{ github.ref_name }}"
+          echo "ansible_install_location=$ANSIBLE_INSTALL_LOCATION" >> $GITHUB_OUTPUT
       
       - name: setup QEMU for multi-arch builds 🏗️
         uses: docker/setup-qemu-action@v2
@@ -155,14 +146,14 @@ jobs:
         env:
           FROM_IMAGE: ${{ steps.generate-from-parameters.outputs.from_image }}
           FROM_VARIANT: ${{ steps.generate-from-parameters.outputs.from_variant }}
-          AVD_VERSION: ${{ inputs.avd_version }}
+          ANSIBLE_INSTALL_LOCATION: ${{ steps.find-ansible-install-location.outputs.ansible_install_location }}
           ANSIBLE_CORE_VERSION: ${{ steps.find-ansible-core-version.outputs.ansible_core_version }}
           USERNAME: ${{ inputs.username }}
           UID: ${{ inputs.user_id }}
           GID: ${{ inputs.group_id }}
         with:
           subFolder: avd-containers/${{ inputs.container_name }}
-          imageName: ghcr.io/ankudinov/avd-devcontainer/${{ inputs.container_name }}
+          imageName: ghcr.io/${{ github.repository }}/${{ inputs.container_name }}
           imageTag: ${{ steps.build-tags.outputs.image_tags }}
           platform: ${{ inputs.platform }}
           push: always
