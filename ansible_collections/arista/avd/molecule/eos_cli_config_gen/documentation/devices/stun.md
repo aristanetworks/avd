@@ -44,7 +44,7 @@ interface Management1
 #### Server Profiles
 
 | Server Profile | IP address |
-| -------------- | --------- |
+| -------------- | ---------- |
 | server1 | 1.2.3.4 |
 | server2 | 2.3.4.5 |
 

@@ -15,7 +15,7 @@
 #### Server Profiles
 
 | Server Profile | IP address |
-| -------------- | --------- |
+| -------------- | ---------- |
 {%             for server_profile in stun.client.server_profiles | arista.avd.natural_sort('name') %}
 | {{ server_profile.name }} | {{ server_profile.ip_address }} |
 {%             endfor %}
