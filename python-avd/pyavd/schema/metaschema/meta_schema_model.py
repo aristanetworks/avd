@@ -68,6 +68,20 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         url: str | None = None
         """URL detailing the deprecation and migration guidelines."""
 
+    class DocumentationOptions(BaseModel):
+        """Schema field options used for controlling documentation generation"""
+
+        # Pydantic config option to forbid keys in the inputs that are not covered by the model
+        model_config = ConfigDict(extra="forbid")
+
+        table: str | None = None
+        """
+        Setting 'table' will allow for custom grouping of schema fields in the documentation.
+        By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.
+        If 'table' is set on a 'child' key, all 'ancestor' keys are automatically included in the table so the full path is visible.
+        The 'table' option is inherited to all child keys, unless specifically set on the child.
+        """
+
     # Pydantic config option to forbid keys in the inputs that are not covered by the model
     model_config = ConfigDict(extra="forbid")
 
@@ -192,31 +206,6 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         """
         # Using the Type of yaml line generator set in the subclass attribute _yaml_line_generator
         yield from self._yaml_line_generator().generate_yaml_lines(schema=self, target_table=target_table)
-
-
-class DocumentationOptions(BaseModel):
-    """Schema field options used for controlling documentation generation"""
-
-    # Pydantic config option to forbid keys in the inputs that are not covered by the model
-    model_config = ConfigDict(extra="forbid")
-
-    table: str | None = None
-    """
-    Setting 'table' will allow for custom grouping of schema fields in the documentation.
-    By default each root key has it's own table. By setting the same table-value on multiple keys, they will be merged to a single table.
-    If 'table' is set on a 'child' key, all 'ancestor' keys are automatically included in the table so the full path is visible.
-    The 'table' option is inherited to all child keys, unless specifically set on the child.
-    """
-
-
-class DocumentationOptionsDict(DocumentationOptions):
-    """Extra schema field options used for controlling documentation generation for dicts"""
-
-    hide_keys: bool | None = None
-    """
-    Prevent keys of the dict from being displayed in the generated documentation.
-    This is used for structured_config where we wish to avoid displaying the full eos_cli_config_gen schema everywhere.
-    """
 
 
 class AvdSchemaInt(AvdSchemaBaseModel):
@@ -457,6 +446,15 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     All these are prefixed with underscore.
     """
 
+    class DocumentationOptions(AvdSchemaBaseModel.DocumentationOptions):
+        """Extra schema field options used for controlling documentation generation for dicts"""
+
+        hide_keys: bool | None = None
+        # """
+        # Prevent keys of the dict from being displayed in the generated documentation.
+        # This is used for structured_config where we wish to avoid displaying the full eos_cli_config_gen schema everywhere.
+        # """
+
     # AvdSchema field properties
     type: Literal["dict"]
     default: dict[str, Any] | None = None
@@ -479,7 +477,7 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     """
     allow_other_keys: bool | None = False
     """Allow keys in the dictionary which are not defined in the schema."""
-    documentation_options: DocumentationOptionsDict | None = None
+    documentation_options: DocumentationOptions | None = None
     """Schema field options used for controlling documentation generation"""
     field_schema: str | None = Field(None, alias="$schema")
     """Schema name used when exporting to JSON schema"""
