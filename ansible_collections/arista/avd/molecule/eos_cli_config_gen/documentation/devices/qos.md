@@ -373,7 +373,7 @@ QOS Profile: **test**
 **ECN Configuration**
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
-| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
+| -------- | ---- | ------------- | ------------- | -------------------- |
 | 1 | All | -  | -  | - |
 | 2 | All | 320 kbytes | 320 kbytes | 90 |
 | 4 | All | 320 segments | 320 segments | - |
