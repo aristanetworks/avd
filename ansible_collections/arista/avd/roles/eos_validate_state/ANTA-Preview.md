@@ -43,7 +43,8 @@
 
   If you `use_anta=false` which is the default, the current version of `eos_validate_state` leveraging Ansible asserts will be run.
 
-- Legacy Ansible tags are supported if you want to run/skip tests:
+- Ansible tags are supported for backwards compatibility until AVD version 5.0.0.
+  To run/skip tests use `--tags` or `--skip-tags`.
 
   Example: `ansible-playbook playbooks/fabric-validate.yaml --tags routing_table`
 
@@ -55,16 +56,18 @@
 
 ## Test Categories
 
-- AvdTestHardware
+note:
+
+- AvdTestHardware (Ansible tags: `hardware`, `platform_information`)
   - VerifyEnvironmentPower: Validate environment power supplies status.
   - VerifyEnvironmentCooling: Validate environment fan status.
   - VerifyTemperature: Validate environment temperature.
   - VerifyTransceiversManufacturers: Validate transceivers manufacturer.
 
-- AvdTestNTP
+- AvdTestNTP (Ansible tags: `ntp`)
   - VerifyNTP: Validate NTP status.
 
-- AvdTestInterfacesState
+- AvdTestInterfacesState (Ansible tags: `interfaces_state`)
   - VerifyInterfacesStatus: Validate interfaces admin and operational status.
     - Ethernet interfaces
     - Port-channel interfaces
@@ -72,29 +75,29 @@
     - Loopback interfaces
     - Vxlan1 interface
 
-- AvdTestP2PIPReachability
+- AvdTestP2PIPReachability (Ansible tags: `ip_reachability`)
   - VerifyReachability: Validate IP reachability for point-to-point l3 ethernet interfaces.
 
-- AvdTestInbandReachability
+- AvdTestInbandReachability (Ansible tags: `loopback_reachability`, `loopback0_reachability`, `optional`)
   - VerifyReachability: Validate loopback reachability between devices.
 
-- AvdTestLoopback0Reachability
+- AvdTestLoopback0Reachability (Ansible tags: `loopback_reachability`, `loopback0_reachability`)
   - VerifyReachability: Validate loopback reachability between devices.
 
-- AvdTestLLDPTopology
+- AvdTestLLDPTopology (Ansible tags: `lldp_topology`)
   - VerifyLLDPNeighbors: Validate LLDP topology.
 
-- AvdTestMLAG
+- AvdTestMLAG (Ansible tags: `mlag`)
   - VerifyMlagStatus: Validate MLAG status.
 
-- AvdTestRoutingTable
+- AvdTestRoutingTable (Ansible tags: `routing_table`)
   - VerifyRoutingTableEntry: Validate remote Loopback0 address and source interface for Vxlan1 interface are in the routing table.
 
-- AvdTestBGP
+- AvdTestBGP (Ansible tags: `bgp_check`)
   - VerifyBGPSpecificPeers: Validate IP BGP and BGP EVPN sessions state.
   - VerifyRoutingProtocolModel: Validate ArBGP is configured and operating.
 
-- AvdTestReloadCause
+- AvdTestReloadCause (Ansible tags: `reload_cause`, `optional`, `never`)
   - VerifyReloadCause: Validate last reload cause. (Optional)
 
 ## Input variables
