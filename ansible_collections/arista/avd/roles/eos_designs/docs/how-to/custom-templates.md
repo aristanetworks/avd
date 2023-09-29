@@ -55,10 +55,4 @@ For more details, see [Custom Templates](https://avd.arista.com/4.3/roles/eos_de
 
 ## Adding the Custom Template to the `eos-designs` Role
 
-This happens automatically via the `eos_designs_custom_templates` line that is part of the `Generate device configuration in structured format` task in `~/.ansible/collections/ansible_collections/arista/avd/roles/eos_designs/tasks/main.yaml`.
-
-<!-- ![Figure 1: /eos_designs/tasks/main.yml](../../../media/eos_designs_tasks_main_yml.png) -->
-
-<div style="text-align:center; width:600px">
-  <img src="../../../../media/eos_designs_tasks_main_yml.png" alt="screen shot of main.yml file" />
-</div>
+Custom templates are rendered automatically when the `eos_designs_custom_templates` variable is set. The custom templates are always rendered _after_ the builtin `eos_designs` features, so any output of `eos_designs` can be accessed and overridden.

@@ -41,18 +41,4 @@ For more details, see [Extensibility with Custom Templates](https://avd.sh/en/st
 
 ## Adding the Custom Template to the `eos_cli_config_gen` Role
 
-This happens automatically as part of the `Generate eos intended configuration` task in `~/.ansible/collections/ansible_collections/arista/avd/roles/eos_cli_config_gen/tasks/main.yaml`.
-
-<!-- ![Figure 1: /eos_cli_config_gen/templates/eos-intended-config.j2](../../../media/main_yml.png) -->
-
-<div style="text-align:left; width:500px">
-  <img src="../../../../media/main_yml.png" alt="screen shot of main.yml file" />
-</div>
-
-This task renders the main `eos-intended-config.j2` template which has multiple include statements. One of these include statements pertains to custom templates and causes any custom templates to be included in the rendering process.
-
-<!-- ![Figure 2: /eos_cli_config_gen/templates/eos-intended-config.j2](../../../media/eos-intended-config.png) -->
-
-<div style="text-align:left; width:400px">
-  <img src="../../../../media/eos-intended-config.png" alt="screen shot of snippet of main template" />
-</div>
+Custom templates are rendered automatically when the `custom_templates` variable is set. The custom templates are always rendered _after_ the builtin `eos_cli_config_gen` templates.
