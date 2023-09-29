@@ -34,7 +34,7 @@ provisioner:
   ansible_args:
     - --inventory
     - ${MOLECULE_SCENARIO_DIRECTORY}/inventory/inventory.yml
-    - --tags=anta
-    - --skip-tags=documentation,debug
+    - --skip-tags=documentation
+    - --check
 verifier:
   name: ansible

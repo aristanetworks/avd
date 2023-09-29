@@ -31,12 +31,18 @@ class AnsibleEOSDevice(AntaDevice):
     Implementation of an AntaDevice using Ansible HttpApi plugin for EOS.
     """
 
-    def __init__(self, name: str, connection: ConnectionBase, tags: list = None) -> None:
+    def __init__(self, name: str, connection: ConnectionBase, tags: list = None, check_mode: bool = False) -> None:
         super().__init__(name, tags, disable_cache=False)
-        if hasattr(connection, "httpapi") and connection._network_os in ["arista.eos.eos", "eos"]:
+        self.check_mode = check_mode
+        # In check_mode we don't care that we cannot connect to the device
+        if self.check_mode:
+            self._connection = connection
+        elif hasattr(connection, "httpapi") and connection._network_os in ["arista.eos.eos", "eos"]:
             self._connection = connection
         else:
-            raise AnsibleError(f"Error while instantiating {self.__class__.__name__}: The provided Ansible connection does not use EOS HttpApi plugin")
+            raise AnsibleError(
+                f"Error while instantiating {self.__class__.__name__}: The provided Ansible connection does not use EOS HttpApi plugin {connection.__dict__}"
+            )
 
     def __eq__(self, other: object) -> bool:
         """
@@ -60,7 +66,7 @@ class AnsibleEOSDevice(AntaDevice):
         if __DEBUG__:
             yield "_connection", connection_vars
 
-    async def _collect(self, command: AntaCommand) -> AntaCommand:
+    async def _collect(self, command: AntaCommand) -> None:
         """
         Collect device command result using Ansible HttpApi connection plugin.
 
@@ -72,6 +78,9 @@ class AnsibleEOSDevice(AntaDevice):
         Raises:
             AnsibleError: Raises an error if the send request failed.
         """
+        if self.check_mode:
+            logger.info("_collect was called in check_mode, doing nothing")
+            return
         try:
             commands = []
 
@@ -121,6 +130,9 @@ class AnsibleEOSDevice(AntaDevice):
           AnsibleError: Raises an error if the get_device_info() failed.
         """
         logger.debug("Refreshing device %s", self.name)
+        if self.check_mode:
+            logger.info("refresh was called in check_mode, doing nothing")
+            return
 
         try:
             device_info = self._connection.get_device_info()

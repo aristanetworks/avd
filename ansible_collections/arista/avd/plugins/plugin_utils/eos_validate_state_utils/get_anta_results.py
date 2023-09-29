@@ -12,11 +12,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import ACRONYM_CATEGORIES, AVD_TEST_CLASSES
 
-from .ansible_eos_device import AnsibleEOSDevice
 from .catalog import Catalog
 
 if TYPE_CHECKING:
-    from ansible.plugins.connection import ConnectionBase
+    from anta.device import AntaDevice
     from yaml import Dumper
 
 try:
@@ -33,10 +32,10 @@ except ImportError:
 LOGGER = logging.getLogger(__name__)
 
 
-def _get_skipped_tests_from_tags(run_tags: list, skip_tags: tuple) -> list[dict]:
+def _get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]:
     """
     Arguments:
-      run_tags (list): List of run_tags used to run the playbook.
+      run_tags (tupe): Tuple of run_tags used to run the playbook.
       skip_tags (tuple): Tuple of skip_tags used to run the playbook.
 
     Returns:
@@ -46,7 +45,7 @@ def _get_skipped_tests_from_tags(run_tags: list, skip_tags: tuple) -> list[dict]
     for cls, cls_info in AVD_TEST_CLASSES.items():
         class_legacy_tags = set(cls_info["legacy_ansible_tags"])
 
-        if "never" in class_legacy_tags:
+        if run_tags and "never" in class_legacy_tags:
             other_tags = class_legacy_tags - {"never"}
             if not other_tags.intersection(set(run_tags)):
                 result.append({"category": cls.__name__})
@@ -56,16 +55,15 @@ def _get_skipped_tests_from_tags(run_tags: list, skip_tags: tuple) -> list[dict]
             result.append({"category": cls.__name__})
             continue
 
-        if run_tags and not class_legacy_tags.intersection(set(run_tags)):
+        if run_tags and run_tags != ("all",) and not class_legacy_tags.intersection(set(run_tags)):
             result.append({"category": cls.__name__})
 
     return result
 
 
 def get_anta_results(
-    device_name: str,
+    anta_device: AntaDevice,
     hostvars: dict,
-    connection: ConnectionBase,
     logging_level: str,
     skipped_tests: dict,
     ansible_tags: dict | None = None,
@@ -75,11 +73,10 @@ def get_anta_results(
 ) -> dict:
     """
     Args:
-      device_name (str): The current device name for which the plugin is being run
+      anta_device (AntaDevice): An instantiated AntaDevice
+                                When running in ansible, the action plugin will pass an AnsibleEOSDevice
       hostvars (dict): A dictionnary that contains a key for each device with a value of the structured_config
                    when using Ansible, this is the equivalent of `task_vars['hostvars']`
-      connection (Connection): The connection to the device
-                               when using Ansible, this is the `self._connection` of the module
       logging_level (str): The level at which ANTA should be logging
       skipped_tests (list[dict]): A list of dictionary
       ansible_tags (dict): An optional dictionary containing the tags to maintain legacy filtering behavior for
@@ -87,6 +84,9 @@ def get_anta_results(
       save_catalog_name (bool): When set, the generated catalog is saved to a file using this name.
       dry_run (boolean): if True, no test is actually run, useful in conjunction with save_catalog_name.
       yaml_dumper (Dumper): Dumper to use to dump Anta Catalog, default is NoAliasDumper to avoid anchors.
+
+
+    TODO when moving to pyavd: Make the anta_device optional and use ANTA default AntaDevice class
     """
     if not HAS_ANTA:
         raise AristaAvdError("AVD could not import the required 'anta' Python library")
@@ -99,12 +99,13 @@ def get_anta_results(
     # Backward compatibility with eos_validate_state Ansible tags
     elif ansible_tags:
         # Retrieve the run_tags
-        run_tags = ansible_tags.get("ansible_run_tags", [])
+        run_tags = ansible_tags.get("ansible_run_tags", ())
         # Retrieve the skip_tags
-        skip_tags = ansible_tags.get("ansible_skip_tags", [])
+        skip_tags = ansible_tags.get("ansible_skip_tags", ())
         # Update the skipped_ variable according to legacy tags
         skipped_tests = _get_skipped_tests_from_tags(run_tags, skip_tags)
 
+    device_name = anta_device.name
     # Create the ANTA catalog object with the appropriate skipped tests if any
     catalog = Catalog(device_name, hostvars, skipped_tests=skipped_tests)
 
@@ -118,11 +119,9 @@ def get_anta_results(
         LOGGER.info("DRY-RUN - generating empty results")
         _create_dry_run_report(device_name, catalog.tests, manager)
     else:
-        # Create the ANTA device object with the HttpApi connection session
-        device = AnsibleEOSDevice(name=device_name, connection=connection)
-        # Create the ANTA Inventory object and add the AnsibleEOSDevice device to it
+        # Create the ANTA Inventory object and add the single AntaDevice device to it
         inventory = AntaInventory()
-        inventory.add_device(device)
+        inventory.add_device(anta_device)
 
         # Run
         run(anta_runner(manager, inventory, catalog.tests))

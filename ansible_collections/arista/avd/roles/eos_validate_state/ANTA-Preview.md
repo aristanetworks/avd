@@ -31,20 +31,21 @@
 - Hardware tests are now collapsed.
 - Some description of tests have been updated to be more precise.
 - Sorting of the test results is now done per device as opposed to per category.
+-
 
 ## How to run eos_validate_state in ANTA mode
 
-- Install anta v0.9.0: `pip install anta==v0.9.0`
+- Install anta v0.9.0: `pip install anta==v0.9.0` (this is part of the `requirements.txt`)
 
-- Run eos_validate_state playbook with `anta` tag i.e `--tags anta`.
+- Run eos_validate_state playbook by setting the variables `use_anta=true`
 
-  Example: `ansible-playbook playbooks/fabric-validate.yaml --tags anta`
+  This can be set for instance in your group_vars or under the task in your playbook.
 
   Not providing the `anta` tag will run the current `eos_validate_state` leveraging Ansible asserts.
 
-- Legacy Ansible tags are also supported if you want to run/skip tests:
+- Legacy Ansible tags are supported if you want to run/skip tests:
 
-  Example: `ansible-playbook playbooks/fabric-validate.yaml --tags anta,routing_table`
+  Example: `ansible-playbook playbooks/fabric-validate.yaml --tags routing_table`
 
 - You can now run the eos_validate_state role in check_mode. This will produce a report of tests that will be performed.
 
@@ -99,6 +100,17 @@
 ```yaml
 # Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
 root_dir: '{{ inventory_dir }}'
+
+# AVD configurations output
+# Main output directory
+output_dir_name: 'intended'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+
+# Output for test catalog YAML files if save_catalog is set to true
+test_catalogs_dir_name: 'test_catalogs'
+test_catalogs_dir: '{{ output_dir }}/{{ test_catalogs_dir_name }}'
+
+# Output directory for eos_validate_state reports
 eos_validate_state_name: 'reports'
 eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
 
@@ -145,4 +157,35 @@ validation_report_md: "{{ validation_role.validation_report_md | arista.avd.defa
 
 # Print only FAILED tests
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
+
+# Variable to enable ANTA eos_validate_state
+# Default to false as ANTA is currently preview
+use_anta: false
+# Whether or not to save each device test catalog to 'test_catalogs_dir'
+# Used only when 'use_anta' is set to true
+save_catalog: false
+# Which tests to skip when using ANTA.
+# If set, legacy tags are ignored
+skipped_tests: []
+# Logging level for the ANTA libraries
+# Default is warning
+logging_level: "WARNING"
+```
+
+## Example Playbook
+
+```yaml
+---
+- name: validate states on EOS devices using ANTA
+  hosts: DC1
+  gather_facts: false
+  tasks:
+    - name: validate states on EOS devices
+      ansible.builtin.import_role:
+        name: arista.avd.eos_validate_state
+      vars:
+        # To enable ANTA
+        use_anta: true
+        # To save catalogs
+        save_catalog: true
 ```

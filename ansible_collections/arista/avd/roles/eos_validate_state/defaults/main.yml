@@ -2,6 +2,17 @@ eos_validate_state_validation_mode_loose: true
 
 # Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
 root_dir: '{{ inventory_dir }}'
+
+# AVD configurations output
+# Main output directory
+output_dir_name: 'intended'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+
+# Output for test catalog YAML files:
+test_catalogs_dir_name: 'test_catalogs'
+test_catalogs_dir: '{{ output_dir }}/{{ test_catalogs_dir_name }}'
+
+# Output directory for eos_validate_state reports
 eos_validate_state_name: 'reports'
 eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
 
@@ -28,13 +39,15 @@ accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok'])
 # Print only FAILED tests
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 
-# AVD configurations output
-# Main output directory
-output_dir_name: 'intended'
-output_dir: '{{ root_dir }}/{{ output_dir_name }}'
-
-# Output for structured YAML files:
-structured_dir_name: 'structured_configs'
-structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
-
-avd_structured_config_file_format: "yml"
+# Variable to enable ANTA eos_validate_state
+# Default to false as ANTA is currently preview
+use_anta: false
+# Whether or not to save each device test catalog to 'test_catalogs_dir'
+# Used only when 'use_anta' is set to true
+save_catalog: false
+# Which tests to skip when using ANTA.
+# If set, legacy tags are ignored
+skipped_tests: []
+# Logging level for the ANTA libraries
+# Default is warning
+logging_level: "WARNING"

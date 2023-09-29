@@ -41,6 +41,10 @@ post_running_config_backup_dir: '{{ root_dir }}/{{ post_running_config_backup_di
 pre_running_config_backup_dir_name: 'config_backup'
 pre_running_config_backup_dir: '{{ root_dir }}/{{ pre_running_config_backup_dir_name }}'
 
+# EOS state validation test catalogs
+test_catalogs_dir_name: 'test_catalogs'
+test_catalogs_dir: '{{ output_dir }}/{{ test_catalogs_dir_name }}'
+
 # EOS state validation directory name
 eos_validate_state_name: 'reports'
 eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'

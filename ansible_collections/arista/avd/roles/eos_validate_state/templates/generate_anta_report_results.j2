@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# AVD State Validation Report #}
-{% if "anta" in ansible_run_tags %}
+{% if use_anta %}
 eos_validate_state_report:
 {%     set test_id = namespace(value=0) %}
 {%     for node in groups[fabric_name] | arista.avd.natural_sort %}

@@ -12,7 +12,7 @@ from ansible.module_utils.common.arg_spec import ArgumentSpecValidator, Validati
 from ansible.module_utils.errors import UnsupportedError
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import get_anta_results
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, get_anta_results
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
@@ -34,6 +34,7 @@ class ActionModule(ActionBase):
 
         hostname = task_vars["inventory_hostname"]
         ansible_connection = self._connection
+        ansible_check_mode = task_vars.get("ansible_check_mode", False)
 
         # Handle logging
         setup_module_logging(hostname, result)
@@ -48,26 +49,25 @@ class ActionModule(ActionBase):
         else:
             save_catalog_name = None
 
-        # If we are running this task, it means "anta" is present in `ansible_run_tags`
         ansible_tags = {
-            "ansible_run_tags": [tag for tag in task_vars.get("ansible_run_tags", []) if tag != "anta"],
-            "ansible_skip_tags": task_vars.get("ansible_skip_tags", []),
+            "ansible_run_tags": task_vars.get("ansible_run_tags", ()),
+            "ansible_skip_tags": task_vars.get("ansible_skip_tags", ()),
         }
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
         hostvars = task_vars["hostvars"]
 
         try:
+            anta_device = AnsibleEOSDevice(name=hostname, connection=ansible_connection, check_mode=ansible_check_mode)
             anta_results = get_anta_results(
-                device_name=hostname,
+                anta_device=anta_device,
                 hostvars=hostvars,
-                connection=ansible_connection,
                 logging_level=logging_level,
                 skipped_tests=skipped_tests,
                 ansible_tags=ansible_tags,
                 save_catalog_name=save_catalog_name,
                 # This convert Ansible Check Mode to dry_run
-                dry_run=self._play_context.check_mode,
+                dry_run=ansible_check_mode,
             )
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
