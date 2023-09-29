@@ -13206,6 +13206,11 @@
                 "type": "string",
                 "description": "VLAN range as string. Example \"100-200,300\"",
                 "title": "VLAN"
+              },
+              "eos_cli": {
+                "type": "string",
+                "description": "Multiline EOS CLI rendered directly on the Router BGP, VLAN-aware-bundle definition in the final EOS configuration",
+                "title": "EOS CLI"
               }
             },
             "additionalProperties": false,
@@ -19358,6 +19363,13 @@
     "tacacs_servers": {
       "type": "object",
       "properties": {
+        "timeout": {
+          "type": "integer",
+          "description": "Timeout in seconds",
+          "minimum": 1,
+          "maximum": 1000,
+          "title": "Timeout"
+        },
         "hosts": {
           "type": "array",
           "items": {
@@ -19393,6 +19405,9 @@
               },
               "timeout": {
                 "type": "integer",
+                "description": "Timeout in seconds",
+                "minimum": 1,
+                "maximum": 1000,
                 "title": "Timeout"
               }
             },

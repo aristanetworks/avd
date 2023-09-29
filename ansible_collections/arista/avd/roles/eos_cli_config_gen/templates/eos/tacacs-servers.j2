@@ -29,4 +29,7 @@
 {%     if tacacs_servers.policy_unknown_mandatory_attribute_ignore is arista.avd.defined(true) %}
 tacacs-server policy unknown-mandatory-attribute ignore
 {%     endif %}
+{%     if tacacs_servers.timeout is arista.avd.defined %}
+tacacs-server timeout {{ tacacs_servers.timeout }}
+{%     endif %}
 {% endif %}

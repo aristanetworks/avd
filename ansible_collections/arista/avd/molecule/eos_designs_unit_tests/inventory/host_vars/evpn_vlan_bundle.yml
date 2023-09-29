@@ -1,0 +1,62 @@
+# Enable vlan aware bundles
+evpn_vlan_aware_bundles: true
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    # LOOPBACK AND VTEP MANAGEMENT
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+    # Possibility to prevent configuration of Tenant VRFs and SVIs. This allows support for centralized routing.
+    evpn_services_l2_only: true
+  nodes:
+    - name: evpn_vlan_bundle
+      id: 3
+      bgp_as: 65101
+      filter:
+        tags: [fabric, ipmi, storageProd]
+
+tenants:
+  - name: StorageProd
+    vlan_aware_bundle_number_base: 100
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 10
+        name: storage_prod
+        tags: ['storageProd']
+      - id: 20
+        name: storage_prod
+        tags: ['storageProd']
+  - name: FABRIC
+    vlan_aware_bundle_number_base: 200
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 50
+        name: ipmi
+        tags: ['ipmi']
+        evpn_vlan_bundle: bundle1
+      - id: 60
+        name: ipmi
+        tags: ['fabric']
+        evpn_vlan_bundle: bundle1
+      - id: 70
+        name: vmotion
+        tags: ['ipmi']
+        evpn_vlan_bundle: bundle2
+      - id: 80
+        name: vstorage
+        tags: ['fabric']
+        evpn_vlan_bundle: bundle2
+
+evpn_vlan_bundles:
+  - name: bundle1
+    id: 1
+    bgp:
+      raw_eos_cli: |
+        vlan add 1000
+  - name: bundle2
+    id: 2
+    rt_override: 111
+    rd_override: 1.1.1.1:222
