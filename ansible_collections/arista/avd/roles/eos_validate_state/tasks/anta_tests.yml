@@ -15,3 +15,4 @@
   register: anta_results
   check_mode: false
   when: use_anta
+  tags: always
