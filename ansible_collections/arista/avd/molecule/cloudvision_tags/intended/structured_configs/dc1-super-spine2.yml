@@ -129,7 +129,7 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-cloudvision_tags:
+cv_tags:
   device_tags:
   - name: topology_hint_datacenter
     value: DC1

@@ -6,14 +6,14 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  cloudvision_tags:
+  cv_tags_enabled:
     documentation_options:
       table: cloudvision-tags
     type: bool
     default: False
     description: |
         Enable the generation of CloudVision tags that can be applied using the `cloudvision` role. If not defined, the value is assumed to be False and no tags are generated.
-  cloudvision_tags_topology_type:
+  cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
     description: |
@@ -24,7 +24,7 @@ keys:
       - "spine"
       - "core"
       - "edge"
-  cloudvision_tags_generate_interface:
+  cv_tags_generate_interface:
     documentation_options:
       table: cloudvision-tags
     description: |
@@ -46,7 +46,7 @@ keys:
           required: true
           type: str
 
-  cloudvision_tags_generate_device:
+  cv_tags_generate_device:
     documentation_options:
       table: cloudvision-tags
     description: |
@@ -68,7 +68,7 @@ keys:
           required: true
           type: str
 
-  cloudvision_tags_device_custom:
+  cv_tags_device_custom:
     documentation_options:
       table: cloudvision-tags
     description: |

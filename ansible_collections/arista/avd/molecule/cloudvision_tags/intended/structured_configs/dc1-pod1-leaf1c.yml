@@ -97,7 +97,7 @@ vlans:
   tenant: TENANT1
 ip_igmp_snooping:
   globally_enabled: true
-cloudvision_tags:
+cv_tags:
   device_tags:
   - name: topology_hint_datacenter
     value: DC1

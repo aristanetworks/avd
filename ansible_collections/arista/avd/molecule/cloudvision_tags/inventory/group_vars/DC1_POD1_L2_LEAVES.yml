@@ -7,4 +7,4 @@ pod_name: pod1
 # associated with l2leafs for leafs in this
 # group. These leafs should be set to edge
 # in the topology on CloudVision.
-cloudvision_tags_topology_type: edge
+cv_tags_topology_type: edge

@@ -36,9 +36,9 @@ INVALID_CUSTOM_DEVICE_TAGS = [
 
 class AvdStructuredConfigTags(AvdFacts):
     """
-    This returns the cloudvision_tags data strucutre as per the below example
+    This returns the cv_tags data strucutre as per the below example
     {
-        "cloudvision_tags": {
+        "cv_tags": {
             "device_tags": [
                 {"name": "topology_hint_type", "value": <topology_hint_type taken from node_type_keys.[].cvp_tags.topology_hint_type> },
                 {"name: "topology_hint_dc", "value": <taken from the dc_name> },
@@ -65,11 +65,11 @@ class AvdStructuredConfigTags(AvdFacts):
     """
 
     @cached_property
-    def cloudvision_tags(self) -> str | None:
+    def cv_tags(self) -> str | None:
         """
-        Generate the data structure `cloudvision_tags`.
+        Generate the data structure `cv_tags`.
         """
-        if not get(self._hostvars, "cloudvision_tags", False):
+        if not get(self._hostvars, "cv_tags_enabled", False):
             # We do not want to define this datastructure if the feature is not
             # enabled
             return
@@ -77,7 +77,7 @@ class AvdStructuredConfigTags(AvdFacts):
         hints = [self._topology_hint_dc, self._topology_hint_fabric, self._topology_hint_pod, self._topology_hint_type, self._topology_hint_rack]
         device_tags = [hint for hint in hints if hint]
 
-        for custom_tag in get(self._hostvars, "cloudvision_tags_device_custom", []):
+        for custom_tag in get(self._hostvars, "cv_tags_device_custom", []):
             if custom_tag["name"].lower() not in INVALID_CUSTOM_DEVICE_TAGS:
                 device_tags.append(custom_tag)
             else:
@@ -85,7 +85,7 @@ class AvdStructuredConfigTags(AvdFacts):
                     f"The CloudVision tag name {custom_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
                 )
 
-        for generate_tag in get(self._hostvars, "cloudvision_tags_generate_device", []):
+        for generate_tag in get(self._hostvars, "cv_tags_generate_device", []):
             value = get(self._hostvars, generate_tag["field"], None)
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(
@@ -114,9 +114,9 @@ class AvdStructuredConfigTags(AvdFacts):
         """
         Return the topology hint type for the device.
         """
-        hint_type = get(self.shared_utils.node_type_key_data, "cloudvision_tags_topology_type")
+        hint_type = get(self.shared_utils.node_type_key_data, "cv_tags_topology_type")
 
-        hint_type = get(self._hostvars, "cloudvision_tags_topology_type", hint_type)
+        hint_type = get(self._hostvars, "cv_tags_topology_type", hint_type)
 
         if not hint_type:
             return None
@@ -163,7 +163,7 @@ class AvdStructuredConfigTags(AvdFacts):
     def _interface_tags(self, link) -> list:
         tags = []
 
-        for generate_tag in get(self._hostvars, "cloudvision_tags_generate_interface", []):
+        for generate_tag in get(self._hostvars, "cv_tags_generate_interface", []):
             value = get(link, generate_tag["field"])
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(
