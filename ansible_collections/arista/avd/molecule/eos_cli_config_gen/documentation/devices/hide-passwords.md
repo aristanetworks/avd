@@ -72,9 +72,9 @@ enable password sha512 <removed>
 
 #### TACACS Servers
 
-| VRF | TACACS Servers | Single-Connection |
-| --- | -------------- | ----------------- |
-| default | 10.10.10.157 | False |
+| VRF | TACACS Servers | Single-Connection | Timeout |
+| --- | -------------- | ----------------- | ------- |
+| default | 10.10.10.157 | False | - |
 
 #### TACACS Servers Device Configuration
 
