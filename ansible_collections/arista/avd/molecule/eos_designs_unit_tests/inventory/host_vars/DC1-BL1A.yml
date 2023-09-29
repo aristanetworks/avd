@@ -56,4 +56,4 @@ override_mac_address_table: "{{ my_mac_address_table }}"
 # for a single device in a Fabric. The structured config for this node
 # should have CloudVision tags generated for it. All other nodes in
 # eos_designs_unit_tests should not have any CloudVision tags generate for them
-cloudvision_tags: True
+cv_tags_enabled: True
