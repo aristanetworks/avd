@@ -33,7 +33,7 @@
 {%             set _ = restrictions.append("Max value: <code>" ~ spec.max ~ "</code>") %}
 {%         endif %}
 {%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
-| {{ "  " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
+| {{ "    " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
 {%         if spec.suboptions %}
 {{ option_desc(spec.suboptions, level + 1) -}}
 {%         endif %}
@@ -47,7 +47,7 @@
 {%     for name, spec in results.items() %}
 {%         set typ = spec.type | default("any") %}
 {%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
-| {{ "  " * level }}{{ name }} | {{ typ }} | {{ description }} |
+| {{ "    " * level }}{{ name }} | {{ typ }} | {{ description }} |
 {%         if spec.contains %}
 {{ result_desc(spec.contains, level + 1) -}}
 {%         endif %}
@@ -64,16 +64,16 @@
 
 {% else %}
 {%     set module_states = {
-     "preview": "not guaranteed to have a backwards compatible interface",
-     "stableinterface": "guaranteed to have backward compatible interface changes going forward",
+     "preview": {"message": "not guaranteed to have a backwards compatible interface", "level": "warning"},
+     "stableinterface": {"message": "guaranteed to have backward compatible interface changes going forward", "level": "info"},
    }
 %}
 {%     if metadata %}
 {%         if metadata.status %}
 
 {%             for cur_state in metadata.status %}
-!!! warning "This module is in **{{ cur_state }}** mode"
-    This {{ plugin_type }} is {{ module_states[cur_state] }}.
+!!! {{ module_states[cur_state]["level"] }} "This module is in **{{ cur_state }}** mode"
+    This {{ plugin_type }} is {{ module_states[cur_state]["message"] }}.
 {%             endfor %}
 {%         endif %}
 {%     endif %}

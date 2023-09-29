@@ -43,7 +43,7 @@ class ActionModule(ActionBase):
 
         # Get task arguments and validate them
         logging_level = self._task.args.get("logging_level")
-        VALID_VALUES = ["DEBUG", "INFO", "ERROR", "WARNING", "WARN", "CRITICAL"]
+        VALID_VALUES = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
         if logging_level is None or not isinstance(logging_level, str) or logging_level not in VALID_VALUES:
             raise AnsibleActionFail(f"'logging_level' must be a string in {VALID_VALUES}, got {logging_level}")
 

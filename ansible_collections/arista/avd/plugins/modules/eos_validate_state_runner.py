@@ -43,17 +43,19 @@ options:
     type: str
   skipped_tests:
     description:
-      - A list of dictionaries containing the key
+      - A list of dictionaries containing the categories and tests to skip
+      - The keys for the dictionnary are: C(categories) and C(tests).
     type: list
     elements: dict
     suboptions:
       category:
         type: str
-        description: The name of one of the AvdTest categories (e.g., C(AvdTestHardware))
+        description: The name of one of the AvdTest categories. e.g., C(AvdTestHardware)
+        required: true
       tests:
         type: list
         elements: str
-        description: A list of test in the category (e.g, C(VerifyRoutingProtocolModel) for C(AvdTestBGP))
+        description: A list of tests in the category. e.g, C(VerifyRoutingProtocolModel) for C(AvdTestBGP)
 seealso:
   - name: ANTA website
     description: ANTA documentation
