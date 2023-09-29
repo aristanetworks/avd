@@ -431,7 +431,7 @@ QOS Profile: **uc_mc_queues_test**
 **ECN Configuration**
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
-| -------- | ---- | ----------- | ------------ | ------------- | -------------------- |
+| -------- | ---- | ------------- | ------------- | -------------------- |
 | 1 | Unicast | 3 milliseconds | 9 milliseconds | 90 |
 | 2 | Unicast | 320 kbytes | 320 kbytes | 90 |
 | 4 | Unicast | 320 segments | 320 segments | - |
