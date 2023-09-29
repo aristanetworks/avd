@@ -124,7 +124,11 @@ def get_anta_results(
         inventory.add_device(anta_device)
 
         # Run
-        run(anta_runner(manager, inventory, catalog.tests))
+        # Go around a bug in ANTA:
+        if not len(catalog.tests):
+            LOGGER.warning("Test catalog is empty!")
+        else:
+            run(anta_runner(manager, inventory, catalog.tests))
 
     # Save the results
     results = loads(manager.get_results(output_format="json"))

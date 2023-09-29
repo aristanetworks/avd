@@ -1,15 +1,14 @@
 # Copyright (c) 2023 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
 import logging
 
 from ansible.errors import AnsibleActionFail
-from ansible.module_utils.common.arg_spec import ArgumentSpecValidator, ValidationResult
-from ansible.module_utils.errors import UnsupportedError
+from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, get_anta_results
@@ -20,14 +19,17 @@ LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGER.propagate = False
 
 
+class AnsibleNoAliasDumper(AnsibleDumper):
+    def ignore_aliases(self, data):
+        return True
+
+
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
         self._supports_check_mode = True
 
         if task_vars is None:
             task_vars = {}
-
-        validation_result, new_module_args = self._validate_argument_spec()
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
@@ -39,16 +41,30 @@ class ActionModule(ActionBase):
         # Handle logging
         setup_module_logging(hostname, result)
 
-        # Get task arguments
-        logging_level = new_module_args["logging_level"]
-        save_catalog = new_module_args["save_catalog"]
-        skipped_tests = new_module_args.get("skipped_tests", {})
+        # Get task arguments and validate them
+        logging_level = self._task.args.get("logging_level")
+        VALID_VALUES = ["DEBUG", "INFO", "ERROR", "WARNING", "WARN", "CRITICAL"]
+        if logging_level is None or not isinstance(logging_level, str) or logging_level not in VALID_VALUES:
+            raise AnsibleActionFail(f"'logging_level' must be a string in {VALID_VALUES}, got {logging_level}")
+
+        save_catalog = self._task.args.get("save_catalog")
+        if not save_catalog or not isinstance(save_catalog, bool):
+            raise AnsibleActionFail(f"'save_catalog' must be a boolean, got {save_catalog}.")
+
         if save_catalog is True:
-            eos_validate_state_dir = new_module_args["device_catalog_output_dir"]
-            save_catalog_name = f"{eos_validate_state_dir}/{hostname}-catalog.yml"
+            device_catalog_output_dir = self._task.args.get("device_catalog_output_dir")
+            if not device_catalog_output_dir:
+                raise AnsibleActionFail("'device_catalog_output_dir' must be set when 'save_catalog' is True.")
+            save_catalog_name = f"{device_catalog_output_dir}/{hostname}-catalog.yml"
         else:
             save_catalog_name = None
 
+        skipped_tests = self._task.args.get("skipped_tests", [])
+        # TODO once we have pydantic, check the list elements
+        if not isinstance(skipped_tests, list):
+            raise AnsibleActionFail(f"'skipped_tests' must be a list of dictionnaries, got {skipped_tests}.")
+
+        # Fetching ansible tags for backward compatibility
         ansible_tags = {
             "ansible_run_tags": task_vars.get("ansible_run_tags", ()),
             "ansible_skip_tags": task_vars.get("ansible_skip_tags", ()),
@@ -68,6 +84,7 @@ class ActionModule(ActionBase):
                 save_catalog_name=save_catalog_name,
                 # This convert Ansible Check Mode to dry_run
                 dry_run=ansible_check_mode,
+                yaml_dumper=AnsibleNoAliasDumper,
             )
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
@@ -75,48 +92,6 @@ class ActionModule(ActionBase):
         result["results"] = anta_results
 
         return result
-
-    def _validate_argument_spec(self) -> [ValidationResult, dict]:
-        """
-        Helper to validate arguments as we still support Ansible from 2.12.6
-        and validate_argument_spec was introduced in 2.13
-        """
-        argument_spec = {
-            "logging_level": {"type": "str", "default": "WARNING"},
-            "save_catalog": {"type": "bool", "defaut": False},
-            "device_catalog_output_dir": {"type": "str"},
-            "skipped_tests": {"type": "list", "suboptions": {"category": {"type": "str"}, "tests": {"type": "list", "elements": "str"}}},
-        }
-        required_if = [("save_catalog", True, ["device_catalog_output_dir"])]
-
-        # TODO - refactor this when we bump ansible-core requirement and keep only the if branch
-
-        if hasattr(self, "validate_argument_spec"):
-            # Yay you are running ansible > 2.13 congrats!
-            validation_result, new_module_args = self.validate_argument_spec(argument_spec=argument_spec, required_if=required_if)
-        else:
-            # You should probably upgrade ansible if you are here ;)
-            new_module_args = self._task.args.copy()
-            validator = ArgumentSpecValidator(
-                argument_spec,
-                required_if=required_if,
-            )
-            validation_result = validator.validate(new_module_args)
-            new_module_args.update(validation_result.validated_parameters)
-            try:
-                error = validation_result.errors[0]
-            except IndexError:
-                error = None
-
-            # Fail for validation errors, even in check mode
-            if error:
-                msg = validation_result.errors.msg
-                if isinstance(error, UnsupportedError):
-                    msg = f"Unsupported parameters for ({self._load_name}) module: {msg}"
-
-                raise AnsibleActionFail(msg)
-
-        return validation_result, new_module_args
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
