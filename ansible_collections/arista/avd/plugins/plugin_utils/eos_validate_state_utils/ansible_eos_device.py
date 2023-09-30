@@ -35,7 +35,7 @@ class AnsibleEOSDevice(AntaDevice):
     Implementation of an AntaDevice using Ansible HttpApi plugin for EOS.
     """
 
-    def __init__(self, name: str, connection: ConnectionBase, tags: list = None, check_mode: bool = False, strict_mode: bool = False) -> None:
+    def __init__(self, name: str, connection: ConnectionBase, tags: list = None, check_mode: bool = False) -> None:
         """
         Initialize an instance of the AnsibleEOSDevice class.
 
@@ -44,11 +44,9 @@ class AnsibleEOSDevice(AntaDevice):
             connection (ConnectionBase): An instance of Ansible ConnectionBase. It must utilize the EOS HttpApi plugin to manage the device's connection.
             tags (list, optional): A list of tags associated with the device. Defaults to None.
             check_mode (bool, optional): If True, initializes the class in check mode. Defaults to False.
-            strict_mode (bool, optional): If set to True, the task will fail when any command collection attempt fails. Defaults to False.
 
         Attributes:
             check_mode (bool): Flag indicating if the class is operating in check mode.
-            strict_mode (bool): Flag indicating the operational mode of the class regarding command collection failure behavior.
             _connection (ConnectionBase): An instance of ConnectionBase using the EOS HttpApi plugin for device connection management.
 
         Raises:
@@ -56,7 +54,6 @@ class AnsibleEOSDevice(AntaDevice):
         """
         super().__init__(name, tags, disable_cache=False)
         self.check_mode = check_mode
-        self.strict_mode = strict_mode
         # In check_mode we don't care that we cannot connect to the device
         if self.check_mode:
             self._connection = connection
@@ -99,13 +96,9 @@ class AnsibleEOSDevice(AntaDevice):
         Args:
             command: the command to collect
 
-        If there is an exception while collecting the command and strict mode is activated,
-        Ansible will raise an error per the logger handler and the task will fail for this device,
-        stopping the Ansible play.
-
-        If strict mode is disabled (False), the exception will be propagated and handled in ANTA.
-        That means ANTA will set the test result to 'error', the play will continue and the test
-        will be marked as FAIL in the eos_validate_state report.
+        If there is an exception while collecting the command, the exception will be propagated
+        and handled in ANTA. That means ANTA will set the test result to 'error', the play will
+        continue and the test will be marked as FAIL in the eos_validate_state report.
         """
         if self.check_mode:
             logger.info("_collect was called in check_mode, doing nothing")
@@ -136,11 +129,7 @@ class AnsibleEOSDevice(AntaDevice):
             message = f"Command '{command.command}' failed"
             command.failed = e
             logger.debug(command)
-
-            if self.strict_mode:
-                anta_log_exception(e, message, logger)
-            else:
-                raise e.__class__(f"{message}: {str(e)}") from e
+            raise e.__class__(f"{message}: {str(e)}") from e
 
     async def refresh(self) -> None:
         """

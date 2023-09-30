@@ -11,7 +11,6 @@
     logging_level: "{{ logging_level | arista.avd.default('WARNING') }}"
     skipped_tests: "{{ skipped_tests | arista.avd.default([]) }}"
     save_catalog: "{{ save_catalog | arista.avd.default(false) }}"
-    strict_mode: "{{ strict_mode | arista.avd.default(false) }}"
     device_catalog_output_dir: "{{ test_catalogs_dir }}"
   register: anta_results
   check_mode: false

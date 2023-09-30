@@ -63,10 +63,6 @@ class ActionModule(ActionBase):
         if not isinstance(skipped_tests, list):
             raise AnsibleActionFail(f"'skipped_tests' must be a list of dictionnaries, got {skipped_tests}.")
 
-        strict_mode = self._task.args.get("strict_mode")
-        if not isinstance(strict_mode, bool):
-            raise AnsibleActionFail(f"'strict_mode' must be a boolean, got {strict_mode}.")
-
         # Fetching ansible tags for backward compatibility
         ansible_tags = {
             "ansible_run_tags": task_vars.get("ansible_run_tags", ()),
@@ -77,7 +73,7 @@ class ActionModule(ActionBase):
         hostvars = task_vars["hostvars"]
 
         try:
-            anta_device = AnsibleEOSDevice(name=hostname, connection=ansible_connection, check_mode=ansible_check_mode, strict_mode=strict_mode)
+            anta_device = AnsibleEOSDevice(name=hostname, connection=ansible_connection, check_mode=ansible_check_mode)
             anta_results = get_anta_results(
                 anta_device=anta_device,
                 hostvars=hostvars,

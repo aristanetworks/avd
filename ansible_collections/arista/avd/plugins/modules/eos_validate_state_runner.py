@@ -23,7 +23,6 @@ description:
         - Generate a per-device test catalog based on the structured_configs
         - Run the generated tests against each device and generate a report in Markdown and CSV format.
         - When using check_mode, only generate the test catalog and generate a report to preview what would tests be run against each device
-        - When using strict_mode, if any command collection fails, the task for the device will fail. Consequently, no report will be generated for that device.
         - Dumping the per-device catalog to a file.
         - Backward compatibility with existing ansible tags behavior for eos_validate_state to filter categories of tests.
 options:
@@ -35,10 +34,6 @@ options:
     default: "WARNING"
   save_catalog:
     description: A boolean to indicate whether or not the catalog should be saved for each device.
-    type: bool
-    default: false
-  strict_mode:
-    description: A boolean to indicate whether or not strict mode is activated for command collections.
     type: bool
     default: false
   device_catalog_output_dir:
@@ -74,7 +69,6 @@ EXAMPLES = r"""
   arista.avd.eos_validate_state_runner:
     logging_level: ERROR
     save_catalog: True
-    strict_mode: True
     eos_validate_state_dir: "/tmp"
     skipped_tests:
       - category: AvdTestHardware

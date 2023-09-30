@@ -31,9 +31,6 @@
 - Hardware tests are now collapsed.
 - Some description of tests have been updated to be more precise.
 - Sorting of the test results is now done per device as opposed to per category.
-- A new `strict_mode` option has been introduced:
-  - **Enabled (True):** If any command collection fails, the task for the device will fail in Ansible, stopping the play. Consequently, no report will be generated for that device.
-  - **Disabled (False, default):** The play continues even if a command collection fails, but the test associated with the failed command will be marked as FAIL in the `eos_validate_state` report.
 
 ## How to run eos_validate_state in ANTA mode
 
@@ -96,6 +93,7 @@
 - AvdTestBGP (Ansible tags: `bgp_check`)
   - VerifyBGPSpecificPeers: Validate IP BGP and BGP EVPN sessions state.
   - VerifyRoutingProtocolModel: Validate ArBGP is configured and operating.
+    - *This test is currently being run on devices that do not have a BGP configuration, which is not the actual behavior of `eos_validate_state`.*
 
 - AvdTestReloadCause (Ansible tags: `reload_cause`, `optional`, `never`)
   - VerifyReloadCause: Validate last reload cause. (Optional)
@@ -173,9 +171,6 @@ skipped_tests: []
 # Logging level for the ANTA libraries
 # Default is warning
 logging_level: "WARNING"
-# Activate strict mode for command collection errors
-# Defaults to false
-strict_mode: false
 ```
 
 ## Example Playbook
