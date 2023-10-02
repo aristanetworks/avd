@@ -9,14 +9,23 @@
 ### QOS
 
 #### QOS Summary
-
 {%     if qos.rewrite_dscp is arista.avd.defined(true) %}
+
 QOS rewrite DSCP: **enabled**
 {%     else %}
+
 QOS rewrite DSCP: **disabled**
 {%     endif %}
+{%     if qos.random_detect.ecn.allow_non_ect.enabled is arista.avd.defined %}
+{%         set ecn_command = "QOS random-detect ECN is set to allow **non-ect**" %}
+{%         if qos.random_detect.ecn.allow_non_ect.chip_based is arista.avd.defined(true) %}
+{%             set ecn_command = ecn_command ~ " **chip-based**" %}
+{%         endif %}
 
+{{ ecn_command }}
+{%     endif %}
 {%     if qos.map is arista.avd.defined %}
+
 ##### QOS Mappings
 
 {%         if qos.map.cos is arista.avd.defined %}

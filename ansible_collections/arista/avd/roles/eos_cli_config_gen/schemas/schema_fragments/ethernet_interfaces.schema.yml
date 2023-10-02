@@ -979,6 +979,130 @@ keys:
         port_profile:
           type: str
           description: Key only used for documentation or validation purposes
+        uc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                required: true
+                description: TX-Queue ID
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            description: Indicate the units to be used for the threshold values
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 256000000
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            convert_types:
+                              - str
+                            min: 1
+                            max: 256000000
+                            description: Set the random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN max-mark-probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN weight
+        tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                required: true
+                description: TX-Queue ID
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            type: str
+                            required: true
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            description: Indicate the units to be used for the threshold values
+                          min:
+                            type: int
+                            min: 1
+                            max: 256000000
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            convert_types:
+                              - str
+                            min: 1
+                            max: 256000000
+                            description: Set the random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN max-mark-probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN weight
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
