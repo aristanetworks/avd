@@ -16,6 +16,7 @@ description: |-
   - Validate the ansible version against collection requirements
   - Validate the collection requirements against the collection requirements
   - Validate the running python version
+  - Emit deprecations warning for Python and Ansible versions
 options:
   requirements:
     description:
