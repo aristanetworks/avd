@@ -355,6 +355,10 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - name: 'Set galaxy server'
+        if: ${{ matrix.galaxy_server }}
+        run: |
+          echo "ANSIBLE_GALAXY_SERVER=${{ matrix.galaxy_server }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.6
