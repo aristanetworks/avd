@@ -171,16 +171,8 @@ nav:
   - External Resources:
       - Ansible Collection User Guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User Guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
-  - Release Notes:
-      - 4.x.x: docs/release-notes/4.x.x.md
-        # Pointing to 3.8 since avd.arista.com does not include older versions.
-        # Going forward we will point to the relevant version.
-      - 3.x.x: https://avd.arista.com/3.8/docs/release-notes/3.x.x.html
-      - 2.x.x: https://avd.arista.com/3.8/docs/release-notes/2.x.x.html
-      - 1.1.x: https://avd.arista.com/3.8/docs/release-notes/1.1.x.html
-      - 1.0.x: https://avd.arista.com/3.8/docs/release-notes/1.0.x.html
-  - Porting Guides:
-      - 4.x.x: docs/porting-guides/4.x.x.md
+  - Release Notes: docs/release-notes/4.x.x.md
+  - Porting Guide: docs/porting-guides/4.x.x.md
   - pyavd: docs/pyavd.md
   - About:
       - AVD on Ansible Galaxy: https://galaxy.ansible.com/arista/avd
