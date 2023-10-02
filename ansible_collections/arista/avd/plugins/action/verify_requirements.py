@@ -59,7 +59,7 @@ def _validate_python_version(info: dict, result: dict) -> bool:
         result.setdefault("deprecations", []).append(
             {
                 "msg": (
-                    f"You are currently running Python {running_version}. The next minor release of AVD  after November 6th 2023 will drop support for Python"
+                    f"You are currently running Python {running_version}. The next minor release of AVD after November 6th 2023 will drop support for Python"
                     f" {min_version} as it will be dropping support for ansible-core<2.14 and ansible-core>=2.14 does not support Python {min_version} as"
                     " documented here: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
                 )
@@ -193,7 +193,7 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
             {
                 "msg": (
                     f"You are currently running ansible-core {running_version}. The next minor release of AVD after November 6th 2023 will drop support for"
-                    " ansible-core<2.14.Python 3.8 support will be dropped at the same time as ansible-core<2.14 does not support it. See the following link"
+                    " ansible-core<2.14. Python 3.8 support will be dropped at the same time as ansible-core>=2.14 does not support it. See the following link"
                     " for more details: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
                 )
             }
