@@ -19143,6 +19143,68 @@
       },
       "title": "Static Routes"
     },
+    "stun": {
+      "type": "object",
+      "description": "STUN configuration",
+      "properties": {
+        "client": {
+          "type": "object",
+          "description": "STUN client settings",
+          "properties": {
+            "server_profiles": {
+              "type": "array",
+              "description": "List of server profiles for the client",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Server Profiles"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Client"
+        },
+        "server": {
+          "type": "object",
+          "description": "STUN server settings",
+          "properties": {
+            "local_interface": {
+              "type": "string",
+              "title": "Local Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Server"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Stun"
+    },
     "switchport_default": {
       "type": "object",
       "properties": {
@@ -19283,6 +19345,13 @@
     "tacacs_servers": {
       "type": "object",
       "properties": {
+        "timeout": {
+          "type": "integer",
+          "description": "Timeout in seconds",
+          "minimum": 1,
+          "maximum": 1000,
+          "title": "Timeout"
+        },
         "hosts": {
           "type": "array",
           "items": {
@@ -19318,6 +19387,9 @@
               },
               "timeout": {
                 "type": "integer",
+                "description": "Timeout in seconds",
+                "minimum": 1,
+                "maximum": 1000,
                 "title": "Timeout"
               }
             },
