@@ -50,4 +50,4 @@ keys:
                       Check which command is required for your platform.
                   chip_based:
                     type: bool
-                    description: Allow non-ect chip-based.
+                    description: Allow non-ect chip-based

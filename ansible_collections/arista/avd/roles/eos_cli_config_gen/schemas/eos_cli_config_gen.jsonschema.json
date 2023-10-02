@@ -3883,7 +3883,7 @@
                                 "mbytes",
                                 "milliseconds"
                               ],
-                              "description": "Indicate the units to be used for the threshold values.",
+                              "description": "Indicate the units to be used for the threshold values",
                               "title": "Units"
                             },
                             "min": {
@@ -3904,14 +3904,14 @@
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 100,
-                              "description": "Set the random-detect ECN max-mark-probability.",
+                              "description": "Set the random-detect ECN max-mark-probability",
                               "title": "Max Probability"
                             },
                             "weight": {
                               "type": "integer",
                               "minimum": 0,
                               "maximum": 15,
-                              "description": "Set the random-detect ECN weight.",
+                              "description": "Set the random-detect ECN weight",
                               "title": "Weight"
                             }
                           },
@@ -3985,7 +3985,7 @@
                                 "mbytes",
                                 "milliseconds"
                               ],
-                              "description": "Indicate the units to be used for the threshold values.",
+                              "description": "Indicate the units to be used for the threshold values",
                               "title": "Units"
                             },
                             "min": {
@@ -4006,14 +4006,14 @@
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 100,
-                              "description": "Set the random-detect ECN max-mark-probability.",
+                              "description": "Set the random-detect ECN max-mark-probability",
                               "title": "Max Probability"
                             },
                             "weight": {
                               "type": "integer",
                               "minimum": 0,
                               "maximum": 15,
-                              "description": "Set the random-detect ECN weight.",
+                              "description": "Set the random-detect ECN weight",
                               "title": "Weight"
                             }
                           },
@@ -11372,7 +11372,7 @@
                     },
                     "chip_based": {
                       "type": "boolean",
-                      "description": "Allow non-ect chip-based.",
+                      "description": "Allow non-ect chip-based",
                       "title": "Chip Based"
                     }
                   },
@@ -11513,7 +11513,7 @@
                 },
                 "comment": {
                   "type": "string",
-                  "description": "Text comment added to queue.\n",
+                  "description": "Text comment added to queue",
                   "title": "Comment"
                 },
                 "random_detect": {
@@ -11525,7 +11525,7 @@
                       "properties": {
                         "count": {
                           "type": "boolean",
-                          "description": "Enable counter for random-detect ECNs\n",
+                          "description": "Enable counter for random-detect ECNs",
                           "title": "Count"
                         },
                         "threshold": {
@@ -11559,14 +11559,14 @@
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 100,
-                              "description": "Random-detect ECN maximum mark probability.",
+                              "description": "Random-detect ECN maximum mark probability",
                               "title": "Max Probability"
                             },
                             "weight": {
                               "type": "integer",
                               "minimum": 0,
                               "maximum": 15,
-                              "description": "Random-detect ECN weight.",
+                              "description": "Random-detect ECN weight",
                               "title": "Weight"
                             }
                           },
@@ -11649,7 +11649,7 @@
                 },
                 "comment": {
                   "type": "string",
-                  "description": "Text comment added to queue.\n",
+                  "description": "Text comment added to queue",
                   "title": "Comment"
                 },
                 "random_detect": {
@@ -11676,33 +11676,33 @@
                                 "mbytes",
                                 "milliseconds"
                               ],
-                              "description": "Unit to be used for the threshold values.",
+                              "description": "Unit to be used for the threshold values",
                               "title": "Units"
                             },
                             "min": {
                               "type": "integer",
                               "minimum": 1,
-                              "description": "Random-detect ECN minimum-threshold.",
+                              "description": "Random-detect ECN minimum-threshold",
                               "title": "Min"
                             },
                             "max": {
                               "type": "integer",
                               "minimum": 1,
-                              "description": "Random-detect ECN maximum-threshold.",
+                              "description": "Random-detect ECN maximum-threshold",
                               "title": "Max"
                             },
                             "max_probability": {
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 100,
-                              "description": "Random-detect ECN maximum mark probability.",
+                              "description": "Random-detect ECN maximum mark probability",
                               "title": "Max Probability"
                             },
                             "weight": {
                               "type": "integer",
                               "minimum": 0,
                               "maximum": 15,
-                              "description": "Random-detect ECN weight.",
+                              "description": "Random-detect ECN weight",
                               "title": "Weight"
                             }
                           },

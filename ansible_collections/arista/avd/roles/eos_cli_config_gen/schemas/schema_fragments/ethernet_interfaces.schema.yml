@@ -1010,7 +1010,7 @@ keys:
                             required: true
                             type: str
                             valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
-                            description: Indicate the units to be used for the threshold values.
+                            description: Indicate the units to be used for the threshold values
                           min:
                             type: int
                             required: true
@@ -1033,14 +1033,14 @@ keys:
                             max: 100
                             convert_types:
                               - str
-                            description: Set the random-detect ECN max-mark-probability.
+                            description: Set the random-detect ECN max-mark-probability
                           weight:
                             type: int
                             min: 0
                             max: 15
                             convert_types:
                               - str
-                            description: Set the random-detect ECN weight.
+                            description: Set the random-detect ECN weight
         tx_queues:
           type: list
           primary_key: id
@@ -1072,7 +1072,7 @@ keys:
                             type: str
                             required: true
                             valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
-                            description: Indicate the units to be used for the threshold values.
+                            description: Indicate the units to be used for the threshold values
                           min:
                             type: int
                             min: 1
@@ -1095,14 +1095,14 @@ keys:
                             max: 100
                             convert_types:
                               - str
-                            description: Set the random-detect ECN max-mark-probability.
+                            description: Set the random-detect ECN max-mark-probability
                           weight:
                             type: int
                             min: 0
                             max: 15
                             convert_types:
                               - str
-                            description: Set the random-detect ECN weight.
+                            description: Set the random-detect ECN weight
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
