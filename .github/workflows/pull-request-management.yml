@@ -343,8 +343,11 @@ jobs:
         avd_scenario:
           - 'eos_validate_state'
         ansible_version:
-          - 'ansible-core==2.12.6'
           - 'ansible-core<2.16.0 --upgrade'
+        include:
+          - avd_scenario: 'eos_validate_state'
+            ansible_version: 'ansible-core==2.12.6'
+            galaxy_server: 'https://old-galaxy.ansible.com'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
     steps:
