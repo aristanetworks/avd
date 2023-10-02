@@ -55,4 +55,4 @@ For more details, see [Custom Templates](https://avd.arista.com/4.3/roles/eos_de
 
 ## Adding the Custom Template to the `eos-designs` Role
 
-Custom templates are rendered automatically when the `eos_designs_custom_templates` variable is set. The custom templates are always rendered _after_ the builtin `eos_designs` features, so any output of `eos_designs` can be accessed and overridden.
+Custom templates are rendered automatically when the `eos_designs_custom_templates` variable is set. The custom templates are always rendered *after* the builtin `eos_designs` features, so any output of `eos_designs` can be accessed and overridden.

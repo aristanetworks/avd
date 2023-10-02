@@ -41,4 +41,4 @@ For more details, see [Extensibility with Custom Templates](https://avd.sh/en/st
 
 ## Adding the Custom Template to the `eos_cli_config_gen` Role
 
-Custom templates are rendered automatically when the `custom_templates` variable is set. The custom templates are always rendered _after_ the builtin `eos_cli_config_gen` templates.
+Custom templates are rendered automatically when the `custom_templates` variable is set. The custom templates are always rendered *after* the builtin `eos_cli_config_gen` templates.
