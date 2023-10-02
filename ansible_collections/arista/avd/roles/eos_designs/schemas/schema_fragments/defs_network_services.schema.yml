@@ -431,6 +431,7 @@ $defs:
                 description: |
                   Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled`.
                   Allow override of `<network_services_key>.[].evpn_l3_multicast` node_settings.
+                  Requires `evpn_multicast` to also be set to `true`.
                 keys:
                   enabled:
                     type: bool
@@ -964,6 +965,11 @@ $defs:
                 type: bool
                 default: true
                 description: Extend this L2VLAN over VXLAN.
+              evpn_vlan_bundle:
+                type: str
+                description: |
+                  Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
+                  To use this option the common "evpn_vlan_aware_bundles" option must be set to true.
               trunk_groups:
                 type: list
                 items:
@@ -978,6 +984,7 @@ $defs:
                 description: |
                   Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
                   When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding those individual settings.
+                  Requires `evpn_multicast` to also be set to `true`.
                 keys:
                   enabled:
                     type: bool

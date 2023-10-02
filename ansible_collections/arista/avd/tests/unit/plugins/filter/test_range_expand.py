@@ -9,7 +9,36 @@ import pytest
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import AnsibleFilterError, FilterModule, range_expand
 
-RANGE_TO_EXPAND_INVALID_VALUES = [True, {"key": "value"}, 33]
+RANGE_TO_EXPAND_INVALID_VALUES = [
+    pytest.param(True, AnsibleFilterError, "value must be of type list or str, got <class 'bool'>", id="Wrong input type - bool"),
+    pytest.param({"key": "value"}, AnsibleFilterError, "value must be of type list or str, got <class 'dict'>", id="Wrong input type - dict"),
+    pytest.param(33, AnsibleFilterError, "", id="Wrong input type - int"),
+    pytest.param(
+        "Ethernet4-2",
+        AnsibleFilterError,
+        "Range Ethernet4-2 could not be expanded because the first interface 4 is larger than last interface 2 in the range.",
+        id="Wrong interface range",
+    ),
+    pytest.param(
+        "Ethernet1,51-3/2",
+        AnsibleFilterError,
+        "Range 51-3/2 could not be expanded because the first module 51 is larger than last module 3 in the range.",
+        id="Wrong module range",
+    ),
+    pytest.param(
+        "Ethernet1.42-21",
+        AnsibleFilterError,
+        "Range Ethernet1.42-21 could not be expanded because the first subinterface 42 is larger than last subinterface 21 in the range.",
+        id="Wrong subinterface range",
+    ),
+    pytest.param(
+        "Ethernet4/2-1/4",
+        AnsibleFilterError,
+        "Range Ethernet4/2-1/4 could not be expanded because the first interface 2 is larger than last interface 1 in the range.",
+        id="Wrong parent interface range",
+    ),
+]
+
 RANGE_TO_EXPAND_VALID_VALUES = [
     "Ethernet1",
     "Ethernet1-2",
@@ -53,12 +82,11 @@ EXPECTED_RESULT_VALID_VALUES = [
 f = FilterModule()
 
 
-class TestListCompressFilter:
-    @pytest.mark.parametrize("RANGE_TO_EXPAND_INVALID", RANGE_TO_EXPAND_INVALID_VALUES)
-    def test_range_expand_invalid(self, RANGE_TO_EXPAND_INVALID):
-        with pytest.raises(AnsibleFilterError) as exc_info:
-            range_expand(RANGE_TO_EXPAND_INVALID)
-        assert str(exc_info.value) == f"value must be of type list or str, got {type(RANGE_TO_EXPAND_INVALID)}"
+class TestRangeExpandFilter:
+    @pytest.mark.parametrize("input_value, expected_raise, expected_raise_message", RANGE_TO_EXPAND_INVALID_VALUES)
+    def test_range_expand_invalid(self, input_value, expected_raise, expected_raise_message):
+        with pytest.raises(expected_raise, match=expected_raise_message):
+            range_expand(input_value)
 
     @pytest.mark.parametrize("RANGE_TO_EXPAND_VALID", RANGE_TO_EXPAND_VALID_VALUES)
     def test_range_expand_valid(self, RANGE_TO_EXPAND_VALID):
