@@ -157,7 +157,8 @@ jobs:
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: 'eos_cli_config_gen'
-            ansible_version: 'ansible-core==2.13.12'
+            ansible_version: 'ansible-core==2.12.6'
+            galaxy_server: 'https://old-galaxy.ansible.com'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
@@ -165,6 +166,10 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - name: 'Set galaxy server'
+        if: ${{ matrix.galaxy_server }}
+        run: |
+          echo "ANSIBLE_GALAXY_SERVER=${{ matrix.galaxy_server }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.6
@@ -245,6 +250,9 @@ jobs:
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: 'eos_designs_unit_tests'
+            ansible_version: 'ansible-core==2.12.6'
+            galaxy_server: 'https://old-galaxy.ansible.com'
+          - avd_scenario: 'eos_designs_unit_tests'
             ansible_version: 'ansible-core>=2.13.1,<2.14.0 --upgrade'
           - avd_scenario: 'eos_designs_unit_tests'
             ansible_version: 'ansible-core>=2.14.0,<2.15.0 --upgrade'
@@ -255,6 +263,10 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - name: 'Set galaxy server'
+        if: ${{ matrix.galaxy_server }}
+        run: |
+          echo "ANSIBLE_GALAXY_SERVER=${{ matrix.galaxy_server }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.6
@@ -280,8 +292,14 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario: ['eos_config_deploy_cvp']
-        ansible_version: ['ansible-core==2.13.12', 'ansible-core<2.16.0 --upgrade']
+        avd_scenario:
+          - 'eos_config_deploy_cvp'
+        ansible_version:
+          - 'ansible-core<2.16.0 --upgrade'
+        include:
+          - avd_scenario: 'eos_config_deploy_cvp'
+            ansible_version: 'ansible-core==2.12.6'
+            galaxy_server: 'https://old-galaxy.ansible.com'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.cloudvision == 'true'
     steps:
@@ -289,6 +307,10 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - name: 'Set galaxy server'
+        if: ${{ matrix.galaxy_server }}
+        run: |
+          echo "ANSIBLE_GALAXY_SERVER=${{ matrix.galaxy_server }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.6
