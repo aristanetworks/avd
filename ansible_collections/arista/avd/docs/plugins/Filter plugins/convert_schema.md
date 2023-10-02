@@ -28,8 +28,6 @@ Only for internal use.
 | ---- | ---- | ----------- |
 | _value | any | Schema of the requested type. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

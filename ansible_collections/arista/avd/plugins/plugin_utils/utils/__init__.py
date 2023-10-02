@@ -11,10 +11,12 @@ from .get_item import get_item
 from .get_templar import get_templar
 from .groupby import groupby
 from .load_python_class import load_python_class
+from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 from .replace_or_append_item import replace_or_append_item
 from .template import template
 from .template_var import template_var
 from .unique import unique
+from .yaml_dumper import NoAliasDumper
 
 __all__ = [
     "append_if_not_duplicate",
@@ -31,4 +33,7 @@ __all__ = [
     "template",
     "template_var",
     "unique",
+    "PythonToAnsibleContextFilter",
+    "PythonToAnsibleHandler",
+    "NoAliasDumper",
 ]

@@ -40,6 +40,9 @@ jobs:
               - '.github/workflows/pull-request-management.yml'
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/*'
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen*/**/*'
+            validate_state:
+              - 'ansible_collections/arista/avd/roles/eos_validate_state/*'
+              - 'ansible_collections/arista/avd/roles/eos_validate_state/**/*'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
@@ -327,6 +330,48 @@ jobs:
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+      #
+  # ----------------------------------- #
+  # EOS Validate State MOLECULE
+  # ----------------------------------- #
+  molecule_eos_validate_state:
+    name: Validate eos_validate_state
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario:
+          - 'eos_validate_state'
+        ansible_version:
+          - 'ansible-core<2.16.0 --upgrade'
+        include:
+          - avd_scenario: 'eos_validate_state'
+            ansible_version: 'ansible-core==2.12.6'
+            galaxy_server: 'https://old-galaxy.ansible.com'
+    needs: [ pre_commit ]
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
+    steps:
+      - name: 'Set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - name: 'Set galaxy server'
+        if: ${{ matrix.galaxy_server }}
+        run: |
+          echo "ANSIBLE_GALAXY_SERVER=${{ matrix.galaxy_server }}" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - name: Run molecule action
+        uses: arista-netdevops-community/action-molecule-avd@v1.6
+        with:
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          galaxy_file: "ansible_collections/arista/avd/collections.yml"
+          ansible: ${{ matrix.ansible_version }}
+          check_git: true
+          check_git_enforced: true
+
   # ----------------------------------- #
   # Ansible tests
   # ----------------------------------- #

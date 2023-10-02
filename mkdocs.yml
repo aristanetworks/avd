@@ -150,7 +150,9 @@ nav:
           - Overview: roles/eos_config_deploy_cvp/README.md
           - Integrating AVD with CVaaS: roles/eos_config_deploy_cvp/docs/avd-to-cvaas.md
       - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
-      - eos_validate_state: roles/eos_validate_state/README.md
+      - eos_validate_state:
+          - Overview: roles/eos_validate_state/README.md
+          - ANTA Preview: roles/eos_validate_state/ANTA-Preview.md
       - eos_snapshot: roles/eos_snapshot/README.md
       - dhcp_provisioner: roles/dhcp_provisioner/README.md
       - build_output_folders: roles/build_output_folders/README.md

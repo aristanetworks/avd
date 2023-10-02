@@ -33,7 +33,7 @@
 {%             set _ = restrictions.append("Max value: <code>" ~ spec.max ~ "</code>") %}
 {%         endif %}
 {%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
-| {{ "  " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
+| {{ "    " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
 {%         if spec.suboptions %}
 {{ option_desc(spec.suboptions, level + 1) -}}
 {%         endif %}
@@ -47,7 +47,7 @@
 {%     for name, spec in results.items() %}
 {%         set typ = spec.type | default("any") %}
 {%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
-| {{ "  " * level }}{{ name }} | {{ typ }} | {{ description }} |
+| {{ "    " * level }}{{ name }} | {{ typ }} | {{ description }} |
 {%         if spec.contains %}
 {{ result_desc(spec.contains, level + 1) -}}
 {%         endif %}
@@ -57,6 +57,27 @@
 
 !!! note
     Always use the FQCN (Fully Qualified Collection Name) `{{ collection | default("arista.avd", true) ~ "." ~ module }}` when using this plugin.
+{% if deprecated %}
+
+!!! danger "This plugin is **deprecated**"
+    This {{ plugin_type }} will be removed in version {{ deprecated['removed_in'] | default('') | string | md_ify | replace("\.", ".") | replace("\,", ",") }}.
+
+{% else %}
+{%     set module_states = {
+     "preview": {"message": "not guaranteed to have a backwards compatible interface", "level": "warning"},
+     "stableinterface": {"message": "guaranteed to have backward compatible interface changes going forward", "level": "info"},
+   }
+%}
+{%     if metadata %}
+{%         if metadata.status %}
+
+{%             for cur_state in metadata.status %}
+!!! {{ module_states[cur_state]["level"] }} "This module is in **{{ cur_state }}** mode"
+    This {{ plugin_type }} is {{ module_states[cur_state]["message"] }}.
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{% endif %}
 {% if short_description %}
 
 {{ short_description | md_ify | replace("\.", ".") | replace("\,", ",") }}
@@ -90,7 +111,7 @@ The below requirements are needed on the host that executes this module.
 ## Notes
 
 {%     for note in notes %}
-   - {{ note | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- {{ note | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%     endfor %}
 {% endif %}
 {% if seealso %}
@@ -99,17 +120,13 @@ The below requirements are needed on the host that executes this module.
 
 {%     for item in seealso %}
 {%         if item.module is defined and item.description is defined %}
-   :ref:`{{ item.module }}_module`
-       {{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- :ref:`{{ item.module }}_module<br>{{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%         elif item.module is defined %}
-   :ref:`{{ item.module }}_module`
-      The official documentation on the **{{ item.module }}** module.
+- :ref:`{{ item.module }}_module`<br>The official documentation on the **{{ item.module }}** module.
 {%         elif item.name is defined and item.link is defined and item.description is defined %}
-   `{{ item.name }} <{{ item.link }}>`_
-       {{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- {{ item.name }}: [{{ item.link }}]({{ item.link }})<br>{{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%         elif item.ref is defined and item.description is defined %}
-   :ref:`{{ item.ref }}`
-       {{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
+- :ref:`{{ item.ref }}`<br>{{ item.description | md_ify | replace("\.", ".") | replace("\,", ",") }}
 {%         endif %}
 {%     endfor %}
 {% endif %}
@@ -126,32 +143,6 @@ The below requirements are needed on the host that executes this module.
 ## Return Values
 
 {{ result_desc(returndocs, 0) -}}
-{% endif %}
-
-## Status
-{% if deprecated %}
-
-- This {{ plugin_type }} will be removed in version
-  {{ deprecated['removed_in'] | default('') | string | md_ify | replace("\.", ".") | replace("\,", ",") }}.
-  *[deprecated]*
-
-{% else %}
-{%     set module_states = {
-     "preview": "not guaranteed to have a backwards compatible interface",
-     "stableinterface": "guaranteed to have backward compatible interface changes going forward",
-   }
-%}
-{%     if metadata %}
-{%         if metadata.status %}
-{%             for cur_state in metadata.status %}
-- This {{ plugin_type }} is {{ module_states[cur_state] }}. *[{{ cur_state }}]*
-{%             endfor %}
-{%         endif %}
-
-{%         if metadata.supported_by %}
-- This {{ plugin_type }} is maintained by {{ metadata.supported_by }}.
-{%         endif %}
-{%     endif %}
 {% endif %}
 {% if author is defined %}
 

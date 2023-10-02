@@ -36,8 +36,6 @@ Build configuration to publish configlets to Cloudvision.
     configlet_extension: 'cfg'
 ```
 
-## Status
-
 ## Authors
 
 - EMEA AS Team (@aristanetworks)

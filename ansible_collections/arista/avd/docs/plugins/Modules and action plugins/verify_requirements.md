@@ -41,8 +41,6 @@ The \`arista.avd.verify\_requirements\` module is an Ansible Action Plugin provi
   run_once: true
 ```
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

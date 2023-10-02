@@ -30,8 +30,6 @@ Arguments are treated as one dict so all arguments will be set as vars.
   check_mode: false
 ```
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)
