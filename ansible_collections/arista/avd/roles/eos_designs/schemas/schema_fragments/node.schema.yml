@@ -1,0 +1,22 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  node:
+    # Not the most optimal ref, but something fails in schema tooling with recursive refs if we use "eos_designs#/$defs/node_type/keys/nodes/items"
+    $ref: "#/$defs/node_type/keys/defaults"
+    type: dict
+    description: |-
+      This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.
+      It is useful when generating device setting from other systems and sources, since the values can be set with a static path per device instead of having to insert it into the common `<node_type_key>` data structure.
+      Since MLAG groupings are currently picked up from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`.
+    documentation_options:
+      table: node-type-structure
+    keys:
+      name:
+        type: str
+        description: The Node Name is used as "hostname".

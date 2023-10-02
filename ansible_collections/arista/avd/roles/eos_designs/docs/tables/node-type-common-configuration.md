@@ -7,6 +7,23 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>node</samp>](## "node") | Dictionary |  |  |  | This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.<br>It is useful when generating device setting from other systems and sources, since the values can be set with a static path per device instead of having to insert it into the common `<node_type_key>` data structure.<br>Since MLAG groupings are currently picked up from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`. |
+    | [<samp>&nbsp;&nbsp;id</samp>](## "node.id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
+    | [<samp>&nbsp;&nbsp;platform</samp>](## "node.platform") | String |  |  |  | Arista platform family. |
+    | [<samp>&nbsp;&nbsp;mac_address</samp>](## "node.mac_address") | String |  |  |  | Leverage to document management interface mac address. |
+    | [<samp>&nbsp;&nbsp;system_mac_address</samp>](## "node.system_mac_address") | String |  |  |  | System MAC Address in this following format: "xx:xx:xx:xx:xx:xx".<br>Set to the same MAC address as available in "show version" on the device.<br>"system_mac_address" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;serial_number</samp>](## "node.serial_number") | String |  |  |  | Set to the Serial Number of the device.<br>Only used for documentation purpose in the fabric documentation and part of the structured_config.<br>"serial_number" can also be set directly as a hostvar.<br>If both are set, the setting under node type settings takes precedence.<br> |
+    | [<samp>&nbsp;&nbsp;rack</samp>](## "node.rack") | String |  |  |  | Rack that the switch is located in (only used in snmp_settings location). |
+    | [<samp>&nbsp;&nbsp;mgmt_ip</samp>](## "node.mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv4 address. |
+    | [<samp>&nbsp;&nbsp;ipv6_mgmt_ip</samp>](## "node.ipv6_mgmt_ip") | String |  |  | Format: cidr | Node management interface IPv6 address. |
+    | [<samp>&nbsp;&nbsp;mgmt_interface</samp>](## "node.mgmt_interface") | String |  |  |  | Management Interface Name.<br>Default -> platform_management_interface -> mgmt_interface -> "Management1".<br> |
+    | [<samp>&nbsp;&nbsp;lacp_port_id_range</samp>](## "node.lacp_port_id_range") | Dictionary |  |  |  | This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".<br>Unique LACP port-id ranges are recommended for EVPN Multihoming designs.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "node.lacp_port_id_range.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;size</samp>](## "node.lacp_port_id_range.size") | Integer |  | `128` |  | Recommended size > = number of ports in the switch. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;offset</samp>](## "node.lacp_port_id_range.offset") | Integer |  | `0` |  | Offset is used to avoid overlapping port-id ranges of different switches.<br>Useful when a "connected-endpoint" is connected to switches in different "node_groups".<br> |
+    | [<samp>&nbsp;&nbsp;always_configure_ip_routing</samp>](## "node.always_configure_ip_routing") | Boolean |  | `False` |  | Force configuration of "ip routing" even on L2 devices.<br>Use this to retain behavior of AVD versions below 4.0.0.<br> |
+    | [<samp>&nbsp;&nbsp;raw_eos_cli</samp>](## "node.raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;structured_config</samp>](## "node.structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "&lt;node_type_keys.key&gt;") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "&lt;node_type_keys.key&gt;.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "&lt;node_type_keys.key&gt;.defaults.id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
@@ -83,6 +100,23 @@
 === "YAML"
 
     ```yaml
+    node:
+      id: <int>
+      platform: <str>
+      mac_address: <str>
+      system_mac_address: <str>
+      serial_number: <str>
+      rack: <str>
+      mgmt_ip: <str>
+      ipv6_mgmt_ip: <str>
+      mgmt_interface: <str>
+      lacp_port_id_range:
+        enabled: <bool>
+        size: <int>
+        offset: <int>
+      always_configure_ip_routing: <bool>
+      raw_eos_cli: <str>
+      structured_config: <dict>
     <node_type_keys.key>:
       defaults:
         id: <int>
