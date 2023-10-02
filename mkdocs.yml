@@ -71,6 +71,10 @@ plugins:
       glob:
         - molecule/*
         - tests/*
+        - docs/release-notes/1.0.x.md
+        - docs/release-notes/1.1.x.md
+        - docs/release-notes/2.x.x.md
+        - docs/release-notes/3.x.x.md
   - include_dir_to_nav
   - git-revision-date-localized:
       type: date
@@ -169,10 +173,12 @@ nav:
       - Ansible User Guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
   - Release Notes:
       - 4.x.x: docs/release-notes/4.x.x.md
-      - 3.x.x: docs/release-notes/3.x.x.md
-      - 2.x.x: docs/release-notes/2.x.x.md
-      - 1.1.x: docs/release-notes/1.1.x.md
-      - 1.0.x: docs/release-notes/1.0.x.md
+        # Pointing to 3.8 since avd.arista.com does not include older versions.
+        # Going forward we will point to the relevant version.
+      - 3.x.x: https://avd.arista.com/3.8/docs/release-notes/3.x.x.html
+      - 2.x.x: https://avd.arista.com/3.8/docs/release-notes/2.x.x.html
+      - 1.1.x: https://avd.arista.com/3.8/docs/release-notes/1.1.x.html
+      - 1.0.x: https://avd.arista.com/3.8/docs/release-notes/1.0.x.html
   - Porting Guides:
       - 4.x.x: docs/porting-guides/4.x.x.md
   - pyavd: docs/pyavd.md
