@@ -13,6 +13,11 @@ qos:
       - "1 to dscp 56"
       - "6 to tx-queue 2"
   rewrite_dscp: true
+  random_detect:
+    ecn:
+      allow_non_ect:
+        enabled: true
+        chip_based: true
 
 priority_flow_control:
   all_off: true
@@ -36,8 +41,23 @@ qos_profiles:
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'
+        random_detect:
+          ecn:
+            threshold:
+              units: kbytes
+              min: 320
+              max: 320
+              max_probability: 90
+              # weight: 0
       - id: 4
         bandwidth_guaranteed_percent: 10
+        random_detect:
+          ecn:
+            threshold:
+              units: segments
+              min: 320
+              max: 320
+              weight: 10
   - name: experiment
     trust: cos
     cos: 2
@@ -108,12 +128,34 @@ qos_profiles:
         bandwidth_percent: 50
         priority: 'no priority'
         comment: "Test no priority"
+        random_detect:
+          ecn:
+            threshold:
+              units: milliseconds
+              min: 3
+              max: 9
+              max_probability: 90
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'
+        random_detect:
+          ecn:
+            threshold:
+              units: kbytes
+              min: 320
+              max: 320
+              max_probability: 90
+              # weight: 0
       - id: 4
         bandwidth_guaranteed_percent: 10
         comment: "Test guaranteed percent"
+        random_detect:
+          ecn:
+            threshold:
+              units: segments
+              min: 320
+              max: 320
+              weight: 10
     mc_tx_queues:
       - id: 1
         bandwidth_percent: 50
@@ -251,6 +293,11 @@ ethernet_interfaces:
     qos:
       trust: cos
       cos: 2
+    tx_queues:
+      - id: 2
+        random_detect:
+          ecn:
+            count: true
 
   - name: Ethernet3
     type: port-channel-member
@@ -281,6 +328,11 @@ ethernet_interfaces:
     mode: trunk
     vlans: 110-111,210-211
     service_profile: qprof_testwithpolicy
+    uc_tx_queues:
+      - id: 4
+        random_detect:
+          ecn:
+            count: true
 
 ### Port-Channel Interfaces ###
 port_channel_interfaces:

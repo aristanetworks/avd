@@ -36,7 +36,7 @@ keys:
         type: dict
         description: Global random-detect settings
         keys:
-          drop:
+          ecn:
             type: dict
             description: Global ECN Configuration
             keys:
@@ -50,4 +50,4 @@ keys:
                       Check which command is required for your platform.
                   chip_based:
                     type: bool
-                    description: Allow non-ect chip-based.
+                    description: Allow non-ect chip-based

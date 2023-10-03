@@ -75,8 +75,6 @@ Note \- if there is a non\-dictionary value with no secondary key provided, it w
 | ---- | ---- | ----------- |
 | _value | any | Returns list of dictionaries or input variable untouched if not a nested dictionary/list. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

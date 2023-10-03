@@ -23,12 +23,12 @@ Set facts from YAML produced by Jinja2 templates
 | schema | dict | False | None |  | Schema conforming to \"AVD Meta Schema\". Either schema or schema\_id must be set. |
 | schema_id | str | False | None | Valid values:<br>- <code>eos_cli_config_gen</code><br>- <code>eos_designs</code> | ID of Schema conforming to \"AVD Meta Schema\".  Either schema or schema\_id must be set. |
 | templates | list | True | None |  | List of dicts for Jinja templates to be run. |
-|   template | str | False | None |  | Template file. Either template or python\_module must be set. |
-|   python_module | str | False | None |  | Python module to import. Either template or python\_module must be set. |
-|   python_class_name | str | False | AvdStructuredConfig |  | Name of Python Class to import. |
-|   options | dict | False | None |  | Template options. |
-|     list_merge | str | False | append |  | Merge strategy for lists |
-|     strip_empty_keys | bool | False | True |  | Filter out keys from the generated output if value is null/none/undefined. Only applies to templates. |
+|     template | str | False | None |  | Template file. Either template or python\_module must be set. |
+|     python_module | str | False | None |  | Python module to import. Either template or python\_module must be set. |
+|     python_class_name | str | False | AvdStructuredConfig |  | Name of Python Class to import. |
+|     options | dict | False | None |  | Template options. |
+|         list_merge | str | False | append |  | Merge strategy for lists |
+|         strip_empty_keys | bool | False | True |  | Filter out keys from the generated output if value is null/none/undefined. Only applies to templates. |
 | debug | bool | False | None |  | Output list \'avd\_yaml\_templates\_to\_facts\_debug\' with timestamps of each performed action. |
 | dest | str | False | None |  | Destination path. If set, the output facts will also be written to this path.<br>Autodetects data format based on file suffix. \'.yml\', \'.yaml\' \-\> YAML, default \-\> JSON |
 | mode | str | False | None |  | File mode \(ex. 0664\) for dest file. See \'ansible.builtin.copy\' module for details. |
@@ -64,8 +64,6 @@ Set facts from YAML produced by Jinja2 templates
   check_mode: no
   changed_when: False
 ```
-
-## Status
 
 ## Authors
 

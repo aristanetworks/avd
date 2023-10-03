@@ -31,26 +31,34 @@ from ansible_collections.arista.avd.plugins.action.verify_requirements import (
             (MIN_PYTHON_SUPPORTED_VERSION[0], MIN_PYTHON_SUPPORTED_VERSION[1], 42, "final", 0),
             True,
         ),
+        (
+            (MIN_PYTHON_SUPPORTED_VERSION[0], MIN_PYTHON_SUPPORTED_VERSION[1] + 1, 42, "final", 0),
+            True,
+        ),
     ],
 )
 def test__validate_python_version(mocked_version, expected_return):
     """
     TODO - could add the expected stderr
     """
-    result = {}
+    info = {}
+    result = {}  # As in ansible module result
     version_info = namedtuple("version_info", "major minor micro releaselevel serial")
     with patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys:
         mocked_sys.version_info = version_info(*mocked_version)
-        ret = _validate_python_version(result)
+        ret = _validate_python_version(info, result)
     assert ret == expected_return
-    assert result["python_version_info"] == {
+    assert info["python_version_info"] == {
         "major": mocked_version[0],
         "minor": mocked_version[1],
         "micro": mocked_version[2],
         "releaselevel": mocked_version[3],
         "serial": mocked_version[4],
     }
-    assert bool(result["python_path"])
+    assert bool(info["python_path"])
+    if mocked_version[:2] == MIN_PYTHON_SUPPORTED_VERSION:
+        # Check for depreecation of PYTHON 3.8
+        assert len(result["deprecations"]) == 1
 
 
 @pytest.mark.parametrize(
@@ -111,27 +119,39 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
 
 
 @pytest.mark.parametrize(
-    "mocked_running_version, expected_return",
+    "mocked_running_version, deprecated_version, expected_return",
     [
         pytest.param(
             "2.14",
+            False,
             True,
             id="valid ansible version",
         ),
         pytest.param(
-            "2.13.0",
+            "2.11.0",
+            True,
             False,
             id="invalid ansible version",
         ),
+        pytest.param(
+            "2.12.6",
+            True,
+            True,
+            id="deprecated ansible version",
+        ),
     ],
 )
-def test__validate_ansible_version(mocked_running_version, expected_return):
+def test__validate_ansible_version(mocked_running_version, deprecated_version, expected_return):
     """
     TODO - check that the requires_ansible is picked up from the correct place
     """
-    result = {}
-    ret = _validate_ansible_version("arista.avd", mocked_running_version, result)
+    info = {}
+    result = {}  # As in ansible module result
+    ret = _validate_ansible_version("arista.avd", mocked_running_version, info, result)
     assert ret == expected_return
+    if expected_return is True and deprecated_version is True:
+        # Check for depreecation of Ansible<2.14
+        assert len(result["deprecations"]) == 1
 
 
 @pytest.mark.parametrize(

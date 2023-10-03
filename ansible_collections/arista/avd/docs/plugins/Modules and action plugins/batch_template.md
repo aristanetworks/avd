@@ -40,8 +40,6 @@ Destination file mode is hardcoded to 0o664.
     documentation_schema: "{{ role_name | arista.avd.convert_schema(type='documentation') }}"
 ```
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

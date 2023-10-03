@@ -39,8 +39,6 @@ myvalue: "{{ variable | arista.avd.default(default_value_1, default_value_2) }}"
 | ---- | ---- | ----------- |
 | _value | any | Input value if <code>not undefined</code> and <code>not None</code>. Otherwise, return the first defined default value or <code>None</code>. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

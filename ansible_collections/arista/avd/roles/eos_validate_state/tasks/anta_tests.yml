@@ -1,0 +1,18 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+---
+#########################################
+##  Run eos_validate_state using ANTA  ##
+#########################################
+
+- name: Run eos_validate_state_runner leveraging ANTA
+  arista.avd.eos_validate_state_runner:
+    logging_level: "{{ logging_level | arista.avd.default('WARNING') }}"
+    skipped_tests: "{{ skipped_tests | arista.avd.default([]) }}"
+    save_catalog: "{{ save_catalog | arista.avd.default(false) }}"
+    device_catalog_output_dir: "{{ test_catalogs_dir }}"
+  register: anta_results
+  check_mode: false
+  when: use_anta
+  tags: always

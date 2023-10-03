@@ -34,8 +34,6 @@ rt: "{{ short_esi | arista.avd.generate_route_target }}"
 | ---- | ---- | ----------- |
 | _value | string | String based on route\-target format like 03\:03\:02\:02\:01\:01 |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)
