@@ -5684,15 +5684,15 @@
                 "description": "Name of the IPsec profile",
                 "title": "Name"
               },
-              "sa_policy": {
-                "type": "string",
-                "description": "Name of the Security Association to use in this profile",
-                "title": "Sa Policy"
-              },
               "ike_policy": {
                 "type": "string",
                 "description": "Name of the IKE policy to use in this profile",
                 "title": "Ike Policy"
+              },
+              "sa_policy": {
+                "type": "string",
+                "description": "Name of the Security Association to use in this profile",
+                "title": "Sa Policy"
               },
               "connection": {
                 "type": "string",
@@ -5740,7 +5740,8 @@
                 },
                 "required": [
                   "interval",
-                  "time"
+                  "time",
+                  "action"
                 ],
                 "additionalProperties": false,
                 "patternProperties": {

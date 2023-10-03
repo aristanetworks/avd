@@ -68,12 +68,12 @@ keys:
             name:
               type: str
               description: Name of the IPsec profile
-            sa_policy:
-              type: str
-              description: Name of the Security Association to use in this profile
             ike_policy:
               type: str
               description: Name of the IKE policy to use in this profile
+            sa_policy:
+              type: str
+              description: Name of the Security Association to use in this profile
             connection:
               type: str
               description: IPsec connection (Initiator/Responder/Dynamic)
@@ -112,6 +112,7 @@ keys:
                     * 'clear': Delete all connections
                     * 'hold': Re-negotiate connection on demand
                     * 'restart': Restart connection immediately
+                  required: true
                   valid_values:
                     - clear
                     - hold

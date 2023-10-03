@@ -1,0 +1,54 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - ip security #}
+{% if ip_security is arista.avd.defined %}
+ip security
+{%     for ike_policy in ip_security.ike_policies | arista.avd.default([]) %}
+   ike policy {{ ike_policy.name }}
+{%         if ike_policy.local_id is arista.avd.defined %}
+      local_id {{ ike_policy.local_id }}
+{%         endif %}
+{%     endfor %}
+{%     for sa_policy in ip_security.sa_policies | arista.avd.default([]) %}
+   sa policy {{ sa_policy.name }}
+{%         if sa_policy.esp.intergrity is arista.avd.defined %}
+      esp intergrity {{ sa_policy.esp.intergrity }}
+{%         endif %}
+{%         if sa_policy.esp.encryption is arista.avd.defined %}
+      esp encryption {{ sa_policy.esp.encryption }}
+{%         endif %}
+{%         if sa_policy.pfs_dh_group is arista.avd.defined %}
+      pfs_dh_group {{ sa_policy.pfs_dh_group }}
+{%         endif %}
+{%     endfor %}
+{%     for profile in ip_security.profiles | arista.avd.default([]) %}
+   profile {{ profile.name }}
+{%         if profile.ike_policy is arista.avd.defined %}
+      ike-policy {{ profile.ike_policy }}
+{%         endif %}
+{%         if profile.sa_policy is arista.avd.defined %}
+      sa-policy {{ profile.sa_policy }}
+{%         endif %}
+{%         if profile.connection is arista.avd.defined %}
+      connection {{ profile.connection }}
+{%         endif %}
+{%         if profile.shared_key is arista.avd.defined %}
+      shared-key 7 {{ profile.shared_key }}
+{%         endif %}
+{%         if profile.dpd is arista.avd.defined %}
+      dpd {{ profile.dpd.interval }} {{ profile.dpd.time }} {{ profile.dpd.action }}
+{%         endif %}
+{%         if profile.mode is arista.avd.defined %}
+      mode {{ profile.mode }}
+{%         endif %}
+{%     endfor %}
+{%     if ip_security.key_controller is arista.avd.defined %}
+   key controller
+{%         if ip_security.key_controller.profile is arista.avd.defined %}
+      profile {{ ip_security.key_controller.profile }}
+{%         endif %}
+{%     endif %}
+{% endif %}
