@@ -27,7 +27,7 @@
 {%         set units = tx_queue.random_detect.drop.threshold.units %}
 {%         set drop_command = "random-detect drop" %}
 {%         if tx_queue.random_detect.drop.threshold.drop_precedence is arista.avd.defined %}
-{%             set drop_command = drop_command ~ " drop-precedence " ~ tx_queue.random_detect.drop.threshold.drop_precedence ~ " " %}
+{%             set drop_command = drop_command ~ " drop-precedence " ~ tx_queue.random_detect.drop.threshold.drop_precedence %}
 {%         endif %}
 {%         set drop_command = drop_command ~ " minimum-threshold " ~ tx_queue.random_detect.drop.threshold.min ~ " " ~ units %}
 {%         set drop_command = drop_command ~ " maximum-threshold " ~ tx_queue.random_detect.drop.threshold.max ~ " " ~ units %}

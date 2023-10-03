@@ -429,6 +429,17 @@ QOS Profile: **wred_queues_test**
 | 2 | Multicast | 10 | priority strict | - | Test strict priority |
 | 4 | Multicast | 10 | - | - | Test guaranteed percent |
 
+**WRED Configuration**
+
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | --------------- | ------------- | ------------- | -------------------- |
+| 1 | All | - | 1 kbytes | 10 kbytes | - |
+| 2 | All | 2 | 2 kbytes | 200 kbytes | - |
+| 4 | All | - | 1 kbytes | 10 kbytes | 90 |
+| 1 | Multicast | - | - | - | - |
+| 2 | Multicast | - | - | - | - |
+| 4 | Multicast | - | - | - | - |
+
 QOS Profile: **wred_uc_queues_test**
 
 **Settings**
@@ -444,6 +455,14 @@ QOS Profile: **wred_uc_queues_test**
 | 1 | Unicast | 50 | no priority | - | Test no priority |
 | 2 | Unicast | 10 | priority strict | - | - |
 | 4 | Unicast | 10 | - | - | Test guaranteed percent |
+
+**WRED Configuration**
+
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | --------------- | ------------- | ------------- | -------------------- |
+| 1 | Unicast | - |1 microseconds | 10 microseconds | - |
+| 2 | Unicast | 1 |2 milliseconds | 20 milliseconds | - |
+| 4 | Unicast | - |1 microseconds | 10 microseconds | 90 |
 
 #### QOS Profile Device Configuration
 
@@ -563,7 +582,7 @@ qos profile wred_queues_test
    tx-queue 2
       bandwidth percent 10
       priority strict
-      random-detect drop drop-precedence 2  minimum-threshold 2 kbytes maximum-threshold 200 kbytes
+      random-detect drop drop-precedence 2 minimum-threshold 2 kbytes maximum-threshold 200 kbytes
    !
    tx-queue 4
       !! Test guaranteed percent
@@ -594,7 +613,7 @@ qos profile wred_uc_queues_test
    uc-tx-queue 2
       bandwidth percent 10
       priority strict
-      random-detect drop drop-precedence 1  minimum-threshold 2 milliseconds maximum-threshold 20 milliseconds
+      random-detect drop drop-precedence 1 minimum-threshold 2 milliseconds maximum-threshold 20 milliseconds
    !
    uc-tx-queue 4
       !! Test guaranteed percent
