@@ -340,11 +340,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario:
-          - 'cloudvision_tags'
-        ansible_version:
-          - 'ansible-core>=2.12.6,<2.15.0,!=2.13.0'
-          - 'ansible-core==2.12.6'
+        avd_scenario: [ 'cloudvision_tags' ]
+        ansible_version: ['ansible-core<2.16.0 --upgrade']
+        galaxy_server: ['https://old-galaxy.ansible.com']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.cloudvision == 'true'
     steps:
