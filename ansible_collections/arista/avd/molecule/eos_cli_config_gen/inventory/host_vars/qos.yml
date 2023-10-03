@@ -189,6 +189,16 @@ qos_profiles:
               units: kbytes
               min: 2
               max: 200
+      - id: 3
+        bandwidth_percent: 10
+        priority: 'priority strict'
+        random_detect:
+          ecn:
+            threshold:
+              units: kbytes
+              min: 320
+              max: 320
+              weight: 10
       - id: 4
         bandwidth_guaranteed_percent: 10
         comment: "Test guaranteed percent"

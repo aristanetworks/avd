@@ -428,6 +428,85 @@ QOS Profile: **uc_mc_queues_test**
 | 2 | Multicast | 10 | priority strict | - | Test strict priority |
 | 4 | Multicast | 10 | - | - | Test guaranteed percent |
 
+**ECN Configuration**
+
+| TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | ------------- | ------------- | -------------------- |
+| 1 | Unicast | 3 milliseconds | 9 milliseconds | 90 |
+| 2 | Unicast | 320 kbytes | 320 kbytes | 90 |
+| 4 | Unicast | 320 segments | 320 segments | - |
+| 1 | Multicast | - | - | - |
+| 2 | Multicast | - | - | - |
+| 4 | Multicast | - | - | - |
+
+QOS Profile: **wred_queues_test**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | - |
+
+**TX Queues**
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | All | 50 | no priority | - | Test no priority |
+| 2 | All | 10 | priority strict | - | - |
+| 3 | All | 10 | priority strict | - | - |
+| 4 | All | 10 | - | - | Test guaranteed percent |
+| 1 | Multicast | 50 | no priority | - | - |
+| 2 | Multicast | 10 | priority strict | - | Test strict priority |
+| 4 | Multicast | 10 | - | - | Test guaranteed percent |
+
+**ECN Configuration**
+
+| TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | ------------- | ------------- | -------------------- |
+| 1 | All | -  | -  | - |
+| 2 | All | -  | -  | - |
+| 3 | All | 320 kbytes | 320 kbytes | - |
+| 4 | All | -  | -  | - |
+| 1 | Multicast | - | - | - |
+| 2 | Multicast | - | - | - |
+| 4 | Multicast | - | - | - |
+
+**WRED Configuration**
+
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | --------------- | ------------- | ------------- | -------------------- |
+| 1 | All | - | 1 kbytes | 10 kbytes | - |
+| 2 | All | 2 | 2 kbytes | 200 kbytes | - |
+| 3 | All | - | -  | -  | - |
+| 4 | All | - | 1 kbytes | 10 kbytes | 90 |
+| 1 | Multicast | - | - | - | - |
+| 2 | Multicast | - | - | - | - |
+| 4 | Multicast | - | - | - | - |
+
+QOS Profile: **wred_uc_queues_test**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | - |
+
+**TX Queues**
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | Unicast | 50 | no priority | - | Test no priority |
+| 2 | Unicast | 10 | priority strict | - | - |
+| 4 | Unicast | 10 | - | - | Test guaranteed percent |
+
+**WRED Configuration**
+
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | --------------- | ------------- | ------------- | -------------------- |
+| 1 | Unicast | - |1 microseconds | 10 microseconds | - |
+| 2 | Unicast | 1 |2 milliseconds | 20 milliseconds | - |
+| 4 | Unicast | - |1 microseconds | 10 microseconds | 90 |
+
 #### QOS Profile Device Configuration
 
 ```eos
@@ -552,6 +631,11 @@ qos profile wred_queues_test
       bandwidth percent 10
       priority strict
       random-detect drop drop-precedence 2 minimum-threshold 2 kbytes maximum-threshold 200 kbytes
+   !
+   tx-queue 3
+      bandwidth percent 10
+      priority strict
+      random-detect ecn minimum-threshold 320 kbytes maximum-threshold 320 kbytes weight 10
    !
    tx-queue 4
       !! Test guaranteed percent
