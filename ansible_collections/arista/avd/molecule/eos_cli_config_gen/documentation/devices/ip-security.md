@@ -52,19 +52,24 @@ interface Management1
 #### IP Security Configuration
 
 ```eos
+!
 ip security
    ike policy IKE-1
       local_id 192.168.100.1
+   !
    ike policy IKE-2
    sa policy SA-1
       esp encryption aes128
       pfs_dh_group 14
+   !
    sa policy SA-2
       esp encryption aes128
       pfs_dh_group 14
+   !
    sa policy SA-3
       esp encryption null
       pfs_dh_group 17
+   !
    profile Profile-1
       ike-policy IKE-1
       sa-policy SA-1
@@ -72,11 +77,13 @@ ip security
       shared-key 7 12312312313213AA
       dpd 42 666 clear
       mode transport
+   !
    profile Profile-2
       sa-policy SA-2
       connection start
       shared-key 7 1231231231321AA
       mode tunnel
+   !
    key controller
       profile Profile-1
 ```
