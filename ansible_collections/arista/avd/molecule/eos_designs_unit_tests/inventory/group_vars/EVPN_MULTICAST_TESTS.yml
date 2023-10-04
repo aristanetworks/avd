@@ -485,6 +485,12 @@ tenants:
               - 232.0.0.0/21
           - rps:
               - 10.40.40.40
+          - rps:
+              - 10.20.20.30
+            nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+            groups:
+              - 232.1.0.0/21
+            access_list_name: RP_ACL_VRF_OVERRIDE
         vrf_vni: 55
         svis:
           - id: 550
