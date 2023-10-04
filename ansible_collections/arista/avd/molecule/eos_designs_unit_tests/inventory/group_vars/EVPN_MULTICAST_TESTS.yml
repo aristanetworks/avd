@@ -413,6 +413,19 @@ tenants:
         rps:
           - 10.1.51.130
           - 10.1.52.130
+      - nodes: [EVPN-MULTICAST-L3LEAF1A, EVPN-MULTICAST-L3LEAF1B]
+        rps:
+          - 10.1.51.140
+          - 10.1.52.140
+        groups:
+          - 232.0.120.0/21
+          - 232.0.128.0/21
+        access_list_name: RPS_ACL_VRF_Tenant_E_1
+      - rps:
+          - 10.1.50.150
+        groups:
+          - 232.0.136.0/21
+        access_list_name: RPS_ACL_VRF_Tenant_E_2
 
     vrfs:
       # This VRF inherits from Tenant

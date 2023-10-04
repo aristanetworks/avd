@@ -199,6 +199,12 @@ $defs:
                 items:
                   type: str
                   description: Group_prefix/mask.
+              access_list_name:
+                type: str
+                description: |
+                  List of groups to associate with the RP address set in 'rp'.
+                  If access_list_name is set, a standard access-list will be configured matching these groups.
+                  Otherwise the groups are configured directly on the RP command.
         igmp_snooping_querier:
           documentation_options:
             table: network-services-multicast-settings
@@ -479,6 +485,12 @@ $defs:
                       items:
                         type: str
                         description: Group_prefix/mask.
+                    access_list_name:
+                      type: str
+                      description: |
+                        List of groups to associate with the RP addresses set in 'rps'.
+                        If access_list_name is set, a standard access-list will be configured matching these groups.
+                        Otherwise the groups are configured directly on the RP command.
               evpn_l2_multi_domain:
                 documentation_options:
                   table: network-services-multicast-settings

@@ -159,21 +159,26 @@ class UtilsFilteredTenantsMixin(object):
                 if self._evpn_multicast:
                     vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
 
-                    rps = []
-                    for rp_address in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
-                        if self.shared_utils.hostname in get(rp_address, "nodes", default=[self.shared_utils.hostname]):
-                            for rp_ip in get(
-                                rp_address,
-                                "rps",
-                                required=True,
-                                org_key=f"pim_rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
-                            ):
-                                if rp_groups := get(rp_address, "groups"):
-                                    rps.append({"address": rp_ip, "groups": rp_groups})
+                rps = []
+                for rp_entry in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
+                    if self.shared_utils.hostname in get(rp_entry, "nodes", default=[self.shared_utils.hostname]):
+                        for rp_ip in get(
+                            rp_entry,
+                            "rps",
+                            required=True,
+                            org_key=f"pim_rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
+                        ):
+                            rp_address = {"address": rp_ip}
+                            if (rp_groups := get(rp_entry, "groups")) is not None:
+                                if (acl := rp_entry.get("access_list_name")) is not None:
+                                    rp_address["access_lists"] = [acl]
                                 else:
-                                    rps.append({"address": rp_ip})
-                    if rps:
-                        vrf["_pim_rp_addresses"] = rps
+                                    rp_address["groups"] = rp_groups
+
+                            rps.append(rp_address)
+
+                if rps:
+                    vrf["_pim_rp_addresses"] = rps
 
                     for evpn_peg in default(get(vrf, "evpn_l3_multicast.evpn_peg"), get(tenant, "evpn_l3_multicast.evpn_peg"), []):
                         if self.shared_utils.hostname in evpn_peg.get("nodes", [self.shared_utils.hostname]) and rps:
