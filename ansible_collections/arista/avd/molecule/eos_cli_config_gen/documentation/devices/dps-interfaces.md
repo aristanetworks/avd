@@ -1,11 +1,11 @@
-# dps-interface
+# dps-interfaces
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
-  - [DPS Interface](#dps-interface)
+  - [DPS Interfaces](#dps-interfaces)
 
 ## Management
 
@@ -37,18 +37,15 @@ interface Management1
 
 ## Interfaces
 
-### DPS Interface
+### DPS Interfaces
 
-#### DPS Interface Summary
+#### DPS Interfaces Summary
 
-| Setting | Value |
-| ------- | ----- |
-} IP address | 192.168.42.42/24 |
-| Flow tracker Hardware | FT-HW |
-| Flow tracker sampled | FT-S |
-| TCP MSS ceiling | * IPv4: 666<br>* IPv6: 666<br>* Direction: ingress |
+| Interface | IP address | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | --------------- | --------------- |
+| Dps1 | 192.168.42.42/24 | * Hardware: FT-HW<br>* Sampled: FT-S | * IPv4: 666<br>* IPv6: 666<br>* Direction: ingress |
 
-#### DPS Interface Device Configuration
+#### DPS Interfaces Device Configuration
 
 ```eos
 !

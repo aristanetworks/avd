@@ -1528,92 +1528,98 @@
         "^_.+$": {}
       }
     },
-    "dps_interface": {
-      "type": "object",
-      "properties": {
-        "Dps1": {
-          "type": "object",
-          "properties": {
-            "description": {
-              "type": "string",
-              "title": "Description"
-            },
-            "ip_address": {
-              "type": "string",
-              "description": "IPv4 address/mask",
-              "title": "IP Address"
-            },
-            "flow_tracker": {
-              "type": "object",
-              "properties": {
-                "sampled": {
-                  "type": "string",
-                  "description": "Sampled flow tracker name",
-                  "title": "Sampled"
-                },
-                "hardware": {
-                  "type": "string",
-                  "description": "Hardware flow tracker name",
-                  "title": "Hardware"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "title": "Flow Tracker"
-            },
-            "tcp_mss_ceiling": {
-              "type": "object",
-              "properties": {
-                "ipv4": {
-                  "type": "integer",
-                  "description": "Segment Size for IPv4",
-                  "minimum": 64,
-                  "maximum": 65495,
-                  "title": "IPv4"
-                },
-                "ipv6": {
-                  "type": "integer",
-                  "description": "Segment Size for IPv6",
-                  "minimum": 64,
-                  "maximum": 65475,
-                  "title": "IPv6"
-                },
-                "direction": {
-                  "type": "string",
-                  "enum": [
-                    "ingress",
-                    "egress"
-                  ],
-                  "description": "Optional direction ('ingress', 'egress')  for tcp mss ceiling\n",
-                  "title": "Direction"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "title": "TCP Mss Ceiling"
-            },
-            "eos_cli": {
-              "type": "string",
-              "description": "Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.",
-              "title": "EOS CLI"
-            }
+    "dps_interfaces": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Only Dps1 is configurabled.",
+            "enum": [
+              "Dps1"
+            ],
+            "title": "Name"
           },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
+          "description": {
+            "type": "string",
+            "title": "Description"
           },
-          "title": "Dps1"
-        }
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4 address/mask",
+            "title": "IP Address"
+          },
+          "flow_tracker": {
+            "type": "object",
+            "properties": {
+              "sampled": {
+                "type": "string",
+                "description": "Sampled flow tracker name",
+                "title": "Sampled"
+              },
+              "hardware": {
+                "type": "string",
+                "description": "Hardware flow tracker name",
+                "title": "Hardware"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracker"
+          },
+          "tcp_mss_ceiling": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "integer",
+                "description": "Segment Size for IPv4",
+                "minimum": 64,
+                "maximum": 65495,
+                "title": "IPv4"
+              },
+              "ipv6": {
+                "type": "integer",
+                "description": "Segment Size for IPv6",
+                "minimum": 64,
+                "maximum": 65475,
+                "title": "IPv6"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "ingress",
+                  "egress"
+                ],
+                "description": "Optional direction ('ingress', 'egress')  for tcp mss ceiling\n",
+                "title": "Direction"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "TCP Mss Ceiling"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.",
+            "title": "EOS CLI"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
       },
-      "additionalProperties": false,
-      "patternProperties": {
-        "^_.+$": {}
-      },
-      "title": "Dps Interface"
+      "title": "Dps Interfaces"
     },
     "dynamic_prefix_lists": {
       "type": "array",

@@ -1,7 +1,7 @@
 ### DPS interface ###
 
-dps_interface:
-  Dps1:
+dps_interfaces:
+  - name: Dps1
     description: Test DPS Interface
     ip_address: 192.168.42.42/24
     flow_tracker:
