@@ -34,7 +34,6 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-
 ### IP Security
 
 ##### IPSec profiles
