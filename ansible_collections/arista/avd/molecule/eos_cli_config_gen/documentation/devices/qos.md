@@ -241,6 +241,7 @@ qos map dscp 46 to traffic-class 5
 qos map traffic-class 1 to dscp 56
 qos map traffic-class 2 4 5 to cos 7
 qos map traffic-class 6 to tx-queue 2
+qos map exp 0 to traffic-class 0
 !
 qos random-detect ecn allow non-ect chip-based
 ```
