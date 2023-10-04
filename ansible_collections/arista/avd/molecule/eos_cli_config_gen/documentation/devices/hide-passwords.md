@@ -106,7 +106,7 @@ radius-server host 10.10.10.158 key 7 <removed>
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65100|  10.50.64.15 |
+| 65100 | 10.50.64.15 |
 
 #### Router BGP Peer Groups
 

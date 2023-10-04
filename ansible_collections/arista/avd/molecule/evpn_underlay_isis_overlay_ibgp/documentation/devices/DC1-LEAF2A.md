@@ -621,7 +621,7 @@ router isis EVPN_UNDERLAY
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65000|  192.168.255.6 |
+| 65000 | 192.168.255.6 |
 
 | BGP Tuning |
 | ---------- |
