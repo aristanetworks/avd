@@ -19422,6 +19422,275 @@
         "^_.+$": {}
       }
     },
+    "router_path_selection": {
+      "type": "object",
+      "description": "Dynamic path selection configuration",
+      "properties": {
+        "peer_dynamic_source": {
+          "type": "string",
+          "enum": [
+            "stun"
+          ],
+          "description": "Source of dynamic peer discover. Only 'stun' is supported.",
+          "title": "Peer Dynamic Source"
+        },
+        "path_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Path group name",
+                "title": "Name"
+              },
+              "id": {
+                "type": "integer",
+                "description": "Path group ID",
+                "minimum": 1,
+                "maximum": 65535,
+                "title": "ID"
+              },
+              "ipsec_profile": {
+                "type": "string",
+                "description": "IPSec profile for the path group",
+                "title": "Ipsec Profile"
+              },
+              "flow_assignment": {
+                "type": "string",
+                "enum": [
+                  "lan"
+                ],
+                "description": "- Flow assignement LAN can not be configured in a path group with dynamic peer\n",
+                "title": "Flow Assignment"
+              },
+              "local_interfaces": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Ethernet1-6 is supported",
+                      "title": "Name"
+                    },
+                    "public_address": {
+                      "type": "string",
+                      "description": "Public IP assigned by NAT",
+                      "title": "Public Address"
+                    },
+                    "stun": {
+                      "type": "object",
+                      "properties": {
+                        "server_profile": {
+                          "type": "string",
+                          "description": "STUN server profile name",
+                          "title": "Server Profile"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Stun"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Local Interfaces"
+              },
+              "local_ips": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ip_address": {
+                      "type": "string",
+                      "title": "IP Address"
+                    },
+                    "public_address": {
+                      "type": "string",
+                      "description": "Public IP assigned by NAT",
+                      "title": "Public Address"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "ip_address"
+                  ]
+                },
+                "title": "Local Ips"
+              },
+              "dynamic_peers": {
+                "type": "object",
+                "description": "- Flow assignement LAN can not be configured in a path group with dynamic peer\n",
+                "properties": {
+                  "ip_local": {
+                    "type": "boolean",
+                    "description": "Prefer local IP address",
+                    "title": "IP Local"
+                  },
+                  "ipsec_disabled": {
+                    "type": "boolean",
+                    "description": "IPsec configuration for dynamic peer",
+                    "title": "Ipsec Disabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Dynamic Peers"
+              },
+              "static_peers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "router_ip": {
+                      "type": "string",
+                      "description": "Peer router IP",
+                      "title": "Router IP"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the site",
+                      "title": "Name"
+                    },
+                    "ip_address": {
+                      "type": "string",
+                      "description": "Static IPv4 address",
+                      "title": "IP Address"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "router_ip"
+                  ]
+                },
+                "title": "Static Peers"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Path Groups"
+        },
+        "load_balance_policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Load-balance policy name",
+                "title": "Name"
+              },
+              "path_groups": {
+                "type": "array",
+                "description": "List of path-group to use for this load balance policy",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Path Groups"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Load Balance Policies"
+        },
+        "policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Dps policy name",
+                "title": "Name"
+              },
+              "default_match": {
+                "type": "object",
+                "properties": {
+                  "load_balance": {
+                    "type": "string",
+                    "description": "Name of the load-balance policy",
+                    "title": "Load Balance"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Default Match"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Policies"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "Name"
+              },
+              "path_selection_policy": {
+                "type": "string",
+                "description": "Dps policy name to use for this VRF",
+                "title": "Path Selection Policy"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Router Path Selection"
+    },
     "router_pim_sparse_mode": {
       "type": "object",
       "properties": {
