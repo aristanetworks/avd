@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>flow_trackings</samp>](## "flow_trackings") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- type</samp>](## "flow_trackings.[].type") | String | Required, Unique |  | Valid Values:<br>- sampled | Flow Tracking Type - only 'sampled' supported for now |
+    | [<samp>&nbsp;&nbsp;- type</samp>](## "flow_trackings.[].type") | String | Required, Unique |  | Valid Values:<br>- sampled<br>- hardware | Flow Tracking Type - only 'sampled' supported for now |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "flow_trackings.[].sample") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trackers</samp>](## "flow_trackings.[].trackers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "flow_trackings.[].trackers.[].name") | String | Required, Unique |  |  | Tracker Name |

@@ -14,7 +14,7 @@ keys:
       keys:
         type:
           type: str
-          valid_values: ['sampled']
+          valid_values: ['sampled', 'hardware']
           description: Flow Tracking Type - only 'sampled' supported for now
         sample:
           type: int

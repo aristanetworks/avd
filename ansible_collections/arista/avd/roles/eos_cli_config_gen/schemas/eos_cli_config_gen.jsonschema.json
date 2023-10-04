@@ -4254,7 +4254,8 @@
           "type": {
             "type": "string",
             "enum": [
-              "sampled"
+              "sampled",
+              "hardware"
             ],
             "description": "Flow Tracking Type - only 'sampled' supported for now",
             "title": "Type"
