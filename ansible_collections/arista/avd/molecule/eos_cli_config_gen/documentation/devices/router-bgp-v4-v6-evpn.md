@@ -43,7 +43,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65100|  10.50.64.15 |
+| 65100 | 10.50.64.15 |
 
 | BGP Tuning |
 | ---------- |
