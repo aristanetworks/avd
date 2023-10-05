@@ -91,7 +91,7 @@
 
 | Rule ID | Application profile | Load-balance policy |
 | ------- | ------------------- | ------------------- |
-{%             if policy.default_match is arisa.avd.defined %}
+{%             if policy.default_match is arista.avd.defined %}
 | Default Match | - | {{ policy.default_match.load_balance_policy | arista.avd.default("-") }} |
 {%             endif %}
 {%             for rule in policy.rules | arista.avd.natural_sort('id') %}

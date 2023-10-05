@@ -19,10 +19,10 @@ router path-selection
 {%         endif %}
    !
    {{ path_group_def }}
-{%         if path_group.ipsec_profile is arisa.avd.defined %}
+{%         if path_group.ipsec_profile is arista.avd.defined %}
       ipsec profile {{ path_group.ipsec_profile }}
 {%         endif %}
-{%         if path_group.flow_assignment is arisa.avd.defined %}
+{%         if path_group.flow_assignment is arista.avd.defined %}
       flow assignment {{ path_group.flow_assignment }}
 {%         endif %}
 {#      local interfaces #}
@@ -84,15 +84,15 @@ router path-selection
 {%     for policy in router_path_selection.policies | arista.avd.natural_sort('name') %}
    !
    policy {{ policy.name }}
-{%         if policy.default_match is arisa.avd.defined %}
+{%         if policy.default_match is arista.avd.defined %}
       default-match
-{%             if policy.default_match.load_balance is arisa.avd.defined %}
+{%             if policy.default_match.load_balance is arista.avd.defined %}
          load-balance {{ policy.default_match.load_balance }}
 {%             endif %}
 {%         endif %}
 {%         for rule in policy.rules | arista.avd.natural_sort('id') %}
       {{ rule.id }} application-profile {{ rule.application_profile }}
-{%             if rule.load_balance is arisa.avd.defined %}
+{%             if rule.load_balance is arista.avd.defined %}
          load-balance {{ rule.load_balance }}
 {%             endif %}
 {%         endfor %}
@@ -101,7 +101,7 @@ router path-selection
 {%     for vrf in router_path_selection.vrfs | arista.avd.natural_sort('name') %}
    !
    vrf {{ vrf.name }}
-{%         if vrf.path_selection_policy is arisa.avd.defined %}
+{%         if vrf.path_selection_policy is arista.avd.defined %}
       path-selection-policy {{ vrf.path_selection_policy }}
 {%         endif %}
 {%     endfor %}
