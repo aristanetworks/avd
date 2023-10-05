@@ -366,7 +366,9 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/avd/requirements.txt
+          # Temporarily adding anta to the requirements while the feature is in preview.
+          # pip_file: ansible_collections/arista/avd/requirements.txt
+          pip_file: "ansible_collections/arista/avd/requirements.txt anta==0.9.0"
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
