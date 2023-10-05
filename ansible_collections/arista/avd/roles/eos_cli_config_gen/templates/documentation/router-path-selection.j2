@@ -95,7 +95,7 @@
 | Default Match | - | {{ policy.default_match.load_balance_policy | arista.avd.default("-") }} |
 {%             endif %}
 {%             for rule in policy.rules | arista.avd.natural_sort('id') %}
-| {{ rule.id }} | {{ rule.applictation_profile }} | {{ rule.load_balance_policy | arista.avd.default("-") }} |
+| {{ rule.id }} | {{ rule.application_profile }} | {{ rule.load_balance_policy | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
