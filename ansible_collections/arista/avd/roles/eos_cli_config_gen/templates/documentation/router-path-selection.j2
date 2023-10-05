@@ -67,7 +67,7 @@
 | Router IP | Name | IP address |
 | --------- | ---- | ---------- |
 {%                 for static_peer in path_group.static_peers | arista.avd.natural_sort('router_ip') %}
-| {{ static_peer.router_ip }} |  {{ static_peer.name | arista.avd.default("-") }} |  {{ static_peer.ip_address | arista.avd.default("-") }} |
+| {{ static_peer.router_ip }} | {{ static_peer.name | arista.avd.default("-") }} | {{ static_peer.ip_address | arista.avd.default("-") }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
@@ -92,10 +92,10 @@
 | Rule ID | Application profile | Load-balance policy |
 | ------- | ------------------- | ------------------- |
 {%             if policy.default_match is arista.avd.defined %}
-| Default Match | - | {{ policy.default_match.load_balance_policy | arista.avd.default("-") }} |
+| Default Match | - | {{ policy.default_match.load_balance | arista.avd.default("-") }} |
 {%             endif %}
 {%             for rule in policy.rules | arista.avd.natural_sort('id') %}
-| {{ rule.id }} | {{ rule.application_profile }} | {{ rule.load_balance_policy | arista.avd.default("-") }} |
+| {{ rule.id }} | {{ rule.application_profile }} | {{ rule.load_balance | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}

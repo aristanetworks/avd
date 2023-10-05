@@ -1,0 +1,96 @@
+### router_path_selection ###
+# NOTE that this leverage all possible knobs and this config is **NOT** valid on
+# an actual device
+
+router_path_selection:
+  peer_dynamic_source: stun
+  path_groups:
+    # Out of order to test sorting
+    - name: PG-2
+      id: 42
+      ipsec_profile: IPSEC-P-1
+      flow_assignment: lan
+      local_interfaces:
+        # Out of order to test sorting
+        - name: Ethernet3
+          stun:
+            server_profiles:
+              - STUN-P-1
+        # Test public address
+        - name: Ethernet2
+          public_address: 192.168.42.42
+          stun:
+            # Test multiple stun profiles
+            server_profiles:
+              - STUN-P-1
+              - STUN-P-2
+      local_ips:
+        # Out of order to test sorting
+        - ip_address: 192.168.100.1
+          stun:
+            server_profiles:
+              - STUN-P-1
+        # Test public address
+        - ip_address: 192.168.1.100
+          public_address: 192.168.42.42
+          stun:
+            # Test multiple stun profiles
+            server_profiles:
+              - STUN-P-1
+              - STUN-P-2
+    - name: PG-1
+      id: 666
+      dynamic_peers:
+        ip_local: true
+        ipsec_disabled: true
+      static_peers:
+        # Out of order to test sorting
+        - router_ip: 172.16.42.42
+          name: TEST-STATIC-PEER-WITH-NAME
+          ip_address: 192.168.42.42
+        - router_ip: 172.16.1.42
+          ip_address: 192.168.1.42
+    - name: PG-3
+      id: 888
+    # path group with no id
+    - name: PG-4
+  load_balance_policies:
+    # Out of order to test sorting
+    - name: LB-P-2
+      path_groups:
+        - PG-1
+    - name: LB-P-1
+      path_groups:
+        - PG-3
+        - PG-2
+  policies:
+    # Out of order to test sorting
+    - name: DPS-P-2
+      default_match:
+        load_balance: LB-P-2
+    - name: DPS-P-1
+      default_match:
+        load_balance: LB-P-1
+      rules:
+        - id: 42
+          application_profile: AP-3
+          load_balance: LB-P-1
+    - name: DPS-P-3
+      # testing default match without load_balance - not rendering as seen as null
+      default_match:
+      # Out of order to test sorting
+      rules:
+        - id: 66
+          application_profile: AP-1
+          load_balance: LB-P-1
+        # testing rule without load_balance
+        - id: 42
+          application_profile: AP-2
+  vrfs:
+    # Out of order to test sorting
+    - name: VRF-2
+      path_selection_policy: DPS-P-2
+    - name: VRF-1
+      path_selection_policy: DPS-P-1
+    # testing VRF without path_selection_policy
+    - name: VRF-3

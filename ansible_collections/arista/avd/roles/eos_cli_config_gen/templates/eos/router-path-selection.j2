@@ -9,13 +9,12 @@
 router path-selection
 {%     if router_path_selection.peer_dynamic_source is arista.avd.defined %}
    peer dynamic source {{ router_path_selection.peer_dynamic_source }}
-   !
 {%     endif %}
 {#  path group #}
 {%     for path_group in router_path_selection.path_groups | arista.avd.natural_sort('name') %}
 {%         set path_group_def = "path-group " ~ path_group.name %}
 {%         if path_group.id is arista.avd.defined %}
-{%             set path_group_def = " id " ~ path_group.id %}
+{%             set path_group_def = path_group_def ~ " id " ~ path_group.id %}
 {%         endif %}
    !
    {{ path_group_def }}
@@ -29,7 +28,7 @@ router path-selection
 {%         for local_interface in path_group.local_interfaces | arista.avd.natural_sort('name') %}
 {%             set local_interface_def = "local interface " ~ local_interface.name %}
 {%             if local_interface.public_address is arista.avd.defined %}
-{%                 set local_interface_def = " public address " ~ local_interface.public_address %}
+{%                 set local_interface_def = local_interface_def ~ " public address " ~ local_interface.public_address %}
 {%             endif %}
       !
       {{ local_interface_def }}
@@ -41,7 +40,7 @@ router path-selection
 {%         for local_ip in path_group.local_ips | arista.avd.natural_sort('ip_address') %}
 {%             set local_ip_def = "local ip " ~ local_ip.ip_address %}
 {%             if local_ip.public_address is arista.avd.defined %}
-{%                 set local_ip_def = " public address " ~ local_ip.public_address %}
+{%                 set local_ip_def = local_ip_def ~ " public address " ~ local_ip.public_address %}
 {%             endif %}
       !
       {{ local_ip_def }}
