@@ -8,7 +8,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError, AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 from .utils_filtered_tenants import UtilsFilteredTenantsMixin
@@ -64,6 +64,10 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                 continue
 
             if "evpn" in vrf_default.get("address_families", ["evpn"]):
+                if self.shared_utils.underlay_filter_peer_as:
+                    raise AristaAvdError(
+                        "underlay_filter_peer_as cannot be used while there are evpn services in the default VRF"
+                        )
                 return True
 
         return False
