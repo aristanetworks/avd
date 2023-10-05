@@ -21,12 +21,7 @@ class UnderlayMixin:
 
     @cached_property
     def underlay_bgp(self: SharedUtils) -> bool:
-        return (
-            self.bgp
-            and self.underlay_routing_protocol == "ebgp"
-            and self.underlay_router
-            and self.uplink_type == "p2p"
-        )
+        return self.bgp and self.underlay_routing_protocol == "ebgp" and self.underlay_router and self.uplink_type == "p2p"
 
     @cached_property
     def underlay_mpls(self: SharedUtils) -> bool:
@@ -47,19 +42,11 @@ class UnderlayMixin:
 
     @cached_property
     def underlay_ospf(self: SharedUtils) -> bool:
-        return (
-            self.underlay_routing_protocol in ["ospf", "ospf-ldp"]
-            and self.underlay_router
-            and self.uplink_type == "p2p"
-        )
+        return self.underlay_routing_protocol in ["ospf", "ospf-ldp"] and self.underlay_router and self.uplink_type == "p2p"
 
     @cached_property
     def underlay_isis(self: SharedUtils) -> bool:
-        return (
-            self.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"]
-            and self.underlay_router
-            and self.uplink_type == "p2p"
-        )
+        return self.underlay_routing_protocol in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"] and self.underlay_router and self.uplink_type == "p2p"
 
     @cached_property
     def underlay_ipv6(self: SharedUtils) -> bool:
