@@ -18,7 +18,6 @@ keys:
       path_groups:
         type: list
         primary_key: name
-        secondary_key: id
         items:
           type: dict
           keys:
@@ -49,16 +48,26 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: Ethernet1-6 is supported
+                    description: |
+                      Local interface name
+
+                      Ethernet<X> is supported
+                    pattern: "^Ethernet\\d+$"
                   public_address:
                     type: str
                     description: Public IP assigned by NAT
                   stun:
                     type: dict
                     keys:
-                      server_profile:
-                        type: str
-                        description: STUN server profile name
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 2
+                        description: |
+                          STUN server-profile names
+                        items:
+                          type: str
             local_ips:
               type: list
               primary_key: ip_address
@@ -125,6 +134,23 @@ keys:
                 load_balance:
                   type: str
                   description: Name of the load-balance policy
+            rules:
+              type: list
+              primary_key: id
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: int
+                    description: Rule ID
+                    min: 1
+                    max: 255
+                  application_profile:
+                    type: str
+                    required: true
+                  load_balance:
+                    type: str
+                    description: Name of the load-balance policy
       vrfs:
         type: list
         primary_key: name

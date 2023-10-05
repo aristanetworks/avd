@@ -15,10 +15,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec_profile</samp>](## "router_path_selection.path_groups.[].ipsec_profile") | String |  |  |  | IPSec profile for the path group |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_assignment</samp>](## "router_path_selection.path_groups.[].flow_assignment") | String |  |  | Valid Values:<br>- lan | - Flow assignement LAN can not be configured in a path group with dynamic peer<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interfaces</samp>](## "router_path_selection.path_groups.[].local_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].name") | String | Required, Unique |  |  | Ethernet1-6 is supported |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].name") | String | Required, Unique |  | Pattern: ^Ethernet\d+$ | Local interface name<br><br>Ethernet<X> is supported<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_address</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].public_address") | String |  |  |  | Public IP assigned by NAT |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stun</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].stun") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_profile</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].stun.server_profile") | String |  |  |  | STUN server profile name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_profiles</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].stun.server_profiles") | List, items: String | Required |  | Min Length: 1<br>Max Length: 2 | STUN server-profile names<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].stun.server_profiles.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_ips</samp>](## "router_path_selection.path_groups.[].local_ips") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ip_address</samp>](## "router_path_selection.path_groups.[].local_ips.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_address</samp>](## "router_path_selection.path_groups.[].local_ips.[].public_address") | String |  |  |  | Public IP assigned by NAT |
@@ -37,6 +38,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_path_selection.policies.[].name") | String | Required, Unique |  |  | Dps policy name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_match</samp>](## "router_path_selection.policies.[].default_match") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load_balance</samp>](## "router_path_selection.policies.[].default_match.load_balance") | String |  |  |  | Name of the load-balance policy |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rules</samp>](## "router_path_selection.policies.[].rules") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "router_path_selection.policies.[].rules.[].id") | Integer | Required, Unique |  | Min: 1<br>Max: 255 | Rule ID |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_profile</samp>](## "router_path_selection.policies.[].rules.[].application_profile") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;load_balance</samp>](## "router_path_selection.policies.[].rules.[].load_balance") | String |  |  |  | Name of the load-balance policy |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_path_selection.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_path_selection.vrfs.[].name") | String | Required, Unique |  |  | VRF name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_selection_policy</samp>](## "router_path_selection.vrfs.[].path_selection_policy") | String |  |  |  | Dps policy name to use for this VRF |
@@ -55,7 +60,8 @@
             - name: <str>
               public_address: <str>
               stun:
-                server_profile: <str>
+                server_profiles:
+                  - <str>
           local_ips:
             - ip_address: <str>
               public_address: <str>
@@ -74,6 +80,10 @@
         - name: <str>
           default_match:
             load_balance: <str>
+          rules:
+            - id: <int>
+              application_profile: <str>
+              load_balance: <str>
       vrfs:
         - name: <str>
           path_selection_policy: <str>

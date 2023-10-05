@@ -19471,7 +19471,8 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "description": "Ethernet1-6 is supported",
+                      "description": "Local interface name\n\nEthernet<X> is supported\n",
+                      "pattern": "^Ethernet\\d+$",
                       "title": "Name"
                     },
                     "public_address": {
@@ -19482,12 +19483,20 @@
                     "stun": {
                       "type": "object",
                       "properties": {
-                        "server_profile": {
-                          "type": "string",
-                          "description": "STUN server profile name",
-                          "title": "Server Profile"
+                        "server_profiles": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 2,
+                          "description": "STUN server-profile names\n",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Server Profiles"
                         }
                       },
+                      "required": [
+                        "server_profiles"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -19646,6 +19655,39 @@
                   "^_.+$": {}
                 },
                 "title": "Default Match"
+              },
+              "rules": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Rule ID",
+                      "minimum": 1,
+                      "maximum": 255,
+                      "title": "ID"
+                    },
+                    "application_profile": {
+                      "type": "string",
+                      "title": "Application Profile"
+                    },
+                    "load_balance": {
+                      "type": "string",
+                      "description": "Name of the load-balance policy",
+                      "title": "Load Balance"
+                    }
+                  },
+                  "required": [
+                    "application_profile",
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Rules"
               }
             },
             "additionalProperties": false,
