@@ -106,41 +106,41 @@ class AvdTestBGP(AvdTestBase):
                 }
             )
 
-        # Add test to check service_routing_protocol_model
-        if (
-            service_routing_protocols_model := get(self.hostvars[self.device_name], "service_routing_protocols_model")
-        ) is None or service_routing_protocols_model != "multi-agent":
-            LOGGER.warning(
-                "Variable 'service_routing_protocols_model' is missing from structured_config or is NOT set to 'multi-agent'. %s is skipped.",
-                self.__class__.__name__,
-            )
+        try:
+            get(self.hostvars[self.device_name], "router_bgp", required=True)
+            service_routing_protocols_model = get(self.hostvars[self.device_name], "service_routing_protocols_model", required=True)
+        except AristaAvdMissingVariableError as e:
+            LOGGER.info("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
             return None
 
-        anta_tests.setdefault("generic", []).append(
-            {
-                "VerifyRoutingProtocolModel": {
-                    "model": "multi-agent",
-                    "result_overwrite": {"categories": self.categories, "description": "ArBGP is configured and operating", "custom_field": "ArBGP"},
+        if service_routing_protocols_model == "multi-agent":
+            anta_tests.setdefault("generic", []).append(
+                {
+                    "VerifyRoutingProtocolModel": {
+                        "model": "multi-agent",
+                        "result_overwrite": {"categories": self.categories, "description": "ArBGP is configured and operating", "custom_field": "ArBGP"},
+                    }
                 }
-            }
-        )
+            )
 
-        bgp_peer_groups = get(self.hostvars[self.device_name], "router_bgp.peer_groups", [])
+            bgp_peer_groups = get(self.hostvars[self.device_name], "router_bgp.peer_groups", [])
 
-        for bgp_neighbor in get(self.hostvars[self.device_name], "router_bgp.neighbors", []):
-            # TODO - this matches legacy eos_validate_state BUT works only for neighbors in peer groups...
-            try:
-                neighbor_peer_group = get_item(
-                    bgp_peer_groups, "name", bgp_neighbor["peer_group"], required=True, var_name=f"name: {bgp_neighbor['peer_group']}"
-                )
-                bgp_neighbor_ip = str(get(bgp_neighbor, "ip_address", required=True))
+            for bgp_neighbor in get(self.hostvars[self.device_name], "router_bgp.neighbors", []):
+                # TODO - this matches legacy eos_validate_state BUT works only for neighbors in peer groups...
+                try:
+                    neighbor_peer_group = get_item(
+                        bgp_peer_groups, "name", bgp_neighbor["peer_group"], required=True, var_name=f"name: {bgp_neighbor['peer_group']}"
+                    )
+                    bgp_neighbor_ip = str(get(bgp_neighbor, "ip_address", required=True))
 
-                if get(neighbor_peer_group, "type", required=True) == "ipv4":
-                    add_verify_peers_test(description="ip bgp peer state established (ipv4)", afi="ipv4", safi="unicast", bgp_neighbor_ip=bgp_neighbor_ip)
-                elif get(neighbor_peer_group, "type", required=True) == "evpn":
-                    add_verify_peers_test(description="bgp evpn peer state established (evpn)", afi="evpn", bgp_neighbor_ip=bgp_neighbor_ip)
+                    if get(neighbor_peer_group, "type", required=True) == "ipv4":
+                        add_verify_peers_test(description="ip bgp peer state established (ipv4)", afi="ipv4", safi="unicast", bgp_neighbor_ip=bgp_neighbor_ip)
+                    elif get(neighbor_peer_group, "type", required=True) == "evpn":
+                        add_verify_peers_test(description="bgp evpn peer state established (evpn)", afi="evpn", bgp_neighbor_ip=bgp_neighbor_ip)
 
-            except AristaAvdMissingVariableError as e:
-                LOGGER.warning("Variable '%s' is missing. Please validate the Router BGP data model of this host.", str(e))
+                except AristaAvdMissingVariableError as e:
+                    LOGGER.warning("Variable '%s' is missing. Please validate the Router BGP data model of this host.", str(e))
+        else:
+            LOGGER.warning("Variable 'service_routing_protocols_model' is NOT set to 'multi-agent'. %s is skipped.", self.__class__.__name__)
 
         return {self.anta_module: anta_tests}
