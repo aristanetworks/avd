@@ -102,7 +102,7 @@ keys:
                 ipsec_disabled:
                   type: bool
                   description: IPsec configuration for dynamic peer
-            static_peers:  
+            static_peers:
               type: list
               primary_key: router_ip
               items:
