@@ -1547,6 +1547,10 @@
             "type": "string",
             "title": "Description"
           },
+          "shutdown": {
+            "type": "boolean",
+            "title": "Shutdown"
+          },
           "ip_address": {
             "type": "string",
             "description": "IPv4 address/mask",

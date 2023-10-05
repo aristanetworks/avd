@@ -11,6 +11,11 @@ interface {{ dps_interface.name }}
 {%     if dps_interface.description is arista.avd.defined %}
    description {{ dps_interface.description }}
 {%     endif %}
+{%     if dps_interface.shutdown is arista.avd.defined(true) %}
+   shutdown
+{%     elif dps_interface.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
 {%     if dps_interface.flow_tracker.hardware is arista.avd.defined %}
    flow tracker hardware {{ dps_interface.flow_tracker.hardware }}
 {%     endif %}

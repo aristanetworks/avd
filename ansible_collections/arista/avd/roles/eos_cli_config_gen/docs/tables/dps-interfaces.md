@@ -10,6 +10,7 @@
     | [<samp>dps_interfaces</samp>](## "dps_interfaces") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 1 |  |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "dps_interfaces.[].name") | String | Required, Unique |  | Valid Values:<br>- Dps1 | Only Dps1 is configurabled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "dps_interfaces.[].description") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "dps_interfaces.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "dps_interfaces.[].ip_address") | String |  |  |  | IPv4 address/mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker</samp>](## "dps_interfaces.[].flow_tracker") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampled</samp>](## "dps_interfaces.[].flow_tracker.sampled") | String |  |  |  | Sampled flow tracker name |
@@ -26,6 +27,7 @@
     dps_interfaces:
       - name: <str>
         description: <str>
+        shutdown: <bool>
         ip_address: <str>
         flow_tracker:
           sampled: <str>

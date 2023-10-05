@@ -21,6 +21,8 @@ keys:
             - Dps1
         description:
           type: str
+        shutdown:
+          type: bool
         ip_address:
           type: str
           description: IPv4 address/mask

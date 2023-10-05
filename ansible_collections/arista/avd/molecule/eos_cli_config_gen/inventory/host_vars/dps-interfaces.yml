@@ -3,6 +3,7 @@
 dps_interfaces:
   - name: Dps1
     description: Test DPS Interface
+    shutdown: true
     ip_address: 192.168.42.42/24
     flow_tracker:
       hardware: FT-HW
