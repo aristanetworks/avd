@@ -343,10 +343,12 @@ jobs:
         avd_scenario:
           - 'eos_validate_state'
         ansible_version:
-          - 'ansible-core<2.16.0 --upgrade'
+          # Temporarily installing anta manually while the feature is in preview.
+          - 'ansible-core<2.16.0 anta==0.9.0 --upgrade'
         include:
           - avd_scenario: 'eos_validate_state'
-            ansible_version: 'ansible-core==2.12.6'
+            # Temporarily installing anta manually while the feature is in preview.
+            ansible_version: 'ansible-core==2.12.6 anta==0.9.0'
             galaxy_server: 'https://old-galaxy.ansible.com'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
@@ -366,9 +368,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          # Temporarily adding anta to the requirements while the feature is in preview.
-          # pip_file: ansible_collections/arista/avd/requirements.txt
-          pip_file: "ansible_collections/arista/avd/requirements.txt anta==0.9.0"
+          pip_file: ansible_collections/arista/avd/requirements.txt
           galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
