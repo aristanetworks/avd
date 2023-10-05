@@ -11310,6 +11310,19 @@ keys:
                   public_address:
                     type: str
                     description: Public IP assigned by NAT
+                  stun:
+                    type: dict
+                    keys:
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 2
+                        description: 'STUN server-profile names
+
+                          '
+                        items:
+                          type: str
             dynamic_peers:
               type: dict
               description: '- Flow assignement LAN can not be configured in a path

@@ -19527,6 +19527,29 @@
                       "type": "string",
                       "description": "Public IP assigned by NAT",
                       "title": "Public Address"
+                    },
+                    "stun": {
+                      "type": "object",
+                      "properties": {
+                        "server_profiles": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 2,
+                          "description": "STUN server-profile names\n",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Server Profiles"
+                        }
+                      },
+                      "required": [
+                        "server_profiles"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Stun"
                     }
                   },
                   "additionalProperties": false,

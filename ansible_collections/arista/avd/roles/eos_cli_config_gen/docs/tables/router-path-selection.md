@@ -23,6 +23,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_ips</samp>](## "router_path_selection.path_groups.[].local_ips") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ip_address</samp>](## "router_path_selection.path_groups.[].local_ips.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_address</samp>](## "router_path_selection.path_groups.[].local_ips.[].public_address") | String |  |  |  | Public IP assigned by NAT |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stun</samp>](## "router_path_selection.path_groups.[].local_ips.[].stun") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_profiles</samp>](## "router_path_selection.path_groups.[].local_ips.[].stun.server_profiles") | List, items: String | Required |  | Min Length: 1<br>Max Length: 2 | STUN server-profile names<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "router_path_selection.path_groups.[].local_ips.[].stun.server_profiles.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_peers</samp>](## "router_path_selection.path_groups.[].dynamic_peers") | Dictionary |  |  |  | - Flow assignement LAN can not be configured in a path group with dynamic peer<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_local</samp>](## "router_path_selection.path_groups.[].dynamic_peers.ip_local") | Boolean |  |  |  | Prefer local IP address |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipsec_disabled</samp>](## "router_path_selection.path_groups.[].dynamic_peers.ipsec_disabled") | Boolean |  |  |  | IPsec configuration for dynamic peer |
@@ -65,6 +68,9 @@
           local_ips:
             - ip_address: <str>
               public_address: <str>
+              stun:
+                server_profiles:
+                  - <str>
           dynamic_peers:
             ip_local: <bool>
             ipsec_disabled: <bool>
