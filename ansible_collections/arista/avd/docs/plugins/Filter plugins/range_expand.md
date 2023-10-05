@@ -75,8 +75,6 @@ Within a single range, prefixes \(ex. Ethernet, Eth, Po\) are carried over to it
 | ---- | ---- | ----------- |
 | _value | list | List of strings from all ranges. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

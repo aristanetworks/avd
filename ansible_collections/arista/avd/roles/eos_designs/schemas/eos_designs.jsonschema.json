@@ -3290,6 +3290,63 @@
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
     },
+    "evpn_vlan_bundles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Specify an EVPN vlan-aware-bundle name.\nEVPN vlan-aware-bundles group L2 VLANs and define common settings.\n",
+            "title": "Name"
+          },
+          "id": {
+            "type": "integer",
+            "description": "\"id\" may be used for vlan-aware-bundle RD/RT ID so it should not overlap with l2vlan IDs which are not part of this bundle.\nSee \"overlay_rd_type\" and \"overlay_rt_type\" for details.\n",
+            "title": "ID"
+          },
+          "rt_override": {
+            "type": "string",
+            "description": "By default the MAC VRF bundle RT will be derived from mac_vrf_id_base + bundle_id.\nThe rt_override allows us to override this value and statically define it.\nrt_override will default to vni_override if set.\n\nrt_override supports two formats:\n  - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).\n  - A full RT string with colon seperator which will override the full RT.\n",
+            "title": "Rt Override"
+          },
+          "rd_override": {
+            "type": "string",
+            "description": "By default the MAC VRF bundle RD will be derived from mac_vrf_id_base + bundle_id.\nThe rt_override allows us to override this value and statically define it.\nrd_override will default to rt_override or vni_override if set.\n\nrd_override supports two formats:\n  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).\n  - A full RD string with colon seperator which will override the full RD.\n",
+            "title": "Rd Override"
+          },
+          "evpn_l2_multi_domain": {
+            "type": "boolean",
+            "description": "Explicitly extend VLAN-Aware Bundle to remote EVPN domains.\nOverrides `<network_services_key>.[].evpn_l2_multi_domain`.\n",
+            "title": "EVPN L2 Multi Domain"
+          },
+          "bgp": {
+            "type": "object",
+            "properties": {
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS cli commands rendered on router_bgp.vlans-aware-bundle.",
+                "title": "Raw EOS CLI"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "BGP"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "EVPN VLAN Bundles"
+    },
     "fabric_evpn_encapsulation": {
       "description": "Should be set to mpls for evpn-mpls scenario.",
       "enum": [
@@ -8810,6 +8867,210 @@
                 "description": "Key only used for documentation or validation purposes",
                 "title": "Port Profile"
               },
+              "uc_tx_queues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "TX-Queue ID",
+                      "title": "ID"
+                    },
+                    "random_detect": {
+                      "type": "object",
+                      "properties": {
+                        "ecn": {
+                          "description": "Explicit Congestion Notification",
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "boolean",
+                              "description": "Enable counter for random-detect ECNs",
+                              "title": "Count"
+                            },
+                            "threshold": {
+                              "type": "object",
+                              "properties": {
+                                "units": {
+                                  "type": "string",
+                                  "enum": [
+                                    "segments",
+                                    "bytes",
+                                    "kbytes",
+                                    "mbytes",
+                                    "milliseconds"
+                                  ],
+                                  "description": "Indicate the units to be used for the threshold values",
+                                  "title": "Units"
+                                },
+                                "min": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN minimum-threshold",
+                                  "title": "Min"
+                                },
+                                "max": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN maximum-threshold",
+                                  "title": "Max"
+                                },
+                                "max_probability": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 100,
+                                  "description": "Set the random-detect ECN max-mark-probability",
+                                  "title": "Max Probability"
+                                },
+                                "weight": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 15,
+                                  "description": "Set the random-detect ECN weight",
+                                  "title": "Weight"
+                                }
+                              },
+                              "required": [
+                                "units",
+                                "min",
+                                "max"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Threshold"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Ecn"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Random Detect"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Uc TX Queues"
+              },
+              "tx_queues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "TX-Queue ID",
+                      "title": "ID"
+                    },
+                    "random_detect": {
+                      "type": "object",
+                      "properties": {
+                        "ecn": {
+                          "description": "Explicit Congestion Notification",
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "boolean",
+                              "description": "Enable counter for random-detect ECNs",
+                              "title": "Count"
+                            },
+                            "threshold": {
+                              "type": "object",
+                              "properties": {
+                                "units": {
+                                  "type": "string",
+                                  "enum": [
+                                    "segments",
+                                    "bytes",
+                                    "kbytes",
+                                    "mbytes",
+                                    "milliseconds"
+                                  ],
+                                  "description": "Indicate the units to be used for the threshold values",
+                                  "title": "Units"
+                                },
+                                "min": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN minimum-threshold",
+                                  "title": "Min"
+                                },
+                                "max": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN maximum-threshold",
+                                  "title": "Max"
+                                },
+                                "max_probability": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 100,
+                                  "description": "Set the random-detect ECN max-mark-probability",
+                                  "title": "Max Probability"
+                                },
+                                "weight": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 15,
+                                  "description": "Set the random-detect ECN weight",
+                                  "title": "Weight"
+                                }
+                              },
+                              "required": [
+                                "units",
+                                "max",
+                                "max_probability"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Threshold"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Ecn"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Random Detect"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "TX Queues"
+              },
               "eos_cli": {
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -9218,7 +9479,7 @@
     },
     "overlay_rd_type": {
       "type": "object",
-      "description": "Configuration options for the Administrator subfield (first part of RD) and the Assigned Number subfield (second part of RD).\n\nBy default Route Distinguishers (RD) are set to:\n- `<overlay_loopback>:<mac_vrf_id_base + vlan_id or mac_vrf_vni_base + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.\n- `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.\n- `<overlay_loopback>:<vrf_id>` for VRFs.\n\nNote:\nRD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nWhen using loopback or 32-bit ASN/number the assigned number can only be a 16-bit number. This may be a problem with large VNIs.\nFor 16-bit ASN/number the assigned number can be a 32-bit number.\n",
+      "description": "Configuration options for the Administrator subfield (first part of RD) and the Assigned Number subfield (second part of RD).\n\nBy default Route Distinguishers (RD) are set to:\n- `<overlay_loopback>:<mac_vrf_id_base + vlan_id or mac_vrf_vni_base + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.\n- `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.\n- `<overlay_loopback>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.\n- `<overlay_loopback>:<vrf_id>` for VRFs.\n\nNote:\nRD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nWhen using loopback or 32-bit ASN/number the assigned number can only be a 16-bit number. This may be a problem with large VNIs.\nFor 16-bit ASN/number the assigned number can be a 32-bit number.\n",
       "properties": {
         "admin_subfield": {
           "type": "string",
@@ -9284,11 +9545,11 @@
     },
     "overlay_rt_type": {
       "type": "object",
-      "description": "Configuration options for the Administrator subfield (first part of RT) and the Assigned Number subfield (second part of RT).\n\nBy default Route Targets (RT) are set to:\n- `<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>:<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.\n- `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.\n- `<vrf_id>:<vrf_id>` for VRFs.\n\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nWhen using 32-bit ASN/number the VNI can only be a 16-bit number. Alternatively use vlan_id/vrf_id as assigned number.\nFor 16-bit ASN/number the assigned number can be a 32-bit number.\n",
+      "description": "Configuration options for the Administrator subfield (first part of RT) and the Assigned Number subfield (second part of RT).\n\nBy default Route Targets (RT) are set to:\n- `<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>:<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.\n- `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.\n- `<vlan_aware_bundle_number_base + id>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.\n- `<vrf_id>:<vrf_id>` for VRFs.\n\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nWhen using 32-bit ASN/number the VNI can only be a 16-bit number. Alternatively use vlan_id/vrf_id as assigned number.\nFor 16-bit ASN/number the assigned number can be a 32-bit number.\n",
       "properties": {
         "admin_subfield": {
           "type": "string",
-          "description": "The method for deriving RT Administrator subfield (first part of RT):\n- 'vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id` for VLANs and `(vrf_id or vrf_vni)` for VRFs.\n- 'vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id` for VLANs and `(vrf_vni or vrf_id)` for VRFs.\n- 'id' means `vlan_id` for VLANs and `(vrf_id or vrf_vni)` for VRFs.\n- 'bgp_as' means the AS number of the device.\n- Integer between <0-65535>.\n- Integer between <0-4294967295>.\n\nThe 'vrf_id' and 'vrf_vni' methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).\n",
+          "description": "The method for deriving RT Administrator subfield (first part of RT):\n- 'vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id` for VLANs, `(vrf_id or vrf_vni)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.\n- 'vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id` for VLANs, `(vrf_vni or vrf_id)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.\n- 'id' means `vlan_id` for VLANs, `(vrf_id or vrf_vni)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.\n- 'bgp_as' means the AS number of the device.\n- Integer between <0-65535>.\n- Integer between <0-4294967295>.\n\nThe 'vrf_id' and 'vrf_vni' methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).\nThe 'vrf_id', 'vrf_vni' and 'id' methods can be overridden per bundle defined under `evpn_vlan_bundles` using 'rt_override'.\n",
           "default": "vrf_id",
           "title": "Admin Subfield"
         },
@@ -14164,6 +14425,210 @@
                 "type": "string",
                 "description": "Key only used for documentation or validation purposes",
                 "title": "Port Profile"
+              },
+              "uc_tx_queues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "TX-Queue ID",
+                      "title": "ID"
+                    },
+                    "random_detect": {
+                      "type": "object",
+                      "properties": {
+                        "ecn": {
+                          "description": "Explicit Congestion Notification",
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "boolean",
+                              "description": "Enable counter for random-detect ECNs",
+                              "title": "Count"
+                            },
+                            "threshold": {
+                              "type": "object",
+                              "properties": {
+                                "units": {
+                                  "type": "string",
+                                  "enum": [
+                                    "segments",
+                                    "bytes",
+                                    "kbytes",
+                                    "mbytes",
+                                    "milliseconds"
+                                  ],
+                                  "description": "Indicate the units to be used for the threshold values",
+                                  "title": "Units"
+                                },
+                                "min": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN minimum-threshold",
+                                  "title": "Min"
+                                },
+                                "max": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN maximum-threshold",
+                                  "title": "Max"
+                                },
+                                "max_probability": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 100,
+                                  "description": "Set the random-detect ECN max-mark-probability",
+                                  "title": "Max Probability"
+                                },
+                                "weight": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 15,
+                                  "description": "Set the random-detect ECN weight",
+                                  "title": "Weight"
+                                }
+                              },
+                              "required": [
+                                "units",
+                                "min",
+                                "max"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Threshold"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Ecn"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Random Detect"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Uc TX Queues"
+              },
+              "tx_queues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "TX-Queue ID",
+                      "title": "ID"
+                    },
+                    "random_detect": {
+                      "type": "object",
+                      "properties": {
+                        "ecn": {
+                          "description": "Explicit Congestion Notification",
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "boolean",
+                              "description": "Enable counter for random-detect ECNs",
+                              "title": "Count"
+                            },
+                            "threshold": {
+                              "type": "object",
+                              "properties": {
+                                "units": {
+                                  "type": "string",
+                                  "enum": [
+                                    "segments",
+                                    "bytes",
+                                    "kbytes",
+                                    "mbytes",
+                                    "milliseconds"
+                                  ],
+                                  "description": "Indicate the units to be used for the threshold values",
+                                  "title": "Units"
+                                },
+                                "min": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN minimum-threshold",
+                                  "title": "Min"
+                                },
+                                "max": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN maximum-threshold",
+                                  "title": "Max"
+                                },
+                                "max_probability": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 100,
+                                  "description": "Set the random-detect ECN max-mark-probability",
+                                  "title": "Max Probability"
+                                },
+                                "weight": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 15,
+                                  "description": "Set the random-detect ECN weight",
+                                  "title": "Weight"
+                                }
+                              },
+                              "required": [
+                                "units",
+                                "max",
+                                "max_probability"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Threshold"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Ecn"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Random Detect"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "TX Queues"
               },
               "eos_cli": {
                 "type": "string",

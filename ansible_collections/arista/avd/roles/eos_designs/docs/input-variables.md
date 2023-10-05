@@ -1146,6 +1146,14 @@ Note: structured configuration is not merged recursively and will be taken direc
 roles/eos_designs/docs/tables/svi-profiles.md
 --8<--
 
+### EVPN VLAN aware bundles settings
+
+Optional VLAN aware bundles to share common settings for l2vlans which are supposed to use the same vlan-aware-bundle.
+
+--8<--
+roles/eos_designs/docs/tables/evpn-vlan-bundles.md
+--8<--
+
 ### Network services keys settings
 
 Network Services can be grouped by using separate keys.

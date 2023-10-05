@@ -9,3 +9,5 @@ PyYAML>=5.4.1
 md-toc>=7.1.0
 deepmerge>=1.1.0
 cryptography>=38.0.4
+# Pinned to specific version until anta reaches 1.0.0 and follows semver.
+anta==0.9.0

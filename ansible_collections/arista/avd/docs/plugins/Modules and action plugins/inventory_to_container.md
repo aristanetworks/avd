@@ -56,8 +56,6 @@ Transform information from ansible inventory to be able to provision CloudVision
     save_topology: true
 ```
 
-## Status
-
 ## Authors
 
 - Ansible Arista Team (@aristanetworks)

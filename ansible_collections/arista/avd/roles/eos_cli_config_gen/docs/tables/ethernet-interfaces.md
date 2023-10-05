@@ -317,6 +317,28 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "ethernet_interfaces.[].sflow.egress.enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unmodified_enable</samp>](## "ethernet_interfaces.[].sflow.egress.unmodified_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;port_profile</samp>](## "ethernet_interfaces.[].port_profile") | String |  |  |  | Key only used for documentation or validation purposes |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uc_tx_queues</samp>](## "ethernet_interfaces.[].uc_tx_queues") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].id") | Integer | Required, Unique |  |  | TX-Queue ID |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;random_detect</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn") | Dictionary |  |  |  | Explicit Congestion Notification |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.count") | Boolean |  |  |  | Enable counter for random-detect ECNs |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.threshold") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.threshold.units") | String | Required |  | Valid Values:<br>- segments<br>- bytes<br>- kbytes<br>- mbytes<br>- milliseconds | Indicate the units to be used for the threshold values |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.threshold.min") | Integer | Required |  | Min: 1<br>Max: 256000000 | Set the random-detect ECN minimum-threshold |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.threshold.max") | Integer | Required |  | Min: 1<br>Max: 256000000 | Set the random-detect ECN maximum-threshold |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_probability</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.threshold.max_probability") | Integer |  |  | Min: 1<br>Max: 100 | Set the random-detect ECN max-mark-probability |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "ethernet_interfaces.[].uc_tx_queues.[].random_detect.ecn.threshold.weight") | Integer |  |  | Min: 0<br>Max: 15 | Set the random-detect ECN weight |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tx_queues</samp>](## "ethernet_interfaces.[].tx_queues") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "ethernet_interfaces.[].tx_queues.[].id") | Integer | Required, Unique |  |  | TX-Queue ID |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;random_detect</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn") | Dictionary |  |  |  | Explicit Congestion Notification |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.count") | Boolean |  |  |  | Enable counter for random-detect ECNs |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.threshold") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.threshold.units") | String | Required |  | Valid Values:<br>- segments<br>- bytes<br>- kbytes<br>- mbytes<br>- milliseconds | Indicate the units to be used for the threshold values |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.threshold.min") | Integer |  |  | Min: 1<br>Max: 256000000 | Set the random-detect ECN minimum-threshold |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.threshold.max") | Integer | Required |  | Min: 1<br>Max: 256000000 | Set the random-detect ECN maximum-threshold |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_probability</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.threshold.max_probability") | Integer | Required |  | Min: 1<br>Max: 100 | Set the random-detect ECN max-mark-probability |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "ethernet_interfaces.[].tx_queues.[].random_detect.ecn.threshold.weight") | Integer |  |  | Min: 0<br>Max: 15 | Set the random-detect ECN weight |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "ethernet_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration |
 
 === "YAML"
@@ -632,5 +654,27 @@
             enable: <bool>
             unmodified_enable: <bool>
         port_profile: <str>
+        uc_tx_queues:
+          - id: <int>
+            random_detect:
+              ecn:
+                count: <bool>
+                threshold:
+                  units: <str>
+                  min: <int>
+                  max: <int>
+                  max_probability: <int>
+                  weight: <int>
+        tx_queues:
+          - id: <int>
+            random_detect:
+              ecn:
+                count: <bool>
+                threshold:
+                  units: <str>
+                  min: <int>
+                  max: <int>
+                  max_probability: <int>
+                  weight: <int>
         eos_cli: <str>
     ```

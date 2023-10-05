@@ -43,8 +43,6 @@ empty_list_2: "{{ some_undefined_var | natural_sort }}" # -> []
 | ---- | ---- | ----------- |
 | _value | list | Sorted list if the input was a list. Sorted keys if the input was a dictionary. Empty list if the input value was <code>None</code> or <code>undefined</code>. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)
