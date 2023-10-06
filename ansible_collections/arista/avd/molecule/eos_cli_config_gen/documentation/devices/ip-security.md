@@ -36,14 +36,21 @@ interface Management1
 
 ### IP Security
 
-##### IPSec profiles
+#### IKE policies
+
+| Policy name | Local ID |
+| ----------- | -------- |
+| IKE-1 | 192.168.100.1 |
+| IKE-2 | - |
+
+#### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode |
 | ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- |
 | Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport |
 | Profile-2 | - | SA-2 | start | - | - | - | tunnel |
 
-##### Key controller
+#### Key controller
 
 | Profile name |
 | ------------ |
@@ -54,10 +61,12 @@ interface Management1
 ```eos
 !
 ip security
+   !
    ike policy IKE-1
       local_id 192.168.100.1
    !
    ike policy IKE-2
+   !
    sa policy SA-1
       esp encryption aes128
       pfs_dh_group 14
