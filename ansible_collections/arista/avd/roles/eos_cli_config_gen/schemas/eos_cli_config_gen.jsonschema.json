@@ -933,12 +933,12 @@
                 "title": "Name"
               },
               "vlan": {
-                "type": "integer",
+                "type": "string",
                 "description": "VLAN value(s) or range(s) of VLAN values",
                 "title": "VLAN"
               },
               "cos": {
-                "type": "integer",
+                "type": "string",
                 "description": "CoS value(s) or range(s) of CoS values",
                 "title": "COS"
               },
@@ -3848,6 +3848,210 @@
             "type": "string",
             "description": "Key only used for documentation or validation purposes",
             "title": "Port Profile"
+          },
+          "uc_tx_queues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "TX-Queue ID",
+                  "title": "ID"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "description": "Explicit Congestion Notification",
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Enable counter for random-detect ECNs",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds"
+                              ],
+                              "description": "Indicate the units to be used for the threshold values",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ECN minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ECN maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Set the random-detect ECN max-mark-probability",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "Set the random-detect ECN weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Uc TX Queues"
+          },
+          "tx_queues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "TX-Queue ID",
+                  "title": "ID"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "description": "Explicit Congestion Notification",
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Enable counter for random-detect ECNs",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds"
+                              ],
+                              "description": "Indicate the units to be used for the threshold values",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ECN minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ECN maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Set the random-detect ECN max-mark-probability",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "Set the random-detect ECN weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "max",
+                            "max_probability"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "TX Queues"
           },
           "eos_cli": {
             "type": "string",
@@ -11149,6 +11353,48 @@
         "rewrite_dscp": {
           "type": "boolean",
           "title": "Rewrite DSCP"
+        },
+        "random_detect": {
+          "type": "object",
+          "description": "Global random-detect settings",
+          "properties": {
+            "ecn": {
+              "type": "object",
+              "description": "Global ECN Configuration",
+              "properties": {
+                "allow_non_ect": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Allow non-ect and set drop-precedence 1 in a policy map simultaneously.\nCheck which command is required for your platform.",
+                      "title": "Enabled"
+                    },
+                    "chip_based": {
+                      "type": "boolean",
+                      "description": "Allow non-ect chip-based",
+                      "title": "Chip Based"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Allow Non Ect"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Ecn"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Random Detect"
         }
       },
       "additionalProperties": false,
@@ -11267,8 +11513,87 @@
                 },
                 "comment": {
                   "type": "string",
-                  "description": "Text comment added to queue.\n",
+                  "description": "Text comment added to queue",
                   "title": "Comment"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "description": "Explicit Congestion Notification",
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Enable counter for random-detect ECNs",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds"
+                              ],
+                              "description": "Units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "Random-detect ECN minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "Random-detect ECN maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Random-detect ECN maximum mark probability",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "Random-detect ECN weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
                 }
               },
               "additionalProperties": false,
@@ -11324,8 +11649,87 @@
                 },
                 "comment": {
                   "type": "string",
-                  "description": "Text comment added to queue.\n",
+                  "description": "Text comment added to queue",
                   "title": "Comment"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "description": "Explicit Congestion Notification",
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Enable counter for random-detect ECNs",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds"
+                              ],
+                              "description": "Unit to be used for the threshold values",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "Random-detect ECN minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "Random-detect ECN maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Random-detect ECN maximum mark probability",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "Random-detect ECN weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
                 }
               },
               "additionalProperties": false,
@@ -19143,6 +19547,68 @@
       },
       "title": "Static Routes"
     },
+    "stun": {
+      "type": "object",
+      "description": "STUN configuration",
+      "properties": {
+        "client": {
+          "type": "object",
+          "description": "STUN client settings",
+          "properties": {
+            "server_profiles": {
+              "type": "array",
+              "description": "List of server profiles for the client",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Server Profiles"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Client"
+        },
+        "server": {
+          "type": "object",
+          "description": "STUN server settings",
+          "properties": {
+            "local_interface": {
+              "type": "string",
+              "title": "Local Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Server"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Stun"
+    },
     "switchport_default": {
       "type": "object",
       "properties": {
@@ -19283,6 +19749,13 @@
     "tacacs_servers": {
       "type": "object",
       "properties": {
+        "timeout": {
+          "type": "integer",
+          "description": "Timeout in seconds",
+          "minimum": 1,
+          "maximum": 1000,
+          "title": "Timeout"
+        },
         "hosts": {
           "type": "array",
           "items": {
@@ -19318,6 +19791,9 @@
               },
               "timeout": {
                 "type": "integer",
+                "description": "Timeout in seconds",
+                "minimum": 1,
+                "maximum": 1000,
                 "title": "Timeout"
               }
             },

@@ -54,8 +54,6 @@ tasks:
 | ---- | ---- | ----------- |
 | _value | string | Markdown with TOC inserted between the toc\_markers. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

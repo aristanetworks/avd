@@ -61,8 +61,6 @@ ethernet_interfaces:
 | ---- | ---- | ----------- |
 | _value | string | Encrypted EOS password string. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

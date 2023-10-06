@@ -43,7 +43,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65103|  192.168.255.3 |
+| 65103 | 192.168.255.3 |
 
 | BGP Tuning |
 | ---------- |

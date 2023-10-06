@@ -1,0 +1,249 @@
+anta.tests.connectivity:
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-leaf1a
+      neighbor_port: Ethernet2
+      port: Ethernet1
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet1 - remote: dc1-leaf1a_Ethernet2'
+      description: LLDP topology - validate peer and interface
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-leaf1b
+      neighbor_port: Ethernet2
+      port: Ethernet2
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet2 - remote: dc1-leaf1b_Ethernet2'
+      description: LLDP topology - validate peer and interface
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-leaf2a
+      neighbor_port: Ethernet2
+      port: Ethernet3
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet3 - remote: dc1-leaf2a_Ethernet2'
+      description: LLDP topology - validate peer and interface
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-leaf2b
+      neighbor_port: Ethernet2
+      port: Ethernet4
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet4 - remote: dc1-leaf2b_Ethernet2'
+      description: LLDP topology - validate peer and interface
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.3
+      repeat: 1
+      source: 10.255.255.2
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc1-spine2_Ethernet1 - Destination: dc1-leaf1a_Ethernet2'
+      description: ip reachability test p2p links
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.7
+      repeat: 1
+      source: 10.255.255.6
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc1-spine2_Ethernet2 - Destination: dc1-leaf1b_Ethernet2'
+      description: ip reachability test p2p links
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.11
+      repeat: 1
+      source: 10.255.255.10
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc1-spine2_Ethernet3 - Destination: dc1-leaf2a_Ethernet2'
+      description: ip reachability test p2p links
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.15
+      repeat: 1
+      source: 10.255.255.14
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc1-spine2_Ethernet4 - Destination: dc1-leaf2b_Ethernet2'
+      description: ip reachability test p2p links
+anta.tests.hardware:
+- VerifyEnvironmentPower:
+    states:
+    - ok
+- VerifyEnvironmentCooling:
+    states:
+    - ok
+- VerifyTemperature: {}
+- VerifyTransceiversManufacturers:
+    manufacturers:
+    - Arista Networks
+    - Arastra, Inc.
+    - Not Present
+anta.tests.interfaces:
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet1
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+      description: Ethernet Interface & Line Protocol == \"up\"
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet2
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet2
+      description: Ethernet Interface & Line Protocol == \"up\"
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet3
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet3 - P2P_LINK_TO_DC1-LEAF2A_Ethernet2
+      description: Ethernet Interface & Line Protocol == \"up\"
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet4
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet4 - P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+      description: Ethernet Interface & Line Protocol == \"up\"
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Loopback0
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Loopback0 - EVPN_Overlay_Peering
+      description: Loopback Interface Status & Line Protocol == \"up\"
+anta.tests.routing.bgp:
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.255.3
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.255.3'
+      description: ip bgp peer state established (ipv4)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.255.7
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.255.7'
+      description: ip bgp peer state established (ipv4)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.255.11
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.255.11'
+      description: ip bgp peer state established (ipv4)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.255.15
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.255.15'
+      description: ip bgp peer state established (ipv4)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.3
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.0.3'
+      description: bgp evpn peer state established (evpn)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.4
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.0.4'
+      description: bgp evpn peer state established (evpn)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.5
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.0.5'
+      description: bgp evpn peer state established (evpn)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.0.6
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.0.6'
+      description: bgp evpn peer state established (evpn)
+anta.tests.routing.generic:
+- VerifyRoutingProtocolModel:
+    model: multi-agent
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: ArBGP
+      description: ArBGP is configured and operating
+anta.tests.system:
+- VerifyNTP:
+    result_overwrite:
+      categories:
+      - NTP
+      custom_field: NTP
+      description: Synchronised with NTP server

@@ -20,6 +20,7 @@ The \`arista.avd.verify\_requirements\` module is an Ansible Action Plugin provi
 \- Validate the ansible version against collection requirements
 \- Validate the collection requirements against the collection requirements
 \- Validate the running python version
+\- Emit deprecation warnings for Python and Ansible versions
 
 ## Parameters
 
@@ -39,8 +40,6 @@ The \`arista.avd.verify\_requirements\` module is an Ansible Action Plugin provi
   check_mode: false
   run_once: true
 ```
-
-## Status
 
 ## Authors
 

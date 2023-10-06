@@ -41,8 +41,6 @@ vars:
 | ---- | ---- | ----------- |
 | _value | boolean | Returns <code>False</code> if either the passed value or the test\_values are <code>Undefined</code> or <code>none</code>.<br>Returns <code>True</code> if the passed list contains one or more of the supplied test\_values. <code>False</code> otherwise. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)
