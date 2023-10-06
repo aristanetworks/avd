@@ -98,7 +98,6 @@
 - AvdTestBGP (Ansible tags: `bgp_check`)
   - VerifyBGPSpecificPeers: Validate IP BGP and BGP EVPN sessions state.
   - VerifyRoutingProtocolModel: Validate ArBGP is configured and operating.
-    - *This test is currently being run on devices that do not have a BGP configuration, which is not the actual behavior of `eos_validate_state`.*
 
 - AvdTestReloadCause (Ansible tags: `reload_cause`, `optional`, `never`)
   - VerifyReloadCause: Validate last reload cause. (Optional)
