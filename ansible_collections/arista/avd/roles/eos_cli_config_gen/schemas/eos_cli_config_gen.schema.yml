@@ -588,14 +588,14 @@ keys:
               type: str
               description: Class-Map Name
             vlan:
-              type: int
+              type: str
               convert_types:
-              - str
+              - int
               description: VLAN value(s) or range(s) of VLAN values
             cos:
-              type: int
+              type: str
               convert_types:
-              - str
+              - int
               description: CoS value(s) or range(s) of CoS values
             ip:
               type: dict
@@ -8438,6 +8438,11 @@ keys:
                 convert_types:
                 - str
                 description: Time (in seconds) to purge a MAC duplication issue
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           route:
             type: dict
             keys:

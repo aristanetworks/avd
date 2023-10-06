@@ -933,12 +933,12 @@
                 "title": "Name"
               },
               "vlan": {
-                "type": "integer",
+                "type": "string",
                 "description": "VLAN value(s) or range(s) of VLAN values",
                 "title": "VLAN"
               },
               "cos": {
-                "type": "integer",
+                "type": "string",
                 "description": "CoS value(s) or range(s) of CoS values",
                 "title": "COS"
               },
@@ -13938,6 +13938,20 @@
                 "^_.+$": {}
               },
               "title": "EVPN Hostflap Detection"
+            },
+            "next_hop": {
+              "type": "object",
+              "properties": {
+                "resolution_disabled": {
+                  "type": "boolean",
+                  "title": "Resolution Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Next Hop"
             },
             "route": {
               "type": "object",
