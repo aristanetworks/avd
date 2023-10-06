@@ -450,36 +450,24 @@ cv_tags:
     value: leaf
   - name: topology_hint_rack
     value: rack-2c
-  - name: layer3_routing
-    value: 'True'
   interface_tags:
   - interface: Ethernet3
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf2a
     - name: peer_device_interface
       value: Ethernet3
   - interface: Ethernet4
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf2a
     - name: peer_device_interface
       value: Ethernet4
   - interface: Ethernet1
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-spine1
     - name: peer_device_interface
       value: Ethernet4
   - interface: Ethernet2
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-spine2
     - name: peer_device_interface
       value: Ethernet4
   - interface: Ethernet8
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf2c
     - name: peer_device_interface
       value: Ethernet2

@@ -109,22 +109,3 @@ cv_tags:
     value: edge
   - name: topology_hint_rack
     value: rack-1c
-  interface_tags:
-  - interface: Ethernet1
-    tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf1a
-    - name: peer_device_interface
-      value: Ethernet8
-  - interface: Ethernet2
-    tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf1b
-    - name: peer_device_interface
-      value: Ethernet8
-  - interface: Ethernet5
-    tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf1-server1
-    - name: peer_device_interface
-      value: iLO

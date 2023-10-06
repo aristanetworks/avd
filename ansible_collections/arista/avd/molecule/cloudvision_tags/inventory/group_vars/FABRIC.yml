@@ -52,12 +52,8 @@ p2p_uplinks_mtu: 1500
 
 cv_tags_enabled: True
 
-cv_tags_generate_interface:
-  - field: peer
-    name: peer_device_name
-  - field: peer_interface
-    name: peer_device_interface
-
+# Generate device tags for all devices in the fabric
+# (except where it may be overriden in group_vars/host_vars)
 cv_tags_generate_device:
   - field: ip_routing
     name: layer3_routing
