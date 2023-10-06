@@ -854,6 +854,11 @@ keys:
                 convert_types:
                   - str
                 description: Time (in seconds) to purge a MAC duplication issue
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           route:
             type: dict
             keys:

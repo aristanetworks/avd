@@ -118,13 +118,24 @@ class UtilsMixin:
         )
 
     @cached_property
+    def _ipvpn_gateway_local_as(self) -> str | None:
+        return str(_as) if (_as := get(self.shared_utils.switch_data_combined, "ipvpn_gateway.local_as")) is not None else None
+
+    @cached_property
     def _ipvpn_gateway_remote_peers(self) -> dict:
         if self.shared_utils.overlay_ipvpn_gateway is not True:
             return {}
 
         ipvpn_gateway_remote_peers = {}
 
-        for ipvpn_gw_peer_dict in natural_sort(get(self.shared_utils.switch_data_combined, "ipvpn_gateway.remote_peers", default=[]), "hostname"):
+        for ipvpn_gw_peer_dict in natural_sort(
+            get(
+                self.shared_utils.switch_data_combined,
+                "ipvpn_gateway.remote_peers",
+                default=[],
+            ),
+            "hostname",
+        ):
             # These remote gw are outside of the inventory
 
             bgp_as = ipvpn_gw_peer_dict["bgp_as"]
@@ -239,5 +250,10 @@ class UtilsMixin:
         bgp_as = peer_facts.get("bgp_as")
         peers_dict[peer_name] = {
             "bgp_as": str(bgp_as) if bgp_as is not None else None,
-            "ip_address": get(peer_facts, "overlay.peering_address", required=True, org_key=f"switch.overlay.peering_address for {peer_name}"),
+            "ip_address": get(
+                peer_facts,
+                "overlay.peering_address",
+                required=True,
+                org_key=f"switch.overlay.peering_address for {peer_name}",
+            ),
         }
