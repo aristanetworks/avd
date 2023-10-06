@@ -16,8 +16,8 @@
   arista.cvp.cv_tag_v3:
     tags:
       - device: "{{ inventory_hostname }}"
-        device_tags: "{{ cv_tags.device_tags }}"
-        interface_tags: "{{ cv_tags.interface_tags }}"
+        device_tags: "{{ cv_tags.device_tags | arista.avd.default(omit) }}"
+        interface_tags: "{{ cv_tags.interface_tags | arista.avd.default(omit) }}"
     mode: assign
     auto_create: true
   when:

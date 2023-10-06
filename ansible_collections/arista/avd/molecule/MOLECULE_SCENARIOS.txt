@@ -1,3 +1,4 @@
+cloudvision_tags
 eos_cli_config_gen
 eos_cli_config_gen_deprecated_vars
 eos_cli_config_gen_negative_unit_tests
