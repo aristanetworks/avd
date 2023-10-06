@@ -933,12 +933,12 @@
                 "title": "Name"
               },
               "vlan": {
-                "type": "integer",
+                "type": "string",
                 "description": "VLAN value(s) or range(s) of VLAN values",
                 "title": "VLAN"
               },
               "cos": {
-                "type": "integer",
+                "type": "string",
                 "description": "CoS value(s) or range(s) of CoS values",
                 "title": "COS"
               },

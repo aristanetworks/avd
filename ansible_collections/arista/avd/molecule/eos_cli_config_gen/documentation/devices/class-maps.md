@@ -46,6 +46,8 @@ interface Management1
 | CM_REPLICATION_LD | acl | ACL_REPLICATION_LD |
 | CM_REPLICATION_LD2 | vlan | 200 |
 | CM_REPLICATION_LD3 | cos | 3 |
+| COS_RANGE | vlan | 1-3 |
+| VLAN_RANGE | vlan | 200-400 |
 
 #### Class-maps Device Configuration
 
@@ -59,6 +61,12 @@ class-map type qos match-any CM_REPLICATION_LD2
 !
 class-map type qos match-any CM_REPLICATION_LD3
    match cos 3
+!
+class-map type qos match-any COS_RANGE
+   match vlan 1-3
+!
+class-map type qos match-any VLAN_RANGE
+   match vlan 200-400
 !
 class-map type pbr match-any CM_PBR_EXCLUDE
    match ip access-group ACL_PBR_EXCLUDE
