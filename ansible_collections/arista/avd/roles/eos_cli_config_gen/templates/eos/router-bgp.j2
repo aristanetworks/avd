@@ -967,7 +967,7 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.address_family_link_state.path_selection.roles.producer is arista.avd.defined(true) %}
       path-selection
 {%             endif %}
-{%             if router_bgp.address_family_link_state.path_selection.roles.consumer is arista.avd.defined or router_bgp.address_family_link_state.path_selection.roles.propagator is arista.avd.defined %}
+{%             if router_bgp.address_family_link_state.path_selection.roles.consumer is arista.avd.defined(true) or router_bgp.address_family_link_state.path_selection.roles.propagator is arista.avd.defined(true) %}
 {%                 set path_selection_roles = "path-selection role" %}
 {%                 if router_bgp.address_family_link_state.path_selection.roles.consumer is arista.avd.defined(true) %}
 {%                     set path_selection_roles = path_selection_roles ~ " consumer" %}
