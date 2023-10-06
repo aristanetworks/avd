@@ -13939,6 +13939,20 @@
               },
               "title": "EVPN Hostflap Detection"
             },
+            "next_hop": {
+              "type": "object",
+              "properties": {
+                "resolution_disabled": {
+                  "type": "boolean",
+                  "title": "Resolution Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Next Hop"
+            },
             "route": {
               "type": "object",
               "properties": {
