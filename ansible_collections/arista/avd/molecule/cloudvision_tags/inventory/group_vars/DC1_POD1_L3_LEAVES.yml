@@ -2,3 +2,13 @@
 type: l3leaf
 
 pod_name: pod1
+
+cv_tags_generate_interface:
+  - field: peer_interface
+    name: peer_device_interface
+
+# Override the Fabric-wide variable
+# so that this group should only have
+# the default cv_tags required for the
+# cloudvision topology generation
+cv_tags_generate_device: []

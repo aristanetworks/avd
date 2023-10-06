@@ -2,3 +2,15 @@
 type: l3leaf
 
 pod_name: pod2
+
+# Define the cv_tags directly,
+# overriding anything that was generated.
+# This will also test the case where a device
+# has only interface_tags defined and no
+# device_tags
+custom_structured_configuration_cv_tags:
+  interface_tags:
+  - interface: Ethernet3
+    tags:
+    - name: peer_device_interface
+      value: Ethernet3

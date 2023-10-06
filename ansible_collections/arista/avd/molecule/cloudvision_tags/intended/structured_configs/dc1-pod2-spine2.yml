@@ -171,28 +171,3 @@ cv_tags:
     value: RackA
   - name: layer3_routing
     value: 'True'
-  interface_tags:
-  - interface: Ethernet1
-    tags:
-    - name: peer_device_name
-      value: dc1-pod2-leaf1a
-    - name: peer_device_interface
-      value: Ethernet2
-  - interface: Ethernet2
-    tags:
-    - name: peer_device_name
-      value: dc1-pod2-leaf1b
-    - name: peer_device_interface
-      value: Ethernet2
-  - interface: Ethernet10
-    tags:
-    - name: peer_device_name
-      value: dc1-super-spine1
-    - name: peer_device_interface
-      value: Ethernet4
-  - interface: Ethernet11
-    tags:
-    - name: peer_device_name
-      value: dc1-super-spine2
-    - name: peer_device_interface
-      value: Ethernet4

@@ -471,42 +471,28 @@ cv_tags:
     value: rack-1c
   - name: custom_tag
     value: custom_value_leaf1a
-  - name: layer3_routing
-    value: 'True'
   interface_tags:
   - interface: Ethernet3
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf1b
     - name: peer_device_interface
       value: Ethernet3
   - interface: Ethernet4
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf1b
     - name: peer_device_interface
       value: Ethernet4
   - interface: Ethernet1
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-spine1
     - name: peer_device_interface
       value: Ethernet1
   - interface: Ethernet2
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-spine2
     - name: peer_device_interface
       value: Ethernet1
   - interface: Ethernet8
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf1c
     - name: peer_device_interface
       value: Ethernet1
   - interface: Ethernet5
     tags:
-    - name: peer_device_name
-      value: dc1-pod1-leaf1-server1
     - name: peer_device_interface
       value: PCI1
