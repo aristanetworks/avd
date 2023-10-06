@@ -174,6 +174,11 @@ class UplinksMixin:
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
 
+                if self.shared_utils.uplink_ptp is not None:
+                    uplink["ptp"] = self.shared_utils.uplink_ptp
+                elif self.shared_utils.ptp_enabled:
+                    uplink["ptp"] = {"enable": True}
+
                 if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
                     # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
                     uplink["channel_description"] = uplink_switch_facts.shared_utils.group

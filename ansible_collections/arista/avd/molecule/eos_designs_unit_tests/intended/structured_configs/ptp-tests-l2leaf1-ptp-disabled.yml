@@ -45,7 +45,7 @@ ethernet_interfaces:
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
-  description: PTP-TESTS-LEAF1_Po11
+  description: PTP-TEST-LEAF_Po11
   type: switched
   shutdown: false
   mode: trunk

@@ -216,6 +216,15 @@ port_channel_interfaces:
   mode: trunk
   vlans: '11'
   mlag: 12
+  ptp:
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+    enable: true
 - name: Port-Channel14
   description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Po1
   type: switched
