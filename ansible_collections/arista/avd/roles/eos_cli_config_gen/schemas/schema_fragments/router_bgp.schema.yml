@@ -1041,8 +1041,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1231,8 +1229,6 @@ keys:
           neighbors:
             type: list
             primary_key: ip_address
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
