@@ -20333,6 +20333,32 @@
       },
       "title": "System"
     },
+    "system_l1": {
+      "type": "object",
+      "properties": {
+        "unsupported_speed_action": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warn"
+          ],
+          "title": "Unsupported Speed Action"
+        },
+        "unsupported_error_correction_action": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warn"
+          ],
+          "title": "Unsupported Error Correction Action"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "System L1"
+    },
     "tacacs_servers": {
       "type": "object",
       "properties": {
