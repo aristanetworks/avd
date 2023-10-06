@@ -412,16 +412,18 @@ roles/eos_designs/docs/tables/default-node-types.md
 
 ## Node type settings
 
-Node type settings are defined under the `node_type_keys.key` i.e `spine:`, `l3leaf:`, `l2leaf:` to configure management, underlay, overlay functionality.
+Node type settings are defined under the `<node_type_keys.key>` i.e `spine:`, `l3leaf:`, `l2leaf:` to configure management, underlay, overlay functionality.
 
 ### Node type structure
 
-All node types have the same structure based on `defaults`, `node_group`, `node_group.node`, `node` and all variables can be defined in any section and support inheritance like this:
+All node types have the same structure based on `defaults`, `node_groups`, `node_groups.nodes`, `nodes` and all variables can be defined in any section and support inheritance.
+The same settings can also be set directly under the root-level `node` key.
 
-Under `node_type_keys.key:`
+The order of inheritance is the same for all node types and follows this pattern:
 
 ```bash
-defaults <- node_group <- node_group.node <- node
+# Later settings takes precedence.
+<node_type_keys.key>.defaults <- <node_type_keys.key>.node_groups <- <node_type_keys.key>.node_groups.nodes <- <node_type_keys.key>.nodes <- node
 ```
 
 !!! tip
