@@ -1339,18 +1339,6 @@ keys:
             keys:
               roles:
                 type: dict
-                description: |
-                  Three roles are available as defined in Link-State RFC
-                  * producer
-                  * consumer
-                  * propagator
-
-                  When setting 'producer' to 'True' the CLI
-                  'path-selection' is rendered
-
-                  When setting 'consumer' and / or 'propagator' to 'True'
-                  the followin CLI is rendered
-                  'path-selection role ( propagator | ( consumer [ propagator ] ) )'
                 keys:
                   producer:
                     type: bool

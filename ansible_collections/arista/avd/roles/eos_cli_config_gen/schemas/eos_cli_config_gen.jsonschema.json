@@ -14912,7 +14912,6 @@
               "properties": {
                 "roles": {
                   "type": "object",
-                  "description": "Three roles are available as defined in Link-State RFC\n* producer\n* consumer\n* propagator\n\nWhen setting 'producer' to 'True' the CLI\n'path-selection' is rendered\n\nWhen setting 'consumer' and / or 'propagator' to 'True'\nthe followin CLI is rendered\n'path-selection role ( propagator | ( consumer [ propagator ] ) )'\n",
                   "properties": {
                     "producer": {
                       "type": "boolean",
