@@ -51,14 +51,14 @@
 | {{ local_ip.ip_address }} | {{ local_ip.public_address | arista.avd.default("-") }} | {{ local_ip.stun.server_profiles | arista.avd.default([]) | join("<br>") }} |
 {%                 endfor %}
 {%             endif %}
-{%             if path_group.dynamic_peers is arista.avd.defined %}
+{%             if path_group.dynamic_peers.enabled is arista.avd.defined(true) %}
 
 ###### Dynamic peers settings
 
 | Setting | Value |
 | ------  | ----- |
 | IP Local | {{ path_group.dynamic_peers.ip_local | arista.avd.default("-") }} |
-| IPSec disabled | {{ path_group.dynamic_peers.ipsec_disabled | arista.avd.default("-") }} |
+| IPSec | {{ path_group.dynamic_peers.ipsec | arista.avd.default("-") }} |
 {%             endif %}
 {%             if path_group.static_peers is arista.avd.defined %}
 

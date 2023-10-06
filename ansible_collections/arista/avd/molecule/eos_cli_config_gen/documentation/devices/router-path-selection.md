@@ -55,7 +55,7 @@ interface Management1
 | Setting | Value |
 | ------  | ----- |
 | IP Local | True |
-| IPSec disabled | True |
+| IPSec | True |
 
 ###### Static peers
 
@@ -85,6 +85,13 @@ interface Management1
 | ---------- | -------------- | ---------------------- |
 | 192.168.1.100 | 192.168.42.42 | STUN-P-1<br>STUN-P-2 |
 | 192.168.100.1 | - | STUN-P-1 |
+
+###### Dynamic peers settings
+
+| Setting | Value |
+| ------  | ----- |
+| IP Local | - |
+| IPSec | False |
 
 ##### Path Group PG-3
 
@@ -146,7 +153,7 @@ router path-selection
       !
       peer dynamic
          ip local
-         ipsec disabled
+         ipsec
       !
       peer static 172.16.1.42
          ipv4 address 192.168.1.42
@@ -170,6 +177,9 @@ router path-selection
       !
       local ip 192.168.100.1
          stun server-profile STUN-P-1
+      !
+      peer dynamic
+         ipsec disabled
    !
    path-group PG-3 id 888
    !

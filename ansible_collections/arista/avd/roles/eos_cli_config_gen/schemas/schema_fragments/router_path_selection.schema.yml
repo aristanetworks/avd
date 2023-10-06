@@ -96,10 +96,13 @@ keys:
               description: |
                 - Flow assignement LAN can not be configured in a path group with dynamic peer
               keys:
+                enabled:
+                  type: bool
+                  description: Enable `peer dynamic`
                 ip_local:
                   type: bool
                   description: Prefer local IP address
-                ipsec_disabled:
+                ipsec:
                   type: bool
                   description: IPsec configuration for dynamic peer
             static_peers:

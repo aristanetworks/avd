@@ -38,11 +38,15 @@ router_path_selection:
             server_profiles:
               - STUN-P-1
               - STUN-P-2
+      dynamic_peers:
+        enabled: true
+        ipsec: false
     - name: PG-1
       id: 666
       dynamic_peers:
+        enabled: true
         ip_local: true
-        ipsec_disabled: true
+        ipsec: true
       static_peers:
         # Out of order to test sorting
         - router_ip: 172.16.42.42

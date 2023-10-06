@@ -19566,15 +19566,20 @@
                 "type": "object",
                 "description": "- Flow assignement LAN can not be configured in a path group with dynamic peer\n",
                 "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable `peer dynamic`",
+                    "title": "Enabled"
+                  },
                   "ip_local": {
                     "type": "boolean",
                     "description": "Prefer local IP address",
                     "title": "IP Local"
                   },
-                  "ipsec_disabled": {
+                  "ipsec": {
                     "type": "boolean",
                     "description": "IPsec configuration for dynamic peer",
-                    "title": "Ipsec Disabled"
+                    "title": "Ipsec"
                   }
                 },
                 "additionalProperties": false,

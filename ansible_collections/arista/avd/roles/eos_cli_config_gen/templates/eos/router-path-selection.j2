@@ -49,13 +49,15 @@ router path-selection
 {%             endif %}
 {%         endfor %}
 {#      peer dynamic #}
-{%         if path_group.dynamic_peers is arista.avd.defined %}
+{%         if path_group.dynamic_peers.enabled is arista.avd.defined(true) %}
       !
       peer dynamic
 {%             if path_group.dynamic_peers.ip_local is arista.avd.defined(true) %}
          ip local
 {%             endif %}
-{%             if path_group.dynamic_peers.ipsec_disabled is arista.avd.defined(true) %}
+{%             if path_group.dynamic_peers.ipsec is arista.avd.defined(true) %}
+         ipsec
+{%             elif path_group.dynamic_peers.ipsec is arista.avd.defined(false) %}
          ipsec disabled
 {%             endif %}
 {%         endif %}
