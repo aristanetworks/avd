@@ -18377,6 +18377,11 @@
       },
       "title": "Router PIM Sparse Mode"
     },
+    "router_service_insertion": {
+      "type": "boolean",
+      "description": "Configure network services inserted to data forwarding",
+      "title": "Router Service Insertion"
+    },
     "router_traffic_engineering": {
       "type": "object",
       "properties": {
