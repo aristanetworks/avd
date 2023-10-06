@@ -2757,7 +2757,7 @@ keys:
       all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them
       away because of AS Path loop detection.
 
-      Note that this setting cannot be used while there are evpn services present
+      Note that this setting cannot be used while there are EVPN services present
       in the default VRF.
 
       '

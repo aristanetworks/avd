@@ -65,7 +65,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
             if "evpn" in vrf_default.get("address_families", ["evpn"]):
                 if self.shared_utils.underlay_filter_peer_as:
-                    raise AristaAvdError("underlay_filter_peer_as cannot be used while there are evpn services in the default VRF")
+                    raise AristaAvdError("'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF.")
                 return True
 
         return False
