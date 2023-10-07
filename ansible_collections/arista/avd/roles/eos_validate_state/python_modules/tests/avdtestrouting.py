@@ -134,22 +134,22 @@ class AvdTestBGP(AvdTestBase):
             for idx, bgp_neighbor in enumerate(bgp_neighbors, start=1):
                 # TODO - this matches legacy eos_validate_state BUT works only for neighbors in peer groups...
                 try:
-                    neighbor_peer_group = get_item(bgp_peer_groups, "name", bgp_neighbor["peer_group"], required=True)
+                    neighbor_peer_group = get_item(bgp_peer_groups, "name", bgp_neighbor["peer_group"], required=True, var_name=bgp_neighbor["peer_group"])
                 except AristaAvdMissingVariableError as e:
-                    LOGGER.warning("Peer group '%s' dictionary is missing from the 'peer_groups' list in the 'router_bgp' data model.", str(e))
+                    LOGGER.warning("Peer group '%s' dictionary is missing from the 'peer_groups' list of the 'router_bgp' data model.", str(e))
                     continue
 
                 try:
                     bgp_neighbor_ip = str(get(bgp_neighbor, "ip_address", required=True))
                 except AristaAvdMissingVariableError as e:
-                    LOGGER.warning("Neighbor entry #%d from the 'neighbors' list is missing the variable '%s' in the 'router_bgp' data model.", idx, str(e))
+                    LOGGER.warning("Neighbor entry #%d from the 'neighbors' list of the 'router_bgp' data model is missing the variable '%s'.", idx, str(e))
                     continue
 
                 try:
                     neighbor_peer_group_type = get(neighbor_peer_group, "type", required=True)
                 except AristaAvdMissingVariableError as e:
                     LOGGER.warning(
-                        "Peer group '%s' from the 'peer_groups' list is missing the variable '%s' in the 'router_bgp' data model.",
+                        "Peer group '%s' from the 'peer_groups' list of the 'router_bgp' data model is missing the variable '%s'.",
                         bgp_neighbor["peer_group"],
                         str(e),
                     )
@@ -162,5 +162,6 @@ class AvdTestBGP(AvdTestBase):
 
         else:
             LOGGER.warning("Variable 'service_routing_protocols_model' is NOT set to 'multi-agent'. %s is skipped.", self.__class__.__name__)
+            return None
 
         return {self.anta_module: anta_tests}
