@@ -37,7 +37,9 @@
 - Install the "anta" Python package (this is *not* part of the `requirements.txt`):
 
   ```shell
+  pip3 install '
   --8<-- "roles/eos_validate_state/preview_requirements.txt:4:4"
+  '
   ```
 
 - Run eos_validate_state playbook by setting the variable `use_anta=true`.
