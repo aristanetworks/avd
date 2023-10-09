@@ -86,7 +86,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Role(s) | - producer<br>- consumer<br>- propagator |
+| Role(s) | producer<br>consumer<br>propagator |
 
 #### Router BGP Device Configuration
 

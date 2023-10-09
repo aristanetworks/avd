@@ -659,13 +659,13 @@
 {%             if router_bgp.address_family_link_state.path_selection.roles is arista.avd.defined %}
 {%                 set path_selection_roles = [] %}
 {%                 if router_bgp.address_family_link_state.path_selection.roles.producer is arista.avd.defined(true) %}
-{%                     do path_selection_roles.append("- producer") %}
+{%                     do path_selection_roles.append("producer") %}
 {%                 endif %}
 {%                 if router_bgp.address_family_link_state.path_selection.roles.consumer is arista.avd.defined(true) %}
-{%                     do path_selection_roles.append("- consumer") %}
+{%                     do path_selection_roles.append("consumer") %}
 {%                 endif %}
 {%                 if router_bgp.address_family_link_state.path_selection.roles.propagator is arista.avd.defined(true) %}
-{%                     do path_selection_roles.append("- propagator") %}
+{%                     do path_selection_roles.append("propagator") %}
 {%                 endif %}
 | Role(s) | {{ path_selection_roles | join("<br>") }} |
 {%             endif %}
