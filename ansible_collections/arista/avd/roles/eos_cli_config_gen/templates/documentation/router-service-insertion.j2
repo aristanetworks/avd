@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# doc - router service-insertion #}
-{% if router_service_insertion is arista.avd.defined(true) %}
+{% if router_service_insertion.enabled is arista.avd.defined(true) %}
 
-Router service-insertion configured.
+Router service-insertion is enabled.
 {% endif %}

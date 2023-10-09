@@ -7,10 +7,12 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>router_service_insertion</samp>](## "router_service_insertion") | Boolean |  |  |  | Configure network services inserted to data forwarding |
+    | [<samp>router_service_insertion</samp>](## "router_service_insertion") | Dictionary |  |  |  | Configure network services inserted to data forwarding |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "router_service_insertion.enabled") | Boolean |  |  |  |  |
 
 === "YAML"
 
     ```yaml
-    router_service_insertion: <bool>
+    router_service_insertion:
+      enabled: <bool>
     ```

@@ -35,5 +35,3 @@ interface Management1
 ```
 
 ## Routing
-
-Router service-insertion configured.
