@@ -11234,13 +11234,13 @@ keys:
                 process ID in the final EOS configuration
   router_path_selection:
     type: dict
-    description: Dynamic path selection configuration
+    description: Dynamic path selection configuration.
     keys:
       peer_dynamic_source:
         type: str
         valid_values:
         - stun
-        description: Source of dynamic peer discover. Only 'stun' is supported.
+        description: Source of dynamic peer discover.
       path_groups:
         type: list
         primary_key: name
@@ -11249,25 +11249,23 @@ keys:
           keys:
             name:
               type: str
-              description: Path group name
+              description: Path group name.
             id:
               type: int
-              description: Path group ID
+              description: Path group ID.
               convert_types:
               - str
               min: 1
               max: 65535
             ipsec_profile:
               type: str
-              description: IPSec profile for the path group
+              description: IPSec profile for the path group.
             flow_assignment:
               type: str
               valid_values:
               - lan
-              description: '- Flow assignement LAN can not be configured in a path
-                group with dynamic peer
-
-                '
+              description: Flow assignement `lan` can not be configured in a path
+                group with dynamic peer.
             local_interfaces:
               type: list
               primary_key: name
@@ -11276,16 +11274,11 @@ keys:
                 keys:
                   name:
                     type: str
-                    description: 'Local interface name
-
-
-                      Ethernet<X> is supported
-
-                      '
+                    description: Local interface name.
                     pattern: ^Ethernet\d+$
                   public_address:
                     type: str
-                    description: Public IP assigned by NAT
+                    description: Public IP assigned by NAT.
                   stun:
                     type: dict
                     keys:
@@ -11294,9 +11287,7 @@ keys:
                         required: true
                         min_length: 1
                         max_length: 2
-                        description: 'STUN server-profile names
-
-                          '
+                        description: STUN server-profile names.
                         items:
                           type: str
             local_ips:
@@ -11309,7 +11300,7 @@ keys:
                     type: str
                   public_address:
                     type: str
-                    description: Public IP assigned by NAT
+                    description: Public IP assigned by NAT.
                   stun:
                     type: dict
                     keys:
@@ -11318,27 +11309,23 @@ keys:
                         required: true
                         min_length: 1
                         max_length: 2
-                        description: 'STUN server-profile names
-
-                          '
+                        description: STUN server-profile names.
                         items:
                           type: str
             dynamic_peers:
               type: dict
-              description: '- Flow assignement LAN can not be configured in a path
-                group with dynamic peer
-
-                '
+              description: Flow assignement `lan` can not be configured in a path
+                group with dynamic peer.
               keys:
                 enabled:
                   type: bool
-                  description: Enable `peer dynamic`
+                  description: Enable `peer dynamic`.
                 ip_local:
                   type: bool
-                  description: Prefer local IP address
+                  description: Prefer local IP address.
                 ipsec:
                   type: bool
-                  description: IPsec configuration for dynamic peer
+                  description: IPsec configuration for dynamic peers.
             static_peers:
               type: list
               primary_key: router_ip
@@ -11347,13 +11334,13 @@ keys:
                 keys:
                   router_ip:
                     type: str
-                    description: Peer router IP
+                    description: Peer router IP.
                   name:
                     type: str
-                    description: Name of the site
+                    description: Name of the site.
                   ip_address:
                     type: str
-                    description: Static IPv4 address
+                    description: Static IPv4 address.
       load_balance_policies:
         type: list
         primary_key: name
@@ -11362,10 +11349,10 @@ keys:
           keys:
             name:
               type: str
-              description: Load-balance policy name
+              description: Load-balance policy name.
             path_groups:
               type: list
-              description: List of path-group to use for this load balance policy
+              description: List of path-group to use for this load balance policy.
               items:
                 type: str
       policies:
@@ -11376,13 +11363,13 @@ keys:
           keys:
             name:
               type: str
-              description: Dps policy name
+              description: DPS policy name.
             default_match:
               type: dict
               keys:
                 load_balance:
                   type: str
-                  description: Name of the load-balance policy
+                  description: Name of the load-balance policy.
             rules:
               type: list
               primary_key: id
@@ -11391,7 +11378,7 @@ keys:
                 keys:
                   id:
                     type: int
-                    description: Rule ID
+                    description: Rule ID.
                     min: 1
                     max: 255
                   application_profile:
@@ -11399,7 +11386,7 @@ keys:
                     required: true
                   load_balance:
                     type: str
-                    description: Name of the load-balance policy
+                    description: Name of the load-balance policy.
       vrfs:
         type: list
         primary_key: name
@@ -11408,10 +11395,10 @@ keys:
           keys:
             name:
               type: str
-              description: VRF name
+              description: VRF name.
             path_selection_policy:
               type: str
-              description: Dps policy name to use for this VRF
+              description: DPS policy name to use for this VRF.
   router_pim_sparse_mode:
     type: dict
     keys:

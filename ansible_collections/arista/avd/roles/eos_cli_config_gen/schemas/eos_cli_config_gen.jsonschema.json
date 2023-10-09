@@ -19424,14 +19424,14 @@
     },
     "router_path_selection": {
       "type": "object",
-      "description": "Dynamic path selection configuration",
+      "description": "Dynamic path selection configuration.",
       "properties": {
         "peer_dynamic_source": {
           "type": "string",
           "enum": [
             "stun"
           ],
-          "description": "Source of dynamic peer discover. Only 'stun' is supported.",
+          "description": "Source of dynamic peer discover.",
           "title": "Peer Dynamic Source"
         },
         "path_groups": {
@@ -19441,19 +19441,19 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Path group name",
+                "description": "Path group name.",
                 "title": "Name"
               },
               "id": {
                 "type": "integer",
-                "description": "Path group ID",
+                "description": "Path group ID.",
                 "minimum": 1,
                 "maximum": 65535,
                 "title": "ID"
               },
               "ipsec_profile": {
                 "type": "string",
-                "description": "IPSec profile for the path group",
+                "description": "IPSec profile for the path group.",
                 "title": "Ipsec Profile"
               },
               "flow_assignment": {
@@ -19461,7 +19461,7 @@
                 "enum": [
                   "lan"
                 ],
-                "description": "- Flow assignement LAN can not be configured in a path group with dynamic peer\n",
+                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peer.",
                 "title": "Flow Assignment"
               },
               "local_interfaces": {
@@ -19471,13 +19471,13 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "description": "Local interface name\n\nEthernet<X> is supported\n",
+                      "description": "Local interface name.",
                       "pattern": "^Ethernet\\d+$",
                       "title": "Name"
                     },
                     "public_address": {
                       "type": "string",
-                      "description": "Public IP assigned by NAT",
+                      "description": "Public IP assigned by NAT.",
                       "title": "Public Address"
                     },
                     "stun": {
@@ -19487,7 +19487,7 @@
                           "type": "array",
                           "minItems": 1,
                           "maxItems": 2,
-                          "description": "STUN server-profile names\n",
+                          "description": "STUN server-profile names.",
                           "items": {
                             "type": "string"
                           },
@@ -19501,7 +19501,7 @@
                       "patternProperties": {
                         "^_.+$": {}
                       },
-                      "title": "Stun"
+                      "title": "STUN"
                     }
                   },
                   "additionalProperties": false,
@@ -19525,7 +19525,7 @@
                     },
                     "public_address": {
                       "type": "string",
-                      "description": "Public IP assigned by NAT",
+                      "description": "Public IP assigned by NAT.",
                       "title": "Public Address"
                     },
                     "stun": {
@@ -19535,7 +19535,7 @@
                           "type": "array",
                           "minItems": 1,
                           "maxItems": 2,
-                          "description": "STUN server-profile names\n",
+                          "description": "STUN server-profile names.",
                           "items": {
                             "type": "string"
                           },
@@ -19549,7 +19549,7 @@
                       "patternProperties": {
                         "^_.+$": {}
                       },
-                      "title": "Stun"
+                      "title": "STUN"
                     }
                   },
                   "additionalProperties": false,
@@ -19564,21 +19564,21 @@
               },
               "dynamic_peers": {
                 "type": "object",
-                "description": "- Flow assignement LAN can not be configured in a path group with dynamic peer\n",
+                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peer.",
                 "properties": {
                   "enabled": {
                     "type": "boolean",
-                    "description": "Enable `peer dynamic`",
+                    "description": "Enable `peer dynamic`.",
                     "title": "Enabled"
                   },
                   "ip_local": {
                     "type": "boolean",
-                    "description": "Prefer local IP address",
+                    "description": "Prefer local IP address.",
                     "title": "IP Local"
                   },
                   "ipsec": {
                     "type": "boolean",
-                    "description": "IPsec configuration for dynamic peer",
+                    "description": "IPsec configuration for dynamic peers.",
                     "title": "Ipsec"
                   }
                 },
@@ -19595,17 +19595,17 @@
                   "properties": {
                     "router_ip": {
                       "type": "string",
-                      "description": "Peer router IP",
+                      "description": "Peer router IP.",
                       "title": "Router IP"
                     },
                     "name": {
                       "type": "string",
-                      "description": "Name of the site",
+                      "description": "Name of the site.",
                       "title": "Name"
                     },
                     "ip_address": {
                       "type": "string",
-                      "description": "Static IPv4 address",
+                      "description": "Static IPv4 address.",
                       "title": "IP Address"
                     }
                   },
@@ -19637,12 +19637,12 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Load-balance policy name",
+                "description": "Load-balance policy name.",
                 "title": "Name"
               },
               "path_groups": {
                 "type": "array",
-                "description": "List of path-group to use for this load balance policy",
+                "description": "List of path-group to use for this load balance policy.",
                 "items": {
                   "type": "string"
                 },
@@ -19666,7 +19666,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Dps policy name",
+                "description": "DPS policy name.",
                 "title": "Name"
               },
               "default_match": {
@@ -19674,7 +19674,7 @@
                 "properties": {
                   "load_balance": {
                     "type": "string",
-                    "description": "Name of the load-balance policy",
+                    "description": "Name of the load-balance policy.",
                     "title": "Load Balance"
                   }
                 },
@@ -19691,7 +19691,7 @@
                   "properties": {
                     "id": {
                       "type": "integer",
-                      "description": "Rule ID",
+                      "description": "Rule ID.",
                       "minimum": 1,
                       "maximum": 255,
                       "title": "ID"
@@ -19702,7 +19702,7 @@
                     },
                     "load_balance": {
                       "type": "string",
-                      "description": "Name of the load-balance policy",
+                      "description": "Name of the load-balance policy.",
                       "title": "Load Balance"
                     }
                   },
@@ -19735,12 +19735,12 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "VRF name",
+                "description": "VRF name.",
                 "title": "Name"
               },
               "path_selection_policy": {
                 "type": "string",
-                "description": "Dps policy name to use for this VRF",
+                "description": "DPS policy name to use for this VRF.",
                 "title": "Path Selection Policy"
               }
             },
@@ -21242,7 +21242,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Stun"
+      "title": "STUN"
     },
     "switchport_default": {
       "type": "object",

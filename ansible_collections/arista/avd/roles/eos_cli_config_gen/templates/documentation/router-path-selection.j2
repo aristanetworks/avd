@@ -13,7 +13,7 @@
 | Setting | Value |
 | ------  | ----- |
 {%     if router_path_selection.peer_dynamic_source is arista.avd.defined %}
-| Dynamic peers source | {{ router_path_selection.peer_dynamic_source }} |
+| Dynamic peers source | {{ router_path_selection.peer_dynamic_source | upper }} |
 {%     endif %}
 {%     if router_path_selection.path_groups is arista.avd.defined %}
 
@@ -29,7 +29,7 @@
 | IPSec profile | {{ path_group.ipsec_profile }} |
 {%             endif %}
 {%             if path_group.flow_assignment is arista.avd.defined %}
-| Flow assignment | {{ path_group.flow_assignment }} |
+| Flow assignment | {{ path_group.flow_assignment | upper }} |
 {%             endif %}
 {%             if path_group.local_interfaces is arista.avd.defined %}
 

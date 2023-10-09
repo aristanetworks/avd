@@ -40,7 +40,7 @@ interface Management1
 
 | Setting | Value |
 | ------  | ----- |
-| Dynamic peers source | stun |
+| Dynamic peers source | STUN |
 
 #### Path Groups
 
@@ -70,7 +70,7 @@ interface Management1
 | ------  | ----- |
 | Path Group ID | 42 |
 | IPSec profile | IPSEC-P-1 |
-| Flow assignment | lan |
+| Flow assignment | LAN |
 
 ###### Local Interfaces
 
