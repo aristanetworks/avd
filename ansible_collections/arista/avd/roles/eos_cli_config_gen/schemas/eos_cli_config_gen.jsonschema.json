@@ -11627,12 +11627,12 @@
                               "description": "WRED maximum-threshold",
                               "title": "Max"
                             },
-                            "max_probability": {
+                            "drop_probability": {
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 100,
-                              "description": "WRED maximum mark probability.",
-                              "title": "Max Probability"
+                              "description": "WRED drop probability.",
+                              "title": "Drop Probability"
                             }
                           },
                           "required": [
@@ -11828,12 +11828,12 @@
                               "description": "WRED maximum-threshold",
                               "title": "Max"
                             },
-                            "max_probability": {
+                            "drop_probability": {
                               "type": "integer",
                               "minimum": 1,
                               "maximum": 100,
-                              "description": "WRED maximum mark probability.",
-                              "title": "Max Probability"
+                              "description": "WRED drop probability.",
+                              "title": "Drop Probability"
                             }
                           },
                           "required": [

@@ -40,7 +40,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_precedence</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.drop_precedence") | Integer |  |  | Min: 0<br>Max: 2 | Specify Drop Precendence value |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.min") | Integer | Required |  | Min: 1 | WRED minimum-threshold |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.max") | Integer | Required |  | Min: 1 | WRED maximum-threshold |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_probability</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.max_probability") | Integer |  |  | Min: 1<br>Max: 100 | WRED maximum mark probability. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_probability</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.drop_probability") | Integer |  |  | Min: 1<br>Max: 100 | WRED drop probability. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uc_tx_queues</samp>](## "qos_profiles.[].uc_tx_queues") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "qos_profiles.[].uc_tx_queues.[].id") | Integer | Required, Unique |  |  | UC TX queue ID |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bandwidth_percent</samp>](## "qos_profiles.[].uc_tx_queues.[].bandwidth_percent") | Integer |  |  |  |  |
@@ -64,7 +64,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_precedence</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.drop_precedence") | Integer |  |  | Min: 0<br>Max: 2 | Specify Drop Precendence value |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.min") | Integer | Required |  | Min: 1 | WRED minimum-threshold |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.max") | Integer | Required |  | Min: 1 | WRED maximum-threshold |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_probability</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.max_probability") | Integer |  |  | Min: 1<br>Max: 100 | WRED maximum mark probability. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_probability</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.drop_probability") | Integer |  |  | Min: 1<br>Max: 100 | WRED drop probability. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mc_tx_queues</samp>](## "qos_profiles.[].mc_tx_queues") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "qos_profiles.[].mc_tx_queues.[].id") | Integer | Required, Unique |  |  | MC TX queue ID |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bandwidth_percent</samp>](## "qos_profiles.[].mc_tx_queues.[].bandwidth_percent") | Integer |  |  |  |  |
@@ -123,7 +123,7 @@
                   drop_precedence: <int>
                   min: <int>
                   max: <int>
-                  max_probability: <int>
+                  drop_probability: <int>
         uc_tx_queues:
           - id: <int>
             bandwidth_percent: <int>
@@ -147,7 +147,7 @@
                   drop_precedence: <int>
                   min: <int>
                   max: <int>
-                  max_probability: <int>
+                  drop_probability: <int>
         mc_tx_queues:
           - id: <int>
             bandwidth_percent: <int>

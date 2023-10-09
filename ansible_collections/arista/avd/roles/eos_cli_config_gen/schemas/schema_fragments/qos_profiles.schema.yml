@@ -160,13 +160,13 @@ keys:
                             convert_types:
                               - str
                             description: WRED maximum-threshold
-                          max_probability:
+                          drop_probability:
                             type: int
                             min: 1
                             max: 100
                             convert_types:
                               - str
-                            description: WRED maximum mark probability.
+                            description: WRED drop probability.
 
         uc_tx_queues:
           type: list
@@ -281,13 +281,13 @@ keys:
                             convert_types:
                               - str
                             description: WRED maximum-threshold
-                          max_probability:
+                          drop_probability:
                             type: int
                             min: 1
                             max: 100
                             convert_types:
                               - str
-                            description: WRED maximum mark probability.
+                            description: WRED drop probability.
 
         mc_tx_queues:
           type: list

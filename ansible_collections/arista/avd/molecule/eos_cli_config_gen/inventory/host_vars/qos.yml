@@ -179,6 +179,7 @@ qos_profiles:
               units: kbytes
               min: 1
               max: 10
+              drop_probability: 100
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'
@@ -208,7 +209,7 @@ qos_profiles:
               units: kbytes
               min: 1
               max: 10
-              max_probability: 90
+              drop_probability: 90
     mc_tx_queues:
       - id: 1
         bandwidth_percent: 50
@@ -251,7 +252,7 @@ qos_profiles:
               units: "microseconds"
               min: 1
               max: 10
-              max_probability: 90
+              drop_probability: 90
 
 policy_maps:
   qos:
