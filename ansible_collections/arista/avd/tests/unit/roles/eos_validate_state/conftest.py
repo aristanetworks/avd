@@ -16,9 +16,9 @@ def build_test_id(val: dict) -> str:
 
     Examples output:
 
-    `::test_avd_tests[AvdTestBGP-missing-router-bgp]`
+    `test_avd_tests[AvdTestBGP-missing-router-bgp]`
 
-    `::test_avd_tests[AvdTestBGP-missing-service-routing-protocols-model]`
+    `test_avd_tests[AvdTestBGP-missing-service-routing-protocols-model]`
     """
     return f"{val['test_module']}-{val['test_name']}"
 

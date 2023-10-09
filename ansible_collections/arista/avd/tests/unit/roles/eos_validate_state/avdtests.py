@@ -21,7 +21,7 @@ def test_avd_tests(caplog: LogCaptureFixture, data: dict) -> None:
     caplog.set_level(logging.INFO)
     avd_test_class = load_python_class("ansible_collections.arista.avd.roles.eos_validate_state.python_modules.tests", data["test_module"], AvdTestBase)
     avd_test_bgp = avd_test_class(device_name="DC1-SPINE1", hostvars=data["hostvars"])
-    result = avd_test_bgp.test_definition
+    result = avd_test_bgp.render()
     assert result == data["expected_result"]
 
     if data["expected_log"] and data["expected_log_level"]:
