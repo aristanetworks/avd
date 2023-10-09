@@ -1,8 +1,8 @@
 ---
 ### Flow Tracking
 
-flow_trackings:
-  - type: sampled
+flow_tracking:
+  sampled:
     sample: 666
     trackers:
       - name: T1
@@ -49,21 +49,14 @@ flow_trackings:
               host: dead:beef::cafe
     shutdown: false
   # Checking hardware
-  - type: hardware
-    sample: 666
+  hardware:
     trackers:
       - name: T1
         record_export:
           on_inactive_timeout: 3666
           on_interval: 5666
-          mpls: true
         # no exporter
       - name: T2
-        # table size as string
-        table_size: "614400"
-        record_export:
-          # Should not be rendered
-          mpls: false
         # one exporter
         exporters:
           - name: T2-E1
@@ -71,8 +64,6 @@ flow_trackings:
               host: 42.42.42.42
               # no port
       - name: T3
-        # specify table size
-        table_size: 100000
         # two exporters
         exporters:
           - name: T3-E1
@@ -100,9 +91,11 @@ ethernet_interfaces:
   - name: Ethernet40
     flow_tracker:
       sampled: T2
+      hardware: T2
   - name: Ethernet41
     flow_tracker:
       sampled: T3
+      hardware: T3
   - name: Ethernet42
     flow_tracker:
       sampled: T3
@@ -111,3 +104,4 @@ port_channel_interfaces:
   - name: Port-Channel42
     flow_tracker:
       sampled: T3
+      hardware: T4

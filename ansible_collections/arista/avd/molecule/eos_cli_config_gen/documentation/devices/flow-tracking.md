@@ -64,6 +64,26 @@ Sample: 666
 | T3 | T3-E3 | - | - | Management1 |
 | T3 | T3-E4 | - | - | No local interface |
 
+#### Flow Tracking Hardware
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
+| ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
+| T1 | 3666 | 5666 | 0 |  |
+| T2 | - | - | 1 | Ethernet40 |
+| T3 | - | - | 4 | Ethernet41 |
+
+##### Exporters Summary
+
+| Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
+| ------------ | ------------- | ----------------- | -------------- | --------------- |
+| T2 | T2-E1 | - | - | No local interface |
+| T3 | T3-E1 | - | - | No local interface |
+| T3 | T3-E2 | - | - | No local interface |
+| T3 | T3-E3 | - | - | Management1 |
+| T3 | T3-E4 | - | - | No local interface |
+
 #### Flow Tracking Configuration
 
 ```eos
@@ -93,15 +113,12 @@ flow tracking sampled
    no shutdown
 !
 flow tracking hardware
-   sample 666
    tracker T1
       record export on inactive timeout 3666
       record export on interval 5666
-      record export mpls
    tracker T2
       exporter T2-E1
          collector 42.42.42.42
-      flow table size 614400 entries
    tracker T3
       exporter T3-E1
       exporter T3-E2
@@ -113,7 +130,6 @@ flow tracking hardware
          template interval 424242
       exporter T3-E4
          collector dead:beef::cafe
-      flow table size 100000 entries
    no shutdown
 ```
 
