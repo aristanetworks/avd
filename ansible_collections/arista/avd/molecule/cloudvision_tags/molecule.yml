@@ -12,6 +12,10 @@ scenario:
     - destroy
 dependency:
   name: galaxy
+  env:
+    CVP_ADDRESS: ${CVP_ADDRESS}
+    CVP_USERNAME: ${CVP_USERNAME}
+    CVP_PASSWORD: ${CVP_PASSWORD}
 driver:
   name: delegated
 platforms:
@@ -29,10 +33,5 @@ provisioner:
       group_vars: 'inventory/group_vars/'
       host_vars: 'inventory/host_vars/'
   ansible_args: []
-  env:
-    CVP_ADDRESS: ${CVP_ADDRESS}
-    CVP_USERNAME: ${CVP_USERNAME}
-    CVP_PASSWORD: ${CVP_PASSWORD}
-    CVP_SKIP: ${CVP_SKIP}
 verifier:
   name: ansible
