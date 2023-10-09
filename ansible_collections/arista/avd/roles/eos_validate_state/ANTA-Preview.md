@@ -34,7 +34,11 @@
 
 ## How to run eos_validate_state in ANTA mode
 
-- Install the "anta" Python package: `--8<-- "preview_requirements.txt:4:4"` (this is *not* part of the `requirements.txt`)
+- Install the "anta" Python package (this is *not* part of the `requirements.txt`):
+
+    ```sh
+    --8<-- "preview_requirements.txt:4:4"
+    ```
 
 - Run eos_validate_state playbook by setting the variable `use_anta=true`.
 
