@@ -811,11 +811,16 @@ roles/eos_cli_config_gen/docs/tables/router-l2-vpn.md
 roles/eos_cli_config_gen/docs/tables/router-ospf.md
 --8<--
 
+### Router path selection
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-path-selection.md
+--8<--
+
 ### Router service-insertion
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/router-service-insertion.md
---8<--
 
 ### Router traffic engineering
 
