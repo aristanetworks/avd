@@ -1057,8 +1057,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
@@ -1245,8 +1243,6 @@ keys:
           peer_groups:
             type: list
             primary_key: name
-            convert_types:
-              - dict
             items:
               type: dict
               keys:
