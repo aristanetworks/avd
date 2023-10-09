@@ -6,10 +6,10 @@
 {# doc - ip security #}
 {% if ip_security is arista.avd.defined %}
 
-### IP Security
+## IP Security
 {%     if ip_security.ike_policies is arista.avd.defined %}
 
-#### IKE policies
+### IKE policies
 
 | Policy name | Local ID |
 | ----------- | -------- |
@@ -19,7 +19,7 @@
 {%     endif %}
 {%     if ip_security.ike_policie is arista.avd.defined %}
 
-#### Security Association policies
+### Security Association policies
 
 | Policy name | ESP Integrity | ESP Encryption | PFS DH Group |
 | ----------- | ------------- | -------------- | ------------ |
@@ -29,7 +29,7 @@
 {%     endif %}
 {%     if ip_security.profiles is arista.avd.defined %}
 
-#### IPSec profiles
+### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode |
 | ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- |
@@ -46,14 +46,14 @@
 {%     endif %}
 {%     if ip_security.key_controller is arista.avd.defined %}
 
-#### Key controller
+### Key controller
 
 | Profile name |
 | ------------ |
 | {{ ip_security.key_controller.profile | arista.avd.default("-") }} |
 {%     endif %}
 
-#### IP Security Configuration
+### IP Security Configuration
 
 ```eos
 {%     include 'eos/ip-security.j2' %}

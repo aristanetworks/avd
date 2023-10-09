@@ -5579,18 +5579,18 @@
       "properties": {
         "ike_policies": {
           "type": "array",
-          "description": "Internet Security Association and Key Mgmt Protocol",
+          "description": "Internet Security Association and Key Mgmt Protocol.",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Policy name",
+                "description": "Policy name.",
                 "title": "Name"
               },
               "local_id": {
                 "type": "string",
-                "description": "Local IKE Identification\nCan be an IPv4 or an IPv6 address.\n",
+                "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
                 "title": "Local ID"
               }
             },
@@ -5606,13 +5606,13 @@
         },
         "sa_policies": {
           "type": "array",
-          "description": "Security Association policies\n",
+          "description": "Security Association policies.",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Name of the SA policy",
+                "description": "Name of the SA policy.",
                 "title": "Name"
               },
               "esp": {
@@ -5675,28 +5675,28 @@
         },
         "profiles": {
           "type": "array",
-          "description": "IPSec profiles",
+          "description": "IPSec profiles.",
           "items": {
             "type": "object",
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Name of the IPsec profile",
+                "description": "Name of the IPsec profile.",
                 "title": "Name"
               },
               "ike_policy": {
                 "type": "string",
-                "description": "Name of the IKE policy to use in this profile",
+                "description": "Name of the IKE policy to use in this profile.",
                 "title": "Ike Policy"
               },
               "sa_policy": {
                 "type": "string",
-                "description": "Name of the Security Association to use in this profile",
+                "description": "Name of the Security Association to use in this profile.",
                 "title": "Sa Policy"
               },
               "connection": {
                 "type": "string",
-                "description": "IPsec connection (Initiator/Responder/Dynamic)",
+                "description": "IPsec connection (Initiator/Responder/Dynamic).",
                 "enum": [
                   "add",
                   "start",
@@ -5706,23 +5706,23 @@
               },
               "shared_key": {
                 "type": "string",
-                "description": "Encrypted password - only type 7 supported",
+                "description": "Encrypted password - only type 7 supported.",
                 "title": "Shared Key"
               },
               "dpd": {
                 "type": "object",
-                "description": "Dead Peer Detection",
+                "description": "Dead Peer Detection.",
                 "properties": {
                   "interval": {
                     "type": "integer",
-                    "description": "Interval (in seconds) between keep-alive messages",
+                    "description": "Interval (in seconds) between keep-alive messages.",
                     "minimum": 2,
                     "maximum": 3600,
                     "title": "Interval"
                   },
                   "time": {
                     "type": "integer",
-                    "description": "Time (in seconds) after which the action is applied",
+                    "description": "Time (in seconds) after which the action is applied.",
                     "minimum": 10,
                     "maximum": 3600,
                     "title": "Time"
@@ -5751,7 +5751,7 @@
               },
               "mode": {
                 "type": "string",
-                "description": "Ipsec mode type",
+                "description": "Ipsec mode type.",
                 "enum": [
                   "transport",
                   "tunnel"
@@ -5774,7 +5774,7 @@
           "properties": {
             "profile": {
               "type": "string",
-              "description": "IPsec profile name to use",
+              "description": "IPsec profile name to use.",
               "title": "Profile"
             }
           },

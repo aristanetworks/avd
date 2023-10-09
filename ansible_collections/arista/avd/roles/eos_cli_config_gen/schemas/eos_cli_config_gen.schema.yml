@@ -3467,33 +3467,31 @@ keys:
     keys:
       ike_policies:
         type: list
-        description: Internet Security Association and Key Mgmt Protocol
+        description: Internet Security Association and Key Mgmt Protocol.
         primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Policy name
+              description: Policy name.
             local_id:
               type: str
-              description: 'Local IKE Identification
+              description: 'Local IKE Identification.
 
                 Can be an IPv4 or an IPv6 address.
 
                 '
       sa_policies:
         type: list
-        description: 'Security Association policies
-
-          '
+        description: Security Association policies.
         primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Name of the SA policy
+              description: Name of the SA policy.
             esp:
               type: dict
               keys:
@@ -3529,37 +3527,37 @@ keys:
               - 24
       profiles:
         type: list
-        description: IPSec profiles
+        description: IPSec profiles.
         primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Name of the IPsec profile
+              description: Name of the IPsec profile.
             ike_policy:
               type: str
-              description: Name of the IKE policy to use in this profile
+              description: Name of the IKE policy to use in this profile.
             sa_policy:
               type: str
-              description: Name of the Security Association to use in this profile
+              description: Name of the Security Association to use in this profile.
             connection:
               type: str
-              description: IPsec connection (Initiator/Responder/Dynamic)
+              description: IPsec connection (Initiator/Responder/Dynamic).
               valid_values:
               - add
               - start
               - route
             shared_key:
               type: str
-              description: Encrypted password - only type 7 supported
+              description: Encrypted password - only type 7 supported.
             dpd:
               type: dict
-              description: Dead Peer Detection
+              description: Dead Peer Detection.
               keys:
                 interval:
                   type: int
-                  description: Interval (in seconds) between keep-alive messages
+                  description: Interval (in seconds) between keep-alive messages.
                   required: true
                   convert_types:
                   - str
@@ -3567,7 +3565,7 @@ keys:
                   max: 3600
                 time:
                   type: int
-                  description: Time (in seconds) after which the action is applied
+                  description: Time (in seconds) after which the action is applied.
                   required: true
                   convert_types:
                   - str
@@ -3592,7 +3590,7 @@ keys:
                   - restart
             mode:
               type: str
-              description: Ipsec mode type
+              description: Ipsec mode type.
               valid_values:
               - transport
               - tunnel
@@ -3601,7 +3599,7 @@ keys:
         keys:
           profile:
             type: str
-            description: IPsec profile name to use
+            description: IPsec profile name to use.
   ip_ssh_client_source_interfaces:
     type: list
     items:

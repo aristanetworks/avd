@@ -4,7 +4,11 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP Security](#ip-security)
+- [IP Security](#ip-security)
+  - [IKE policies](#ike-policies)
+  - [IPSec profiles](#ipsec-profiles)
+  - [Key controller](#key-controller)
+  - [IP Security Configuration](#ip-security-configuration)
 
 ## Management
 
@@ -34,29 +38,29 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-### IP Security
+## IP Security
 
-#### IKE policies
+### IKE policies
 
 | Policy name | Local ID |
 | ----------- | -------- |
 | IKE-1 | 192.168.100.1 |
 | IKE-2 | - |
 
-#### IPSec profiles
+### IPSec profiles
 
 | Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode |
 | ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- |
 | Profile-1 | IKE-1 | SA-1 | start | - | - | - | transport |
 | Profile-2 | - | SA-2 | start | - | - | - | tunnel |
 
-#### Key controller
+### Key controller
 
 | Profile name |
 | ------------ |
 | Profile-1 |
 
-#### IP Security Configuration
+### IP Security Configuration
 
 ```eos
 !
