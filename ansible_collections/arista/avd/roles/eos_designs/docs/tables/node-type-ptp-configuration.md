@@ -7,41 +7,6 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>node</samp>](## "node") | Dictionary |  |  |  | This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.<br>It is useful when generating device setting from other systems and sources, since the values can be set with a static path per device instead of having to insert it into the common `<node_type_key>` data structure.<br>Since MLAG groupings are currently picked up from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`. |
-    | [<samp>&nbsp;&nbsp;ptp</samp>](## "node.ptp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "node.ptp.enabled") | Boolean |  | `False` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "node.ptp.profile") | String |  | `aes67-r16-2016` | Valid Values:<br>- aes67<br>- smpte2059-2<br>- aes67-r16-2016 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "node.ptp.domain") | Integer |  | `127` | Min: 0<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;priority1</samp>](## "node.ptp.priority1") | Integer |  |  | Min: 0<br>Max: 255 | default -> automatically set based on node_type.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;priority2</samp>](## "node.ptp.priority2") | Integer |  |  | Min: 0<br>Max: 255 | default -> (node_id modulus 256).<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;auto_clock_identity</samp>](## "node.ptp.auto_clock_identity") | Boolean |  | `True` |  | If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.<br>default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;clock_identity_prefix</samp>](## "node.ptp.clock_identity_prefix") | String |  |  |  | PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".<br>By default the 3-byte prefix is "00:1C:73".<br>This can be overridden if auto_clock_identity is set to true (which is the default).<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;clock_identity</samp>](## "node.ptp.clock_identity") | String |  |  |  | Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "node.ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This can be set manually if required, for example, to a value of "10.1.2.3".<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "node.ptp.ttl") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "node.ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "node.ptp.dscp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "node.ptp.dscp.general_messages") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "node.ptp.dscp.event_messages") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;monitor</samp>](## "node.ptp.monitor") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "node.ptp.monitor.enabled") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "node.ptp.monitor.threshold") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset_from_master</samp>](## "node.ptp.monitor.threshold.offset_from_master") | Integer |  | `250` | Min: 0<br>Max: 1000000000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mean_path_delay</samp>](## "node.ptp.monitor.threshold.mean_path_delay") | Integer |  | `1500` | Min: 0<br>Max: 1000000000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "node.ptp.monitor.threshold.drop") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset_from_master</samp>](## "node.ptp.monitor.threshold.drop.offset_from_master") | Integer |  |  | Min: 0<br>Max: 1000000000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mean_path_delay</samp>](## "node.ptp.monitor.threshold.drop.mean_path_delay") | Integer |  |  | Min: 0<br>Max: 1000000000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_message</samp>](## "node.ptp.monitor.missing_message") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intervals</samp>](## "node.ptp.monitor.missing_message.intervals") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "node.ptp.monitor.missing_message.intervals.announce") | Integer |  |  | Min: 2<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow_up</samp>](## "node.ptp.monitor.missing_message.intervals.follow_up") | Integer |  |  | Min: 2<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sync</samp>](## "node.ptp.monitor.missing_message.intervals.sync") | Integer |  |  | Min: 2<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequence_ids</samp>](## "node.ptp.monitor.missing_message.sequence_ids") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "node.ptp.monitor.missing_message.sequence_ids.enabled") | Boolean |  | `True` |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "node.ptp.monitor.missing_message.sequence_ids.announce") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay_resp</samp>](## "node.ptp.monitor.missing_message.sequence_ids.delay_resp") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow_up</samp>](## "node.ptp.monitor.missing_message.sequence_ids.follow_up") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sync</samp>](## "node.ptp.monitor.missing_message.sequence_ids.sync") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "&lt;node_type_keys.key&gt;") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "&lt;node_type_keys.key&gt;.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "&lt;node_type_keys.key&gt;.defaults.ptp") | Dictionary |  |  |  |  |
@@ -186,45 +151,45 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay_resp</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ptp.monitor.missing_message.sequence_ids.delay_resp") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow_up</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ptp.monitor.missing_message.sequence_ids.follow_up") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sync</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].ptp.monitor.missing_message.sequence_ids.sync") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
+    | [<samp>node</samp>](## "node") | Dictionary |  |  |  | This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.<br>It is useful when generating device setting from other systems and sources, since the values can be set with a static path per device instead of having to insert it into the common `<node_type_key>` data structure.<br>Since MLAG groupings are currently picked up from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`. |
+    | [<samp>&nbsp;&nbsp;ptp</samp>](## "node.ptp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "node.ptp.enabled") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "node.ptp.profile") | String |  | `aes67-r16-2016` | Valid Values:<br>- aes67<br>- smpte2059-2<br>- aes67-r16-2016 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;domain</samp>](## "node.ptp.domain") | Integer |  | `127` | Min: 0<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;priority1</samp>](## "node.ptp.priority1") | Integer |  |  | Min: 0<br>Max: 255 | default -> automatically set based on node_type.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;priority2</samp>](## "node.ptp.priority2") | Integer |  |  | Min: 0<br>Max: 255 | default -> (node_id modulus 256).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;auto_clock_identity</samp>](## "node.ptp.auto_clock_identity") | Boolean |  | `True` |  | If you prefer to have PTP clock identity be the system MAC-address of the switch, which is the default EOS behaviour, simply disable the automatic PTP clock identity.<br>default -> (clock_identity_prefix = 00:1C:73 (default)) + (PTP priority 1 as HEX) + ":00:" + (PTP priority 2 as HEX).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;clock_identity_prefix</samp>](## "node.ptp.clock_identity_prefix") | String |  |  |  | PTP clock idetentiy 3-byte prefix. i.e. "01:02:03".<br>By default the 3-byte prefix is "00:1C:73".<br>This can be overridden if auto_clock_identity is set to true (which is the default).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;clock_identity</samp>](## "node.ptp.clock_identity") | String |  |  |  | Set PTP clock identity manually. 6-byte value i.e. "01:02:03:04:05:06".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;source_ip</samp>](## "node.ptp.source_ip") | String |  |  |  | By default in EOS, PTP packets are sourced with an IP address from the routed port or from the relevant SVI, which is the recommended behaviour.<br>This can be set manually if required, for example, to a value of "10.1.2.3".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "node.ptp.ttl") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;forward_unicast</samp>](## "node.ptp.forward_unicast") | Boolean |  | `False` |  | Enable PTP unicast forwarding.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "node.ptp.dscp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;general_messages</samp>](## "node.ptp.dscp.general_messages") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;event_messages</samp>](## "node.ptp.dscp.event_messages") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;monitor</samp>](## "node.ptp.monitor") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "node.ptp.monitor.enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "node.ptp.monitor.threshold") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset_from_master</samp>](## "node.ptp.monitor.threshold.offset_from_master") | Integer |  | `250` | Min: 0<br>Max: 1000000000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mean_path_delay</samp>](## "node.ptp.monitor.threshold.mean_path_delay") | Integer |  | `1500` | Min: 0<br>Max: 1000000000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "node.ptp.monitor.threshold.drop") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;offset_from_master</samp>](## "node.ptp.monitor.threshold.drop.offset_from_master") | Integer |  |  | Min: 0<br>Max: 1000000000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mean_path_delay</samp>](## "node.ptp.monitor.threshold.drop.mean_path_delay") | Integer |  |  | Min: 0<br>Max: 1000000000 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_message</samp>](## "node.ptp.monitor.missing_message") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;intervals</samp>](## "node.ptp.monitor.missing_message.intervals") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "node.ptp.monitor.missing_message.intervals.announce") | Integer |  |  | Min: 2<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow_up</samp>](## "node.ptp.monitor.missing_message.intervals.follow_up") | Integer |  |  | Min: 2<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sync</samp>](## "node.ptp.monitor.missing_message.intervals.sync") | Integer |  |  | Min: 2<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sequence_ids</samp>](## "node.ptp.monitor.missing_message.sequence_ids") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "node.ptp.monitor.missing_message.sequence_ids.enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;announce</samp>](## "node.ptp.monitor.missing_message.sequence_ids.announce") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay_resp</samp>](## "node.ptp.monitor.missing_message.sequence_ids.delay_resp") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;follow_up</samp>](## "node.ptp.monitor.missing_message.sequence_ids.follow_up") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sync</samp>](## "node.ptp.monitor.missing_message.sequence_ids.sync") | Integer |  | `3` | Min: 2<br>Max: 255 |  |
 
 === "YAML"
 
     ```yaml
-    node:
-      ptp:
-        enabled: <bool>
-        profile: <str>
-        domain: <int>
-        priority1: <int>
-        priority2: <int>
-        auto_clock_identity: <bool>
-        clock_identity_prefix: <str>
-        clock_identity: <str>
-        source_ip: <str>
-        ttl: <int>
-        forward_unicast: <bool>
-        dscp:
-          general_messages: <int>
-          event_messages: <int>
-        monitor:
-          enabled: <bool>
-          threshold:
-            offset_from_master: <int>
-            mean_path_delay: <int>
-            drop:
-              offset_from_master: <int>
-              mean_path_delay: <int>
-          missing_message:
-            intervals:
-              announce: <int>
-              follow_up: <int>
-              sync: <int>
-            sequence_ids:
-              enabled: <bool>
-              announce: <int>
-              delay_resp: <int>
-              follow_up: <int>
-              sync: <int>
     <node_type_keys.key>:
       defaults:
         ptp:
@@ -369,4 +334,39 @@
                   delay_resp: <int>
                   follow_up: <int>
                   sync: <int>
+    node:
+      ptp:
+        enabled: <bool>
+        profile: <str>
+        domain: <int>
+        priority1: <int>
+        priority2: <int>
+        auto_clock_identity: <bool>
+        clock_identity_prefix: <str>
+        clock_identity: <str>
+        source_ip: <str>
+        ttl: <int>
+        forward_unicast: <bool>
+        dscp:
+          general_messages: <int>
+          event_messages: <int>
+        monitor:
+          enabled: <bool>
+          threshold:
+            offset_from_master: <int>
+            mean_path_delay: <int>
+            drop:
+              offset_from_master: <int>
+              mean_path_delay: <int>
+          missing_message:
+            intervals:
+              announce: <int>
+              follow_up: <int>
+              sync: <int>
+            sequence_ids:
+              enabled: <bool>
+              announce: <int>
+              delay_resp: <int>
+              follow_up: <int>
+              sync: <int>
     ```

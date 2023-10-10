@@ -7,11 +7,6 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>node</samp>](## "node") | Dictionary |  |  |  | This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.<br>It is useful when generating device setting from other systems and sources, since the values can be set with a static path per device instead of having to insert it into the common `<node_type_key>` data structure.<br>Since MLAG groupings are currently picked up from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`. |
-    | [<samp>&nbsp;&nbsp;isis_system_id_prefix</samp>](## "node.isis_system_id_prefix") | String |  |  | Pattern: [0-9a-f]{4}\.[0-9a-f]{4} | (4.4 hexadecimal). |
-    | [<samp>&nbsp;&nbsp;isis_maximum_paths</samp>](## "node.isis_maximum_paths") | Integer |  |  |  | Number of path to configure in ECMP for ISIS. |
-    | [<samp>&nbsp;&nbsp;is_type</samp>](## "node.is_type") | String |  | `level-2` | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 |  |
-    | [<samp>&nbsp;&nbsp;node_sid_base</samp>](## "node.node_sid_base") | Integer |  | `0` |  | Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID. |
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "&lt;node_type_keys.key&gt;") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "&lt;node_type_keys.key&gt;.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;isis_system_id_prefix</samp>](## "&lt;node_type_keys.key&gt;.defaults.isis_system_id_prefix") | String |  |  | Pattern: [0-9a-f]{4}\.[0-9a-f]{4} | (4.4 hexadecimal). |
@@ -36,15 +31,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_maximum_paths</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].isis_maximum_paths") | Integer |  |  |  | Number of path to configure in ECMP for ISIS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;is_type</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].is_type") | String |  | `level-2` | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;node_sid_base</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].node_sid_base") | Integer |  | `0` |  | Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID. |
+    | [<samp>node</samp>](## "node") | Dictionary |  |  |  | This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.<br>It is useful when generating device setting from other systems and sources, since the values can be set with a static path per device instead of having to insert it into the common `<node_type_key>` data structure.<br>Since MLAG groupings are currently picked up from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`. |
+    | [<samp>&nbsp;&nbsp;isis_system_id_prefix</samp>](## "node.isis_system_id_prefix") | String |  |  | Pattern: [0-9a-f]{4}\.[0-9a-f]{4} | (4.4 hexadecimal). |
+    | [<samp>&nbsp;&nbsp;isis_maximum_paths</samp>](## "node.isis_maximum_paths") | Integer |  |  |  | Number of path to configure in ECMP for ISIS. |
+    | [<samp>&nbsp;&nbsp;is_type</samp>](## "node.is_type") | String |  | `level-2` | Valid Values:<br>- level-1-2<br>- level-1<br>- level-2 |  |
+    | [<samp>&nbsp;&nbsp;node_sid_base</samp>](## "node.node_sid_base") | Integer |  | `0` |  | Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID. |
 
 === "YAML"
 
     ```yaml
-    node:
-      isis_system_id_prefix: <str>
-      isis_maximum_paths: <int>
-      is_type: <str>
-      node_sid_base: <int>
     <node_type_keys.key>:
       defaults:
         isis_system_id_prefix: <str>
@@ -69,4 +64,9 @@
           isis_maximum_paths: <int>
           is_type: <str>
           node_sid_base: <int>
+    node:
+      isis_system_id_prefix: <str>
+      isis_maximum_paths: <int>
+      is_type: <str>
+      node_sid_base: <int>
     ```

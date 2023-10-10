@@ -23210,6 +23210,20 @@
                       },
                       "title": "EVPN Hostflap Detection"
                     },
+                    "next_hop": {
+                      "type": "object",
+                      "properties": {
+                        "resolution_disabled": {
+                          "type": "boolean",
+                          "title": "Resolution Disabled"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Next Hop"
+                    },
                     "route": {
                       "type": "object",
                       "properties": {
@@ -23587,6 +23601,85 @@
                   },
                   "title": "Address Family IPv4 Multicast"
                 },
+                "address_family_ipv4_sr_te": {
+                  "type": "object",
+                  "properties": {
+                    "neighbors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "ip_address": {
+                            "type": "string",
+                            "title": "IP Address"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "route_map_in": {
+                            "type": "string",
+                            "description": "Inbound route-map name",
+                            "title": "Route Map In"
+                          },
+                          "route_map_out": {
+                            "type": "string",
+                            "description": "Outbound route-map name",
+                            "title": "Route Map Out"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "ip_address"
+                        ]
+                      },
+                      "title": "Neighbors"
+                    },
+                    "peer_groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Peer-group name",
+                            "title": "Name"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "route_map_in": {
+                            "type": "string",
+                            "description": "Inbound route-map name",
+                            "title": "Route Map In"
+                          },
+                          "route_map_out": {
+                            "type": "string",
+                            "description": "Outbound route-map name",
+                            "title": "Route Map Out"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      },
+                      "title": "Peer Groups"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Address Family IPv4 Sr Te"
+                },
                 "address_family_ipv6": {
                   "type": "object",
                   "properties": {
@@ -23885,6 +23978,85 @@
                     "^_.+$": {}
                   },
                   "title": "Address Family IPv6 Multicast"
+                },
+                "address_family_ipv6_sr_te": {
+                  "type": "object",
+                  "properties": {
+                    "neighbors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "ip_address": {
+                            "type": "string",
+                            "title": "IP Address"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "route_map_in": {
+                            "type": "string",
+                            "description": "Inbound route-map name",
+                            "title": "Route Map In"
+                          },
+                          "route_map_out": {
+                            "type": "string",
+                            "description": "Outbound route-map name",
+                            "title": "Route Map Out"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "ip_address"
+                        ]
+                      },
+                      "title": "Neighbors"
+                    },
+                    "peer_groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Peer-group name",
+                            "title": "Name"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "route_map_in": {
+                            "type": "string",
+                            "description": "Inbound route-map name",
+                            "title": "Route Map In"
+                          },
+                          "route_map_out": {
+                            "type": "string",
+                            "description": "Outbound route-map name",
+                            "title": "Route Map Out"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      },
+                      "title": "Peer Groups"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Address Family IPv6 Sr Te"
                 },
                 "address_family_flow_spec_ipv4": {
                   "type": "object",
@@ -24371,6 +24543,10 @@
                                     "type": "string"
                                   },
                                   "title": "Route Targets"
+                                },
+                                "route_map": {
+                                  "type": "string",
+                                  "title": "Route Map"
                                 }
                               },
                               "additionalProperties": false,
@@ -24398,6 +24574,10 @@
                                     "type": "string"
                                   },
                                   "title": "Route Targets"
+                                },
+                                "route_map": {
+                                  "type": "string",
+                                  "title": "Route Map"
                                 }
                               },
                               "additionalProperties": false,

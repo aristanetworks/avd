@@ -7,13 +7,6 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>node</samp>](## "node") | Dictionary |  |  |  | This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.<br>It is useful when generating device setting from other systems and sources, since the values can be set with a static path per device instead of having to insert it into the common `<node_type_key>` data structure.<br>Since MLAG groupings are currently picked up from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`. |
-    | [<samp>&nbsp;&nbsp;mpls_overlay_role</samp>](## "node.mpls_overlay_role") | String |  |  | Valid Values:<br>- client<br>- server<br>- none | Set the default mpls overlay role.<br>Acting role in overlay control plane.<br> |
-    | [<samp>&nbsp;&nbsp;overlay_address_families</samp>](## "node.overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node.overlay_address_families.[].&lt;str&gt;") | String |  |  | Valid Values:<br>- evpn<br>- vpn-ipv4<br>- vpn-ipv6 |  |
-    | [<samp>&nbsp;&nbsp;mpls_route_reflectors</samp>](## "node.mpls_route_reflectors") | List, items: String |  |  |  | List of inventory hostname acting as MPLS route-reflectors. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node.mpls_route_reflectors.[].&lt;str&gt;") | String |  |  |  | Inventory_hostname_of_mpls_route_reflectors. |
-    | [<samp>&nbsp;&nbsp;bgp_cluster_id</samp>](## "node.bgp_cluster_id") | String |  |  |  | Set BGP cluster id. |
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "&lt;node_type_keys.key&gt;") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "&lt;node_type_keys.key&gt;.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_overlay_role</samp>](## "&lt;node_type_keys.key&gt;.defaults.mpls_overlay_role") | String |  |  | Valid Values:<br>- client<br>- server<br>- none | Set the default mpls overlay role.<br>Acting role in overlay control plane.<br> |
@@ -46,17 +39,17 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_route_reflectors</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mpls_route_reflectors") | List, items: String |  |  |  | List of inventory hostname acting as MPLS route-reflectors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].mpls_route_reflectors.[].&lt;str&gt;") | String |  |  |  | Inventory_hostname_of_mpls_route_reflectors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_cluster_id</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].bgp_cluster_id") | String |  |  |  | Set BGP cluster id. |
+    | [<samp>node</samp>](## "node") | Dictionary |  |  |  | This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.<br>It is useful when generating device setting from other systems and sources, since the values can be set with a static path per device instead of having to insert it into the common `<node_type_key>` data structure.<br>Since MLAG groupings are currently picked up from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`. |
+    | [<samp>&nbsp;&nbsp;mpls_overlay_role</samp>](## "node.mpls_overlay_role") | String |  |  | Valid Values:<br>- client<br>- server<br>- none | Set the default mpls overlay role.<br>Acting role in overlay control plane.<br> |
+    | [<samp>&nbsp;&nbsp;overlay_address_families</samp>](## "node.overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node.overlay_address_families.[].&lt;str&gt;") | String |  |  | Valid Values:<br>- evpn<br>- vpn-ipv4<br>- vpn-ipv6 |  |
+    | [<samp>&nbsp;&nbsp;mpls_route_reflectors</samp>](## "node.mpls_route_reflectors") | List, items: String |  |  |  | List of inventory hostname acting as MPLS route-reflectors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node.mpls_route_reflectors.[].&lt;str&gt;") | String |  |  |  | Inventory_hostname_of_mpls_route_reflectors. |
+    | [<samp>&nbsp;&nbsp;bgp_cluster_id</samp>](## "node.bgp_cluster_id") | String |  |  |  | Set BGP cluster id. |
 
 === "YAML"
 
     ```yaml
-    node:
-      mpls_overlay_role: <str>
-      overlay_address_families:
-        - <str>
-      mpls_route_reflectors:
-        - <str>
-      bgp_cluster_id: <str>
     <node_type_keys.key>:
       defaults:
         mpls_overlay_role: <str>
@@ -89,4 +82,11 @@
           mpls_route_reflectors:
             - <str>
           bgp_cluster_id: <str>
+    node:
+      mpls_overlay_role: <str>
+      overlay_address_families:
+        - <str>
+      mpls_route_reflectors:
+        - <str>
+      bgp_cluster_id: <str>
     ```
