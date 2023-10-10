@@ -1346,7 +1346,6 @@ keys:
                     type: bool
                   propagator:
                     type: bool
->>>>>>> 02edb86c0 (Feat(eos_cli_config_gen): Add support for BGP link-state address-family)
       address_family_flow_spec_ipv4:
         type: dict
         keys:

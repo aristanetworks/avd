@@ -897,7 +897,6 @@ router bgp {{ router_bgp.as }}
       {{ network_cli }}
 {%         endfor %}
 {%     endif %}
-<<<<<<< HEAD
 {# address family ipv6 sr-te activation #}
 {%     if router_bgp.address_family_ipv6_sr_te is arista.avd.defined %}
    !

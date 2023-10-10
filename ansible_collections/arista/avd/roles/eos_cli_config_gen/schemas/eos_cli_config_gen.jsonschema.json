@@ -14708,7 +14708,6 @@
           },
           "title": "Address Family IPv6 Multicast"
         },
-<<<<<<< HEAD
         "address_family_ipv6_sr_te": {
           "type": "object",
           "properties": {
@@ -14745,7 +14744,49 @@
                 ]
               },
               "title": "Neighbors"
-=======
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Inbound route-map name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Outbound route-map name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family IPv6 Sr Te"
+        },
         "address_family_link_state": {
           "type": "object",
           "properties": {
@@ -14786,7 +14827,6 @@
                 "^_.+$": {}
               },
               "title": "BGP"
->>>>>>> 02edb86c0 (Feat(eos_cli_config_gen): Add support for BGP link-state address-family)
             },
             "peer_groups": {
               "type": "array",
@@ -14802,17 +14842,6 @@
                     "type": "boolean",
                     "title": "Activate"
                   },
-<<<<<<< HEAD
-                  "route_map_in": {
-                    "type": "string",
-                    "description": "Inbound route-map name",
-                    "title": "Route Map In"
-                  },
-                  "route_map_out": {
-                    "type": "string",
-                    "description": "Outbound route-map name",
-                    "title": "Route Map Out"
-=======
                   "missing_policy": {
                     "type": "object",
                     "properties": {
@@ -14840,7 +14869,6 @@
                       "^_.+$": {}
                     },
                     "title": "Missing Policy"
->>>>>>> 02edb86c0 (Feat(eos_cli_config_gen): Add support for BGP link-state address-family)
                   }
                 },
                 "additionalProperties": false,
@@ -14852,8 +14880,6 @@
                 ]
               },
               "title": "Peer Groups"
-<<<<<<< HEAD
-=======
             },
             "neighbors": {
               "type": "array",
@@ -14938,18 +14964,13 @@
                 "^_.+$": {}
               },
               "title": "Path Selection"
->>>>>>> 02edb86c0 (Feat(eos_cli_config_gen): Add support for BGP link-state address-family)
             }
           },
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
           },
-<<<<<<< HEAD
-          "title": "Address Family IPv6 Sr Te"
-=======
           "title": "Address Family Link State"
->>>>>>> 02edb86c0 (Feat(eos_cli_config_gen): Add support for BGP link-state address-family)
         },
         "address_family_flow_spec_ipv4": {
           "type": "object",
