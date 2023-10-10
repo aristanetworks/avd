@@ -4156,7 +4156,7 @@
     },
     "lldp_topology": {
       "type": "array",
-      "description": "Generate AVD configurations directly from the given Topology.\nActivate this feature by setting `use_lldp_topology` to `true`.\nRequires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.",
+      "description": "Generate AVD configurations directly from the given topology.\nActivate this feature by setting `use_lldp_topology` to `true`.\nRequires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.",
       "items": {
         "type": "object",
         "properties": {

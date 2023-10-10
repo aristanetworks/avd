@@ -1093,7 +1093,7 @@ keys:
     documentation_options:
       table: lldp-topology
     type: list
-    description: 'Generate AVD configurations directly from the given Topology.
+    description: 'Generate AVD configurations directly from the given topology.
 
       Activate this feature by setting `use_lldp_topology` to `true`.
 

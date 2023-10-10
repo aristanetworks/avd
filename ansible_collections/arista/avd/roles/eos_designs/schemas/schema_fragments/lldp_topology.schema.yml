@@ -12,7 +12,7 @@ keys:
     type: list
     # Other future uses of this could be post validation or even input validation to highlight discrepancies
     description: |-
-      Generate AVD configurations directly from the given Topology.
+      Generate AVD configurations directly from the given topology.
       Activate this feature by setting `use_lldp_topology` to `true`.
       Requires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.
       Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.

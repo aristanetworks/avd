@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>lldp_topology</samp>](## "lldp_topology") | List, items: Dictionary |  |  |  | Generate AVD configurations directly from the given Topology.<br>Activate this feature by setting `use_lldp_topology` to `true`.<br>Requires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.<br>Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration. |
+    | [<samp>lldp_topology</samp>](## "lldp_topology") | List, items: Dictionary |  |  |  | Generate AVD configurations directly from the given topology.<br>Activate this feature by setting `use_lldp_topology` to `true`.<br>Requires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.<br>Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration. |
     | [<samp>&nbsp;&nbsp;- hostname</samp>](## "lldp_topology.[].hostname") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "lldp_topology.[].platform") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "lldp_topology.[].interfaces") | List, items: Dictionary | Required |  |  |  |
