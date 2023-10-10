@@ -571,8 +571,8 @@ This feature currently provides the following configurations based on the given 
     When using parallel links between the same devices for L3 uplinks it is important to set
     `max_uplink_switches` and `max_parallel_uplinks` to ensure consistent IP addressing.
 
-!!! tip
-    To use this feature set `default_interfaces` according to the intended design and set `use_lldp_topology` to `true`.
+??? example "LLDP topology example"
+    To use this feature set `default_interfaces` according to the intended design (see [default_intefaces](#default-interface-settings) for details) and set `use_lldp_topology` to `true`.
     Provide a full topology under `lldp_topology` like this example:
 
     ```yaml
