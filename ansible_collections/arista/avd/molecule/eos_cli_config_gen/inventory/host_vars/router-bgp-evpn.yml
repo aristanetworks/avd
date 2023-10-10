@@ -67,6 +67,8 @@ router_bgp:
       window: 10
       threshold: 1
       expiry_timeout: 3
+    next_hop:
+      resolution_disabled: true
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
