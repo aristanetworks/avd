@@ -965,6 +965,9 @@ router bgp {{ router_bgp.as }}
 {%                 for route_target in address_family.route_targets %}
       route-target import {{ address_family.address_family }} {{ route_target }}
 {%                 endfor %}
+{%                 if address_family.route_map is arista.avd.defined %}
+      route-target import {{ address_family.address_family }} route-map {{ address_family.route_map }}
+{%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         if vrf.route_targets.export is arista.avd.defined %}
@@ -972,6 +975,9 @@ router bgp {{ router_bgp.as }}
 {%                 for route_target in address_family.route_targets %}
       route-target export {{ address_family.address_family }} {{ route_target }}
 {%                 endfor %}
+{%                 if address_family.route_map is arista.avd.defined %}
+      route-target export {{ address_family.address_family }} route-map {{ address_family.route_map }}
+{%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         if vrf.router_id is arista.avd.defined %}
