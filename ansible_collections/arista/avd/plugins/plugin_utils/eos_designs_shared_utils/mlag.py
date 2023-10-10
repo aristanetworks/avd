@@ -50,7 +50,14 @@ class MlagMixin:
 
     @cached_property
     def mlag_interfaces(self: SharedUtils) -> list:
-        return range_expand(default(get(self.switch_data_combined, "mlag_interfaces"), get(self.default_interfaces, "mlag_interfaces"), []))
+        return range_expand(
+            default(
+                get(self.switch_data_combined, "mlag_interfaces"),
+                get(self.lldp_topology_config, "mlag_interfaces"),
+                get(self.default_interfaces, "mlag_interfaces"),
+                [],
+            )
+        )
 
     @cached_property
     def mlag_interfaces_speed(self: SharedUtils) -> str | None:

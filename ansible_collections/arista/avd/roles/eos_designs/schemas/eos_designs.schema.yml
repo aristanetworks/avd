@@ -1089,6 +1089,44 @@ keys:
   l3_edge:
     type: dict
     $ref: '#/$defs/l3_edge'
+  lldp_topology:
+    documentation_options:
+      table: lldp-topology
+    type: list
+    description: "LLDP Topology.\nUsed to generate AVD configurations directly from
+      the given topology if `use_lldp_topology` is set to `true`.\nNeighbor hostnames
+      must match the inventory hostnames of the AVD inventory to be taken into consideration.\nRequires
+      `default_interfaces` to be set, to detect the proper interface roles automatically.\nCurrently
+      providing the following configurations based on the given LLDP topology and
+      `default_interfaces`:\n- `uplink_switches`.\n- `uplink_interfaces`\n- `uplink_switch_interfaces`\n-
+      `mlag_interfaces`\n- `# mlag_peer` (future)\n- `platform`\n- `mgmt_interface`\nNOTES:\n-
+      Any derived configuration can be overridden by setting the key manually.\n  Even
+      keys set under node type `defaults` will take precedence over these derived
+      configurations.\n- when using parallel links between the same devices for L3
+      uplinks it is important to set\n  `max_uplink_switches` and `max_parallel_uplinks`
+      to ensure consistent IP addressing."
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+        platform:
+          type: str
+          required: true
+        interfaces:
+          type: list
+          required: true
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+              neighbor:
+                type: str
+              neighbor_interface:
+                type: str
   local_users:
     documentation_options:
       table: management-settings
@@ -2916,6 +2954,13 @@ keys:
       enable:
         type: bool
         default: false
+  use_lldp_topology:
+    documentation_options:
+      table: lldp-topology
+    type: bool
+    description: 'Generate AVD configurations directly from a given LLDP Topology.
+
+      See `lldp_topology` for details.'
   vtep_vvtep_ip:
     documentation_options:
       table: overlay-settings

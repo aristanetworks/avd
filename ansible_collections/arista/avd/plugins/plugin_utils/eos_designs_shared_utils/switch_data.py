@@ -73,7 +73,13 @@ class SwitchDataMixin:
         defaults_config = get(node_type_config, "defaults", default={})
 
         # Merge node data -> node_group data -> defaults into combined
-        switch_data["combined"] = merge(defaults_config, switch_data["node_group"], node_config, list_merge="replace", destructive_merge=False)
+        switch_data["combined"] = merge(
+            defaults_config,
+            switch_data["node_group"],
+            node_config,
+            list_merge="replace",
+            destructive_merge=False,
+        )
 
         return switch_data
 

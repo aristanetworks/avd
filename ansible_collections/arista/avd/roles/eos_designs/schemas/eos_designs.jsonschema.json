@@ -4154,6 +4154,61 @@
       },
       "title": "L3 Edge"
     },
+    "lldp_topology": {
+      "type": "array",
+      "description": "LLDP Topology.\nUsed to generate AVD configurations directly from the given topology if `use_lldp_topology` is set to `true`.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.\nRequires `default_interfaces` to be set, to detect the proper interface roles automatically.\nCurrently providing the following configurations based on the given LLDP topology and `default_interfaces`:\n- `uplink_switches`.\n- `uplink_interfaces`\n- `uplink_switch_interfaces`\n- `mlag_interfaces`\n- `# mlag_peer` (future)\n- `platform`\n- `mgmt_interface`\nNOTES:\n- Any derived configuration can be overridden by setting the key manually.\n  Even keys set under node type `defaults` will take precedence over these derived configurations.\n- when using parallel links between the same devices for L3 uplinks it is important to set\n  `max_uplink_switches` and `max_parallel_uplinks` to ensure consistent IP addressing.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "title": "Hostname"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "neighbor": {
+                  "type": "string",
+                  "title": "Neighbor"
+                },
+                "neighbor_interface": {
+                  "type": "string",
+                  "title": "Neighbor Interface"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "title": "Interfaces"
+          }
+        },
+        "required": [
+          "platform",
+          "interfaces",
+          "hostname"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "LLDP Topology"
+    },
     "local_users": {
       "type": "array",
       "items": {
@@ -19052,6 +19107,11 @@
         "^_.+$": {}
       },
       "title": "Uplink PTP"
+    },
+    "use_lldp_topology": {
+      "type": "boolean",
+      "description": "Generate AVD configurations directly from a given LLDP Topology.\nSee `lldp_topology` for details.",
+      "title": "Use LLDP Topology"
     },
     "vtep_vvtep_ip": {
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",

@@ -1,0 +1,53 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  lldp_topology:
+    documentation_options:
+      table: lldp-topology
+    type: list
+    # Other future uses of this could be post validation or even input validation to highlight discrepancies
+    description: |-
+      LLDP Topology.
+      Used to generate AVD configurations directly from the given topology if `use_lldp_topology` is set to `true`.
+      Neighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.
+      Requires `default_interfaces` to be set, to detect the proper interface roles automatically.
+      Currently providing the following configurations based on the given LLDP topology and `default_interfaces`:
+      - `uplink_switches`.
+      - `uplink_interfaces`
+      - `uplink_switch_interfaces`
+      - `mlag_interfaces`
+      - `# mlag_peer` (future)
+      - `platform`
+      - `mgmt_interface`
+      NOTES:
+      - Any derived configuration can be overridden by setting the key manually.
+        Even keys set under node type `defaults` will take precedence over these derived configurations.
+      - when using parallel links between the same devices for L3 uplinks it is important to set
+        `max_uplink_switches` and `max_parallel_uplinks` to ensure consistent IP addressing.
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+        platform:
+          type: str
+          required: true
+        interfaces:
+          type: list
+          required: True
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+              neighbor:
+                type: str
+              neighbor_interface:
+                type: str

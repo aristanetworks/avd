@@ -7,6 +7,7 @@ from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
 from .link_tracking_groups import LinkTrackingGroupsMixin
+from .lldp_topology import LldpTopology
 from .mgmt import MgmtMixin
 from .misc import MiscMixin
 from .mlag import MlagMixin
@@ -28,6 +29,7 @@ class SharedUtils(
     InterfaceDescriptionsMixin,
     IpAddressingMixin,
     LinkTrackingGroupsMixin,
+    LldpTopology,
     MgmtMixin,
     MlagMixin,
     MiscMixin,

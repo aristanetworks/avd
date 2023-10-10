@@ -87,7 +87,11 @@ class MiscMixin:
 
     @cached_property
     def uplink_switches(self: SharedUtils) -> list:
-        return get(self.switch_data_combined, "uplink_switches", default=[])
+        return default(
+            get(self.switch_data_combined, "uplink_switches"),
+            get(self.lldp_topology_config, "uplink_switches"),
+            [],
+        )
 
     @cached_property
     def virtual_router_mac_address(self: SharedUtils) -> str | None:
