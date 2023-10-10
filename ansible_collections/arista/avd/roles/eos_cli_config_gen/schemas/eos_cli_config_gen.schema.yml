@@ -9018,6 +9018,8 @@ keys:
                         type: list
                         items:
                           type: str
+                      route_map:
+                        type: str
                 export:
                   type: list
                   primary_key: address_family
@@ -9033,6 +9035,8 @@ keys:
                         type: list
                         items:
                           type: str
+                      route_map:
+                        type: str
             router_id:
               description: in IP address format A.B.C.D
               type: str
