@@ -567,6 +567,62 @@
 | L3 Gateway Inter-domain | True |
 {%         endif %}
 {%     endif %}
+{%     if router_bgp.address_family_ipv4_sr_te is arista.avd.defined %}
+
+#### Router BGP IPv4 SR-TE Address Family
+{%         if router_bgp.address_family_ipv4_sr_te.neighbors is arista.avd.defined %}
+
+##### IPv4 SR-TE Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+{%             for neighbor in router_bgp.address_family_ipv4_sr_te.neighbors | arista.avd.natural_sort('ip_address') %}
+{%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_ipv4_sr_te.peer_groups is arista.avd.defined %}
+
+##### IPv4 SR-TE Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+{%             for peer_group in router_bgp.address_family_ipv4_sr_te.peer_groups | arista.avd.natural_sort('name') %}
+{%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if router_bgp.address_family_ipv6_sr_te is arista.avd.defined %}
+
+#### Router BGP IPv6 SR-TE Address Family
+{%         if router_bgp.address_family_ipv6_sr_te.neighbors is arista.avd.defined %}
+
+##### IPv6 SR-TE Neighbors
+
+| Neighbor | Activate | Route-map In | Route-map Out |
+| -------- | -------- | ------------ | ------------- |
+{%             for neighbor in router_bgp.address_family_ipv6_sr_te.neighbors | arista.avd.natural_sort('ip_address') %}
+{%                 set route_map_in = neighbor.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = neighbor.route_map_out | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_ipv6_sr_te.peer_groups is arista.avd.defined %}
+
+##### IPv6 SR-TE Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out |
+| ---------- | -------- | ------------ | ------------- |
+{%             for peer_group in router_bgp.address_family_ipv6_sr_te.peer_groups | arista.avd.natural_sort('name') %}
+{%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
+{%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
 {%     if router_bgp.address_family_vpn_ipv4 is arista.avd.defined %}
 
 #### Router BGP VPN-IPv4 Address Family
