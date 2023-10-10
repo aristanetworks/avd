@@ -555,14 +555,14 @@ roles/eos_designs/docs/tables/default-interfaces.md
 
 Generate AVD topology configurations directly from a given topology.
 
-Currently provides the following configurations based on the given LLDP topology and `default_interfaces`:
+This feature currently provides the following configurations based on the given LLDP topology and `default_interfaces`:
 
-- `uplink_switches`.
+- `uplink_switches`
 - `uplink_interfaces`
 - `uplink_switch_interfaces`
 - `mlag_interfaces`
-- `platform`
-- `mgmt_interface`
+- `platform` (if set)
+- `mgmt_interface` (if interface "ManagementX" is found in the list)
 
 !!! note
     Any derived configuration can be overridden by setting the key manually.
