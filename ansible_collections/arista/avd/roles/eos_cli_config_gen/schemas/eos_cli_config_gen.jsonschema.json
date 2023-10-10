@@ -15272,6 +15272,10 @@
                             "type": "string"
                           },
                           "title": "Route Targets"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
                         }
                       },
                       "additionalProperties": false,
@@ -15299,6 +15303,10 @@
                             "type": "string"
                           },
                           "title": "Route Targets"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
                         }
                       },
                       "additionalProperties": false,
