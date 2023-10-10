@@ -4,15 +4,16 @@
  that can be found in the LICENSE file.
 #}
 {# doc - flow tracking #}
-{% if flow_tracking is arista.avd.defined %}
+{% if flow_tracking is arista.avd.defined or flow_trackings is arista.avd.defined %}
 
 ### Flow Tracking
-{%     if flow_tracking.sampled is arista.avd.defined %}
+{# flow_trackings only support sampled flow #}
+{%     if flow_tracking.sampled is arista.avd.defined or flow_trackings is arista.avd.defined %}
 
 #### Flow Tracking Sampled
 
-Sample: {{ flow_tracking.sampled.sample | arista.avd.default("default") }}
-{%         if flow_tracking.sampled.trackers is arista.avd.defined %}
+Sample: {{ flow_tracking.sampled.sample | arista.avd.default(flow_trackings[0].sample, "default") }}
+{%         if flow_tracking.sampled.trackers is arista.avd.defined or flow_trackings[0].trackers is arista.avd.defined %}
 
 ##### Trackers Summary
 
@@ -37,6 +38,28 @@ Sample: {{ flow_tracking.sampled.sample | arista.avd.default("default") }}
 {%                 endfor %}
 | {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} | {{ table_size }} |
 {%             endfor %}
+{# Legacy syntax #}
+{%             for flow_tracking_obj in flow_trackings | arista.avd.default([]) %}
+{%                 for tracker in flow_tracking_obj.trackers | arista.avd.natural_sort('name') %}
+{%                     set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
+{%                     set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
+{%                     set mpls = tracker.record_export.mpls | arista.avd.default("-") %}
+{%                     set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
+{%                     set applied_on = [] %}
+{%                     set table_size = tracker.table_size | arista.avd.default('-') %}
+{%                     for ethernet_interface in ethernet_interfaces | arista.avd.default([]) %}
+{%                         if ethernet_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
+{%                             do applied_on.append(ethernet_interface.name) %}
+{%                         endif %}
+{%                     endfor %}
+{%                     for port_channel_interface in port_channel_interfaces | arista.avd.default([]) %}
+{%                         if port_channel_interface.flow_tracker.sampled is arista.avd.defined(tracker.name) %}
+{%                             do applied_on.append(port_channel_interface.name) %}
+{%                         endif %}
+{%                     endfor %}
+| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} | {{ table_size }} |
+{%                 endfor %}
+{%             endfor %}
 
 ##### Exporters Summary
 
@@ -48,6 +71,17 @@ Sample: {{ flow_tracking.sampled.sample | arista.avd.default("default") }}
 {%                     set port = exporter.port | arista.avd.default("-") %}
 {%                     set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
 | {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ local_interface }} |
+{%                 endfor %}
+{%             endfor %}
+{# Legacy syntax #}
+{%             for flow_tracking_obj in flow_trackings | arista.avd.default([]) %}
+{%                 for tracker in flow_tracking_obj.trackers | arista.avd.natural_sort('name') %}
+{%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
+{%                         set host = exporter.host | arista.avd.default("-") %}
+{%                         set port = exporter.port | arista.avd.default("-") %}
+{%                         set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
+| {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ local_interface }} |
+{%                     endfor %}
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
@@ -98,5 +132,6 @@ Sample: {{ flow_tracking.sampled.sample | arista.avd.default("default") }}
 
 ```eos
 {%     include 'eos/flow-tracking.j2' %}
+{%     include 'eos/flow-trackings.j2' %}
 ```
 {% endif %}

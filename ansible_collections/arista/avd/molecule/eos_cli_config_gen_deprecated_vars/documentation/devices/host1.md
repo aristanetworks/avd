@@ -20,7 +20,7 @@
   - [SFlow](#sflow)
   - [VM Tracer Sessions](#vm-tracer-sessions)
   - [Event Handler](#event-handler)
-  - [Flow Tracking - Deprecated](#flow-tracking---deprecated)
+  - [Flow Tracking](#flow-tracking)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Custom TCAM profiles](#custom-tcam-profiles)
   - [Hardware TCAM configuration](#hardware-tcam-configuration)
@@ -448,7 +448,7 @@ event-handler evpn-blacklist-recovery
    asynchronous
 ```
 
-### Flow Tracking - Deprecated
+### Flow Tracking
 
 #### Flow Tracking Sampled
 
