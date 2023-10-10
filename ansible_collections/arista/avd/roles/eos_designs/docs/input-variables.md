@@ -551,6 +551,65 @@ roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 roles/eos_designs/docs/tables/default-interfaces.md
 --8<--
 
+## LLDP Topology settings
+
+Generate AVD topology configurations directly from a given topology.
+
+Currently provides the following configurations based on the given LLDP topology and `default_interfaces`:
+
+- `uplink_switches`.
+- `uplink_interfaces`
+- `uplink_switch_interfaces`
+- `mlag_interfaces`
+- `platform`
+- `mgmt_interface`
+
+!!! note
+    Any derived configuration can be overridden by setting the key manually.
+    Even keys set under node type `defaults` will take precedence over these derived configurations.
+
+    When using parallel links between the same devices for L3 uplinks it is important to set
+    `max_uplink_switches` and `max_parallel_uplinks` to ensure consistent IP addressing.
+
+!!! tip
+    To use this feature set `default_interfaces` according to the intended design and set `use_lldp_topology` to `true`.
+    Provide a full topology under `lldp_topology` like this example:
+
+    ```yaml
+    use_lldp_topology: true
+    lldp_topology:
+      - hostname: s2-spine2
+        platform: vEOS-LAB
+        interfaces:
+          - name: Ethernet2
+            neighbor: s2-leaf1
+            neighbor_interface: Ethernet3
+          - name: Ethernet3
+            neighbor: s2-leaf2
+            neighbor_interface: Ethernet3
+          - name: Ethernet4
+            neighbor: s2-leaf3
+            neighbor_interface: Ethernet3
+          - name: Ethernet5
+            neighbor: s2-leaf4
+            neighbor_interface: Ethernet3
+          - name: Ethernet7
+            neighbor: s2-brdr1
+            neighbor_interface: Ethernet3
+          - name: Ethernet8
+            neighbor: s2-brdr2
+            neighbor_interface: Ethernet3
+          - name: Management0
+            neighbor: 00:1c:73:aa:bb:cc
+            neighbor_interface: Ethernet21
+      - hostname: s1-spine1
+      ...cut for readability...
+    ```
+
+--8<--
+roles/eos_designs/docs/tables/lldp-topology.md
+--8<--
+
 ## L3 edge and DCI settings
 
 The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.
