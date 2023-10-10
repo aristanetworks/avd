@@ -43,7 +43,7 @@ interface Management1
 
 | Interface | IP address | Shutdown | Flow tracker(s) | TCP MSS Ceiling |
 | --------- | ---------- | -------- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | True | * Hardware: FT-HW<br>* Sampled: FT-S | * IPv4: 666<br>* IPv6: 666<br>* Direction: ingress |
+| Dps1 | 192.168.42.42/24 | True | Hardware: FT-HW<br>Sampled: FT-S | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
 
 #### DPS Interfaces Device Configuration
 

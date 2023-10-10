@@ -16,7 +16,8 @@ keys:
       keys:
         name:
           type: str
-          description: Only Dps1 is configurabled.
+          description: |-
+            "Dps1" is currently the only supported interface.
           valid_values:
             - Dps1
         description:
@@ -25,29 +26,29 @@ keys:
           type: bool
         ip_address:
           type: str
-          description: IPv4 address/mask
+          description: IPv4 address/mask.
         flow_tracker:
           type: dict
           keys:
             sampled:
               type: str
-              description: Sampled flow tracker name
+              description: Sampled flow tracker name.
             hardware:
               type: str
-              description: Hardware flow tracker name
+              description: Hardware flow tracker name,
         tcp_mss_ceiling:
           type: dict
           keys:
             ipv4:
               type: int
-              description: Segment Size for IPv4
+              description: Segment Size for IPv4.
               min: 64
               max: 65495
               convert_types:
                 - str
             ipv6:
               type: int
-              description: Segment Size for IPv6
+              description: Segment Size for IPv6.
               min: 64
               max: 65475
               convert_types:
@@ -55,9 +56,9 @@ keys:
             direction:
               type: str
               valid_values: ["ingress", "egress"]
-              description: |
-                Optional direction ('ingress', 'egress')  for tcp mss ceiling
+              description: |-
+                Optional direction ('ingress', 'egress')  for tcp mss ceiling.
         eos_cli:
           type: str
-          description: |
+          description: |-
             Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.

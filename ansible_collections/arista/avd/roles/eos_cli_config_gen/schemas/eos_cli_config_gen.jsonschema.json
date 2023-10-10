@@ -1537,7 +1537,7 @@
         "properties": {
           "name": {
             "type": "string",
-            "description": "Only Dps1 is configurabled.",
+            "description": "\"Dps1\" is currently the only supported interface.",
             "enum": [
               "Dps1"
             ],
@@ -1553,7 +1553,7 @@
           },
           "ip_address": {
             "type": "string",
-            "description": "IPv4 address/mask",
+            "description": "IPv4 address/mask.",
             "title": "IP Address"
           },
           "flow_tracker": {
@@ -1561,12 +1561,12 @@
             "properties": {
               "sampled": {
                 "type": "string",
-                "description": "Sampled flow tracker name",
+                "description": "Sampled flow tracker name.",
                 "title": "Sampled"
               },
               "hardware": {
                 "type": "string",
-                "description": "Hardware flow tracker name",
+                "description": "Hardware flow tracker name,",
                 "title": "Hardware"
               }
             },
@@ -1581,14 +1581,14 @@
             "properties": {
               "ipv4": {
                 "type": "integer",
-                "description": "Segment Size for IPv4",
+                "description": "Segment Size for IPv4.",
                 "minimum": 64,
                 "maximum": 65495,
                 "title": "IPv4"
               },
               "ipv6": {
                 "type": "integer",
-                "description": "Segment Size for IPv6",
+                "description": "Segment Size for IPv6.",
                 "minimum": 64,
                 "maximum": 65475,
                 "title": "IPv6"
@@ -1599,7 +1599,7 @@
                   "ingress",
                   "egress"
                 ],
-                "description": "Optional direction ('ingress', 'egress')  for tcp mss ceiling\n",
+                "description": "Optional direction ('ingress', 'egress')  for tcp mss ceiling.",
                 "title": "Direction"
               }
             },
