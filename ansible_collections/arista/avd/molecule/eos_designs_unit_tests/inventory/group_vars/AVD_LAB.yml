@@ -87,13 +87,13 @@ default_interfaces:
     mlag_interfaces: [ Ethernet57-58/1 ]
     downlink_interfaces: [ Ethernet1-30/1 ]
 
-  - types: [ l3leaf ]
+  - types: [ all ]
     platforms: [ 7368.* ]
     uplink_interfaces: [ Ethernet1/9-14/1 ]
     mlag_interfaces: [ Ethernet1/15-16/1 ]
     downlink_interfaces: [ Ethernet1/1-8/1 ]
 
-  - types: [ l3leaf ]
+  - types: [ all ]
     platforms: [ 7300X3 ]
     uplink_interfaces: [ Ethernet1/27-30/1 ]
     mlag_interfaces: [ Ethernet1/31-32/1 ]
