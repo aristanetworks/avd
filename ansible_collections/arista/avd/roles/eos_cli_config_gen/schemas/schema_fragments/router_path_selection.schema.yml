@@ -14,7 +14,7 @@ keys:
         type: str
         valid_values:
           - stun
-        description: Source of dynamic peer discover.
+        description: Source of dynamic peer discovery.
       path_groups:
         type: list
         primary_key: name
@@ -38,7 +38,7 @@ keys:
               type: str
               valid_values:
                 - lan
-              description: Flow assignement `lan` can not be configured in a path group with dynamic peer.
+              description: Flow assignement `lan` can not be configured in a path group with dynamic peers.
             local_interfaces:
               type: list
               primary_key: name
@@ -87,7 +87,7 @@ keys:
                           type: str
             dynamic_peers:
               type: dict
-              description: Flow assignement `lan` can not be configured in a path group with dynamic peer.
+              description: Flow assignement `lan` can not be configured in a path group with dynamic peers.
               keys:
                 enabled:
                   type: bool
@@ -124,7 +124,7 @@ keys:
               description: Load-balance policy name.
             path_groups:
               type: list
-              description: List of path-group to use for this load balance policy.
+              description: List of path-groups to use for this load balance policy.
               items:
                 type: str
       policies:

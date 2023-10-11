@@ -19431,7 +19431,7 @@
           "enum": [
             "stun"
           ],
-          "description": "Source of dynamic peer discover.",
+          "description": "Source of dynamic peer discovery.",
           "title": "Peer Dynamic Source"
         },
         "path_groups": {
@@ -19461,7 +19461,7 @@
                 "enum": [
                   "lan"
                 ],
-                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peer.",
+                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peers.",
                 "title": "Flow Assignment"
               },
               "local_interfaces": {
@@ -19564,7 +19564,7 @@
               },
               "dynamic_peers": {
                 "type": "object",
-                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peer.",
+                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peers.",
                 "properties": {
                   "enabled": {
                     "type": "boolean",
@@ -19642,7 +19642,7 @@
               },
               "path_groups": {
                 "type": "array",
-                "description": "List of path-group to use for this load balance policy.",
+                "description": "List of path-groups to use for this load balance policy.",
                 "items": {
                   "type": "string"
                 },
