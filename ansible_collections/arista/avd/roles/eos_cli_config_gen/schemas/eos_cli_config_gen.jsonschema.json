@@ -4692,7 +4692,7 @@
                   "type": "integer",
                   "description": "TTL value",
                   "minimum": 0,
-                  "maximum": 254,
+                  "maximum": 255,
                   "title": "TTL"
                 },
                 "ttl_match": {
@@ -11124,7 +11124,7 @@
         "ttl": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 254,
+          "maximum": 255,
           "title": "TTL"
         },
         "domain": {
