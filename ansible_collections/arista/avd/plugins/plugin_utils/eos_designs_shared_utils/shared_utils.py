@@ -3,11 +3,11 @@
 # that can be found in the LICENSE file.
 from .bgp_peer_groups import BgpPeerGroupsMixin
 from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
+from .cv_topology import CvTopology
 from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
 from .link_tracking_groups import LinkTrackingGroupsMixin
-from .lldp_topology import LldpTopology
 from .mgmt import MgmtMixin
 from .misc import MiscMixin
 from .mlag import MlagMixin
@@ -29,7 +29,7 @@ class SharedUtils(
     InterfaceDescriptionsMixin,
     IpAddressingMixin,
     LinkTrackingGroupsMixin,
-    LldpTopology,
+    CvTopology,
     MgmtMixin,
     MlagMixin,
     MiscMixin,

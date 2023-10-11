@@ -44,10 +44,10 @@ overlay_controller:
       bgp_as: 65101
       evpn_role: server
       evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
-      # platform: vEOS-LAB Test using "use_lldp_topology"
-      # uplink_switch_interfaces: ['Ethernet5', 'Ethernet6', 'Ethernet4'] Test using "use_lldp_topology"
-      # uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3'] Test using "use_lldp_topology
-      # uplink_switches: ['DC1-SUPER-SPINE1', 'DC1-POD1-SPINE1', 'DC1-POD1-LEAF1A'] Test using "use_lldp_topology
+      # platform: vEOS-LAB Test using "use_cv_topology"
+      # uplink_switch_interfaces: ['Ethernet5', 'Ethernet6', 'Ethernet4'] Test using "use_cv_topology"
+      # uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3'] Test using "use_cv_topology
+      # uplink_switches: ['DC1-SUPER-SPINE1', 'DC1-POD1-SPINE1', 'DC1-POD1-LEAF1A'] Test using "use_cv_topology
     - name: DC1-RS2
       id: 2
       mgmt_ip: 192.168.1.4/24

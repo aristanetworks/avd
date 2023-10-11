@@ -2926,6 +2926,61 @@
       ],
       "title": "Custom Structured Configuration Prefix"
     },
+    "cv_topology": {
+      "type": "array",
+      "description": "Generate AVD configurations directly from the given CloudVision topology.\nActivate this feature by setting `use_cv_topology` to `true`.\nRequires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "title": "Hostname"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "neighbor": {
+                  "type": "string",
+                  "title": "Neighbor"
+                },
+                "neighbor_interface": {
+                  "type": "string",
+                  "title": "Neighbor Interface"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "title": "Interfaces"
+          }
+        },
+        "required": [
+          "platform",
+          "interfaces",
+          "hostname"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Cv Topology"
+    },
     "cvp_ingestauth_key": {
       "type": "string",
       "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication:\n- On-premise using token onboarding. Default token path is '/tmp/token'.\n- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.\nToken must be copied to the device first.",
@@ -4153,61 +4208,6 @@
         "^_.+$": {}
       },
       "title": "L3 Edge"
-    },
-    "lldp_topology": {
-      "type": "array",
-      "description": "Generate AVD configurations directly from the given topology.\nActivate this feature by setting `use_lldp_topology` to `true`.\nRequires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.",
-      "items": {
-        "type": "object",
-        "properties": {
-          "hostname": {
-            "type": "string",
-            "title": "Hostname"
-          },
-          "platform": {
-            "type": "string",
-            "title": "Platform"
-          },
-          "interfaces": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "title": "Name"
-                },
-                "neighbor": {
-                  "type": "string",
-                  "title": "Neighbor"
-                },
-                "neighbor_interface": {
-                  "type": "string",
-                  "title": "Neighbor Interface"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "required": [
-                "name"
-              ]
-            },
-            "title": "Interfaces"
-          }
-        },
-        "required": [
-          "platform",
-          "interfaces",
-          "hostname"
-        ],
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        }
-      },
-      "title": "LLDP Topology"
     },
     "local_users": {
       "type": "array",
@@ -19108,10 +19108,10 @@
       },
       "title": "Uplink PTP"
     },
-    "use_lldp_topology": {
+    "use_cv_topology": {
       "type": "boolean",
-      "description": "Generate AVD configurations directly from a given LLDP Topology.\nSee `lldp_topology` for details.",
-      "title": "Use LLDP Topology"
+      "description": "Generate AVD configurations directly from a given CloudVision topology.\nSee `cv_topology` for details.",
+      "title": "Use Cv Topology"
     },
     "vtep_vvtep_ip": {
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",

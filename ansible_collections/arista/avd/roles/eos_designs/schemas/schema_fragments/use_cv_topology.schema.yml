@@ -6,10 +6,10 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  use_lldp_topology:
+  use_cv_topology:
     documentation_options:
-      table: lldp-topology
+      table: cv-topology
     type: bool
     description: |-
-      Generate AVD configurations directly from a given LLDP Topology.
-      See `lldp_topology` for details.
+      Generate AVD configurations directly from a given CloudVision topology.
+      See `cv_topology` for details.

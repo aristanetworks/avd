@@ -53,7 +53,7 @@ class MlagMixin:
         return range_expand(
             default(
                 get(self.switch_data_combined, "mlag_interfaces"),
-                get(self.lldp_topology_config, "mlag_interfaces"),
+                get(self.cv_topology_config, "mlag_interfaces"),
                 get(self.default_interfaces, "mlag_interfaces"),
                 [],
             )

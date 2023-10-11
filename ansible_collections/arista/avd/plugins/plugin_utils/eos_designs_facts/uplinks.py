@@ -43,7 +43,7 @@ class UplinksMixin:
         return range_expand(
             default(
                 get(self.shared_utils.switch_data_combined, "uplink_interfaces"),
-                get(self.shared_utils.lldp_topology_config, "uplink_interfaces"),
+                get(self.shared_utils.cv_topology_config, "uplink_interfaces"),
                 get(self.shared_utils.default_interfaces, "uplink_interfaces"),
                 [],
             )
@@ -53,7 +53,7 @@ class UplinksMixin:
     def _uplink_switch_interfaces(self: EosDesignsFacts) -> list:
         uplink_switch_interfaces = default(
             get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces"),
-            get(self.shared_utils.lldp_topology_config, "uplink_switch_interfaces"),
+            get(self.shared_utils.cv_topology_config, "uplink_switch_interfaces"),
         )
         if uplink_switch_interfaces is not None:
             return uplink_switch_interfaces

@@ -89,7 +89,7 @@ class MiscMixin:
     def uplink_switches(self: SharedUtils) -> list:
         return default(
             get(self.switch_data_combined, "uplink_switches"),
-            get(self.lldp_topology_config, "uplink_switches"),
+            get(self.cv_topology_config, "uplink_switches"),
             [],
         )
 
