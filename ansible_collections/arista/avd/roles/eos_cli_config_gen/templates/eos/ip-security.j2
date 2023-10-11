@@ -42,7 +42,7 @@ ip security
 {%         if profile.shared_key is arista.avd.defined %}
       shared-key 7 {{ profile.shared_key }}
 {%         endif %}
-{%         if profile.dpd is arista.avd.defined %}
+{%         if profile.dpd.interval is arista.avd.defined and profile.dpd.time is arista.avd.defined and profile.dpd.action is arista.avd.defined %}
       dpd {{ profile.dpd.interval }} {{ profile.dpd.time }} {{ profile.dpd.action }}
 {%         endif %}
 {%         if profile.mode is arista.avd.defined %}
