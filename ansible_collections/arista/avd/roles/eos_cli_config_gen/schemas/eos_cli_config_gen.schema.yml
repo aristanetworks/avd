@@ -2911,7 +2911,7 @@ keys:
                 convert_types:
                 - str
                 min: 0
-                max: 254
+                max: 255
               ttl_match:
                 type: str
                 valid_values:
@@ -6685,7 +6685,7 @@ keys:
       ttl:
         type: int
         min: 1
-        max: 254
+        max: 255
         convert_types:
         - str
       domain:
