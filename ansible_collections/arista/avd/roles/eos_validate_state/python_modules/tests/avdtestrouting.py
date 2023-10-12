@@ -118,50 +118,49 @@ class AvdTestBGP(AvdTestBase):
             LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
             return None
 
-        if service_routing_protocols_model == "multi-agent":
-            anta_tests.setdefault("generic", []).append(
-                {
-                    "VerifyRoutingProtocolModel": {
-                        "model": "multi-agent",
-                        "result_overwrite": {"categories": self.categories, "description": "ArBGP is configured and operating", "custom_field": "ArBGP"},
-                    }
-                }
-            )
-
-            bgp_peer_groups = get(self.hostvars[self.device_name], "router_bgp.peer_groups", [])
-            bgp_neighbors = get(self.hostvars[self.device_name], "router_bgp.neighbors", [])
-
-            for idx, bgp_neighbor in enumerate(bgp_neighbors, start=1):
-                # TODO - this matches legacy eos_validate_state BUT works only for neighbors in peer groups...
-                try:
-                    neighbor_peer_group = get_item(bgp_peer_groups, "name", bgp_neighbor["peer_group"], required=True, var_name=bgp_neighbor["peer_group"])
-                except AristaAvdMissingVariableError as e:
-                    LOGGER.warning("Peer group '%s' dictionary is missing from the 'peer_groups' list of the 'router_bgp' data model.", str(e))
-                    continue
-
-                try:
-                    bgp_neighbor_ip = str(get(bgp_neighbor, "ip_address", required=True))
-                except AristaAvdMissingVariableError as e:
-                    LOGGER.warning("Neighbor entry #%d from the 'neighbors' list of the 'router_bgp' data model is missing the variable '%s'.", idx, str(e))
-                    continue
-
-                try:
-                    neighbor_peer_group_type = get(neighbor_peer_group, "type", required=True)
-                except AristaAvdMissingVariableError as e:
-                    LOGGER.warning(
-                        "Peer group '%s' from the 'peer_groups' list of the 'router_bgp' data model is missing the variable '%s'.",
-                        bgp_neighbor["peer_group"],
-                        str(e),
-                    )
-                    continue
-
-                if neighbor_peer_group_type == "ipv4":
-                    add_verify_peers_test(description="ip bgp peer state established (ipv4)", afi="ipv4", safi="unicast", bgp_neighbor_ip=bgp_neighbor_ip)
-                elif neighbor_peer_group_type == "evpn":
-                    add_verify_peers_test(description="bgp evpn peer state established (evpn)", afi="evpn", bgp_neighbor_ip=bgp_neighbor_ip)
-
-        else:
+        if service_routing_protocols_model != "multi-agent":
             LOGGER.warning("Variable 'service_routing_protocols_model' is NOT set to 'multi-agent'. %s is skipped.", self.__class__.__name__)
             return None
+
+        anta_tests.setdefault("generic", []).append(
+            {
+                "VerifyRoutingProtocolModel": {
+                    "model": "multi-agent",
+                    "result_overwrite": {"categories": self.categories, "description": "ArBGP is configured and operating", "custom_field": "ArBGP"},
+                }
+            }
+        )
+
+        bgp_peer_groups = get(self.hostvars[self.device_name], "router_bgp.peer_groups", [])
+        bgp_neighbors = get(self.hostvars[self.device_name], "router_bgp.neighbors", [])
+
+        for idx, bgp_neighbor in enumerate(bgp_neighbors, start=1):
+            # TODO - this matches legacy eos_validate_state BUT works only for neighbors in peer groups...
+            try:
+                neighbor_peer_group = get_item(bgp_peer_groups, "name", bgp_neighbor["peer_group"], required=True, var_name=bgp_neighbor["peer_group"])
+            except AristaAvdMissingVariableError as e:
+                LOGGER.warning("Peer group '%s' dictionary is missing from the 'peer_groups' list of the 'router_bgp' data model.", str(e))
+                continue
+
+            try:
+                bgp_neighbor_ip = str(get(bgp_neighbor, "ip_address", required=True))
+            except AristaAvdMissingVariableError as e:
+                LOGGER.warning("Neighbor entry #%d from the 'neighbors' list of the 'router_bgp' data model is missing the variable '%s'.", idx, str(e))
+                continue
+
+            try:
+                neighbor_peer_group_type = get(neighbor_peer_group, "type", required=True)
+            except AristaAvdMissingVariableError as e:
+                LOGGER.warning(
+                    "Peer group '%s' from the 'peer_groups' list of the 'router_bgp' data model is missing the variable '%s'.",
+                    bgp_neighbor["peer_group"],
+                    str(e),
+                )
+                continue
+
+            if neighbor_peer_group_type == "ipv4":
+                add_verify_peers_test(description="ip bgp peer state established (ipv4)", afi="ipv4", safi="unicast", bgp_neighbor_ip=bgp_neighbor_ip)
+            elif neighbor_peer_group_type == "evpn":
+                add_verify_peers_test(description="bgp evpn peer state established (evpn)", afi="evpn", bgp_neighbor_ip=bgp_neighbor_ip)
 
         return {self.anta_module: anta_tests}
