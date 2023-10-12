@@ -57,5 +57,4 @@ interface Dps1
    ip address 192.168.42.42/24
    tcp mss ceiling ipv4 666 ipv6 666 ingress
    load-interval 42
-
 ```

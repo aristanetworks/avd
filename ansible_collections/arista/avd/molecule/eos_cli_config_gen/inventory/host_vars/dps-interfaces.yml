@@ -15,5 +15,5 @@ dps_interfaces:
       ipv6: 666
       direction: ingress
     # This is a dummy command
-    eos_cli: |
+    eos_cli: |-
       load-interval 42

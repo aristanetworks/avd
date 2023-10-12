@@ -1623,7 +1623,7 @@
           "name"
         ]
       },
-      "title": "Dps Interfaces"
+      "title": "DPS Interfaces"
     },
     "dynamic_prefix_lists": {
       "type": "array",
