@@ -345,6 +345,12 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.bfd.echo is arista.avd.defined(false) %}
    no bfd echo
 {%     endif %}
+{%     if ethernet_interface.dhcp_server_ipv4 is arista.avd.defined(true) %}
+   dhcp server ipv4
+{%     endif %}
+{%     if ethernet_interface.dhcp_server_ipv6 is arista.avd.defined(true) %}
+   dhcp server ipv6
+{%     endif %}
 {%     if ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
