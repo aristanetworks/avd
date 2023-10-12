@@ -3,7 +3,8 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{% if switchport_default is arista.avd.defined
+{% if system_l1 is arista.avd.defined
+       or switchport_default is arista.avd.defined
        or interface_defaults is arista.avd.defined
        or interface_profiles is arista.avd.defined
        or ethernet_interfaces is arista.avd.defined
@@ -14,6 +15,8 @@
        or vxlan_interface is arista.avd.defined %}
 
 ## Interfaces
+{## System l1 #}
+{%     include 'documentation/system-l1.j2' %}
 {## Switchport Default #}
 {%     include 'documentation/switchport-default.j2' %}
 {## Interface Defaults #}

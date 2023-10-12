@@ -1,0 +1,29 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - system #}
+{% if system_l1 is arista.avd.defined %}
+
+### System L1 Switch Parameters
+{%     if system_l1.unsupported_speed_action is arista.avd.defined or system_l1.unsupported_error_correction_action is arista.avd.defined %}
+
+#### Configuration for Handling Unsupported L1 Interface Configurations
+
+| Unsupported Type | action |
+| ---------------- | -------|
+{%         if system_l1.unsupported_speed_action is arista.avd.defined %}
+| Speed/duplex | {{ system_l1.unsupported_speed_action }} |
+{%         endif %}
+{%         if system_l1.unsupported_error_correction_action is arista.avd.defined %}
+| Forward error correction | {{ system_l1.unsupported_error_correction_action }} |
+{%         endif %}
+{%     endif %}
+
+#### System L1 Configuration
+
+```eos
+{%     include 'eos/system-l1.j2' %}
+```
+{% endif %}
