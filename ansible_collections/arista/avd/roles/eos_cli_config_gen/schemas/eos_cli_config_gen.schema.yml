@@ -1057,6 +1057,62 @@ keys:
             max: 9236
             convert_types:
             - str
+  dps_interfaces:
+    type: list
+    primary_key: name
+    min_length: 1
+    max_length: 1
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: '"Dps1" is currently the only supported interface.'
+          valid_values:
+          - Dps1
+        description:
+          type: str
+        shutdown:
+          type: bool
+        ip_address:
+          type: str
+          description: IPv4 address/mask.
+        flow_tracker:
+          type: dict
+          keys:
+            sampled:
+              type: str
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name,
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+              - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+              - str
+            direction:
+              type: str
+              valid_values:
+              - ingress
+              - egress
+              description: Optional direction ('ingress', 'egress')  for tcp mss ceiling.
+        eos_cli:
+          type: str
+          description: Multiline String with EOS CLI rendered directly on the Dps
+            interface in the final EOS configuration.
   dynamic_prefix_lists:
     type: list
     items:
@@ -9161,6 +9217,127 @@ keys:
                   description: Peer-group name
                 activate:
                   type: bool
+      address_family_path_selection:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
+                  send:
+                    type: dict
+                    keys:
+                      any:
+                        type: bool
+                      backup:
+                        type: bool
+                      ecmp:
+                        type: bool
+                      ecmp_limit:
+                        type: int
+                        description: Amount of ECMP paths to send
+                        convert_types:
+                        - str
+                        min: 2
+                        max: 64
+                      limit:
+                        type: int
+                        description: Amount of paths to send
+                        convert_types:
+                        - str
+                        min: 2
+                        max: 64
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    install:
+                      type: bool
+                    install_ecmp_primary:
+                      type: bool
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    install:
+                      type: bool
+                    install_ecmp_primary:
+                      type: bool
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -11070,6 +11247,12 @@ keys:
                         max: 32
                       override:
                         type: bool
+  router_service_insertion:
+    type: dict
+    description: Configure network services inserted to data forwarding
+    keys:
+      enabled:
+        type: bool
   router_traffic_engineering:
     type: dict
     keys:

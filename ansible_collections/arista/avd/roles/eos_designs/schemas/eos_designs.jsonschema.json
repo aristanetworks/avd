@@ -115,7 +115,7 @@
       "description": "Maximum ECMP for BGP multi-path.",
       "type": "integer",
       "default": 4,
-      "title": "BGP Ecmp"
+      "title": "BGP ECMP"
     },
     "bgp_graceful_restart": {
       "description": "BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
