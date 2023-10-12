@@ -5,7 +5,7 @@
 mgmt_gateway: 172.16.1.1
 
 ### DNS Domain ###
-dns_domain: dc1.local
+custom_structured_configuration_dns_domain: dc1.local
 
 # Spine switch group
 spine:

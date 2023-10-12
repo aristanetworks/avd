@@ -224,7 +224,6 @@ class AvdTestLLDPTopology(AvdTestBase):
 
             custom_field = f"local: {ethernet_interface['name']} - remote: {peer}_{ethernet_interface['peer_interface']}"
 
-            # TODO Create dns_domain knob in the structured_config
             if (dns_domain := get(self.hostvars[peer], "dns_domain")) is not None:
                 peer = f"{peer}.{dns_domain}"
 

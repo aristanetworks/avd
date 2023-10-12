@@ -97,3 +97,4 @@ vlans:
   tenant: TENANT1
 ip_igmp_snooping:
   globally_enabled: true
+dns_domain: dc1.local
