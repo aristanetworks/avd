@@ -186,6 +186,7 @@ sFlow is disabled.
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 | Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 | Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
+| Ethernet63 | DHCP interface | routed | - | dhcp | default | - | - | - | - |
 
 ##### IP NAT: Source Static
 
@@ -853,6 +854,12 @@ interface Ethernet62
    switchport phone trunk tagged phone
    switchport mode trunk phone
    switchport
+!
+interface Ethernet63
+   description DHCP interface
+   no switchport
+   ip address dhcp
+   dhcp client accept default-route
 ```
 
 ## BFD

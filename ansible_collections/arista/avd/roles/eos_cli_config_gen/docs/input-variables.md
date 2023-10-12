@@ -841,6 +841,14 @@ roles/eos_cli_config_gen/docs/tables/static-routes.md
 roles/eos_cli_config_gen/docs/tables/vrfs.md
 --8<--
 
+## Security
+
+### IP Security
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/ip-security.md
+--8<--
+
 ## Switching
 
 ### MLAG configuration
