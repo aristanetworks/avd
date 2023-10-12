@@ -7164,7 +7164,7 @@
               },
               "ip_address": {
                 "type": "string",
-                "description": "IPv4 address/mask",
+                "description": "IPv4 address/mask or \"dhcp\"",
                 "title": "IP Address"
               },
               "ip_address_secondaries": {
@@ -7173,6 +7173,11 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "dhcp_client_accept_default_route": {
+                "type": "boolean",
+                "description": "Install default-route obtained via DHCP",
+                "title": "DHCP Client Accept Default Route"
               },
               "ip_helpers": {
                 "type": "array",
@@ -12723,7 +12728,7 @@
               },
               "ip_address": {
                 "type": "string",
-                "description": "IPv4 address/mask",
+                "description": "IPv4 address/mask or \"dhcp\"",
                 "title": "IP Address"
               },
               "ip_address_secondaries": {
@@ -12732,6 +12737,11 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "dhcp_client_accept_default_route": {
+                "type": "boolean",
+                "description": "Install default-route obtained via DHCP",
+                "title": "DHCP Client Accept Default Route"
               },
               "ip_helpers": {
                 "type": "array",
