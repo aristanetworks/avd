@@ -24,6 +24,7 @@
 ## Known limitations
 
 - Loose mode to ignore playbook errors is no longer supported in ANTA mode.
+- ANTA mode exclusively supports the newer "list-of-dicts" data models in the structured configuration file input. For further details, consult the AVD 4.x.x [porting guides](https://avd.sh/en/stable/docs/porting-guides/4.x.x.html#data-model-changes-from-dict-of-dicts-to-list-of-dicts).
 
 ## Expected changes
 
@@ -31,6 +32,10 @@
 - Hardware tests are now collapsed.
 - Some description of tests have been updated to be more precise.
 - Sorting of the test results is now done per device as opposed to per category.
+- BGP tests will only run if `service_routing_protocols_model` is set to `multi-agent` in the structured configuration file.
+
+!!! note
+    Starting from version 4.30.1F, `service_routing_protocols_model` is preset to `multi-agent` by default on EOS devices.
 
 ## How to run eos_validate_state in ANTA mode
 
@@ -103,7 +108,6 @@
 - AvdTestBGP (Ansible tags: `bgp_check`)
   - VerifyBGPSpecificPeers: Validate IP BGP and BGP EVPN sessions state.
   - VerifyRoutingProtocolModel: Validate ArBGP is configured and operating.
-    - *This test is currently being run on devices that do not have a BGP configuration, which is not the actual behavior of `eos_validate_state`.*
 
 - AvdTestReloadCause (Ansible tags: `reload_cause`, `optional`, `never`)
   - VerifyReloadCause: Validate last reload cause. (Optional)
