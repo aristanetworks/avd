@@ -104,4 +104,4 @@ port_channel_interfaces:
   - name: Port-Channel42
     flow_tracker:
       sampled: T3
-      hardware: T4
+      hardware: T3

@@ -72,7 +72,7 @@ Sample: 666
 | ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
 | T1 | 3666 | 5666 | 0 |  |
 | T2 | - | - | 1 | Ethernet40 |
-| T3 | - | - | 4 | Ethernet41 |
+| T3 | - | - | 4 | Ethernet41<br>Port-Channel42 |
 
 ##### Exporters Summary
 
@@ -184,6 +184,6 @@ interface Ethernet42
 !
 interface Port-Channel42
    switchport
-   flow tracker hardware T4
+   flow tracker hardware T3
    flow tracker sampled T3
 ```
