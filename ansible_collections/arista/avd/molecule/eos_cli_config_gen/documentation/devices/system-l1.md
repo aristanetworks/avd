@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
-  - [System L1 Switch Parameters](#system-l1-switch-parameters)
+  - [System L1](#system-l1)
 
 ## Management
 
@@ -37,14 +37,14 @@ interface Management1
 
 ## Interfaces
 
-### System L1 Switch Parameters
+### System L1
 
-#### Configuration for Handling Unsupported L1 Interface Configurations
+#### Unsupported interface configurations
 
-| Unsupported Type | action |
+| Unsupported Configuration | action |
 | ---------------- | -------|
-| Speed/duplex | warn |
-| Forward error correction | error |
+| Speed | warn |
+| Error correction | error |
 
 #### System L1 Configuration
 
