@@ -235,6 +235,7 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      bgp next-hop-unchanged
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate
@@ -243,7 +244,6 @@ router bgp 65101
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
       next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
-      bgp next-hop-unchanged
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
