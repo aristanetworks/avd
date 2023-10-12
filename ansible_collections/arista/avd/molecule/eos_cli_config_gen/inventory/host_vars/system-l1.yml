@@ -1,0 +1,3 @@
+system_l1:
+  unsupported_speed_action: warn
+  unsupported_error_correction_action: error
