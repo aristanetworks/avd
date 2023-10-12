@@ -345,14 +345,14 @@ class TableRowGenDict(TableRowGenBase):
             # Skip generating table fields for children, if "hide_keys" is set.
             return
 
-        if self.schema.keys:
-            for child_schema in self.schema.keys.values():
+        if self.schema.dynamic_keys:
+            for child_schema in self.schema.dynamic_keys.values():
                 yield from child_schema._generate_table_rows(
                     target_table=self.target_table,
                 )
 
-        if self.schema.dynamic_keys:
-            for child_schema in self.schema.dynamic_keys.values():
+        if self.schema.keys:
+            for child_schema in self.schema.keys.values():
                 yield from child_schema._generate_table_rows(
                     target_table=self.target_table,
                 )
