@@ -98,6 +98,8 @@ interface Management1
 
 #### Router BGP EVPN Address Family
 
+- Next-hop resolution is __disabled__
+
 ##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
@@ -238,6 +240,7 @@ router bgp 65101
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4
