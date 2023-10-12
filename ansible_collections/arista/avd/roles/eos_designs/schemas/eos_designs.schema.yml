@@ -2081,7 +2081,9 @@ keys:
               speed_groups:
                 type: list
                 items:
-                  type: str
+                  type: int
+                  convert_types:
+                  - str
   pod_name:
     documentation_options:
       table: fabric-topology
