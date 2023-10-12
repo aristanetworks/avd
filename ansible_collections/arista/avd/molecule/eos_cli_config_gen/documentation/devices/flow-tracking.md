@@ -155,10 +155,12 @@ flow tracking hardware
 !
 interface Ethernet40
    switchport
+   flow tracker hardware T2
    flow tracker sampled T2
 !
 interface Ethernet41
    switchport
+   flow tracker hardware T3
    flow tracker sampled T3
 !
 interface Ethernet42
@@ -182,5 +184,6 @@ interface Ethernet42
 !
 interface Port-Channel42
    switchport
+   flow tracker hardware T4
    flow tracker sampled T3
 ```
