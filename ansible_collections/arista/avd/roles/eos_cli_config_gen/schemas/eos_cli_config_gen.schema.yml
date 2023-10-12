@@ -11191,6 +11191,12 @@ keys:
                         max: 32
                       override:
                         type: bool
+  router_service_insertion:
+    type: dict
+    description: Configure network services inserted to data forwarding
+    keys:
+      enabled:
+        type: bool
   router_traffic_engineering:
     type: dict
     keys:
