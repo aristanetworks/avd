@@ -12785,7 +12785,7 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 600,
-              "title": "Ecmp"
+              "title": "ECMP"
             }
           },
           "required": [
@@ -15388,6 +15388,241 @@
           },
           "title": "Address Family Flow Spec IPv6"
         },
+        "address_family_path_selection": {
+          "type": "object",
+          "properties": {
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "additional_paths": {
+                  "type": "object",
+                  "properties": {
+                    "receive": {
+                      "type": "boolean",
+                      "title": "Receive"
+                    },
+                    "send": {
+                      "type": "object",
+                      "properties": {
+                        "any": {
+                          "type": "boolean",
+                          "title": "Any"
+                        },
+                        "backup": {
+                          "type": "boolean",
+                          "title": "Backup"
+                        },
+                        "ecmp": {
+                          "type": "boolean",
+                          "title": "ECMP"
+                        },
+                        "ecmp_limit": {
+                          "type": "integer",
+                          "description": "Amount of ECMP paths to send",
+                          "minimum": 2,
+                          "maximum": 64,
+                          "title": "ECMP Limit"
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "Amount of paths to send",
+                          "minimum": 2,
+                          "maximum": 64,
+                          "title": "Limit"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Send"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Additional Paths"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "additional_paths": {
+                    "type": "object",
+                    "properties": {
+                      "install": {
+                        "type": "boolean",
+                        "title": "Install"
+                      },
+                      "install_ecmp_primary": {
+                        "type": "boolean",
+                        "title": "Install ECMP Primary"
+                      },
+                      "receive": {
+                        "type": "boolean",
+                        "title": "Receive"
+                      },
+                      "send": {
+                        "type": "object",
+                        "properties": {
+                          "any": {
+                            "type": "boolean",
+                            "title": "Any"
+                          },
+                          "backup": {
+                            "type": "boolean",
+                            "title": "Backup"
+                          },
+                          "ecmp": {
+                            "type": "boolean",
+                            "title": "ECMP"
+                          },
+                          "ecmp_limit": {
+                            "type": "integer",
+                            "description": "Amount of ECMP paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "ECMP Limit"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "description": "Amount of paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Send"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Additional Paths"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "additional_paths": {
+                    "type": "object",
+                    "properties": {
+                      "install": {
+                        "type": "boolean",
+                        "title": "Install"
+                      },
+                      "install_ecmp_primary": {
+                        "type": "boolean",
+                        "title": "Install ECMP Primary"
+                      },
+                      "receive": {
+                        "type": "boolean",
+                        "title": "Receive"
+                      },
+                      "send": {
+                        "type": "object",
+                        "properties": {
+                          "any": {
+                            "type": "boolean",
+                            "title": "Any"
+                          },
+                          "backup": {
+                            "type": "boolean",
+                            "title": "Backup"
+                          },
+                          "ecmp": {
+                            "type": "boolean",
+                            "title": "ECMP"
+                          },
+                          "ecmp_limit": {
+                            "type": "integer",
+                            "description": "Amount of ECMP paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "ECMP Limit"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "description": "Amount of paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Send"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Additional Paths"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family Path Selection"
+        },
         "address_family_vpn_ipv4": {
           "type": "object",
           "properties": {
@@ -16225,7 +16460,7 @@
                           },
                           "install_ecmp_primary": {
                             "type": "boolean",
-                            "title": "Install Ecmp Primary"
+                            "title": "Install ECMP Primary"
                           },
                           "receive": {
                             "type": "boolean",
@@ -16244,14 +16479,14 @@
                               },
                               "ecmp": {
                                 "type": "boolean",
-                                "title": "Ecmp"
+                                "title": "ECMP"
                               },
                               "ecmp_limit": {
                                 "type": "integer",
                                 "description": "Amount of ECMP paths to send",
                                 "minimum": 2,
                                 "maximum": 64,
-                                "title": "Ecmp Limit"
+                                "title": "ECMP Limit"
                               },
                               "limit": {
                                 "type": "integer",
@@ -16421,7 +16656,7 @@
                           },
                           "install_ecmp_primary": {
                             "type": "boolean",
-                            "title": "Install Ecmp Primary"
+                            "title": "Install ECMP Primary"
                           },
                           "receive": {
                             "type": "boolean",
@@ -16440,14 +16675,14 @@
                               },
                               "ecmp": {
                                 "type": "boolean",
-                                "title": "Ecmp"
+                                "title": "ECMP"
                               },
                               "ecmp_limit": {
                                 "type": "integer",
                                 "description": "Amount of ECMP paths to send",
                                 "minimum": 2,
                                 "maximum": 64,
-                                "title": "Ecmp Limit"
+                                "title": "ECMP Limit"
                               },
                               "limit": {
                                 "type": "integer",

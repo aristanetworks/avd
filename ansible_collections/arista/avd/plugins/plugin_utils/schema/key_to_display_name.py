@@ -21,6 +21,7 @@ WORDLIST = {
     "dot1x": "dot1x",
     "dr": "DR",
     "dscp": "DSCP",
+    "ecmp": "ECMP",
     "eos": "EOS",
     "evpn": "EVPN",
     "fcs": "FCS",
