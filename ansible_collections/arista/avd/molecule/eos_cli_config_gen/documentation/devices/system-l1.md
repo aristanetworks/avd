@@ -4,8 +4,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [System Settings](#system-settings)
-  - [System L1](#system-l1)
+- [System L1](#system-l1)
+  - [Unsupported interface configurations](#unsupported-interface-configurations)
+  - [System L1 Configuration](#system-l1-configuration)
 
 ## Management
 
@@ -35,18 +36,16 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## System Settings
+## System L1
 
-### System L1
-
-#### Unsupported interface configurations
+### Unsupported interface configurations
 
 | Unsupported Configuration | action |
 | ---------------- | -------|
 | Speed | warn |
 | Error correction | error |
 
-#### System L1 Configuration
+### System L1 Configuration
 
 ```eos
 !

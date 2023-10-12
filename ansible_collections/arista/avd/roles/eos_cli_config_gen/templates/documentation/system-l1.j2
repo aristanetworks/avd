@@ -6,10 +6,10 @@
 {# doc - system_l1 #}
 {% if system_l1 is arista.avd.defined %}
 
-### System L1
+## System L1
 {%     if system_l1.unsupported_speed_action is arista.avd.defined or system_l1.unsupported_error_correction_action is arista.avd.defined %}
 
-#### Unsupported interface configurations
+### Unsupported interface configurations
 
 | Unsupported Configuration | action |
 | ---------------- | -------|
@@ -21,7 +21,7 @@
 {%         endif %}
 {%     endif %}
 
-#### System L1 Configuration
+### System L1 Configuration
 
 ```eos
 {%     include 'eos/system-l1.j2' %}
