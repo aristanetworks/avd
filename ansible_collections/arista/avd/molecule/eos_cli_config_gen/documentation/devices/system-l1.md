@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Interfaces](#interfaces)
+- [System Settings](#system-settings)
   - [System L1](#system-l1)
 
 ## Management
@@ -35,7 +35,7 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Interfaces
+## System Settings
 
 ### System L1
 
