@@ -5579,6 +5579,223 @@
       "type": "boolean",
       "title": "IP Routing IPv6 Interfaces"
     },
+    "ip_security": {
+      "type": "object",
+      "properties": {
+        "ike_policies": {
+          "type": "array",
+          "description": "Internet Security Association and Key Mgmt Protocol.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Policy name.",
+                "title": "Name"
+              },
+              "local_id": {
+                "type": "string",
+                "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
+                "title": "Local ID"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Ike Policies"
+        },
+        "sa_policies": {
+          "type": "array",
+          "description": "Security Association policies.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the SA policy.",
+                "title": "Name"
+              },
+              "esp": {
+                "type": "object",
+                "properties": {
+                  "integrity": {
+                    "type": "string",
+                    "enum": [
+                      "null",
+                      "sha1",
+                      "sha256"
+                    ],
+                    "title": "Integrity"
+                  },
+                  "encryption": {
+                    "type": "string",
+                    "enum": [
+                      "null",
+                      "aes128",
+                      "aes128gcm128",
+                      "aes128gcm64",
+                      "aes256",
+                      "aes256gcm256"
+                    ],
+                    "title": "Encryption"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Esp"
+              },
+              "pfs_dh_group": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  5,
+                  14,
+                  15,
+                  16,
+                  17,
+                  20,
+                  21,
+                  24
+                ],
+                "title": "Pfs Dh Group"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Sa Policies"
+        },
+        "profiles": {
+          "type": "array",
+          "description": "IPSec profiles.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the IPsec profile.",
+                "title": "Name"
+              },
+              "ike_policy": {
+                "type": "string",
+                "description": "Name of the IKE policy to use in this profile.",
+                "title": "Ike Policy"
+              },
+              "sa_policy": {
+                "type": "string",
+                "description": "Name of the Security Association to use in this profile.",
+                "title": "Sa Policy"
+              },
+              "connection": {
+                "type": "string",
+                "description": "IPsec connection (Initiator/Responder/Dynamic).",
+                "enum": [
+                  "add",
+                  "start",
+                  "route"
+                ],
+                "title": "Connection"
+              },
+              "shared_key": {
+                "type": "string",
+                "description": "Encrypted password - only type 7 supported.",
+                "title": "Shared Key"
+              },
+              "dpd": {
+                "type": "object",
+                "description": "Dead Peer Detection.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "description": "Interval (in seconds) between keep-alive messages.",
+                    "minimum": 2,
+                    "maximum": 3600,
+                    "title": "Interval"
+                  },
+                  "time": {
+                    "type": "integer",
+                    "description": "Time (in seconds) after which the action is applied.",
+                    "minimum": 10,
+                    "maximum": 3600,
+                    "title": "Time"
+                  },
+                  "action": {
+                    "type": "string",
+                    "description": "Action to apply\n\n* 'clear': Delete all connections\n* 'hold': Re-negotiate connection on demand\n* 'restart': Restart connection immediately\n",
+                    "enum": [
+                      "clear",
+                      "hold",
+                      "restart"
+                    ],
+                    "title": "Action"
+                  }
+                },
+                "required": [
+                  "interval",
+                  "time",
+                  "action"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Dpd"
+              },
+              "mode": {
+                "type": "string",
+                "description": "Ipsec mode type.",
+                "enum": [
+                  "transport",
+                  "tunnel"
+                ],
+                "title": "Mode"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Profiles"
+        },
+        "key_controller": {
+          "type": "object",
+          "properties": {
+            "profile": {
+              "type": "string",
+              "description": "IPsec profile name to use.",
+              "title": "Profile"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Key Controller"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IP Security"
+    },
     "ip_ssh_client_source_interfaces": {
       "type": "array",
       "items": {
