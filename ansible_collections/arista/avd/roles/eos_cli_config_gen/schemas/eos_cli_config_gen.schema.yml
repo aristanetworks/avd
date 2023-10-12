@@ -1450,11 +1450,14 @@ keys:
           - str
         ip_address:
           type: str
-          description: IPv4 address/mask
+          description: IPv4 address/mask or "dhcp"
         ip_address_secondaries:
           type: list
           items:
             type: str
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP
         ip_helpers:
           type: list
           primary_key: ip_helper
@@ -2911,7 +2914,7 @@ keys:
                 convert_types:
                 - str
                 min: 0
-                max: 254
+                max: 255
               ttl_match:
                 type: str
                 valid_values:
@@ -6685,7 +6688,7 @@ keys:
       ttl:
         type: int
         min: 1
-        max: 254
+        max: 255
         convert_types:
         - str
       domain:

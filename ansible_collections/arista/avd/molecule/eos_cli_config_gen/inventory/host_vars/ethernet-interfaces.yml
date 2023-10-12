@@ -853,3 +853,8 @@ ethernet_interfaces:
     phone:
       trunk: "tagged phone"
       vlan: 70
+  - name: Ethernet63
+    description: DHCP interface
+    type: routed
+    ip_address: "dhcp"
+    dhcp_client_accept_default_route: true
