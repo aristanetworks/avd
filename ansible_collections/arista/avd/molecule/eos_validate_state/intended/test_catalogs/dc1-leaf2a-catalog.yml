@@ -1,7 +1,7 @@
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf2b
+    - neighbor_device: dc1-leaf2b.dc1.local
       neighbor_port: Ethernet3
       port: Ethernet3
     result_overwrite:
@@ -11,7 +11,7 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf2b
+    - neighbor_device: dc1-leaf2b.dc1.local
       neighbor_port: Ethernet4
       port: Ethernet4
     result_overwrite:
@@ -21,7 +21,7 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-spine1
+    - neighbor_device: dc1-spine1.dc1.local
       neighbor_port: Ethernet3
       port: Ethernet1
     result_overwrite:
@@ -31,23 +31,13 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-spine2
+    - neighbor_device: dc1-spine2.dc1.local
       neighbor_port: Ethernet3
       port: Ethernet2
     result_overwrite:
       categories:
       - LLDP Topology
       custom_field: 'local: Ethernet2 - remote: dc1-spine2_Ethernet3'
-      description: LLDP topology - validate peer and interface
-- VerifyLLDPNeighbors:
-    neighbors:
-    - neighbor_device: dc1-leaf2c
-      neighbor_port: Ethernet1
-      port: Ethernet8
-    result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet8 - remote: dc1-leaf2c_Ethernet1'
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
@@ -281,13 +271,13 @@ anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet8
-      protocol_status: up
-      state: up
+      protocol_status: down
+      state: adminDown
     result_overwrite:
       categories:
       - Interface State
       custom_field: Ethernet8 - DC1-LEAF2C_Ethernet1
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == \"adminDown\"
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet6

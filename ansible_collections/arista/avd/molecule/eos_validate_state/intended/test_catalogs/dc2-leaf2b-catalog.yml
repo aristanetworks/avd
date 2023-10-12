@@ -51,7 +51,7 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf2b
+    - neighbor_device: dc1-leaf2b.dc1.local
       neighbor_port: Ethernet6
       port: Ethernet6
     result_overwrite:
