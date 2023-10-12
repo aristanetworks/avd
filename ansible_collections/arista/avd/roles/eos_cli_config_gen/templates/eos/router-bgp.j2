@@ -928,6 +928,56 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# address family link state activation #}
+{%     if router_bgp.address_family_link_state is arista.avd.defined %}
+   !
+   address-family link-state
+{%         if router_bgp.address_family_link_state.bgp.missing_policy.direction_in_action is arista.avd.defined %}
+      bgp missing-policy direction in action {{ router_bgp.address_family_link_state.bgp.missing_policy.direction_in_action }}
+{%         endif %}
+{%         if router_bgp.address_family_link_state.bgp.missing_policy.direction_out_action is arista.avd.defined %}
+      bgp missing-policy direction out action {{ router_bgp.address_family_link_state.bgp.missing_policy.direction_out_action }}
+{%         endif %}
+{%         for peer_group in router_bgp.address_family_link_state.peer_groups | arista.avd.natural_sort('name') %}
+{%             if peer_group.activate is arista.avd.defined(true) %}
+      neighbor {{ peer_group.name }} activate
+{%             elif peer_group.activate is arista.avd.defined(false) %}
+      no neighbor {{ peer_group.name }} activate
+{%             endif %}
+{%             if peer_group.missing_policy.direction_in_action is arista.avd.defined %}
+      neighbor {{ peer_group.name }} missing-policy direction in action {{ peer_group.missing_policy.direction_in_action }}
+{%             endif %}
+{%             if peer_group.missing_policy.direction_out_action is arista.avd.defined %}
+      neighbor {{ peer_group.name }} missing-policy direction out action {{ peer_group.missing_policy.direction_out_action }}
+{%             endif %}
+{%         endfor %}
+{%         for neighbor in router_bgp.address_family_link_state.neighbors | arista.avd.natural_sort('ip_address') %}
+{%             if neighbor.activate is arista.avd.defined(true) %}
+      neighbor {{ neighbor.ip_address }} activate
+{%             endif %}
+{%             if neighbor.missing_policy.direction_in_action is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} missing-policy direction in action {{ neighbor.missing_policy.direction_in_action }}
+{%             endif %}
+{%             if neighbor.missing_policy.direction_out_action is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} missing-policy direction out action {{ neighbor.missing_policy.direction_out_action }}
+{%             endif %}
+{%         endfor %}
+{%         if router_bgp.address_family_link_state.path_selection is arista.avd.defined %}
+{%             if router_bgp.address_family_link_state.path_selection.roles.producer is arista.avd.defined(true) %}
+      path-selection
+{%             endif %}
+{%             if router_bgp.address_family_link_state.path_selection.roles.consumer is arista.avd.defined(true) or router_bgp.address_family_link_state.path_selection.roles.propagator is arista.avd.defined(true) %}
+{%                 set path_selection_roles = "path-selection role" %}
+{%                 if router_bgp.address_family_link_state.path_selection.roles.consumer is arista.avd.defined(true) %}
+{%                     set path_selection_roles = path_selection_roles ~ " consumer" %}
+{%                 endif %}
+{%                 if router_bgp.address_family_link_state.path_selection.roles.propagator is arista.avd.defined(true) %}
+{%                     set path_selection_roles = path_selection_roles ~ " propagator" %}
+{%                 endif %}
+      {{ path_selection_roles }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
 {# address family vpn-ipv4 activation #}
 {%     if router_bgp.address_family_vpn_ipv4 is arista.avd.defined %}
    !

@@ -363,6 +363,28 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv6_sr_te.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name |
+    | [<samp>&nbsp;&nbsp;address_family_link_state</samp>](## "router_bgp.address_family_link_state") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_link_state.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_link_state.bgp.missing_policy") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in_action</samp>](## "router_bgp.address_family_link_state.bgp.missing_policy.direction_in_action") | String |  |  | Valid Values:<br>- deny<br>- deny-in-out<br>- permit |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out_action</samp>](## "router_bgp.address_family_link_state.bgp.missing_policy.direction_out_action") | String |  |  | Valid Values:<br>- deny<br>- deny-in-out<br>- permit |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_link_state.peer_groups") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_bgp.address_family_link_state.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_link_state.peer_groups.[].activate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_link_state.peer_groups.[].missing_policy") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in_action</samp>](## "router_bgp.address_family_link_state.peer_groups.[].missing_policy.direction_in_action") | String |  |  | Valid Values:<br>- deny<br>- deny-in-out<br>- permit |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out_action</samp>](## "router_bgp.address_family_link_state.peer_groups.[].missing_policy.direction_out_action") | String |  |  | Valid Values:<br>- deny<br>- deny-in-out<br>- permit |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_link_state.neighbors") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ip_address</samp>](## "router_bgp.address_family_link_state.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_link_state.neighbors.[].activate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_link_state.neighbors.[].missing_policy") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in_action</samp>](## "router_bgp.address_family_link_state.neighbors.[].missing_policy.direction_in_action") | String |  |  | Valid Values:<br>- deny<br>- deny-in-out<br>- permit |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out_action</samp>](## "router_bgp.address_family_link_state.neighbors.[].missing_policy.direction_out_action") | String |  |  | Valid Values:<br>- deny<br>- deny-in-out<br>- permit |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_selection</samp>](## "router_bgp.address_family_link_state.path_selection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;roles</samp>](## "router_bgp.address_family_link_state.path_selection.roles") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;producer</samp>](## "router_bgp.address_family_link_state.path_selection.roles.producer") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;consumer</samp>](## "router_bgp.address_family_link_state.path_selection.roles.consumer") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;propagator</samp>](## "router_bgp.address_family_link_state.path_selection.roles.propagator") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;address_family_flow_spec_ipv4</samp>](## "router_bgp.address_family_flow_spec_ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_flow_spec_ipv4.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_flow_spec_ipv4.bgp.missing_policy") | Dictionary |  |  |  |  |
@@ -991,6 +1013,28 @@
             activate: <bool>
             route_map_in: <str>
             route_map_out: <str>
+      address_family_link_state:
+        bgp:
+          missing_policy:
+            direction_in_action: <str>
+            direction_out_action: <str>
+        peer_groups:
+          - name: <str>
+            activate: <bool>
+            missing_policy:
+              direction_in_action: <str>
+              direction_out_action: <str>
+        neighbors:
+          - ip_address: <str>
+            activate: <bool>
+            missing_policy:
+              direction_in_action: <str>
+              direction_out_action: <str>
+        path_selection:
+          roles:
+            producer: <bool>
+            consumer: <bool>
+            propagator: <bool>
       address_family_flow_spec_ipv4:
         bgp:
           missing_policy:

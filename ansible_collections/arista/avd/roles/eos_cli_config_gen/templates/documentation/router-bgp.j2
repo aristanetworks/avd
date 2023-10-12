@@ -623,6 +623,54 @@
 {%             endfor %}
 {%         endif %}
 {%     endif %}
+{%     if router_bgp.address_family_link_state is arista.avd.defined %}
+
+#### Router BGP Link-State Address Family
+{%         if router_bgp.address_family_link_state.neighbors is arista.avd.defined %}
+
+##### Link-State Neighbors
+
+| Neighbor | Activate | Missing policy In action | Missing policy Out action |
+| -------- | -------- | ------------------------ | ------------------------- |
+{%             for neighbor in router_bgp.address_family_link_state.neighbors | arista.avd.natural_sort('ip_address') %}
+{%                 set missing_policy_in = neighbor.missing_policy.direction_in_action | arista.avd.default("-") %}
+{%                 set missing_policy_out = neighbor.missing_policy.direction_out_action | arista.avd.default("-") %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} | {{ missing_policy_in }} | {{ missing_policy_out }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_link_state.peer_groups is arista.avd.defined %}
+
+##### Link-State Peer Groups
+
+| Peer Group | Activate | Missing policy In action | Missing policy Out action |
+| ---------- | -------- | ------------------------ | ------------------------- |
+{%             for peer_group in router_bgp.address_family_link_state.peer_groups | arista.avd.natural_sort('name') %}
+{%                 set missing_policy_in = peer_group.missing_policy.direction_in_action | arista.avd.default("-") %}
+{%                 set missing_policy_out = peer_group.missing_policy.direction_out_action | arista.avd.default("-") %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ missing_policy_in }} | {{ missing_policy_out }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_link_state.path_selection is arista.avd.defined %}
+
+##### Link-State Path Selection configuration
+
+| Settings | Value |
+| -------- | ----- |
+{%             if router_bgp.address_family_link_state.path_selection.roles is arista.avd.defined %}
+{%                 set path_selection_roles = [] %}
+{%                 if router_bgp.address_family_link_state.path_selection.roles.producer is arista.avd.defined(true) %}
+{%                     do path_selection_roles.append("producer") %}
+{%                 endif %}
+{%                 if router_bgp.address_family_link_state.path_selection.roles.consumer is arista.avd.defined(true) %}
+{%                     do path_selection_roles.append("consumer") %}
+{%                 endif %}
+{%                 if router_bgp.address_family_link_state.path_selection.roles.propagator is arista.avd.defined(true) %}
+{%                     do path_selection_roles.append("propagator") %}
+{%                 endif %}
+| Role(s) | {{ path_selection_roles | join("<br>") }} |
+{%             endif %}
+{%         endif %}
+{%     endif %}
 {%     if router_bgp.address_family_vpn_ipv4 is arista.avd.defined %}
 
 #### Router BGP VPN-IPv4 Address Family

@@ -2967,7 +2967,7 @@ keys:
                 convert_types:
                 - str
                 min: 0
-                max: 254
+                max: 255
               ttl_match:
                 type: str
                 valid_values:
@@ -6741,7 +6741,7 @@ keys:
       ttl:
         type: int
         min: 1
-        max: 254
+        max: 255
         convert_types:
         - str
       domain:
@@ -8900,6 +8900,90 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name
+      address_family_link_state:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                missing_policy:
+                  type: dict
+                  keys:
+                    direction_in_action:
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+                    direction_out_action:
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                missing_policy:
+                  type: dict
+                  keys:
+                    direction_in_action:
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+                    direction_out_action:
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+          path_selection:
+            type: dict
+            keys:
+              roles:
+                type: dict
+                keys:
+                  producer:
+                    type: bool
+                  consumer:
+                    type: bool
+                  propagator:
+                    type: bool
       address_family_flow_spec_ipv4:
         type: dict
         keys:
