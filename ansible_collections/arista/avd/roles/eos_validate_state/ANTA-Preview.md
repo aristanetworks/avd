@@ -34,9 +34,15 @@
 
 ## How to run eos_validate_state in ANTA mode
 
-- Install anta v0.9.0: `pip install anta==v0.9.0` (this is part of the `requirements.txt`)
+- Install the "anta" Python package (this is *not* part of the `requirements.txt`):
 
-- Run eos_validate_state playbook by setting the variables `use_anta=true`
+  ```shell
+  pip3 install '
+  --8<-- "roles/eos_validate_state/preview_requirements.txt:4:4"
+  '
+  ```
+
+- Run eos_validate_state playbook by setting the variable `use_anta=true`.
 
   This can be set for instance in your group_vars or under the task in your playbook.
 
@@ -45,11 +51,15 @@
 - Ansible tags are supported for backwards compatibility until AVD version 5.0.0.
   To run/skip tests use `--tags` or `--skip-tags`.
 
-  Example: `ansible-playbook playbooks/fabric-validate.yaml --tags routing_table`
+  ```shell
+  ansible-playbook playbooks/fabric-validate.yaml --tags routing_table
+  ```
 
 - You can now run the eos_validate_state role in check_mode. This will produce a report of tests that will be performed without running the tests on your network.
 
-  Example: `ansible-playbook playbooks/fabric-validate.yaml --check`
+  ```shell
+  ansible-playbook playbooks/fabric-validate.yaml --check
+  ```
 
 - You have the option to save the test catalog generate by the role for each device in the `intended/test_catalogs` folder by setting the variable `save_catalog` to `true`.
 
