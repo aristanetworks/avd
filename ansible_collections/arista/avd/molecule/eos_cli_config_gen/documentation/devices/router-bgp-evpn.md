@@ -99,6 +99,7 @@ interface Management1
 #### Router BGP EVPN Address Family
 
 - Next-hop resolution is __disabled__
+- Next-hop-unchanged is explicitly configured (default behaviour)
 
 ##### EVPN Peer Groups
 
@@ -242,6 +243,7 @@ router bgp 65101
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
       next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
+      bgp next-hop-unchanged
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate

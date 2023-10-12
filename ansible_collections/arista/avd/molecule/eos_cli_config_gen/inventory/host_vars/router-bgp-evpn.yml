@@ -69,6 +69,7 @@ router_bgp:
       expiry_timeout: 3
     next_hop:
       resolution_disabled: true
+    next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
