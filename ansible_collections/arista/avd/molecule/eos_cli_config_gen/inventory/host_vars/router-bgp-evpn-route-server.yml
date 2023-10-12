@@ -1,0 +1,59 @@
+router_bgp:
+  as: 65000
+  router_id: 192.168.255.1
+  bgp_defaults:
+    - timers bgp 5 15
+    - bgp asn notation asdot
+  distance:
+    external_routes: 20
+    internal_routes: 200
+    local_routes: 200
+  graceful_restart:
+    enabled: true
+    restart_time: 300
+  maximum_paths:
+    paths: 128
+  bgp:
+    default:
+      ipv4_unicast: true
+  updates:
+    wait_for_convergence: true
+    wait_install: true
+  peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 2
+      password: "q+VNViP5i4rVjW1cxFv2wA=="
+      send_community: all
+      maximum_routes: 0
+    - name: IPV4-UNDERLAY-PEERS
+      type: ipv4
+      password: "vnEaG8gMeQf3d3cN6PktXQ=="
+      maximum_routes: 12000
+      maximum_routes_warning_only: true
+      send_community: all
+  listen_ranges:
+    - prefix: 192.168.0.0/24
+      peer_group: IPV4-UNDERLAY-PEERS
+      peer_filter: PF_AS_LEAVES
+    - prefix: 192.168.255.0/26
+      peer_group: EVPN-OVERLAY-PEERS
+      peer_filter: PF_AS_LEAVES
+  redistribute_routes:
+    - source_protocol: connected
+      route_map: RM_LOOPBACKS
+  address_family_ipv4:
+    peer_groups:
+      - name: EVPN-OVERLAY-PEERS
+        activate: false
+  address_family_evpn:
+    peer_groups:
+      - name: EVPN-OVERLAY-PEERS
+        activate: true
+    next_hop_unchanged: true
+  address_family_rtc:
+    peer_groups:
+      - name: EVPN-OVERLAY-PEERS
+        activate: true
