@@ -18,8 +18,8 @@ keys:
       keys:
         type:
           type: str
-          valid_values: ['sampled', 'hardware']
-          description: Flow tracking types
+          valid_values: ['sampled']
+          description: Flow Tracking Type - only 'sampled' supported for now
         sample:
           type: int
           convert_types:

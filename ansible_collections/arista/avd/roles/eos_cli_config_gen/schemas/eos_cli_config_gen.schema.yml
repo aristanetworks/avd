@@ -2583,8 +2583,7 @@ keys:
           type: str
           valid_values:
           - sampled
-          - hardware
-          description: Flow tracking types
+          description: Flow Tracking Type - only 'sampled' supported for now
         sample:
           type: int
           convert_types:
