@@ -1058,7 +1058,7 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
-- name: Ethernet49/1
+- name: Ethernet69/1
   peer: DC1-SPINE1
   peer_interface: Ethernet7/1
   peer_type: spine
@@ -1068,7 +1068,7 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.97/31
-- name: Ethernet50/1
+- name: Ethernet70/1
   peer: DC1-SPINE2
   peer_interface: Ethernet1/7/1
   peer_type: spine
@@ -1078,7 +1078,7 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.99/31
-- name: Ethernet51/1
+- name: Ethernet71/1
   peer: DC1-SPINE3
   peer_interface: Ethernet1/7/1
   peer_type: spine
@@ -1088,7 +1088,7 @@ ethernet_interfaces:
   mtu: 1500
   type: routed
   ip_address: 172.31.254.101/31
-- name: Ethernet52/1
+- name: Ethernet72/1
   peer: DC1-SPINE4
   peer_interface: Ethernet7/1
   peer_type: spine

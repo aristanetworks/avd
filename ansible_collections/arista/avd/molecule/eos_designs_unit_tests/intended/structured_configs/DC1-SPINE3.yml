@@ -60,11 +60,11 @@ router_bgp:
   - ip_address: 172.31.254.101
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
-    description: DC1-SVC3A_Ethernet51/1
+    description: DC1-SVC3A_Ethernet71/1
   - ip_address: 172.31.254.133
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
-    description: DC1-SVC3B_Ethernet51/1
+    description: DC1-SVC3B_Ethernet71/1
   - ip_address: 172.31.254.165
     peer_group: UNDERLAY-PEERS
     remote_as: '65104'
@@ -265,9 +265,9 @@ ethernet_interfaces:
   ip_address: 172.31.254.78/31
 - name: Ethernet1/7/1
   peer: DC1-SVC3A
-  peer_interface: Ethernet51/1
+  peer_interface: Ethernet71/1
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-SVC3A_Ethernet51/1
+  description: P2P_LINK_TO_DC1-SVC3A_Ethernet71/1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500
@@ -275,9 +275,9 @@ ethernet_interfaces:
   ip_address: 172.31.254.100/31
 - name: Ethernet1/9/1
   peer: DC1-SVC3B
-  peer_interface: Ethernet51/1
+  peer_interface: Ethernet71/1
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-SVC3B_Ethernet51/1
+  description: P2P_LINK_TO_DC1-SVC3B_Ethernet71/1
   speed: forced 100gfull
   shutdown: false
   mtu: 1500

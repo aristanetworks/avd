@@ -169,14 +169,14 @@ class PlatformMixin:
         for default_interface in default_interfaces:
             for platform in default_interface.get("platforms", []):
                 if search(f"^{platform}$", device_platform) and (
-                    self.type in default_interface.get("types", []) or "all" in default_interface.get("types", [])
+                    self.type in default_interface.get("types", []) or "default" in default_interface.get("types", [])
                 ):
                     return default_interface
 
         # If not found, then look for a default default_interface that matches our type
         for default_interface in default_interfaces:
             for platform in default_interface.get("platforms", []):
-                if search(f"^{platform}$", "default") and (self.type in default_interface.get("types", []) or "all" in default_interface.get("types", [])):
+                if search(f"^{platform}$", "default") and (self.type in default_interface.get("types", []) or "default" in default_interface.get("types", [])):
                     return default_interface
 
         return {}

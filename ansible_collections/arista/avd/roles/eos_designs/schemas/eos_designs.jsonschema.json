@@ -2970,7 +2970,7 @@
         "properties": {
           "types": {
             "type": "array",
-            "description": "List of node type keys.\n'all' will apply these default interfaces to all node types (the node's platform must still match a platform type regular expression).\n",
+            "description": "List of node type keys.\n'default' will apply these default interfaces to node types where there is no more-specific match.\nNote that the node's platform must still match a platform type regular expression.\n",
             "items": {
               "type": "string"
             },

@@ -20,7 +20,8 @@ keys:
           required: true
           description: |
             List of node type keys.
-            'all' will apply these default interfaces to all node types (the node's platform must still match a platform type regular expression).
+            'default' will apply these default interfaces to node types where there is no more-specific match.
+            Note that the node's platform must still match a platform type regular expression.
           items:
             type: str
         platforms:
