@@ -3,21 +3,21 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{# doc - system_l1 #}
-{% if system_l1 is arista.avd.defined %}
+{# doc - system.l1 #}
+{% if system.l1 is arista.avd.defined %}
 
 ## System L1
-{%     if system_l1.unsupported_speed_action is arista.avd.defined or system_l1.unsupported_error_correction_action is arista.avd.defined %}
+{%     if system.l1.unsupported_speed_action is arista.avd.defined or system.l1.unsupported_error_correction_action is arista.avd.defined %}
 
 ### Unsupported interface configurations
 
 | Unsupported Configuration | action |
 | ---------------- | -------|
-{%         if system_l1.unsupported_speed_action is arista.avd.defined %}
-| Speed | {{ system_l1.unsupported_speed_action }} |
+{%         if system.l1.unsupported_speed_action is arista.avd.defined %}
+| Speed | {{ system.l1.unsupported_speed_action }} |
 {%         endif %}
-{%         if system_l1.unsupported_error_correction_action is arista.avd.defined %}
-| Error correction | {{ system_l1.unsupported_error_correction_action }} |
+{%         if system.l1.unsupported_error_correction_action is arista.avd.defined %}
+| Error correction | {{ system.l1.unsupported_error_correction_action }} |
 {%         endif %}
 {%     endif %}
 
