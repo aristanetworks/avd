@@ -2619,9 +2619,7 @@ keys:
           type: dict
           keys:
             speed_group:
-              type: int
-              convert_types:
-              - str
+              type: str
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g"

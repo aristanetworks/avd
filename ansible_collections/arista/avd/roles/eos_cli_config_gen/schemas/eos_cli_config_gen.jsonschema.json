@@ -4349,7 +4349,7 @@
             "type": "object",
             "properties": {
               "speed_group": {
-                "type": "integer",
+                "type": "string",
                 "title": "Speed Group"
               },
               "serdes": {
