@@ -19,6 +19,7 @@ WORDLIST = {
     "dns": "DNS",
     "dot1br": "dot1br",
     "dot1x": "dot1x",
+    "dps": "DPS",
     "dr": "DR",
     "dscp": "DSCP",
     "ecmp": "ECMP",
