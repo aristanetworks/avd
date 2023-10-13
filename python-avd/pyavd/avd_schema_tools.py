@@ -7,8 +7,9 @@ from .validation_result import ValidationResult
 from .vendor.errors import AvdConversionWarning, AvdDeprecationWarning, AvdValidationError
 from .vendor.schema.avdschema import AvdSchema
 
-IGNORE_EXCEPTIONS = (AvdDeprecationWarning, AvdConversionWarning)
-RETURN_EXCEPTIONS = AvdValidationError
+IGNORE_EXCEPTIONS = AvdConversionWarning
+VALIDATION_ERROR_EXCEPTIONS = AvdValidationError
+DEPRECATION_WARNING_EXCEPTIONS = AvdDeprecationWarning
 
 
 class AvdSchemaTools:
@@ -60,7 +61,7 @@ class AvdSchemaTools:
         Returns:
             Instance of ValidationResult, where "failed" is True if data is invalid and "errors" is a list of AvdValidationError.
         """
-        result = ValidationResult(failed=False, validation_errors=[])
+        result = ValidationResult(failed=False)
 
         # avdschema.validate returns a Generator, so we have to iterate through it to perform the actual validations.
         exceptions: Generator = self.avdschema.validate(data)
@@ -69,9 +70,13 @@ class AvdSchemaTools:
             if isinstance(exception, IGNORE_EXCEPTIONS):
                 continue
 
-            if isinstance(exception, RETURN_EXCEPTIONS):
+            if isinstance(exception, VALIDATION_ERROR_EXCEPTIONS):
                 result.validation_errors.append(exception)
                 result.failed = True
+                continue
+
+            if isinstance(exception, DEPRECATION_WARNING_EXCEPTIONS):
+                result.deprecation_warnings.append(exception)
                 continue
 
             if isinstance(exception, Exception):

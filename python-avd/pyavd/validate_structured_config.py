@@ -18,8 +18,7 @@ def validate_structured_config(structured_config: dict) -> ValidationResult:
         structured_config: Dictionary with structured configuration.
 
     Returns:
-        Instance of ValidationResult, where "failed" is True if data is not valid according to the schema
-            and "errors" is a list of AvdValidationErrors containing schema violations.
+        Validation result object with any validation errors or deprecation warnings.
     """
 
     # Initialize a global instance of eos_cli_config_gen_schema_tools
