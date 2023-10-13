@@ -1,4 +1,5 @@
 hostname: SITE3-LER1
+is_deployed: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

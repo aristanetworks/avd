@@ -1,4 +1,5 @@
 hostname: AUTO_BGP_ASN_LEAF8B
+is_deployed: true
 router_bgp:
   as: '65222.13'
   router_id: 192.168.255.16
