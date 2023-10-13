@@ -28,7 +28,7 @@ class AvdSchemaTools:
         """
         self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
 
-    def convert_data(self, data: dict) -> None:
+    def convert_data(self, data: dict) -> list[AvdDeprecationWarning]:
         """
         Convert data according to the schema (convert_types)
         The data conversion is done in-place (updating the original "data" dict).
@@ -36,19 +36,27 @@ class AvdSchemaTools:
         Args:
             data:
                 Input variables which should be converted according to the schema.
+
+        Returns:
+            List of AvdDeprecationWarnings
         """
 
         # avdschema.convert returns a Generator, so we have to iterate through it to perform the actual conversions.
         exceptions: Generator = self.avdschema.convert(data)
+
+        result = []
         for exception in exceptions:
             # Ignore conversions and deprecations
             if isinstance(exception, IGNORE_EXCEPTIONS):
                 continue
 
+            if isinstance(exception, DEPRECATION_WARNING_EXCEPTIONS):
+                result.append(exception)
+
             if isinstance(exception, Exception):
                 raise exception
 
-        return None
+        return result
 
     def validate_data(self, data: dict) -> ValidationResult:
         """
@@ -59,7 +67,7 @@ class AvdSchemaTools:
                 Input variables which are to be validated according to the schema.
 
         Returns:
-            Instance of ValidationResult, where "failed" is True if data is invalid and "errors" is a list of AvdValidationError.
+            Validation result object with any validation errors or deprecation warnings.
         """
         result = ValidationResult(failed=False)
 

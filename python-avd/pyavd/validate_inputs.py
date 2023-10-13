@@ -37,7 +37,9 @@ def validate_inputs(inputs: dict) -> ValidationResult:
     inputs.setdefault("network_services_keys", shared_utils.network_services_keys)
 
     # Inplace conversion of data
-    eos_designs_schema_tools.convert_data(inputs)
+    deprecation_warnings = eos_designs_schema_tools.convert_data(inputs)
 
     # Validate input data
-    return eos_designs_schema_tools.validate_data(inputs)
+    validation_result = eos_designs_schema_tools.validate_data(inputs)
+    validation_result.deprecation_warnings.extend(deprecation_warnings)
+    return validation_result
