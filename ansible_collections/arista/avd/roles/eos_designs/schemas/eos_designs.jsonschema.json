@@ -9867,7 +9867,7 @@
                 "speed_groups": {
                   "type": "array",
                   "items": {
-                    "type": "integer"
+                    "type": "string"
                   },
                   "title": "Speed Groups"
                 }

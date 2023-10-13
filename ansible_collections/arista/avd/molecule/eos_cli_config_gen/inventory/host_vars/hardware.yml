@@ -7,3 +7,5 @@ hardware:
       serdes: 10g
     - speed_group: 2
       serdes: 25g
+    - speed_group: 3/1
+      serdes: 25g
