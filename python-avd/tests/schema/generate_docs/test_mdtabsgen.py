@@ -10,22 +10,21 @@ import pytest
 # Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
 path.insert(0, str(Path(__file__).parents[3].joinpath("pyavd")))
 
-from schema.constants import STORE
 from schema.generate_docs.mdtabsgen import get_md_tabs
 from schema.metaschema.meta_schema_model import AristaAvdSchema
 
-raw_schema = STORE["eos_designs"]
-
 
 @pytest.mark.parametrize("table_name", ["network-services-multicast-settings"])
-def test_get_md_tabs(table_name: str):
+def test_get_md_tabs(table_name: str, schema_store, artifacts_path, output_path):
     """
     Loads the schema with the resolved $refs and generated md_tabs.
     Write the resulting md_tabs to a file.
     Compare the output with the expected file.
     """
-    output_file = Path(__file__).parent.joinpath(f"{table_name}.md")
-    expected_file = Path(__file__).parent.joinpath(f"expected-{table_name}.md")
+    raw_schema = schema_store["eos_designs"]
+
+    output_file = output_path.joinpath(f"{table_name}.md")
+    expected_file = artifacts_path.joinpath(f"expected-{table_name}.md")
 
     schema = AristaAvdSchema(resolve_schema=True, **raw_schema)
     md_tabs = get_md_tabs(schema, table_name)
