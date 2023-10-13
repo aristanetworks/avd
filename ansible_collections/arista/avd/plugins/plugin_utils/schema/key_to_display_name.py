@@ -23,6 +23,7 @@ WORDLIST = {
     "dscp": "DSCP",
     "eos": "EOS",
     "evpn": "EVPN",
+    "exp": "EXP",
     "fcs": "FCS",
     "gnmi": "gNMI",
     "http": "HTTP",

@@ -11341,7 +11341,7 @@
                 "type": "string",
                 "description": "Example \"0 to traffic-class 0\"\n"
               },
-              "title": "Exp"
+              "title": "EXP"
             },
             "traffic_class": {
               "type": "array",
