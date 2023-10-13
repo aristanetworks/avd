@@ -51,6 +51,14 @@ ntp:
 
 # Support for per-platform automatic interface allocation
 default_interfaces:
+  - types: [ default ]
+    platforms: [ default ]
+    # Higher-numbered interfaces used to differentiate from
+    # other definitions below
+    uplink_interfaces: [ Ethernet79-82/1 ]
+    mlag_interfaces: [ Ethernet53-54/1 ]
+    downlink_interfaces: [ Ethernet1-30/1 ]
+
   - types: [ spine ]
     platforms: [ 7280R3, default ]
     uplink_interfaces: [ Ethernet49-54/1 ]

@@ -162,8 +162,15 @@ class PlatformMixin:
         default_interfaces set based on default_interfaces
         """
         default_interfaces = get(self.hostvars, "default_interfaces", default=[])
-
         device_platform = default(self.platform, "default")
+
+        # Re-order default_interfaces:
+        # #  platform  type
+        # 1  abc       xyz
+        # 2  abc       default
+        # 3  default   xyz
+        # 4  default   default
+        default_interfaces.sort(key=self.sort_default_interfaces)
 
         # First look for a matching default interface set that matches our platform and type
         for default_interface in default_interfaces:
@@ -180,6 +187,20 @@ class PlatformMixin:
                     return default_interface
 
         return {}
+
+    @staticmethod
+    def sort_default_interfaces(default_interface: dict) -> int:
+        """
+        Set sort order for each default_interface, based on platforms and types keys
+        """
+        if "default" not in default_interface.get("platforms") and "default" not in default_interface.get("types"):
+            return 1
+        elif "default" not in default_interface.get("platforms") and "default" in default_interface.get("types"):
+            return 2
+        elif "default" in default_interface.get("platforms") and "default" not in default_interface.get("types"):
+            return 3
+        else:
+            return 4
 
     @cached_property
     def platform_settings_feature_support_interface_storm_control(self) -> bool:
