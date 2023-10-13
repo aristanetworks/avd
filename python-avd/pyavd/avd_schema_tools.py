@@ -52,6 +52,7 @@ class AvdSchemaTools:
 
             if isinstance(exception, DEPRECATION_WARNING_EXCEPTIONS):
                 result.append(exception)
+                continue
 
             if isinstance(exception, Exception):
                 raise exception
