@@ -153,8 +153,15 @@ repos:
         files: ansible_collections/arista/avd/plugins/vars/
 
       - id: schemas
-        name: Build AVD Schemas and Documentation
-        entry: sh -c 'exec env ANSIBLE_COLLECTIONS_PATHS=`pwd` ansible-playbook --forks 10 arista.avd._build_schemas_and_docs'
+        name: Build AVD Schemas
+        entry: sh -c 'exec env ANSIBLE_COLLECTIONS_PATHS=`pwd` ansible-playbook --forks 10 arista.avd._build_schemas'
+        language: system
+        files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
+        pass_filenames: false
+
+      - id: schemas
+        name: Build AVD Docs
+        entry: sh -c 'exec python-avd/scripts/build-schema-tables.py'
         language: system
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false

@@ -1057,6 +1057,62 @@ keys:
             max: 9236
             convert_types:
             - str
+  dps_interfaces:
+    type: list
+    primary_key: name
+    min_length: 1
+    max_length: 1
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: '"Dps1" is currently the only supported interface.'
+          valid_values:
+          - Dps1
+        description:
+          type: str
+        shutdown:
+          type: bool
+        ip_address:
+          type: str
+          description: IPv4 address/mask.
+        flow_tracker:
+          type: dict
+          keys:
+            sampled:
+              type: str
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name,
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+              - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+              - str
+            direction:
+              type: str
+              valid_values:
+              - ingress
+              - egress
+              description: Optional direction ('ingress', 'egress')  for tcp mss ceiling.
+        eos_cli:
+          type: str
+          description: Multiline String with EOS CLI rendered directly on the Dps
+            interface in the final EOS configuration.
   dynamic_prefix_lists:
     type: list
     items:
@@ -1306,7 +1362,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         error_correction_encoding:
           type: dict
           keys:
@@ -1450,11 +1509,14 @@ keys:
           - str
         ip_address:
           type: str
-          description: IPv4 address/mask
+          description: IPv4 address/mask or "dhcp"
         ip_address_secondaries:
           type: list
           items:
             type: str
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP
         ip_helpers:
           type: list
           primary_key: ip_helper
@@ -1474,6 +1536,7 @@ keys:
                 convert_types:
                 - int
         ip_nat:
+          type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
@@ -2470,7 +2533,48 @@ keys:
     keys:
       enabled:
         type: bool
+  flow_tracking:
+    type: dict
+    keys:
+      sampled:
+        type: dict
+        $ref: eos_cli_config_gen#/$defs/flow_tracking
+        keys:
+          sample:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+          trackers:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                table_size:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 614400
+                  description: 'Maximum number of entries in flow table.
+
+                    '
+                record_export:
+                  type: dict
+                  keys:
+                    mpls:
+                      type: bool
+                      description: Export MPLS forwarding information
+      hardware:
+        type: dict
+        $ref: eos_cli_config_gen#/$defs/flow_tracking
   flow_trackings:
+    deprecation:
+      warning: true
+      new_key: flow_tracking
+      remove_in_version: v5.0.0
     type: list
     primary_key: type
     items:
@@ -2616,9 +2720,9 @@ keys:
           type: dict
           keys:
             speed_group:
-              type: int
+              type: str
               convert_types:
-              - str
+              - int
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g"
@@ -3462,6 +3566,144 @@ keys:
     type: bool
   ip_routing_ipv6_interfaces:
     type: bool
+  ip_security:
+    type: dict
+    keys:
+      ike_policies:
+        type: list
+        description: Internet Security Association and Key Mgmt Protocol.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            local_id:
+              type: str
+              description: 'Local IKE Identification.
+
+                Can be an IPv4 or an IPv6 address.
+
+                '
+      sa_policies:
+        type: list
+        description: Security Association policies.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the SA policy.
+            esp:
+              type: dict
+              keys:
+                integrity:
+                  type: str
+                  valid_values:
+                  - 'null'
+                  - sha1
+                  - sha256
+                encryption:
+                  type: str
+                  valid_values:
+                  - 'null'
+                  - aes128
+                  - aes128gcm128
+                  - aes128gcm64
+                  - aes256
+                  - aes256gcm256
+            pfs_dh_group:
+              type: int
+              convert_types:
+              - str
+              valid_values:
+              - 1
+              - 2
+              - 5
+              - 14
+              - 15
+              - 16
+              - 17
+              - 20
+              - 21
+              - 24
+      profiles:
+        type: list
+        description: IPSec profiles.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the IPsec profile.
+            ike_policy:
+              type: str
+              description: Name of the IKE policy to use in this profile.
+            sa_policy:
+              type: str
+              description: Name of the Security Association to use in this profile.
+            connection:
+              type: str
+              description: IPsec connection (Initiator/Responder/Dynamic).
+              valid_values:
+              - add
+              - start
+              - route
+            shared_key:
+              type: str
+              description: Encrypted password - only type 7 supported.
+            dpd:
+              type: dict
+              description: Dead Peer Detection.
+              keys:
+                interval:
+                  type: int
+                  description: Interval (in seconds) between keep-alive messages.
+                  required: true
+                  convert_types:
+                  - str
+                  min: 2
+                  max: 3600
+                time:
+                  type: int
+                  description: Time (in seconds) after which the action is applied.
+                  required: true
+                  convert_types:
+                  - str
+                  min: 10
+                  max: 3600
+                action:
+                  type: str
+                  description: 'Action to apply
+
+
+                    * ''clear'': Delete all connections
+
+                    * ''hold'': Re-negotiate connection on demand
+
+                    * ''restart'': Restart connection immediately
+
+                    '
+                  required: true
+                  valid_values:
+                  - clear
+                  - hold
+                  - restart
+            mode:
+              type: str
+              description: Ipsec mode type.
+              valid_values:
+              - transport
+              - tunnel
+      key_controller:
+        type: dict
+        keys:
+          profile:
+            type: str
+            description: IPsec profile name to use.
   ip_ssh_client_source_interfaces:
     type: list
     items:
@@ -6400,6 +6642,7 @@ keys:
           type: str
           description: IPv4 address/mask
         ip_nat:
+          type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
@@ -6517,7 +6760,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         bgp:
           type: dict
           keys:
@@ -9020,6 +9266,127 @@ keys:
                   description: Peer-group name
                 activate:
                   type: bool
+      address_family_path_selection:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
+                  send:
+                    type: dict
+                    keys:
+                      any:
+                        type: bool
+                      backup:
+                        type: bool
+                      ecmp:
+                        type: bool
+                      ecmp_limit:
+                        type: int
+                        description: Amount of ECMP paths to send
+                        convert_types:
+                        - str
+                        min: 2
+                        max: 64
+                      limit:
+                        type: int
+                        description: Amount of paths to send
+                        convert_types:
+                        - str
+                        min: 2
+                        max: 64
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    install:
+                      type: bool
+                    install_ecmp_primary:
+                      type: bool
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    install:
+                      type: bool
+                    install_ecmp_primary:
+                      type: bool
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -10929,6 +11296,12 @@ keys:
                         max: 32
                       override:
                         type: bool
+  router_service_insertion:
+    type: dict
+    description: Configure network services inserted to data forwarding
+    keys:
+      enabled:
+        type: bool
   router_traffic_engineering:
     type: dict
     keys:
@@ -11753,6 +12126,19 @@ keys:
                   type: str
                   convert_types:
                   - int
+      l1:
+        type: dict
+        keys:
+          unsupported_speed_action:
+            type: str
+            valid_values:
+            - error
+            - warn
+          unsupported_error_correction_action:
+            type: str
+            valid_values:
+            - error
+            - warn
   tacacs_servers:
     type: dict
     keys:
@@ -12348,6 +12734,7 @@ keys:
                 convert_types:
                 - int
         ip_nat:
+          type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
@@ -13031,6 +13418,78 @@ keys:
             description: Multiline String with EOS CLI rendered directly on the Vxlan
               interface in the final EOS configuration.
 $defs:
+  flow_tracking:
+    type: dict
+    keys:
+      trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Tracker Name
+            record_export:
+              type: dict
+              keys:
+                on_inactive_timeout:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 3000
+                  max: 900000
+                  description: Flow record inactive export timeout in milliseconds
+                on_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1000
+                  max: 36000000
+                  description: Flow record export interval in milliseconds
+            exporters:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Exporter Name
+                  collector:
+                    type: dict
+                    keys:
+                      host:
+                        type: str
+                        description: Collector IPv4 address or IPv6 address or fully
+                          qualified domain name
+                      port:
+                        type: int
+                        description: Collector Port Number
+                        min: 1
+                        max: 65535
+                        convert_types:
+                        - str
+                  format:
+                    type: dict
+                    keys:
+                      ipfix_version:
+                        type: int
+                        convert_types:
+                        - str
+                  local_interface:
+                    type: str
+                    description: Local Source Interface
+                  template_interval:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 5000
+                    max: 3600000
+                    description: Template interval in milliseconds
+      shutdown:
+        type: bool
+        default: false
   interface_ip_nat:
     type: dict
     keys:
@@ -13057,6 +13516,7 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
+            type: list
             $ref: eos_cli_config_gen#/$defs/interface_ip_nat_static
       source:
         type: dict
@@ -13094,6 +13554,7 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
+            type: list
             $ref: eos_cli_config_gen#/$defs/interface_ip_nat_static
   interface_ip_nat_static:
     type: list

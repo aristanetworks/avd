@@ -373,7 +373,7 @@ platform_speed_groups:
   - platform: 7280R             # Only setting speed-groups on 7280R platform, so only L3leaf should get this setting.
     speeds:
       - speed: 25G
-        speed_groups: [ 3, 2 ]    # Unsorted order, but we should sort output correctly.
+        speed_groups: [ 3, 2, 5/1 ]    # Unsorted order, but we should sort output correctly.
       - speed: 10G
         speed_groups: [ 1, 2, 4 ] # Duplicate speed-group 2. Since we sort on key first the result will be 25G for group 2
 

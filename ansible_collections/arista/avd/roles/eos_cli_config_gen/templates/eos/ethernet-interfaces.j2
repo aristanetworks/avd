@@ -163,6 +163,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
    l2-protocol forwarding profile {{ ethernet_interface.l2_protocol.forwarding_profile }}
 {%     endif %}
+{%     if ethernet_interface.flow_tracker.hardware is arista.avd.defined %}
+   flow tracker hardware {{ ethernet_interface.flow_tracker.hardware }}
+{%     endif %}
 {%     if ethernet_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ ethernet_interface.flow_tracker.sampled }}
 {%     endif %}
@@ -331,6 +334,9 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
    {{ ip_helper_cli }}
 {%         endfor %}
+{%     endif %}
+{%     if ethernet_interface.ip_address is arista.avd.defined("dhcp") and ethernet_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
+   dhcp client accept default-route
 {%     endif %}
 {%     if ethernet_interface.bfd.interval is arista.avd.defined and
           ethernet_interface.bfd.min_rx is arista.avd.defined and

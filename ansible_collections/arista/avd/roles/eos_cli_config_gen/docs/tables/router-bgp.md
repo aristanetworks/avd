@@ -407,6 +407,42 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_flow_spec_ipv6.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_bgp.address_family_flow_spec_ipv6.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_flow_spec_ipv6.peer_groups.[].activate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;address_family_path_selection</samp>](## "router_bgp.address_family_path_selection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_path_selection.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.receive") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.any") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.backup") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.ecmp") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_path_selection.neighbors") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- ip_address</samp>](## "router_bgp.address_family_path_selection.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_path_selection.neighbors.[].activate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.install") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.install_ecmp_primary") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.any") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.backup") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.ecmp") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_path_selection.peer_groups") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].activate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.install") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.install_ecmp_primary") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.any") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.backup") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.ecmp") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send |
     | [<samp>&nbsp;&nbsp;address_family_vpn_ipv4</samp>](## "router_bgp.address_family_vpn_ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;domain_identifier</samp>](## "router_bgp.address_family_vpn_ipv4.domain_identifier") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups") | List, items: Dictionary |  |  |  |  |
@@ -1057,6 +1093,42 @@
         peer_groups:
           - name: <str>
             activate: <bool>
+      address_family_path_selection:
+        bgp:
+          additional_paths:
+            receive: <bool>
+            send:
+              any: <bool>
+              backup: <bool>
+              ecmp: <bool>
+              ecmp_limit: <int>
+              limit: <int>
+        neighbors:
+          - ip_address: <str>
+            activate: <bool>
+            additional_paths:
+              install: <bool>
+              install_ecmp_primary: <bool>
+              receive: <bool>
+              send:
+                any: <bool>
+                backup: <bool>
+                ecmp: <bool>
+                ecmp_limit: <int>
+                limit: <int>
+        peer_groups:
+          - name: <str>
+            activate: <bool>
+            additional_paths:
+              install: <bool>
+              install_ecmp_primary: <bool>
+              receive: <bool>
+              send:
+                any: <bool>
+                backup: <bool>
+                ecmp: <bool>
+                ecmp_limit: <int>
+                limit: <int>
       address_family_vpn_ipv4:
         domain_identifier: <str>
         peer_groups:
