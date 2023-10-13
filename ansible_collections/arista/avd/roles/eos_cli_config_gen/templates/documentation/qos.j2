@@ -48,6 +48,15 @@ QOS rewrite DSCP: **disabled**
 
 {%         if qos.map.traffic_class is arista.avd.defined %}
 
+| EXP to Traffic Class mappings |
+| ----------------------------- |
+{%             for exp_map in qos.map.exp | arista.avd.natural_sort %}
+| {{ exp_map | default('-') }} |
+{%             endfor %}
+{%         endif %}
+
+{%         if qos.map.traffic_class is arista.avd.defined %}
+
 | Traffic Class to DSCP or COS mappings |
 | ------------------------------------- |
 {%             for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
