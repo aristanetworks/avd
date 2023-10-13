@@ -12077,6 +12077,19 @@ keys:
                   type: str
                   convert_types:
                   - int
+      l1:
+        type: dict
+        keys:
+          unsupported_speed_action:
+            type: str
+            valid_values:
+            - error
+            - warn
+          unsupported_error_correction_action:
+            type: str
+            valid_values:
+            - error
+            - warn
   tacacs_servers:
     type: dict
     keys:
