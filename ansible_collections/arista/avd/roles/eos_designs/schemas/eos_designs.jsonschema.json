@@ -115,7 +115,7 @@
       "description": "Maximum ECMP for BGP multi-path.",
       "type": "integer",
       "default": 4,
-      "title": "BGP Ecmp"
+      "title": "BGP ECMP"
     },
     "bgp_graceful_restart": {
       "description": "BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
@@ -6635,8 +6635,13 @@
                     "properties": {
                       "sampled": {
                         "type": "string",
-                        "description": "Flow tracker name",
+                        "description": "Sampled flow tracker name.",
                         "title": "Sampled"
+                      },
+                      "hardware": {
+                        "type": "string",
+                        "description": "Hardware flow tracker name.",
+                        "title": "Hardware"
                       }
                     },
                     "additionalProperties": false,
@@ -6910,8 +6915,13 @@
                 "properties": {
                   "sampled": {
                     "type": "string",
-                    "description": "Flow tracker name",
+                    "description": "Sampled flow tracker name.",
                     "title": "Sampled"
+                  },
+                  "hardware": {
+                    "type": "string",
+                    "description": "Hardware flow tracker name.",
+                    "title": "Hardware"
                   }
                 },
                 "additionalProperties": false,
@@ -9867,7 +9877,7 @@
                 "speed_groups": {
                   "type": "array",
                   "items": {
-                    "type": "integer"
+                    "type": "string"
                   },
                   "title": "Speed Groups"
                 }
@@ -12199,8 +12209,13 @@
                     "properties": {
                       "sampled": {
                         "type": "string",
-                        "description": "Flow tracker name",
+                        "description": "Sampled flow tracker name.",
                         "title": "Sampled"
+                      },
+                      "hardware": {
+                        "type": "string",
+                        "description": "Hardware flow tracker name.",
+                        "title": "Hardware"
                       }
                     },
                     "additionalProperties": false,
@@ -12474,8 +12489,13 @@
                 "properties": {
                   "sampled": {
                     "type": "string",
-                    "description": "Flow tracker name",
+                    "description": "Sampled flow tracker name.",
                     "title": "Sampled"
+                  },
+                  "hardware": {
+                    "type": "string",
+                    "description": "Hardware flow tracker name.",
+                    "title": "Hardware"
                   }
                 },
                 "additionalProperties": false,

@@ -15,3 +15,6 @@ system:
         vrf: blue
       - acl_name: "acl6_3"
         vrf: default
+  l1:
+    unsupported_speed_action: warn
+    unsupported_error_correction_action: error
