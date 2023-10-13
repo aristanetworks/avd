@@ -7,7 +7,7 @@
 type: dict
 dynamic_keys:
   "node_type_keys.key":
-    $ref: "#/$defs/node_type"
+    $ref: "eos_designs#/$defs/node_type"
     type: dict
     documentation_options:
       table: node-type-structure
