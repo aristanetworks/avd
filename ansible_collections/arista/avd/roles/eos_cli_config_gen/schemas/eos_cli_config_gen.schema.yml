@@ -1362,7 +1362,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         error_correction_encoding:
           type: dict
           keys:
@@ -2529,7 +2532,48 @@ keys:
     keys:
       enabled:
         type: bool
+  flow_tracking:
+    type: dict
+    keys:
+      sampled:
+        type: dict
+        $ref: eos_cli_config_gen#/$defs/flow_tracking
+        keys:
+          sample:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+          trackers:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                table_size:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 614400
+                  description: 'Maximum number of entries in flow table.
+
+                    '
+                record_export:
+                  type: dict
+                  keys:
+                    mpls:
+                      type: bool
+                      description: Export MPLS forwarding information
+      hardware:
+        type: dict
+        $ref: eos_cli_config_gen#/$defs/flow_tracking
   flow_trackings:
+    deprecation:
+      warning: true
+      new_key: flow_tracking
+      remove_in_version: v5.0.0
     type: list
     primary_key: type
     items:
@@ -6714,7 +6758,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         bgp:
           type: dict
           keys:
@@ -13368,6 +13415,78 @@ keys:
             description: Multiline String with EOS CLI rendered directly on the Vxlan
               interface in the final EOS configuration.
 $defs:
+  flow_tracking:
+    type: dict
+    keys:
+      trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Tracker Name
+            record_export:
+              type: dict
+              keys:
+                on_inactive_timeout:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 3000
+                  max: 900000
+                  description: Flow record inactive export timeout in milliseconds
+                on_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1000
+                  max: 36000000
+                  description: Flow record export interval in milliseconds
+            exporters:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Exporter Name
+                  collector:
+                    type: dict
+                    keys:
+                      host:
+                        type: str
+                        description: Collector IPv4 address or IPv6 address or fully
+                          qualified domain name
+                      port:
+                        type: int
+                        description: Collector Port Number
+                        min: 1
+                        max: 65535
+                        convert_types:
+                        - str
+                  format:
+                    type: dict
+                    keys:
+                      ipfix_version:
+                        type: int
+                        convert_types:
+                        - str
+                  local_interface:
+                    type: str
+                    description: Local Source Interface
+                  template_interval:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 5000
+                    max: 3600000
+                    description: Template interval in milliseconds
+      shutdown:
+        type: bool
+        default: false
   interface_ip_nat:
     type: dict
     keys:

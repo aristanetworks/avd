@@ -6635,8 +6635,13 @@
                     "properties": {
                       "sampled": {
                         "type": "string",
-                        "description": "Flow tracker name",
+                        "description": "Sampled flow tracker name.",
                         "title": "Sampled"
+                      },
+                      "hardware": {
+                        "type": "string",
+                        "description": "Hardware flow tracker name.",
+                        "title": "Hardware"
                       }
                     },
                     "additionalProperties": false,
@@ -6910,8 +6915,13 @@
                 "properties": {
                   "sampled": {
                     "type": "string",
-                    "description": "Flow tracker name",
+                    "description": "Sampled flow tracker name.",
                     "title": "Sampled"
+                  },
+                  "hardware": {
+                    "type": "string",
+                    "description": "Hardware flow tracker name.",
+                    "title": "Hardware"
                   }
                 },
                 "additionalProperties": false,
@@ -12199,8 +12209,13 @@
                     "properties": {
                       "sampled": {
                         "type": "string",
-                        "description": "Flow tracker name",
+                        "description": "Sampled flow tracker name.",
                         "title": "Sampled"
+                      },
+                      "hardware": {
+                        "type": "string",
+                        "description": "Hardware flow tracker name.",
+                        "title": "Hardware"
                       }
                     },
                     "additionalProperties": false,
@@ -12474,8 +12489,13 @@
                 "properties": {
                   "sampled": {
                     "type": "string",
-                    "description": "Flow tracker name",
+                    "description": "Sampled flow tracker name.",
                     "title": "Sampled"
+                  },
+                  "hardware": {
+                    "type": "string",
+                    "description": "Hardware flow tracker name.",
+                    "title": "Hardware"
                   }
                 },
                 "additionalProperties": false,
