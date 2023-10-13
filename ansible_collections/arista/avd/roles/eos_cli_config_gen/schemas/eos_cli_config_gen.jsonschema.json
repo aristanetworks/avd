@@ -7569,10 +7569,6 @@
           "title": "Profiles"
         }
       },
-      "required": [
-        "license",
-        "fips_restrictions"
-      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
