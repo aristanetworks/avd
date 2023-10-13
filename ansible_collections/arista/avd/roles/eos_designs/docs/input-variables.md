@@ -1206,7 +1206,7 @@ roles/eos_designs/docs/tables/custom-structured-configuration.md
 
 Generate AVD topology configurations directly from a given CloudVision topology.
 
-This feature is intended to be used for integration of AVD and CloudVision Studios.
+This feature is intended to be used for the integration of AVD and CloudVision Studios.
 
 The topology should be pulled from the CloudVision "Inventory and Topology Studio" inputs. Device IDs must be translated to hostnames.
 
