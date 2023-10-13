@@ -17930,13 +17930,13 @@
           "title": "Router ID"
         },
         "is_type": {
+          "title": "IS Type",
           "type": "string",
           "enum": [
             "level-1",
             "level-1-2",
             "level-2"
-          ],
-          "title": "Is Type"
+          ]
         },
         "log_adjacency_changes": {
           "type": "boolean",

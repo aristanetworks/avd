@@ -10392,6 +10392,7 @@ keys:
         type: str
         description: IPv4 Address
       is_type:
+        display_name: IS Type
         type: str
         valid_values:
         - level-1
