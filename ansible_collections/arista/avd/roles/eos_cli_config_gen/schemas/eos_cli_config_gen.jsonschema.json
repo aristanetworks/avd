@@ -7406,10 +7406,6 @@
               "title": "License Key"
             }
           },
-          "required": [
-            "license_name",
-            "license_key"
-          ],
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
@@ -7569,10 +7565,6 @@
           "title": "Profiles"
         }
       },
-      "required": [
-        "license",
-        "fips_restrictions"
-      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}

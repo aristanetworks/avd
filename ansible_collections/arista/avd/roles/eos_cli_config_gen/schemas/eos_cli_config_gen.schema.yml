@@ -4441,17 +4441,13 @@ keys:
     keys:
       license:
         type: dict
-        required: true
         keys:
           license_name:
             type: str
-            required: true
           license_key:
             type: str
-            required: true
       fips_restrictions:
         type: bool
-        required: true
       profiles:
         type: list
         primary_key: name
