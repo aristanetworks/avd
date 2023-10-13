@@ -3619,10 +3619,10 @@
       "title": "IPv6 Management Gateway"
     },
     "is_deployed": {
-      "description": "Is device already deployed in the fabric.\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
+      "description": "If the device is already deployed in the fabric.\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
       "type": "boolean",
       "default": true,
-      "title": "IS Deployed"
+      "title": "Is Deployed"
     },
     "isis_advertise_passive_only": {
       "type": "boolean",
@@ -3646,14 +3646,14 @@
       "title": "ISIS Default Circuit Type"
     },
     "isis_default_is_type": {
+      "title": "ISIS Default IS Type",
       "type": "string",
       "enum": [
         "level-1-2",
         "level-1",
         "level-2"
       ],
-      "default": "level-2",
-      "title": "ISIS Default IS Type"
+      "default": "level-2"
     },
     "isis_default_metric": {
       "type": "integer",

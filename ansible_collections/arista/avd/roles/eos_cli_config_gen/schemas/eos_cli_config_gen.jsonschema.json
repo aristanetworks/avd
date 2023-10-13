@@ -6511,6 +6511,12 @@
       "type": "boolean",
       "title": "IPv6 Unicast Routing"
     },
+    "is_deployed": {
+      "description": "Key only used for documentation or validation purposes",
+      "type": "boolean",
+      "default": true,
+      "title": "Is Deployed"
+    },
     "l2_protocol": {
       "type": "object",
       "properties": {
@@ -17930,7 +17936,7 @@
             "level-1-2",
             "level-2"
           ],
-          "title": "IS Type"
+          "title": "Is Type"
         },
         "log_adjacency_changes": {
           "type": "boolean",
