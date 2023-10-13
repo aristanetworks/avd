@@ -775,6 +775,12 @@ roles/eos_cli_config_gen/docs/tables/ipv6-unicast-routing.md
 roles/eos_cli_config_gen/docs/tables/mpls.md
 --8<--
 
+### Router adaptive virtual topology
+
+--8<--
+router-adaptive-virtual-topology.md
+--8<--
+
 ### Router BFD
 
 --8<--
