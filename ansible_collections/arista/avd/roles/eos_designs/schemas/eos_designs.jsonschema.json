@@ -13963,7 +13963,7 @@
                           "type": "integer",
                           "description": "TTL value",
                           "minimum": 0,
-                          "maximum": 254,
+                          "maximum": 255,
                           "title": "TTL"
                         },
                         "ttl_match": {
@@ -20395,7 +20395,7 @@
                 "ttl": {
                   "type": "integer",
                   "minimum": 1,
-                  "maximum": 254,
+                  "maximum": 255,
                   "title": "TTL"
                 },
                 "domain": {
@@ -24057,6 +24057,191 @@
                     "^_.+$": {}
                   },
                   "title": "Address Family IPv6 Sr Te"
+                },
+                "address_family_link_state": {
+                  "type": "object",
+                  "properties": {
+                    "bgp": {
+                      "type": "object",
+                      "properties": {
+                        "missing_policy": {
+                          "type": "object",
+                          "properties": {
+                            "direction_in_action": {
+                              "type": "string",
+                              "enum": [
+                                "deny",
+                                "deny-in-out",
+                                "permit"
+                              ],
+                              "title": "Direction In Action"
+                            },
+                            "direction_out_action": {
+                              "type": "string",
+                              "enum": [
+                                "deny",
+                                "deny-in-out",
+                                "permit"
+                              ],
+                              "title": "Direction Out Action"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Missing Policy"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "BGP"
+                    },
+                    "peer_groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Peer-group name",
+                            "title": "Name"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "missing_policy": {
+                            "type": "object",
+                            "properties": {
+                              "direction_in_action": {
+                                "type": "string",
+                                "enum": [
+                                  "deny",
+                                  "deny-in-out",
+                                  "permit"
+                                ],
+                                "title": "Direction In Action"
+                              },
+                              "direction_out_action": {
+                                "type": "string",
+                                "enum": [
+                                  "deny",
+                                  "deny-in-out",
+                                  "permit"
+                                ],
+                                "title": "Direction Out Action"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Missing Policy"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      },
+                      "title": "Peer Groups"
+                    },
+                    "neighbors": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "ip_address": {
+                            "type": "string",
+                            "title": "IP Address"
+                          },
+                          "activate": {
+                            "type": "boolean",
+                            "title": "Activate"
+                          },
+                          "missing_policy": {
+                            "type": "object",
+                            "properties": {
+                              "direction_in_action": {
+                                "type": "string",
+                                "enum": [
+                                  "deny",
+                                  "deny-in-out",
+                                  "permit"
+                                ],
+                                "title": "Direction In Action"
+                              },
+                              "direction_out_action": {
+                                "type": "string",
+                                "enum": [
+                                  "deny",
+                                  "deny-in-out",
+                                  "permit"
+                                ],
+                                "title": "Direction Out Action"
+                              }
+                            },
+                            "additionalProperties": false,
+                            "patternProperties": {
+                              "^_.+$": {}
+                            },
+                            "title": "Missing Policy"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "ip_address"
+                        ]
+                      },
+                      "title": "Neighbors"
+                    },
+                    "path_selection": {
+                      "type": "object",
+                      "properties": {
+                        "roles": {
+                          "type": "object",
+                          "properties": {
+                            "producer": {
+                              "type": "boolean",
+                              "title": "Producer"
+                            },
+                            "consumer": {
+                              "type": "boolean",
+                              "title": "Consumer"
+                            },
+                            "propagator": {
+                              "type": "boolean",
+                              "title": "Propagator"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Roles"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Path Selection"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Address Family Link State"
                 },
                 "address_family_flow_spec_ipv4": {
                   "type": "object",
