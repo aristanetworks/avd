@@ -156,5 +156,4 @@
           reload_delay:
             mlag: 300
             non_mlag: 330
-
         ```

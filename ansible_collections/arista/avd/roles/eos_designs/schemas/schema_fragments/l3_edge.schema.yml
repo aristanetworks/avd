@@ -8,4 +8,4 @@ type: dict
 keys:
   l3_edge:
     type: dict
-    $ref: "#/$defs/l3_edge"
+    $ref: "eos_designs#/$defs/l3_edge"

@@ -497,7 +497,7 @@ $defs:
                   List of SVIs.
                   This will create both the L3 SVI and L2 VLAN based on filters applied to the node.
                 items:
-                  $ref: "#/$defs/svi"
+                  $ref: "eos_designs#/$defs/svi"
                   type: dict
                   keys:
                     id:

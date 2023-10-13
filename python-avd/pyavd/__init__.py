@@ -17,7 +17,7 @@ PYAVD_PRERELEASE = "b1"  # Set this to aN or bN for alpha and beta releases of p
 __author__ = "Arista Networks"
 __copyright__ = "Copyright 2023 Arista Networks"
 __license__ = "Apache 2.0"
-__version__ = "4.3.0b1"
+__version__ = "4.4.0b1"
 
 __all__ = [
     "get_avd_facts",
