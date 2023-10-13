@@ -7406,6 +7406,10 @@
               "title": "License Key"
             }
           },
+          "required": [
+            "license_name",
+            "license_key"
+          ],
           "additionalProperties": false,
           "patternProperties": {
             "^_.+$": {}
