@@ -22,8 +22,10 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     be overridden by a custom python class.
     """
 
-    # Shortcut to get_ip_from_pool in case any custom subclasses are using this.
     def _ip(self, pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
+        """
+        Shortcut to get_ip_from_pool in case any custom subclasses are using this
+        """
         return get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
 
     def _template(self, template_path, **kwargs):
