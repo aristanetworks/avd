@@ -1,7 +1,7 @@
 import pytest
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.ip_addressing_utils import get_ip_from_pool
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_ip_from_pool
 
 # default values for testcases
 (pool, prefixlen, subnet_offset, ip_offset) = ("1.2.3.4/24", 32, 1, 0)

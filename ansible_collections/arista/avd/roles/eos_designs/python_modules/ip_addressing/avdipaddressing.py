@@ -5,11 +5,7 @@ import ipaddress
 from collections import ChainMap
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-
-from .utils import UtilsMixin
-from ansible_collections.arista.avd.plugins.plugin_utils.ip_addressing_utils import get_ip_from_pool
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_ip_from_pool
 
 
 class AvdIpAddressing(AvdFacts, UtilsMixin):
