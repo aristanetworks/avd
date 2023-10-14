@@ -9,7 +9,7 @@ from typing import NoReturn
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_ip_from_pool, unique
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
 
 from .utils import UtilsMixin
 
@@ -92,6 +92,10 @@ class VxlanInterfaceMixin(UtilsMixin):
                         vrf.get("vrf_vni"),
                         vrf.get("vrf_id"),
                     )
+                    id = default(
+                        vrf.get("vrf_id"),
+                        vrf.get("vrf_vni"),
+                    )
                     if vni is not None:
                         # Silently ignore if we cannot set a VNI
                         # This is legacy behavior so we will leave stricter enforcement to the schema
@@ -106,8 +110,9 @@ class VxlanInterfaceMixin(UtilsMixin):
                             underlay_l3_mcast_group_ipv4_pool_offset = get(
                                 tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0
                             )
-                            offset = vni - 1 + underlay_l3_mcast_group_ipv4_pool_offset
-                            vrf_data["multicast_group"] = get_ip_from_pool(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+                            vrf_data["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
+                                underlay_l3_multicast_group_ipv4_pool, vni, id, underlay_l3_mcast_group_ipv4_pool_offset
+                            )
 
                         # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
                         # This is necessary to find duplicate VNIs across multiple object types.
@@ -187,8 +192,9 @@ class VxlanInterfaceMixin(UtilsMixin):
                 org_key=f"'evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: {tenant['name']}",
             )
             underlay_l2_multicast_group_ipv4_pool_offset = get(tenant, "evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset", default=0)
-            offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
-            vxlan_interface_vlan["multicast_group"] = get_ip_from_pool(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
+            vxlan_interface_vlan["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l2_multicast_group(
+                underlay_l2_multicast_group_ipv4_pool, vlan_id, underlay_l2_multicast_group_ipv4_pool_offset
+            )
 
         if self.shared_utils.overlay_her and self._overlay_her_flood_list_per_vni:
             vxlan_interface_vlan["flood_vteps"] = natural_sort(unique(self._overlay_her_flood_lists.get(vlan_id, [])))
