@@ -22,6 +22,9 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     be overridden by a custom python class.
     """
 
+    # Shortcut to get_ip_from_pool in case any custom subclasses are using this.
+    _ip = get_ip_from_pool
+
     def _template(self, template_path, **kwargs):
         template_vars = ChainMap(kwargs, self._hostvars)
         return self.shared_utils.template_var(template_path, template_vars)
