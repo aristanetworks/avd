@@ -86,7 +86,6 @@ md-toc>=8.1.8
 ::: pyavd.validate_inputs
     options:
       show_root_toc_entry: false
-      paths: ../../../../python-avd
 
 ::: pyavd.get_avd_facts
     options:
@@ -99,7 +98,6 @@ md-toc>=8.1.8
 ::: pyavd.validate_structured_config
     options:
       show_root_toc_entry: false
-      paths: ../../../../python-avd
 
 ::: pyavd.get_device_config
     options:
@@ -112,5 +110,7 @@ md-toc>=8.1.8
 ::: pyavd.validation_result
     options:
       show_root_toc_entry: false
-      paths: ../../../../python-avd
-<!-- TODO: Add docs for AvdPoolManager, but it is not possible today since it is under the vendored code.-->
+
+::: pool_manager.avdpoolmanager
+    options:
+      show_root_toc_entry: false
