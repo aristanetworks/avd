@@ -67,6 +67,9 @@ Within a single range, prefixes \(ex. Ethernet, Eth, Po\) are carried over to it
 
 - "{{ 'Et1-2/3-4/5-6' | range_expand }}"
 # -> ["Et1/3/5", "Et1/3/6", "Et1/4/5", "Et1/4/6", "Et2/3/5", "Et2/3/6", "Et2/4/5", "Et2/4/6"]
+
+- "{{ 'eth{7,9,11-13}/1,21/1,26/1' | range_expand }}"
+# -> ["eth7/1", "eth9/1", "eth11/1", "eth12/1", "eth13/1", "eth21/1", "eth26/1"]
 ```
 
 ## Return Values
