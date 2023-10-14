@@ -54,7 +54,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                     "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
                     "shutdown": False,
                     "vrf": vrf["name"],
-                    "ip_address": f"{self.shared_utils.ip_addressing.loopback_ip(loopback_ipv4_pool)}/32",
+                    "ip_address": f"{self.shared_utils.ip_addressing.vrf_loopback_ip(loopback_ipv4_pool)}/32",
                 }
                 append_if_not_duplicate(
                     list_of_dicts=loopback_interfaces,
