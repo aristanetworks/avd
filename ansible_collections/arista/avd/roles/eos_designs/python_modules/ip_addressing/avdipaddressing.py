@@ -5,7 +5,10 @@ import ipaddress
 from collections import ChainMap
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_ip_from_pool
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_ip_from_pool
+
+from .utils import UtilsMixin
 
 
 class AvdIpAddressing(AvdFacts, UtilsMixin):
@@ -32,17 +35,17 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         if self._fabric_ipaddress_mlag_algorithm == "odd_id":
             offset = self._mlag_odd_id_based_offset
-            return self._ip(pool, 31, offset, ip_offset)
+            return get_ip_from_pool(pool, 31, offset, ip_offset)
 
         if self._fabric_ipaddress_mlag_algorithm == "same_subnet":
             pool_network = ipaddress.ip_network(pool, strict=False)
             if pool_network.prefixlen != 31:
                 raise AristaAvdError("MLAG same_subnet addressing requires the pool to be a /31")
-            return self._ip(pool, 31, 0, ip_offset)
+            return get_ip_from_pool(pool, 31, 0, ip_offset)
 
         # Use default first_id
         offset = self._mlag_primary_id - 1
-        return self._ip(pool, 31, offset, ip_offset)
+        return get_ip_from_pool(pool, 31, offset, ip_offset)
 
     def mlag_ibgp_peering_ip_primary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """

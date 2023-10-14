@@ -5,10 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_item
-from ansible_collections.arista.avd.plugins.plugin_utils.ip_addressing_utils import get_ip_from_pool
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_ip_from_pool, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_ip_from_pool, get_item
 
 from .utils import UtilsMixin
 

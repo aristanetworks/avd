@@ -9,11 +9,7 @@ from typing import NoReturn
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.ip_addressing_utils import get_ip_from_pool
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, unique
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_ip_from_pool, unique
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.ip_addressing import AvdIpAddressing
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, get_ip_from_pool, unique
 
 from .utils import UtilsMixin
 
@@ -111,7 +107,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                                 tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0
                             )
                             offset = vni - 1 + underlay_l3_mcast_group_ipv4_pool_offset
-                            vrf_data["multicast_group"] = self.shared_utils.ip_addressing._ip(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+                            vrf_data["multicast_group"] = get_ip_from_pool(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
 
                         # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
                         # This is necessary to find duplicate VNIs across multiple object types.
@@ -130,7 +126,6 @@ class VxlanInterfaceMixin(UtilsMixin):
                             context="VXLAN VNIs for VRFs",
                             context_keys=["name", "vni"],
                         )
-                            vrfs[vrf_name]["multicast_group"] = get_ip_from_pool(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
 
             for l2vlan in tenant["l2vlans"]:
                 if vlan := self._get_vxlan_interface_config_for_vlan(l2vlan, tenant):
