@@ -23,7 +23,8 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     """
 
     # Shortcut to get_ip_from_pool in case any custom subclasses are using this.
-    _ip = get_ip_from_pool
+    def _ip(self, pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
+        return get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
 
     def _template(self, template_path, **kwargs):
         template_vars = ChainMap(kwargs, self._hostvars)
