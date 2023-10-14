@@ -30,8 +30,7 @@ def get_avd_facts(all_inputs: dict[str, dict], pool_manager: AvdPoolManager | No
                 ...
             }
             ```
-
-        id_pool_data: An instance of pyavd.AvdPoolManager or subclass hereof implementing ".get_id(shared_utils: SharedUtils)".
+        pool_manager: An instance of pyavd.AvdPoolManager or subclass hereof implementing ".get_id(shared_utils: SharedUtils)".
             Used for dynamic ID allocations using the "pool_manager" feature.
 
     Returns:
@@ -69,6 +68,8 @@ def _create_avd_switch_facts_instances(all_inputs: dict[str, dict], pool_manager
                 ...
             }
             ```
+        pool_manager: An instance of pyavd.AvdPoolManager or subclass hereof implementing ".get_id(shared_utils: SharedUtils)".
+            Used for dynamic ID allocations using the "pool_manager" feature.
 
     Returns:
         Dictionary with instances of EosDesignsFacts per device.
