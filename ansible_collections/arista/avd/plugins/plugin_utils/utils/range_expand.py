@@ -6,12 +6,16 @@ from __future__ import annotations
 from types import SimpleNamespace
 
 OPERATORS = ["{", "}", "-", ","]
-RANGE_OPERATORS = ["-", ","]
 BRACES = ["{", "}"]
 BRACES_OR_COMMA = ["{", "}", ","]
 
 
 class TokenizerData(SimpleNamespace):
+    """
+    Namespace to parse tokenizer data between various functions
+    making them in-place updatable.
+    """
+
     string: str
     position: int
     length: int
@@ -45,12 +49,14 @@ def _other_token(data: TokenizerData) -> str | None:
     return token
 
 
-def _tokenizer(string: str) -> list:
+def _tokenizer(string: str) -> list[str]:
     """
-    Returns a list of tokens like
-    [ "Ethernet", 123, "-", 234, ".", "{", 12, "-", 13, ",", 15, "}"]
+    Returns a list of tokens found in the given string.
+    Example:
+    "Ethernet123-234.{12-13,15}" ->
+        [ "Ethernet", 123, "-", 234, ".", "{", 12, "-", 13, ",", 15, "}"]
     """
-    # Keeping position in a dict so we can do inplace update.
+    # Keeping position in a namespace so we can do in-place update.
     data = TokenizerData(string=string, position=0, length=len(string))
     tokens = []
     while data.position < data.length:
@@ -62,7 +68,6 @@ def _tokenizer(string: str) -> list:
         else:
             if (token := _other_token(data)) is not None:
                 tokens.append(token)
-    # raise Exception(tokens)
     return tokens
 
 
@@ -70,6 +75,8 @@ def _number_range(tokens: list) -> list[str]:
     """
     Return a list of numbers expanded from "-" and "," operators.
     "," is only expanded if inside braces.
+
+    Consumes tokens until first token which is not numeric, brace, "-" or "," inside braces.
     Popping consumed elements from the given tokens.
     """
     output = []
@@ -82,7 +89,7 @@ def _number_range(tokens: list) -> list[str]:
 
         if token == "-":
             if len(tokens) < 2:
-                raise ValueError(f"Invalid range. Missing value following operator '{token}'.")
+                raise ValueError(f"Invalid range. Missing numeric value following operator '{token}'.")
             if not tokens[1].isdigit():
                 raise ValueError(f"Invalid range. Invalid value following operator '{token}'. The value must be numeric. Got '{tokens[1]}'.")
 
@@ -99,7 +106,7 @@ def _number_range(tokens: list) -> list[str]:
         if token == "," and in_braces > 0:
             # Inside braces we expand comma operators with numeric values.
             if len(tokens) < 2:
-                raise ValueError(f"Invalid range. Missing value following operator '{token}'.")
+                raise ValueError(f"Invalid range. Missing numeric value following operator '{token}'.")
             if not tokens[1].isdigit():
                 raise ValueError(f"Invalid range. Invalid value following operator '{token}'. The value must be numeric. Got '{tokens[1]}'.")
 
@@ -117,7 +124,7 @@ def _number_range(tokens: list) -> list[str]:
             tokens.pop(0)
             continue
 
-        # The token was not a number, brace or a range operator, so we break out and return what we got.
+        # The token was not a number, brace or a range operator, so we break out and return.
         break
 
     if in_braces != 0:
@@ -126,7 +133,13 @@ def _number_range(tokens: list) -> list[str]:
     return output
 
 
-def _tokens_until_comma(tokens: list) -> list:
+def _tokens_until_comma(tokens: list) -> list[str]:
+    """
+    Returns a subset if the given list starting from index 0
+    and ending before the first found "," outside of braces.
+
+    Popping returned tokens from the given tokens.
+    """
     in_braces = 0
     tokens_until_comma = []
     while tokens:
@@ -145,7 +158,16 @@ def _tokens_until_comma(tokens: list) -> list:
     return tokens_until_comma
 
 
-def _parser(tokens: list, prefix: str = "") -> list:
+def _parser(tokens: list, prefix: str = "") -> list[str]:
+    """
+    Return list of strings expanded from the given tokens.
+
+    The fuction is called recursively to expand multiple ranges in the right order:
+    Tokens ["Ethernet", "11", "-", "12", "/", "1" - "2"]
+    becomes ["Ethernet11/1" "Ethernet11/2", "Ethernet12/1", "Ethernet12/2"]
+    so the first "-" is resolved into 11, 12 which are then looped over to call the function
+    recursively to expand deeper into the tokens.
+    """
     if not tokens:
         if prefix:
             return [prefix]
@@ -153,25 +175,31 @@ def _parser(tokens: list, prefix: str = "") -> list:
     items = []
     while tokens:
         token = tokens[0]
-        if token.isdigit() or token in BRACES:
-            numbers = _number_range(tokens)
-            # _range pops the numbers, braces and range operators from tokens so it is now a shorter list we recurse over.
 
+        if token.isdigit() or token in BRACES:
             # Extend items up to the first comma (outside of braces).
+
+            # _number_range pops the numbers, braces and range operators from tokens so it is now a shorter list we recurse over.
+            numbers = _number_range(tokens)
+
             # _tokens_until_comma will pop the items from the original list.
             tokens_until_comma = _tokens_until_comma(tokens)
+
             for number in numbers:
+                # Since _parser will pop items from the given tokens, we have to provide an individual copy for each loop
+                # so each of them will expand all the following tokens.
                 items.extend(_parser(tokens_until_comma.copy(), f"{prefix}{number}"))
             continue
 
         if token == "-":
-            raise ValueError(f"Invalid range. Missing value before operator '{token}'.")
+            # "-" alone is only supported between numeric operators.
+            raise ValueError(f"Invalid range. Missing numeric value before operator '{token}'.")
 
         if token == ",":
             if not items:
-                raise ValueError(f"Invalid range. Missing value before operator '{token}'.")
+                raise ValueError(f"Invalid range. Missing numeric value before operator '{token}'.")
             if len(tokens) < 2:
-                raise ValueError(f"Invalid range. Missing value following for operator '{token}'.")
+                raise ValueError(f"Invalid range. Missing numeric value after operator '{token}'.")
             # Remove the comma operator and we can add items after the comma.
             tokens.pop(0)
             # Before we continue, check if we have a new prefix after the comma (non-numeric token)
