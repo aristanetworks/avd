@@ -7852,6 +7852,11 @@
                     "type": "string",
                     "description": "ACL name",
                     "title": "IP Access Group"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "GNMI port",
+                    "title": "Port"
                   }
                 },
                 "additionalProperties": false,

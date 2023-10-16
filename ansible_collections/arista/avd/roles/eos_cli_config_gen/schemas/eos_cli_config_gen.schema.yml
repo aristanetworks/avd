@@ -4707,6 +4707,11 @@ keys:
                 ip_access_group:
                   type: str
                   description: ACL name
+                port:
+                  type: int
+                  description: GNMI port
+                  convert_types:
+                  - str
           grpc_tunnels:
             type: list
             primary_key: name
