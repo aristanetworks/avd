@@ -15,4 +15,9 @@ dhcp relay
 {%     elif dhcp_relay.tunnel_requests_disabled is arista.avd.defined(false) %}
    no tunnel requests disabled
 {%     endif %}
+{%     if dhcp_relay.mlag_peerlink_requests_disabled is arista.avd.defined(true) %}
+   mlag peer-link requests disabled
+{%     elif dhcp_relay.mlag_peerlink_requests_disabled is arista.avd.defined(false) %}
+   no mlag peer-link requests disabled
+{%     endif %}
 {% endif %}
