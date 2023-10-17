@@ -12,9 +12,6 @@ dhcp_servers:
     disabled: false
     dns_domain_name_ipv4: testv4.com
     dns_domain_name_ipv6: testv6.com
-    dns_servers:
-      - 10.1.1.10
-      - 10.1.1.11
     subnets:
       - subnet: 10.0.0.0/24 # required
         name: TEST1
@@ -33,4 +30,3 @@ dhcp_servers:
   - subnets:
     - subnet: 10.2.3.0/24
     - subnet: 2a00:2::/64
-      default_gateway: 2a00:2::1

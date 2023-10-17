@@ -1538,6 +1538,182 @@
       },
       "title": "DHCP Relay"
     },
+    "dhcp_servers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "disabled": {
+            "type": "boolean",
+            "title": "Disabled"
+          },
+          "vrf": {
+            "type": "string",
+            "title": "VRF"
+          },
+          "dns_domain_name_ipv4": {
+            "type": "string",
+            "title": "DNS Domain Name IPv4"
+          },
+          "dns_domain_name_ipv6": {
+            "type": "string",
+            "title": "DNS Domain Name IPv6"
+          },
+          "ipv4_vendor_options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "vendor_id": {
+                  "type": "string",
+                  "title": "Vendor ID"
+                },
+                "sub_options": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "number": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 254,
+                        "title": "Number"
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "string",
+                          "ipv4-address",
+                          "array ipv4-address"
+                        ],
+                        "title": "Type"
+                      },
+                      "data": {
+                        "type": "string",
+                        "title": "Data"
+                      }
+                    },
+                    "required": [
+                      "number",
+                      "type",
+                      "data"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Sub Options"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "IPv4 Vendor Options"
+          },
+          "subnets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "subnet": {
+                  "type": "string",
+                  "title": "Subnet"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "default_gateway": {
+                  "type": "string",
+                  "title": "Default Gateway"
+                },
+                "dns_servers": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "title": "DNS Servers"
+                },
+                "ranges": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "start": {
+                        "type": "string",
+                        "title": "Start"
+                      },
+                      "end": {
+                        "type": "string",
+                        "title": "End"
+                      }
+                    },
+                    "required": [
+                      "start",
+                      "end"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    }
+                  },
+                  "title": "Ranges"
+                },
+                "lease_time": {
+                  "type": "object",
+                  "properties": {
+                    "days": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 2000,
+                      "title": "Days"
+                    },
+                    "hours": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 23,
+                      "title": "Hours"
+                    },
+                    "minutes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 59,
+                      "title": "Minutes"
+                    }
+                  },
+                  "required": [
+                    "days",
+                    "hours",
+                    "minutes"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Lease Time"
+                }
+              },
+              "required": [
+                "subnet"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Subnets"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "DHCP Servers"
+    },
     "dns_domain": {
       "type": "string",
       "description": "Domain Name",

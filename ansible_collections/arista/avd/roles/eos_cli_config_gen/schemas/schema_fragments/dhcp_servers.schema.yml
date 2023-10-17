@@ -19,10 +19,6 @@ keys:
           type: str
         dns_domain_name_ipv6:
           type: str
-        dns_servers:
-          type: list
-          items:
-            type: str
         ipv4_vendor_options:
           type: list
           items:
