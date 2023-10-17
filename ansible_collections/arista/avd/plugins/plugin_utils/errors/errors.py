@@ -49,6 +49,7 @@ class AvdValidationError(AristaAvdError):
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
 
         if isinstance(error, (jsonschema.ValidationError)):
+            self.path = self._json_path_to_string(error.absolute_path)
             self.message = f"'Validation Error: {self._json_path_to_string(error.absolute_path)}': {error.message}"
         else:
             self.message = message
@@ -74,6 +75,7 @@ class AvdDeprecationWarning(AristaAvdError):
         self.version = remove_in_version
         self.date = remove_after_date
         self.removed = removed
+        self.path = key
 
         if new_key is not None:
             messages.append(f"Use '{new_key}' instead.")

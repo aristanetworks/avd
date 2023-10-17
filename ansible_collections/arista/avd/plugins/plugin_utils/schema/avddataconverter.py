@@ -112,16 +112,18 @@ class AvdDataConverter:
             return
 
         for index, item in enumerate(data):
+            path[-1] += f"[{index}]"
+
             # Perform type conversion of the items data if required based on "convert_types"
             if "convert_types" in items:
-                yield from self.convert_types(items["convert_types"], data, index, items, path + [f"[{index}]"])
+                yield from self.convert_types(items["convert_types"], data, index, items, path)
 
             # Convert to lower case if set in schema and item is a string
             if items.get("convert_to_lower_case") and isinstance(item, str):
                 data[index] = item.lower()
 
             # Dive in to child items/schema
-            yield from self.convert_data(item, items, path + [f"[{index}]"])
+            yield from self.convert_data(item, items, path)
 
     def convert_types(self, convert_types: list, data: dict | list, index: str | int, schema: dict, path: list[str]):
         """
