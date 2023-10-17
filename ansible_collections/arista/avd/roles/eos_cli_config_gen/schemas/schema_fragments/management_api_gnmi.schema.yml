@@ -45,7 +45,7 @@ keys:
                 port:
                   type: int
                   description: |
-                      GNMI port. 
+                      GNMI port.
                       Make sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.
                   convert_types:
                     - str
