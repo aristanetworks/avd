@@ -1442,6 +1442,10 @@
         "tunnel_requests_disabled": {
           "type": "boolean",
           "title": "Tunnel Requests Disabled"
+        },
+        "mlag_peerlink_requests_disabled": {
+          "type": "boolean",
+          "title": "MLAG Peerlink Requests Disabled"
         }
       },
       "additionalProperties": false,
