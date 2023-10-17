@@ -1,0 +1,36 @@
+dhcp_servers:
+  - vrf: TEST
+    ipv4_vendor_options:
+      - vendor_id: NTP
+        sub_options:
+          - number: 42
+            type: ipv4-address
+            data: "10.1.1.1"
+          - number: 1
+            type: string
+            data: "doge"
+    disabled: false
+    dns_domain_name_ipv4: testv4.com
+    dns_domain_name_ipv6: testv6.com
+    dns_servers:
+      - 10.1.1.10
+      - 10.1.1.11
+    subnets:
+      - subnet: 10.0.0.0/24 # required
+        name: TEST1
+        ranges:
+          - start: 10.0.0.10 # required
+            end: 10.0.0.100 # required
+        dns_servers:
+          - 10.1.1.12
+          - 10.1.1.13
+        lease_time:
+          days: 0
+          hours: 0
+          minutes: 10
+        default_gateway: 10.0.0.1
+
+  - subnets:
+    - subnet: 10.2.3.0/24
+    - subnet: 2a00:2::/64
+      default_gateway: 2a00:2::1
