@@ -187,6 +187,10 @@ class MiscMixin:
         return get(self.switch_data_combined, "uplink_interface_speed")
 
     @cached_property
+    def uplink_switch_interface_speed(self: SharedUtils) -> str | None:
+        return get(self.switch_data_combined, "uplink_switch_interface_speed")
+
+    @cached_property
     def uplink_bfd(self: SharedUtils) -> bool:
         return get(self.switch_data_combined, "uplink_bfd") is True
 

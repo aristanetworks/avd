@@ -306,6 +306,8 @@ l2leaf:
           uplink_switch_interfaces: [ Ethernet8, Ethernet8 ]
     - group: DC1_L2LEAF2
       mlag_dual_primary_detection: true
+      uplink_interface_speed: forced 100gfull
+      uplink_switch_interface_speed: 100g-2
       nodes:
         - name: DC1-L2LEAF2A
           id: 9

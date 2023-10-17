@@ -65,7 +65,7 @@ class UtilsMixin:
                         "peer_is_deployed": peer_facts["is_deployed"],
                         "peer_bgp_as": get(peer_facts, "bgp_as"),
                         "type": get(uplink, "type", required=True),
-                        "speed": get(uplink, "speed"),
+                        "speed": get(uplink, "peer_speed", get(uplink, "speed")),
                         "ip_address": get(uplink, "peer_ip_address"),
                         "peer_ip_address": get(uplink, "ip_address"),
                         "channel_group_id": get(uplink, "peer_channel_group_id"),

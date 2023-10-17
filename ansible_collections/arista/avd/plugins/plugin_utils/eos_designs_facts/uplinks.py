@@ -182,6 +182,9 @@ class UplinksMixin:
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
 
+                if self.shared_utils.uplink_switch_interface_speed is not None:
+                    uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
+
                 if self.shared_utils.uplink_ptp is not None:
                     uplink["ptp"] = self.shared_utils.uplink_ptp
                 elif self.shared_utils.ptp_enabled:
