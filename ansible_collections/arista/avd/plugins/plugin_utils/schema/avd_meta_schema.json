@@ -296,7 +296,8 @@
         },
         "$ref": {
             "type": "string",
-            "description": "Reference to Sub Schema using JSON Schema resolver.\nExample '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema"
+            "pattern": "^(eos_designs|eos_cli_config_gen)#",
+            "description": "Reference to Sub Schema using JSON Schema resolver.\nExample 'eos_designs#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the eos_designs schema"
         },
         "documentation_options": {
             "type": "object",

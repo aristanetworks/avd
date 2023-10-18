@@ -8,7 +8,7 @@ type: dict
 keys:
   node:
     # Not the most optimal ref, but something fails in schema tooling with recursive refs if we use "eos_designs#/$defs/node_type/keys/nodes/items"
-    $ref: "#/$defs/node_type/keys/defaults"
+    $ref: "eos_designs#/$defs/node_type/keys/defaults"
     type: dict
     description: |-
       This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.
