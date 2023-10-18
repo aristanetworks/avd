@@ -11956,6 +11956,14 @@
               },
               "title": "DSCP"
             },
+            "exp": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Example \"0 to traffic-class 0\"\n"
+              },
+              "title": "EXP"
+            },
             "traffic_class": {
               "type": "array",
               "items": {
