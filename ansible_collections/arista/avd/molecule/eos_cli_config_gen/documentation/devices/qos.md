@@ -208,12 +208,10 @@ QOS random-detect ECN is set to allow **non-ect** **chip-based**
 
 ##### QOS Mappings
 
-
 | COS to Traffic Class mappings |
 | ----------------------------- |
 | 1 2 3 4 to traffic-class 2 |
 | 3 to traffic-class 3 |
-
 
 | DSCP to Traffic Class mappings |
 | ------------------------------ |
@@ -221,11 +219,9 @@ QOS random-detect ECN is set to allow **non-ect** **chip-based**
 | 18 20 22 26 28 30 34 36 38 to traffic-class 4 drop-precedence 2 |
 | 46 to traffic-class 5 |
 
-
 | EXP to Traffic Class mappings |
 | ----------------------------- |
 | 0 to traffic-class 0 |
-
 
 | Traffic Class to DSCP or COS mappings |
 | ------------------------------------- |
