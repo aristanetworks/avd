@@ -11,3 +11,27 @@ event_handlers:
     action: FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* | tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* | tail -n +11 | xargs -I % rm %; fi
     delay: 0
     trigger: on-startup-config
+  - name: trigger-on-boot
+    trigger: on-boot
+    action_type: bash
+    action: echo "on-boot"
+  - name: trigger-on-config
+    trigger: on-config
+    action_type: bash
+    action: echo "on-config"
+  - name: trigger-on-counters
+    trigger: on-counters
+    action_type: bash
+    action: echo "on-counters"
+  - name: trigger-on-intf
+    trigger: on-intf
+    action_type: bash
+    action: echo "on-intf"
+  - name: trigger-on-maintenance
+    trigger: on-maintenance
+    action_type: bash
+    action: echo "on-maintenance"
+  - name: trigger-vm-tracer
+    trigger: vm-tracer
+    action_type: bash
+    action: echo "vm-tracer"
