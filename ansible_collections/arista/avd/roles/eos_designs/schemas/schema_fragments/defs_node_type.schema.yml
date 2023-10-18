@@ -882,6 +882,10 @@ $defs:
                   - "smpte2059-2"
                   - "aes67-r16-2016"
                 default: "aes67-r16-2016"
+              mlag:
+                description: Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG peer-link port-channel.
+                type: bool
+                default: false
               domain:
                 type: int
                 convert_types:
