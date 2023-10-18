@@ -20848,6 +20848,14 @@
             "local_interface": {
               "type": "string",
               "title": "Local Interface"
+            },
+            "local_interfaces": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              },
+              "title": "Local Interfaces"
             }
           },
           "additionalProperties": false,
