@@ -815,7 +815,7 @@ $defs:
               new_key: inband_mgmt_subnet
               remove_in_version: 5.0.0
             type: str
-            $ref: "#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet"
+            $ref: "eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet"
           inband_management_vlan:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -824,7 +824,7 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
-            $ref: "#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan"
+            $ref: "eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan"
           mpls_overlay_role:
             documentation_options:
               table: node-type-mpls-configuration
@@ -1053,7 +1053,7 @@ $defs:
           - dict
         primary_key: group
         items:
-          "$ref": "#/$defs/node_type/keys/defaults"
+          "$ref": "eos_designs#/$defs/node_type/keys/defaults"
           type: dict
           keys:
             group:
@@ -1062,7 +1062,7 @@ $defs:
                 The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
                 The Node Group Name is also used for peer description on downstream switches' uplinks.
             nodes:
-              "$ref": "#/$defs/node_type/keys/nodes"
+              "$ref": "eos_designs#/$defs/node_type/keys/nodes"
               description: Define variables per node.
               type: list
       nodes:
@@ -1072,7 +1072,7 @@ $defs:
           - dict
         primary_key: name
         items:
-          "$ref": "#/$defs/node_type/keys/defaults"
+          "$ref": "eos_designs#/$defs/node_type/keys/defaults"
           type: dict
           keys:
             name:

@@ -255,11 +255,14 @@ $defs:
                 default: "percent"
                 description: Optional variable and is hardware dependent.
           broadcast:
-            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+            type: dict
+            $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
           multicast:
-            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+            type: dict
+            $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
           unknown_unicast:
-            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+            type: dict
+            $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
       monitor_sessions:
         type: list
         description: Used to define switchports as source or destination for monitoring sessions.

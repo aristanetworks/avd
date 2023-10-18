@@ -1,10 +1,13 @@
-# system-control-plane
+# system
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [System Control-Plane](#system-control-plane)
+- [System L1](#system-l1)
+  - [Unsupported interface configurations](#unsupported-interface-configurations)
+  - [System L1 Configuration](#system-l1-configuration)
 
 ## Management
 
@@ -66,4 +69,22 @@ system control-plane
    ipv6 access-group acl6_1 in
    ipv6 access-group acl6_2 vrf blue in
    ipv6 access-group acl6_3 vrf default in
+```
+
+## System L1
+
+### Unsupported interface configurations
+
+| Unsupported Configuration | action |
+| ---------------- | -------|
+| Speed | warn |
+| Error correction | error |
+
+### System L1 Configuration
+
+```eos
+!
+system l1
+   unsupported speed action warn
+   unsupported error-correction action error
 ```

@@ -246,13 +246,13 @@ service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
   speed_groups:
-  - speed_group: 1
+  - speed_group: '1'
     serdes: 10G
-  - speed_group: 2
+  - speed_group: '2'
     serdes: 25G
-  - speed_group: 3
+  - speed_group: '3'
     serdes: 25G
-  - speed_group: 4
+  - speed_group: '4'
     serdes: 10G
 daemon_terminattr:
   cvaddrs:
