@@ -37,6 +37,12 @@ class ActionModule(ActionBase):
         hostname = task_vars["inventory_hostname"]
         ansible_connection = self._connection
         ansible_check_mode = task_vars.get("ansible_check_mode", False)
+        is_deployed = task_vars.get("is_deployed", True)
+
+        if not is_deployed:
+            result["skipped"] = True
+            result["msg"] = f"Device {hostname} is marked as not deployed. Skipping all tests."
+            return result
 
         # Handle logging
         setup_module_logging(hostname, result)

@@ -49,63 +49,38 @@ class AvdTestP2PIPReachability(AvdTestBase):
                 LOGGER.warning("Ethernet interface entry #%d from the 'ethernet_interfaces' data model is missing the variable '%s'.", idx, str(e))
                 continue
 
-            if (peer := ethernet_interface["peer"]) not in self.hostvars:
-                LOGGER.info(
-                    "Ethernet interface '%s' connected peer '%s' is not configured by AVD. 'VerifyReachability' is skipped for this interface",
-                    ethernet_interface["name"],
-                    peer,
-                )
-                continue
-
-            # If is_deployed is missing from the peer structured_config by mistake, we set it to True
-            if not get(self.hostvars[peer], "is_deployed", default=True):
-                LOGGER.info(
-                    "Ethernet interface '%s' connected peer '%s' is marked as not deployed. 'VerifyReachability' is skipped for this interface.",
-                    ethernet_interface["name"],
-                    peer,
-                )
-                continue
-
-            try:
-                peer_ethernet_interfaces = get(self.hostvars[peer], "ethernet_interfaces", required=True)
-            except AristaAvdMissingVariableError as e:
-                LOGGER.warning("Ethernet interface '%s' connected peer '%s' is missing the '%s' data model.", ethernet_interface["name"], peer, str(e))
-                continue
-
-            try:
-                peer_ethernet_interface = get_item(
-                    peer_ethernet_interfaces,
-                    "name",
-                    ethernet_interface["peer_interface"],
-                    required=True,
-                    var_name=ethernet_interface["peer_interface"],
-                )
-            except AristaAvdMissingVariableError as e:
-                LOGGER.warning(
-                    "Ethernet interface '%s' connected peer '%s' is missing interface '%s' from the 'ethernet_interfaces' data model.",
-                    ethernet_interface["name"],
-                    peer,
-                    str(e),
-                )
-                continue
-
-            try:
-                peer_ethernet_interface_ip = get(peer_ethernet_interface, "ip_address", required=True)
-            except AristaAvdMissingVariableError as e:
-                LOGGER.warning(
-                    "Ethernet interface '%s' connected peer '%s' is missing the variable '%s' from interface '%s'.",
-                    ethernet_interface["name"],
-                    peer,
-                    str(e),
-                    ethernet_interface["peer_interface"],
-                )
-                continue
-
             if ethernet_interface["type"] == "routed":
                 try:
                     ethernet_interface_ip = get(ethernet_interface, "ip_address", required=True)
                 except AristaAvdMissingVariableError as e:
                     LOGGER.warning("Ethernet interface '%s' is of type 'routed' but the variable '%s' is missing.", ethernet_interface["name"], str(e))
+                    continue
+
+                if (peer := ethernet_interface["peer"]) not in self.hostvars or not get(self.hostvars[peer], "is_deployed", default=True):
+                    LOGGER.info(
+                        "Ethernet interface '%s' connected peer '%s' is not configured by AVD or is marked as not deployed. 'VerifyReachability' is skipped for"
+                        " this interface",
+                        ethernet_interface["name"],
+                        peer,
+                    )
+                    continue
+
+                try:
+                    peer_ethernet_interfaces = get(self.hostvars[peer], "ethernet_interfaces", required=True)
+                    peer_ethernet_interface = get_item(
+                        peer_ethernet_interfaces,
+                        "name",
+                        ethernet_interface["peer_interface"],
+                        required=True,
+                    )
+                    peer_ethernet_interface_ip = get(peer_ethernet_interface, "ip_address", required=True)
+                except AristaAvdMissingVariableError:
+                    LOGGER.warning(
+                        "Ethernet interface '%s' connected peer '%s' is missing interface '%s' or his variable 'ip_address' is missing.",
+                        ethernet_interface["name"],
+                        peer,
+                        ethernet_interface["peer_interface"],
+                    )
                     continue
 
                 src_ip = str(ip_interface(ethernet_interface_ip).ip)

@@ -16,6 +16,7 @@ all:
               hosts:
                 dc1-leaf1a:
                   ansible_host: 172.16.1.101
+                  is_deployed: false
                 dc1-leaf1b:
                   ansible_host: 172.16.1.102
                 dc1-leaf2a:
