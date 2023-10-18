@@ -8709,6 +8709,8 @@ keys:
                 type: str
                 valid_values:
                 - discard
+          next_hop_unchanged:
+            type: bool
       address_family_rtc:
         type: dict
         keys:

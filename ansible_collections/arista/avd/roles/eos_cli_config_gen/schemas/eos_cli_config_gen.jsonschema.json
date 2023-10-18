@@ -14604,6 +14604,10 @@
                 "^_.+$": {}
               },
               "title": "Route"
+            },
+            "next_hop_unchanged": {
+              "type": "boolean",
+              "title": "Next Hop Unchanged"
             }
           },
           "additionalProperties": false,
