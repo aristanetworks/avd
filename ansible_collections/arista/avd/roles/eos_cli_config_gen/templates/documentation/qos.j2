@@ -43,7 +43,7 @@ QOS rewrite DSCP: **disabled**
 | {{ dscp_map | default('-') }} |
 {%             endfor %}
 {%         endif %}
-{%         if qos.map.traffic_class is arista.avd.defined %}
+{%         if qos.map.exp is arista.avd.defined %}
 
 | EXP to Traffic Class mappings |
 | ----------------------------- |
