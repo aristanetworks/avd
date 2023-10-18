@@ -7244,6 +7244,16 @@
                 "description": "Install default-route obtained via DHCP",
                 "title": "DHCP Client Accept Default Route"
               },
+              "dhcp_server_ipv4": {
+                "type": "boolean",
+                "description": "Enable IPv4 DHCP server.",
+                "title": "DHCP Server IPv4"
+              },
+              "dhcp_server_ipv6": {
+                "type": "boolean",
+                "description": "Enable IPv6 DHCP server.",
+                "title": "DHCP Server IPv6"
+              },
               "ip_helpers": {
                 "type": "array",
                 "items": {
@@ -12817,6 +12827,16 @@
                 "type": "boolean",
                 "description": "Install default-route obtained via DHCP",
                 "title": "DHCP Client Accept Default Route"
+              },
+              "dhcp_server_ipv4": {
+                "type": "boolean",
+                "description": "Enable IPv4 DHCP server.",
+                "title": "DHCP Server IPv4"
+              },
+              "dhcp_server_ipv6": {
+                "type": "boolean",
+                "description": "Enable IPv6 DHCP server.",
+                "title": "DHCP Server IPv6"
               },
               "ip_helpers": {
                 "type": "array",
