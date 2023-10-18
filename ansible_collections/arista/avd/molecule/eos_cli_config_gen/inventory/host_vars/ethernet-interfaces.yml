@@ -854,7 +854,13 @@ ethernet_interfaces:
       trunk: "tagged phone"
       vlan: 70
   - name: Ethernet63
-    description: DHCP interface
+    description: DHCP client interface
     type: routed
     ip_address: "dhcp"
     dhcp_client_accept_default_route: true
+  - name: Ethernet64
+    description: DHCP server interface
+    type: routed
+    ip_address: 192.168.42.42/24
+    dhcp_server_ipv4: true
+    dhcp_server_ipv6: true
