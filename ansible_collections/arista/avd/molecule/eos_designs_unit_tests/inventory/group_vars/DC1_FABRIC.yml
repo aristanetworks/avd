@@ -263,6 +263,7 @@ l3leaf:
         - name: DC1_UNDEPLOYED_LEAF1A
           id: 13
           bgp_as: 65110
+          uplink_switch_interface_speed: 100g-2
           mgmt_ip: 192.168.200.121/24
           uplink_switch_interfaces: [ Ethernet28, Ethernet28, Ethernet28, Ethernet28 ]
         - name: DC1_UNDEPLOYED_LEAF1B
