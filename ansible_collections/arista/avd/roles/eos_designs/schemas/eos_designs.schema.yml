@@ -5364,9 +5364,10 @@ $defs:
             description: 'Set point-to-Point interface speed and will apply to uplink
               interfaces on both ends.
 
-              (Uplink switch interface speed can be overridden with ''uplink_switch_interface_speed'').
+              (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
 
-              interface_speed or forced interface_speed or auto interface_speed.
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
 
               '
             type: str
@@ -5376,7 +5377,8 @@ $defs:
             description: 'Set point-to-Point interface speed for the uplink switch
               interface only.
 
-              interface_speed or forced interface_speed or auto interface_speed.
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
 
               '
             type: str
