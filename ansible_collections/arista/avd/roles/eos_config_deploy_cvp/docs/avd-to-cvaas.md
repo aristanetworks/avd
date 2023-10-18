@@ -77,12 +77,12 @@ cluster URLs used in production:
 
 | Region | URL |
 |--------|-----|
-| United States 1a | [www.arista.io](www.arista.io) |
-| United States 1a| [www.cv-prod-us-central1-c.arista.io](www.cv-prod-us-central1-c.arista.io)|
-| Canada | [www.cv-prod-na-northeast1-b.arista.io](www.cv-prod-na-northeast1-b.arista.io)|
-| Europe West 2| [www.cv-prod-euwest-2.arista.io](www.cv-prod-euwest-2.arista.io)|
-| Japan| [www.cv-prod-apnortheast-1.arista.io](www.cv-prod-apnortheast-1.arista.io)|
-| Australia | [www.cv-prod-ausoutheast-1.prod.arista.io](www.cv-prod-ausoutheast-1.prod.arista.io)|
+| United States 1a | [www.arista.io](https://www.arista.io) |
+| United States 1a| [www.cv-prod-us-central1-c.arista.io](https://www.cv-prod-us-central1-c.arista.io)|
+| Canada | [www.cv-prod-na-northeast1-b.arista.io](https://www.cv-prod-na-northeast1-b.arista.io)|
+| Europe West 2| [www.cv-prod-euwest-2.arista.io](https://www.cv-prod-euwest-2.arista.io)|
+| Japan| [www.cv-prod-apnortheast-1.arista.io](https://www.cv-prod-apnortheast-1.arista.io)|
+| Australia | [www.cv-prod-ausoutheast-1.prod.arista.io](https://www.cv-prod-ausoutheast-1.prod.arista.io)|
 
 > NOTE That URLs without `wwww` are not supported.
 
