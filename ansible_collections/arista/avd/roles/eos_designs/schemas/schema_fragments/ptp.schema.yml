@@ -21,6 +21,7 @@ keys:
           - "aes67-r16-2016"
         default: "aes67-r16-2016"
       domain:
+        type: int
         $ref: "eos_cli_config_gen#/keys/ptp/keys/domain"
       auto_clock_identity:
         type: bool

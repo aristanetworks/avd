@@ -37,7 +37,7 @@ $defs:
         convert_types:
           - dict
         primary_key: name
-        $ref: '#/$defs/p2p_links'
+        $ref: "eos_designs#/$defs/p2p_links"
         items:
           type: dict
           keys:
@@ -46,7 +46,7 @@ $defs:
               description: P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
       p2p_links:
         type: list
-        $ref: '#/$defs/p2p_links'
+        $ref: "eos_designs#/$defs/p2p_links"
         items:
           type: dict
           keys:

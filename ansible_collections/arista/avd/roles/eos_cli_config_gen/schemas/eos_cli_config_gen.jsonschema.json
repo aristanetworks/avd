@@ -1989,8 +1989,13 @@
             "properties": {
               "sampled": {
                 "type": "string",
-                "description": "Flow tracker name",
+                "description": "Sampled flow tracker name.",
                 "title": "Sampled"
+              },
+              "hardware": {
+                "type": "string",
+                "description": "Hardware flow tracker name.",
+                "title": "Hardware"
               }
             },
             "additionalProperties": false,
@@ -2257,6 +2262,16 @@
             "type": "boolean",
             "description": "Install default-route obtained via DHCP",
             "title": "DHCP Client Accept Default Route"
+          },
+          "dhcp_server_ipv4": {
+            "type": "boolean",
+            "description": "Enable IPv4 DHCP server.",
+            "title": "DHCP Server IPv4"
+          },
+          "dhcp_server_ipv6": {
+            "type": "boolean",
+            "description": "Enable IPv6 DHCP server.",
+            "title": "DHCP Server IPv6"
           },
           "ip_helpers": {
             "type": "array",
@@ -4246,6 +4261,292 @@
       },
       "title": "Event Monitor"
     },
+    "flow_tracking": {
+      "type": "object",
+      "properties": {
+        "sampled": {
+          "type": "object",
+          "properties": {
+            "sample": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4294967295,
+              "title": "Sample"
+            },
+            "trackers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "table_size": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 614400,
+                    "description": "Maximum number of entries in flow table.\n",
+                    "title": "Table Size"
+                  },
+                  "record_export": {
+                    "type": "object",
+                    "properties": {
+                      "mpls": {
+                        "type": "boolean",
+                        "description": "Export MPLS forwarding information",
+                        "title": "MPLS"
+                      },
+                      "on_inactive_timeout": {
+                        "type": "integer",
+                        "minimum": 3000,
+                        "maximum": 900000,
+                        "description": "Flow record inactive export timeout in milliseconds",
+                        "title": "On Inactive Timeout"
+                      },
+                      "on_interval": {
+                        "type": "integer",
+                        "minimum": 1000,
+                        "maximum": 36000000,
+                        "description": "Flow record export interval in milliseconds",
+                        "title": "On Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Record Export"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Tracker Name",
+                    "title": "Name"
+                  },
+                  "exporters": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Exporter Name",
+                          "title": "Name"
+                        },
+                        "collector": {
+                          "type": "object",
+                          "properties": {
+                            "host": {
+                              "type": "string",
+                              "description": "Collector IPv4 address or IPv6 address or fully qualified domain name",
+                              "title": "Host"
+                            },
+                            "port": {
+                              "type": "integer",
+                              "description": "Collector Port Number",
+                              "minimum": 1,
+                              "maximum": 65535,
+                              "title": "Port"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Collector"
+                        },
+                        "format": {
+                          "type": "object",
+                          "properties": {
+                            "ipfix_version": {
+                              "type": "integer",
+                              "title": "Ipfix Version"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Format"
+                        },
+                        "local_interface": {
+                          "type": "string",
+                          "description": "Local Source Interface",
+                          "title": "Local Interface"
+                        },
+                        "template_interval": {
+                          "type": "integer",
+                          "minimum": 5000,
+                          "maximum": 3600000,
+                          "description": "Template interval in milliseconds",
+                          "title": "Template Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Exporters"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Trackers"
+            },
+            "shutdown": {
+              "type": "boolean",
+              "default": false,
+              "title": "Shutdown"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sampled"
+        },
+        "hardware": {
+          "type": "object",
+          "properties": {
+            "trackers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Tracker Name",
+                    "title": "Name"
+                  },
+                  "record_export": {
+                    "type": "object",
+                    "properties": {
+                      "on_inactive_timeout": {
+                        "type": "integer",
+                        "minimum": 3000,
+                        "maximum": 900000,
+                        "description": "Flow record inactive export timeout in milliseconds",
+                        "title": "On Inactive Timeout"
+                      },
+                      "on_interval": {
+                        "type": "integer",
+                        "minimum": 1000,
+                        "maximum": 36000000,
+                        "description": "Flow record export interval in milliseconds",
+                        "title": "On Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Record Export"
+                  },
+                  "exporters": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Exporter Name",
+                          "title": "Name"
+                        },
+                        "collector": {
+                          "type": "object",
+                          "properties": {
+                            "host": {
+                              "type": "string",
+                              "description": "Collector IPv4 address or IPv6 address or fully qualified domain name",
+                              "title": "Host"
+                            },
+                            "port": {
+                              "type": "integer",
+                              "description": "Collector Port Number",
+                              "minimum": 1,
+                              "maximum": 65535,
+                              "title": "Port"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Collector"
+                        },
+                        "format": {
+                          "type": "object",
+                          "properties": {
+                            "ipfix_version": {
+                              "type": "integer",
+                              "title": "Ipfix Version"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Format"
+                        },
+                        "local_interface": {
+                          "type": "string",
+                          "description": "Local Source Interface",
+                          "title": "Local Interface"
+                        },
+                        "template_interval": {
+                          "type": "integer",
+                          "minimum": 5000,
+                          "maximum": 3600000,
+                          "description": "Template interval in milliseconds",
+                          "title": "Template Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Exporters"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Trackers"
+            },
+            "shutdown": {
+              "type": "boolean",
+              "default": false,
+              "title": "Shutdown"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Hardware"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Flow Tracking"
+    },
     "flow_trackings": {
       "type": "array",
       "items": {
@@ -4446,7 +4747,7 @@
             "type": "object",
             "properties": {
               "speed_group": {
-                "type": "integer",
+                "type": "string",
                 "title": "Speed Group"
               },
               "serdes": {
@@ -7278,10 +7579,6 @@
           "title": "Profiles"
         }
       },
-      "required": [
-        "license",
-        "fips_restrictions"
-      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
@@ -11195,8 +11492,13 @@
             "properties": {
               "sampled": {
                 "type": "string",
-                "description": "Flow tracker name",
+                "description": "Sampled flow tracker name.",
                 "title": "Sampled"
+              },
+              "hardware": {
+                "type": "string",
+                "description": "Hardware flow tracker name.",
+                "title": "Hardware"
               }
             },
             "additionalProperties": false,
@@ -20672,6 +20974,32 @@
             "^_.+$": {}
           },
           "title": "Control Plane"
+        },
+        "l1": {
+          "type": "object",
+          "properties": {
+            "unsupported_speed_action": {
+              "type": "string",
+              "enum": [
+                "error",
+                "warn"
+              ],
+              "title": "Unsupported Speed Action"
+            },
+            "unsupported_error_correction_action": {
+              "type": "string",
+              "enum": [
+                "error",
+                "warn"
+              ],
+              "title": "Unsupported Error Correction Action"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "L1"
         }
       },
       "additionalProperties": false,

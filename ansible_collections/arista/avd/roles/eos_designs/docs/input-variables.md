@@ -1203,3 +1203,66 @@ See the [Custom Structured Configuration](how-to/custom-structured-configuration
 --8<--
 roles/eos_designs/docs/tables/custom-structured-configuration.md
 --8<--
+
+## CloudVision Topology settings
+
+Generate AVD topology configurations directly from a given CloudVision topology.
+
+This feature is intended to be used for the integration of AVD and CloudVision Studios.
+
+The topology should be pulled from the CloudVision "Inventory and Topology Studio" inputs. Device IDs must be translated to hostnames.
+
+This feature currently provides the following configurations based on the given CloudVision topology and `default_interfaces`:
+
+- `uplink_switches`
+- `uplink_interfaces`
+- `uplink_switch_interfaces`
+- `mlag_interfaces`
+- `platform` (if set)
+- `mgmt_interface` (if interface "ManagementX" is found in the list)
+
+!!! note
+    Any derived configuration can be overridden by setting the key manually.
+    Even keys set under node type `defaults` will take precedence over these derived configurations.
+
+    When using parallel links between the same devices for L3 uplinks it is important to set
+    `max_uplink_switches` and `max_parallel_uplinks` to ensure consistent IP addressing.
+
+??? example "`cv_topology` example"
+    To use this feature set `default_interfaces` according to the intended design (see [default_intefaces](#default-interface-settings) for details) and set `use_cv_topology` to `true`.
+    Provide a full topology under `cv_topology` like this example:
+
+    ```yaml
+    use_cv_topology: true
+    cv_topology:
+      - hostname: s2-spine2
+        platform: vEOS-LAB
+        interfaces:
+          - name: Ethernet2
+            neighbor: s2-leaf1
+            neighbor_interface: Ethernet3
+          - name: Ethernet3
+            neighbor: s2-leaf2
+            neighbor_interface: Ethernet3
+          - name: Ethernet4
+            neighbor: s2-leaf3
+            neighbor_interface: Ethernet3
+          - name: Ethernet5
+            neighbor: s2-leaf4
+            neighbor_interface: Ethernet3
+          - name: Ethernet7
+            neighbor: s2-brdr1
+            neighbor_interface: Ethernet3
+          - name: Ethernet8
+            neighbor: s2-brdr2
+            neighbor_interface: Ethernet3
+          - name: Management0
+            neighbor: 00:1c:73:aa:bb:cc
+            neighbor_interface: Ethernet21
+      - hostname: s1-spine1
+      ...cut for readability...
+    ```
+
+--8<--
+roles/eos_designs/docs/tables/cv-topology.md
+--8<--

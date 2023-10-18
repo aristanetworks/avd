@@ -163,6 +163,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
    l2-protocol forwarding profile {{ ethernet_interface.l2_protocol.forwarding_profile }}
 {%     endif %}
+{%     if ethernet_interface.flow_tracker.hardware is arista.avd.defined %}
+   flow tracker hardware {{ ethernet_interface.flow_tracker.hardware }}
+{%     endif %}
 {%     if ethernet_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ ethernet_interface.flow_tracker.sampled }}
 {%     endif %}
@@ -344,6 +347,12 @@ interface {{ ethernet_interface.name }}
    bfd echo
 {%     elif ethernet_interface.bfd.echo is arista.avd.defined(false) %}
    no bfd echo
+{%     endif %}
+{%     if ethernet_interface.dhcp_server_ipv4 is arista.avd.defined(true) %}
+   dhcp server ipv4
+{%     endif %}
+{%     if ethernet_interface.dhcp_server_ipv6 is arista.avd.defined(true) %}
+   dhcp server ipv6
 {%     endif %}
 {%     if ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable

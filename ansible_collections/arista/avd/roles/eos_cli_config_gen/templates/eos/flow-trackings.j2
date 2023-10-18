@@ -4,6 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - flow trackings #}
+{# Deprecated #}
 {% for flow_tracking in flow_trackings | arista.avd.default([]) %}
 !
 flow tracking {{ flow_tracking.type }}
