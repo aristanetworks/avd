@@ -40,8 +40,8 @@ interface Management1
 
 | Transport | SSL Profile | VRF | Notification Timestamp | ACL | Port |
 | --------- | ----------- | --- | ---------------------- | --- | ---- |
-| MGMT | gnmi | MGMT | send-time | acl1 | 6030
-| mytransport | - | - | send-time | acl1 | 6032
+| MGMT | gnmi | MGMT | send-time | acl1 | 6030 |
+| mytransport | - | - | send-time | acl1 | 6032 |
 
 Provider eos-native is configured.
 

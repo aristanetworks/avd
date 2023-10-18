@@ -36,7 +36,7 @@
 {%                 set notif = transport.notification_timestamp | arista.avd.default('last-change-time') %}
 {%                 set acl = transport.ip_access_group | arista.avd.default('-') %}
 {%                 set port = transport.port | arista.avd.default('6030') %}
-| {{ transport_name }} | {{ ssl_profile }} | {{ vrf }} | {{ notif }} | {{ acl }} | {{ port }}
+| {{ transport_name }} | {{ ssl_profile }} | {{ vrf }} | {{ notif }} | {{ acl }} | {{ port }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

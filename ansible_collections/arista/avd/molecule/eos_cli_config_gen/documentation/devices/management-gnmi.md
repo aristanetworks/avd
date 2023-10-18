@@ -40,8 +40,8 @@ interface Management1
 
 | Transport | SSL Profile | VRF | Notification Timestamp | ACL | Port |
 | --------- | ----------- | --- | ---------------------- | --- | ---- |
-| MGMT | - | MGMT | last-change-time | ACL-GNMI | 6030
-| MONITORING | - | MONITORING | last-change-time | - | 6031
+| MGMT | - | MGMT | last-change-time | ACL-GNMI | 6030 |
+| MONITORING | - | MONITORING | last-change-time | - | 6031 |
 
 Provider eos-native is configured.
 
