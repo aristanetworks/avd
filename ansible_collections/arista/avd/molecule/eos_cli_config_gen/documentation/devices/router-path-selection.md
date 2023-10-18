@@ -114,20 +114,20 @@ interface Management1
 
 #### DPS policies
 
-##### DPS policy: DPS-P-1
+##### DPS policy DPS-P-1
 
 | Rule ID | Application profile | Load-balance policy |
 | ------- | ------------------- | ------------------- |
 | Default Match | - | LB-P-1 |
 | 42 | AP-3 | LB-P-1 |
 
-##### DPS policy: DPS-P-2
+##### DPS policy DPS-P-2
 
 | Rule ID | Application profile | Load-balance policy |
 | ------- | ------------------- | ------------------- |
 | Default Match | - | LB-P-2 |
 
-##### DPS policy: DPS-P-3
+##### DPS policy DPS-P-3
 
 | Rule ID | Application profile | Load-balance policy |
 | ------- | ------------------- | ------------------- |
@@ -136,8 +136,8 @@ interface Management1
 
 #### VRFs configuration
 
-| VRF  name | DPS policy |
-| --------- | ---------- |
+| VRF name | DPS policy |
+| -------- | ---------- |
 | VRF-1 | DPS-P-1 |
 | VRF-2 | DPS-P-2 |
 | VRF-3 | - |

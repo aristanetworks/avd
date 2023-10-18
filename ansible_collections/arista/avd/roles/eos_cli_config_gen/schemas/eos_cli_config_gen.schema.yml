@@ -11379,6 +11379,8 @@ keys:
                   id:
                     type: int
                     description: Rule ID.
+                    convert_types:
+                    - str
                     min: 1
                     max: 255
                   application_profile:
