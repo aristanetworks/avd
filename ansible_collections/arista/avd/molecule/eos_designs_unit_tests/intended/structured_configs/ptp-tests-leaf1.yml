@@ -1,4 +1,5 @@
 hostname: ptp-tests-leaf1
+is_deployed: true
 router_bgp:
   as: '65101'
   router_id: 10.254.1.1

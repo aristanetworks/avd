@@ -1,4 +1,5 @@
 hostname: DC2-POD1-LEAF2A
+is_deployed: true
 router_bgp:
   as: '65212'
   router_id: 172.16.210.4

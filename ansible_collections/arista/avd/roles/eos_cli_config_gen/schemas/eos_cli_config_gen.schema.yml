@@ -3899,6 +3899,10 @@ keys:
           max: 4294967295
   ipv6_unicast_routing:
     type: bool
+  is_deployed:
+    description: Key only used for documentation or validation purposes
+    type: bool
+    default: true
   l2_protocol:
     type: dict
     keys:
@@ -10388,6 +10392,7 @@ keys:
         type: str
         description: IPv4 Address
       is_type:
+        display_name: IS Type
         type: str
         valid_values:
         - level-1

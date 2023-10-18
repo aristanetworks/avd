@@ -1,4 +1,5 @@
 hostname: DC1_UNDEPLOYED_LEAF1A
+is_deployed: false
 router_bgp:
   as: '65110'
   router_id: 192.168.255.21

@@ -37,7 +37,6 @@ WORDLIST = {
     "ip": "IP",
     "ipv4": "IPv4",
     "ipv6": "IPv6",
-    "is": "IS",
     "isis": "ISIS",
     "lacp": "LACP",
     "lag": "LAG",

@@ -34,6 +34,10 @@ class MiscMixin:
         return get(self.hostvars, "inventory_hostname", required=True)
 
     @cached_property
+    def is_deployed(self: SharedUtils) -> bool:
+        return get(self.hostvars, "is_deployed", default=True)
+
+    @cached_property
     def id(self: SharedUtils) -> int | None:
         return get(self.switch_data_combined, "id")
 
