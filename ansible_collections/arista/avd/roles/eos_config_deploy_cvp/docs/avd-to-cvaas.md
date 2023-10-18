@@ -84,7 +84,9 @@ cluster URLs used in production:
 | Japan| [www.cv-prod-apnortheast-1.arista.io](https://www.cv-prod-apnortheast-1.arista.io)|
 | Australia | [www.cv-prod-ausoutheast-1.arista.io](https://www.cv-prod-ausoutheast-1.arista.io)|
 
-> NOTE That URLs without `wwww` are not supported.
+!!! Warning
+
+    URLs without `www` are not supported.
 
 Click [here](#ansible-vault) for instructions on how to setup Ansible Vault.
 
