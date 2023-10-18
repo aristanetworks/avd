@@ -2522,8 +2522,14 @@ keys:
 
             '
           valid_values:
+          - on-boot
+          - on-config
+          - on-counters
+          - on-intf
           - on-logging
+          - on-maintenance
           - on-startup-config
+          - vm-tracer
         regex:
           type: str
           description: 'Regular expression to use for searching log messages. Required

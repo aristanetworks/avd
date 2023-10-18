@@ -4220,8 +4220,14 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
+              "on-boot",
+              "on-config",
+              "on-counters",
+              "on-intf",
               "on-logging",
-              "on-startup-config"
+              "on-maintenance",
+              "on-startup-config",
+              "vm-tracer"
             ],
             "title": "Trigger"
           },
