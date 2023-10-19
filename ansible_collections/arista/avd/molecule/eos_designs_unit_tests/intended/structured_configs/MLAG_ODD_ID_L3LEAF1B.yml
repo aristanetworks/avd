@@ -46,6 +46,10 @@ router_bgp:
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: MLAG_ODD_ID_L3LEAF1A
     description: MLAG_ODD_ID_L3LEAF1A
+  - ip_address: 10.254.255.254
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65123'
+    description: P2P-UPLINKS-IPV4-PREFIX-LENGTH_Ethernet2
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -130,6 +134,15 @@ ethernet_interfaces:
   channel_group:
     id: 5
     mode: active
+- name: Ethernet10
+  peer: P2P-UPLINKS-IPV4-PREFIX-LENGTH
+  peer_interface: Ethernet2
+  peer_type: overlay-controller
+  description: P2P_LINK_TO_P2P-UPLINKS-IPV4-PREFIX-LENGTH_Ethernet2
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.254.255.253/30
 mlag_configuration:
   domain_id: MLAG_ODD_ID_L3LEAF1
   local_interface: Vlan4094

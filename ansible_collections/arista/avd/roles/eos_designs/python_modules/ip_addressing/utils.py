@@ -39,6 +39,10 @@ class UtilsMixin:
         return self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length
 
     @cached_property
+    def _fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length(self: "AvdIpAddressing") -> int:
+        return self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
+
+    @cached_property
     def _mlag_peer_ipv4_pool(self: "AvdIpAddressing") -> str:
         return self.shared_utils.mlag_peer_ipv4_pool
 

@@ -68,6 +68,7 @@ class UtilsMixin:
                         "speed": get(uplink, "peer_speed", default=get(uplink, "speed")),
                         "ip_address": get(uplink, "peer_ip_address"),
                         "peer_ip_address": get(uplink, "ip_address"),
+                        "prefix_length": get(uplink, "prefix_length"),
                         "channel_group_id": get(uplink, "peer_channel_group_id"),
                         "peer_channel_group_id": get(uplink, "channel_group_id"),
                         "channel_description": get(uplink, "peer_channel_description"),

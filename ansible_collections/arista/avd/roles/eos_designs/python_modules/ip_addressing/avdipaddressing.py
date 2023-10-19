@@ -157,8 +157,9 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 uplink_switch_index=uplink_switch_index,
             )
 
+        prefixlen = self._fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
         offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
-        return get_ip_from_pool(self._uplink_ipv4_pool, 31, offset, 1)
+        return get_ip_from_pool(self._uplink_ipv4_pool, prefixlen, offset, 1)
 
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
         """
@@ -174,8 +175,9 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 uplink_switch_index=uplink_switch_index,
             )
 
+        prefixlen = self._fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
         offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
-        return get_ip_from_pool(self._uplink_ipv4_pool, 31, offset, 0)
+        return get_ip_from_pool(self._uplink_ipv4_pool, prefixlen, offset, 0)
 
     def router_id(self) -> str:
         """
