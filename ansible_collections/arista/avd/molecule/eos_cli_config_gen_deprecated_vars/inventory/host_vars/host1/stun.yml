@@ -2,5 +2,5 @@
 ---
 stun:
   server:
-    # deprecatd in favor of local_interfaces
+    # deprecated in favor of local_interfaces
     local_interface: ethernet1
