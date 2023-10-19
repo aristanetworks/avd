@@ -235,6 +235,10 @@ class MiscMixin:
         return get(self.hostvars, "fabric_ip_addressing.mlag.algorithm", default="first_id")
 
     @cached_property
+    def fabric_ip_addressing_mlag_ipv4_prefix_length(self: SharedUtils) -> int:
+        return get(self.hostvars, "fabric_ip_addressing.mlag.ipv4_prefix_length", default=31)
+
+    @cached_property
     def fabric_sflow_uplinks(self: SharedUtils) -> bool | None:
         return get(self.hostvars, "fabric_sflow.uplinks")
 
