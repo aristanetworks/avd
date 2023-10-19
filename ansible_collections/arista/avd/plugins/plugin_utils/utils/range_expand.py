@@ -3,11 +3,86 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from collections import deque
+from itertools import takewhile
 from types import SimpleNamespace
+from typing import Type
 
-OPERATORS = ["{", "}", "-", ","]
-BRACES = ["{", "}"]
-BRACES_OR_COMMA = ["{", "}", ","]
+
+class Token(SimpleNamespace):
+    """Base class for tokens"""
+
+    value: str
+
+    def __str__(self):
+        return self.value
+
+    def __repr__(self):
+        return f'{self.__class__.__name__}(value="{self.value}")'
+
+
+class DynamicToken(Token):
+    """Dynamic tokens contain must be set with one or more characters from the input data."""
+
+    @classmethod
+    def get_token(cls, value: str) -> DynamicToken:
+        return cls(value="".join(takewhile(cls.is_token, value)))
+
+
+class NumberToken(DynamicToken):
+    """Token for contiguous digits"""
+
+    @classmethod
+    def is_token(cls, value: str) -> bool:
+        return value and value[0].isdigit()
+
+    def __int__(self):
+        return int(self.value)
+
+
+class StringToken(DynamicToken):
+    """Token for something we don't expand like a prefix or a dot."""
+
+    @classmethod
+    def is_token(cls, value: str) -> bool:
+        # We accept "-"" if it is in a string to accept things like
+        return value and not value[0].isdigit() and value[0] not in [",", "{", "}"]
+
+
+class OperatorToken(Token):
+    """Operator tokens always have a preset value attribute."""
+
+    @classmethod
+    def get_token(cls, value: str) -> OperatorToken:
+        return cls()
+
+    @classmethod
+    def is_token(cls, value: str) -> bool:
+        return value.startswith(cls.value)
+
+
+class OpenBraceOperator(OperatorToken):
+    value = "{"
+
+
+class CloseBraceOperator(OperatorToken):
+    value = "}"
+
+
+class CommaOperator(OperatorToken):
+    """Comma outside of braces , { }"""
+
+    value = ","
+
+
+class CommaInBracesOperator(OperatorToken):
+    """Comma inside of braces { , }"""
+
+    value = ","
+
+
+class HyphenOperator(OperatorToken):
+    value = "-"
 
 
 class TokenizerData(SimpleNamespace):
@@ -21,144 +96,144 @@ class TokenizerData(SimpleNamespace):
     length: int
 
 
-def _number_token(data: TokenizerData) -> str:
+def _get_token(data: TokenizerData, token_types: Type[Token] | tuple[Type[Token]]) -> Token | None:
     """
-    Parses data.string gathering digits from the current position until the first non-digit character.
-    Returns an string with the gathered digits.
+    Parses data.string gathering characters from the current position.
+    For non-operators it consumes characters until the first character not matching the requested token type.
+    For operators it consumes only characters matching the token.
+    Returns the requested token type with the gathered characters.
+    Advances data.position for consumed characters.
     """
-    start_position = data.position
-    while data.position < data.length and data.string[data.position].isdigit():
-        data.position += 1
+    if not isinstance(token_types, tuple):
+        token_types = (token_types,)
 
-    return data.string[start_position : data.position]
+    for token_type in token_types:
+        if not token_type.is_token(data.string[data.position :]):
+            continue
+
+        token = token_type.get_token(data.string[data.position :])
+        data.position += len(token.value)
+
+        if isinstance(token, StringToken) and token.value.isspace():
+            # We got only spaces so we return None
+            return None
+
+        return token
+    return None
 
 
-def _other_token(data: TokenizerData) -> str | None:
+def _tokenizer(string: str) -> deque[Token]:
     """
-    Parses data.string gathering non-digits and non-operators from the current position until the first digit or operator character.
-    Returns a string with the gathered characters or None if the token is all whitespaces.
-    """
-    start_position = data.position
-    while data.position < data.length and not data.string[data.position].isdigit() and data.string[data.position] not in BRACES_OR_COMMA:
-        data.position += 1
-
-    token = data.string[start_position : data.position]
-    if token.isspace():
-        return None
-
-    return token
-
-
-def _tokenizer(string: str) -> list[str]:
-    """
-    Returns a list of tokens found in the given string.
+    Returns a deque of tokens found in the given string.
     Example:
     "Ethernet123-234.{12-13,15}" ->
-        [ "Ethernet", 123, "-", 234, ".", "{", 12, "-", 13, ",", 15, "}"]
+        [
+            StringToken(value="Ethernet"),
+            NumberToken(value="123"),
+            HyphenOperator(),
+            NumberToken(value="234"),
+            StringToken(value="."),
+            OpenBraceOperator(),
+            NumberToken(value="12"),
+            HyphenOperator(),
+            NumberToken(value="13"),
+            CommaInBracesOperator(),
+            NumberToken(value="15"),
+            CloseBraceOperator(),
+        ]
     """
     # Keeping position in a namespace so we can do in-place update.
     data = TokenizerData(string=string, position=0, length=len(string))
-    tokens = []
+    tokens = deque()
+    in_braces = 0
     while data.position < data.length:
-        if data.string[data.position].isdigit():
-            tokens.append(_number_token(data))
-        elif data.string[data.position] in OPERATORS:
-            tokens.append(data.string[data.position])
-            data.position += 1
+        # The order below is important since we have commas inside or outside of braces.
+        if (token := _get_token(data, OpenBraceOperator)) is not None:
+            in_braces += 1
+        elif (token := _get_token(data, CloseBraceOperator)) is not None:
+            in_braces -= 1
+        elif in_braces != 0 and (token := _get_token(data, CommaInBracesOperator)) is not None:
+            pass
         else:
-            if (token := _other_token(data)) is not None:
-                tokens.append(token)
+            if (token := _get_token(data, (NumberToken, HyphenOperator, CommaOperator, StringToken))) is None:
+                continue
+
+        tokens.append(token)
+
+    if in_braces != 0:
+        raise ValueError("Invalid range. Unmatched braces.")
     return tokens
 
 
-def _number_range(tokens: list) -> list[str]:
+def _number_range(tokens: deque) -> deque[str]:
     """
-    Return a list of numbers expanded from "-" and "," operators.
+    Return a deque of numbers expanded from "-" and "," operators.
     "," is only expanded if inside braces.
 
     Consumes tokens until first token which is not numeric, brace, "-" or "," inside braces.
     Popping consumed elements from the given tokens.
     """
-    output = []
-    in_braces = 0
+    output = deque()
     while tokens:
         token = tokens[0]
-        if token.isdigit():
-            output.append(int(tokens.pop(0)))
+        if isinstance(token, NumberToken):
+            output.append(int(tokens.popleft()))
             continue
 
-        if token == "-":
+        if isinstance(token, HyphenOperator):
             if len(tokens) < 2:
                 raise ValueError(f"Invalid range. Missing numeric value following operator '{token}'.")
-            if not tokens[1].isdigit():
+            if not isinstance(tokens[1], NumberToken):
                 raise ValueError(f"Invalid range. Invalid value following operator '{token}'. The value must be numeric. Got '{tokens[1]}'.")
 
             # Remove the operator and pop the end value
-            tokens.pop(0)
+            tokens.popleft()
             start_value = output.pop()
-            end_value = int(tokens.pop(0))
+            end_value = int(tokens.popleft())
             if start_value > end_value:
                 raise ValueError(f"Invalid range. Start value '{start_value}' is larger than end value '{end_value}'.")
 
             output.extend(range(start_value, end_value + 1))
             continue
 
-        if token == "," and in_braces > 0:
+        if isinstance(token, CommaInBracesOperator):
             # Inside braces we expand comma operators with numeric values.
             if len(tokens) < 2:
                 raise ValueError(f"Invalid range. Missing numeric value following operator '{token}'.")
-            if not tokens[1].isdigit():
+            if not isinstance(tokens[1], NumberToken):
                 raise ValueError(f"Invalid range. Invalid value following operator '{token}'. The value must be numeric. Got '{tokens[1]}'.")
 
             # Since we already added the previous number, we can just pop the operator and continue.
-            tokens.pop(0)
+            tokens.popleft()
             continue
 
-        if token == "{":
-            in_braces += 1
-            tokens.pop(0)
-            continue
-
-        if token == "}":
-            in_braces -= 1
-            tokens.pop(0)
+        if isinstance(token, (OpenBraceOperator, CloseBraceOperator)):
+            # Nothing to do here.
+            tokens.popleft()
             continue
 
         # The token was not a number, brace or a range operator, so we break out and return.
         break
 
-    if in_braces != 0:
-        raise ValueError("Invalid range. Unmatched braces.")
-
     return output
 
 
-def _tokens_until_comma(tokens: list) -> list[str]:
+def _tokens_until_comma(tokens: deque) -> deque[str]:
     """
-    Returns a subset if the given list starting from index 0
+    Returns a subset if the given deque starting from index 0
     and ending before the first found "," outside of braces.
 
     Popping returned tokens from the given tokens.
     """
-    in_braces = 0
-    tokens_until_comma = []
-    while tokens:
-        token = tokens[0]
-        if in_braces == 0 and token == ",":
-            break
-        if token == "{":
-            in_braces += 1
-        elif token == "}":
-            in_braces -= 1
-        tokens_until_comma.append(tokens.pop(0))
-
-    if in_braces != 0:
-        raise ValueError("Invalid range. Unmatched braces")
+    # return list(popwhile(lambda item: not isinstance(item, CommaOperator), tokens))
+    tokens_until_comma = deque()
+    while tokens and not isinstance(tokens[0], CommaOperator):
+        tokens_until_comma.append(tokens.popleft())
 
     return tokens_until_comma
 
 
-def _parser(tokens: list, prefix: str = "") -> list[str]:
+def _parser(tokens: deque, prefix: str = "") -> list[str]:
     """
     Return list of strings expanded from the given tokens.
 
@@ -176,7 +251,7 @@ def _parser(tokens: list, prefix: str = "") -> list[str]:
     while tokens:
         token = tokens[0]
 
-        if token.isdigit() or token in BRACES:
+        if isinstance(token, (NumberToken, OpenBraceOperator)):
             # Extend items up to the first comma (outside of braces).
 
             # _number_range pops the numbers, braces and range operators from tokens so it is now a shorter list we recurse over.
@@ -191,25 +266,25 @@ def _parser(tokens: list, prefix: str = "") -> list[str]:
                 items.extend(_parser(tokens_until_comma.copy(), f"{prefix}{number}"))
             continue
 
-        if token == "-":
+        if isinstance(token, HyphenOperator):
             # "-" alone is only supported between numeric operators.
             raise ValueError(f"Invalid range. Missing numeric value before operator '{token}'.")
 
-        if token == ",":
+        if isinstance(token, CommaOperator):
             if not items:
                 raise ValueError(f"Invalid range. Missing numeric value before operator '{token}'.")
             if len(tokens) < 2:
                 raise ValueError(f"Invalid range. Missing numeric value after operator '{token}'.")
             # Remove the comma operator and we can add items after the comma.
-            tokens.pop(0)
+            tokens.popleft()
             # Before we continue, check if we have a new prefix after the comma (non-numeric token)
             # and clear the prefix if so.
-            if not (tokens[0].isdigit() or tokens[0] in BRACES):
+            if not isinstance(tokens[0], (NumberToken, OpenBraceOperator)):
                 prefix = ""
             continue
 
         # Other token so we just add it to the prefix.
-        prefix += tokens.pop(0)
+        prefix += str(tokens.popleft())
 
     return items
 
