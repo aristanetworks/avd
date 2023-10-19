@@ -1012,6 +1012,8 @@ keys:
           description: Server IP or Hostname
       tunnel_requests_disabled:
         type: bool
+      mlag_peerlink_requests_disabled:
+        type: bool
   dns_domain:
     type: str
     description: Domain Name
