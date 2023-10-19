@@ -13,7 +13,7 @@
 | DHCP Server Enabled | VRF |
 | ------------------- | --- |
 {%     for dhcp_server in dhcp_servers | arista.avd.natural_sort %}
-| {{ not dhcp_server.disabled | arista.avd.default(false)  }} | {{ dhcp_server.vrf | arista.avd.default("-") }} |
+| {{ not dhcp_server.disabled | arista.avd.default(false) }} | {{ dhcp_server.vrf | arista.avd.default("-") }} |
 {%     endfor %}
 
 ### DHCP Relay Configuration

@@ -28,5 +28,5 @@ dhcp_servers:
         default_gateway: 10.0.0.1
 
   - subnets:
-    - subnet: 10.2.3.0/24
-    - subnet: 2a00:2::/64
+      - subnet: 10.2.3.0/24
+      - subnet: 2a00:2::/64
