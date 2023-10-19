@@ -15,23 +15,3 @@ event_handlers:
     trigger: on-boot
     action_type: bash
     action: echo "on-boot"
-  - name: trigger-on-config
-    trigger: on-config
-    action_type: bash
-    action: echo "on-config"
-  - name: trigger-on-counters
-    trigger: on-counters
-    action_type: bash
-    action: echo "on-counters"
-  - name: trigger-on-intf
-    trigger: on-intf
-    action_type: bash
-    action: echo "on-intf"
-  - name: trigger-on-maintenance
-    trigger: on-maintenance
-    action_type: bash
-    action: echo "on-maintenance"
-  - name: trigger-vm-tracer
-    trigger: vm-tracer
-    action_type: bash
-    action: echo "vm-tracer"

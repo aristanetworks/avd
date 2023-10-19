@@ -46,11 +46,6 @@ interface Management1
 | CONFIG_VERSIONING | bash | <code>FN=/mnt/flash/startup-config; LFN="`ls -1 $FN.*-* \| tail -n 1`"; if [ -z "$LFN" -o -n "`diff -I 'last modified' $FN $LFN`" ]; then cp $FN $FN.`date +%Y%m%d-%H%M%S`; ls -1r $FN.*-* \| tail -n +11 \| xargs -I % rm %; fi</code> | on-startup-config |
 | evpn-blacklist-recovery | bash | <code>FastCli -p 15 -c "clear bgp evpn host-flap"</code> | on-logging |
 | trigger-on-boot | bash | <code>echo "on-boot"</code> | on-boot |
-| trigger-on-config | bash | <code>echo "on-config"</code> | on-config |
-| trigger-on-counters | bash | <code>echo "on-counters"</code> | on-counters |
-| trigger-on-intf | bash | <code>echo "on-intf"</code> | on-intf |
-| trigger-on-maintenance | bash | <code>echo "on-maintenance"</code> | on-maintenance |
-| trigger-vm-tracer | bash | <code>echo "vm-tracer"</code> | vm-tracer |
 
 #### Event Handler Device Configuration
 
@@ -71,24 +66,4 @@ event-handler evpn-blacklist-recovery
 event-handler trigger-on-boot
    trigger on-boot
    action bash echo "on-boot"
-!
-event-handler trigger-on-config
-   trigger on-config
-   action bash echo "on-config"
-!
-event-handler trigger-on-counters
-   trigger on-counters
-   action bash echo "on-counters"
-!
-event-handler trigger-on-intf
-   trigger on-intf
-   action bash echo "on-intf"
-!
-event-handler trigger-on-maintenance
-   trigger on-maintenance
-   action bash echo "on-maintenance"
-!
-event-handler trigger-vm-tracer
-   trigger vm-tracer
-   action bash echo "vm-tracer"
 ```
