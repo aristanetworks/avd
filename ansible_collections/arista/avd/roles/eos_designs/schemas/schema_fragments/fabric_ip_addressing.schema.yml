@@ -32,6 +32,8 @@ keys:
           ipv4_prefix_length:
             type: int
             default: 31
+            min: 1
+            max: 31
             convert_types:
               - str
             description: IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.
@@ -41,6 +43,8 @@ keys:
           ipv4_prefix_length:
             type: int
             default: 31
+            min: 1
+            max: 31
             convert_types:
               - str
             description: IPv4 prefix length used for L3 point-to-point uplinks.
