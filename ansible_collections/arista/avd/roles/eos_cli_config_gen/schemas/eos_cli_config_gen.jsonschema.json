@@ -19472,7 +19472,7 @@
                     "name": {
                       "type": "string",
                       "description": "Local interface name.",
-                      "pattern": "^Ethernet\\d+$",
+                      "pattern": "^Ethernet\\d+(/\\d+)*$",
                       "title": "Name"
                     },
                     "public_address": {

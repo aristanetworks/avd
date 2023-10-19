@@ -1,0 +1,447 @@
+hostname: caravan-site101-r1
+
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.cv-staging.corp.arista.io:443
+  # Compression in schema but not in template!
+  grpcaddr: 0.0.0.0:6042
+  cvauth:
+    method: token-secure
+    token_file: /tmp/cv-onboarding-token
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata,flowtracking/hardware
+  disable_aaa: true
+  # cvsourceip - not implemented
+  # sysdbexcludes - not implemented
+switchport_default:
+  mode: routed
+flow_tracking:
+  hardware:
+    trackers:
+      - name: flowTracker
+        record_export:
+          on_inactive_timeout: 70000
+          on_interval: 5000
+        exporters:
+          - name: exp
+            collector:
+              host: 127.0.0.1
+            local_interface: Loopback0
+            template_interval: 5000
+    shutdown: false
+service_routing_protocols_model: multi-agent
+logging:
+  console: debugging
+  monitor: debugging
+ip_domain_lookup:
+  source_interfaces:
+    - name: Loopback100
+ip_name_servers:
+  - ip_address: 10.0.101.250
+    vrf: default
+  - ip_address: 10.0.103.88
+    vrf: default
+  - ip_address: 8.8.4.4
+    vrf: default
+    priority: 4
+  - ip_address: 8.8.8.8
+    vrf: default
+    priority: 4
+dns_domain: core.acvnx.net.
+router_path_selection:
+  path_groups:
+    - name: LAN-HA
+      id: 65535
+      flow_assignment: lan
+      local_interfaces:
+        - name: Ethernet5
+      static_peers:
+        - router_ip: 192.168.101.2
+          ip_address: 10.0.101.2
+    - name: equinix-ne
+      id: 122
+    - name: internet
+      id: 101
+      ipsec_profile: controlPlaneIpsecProfile
+      local_interfaces:
+        - name: Ethernet1
+          stun:
+            server_profiles:
+              - 192.168.99.1
+              - 192.168.99.2
+      dynamic_peers:
+        enabled: true
+      static_peers:
+        - router_ip: 192.168.99.1
+          ip_address: 54.219.217.50
+        - router_ip: 192.168.99.2
+          ip_address: 35.211.63.51
+    - name: mpls-1
+      id: 111
+      ipsec_profile: controlPlaneIpsecProfile
+      local_interfaces:
+        - name: Ethernet2
+      dynamic_peers:
+        enabled: true
+    - name: mpls-99
+      id: 199
+      ipsec_profile: controlPlaneIpsecProfile
+      local_interfaces:
+        - name: Ethernet4
+          stun:
+            server_profiles:
+              - pathfinder2-mpls99
+              - pathfinder1-mpls99
+      static_peers:
+        - router_ip: 192.168.99.1
+          ip_address: 10.249.99.5
+        - router_ip: 192.168.99.2
+          ip_address: 10.249.210.5
+  load_balance_policies:
+    - name: default-avtLbPolicy
+      path_groups:
+        - LAN_HA
+        - aws
+        - azure
+        - equinix-bm
+        - equinix-ne
+        - gcp
+        - internet
+        - mpls-1
+        - mpls-2
+        - mpls-99
+  policies:
+    - name: dps-policy-default
+      default_match:
+        load_balance: default-avtLbPolicy
+  vrfs:
+    - name: default
+      path_selection_policy: dps-policy-default
+    - name: green
+      path_selection_policy: dps-policy-default
+snmp_server:
+  engine_ids:
+    local: 010010010101
+  local_interfaces:
+    - name: Loopback100
+  views:
+    - name: all-items
+      mib_family_name: iso
+      included: true
+  communities:
+    - name: AcvnX21
+      access: ro
+  groups:
+    - name: TG
+      version: v3
+      authentication: priv
+      read: all-items
+  users:
+    - name: Collector
+      group: TG
+      version: v3
+      auth: sha
+      auth_passphrase: b46e39fb8e1999916fea1fa58885a15fa40df617
+      priv: aes
+      priv_passphrase: ef74455a51703b15be86743d2299504d
+spanning_tree:
+  mode: none
+system:
+  l1:
+    unsupported_speed_action: error
+    unsupported_error_correction_action: error
+  control_plane:
+    ipv4_access_groups:
+      - acl_name: def2
+vrfs:
+  - name: green
+    ip_routing: true
+management_api_gnmi:
+  provider: eos-native
+  transport:
+    grpc:
+      - name: def
+aaa_authentication:
+  policies:
+    on_success_log: true
+    on_failure_log: true
+aaa_authorization:
+  exec:
+    default: local
+ip_security:
+  ike_policies:
+    - name: controlPlaneIkePolicy
+      local_id: 192.168.101.1
+  sa_policies:
+    - name: controlPlaneSaPolicy
+      esp:
+        encryption: aes128
+      pfs_dh_group: 14
+    - name: dataPlaneSaPolicy
+      esp:
+        encryption: aes128
+      pfs_dh_group: 14
+  profiles:
+    - name: controlPlaneIpsecProfile
+      ike_policy: controlPlaneIkePolicy
+      sa_policy: controlPlaneSaPolicy
+      connection: start
+      shared_key: "424242424242424242"
+      dpd:
+        interval: 10
+        time: 50
+        action: clear
+      mode: transport
+    - name: dataPlaneIpsecProfile
+      sa_policy: dataPlaneSaPolicy
+      connection: start
+      shared_key: "424242424242424242424242"
+      dpd:
+        interval: 10
+        time: 50
+        action: clear
+      mode: transport
+  key_controller:
+    profile: dataPlaneIpsecProfile
+dps_interfaces:
+  - name: Dps1
+    flow_tracker:
+      hardware: flowTracker
+    ip_address: 169.254.101.1/24
+    tcp_mss_ceiling:
+      ipv4: 1000
+ethernet_interfaces:
+  - name: Ethernet1
+    description: "Internet WAN Circuit: 50.208.41.107"
+    type: routed
+    flow_tracker:
+      hardware: flowTracker
+    ip_address: 10.33.33.101/24
+  - name: Ethernet2
+    description: "MPLS-1 WAN Circuit"
+    type: routed
+    flow_tracker:
+      hardware: flowTracker
+    ip_address: 10.240.101.2/24
+    dhcp_server: ipv
+    shape:
+        rate: 100000
+  - name: Ethernet4
+    description: MPLS-99 RR Direct Connect Circuit
+    type: routed
+    flow_tracker:
+      hardware: flowTracker
+    ip_address: 10.249.101.2/24
+  - name: Ethernet5
+    description: VRF Default Site101 LAN
+    type: routed
+    flow_tracker:
+      hardware: flowTracker
+    ip_address: 10.0.101.1/24
+    vrrp_ids:
+      - id: 1
+        priority_level: 200
+        ipv4:
+          address: 10.0.101.3
+  - name: Ethernet6
+    description: VRF Green Site101 LAN
+    type: routed
+    vrf: green
+    flow_tracker:
+      hardware: flowTracker
+    ip_address: 10.1.101.1/24
+    vrrp_ids:
+      - id: 1
+        priority_level: 200
+        ipv4:
+          address: 10.1.101.3
+  - name: Ethernet7
+    description: VRF Default Corporate Internet Access via X1
+    type: routed
+    flow_tracker:
+      hardware: flowTracker
+    ip_address: 10.11.11.101/24
+  - name: Ethernet8
+    description: VRF Green Corporate Internet Access via X1
+    type: routed
+    vrf: green
+    flow_tracker:
+      hardware: flowTracker
+    ip_address: 10.12.12.101/24
+loopback_interfaces:
+  - name: Loopback0
+    ip_address: 192.168.101.1/32
+  - name: Loopback1
+    description: VRF Green Site101 Lo1
+    vrf: green
+    ip_address: 192.168.101.1/32
+  - name: Loopback100
+    description: VRF Default Site101 Lo100 Management
+    ip_address: 10.254.101.1/32
+management_interfaces:
+  - name: Management1
+    description: VRF Default Site101 Local Management
+    ip_address: 10.10.10.101/24
+vxlan_interface:
+  Vxlan1:
+    vxlan:
+      source_interface: Loopback0
+      udp_port: 4789
+      vrfs:
+        - name: default
+          vni: 101
+        - name: green
+          vni: 1
+ip_routing: true
+prefix_lists:
+  - name: PL-SITE100-R1-VRF-Default-AllLocals
+    sequence_numbers:
+      - sequence: 10
+        action: "permit 10.0.100.0/24"
+      - sequence: 30
+        action: "permit 10.254.100.1/32"
+static_routes:
+  - vrf: default
+    destination_address_prefix: 0.0.0.0/0
+    gateway: 10.11.11.254
+  - vrf: default
+    destination_address_prefix: 0.0.0.0/0
+    gateway: 10.11.11.100
+    distance: 210
+  - vrf: default
+    destination_address_prefix: 10.240.0.0/16
+    gateway: 10.240.100.1
+  - vrf: default
+    destination_address_prefix: 10.241.0.0/16
+    gateway: 10.241.100.1
+  - vrf: default
+    destination_address_prefix: 10.249.0.0/16
+    gateway: 10.249.100.1
+  - vrf: default
+    destination_address_prefix: 34.82.61.125/32
+    gateway: 10.11.11.254
+  - vrf: default
+    destination_address_prefix: 35.197.12.75/32
+    gateway: 10.11.11.254
+ntp:
+  servers:
+    - name: 1.pool.ntp.org
+    - name: 2.pool.ntp.org
+    - name: 3.pool.ntp.org
+route_maps:
+  - name: RM-SITE100-R1-VRF-Default-AllLocals
+    sequence_numbers:
+      - sequence: 10
+        type: permit
+        match:
+          - ip address prefix-list PL-SITE100-R1-VRF-Default-AllLocals
+router_bgp:
+  as: 65199
+  router_id: 192.168.100.1
+  maximum_paths:
+    paths: 16
+  peer_groups:
+    - name: PATHFINDERS
+      remote_as: 65199
+      update_source: Loopback0
+      send_community: extended
+  neighbors:
+    - ip_address: 192.168.99.1
+      peer_group: PATHFINDERS
+    - ip_address: 192.168.99.2
+      peer_group: PATHFINDERS
+  address_family_evpn:
+    peer_groups:
+      - name: PATHFINDERS
+        activate: true
+  address_family_ipv4:
+    peer_groups:
+      - name: PATHFINDERS
+        activate: false
+    networks:
+      - prefix: 10.0.100.0/24
+      - prefix: 10.254.100.1/32
+  address_family_ipv4_sr_te:
+    peer_groups:
+      - name: PATHFINDERS
+        activate: true
+  address_family_link_state:
+    peer_groups:
+      - name: PATHFINDERS
+        activate: true
+    path_selection:
+      roles:
+        producer: true
+  address_family_path_selection:
+    peer_groups:
+      - name: PATHFINDERS
+        activate: true
+        additional_paths:
+          receive: true
+          send:
+            any: true
+  vrfs:
+    - name: default
+      rd: 192.168.100.1:101
+      route_targets:
+        import:
+          - address_family: evpn
+            route_targets:
+              - 65199:101
+        export:
+          - address_family: evpn
+            route_targets:
+              - 65199:101
+            route_map: RM-SITE100-R1-VRF-Default-AllLocals
+    - name: green
+      router_id: 192.168.100.1
+      rd: 192.168.100.1:1
+      route_targets:
+        import:
+          - address_family: evpn
+            route_targets:
+              - "65199:1"
+        export:
+          - address_family: evpn
+            route_targets:
+              - "65199:1"
+      networks:
+        - prefix: 10.1.100.0/24
+        - prefix: 192.168.100.1/32
+router_traffic_engineering:
+  # TODO - add enable ?
+  _empty: hack
+stun:
+  client:
+    server_profiles:
+      - name: 192.168.99.1
+        ip_address: 54.219.217.50
+      - name: 192.168.99.2
+        ip_address: 35.211.63.51
+      - name: pathfinder2-mpls99
+        ip_address: 10.249.99.5
+management_ssh:
+  client_alive:
+    interval: 180
+# TODO - change once PR 3237 is merged
+eos_cli: |
+  router adaptive-virtual-topology
+     topology role edge
+     region US-West id 1
+     zone default id 1
+     site site101 id 101
+  dhcp server
+     subnet 10.1.101.0/24
+     !
+     subnet 10.240.101.0/24
+     range 10.1.101.231 10.1.101.235
+        name Site101-VRF-GREEN-LAN
+        dns server 8.8.8.8 8.8.4.4
+        lease time 1 days 0 hours 0 minutes
+        default-gateway 10.1.101.3
+     !
+     subnet 10.1.101.0/25
+     !
+     vendor-option ipv4 NTP
+        sub-option 42 type ipv4-address data 10.1.1.1
+

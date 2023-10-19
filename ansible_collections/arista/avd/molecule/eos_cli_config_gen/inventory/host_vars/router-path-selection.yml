@@ -24,6 +24,8 @@ router_path_selection:
             server_profiles:
               - STUN-P-1
               - STUN-P-2
+        - name: Ethernet1/1
+        - name: Ethernet1/1/3
       local_ips:
         # Out of order to test sorting
         - ip_address: 192.168.100.1

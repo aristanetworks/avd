@@ -76,6 +76,8 @@ interface Management1
 
 | Interface name | Public address | STUN server profile(s) |
 | -------------- | -------------- | ---------------------- |
+| Ethernet1/1 | - |  |
+| Ethernet1/1/3 | - |  |
 | Ethernet2 | 192.168.42.42 | STUN-P-1<br>STUN-P-2 |
 | Ethernet3 | - | STUN-P-1 |
 
@@ -165,6 +167,10 @@ router path-selection
    path-group PG-2 id 42
       ipsec profile IPSEC-P-1
       flow assignment lan
+      !
+      local interface Ethernet1/1
+      !
+      local interface Ethernet1/1/3
       !
       local interface Ethernet2 public address 192.168.42.42
          stun server-profile STUN-P-1 STUN-P-2
