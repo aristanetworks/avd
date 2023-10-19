@@ -4717,6 +4717,16 @@ keys:
                 ip_access_group:
                   type: str
                   description: ACL name
+                port:
+                  type: int
+                  description: 'GNMI port.
+
+                    Make sure to update the control-plane ACL accordingly in order
+                    for the service to be reachable by external applications.
+
+                    '
+                  convert_types:
+                  - str
           grpc_tunnels:
             type: list
             primary_key: name

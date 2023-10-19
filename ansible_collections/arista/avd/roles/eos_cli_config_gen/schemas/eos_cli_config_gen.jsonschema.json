@@ -7868,6 +7868,11 @@
                     "type": "string",
                     "description": "ACL name",
                     "title": "IP Access Group"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "GNMI port.\nMake sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.\n",
+                    "title": "Port"
                   }
                 },
                 "additionalProperties": false,
