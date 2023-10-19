@@ -4,6 +4,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [DHCP Server](#dhcp-server)
+  - [DHCP Server interfaces](#dhcp-server-interfaces)
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
@@ -47,6 +49,14 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+
+## DHCP Server
+
+### DHCP Server interfaces
+
+| Interface name | DHCP IPv4 | DHCP IPv6 |
+| -------------- | --------- | --------- |
+| Ethernet64 | True | True |
 
 ## Monitoring
 
@@ -186,7 +196,8 @@ sFlow is disabled.
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 | Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 | Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
-| Ethernet63 | DHCP interface | routed | - | dhcp | default | - | - | - | - |
+| Ethernet63 | DHCP client interface | routed | - | dhcp | default | - | - | - | - |
+| Ethernet64 | DHCP server interface | routed | - | 192.168.42.42/24 | default | - | - | - | - |
 
 ##### IP NAT: Source Static
 
@@ -856,10 +867,17 @@ interface Ethernet62
    switchport
 !
 interface Ethernet63
-   description DHCP interface
+   description DHCP client interface
    no switchport
    ip address dhcp
    dhcp client accept default-route
+!
+interface Ethernet64
+   description DHCP server interface
+   no switchport
+   ip address 192.168.42.42/24
+   dhcp server ipv4
+   dhcp server ipv6
 ```
 
 ## BFD

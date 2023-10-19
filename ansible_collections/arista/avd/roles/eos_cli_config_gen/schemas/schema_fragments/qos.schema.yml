@@ -24,6 +24,12 @@ keys:
               type: str
               description: |
                 Example: "8 9 10 to traffic-class 1"
+          exp:
+            type: list
+            items:
+              type: str
+              description: |
+                Example "0 to traffic-class 0"
           traffic_class:
             type: list
             items:

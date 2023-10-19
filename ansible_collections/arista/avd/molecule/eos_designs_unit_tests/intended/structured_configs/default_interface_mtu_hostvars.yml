@@ -1,4 +1,5 @@
 hostname: default_interface_mtu_hostvars
+is_deployed: true
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending

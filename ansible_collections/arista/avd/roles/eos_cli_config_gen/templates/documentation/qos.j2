@@ -27,7 +27,6 @@ QOS rewrite DSCP: **disabled**
 {%     if qos.map is arista.avd.defined %}
 
 ##### QOS Mappings
-
 {%         if qos.map.cos is arista.avd.defined %}
 
 | COS to Traffic Class mappings |
@@ -36,7 +35,6 @@ QOS rewrite DSCP: **disabled**
 | {{ cos_map | default('-') }} |
 {%             endfor %}
 {%         endif %}
-
 {%         if qos.map.dscp is arista.avd.defined %}
 
 | DSCP to Traffic Class mappings |
@@ -45,7 +43,14 @@ QOS rewrite DSCP: **disabled**
 | {{ dscp_map | default('-') }} |
 {%             endfor %}
 {%         endif %}
+{%         if qos.map.exp is arista.avd.defined %}
 
+| EXP to Traffic Class mappings |
+| ----------------------------- |
+{%             for exp_map in qos.map.exp | arista.avd.natural_sort %}
+| {{ exp_map | default('-') }} |
+{%             endfor %}
+{%         endif %}
 {%         if qos.map.traffic_class is arista.avd.defined %}
 
 | Traffic Class to DSCP or COS mappings |

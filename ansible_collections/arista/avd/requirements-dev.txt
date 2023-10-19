@@ -22,3 +22,4 @@ isort==5.12.0
 black==22.8.0
 ansible-doc-extractor>=0.1.10
 tox
+pydantic>=2.3.0

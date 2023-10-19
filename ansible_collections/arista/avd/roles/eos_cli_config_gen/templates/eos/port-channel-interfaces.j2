@@ -109,6 +109,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
    l2-protocol forwarding profile {{ port_channel_interface.l2_protocol.forwarding_profile }}
 {%     endif %}
+{%     if port_channel_interface.flow_tracker.hardware is arista.avd.defined %}
+   flow tracker hardware {{ port_channel_interface.flow_tracker.hardware }}
+{%     endif %}
 {%     if port_channel_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ port_channel_interface.flow_tracker.sampled }}
 {%     endif %}

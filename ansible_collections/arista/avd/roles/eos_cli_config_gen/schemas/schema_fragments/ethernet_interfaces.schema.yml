@@ -118,7 +118,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         error_correction_encoding:
           type: dict
           keys:
@@ -264,6 +267,12 @@ keys:
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP
+        dhcp_server_ipv4:
+          type: bool
+          description: Enable IPv4 DHCP server.
+        dhcp_server_ipv6:
+          type: bool
+          description: Enable IPv6 DHCP server.
         ip_helpers:
           type: list
           primary_key: ip_helper
@@ -283,6 +292,7 @@ keys:
                 convert_types:
                   - int
         ip_nat:
+          type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
