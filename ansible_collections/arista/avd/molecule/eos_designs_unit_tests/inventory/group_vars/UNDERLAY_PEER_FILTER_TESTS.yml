@@ -9,13 +9,17 @@ l3leaf:
     - name: underlay_filter_peer_as_evpn_1
       bgp_as: 64512
       id: 1
-      uplink_switches: [ underlay_filter_peer_as_evpn_2 ]
-      uplink_interfaces: [ Ethernet1 ]
-      uplink_switch_interfaces: [ Ethernet1 ]
+      uplink_switches: [ underlay_filter_peer_as_evpn_2, underlay_filter_peer_as_evpn_3 ]
+      uplink_interfaces: [ Ethernet1, Ethernet2 ]
+      uplink_switch_interfaces: [ Ethernet1, Ethernet1 ]
       evpn_role: client
     - name: underlay_filter_peer_as_evpn_2
       bgp_as: 64513
       id: 2
+      evpn_role: server
+    - name: underlay_filter_peer_as_evpn_3
+      bgp_as: 64513
+      id: 3
       evpn_role: server
 
 underlay_filter_peer_as: true

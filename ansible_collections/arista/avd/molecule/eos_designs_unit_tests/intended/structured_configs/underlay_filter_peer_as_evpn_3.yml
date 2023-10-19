@@ -1,7 +1,7 @@
-hostname: underlay_filter_peer_as_evpn_1
+hostname: underlay_filter_peer_as_evpn_3
 router_bgp:
-  as: '64512'
-  router_id: 192.168.255.1
+  as: '64513'
+  router_id: 192.168.255.3
   bgp:
     default:
       ipv4_unicast: false
@@ -22,6 +22,7 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
+    next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
@@ -32,24 +33,15 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   neighbors:
-  - ip_address: 192.168.153.0
+  - ip_address: 192.168.153.3
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '64513'
-    description: underlay_filter_peer_as_evpn_2_Ethernet1
-    route_map_out: RM-BGP-AS64513-OUT
-  - ip_address: 192.168.153.2
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '64513'
-    description: underlay_filter_peer_as_evpn_3_Ethernet1
-    route_map_out: RM-BGP-AS64513-OUT
-  - ip_address: 192.168.255.2
+    remote_as: '64512'
+    description: underlay_filter_peer_as_evpn_1_Ethernet2
+    route_map_out: RM-BGP-AS64512-OUT
+  - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
-    description: underlay_filter_peer_as_evpn_2
-    remote_as: '64513'
-  - ip_address: 192.168.255.3
-    peer_group: EVPN-OVERLAY-PEERS
-    description: underlay_filter_peer_as_evpn_3
-    remote_as: '64513'
+    description: underlay_filter_peer_as_evpn_1
+    remote_as: '64512'
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -70,32 +62,23 @@ management_api_http:
   enable_https: true
 ethernet_interfaces:
 - name: Ethernet1
-  peer: underlay_filter_peer_as_evpn_2
-  peer_interface: Ethernet1
+  peer: underlay_filter_peer_as_evpn_1
+  peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_EVPN_2_Ethernet1
+  description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_EVPN_1_Ethernet2
   shutdown: false
   mtu: 9214
   type: routed
-  ip_address: 192.168.153.1/31
-- name: Ethernet2
-  peer: underlay_filter_peer_as_evpn_3
-  peer_interface: Ethernet1
-  peer_type: l3leaf
-  description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_EVPN_3_Ethernet1
-  shutdown: false
-  mtu: 9214
-  type: routed
-  ip_address: 192.168.153.3/31
+  ip_address: 192.168.153.2/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
   shutdown: false
-  ip_address: 192.168.255.1/32
+  ip_address: 192.168.255.3/32
 - name: Loopback1
   description: VTEP_VXLAN_Tunnel_Source
   shutdown: false
-  ip_address: 192.168.254.1/32
+  ip_address: 192.168.254.3/32
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -110,12 +93,12 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-- name: RM-BGP-AS64513-OUT
+- name: RM-BGP-AS64512-OUT
   sequence_numbers:
   - sequence: 10
     type: deny
     match:
-    - as 64513
+    - as 64512
   - sequence: 20
     type: permit
 router_bfd:
@@ -128,7 +111,7 @@ ip_igmp_snooping:
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:
-    description: underlay_filter_peer_as_evpn_1_VTEP
+    description: underlay_filter_peer_as_evpn_3_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback1
