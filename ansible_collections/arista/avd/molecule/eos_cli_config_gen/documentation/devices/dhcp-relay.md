@@ -41,6 +41,7 @@ interface Management1
 ### DHCP Relay Summary
 
 - DHCP Relay is disabled for tunnelled requests
+- DHCP Relay is disabled for MLAG peer-link requests
 
 | DHCP Relay Servers |
 | ------------------ |
