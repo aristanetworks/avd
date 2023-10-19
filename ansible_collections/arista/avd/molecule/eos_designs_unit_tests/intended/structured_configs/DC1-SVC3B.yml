@@ -1034,6 +1034,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet2
+  speed: 100g-2
   shutdown: false
   type: port-channel-member
   channel_group:
@@ -1044,6 +1045,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet2
+  speed: 100g-2
   shutdown: false
   type: port-channel-member
   channel_group:
