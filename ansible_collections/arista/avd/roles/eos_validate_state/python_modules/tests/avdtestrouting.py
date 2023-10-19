@@ -41,6 +41,10 @@ class AvdTestRoutingTable(AvdTestBase):
             processed_ips = set()
 
             for node, ip in mapping:
+                if not get(self.hostvars[node], "is_deployed", default=True):
+                    LOGGER.info("Peer '%s' is marked as not deployed. 'VerifyRoutingTableEntry' for this peer routes is skipped.", node)
+                    continue
+
                 if ip not in processed_ips:
                     anta_tests.append(
                         {
@@ -55,18 +59,17 @@ class AvdTestRoutingTable(AvdTestBase):
         try:
             # To be removed once 'l3leaf' check is removed
             node_type = get(self.hostvars[self.device_name], "type", required=True)
-
-            if node_type == "l3leaf":
-                add_test(mapping=self.loopback0_mapping, description="Remote Lo0 address")
-
-            if get(self.hostvars[self.device_name], "vxlan_interface.Vxlan1.vxlan.source_interface") is not None:
-                add_test(mapping=self.vtep_mapping, description="Remote VTEP address")
-
         except AristaAvdMissingVariableError as e:
             LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
             return None
 
-        return {self.anta_module: anta_tests}
+        if node_type == "l3leaf":
+            add_test(mapping=self.loopback0_mapping, description="Remote Lo0 address")
+
+        if get(self.hostvars[self.device_name], "vxlan_interface.Vxlan1.vxlan.source_interface") is not None:
+            add_test(mapping=self.vtep_mapping, description="Remote VTEP address")
+
+        return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestBGP(AvdTestBase):

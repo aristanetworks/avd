@@ -84,4 +84,4 @@ class AvdTestInterfacesState(AvdTestBase):
         if get(self.hostvars[self.device_name], "vxlan_interface.Vxlan1") is not None:
             add_test("Vxlan1", "up", "up", r"Vxlan Interface Status & Line Protocol == \"up\"", "Vxlan1")
 
-        return {self.anta_module: anta_tests}
+        return {self.anta_module: anta_tests} if anta_tests else None

@@ -53,15 +53,14 @@ class AvdTestP2PIPReachability(AvdTestBase):
                 try:
                     ethernet_interface_ip = get(ethernet_interface, "ip_address", required=True)
                 except AristaAvdMissingVariableError as e:
-                    LOGGER.warning("Ethernet interface '%s' is of type 'routed' but the variable '%s' is missing.", ethernet_interface["name"], str(e))
+                    LOGGER.warning("Ethernet interface '%s' is missing the variable '%s'.", ethernet_interface["name"], str(e))
                     continue
 
                 if (peer := ethernet_interface["peer"]) not in self.hostvars or not get(self.hostvars[peer], "is_deployed", default=True):
                     LOGGER.info(
-                        "Ethernet interface '%s' connected peer '%s' is not configured by AVD or is marked as not deployed. 'VerifyReachability' is skipped for"
-                        " this interface",
-                        ethernet_interface["name"],
+                        "Peer '%s' is not configured by AVD or is marked as not deployed. 'VerifyReachability' from interface '%s' to this peer is skipped.",
                         peer,
+                        ethernet_interface["name"],
                     )
                     continue
 
@@ -95,7 +94,7 @@ class AvdTestP2PIPReachability(AvdTestBase):
                     }
                 )
 
-        return {self.anta_module: anta_tests}
+        return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestInbandReachability(AvdTestBase):
@@ -123,25 +122,30 @@ class AvdTestInbandReachability(AvdTestBase):
             LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
             return None
 
-        for management_interface in management_interfaces:
+        for idx, management_interface in enumerate(management_interfaces, start=1):
             try:
                 _type = get(management_interface, "type", required=True)
-                if _type == "inband":
-                    for dst_node, dst_ip in self.loopback0_mapping:
-                        custom_field = f"Source: {self.device_name} - {management_interface['name']} Destination: {dst_ip}"
-                        anta_tests.append(
-                            {
-                                "VerifyReachability": {
-                                    "hosts": [{"source": management_interface["name"], "destination": dst_ip, "vrf": "default", "repeat": 1}],
-                                    "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
-                                }
-                            }
-                        )
+                name = get(management_interface, "name", required=True)
             except AristaAvdMissingVariableError as e:
-                LOGGER.warning("Variable '%s' is missing. Please validate the Management interfaces data model of this host.", str(e))
+                LOGGER.warning("Management interface entry #%d from the 'management_interfaces' data model is missing the variable '%s'.", idx, str(e))
                 continue
 
-        return {self.anta_module: anta_tests}
+            if _type == "inband":
+                for dst_node, dst_ip in self.loopback0_mapping:
+                    if not get(self.hostvars[dst_node], "is_deployed", default=True):
+                        LOGGER.info("Peer '%s' is marked as not deployed. 'VerifyReachability' from interface '%s' to this peer is skipped.", dst_node, name)
+                        continue
+                    custom_field = f"Source: {self.device_name} - {name} Destination: {dst_ip}"
+                    anta_tests.append(
+                        {
+                            "VerifyReachability": {
+                                "hosts": [{"source": name, "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                                "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
+                            }
+                        }
+                    )
+
+        return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestLoopback0Reachability(AvdTestBase):
@@ -167,30 +171,34 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         try:
             # To be removed once 'l3leaf' check is removed
             node_type = get(self.hostvars[self.device_name], "type", required=True)
-
-            if node_type == "l3leaf":
-                loopback_interfaces = get(self.hostvars[self.device_name], "loopback_interfaces", required=True)
-                loopback0 = get_item(loopback_interfaces, "name", "Loopback0", required=True, var_name="name: Loopback0")
-                src_ip = get(loopback0, "ip_address", required=True)
-
-                for dst_node, dst_ip in self.loopback0_mapping:
-                    custom_field = f"Source: {self.device_name} - {src_ip} Destination: {dst_ip}"
-                    anta_tests.append(
-                        {
-                            "VerifyReachability": {
-                                "hosts": [{"source": str(ip_interface(src_ip).ip), "destination": dst_ip, "vrf": "default", "repeat": 1}],
-                                "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
-                            }
-                        }
-                    )
         except AristaAvdMissingVariableError as e:
-            if str(e) == "type":
-                LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
-            else:
-                LOGGER.warning("Variable '%s' is missing. Please validate the Loopback interfaces data model of this host.", str(e))
+            LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
             return None
 
-        return {self.anta_module: anta_tests}
+        if node_type == "l3leaf":
+            try:
+                loopback_interfaces = get(self.hostvars[self.device_name], "loopback_interfaces", required=True)
+                loopback0 = get_item(loopback_interfaces, "name", "Loopback0", required=True)
+                src_ip = get(loopback0, "ip_address", required=True)
+            except AristaAvdMissingVariableError:
+                LOGGER.warning("Interface 'Loopback0' from the 'loopback_interfaces' data model is missing or his variable 'ip_address' is missing.")
+                return None
+
+            for dst_node, dst_ip in self.loopback0_mapping:
+                if not get(self.hostvars[dst_node], "is_deployed", default=True):
+                    LOGGER.info("Peer '%s' is marked as not deployed. 'VerifyReachability' from interface 'Loopback0' to this peer is skipped.", dst_node)
+                    continue
+                custom_field = f"Source: {self.device_name} - {src_ip} Destination: {dst_ip}"
+                anta_tests.append(
+                    {
+                        "VerifyReachability": {
+                            "hosts": [{"source": str(ip_interface(src_ip).ip), "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                            "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
+                        }
+                    }
+                )
+
+        return {self.anta_module: anta_tests} if anta_tests else None
 
 
 class AvdTestLLDPTopology(AvdTestBase):
