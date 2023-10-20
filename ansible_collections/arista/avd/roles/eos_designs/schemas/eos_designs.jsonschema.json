@@ -3233,6 +3233,7 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
+              "on-boot",
               "on-logging",
               "on-startup-config"
             ],

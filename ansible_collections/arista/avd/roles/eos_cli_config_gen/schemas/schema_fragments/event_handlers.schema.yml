@@ -38,7 +38,10 @@ keys:
           type: str
           description: |
             Configure event trigger condition.
-          valid_values: ["on-logging", "on-startup-config"]
+          valid_values:
+          - on-boot
+          - on-logging
+          - on-startup-config
         regex:
           type: str
           description: |

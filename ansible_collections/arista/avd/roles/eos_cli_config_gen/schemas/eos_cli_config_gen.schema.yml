@@ -2524,6 +2524,7 @@ keys:
 
             '
           valid_values:
+          - on-boot
           - on-logging
           - on-startup-config
         regex:
