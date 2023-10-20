@@ -418,7 +418,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: l2leaf
   description: DC1-LEAF2C_Ethernet2
-  shutdown: true
+  shutdown: false
   type: port-channel-member
   channel_group:
     id: 8

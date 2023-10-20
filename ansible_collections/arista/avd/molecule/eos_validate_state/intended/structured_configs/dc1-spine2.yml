@@ -122,7 +122,7 @@ ethernet_interfaces:
   peer_interface: Ethernet2
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF1B_Ethernet2
-  shutdown: false
+  shutdown: true
   mtu: 1500
   type: routed
   ip_address: 10.255.255.6/31
