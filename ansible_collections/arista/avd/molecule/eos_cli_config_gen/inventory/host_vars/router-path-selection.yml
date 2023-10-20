@@ -55,7 +55,6 @@ router_path_selection:
         # Out of order to test sorting
         - router_ip: 172.16.42.42
           name: TEST-STATIC-PEER-WITH-NAME
-          # Out of order to test sorting
           ipv4_addresses:
             - 192.168.42.42
             - 192.168.1.42

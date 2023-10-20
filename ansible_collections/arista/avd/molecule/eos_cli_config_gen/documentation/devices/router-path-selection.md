@@ -63,7 +63,7 @@ interface Management1
 | --------- | ---- | ---------------- |
 | 172.16.1.42 | - |  |
 | 172.16.2.42 | - | 192.168.2.42 |
-| 172.16.42.42 | TEST-STATIC-PEER-WITH-NAME | 192.168.1.42<br>192.168.42.42 |
+| 172.16.42.42 | TEST-STATIC-PEER-WITH-NAME | 192.168.42.42<br>192.168.1.42 |
 
 ##### Path Group PG-2
 
@@ -167,8 +167,8 @@ router path-selection
       !
       peer static router-ip 172.16.42.42
          name TEST-STATIC-PEER-WITH-NAME
-         ipv4 address 192.168.1.42
          ipv4 address 192.168.42.42
+         ipv4 address 192.168.1.42
    !
    path-group PG-2 id 42
       ipsec profile IPSEC-P-1

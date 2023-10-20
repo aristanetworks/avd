@@ -68,7 +68,8 @@ router path-selection
 {%             if static_peer.name is arista.avd.defined %}
          name {{ static_peer.name }}
 {%             endif %}
-{%             for ipv4_address in static_peer.ipv4_addresses | arista.avd.natural_sort %}
+{# Not sorting these ipv4 addresses as EOS is reordering them based on a set logic which we cannot predict and changes across python version #}
+{%             for ipv4_address in static_peer.ipv4_addresses | arista.avd.default([]) %}
          ipv4 address {{ ipv4_address }}
 {%             endfor %}
 {%         endfor %}
