@@ -80,7 +80,9 @@ interface Management1
 | Ethernet1/1 | - |  |
 | Ethernet1/1/3 | - |  |
 | Ethernet2 | 192.168.42.42 | STUN-P-1<br>STUN-P-2 |
+| Ethernet2/4.666 | - |  |
 | Ethernet3 | - | STUN-P-1 |
+| Ethernet4.666 | - |  |
 
 ###### Local IPs
 
@@ -179,8 +181,12 @@ router path-selection
       local interface Ethernet2 public address 192.168.42.42
          stun server-profile STUN-P-1 STUN-P-2
       !
+      local interface Ethernet2/4.666
+      !
       local interface Ethernet3
          stun server-profile STUN-P-1
+      !
+      local interface Ethernet4.666
       !
       local ip 192.168.1.100 public address 192.168.42.42
          stun server-profile STUN-P-1 STUN-P-2
