@@ -388,6 +388,32 @@ keys:
           ipv6_enforcement_disabled:
             type: bool
             description: Configure enforcement for locked IPv6 addresses
+  agents:
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Agent name.
+        environments:
+          type: list
+          primary_key: name
+          min_lenth: 1
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Environment variable name.
+              value:
+                type: str
+                convert_types:
+                - int
+                - bool
+                required: true
+                description: Environment variable value.
   aliases:
     type: str
     description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
