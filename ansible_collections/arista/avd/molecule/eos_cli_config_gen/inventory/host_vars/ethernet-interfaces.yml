@@ -873,3 +873,74 @@ ethernet_interfaces:
     description: IP NAT service-profile
     ip_nat:
       service_profile: TEST-NAT-PROFILE
+# VRRP
+  - name: Ethernet65
+    description: Multiple VRIDs
+    type: routed
+    shutdown: false
+    ip_address: 192.0.2.2/25
+    ipv6_enable: true
+    ipv6_address: 2001:db8::2/64
+    ipv6_address_link_local: fe80::2/64
+    vrrp_ids:
+      - id: 1
+        priority_level: 105
+        advertisement:
+          interval: 2
+        preempt:
+          enabled: true
+          delay:
+            minimum: 30
+            reload: 800
+        ipv4:
+          address: 192.0.2.1
+      - id: 2
+        preempt:
+          enabled: true
+          delay:
+        ipv6:
+          address: 2001:db8::1
+
+  - name: Ethernet66
+    description: Multiple VRIDs and tracking
+    shutdown: false
+    type: routed
+    ip_address: 192.0.2.2/25
+    ipv6_enable: true
+    ipv6_address: 2001:db8::2/64
+    ipv6_address_link_local: fe80::2/64
+    vrrp_ids:
+      - id: 1
+        priority_level: 105
+        advertisement:
+          interval: 2
+        preempt:
+          enabled: true
+          delay:
+            minimum: 30
+            reload: 800
+        ipv4:
+          address: 192.0.2.1
+        tracked_object:
+          - name: ID1-TrackedObjectDecrement
+            decrement: 5
+          - name: ID1-TrackedObjectShutdown
+            shutdown: true
+      - id: 2
+        preempt:
+          enabled: true
+          delay:
+        ipv6:
+          address: 2001:db8::1
+        tracked_object:
+          - name: ID2-TrackedObjectDecrement
+            decrement: 10
+          - name: ID2-TrackedObjectShutdown
+            shutdown: true
+      - id: 3
+        timers:
+          delay:
+            reload: 900
+        ipv4:
+          address: 100.64.0.1
+          version: 3

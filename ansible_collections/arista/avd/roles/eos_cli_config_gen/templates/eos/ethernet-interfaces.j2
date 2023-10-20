@@ -708,6 +708,51 @@ interface {{ ethernet_interface.name }}
 {%     for uc_tx_queue in ethernet_interface.uc_tx_queues | arista.avd.natural_sort('id') %}
 {%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
 {%     endfor %}
+{%     if ethernet_interface.vrrp_ids is arista.avd.defined %}
+{%         for vrid in ethernet_interface.vrrp_ids | arista.avd.natural_sort('id') if vrid.id is arista.avd.defined %}
+{%             if vrid.priority_level is arista.avd.defined %}
+   vrrp {{ vrid.id }} priority-level {{ vrid.priority_level }}
+{%             endif %}
+{%             if vrid.advertisement.interval is arista.avd.defined %}
+   vrrp {{ vrid.id }} advertisement interval {{ vrid.advertisement.interval }}
+{%             endif %}
+{%             if vrid.preempt.enabled is arista.avd.defined(true) and (
+                  vrid.preempt.delay.minimum is arista.avd.defined or
+                  vrid.preempt.delay.reload is arista.avd.defined) %}
+{%                 set delay_cli = 'vrrp ' ~ vrid.id ~ ' preempt delay' %}
+{%                 if vrid.preempt.delay.minimum is arista.avd.defined %}
+{%                     set delay_cli = delay_cli ~ ' minimum ' ~ vrid.preempt.delay.minimum %}
+{%                 endif %}
+{%                 if vrid.preempt.delay.reload is arista.avd.defined %}
+{%                     set delay_cli = delay_cli ~ ' reload ' ~ vrid.preempt.delay.reload %}
+{%                 endif %}
+   {{ delay_cli }}
+{%             endif %}
+{%             if vrid.timers.delay.reload is arista.avd.defined %}
+   vrrp {{ vrid.id }} timers delay reload {{ vrid.timers.delay.reload }}
+{%             endif %}
+{%             if vrid.ipv4.address is arista.avd.defined %}
+   vrrp {{ vrid.id }} ipv4 {{ vrid.ipv4.address }}
+{%             endif %}
+{%             if vrid.ipv4.version is arista.avd.defined %}
+   vrrp {{ vrid.id }} ipv4 version {{ vrid.ipv4.version }}
+{%             endif %}
+{%             if vrid.ipv6.address is arista.avd.defined %}
+   vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
+{%             endif %}
+{%             for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
+{%                 if tracked_obj.name is arista.avd.defined %}
+{%                     set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}
+{%                     if tracked_obj.decrement is arista.avd.defined %}
+{%                         set tracked_obj_cli = tracked_obj_cli ~ " decrement " ~ tracked_obj.decrement %}
+{%                     elif tracked_obj.shutdown is arista.avd.defined(true) %}
+{%                         set tracked_obj_cli = tracked_obj_cli ~ " shutdown" %}
+{%                     endif %}
+   {{ tracked_obj_cli }}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
 {%     if ethernet_interface.eos_cli is arista.avd.defined %}
    {{ ethernet_interface.eos_cli | indent(3, false) }}
 {%     endif %}
