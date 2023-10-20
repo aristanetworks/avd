@@ -106,17 +106,20 @@ DATA: list[dict] = [
         "expected_log_level": "WARNING",
     },
     {
-        "test_name": "interface-shutdown",
+        "test_name": "peer-not-deployed",
         "test_module": "AvdTestLLDPTopology",
         "hostvars": {
             "DC1-SPINE1": {
                 "ethernet_interfaces": [
-                    {"name": "Ethernet1", "peer": "DC1-LEAF1A", "peer_interface": "Ethernet1", "shutdown": True},
+                    {"name": "Ethernet1", "peer": "DC1-LEAF1A", "peer_interface": "Ethernet1", "shutdown": False},
                 ]
-            }
+            },
+            "DC1-LEAF1A": {"is_deployed": False},
         },
         "expected_result": {},
-        "expected_log": "Ethernet interface 'Ethernet1' is shutdown. 'VerifyLLDPNeighbors' is skipped for this interface.",
+        "expected_log": (
+            "Peer 'DC1-LEAF1A' is not configured by AVD or is marked as not deployed. 'VerifyLLDPNeighbors' from interface 'Ethernet1' to this peer is skipped."
+        ),
         "expected_log_level": "INFO",
     },
     {
@@ -130,7 +133,9 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Ethernet interface 'Ethernet1' connected peer 'HOST-1' is not configured by AVD. 'VerifyLLDPNeighbors' is skipped for this interface.",
+        "expected_log": (
+            "Peer 'HOST-1' is not configured by AVD or is marked as not deployed. 'VerifyLLDPNeighbors' from interface 'Ethernet1' to this peer is skipped."
+        ),
         "expected_log_level": "INFO",
     },
     {
@@ -191,3 +196,4 @@ DATA: list[dict] = [
         "expected_log_level": None,
     },
 ]
+"""Data for `ansible_collections.arista.avd.roles.eos_validate_state.python_modules.tests.avdtestconnectivity.py` unit tests"""
