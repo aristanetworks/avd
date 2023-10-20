@@ -240,9 +240,9 @@ management_api_http:
   enable_https: true
   default_services: false
 ip_name_servers:
-- ip_address: 8.8.8.8
-  vrf: MGMT
 - ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
   vrf: MGMT
 snmp_server:
   contact: example@example.com
