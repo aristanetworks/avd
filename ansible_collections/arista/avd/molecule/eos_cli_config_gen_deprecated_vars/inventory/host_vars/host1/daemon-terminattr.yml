@@ -17,3 +17,5 @@ daemon_terminattr:
         method: "token"
         token_file: "/tmp/tokenDC2"
       cvvrf: mgt
+  # deprecated in 4.4.0. To be removed in 5.0.0
+  cvcompression: gzip
