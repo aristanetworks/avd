@@ -231,6 +231,19 @@ class UplinksMixin:
                     else:
                         uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", uplink_switch_interfaces[0]))
 
+                # produce an error if the switch is MLAG and port-channel ID is above 2000
+                if self.shared_utils.mlag_role:
+                    if int(uplink["channel_group_id"]) not in range(1, 2001):
+                        raise AristaAvdError(
+                        f"'channel_group_id' on '{self.shared_utils.hostname}' is invalid. "
+                        f"Only values between 1 and 2000 are supported."
+                    )
+                    if int(uplink["peer_channel_group_id"]) not in range(1, 2001):
+                        raise AristaAvdError(
+                        f"'peer_channel_group_id' on '{self.shared_utils.hostname}' is invalid. "
+                        f"Only values between 1 and 2000 are supported."
+                    )
+
                 # Remove vlans if upstream switch does not have them #}
                 if self.shared_utils.enable_trunk_groups:
                     uplink["trunk_groups"] = ["UPLINK"]
