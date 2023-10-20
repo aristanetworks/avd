@@ -39,6 +39,8 @@ interface Management1
 
 ### Router Traffic-Engineering
 
+- Traffic Engineering is enabled.
+
 #### Segment Routing Summary
 
 - SRTE is enabled.

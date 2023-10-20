@@ -19654,6 +19654,10 @@
     "router_traffic_engineering": {
       "type": "object",
       "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
         "router_id": {
           "type": "object",
           "properties": {
