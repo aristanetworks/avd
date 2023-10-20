@@ -61,5 +61,4 @@
         - description: Generic Device
           key: generic_devices
           type: generic_device
-
         ```

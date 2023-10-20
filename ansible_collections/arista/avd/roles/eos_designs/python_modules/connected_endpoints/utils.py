@@ -8,7 +8,8 @@ from functools import cached_property
 from hashlib import sha256
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_route_target
+from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
+from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item

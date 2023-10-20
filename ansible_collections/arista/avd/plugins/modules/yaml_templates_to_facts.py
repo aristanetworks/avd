@@ -31,25 +31,20 @@ options:
     elements: dict
     suboptions:
       template:
-        description: |
-          Template file.
-          Either template or python_module must be set.
+        description: Template file. Either template or python_module must be set.
         required: false
         type: str
       python_module:
-        description: |
-          Python module to import
-          Either template or python_module must be set.
+        description: Python module to import. Either template or python_module must be set.
         required: false
         type: str
       python_class_name:
-        description: |
-          Name of Python Class to import
+        description: Name of Python Class to import.
         required: false
         type: str
         default: "AvdStructuredConfig"
       options:
-        description: Template options
+        description: Template options.
         required: false
         type: dict
         suboptions:
@@ -59,9 +54,7 @@ options:
             default: 'append'
             type: str
           strip_empty_keys:
-            description: |
-              Filter out keys from the generated output if value is null/none/undefined
-              Only applies to templates.
+            description: Filter out keys from the generated output if value is null/none/undefined. Only applies to templates.
             required: false
             default: true
             type: bool
@@ -70,9 +63,9 @@ options:
     required: false
     type: bool
   dest:
-    description: |
-      Destination path. If set, the output facts will also be written to this path.
-      Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
+    description:
+      - Destination path. If set, the output facts will also be written to this path.
+      - Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
     required: false
     type: str
   mode:
@@ -80,9 +73,9 @@ options:
     required: false
     type: str
   template_output:
-    description: |
-      If true the output data will be run through another jinja2 rendering before returning.
-      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+    description:
+      - If true, the output data will be run through another jinja2 rendering before returning.
+      - This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     required: false
     type: bool
   conversion_mode:
@@ -133,6 +126,7 @@ options:
 """
 
 EXAMPLES = r"""
+---
 - name: Generate device configuration in structured format
   arista.avd.yaml_templates_to_facts:
     root_key: structured_config

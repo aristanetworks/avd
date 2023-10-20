@@ -166,8 +166,8 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet5 | routed | - | 172.17.20.9/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet7 | routed | - | 172.17.20.11/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet5 | routed | - | 172.17.20.9/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet7 | routed | - | 172.17.20.11/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -176,7 +176,6 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet5
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.17.20.9/31
    service-profile QOS-PROFILE
@@ -184,7 +183,6 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet7
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.17.20.11/31
    service-profile QOS-PROFILE
@@ -275,7 +273,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65201|  172.16.20.2 |
+| 65201 | 172.16.20.2 |
 
 | BGP Tuning |
 | ---------- |

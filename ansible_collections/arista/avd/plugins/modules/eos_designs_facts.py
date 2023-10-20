@@ -9,12 +9,15 @@ version_added: "3.5.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Set eos_designs facts
 description:
-  - The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities
-  - Set `avd_switch_facts` fact containing both `switch` facts per host.
-  - Set `avd_topology_peers` fact containing list of downlink switches per host.
-    This list is built based on the `uplink_switches` from all other hosts.
-  - Set `avd_overlay_peers` fact containing list of EVPN or MPLS overlay peers per host.
-    This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
+  - |-
+    The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
+
+    - Set `avd_switch_facts` fact containing both `switch` facts per host.
+    - Set `avd_topology_peers` fact containing list of downlink switches per host.
+      This list is built based on the `uplink_switches` from all other hosts.
+    - Set `avd_overlay_peers` fact containing list of EVPN or MPLS overlay peers per host.
+      This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
+
   - The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices,
     so all devices can lookup values of any other device without using the slower `hostvars`.
   - The facts can also be copied to the "root" `switch` in a task run per-device (see example below)
@@ -22,9 +25,9 @@ description:
     and python module in `arista.avd.eos_designs` to generate the `structured_configuration`.
 options:
   template_output:
-    description: |
-      If true the output data will be run through another jinja2 rendering before returning.
-      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+    description:
+      - If true, the output data will be run through another jinja2 rendering before returning.
+        This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     required: false
     type: bool
   conversion_mode:
@@ -66,6 +69,7 @@ options:
 """
 
 EXAMPLES = r"""
+---
 - name: Set eos_designs facts
   tags: [build, provision, facts]
   arista.avd.eos_designs_facts:

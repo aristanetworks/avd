@@ -115,7 +115,7 @@
       "description": "Maximum ECMP for BGP multi-path.",
       "type": "integer",
       "default": 4,
-      "title": "BGP Ecmp"
+      "title": "BGP ECMP"
     },
     "bgp_graceful_restart": {
       "description": "BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
@@ -2926,6 +2926,61 @@
       ],
       "title": "Custom Structured Configuration Prefix"
     },
+    "cv_topology": {
+      "type": "array",
+      "description": "Generate AVD configurations directly from the given CloudVision topology.\nActivate this feature by setting `use_cv_topology` to `true`.\nRequires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "title": "Hostname"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "neighbor": {
+                  "type": "string",
+                  "title": "Neighbor"
+                },
+                "neighbor_interface": {
+                  "type": "string",
+                  "title": "Neighbor Interface"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "title": "Interfaces"
+          }
+        },
+        "required": [
+          "platform",
+          "interfaces",
+          "hostname"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Cv Topology"
+    },
     "cvp_ingestauth_key": {
       "type": "string",
       "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication:\n- On-premise using token onboarding. Default token path is '/tmp/token'.\n- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.\nToken must be copied to the device first.",
@@ -3178,6 +3233,7 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
+              "on-boot",
               "on-logging",
               "on-startup-config"
             ],
@@ -3262,7 +3318,7 @@
     },
     "evpn_multicast": {
       "type": "boolean",
-      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" or \"evpn_l3_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
+      "description": "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\" or \"evpn_l3_multicast\" must also be configured under the Network Services (tenants).\nRequires \"underlay_multicast: true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.\nWarning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP\n  The Following default platform setting will be configured: \"platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding agents will be restarted when this configuration is applied.\n  You can tune the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n  Please contact an Arista representative for help with determining the appropriate values for your environment.\n",
       "default": false,
       "title": "EVPN Multicast"
     },
@@ -3289,6 +3345,63 @@
       "type": "boolean",
       "default": false,
       "title": "EVPN VLAN Aware Bundles"
+    },
+    "evpn_vlan_bundles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Specify an EVPN vlan-aware-bundle name.\nEVPN vlan-aware-bundles group L2 VLANs and define common settings.\n",
+            "title": "Name"
+          },
+          "id": {
+            "type": "integer",
+            "description": "\"id\" may be used for vlan-aware-bundle RD/RT ID so it should not overlap with l2vlan IDs which are not part of this bundle.\nSee \"overlay_rd_type\" and \"overlay_rt_type\" for details.\n",
+            "title": "ID"
+          },
+          "rt_override": {
+            "type": "string",
+            "description": "By default the MAC VRF bundle RT will be derived from mac_vrf_id_base + bundle_id.\nThe rt_override allows us to override this value and statically define it.\nrt_override will default to vni_override if set.\n\nrt_override supports two formats:\n  - A single number which will be used in the RT fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).\n  - A full RT string with colon seperator which will override the full RT.\n",
+            "title": "Rt Override"
+          },
+          "rd_override": {
+            "type": "string",
+            "description": "By default the MAC VRF bundle RD will be derived from mac_vrf_id_base + bundle_id.\nThe rt_override allows us to override this value and statically define it.\nrd_override will default to rt_override or vni_override if set.\n\nrd_override supports two formats:\n  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).\n  - A full RD string with colon seperator which will override the full RD.\n",
+            "title": "Rd Override"
+          },
+          "evpn_l2_multi_domain": {
+            "type": "boolean",
+            "description": "Explicitly extend VLAN-Aware Bundle to remote EVPN domains.\nOverrides `<network_services_key>.[].evpn_l2_multi_domain`.\n",
+            "title": "EVPN L2 Multi Domain"
+          },
+          "bgp": {
+            "type": "object",
+            "properties": {
+              "raw_eos_cli": {
+                "type": "string",
+                "description": "EOS cli commands rendered on router_bgp.vlans-aware-bundle.",
+                "title": "Raw EOS CLI"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "BGP"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "EVPN VLAN Bundles"
     },
     "fabric_evpn_encapsulation": {
       "description": "Should be set to mpls for evpn-mpls scenario.",
@@ -3507,10 +3620,10 @@
       "title": "IPv6 Management Gateway"
     },
     "is_deployed": {
-      "description": "Is device already deployed in the fabric.\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
+      "description": "If the device is already deployed in the fabric.\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
       "type": "boolean",
       "default": true,
-      "title": "IS Deployed"
+      "title": "Is Deployed"
     },
     "isis_advertise_passive_only": {
       "type": "boolean",
@@ -3534,14 +3647,14 @@
       "title": "ISIS Default Circuit Type"
     },
     "isis_default_is_type": {
+      "title": "ISIS Default IS Type",
       "type": "string",
       "enum": [
         "level-1-2",
         "level-1",
         "level-2"
       ],
-      "default": "level-2",
-      "title": "ISIS Default IS Type"
+      "default": "level-2"
     },
     "isis_default_metric": {
       "type": "integer",
@@ -6578,8 +6691,13 @@
                     "properties": {
                       "sampled": {
                         "type": "string",
-                        "description": "Flow tracker name",
+                        "description": "Sampled flow tracker name.",
                         "title": "Sampled"
+                      },
+                      "hardware": {
+                        "type": "string",
+                        "description": "Hardware flow tracker name.",
+                        "title": "Hardware"
                       }
                     },
                     "additionalProperties": false,
@@ -6853,8 +6971,13 @@
                 "properties": {
                   "sampled": {
                     "type": "string",
-                    "description": "Flow tracker name",
+                    "description": "Sampled flow tracker name.",
                     "title": "Sampled"
+                  },
+                  "hardware": {
+                    "type": "string",
+                    "description": "Hardware flow tracker name.",
+                    "title": "Hardware"
                   }
                 },
                 "additionalProperties": false,
@@ -7107,7 +7230,7 @@
               },
               "ip_address": {
                 "type": "string",
-                "description": "IPv4 address/mask",
+                "description": "IPv4 address/mask or \"dhcp\"",
                 "title": "IP Address"
               },
               "ip_address_secondaries": {
@@ -7116,6 +7239,21 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "dhcp_client_accept_default_route": {
+                "type": "boolean",
+                "description": "Install default-route obtained via DHCP",
+                "title": "DHCP Client Accept Default Route"
+              },
+              "dhcp_server_ipv4": {
+                "type": "boolean",
+                "description": "Enable IPv4 DHCP server.",
+                "title": "DHCP Server IPv4"
+              },
+              "dhcp_server_ipv6": {
+                "type": "boolean",
+                "description": "Enable IPv6 DHCP server.",
+                "title": "DHCP Server IPv6"
               },
               "ip_helpers": {
                 "type": "array",
@@ -8810,6 +8948,210 @@
                 "description": "Key only used for documentation or validation purposes",
                 "title": "Port Profile"
               },
+              "uc_tx_queues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "TX-Queue ID",
+                      "title": "ID"
+                    },
+                    "random_detect": {
+                      "type": "object",
+                      "properties": {
+                        "ecn": {
+                          "description": "Explicit Congestion Notification",
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "boolean",
+                              "description": "Enable counter for random-detect ECNs",
+                              "title": "Count"
+                            },
+                            "threshold": {
+                              "type": "object",
+                              "properties": {
+                                "units": {
+                                  "type": "string",
+                                  "enum": [
+                                    "segments",
+                                    "bytes",
+                                    "kbytes",
+                                    "mbytes",
+                                    "milliseconds"
+                                  ],
+                                  "description": "Indicate the units to be used for the threshold values",
+                                  "title": "Units"
+                                },
+                                "min": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN minimum-threshold",
+                                  "title": "Min"
+                                },
+                                "max": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN maximum-threshold",
+                                  "title": "Max"
+                                },
+                                "max_probability": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 100,
+                                  "description": "Set the random-detect ECN max-mark-probability",
+                                  "title": "Max Probability"
+                                },
+                                "weight": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 15,
+                                  "description": "Set the random-detect ECN weight",
+                                  "title": "Weight"
+                                }
+                              },
+                              "required": [
+                                "units",
+                                "min",
+                                "max"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Threshold"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Ecn"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Random Detect"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Uc TX Queues"
+              },
+              "tx_queues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "TX-Queue ID",
+                      "title": "ID"
+                    },
+                    "random_detect": {
+                      "type": "object",
+                      "properties": {
+                        "ecn": {
+                          "description": "Explicit Congestion Notification",
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "boolean",
+                              "description": "Enable counter for random-detect ECNs",
+                              "title": "Count"
+                            },
+                            "threshold": {
+                              "type": "object",
+                              "properties": {
+                                "units": {
+                                  "type": "string",
+                                  "enum": [
+                                    "segments",
+                                    "bytes",
+                                    "kbytes",
+                                    "mbytes",
+                                    "milliseconds"
+                                  ],
+                                  "description": "Indicate the units to be used for the threshold values",
+                                  "title": "Units"
+                                },
+                                "min": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN minimum-threshold",
+                                  "title": "Min"
+                                },
+                                "max": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN maximum-threshold",
+                                  "title": "Max"
+                                },
+                                "max_probability": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 100,
+                                  "description": "Set the random-detect ECN max-mark-probability",
+                                  "title": "Max Probability"
+                                },
+                                "weight": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 15,
+                                  "description": "Set the random-detect ECN weight",
+                                  "title": "Weight"
+                                }
+                              },
+                              "required": [
+                                "units",
+                                "max",
+                                "max_probability"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Threshold"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Ecn"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Random Detect"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "TX Queues"
+              },
               "eos_cli": {
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -9218,7 +9560,7 @@
     },
     "overlay_rd_type": {
       "type": "object",
-      "description": "Configuration options for the Administrator subfield (first part of RD) and the Assigned Number subfield (second part of RD).\n\nBy default Route Distinguishers (RD) are set to:\n- `<overlay_loopback>:<mac_vrf_id_base + vlan_id or mac_vrf_vni_base + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.\n- `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.\n- `<overlay_loopback>:<vrf_id>` for VRFs.\n\nNote:\nRD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nWhen using loopback or 32-bit ASN/number the assigned number can only be a 16-bit number. This may be a problem with large VNIs.\nFor 16-bit ASN/number the assigned number can be a 32-bit number.\n",
+      "description": "Configuration options for the Administrator subfield (first part of RD) and the Assigned Number subfield (second part of RD).\n\nBy default Route Distinguishers (RD) are set to:\n- `<overlay_loopback>:<mac_vrf_id_base + vlan_id or mac_vrf_vni_base + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.\n- `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.\n- `<overlay_loopback>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.\n- `<overlay_loopback>:<vrf_id>` for VRFs.\n\nNote:\nRD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nWhen using loopback or 32-bit ASN/number the assigned number can only be a 16-bit number. This may be a problem with large VNIs.\nFor 16-bit ASN/number the assigned number can be a 32-bit number.\n",
       "properties": {
         "admin_subfield": {
           "type": "string",
@@ -9284,11 +9626,11 @@
     },
     "overlay_rt_type": {
       "type": "object",
-      "description": "Configuration options for the Administrator subfield (first part of RT) and the Assigned Number subfield (second part of RT).\n\nBy default Route Targets (RT) are set to:\n- `<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>:<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.\n- `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.\n- `<vrf_id>:<vrf_id>` for VRFs.\n\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nWhen using 32-bit ASN/number the VNI can only be a 16-bit number. Alternatively use vlan_id/vrf_id as assigned number.\nFor 16-bit ASN/number the assigned number can be a 32-bit number.\n",
+      "description": "Configuration options for the Administrator subfield (first part of RT) and the Assigned Number subfield (second part of RT).\n\nBy default Route Targets (RT) are set to:\n- `<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>:<(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.\n- `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.\n- `<vlan_aware_bundle_number_base + id>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.\n- `<vrf_id>:<vrf_id>` for VRFs.\n\nNotes:\nRT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.\nWhen using 32-bit ASN/number the VNI can only be a 16-bit number. Alternatively use vlan_id/vrf_id as assigned number.\nFor 16-bit ASN/number the assigned number can be a 32-bit number.\n",
       "properties": {
         "admin_subfield": {
           "type": "string",
-          "description": "The method for deriving RT Administrator subfield (first part of RT):\n- 'vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id` for VLANs and `(vrf_id or vrf_vni)` for VRFs.\n- 'vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id` for VLANs and `(vrf_vni or vrf_id)` for VRFs.\n- 'id' means `vlan_id` for VLANs and `(vrf_id or vrf_vni)` for VRFs.\n- 'bgp_as' means the AS number of the device.\n- Integer between <0-65535>.\n- Integer between <0-4294967295>.\n\nThe 'vrf_id' and 'vrf_vni' methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).\n",
+          "description": "The method for deriving RT Administrator subfield (first part of RT):\n- 'vrf_id' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id` for VLANs, `(vrf_id or vrf_vni)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.\n- 'vrf_vni' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id` for VLANs, `(vrf_vni or vrf_id)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.\n- 'id' means `vlan_id` for VLANs, `(vrf_id or vrf_vni)` for VRFs and `id` for bundles defined under 'evpn_vlan_bundles'.\n- 'bgp_as' means the AS number of the device.\n- Integer between <0-65535>.\n- Integer between <0-4294967295>.\n\nThe 'vrf_id' and 'vrf_vni' methods can be overridden per VLAN if either 'rt_override' or 'vni_override' is set (preferred in this order).\nThe 'vrf_id', 'vrf_vni' and 'id' methods can be overridden per bundle defined under `evpn_vlan_bundles` using 'rt_override'.\n",
           "default": "vrf_id",
           "title": "Admin Subfield"
         },
@@ -9378,6 +9720,13 @@
             "type": "boolean",
             "title": "LAG Hardware Only"
           },
+          "default_interface_mtu": {
+            "type": "integer",
+            "description": "Default interface MTU configured on EOS under \"interface defaults\".\nTakes precedence over the root key \"default_interface_mtu\".\n",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "Default Interface MTU"
+          },
           "feature_support": {
             "type": "object",
             "properties": {
@@ -9395,6 +9744,12 @@
                 "type": "boolean",
                 "default": false,
                 "title": "PoE"
+              },
+              "per_interface_mtu": {
+                "type": "boolean",
+                "default": true,
+                "description": "Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.\nEffectively this means that all settings regarding interface MTU will be ignored if this is false.\nPlatforms without support for per interface MTU can use a single default interface MTU setting. Set this via \"default_interface_mtu\"\n",
+                "title": "Per Interface MTU"
               },
               "bgp_update_wait_install": {
                 "type": "boolean",
@@ -9588,7 +9943,7 @@
                 "speed_groups": {
                   "type": "array",
                   "items": {
-                    "type": "integer"
+                    "type": "string"
                   },
                   "title": "Speed Groups"
                 }
@@ -11920,8 +12275,13 @@
                     "properties": {
                       "sampled": {
                         "type": "string",
-                        "description": "Flow tracker name",
+                        "description": "Sampled flow tracker name.",
                         "title": "Sampled"
+                      },
+                      "hardware": {
+                        "type": "string",
+                        "description": "Hardware flow tracker name.",
+                        "title": "Hardware"
                       }
                     },
                     "additionalProperties": false,
@@ -12195,8 +12555,13 @@
                 "properties": {
                   "sampled": {
                     "type": "string",
-                    "description": "Flow tracker name",
+                    "description": "Sampled flow tracker name.",
                     "title": "Sampled"
+                  },
+                  "hardware": {
+                    "type": "string",
+                    "description": "Hardware flow tracker name.",
+                    "title": "Hardware"
                   }
                 },
                 "additionalProperties": false,
@@ -12449,7 +12814,7 @@
               },
               "ip_address": {
                 "type": "string",
-                "description": "IPv4 address/mask",
+                "description": "IPv4 address/mask or \"dhcp\"",
                 "title": "IP Address"
               },
               "ip_address_secondaries": {
@@ -12458,6 +12823,21 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "dhcp_client_accept_default_route": {
+                "type": "boolean",
+                "description": "Install default-route obtained via DHCP",
+                "title": "DHCP Client Accept Default Route"
+              },
+              "dhcp_server_ipv4": {
+                "type": "boolean",
+                "description": "Enable IPv4 DHCP server.",
+                "title": "DHCP Server IPv4"
+              },
+              "dhcp_server_ipv6": {
+                "type": "boolean",
+                "description": "Enable IPv6 DHCP server.",
+                "title": "DHCP Server IPv6"
               },
               "ip_helpers": {
                 "type": "array",
@@ -14152,6 +14532,210 @@
                 "description": "Key only used for documentation or validation purposes",
                 "title": "Port Profile"
               },
+              "uc_tx_queues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "TX-Queue ID",
+                      "title": "ID"
+                    },
+                    "random_detect": {
+                      "type": "object",
+                      "properties": {
+                        "ecn": {
+                          "description": "Explicit Congestion Notification",
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "boolean",
+                              "description": "Enable counter for random-detect ECNs",
+                              "title": "Count"
+                            },
+                            "threshold": {
+                              "type": "object",
+                              "properties": {
+                                "units": {
+                                  "type": "string",
+                                  "enum": [
+                                    "segments",
+                                    "bytes",
+                                    "kbytes",
+                                    "mbytes",
+                                    "milliseconds"
+                                  ],
+                                  "description": "Indicate the units to be used for the threshold values",
+                                  "title": "Units"
+                                },
+                                "min": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN minimum-threshold",
+                                  "title": "Min"
+                                },
+                                "max": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN maximum-threshold",
+                                  "title": "Max"
+                                },
+                                "max_probability": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 100,
+                                  "description": "Set the random-detect ECN max-mark-probability",
+                                  "title": "Max Probability"
+                                },
+                                "weight": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 15,
+                                  "description": "Set the random-detect ECN weight",
+                                  "title": "Weight"
+                                }
+                              },
+                              "required": [
+                                "units",
+                                "min",
+                                "max"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Threshold"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Ecn"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Random Detect"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Uc TX Queues"
+              },
+              "tx_queues": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "TX-Queue ID",
+                      "title": "ID"
+                    },
+                    "random_detect": {
+                      "type": "object",
+                      "properties": {
+                        "ecn": {
+                          "description": "Explicit Congestion Notification",
+                          "type": "object",
+                          "properties": {
+                            "count": {
+                              "type": "boolean",
+                              "description": "Enable counter for random-detect ECNs",
+                              "title": "Count"
+                            },
+                            "threshold": {
+                              "type": "object",
+                              "properties": {
+                                "units": {
+                                  "type": "string",
+                                  "enum": [
+                                    "segments",
+                                    "bytes",
+                                    "kbytes",
+                                    "mbytes",
+                                    "milliseconds"
+                                  ],
+                                  "description": "Indicate the units to be used for the threshold values",
+                                  "title": "Units"
+                                },
+                                "min": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN minimum-threshold",
+                                  "title": "Min"
+                                },
+                                "max": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 256000000,
+                                  "description": "Set the random-detect ECN maximum-threshold",
+                                  "title": "Max"
+                                },
+                                "max_probability": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 100,
+                                  "description": "Set the random-detect ECN max-mark-probability",
+                                  "title": "Max Probability"
+                                },
+                                "weight": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 15,
+                                  "description": "Set the random-detect ECN weight",
+                                  "title": "Weight"
+                                }
+                              },
+                              "required": [
+                                "units",
+                                "max",
+                                "max_probability"
+                              ],
+                              "additionalProperties": false,
+                              "patternProperties": {
+                                "^_.+$": {}
+                              },
+                              "title": "Threshold"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Ecn"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Random Detect"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "TX Queues"
+              },
               "eos_cli": {
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -14432,7 +15016,7 @@
     },
     "snmp_settings": {
       "type": "object",
-      "description": "Set SNMP settings (optional).",
+      "description": "SNMP settings\nFor SNMP local-interfaces see \"source_interfaces.snmp\"\nConfiguration of remote SNMP engine IDs are currently only possible using `structured_config`.",
       "properties": {
         "contact": {
           "type": "string",
@@ -14444,6 +15028,42 @@
           "default": false,
           "description": "Set SNMP location. Formatted as \"<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>\".",
           "title": "Location"
+        },
+        "vrfs": {
+          "type": "array",
+          "description": "Enable/disable SNMP for one or more VRFs.\nCan be used in combination with \"enable_mgmt_interface_vrf\" and \"enable_inband_mgmt_vrf\".",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name",
+                "title": "Name"
+              },
+              "enable": {
+                "type": "boolean",
+                "title": "Enable"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
+        },
+        "enable_mgmt_interface_vrf": {
+          "type": "boolean",
+          "description": "Enable/disable SNMP for the VRF set with \"mgmt_interface_vrf\".\nIgnored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device.\nCan be used in combination with \"vrfs\" and \"enable_inband_mgmt_vrf\".",
+          "title": "Enable Management Interface VRF"
+        },
+        "enable_inband_mgmt_vrf": {
+          "type": "boolean",
+          "description": "Enable/disable SNMP for the VRF set with \"inband_mgmt_vrf\".\nIgnored if inband management is not configured for the device.\nCan be used in combination with \"vrfs\" and \"enable_mgmt_interface_vrf\".",
+          "title": "Enable Inband Management VRF"
         },
         "compute_local_engineid": {
           "type": "boolean",
@@ -14469,6 +15089,7 @@
         },
         "users": {
           "type": "array",
+          "description": "Configuration of local SNMP users.\nConfiguration of remote SNMP users are currently only possible using `structured_config`.",
           "items": {
             "type": "object",
             "properties": {
@@ -14479,7 +15100,7 @@
               },
               "group": {
                 "type": "string",
-                "description": "Configuration of the SNMP User Groups are currently only possible using `structured_config`.\n",
+                "description": "Group name",
                 "title": "Group"
               },
               "version": {
@@ -14529,6 +15150,306 @@
             }
           },
           "title": "Users"
+        },
+        "hosts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string",
+                "description": "Host IP address or name",
+                "title": "Host"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF Name.\nCan be used in combination with \"use_mgmt_interface_vrf\" and \"use_inband_mgmt_vrf\" to configure the SNMP host under multiple VRFs.",
+                "title": "VRF"
+              },
+              "use_mgmt_interface_vrf": {
+                "type": "boolean",
+                "description": "Configure the SNMP host under the VRF set with \"mgmt_interface_vrf\". Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all. Can be used in combination with \"vrf\" and \"use_inband_mgmt_vrf\" to configure the SNMP host under multiple VRFs.",
+                "title": "Use Management Interface VRF"
+              },
+              "use_inband_mgmt_vrf": {
+                "type": "boolean",
+                "description": "Configure the SNMP host under the VRF set with \"inband_mgmt_vrf\". Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the host will not be configured at all. Can be used in combination with \"vrf\" and \"use_mgmt_interface_vrf\" to configure the SNMP host under multiple VRFs.",
+                "title": "Use Inband Management VRF"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "1",
+                  "2c",
+                  "3"
+                ],
+                "title": "Version"
+              },
+              "community": {
+                "type": "string",
+                "description": "Community name",
+                "title": "Community"
+              },
+              "users": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "title": "Username"
+                    },
+                    "authentication_level": {
+                      "type": "string",
+                      "enum": [
+                        "auth",
+                        "noauth",
+                        "priv"
+                      ],
+                      "title": "Authentication Level"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Users"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Hosts"
+        },
+        "communities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Community name",
+                "title": "Name"
+              },
+              "access": {
+                "type": "string",
+                "enum": [
+                  "ro",
+                  "rw"
+                ],
+                "title": "Access"
+              },
+              "access_list_ipv4": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv4 access list name",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Access List IPv4"
+              },
+              "access_list_ipv6": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv6 access list name",
+                    "title": "Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Access List IPv6"
+              },
+              "view": {
+                "type": "string",
+                "title": "View"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Communities"
+        },
+        "ipv4_acls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "IPv4 access list name",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "IPv4 Acls"
+        },
+        "ipv6_acls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "IPv6 access list name",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "title": "VRF"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "IPv6 Acls"
+        },
+        "views": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "SNMP view name",
+                "title": "Name"
+              },
+              "mib_family_name": {
+                "type": "string",
+                "title": "MIB Family Name"
+              },
+              "included": {
+                "type": "boolean",
+                "title": "Included"
+              },
+              "MIB_family_name": {
+                "type": "string",
+                "title": "MIB Family Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Views"
+        },
+        "groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Group name",
+                "title": "Name"
+              },
+              "version": {
+                "type": "string",
+                "enum": [
+                  "v1",
+                  "v2c",
+                  "v3"
+                ],
+                "title": "Version"
+              },
+              "authentication": {
+                "type": "string",
+                "enum": [
+                  "auth",
+                  "noauth",
+                  "priv"
+                ],
+                "title": "Authentication"
+              },
+              "read": {
+                "type": "string",
+                "description": "Read view",
+                "title": "Read"
+              },
+              "write": {
+                "type": "string",
+                "description": "Write view",
+                "title": "Write"
+              },
+              "notify": {
+                "type": "string",
+                "description": "Notify view",
+                "title": "Notify"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Groups"
+        },
+        "traps": {
+          "type": "object",
+          "properties": {
+            "enable": {
+              "type": "boolean",
+              "default": false,
+              "description": "Enable or disable all snmp-traps\n",
+              "title": "Enable"
+            },
+            "snmp_traps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Enable or disable specific snmp-traps and their sub_traps\nExamples:\n- \"bgp\"\n- \"bgp established\"\n",
+                    "title": "Name"
+                  },
+                  "enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Enabled"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Snmp Traps"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Traps"
         }
       },
       "additionalProperties": false,
@@ -14603,6 +15524,27 @@
             "^_.+$": {}
           },
           "title": "Radius"
+        },
+        "snmp": {
+          "type": "object",
+          "description": "SNMP local-interfaces.",
+          "properties": {
+            "mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
+              "title": "Management Interface"
+            },
+            "inband_mgmt_interface": {
+              "type": "boolean",
+              "description": "Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
+              "title": "Inband Management Interface"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Snmp"
         },
         "ssh_client": {
           "type": "object",
@@ -14828,7 +15770,7 @@
                 },
                 "evpn_l2_multicast": {
                   "type": "object",
-                  "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\n",
+                  "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\nRequires `evpn_multicast` to also be set to `true`.\n",
                   "properties": {
                     "enabled": {
                       "type": "boolean",
@@ -14843,7 +15785,7 @@
                 },
                 "evpn_l3_multicast": {
                   "type": "object",
-                  "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\n",
+                  "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\nRequires `evpn_multicast` to also be set to `true`.\n",
                   "properties": {
                     "enabled": {
                       "type": "boolean",
@@ -16462,7 +17404,7 @@
           },
           "evpn_l2_multicast": {
             "type": "object",
-            "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\n",
+            "description": "Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.\nWhen evpn_l2_multicast.enabled is set to true for a vlan or a tenant, \"igmp snooping\" and \"igmp snooping querier\" will always be enabled, overriding those individual settings.\nRequires `evpn_multicast` to also be set to `true`.\n",
             "properties": {
               "enabled": {
                 "type": "boolean",
@@ -16477,7 +17419,7 @@
           },
           "evpn_l3_multicast": {
             "type": "object",
-            "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\n",
+            "description": "Explicitly enable or disable evpn_l3_multicast to override setting of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.\nRequires `evpn_multicast` to also be set to `true`.\n",
             "properties": {
               "enabled": {
                 "type": "boolean",
@@ -18216,6 +19158,11 @@
         "^_.+$": {}
       },
       "title": "Uplink PTP"
+    },
+    "use_cv_topology": {
+      "type": "boolean",
+      "description": "Generate AVD configurations directly from a given CloudVision topology.\nSee `cv_topology` for details.",
+      "title": "Use Cv Topology"
     },
     "vtep_vvtep_ip": {
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",

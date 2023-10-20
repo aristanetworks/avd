@@ -71,6 +71,10 @@ plugins:
       glob:
         - molecule/*
         - tests/*
+        - docs/release-notes/1.0.x.md
+        - docs/release-notes/1.1.x.md
+        - docs/release-notes/2.x.x.md
+        - docs/release-notes/3.x.x.md
   - include_dir_to_nav
   - git-revision-date-localized:
       type: date
@@ -133,7 +137,7 @@ nav:
       - ISIS-LDP IPVPN: examples/isis-ldp-ipvpn/README.md
   - Installation:
       - Collection Installation: docs/installation/collection-installation.md
-  - Roles Documentation:
+  - Ansible Collection Roles:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
           - Role Configuration: roles/eos_designs/docs/role-configuration.md
@@ -141,24 +145,25 @@ nav:
           - How-To Guides:
               - Configuring PTP: roles/eos_designs/docs/how-to/ptp.md
               - Custom Structured Configuration: roles/eos_designs/docs/how-to/custom-structured-configuration.md
+              - Custom Templates: roles/eos_designs/docs/how-to/custom-templates.md
       - eos_cli_config_gen:
           - Overview: roles/eos_cli_config_gen/README.md
           - Role Configuration: roles/eos_cli_config_gen/docs/role-configuration.md
           - Input Variables: roles/eos_cli_config_gen/docs/input-variables.md
+          - How-To Guides:
+              - Custom Templates: roles/eos_cli_config_gen/docs/how-to/custom-templates.md
       - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
       - eos_config_deploy_cvp:
           - Overview: roles/eos_config_deploy_cvp/README.md
           - Integrating AVD with CVaaS: roles/eos_config_deploy_cvp/docs/avd-to-cvaas.md
       - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
-      - eos_validate_state: roles/eos_validate_state/README.md
+      - eos_validate_state:
+          - Overview: roles/eos_validate_state/README.md
+          - ANTA Preview: roles/eos_validate_state/ANTA-Preview.md
       - eos_snapshot: roles/eos_snapshot/README.md
       - dhcp_provisioner: roles/dhcp_provisioner/README.md
       - build_output_folders: roles/build_output_folders/README.md
-  - Modules Documentation:
-      - Module Inventory to Containers: docs/modules/inventory_to_container.rst.md
-      - Module Configlet Build Configuration: docs/modules/configlet_build_config.rst.md
-      - AVD Plugins & Filters: plugins/README.md
-      - CloudVision Module Documentation: https://cvp.avd.sh/
+  - Ansible Collection Plugins: docs/plugins/
   - Contributing to AVD:
       - Overview: docs/contribution/overview.md
       - Setup Environment: docs/contribution/setup-environment.md
@@ -171,14 +176,8 @@ nav:
   - External Resources:
       - Ansible Collection User Guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User Guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
-  - Release Notes:
-      - 4.x.x: docs/release-notes/4.x.x.md
-      - 3.x.x: docs/release-notes/3.x.x.md
-      - 2.x.x: docs/release-notes/2.x.x.md
-      - 1.1.x: docs/release-notes/1.1.x.md
-      - 1.0.x: docs/release-notes/1.0.x.md
-  - Porting Guides:
-      - 4.x.x: docs/porting-guides/4.x.x.md
+  - Release Notes: docs/release-notes/4.x.x.md
+  - Porting Guide: docs/porting-guides/4.x.x.md
   - pyavd: docs/pyavd.md
   - About:
       - AVD on Ansible Galaxy: https://galaxy.ansible.com/arista/avd

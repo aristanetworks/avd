@@ -41,12 +41,20 @@ class UplinksMixin:
     @cached_property
     def _uplink_interfaces(self: EosDesignsFacts) -> list:
         return range_expand(
-            default(get(self.shared_utils.switch_data_combined, "uplink_interfaces"), get(self.shared_utils.default_interfaces, "uplink_interfaces"), [])
+            default(
+                get(self.shared_utils.switch_data_combined, "uplink_interfaces"),
+                get(self.shared_utils.cv_topology_config, "uplink_interfaces"),
+                get(self.shared_utils.default_interfaces, "uplink_interfaces"),
+                [],
+            )
         )
 
     @cached_property
     def _uplink_switch_interfaces(self: EosDesignsFacts) -> list:
-        uplink_switch_interfaces = get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces")
+        uplink_switch_interfaces = default(
+            get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces"),
+            get(self.shared_utils.cv_topology_config, "uplink_switch_interfaces"),
+        )
         if uplink_switch_interfaces is not None:
             return uplink_switch_interfaces
 
@@ -116,16 +124,24 @@ class UplinksMixin:
                 uplink["type"] = "underlay_p2p"
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
+
                 if self.shared_utils.uplink_bfd:
                     uplink["bfd"] = True
+
+                if self.shared_utils.uplink_switch_interface_speed is not None:
+                    uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
+
                 if self.shared_utils.uplink_ptp is not None:
                     uplink["ptp"] = self.shared_utils.uplink_ptp
                 elif self.shared_utils.ptp_enabled:
                     uplink["ptp"] = {"enable": True}
+
                 if self.shared_utils.uplink_macsec is not None:
                     uplink["mac_security"] = self.shared_utils.uplink_macsec
+
                 if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
                     uplink["underlay_multicast"] = True
+
                 if self.shared_utils.underlay_rfc5549:
                     uplink["ipv6_enable"] = True
                 else:
@@ -168,6 +184,14 @@ class UplinksMixin:
 
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
+
+                if self.shared_utils.uplink_switch_interface_speed is not None:
+                    uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
+
+                if self.shared_utils.uplink_ptp is not None:
+                    uplink["ptp"] = self.shared_utils.uplink_ptp
+                elif self.shared_utils.ptp_enabled:
+                    uplink["ptp"] = {"enable": True}
 
                 if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
                     # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}

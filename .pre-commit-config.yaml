@@ -116,16 +116,52 @@ repos:
         args: [--strict, -c=.github/yamllintrc]
 
   - repo: https://github.com/aristanetworks/j2lint.git
-    rev: "f045784"
+    rev: "742a25e"
     hooks:
       - id: j2lint
         name: Check for Linting errors on Jinja2 files
 
   - repo: local
     hooks:
+
+      - id: docs-plugin-modules
+        name: Build documentation for collection modules and action plugins
+        entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Modules and action plugins/"
+        language: system
+        types: [python]
+        files: ansible_collections/arista/avd/plugins/modules/
+
+      - id: docs-plugin-filter
+        name: Build documentation for collection filter plugins
+        entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Filter plugins/"
+        language: system
+        types: [python]
+        files: ansible_collections/arista/avd/plugins/filter/
+
+      - id: docs-plugin-test
+        name: Build documentation for collection test plugins
+        entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Test plugins/"
+        language: system
+        types: [python]
+        files: ansible_collections/arista/avd/plugins/test/
+
+      - id: docs-plugin-vars
+        name: Build documentation for collection var plugins
+        entry: ansible-doc-extractor --template ansible_collections/arista/avd/docs/templates/plugin-docs.j2 --markdown "ansible_collections/arista/avd/docs/plugins/Vars plugins/"
+        language: system
+        types: [python]
+        files: ansible_collections/arista/avd/plugins/vars/
+
       - id: schemas
-        name: Build AVD Schemas and Documentation
-        entry: sh -c 'exec env ANSIBLE_COLLECTIONS_PATHS=`pwd` ansible-playbook --forks 10 arista.avd._build_schemas_and_docs'
+        name: Build AVD Schemas
+        entry: sh -c 'exec env ANSIBLE_COLLECTIONS_PATHS=`pwd` ansible-playbook --forks 10 arista.avd._build_schemas'
+        language: system
+        files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
+        pass_filenames: false
+
+      - id: schemas
+        name: Build AVD Docs
+        entry: sh -c 'exec python-avd/scripts/build-schema-tables.py'
         language: system
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false

@@ -15,3 +15,4 @@ example-campus-fabric
 example-dual-dc-l3ls
 example-l2ls-fabric
 example-single-dc-l3ls
+eos_validate_state

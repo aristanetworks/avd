@@ -1,0 +1,16 @@
+# Testing "node_type_keys" as dict of dict
+# Dict type is deprecated in 4.0.0. To be removed in 5.0.0
+
+node_type_keys:
+  pe:
+    type: pe
+    mpls_lsr: true
+    default_mpls_overlay_role: client
+    default_evpn_role: client
+    network_services:
+      l1: true
+      l2: true
+      l3: true
+    default_overlay_routing_protocol: ibgp
+    default_overlay_address_families: [ evpn ]
+    default_evpn_encapsulation: mpls

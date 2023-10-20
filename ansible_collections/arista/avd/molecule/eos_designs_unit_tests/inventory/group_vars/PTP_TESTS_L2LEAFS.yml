@@ -1,0 +1,38 @@
+---
+type: l2leaf
+
+l2leaf:
+  defaults:
+    platform: vEOS-lab
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['ptp-tests-leaf1', 'ptp-tests-leaf2']
+    mlag_interfaces: ['Ethernet11', 'Ethernet12']
+    mlag_peer_ipv4_pool: 10.254.1.64/27
+    spanning_tree_mode: mstp
+    ptp:
+      enabled: false
+
+  nodes:
+    - name: ptp-tests-l2leaf1-ptp-disabled
+      id: 1
+      uplink_switch_interfaces:
+        - Ethernet11
+        - Ethernet11
+
+    - name: ptp-tests-l2leaf2-ptp-enabled
+      id: 2
+      uplink_switch_interfaces:
+        - Ethernet12
+        - Ethernet12
+      ptp:
+        enabled: true
+
+    - name: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
+      id: 3
+      uplink_switch_interfaces:
+        - Ethernet14
+        - Ethernet14
+      ptp:
+        enabled: true
+      uplink_ptp:
+        enable: false

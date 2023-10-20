@@ -19,8 +19,7 @@ def validate_inputs(inputs: dict) -> ValidationResult:
         inputs: Dictionary with inputs for "eos_designs".
 
     Returns:
-        Instance of ValidationResult, where "failed" is True if data is not valid according to the schema
-            and "errors" is a list of AvdValidationErrors containing schema violations.
+        Validation result object with any validation errors or deprecation warnings.
     """
 
     # Initialize a global instance of eos_designs_schema_tools
@@ -38,7 +37,9 @@ def validate_inputs(inputs: dict) -> ValidationResult:
     inputs.setdefault("network_services_keys", shared_utils.network_services_keys)
 
     # Inplace conversion of data
-    eos_designs_schema_tools.convert_data(inputs)
+    deprecation_warnings = eos_designs_schema_tools.convert_data(inputs)
 
     # Validate input data
-    return eos_designs_schema_tools.validate_data(inputs)
+    validation_result = eos_designs_schema_tools.validate_data(inputs)
+    validation_result.deprecation_warnings.extend(deprecation_warnings)
+    return validation_result

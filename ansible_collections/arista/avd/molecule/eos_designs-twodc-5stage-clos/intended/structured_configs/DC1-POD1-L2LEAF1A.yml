@@ -1,4 +1,5 @@
 hostname: DC1-POD1-L2LEAF1A
+is_deployed: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -11,8 +12,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-snmp_server:
-  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF1A
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -32,6 +31,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF1A
 ethernet_interfaces:
 - name: Ethernet1
   peer: DC1-POD1-LEAF1A
@@ -61,6 +62,5 @@ vlan_interfaces:
 - name: Vlan4085
   description: L2LEAF_INBAND_MGMT
   shutdown: false
-  mtu: 1500
   ip_address: 172.21.110.4/24
   type: inband_mgmt

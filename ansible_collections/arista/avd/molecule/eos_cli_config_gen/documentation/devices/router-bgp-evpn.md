@@ -43,7 +43,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  192.168.255.3 |
+| 65101 | 192.168.255.3 |
 
 | BGP Tuning |
 | ---------- |
@@ -97,6 +97,9 @@ interface Management1
 | Ethernet28 | TENANT_A_PROJECT02 | MLAG-IPv4-UNDERLAY-PEER | - | SOME_FILTER |
 
 #### Router BGP EVPN Address Family
+
+- Next-hop resolution is __disabled__
+- Next-hop-unchanged is explicitly configured (default behaviour)
 
 ##### EVPN Peer Groups
 
@@ -232,12 +235,14 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      bgp next-hop-unchanged
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4

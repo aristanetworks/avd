@@ -933,12 +933,12 @@
                 "title": "Name"
               },
               "vlan": {
-                "type": "integer",
+                "type": "string",
                 "description": "VLAN value(s) or range(s) of VLAN values",
                 "title": "VLAN"
               },
               "cos": {
-                "type": "integer",
+                "type": "string",
                 "description": "CoS value(s) or range(s) of CoS values",
                 "title": "COS"
               },
@@ -1442,6 +1442,10 @@
         "tunnel_requests_disabled": {
           "type": "boolean",
           "title": "Tunnel Requests Disabled"
+        },
+        "mlag_peerlink_requests_disabled": {
+          "type": "boolean",
+          "title": "MLAG Peerlink Requests Disabled"
         }
       },
       "additionalProperties": false,
@@ -1527,6 +1531,103 @@
       "patternProperties": {
         "^_.+$": {}
       }
+    },
+    "dps_interfaces": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "\"Dps1\" is currently the only supported interface.",
+            "enum": [
+              "Dps1"
+            ],
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "shutdown": {
+            "type": "boolean",
+            "title": "Shutdown"
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "IPv4 address/mask.",
+            "title": "IP Address"
+          },
+          "flow_tracker": {
+            "type": "object",
+            "properties": {
+              "sampled": {
+                "type": "string",
+                "description": "Sampled flow tracker name.",
+                "title": "Sampled"
+              },
+              "hardware": {
+                "type": "string",
+                "description": "Hardware flow tracker name,",
+                "title": "Hardware"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Flow Tracker"
+          },
+          "tcp_mss_ceiling": {
+            "type": "object",
+            "properties": {
+              "ipv4": {
+                "type": "integer",
+                "description": "Segment Size for IPv4.",
+                "minimum": 64,
+                "maximum": 65495,
+                "title": "IPv4"
+              },
+              "ipv6": {
+                "type": "integer",
+                "description": "Segment Size for IPv6.",
+                "minimum": 64,
+                "maximum": 65475,
+                "title": "IPv6"
+              },
+              "direction": {
+                "type": "string",
+                "enum": [
+                  "ingress",
+                  "egress"
+                ],
+                "description": "Optional direction ('ingress', 'egress')  for tcp mss ceiling.",
+                "title": "Direction"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "TCP Mss Ceiling"
+          },
+          "eos_cli": {
+            "type": "string",
+            "description": "Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.",
+            "title": "EOS CLI"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "DPS Interfaces"
     },
     "dynamic_prefix_lists": {
       "type": "array",
@@ -1892,8 +1993,13 @@
             "properties": {
               "sampled": {
                 "type": "string",
-                "description": "Flow tracker name",
+                "description": "Sampled flow tracker name.",
                 "title": "Sampled"
+              },
+              "hardware": {
+                "type": "string",
+                "description": "Hardware flow tracker name.",
+                "title": "Hardware"
               }
             },
             "additionalProperties": false,
@@ -2146,7 +2252,7 @@
           },
           "ip_address": {
             "type": "string",
-            "description": "IPv4 address/mask",
+            "description": "IPv4 address/mask or \"dhcp\"",
             "title": "IP Address"
           },
           "ip_address_secondaries": {
@@ -2155,6 +2261,21 @@
               "type": "string"
             },
             "title": "IP Address Secondaries"
+          },
+          "dhcp_client_accept_default_route": {
+            "type": "boolean",
+            "description": "Install default-route obtained via DHCP",
+            "title": "DHCP Client Accept Default Route"
+          },
+          "dhcp_server_ipv4": {
+            "type": "boolean",
+            "description": "Enable IPv4 DHCP server.",
+            "title": "DHCP Server IPv4"
+          },
+          "dhcp_server_ipv6": {
+            "type": "boolean",
+            "description": "Enable IPv6 DHCP server.",
+            "title": "DHCP Server IPv6"
           },
           "ip_helpers": {
             "type": "array",
@@ -3849,6 +3970,210 @@
             "description": "Key only used for documentation or validation purposes",
             "title": "Port Profile"
           },
+          "uc_tx_queues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "TX-Queue ID",
+                  "title": "ID"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "description": "Explicit Congestion Notification",
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Enable counter for random-detect ECNs",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds"
+                              ],
+                              "description": "Indicate the units to be used for the threshold values",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ECN minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ECN maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Set the random-detect ECN max-mark-probability",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "Set the random-detect ECN weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Uc TX Queues"
+          },
+          "tx_queues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "TX-Queue ID",
+                  "title": "ID"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "description": "Explicit Congestion Notification",
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Enable counter for random-detect ECNs",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds"
+                              ],
+                              "description": "Indicate the units to be used for the threshold values",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ECN minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 256000000,
+                              "description": "Set the random-detect ECN maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Set the random-detect ECN max-mark-probability",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "Set the random-detect ECN weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "max",
+                            "max_probability"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "TX Queues"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -3899,6 +4224,7 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
+              "on-boot",
               "on-logging",
               "on-startup-config"
             ],
@@ -3939,6 +4265,292 @@
         "^_.+$": {}
       },
       "title": "Event Monitor"
+    },
+    "flow_tracking": {
+      "type": "object",
+      "properties": {
+        "sampled": {
+          "type": "object",
+          "properties": {
+            "sample": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4294967295,
+              "title": "Sample"
+            },
+            "trackers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "table_size": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 614400,
+                    "description": "Maximum number of entries in flow table.\n",
+                    "title": "Table Size"
+                  },
+                  "record_export": {
+                    "type": "object",
+                    "properties": {
+                      "mpls": {
+                        "type": "boolean",
+                        "description": "Export MPLS forwarding information",
+                        "title": "MPLS"
+                      },
+                      "on_inactive_timeout": {
+                        "type": "integer",
+                        "minimum": 3000,
+                        "maximum": 900000,
+                        "description": "Flow record inactive export timeout in milliseconds",
+                        "title": "On Inactive Timeout"
+                      },
+                      "on_interval": {
+                        "type": "integer",
+                        "minimum": 1000,
+                        "maximum": 36000000,
+                        "description": "Flow record export interval in milliseconds",
+                        "title": "On Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Record Export"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Tracker Name",
+                    "title": "Name"
+                  },
+                  "exporters": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Exporter Name",
+                          "title": "Name"
+                        },
+                        "collector": {
+                          "type": "object",
+                          "properties": {
+                            "host": {
+                              "type": "string",
+                              "description": "Collector IPv4 address or IPv6 address or fully qualified domain name",
+                              "title": "Host"
+                            },
+                            "port": {
+                              "type": "integer",
+                              "description": "Collector Port Number",
+                              "minimum": 1,
+                              "maximum": 65535,
+                              "title": "Port"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Collector"
+                        },
+                        "format": {
+                          "type": "object",
+                          "properties": {
+                            "ipfix_version": {
+                              "type": "integer",
+                              "title": "Ipfix Version"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Format"
+                        },
+                        "local_interface": {
+                          "type": "string",
+                          "description": "Local Source Interface",
+                          "title": "Local Interface"
+                        },
+                        "template_interval": {
+                          "type": "integer",
+                          "minimum": 5000,
+                          "maximum": 3600000,
+                          "description": "Template interval in milliseconds",
+                          "title": "Template Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Exporters"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Trackers"
+            },
+            "shutdown": {
+              "type": "boolean",
+              "default": false,
+              "title": "Shutdown"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sampled"
+        },
+        "hardware": {
+          "type": "object",
+          "properties": {
+            "trackers": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Tracker Name",
+                    "title": "Name"
+                  },
+                  "record_export": {
+                    "type": "object",
+                    "properties": {
+                      "on_inactive_timeout": {
+                        "type": "integer",
+                        "minimum": 3000,
+                        "maximum": 900000,
+                        "description": "Flow record inactive export timeout in milliseconds",
+                        "title": "On Inactive Timeout"
+                      },
+                      "on_interval": {
+                        "type": "integer",
+                        "minimum": 1000,
+                        "maximum": 36000000,
+                        "description": "Flow record export interval in milliseconds",
+                        "title": "On Interval"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Record Export"
+                  },
+                  "exporters": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "description": "Exporter Name",
+                          "title": "Name"
+                        },
+                        "collector": {
+                          "type": "object",
+                          "properties": {
+                            "host": {
+                              "type": "string",
+                              "description": "Collector IPv4 address or IPv6 address or fully qualified domain name",
+                              "title": "Host"
+                            },
+                            "port": {
+                              "type": "integer",
+                              "description": "Collector Port Number",
+                              "minimum": 1,
+                              "maximum": 65535,
+                              "title": "Port"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Collector"
+                        },
+                        "format": {
+                          "type": "object",
+                          "properties": {
+                            "ipfix_version": {
+                              "type": "integer",
+                              "title": "Ipfix Version"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Format"
+                        },
+                        "local_interface": {
+                          "type": "string",
+                          "description": "Local Source Interface",
+                          "title": "Local Interface"
+                        },
+                        "template_interval": {
+                          "type": "integer",
+                          "minimum": 5000,
+                          "maximum": 3600000,
+                          "description": "Template interval in milliseconds",
+                          "title": "Template Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "required": [
+                        "name"
+                      ]
+                    },
+                    "title": "Exporters"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Trackers"
+            },
+            "shutdown": {
+              "type": "boolean",
+              "default": false,
+              "title": "Shutdown"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Hardware"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Flow Tracking"
     },
     "flow_trackings": {
       "type": "array",
@@ -4140,7 +4752,7 @@
             "type": "object",
             "properties": {
               "speed_group": {
-                "type": "integer",
+                "type": "string",
                 "title": "Speed Group"
               },
               "serdes": {
@@ -4488,7 +5100,7 @@
                   "type": "integer",
                   "description": "TTL value",
                   "minimum": 0,
-                  "maximum": 254,
+                  "maximum": 255,
                   "title": "TTL"
                 },
                 "ttl_match": {
@@ -5370,6 +5982,223 @@
       "type": "boolean",
       "title": "IP Routing IPv6 Interfaces"
     },
+    "ip_security": {
+      "type": "object",
+      "properties": {
+        "ike_policies": {
+          "type": "array",
+          "description": "Internet Security Association and Key Mgmt Protocol.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Policy name.",
+                "title": "Name"
+              },
+              "local_id": {
+                "type": "string",
+                "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
+                "title": "Local ID"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Ike Policies"
+        },
+        "sa_policies": {
+          "type": "array",
+          "description": "Security Association policies.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the SA policy.",
+                "title": "Name"
+              },
+              "esp": {
+                "type": "object",
+                "properties": {
+                  "integrity": {
+                    "type": "string",
+                    "enum": [
+                      "null",
+                      "sha1",
+                      "sha256"
+                    ],
+                    "title": "Integrity"
+                  },
+                  "encryption": {
+                    "type": "string",
+                    "enum": [
+                      "null",
+                      "aes128",
+                      "aes128gcm128",
+                      "aes128gcm64",
+                      "aes256",
+                      "aes256gcm256"
+                    ],
+                    "title": "Encryption"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Esp"
+              },
+              "pfs_dh_group": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  5,
+                  14,
+                  15,
+                  16,
+                  17,
+                  20,
+                  21,
+                  24
+                ],
+                "title": "Pfs Dh Group"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Sa Policies"
+        },
+        "profiles": {
+          "type": "array",
+          "description": "IPSec profiles.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the IPsec profile.",
+                "title": "Name"
+              },
+              "ike_policy": {
+                "type": "string",
+                "description": "Name of the IKE policy to use in this profile.",
+                "title": "Ike Policy"
+              },
+              "sa_policy": {
+                "type": "string",
+                "description": "Name of the Security Association to use in this profile.",
+                "title": "Sa Policy"
+              },
+              "connection": {
+                "type": "string",
+                "description": "IPsec connection (Initiator/Responder/Dynamic).",
+                "enum": [
+                  "add",
+                  "start",
+                  "route"
+                ],
+                "title": "Connection"
+              },
+              "shared_key": {
+                "type": "string",
+                "description": "Encrypted password - only type 7 supported.",
+                "title": "Shared Key"
+              },
+              "dpd": {
+                "type": "object",
+                "description": "Dead Peer Detection.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "description": "Interval (in seconds) between keep-alive messages.",
+                    "minimum": 2,
+                    "maximum": 3600,
+                    "title": "Interval"
+                  },
+                  "time": {
+                    "type": "integer",
+                    "description": "Time (in seconds) after which the action is applied.",
+                    "minimum": 10,
+                    "maximum": 3600,
+                    "title": "Time"
+                  },
+                  "action": {
+                    "type": "string",
+                    "description": "Action to apply\n\n* 'clear': Delete all connections\n* 'hold': Re-negotiate connection on demand\n* 'restart': Restart connection immediately\n",
+                    "enum": [
+                      "clear",
+                      "hold",
+                      "restart"
+                    ],
+                    "title": "Action"
+                  }
+                },
+                "required": [
+                  "interval",
+                  "time",
+                  "action"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Dpd"
+              },
+              "mode": {
+                "type": "string",
+                "description": "Ipsec mode type.",
+                "enum": [
+                  "transport",
+                  "tunnel"
+                ],
+                "title": "Mode"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Profiles"
+        },
+        "key_controller": {
+          "type": "object",
+          "properties": {
+            "profile": {
+              "type": "string",
+              "description": "IPsec profile name to use.",
+              "title": "Profile"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Key Controller"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IP Security"
+    },
     "ip_ssh_client_source_interfaces": {
       "type": "array",
       "items": {
@@ -5686,6 +6515,12 @@
     "ipv6_unicast_routing": {
       "type": "boolean",
       "title": "IPv6 Unicast Routing"
+    },
+    "is_deployed": {
+      "description": "Key only used for documentation or validation purposes",
+      "type": "boolean",
+      "default": true,
+      "title": "Is Deployed"
     },
     "l2_protocol": {
       "type": "object",
@@ -6755,10 +7590,6 @@
           "title": "Profiles"
         }
       },
-      "required": [
-        "license",
-        "fips_restrictions"
-      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}
@@ -7042,6 +7873,11 @@
                     "type": "string",
                     "description": "ACL name",
                     "title": "IP Access Group"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "GNMI port.\nMake sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.\n",
+                    "title": "Port"
                   }
                 },
                 "additionalProperties": false,
@@ -7909,6 +8745,30 @@
           "type": "string",
           "description": "SSH daemon log level",
           "title": "Log Level"
+        },
+        "client_alive": {
+          "type": "object",
+          "properties": {
+            "count_max": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "description": "Number of keep-alive packets that can be sent without a response before the connection is assumed dead.",
+              "title": "Count Max"
+            },
+            "interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "description": "Time period (in seconds) to send SSH keep-alive packets.",
+              "title": "Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Client Alive"
         }
       },
       "additionalProperties": false,
@@ -10672,8 +11532,13 @@
             "properties": {
               "sampled": {
                 "type": "string",
-                "description": "Flow tracker name",
+                "description": "Sampled flow tracker name.",
                 "title": "Sampled"
+              },
+              "hardware": {
+                "type": "string",
+                "description": "Hardware flow tracker name.",
+                "title": "Hardware"
               }
             },
             "additionalProperties": false,
@@ -10920,7 +11785,7 @@
         "ttl": {
           "type": "integer",
           "minimum": 1,
-          "maximum": 254,
+          "maximum": 255,
           "title": "TTL"
         },
         "domain": {
@@ -11131,6 +11996,14 @@
               },
               "title": "DSCP"
             },
+            "exp": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Example \"0 to traffic-class 0\"\n"
+              },
+              "title": "EXP"
+            },
             "traffic_class": {
               "type": "array",
               "items": {
@@ -11149,6 +12022,48 @@
         "rewrite_dscp": {
           "type": "boolean",
           "title": "Rewrite DSCP"
+        },
+        "random_detect": {
+          "type": "object",
+          "description": "Global random-detect settings",
+          "properties": {
+            "ecn": {
+              "type": "object",
+              "description": "Global ECN Configuration",
+              "properties": {
+                "allow_non_ect": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Allow non-ect and set drop-precedence 1 in a policy map simultaneously.\nCheck which command is required for your platform.",
+                      "title": "Enabled"
+                    },
+                    "chip_based": {
+                      "type": "boolean",
+                      "description": "Allow non-ect chip-based",
+                      "title": "Chip Based"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Allow Non Ect"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Ecn"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Random Detect"
         }
       },
       "additionalProperties": false,
@@ -11267,8 +12182,87 @@
                 },
                 "comment": {
                   "type": "string",
-                  "description": "Text comment added to queue.\n",
+                  "description": "Text comment added to queue",
                   "title": "Comment"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "description": "Explicit Congestion Notification",
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Enable counter for random-detect ECNs",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds"
+                              ],
+                              "description": "Units to be used for the threshold values.\nThis should be one of segments, byte, kbytes, mbytes.",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "Random-detect ECN minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "Random-detect ECN maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Random-detect ECN maximum mark probability",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "Random-detect ECN weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
                 }
               },
               "additionalProperties": false,
@@ -11324,8 +12318,87 @@
                 },
                 "comment": {
                   "type": "string",
-                  "description": "Text comment added to queue.\n",
+                  "description": "Text comment added to queue",
                   "title": "Comment"
+                },
+                "random_detect": {
+                  "type": "object",
+                  "properties": {
+                    "ecn": {
+                      "description": "Explicit Congestion Notification",
+                      "type": "object",
+                      "properties": {
+                        "count": {
+                          "type": "boolean",
+                          "description": "Enable counter for random-detect ECNs",
+                          "title": "Count"
+                        },
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "milliseconds"
+                              ],
+                              "description": "Unit to be used for the threshold values",
+                              "title": "Units"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "Random-detect ECN minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "Random-detect ECN maximum-threshold",
+                              "title": "Max"
+                            },
+                            "max_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "Random-detect ECN maximum mark probability",
+                              "title": "Max Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "Random-detect ECN weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Ecn"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Random Detect"
                 }
               },
               "additionalProperties": false,
@@ -12159,12 +13232,11 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 600,
-              "title": "Ecmp"
+              "title": "ECMP"
             }
           },
           "required": [
-            "paths",
-            "ecmp"
+            "paths"
           ],
           "additionalProperties": false,
           "patternProperties": {
@@ -13127,6 +14199,11 @@
                 "type": "string",
                 "description": "VLAN range as string. Example \"100-200,300\"",
                 "title": "VLAN"
+              },
+              "eos_cli": {
+                "type": "string",
+                "description": "Multiline EOS CLI rendered directly on the Router BGP, VLAN-aware-bundle definition in the final EOS configuration",
+                "title": "EOS CLI"
               }
             },
             "additionalProperties": false,
@@ -13531,6 +14608,20 @@
               },
               "title": "EVPN Hostflap Detection"
             },
+            "next_hop": {
+              "type": "object",
+              "properties": {
+                "resolution_disabled": {
+                  "type": "boolean",
+                  "title": "Resolution Disabled"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Next Hop"
+            },
             "route": {
               "type": "object",
               "properties": {
@@ -13547,6 +14638,10 @@
                 "^_.+$": {}
               },
               "title": "Route"
+            },
+            "next_hop_unchanged": {
+              "type": "boolean",
+              "title": "Next Hop Unchanged"
             }
           },
           "additionalProperties": false,
@@ -13908,6 +15003,85 @@
           },
           "title": "Address Family IPv4 Multicast"
         },
+        "address_family_ipv4_sr_te": {
+          "type": "object",
+          "properties": {
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Inbound route-map name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Outbound route-map name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Inbound route-map name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Outbound route-map name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family IPv4 Sr Te"
+        },
         "address_family_ipv6": {
           "type": "object",
           "properties": {
@@ -14207,6 +15381,270 @@
           },
           "title": "Address Family IPv6 Multicast"
         },
+        "address_family_ipv6_sr_te": {
+          "type": "object",
+          "properties": {
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Inbound route-map name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Outbound route-map name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "route_map_in": {
+                    "type": "string",
+                    "description": "Inbound route-map name",
+                    "title": "Route Map In"
+                  },
+                  "route_map_out": {
+                    "type": "string",
+                    "description": "Outbound route-map name",
+                    "title": "Route Map Out"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family IPv6 Sr Te"
+        },
+        "address_family_link_state": {
+          "type": "object",
+          "properties": {
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "missing_policy": {
+                  "type": "object",
+                  "properties": {
+                    "direction_in_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction In Action"
+                    },
+                    "direction_out_action": {
+                      "type": "string",
+                      "enum": [
+                        "deny",
+                        "deny-in-out",
+                        "permit"
+                      ],
+                      "title": "Direction Out Action"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Missing Policy"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "missing_policy": {
+                    "type": "object",
+                    "properties": {
+                      "direction_in_action": {
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "deny-in-out",
+                          "permit"
+                        ],
+                        "title": "Direction In Action"
+                      },
+                      "direction_out_action": {
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "deny-in-out",
+                          "permit"
+                        ],
+                        "title": "Direction Out Action"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Missing Policy"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "missing_policy": {
+                    "type": "object",
+                    "properties": {
+                      "direction_in_action": {
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "deny-in-out",
+                          "permit"
+                        ],
+                        "title": "Direction In Action"
+                      },
+                      "direction_out_action": {
+                        "type": "string",
+                        "enum": [
+                          "deny",
+                          "deny-in-out",
+                          "permit"
+                        ],
+                        "title": "Direction Out Action"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Missing Policy"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "path_selection": {
+              "type": "object",
+              "properties": {
+                "roles": {
+                  "type": "object",
+                  "properties": {
+                    "producer": {
+                      "type": "boolean",
+                      "title": "Producer"
+                    },
+                    "consumer": {
+                      "type": "boolean",
+                      "title": "Consumer"
+                    },
+                    "propagator": {
+                      "type": "boolean",
+                      "title": "Propagator"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Roles"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Path Selection"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family Link State"
+        },
         "address_family_flow_spec_ipv4": {
           "type": "object",
           "properties": {
@@ -14400,6 +15838,241 @@
             "^_.+$": {}
           },
           "title": "Address Family Flow Spec IPv6"
+        },
+        "address_family_path_selection": {
+          "type": "object",
+          "properties": {
+            "bgp": {
+              "type": "object",
+              "properties": {
+                "additional_paths": {
+                  "type": "object",
+                  "properties": {
+                    "receive": {
+                      "type": "boolean",
+                      "title": "Receive"
+                    },
+                    "send": {
+                      "type": "object",
+                      "properties": {
+                        "any": {
+                          "type": "boolean",
+                          "title": "Any"
+                        },
+                        "backup": {
+                          "type": "boolean",
+                          "title": "Backup"
+                        },
+                        "ecmp": {
+                          "type": "boolean",
+                          "title": "ECMP"
+                        },
+                        "ecmp_limit": {
+                          "type": "integer",
+                          "description": "Amount of ECMP paths to send",
+                          "minimum": 2,
+                          "maximum": 64,
+                          "title": "ECMP Limit"
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "Amount of paths to send",
+                          "minimum": 2,
+                          "maximum": 64,
+                          "title": "Limit"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Send"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Additional Paths"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "BGP"
+            },
+            "neighbors": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "additional_paths": {
+                    "type": "object",
+                    "properties": {
+                      "install": {
+                        "type": "boolean",
+                        "title": "Install"
+                      },
+                      "install_ecmp_primary": {
+                        "type": "boolean",
+                        "title": "Install ECMP Primary"
+                      },
+                      "receive": {
+                        "type": "boolean",
+                        "title": "Receive"
+                      },
+                      "send": {
+                        "type": "object",
+                        "properties": {
+                          "any": {
+                            "type": "boolean",
+                            "title": "Any"
+                          },
+                          "backup": {
+                            "type": "boolean",
+                            "title": "Backup"
+                          },
+                          "ecmp": {
+                            "type": "boolean",
+                            "title": "ECMP"
+                          },
+                          "ecmp_limit": {
+                            "type": "integer",
+                            "description": "Amount of ECMP paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "ECMP Limit"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "description": "Amount of paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Send"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Additional Paths"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "ip_address"
+                ]
+              },
+              "title": "Neighbors"
+            },
+            "peer_groups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Peer-group name",
+                    "title": "Name"
+                  },
+                  "activate": {
+                    "type": "boolean",
+                    "title": "Activate"
+                  },
+                  "additional_paths": {
+                    "type": "object",
+                    "properties": {
+                      "install": {
+                        "type": "boolean",
+                        "title": "Install"
+                      },
+                      "install_ecmp_primary": {
+                        "type": "boolean",
+                        "title": "Install ECMP Primary"
+                      },
+                      "receive": {
+                        "type": "boolean",
+                        "title": "Receive"
+                      },
+                      "send": {
+                        "type": "object",
+                        "properties": {
+                          "any": {
+                            "type": "boolean",
+                            "title": "Any"
+                          },
+                          "backup": {
+                            "type": "boolean",
+                            "title": "Backup"
+                          },
+                          "ecmp": {
+                            "type": "boolean",
+                            "title": "ECMP"
+                          },
+                          "ecmp_limit": {
+                            "type": "integer",
+                            "description": "Amount of ECMP paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "ECMP Limit"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "description": "Amount of paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Send"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Additional Paths"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Peer Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Address Family Path Selection"
         },
         "address_family_vpn_ipv4": {
           "type": "object",
@@ -14692,6 +16365,10 @@
                             "type": "string"
                           },
                           "title": "Route Targets"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
                         }
                       },
                       "additionalProperties": false,
@@ -14719,6 +16396,10 @@
                             "type": "string"
                           },
                           "title": "Route Targets"
+                        },
+                        "route_map": {
+                          "type": "string",
+                          "title": "Route Map"
                         }
                       },
                       "additionalProperties": false,
@@ -15230,7 +16911,7 @@
                           },
                           "install_ecmp_primary": {
                             "type": "boolean",
-                            "title": "Install Ecmp Primary"
+                            "title": "Install ECMP Primary"
                           },
                           "receive": {
                             "type": "boolean",
@@ -15249,14 +16930,14 @@
                               },
                               "ecmp": {
                                 "type": "boolean",
-                                "title": "Ecmp"
+                                "title": "ECMP"
                               },
                               "ecmp_limit": {
                                 "type": "integer",
                                 "description": "Amount of ECMP paths to send",
                                 "minimum": 2,
                                 "maximum": 64,
-                                "title": "Ecmp Limit"
+                                "title": "ECMP Limit"
                               },
                               "limit": {
                                 "type": "integer",
@@ -15426,7 +17107,7 @@
                           },
                           "install_ecmp_primary": {
                             "type": "boolean",
-                            "title": "Install Ecmp Primary"
+                            "title": "Install ECMP Primary"
                           },
                           "receive": {
                             "type": "boolean",
@@ -15445,14 +17126,14 @@
                               },
                               "ecmp": {
                                 "type": "boolean",
-                                "title": "Ecmp"
+                                "title": "ECMP"
                               },
                               "ecmp_limit": {
                                 "type": "integer",
                                 "description": "Amount of ECMP paths to send",
                                 "minimum": 2,
                                 "maximum": 64,
-                                "title": "Ecmp Limit"
+                                "title": "ECMP Limit"
                               },
                               "limit": {
                                 "type": "integer",
@@ -16287,13 +17968,13 @@
           "title": "Router ID"
         },
         "is_type": {
+          "title": "IS Type",
           "type": "string",
           "enum": [
             "level-1",
             "level-1-2",
             "level-2"
-          ],
-          "title": "IS Type"
+          ]
         },
         "log_adjacency_changes": {
           "type": "boolean",
@@ -17955,6 +19636,21 @@
       },
       "title": "Router PIM Sparse Mode"
     },
+    "router_service_insertion": {
+      "type": "object",
+      "description": "Configure network services inserted to data forwarding",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Router Service Insertion"
+    },
     "router_traffic_engineering": {
       "type": "object",
       "properties": {
@@ -19139,6 +20835,76 @@
       },
       "title": "Static Routes"
     },
+    "stun": {
+      "type": "object",
+      "description": "STUN configuration",
+      "properties": {
+        "client": {
+          "type": "object",
+          "description": "STUN client settings",
+          "properties": {
+            "server_profiles": {
+              "type": "array",
+              "description": "List of server profiles for the client",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "ip_address": {
+                    "type": "string",
+                    "title": "IP Address"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "Server Profiles"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Client"
+        },
+        "server": {
+          "type": "object",
+          "description": "STUN server settings",
+          "properties": {
+            "local_interface": {
+              "type": "string",
+              "title": "Local Interface"
+            },
+            "local_interfaces": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              },
+              "title": "Local Interfaces"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Server"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Stun"
+    },
     "switchport_default": {
       "type": "object",
       "properties": {
@@ -19268,6 +21034,32 @@
             "^_.+$": {}
           },
           "title": "Control Plane"
+        },
+        "l1": {
+          "type": "object",
+          "properties": {
+            "unsupported_speed_action": {
+              "type": "string",
+              "enum": [
+                "error",
+                "warn"
+              ],
+              "title": "Unsupported Speed Action"
+            },
+            "unsupported_error_correction_action": {
+              "type": "string",
+              "enum": [
+                "error",
+                "warn"
+              ],
+              "title": "Unsupported Error Correction Action"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "L1"
         }
       },
       "additionalProperties": false,
@@ -19279,6 +21071,13 @@
     "tacacs_servers": {
       "type": "object",
       "properties": {
+        "timeout": {
+          "type": "integer",
+          "description": "Timeout in seconds",
+          "minimum": 1,
+          "maximum": 1000,
+          "title": "Timeout"
+        },
         "hosts": {
           "type": "array",
           "items": {
@@ -19314,6 +21113,9 @@
               },
               "timeout": {
                 "type": "integer",
+                "description": "Timeout in seconds",
+                "minimum": 1,
+                "maximum": 1000,
                 "title": "Timeout"
               }
             },

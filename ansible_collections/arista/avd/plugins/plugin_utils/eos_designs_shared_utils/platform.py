@@ -138,7 +138,7 @@ class PlatformMixin:
 
     @cached_property
     def platform(self: SharedUtils) -> str | None:
-        return get(self.switch_data_combined, "platform")
+        return get(self.switch_data_combined, "platform", default=self.cv_topology_platform)
 
     @cached_property
     def platform_settings(self: SharedUtils) -> dict:
@@ -190,3 +190,7 @@ class PlatformMixin:
     @cached_property
     def platform_settings_feature_support_poe(self) -> bool:
         return get(self.platform_settings, "feature_support.poe", default=False) is True
+
+    @cached_property
+    def platform_settings_feature_support_per_interface_mtu(self) -> bool:
+        return get(self.platform_settings, "feature_support.per_interface_mtu", default=True) is True

@@ -1,4 +1,5 @@
 hostname: DC1-LEAF2B
+is_deployed: true
 router_bgp:
   as: '65102'
   router_id: 192.168.255.11
@@ -326,14 +327,16 @@ service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
   speed_groups:
-  - speed_group: 1
+  - speed_group: '1'
     serdes: 10G
-  - speed_group: 2
+  - speed_group: '2'
     serdes: 25G
-  - speed_group: 3
+  - speed_group: '3'
     serdes: 25G
-  - speed_group: 4
+  - speed_group: '4'
     serdes: 10G
+  - speed_group: 5/1
+    serdes: 25G
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
@@ -354,9 +357,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS rackD DC1-LEAF2B
 spanning_tree:
   root_super: true
   mode: mstp
@@ -427,6 +427,9 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS rackD DC1-LEAF2B
 ethernet_interfaces:
 - name: Ethernet7
   peer: DC1-L2LEAF1A

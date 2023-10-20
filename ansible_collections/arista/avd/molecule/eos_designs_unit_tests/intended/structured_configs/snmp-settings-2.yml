@@ -1,0 +1,59 @@
+hostname: snmp-settings-2
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+snmp_server:
+  hosts:
+  - host: 10.6.75.125
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  - host: 10.6.75.125
+    version: 2c
+    community: SNMP-COMMUNITY-2
+    vrf: SNMPVRF
+  - host: 10.6.75.126
+    version: '3'
+    users:
+    - username: USER-WRITE
+      authentication_level: auth
+  - host: 10.6.75.127
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  - host: 10.6.75.127
+    version: 2c
+    community: SNMP-COMMUNITY-2
+    vrf: SNMPVRF
+  - host: 10.6.75.128
+    version: '3'
+    users:
+    - username: USER-WRITE
+      authentication_level: auth
+  vrfs:
+  - name: default
+    enable: true
+  - name: SNMPVRF
+    enable: true
+ip_igmp_snooping:
+  globally_enabled: true
+vlans:
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
+vlan_interfaces:
+- name: Vlan123
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  ip_address: 192.168.0.1/24
+  type: inband_mgmt

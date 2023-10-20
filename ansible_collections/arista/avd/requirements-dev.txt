@@ -10,7 +10,7 @@ pre-commit>=3.2.0
 pre-commit-hooks>=3.3.0
 identify>=1.4.20
 docker
-molecule>=3.2.0
+molecule>=3.2.0,<6.0
 molecule-plugins[docker]>=23.4.0 ; python_version >= "3.9" #Not supported in 3.8
 yamllint
 treelib
@@ -20,3 +20,6 @@ jsonschema>=4.5.1,<4.18
 deepmerge>=1.1.0
 isort==5.12.0
 black==22.8.0
+ansible-doc-extractor>=0.1.10
+tox
+pydantic>=2.3.0

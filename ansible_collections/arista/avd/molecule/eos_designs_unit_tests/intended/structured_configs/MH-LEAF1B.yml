@@ -1,4 +1,5 @@
 hostname: MH-LEAF1B
+is_deployed: true
 router_bgp:
   as: '65152'
   router_id: 192.168.255.34
@@ -101,9 +102,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS MH-LEAF1B
 local_users:
 - name: admin
   disabled: true
@@ -143,6 +141,9 @@ lacp:
     range:
       begin: 129
       end: 256
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS MH-LEAF1B
 ethernet_interfaces:
 - name: Ethernet1
   peer: DC1-SPINE1

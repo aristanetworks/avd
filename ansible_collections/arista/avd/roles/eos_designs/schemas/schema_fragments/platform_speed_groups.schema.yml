@@ -34,6 +34,6 @@ keys:
               speed_groups:
                 type: list
                 items:
-                  type: int
+                  type: str
                   convert_types:
-                    - str
+                    - int

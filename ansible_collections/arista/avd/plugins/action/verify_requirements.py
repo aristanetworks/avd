@@ -31,33 +31,51 @@ except ImportError:
 MIN_PYTHON_SUPPORTED_VERSION = (3, 8)
 
 
-def _validate_python_version(result: dict) -> bool:
+def _validate_python_version(info: dict, result: dict) -> bool:
     """
     TODO - avoid hardcoding the min supported version
 
+    Args:
+      info (dict): Dictionary to store information to present in ansible logs
+      result (dict): Module result dictionary to store deprecation warnings
+
     return False if the python version is not valid
     """
-    result["python_version_info"] = {
+    info["python_version_info"] = {
         "major": sys.version_info.major,
         "minor": sys.version_info.minor,
         "micro": sys.version_info.micro,
         "releaselevel": sys.version_info.releaselevel,
         "serial": sys.version_info.serial,
     }
-    result["python_path"] = sys.path
+    info["python_path"] = sys.path
 
+    running_version = ".".join(str(v) for v in sys.version_info[:3])
+    min_version = ".".join(str(v) for v in MIN_PYTHON_SUPPORTED_VERSION)
     if sys.version_info < MIN_PYTHON_SUPPORTED_VERSION:
-        running_version = ".".join(str(v) for v in sys.version_info[:3])
-        min_version = ".".join(str(v) for v in MIN_PYTHON_SUPPORTED_VERSION)
         display.error(f"Python Version running {running_version} - Minimum Version required is {min_version}", False)
         return False
+    elif sys.version_info[:2] == MIN_PYTHON_SUPPORTED_VERSION:
+        result.setdefault("deprecations", []).append(
+            {
+                "msg": (
+                    f"You are currently running Python {running_version}. The next minor release of AVD after November 6th 2023 will drop support for Python"
+                    f" {min_version} as it will be dropping support for ansible-core<2.14 and ansible-core>=2.14 does not support Python {min_version} as"
+                    " documented here: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
+                )
+            }
+        )
 
     return True
 
 
-def _validate_python_requirements(requirements: list, result: dict) -> bool:
+def _validate_python_requirements(requirements: list, info: dict) -> bool:
     """
     Validate python lib versions
+
+    Args:
+      requirements (list): List of requirements for pythom modules
+      info (dict): Dictionary to store information to present in ansible logs
 
     return False if any python requirement is not valid
     """
@@ -70,8 +88,8 @@ def _validate_python_requirements(requirements: list, result: dict) -> bool:
         "parsing_failed": [],
     }
 
-    # Remove the comments
-    requirements = [req for req in requirements if req[0] != "#"]
+    # Remove the comments including inline comments
+    requirements = [req.split(" #", maxsplit=1)[0] for req in requirements if req[0] != "#"]
     for raw_req in requirements:
         try:
             req = Requirement(raw_req)
@@ -140,35 +158,57 @@ def _validate_python_requirements(requirements: list, result: dict) -> bool:
             }
             valid = False
 
-    result["python_requirements"] = requirements_dict
+    info["python_requirements"] = requirements_dict
     return valid
 
 
-def _validate_ansible_version(collection_name: str, running_version: str, result: dict) -> bool:
+def _validate_ansible_version(collection_name: str, running_version: str, info: dict, result: dict) -> bool:
     """
     Validate ansible version in use, running_version, based on the collection requirements
+
+    Args:
+      collection_name (str): The collection name
+      running_version (str): A string representing the current Ansible version being run
+      info (dict): Dictionary to store information to present in ansible logs
+      result (dict): Module result dictionary to store deprecation warnings
 
     Return False if Ansible version is not valid
     """
     collection_meta = _get_collection_metadata(collection_name)
     specifiers_set = SpecifierSet(collection_meta.get("requires_ansible", ""))
-    result["ansible_version"] = running_version
+    deprecation_specifiers_set = SpecifierSet(">=2.14")
+    info["ansible_version"] = running_version
 
     if len(specifiers_set) > 0:
-        result["requires_ansible"] = str(specifiers_set)
+        info["requires_ansible"] = str(specifiers_set)
     if not specifiers_set.contains(running_version):
         display.error(
             f"Ansible Version running {running_version} - Requirement is {str(specifiers_set)}",
             False,
         )
         return False
+    # TODO remove this once dropping support of ansible-core<2.14 as the previous if will catch it.
+    elif not deprecation_specifiers_set.contains(running_version):
+        result.setdefault("deprecations", []).append(
+            {
+                "msg": (
+                    f"You are currently running ansible-core {running_version}. The next minor release of AVD after November 6th 2023 will drop support for"
+                    " ansible-core<2.14. Python 3.8 support will be dropped at the same time as ansible-core>=2.14 does not support it. See the following link"
+                    " for more details: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
+                )
+            }
+        )
 
     return True
 
 
-def _validate_ansible_collections(running_collection_name: str, result: dict) -> bool:
+def _validate_ansible_collections(running_collection_name: str, info: dict) -> bool:
     """
     Verify the version of required ansible collections running based on the collection requirements
+
+    Args:
+      collection_name (str): The collection name
+      info (dict): Dictionary to store information to present in ansible logs
 
     Return True if all collection requirements are valid, False otherwise
     """
@@ -227,7 +267,7 @@ def _validate_ansible_collections(running_collection_name: str, result: dict) ->
             }
             valid = False
 
-    result["collection_requirements"] = requirements_dict
+    info["collection_requirements"] = requirements_dict
     return valid
 
 
@@ -325,11 +365,11 @@ class ActionModule(ActionBase):
         if display.verbosity < 1:
             display.display("Use -v for details.")
 
-        if not _validate_python_version(info["python"]):
+        if not _validate_python_version(info["python"], result):
             result["failed"] = True
         if not _validate_python_requirements(py_requirements, info["python"]):
             result["failed"] = True
-        if not _validate_ansible_version(running_collection_name, running_ansible_version, info["ansible"]):
+        if not _validate_ansible_version(running_collection_name, running_ansible_version, info["ansible"], result):
             result["failed"] = True
         if not _validate_ansible_collections(running_collection_name, info["ansible"]):
             result["failed"] = True

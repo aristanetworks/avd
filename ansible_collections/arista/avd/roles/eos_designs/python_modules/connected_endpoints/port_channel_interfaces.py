@@ -7,7 +7,9 @@ import re
 from collections import ChainMap
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_lacp_id, generate_route_target
+from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
+from ansible_collections.arista.avd.plugins.filter.generate_lacp_id import generate_lacp_id
+from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
@@ -127,7 +129,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             ),
             "type": port_channel_type,
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
-            "mtu": adapter.get("mtu"),
+            "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "service_profile": adapter.get("qos_profile"),
             "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
             "ptp": self._get_adapter_ptp(adapter),

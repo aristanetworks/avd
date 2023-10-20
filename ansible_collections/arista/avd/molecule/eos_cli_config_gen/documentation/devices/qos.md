@@ -98,6 +98,9 @@ interface Ethernet6
    qos trust cos
    qos cos 2
    service-profile experiment
+   !
+   tx-queue 2
+      random-detect ecn count
 !
 interface Ethernet7
    description Test-with-policymap
@@ -105,6 +108,9 @@ interface Ethernet7
    switchport mode trunk
    switchport
    service-profile qprof_testwithpolicy
+   !
+   uc-tx-queue 4
+      random-detect ecn count
 ```
 
 ### Port-Channel Interfaces
@@ -198,14 +204,14 @@ ipv6 access-list acl_qos_tc5_v6
 
 QOS rewrite DSCP: **enabled**
 
-##### QOS Mappings
+QOS random-detect ECN is set to allow **non-ect** **chip-based**
 
+##### QOS Mappings
 
 | COS to Traffic Class mappings |
 | ----------------------------- |
 | 1 2 3 4 to traffic-class 2 |
 | 3 to traffic-class 3 |
-
 
 | DSCP to Traffic Class mappings |
 | ------------------------------ |
@@ -213,6 +219,9 @@ QOS rewrite DSCP: **enabled**
 | 18 20 22 26 28 30 34 36 38 to traffic-class 4 drop-precedence 2 |
 | 46 to traffic-class 5 |
 
+| EXP to Traffic Class mappings |
+| ----------------------------- |
+| 0 to traffic-class 0 |
 
 | Traffic Class to DSCP or COS mappings |
 | ------------------------------------- |
@@ -233,6 +242,9 @@ qos map dscp 46 to traffic-class 5
 qos map traffic-class 1 to dscp 56
 qos map traffic-class 2 4 5 to cos 7
 qos map traffic-class 6 to tx-queue 2
+qos map exp 0 to traffic-class 0
+!
+qos random-detect ecn allow non-ect chip-based
 ```
 
 ### QOS Class Maps
@@ -360,6 +372,14 @@ QOS Profile: **test**
 | 2 | All | 10 | priority strict | - | - |
 | 4 | All | 10 | - | - | - |
 
+**ECN Configuration**
+
+| TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | ------------- | ------------- | -------------------- |
+| 1 | All | -  | -  | - |
+| 2 | All | 320 kbytes | 320 kbytes | 90 |
+| 4 | All | 320 segments | 320 segments | - |
+
 QOS Profile: **test_with_pfc**
 
 **Settings**
@@ -409,6 +429,17 @@ QOS Profile: **uc_mc_queues_test**
 | 1 | Multicast | 50 | no priority | - | - |
 | 2 | Multicast | 10 | priority strict | - | Test strict priority |
 | 4 | Multicast | 10 | - | - | Test guaranteed percent |
+
+**ECN Configuration**
+
+| TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | ------------- | ------------- | -------------------- |
+| 1 | Unicast | 3 milliseconds | 9 milliseconds | 90 |
+| 2 | Unicast | 320 kbytes | 320 kbytes | 90 |
+| 4 | Unicast | 320 segments | 320 segments | - |
+| 1 | Multicast | - | - | - |
+| 2 | Multicast | - | - | - |
+| 4 | Multicast | - | - | - |
 
 #### QOS Profile Device Configuration
 
@@ -465,9 +496,11 @@ qos profile test
    tx-queue 2
       bandwidth percent 10
       priority strict
+      random-detect ecn minimum-threshold 320 kbytes maximum-threshold 320 kbytes max-mark-probability 90
    !
    tx-queue 4
       bandwidth guaranteed percent 10
+      random-detect ecn minimum-threshold 320 segments maximum-threshold 320 segments weight 10
 !
 qos profile test_with_pfc
    service-policy type qos input pmap_test1
@@ -495,14 +528,17 @@ qos profile uc_mc_queues_test
       !! Test no priority
       bandwidth percent 50
       no priority
+      random-detect ecn minimum-threshold 3 milliseconds maximum-threshold 9 milliseconds max-mark-probability 90
    !
    uc-tx-queue 2
       bandwidth percent 10
       priority strict
+      random-detect ecn minimum-threshold 320 kbytes maximum-threshold 320 kbytes max-mark-probability 90
    !
    uc-tx-queue 4
       !! Test guaranteed percent
       bandwidth guaranteed percent 10
+      random-detect ecn minimum-threshold 320 segments maximum-threshold 320 segments weight 10
    !
    mc-tx-queue 1
       bandwidth percent 50

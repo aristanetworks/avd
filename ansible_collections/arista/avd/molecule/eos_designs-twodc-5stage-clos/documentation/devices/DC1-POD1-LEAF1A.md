@@ -165,9 +165,9 @@ vlan 4085
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3 | routed | - | 172.17.110.1/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3 | routed | - | 172.17.110.3/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-RS1_Ethernet3 | routed | - | 172.17.10.4/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3 | routed | - | 172.17.110.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3 | routed | - | 172.17.110.3/31 | default | - | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-RS1_Ethernet3 | routed | - | 172.17.10.4/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -176,7 +176,6 @@ vlan 4085
 interface Ethernet1
    description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.1/31
@@ -186,7 +185,6 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.3/31
@@ -201,7 +199,6 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-RS1_Ethernet3
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.17.10.4/31
    service-profile QOS-PROFILE
@@ -270,7 +267,7 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
 
 ##### IPv4
 
@@ -285,7 +282,6 @@ interface Loopback1
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
-   mtu 1500
    ip address 172.21.110.2/24
    ip attached-host route export 19
    ip virtual-router address 172.21.110.1
@@ -381,7 +377,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65111.100|  172.16.110.3 |
+| 65111.100 | 172.16.110.3 |
 
 | BGP Tuning |
 | ---------- |

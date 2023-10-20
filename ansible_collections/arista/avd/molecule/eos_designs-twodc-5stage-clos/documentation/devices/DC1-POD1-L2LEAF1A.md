@@ -199,7 +199,7 @@ interface Port-Channel1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
 
 ##### IPv4
 
@@ -214,7 +214,6 @@ interface Port-Channel1
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
-   mtu 1500
    ip address 172.21.110.4/24
 ```
 

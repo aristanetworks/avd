@@ -1,4 +1,5 @@
 hostname: inband-mgmt-parent
+is_deployed: true
 router_bgp:
   as: '65000'
   router_id: 10.0.255.1

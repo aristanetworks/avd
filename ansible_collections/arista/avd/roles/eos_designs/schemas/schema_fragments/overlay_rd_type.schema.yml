@@ -16,6 +16,7 @@ keys:
       By default Route Distinguishers (RD) are set to:
       - `<overlay_loopback>:<mac_vrf_id_base + vlan_id or mac_vrf_vni_base + vlan_id>` for VLANs and VLAN-Aware Bundles with L2 vlans.
       - `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware Bundles with SVIs.
+      - `<overlay_loopback>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles defined under 'evpn_vlan_bundles'.
       - `<overlay_loopback>:<vrf_id>` for VRFs.
 
       Note:

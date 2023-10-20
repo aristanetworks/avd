@@ -1,4 +1,5 @@
 hostname: DC2-POD1-SPINE2
+is_deployed: true
 router_bgp:
   as: '65210'
   router_id: 172.16.210.2
@@ -57,8 +58,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-snmp_server:
-  location: TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-SPINE2
 spanning_tree:
   mode: none
 local_users:
@@ -84,6 +83,8 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1009\n  description Loopback created from raw_eos_cli under spine defaults in DC2 POD1\n\ninterface Loopback1111\n
   \ description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-SPINE2
 ethernet_interfaces:
 - name: Ethernet1
   peer: DC2-SUPER-SPINE1
@@ -91,7 +92,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -103,7 +103,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -115,7 +114,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet2
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -127,7 +125,6 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet2
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ptp:
@@ -140,7 +137,6 @@ ethernet_interfaces:
   description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4
   type: routed
   shutdown: false
-  mtu: 1498
   ip_address: 200.200.200.201/24
   ptp:
     enable: true

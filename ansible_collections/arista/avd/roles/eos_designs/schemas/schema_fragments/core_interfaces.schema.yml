@@ -8,4 +8,4 @@ type: dict
 keys:
   core_interfaces:
     type: dict
-    $ref: "#/$defs/l3_edge"
+    $ref: "eos_designs#/$defs/l3_edge"

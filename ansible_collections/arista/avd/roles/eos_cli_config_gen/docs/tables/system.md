@@ -18,6 +18,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_groups</samp>](## "system.control_plane.ipv6_access_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- acl_name</samp>](## "system.control_plane.ipv6_access_groups.[].acl_name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "system.control_plane.ipv6_access_groups.[].vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;l1</samp>](## "system.l1") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_speed_action</samp>](## "system.l1.unsupported_speed_action") | String |  |  | Valid Values:<br>- error<br>- warn |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_error_correction_action</samp>](## "system.l1.unsupported_error_correction_action") | String |  |  | Valid Values:<br>- error<br>- warn |  |
 
 === "YAML"
 
@@ -33,4 +36,7 @@
         ipv6_access_groups:
           - acl_name: <str>
             vrf: <str>
+      l1:
+        unsupported_speed_action: <str>
+        unsupported_error_correction_action: <str>
     ```

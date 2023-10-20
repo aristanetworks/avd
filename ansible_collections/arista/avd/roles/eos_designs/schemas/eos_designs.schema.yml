@@ -427,7 +427,7 @@ keys:
       description: Generic Device
   core_interfaces:
     type: dict
-    $ref: '#/$defs/l3_edge'
+    $ref: eos_designs#/$defs/l3_edge
   custom_structured_configuration_list_merge:
     documentation_options:
       table: custom-structured-configuration
@@ -478,6 +478,42 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
+  cv_topology:
+    documentation_options:
+      table: cv-topology
+    type: list
+    description: 'Generate AVD configurations directly from the given CloudVision
+      topology.
+
+      Activate this feature by setting `use_cv_topology` to `true`.
+
+      Requires `default_interfaces` to be set for the relevant platforms and node
+      types to detect the proper interface roles automatically.
+
+      Neighbor hostnames must match the inventory hostnames of the AVD inventory to
+      be taken into consideration.'
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+        platform:
+          type: str
+          required: true
+        interfaces:
+          type: list
+          required: true
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+              neighbor:
+                type: str
+              neighbor_interface:
+                type: str
   cvp_ingestauth_key:
     documentation_options:
       table: cloudvision-settings
@@ -779,7 +815,7 @@ keys:
       platform setting will be configured: \"platform trident forwarding-table partition
       flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  All forwarding
       agents will be restarted when this configuration is applied.\n  You can tune
-      the settings by overridding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
+      the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
       \ Please contact an Arista representative for help with determining the appropriate
       values for your environment.\n"
     default: false
@@ -839,6 +875,69 @@ keys:
     description: Enable vlan aware bundles for EVPN MAC-VRF.
     type: bool
     default: false
+  evpn_vlan_bundles:
+    documentation_options:
+      table: evpn-vlan-bundles
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          convert_types:
+          - int
+          description: 'Specify an EVPN vlan-aware-bundle name.
+
+            EVPN vlan-aware-bundles group L2 VLANs and define common settings.
+
+            '
+        id:
+          type: int
+          required: true
+          convert_types:
+          - str
+          description: '"id" may be used for vlan-aware-bundle RD/RT ID so it should
+            not overlap with l2vlan IDs which are not part of this bundle.
+
+            See "overlay_rd_type" and "overlay_rt_type" for details.
+
+            '
+        rt_override:
+          type: str
+          convert_types:
+          - int
+          description: "By default the MAC VRF bundle RT will be derived from mac_vrf_id_base
+            + bundle_id.\nThe rt_override allows us to override this value and statically
+            define it.\nrt_override will default to vni_override if set.\n\nrt_override
+            supports two formats:\n  - A single number which will be used in the RT
+            fields instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rt_type' for details).\n
+            \ - A full RT string with colon seperator which will override the full
+            RT.\n"
+        rd_override:
+          type: str
+          convert_types:
+          - int
+          description: "By default the MAC VRF bundle RD will be derived from mac_vrf_id_base
+            + bundle_id.\nThe rt_override allows us to override this value and statically
+            define it.\nrd_override will default to rt_override or vni_override if
+            set.\n\nrd_override supports two formats:\n  - A single number which will
+            be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni
+            (see 'overlay_rd_type' for details).\n  - A full RD string with colon
+            seperator which will override the full RD.\n"
+        evpn_l2_multi_domain:
+          type: bool
+          description: 'Explicitly extend VLAN-Aware Bundle to remote EVPN domains.
+
+            Overrides `<network_services_key>.[].evpn_l2_multi_domain`.
+
+            '
+        bgp:
+          type: dict
+          keys:
+            raw_eos_cli:
+              type: str
+              description: EOS cli commands rendered on router_bgp.vlans-aware-bundle.
   fabric_evpn_encapsulation:
     documentation_options:
       table: evpn-settings
@@ -944,7 +1043,7 @@ keys:
   is_deployed:
     documentation_options:
       table: is-deployed
-    description: 'Is device already deployed in the fabric.
+    description: 'If the device is already deployed in the fabric.
 
       When set to false, interfaces toward this device may be shutdown depending on
       the `shutdown_interfaces_towards_undeployed_peers` setting.
@@ -980,6 +1079,7 @@ keys:
     description: These fabric level parameters can be used with core_interfaces running
       ISIS, and may be overridden on link profile or link level.
   isis_default_is_type:
+    display_name: ISIS Default IS Type
     documentation_options:
       table: isis-settings
     type: str
@@ -1025,7 +1125,7 @@ keys:
         default: 10000
   l3_edge:
     type: dict
-    $ref: '#/$defs/l3_edge'
+    $ref: eos_designs#/$defs/l3_edge
   local_users:
     documentation_options:
       table: management-settings
@@ -1153,7 +1253,7 @@ keys:
     type: list
     items:
       type: dict
-      $ref: '#/$defs/adapter_config'
+      $ref: eos_designs#/$defs/adapter_config
       keys:
         switches:
           type: list
@@ -1536,6 +1636,9 @@ keys:
       - `<overlay_loopback>:<vlan_aware_bundle_number_base + vrf_id>` for VLAN-Aware
       Bundles with SVIs.
 
+      - `<overlay_loopback>:<vlan_aware_bundle_number_base + id>` for VLAN-Aware Bundles
+      defined under ''evpn_vlan_bundles''.
+
       - `<overlay_loopback>:<vrf_id>` for VRFs.
 
 
@@ -1688,6 +1791,9 @@ keys:
       - `<vlan_aware_bundle_number_base + vrf_id>:<vlan_aware_bundle_number_base +
       vrf_id>` for VLAN-Aware Bundles with SVIs.
 
+      - `<vlan_aware_bundle_number_base + id>:<vlan_aware_bundle_number_base + id>`
+      for VLAN-Aware Bundles defined under ''evpn_vlan_bundles''.
+
       - `<vrf_id>:<vrf_id>` for VRFs.
 
 
@@ -1710,12 +1816,15 @@ keys:
           of RT):
 
           - ''vrf_id'' means `(mac_vrf_id_base or mac_vrf_vni_base) + vlan_id` for
-          VLANs and `(vrf_id or vrf_vni)` for VRFs.
+          VLANs, `(vrf_id or vrf_vni)` for VRFs and `id` for bundles defined under
+          ''evpn_vlan_bundles''.
 
           - ''vrf_vni'' means `(mac_vrf_vni_base or mac_vrf_id_base) + vlan_id` for
-          VLANs and `(vrf_vni or vrf_id)` for VRFs.
+          VLANs, `(vrf_vni or vrf_id)` for VRFs and `id` for bundles defined under
+          ''evpn_vlan_bundles''.
 
-          - ''id'' means `vlan_id` for VLANs and `(vrf_id or vrf_vni)` for VRFs.
+          - ''id'' means `vlan_id` for VLANs, `(vrf_id or vrf_vni)` for VRFs and `id`
+          for bundles defined under ''evpn_vlan_bundles''.
 
           - ''bgp_as'' means the AS number of the device.
 
@@ -1726,6 +1835,9 @@ keys:
 
           The ''vrf_id'' and ''vrf_vni'' methods can be overridden per VLAN if either
           ''rt_override'' or ''vni_override'' is set (preferred in this order).
+
+          The ''vrf_id'', ''vrf_vni'' and ''id'' methods can be overridden per bundle
+          defined under `evpn_vlan_bundles` using ''rt_override''.
 
           '
         default: vrf_id
@@ -1823,6 +1935,17 @@ keys:
           type: str
         lag_hardware_only:
           type: bool
+        default_interface_mtu:
+          type: int
+          convert_types:
+          - str
+          description: 'Default interface MTU configured on EOS under "interface defaults".
+
+            Takes precedence over the root key "default_interface_mtu".
+
+            '
+          min: 68
+          max: 65535
         feature_support:
           type: dict
           keys:
@@ -1835,6 +1958,19 @@ keys:
             poe:
               type: bool
               default: false
+            per_interface_mtu:
+              type: bool
+              default: true
+              description: 'Support for configuration of per interface MTU for p2p
+                links, MLAG SVIs and Network Services.
+
+                Effectively this means that all settings regarding interface MTU will
+                be ignored if this is false.
+
+                Platforms without support for per interface MTU can use a single default
+                interface MTU setting. Set this via "default_interface_mtu"
+
+                '
             bgp_update_wait_install:
               type: bool
               default: true
@@ -1982,9 +2118,9 @@ keys:
               speed_groups:
                 type: list
                 items:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
   pod_name:
     documentation_options:
       table: fabric-topology
@@ -2015,7 +2151,7 @@ keys:
       '
     items:
       type: dict
-      $ref: '#/$defs/adapter_config'
+      $ref: eos_designs#/$defs/adapter_config
       keys:
         profile:
           type: str
@@ -2041,6 +2177,7 @@ keys:
         - aes67-r16-2016
         default: aes67-r16-2016
       domain:
+        type: int
         $ref: eos_cli_config_gen#/keys/ptp/keys/domain
       auto_clock_identity:
         type: bool
@@ -2195,9 +2332,13 @@ keys:
       are not present in the network.'
   snmp_settings:
     documentation_options:
-      table: management-settings
+      table: management-snmp-settings
     type: dict
-    description: Set SNMP settings (optional).
+    description: 'SNMP settings
+
+      For SNMP local-interfaces see "source_interfaces.snmp"
+
+      Configuration of remote SNMP engine IDs are currently only possible using `structured_config`.'
     keys:
       contact:
         type: str
@@ -2207,6 +2348,26 @@ keys:
         default: false
         description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name>
           <switch_rack> <inventory_hostname>".
+      vrfs:
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/vrfs
+        type: list
+        description: 'Enable/disable SNMP for one or more VRFs.
+
+          Can be used in combination with "enable_mgmt_interface_vrf" and "enable_inband_mgmt_vrf".'
+      enable_mgmt_interface_vrf:
+        type: bool
+        description: 'Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
+
+          Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for the device.
+
+          Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".'
+      enable_inband_mgmt_vrf:
+        type: bool
+        description: 'Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
+
+          Ignored if inband management is not configured for the device.
+
+          Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".'
       compute_local_engineid:
         type: bool
         default: false
@@ -2240,6 +2401,9 @@ keys:
           '
       users:
         type: list
+        description: 'Configuration of local SNMP users.
+
+          Configuration of remote SNMP users are currently only possible using `structured_config`.'
         items:
           type: dict
           keys:
@@ -2248,10 +2412,7 @@ keys:
               description: Username
             group:
               type: str
-              description: 'Configuration of the SNMP User Groups are currently only
-                possible using `structured_config`.
-
-                '
+              description: Group name
             version:
               type: str
               valid_values:
@@ -2281,6 +2442,56 @@ keys:
               type: str
               description: Cleartext passphrase so the recommendation is to use vault.
                 Requires 'priv' to be set.
+      hosts:
+        type: list
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/hosts
+        items:
+          type: dict
+          keys:
+            host:
+              type: str
+              $ref: eos_cli_config_gen#/keys/snmp_server/keys/hosts/items/keys/host
+            vrf:
+              type: str
+              description: 'VRF Name.
+
+                Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf"
+                to configure the SNMP host under multiple VRFs.'
+              convert_types:
+              - int
+            use_mgmt_interface_vrf:
+              type: bool
+              description: Configure the SNMP host under the VRF set with "mgmt_interface_vrf".
+                Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the
+                device, so if the host is only configured with this VRF, the host
+                will not be configured at all. Can be used in combination with "vrf"
+                and "use_inband_mgmt_vrf" to configure the SNMP host under multiple
+                VRFs.
+            use_inband_mgmt_vrf:
+              type: bool
+              description: Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
+                Ignored if inband management is not configured for the device, so
+                if the host is only configured with this VRF, the host will not be
+                configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
+                to configure the SNMP host under multiple VRFs.
+      communities:
+        type: list
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
+      ipv4_acls:
+        type: list
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls
+      ipv6_acls:
+        type: list
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls
+      views:
+        type: list
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
+      groups:
+        type: list
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/groups
+      traps:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/snmp_server/keys/traps
   source_interfaces:
     documentation_options:
       table: management-source-interfaces-settings
@@ -2353,6 +2564,25 @@ keys:
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
+      snmp:
+        type: dict
+        description: SNMP local-interfaces.
+        keys:
+          mgmt_interface:
+            type: bool
+            description: 'Configure a SNMP local-interface with the interface set
+              by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
+
+              `mgmt_interface` is typically the out-of-band Management interface,
+              and can be set under the node settings, platform settings or as a group/host
+              var.'
+          inband_mgmt_interface:
+            type: bool
+            description: 'Configure a SNMP local-interface with the interface set
+              by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and
+              can be set under the node settings.'
       ssh_client:
         type: dict
         description: IP SSH Client source-interfaces.
@@ -2417,7 +2647,7 @@ keys:
 
       '
     items:
-      $ref: '#/$defs/svi'
+      $ref: eos_designs#/$defs/svi
       type: dict
       keys:
         profile:
@@ -2731,6 +2961,13 @@ keys:
       enable:
         type: bool
         default: false
+  use_cv_topology:
+    documentation_options:
+      table: cv-topology
+    type: bool
+    description: 'Generate AVD configurations directly from a given CloudVision topology.
+
+      See `cv_topology` for details.'
   vtep_vvtep_ip:
     documentation_options:
       table: overlay-settings
@@ -2753,19 +2990,19 @@ keys:
     default: false
 dynamic_keys:
   connected_endpoints_keys.key:
-    $ref: '#/$defs/connected_endpoints'
+    $ref: eos_designs#/$defs/connected_endpoints
     type: list
     display_name: Connected Endpoints
     documentation_options:
       table: connected-endpoints
   network_services_keys.name:
-    $ref: '#/$defs/network_services'
+    $ref: eos_designs#/$defs/network_services
     type: list
     display_name: Network Services
     documentation_options:
       table: network-services
   node_type_keys.key:
-    $ref: '#/$defs/node_type'
+    $ref: eos_designs#/$defs/node_type
     type: dict
     documentation_options:
       table: node-type-structure
@@ -3062,11 +3299,14 @@ $defs:
                 default: percent
                 description: Optional variable and is hardware dependent.
           broadcast:
-            $ref: '#/$defs/adapter_config/keys/storm_control/keys/all'
+            type: dict
+            $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
           multicast:
-            $ref: '#/$defs/adapter_config/keys/storm_control/keys/all'
+            type: dict
+            $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
           unknown_unicast:
-            $ref: '#/$defs/adapter_config/keys/storm_control/keys/all'
+            type: dict
+            $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
       monitor_sessions:
         type: list
         description: Used to define switchports as source or destination for monitoring
@@ -3397,7 +3637,7 @@ $defs:
           type: list
           description: A list of adapters, group by adapters leveraging the same port-profile.
           items:
-            $ref: '#/$defs/adapter_config'
+            $ref: eos_designs#/$defs/adapter_config
             type: dict
             keys:
               switch_ports:
@@ -3427,10 +3667,10 @@ $defs:
               endpoint_ports:
                 type: list
                 description: 'Endpoint ports is used for description, required unless
-                  description is set.
+                  `description` or `descriptions` is set.
 
-                  The lists `endpoint_ports`, `switch_ports`, and `switches` must
-                  have the same length.
+                  The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches`
+                  must have the same length.
 
                   Each list item is one switchport.
 
@@ -3438,6 +3678,12 @@ $defs:
                 items:
                   type: str
                   description: Interface name.
+              descriptions:
+                type: list
+                description: 'Unique description per port. When set, takes priority
+                  over description.
+
+                  '
               server_ports:
                 type: list
                 deprecation:
@@ -3479,7 +3725,7 @@ $defs:
         convert_types:
         - dict
         primary_key: name
-        $ref: '#/$defs/p2p_links'
+        $ref: eos_designs#/$defs/p2p_links
         items:
           type: dict
           keys:
@@ -3489,7 +3735,7 @@ $defs:
                 can be inherited from a profile.
       p2p_links:
         type: list
-        $ref: '#/$defs/p2p_links'
+        $ref: eos_designs#/$defs/p2p_links
         items:
           type: dict
           keys:
@@ -3748,6 +3994,17 @@ $defs:
                 items:
                   type: str
                   description: Group_prefix/mask.
+              access_list_name:
+                type: str
+                description: 'List of groups to associate with the RP address set
+                  in ''rp''.
+
+                  If access_list_name is set, a standard access-list will be configured
+                  matching these groups.
+
+                  Otherwise the groups are configured directly on the RP command.
+
+                  '
         igmp_snooping_querier:
           documentation_options:
             table: network-services-multicast-settings
@@ -3852,8 +4109,6 @@ $defs:
                 type: int
                 convert_types:
                 - str
-                min: 1
-                max: 1024
                 description: 'Required if "vrf_vni" is not set.
 
                   "vrf_id" is used as default value for "vrf_vni" and "ospf.process_id"
@@ -4062,6 +4317,8 @@ $defs:
                   Allow override of `<network_services_key>.[].evpn_l3_multicast`
                   node_settings.
 
+                  Requires `evpn_multicast` to also be set to `true`.
+
                   '
                 keys:
                   enabled:
@@ -4118,6 +4375,17 @@ $defs:
                       items:
                         type: str
                         description: Group_prefix/mask.
+                    access_list_name:
+                      type: str
+                      description: 'List of groups to associate with the RP addresses
+                        set in ''rps''.
+
+                        If access_list_name is set, a standard access-list will be
+                        configured matching these groups.
+
+                        Otherwise the groups are configured directly on the RP command.
+
+                        '
               evpn_l2_multi_domain:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -4142,7 +4410,7 @@ $defs:
 
                   '
                 items:
-                  $ref: '#/$defs/svi'
+                  $ref: eos_designs#/$defs/svi
                   type: dict
                   keys:
                     id:
@@ -4684,6 +4952,15 @@ $defs:
                 type: bool
                 default: true
                 description: Extend this L2VLAN over VXLAN.
+              evpn_vlan_bundle:
+                type: str
+                description: 'Name of a bundle defined under ''evpn_vlan_bundles''
+                  to inherit configuration.
+
+                  To use this option the common "evpn_vlan_aware_bundles" option must
+                  be set to true.
+
+                  '
               trunk_groups:
                 type: list
                 items:
@@ -4704,6 +4981,8 @@ $defs:
                   When evpn_l2_multicast.enabled is set to true for a vlan or a tenant,
                   igmp snooping and igmp snooping querier will always be enabled,
                   overriding those individual settings.
+
+                  Requires `evpn_multicast` to also be set to `true`.
 
                   '
                 keys:
@@ -5086,7 +5365,21 @@ $defs:
             description: 'Set point-to-Point interface speed and will apply to uplink
               interfaces on both ends.
 
-              interface_speed or forced interface_speed or auto interface_speed.
+              (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
+
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
+
+              '
+            type: str
+          uplink_switch_interface_speed:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: 'Set point-to-Point interface speed for the uplink switch
+              interface only.
+
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
 
               '
             type: str
@@ -5325,6 +5618,13 @@ $defs:
             convert_types:
             - str
             default: 0
+          vtep:
+            type: bool
+            description: 'Node is configured as a VTEP when applicable based on ''overlay_routing_protocol''.
+
+              Overrides VTEP setting inherited from node_type_keys.'
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
           vtep_loopback:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -5867,7 +6167,7 @@ $defs:
               new_key: inband_mgmt_subnet
               remove_in_version: 5.0.0
             type: str
-            $ref: '#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet'
+            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet
           inband_management_vlan:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -5876,7 +6176,7 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
-            $ref: '#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan'
+            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan
           mpls_overlay_role:
             documentation_options:
               table: node-type-mpls-configuration
@@ -5937,6 +6237,12 @@ $defs:
                 - smpte2059-2
                 - aes67-r16-2016
                 default: aes67-r16-2016
+              mlag:
+                description: Configure PTP on the MLAG peer-link port-channel when
+                  PTP is enabled. By default PTP will not be configured on the MLAG
+                  peer-link port-channel.
+                type: bool
+                default: false
               domain:
                 type: int
                 convert_types:
@@ -6122,7 +6428,7 @@ $defs:
         - dict
         primary_key: group
         items:
-          $ref: '#/$defs/node_type/keys/defaults'
+          $ref: eos_designs#/$defs/node_type/keys/defaults
           type: dict
           keys:
             group:
@@ -6135,7 +6441,7 @@ $defs:
 
                 '
             nodes:
-              $ref: '#/$defs/node_type/keys/nodes'
+              $ref: eos_designs#/$defs/node_type/keys/nodes
               description: Define variables per node.
               type: list
       nodes:
@@ -6145,7 +6451,7 @@ $defs:
         - dict
         primary_key: name
         items:
-          $ref: '#/$defs/node_type/keys/defaults'
+          $ref: eos_designs#/$defs/node_type/keys/defaults
           type: dict
           keys:
             name:
@@ -6322,7 +6628,7 @@ $defs:
             since it can be either ethernet_interfaces or port_channel_interfaces.'
   svi:
     type: dict
-    $ref: '#/$defs/svi_settings'
+    $ref: eos_designs#/$defs/svi_settings
     keys:
       nodes:
         type: list
@@ -6337,7 +6643,7 @@ $defs:
           '
         items:
           type: dict
-          $ref: '#/$defs/svi_settings'
+          $ref: eos_designs#/$defs/svi_settings
           keys:
             node:
               type: str
@@ -6535,6 +6841,8 @@ $defs:
           snooping" and "igmp snooping querier" will always be enabled, overriding
           those individual settings.
 
+          Requires `evpn_multicast` to also be set to `true`.
+
           '
         keys:
           enabled:
@@ -6545,6 +6853,8 @@ $defs:
         type: dict
         description: 'Explicitly enable or disable evpn_l3_multicast to override setting
           of `<network_services_key>.[].evpn_l3_multicast.enabled` and `<network_services_key>.[].vrfs.[].evpn_l3_multicast.enabled`.
+
+          Requires `evpn_multicast` to also be set to `true`.
 
           '
         keys:

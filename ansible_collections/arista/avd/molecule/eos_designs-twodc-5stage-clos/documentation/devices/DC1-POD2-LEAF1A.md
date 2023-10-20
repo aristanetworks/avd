@@ -244,9 +244,9 @@ vlan 2601
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3 | routed | - | 172.17.120.1/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | routed | - | 172.17.120.3/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-RS2_Ethernet3 | routed | - | 172.17.10.12/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3 | routed | - | 172.17.120.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | routed | - | 172.17.120.3/31 | default | - | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-RS2_Ethernet3 | routed | - | 172.17.10.12/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -255,7 +255,6 @@ vlan 2601
 interface Ethernet1
    description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.120.1/31
@@ -265,7 +264,6 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.120.3/31
@@ -275,7 +273,6 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-RS2_Ethernet3
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.17.10.12/31
    service-profile QOS-PROFILE
@@ -538,7 +535,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65121|  172.16.120.3 |
+| 65121 | 172.16.120.3 |
 
 | BGP Tuning |
 | ---------- |

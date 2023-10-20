@@ -34,6 +34,10 @@ class MiscMixin:
         return get(self.hostvars, "inventory_hostname", required=True)
 
     @cached_property
+    def is_deployed(self: SharedUtils) -> bool:
+        return get(self.hostvars, "is_deployed", default=True)
+
+    @cached_property
     def id(self: SharedUtils) -> int | None:
         return get(self.switch_data_combined, "id")
 
@@ -87,7 +91,11 @@ class MiscMixin:
 
     @cached_property
     def uplink_switches(self: SharedUtils) -> list:
-        return get(self.switch_data_combined, "uplink_switches", default=[])
+        return default(
+            get(self.switch_data_combined, "uplink_switches"),
+            get(self.cv_topology_config, "uplink_switches"),
+            [],
+        )
 
     @cached_property
     def virtual_router_mac_address(self: SharedUtils) -> str | None:
@@ -117,7 +125,10 @@ class MiscMixin:
         return get(self.switch_data_combined, "max_uplink_switches", default=len(self.uplink_switches))
 
     @cached_property
-    def p2p_uplinks_mtu(self: SharedUtils) -> int:
+    def p2p_uplinks_mtu(self: SharedUtils) -> int | None:
+        if not self.platform_settings_feature_support_per_interface_mtu:
+            return None
+
         return get(self.hostvars, "p2p_uplinks_mtu", default=9214)
 
     @cached_property
@@ -180,6 +191,10 @@ class MiscMixin:
         return get(self.switch_data_combined, "uplink_interface_speed")
 
     @cached_property
+    def uplink_switch_interface_speed(self: SharedUtils) -> str | None:
+        return get(self.switch_data_combined, "uplink_switch_interface_speed")
+
+    @cached_property
     def uplink_bfd(self: SharedUtils) -> bool:
         return get(self.switch_data_combined, "uplink_bfd") is True
 
@@ -234,3 +249,8 @@ class MiscMixin:
     @cached_property
     def fabric_sflow_mlag_interfaces(self: SharedUtils) -> bool | None:
         return get(self.hostvars, "fabric_sflow.mlag_interfaces")
+
+    @cached_property
+    def default_interface_mtu(self: SharedUtils) -> int | None:
+        default_default_interface_mtu = get(self.hostvars, "default_interface_mtu")
+        return get(self.platform_settings, "default_interface_mtu", default=default_default_interface_mtu)

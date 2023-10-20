@@ -5,11 +5,12 @@ from jinja2 import ChoiceLoader, Environment, FileSystemLoader, ModuleLoader, St
 
 from .constants import JINJA2_EXTENSIONS, JINJA2_PRECOMPILED_TEMPLATE_PATH
 from .vendor.j2.filter.convert_dicts import convert_dicts
+from .vendor.j2.filter.decrypt import decrypt
 from .vendor.j2.filter.default import default
+from .vendor.j2.filter.encrypt import encrypt
 from .vendor.j2.filter.hide_passwords import hide_passwords
 from .vendor.j2.filter.list_compress import list_compress
 from .vendor.j2.filter.natural_sort import natural_sort
-from .vendor.j2.filter.password import decrypt, encrypt
 from .vendor.j2.filter.range_expand import range_expand
 from .vendor.j2.test.contains import contains
 from .vendor.j2.test.defined import defined

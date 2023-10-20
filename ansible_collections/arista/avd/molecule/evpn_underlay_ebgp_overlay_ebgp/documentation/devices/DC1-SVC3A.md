@@ -1243,7 +1243,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65103|  192.168.255.12 |
+| 65103 | 192.168.255.12 |
 
 | BGP Tuning |
 | ---------- |

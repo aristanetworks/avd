@@ -72,6 +72,22 @@ ansible_httpapi_validate_certs: True
 ansible_httpapi_port: 443
 ```
 
+Please note that the correct regional URL where the CVaaS tenant is deployed must be used. The following are the
+cluster URLs used in production:
+
+| Region | URL |
+|--------|-----|
+| United States 1a | [www.arista.io](https://www.arista.io) |
+| United States 1c| [www.cv-prod-us-central1-c.arista.io](https://www.cv-prod-us-central1-c.arista.io)|
+| Canada | [www.cv-prod-na-northeast1-b.arista.io](https://www.cv-prod-na-northeast1-b.arista.io)|
+| Europe West 2| [www.cv-prod-euwest-2.arista.io](https://www.cv-prod-euwest-2.arista.io)|
+| Japan| [www.cv-prod-apnortheast-1.arista.io](https://www.cv-prod-apnortheast-1.arista.io)|
+| Australia | [www.cv-prod-ausoutheast-1.arista.io](https://www.cv-prod-ausoutheast-1.arista.io)|
+
+!!! Warning
+
+    URLs without `www` are not supported.
+
 Click [here](#ansible-vault) for instructions on how to setup Ansible Vault.
 
 ## Testing connectivity and authentication between AVD and CVaaS
