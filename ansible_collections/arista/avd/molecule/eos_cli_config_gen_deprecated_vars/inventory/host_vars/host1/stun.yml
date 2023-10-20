@@ -1,0 +1,6 @@
+### stun
+---
+stun:
+  server:
+    # deprecated in favor of local_interfaces
+    local_interface: ethernet1

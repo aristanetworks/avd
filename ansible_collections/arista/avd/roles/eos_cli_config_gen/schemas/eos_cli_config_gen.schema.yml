@@ -12102,6 +12102,15 @@ keys:
         keys:
           local_interface:
             type: str
+            deprecation:
+              warning: true
+              new_key: local_interfaces
+              remove_in_version: v5.0.0
+          local_interfaces:
+            type: list
+            min_length: 1
+            items:
+              type: str
   switchport_default:
     type: dict
     keys:

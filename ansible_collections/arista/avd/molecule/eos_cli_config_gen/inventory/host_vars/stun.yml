@@ -2,7 +2,11 @@
 ---
 stun:
   server:
-    local_interface: ethernet1
+    local_interfaces:
+      - Ethernet1
+      - Vlan42
+      - Vlan666
+      - Ethernet13
   client:
     server_profiles:
       # The servers are on purpose not in order in order to test the sorting
