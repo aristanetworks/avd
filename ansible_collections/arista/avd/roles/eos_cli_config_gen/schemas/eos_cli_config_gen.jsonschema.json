@@ -1555,6 +1555,13 @@
             "type": "boolean",
             "title": "Shutdown"
           },
+          "mtu": {
+            "type": "integer",
+            "description": "Maximum Transmission Unit in bytes.",
+            "minimum": 86,
+            "maximum": 65535,
+            "title": "MTU"
+          },
           "ip_address": {
             "type": "string",
             "description": "IPv4 address/mask.",
