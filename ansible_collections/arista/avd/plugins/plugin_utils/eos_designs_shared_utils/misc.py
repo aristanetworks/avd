@@ -37,6 +37,10 @@ class MiscMixin:
         return get(self.hostvars, "inventory_hostname", required=True)
 
     @cached_property
+    def is_deployed(self: SharedUtils) -> bool:
+        return get(self.hostvars, "is_deployed", default=True)
+
+    @cached_property
     def id(self: SharedUtils) -> int | None:
         """
         Node ID.
@@ -109,7 +113,11 @@ class MiscMixin:
 
     @cached_property
     def uplink_switches(self: SharedUtils) -> list:
-        return get(self.switch_data_combined, "uplink_switches", default=[])
+        return default(
+            get(self.switch_data_combined, "uplink_switches"),
+            get(self.cv_topology_config, "uplink_switches"),
+            [],
+        )
 
     @cached_property
     def virtual_router_mac_address(self: SharedUtils) -> str | None:
@@ -203,6 +211,10 @@ class MiscMixin:
     @cached_property
     def uplink_interface_speed(self: SharedUtils) -> str | None:
         return get(self.switch_data_combined, "uplink_interface_speed")
+
+    @cached_property
+    def uplink_switch_interface_speed(self: SharedUtils) -> str | None:
+        return get(self.switch_data_combined, "uplink_switch_interface_speed")
 
     @cached_property
     def uplink_bfd(self: SharedUtils) -> bool:

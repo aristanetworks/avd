@@ -72,9 +72,9 @@ enable password sha512 <removed>
 
 #### TACACS Servers
 
-| VRF | TACACS Servers | Single-Connection |
-| --- | -------------- | ----------------- |
-| default | 10.10.10.157 | False |
+| VRF | TACACS Servers | Single-Connection | Timeout |
+| --- | -------------- | ----------------- | ------- |
+| default | 10.10.10.157 | False | - |
 
 #### TACACS Servers Device Configuration
 
@@ -106,7 +106,7 @@ radius-server host 10.10.10.158 key 7 <removed>
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65100|  10.50.64.15 |
+| 65100 | 10.50.64.15 |
 
 #### Router BGP Peer Groups
 

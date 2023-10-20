@@ -43,7 +43,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65001|  1.0.1.1 |
+| 65001 | 1.0.1.1 |
 
 #### Router BGP VRFs
 

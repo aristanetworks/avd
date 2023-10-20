@@ -49,7 +49,8 @@ class AvdValidationError(AristaAvdError):
             raise AristaAvdError('Python library "jsonschema" must be installed to use this plugin') from JSONSCHEMA_IMPORT_ERROR
 
         if isinstance(error, (jsonschema.ValidationError)):
-            self.message = f"'Validation Error: {self._json_path_to_string(error.absolute_path)}': {error.message}"
+            self.path = self._json_path_to_string(error.absolute_path)
+            self.message = f"'Validation Error: {self.path}': {error.message}"
         else:
             self.message = message
         super().__init__(self.message)
@@ -58,7 +59,8 @@ class AvdValidationError(AristaAvdError):
 class AvdConversionWarning(AristaAvdError):
     def __init__(self, message: str = "Data was converted to conform to schema", key=None, oldtype="unknown", newtype="unknown"):
         if key is not None:
-            self.message = f"'Data Type Converted: {key} from '{oldtype}' to '{newtype}'"
+            self.path = self._json_path_to_string(key)
+            self.message = f"'Data Type Converted: {self.path} from '{oldtype}' to '{newtype}'"
         else:
             self.message = message
         super().__init__(self.message)
@@ -67,10 +69,13 @@ class AvdConversionWarning(AristaAvdError):
 class AvdDeprecationWarning(AristaAvdError):
     def __init__(self, key, new_key=None, remove_in_version=None, remove_after_date=None, url=None, removed=False):
         messages = []
+        self.path = self._json_path_to_string(key)
+
         if removed:
-            messages.append(f"The input data model '{key}' was removed.")
+            messages.append(f"The input data model '{self.path}' was removed.")
         else:
-            messages.append(f"The input data model '{key}' is deprecated.")
+            messages.append(f"The input data model '{self.path}' is deprecated.")
+
         self.version = remove_in_version
         self.date = remove_after_date
         self.removed = removed

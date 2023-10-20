@@ -7,7 +7,7 @@
 type: dict
 dynamic_keys:
   "connected_endpoints_keys.key":
-    $ref: "#/$defs/connected_endpoints"
+    $ref: "eos_designs#/$defs/connected_endpoints"
     type: list
     display_name: Connected Endpoints
     documentation_options:

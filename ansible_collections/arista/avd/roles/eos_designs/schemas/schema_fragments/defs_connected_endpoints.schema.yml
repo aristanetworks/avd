@@ -28,7 +28,7 @@ $defs:
           type: list
           description: A list of adapters, group by adapters leveraging the same port-profile.
           items:
-            $ref: "#/$defs/adapter_config"
+            $ref: "eos_designs#/$defs/adapter_config"
             type: dict
             keys:
               switch_ports:

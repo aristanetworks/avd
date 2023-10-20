@@ -40,7 +40,7 @@ spanning-tree vlan-id 100-500 priority 16384
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  192.168.255.3 |
+| 65101 | 192.168.255.3 |
 
 #### Router BGP VRFs
 

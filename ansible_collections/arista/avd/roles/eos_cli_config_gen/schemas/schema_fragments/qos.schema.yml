@@ -24,6 +24,12 @@ keys:
               type: str
               description: |
                 Example: "8 9 10 to traffic-class 1"
+          exp:
+            type: list
+            items:
+              type: str
+              description: |
+                Example "0 to traffic-class 0"
           traffic_class:
             type: list
             items:
@@ -32,3 +38,22 @@ keys:
                 Example: "1 to dscp 32"
       rewrite_dscp:
         type: bool
+      random_detect:
+        type: dict
+        description: Global random-detect settings
+        keys:
+          ecn:
+            type: dict
+            description: Global ECN Configuration
+            keys:
+              allow_non_ect:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: |-
+                      Allow non-ect and set drop-precedence 1 in a policy map simultaneously.
+                      Check which command is required for your platform.
+                  chip_based:
+                    type: bool
+                    description: Allow non-ect chip-based

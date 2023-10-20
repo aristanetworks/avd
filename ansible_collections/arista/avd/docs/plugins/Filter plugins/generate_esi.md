@@ -35,8 +35,6 @@ esi: "{{ short_esi | arista.avd.generate_esi('deaf:beed:') }}"
 | ---- | ---- | ----------- |
 | _value | string | Concatenated string of <em>esi\_prefix</em> and <em>short\_esi</em> like <code>0000\:0000\:0303\:0202\:0101</code> |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

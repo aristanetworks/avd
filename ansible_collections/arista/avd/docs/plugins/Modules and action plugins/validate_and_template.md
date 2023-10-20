@@ -53,8 +53,6 @@ For Markdown files the plugin can also run md\_toc on the output before writing 
   when: generate_device_documentation | arista.avd.default(true)
 ```
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

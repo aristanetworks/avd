@@ -62,11 +62,46 @@ router_bgp:
         encapsulation: vxlan
       - name: MLAG-IPv4-UNDERLAY-PEER
         activate: false
+      - name: ADDITIONAL-PATH-PG-1
+        activate: true
+        additional_paths:
+          receive: true
+          send:
+            any: true
+      - name: ADDITIONAL-PATH-PG-2
+        activate: true
+        additional_paths:
+          send:
+            backup: true
+      - name: ADDITIONAL-PATH-PG-3
+        activate: true
+        additional_paths:
+          send:
+            ecmp: true
+      - name: ADDITIONAL-PATH-PG-4
+        activate: true
+        additional_paths:
+          send:
+            ecmp_limit: 42
+      - name: ADDITIONAL-PATH-PG-5
+        activate: true
+        additional_paths:
+          send:
+            limit: 42
+      # Checking the `no neighbor <PG> additional-paths send any is rendered
+      - name: ADDITIONAL-PATH-PG-6
+        activate: true
+        additional_paths:
+          send:
+            any: false
     evpn_hostflap_detection:
       enabled: true
       window: 10
       threshold: 1
       expiry_timeout: 3
+    next_hop:
+      resolution_disabled: true
+    next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS

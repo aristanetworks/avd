@@ -1,4 +1,5 @@
 hostname: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
+is_deployed: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -62,7 +63,7 @@ ethernet_interfaces:
     mode: active
 port_channel_interfaces:
 - name: Port-Channel1
-  description: PTP-TESTS-LEAF1_Po14
+  description: PTP-TEST-LEAF_Po14
   type: switched
   shutdown: false
   mode: trunk

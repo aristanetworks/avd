@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 
 from .bgp_peer_groups import BgpPeerGroupsMixin
 from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
+from .cv_topology import CvTopology
 from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
@@ -35,6 +36,7 @@ class SharedUtils(
     InterfaceDescriptionsMixin,
     IpAddressingMixin,
     LinkTrackingGroupsMixin,
+    CvTopology,
     MgmtMixin,
     MlagMixin,
     MiscMixin,

@@ -1,4 +1,5 @@
 hostname: DC2-RS2
+is_deployed: true
 router_bgp:
   as: '65201'
   router_id: 172.16.20.2

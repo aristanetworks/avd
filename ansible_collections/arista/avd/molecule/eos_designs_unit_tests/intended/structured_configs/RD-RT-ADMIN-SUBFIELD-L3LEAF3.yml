@@ -1,4 +1,5 @@
 hostname: RD-RT-ADMIN-SUBFIELD-L3LEAF3
+is_deployed: true
 router_bgp:
   as: '65003'
   router_id: 192.168.255.3
