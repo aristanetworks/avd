@@ -1012,6 +1012,8 @@ keys:
           description: Server IP or Hostname
       tunnel_requests_disabled:
         type: bool
+      mlag_peerlink_requests_disabled:
+        type: bool
   dns_domain:
     type: str
     description: Domain Name
@@ -1517,6 +1519,12 @@ keys:
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP
+        dhcp_server_ipv4:
+          type: bool
+          description: Enable IPv4 DHCP server.
+        dhcp_server_ipv6:
+          type: bool
+          description: Enable IPv6 DHCP server.
         ip_helpers:
           type: list
           primary_key: ip_helper
@@ -2516,6 +2524,7 @@ keys:
 
             '
           valid_values:
+          - on-boot
           - on-logging
           - on-startup-config
         regex:
@@ -3893,6 +3902,10 @@ keys:
           max: 4294967295
   ipv6_unicast_routing:
     type: bool
+  is_deployed:
+    description: Key only used for documentation or validation purposes
+    type: bool
+    default: true
   l2_protocol:
     type: dict
     keys:
@@ -4707,6 +4720,16 @@ keys:
                 ip_access_group:
                   type: str
                   description: ACL name
+                port:
+                  type: int
+                  description: 'GNMI port.
+
+                    Make sure to update the control-plane ACL accordingly in order
+                    for the service to be reachable by external applications.
+
+                    '
+                  convert_types:
+                  - str
           grpc_tunnels:
             type: list
             primary_key: name
@@ -5200,6 +5223,24 @@ keys:
       log_level:
         type: str
         description: SSH daemon log level
+      client_alive:
+        type: dict
+        keys:
+          count_max:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 1000
+            description: Number of keep-alive packets that can be sent without a response
+              before the connection is assumed dead.
+          interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 1000
+            description: Time period (in seconds) to send SSH keep-alive packets.
   management_tech_support:
     type: dict
     keys:
@@ -7064,6 +7105,13 @@ keys:
               description: 'Example: "8 9 10 to traffic-class 1"
 
                 '
+          exp:
+            type: list
+            items:
+              type: str
+              description: 'Example "0 to traffic-class 0"
+
+                '
           traffic_class:
             type: list
             items:
@@ -8692,6 +8740,8 @@ keys:
                 type: str
                 valid_values:
                 - discard
+          next_hop_unchanged:
+            type: bool
       address_family_rtc:
         type: dict
         keys:
@@ -10375,6 +10425,7 @@ keys:
         type: str
         description: IPv4 Address
       is_type:
+        display_name: IS Type
         type: str
         valid_values:
         - level-1
@@ -12052,6 +12103,15 @@ keys:
         keys:
           local_interface:
             type: str
+            deprecation:
+              warning: true
+              new_key: local_interfaces
+              remove_in_version: v5.0.0
+          local_interfaces:
+            type: list
+            min_length: 1
+            items:
+              type: str
   switchport_default:
     type: dict
     keys:

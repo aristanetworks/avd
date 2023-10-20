@@ -52,7 +52,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         """
         Exposed in avd_switch_facts
         """
-        return get(self._hostvars, "is_deployed", default=True)
+        return self.shared_utils.is_deployed
 
     @cached_property
     def serial_number(self) -> str | None:

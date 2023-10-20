@@ -1043,7 +1043,7 @@ keys:
   is_deployed:
     documentation_options:
       table: is-deployed
-    description: 'Is device already deployed in the fabric.
+    description: 'If the device is already deployed in the fabric.
 
       When set to false, interfaces toward this device may be shutdown depending on
       the `shutdown_interfaces_towards_undeployed_peers` setting.
@@ -1079,6 +1079,7 @@ keys:
     description: These fabric level parameters can be used with core_interfaces running
       ISIS, and may be overridden on link profile or link level.
   isis_default_is_type:
+    display_name: ISIS Default IS Type
     documentation_options:
       table: isis-settings
     type: str
@@ -3993,6 +3994,17 @@ $defs:
                 items:
                   type: str
                   description: Group_prefix/mask.
+              access_list_name:
+                type: str
+                description: 'List of groups to associate with the RP address set
+                  in ''rp''.
+
+                  If access_list_name is set, a standard access-list will be configured
+                  matching these groups.
+
+                  Otherwise the groups are configured directly on the RP command.
+
+                  '
         igmp_snooping_querier:
           documentation_options:
             table: network-services-multicast-settings
@@ -4363,6 +4375,17 @@ $defs:
                       items:
                         type: str
                         description: Group_prefix/mask.
+                    access_list_name:
+                      type: str
+                      description: 'List of groups to associate with the RP addresses
+                        set in ''rps''.
+
+                        If access_list_name is set, a standard access-list will be
+                        configured matching these groups.
+
+                        Otherwise the groups are configured directly on the RP command.
+
+                        '
               evpn_l2_multi_domain:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -5342,7 +5365,21 @@ $defs:
             description: 'Set point-to-Point interface speed and will apply to uplink
               interfaces on both ends.
 
-              interface_speed or forced interface_speed or auto interface_speed.
+              (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
+
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
+
+              '
+            type: str
+          uplink_switch_interface_speed:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: 'Set point-to-Point interface speed for the uplink switch
+              interface only.
+
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
 
               '
             type: str
@@ -6200,6 +6237,12 @@ $defs:
                 - smpte2059-2
                 - aes67-r16-2016
                 default: aes67-r16-2016
+              mlag:
+                description: Configure PTP on the MLAG peer-link port-channel when
+                  PTP is enabled. By default PTP will not be configured on the MLAG
+                  peer-link port-channel.
+                type: bool
+                default: false
               domain:
                 type: int
                 convert_types:

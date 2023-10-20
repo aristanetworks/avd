@@ -99,6 +99,7 @@ interface Management1
 #### Router BGP EVPN Address Family
 
 - Next-hop resolution is __disabled__
+- Next-hop-unchanged is explicitly configured (default behaviour)
 
 ##### EVPN Peer Groups
 
@@ -234,6 +235,7 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      bgp next-hop-unchanged
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate
