@@ -29,7 +29,7 @@
   register: cvp_container_results
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
-  tags: [apply]
+  tags: [apply, containers, provision]
   arista.cvp.cv_task_v3:
     tasks: "{{ cvp_container_results.taskIds }}"
   when:
