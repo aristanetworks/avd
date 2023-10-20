@@ -14561,6 +14561,56 @@
                       "mpls"
                     ],
                     "title": "Encapsulation"
+                  },
+                  "additional_paths": {
+                    "type": "object",
+                    "properties": {
+                      "receive": {
+                        "type": "boolean",
+                        "title": "Receive"
+                      },
+                      "send": {
+                        "type": "object",
+                        "properties": {
+                          "any": {
+                            "type": "boolean",
+                            "title": "Any"
+                          },
+                          "backup": {
+                            "type": "boolean",
+                            "title": "Backup"
+                          },
+                          "ecmp": {
+                            "type": "boolean",
+                            "title": "ECMP"
+                          },
+                          "ecmp_limit": {
+                            "type": "integer",
+                            "description": "Amount of ECMP paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "ECMP Limit"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "description": "Amount of paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Send"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Additional Paths"
                   }
                 },
                 "additionalProperties": false,
