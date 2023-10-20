@@ -753,6 +753,9 @@ $defs:
             convert_types:
               - str
             default: 32768
+            description: |-
+              Spanning-tree priority configured for the selected mode.
+              For `rapid-pvst` the priority can also be set per VLAN under network services.
           spanning_tree_root_super:
             documentation_options:
               table: node-type-l2-mlag-configuration

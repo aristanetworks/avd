@@ -27081,6 +27081,11 @@
                   "description": "Extend this SVI over VXLAN.",
                   "title": "VxLAN"
                 },
+                "spanning_tree_priority": {
+                  "type": "integer",
+                  "description": "Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.\nThe default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).",
+                  "title": "Spanning Tree Priority"
+                },
                 "mtu": {
                   "type": "integer",
                   "description": "Interface MTU.",
@@ -28712,6 +28717,11 @@
             "default": true,
             "description": "Extend this SVI over VXLAN.",
             "title": "VxLAN"
+          },
+          "spanning_tree_priority": {
+            "type": "integer",
+            "description": "Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.\nThe default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).",
+            "title": "Spanning Tree Priority"
           },
           "mtu": {
             "type": "integer",
