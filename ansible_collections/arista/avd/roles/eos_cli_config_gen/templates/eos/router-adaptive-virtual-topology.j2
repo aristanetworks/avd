@@ -8,7 +8,7 @@
 !
 router adaptive-virtual-topolog
 {%     if router_adaptive_virtual_topology.topology_role is arista.avd.defined %}
-   topology role {{ router_adaptive_virtual_topology.topology_role | replace("-"," ") }}
+   topology role {{ router_adaptive_virtual_topology.topology_role }}
 {%     endif %}
 {%     if router_adaptive_virtual_topology.region is arista.avd.defined %}
    region {{ router_adaptive_virtual_topology.region.name }} id {{ router_adaptive_virtual_topology.region.id }}

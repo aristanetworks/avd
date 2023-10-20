@@ -7829,8 +7829,8 @@ keys:
         valid_values:
         - edge
         - pathfinder
-        - transit-region
-        - transit-zone
+        - transit region
+        - transit zone
       region:
         type: dict
         description: Region name and id

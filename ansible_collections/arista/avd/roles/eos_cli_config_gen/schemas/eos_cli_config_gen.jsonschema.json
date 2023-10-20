@@ -13079,8 +13079,8 @@
           "enum": [
             "edge",
             "pathfinder",
-            "transit-region",
-            "transit-zone"
+            "transit region",
+            "transit zone"
           ],
           "title": "Topology Role"
         },
