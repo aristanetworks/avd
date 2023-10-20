@@ -4,9 +4,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [DHCP Servers](#dhcp-servers)
+- [DHCP Server](#dhcp-server)
   - [DHCP Servers Summary](#dhcp-servers-summary)
-  - [DHCP Relay Configuration](#dhcp-relay-configuration)
+  - [DHCP Server Configuration](#dhcp-server-configuration)
 
 ## Management
 
@@ -36,7 +36,7 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## DHCP Servers
+## DHCP Server
 
 ### DHCP Servers Summary
 
@@ -45,7 +45,7 @@ interface Management1
 | True | - |
 | True | TEST |
 
-### DHCP Relay Configuration
+### DHCP Server Configuration
 
 ```eos
 !

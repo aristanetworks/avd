@@ -11,15 +11,33 @@
 {%     endif %}
 {% endfor %}
 {# later on this condition will change when top level key dhcp_server is implemented #}
-{% if ethernet_interfaces_dhcp_server | length > 0 %}
+{% if (ethernet_interfaces_dhcp_server | length > 0 or dhcp_servers is arista.avd.defined) %}
 
 ## DHCP Server
+{%     if dhcp_servers is arista.avd.defined %}
+
+### DHCP Servers Summary
+
+| DHCP Server Enabled | VRF |
+| ------------------- | --- |
+{%         for dhcp_server in dhcp_servers | arista.avd.natural_sort %}
+| {{ not dhcp_server.disabled | arista.avd.default(false) }} | {{ dhcp_server.vrf | arista.avd.default("-") }} |
+{%         endfor %}
+
+### DHCP Server Configuration
+
+```eos
+{%     include 'eos/dhcp-servers.j2' %}
+```
+{%     endif %}
+{%     if ethernet_interfaces_dhcp_server | length > 0 %}
 
 ### DHCP Server interfaces
 
 | Interface name | DHCP IPv4 | DHCP IPv6 |
 | -------------- | --------- | --------- |
-{%     for ethernet_interface in ethernet_interfaces_dhcp_server | arista.avd.natural_sort %}
+{%         for ethernet_interface in ethernet_interfaces_dhcp_server | arista.avd.natural_sort %}
 | {{ ethernet_interface.name }} | {{ ethernet_interface.dhcp_server_ipv4 | arista.avd.default(false) }} | {{ ethernet_interface.dhcp_server_ipv6 | arista.avd.default(false) }} |
-{%     endfor %}
+{%         endfor %}
+{%     endif %}
 {% endif %}
