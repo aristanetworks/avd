@@ -68,9 +68,9 @@ router path-selection
 {%             if static_peer.name is arista.avd.defined %}
          name {{ static_peer.name }}
 {%             endif %}
-{%             if static_peer.ip_address is arista.avd.defined %}
-         ipv4 address {{ static_peer.ip_address }}
-{%             endif %}
+{%             for ipv4_address in static_peer.ipv4_addresses | arista.avd.natural_sort %}
+         ipv4 address {{ ipv4_address }}
+{%             endfor %}
 {%         endfor %}
 {%     endfor %}
 {#   load-balance policies #}

@@ -53,9 +53,15 @@ router_path_selection:
         # Out of order to test sorting
         - router_ip: 172.16.42.42
           name: TEST-STATIC-PEER-WITH-NAME
-          ip_address: 192.168.42.42
+          # Out of order to test sorting
+          ipv4_addresses:
+            - 192.168.42.42
+            - 192.168.1.42
+        - router_ip: 172.16.2.42
+          ipv4_addresses:
+            - 192.168.2.42
+        # No ipv4 address
         - router_ip: 172.16.1.42
-          ip_address: 192.168.1.42
     - name: PG-3
       id: 888
     # path group with no id

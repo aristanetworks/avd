@@ -33,7 +33,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static_peers</samp>](## "router_path_selection.path_groups.[].static_peers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- router_ip</samp>](## "router_path_selection.path_groups.[].static_peers.[].router_ip") | String | Required, Unique |  |  | Peer router IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "router_path_selection.path_groups.[].static_peers.[].name") | String |  |  |  | Name of the site. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "router_path_selection.path_groups.[].static_peers.[].ip_address") | String |  |  |  | Static IPv4 address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_addresses</samp>](## "router_path_selection.path_groups.[].static_peers.[].ipv4_addresses") | List, items: String |  |  |  | Static IPv4 addresses. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "router_path_selection.path_groups.[].static_peers.[].ipv4_addresses.[].&lt;str&gt;") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;load_balance_policies</samp>](## "router_path_selection.load_balance_policies") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_path_selection.load_balance_policies.[].name") | String | Required, Unique |  |  | Load-balance policy name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "router_path_selection.load_balance_policies.[].path_groups") | List, items: String |  |  |  | List of path-groups to use for this load balance policy. |
@@ -79,7 +80,8 @@
           static_peers:
             - router_ip: <str>
               name: <str>
-              ip_address: <str>
+              ipv4_addresses:
+                - <str>
       load_balance_policies:
         - name: <str>
           path_groups:

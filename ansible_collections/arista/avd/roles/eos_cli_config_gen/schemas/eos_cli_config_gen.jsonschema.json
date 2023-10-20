@@ -19603,10 +19603,13 @@
                       "description": "Name of the site.",
                       "title": "Name"
                     },
-                    "ip_address": {
-                      "type": "string",
-                      "description": "Static IPv4 address.",
-                      "title": "IP Address"
+                    "ipv4_addresses": {
+                      "type": "array",
+                      "description": "Static IPv4 addresses.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "IPv4 Addresses"
                     }
                   },
                   "additionalProperties": false,

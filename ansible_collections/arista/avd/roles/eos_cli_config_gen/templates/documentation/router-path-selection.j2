@@ -64,10 +64,10 @@
 
 ###### Static peers
 
-| Router IP | Name | IP address |
-| --------- | ---- | ---------- |
+| Router IP | Name | IPv4 address(es) |
+| --------- | ---- | ---------------- |
 {%                 for static_peer in path_group.static_peers | arista.avd.natural_sort('router_ip') %}
-| {{ static_peer.router_ip }} | {{ static_peer.name | arista.avd.default("-") }} | {{ static_peer.ip_address | arista.avd.default("-") }} |
+| {{ static_peer.router_ip }} | {{ static_peer.name | arista.avd.default("-") }} | {{ static_peer.ipv4_addresses | arista.avd.natural_sort | join("<br>") }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}

@@ -11338,9 +11338,11 @@ keys:
                   name:
                     type: str
                     description: Name of the site.
-                  ip_address:
-                    type: str
-                    description: Static IPv4 address.
+                  ipv4_addresses:
+                    type: list
+                    description: Static IPv4 addresses.
+                    items:
+                      type: str
       load_balance_policies:
         type: list
         primary_key: name
