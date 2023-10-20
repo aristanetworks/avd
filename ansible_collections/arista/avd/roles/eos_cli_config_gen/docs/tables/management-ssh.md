@@ -32,6 +32,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "management_ssh.vrfs.[].name") | String | Required, Unique |  |  | VRF Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "management_ssh.vrfs.[].enable") | Boolean |  |  |  | Enable SSH in VRF |
     | [<samp>&nbsp;&nbsp;log_level</samp>](## "management_ssh.log_level") | String |  |  |  | SSH daemon log level |
+    | [<samp>&nbsp;&nbsp;client_alive</samp>](## "management_ssh.client_alive") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;count_max</samp>](## "management_ssh.client_alive.count_max") | Integer |  |  | Min: 1<br>Max: 1000 | Number of keep-alive packets that can be sent without a response before the connection is assumed dead. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_ssh.client_alive.interval") | Integer |  |  | Min: 1<br>Max: 1000 | Time period (in seconds) to send SSH keep-alive packets. |
 
 === "YAML"
 
@@ -61,4 +64,7 @@
         - name: <str>
           enable: <bool>
       log_level: <str>
+      client_alive:
+        count_max: <int>
+        interval: <int>
     ```

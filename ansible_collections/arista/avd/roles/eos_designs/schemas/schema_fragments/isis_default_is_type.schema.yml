@@ -7,6 +7,7 @@
 type: dict
 keys:
   isis_default_is_type:
+    display_name: ISIS Default IS Type
     documentation_options:
       table: isis-settings
     type: str

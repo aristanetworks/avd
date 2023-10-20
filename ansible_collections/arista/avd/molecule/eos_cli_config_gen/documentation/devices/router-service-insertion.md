@@ -1,10 +1,10 @@
-# system-control-plane
+# router-service-insertion
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [System Control-Plane](#system-control-plane)
+- [Routing](#routing)
 
 ## Management
 
@@ -34,36 +34,6 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-### System Control-Plane
+## Routing
 
-##### TCP MSS Ceiling
-
-| Protocol | Segment Size |
-| -------- | -------------|
-| IPv4 | 1344 |
-| IPv6 | 1366 |
-
-##### Control-Plane Access-Groups
-
-| Protocol | VRF | Access-list |
-| -------- | --- | ------------|
-| IPv4 | default | acl4_1 |
-| IPv4 | red | acl4_2 |
-| IPv4 | default | acl4_3 |
-| IPv6 | default | acl6_1 |
-| IPv6 | blue | acl6_2 |
-| IPv6 | default | acl6_3 |
-
-#### System Control-Plane Configuration
-
-```eos
-!
-system control-plane
-   tcp mss ceiling ipv4 1344 ipv6 1366
-   ip access-group acl4_1 in
-   ip access-group acl4_2 vrf red in
-   ip access-group acl4_3 vrf default in
-   ipv6 access-group acl6_1 in
-   ipv6 access-group acl6_2 vrf blue in
-   ipv6 access-group acl6_3 vrf default in
-```
+Router service-insertion is enabled.

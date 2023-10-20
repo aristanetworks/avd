@@ -115,7 +115,7 @@
       "description": "Maximum ECMP for BGP multi-path.",
       "type": "integer",
       "default": 4,
-      "title": "BGP Ecmp"
+      "title": "BGP ECMP"
     },
     "bgp_graceful_restart": {
       "description": "BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.\nIts neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.\n",
@@ -2926,6 +2926,61 @@
       ],
       "title": "Custom Structured Configuration Prefix"
     },
+    "cv_topology": {
+      "type": "array",
+      "description": "Generate AVD configurations directly from the given CloudVision topology.\nActivate this feature by setting `use_cv_topology` to `true`.\nRequires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "title": "Hostname"
+          },
+          "platform": {
+            "type": "string",
+            "title": "Platform"
+          },
+          "interfaces": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "neighbor": {
+                  "type": "string",
+                  "title": "Neighbor"
+                },
+                "neighbor_interface": {
+                  "type": "string",
+                  "title": "Neighbor Interface"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "name"
+              ]
+            },
+            "title": "Interfaces"
+          }
+        },
+        "required": [
+          "platform",
+          "interfaces",
+          "hostname"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Cv Topology"
+    },
     "cvp_ingestauth_key": {
       "type": "string",
       "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication:\n- On-premise using token onboarding. Default token path is '/tmp/token'.\n- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.\nToken must be copied to the device first.",
@@ -3178,6 +3233,7 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
+              "on-boot",
               "on-logging",
               "on-startup-config"
             ],
@@ -3564,10 +3620,10 @@
       "title": "IPv6 Management Gateway"
     },
     "is_deployed": {
-      "description": "Is device already deployed in the fabric.\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
+      "description": "If the device is already deployed in the fabric.\nWhen set to false, interfaces toward this device may be shutdown depending on the `shutdown_interfaces_towards_undeployed_peers` setting.\nFurthermore `eos_config_deploy_cvp` will not attempt to move or apply configurations to the device.\n",
       "type": "boolean",
       "default": true,
-      "title": "IS Deployed"
+      "title": "Is Deployed"
     },
     "isis_advertise_passive_only": {
       "type": "boolean",
@@ -3591,14 +3647,14 @@
       "title": "ISIS Default Circuit Type"
     },
     "isis_default_is_type": {
+      "title": "ISIS Default IS Type",
       "type": "string",
       "enum": [
         "level-1-2",
         "level-1",
         "level-2"
       ],
-      "default": "level-2",
-      "title": "ISIS Default IS Type"
+      "default": "level-2"
     },
     "isis_default_metric": {
       "type": "integer",
@@ -6635,8 +6691,13 @@
                     "properties": {
                       "sampled": {
                         "type": "string",
-                        "description": "Flow tracker name",
+                        "description": "Sampled flow tracker name.",
                         "title": "Sampled"
+                      },
+                      "hardware": {
+                        "type": "string",
+                        "description": "Hardware flow tracker name.",
+                        "title": "Hardware"
                       }
                     },
                     "additionalProperties": false,
@@ -6910,8 +6971,13 @@
                 "properties": {
                   "sampled": {
                     "type": "string",
-                    "description": "Flow tracker name",
+                    "description": "Sampled flow tracker name.",
                     "title": "Sampled"
+                  },
+                  "hardware": {
+                    "type": "string",
+                    "description": "Hardware flow tracker name.",
+                    "title": "Hardware"
                   }
                 },
                 "additionalProperties": false,
@@ -7164,7 +7230,7 @@
               },
               "ip_address": {
                 "type": "string",
-                "description": "IPv4 address/mask",
+                "description": "IPv4 address/mask or \"dhcp\"",
                 "title": "IP Address"
               },
               "ip_address_secondaries": {
@@ -7173,6 +7239,21 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "dhcp_client_accept_default_route": {
+                "type": "boolean",
+                "description": "Install default-route obtained via DHCP",
+                "title": "DHCP Client Accept Default Route"
+              },
+              "dhcp_server_ipv4": {
+                "type": "boolean",
+                "description": "Enable IPv4 DHCP server.",
+                "title": "DHCP Server IPv4"
+              },
+              "dhcp_server_ipv6": {
+                "type": "boolean",
+                "description": "Enable IPv6 DHCP server.",
+                "title": "DHCP Server IPv6"
               },
               "ip_helpers": {
                 "type": "array",
@@ -9862,7 +9943,7 @@
                 "speed_groups": {
                   "type": "array",
                   "items": {
-                    "type": "integer"
+                    "type": "string"
                   },
                   "title": "Speed Groups"
                 }
@@ -12194,8 +12275,13 @@
                     "properties": {
                       "sampled": {
                         "type": "string",
-                        "description": "Flow tracker name",
+                        "description": "Sampled flow tracker name.",
                         "title": "Sampled"
+                      },
+                      "hardware": {
+                        "type": "string",
+                        "description": "Hardware flow tracker name.",
+                        "title": "Hardware"
                       }
                     },
                     "additionalProperties": false,
@@ -12469,8 +12555,13 @@
                 "properties": {
                   "sampled": {
                     "type": "string",
-                    "description": "Flow tracker name",
+                    "description": "Sampled flow tracker name.",
                     "title": "Sampled"
+                  },
+                  "hardware": {
+                    "type": "string",
+                    "description": "Hardware flow tracker name.",
+                    "title": "Hardware"
                   }
                 },
                 "additionalProperties": false,
@@ -12723,7 +12814,7 @@
               },
               "ip_address": {
                 "type": "string",
-                "description": "IPv4 address/mask",
+                "description": "IPv4 address/mask or \"dhcp\"",
                 "title": "IP Address"
               },
               "ip_address_secondaries": {
@@ -12732,6 +12823,21 @@
                   "type": "string"
                 },
                 "title": "IP Address Secondaries"
+              },
+              "dhcp_client_accept_default_route": {
+                "type": "boolean",
+                "description": "Install default-route obtained via DHCP",
+                "title": "DHCP Client Accept Default Route"
+              },
+              "dhcp_server_ipv4": {
+                "type": "boolean",
+                "description": "Enable IPv4 DHCP server.",
+                "title": "DHCP Server IPv4"
+              },
+              "dhcp_server_ipv6": {
+                "type": "boolean",
+                "description": "Enable IPv6 DHCP server.",
+                "title": "DHCP Server IPv6"
               },
               "ip_helpers": {
                 "type": "array",
@@ -19052,6 +19158,11 @@
         "^_.+$": {}
       },
       "title": "Uplink PTP"
+    },
+    "use_cv_topology": {
+      "type": "boolean",
+      "description": "Generate AVD configurations directly from a given CloudVision topology.\nSee `cv_topology` for details.",
+      "title": "Use Cv Topology"
     },
     "vtep_vvtep_ip": {
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",

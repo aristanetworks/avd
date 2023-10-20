@@ -1,4 +1,5 @@
 hostname: dc1-spine2
+is_deployed: true
 router_bgp:
   as: '65100'
   router_id: 10.255.0.2

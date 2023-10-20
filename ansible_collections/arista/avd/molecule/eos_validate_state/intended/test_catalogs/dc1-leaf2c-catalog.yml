@@ -73,14 +73,6 @@ anta.tests.interfaces:
       - Interface State
       custom_field: Port-Channel1 - DC1_L3_LEAF2_Po8
       description: Port-Channel Interface & Line Protocol == \"up\"
-anta.tests.routing.generic:
-- VerifyRoutingProtocolModel:
-    model: multi-agent
-    result_overwrite:
-      categories:
-      - BGP
-      custom_field: ArBGP
-      description: ArBGP is configured and operating
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:

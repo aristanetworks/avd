@@ -49,3 +49,7 @@ device_apply_mode: "loose"
 
 # Search key for cv_device_v3 - 'fqdn', 'hostname', 'serialNumber'
 device_search_key: "hostname"
+
+# Inventory mode for cv_device_v3 - strict fails on any missing device. loose ignores missing devices
+# NOT set as default, to avoid setting the argument on older arista.cvp versions
+# device_inventory_mode: "strict"

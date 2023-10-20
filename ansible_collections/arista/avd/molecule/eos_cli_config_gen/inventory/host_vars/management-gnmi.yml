@@ -7,3 +7,4 @@ management_api_gnmi:
         ip_access_group: ACL-GNMI
       - name: MONITORING
         vrf: MONITORING
+        port: 6031

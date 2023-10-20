@@ -490,6 +490,9 @@
 
 - Next-hop resolution is __disabled__
 {%         endif %}
+{%         if router_bgp.address_family_evpn.next_hop_unchanged is arista.avd.defined(true) %}
+- Next-hop-unchanged is explicitly configured (default behaviour)
+{%         endif %}
 {%         if router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
 
 ##### EVPN Peer Groups
@@ -732,6 +735,30 @@
 {%                 set route_map_in = peer_group.route_map_in | arista.avd.default("-") %}
 {%                 set route_map_out = peer_group.route_map_out | arista.avd.default("-") %}
 | {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} | {{ route_map_in }} | {{ route_map_out }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if router_bgp.address_family_path_selection is arista.avd.defined %}
+
+#### Router BGP Path-Selection Address Family
+{%         if router_bgp.address_family_path_selection.neighbors is arista.avd.defined %}
+
+##### Path-Selection Neighbors
+
+| Neighbor | Activate |
+| -------- | -------- |
+{%             for neighbor in router_bgp.address_family_path_selection.neighbors | arista.avd.natural_sort('ip_address') %}
+| {{ neighbor.ip_address }} | {{ neighbor.activate | arista.avd.default(false) }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_path_selection.peer_groups is arista.avd.defined %}
+
+##### Path-Selection Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+{%             for peer_group in router_bgp.address_family_path_selection.peer_groups | arista.avd.natural_sort('name') %}
+| {{ peer_group.name }} | {{ peer_group.activate | arista.avd.default(false) }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
