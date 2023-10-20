@@ -210,6 +210,10 @@ class AvdTestLLDPTopology(AvdTestBase):
                 LOGGER.warning("Ethernet interface entry #%d from the 'ethernet_interfaces' data model is missing the variable '%s'.", idx, str(e))
                 continue
 
+            if ethernet_interface["shutdown"]:
+                LOGGER.info("Ethernet interface '%s' is shutdown. 'VerifyLLDPNeighbors' is skipped for this interface.", ethernet_interface["name"])
+                continue
+
             if (peer := ethernet_interface["peer"]) not in self.hostvars or not get(self.hostvars[peer], "is_deployed", default=True):
                 LOGGER.info(
                     "Peer '%s' is not configured by AVD or is marked as not deployed. 'VerifyLLDPNeighbors' from interface '%s' to this peer is skipped.",
