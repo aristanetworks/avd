@@ -400,7 +400,7 @@ keys:
         environments:
           type: list
           primary_key: name
-          min_lenth: 1
+          min_length: 1
           items:
             type: dict
             keys:
