@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;- name</samp>](## "dps_interfaces.[].name") | String | Required, Unique |  | Valid Values:<br>- Dps1 | "Dps1" is currently the only supported interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "dps_interfaces.[].description") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "dps_interfaces.[].shutdown") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "dps_interfaces.[].mtu") | Integer |  |  | Min: 86<br>Max: 65535 | Maximum Transmission Unit in bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mtu</samp>](## "dps_interfaces.[].mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Maximum Transmission Unit in bytes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "dps_interfaces.[].ip_address") | String |  |  |  | IPv4 address/mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;flow_tracker</samp>](## "dps_interfaces.[].flow_tracker") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sampled</samp>](## "dps_interfaces.[].flow_tracker.sampled") | String |  |  |  | Sampled flow tracker name. |

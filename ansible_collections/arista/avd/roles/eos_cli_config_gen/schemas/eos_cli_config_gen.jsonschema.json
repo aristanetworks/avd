@@ -1558,7 +1558,7 @@
           "mtu": {
             "type": "integer",
             "description": "Maximum Transmission Unit in bytes.",
-            "minimum": 86,
+            "minimum": 68,
             "maximum": 65535,
             "title": "MTU"
           },
