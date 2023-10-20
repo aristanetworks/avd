@@ -39,7 +39,7 @@ class AvdTestP2PIPReachability(AvdTestBase):
             LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
             return None
 
-        required_vars = ["name", "peer", "peer_interface", "type"]
+        required_vars = ["name", "peer", "peer_interface", "type", "shutdown"]
 
         for idx, ethernet_interface in enumerate(ethernet_interfaces, start=1):
             try:
@@ -54,6 +54,10 @@ class AvdTestP2PIPReachability(AvdTestBase):
                     ethernet_interface_ip = get(ethernet_interface, "ip_address", required=True)
                 except AristaAvdMissingVariableError as e:
                     LOGGER.warning("Ethernet interface '%s' is missing the variable '%s'.", ethernet_interface["name"], str(e))
+                    continue
+
+                if ethernet_interface["shutdown"]:
+                    LOGGER.info("Ethernet interface '%s' is shutdown. 'VerifyReachability' is skipped for this interface.", ethernet_interface["name"])
                     continue
 
                 if (peer := ethernet_interface["peer"]) not in self.hostvars or not get(self.hostvars[peer], "is_deployed", default=True):
