@@ -50,8 +50,8 @@ l2leaf:
           uplink_switch_interfaces: ['Ethernet33', 'Ethernet33']
         - name: AUTO_NODE_TYPE_L2LEAF_1B
           id: 4
-          uplink_port_channel_id: 789
-          uplink_switch_port_channel_id: 1011
+          uplink_port_channel_id: 123
+          uplink_switch_port_channel_id: 456
           uplink_switch_interfaces: ['Ethernet34', 'Ethernet34']
   nodes:
     - name: AUTO_NODE_TYPE_L2LEAF_2

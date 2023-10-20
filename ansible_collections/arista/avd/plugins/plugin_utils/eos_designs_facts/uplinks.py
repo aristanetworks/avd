@@ -215,12 +215,28 @@ class UplinksMixin:
                     mlag_peer_switch_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
                     if mlag_peer_switch_facts._uplink_port_channel_id is not None:
                         uplink["channel_group_id"] = str(mlag_peer_switch_facts._uplink_port_channel_id)
+                        # check that port-channel IDs are the same as on primary
+                        if uplink_port_channel_id is not None:
+                            if uplink_port_channel_id != mlag_peer_switch_facts._uplink_port_channel_id:
+                                raise AristaAvdError(
+                                    f"'uplink_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_port_channel_id} and is not matching {mlag_peer_switch_facts._uplink_port_channel_id} set on MLAG peer. "
+                                    f"The 'uplink_port_channel_id' must be matching on MLAG peers."
+                                )
                     else:
                         uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_interfaces[0]))
                     if mlag_peer_switch_facts._uplink_switch_port_channel_id is not None:
                         uplink["peer_channel_group_id"] = str(mlag_peer_switch_facts._uplink_switch_port_channel_id)
+                        # check that port-channel IDs are the same as on primary
+                        if uplink_switch_port_channel_id is not None:
+                            if uplink_switch_port_channel_id != mlag_peer_switch_facts._uplink_switch_port_channel_id:
+                                mlag_peer_switch_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
+                                raise AristaAvdError(
+                                    f"'uplink_switch_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_switch_port_channel_id} and is not matching {mlag_peer_switch_facts._uplink_switch_port_channel_id} set on MLAG peer. "
+                                    f"The 'uplink_switch_port_channel_id' must be matching on MLAG peers."
+                                )
                     else:
                         uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_switch_interfaces[0]))
+                    
                 else:
                     if uplink_port_channel_id is not None:
                         uplink["channel_group_id"] = str(uplink_port_channel_id)
