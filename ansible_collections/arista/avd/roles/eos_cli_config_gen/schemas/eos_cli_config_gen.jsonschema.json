@@ -8325,6 +8325,29 @@
             "description": "MAC address",
             "title": "MAC Address"
           },
+          "lldp": {
+            "type": "object",
+            "properties": {
+              "transmit": {
+                "type": "boolean",
+                "title": "Transmit"
+              },
+              "receive": {
+                "type": "boolean",
+                "title": "Receive"
+              },
+              "ztp_vlan": {
+                "type": "integer",
+                "description": "ZTP vlan number",
+                "title": "ZTP VLAN"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "LLDP"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the management interface in the final EOS configuration",

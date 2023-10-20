@@ -326,6 +326,7 @@ ethernet_interfaces:
     lldp:
       transmit: false
       receive: false
+      ztp_vlan: 666
 
   - name: Ethernet20
     description: Port patched through patch-panel to pseudowire
