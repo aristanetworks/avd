@@ -7,6 +7,13 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>dns_settings</samp>](## "dns_settings") | Dictionary |  |  |  | DNS settings<br>For DNS source-interfaces see "source_interfaces.domain_lookup" |
+    | [<samp>&nbsp;&nbsp;servers</samp>](## "dns_settings.servers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- vrf</samp>](## "dns_settings.servers.[].vrf") | String |  |  |  | VRF Name.<br>Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf" to configure the DNS server under multiple VRFs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_mgmt_interface_vrf</samp>](## "dns_settings.servers.[].use_mgmt_interface_vrf") | Boolean |  |  |  | Configure the DNS server under the VRF set with "mgmt_interface_vrf". Ignored if 'mgmt_ip' or 'ipv6_mgmt_ip' are not configured for the device, so if the host is only configured with this VRF, the server will not be configured at all. Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to configure the DNS server under multiple VRFs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use_inband_mgmt_vrf</samp>](## "dns_settings.servers.[].use_inband_mgmt_vrf") | Boolean |  |  |  | Configure the DNS server under the VRF set with "inband_mgmt_vrf". Ignored if inband management is not configured for the device, so if the host is only configured with this VRF, the server will not be configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf" to configure the DNS server under multiple VRFs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "dns_settings.servers.[].ip_address") | String |  |  |  | IPv4 or IPv6 address for DNS server |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "dns_settings.servers.[].priority") | Integer |  |  | Min: 0<br>Max: 4 | Priority value (lower is first) |
     | [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  | Gives the ability to monitor and react to Syslog messages.<br>Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,<br>customize the system behavior, and implement workarounds to problems discovered in the field.<br> |
     | [<samp>&nbsp;&nbsp;- name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event Handler Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;action_type</samp>](## "event_handlers.[].action_type") | String |  |  | Valid Values:<br>- bash<br>- increment<br>- log |  |
@@ -31,13 +38,20 @@
     | [<samp>&nbsp;&nbsp;enable_http</samp>](## "management_eapi.enable_http") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;enable_https</samp>](## "management_eapi.enable_https") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;default_services</samp>](## "management_eapi.default_services") | Boolean |  |  |  |  |
-    | [<samp>name_servers</samp>](## "name_servers") | List, items: String |  |  |  | List of DNS servers. The VRF is set to < mgmt_interface_vrf >. |
+    | [<samp>name_servers</samp>](## "name_servers") <span style="color:red">deprecated</span> | List, items: String |  |  |  | List of DNS servers. The VRF is set to < mgmt_interface_vrf >.<span style="color:red">This key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>dns_settings.servers</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;- &lt;str&gt;</samp>](## "name_servers.[].&lt;str&gt;") | String |  |  |  | IPv4 address |
     | [<samp>timezone</samp>](## "timezone") | String |  |  |  | Clock timezone like "CET" or "US/Pacific". |
 
 === "YAML"
 
     ```yaml
+    dns_settings:
+      servers:
+        - vrf: <str>
+          use_mgmt_interface_vrf: <bool>
+          use_inband_mgmt_vrf: <bool>
+          ip_address: <str>
+          priority: <int>
     event_handlers:
       - name: <str>
         action_type: <str>
