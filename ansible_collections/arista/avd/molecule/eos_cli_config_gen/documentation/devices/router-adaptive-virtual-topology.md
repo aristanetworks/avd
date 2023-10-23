@@ -4,6 +4,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Routing](#routing)
+  - [Router Adaptive Virtual Topology](#router-adaptive-virtual-topology)
 
 ## Management
 
@@ -31,4 +33,30 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+## Routing
+
+### Router Adaptive Virtual Topology
+
+#### Router Adaptive Virtual Topology Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Topology Role | transit region |
+| Region | North America id 1 |
+| Zone Name | Canada |
+| Zone ID | 2 |
+| Site | Ottawa |
+| Site ID | 99 |
+
+#### Router Adaptive Virtual Topology Configuration
+
+```eos
+!
+router adaptive-virtual-topology
+   topology role transit region
+   region North America id 1
+   zone Canada id 2
+   site Ottawa id 99
 ```

@@ -1,0 +1,35 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - router-adaptive-virtual-topology #}
+{% if router_adaptive_virtual_topology is arista.avd.defined %}
+
+### Router Adaptive Virtual Topology
+
+#### Router Adaptive Virtual Topology Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%     if router_adaptive_virtual_topology.topology_role is arista.avd.defined %}
+| Topology Role | {{ router_adaptive_virtual_topology.topology_role }} |
+{%     endif %}
+{%     if router_adaptive_virtual_topology.region is arista.avd.defined %}
+| Region | {{ router_adaptive_virtual_topology.region.name }} id {{ router_adaptive_virtual_topology.region.id }} |
+{%     endif %}
+{%     if router_adaptive_virtual_topology.zone is arista.avd.defined %}
+| Zone Name | {{ router_adaptive_virtual_topology.zone.name }} |
+| Zone ID | {{ router_adaptive_virtual_topology.zone.id }} |
+{%     endif %}
+{%     if router_adaptive_virtual_topology.site is arista.avd.defined %}
+| Site | {{ router_adaptive_virtual_topology.site.name }} |
+| Site ID | {{ router_adaptive_virtual_topology.site.id }} |
+{%     endif %}
+
+#### Router Adaptive Virtual Topology Configuration
+
+```eos
+{%     include 'eos/router-adaptive-virtual-topology.j2' %}
+```
+{% endif %}

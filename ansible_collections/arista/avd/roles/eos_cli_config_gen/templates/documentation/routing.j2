@@ -15,6 +15,7 @@
        or router_general is arista.avd.defined
        or router_service_insertion is arista.avd.defined
        or router_traffic_engineering is arista.avd.defined
+       or router_adaptive_virtual_topology is arista.avd.defined
        or router_ospf is arista.avd.defined
        or router_isis is arista.avd.defined
        or router_bgp is arista.avd.defined
@@ -43,6 +44,8 @@
 {%     include 'documentation/router-service-insertion.j2' %}
 {## Router Traffic Engineering #}
 {%     include 'documentation/router-traffic-engineering.j2' %}
+{## Router Adaptive Virtual Topology #}
+{%     include 'documentation/router-adaptive-virtual-topology.j2' %}
 {## Router OSPF #}
 {%     include 'documentation/router-ospf.j2' %}
 {## Router ISIS #}
