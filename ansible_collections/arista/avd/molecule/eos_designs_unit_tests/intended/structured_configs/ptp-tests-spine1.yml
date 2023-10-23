@@ -1,4 +1,5 @@
 hostname: ptp-tests-spine1
+is_deployed: true
 router_bgp:
   as: '65200'
   router_id: 10.255.0.1

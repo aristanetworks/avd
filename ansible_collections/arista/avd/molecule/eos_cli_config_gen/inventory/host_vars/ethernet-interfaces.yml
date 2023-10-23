@@ -6,6 +6,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     ip_address: 172.31.255.1/31
@@ -326,6 +327,7 @@ ethernet_interfaces:
     lldp:
       transmit: false
       receive: false
+      ztp_vlan: 666
 
   - name: Ethernet20
     description: Port patched through patch-panel to pseudowire
@@ -854,7 +856,13 @@ ethernet_interfaces:
       trunk: "tagged phone"
       vlan: 70
   - name: Ethernet63
-    description: DHCP interface
+    description: DHCP client interface
     type: routed
     ip_address: "dhcp"
     dhcp_client_accept_default_route: true
+  - name: Ethernet64
+    description: DHCP server interface
+    type: routed
+    ip_address: 192.168.42.42/24
+    dhcp_server_ipv4: true
+    dhcp_server_ipv6: true

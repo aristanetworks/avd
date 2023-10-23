@@ -199,7 +199,15 @@ $defs:
               table: node-type-uplink-configuration
             description: |
               Set point-to-Point interface speed and will apply to uplink interfaces on both ends.
-              interface_speed or forced interface_speed or auto interface_speed.
+              (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+            type: str
+          uplink_switch_interface_speed:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: |
+              Set point-to-Point interface speed for the uplink switch interface only.
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
             type: str
           max_uplink_switches:
             documentation_options:
@@ -622,7 +630,7 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: |
               Set MLAG interface speed.
-              < interface_speed or forced interface_speed or auto interface_speed >.
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
             type: str
           mlag_peer_l3_vlan:
             documentation_options:
@@ -815,7 +823,7 @@ $defs:
               new_key: inband_mgmt_subnet
               remove_in_version: 5.0.0
             type: str
-            $ref: "#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet"
+            $ref: "eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet"
           inband_management_vlan:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -824,7 +832,7 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
-            $ref: "#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan"
+            $ref: "eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan"
           mpls_overlay_role:
             documentation_options:
               table: node-type-mpls-configuration
@@ -882,6 +890,10 @@ $defs:
                   - "smpte2059-2"
                   - "aes67-r16-2016"
                 default: "aes67-r16-2016"
+              mlag:
+                description: Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG peer-link port-channel.
+                type: bool
+                default: false
               domain:
                 type: int
                 convert_types:
@@ -1049,7 +1061,7 @@ $defs:
           - dict
         primary_key: group
         items:
-          "$ref": "#/$defs/node_type/keys/defaults"
+          "$ref": "eos_designs#/$defs/node_type/keys/defaults"
           type: dict
           keys:
             group:
@@ -1058,7 +1070,7 @@ $defs:
                 The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.
                 The Node Group Name is also used for peer description on downstream switches' uplinks.
             nodes:
-              "$ref": "#/$defs/node_type/keys/nodes"
+              "$ref": "eos_designs#/$defs/node_type/keys/nodes"
               description: Define variables per node.
               type: list
       nodes:
@@ -1068,7 +1080,7 @@ $defs:
           - dict
         primary_key: name
         items:
-          "$ref": "#/$defs/node_type/keys/defaults"
+          "$ref": "eos_designs#/$defs/node_type/keys/defaults"
           type: dict
           keys:
             name:

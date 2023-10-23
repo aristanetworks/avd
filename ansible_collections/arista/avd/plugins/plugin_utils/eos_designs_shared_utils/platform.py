@@ -138,7 +138,7 @@ class PlatformMixin:
 
     @cached_property
     def platform(self: SharedUtils) -> str | None:
-        return get(self.switch_data_combined, "platform")
+        return get(self.switch_data_combined, "platform", default=self.cv_topology_platform)
 
     @cached_property
     def platform_settings(self: SharedUtils) -> dict:

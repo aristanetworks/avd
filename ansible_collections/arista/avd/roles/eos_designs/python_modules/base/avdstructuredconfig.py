@@ -34,6 +34,10 @@ class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
         return self.shared_utils.hostname
 
     @cached_property
+    def is_deployed(self) -> bool:
+        return self.shared_utils.is_deployed
+
+    @cached_property
     def serial_number(self) -> str | None:
         """
         serial_number variable set based on serial_number fact

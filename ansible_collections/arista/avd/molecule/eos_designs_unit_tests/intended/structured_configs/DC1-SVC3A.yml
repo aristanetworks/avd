@@ -1,4 +1,5 @@
 hostname: DC1-SVC3A
+is_deployed: true
 router_bgp:
   as: '65103'
   router_id: 192.168.255.12
@@ -1043,6 +1044,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet1
+  speed: 100g-2
   shutdown: false
   type: port-channel-member
   channel_group:
@@ -1053,6 +1055,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet1
+  speed: 100g-2
   shutdown: false
   type: port-channel-member
   channel_group:
