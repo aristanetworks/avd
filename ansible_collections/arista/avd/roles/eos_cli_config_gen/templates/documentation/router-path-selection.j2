@@ -67,7 +67,7 @@
 | Router IP | Name | IPv4 address(es) |
 | --------- | ---- | ---------------- |
 {%                 for static_peer in path_group.static_peers | arista.avd.natural_sort('router_ip') %}
-{%                     set ipv4_addresses = static_peer.ipv4_addresses | arista.avd.default([]) | join("<br>") %}
+{%                     set ipv4_addresses = static_peer.ipv4_addresses | arista.avd.default(["-"]) | join("<br>") %}
 | {{ static_peer.router_ip }} | {{ static_peer.name | arista.avd.default("-") }} | {{ ipv4_addresses }} |
 {%                 endfor %}
 {%             endif %}
