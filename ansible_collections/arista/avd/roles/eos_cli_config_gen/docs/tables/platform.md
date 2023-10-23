@@ -41,10 +41,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multicast_replication</samp>](## "platform.sand.multicast_replication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "platform.sand.multicast_replication.default") | String |  |  | Valid Values:<br>- ingress<br>- egress |  |
     | [<samp>&nbsp;&nbsp;sfe</samp>](## "platform.sfe") | Dictionary |  |  |  | Sfe (Software Forwarding Engine) settings. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;data_plane</samp>](## "platform.sfe.data_plane") | Dictionary |  |  |  | Data plane configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "platform.sfe.data_plane.cpu") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;allocation</samp>](## "platform.sfe.data_plane.cpu.allocation") | Dictionary |  |  |  | Control the number of physical CPUs used for data plane traffic forwarding. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "platform.sfe.data_plane.cpu.allocation.maximum") | Integer |  |  | Min: 1<br>Max: 128 | Maximum number of CPUs assigned for forwarding traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "platform.sfe.data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Maximum number of CPUs used for data plane traffic forwarding. |
 
 === "YAML"
 
@@ -83,8 +80,5 @@
         multicast_replication:
           default: <str>
       sfe:
-        data_plane:
-          cpu:
-            allocation:
-              maximum: <int>
+        data_plane_cpu_allocation_max: <int>
     ```

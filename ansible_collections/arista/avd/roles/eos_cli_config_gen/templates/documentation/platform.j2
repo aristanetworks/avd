@@ -77,8 +77,8 @@
 
 | Settings | Value |
 | -------- | ----- |
-{%             if platform.sfe.data_plane.cpu.allocation.maximum is arista.avd.defined %}
-| Maximum CPU Allocation | {{ platform.sfe.data_plane.cpu.allocation.maximum }} |
+{%             if platform.sfe.data_plane_cpu_allocation_max is arista.avd.defined %}
+| Maximum CPU Allocation | {{ platform.sfe.data_plane_cpu_allocation_max }} |
 {%             endif %}
 {%         endif %}
 {%     endif %}

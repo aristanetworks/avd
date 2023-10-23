@@ -66,7 +66,4 @@ platform:
       default: ingress
     forwarding_mode: arad
   sfe:
-    data_plane:
-      cpu:
-        allocation:
-          maximum: 42
+    data_plane_cpu_allocation_max: 42

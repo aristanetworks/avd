@@ -169,21 +169,10 @@ keys:
         type: dict
         description: Sfe (Software Forwarding Engine) settings.
         keys:
-          data_plane:
-            type: dict
-            description: Data plane configuration.
-            keys:
-              cpu:
-                type: dict
-                keys:
-                  allocation:
-                    type: dict
-                    description: Control the number of physical CPUs used for data plane traffic forwarding.
-                    keys:
-                      maximum:
-                        type: int
-                        description: Maximum number of CPUs assigned for forwarding traffic.
-                        convert_types:
-                          - str
-                        min: 1
-                        max: 128
+          data_plane_cpu_allocation_max:
+            type: int
+            description: Maximum number of CPUs used for data plane traffic forwarding.
+            convert_types:
+              - str
+            min: 1
+            max: 128
