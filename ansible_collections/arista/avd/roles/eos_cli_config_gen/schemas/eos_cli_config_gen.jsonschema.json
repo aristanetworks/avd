@@ -679,6 +679,40 @@
             "^_.+$": {}
           },
           "title": "Aging"
+        },
+        "static_entries": {
+          "type": "array",
+          "description": "Static ARP entries.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ipv4_address": {
+                "type": "string",
+                "description": "ARP entry IPv4 address.",
+                "title": "IPv4 Address"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "ARP entry VRF - default to \"default\".",
+                "title": "VRF"
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "ARP entry MAC address.",
+                "pattern": "^[0-9A-Fa-f]{1,4}\\.[0-9A-Fa-f]{1,4}\\.[0-9A-Fa-f]{1,4}$",
+                "title": "MAC Address"
+              }
+            },
+            "required": [
+              "ipv4_address",
+              "mac_address"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Static Entries"
         }
       },
       "additionalProperties": false,

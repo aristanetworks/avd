@@ -4,9 +4,29 @@
  that can be found in the LICENSE file.
 #}
 {# doc - arp #}
-{% if arp.aging.timeout_default is arista.avd.defined %}
+{% if arp.aging.timeout_default is arista.avd.defined or arp.static_entries is arista.avd.defined %}
 
 ### ARP
+{%     if arp.aging.timeout_default is arista.avd.defined %}
 
 Global ARP timeout: {{ arp.aging.timeout_default }}
+{%     endif %}
+{%     if arp.static_entries is arista.avd.defined %}
+
+#### ARP static entries
+
+| VRF | IPv4 address | MAC address |
+| --- | ------------ | ----------- |
+{%         for vrf, entries in arp.static_entries | arista.avd.default([]) | groupby("vrf", default="default") | arista.avd.natural_sort %}
+{%             for entry in entries | arista.avd.natural_sort("ipv4_address") %} 
+| vrf | {{ entry.ipv4_address }} | {{ entry.mac_address }} |
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+
+#### ARP Configuration
+
+```eos
+{%     include 'eos/arp.j2' %}
+```
 {% endif %}

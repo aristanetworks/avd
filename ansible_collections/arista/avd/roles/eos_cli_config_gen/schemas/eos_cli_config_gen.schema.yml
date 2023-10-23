@@ -404,6 +404,24 @@ keys:
             type: int
             min: 60
             max: 65535
+      static_entries:
+        type: list
+        description: Static ARP entries.
+        items:
+          type: dict
+          keys:
+            ipv4_address:
+              type: str
+              required: true
+              description: ARP entry IPv4 address.
+            vrf:
+              type: str
+              description: ARP entry VRF - default to "default".
+            mac_address:
+              type: str
+              description: ARP entry MAC address.
+              required: true
+              pattern: ^[0-9A-Fa-f]{1,4}\.[0-9A-Fa-f]{1,4}\.[0-9A-Fa-f]{1,4}$
   as_path:
     type: dict
     keys:
