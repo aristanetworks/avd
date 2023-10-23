@@ -9974,6 +9974,56 @@
             "^_.+$": {}
           },
           "title": "Sand"
+        },
+        "sfe": {
+          "type": "object",
+          "description": "Sfe (Software Forwarding Engine) settings.",
+          "properties": {
+            "data_plane": {
+              "type": "object",
+              "description": "Data plane configuration.",
+              "properties": {
+                "cpu": {
+                  "type": "object",
+                  "properties": {
+                    "allocation": {
+                      "type": "object",
+                      "description": "Control the number of physical CPUs used for data plane traffic forwarding.",
+                      "properties": {
+                        "maximum": {
+                          "type": "integer",
+                          "description": "Maximum number of CPUs assigned for forwarding traffic.",
+                          "minimum": 1,
+                          "maximum": 128,
+                          "title": "Maximum"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Allocation"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "CPU"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Data Plane"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sfe"
         }
       },
       "additionalProperties": false,

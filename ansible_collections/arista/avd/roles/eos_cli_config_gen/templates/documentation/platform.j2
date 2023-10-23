@@ -7,7 +7,7 @@
 {% if platform is arista.avd.defined %}
 
 ## Platform
-{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined %}
+{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined or platform.sfe is arista.avd.defined %}
 
 ### Platform Summary
 {%         if platform.trident is arista.avd.defined %}
@@ -69,6 +69,16 @@
 | {{ qos_map.traffic_class }} | {{ qos_map.to_network_qos }} |
 {%                     endif %}
 {%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%         if platform.sfe is arista.avd.defined %}
+
+#### Platform Software Forwarding Engine Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%             if platform.sfe.data_plane.cpu.allocation.maximum is arista.avd.defined %}
+| Maximum CPU Allocation | {{ platform.sfe.data_plane.cpu.allocation.maximum }} |
 {%             endif %}
 {%         endif %}
 {%     endif %}
