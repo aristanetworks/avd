@@ -6,7 +6,7 @@
 {# eos - router-adaptive-virtual-topology #}
 {% if router_adaptive_virtual_topology is arista.avd.defined %}
 !
-router adaptive-virtual-topolog
+router adaptive-virtual-topology
 {%     if router_adaptive_virtual_topology.topology_role is arista.avd.defined %}
    topology role {{ router_adaptive_virtual_topology.topology_role }}
 {%     endif %}
