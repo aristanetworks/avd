@@ -665,7 +665,7 @@
             "description": "Agent name.",
             "title": "Name"
           },
-          "environments": {
+          "environment_variables": {
             "type": "array",
             "minItems": 1,
             "items": {
@@ -691,7 +691,7 @@
                 "^_.+$": {}
               }
             },
-            "title": "Environments"
+            "title": "Environment Variables"
           }
         },
         "additionalProperties": false,

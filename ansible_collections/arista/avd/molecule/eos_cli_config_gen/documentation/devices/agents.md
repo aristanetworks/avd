@@ -31,8 +31,8 @@
 
 ```eos
 !
-agent Dummy environment  V1=42:V2=666
-agent KernelFib environment  KERNELFIB_PROGRAM_ALL_ECMP=true
+agent Dummy environment V1=42:V2=666
+agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
 ```
 
 ### Management Interfaces

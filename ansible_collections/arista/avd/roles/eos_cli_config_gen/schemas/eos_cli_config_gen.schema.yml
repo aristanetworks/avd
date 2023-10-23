@@ -397,7 +397,7 @@ keys:
         name:
           type: str
           description: Agent name.
-        environments:
+        environment_variables:
           type: list
           primary_key: name
           min_length: 1

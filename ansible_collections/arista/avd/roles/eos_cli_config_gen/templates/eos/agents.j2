@@ -8,11 +8,11 @@
 {%     if loop.first %}
 !
 {%     endif %}
-{%     if agent.environments is arista.avd.defined %}
+{%     if agent.environment_variables is arista.avd.defined %}
 {%         set env_list = [] %}
-{%         for envvar in agent.environments %}
+{%         for envvar in agent.environment_variables %}
 {%             do env_list.append(envvar.name ~ "=" ~ envvar.value) %}
 {%         endfor %}
-agent {{ agent.name }} environment  {{ env_list | join(":") }}
+agent {{ agent.name }} environment {{ env_list | join(":") }}
 {%     endif %}
 {% endfor %}
