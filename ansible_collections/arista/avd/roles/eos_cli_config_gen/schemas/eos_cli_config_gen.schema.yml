@@ -1248,8 +1248,8 @@ keys:
           description: Interval in seconds for updating interface counters"
         speed:
           type: str
-          description: Speed can be interface_speed or forced interface_speed or auto
-            interface_speed
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
           convert_types:
