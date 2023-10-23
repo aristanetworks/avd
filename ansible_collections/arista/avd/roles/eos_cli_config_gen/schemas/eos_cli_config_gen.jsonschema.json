@@ -8279,7 +8279,7 @@
           },
           "speed": {
             "type": "string",
-            "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+            "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
             "title": "Speed"
           },
           "mtu": {
