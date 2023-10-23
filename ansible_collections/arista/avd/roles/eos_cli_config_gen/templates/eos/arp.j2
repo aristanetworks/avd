@@ -9,7 +9,7 @@
 arp aging timeout default {{ arp.aging.timeout_default }}
 {% endif %}
 {% for vrf, entries in arp.static_entries | arista.avd.default([]) | groupby("vrf", default="default") | arista.avd.natural_sort %}
-{%     for entry in entries | arista.avd.natural_sort("ipv4_address") %} 
+{%     for entry in entries | arista.avd.natural_sort("ipv4_address") %}
 {%         set arp_entry_prefix = "arp" %}
 {%         if vrf != "default" %}
 {%             set arp_entry_prefix = arp_entry_prefix ~ " vrf " ~ vrf %}

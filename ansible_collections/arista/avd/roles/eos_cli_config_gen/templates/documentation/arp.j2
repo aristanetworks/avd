@@ -18,7 +18,7 @@ Global ARP timeout: {{ arp.aging.timeout_default }}
 | VRF | IPv4 address | MAC address |
 | --- | ------------ | ----------- |
 {%         for vrf, entries in arp.static_entries | arista.avd.default([]) | groupby("vrf", default="default") | arista.avd.natural_sort %}
-{%             for entry in entries | arista.avd.natural_sort("ipv4_address") %} 
+{%             for entry in entries | arista.avd.natural_sort("ipv4_address") %}
 | vrf | {{ entry.ipv4_address }} | {{ entry.mac_address }} |
 {%             endfor %}
 {%         endfor %}
