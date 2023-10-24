@@ -1,4 +1,5 @@
 hostname: underlay_filter_peer_as_evpn_1
+is_deployed: true
 router_bgp:
   as: '64512'
   router_id: 192.168.255.1
