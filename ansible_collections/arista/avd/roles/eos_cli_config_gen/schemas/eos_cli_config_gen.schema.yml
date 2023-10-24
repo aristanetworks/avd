@@ -1012,6 +1012,8 @@ keys:
           description: Server IP or Hostname
       tunnel_requests_disabled:
         type: bool
+      mlag_peerlink_requests_disabled:
+        type: bool
   dns_domain:
     type: str
     description: Domain Name
@@ -1246,8 +1248,8 @@ keys:
           description: Interval in seconds for updating interface counters"
         speed:
           type: str
-          description: Speed can be interface_speed or forced interface_speed or auto
-            interface_speed
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
           convert_types:
@@ -2522,6 +2524,7 @@ keys:
 
             '
           valid_values:
+          - on-boot
           - on-logging
           - on-startup-config
         regex:
@@ -4717,6 +4720,16 @@ keys:
                 ip_access_group:
                   type: str
                   description: ACL name
+                port:
+                  type: int
+                  description: 'GNMI port.
+
+                    Make sure to update the control-plane ACL accordingly in order
+                    for the service to be reachable by external applications.
+
+                    '
+                  convert_types:
+                  - str
           grpc_tunnels:
             type: list
             primary_key: name
@@ -4933,6 +4946,10 @@ keys:
           type: str
         shutdown:
           type: bool
+        speed:
+          type: str
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
         vrf:
@@ -4964,6 +4981,18 @@ keys:
         mac_address:
           type: str
           description: MAC address
+        lldp:
+          type: dict
+          keys:
+            transmit:
+              type: bool
+            receive:
+              type: bool
+            ztp_vlan:
+              type: int
+              convert_types:
+              - str
+              description: ZTP vlan number
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface
@@ -5210,6 +5239,24 @@ keys:
       log_level:
         type: str
         description: SSH daemon log level
+      client_alive:
+        type: dict
+        keys:
+          count_max:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 1000
+            description: Number of keep-alive packets that can be sent without a response
+              before the connection is assumed dead.
+          interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 1000
+            description: Time period (in seconds) to send SSH keep-alive packets.
   management_tech_support:
     type: dict
     keys:
@@ -8670,6 +8717,34 @@ keys:
                   valid_values:
                   - vxlan
                   - mpls
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -12072,6 +12147,15 @@ keys:
         keys:
           local_interface:
             type: str
+            deprecation:
+              warning: true
+              new_key: local_interfaces
+              remove_in_version: v5.0.0
+          local_interfaces:
+            type: list
+            min_length: 1
+            items:
+              type: str
   switchport_default:
     type: dict
     keys:

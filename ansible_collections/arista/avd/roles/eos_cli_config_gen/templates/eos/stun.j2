@@ -18,6 +18,9 @@ stun
 {%     endif %}
 {%     if stun.server is arista.avd.defined %}
    server
+{%         for local_interface in stun.server.local_interfaces | arista.avd.natural_sort %}
+      local-interface {{ local_interface }}
+{%         endfor %}
 {%         if stun.server.local_interface is arista.avd.defined %}
       local-interface {{ stun.server.local_interface }}
 {%         endif %}

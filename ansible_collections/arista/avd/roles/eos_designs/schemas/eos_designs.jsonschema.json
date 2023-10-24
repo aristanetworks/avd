@@ -2441,7 +2441,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -2685,7 +2685,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -3233,6 +3233,7 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
+              "on-boot",
               "on-logging",
               "on-startup-config"
             ],
@@ -3749,7 +3750,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -3993,7 +3994,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -4407,7 +4408,7 @@
           },
           "speed": {
             "type": "string",
-            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "description": "Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.\nIf not specified speed will be auto.\n",
             "title": "Speed"
           },
           "profile": {
@@ -6816,7 +6817,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "mtu": {
@@ -9991,7 +9992,7 @@
           },
           "speed": {
             "type": "string",
-            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "description": "Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.\nIf not specified speed will be auto.\n",
             "title": "Speed"
           },
           "description": {
@@ -12400,7 +12401,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "mtu": {

@@ -105,3 +105,20 @@ keys:
       log_level:
         type: str
         description: SSH daemon log level
+      client_alive:
+        type: dict
+        keys:
+          count_max:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 1000
+            description: Number of keep-alive packets that can be sent without a response before the connection is assumed dead.
+          interval:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 1000
+            description: Time period (in seconds) to send SSH keep-alive packets.
