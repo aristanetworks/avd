@@ -1546,6 +1546,10 @@ keys:
         ip_nat:
           type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
+          keys:
+            service_profile:
+              type: str
+              description: NAT interface profile.
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -3394,6 +3398,18 @@ keys:
         min: 1
         max: 64
         description: Buffer size in MB
+      profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/interface_ip_nat
+          keys:
+            name:
+              type: str
+            vrf:
+              type: str
+              description: Specify VRF for NAT profile.
       pools:
         type: list
         primary_key: name

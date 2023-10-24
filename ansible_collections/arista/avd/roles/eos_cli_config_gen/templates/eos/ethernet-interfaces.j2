@@ -476,6 +476,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ip_nat is arista.avd.defined %}
 {%         set interface_ip_nat = ethernet_interface.ip_nat %}
 {%         include 'eos/interface-ip-nat.j2' %}
+{%         if ethernet_interface.ip_nat.service_profile is arista.avd.defined %}
+   ip nat service-profile {{ ethernet_interface.ip_nat.service_profile }}
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interface.ospf_cost is arista.avd.defined %}
    ip ospf cost {{ ethernet_interface.ospf_cost }}

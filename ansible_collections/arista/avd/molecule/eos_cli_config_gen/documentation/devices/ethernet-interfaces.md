@@ -134,6 +134,7 @@ sFlow is disabled.
 | Ethernet60 |  IP NAT Testing | access | - | - | - | - |
 | Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet69 |  IP NAT service-profile | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -249,6 +250,12 @@ sFlow is disabled.
 | Ethernet60 | ACL4 | POOL4 | 1 | Priority low end |
 | Ethernet60 | ACL5 | POOL5 | 4294967295 | Priority high end |
 | Ethernet60 | ACL6 | POOL6 | 0 | Priority default |
+
+##### IP NAT: Interfaces configured via profile
+
+| Interface | Profile |
+| --------- | ----------- |
+| Ethernet69 | TEST-NAT-PROFILE |
 
 ##### IPv6
 
@@ -879,6 +886,11 @@ interface Ethernet64
    ip address 192.168.42.42/24
    dhcp server ipv4
    dhcp server ipv6
+!
+interface Ethernet69
+   description IP NAT service-profile
+   switchport
+   ip nat service-profile TEST-NAT-PROFILE
 ```
 
 ## BFD
