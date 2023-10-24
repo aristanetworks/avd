@@ -41,14 +41,13 @@ interface Management1
 
 #### Router Adaptive Virtual Topology Summary
 
-| Settings | Value |
-| -------- | ----- |
-| Topology Role | transit region |
-| Region | North America id 1 |
-| Zone Name | Canada |
-| Zone ID | 2 |
-| Site | Ottawa |
-| Site ID | 99 |
+Topology role: transit region
+
+| Hierarchy | Name | ID |
+| --------- | ---- | -- |
+| Region | North America | 1 |
+| Zone | Canada | 2 |
+| Site | Ottawa | 99 |
 
 #### Router Adaptive Virtual Topology Configuration
 
