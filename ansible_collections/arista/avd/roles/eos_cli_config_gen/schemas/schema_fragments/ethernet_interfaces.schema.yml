@@ -610,7 +610,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: [ "percent", "pps" ]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -624,7 +624,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: ["percent", "pps"]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -638,7 +638,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: ["percent", "pps"]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -652,7 +652,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: [ "percent", "pps" ]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         logging:
           type: dict
           keys:

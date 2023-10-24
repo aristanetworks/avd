@@ -3185,7 +3185,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3210,7 +3210,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3235,7 +3235,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3260,7 +3260,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -9712,6 +9712,7 @@
     },
     "platform": {
       "type": "object",
+      "description": "Every key below this point is platform dependent.",
       "properties": {
         "trident": {
           "type": "object",
@@ -9901,7 +9902,7 @@
         },
         "sand": {
           "type": "object",
-          "description": "Most of the platform sand options are hardware dependant and optional",
+          "description": "Most of the platform sand options are hardware dependent and optional",
           "properties": {
             "qos_maps": {
               "type": "array",
@@ -10719,7 +10720,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10744,7 +10745,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10769,7 +10770,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10794,7 +10795,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },

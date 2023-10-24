@@ -8,6 +8,8 @@ type: dict
 keys:
   platform:
     type: dict
+    description: |-
+      Every key below this point is platform dependent.
     keys:
       trident:
         type: dict
@@ -131,7 +133,7 @@ keys:
                                   Example: 7/8 or 3/4 or 1/2
       sand:
         type: dict
-        description: Most of the platform sand options are hardware dependant and optional
+        description: Most of the platform sand options are hardware dependent and optional
         keys:
           qos_maps:
             type: list
