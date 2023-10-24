@@ -18986,7 +18986,7 @@
     },
     "underlay_filter_peer_as": {
       "type": "boolean",
-      "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote this key is ignored when EVPN is configured.\n",
+      "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote that this setting cannot be used while there are EVPN services present in the default VRF.\n",
       "default": false,
       "title": "Underlay Filter Peer As"
     },
