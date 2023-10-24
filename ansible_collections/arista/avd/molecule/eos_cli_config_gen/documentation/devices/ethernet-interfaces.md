@@ -254,7 +254,7 @@ sFlow is disabled.
 ##### IP NAT: Interfaces configured via profile
 
 | Interface | Profile |
-| --------- | ----------- |
+| --------- |-------- |
 | Ethernet69 | TEST-NAT-PROFILE |
 
 ##### IPv6

@@ -110,7 +110,7 @@ NAT profile VRF is: {{ profile.vrf }}
 ##### IP NAT: Destination Static
 
 | Direction | Original IP | Original Port | Access List | Translated IP | Translated Port | Protocol | Group | Priority | Comment |
-| --------- | --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
+| --------- | ----------- | ------------- | ----------- | ------------- | --------------- | -------- | ----- | -------- | ------- |
 {%                 for row in ip_nat.dst_static %}
 | {{ row.direction }} | {{ row.o_ip }} | {{ row.o_port }} | {{ row.acl }} | {{ row.t_ip }} | {{ row.t_port }} | {{ row.proto }} | {{ row.group }} | {{ row.priority }} | {{ row.comment }} |
 {%                 endfor %}

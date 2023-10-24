@@ -27,6 +27,8 @@ keys:
               type: str
             vrf:
               type: str
+              convert_types:
+                - int
               description: Specify VRF for NAT profile.
       pools:
         type: list
