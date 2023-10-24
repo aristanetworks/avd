@@ -655,6 +655,55 @@
       },
       "title": "Address Locking"
     },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name.",
+            "title": "Name"
+          },
+          "environment_variables": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Environment variable name.",
+                  "title": "Name"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Environment variable value.",
+                  "title": "Value"
+                }
+              },
+              "required": [
+                "value",
+                "name"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Environment Variables"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Agents"
+    },
     "aliases": {
       "type": "string",
       "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",

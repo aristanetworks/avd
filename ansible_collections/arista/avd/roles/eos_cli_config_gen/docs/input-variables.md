@@ -889,6 +889,12 @@ roles/eos_cli_config_gen/docs/tables/vlans.md
 
 ## System settings
 
+### Agents
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/agents.md
+--8<--
+
 ### Hardware counters
 
 --8<--

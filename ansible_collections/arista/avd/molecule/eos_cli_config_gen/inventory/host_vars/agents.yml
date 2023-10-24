@@ -1,0 +1,14 @@
+---
+agents:
+  - name: KernelFib
+    environment_variables:
+      - name: KERNELFIB_PROGRAM_ALL_ECMP
+        value: 'true'
+  - name: Dummy
+    environment_variables:
+      - name: V1
+        value: 42
+      - name: V2
+        value: 666
+  # This next one is not rendered because there is no config to render for it
+  - name: NotRendered
