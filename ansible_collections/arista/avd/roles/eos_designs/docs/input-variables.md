@@ -417,7 +417,7 @@ Node type settings are defined under the `<node_type_keys.key>` i.e `spine:`, `l
 ### Node type structure
 
 All node types have the same structure based on `defaults`, `node_groups`, `node_groups.nodes`, `nodes` and all variables can be defined in any section and support inheritance.
-The same settings can also be set directly under the root-level `node` key.
+The same settings can also be set directly under the `node` root-level key.
 
 The order of inheritance is the same for all node types and follows this pattern:
 
