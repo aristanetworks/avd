@@ -11595,6 +11595,8 @@ keys:
   router_traffic_engineering:
     type: dict
     keys:
+      enabled:
+        type: bool
       router_id:
         type: dict
         keys:
