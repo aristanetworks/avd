@@ -459,6 +459,14 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ntp:
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
+  local_interface:
+    name: Management1
+    vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC DC1-SVC3B

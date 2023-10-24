@@ -145,6 +145,14 @@ lacp:
     range:
       begin: 1
       end: 128
+ntp:
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
+  local_interface:
+    name: Management1
+    vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MH-LEAF1A
