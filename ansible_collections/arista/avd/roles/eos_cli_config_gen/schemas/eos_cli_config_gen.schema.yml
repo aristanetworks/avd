@@ -11302,6 +11302,177 @@ keys:
               type: str
               description: Multiline EOS CLI rendered directly on the Router OSPF
                 process ID in the final EOS configuration
+  router_path_selection:
+    type: dict
+    description: Dynamic path selection configuration.
+    keys:
+      peer_dynamic_source:
+        type: str
+        valid_values:
+        - stun
+        description: Source of dynamic peer discovery.
+      path_groups:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Path group name.
+            id:
+              type: int
+              description: Path group ID.
+              convert_types:
+              - str
+              min: 1
+              max: 65535
+            ipsec_profile:
+              type: str
+              description: IPSec profile for the path group.
+            flow_assignment:
+              type: str
+              valid_values:
+              - lan
+              description: Flow assignement `lan` can not be configured in a path
+                group with dynamic peers.
+            local_interfaces:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Local interface name.
+                    pattern: ^Ethernet\d+(/\d+)*(\.\d+)?$
+                  public_address:
+                    type: str
+                    description: Public IP assigned by NAT.
+                  stun:
+                    type: dict
+                    keys:
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 2
+                        description: STUN server-profile names.
+                        items:
+                          type: str
+            local_ips:
+              type: list
+              primary_key: ip_address
+              items:
+                type: dict
+                keys:
+                  ip_address:
+                    type: str
+                  public_address:
+                    type: str
+                    description: Public IP assigned by NAT.
+                  stun:
+                    type: dict
+                    keys:
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 2
+                        description: STUN server-profile names.
+                        items:
+                          type: str
+            dynamic_peers:
+              type: dict
+              description: Flow assignement `lan` can not be configured in a path
+                group with dynamic peers.
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable `peer dynamic`.
+                ip_local:
+                  type: bool
+                  description: Prefer local IP address.
+                ipsec:
+                  type: bool
+                  description: IPsec configuration for dynamic peers.
+            static_peers:
+              type: list
+              primary_key: router_ip
+              items:
+                type: dict
+                keys:
+                  router_ip:
+                    type: str
+                    description: Peer router IP.
+                  name:
+                    type: str
+                    description: Name of the site.
+                  ipv4_addresses:
+                    type: list
+                    description: Static IPv4 addresses.
+                    items:
+                      type: str
+      load_balance_policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Load-balance policy name.
+            path_groups:
+              type: list
+              description: List of path-groups to use for this load balance policy.
+              items:
+                type: str
+      policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: DPS policy name.
+            default_match:
+              type: dict
+              keys:
+                load_balance:
+                  type: str
+                  description: Name of the load-balance policy.
+            rules:
+              type: list
+              primary_key: id
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: int
+                    description: Rule ID.
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 255
+                  application_profile:
+                    type: str
+                    required: true
+                  load_balance:
+                    type: str
+                    description: Name of the load-balance policy.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            path_selection_policy:
+              type: str
+              description: DPS policy name to use for this VRF.
   router_pim_sparse_mode:
     type: dict
     keys:
