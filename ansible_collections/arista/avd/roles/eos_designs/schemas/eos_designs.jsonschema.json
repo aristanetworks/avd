@@ -3143,6 +3143,7 @@
         },
         "servers": {
           "type": "array",
+          "description": "This key replaces the deprecated `name_servers`. Both keys should not be used at the same time.",
           "items": {
             "type": "object",
             "properties": {
