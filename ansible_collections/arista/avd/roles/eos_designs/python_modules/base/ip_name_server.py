@@ -18,14 +18,14 @@ class IpNameServersMixin(UtilsMixin):
     """
 
     @cached_property
-    def ip_name_servers(self) -> dict | None:
+    def ip_name_servers(self) -> list | None:
         """
         ip_name_servers set based on "dns_settings" data-model or the deprecated "name_servers" input data-model.
 
         Servers in the new data model may have management VRFs dynamically set.
         """
         dns_settings_servers = get(self._hostvars, "dns_settings.servers", default=[])
-        ip_name_servers = self._name_servers
+        ip_name_servers = self.get_deprecated_name_servers()
 
         if not dns_settings_servers:
             return ip_name_servers or None
@@ -49,20 +49,13 @@ class IpNameServersMixin(UtilsMixin):
                 # If no VRFs are defined (and we are not just ignoring missing mgmt config)
                 vrfs.add("default")
 
-            # Ensure default VRF is added first
-            if "default" in vrfs:
-                vrfs.remove("default")
-                # Add server without VRF field
-                ip_name_servers.append(server)
-
             for vrf in natural_sort(vrfs):
                 # Add server with VRF field.
                 ip_name_servers.append({**server, "vrf": vrf})
 
         return ip_name_servers or None
 
-    @cached_property
-    def _name_servers(self) -> list:
+    def get_deprecated_name_servers(self) -> list:
         """
         ip_name_servers set based on the deprecated name_servers data-model and mgmt_interface_vrf
 
