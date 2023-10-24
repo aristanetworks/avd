@@ -10,7 +10,7 @@ keys:
     type: dict
     keys:
       topology_role:
-        description: Role profile
+        description: Role name
         type: str
         valid_values:
           - "edge"

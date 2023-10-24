@@ -13074,7 +13074,7 @@
       "type": "object",
       "properties": {
         "topology_role": {
-          "description": "Role profile",
+          "description": "Role name",
           "type": "string",
           "enum": [
             "edge",
