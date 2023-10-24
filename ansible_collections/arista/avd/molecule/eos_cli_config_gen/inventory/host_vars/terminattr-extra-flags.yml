@@ -15,7 +15,6 @@ daemon_terminattr:
   cvproxy: "http://arista:arista@10.10.10.1:3128"
   disable_aaa: true
   grpcaddr: "mgmt/0.0.0.0:6042"
-  cvcompression: gzip
   grpcreadonly: true
   cvconfig: true
   cvsourceintf: Vlan100

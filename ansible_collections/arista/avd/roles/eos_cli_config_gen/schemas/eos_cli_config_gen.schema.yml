@@ -1000,6 +1000,9 @@ keys:
 
           '
       cvcompression:
+        deprecation:
+          warning: true
+          remove_in_version: v5.0.0
         type: str
         description: 'The default compression scheme when streaming to CloudVision
           is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
