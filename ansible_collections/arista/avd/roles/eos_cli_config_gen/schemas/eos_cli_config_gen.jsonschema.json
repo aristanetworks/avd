@@ -693,7 +693,7 @@
               },
               "vrf": {
                 "type": "string",
-                "description": "ARP entry VRF - default to \"default\".",
+                "description": "ARP entry VRF.",
                 "title": "VRF"
               },
               "mac_address": {

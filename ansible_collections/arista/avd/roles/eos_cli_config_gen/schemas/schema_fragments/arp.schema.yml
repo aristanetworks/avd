@@ -29,7 +29,9 @@ keys:
               description: ARP entry IPv4 address.
             vrf:
               type: str
-              description: ARP entry VRF - default to "default".
+              convert_types:
+                - int
+              description: ARP entry VRF.
             mac_address:
               type: str
               description: ARP entry MAC address.
