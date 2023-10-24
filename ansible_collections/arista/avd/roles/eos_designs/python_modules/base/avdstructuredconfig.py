@@ -749,3 +749,10 @@ class AvdStructuredConfigBase(AvdFacts, IpNameServersMixin, SnmpServerMixin):
             return source_interfaces
 
         return None
+
+    @cached_property
+    def dns_domain(self) -> str | None:
+        """
+        dns_domain set based on dns_settings.domain data-model
+        """
+        return get(self._hostvars, "dns_settings.domain")

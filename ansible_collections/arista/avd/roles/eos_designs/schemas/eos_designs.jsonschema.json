@@ -3136,6 +3136,11 @@
       "type": "object",
       "description": "DNS settings\nFor DNS source-interfaces see \"source_interfaces.domain_lookup\"",
       "properties": {
+        "domain": {
+          "type": "string",
+          "description": "DNS domain name like 'fabric.local'",
+          "title": "Domain"
+        },
         "servers": {
           "type": "array",
           "items": {
