@@ -12,3 +12,17 @@ ntp_settings:
   servers:
     - name: 10.10.10.1
     - name: 10.10.10.2
+      burst: true
+      iburst: true
+      key: 1
+      maxpoll: 5
+      minpoll: 3
+      version: 4
+  authenticate: true
+  authenticate_servers_only: true
+  authentication_keys:
+    - id: 1
+      hash_algorithm: sha1
+      key: someobfuscatedkey
+      key_type: 7
+  trusted_keys: 1
