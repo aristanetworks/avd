@@ -19,7 +19,3 @@ arp:
     - ipv4_address: 42.42.42.42
       vrf: defaulu
       mac_address: DEAD.BEEF.CAFE
-    # testing with implicit leading zeros
-    - ipv4_address: 42.42.42.42
-      vrf: zeros
-      mac_address: 1.2.3

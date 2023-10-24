@@ -699,7 +699,7 @@
               "mac_address": {
                 "type": "string",
                 "description": "ARP entry MAC address.",
-                "pattern": "^[0-9A-Fa-f]{1,4}\\.[0-9A-Fa-f]{1,4}\\.[0-9A-Fa-f]{1,4}$",
+                "pattern": "^[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}$",
                 "title": "MAC Address"
               }
             },

@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;static_entries</samp>](## "arp.static_entries") | List, items: Dictionary |  |  |  | Static ARP entries. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- ipv4_address</samp>](## "arp.static_entries.[].ipv4_address") | String | Required |  |  | ARP entry IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "arp.static_entries.[].vrf") | String |  |  |  | ARP entry VRF. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "arp.static_entries.[].mac_address") | String | Required |  | Pattern: ^[0-9A-Fa-f]{1,4}\.[0-9A-Fa-f]{1,4}\.[0-9A-Fa-f]{1,4}$ | ARP entry MAC address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "arp.static_entries.[].mac_address") | String | Required |  | Pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$ | ARP entry MAC address. |
 
 === "YAML"
 

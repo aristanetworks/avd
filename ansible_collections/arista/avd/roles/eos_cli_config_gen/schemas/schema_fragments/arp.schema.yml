@@ -36,4 +36,4 @@ keys:
               type: str
               description: ARP entry MAC address.
               required: true
-              pattern: "^[0-9A-Fa-f]{1,4}\\.[0-9A-Fa-f]{1,4}\\.[0-9A-Fa-f]{1,4}$"
+              pattern: "^[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}$"

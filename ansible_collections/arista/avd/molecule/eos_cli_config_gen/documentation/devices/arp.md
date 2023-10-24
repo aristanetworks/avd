@@ -51,7 +51,6 @@ Global ARP timeout: 300
 | default | 42.42.42.42 | DEAD.BEEF.CAFE |
 | default | 43.42.42.42 | DEAD.BEEF.CAFE |
 | defaulu | 42.42.42.42 | DEAD.BEEF.CAFE |
-| zeros | 42.42.42.42 | 1.2.3 |
 
 #### ARP Configuration
 
@@ -64,5 +63,4 @@ arp 41.42.42.42 DEAD.BEEF.CAFE arpa
 arp 42.42.42.42 DEAD.BEEF.CAFE arpa
 arp 43.42.42.42 DEAD.BEEF.CAFE arpa
 arp vrf defaulu 42.42.42.42 DEAD.BEEF.CAFE arpa
-arp vrf zeros 42.42.42.42 1.2.3 arpa
 ```
