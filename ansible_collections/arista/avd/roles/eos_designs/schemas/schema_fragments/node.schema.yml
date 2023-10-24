@@ -11,7 +11,7 @@ keys:
     $ref: "eos_designs#/$defs/node_type/keys/defaults"
     type: dict
     description: |-
-      This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.
+      This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other settings under the node type keys like `l3leaf` or `spine`.
       It is useful when generating device settings from an external system of record since the values can be set with a static path per device instead of inserting it into the common `<node_type_key>` data structure.
       Since MLAG groupings are derived from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`.
     documentation_options:
