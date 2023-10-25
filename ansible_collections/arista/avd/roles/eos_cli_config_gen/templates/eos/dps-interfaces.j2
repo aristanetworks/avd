@@ -15,6 +15,9 @@ interface {{ dps_interface.name }}
 {%     elif dps_interface.shutdown is arista.avd.defined(false) %}
    no shutdown
 {%     endif %}
+{%     if dps_interface.mtu is arista.avd.defined %}
+   mtu {{ dps_interface.mtu }}
+{%     endif %}
 {%     if dps_interface.flow_tracker.hardware is arista.avd.defined %}
    flow tracker hardware {{ dps_interface.flow_tracker.hardware }}
 {%     endif %}

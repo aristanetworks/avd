@@ -62,17 +62,14 @@ class RouterBgpMixin(UtilsMixin):
                 if link["type"] != "underlay_p2p":
                     continue
 
-                neighbor_interface = {
-                    "name": link["interface"],
-                    "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
-                    "remote_as": link["peer_bgp_as"],
-                    "description": "_".join([link["peer"], link["peer_interface"]]),
-                }
-
-                if self.shared_utils.underlay_filter_peer_as is True:
-                    self._underlay_filter_peer_as_route_maps_asns.append(link["peer_bgp_as"])
-
-                neighbor_interfaces.append(neighbor_interface)
+                neighbor_interfaces.append(
+                    {
+                        "name": link["interface"],
+                        "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
+                        "remote_as": link["peer_bgp_as"],
+                        "description": "_".join([link["peer"], link["peer_interface"]]),
+                    }
+                )
 
             if neighbor_interfaces:
                 router_bgp["neighbor_interfaces"] = neighbor_interfaces

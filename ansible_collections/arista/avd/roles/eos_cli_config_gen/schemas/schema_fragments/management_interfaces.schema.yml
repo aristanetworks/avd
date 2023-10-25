@@ -21,6 +21,10 @@ keys:
           type: str
         shutdown:
           type: bool
+        speed:
+          type: str
+          description: |-
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
         vrf:

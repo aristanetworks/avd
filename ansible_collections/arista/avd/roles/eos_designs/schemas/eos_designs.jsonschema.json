@@ -2441,7 +2441,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -2685,7 +2685,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -3787,7 +3787,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -4031,7 +4031,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -4445,7 +4445,7 @@
           },
           "speed": {
             "type": "string",
-            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "description": "Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.\nIf not specified speed will be auto.\n",
             "title": "Speed"
           },
           "profile": {
@@ -5874,7 +5874,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -5899,7 +5899,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -5924,7 +5924,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -5949,7 +5949,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -6854,7 +6854,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "mtu": {
@@ -8200,7 +8200,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -8225,7 +8225,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -8250,7 +8250,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -8275,7 +8275,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -10029,7 +10029,7 @@
           },
           "speed": {
             "type": "string",
-            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "description": "Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.\nIf not specified speed will be auto.\n",
             "title": "Speed"
           },
           "description": {
@@ -11458,7 +11458,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -11483,7 +11483,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -11508,7 +11508,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -11533,7 +11533,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -12438,7 +12438,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "mtu": {
@@ -13784,7 +13784,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -13809,7 +13809,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -13834,7 +13834,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -13859,7 +13859,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -19023,7 +19023,7 @@
     },
     "underlay_filter_peer_as": {
       "type": "boolean",
-      "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote this key is ignored when EVPN is configured.\n",
+      "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote that this setting cannot be used while there are EVPN services present in the default VRF.\n",
       "default": false,
       "title": "Underlay Filter Peer As"
     },
