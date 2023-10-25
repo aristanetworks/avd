@@ -1,0 +1,16 @@
+---
+fabric_name: fabric_id_static_and_pool_manager
+type: l2leaf
+
+fabric_numbering:
+  id:
+    algorithm: pool_manager
+
+l2leaf:
+  nodes:
+    - name: id-static-and-pool-manager
+      id: 1
+
+expected_error_message: >-
+  Unexpected failure during module execution: When 'fabric_numbering.id.algorithm' is set to 'pool_manager', 'id' must not be set under node settings.
+  Got 'id: 1' for 'id-static-and-pool-manager'

@@ -30,7 +30,7 @@ def get_avd_facts(all_inputs: dict[str, dict], pool_manager: AvdPoolManager | No
                 ...
             }
             ```
-        pool_manager: An instance of pyavd.AvdPoolManager or subclass hereof implementing ".get_id(shared_utils: SharedUtils)".
+        pool_manager: Optional instance of pyavd.AvdPoolManager or subclass hereof implementing ".get_id(shared_utils: SharedUtils)".
             Used for dynamic ID allocations using the "pool_manager" feature.
 
     Returns:

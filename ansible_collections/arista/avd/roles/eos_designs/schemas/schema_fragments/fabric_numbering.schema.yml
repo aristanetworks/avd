@@ -16,25 +16,14 @@ keys:
         keys:
           algorithm:
             type: str
+            default: static
             valid_values:
+              - static
               - pool_manager
             description: |-
-              If set, IDs will be automatically assigned using the configured algorithm unless statically configured under the node settings.
-
-              - "pool_manager" will activate the pool manager for ID pools.
-
-                The pools are dynamically built and matched on the following device data:
-                - `fabric_name`
-                - `dc_name`
-                - `pod_name`
-                - `type`
-
-                Note: This means changing any of these fields may renumber the devices!
-
-                Each pool will assign the first available ID starting from 1.
-
-                Stale entries will be reclaimed from each pool automatically after every run.
-                A stale entry is an entry that was not accessed during the run.
+              IDs will be automatically assigned according to the configured algorithm.
+              - `static` will use the statically set IDs under node setting.
+              - `pool_manager` will activate the pool manager for ID pools.
           pools_file:
             type: str
             description: |-
