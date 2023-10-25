@@ -3276,7 +3276,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3301,7 +3301,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3326,7 +3326,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3351,7 +3351,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -9808,6 +9808,7 @@
     },
     "platform": {
       "type": "object",
+      "description": "Every key below this point is platform dependent.",
       "properties": {
         "trident": {
           "type": "object",
@@ -9997,7 +9998,7 @@
         },
         "sand": {
           "type": "object",
-          "description": "Most of the platform sand options are hardware dependant and optional",
+          "description": "Most of the platform sand options are hardware dependent and optional",
           "properties": {
             "qos_maps": {
               "type": "array",
@@ -10070,6 +10071,24 @@
             "^_.+$": {}
           },
           "title": "Sand"
+        },
+        "sfe": {
+          "type": "object",
+          "description": "Sfe (Software Forwarding Engine) settings.",
+          "properties": {
+            "data_plane_cpu_allocation_max": {
+              "type": "integer",
+              "description": "Maximum number of CPUs used for data plane traffic forwarding.",
+              "minimum": 1,
+              "maximum": 128,
+              "title": "Data Plane CPU Allocation Max"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sfe"
         }
       },
       "additionalProperties": false,
@@ -10797,7 +10816,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10822,7 +10841,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10847,7 +10866,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10872,7 +10891,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
