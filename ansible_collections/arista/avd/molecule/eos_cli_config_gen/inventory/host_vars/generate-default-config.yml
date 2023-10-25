@@ -1,3 +1,4 @@
-generate_default_config: false
+generate_default_config: true
+transceiver_qsfp_default_mode_channelized: false
 #Override config inherited from all.yml
 management_interfaces: null
