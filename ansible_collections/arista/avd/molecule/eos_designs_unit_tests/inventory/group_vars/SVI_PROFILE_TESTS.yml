@@ -71,6 +71,10 @@ svi_profiles:
   - profile: struct_config_child_profile_4
     parent_profile: struct_config_parent_profile_2
 
+  - profile: struct_config_on_multiple_svis
+    structured_config:
+      description: "set from svi_profile struct_config_on_multiple_svis"
+
 #### ---- Test inheritance of svi igmp_snooping_enabled ----- ###
 # Tests logic for network services: ip igmp snooping
 # Precedence order:
@@ -251,6 +255,15 @@ tenants:
             enabled: true
             ip_address_virtual: 10.1.15.1/24
             profile: struct_config_child_profile_4
+
+          # Expected results:
+          # - description: set from svi_profile struct_config_on_multiple_svis
+          - id: 120
+            name: svi_profile_tests_120_description
+            profile: struct_config_on_multiple_svis
+          - id: 121
+            name: svi_profile_tests_121_description
+            profile: struct_config_on_multiple_svis
 
 #### ---- Test inheritance of svi igmp_snooping_enabled ----- ###
 # Tests logic for network services: ip igmp snooping
