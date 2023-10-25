@@ -518,6 +518,9 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
    !
    address-family evpn
+{%         if router_bgp.address_family_evpn.next_hop_unchanged is arista.avd.defined(true) %}
+      bgp next-hop-unchanged
+{%         endif %}
 {%         if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
       no host-flap detection
 {%         elif router_bgp.address_family_evpn.evpn_hostflap_detection.enabled is arista.avd.defined(true) %}
@@ -556,6 +559,22 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer_group.name }} activate
 {%             elif peer_group.activate is arista.avd.defined(false) %}
       no neighbor {{ peer_group.name }} activate
+{%             endif %}
+{%             if peer_group.additional_paths.receive is arista.avd.defined(true) %}
+      neighbor {{ peer_group.name }} additional-paths receive
+{%             endif %}
+{%             if peer_group.additional_paths.send.any is arista.avd.defined(true) %}
+      neighbor {{ peer_group.name }} additional-paths send any
+{%             elif peer_group.additional_paths.send.any is arista.avd.defined(false) %}
+      no neighbor {{ peer_group.name }} additional-paths send any
+{%             elif peer_group.additional_paths.send.backup is arista.avd.defined(true) %}
+      neighbor {{ peer_group.name }} additional-paths send backup
+{%             elif peer_group.additional_paths.send.ecmp is arista.avd.defined(true) %}
+      neighbor {{ peer_group.name }} additional-paths send ecmp
+{%             elif peer_group.additional_paths.send.ecmp_limit is arista.avd.defined %}
+      neighbor {{ peer_group.name }} additional-paths send ecmp limit {{ peer_group.additional_paths.send.ecmp_limit }}
+{%             elif peer_group.additional_paths.send.limit is arista.avd.defined %}
+      neighbor {{ peer_group.name }} additional-paths send limit {{ peer_group.additional_paths.send.limit }}
 {%             endif %}
 {%             if peer_group.domain_remote is arista.avd.defined(true) %}
       neighbor {{ peer_group.name }} domain remote

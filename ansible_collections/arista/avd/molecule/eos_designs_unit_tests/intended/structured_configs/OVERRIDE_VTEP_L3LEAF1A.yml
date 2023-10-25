@@ -1,4 +1,5 @@
 hostname: OVERRIDE_VTEP_L3LEAF1A
+is_deployed: true
 router_bgp:
   as: '923'
   router_id: 192.168.255.35

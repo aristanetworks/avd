@@ -1,5 +1,7 @@
 ### Routing - Traffic Engineering ###
 router_traffic_engineering:
+  # enabled is not enforced in AVD 4.x but will be in 5.x
+  enabled: true
   router_id:
     ipv4: 10.0.0.1
     ipv6: 2001:beef:cafe::1

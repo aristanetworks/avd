@@ -1,4 +1,5 @@
 hostname: dc2-leaf2b
+is_deployed: true
 router_bgp:
   as: '65202'
   router_id: 10.255.128.16

@@ -655,6 +655,55 @@
       },
       "title": "Address Locking"
     },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name.",
+            "title": "Name"
+          },
+          "environment_variables": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Environment variable name.",
+                  "title": "Name"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Environment variable value.",
+                  "title": "Value"
+                }
+              },
+              "required": [
+                "value",
+                "name"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Environment Variables"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Agents"
+    },
     "aliases": {
       "type": "string",
       "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
@@ -679,6 +728,40 @@
             "^_.+$": {}
           },
           "title": "Aging"
+        },
+        "static_entries": {
+          "type": "array",
+          "description": "Static ARP entries.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ipv4_address": {
+                "type": "string",
+                "description": "ARP entry IPv4 address.",
+                "title": "IPv4 Address"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "ARP entry VRF.",
+                "title": "VRF"
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "ARP entry MAC address.",
+                "pattern": "^[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}$",
+                "title": "MAC Address"
+              }
+            },
+            "required": [
+              "ipv4_address",
+              "mac_address"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Static Entries"
         }
       },
       "additionalProperties": false,
@@ -1385,7 +1468,8 @@
         },
         "cvcompression": {
           "type": "string",
-          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\nThis key is deprecated. Support will be removed in AVD version v5.0.0.",
+          "deprecated": true,
           "title": "Cvcompression"
         }
       },
@@ -1442,6 +1526,10 @@
         "tunnel_requests_disabled": {
           "type": "boolean",
           "title": "Tunnel Requests Disabled"
+        },
+        "mlag_peerlink_requests_disabled": {
+          "type": "boolean",
+          "title": "MLAG Peerlink Requests Disabled"
         }
       },
       "additionalProperties": false,
@@ -1550,6 +1638,13 @@
           "shutdown": {
             "type": "boolean",
             "title": "Shutdown"
+          },
+          "mtu": {
+            "type": "integer",
+            "description": "Maximum Transmission Unit in bytes.",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "MTU"
           },
           "ip_address": {
             "type": "string",
@@ -1835,7 +1930,7 @@
           },
           "speed": {
             "type": "string",
-            "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+            "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
             "title": "Speed"
           },
           "mtu": {
@@ -3181,7 +3276,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3206,7 +3301,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3231,7 +3326,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3256,7 +3351,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -4220,6 +4315,7 @@
             "type": "string",
             "description": "Configure event trigger condition.\n",
             "enum": [
+              "on-boot",
               "on-logging",
               "on-startup-config"
             ],
@@ -6511,6 +6607,12 @@
       "type": "boolean",
       "title": "IPv6 Unicast Routing"
     },
+    "is_deployed": {
+      "description": "Key only used for documentation or validation purposes",
+      "type": "boolean",
+      "default": true,
+      "title": "Is Deployed"
+    },
     "l2_protocol": {
       "type": "object",
       "properties": {
@@ -7862,6 +7964,11 @@
                     "type": "string",
                     "description": "ACL name",
                     "title": "IP Access Group"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "GNMI port.\nMake sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.\n",
+                    "title": "Port"
                   }
                 },
                 "additionalProperties": false,
@@ -8261,6 +8368,11 @@
             "type": "boolean",
             "title": "Shutdown"
           },
+          "speed": {
+            "type": "string",
+            "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
+            "title": "Speed"
+          },
           "mtu": {
             "type": "integer",
             "title": "MTU"
@@ -8308,6 +8420,29 @@
             "type": "string",
             "description": "MAC address",
             "title": "MAC Address"
+          },
+          "lldp": {
+            "type": "object",
+            "properties": {
+              "transmit": {
+                "type": "boolean",
+                "title": "Transmit"
+              },
+              "receive": {
+                "type": "boolean",
+                "title": "Receive"
+              },
+              "ztp_vlan": {
+                "type": "integer",
+                "description": "ZTP vlan number",
+                "title": "ZTP VLAN"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "LLDP"
           },
           "eos_cli": {
             "type": "string",
@@ -8729,6 +8864,30 @@
           "type": "string",
           "description": "SSH daemon log level",
           "title": "Log Level"
+        },
+        "client_alive": {
+          "type": "object",
+          "properties": {
+            "count_max": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "description": "Number of keep-alive packets that can be sent without a response before the connection is assumed dead.",
+              "title": "Count Max"
+            },
+            "interval": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "description": "Time period (in seconds) to send SSH keep-alive packets.",
+              "title": "Interval"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Client Alive"
         }
       },
       "additionalProperties": false,
@@ -9649,6 +9808,7 @@
     },
     "platform": {
       "type": "object",
+      "description": "Every key below this point is platform dependent.",
       "properties": {
         "trident": {
           "type": "object",
@@ -9838,7 +9998,7 @@
         },
         "sand": {
           "type": "object",
-          "description": "Most of the platform sand options are hardware dependant and optional",
+          "description": "Most of the platform sand options are hardware dependent and optional",
           "properties": {
             "qos_maps": {
               "type": "array",
@@ -9911,6 +10071,24 @@
             "^_.+$": {}
           },
           "title": "Sand"
+        },
+        "sfe": {
+          "type": "object",
+          "description": "Sfe (Software Forwarding Engine) settings.",
+          "properties": {
+            "data_plane_cpu_allocation_max": {
+              "type": "integer",
+              "description": "Maximum number of CPUs used for data plane traffic forwarding.",
+              "minimum": 1,
+              "maximum": 128,
+              "title": "Data Plane CPU Allocation Max"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sfe"
         }
       },
       "additionalProperties": false,
@@ -10638,7 +10816,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10663,7 +10841,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10688,7 +10866,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10713,7 +10891,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -11955,6 +12133,14 @@
                 "description": "Example: \"8 9 10 to traffic-class 1\"\n"
               },
               "title": "DSCP"
+            },
+            "exp": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "Example \"0 to traffic-class 0\"\n"
+              },
+              "title": "EXP"
             },
             "traffic_class": {
               "type": "array",
@@ -14513,6 +14699,56 @@
                       "mpls"
                     ],
                     "title": "Encapsulation"
+                  },
+                  "additional_paths": {
+                    "type": "object",
+                    "properties": {
+                      "receive": {
+                        "type": "boolean",
+                        "title": "Receive"
+                      },
+                      "send": {
+                        "type": "object",
+                        "properties": {
+                          "any": {
+                            "type": "boolean",
+                            "title": "Any"
+                          },
+                          "backup": {
+                            "type": "boolean",
+                            "title": "Backup"
+                          },
+                          "ecmp": {
+                            "type": "boolean",
+                            "title": "ECMP"
+                          },
+                          "ecmp_limit": {
+                            "type": "integer",
+                            "description": "Amount of ECMP paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "ECMP Limit"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "description": "Amount of paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Send"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Additional Paths"
                   }
                 },
                 "additionalProperties": false,
@@ -14590,6 +14826,10 @@
                 "^_.+$": {}
               },
               "title": "Route"
+            },
+            "next_hop_unchanged": {
+              "type": "boolean",
+              "title": "Next Hop Unchanged"
             }
           },
           "additionalProperties": false,
@@ -17916,13 +18156,13 @@
           "title": "Router ID"
         },
         "is_type": {
+          "title": "IS Type",
           "type": "string",
           "enum": [
             "level-1",
             "level-1-2",
             "level-2"
-          ],
-          "title": "IS Type"
+          ]
         },
         "log_adjacency_changes": {
           "type": "boolean",
@@ -19370,6 +19610,348 @@
         "^_.+$": {}
       }
     },
+    "router_path_selection": {
+      "type": "object",
+      "description": "Dynamic path selection configuration.",
+      "properties": {
+        "peer_dynamic_source": {
+          "type": "string",
+          "enum": [
+            "stun"
+          ],
+          "description": "Source of dynamic peer discovery.",
+          "title": "Peer Dynamic Source"
+        },
+        "path_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Path group name.",
+                "title": "Name"
+              },
+              "id": {
+                "type": "integer",
+                "description": "Path group ID.",
+                "minimum": 1,
+                "maximum": 65535,
+                "title": "ID"
+              },
+              "ipsec_profile": {
+                "type": "string",
+                "description": "IPSec profile for the path group.",
+                "title": "Ipsec Profile"
+              },
+              "flow_assignment": {
+                "type": "string",
+                "enum": [
+                  "lan"
+                ],
+                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peers.",
+                "title": "Flow Assignment"
+              },
+              "local_interfaces": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Local interface name.",
+                      "pattern": "^Ethernet\\d+(/\\d+)*(\\.\\d+)?$",
+                      "title": "Name"
+                    },
+                    "public_address": {
+                      "type": "string",
+                      "description": "Public IP assigned by NAT.",
+                      "title": "Public Address"
+                    },
+                    "stun": {
+                      "type": "object",
+                      "properties": {
+                        "server_profiles": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 2,
+                          "description": "STUN server-profile names.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Server Profiles"
+                        }
+                      },
+                      "required": [
+                        "server_profiles"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "STUN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Local Interfaces"
+              },
+              "local_ips": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ip_address": {
+                      "type": "string",
+                      "title": "IP Address"
+                    },
+                    "public_address": {
+                      "type": "string",
+                      "description": "Public IP assigned by NAT.",
+                      "title": "Public Address"
+                    },
+                    "stun": {
+                      "type": "object",
+                      "properties": {
+                        "server_profiles": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 2,
+                          "description": "STUN server-profile names.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Server Profiles"
+                        }
+                      },
+                      "required": [
+                        "server_profiles"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "STUN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "ip_address"
+                  ]
+                },
+                "title": "Local Ips"
+              },
+              "dynamic_peers": {
+                "type": "object",
+                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peers.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable `peer dynamic`.",
+                    "title": "Enabled"
+                  },
+                  "ip_local": {
+                    "type": "boolean",
+                    "description": "Prefer local IP address.",
+                    "title": "IP Local"
+                  },
+                  "ipsec": {
+                    "type": "boolean",
+                    "description": "IPsec configuration for dynamic peers.",
+                    "title": "Ipsec"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Dynamic Peers"
+              },
+              "static_peers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "router_ip": {
+                      "type": "string",
+                      "description": "Peer router IP.",
+                      "title": "Router IP"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the site.",
+                      "title": "Name"
+                    },
+                    "ipv4_addresses": {
+                      "type": "array",
+                      "description": "Static IPv4 addresses.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "IPv4 Addresses"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "router_ip"
+                  ]
+                },
+                "title": "Static Peers"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Path Groups"
+        },
+        "load_balance_policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Load-balance policy name.",
+                "title": "Name"
+              },
+              "path_groups": {
+                "type": "array",
+                "description": "List of path-groups to use for this load balance policy.",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Path Groups"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Load Balance Policies"
+        },
+        "policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "DPS policy name.",
+                "title": "Name"
+              },
+              "default_match": {
+                "type": "object",
+                "properties": {
+                  "load_balance": {
+                    "type": "string",
+                    "description": "Name of the load-balance policy.",
+                    "title": "Load Balance"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Default Match"
+              },
+              "rules": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Rule ID.",
+                      "minimum": 1,
+                      "maximum": 255,
+                      "title": "ID"
+                    },
+                    "application_profile": {
+                      "type": "string",
+                      "title": "Application Profile"
+                    },
+                    "load_balance": {
+                      "type": "string",
+                      "description": "Name of the load-balance policy.",
+                      "title": "Load Balance"
+                    }
+                  },
+                  "required": [
+                    "application_profile",
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Rules"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Policies"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name.",
+                "title": "Name"
+              },
+              "path_selection_policy": {
+                "type": "string",
+                "description": "DPS policy name to use for this VRF.",
+                "title": "Path Selection Policy"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Router Path Selection"
+    },
     "router_pim_sparse_mode": {
       "type": "object",
       "properties": {
@@ -19602,6 +20184,10 @@
     "router_traffic_engineering": {
       "type": "object",
       "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
         "router_id": {
           "type": "object",
           "properties": {
@@ -20830,6 +21416,14 @@
             "local_interface": {
               "type": "string",
               "title": "Local Interface"
+            },
+            "local_interfaces": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              },
+              "title": "Local Interfaces"
             }
           },
           "additionalProperties": false,
@@ -20843,7 +21437,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Stun"
+      "title": "STUN"
     },
     "switchport_default": {
       "type": "object",
