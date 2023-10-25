@@ -941,6 +941,8 @@ ethernet_interfaces:
         timers:
           delay:
             reload: 900
+        preempt:
+          enabled: false
         ipv4:
           address: 100.64.0.1
           version: 3

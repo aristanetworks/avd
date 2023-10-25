@@ -278,7 +278,7 @@ sFlow is disabled.
 | Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 |
 | Ethernet66 | 1 | 105 | 2 | Enabled | ID1-TrackedObjectDecrement, ID1-TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - |
 | Ethernet66 | 2 | - | - | Enabled | ID2-TrackedObjectDecrement, ID2-TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 |
-| Ethernet66 | 3 | - | - | Enabled | - | - | 100.64.0.1 | 3 | - |
+| Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - |
 
 ##### ISIS
 
@@ -933,6 +933,7 @@ interface Ethernet66
    vrrp 2 ipv6 2001:db8::1
    vrrp 2 tracked-object ID2-TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2-TrackedObjectShutdown shutdown
+   no vrrp 3 preempt
    vrrp 3 timers delay reload 900
    vrrp 3 ipv4 100.64.0.1
    vrrp 3 ipv4 version 3

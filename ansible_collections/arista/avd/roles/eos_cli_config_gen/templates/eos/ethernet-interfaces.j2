@@ -727,6 +727,8 @@ interface {{ ethernet_interface.name }}
 {%                     set delay_cli = delay_cli ~ ' reload ' ~ vrid.preempt.delay.reload %}
 {%                 endif %}
    {{ delay_cli }}
+{%             elif vrid.preempt.enabled is arista.avd.defined(false) %}
+   no vrrp {{ vrid.id }} preempt
 {%             endif %}
 {%             if vrid.timers.delay.reload is arista.avd.defined %}
    vrrp {{ vrid.id }} timers delay reload {{ vrid.timers.delay.reload }}
