@@ -8,18 +8,16 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 
 def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
     """
-    get_ip_from_pool returns one IP address from given pool.
+    get_ip_from_pool returns one IP address from a subnet of the given prefix length size from the given pool.
 
-    Parameters
-    ----------
-    pool : IP pool in string format, example: "1.2.3.4/24"
-    prefixlen : Integer
-    subnet_offset : Integer
-    ip_offset : Integer
+    Args:
+        pool : IP pool in string format, example: "1.2.3.4/24"
+        prefixlen : Prefix length for subnet to fetch from the pool
+        subnet_offset : Offset this many subnets of 'prefixlen' size into the pool.
+        ip_offset : Offset this many IP addresses into the subnet to get the IP.
 
-    Returns
-    -------
-    IP address
+    Returns:
+        IP address without mask
     """
 
     pool_network = ipaddress.ip_network(pool, strict=False)
