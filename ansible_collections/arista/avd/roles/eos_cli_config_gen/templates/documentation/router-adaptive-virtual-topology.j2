@@ -9,21 +9,23 @@
 ### Router Adaptive Virtual Topology
 
 #### Router Adaptive Virtual Topology Summary
-
 {%     if router_adaptive_virtual_topology.topology_role is arista.avd.defined %}
-Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 
+Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 {%     endif %}
+{%     if router_adaptive_virtual_topology.region is arista.avd.defined or router_adaptive_virtual_topology.zone is arista.avd.defined  or router_adaptive_virtual_topology.site is arista.avd.defined %}
+
 | Hierarchy | Name | ID |
 | --------- | ---- | -- |
-{%     if router_adaptive_virtual_topology.region is arista.avd.defined %}
+{%         if router_adaptive_virtual_topology.region is arista.avd.defined %}
 | Region | {{ router_adaptive_virtual_topology.region.name }} | {{ router_adaptive_virtual_topology.region.id }} |
-{%     endif %}
-{%     if router_adaptive_virtual_topology.zone is arista.avd.defined %}
+{%         endif %}
+{%         if router_adaptive_virtual_topology.zone is arista.avd.defined %}
 | Zone | {{ router_adaptive_virtual_topology.zone.name }} | {{ router_adaptive_virtual_topology.zone.id }} |
-{%     endif %}
-{%     if router_adaptive_virtual_topology.site is arista.avd.defined %}
+{%         endif %}
+{%         if router_adaptive_virtual_topology.site is arista.avd.defined %}
 | Site | {{ router_adaptive_virtual_topology.site.name }} | {{ router_adaptive_virtual_topology.site.id }} |
+{%         endif %}
 {%     endif %}
 
 #### Router Adaptive Virtual Topology Configuration
