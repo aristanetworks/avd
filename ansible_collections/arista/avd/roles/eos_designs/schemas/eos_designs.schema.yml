@@ -1207,6 +1207,8 @@ keys:
       Configure destinations and default enabling of sFlow for varous interface types
       across the fabric.
 
+      The sFlow process will be enabled if any interface is enabled for sFlow.
+
       For source-interfaces see "source_interfaces.sflow"'
     keys:
       destinations:

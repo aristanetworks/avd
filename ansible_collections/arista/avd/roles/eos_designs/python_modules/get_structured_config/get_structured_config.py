@@ -20,6 +20,7 @@ from ..metadata import AvdStructuredConfigMetadata
 from ..mlag import AvdStructuredConfigMlag
 from ..network_services import AvdStructuredConfigNetworkServices
 from ..overlay import AvdStructuredConfigOverlay
+from ..sflow import AvdStructuredConfigSflow
 from ..underlay import AvdStructuredConfigUnderlay
 
 AVD_STRUCTURED_CONFIG_CLASSES = [
@@ -31,6 +32,7 @@ AVD_STRUCTURED_CONFIG_CLASSES = [
     AvdStructuredConfigNetworkServices,
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,
+    AvdStructuredConfigSflow,
     # Metadata must be after anything else that can generate structured config, since CV tags can consume from structured config.
     AvdStructuredConfigMetadata,
     AvdStructuredConfigCustomStructuredConfiguration,

@@ -14,6 +14,8 @@ class UtilsMixin:
     """
     Mixin Class with internal functions.
     Class should only be used as Mixin to a AvdStructuredConfig class or other Mixins.
+
+    NOTE: This Mixin is also imported from the sflow module
     """
 
     # Set type hints for Attributes of the main class as needed

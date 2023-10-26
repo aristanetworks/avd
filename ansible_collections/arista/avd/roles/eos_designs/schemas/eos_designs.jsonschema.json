@@ -5035,7 +5035,7 @@
     },
     "fabric_sflow": {
       "type": "object",
-      "description": "sFlow settings.\nConfigure destinations and default enabling of sFlow for varous interface types across the fabric.\nFor source-interfaces see \"source_interfaces.sflow\"",
+      "description": "sFlow settings.\nConfigure destinations and default enabling of sFlow for varous interface types across the fabric.\nThe sFlow process will be enabled if any interface is enabled for sFlow.\nFor source-interfaces see \"source_interfaces.sflow\"",
       "properties": {
         "destinations": {
           "type": "array",

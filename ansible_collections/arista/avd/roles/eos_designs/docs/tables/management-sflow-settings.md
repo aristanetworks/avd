@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>fabric_sflow</samp>](## "fabric_sflow") | Dictionary |  |  |  | sFlow settings.<br>Configure destinations and default enabling of sFlow for varous interface types across the fabric.<br>For source-interfaces see "source_interfaces.sflow" |
+    | [<samp>fabric_sflow</samp>](## "fabric_sflow") | Dictionary |  |  |  | sFlow settings.<br>Configure destinations and default enabling of sFlow for varous interface types across the fabric.<br>The sFlow process will be enabled if any interface is enabled for sFlow.<br>For source-interfaces see "source_interfaces.sflow" |
     | [<samp>&nbsp;&nbsp;destinations</samp>](## "fabric_sflow.destinations") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;destination</samp>](## "fabric_sflow.destinations.[].destination") | String | Required |  |  | sFlow destination IP address |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "fabric_sflow.destinations.[].port") | Integer |  |  |  | Port number |
@@ -27,6 +27,7 @@
     ```yaml
     # sFlow settings.
     # Configure destinations and default enabling of sFlow for varous interface types across the fabric.
+    # The sFlow process will be enabled if any interface is enabled for sFlow.
     # For source-interfaces see "source_interfaces.sflow"
     fabric_sflow:
       destinations:
