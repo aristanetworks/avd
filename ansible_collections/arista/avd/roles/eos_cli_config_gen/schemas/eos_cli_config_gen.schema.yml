@@ -388,6 +388,32 @@ keys:
           ipv6_enforcement_disabled:
             type: bool
             description: Configure enforcement for locked IPv6 addresses
+  agents:
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Agent name.
+        environment_variables:
+          type: list
+          primary_key: name
+          min_length: 1
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Environment variable name.
+              value:
+                type: str
+                convert_types:
+                - int
+                - bool
+                required: true
+                description: Environment variable value.
   aliases:
     type: str
     description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
@@ -404,6 +430,26 @@ keys:
             type: int
             min: 60
             max: 65535
+      static_entries:
+        type: list
+        description: Static ARP entries.
+        items:
+          type: dict
+          keys:
+            ipv4_address:
+              type: str
+              required: true
+              description: ARP entry IPv4 address.
+            vrf:
+              type: str
+              convert_types:
+              - int
+              description: ARP entry VRF.
+            mac_address:
+              type: str
+              description: ARP entry MAC address.
+              required: true
+              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
   as_path:
     type: dict
     keys:
@@ -974,6 +1020,9 @@ keys:
 
           '
       cvcompression:
+        deprecation:
+          warning: true
+          remove_in_version: v5.0.0
         type: str
         description: 'The default compression scheme when streaming to CloudVision
           is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
@@ -1076,6 +1125,13 @@ keys:
           type: str
         shutdown:
           type: bool
+        mtu:
+          type: int
+          description: Maximum Transmission Unit in bytes.
+          convert_types:
+          - str
+          min: 68
+          max: 65535
         ip_address:
           type: str
           description: IPv4 address/mask.
@@ -1912,7 +1968,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -1928,7 +1984,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -1944,7 +2000,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -1960,7 +2016,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         logging:
           type: dict
           keys:
@@ -5789,6 +5845,7 @@ keys:
                   Example: "as-range 1-100 result accept"'
   platform:
     type: dict
+    description: Every key below this point is platform dependent.
     keys:
       trident:
         type: dict
@@ -5942,7 +5999,7 @@ keys:
                                   '
       sand:
         type: dict
-        description: Most of the platform sand options are hardware dependant and
+        description: Most of the platform sand options are hardware dependent and
           optional
         keys:
           qos_maps:
@@ -5979,6 +6036,17 @@ keys:
                 valid_values:
                 - ingress
                 - egress
+      sfe:
+        type: dict
+        description: Sfe (Software Forwarding Engine) settings.
+        keys:
+          data_plane_cpu_allocation_max:
+            type: int
+            description: Maximum number of CPUs used for data plane traffic forwarding.
+            convert_types:
+            - str
+            min: 1
+            max: 128
   poe:
     type: dict
     keys:
@@ -6440,7 +6508,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -6456,7 +6524,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -6472,7 +6540,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -6488,7 +6556,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         ip_proxy_arp:
           type: bool
         isis_enable:
@@ -11276,6 +11344,177 @@ keys:
               type: str
               description: Multiline EOS CLI rendered directly on the Router OSPF
                 process ID in the final EOS configuration
+  router_path_selection:
+    type: dict
+    description: Dynamic path selection configuration.
+    keys:
+      peer_dynamic_source:
+        type: str
+        valid_values:
+        - stun
+        description: Source of dynamic peer discovery.
+      path_groups:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Path group name.
+            id:
+              type: int
+              description: Path group ID.
+              convert_types:
+              - str
+              min: 1
+              max: 65535
+            ipsec_profile:
+              type: str
+              description: IPSec profile for the path group.
+            flow_assignment:
+              type: str
+              valid_values:
+              - lan
+              description: Flow assignement `lan` can not be configured in a path
+                group with dynamic peers.
+            local_interfaces:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Local interface name.
+                    pattern: ^Ethernet\d+(/\d+)*(\.\d+)?$
+                  public_address:
+                    type: str
+                    description: Public IP assigned by NAT.
+                  stun:
+                    type: dict
+                    keys:
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 2
+                        description: STUN server-profile names.
+                        items:
+                          type: str
+            local_ips:
+              type: list
+              primary_key: ip_address
+              items:
+                type: dict
+                keys:
+                  ip_address:
+                    type: str
+                  public_address:
+                    type: str
+                    description: Public IP assigned by NAT.
+                  stun:
+                    type: dict
+                    keys:
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 2
+                        description: STUN server-profile names.
+                        items:
+                          type: str
+            dynamic_peers:
+              type: dict
+              description: Flow assignement `lan` can not be configured in a path
+                group with dynamic peers.
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable `peer dynamic`.
+                ip_local:
+                  type: bool
+                  description: Prefer local IP address.
+                ipsec:
+                  type: bool
+                  description: IPsec configuration for dynamic peers.
+            static_peers:
+              type: list
+              primary_key: router_ip
+              items:
+                type: dict
+                keys:
+                  router_ip:
+                    type: str
+                    description: Peer router IP.
+                  name:
+                    type: str
+                    description: Name of the site.
+                  ipv4_addresses:
+                    type: list
+                    description: Static IPv4 addresses.
+                    items:
+                      type: str
+      load_balance_policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Load-balance policy name.
+            path_groups:
+              type: list
+              description: List of path-groups to use for this load balance policy.
+              items:
+                type: str
+      policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: DPS policy name.
+            default_match:
+              type: dict
+              keys:
+                load_balance:
+                  type: str
+                  description: Name of the load-balance policy.
+            rules:
+              type: list
+              primary_key: id
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: int
+                    description: Rule ID.
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 255
+                  application_profile:
+                    type: str
+                    required: true
+                  load_balance:
+                    type: str
+                    description: Name of the load-balance policy.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            path_selection_policy:
+              type: str
+              description: DPS policy name to use for this VRF.
   router_pim_sparse_mode:
     type: dict
     keys:
@@ -11398,6 +11637,8 @@ keys:
   router_traffic_engineering:
     type: dict
     keys:
+      enabled:
+        type: bool
       router_id:
         type: dict
         keys:
