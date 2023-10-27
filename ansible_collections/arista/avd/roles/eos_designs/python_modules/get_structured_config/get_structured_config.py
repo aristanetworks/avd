@@ -32,9 +32,13 @@ AVD_STRUCTURED_CONFIG_CLASSES = [
     AvdStructuredConfigNetworkServices,
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,
+    # The sFlow module must be rendered after others contributing interfaces,
+    # since it parses those interfaces for sFlow config.
     AvdStructuredConfigSflow,
     # Metadata must be after anything else that can generate structured config, since CV tags can consume from structured config.
     AvdStructuredConfigMetadata,
+    # The Custom Structured Configuration module must be rendered last,
+    # since it parses all supported object looking for `struct_cfg`.
     AvdStructuredConfigCustomStructuredConfiguration,
 ]
 """

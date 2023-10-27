@@ -5,7 +5,7 @@ fabric_name: SFLOW_TESTS
 
 mgmt_gateway: 192.168.0.1
 
-fabric_sflow:
+sflow_settings:
   destinations:
     - destination: 10.10.10.10
     - destination: 10.10.10.11
@@ -26,16 +26,18 @@ fabric_sflow:
       vrf: sflowvrf
       use_mgmt_interface_vrf: true
       use_inband_mgmt_vrf: true
+  structured_config:
+    vrfs:
+      - name: sflowvrf
+        source_interface: Loopback321
+
+fabric_sflow:
   uplinks: true
   downlinks: true
   endpoints: true
   l3_edge: true
   core_interfaces: true
   mlag_interfaces: true
-  structured_config:
-    vrfs:
-      - name: sflowvrf
-        source_interface: Loopback321
 
 source_interfaces:
   sflow:

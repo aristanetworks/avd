@@ -29,13 +29,13 @@ class AvdStructuredConfigSflow(AvdFacts, UtilsMixin):
         Only configure if any interface is enabled for sFlow.
 
         Covers:
-        - destinations
+        - sflow_settings
         - source-interfaces based on source_interfaces.sflow
         """
         if not self._enable_sflow:
             return None
 
-        destinations = get(self._hostvars, "fabric_sflow.destinations")
+        destinations = get(self._hostvars, "sflow_settings.destinations")
         if destinations is None:
             # TODO:
             # AVD5.0.0 raise an error if sflow is enabled on an interface but there are no destinations configured.
