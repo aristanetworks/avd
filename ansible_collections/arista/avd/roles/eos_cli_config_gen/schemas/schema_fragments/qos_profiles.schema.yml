@@ -162,11 +162,19 @@ keys:
                             description: WRED maximum-threshold
                           drop_probability:
                             type: int
+                            required: true
                             min: 1
                             max: 100
                             convert_types:
                               - str
                             description: WRED drop probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: WRED weight
 
         uc_tx_queues:
           type: list
@@ -283,11 +291,19 @@ keys:
                             description: WRED maximum-threshold
                           drop_probability:
                             type: int
+                            required: true
                             min: 1
                             max: 100
                             convert_types:
                               - str
                             description: WRED drop probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: WRED weight
 
         mc_tx_queues:
           type: list

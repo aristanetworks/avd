@@ -192,6 +192,8 @@ qos_profiles:
               units: kbytes
               min: 2
               max: 200
+              drop_probability: 50
+              weight: 10
       - id: 3
         bandwidth_percent: 10
         priority: 'priority strict'
@@ -235,6 +237,8 @@ qos_profiles:
               units: "microseconds"
               min: 1
               max: 10
+              drop_probability: 90
+              weight: 15
       - id: 2
         bandwidth_percent: 10
         priority: 'priority strict'
@@ -245,6 +249,7 @@ qos_profiles:
               units: "milliseconds"
               min: 2
               max: 20
+              drop_probability: 80
       - id: 4
         bandwidth_guaranteed_percent: 10
         comment: "Test guaranteed percent"

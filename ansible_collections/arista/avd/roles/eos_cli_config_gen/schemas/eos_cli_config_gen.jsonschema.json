@@ -12440,12 +12440,20 @@
                               "maximum": 100,
                               "description": "WRED drop probability.",
                               "title": "Drop Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "WRED weight",
+                              "title": "Weight"
                             }
                           },
                           "required": [
                             "units",
                             "min",
-                            "max"
+                            "max",
+                            "drop_probability"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {
@@ -12641,12 +12649,20 @@
                               "maximum": 100,
                               "description": "WRED drop probability.",
                               "title": "Drop Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "WRED weight",
+                              "title": "Weight"
                             }
                           },
                           "required": [
                             "units",
                             "min",
-                            "max"
+                            "max",
+                            "drop_probability"
                           ],
                           "additionalProperties": false,
                           "patternProperties": {

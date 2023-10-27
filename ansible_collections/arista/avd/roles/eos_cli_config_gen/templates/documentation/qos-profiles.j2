@@ -128,8 +128,8 @@ QOS Profile: **{{ profile.name }}**
 
 **WRED Configuration**
 
-| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability |
-| -------- | ---- | --------------- | ------------- | ------------- | ---------------- |
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability | Weight |
+| -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
 {%             if profile.tx_queues is arista.avd.defined %}
 {%                 for tx_queue in profile.tx_queues | arista.avd.natural_sort('id') %}
 {%                     set type = "All" %}
@@ -137,8 +137,9 @@ QOS Profile: **{{ profile.name }}**
 {%                     set min = tx_queue.random_detect.drop.threshold.min | arista.avd.default("-") %}
 {%                     set max = tx_queue.random_detect.drop.threshold.max | arista.avd.default("-") %}
 {%                     set prob = tx_queue.random_detect.drop.threshold.drop_probability | arista.avd.default("-") %}
+{%                     set weight = tx_queue.random_detect.drop.threshold.weight | arista.avd.default("-") %}
 {%                     set units = tx_queue.random_detect.drop.threshold.units | arista.avd.default("") %}
-| {{ tx_queue.id }} | {{ type }} | {{ precedence }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
+| {{ tx_queue.id }} | {{ type }} | {{ precedence }} | {{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} | {{ weight }} |
 {%                 endfor %}
 {%             endif %}
 {%             if profile.uc_tx_queues is arista.avd.defined %}
@@ -148,8 +149,9 @@ QOS Profile: **{{ profile.name }}**
 {%                     set min = uc_tx_queue.random_detect.drop.threshold.min | arista.avd.default("-") %}
 {%                     set max = uc_tx_queue.random_detect.drop.threshold.max | arista.avd.default("-") %}
 {%                     set prob = uc_tx_queue.random_detect.drop.threshold.drop_probability | arista.avd.default("-") %}
+{%                     set weight = uc_tx_queue.random_detect.drop.threshold.weight | arista.avd.default("-") %}
 {%                     set units = uc_tx_queue.random_detect.drop.threshold.units | arista.avd.default("") %}
-| {{ uc_tx_queue.id }} | {{ type }} | {{ precedence }} |{{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} |
+| {{ uc_tx_queue.id }} | {{ type }} | {{ precedence }} |{{ min }} {{ units }} | {{ max }} {{ units }} | {{ prob }} | {{ weight }} |
 {%                 endfor %}
 {%             endif %}
 {%             if profile.mc_tx_queues is arista.avd.defined %}

@@ -475,12 +475,12 @@ QOS Profile: **wred_queues_test**
 
 **WRED Configuration**
 
-| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability |
-| -------- | ---- | --------------- | ------------- | ------------- | ---------------- |
-| 1 | All | - | 1 kbytes | 10 kbytes | 100 |
-| 2 | All | 2 | 2 kbytes | 200 kbytes | - |
-| 3 | All | - | -  | -  | - |
-| 4 | All | - | 1 kbytes | 10 kbytes | 90 |
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability | Weight |
+| -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
+| 1 | All | - | 1 kbytes | 10 kbytes | 100 | - |
+| 2 | All | 2 | 2 kbytes | 200 kbytes | 50 | 10 |
+| 3 | All | - | -  | -  | - | - |
+| 4 | All | - | 1 kbytes | 10 kbytes | 90 | - |
 | 1 | Multicast | - | - | - | - |
 | 2 | Multicast | - | - | - | - |
 | 4 | Multicast | - | - | - | - |
@@ -503,11 +503,11 @@ QOS Profile: **wred_uc_queues_test**
 
 **WRED Configuration**
 
-| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability |
-| -------- | ---- | --------------- | ------------- | ------------- | ---------------- |
-| 1 | Unicast | - |1 microseconds | 10 microseconds | - |
-| 2 | Unicast | 1 |2 milliseconds | 20 milliseconds | - |
-| 4 | Unicast | - |1 microseconds | 10 microseconds | 90 |
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability | Weight |
+| -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
+| 1 | Unicast | - |1 microseconds | 10 microseconds | 90 | 15 |
+| 2 | Unicast | 1 |2 milliseconds | 20 milliseconds | 80 | - |
+| 4 | Unicast | - |1 microseconds | 10 microseconds | 90 | - |
 
 #### QOS Profile Device Configuration
 
@@ -632,7 +632,7 @@ qos profile wred_queues_test
    tx-queue 2
       bandwidth percent 10
       priority strict
-      random-detect drop drop-precedence 2 minimum-threshold 2 kbytes maximum-threshold 200 kbytes
+      random-detect drop drop-precedence 2 minimum-threshold 2 kbytes maximum-threshold 200 kbytes drop-probability 50 weight 10
    !
    tx-queue 3
       bandwidth percent 10
@@ -663,12 +663,12 @@ qos profile wred_uc_queues_test
       !! Test no priority
       bandwidth percent 50
       no priority
-      random-detect drop minimum-threshold 1 microseconds maximum-threshold 10 microseconds
+      random-detect drop minimum-threshold 1 microseconds maximum-threshold 10 microseconds drop-probability 90 weight 15
    !
    uc-tx-queue 2
       bandwidth percent 10
       priority strict
-      random-detect drop drop-precedence 1 minimum-threshold 2 milliseconds maximum-threshold 20 milliseconds
+      random-detect drop drop-precedence 1 minimum-threshold 2 milliseconds maximum-threshold 20 milliseconds drop-probability 80
    !
    uc-tx-queue 4
       !! Test guaranteed percent

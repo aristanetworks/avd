@@ -47,8 +47,9 @@
 {%         endif %}
 {%         set drop_command = drop_command ~ " minimum-threshold " ~ uc_tx_queue.random_detect.drop.threshold.min ~ " " ~ units %}
 {%         set drop_command = drop_command ~ " maximum-threshold " ~ uc_tx_queue.random_detect.drop.threshold.max ~ " " ~ units %}
-{%         if uc_tx_queue.random_detect.drop.threshold.drop_probability is arista.avd.defined %}
-{%             set drop_command = drop_command ~ " drop-probability " ~ uc_tx_queue.random_detect.drop.threshold.drop_probability %}
+{%         set drop_command = drop_command ~ " drop-probability " ~ uc_tx_queue.random_detect.drop.threshold.drop_probability %}
+{%         if uc_tx_queue.random_detect.drop.threshold.weight is arista.avd.defined %}
+{%             set drop_command = drop_command ~ " weight " ~ uc_tx_queue.random_detect.drop.threshold.weight %}
 {%         endif %}
       {{ drop_command }}
 {%     endif %}
