@@ -4,9 +4,6 @@ l2leaf:
     - name: source-interfaces-sflow-missing-inband-mgmt-interface
       id: 1
       mgmt_ip: 192.168.0.2/24
-      # inband_mgmt_ip: 10.20.30.40/24
-      # inband_mgmt_gateway: 10.20.30.1
-      # inband_mgmt_vrf: INBANDMGMT
 
 source_interfaces:
   sflow:
