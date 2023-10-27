@@ -9,7 +9,7 @@ from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 LOGGER = logging.getLogger(__name__)
 
@@ -33,70 +33,37 @@ class AvdTestP2PIPReachability(AvdTestBase):
         """
         anta_tests = []
 
-        try:
-            ethernet_interfaces = get(self.hostvars[self.device_name], "ethernet_interfaces", required=True)
-        except AristaAvdMissingVariableError as e:
-            LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
+        required_keys = ["name", "peer", "peer_interface", "type", "ip_address", "shutdown"]
+
+        if not (
+            ethernet_interfaces := self.validate_vars(
+                data_model="ethernet_interfaces", loop_through_items=True, required_keys=required_keys, type="routed", shutdown=False
+            )
+        ):
             return None
 
-        required_vars = ["name", "peer", "peer_interface", "type", "shutdown"]
-
-        for idx, ethernet_interface in enumerate(ethernet_interfaces, start=1):
-            try:
-                for var in required_vars:
-                    get(ethernet_interface, var, required=True)
-            except AristaAvdMissingVariableError as e:
-                LOGGER.warning("Ethernet interface entry #%d from the 'ethernet_interfaces' data model is missing the variable '%s'.", idx, str(e))
+        for ethernet_interface in ethernet_interfaces:
+            if not self.is_peer_available(peer := ethernet_interface["peer"]):
                 continue
 
-            if ethernet_interface["type"] == "routed":
-                try:
-                    ethernet_interface_ip = get(ethernet_interface, "ip_address", required=True)
-                except AristaAvdMissingVariableError as e:
-                    LOGGER.warning("Ethernet interface '%s' is missing the variable '%s'.", ethernet_interface["name"], str(e))
-                    continue
-
-                if ethernet_interface["shutdown"]:
-                    LOGGER.info("Ethernet interface '%s' is shutdown. 'VerifyReachability' is skipped for this interface.", ethernet_interface["name"])
-                    continue
-
-                if (peer := ethernet_interface["peer"]) not in self.hostvars or not get(self.hostvars[peer], "is_deployed", default=True):
-                    LOGGER.info(
-                        "Peer '%s' is not configured by AVD or is marked as not deployed. 'VerifyReachability' from interface '%s' to this peer is skipped.",
-                        peer,
-                        ethernet_interface["name"],
-                    )
-                    continue
-
-                try:
-                    peer_ethernet_interfaces = get(self.hostvars[peer], "ethernet_interfaces", required=True)
-                    peer_ethernet_interface = get_item(
-                        peer_ethernet_interfaces,
-                        "name",
-                        ethernet_interface["peer_interface"],
-                        required=True,
-                    )
-                    peer_ethernet_interface_ip = get(peer_ethernet_interface, "ip_address", required=True)
-                except AristaAvdMissingVariableError:
-                    LOGGER.warning(
-                        "Ethernet interface '%s' connected peer '%s' is missing interface '%s' or his variable 'ip_address' is missing.",
-                        ethernet_interface["name"],
-                        peer,
-                        ethernet_interface["peer_interface"],
-                    )
-                    continue
-
-                src_ip = str(ip_interface(ethernet_interface_ip).ip)
-                dst_ip = str(ip_interface(peer_ethernet_interface_ip).ip)
-                custom_field = f"Source: {self.device_name}_{ethernet_interface['name']} - Destination: {peer}_{ethernet_interface['peer_interface']}"
-                anta_tests.append(
-                    {
-                        "VerifyReachability": {
-                            "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
-                            "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
-                        }
-                    }
+            if not (
+                peer_ethernet_interface_ip := self.get_interface_ip(
+                    interface_model="ethernet_interfaces", interface_name=ethernet_interface["peer_interface"], host=peer
                 )
+            ):
+                continue
+
+            src_ip = str(ip_interface(ethernet_interface["ip_address"]).ip)
+            dst_ip = str(ip_interface(peer_ethernet_interface_ip).ip)
+            custom_field = f"Source: {self.device_name}_{ethernet_interface['name']} - Destination: {peer}_{ethernet_interface['peer_interface']}"
+            anta_tests.append(
+                {
+                    "VerifyReachability": {
+                        "hosts": [{"source": src_ip, "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                        "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
+                    }
+                }
+            )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
@@ -120,34 +87,29 @@ class AvdTestInbandReachability(AvdTestBase):
         """
         anta_tests = []
 
-        try:
-            management_interfaces = get(self.hostvars[self.device_name], "management_interfaces", required=True)
-        except AristaAvdMissingVariableError as e:
-            LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
+        required_keys = ["name", "type", "shutdown"]
+
+        if not (
+            management_interfaces := self.validate_vars(
+                data_model="management_interfaces", loop_through_items=True, required_keys=required_keys, type="inband", shutdown=False
+            )
+        ):
             return None
 
-        for idx, management_interface in enumerate(management_interfaces, start=1):
-            try:
-                _type = get(management_interface, "type", required=True)
-                name = get(management_interface, "name", required=True)
-            except AristaAvdMissingVariableError as e:
-                LOGGER.warning("Management interface entry #%d from the 'management_interfaces' data model is missing the variable '%s'.", idx, str(e))
-                continue
+        for management_interface in management_interfaces:
+            for dst_node, dst_ip in self.loopback0_mapping:
+                if not self.is_peer_available(dst_node):
+                    continue
 
-            if _type == "inband":
-                for dst_node, dst_ip in self.loopback0_mapping:
-                    if not get(self.hostvars[dst_node], "is_deployed", default=True):
-                        LOGGER.info("Peer '%s' is marked as not deployed. 'VerifyReachability' from interface '%s' to this peer is skipped.", dst_node, name)
-                        continue
-                    custom_field = f"Source: {self.device_name} - {name} Destination: {dst_ip}"
-                    anta_tests.append(
-                        {
-                            "VerifyReachability": {
-                                "hosts": [{"source": name, "destination": dst_ip, "vrf": "default", "repeat": 1}],
-                                "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
-                            }
+                custom_field = f"Source: {self.device_name} - {management_interface['name']} Destination: {dst_ip}"
+                anta_tests.append(
+                    {
+                        "VerifyReachability": {
+                            "hosts": [{"source": management_interface["name"], "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                            "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
                         }
-                    )
+                    }
+                )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
@@ -172,26 +134,18 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         """
         anta_tests = []
 
-        try:
-            # To be removed once 'l3leaf' check is removed
-            node_type = get(self.hostvars[self.device_name], "type", required=True)
-        except AristaAvdMissingVariableError as e:
-            LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
+        # To be removed once 'l3leaf' check is removed
+        if not (node_type := self.validate_vars(data_model="type")):
             return None
 
         if node_type == "l3leaf":
-            try:
-                loopback_interfaces = get(self.hostvars[self.device_name], "loopback_interfaces", required=True)
-                loopback0 = get_item(loopback_interfaces, "name", "Loopback0", required=True)
-                src_ip = get(loopback0, "ip_address", required=True)
-            except AristaAvdMissingVariableError:
-                LOGGER.warning("Interface 'Loopback0' from the 'loopback_interfaces' data model is missing or his variable 'ip_address' is missing.")
+            if not (src_ip := self.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")):
                 return None
 
             for dst_node, dst_ip in self.loopback0_mapping:
-                if not get(self.hostvars[dst_node], "is_deployed", default=True):
-                    LOGGER.info("Peer '%s' is marked as not deployed. 'VerifyReachability' from interface 'Loopback0' to this peer is skipped.", dst_node)
+                if not self.is_peer_available(dst_node):
                     continue
+
                 custom_field = f"Source: {self.device_name} - {src_ip} Destination: {dst_ip}"
                 anta_tests.append(
                     {
