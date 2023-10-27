@@ -13090,8 +13090,6 @@
           "properties": {
             "name": {
               "type": "string",
-              "pattern": "^[^ ]*$",
-              "description": "String with no space.",
               "title": "Name"
             },
             "id": {
@@ -13117,8 +13115,6 @@
           "properties": {
             "name": {
               "type": "string",
-              "pattern": "^[^ ]*$",
-              "description": "String with no space.",
               "title": "Name"
             },
             "id": {
@@ -13144,8 +13140,6 @@
           "properties": {
             "name": {
               "type": "string",
-              "pattern": "^[^ ]*$",
-              "description": "String with no space.",
               "title": "Name"
             },
             "id": {

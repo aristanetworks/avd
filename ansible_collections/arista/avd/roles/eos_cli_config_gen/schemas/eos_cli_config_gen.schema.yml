@@ -7838,8 +7838,6 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[^ ]*$
-            description: String with no space.
           id:
             type: int
             convert_types:
@@ -7854,8 +7852,6 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[^ ]*$
-            description: String with no space.
           id:
             type: int
             convert_types:
@@ -7870,8 +7866,6 @@ keys:
           name:
             type: str
             required: true
-            pattern: ^[^ ]*$
-            description: String with no space.
           id:
             type: int
             convert_types:
