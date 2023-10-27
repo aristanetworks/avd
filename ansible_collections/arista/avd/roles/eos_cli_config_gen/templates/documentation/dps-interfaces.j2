@@ -10,9 +10,10 @@
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | Shutdown | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------- | --------------- | --------------- |
+| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------- | --- | --------------- | --------------- |
 {%     for dps_interface in dps_interfaces | arista.avd.natural_sort('name') %}
+{%         set mtu = dps_interface.mtu | arista.avd.default("-") %}
 {%         set ip_address = dps_interface.ip_address | arista.avd.default("-") %}
 {%         set flow_trackers = [] %}
 {%         if dps_interface.flow_tracker.hardware is arista.avd.defined %}
@@ -32,7 +33,7 @@
 {%         if dps_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
 {%             do tcp_mss_settings.append("Direction: " ~ dps_interface.tcp_mss_ceiling.direction) %}
 {%         endif %}
-| {{ dps_interface.name }} | {{ ip_address }} | {{ shutdown }} | {{ flow_trackers | join("<br>") }} | {{ tcp_mss_settings | join("<br>") }} |
+| {{ dps_interface.name }} | {{ ip_address }} | {{ shutdown }} | {{ mtu }} | {{ flow_trackers | join("<br>") }} | {{ tcp_mss_settings | join("<br>") }} |
 {%     endfor %}
 
 #### DPS Interfaces Device Configuration

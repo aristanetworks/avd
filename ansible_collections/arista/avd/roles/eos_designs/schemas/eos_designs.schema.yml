@@ -2757,7 +2757,8 @@ keys:
       all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them
       away because of AS Path loop detection.
 
-      Note this key is ignored when EVPN is configured.
+      Note that this setting cannot be used while there are EVPN services present
+      in the default VRF.
 
       '
     default: false
@@ -3012,10 +3013,10 @@ $defs:
     keys:
       speed:
         type: str
-        description: 'Set adapter speed: `< interface_speed >`, `forced < interface_speed
-          >`, `auto < interface_speed >`.
+        description: 'Set adapter speed in the format `<interface_speed>` or `forced
+          <interface_speed>` or `auto <interface_speed>`.
 
-          If not specified will be auto.
+          If not specified speed will be auto.
 
           '
       description:
@@ -5904,8 +5905,8 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: 'Set MLAG interface speed.
 
-              < interface_speed or forced interface_speed or auto interface_speed
-              >.
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
 
               '
             type: str
@@ -6473,7 +6474,8 @@ $defs:
             '
         speed:
           type: str
-          description: The values can be speed or auto speed or forced speed.
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
         ip_pool:
           type: str
           description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A

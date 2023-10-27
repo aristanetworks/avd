@@ -828,6 +828,34 @@ keys:
                   valid_values:
                     - "vxlan"
                     - "mpls"
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                            - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                            - str
+                          min: 2
+                          max: 64
           evpn_hostflap_detection:
             type: dict
             keys:

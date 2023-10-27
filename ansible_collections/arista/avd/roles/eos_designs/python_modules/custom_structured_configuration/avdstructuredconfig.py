@@ -45,8 +45,7 @@ class AvdStructuredConfigCustomStructuredConfiguration(AvdFacts):
                 continue
 
             struct_cfg = item.pop("struct_cfg")
-            struct_cfg[primary_key] = item[primary_key]
-            struct_cfgs.append(struct_cfg)
+            struct_cfgs.append({primary_key: item[primary_key], **struct_cfg})
 
         return struct_cfgs
 
