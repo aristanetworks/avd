@@ -401,7 +401,7 @@ interface Ethernet6
    logging event link-status
    logging event congestion-drops
    logging event spanning-tree
-   logging event storm-control
+   logging event storm-control discards
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
@@ -482,7 +482,7 @@ interface Ethernet13
    no logging event link-status
    no logging event congestion-drops
    no logging event spanning-tree
-   no logging event storm-control
+   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
@@ -849,7 +849,7 @@ interface Ethernet61
    no logging event link-status
    no logging event congestion-drops
    no logging event spanning-tree
-   no logging event storm-control
+   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged phone
@@ -861,7 +861,7 @@ interface Ethernet62
    no logging event link-status
    no logging event congestion-drops
    no logging event spanning-tree
-   no logging event storm-control
+   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk tagged phone

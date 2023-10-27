@@ -157,7 +157,7 @@ ethernet_interfaces:
         link_status: true
         congestion_drops: true
         spanning_tree: true
-        storm_control: true
+        storm_control_discards: true
     peer: SRV-POD02
     peer_interface: Eth1
     peer_type: server
@@ -270,7 +270,7 @@ ethernet_interfaces:
         link_status: false
         congestion_drops: false
         spanning_tree: false
-        storm_control: false
+        storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100
@@ -832,7 +832,7 @@ ethernet_interfaces:
         link_status: false
         congestion_drops: false
         spanning_tree: false
-        storm_control: false
+        storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100
@@ -847,7 +847,7 @@ ethernet_interfaces:
         link_status: false
         congestion_drops: false
         spanning_tree: false
-        storm_control: false
+        storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100
