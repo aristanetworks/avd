@@ -5,7 +5,12 @@ spine:
       id: 1
       loopback_ipv4_pool: 1.2.3.4/24
       bgp_as: 1234
+      mgmt_ip: 192.168.0.2/24
 
 mgmt_gateway: 192.168.0.1
-cvp_instance_ips:
-  - cv-staging.corp.arista.io
+
+cv_settings:
+  cvaas_clusters:
+    - name: test
+      vrf: use_mgmt_interface_vrf
+      server: cv-staging.corp.arista.io

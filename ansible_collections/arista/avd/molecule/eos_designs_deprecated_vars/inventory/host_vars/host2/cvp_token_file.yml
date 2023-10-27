@@ -1,0 +1,3 @@
+---
+# Deprecated in 4.5.0. To be removed in AVD 5.0.0
+cvp_token_file: /tmp/anothertoken

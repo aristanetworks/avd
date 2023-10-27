@@ -11,7 +11,7 @@ keys:
       table: cloudvision-settings
     deprecation:
       warning: true
-      new_key: cvp_instance_ips
+      new_key: cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas.server
       remove_in_version: "5.0.0"
     type: str
     description: |

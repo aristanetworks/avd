@@ -1,0 +1,33 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: cv-settings
+      mgmt_ip: 192.168.0.2/24
+      inband_mgmt_vrf: INBAND_MGMT_VRF
+      inband_mgmt_ip: 172.17.0.2/24
+
+cv_settings:
+  cvaas_clusters:
+    - name: cvaas_oob
+      vrf: use_mgmt_interface_vrf
+      server: www.arista.io
+    - name: cvaas_inband
+      vrf: use_inband_mgmt_vrf
+      server: www.cv-prod-euwest-2.arista.io
+  onprem_clusters:
+    - name: onprem_oob
+      vrf: use_mgmt_interface_vrf
+      servers:
+        - name: onprem_oob1
+          port: 9911
+        - name: onprem_oob2
+        - name: onprem_oob3
+      key: keys-are-deprecated
+    - name: onprem_inband
+      vrf: use_inband_mgmt_vrf
+      servers:
+        - name: onprem_inband_1
+      token_file: /tmp/anothertoken
+  terminattr_disable_aaa: True
+  terminattr_ingestexclude: excludethis
+  terminattr_smashexcludes: excludethat

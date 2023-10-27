@@ -16,3 +16,7 @@ keys:
       - On-premise using token onboarding. Default token path is '/tmp/token'.
       - CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.
       Token must be copied to the device first.
+    deprecation:
+      warning: true
+      remove_in_version: 5.0.0
+      new_key: cv_settings.onprem_clusters[].key

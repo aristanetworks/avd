@@ -1,5 +1,12 @@
 type: l2leaf
-l2leaf: {}
+l2leaf:
+  nodes:
+    - name: cvp-instance-ips-onprem-token
+      mgmt_ip: 192.168.0.2/24
 
-cvp_instance_ips:
-  - myonpremcvpserver
+cv_settings:
+  onprem_clusters:
+    - name: test
+      vrf: use_mgmt_interface_vrf
+      servers:
+        - name: myonpremcvpserver

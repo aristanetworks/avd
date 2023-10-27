@@ -18,3 +18,7 @@ keys:
     items:
       type: str
       description: IPv4 address or DNS name for CloudVision
+    deprecation:
+      warning: true
+      new_key: cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas.server
+      remove_in_version: "5.0.0"

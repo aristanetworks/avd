@@ -66,11 +66,13 @@ default_interfaces:
     uplink_interfaces: [ Ethernet1-2 ]
 
 # CloudVision Portal definitions
-cvp_instance_ips:
-  - 192.168.1.12
-terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
-terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
-terminattr_disable_aaa: true
+cv_settings:
+  onprem_clusters:
+    - name: example
+      vrf: use_mgmt_interface_vrf
+      servers:
+        - name: 192.168.1.12
+  terminattr_disable_aaa: true
 
 # DNS Server
 name_servers:
