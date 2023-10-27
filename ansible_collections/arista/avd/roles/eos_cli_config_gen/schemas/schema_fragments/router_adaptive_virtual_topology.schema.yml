@@ -10,7 +10,7 @@ keys:
     type: dict
     keys:
       topology_role:
-        description: Role name
+        description: Role name.
         type: str
         valid_values:
           - "edge"
@@ -19,11 +19,13 @@ keys:
           - "transit zone"
       region:
         type: dict
-        description: Region name and id
+        description: Region name and ID.
         keys:
           name:
             type: str
             required: true
+            pattern: "^[^ ]*$"
+            description: String with no space.
           id:
             type: int
             convert_types:
@@ -33,11 +35,13 @@ keys:
             max: 255
       zone:
         type: dict
-        description: Zone name and id
+        description: Zone name and ID.
         keys:
           name:
             type: str
             required: true
+            pattern: "^[^ ]*$"
+            description: String with no space.
           id:
             type: int
             convert_types:
@@ -47,11 +51,13 @@ keys:
             max: 10000
       site:
         type: dict
-        description: Site name and id
+        description: Site name and ID.
         keys:
           name:
             type: str
             required: true
+            pattern: "^[^ ]*$"
+            description: String with no space.
           id:
             type: int
             convert_types:

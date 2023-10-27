@@ -17,13 +17,13 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 
 | Hierarchy | Name | ID |
 | --------- | ---- | -- |
-{%         if router_adaptive_virtual_topology.region is arista.avd.defined %}
+{%         if router_adaptive_virtual_topology.region.name is arista.avd.defined and router_adaptive_virtual_topology.region.id %}
 | Region | {{ router_adaptive_virtual_topology.region.name }} | {{ router_adaptive_virtual_topology.region.id }} |
 {%         endif %}
-{%         if router_adaptive_virtual_topology.zone is arista.avd.defined %}
+{%         if router_adaptive_virtual_topology.zone.name is arista.avd.defined and router_adaptive_virtual_topology.zone.id %}
 | Zone | {{ router_adaptive_virtual_topology.zone.name }} | {{ router_adaptive_virtual_topology.zone.id }} |
 {%         endif %}
-{%         if router_adaptive_virtual_topology.site is arista.avd.defined %}
+{%         if router_adaptive_virtual_topology.site.name is arista.avd.defined and router_adaptive_virtual_topology.site.id %}
 | Site | {{ router_adaptive_virtual_topology.site.name }} | {{ router_adaptive_virtual_topology.site.id }} |
 {%         endif %}
 {%     endif %}

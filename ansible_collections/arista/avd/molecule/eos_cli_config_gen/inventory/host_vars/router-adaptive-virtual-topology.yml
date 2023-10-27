@@ -1,7 +1,7 @@
 router_adaptive_virtual_topology:
   topology_role: transit region
   region:
-    name: North America
+    name: North_America
     id: 1
   zone:
     name: Canada

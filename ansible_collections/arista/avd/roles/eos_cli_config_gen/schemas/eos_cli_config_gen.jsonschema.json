@@ -13074,7 +13074,7 @@
       "type": "object",
       "properties": {
         "topology_role": {
-          "description": "Role name",
+          "description": "Role name.",
           "type": "string",
           "enum": [
             "edge",
@@ -13086,10 +13086,12 @@
         },
         "region": {
           "type": "object",
-          "description": "Region name and id",
+          "description": "Region name and ID.",
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[^ ]*$",
+              "description": "String with no space.",
               "title": "Name"
             },
             "id": {
@@ -13111,10 +13113,12 @@
         },
         "zone": {
           "type": "object",
-          "description": "Zone name and id",
+          "description": "Zone name and ID.",
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[^ ]*$",
+              "description": "String with no space.",
               "title": "Name"
             },
             "id": {
@@ -13136,10 +13140,12 @@
         },
         "site": {
           "type": "object",
-          "description": "Site name and id",
+          "description": "Site name and ID.",
           "properties": {
             "name": {
               "type": "string",
+              "pattern": "^[^ ]*$",
+              "description": "String with no space.",
               "title": "Name"
             },
             "id": {

@@ -45,7 +45,7 @@ Topology role: transit region
 
 | Hierarchy | Name | ID |
 | --------- | ---- | -- |
-| Region | North America | 1 |
+| Region | North_America | 1 |
 | Zone | Canada | 2 |
 | Site | Ottawa | 99 |
 
@@ -55,7 +55,7 @@ Topology role: transit region
 !
 router adaptive-virtual-topology
    topology role transit region
-   region North America id 1
+   region North_America id 1
    zone Canada id 2
    site Ottawa id 99
 ```

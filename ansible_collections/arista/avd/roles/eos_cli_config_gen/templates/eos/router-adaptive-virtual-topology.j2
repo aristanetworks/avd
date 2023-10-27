@@ -10,13 +10,13 @@ router adaptive-virtual-topology
 {%     if router_adaptive_virtual_topology.topology_role is arista.avd.defined %}
    topology role {{ router_adaptive_virtual_topology.topology_role }}
 {%     endif %}
-{%     if router_adaptive_virtual_topology.region is arista.avd.defined %}
+{%     if router_adaptive_virtual_topology.region.name is arista.avd.defined and router_adaptive_virtual_topology.region.id %}
    region {{ router_adaptive_virtual_topology.region.name }} id {{ router_adaptive_virtual_topology.region.id }}
 {%     endif %}
-{%     if router_adaptive_virtual_topology.zone is arista.avd.defined %}
+{%     if router_adaptive_virtual_topology.zone.name is arista.avd.defined and router_adaptive_virtual_topology.zone.id %}
    zone {{ router_adaptive_virtual_topology.zone.name }} id {{ router_adaptive_virtual_topology.zone.id }}
 {%     endif %}
-{%     if router_adaptive_virtual_topology.site is arista.avd.defined %}
+{%     if router_adaptive_virtual_topology.site.name is arista.avd.defined and router_adaptive_virtual_topology.site.id %}
    site {{ router_adaptive_virtual_topology.site.name }} id {{ router_adaptive_virtual_topology.site.id }}
 {%     endif %}
 {% endif %}
