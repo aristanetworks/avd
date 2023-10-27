@@ -1202,48 +1202,11 @@ keys:
     documentation_options:
       table: management-sflow-settings
     type: dict
-    description: 'sFlow settings.
+    description: 'Default enabling of sFlow for varous interface types across the
+      fabric.
 
-      Configure destinations and default enabling of sFlow for varous interface types
-      across the fabric.
-
-      The sFlow process will be enabled if any interface is enabled for sFlow.
-
-      For source-interfaces see "source_interfaces.sflow"'
+      sFlow can also be enabled/disabled under each of the specific data models.'
     keys:
-      destinations:
-        type: list
-        items:
-          type: dict
-          keys:
-            destination:
-              type: str
-              required: true
-              description: sFlow destination IP address
-            port:
-              type: int
-              description: Port number
-              convert_types:
-              - str
-            vrf:
-              type: str
-              description: 'VRF Name.
-
-                Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf"
-                to configure the destination under multiple VRFs.'
-              convert_types:
-              - int
-            use_mgmt_interface_vrf:
-              type: bool
-              description: Configure the destination under the VRF set with "mgmt_interface_vrf".
-                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to
-                configure the destination under multiple VRFs.
-            use_inband_mgmt_vrf:
-              type: bool
-              description: Configure the destination under the VRF set with "inband_mgmt_vrf".
-                Ignored if inband management is not configured for the device. Can
-                be used in combination with "vrf" and "use_mgmt_interface_vrf" to
-                configure the destination under multiple VRFs.
       uplinks:
         description: Enable sFlow on all fabric uplinks.
         type: bool
@@ -1262,9 +1225,6 @@ keys:
       mlag_interfaces:
         description: Enable sFlow on all MLAG peer interfaces.
         type: bool
-      structured_config:
-        type: dict
-        description: Custom structured config added under sflow for eos_cli_config_gen
   flow_tracking_settings:
     description: Define the flow tracking parameters for this topology.
     type: dict
@@ -2912,6 +2872,55 @@ keys:
     type: str
     convert_types:
     - int
+  sflow_settings:
+    documentation_options:
+      table: management-sflow-settings
+    type: dict
+    description: 'sFlow settings.
+
+      The sFlow process will only be configured if any interface is enabled for sFlow.
+
+      For source-interfaces see "source_interfaces.sflow"
+
+      For default enabling of sFlow for varous interface types across the fabric see
+      "fabric_sflow"'
+    keys:
+      destinations:
+        type: list
+        items:
+          type: dict
+          keys:
+            destination:
+              type: str
+              required: true
+              description: sFlow destination IP address.
+            port:
+              type: int
+              description: Port number
+              convert_types:
+              - str
+            vrf:
+              type: str
+              description: 'VRF Name.
+
+                Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf"
+                to configure the destination under multiple VRFs.'
+              convert_types:
+              - int
+            use_mgmt_interface_vrf:
+              type: bool
+              description: Configure the destination under the VRF set with "mgmt_interface_vrf".
+                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to
+                configure the destination under multiple VRFs.
+            use_inband_mgmt_vrf:
+              type: bool
+              description: Configure the destination under the VRF set with "inband_mgmt_vrf".
+                Ignored if inband management is not configured for the device. Can
+                be used in combination with "vrf" and "use_mgmt_interface_vrf" to
+                configure the destination under multiple VRFs.
+      structured_config:
+        type: dict
+        description: Custom structured config added under sflow for eos_cli_config_gen
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
       table: fabric-settings

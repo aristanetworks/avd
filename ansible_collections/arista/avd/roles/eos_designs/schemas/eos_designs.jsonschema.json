@@ -5035,49 +5035,8 @@
     },
     "fabric_sflow": {
       "type": "object",
-      "description": "sFlow settings.\nConfigure destinations and default enabling of sFlow for varous interface types across the fabric.\nThe sFlow process will be enabled if any interface is enabled for sFlow.\nFor source-interfaces see \"source_interfaces.sflow\"",
+      "description": "Default enabling of sFlow for varous interface types across the fabric.\nsFlow can also be enabled/disabled under each of the specific data models.",
       "properties": {
-        "destinations": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "destination": {
-                "type": "string",
-                "description": "sFlow destination IP address",
-                "title": "Destination"
-              },
-              "port": {
-                "type": "integer",
-                "description": "Port number",
-                "title": "Port"
-              },
-              "vrf": {
-                "type": "string",
-                "description": "VRF Name.\nCan be used in combination with \"use_mgmt_interface_vrf\" and \"use_inband_mgmt_vrf\" to configure the destination under multiple VRFs.",
-                "title": "VRF"
-              },
-              "use_mgmt_interface_vrf": {
-                "type": "boolean",
-                "description": "Configure the destination under the VRF set with \"mgmt_interface_vrf\". Can be used in combination with \"vrf\" and \"use_inband_mgmt_vrf\" to configure the destination under multiple VRFs.",
-                "title": "Use Management Interface VRF"
-              },
-              "use_inband_mgmt_vrf": {
-                "type": "boolean",
-                "description": "Configure the destination under the VRF set with \"inband_mgmt_vrf\". Ignored if inband management is not configured for the device. Can be used in combination with \"vrf\" and \"use_mgmt_interface_vrf\" to configure the destination under multiple VRFs.",
-                "title": "Use Inband Management VRF"
-              }
-            },
-            "required": [
-              "destination"
-            ],
-            "additionalProperties": false,
-            "patternProperties": {
-              "^_.+$": {}
-            }
-          },
-          "title": "Destinations"
-        },
         "uplinks": {
           "description": "Enable sFlow on all fabric uplinks.",
           "type": "boolean",
@@ -5107,11 +5066,6 @@
           "description": "Enable sFlow on all MLAG peer interfaces.",
           "type": "boolean",
           "title": "MLAG Interfaces"
-        },
-        "structured_config": {
-          "type": "object",
-          "description": "Custom structured config added under sflow for eos_cli_config_gen",
-          "title": "Structured Config"
         }
       },
       "additionalProperties": false,
@@ -20622,6 +20576,63 @@
       "description": "Serial Number of the device.\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under node type settings.\nIf both are set, the value under node type settings takes precedence.\n",
       "type": "string",
       "title": "Serial Number"
+    },
+    "sflow_settings": {
+      "type": "object",
+      "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor source-interfaces see \"source_interfaces.sflow\"\nFor default enabling of sFlow for varous interface types across the fabric see \"fabric_sflow\"",
+      "properties": {
+        "destinations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "destination": {
+                "type": "string",
+                "description": "sFlow destination IP address.",
+                "title": "Destination"
+              },
+              "port": {
+                "type": "integer",
+                "description": "Port number",
+                "title": "Port"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF Name.\nCan be used in combination with \"use_mgmt_interface_vrf\" and \"use_inband_mgmt_vrf\" to configure the destination under multiple VRFs.",
+                "title": "VRF"
+              },
+              "use_mgmt_interface_vrf": {
+                "type": "boolean",
+                "description": "Configure the destination under the VRF set with \"mgmt_interface_vrf\". Can be used in combination with \"vrf\" and \"use_inband_mgmt_vrf\" to configure the destination under multiple VRFs.",
+                "title": "Use Management Interface VRF"
+              },
+              "use_inband_mgmt_vrf": {
+                "type": "boolean",
+                "description": "Configure the destination under the VRF set with \"inband_mgmt_vrf\". Ignored if inband management is not configured for the device. Can be used in combination with \"vrf\" and \"use_mgmt_interface_vrf\" to configure the destination under multiple VRFs.",
+                "title": "Use Inband Management VRF"
+              }
+            },
+            "required": [
+              "destination"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Destinations"
+        },
+        "structured_config": {
+          "type": "object",
+          "description": "Custom structured config added under sflow for eos_cli_config_gen",
+          "title": "Structured Config"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Sflow Settings"
     },
     "shutdown_interfaces_towards_undeployed_peers": {
       "type": "boolean",
