@@ -84,7 +84,7 @@ class AvdTestBase:
             LOGGER.warning(msg)
             return None
 
-    def safe_get(self, key: str, host: str | None = None):
+    def safe_get(self, key: str, host: str | None = None, warning: bool = True):
         """
         TODO
         """
@@ -95,7 +95,7 @@ class AvdTestBase:
             return data
         except AristaAvdMissingVariableError:
             msg = f"Key '{key}' is missing from the structured_config. {self.__class__.__name__} is skipped."
-            LOGGER.warning(msg)
+            LOGGER.warning(msg) if warning else LOGGER.info(msg)
             return None
 
     def validate_vars(self, data_model: str, host: str | None = None, required_keys: str | list[str] | None = None, **kwargs):
@@ -108,7 +108,7 @@ class AvdTestBase:
             TODO
             """
             if is_missing is False and value is None:
-                raise ValueError(f"Error running {self.__class__.__name__}: Key value must be provided when logging a non matching key.")
+                raise AristaAvdError(f"Error running {self.__class__.__name__}: Key value must be provided when logging a non matching key.")
             msg_type = "is missing" if is_missing else f"!= {value}"
             msg = f"Entry #{entry} from '{data_model}': Variable '{key}' {msg_type}. {self.__class__.__name__} is skipped for this entry."
             LOGGER.warning(msg) if is_missing else LOGGER.info(msg)
@@ -118,7 +118,7 @@ class AvdTestBase:
         entries = get(self.hostvars[host], data_model, [])
 
         if not isinstance(entries, list):
-            raise ValueError(f"Data model '{data_model}' is not a list.")
+            raise AristaAvdError(f"Data model '{data_model}' is not a list.")
 
         valid_entries = []
         for idx, entry in enumerate(entries, start=1):

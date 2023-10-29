@@ -40,9 +40,8 @@ class AvdTestRoutingTable(AvdTestBase):
 
             processed_ips = set()
 
-            for node, ip in mapping:
-                if not get(self.hostvars[node], "is_deployed", default=True):
-                    LOGGER.info("Peer '%s' is marked as not deployed. 'VerifyRoutingTableEntry' for this peer routes is skipped.", node)
+            for peer, ip in mapping:
+                if not self.is_peer_available(peer):
                     continue
 
                 if ip not in processed_ips:
@@ -56,11 +55,8 @@ class AvdTestRoutingTable(AvdTestBase):
                     )
                     processed_ips.add(ip)
 
-        try:
-            # To be removed once 'l3leaf' check is removed
-            node_type = get(self.hostvars[self.device_name], "type", required=True)
-        except AristaAvdMissingVariableError as e:
-            LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
+        # To be removed once 'l3leaf' check is removed
+        if not (node_type := self.safe_get(key="type")):
             return None
 
         if node_type == "l3leaf":

@@ -7,8 +7,6 @@ import logging
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.get import get
 
 LOGGER = logging.getLogger(__name__)
 
@@ -29,19 +27,15 @@ class AvdTestMLAG(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-        try:
-            get(self.hostvars[self.device_name], "mlag_configuration", required=True)
-
-            anta_tests = [
-                {
-                    "VerifyMlagStatus": {
-                        "result_overwrite": {"categories": self.categories, "description": "MLAG State active & Status connected", "custom_field": "MLAG"}
-                    }
-                },
-            ]
-
-        except AristaAvdMissingVariableError as e:
-            LOGGER.info("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
+        if not self.safe_get(key="mlag_configuration", warning=False):
             return None
+
+        anta_tests = [
+            {
+                "VerifyMlagStatus": {
+                    "result_overwrite": {"categories": self.categories, "description": "MLAG State active & Status connected", "custom_field": "MLAG"}
+                }
+            },
+        ]
 
         return {self.anta_module: anta_tests}
