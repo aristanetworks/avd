@@ -425,7 +425,7 @@ ethernet_interfaces:
   peer_interface: Ethernet49/1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1_UNDEPLOYED_LEAF1A_Ethernet49/1
-  speed: forced 100gfull
+  speed: 100g-2
   shutdown: true
   mtu: 1500
   type: routed

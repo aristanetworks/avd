@@ -170,6 +170,7 @@ ethernet_interfaces:
   peer_interface: Ethernet8
   peer_type: l3leaf
   description: DC1-SVC3A_Ethernet8
+  speed: forced 100gfull
   shutdown: false
   type: port-channel-member
   channel_group:
@@ -180,6 +181,7 @@ ethernet_interfaces:
   peer_interface: Ethernet8
   peer_type: l3leaf
   description: DC1-SVC3B_Ethernet8
+  speed: forced 100gfull
   shutdown: false
   type: port-channel-member
   channel_group:

@@ -21,6 +21,7 @@ port_channel_interfaces:
         unit: percent
     bgp:
       session_tracker: ST2
+    l2_mtu: 8000
     eos_cli: |
       comment
       Comment created from eos_cli under port_channel_interfaces.Port-Channel5

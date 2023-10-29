@@ -77,6 +77,8 @@ management ssh
    idle-timeout 15
    connection limit 50
    connection per-host 10
+   client-alive interval 666
+   client-alive count-max 42
    no shutdown
    log-level debug
    !

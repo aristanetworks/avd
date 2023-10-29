@@ -10,3 +10,4 @@ management_api_gnmi:
     - name: mytransport
       notification_timestamp: "send-time"
       ip_access_group: acl1
+      port: "6032"

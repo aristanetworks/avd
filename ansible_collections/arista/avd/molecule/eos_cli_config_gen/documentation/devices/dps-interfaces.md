@@ -41,9 +41,9 @@ interface Management1
 
 #### DPS Interfaces Summary
 
-| Interface | IP address | Shutdown | Flow tracker(s) | TCP MSS Ceiling |
-| --------- | ---------- | -------- | --------------- | --------------- |
-| Dps1 | 192.168.42.42/24 | True | Hardware: FT-HW<br>Sampled: FT-S | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
+| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------- | --- | --------------- | --------------- |
+| Dps1 | 192.168.42.42/24 | True | 666 | Hardware: FT-HW<br>Sampled: FT-S | IPv4: 666<br>IPv6: 666<br>Direction: ingress |
 
 #### DPS Interfaces Device Configuration
 
@@ -52,6 +52,7 @@ interface Management1
 interface Dps1
    description Test DPS Interface
    shutdown
+   mtu 666
    flow tracker hardware FT-HW
    flow tracker sampled FT-S
    ip address 192.168.42.42/24

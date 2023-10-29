@@ -187,36 +187,44 @@ class AvdTestLLDPTopology(AvdTestBase):
 
         required_vars = ["name", "shutdown", "peer", "peer_interface"]
 
-        for ethernet_interface in ethernet_interfaces:
+        for idx, ethernet_interface in enumerate(ethernet_interfaces, start=1):
             try:
                 for var in required_vars:
                     get(ethernet_interface, var, required=True)
-
-                if (peer := ethernet_interface["peer"]) not in self.hostvars:
-                    LOGGER.info("The structured_config is missing for peer %s.", peer)
-                    continue
-
-                custom_field = f"local: {ethernet_interface['name']} - remote: {peer}_{ethernet_interface['peer_interface']}"
-
-                if (dns_domain := get(self.hostvars[peer], "dns_domain")) is not None:
-                    peer = f"{peer}.{dns_domain}"
-
-                anta_tests.append(
-                    {
-                        "VerifyLLDPNeighbors": {
-                            "neighbors": [
-                                {
-                                    "port": str(ethernet_interface["name"]),
-                                    "neighbor_device": str(peer),
-                                    "neighbor_port": str(ethernet_interface["peer_interface"]),
-                                }
-                            ],
-                            "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
-                        }
-                    }
-                )
             except AristaAvdMissingVariableError as e:
-                LOGGER.info("Variable '%s' is missing. Please validate the Ethernet interfaces data model of this host.", str(e))
+                LOGGER.warning("Ethernet interface entry #%d from the 'ethernet_interfaces' data model is missing the variable '%s'.", idx, str(e))
                 continue
 
-        return {self.anta_module: anta_tests}
+            if ethernet_interface["shutdown"]:
+                LOGGER.info("Ethernet interface '%s' is shutdown. 'VerifyLLDPNeighbors' is skipped for this interface.", ethernet_interface["name"])
+                continue
+
+            if (peer := ethernet_interface["peer"]) not in self.hostvars or not get(self.hostvars[peer], "is_deployed", default=True):
+                LOGGER.info(
+                    "Peer '%s' is not configured by AVD or is marked as not deployed. 'VerifyLLDPNeighbors' from interface '%s' to this peer is skipped.",
+                    peer,
+                    ethernet_interface["name"],
+                )
+                continue
+
+            custom_field = f"local: {ethernet_interface['name']} - remote: {peer}_{ethernet_interface['peer_interface']}"
+
+            if (dns_domain := get(self.hostvars[peer], "dns_domain")) is not None:
+                peer = f"{peer}.{dns_domain}"
+
+            anta_tests.append(
+                {
+                    "VerifyLLDPNeighbors": {
+                        "neighbors": [
+                            {
+                                "port": str(ethernet_interface["name"]),
+                                "neighbor_device": str(peer),
+                                "neighbor_port": str(ethernet_interface["peer_interface"]),
+                            }
+                        ],
+                        "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
+                    }
+                }
+            )
+
+        return {self.anta_module: anta_tests} if anta_tests else None
