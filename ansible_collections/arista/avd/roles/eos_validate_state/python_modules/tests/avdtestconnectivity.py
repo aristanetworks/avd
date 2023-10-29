@@ -8,7 +8,6 @@ from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 LOGGER = logging.getLogger(__name__)
@@ -33,29 +32,24 @@ class AvdTestP2PIPReachability(AvdTestBase):
         """
         anta_tests = []
 
-        required_keys = ["name", "peer", "peer_interface", "type", "ip_address", "shutdown"]
-
-        if not (
-            ethernet_interfaces := self.validate_vars(
-                data_model="ethernet_interfaces", loop_through_items=True, required_keys=required_keys, type="routed", shutdown=False
-            )
-        ):
+        if not self.safe_get(key="ethernet_interfaces"):
             return None
 
-        for ethernet_interface in ethernet_interfaces:
-            if not self.is_peer_available(peer := ethernet_interface["peer"]):
+        required_keys = ["name", "peer", "peer_interface", "ip_address"]
+
+        if not (valid_ethernet_interfaces := self.validate_vars(data_model="ethernet_interfaces", required_keys=required_keys, type="routed", shutdown=False)):
+            return None
+
+        for interface in valid_ethernet_interfaces:
+            if not self.is_peer_available(peer := interface["peer"]):
                 continue
 
-            if not (
-                peer_ethernet_interface_ip := self.get_interface_ip(
-                    interface_model="ethernet_interfaces", interface_name=ethernet_interface["peer_interface"], host=peer
-                )
-            ):
+            if not (peer_interface_ip := self.get_interface_ip(interface_model="ethernet_interfaces", interface_name=interface["peer_interface"], host=peer)):
                 continue
 
-            src_ip = str(ip_interface(ethernet_interface["ip_address"]).ip)
-            dst_ip = str(ip_interface(peer_ethernet_interface_ip).ip)
-            custom_field = f"Source: {self.device_name}_{ethernet_interface['name']} - Destination: {peer}_{ethernet_interface['peer_interface']}"
+            src_ip = str(ip_interface(interface["ip_address"]).ip)
+            dst_ip = str(ip_interface(peer_interface_ip).ip)
+            custom_field = f"Source: {self.device_name}_{interface['name']} - Destination: {peer}_{interface['peer_interface']}"
             anta_tests.append(
                 {
                     "VerifyReachability": {
@@ -87,25 +81,22 @@ class AvdTestInbandReachability(AvdTestBase):
         """
         anta_tests = []
 
-        required_keys = ["name", "type", "shutdown"]
-
-        if not (
-            management_interfaces := self.validate_vars(
-                data_model="management_interfaces", loop_through_items=True, required_keys=required_keys, type="inband", shutdown=False
-            )
-        ):
+        if not self.safe_get(key="management_interfaces"):
             return None
 
-        for management_interface in management_interfaces:
+        if not (valid_management_interfaces := self.validate_vars(data_model="management_interfaces", required_keys="name", type="inband", shutdown=False)):
+            return None
+
+        for interface in valid_management_interfaces:
             for dst_node, dst_ip in self.loopback0_mapping:
                 if not self.is_peer_available(dst_node):
                     continue
 
-                custom_field = f"Source: {self.device_name} - {management_interface['name']} Destination: {dst_ip}"
+                custom_field = f"Source: {self.device_name} - {interface['name']} Destination: {dst_ip}"
                 anta_tests.append(
                     {
                         "VerifyReachability": {
-                            "hosts": [{"source": management_interface["name"], "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                            "hosts": [{"source": interface["name"], "destination": dst_ip, "vrf": "default", "repeat": 1}],
                             "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
                         }
                     }
@@ -135,7 +126,7 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         anta_tests = []
 
         # To be removed once 'l3leaf' check is removed
-        if not (node_type := self.validate_vars(data_model="type")):
+        if not (node_type := self.safe_get(key="type")):
             return None
 
         if node_type == "l3leaf":
@@ -179,35 +170,19 @@ class AvdTestLLDPTopology(AvdTestBase):
         """
         anta_tests = []
 
-        try:
-            ethernet_interfaces = get(self.hostvars[self.device_name], "ethernet_interfaces", required=True)
-        except AristaAvdMissingVariableError as e:
-            LOGGER.warning("Variable '%s' is missing from the structured_config. %s is skipped.", str(e), self.__class__.__name__)
+        if not self.safe_get(key="ethernet_interfaces"):
             return None
 
-        required_vars = ["name", "shutdown", "peer", "peer_interface"]
+        required_keys = ["name", "peer", "peer_interface"]
 
-        for idx, ethernet_interface in enumerate(ethernet_interfaces, start=1):
-            try:
-                for var in required_vars:
-                    get(ethernet_interface, var, required=True)
-            except AristaAvdMissingVariableError as e:
-                LOGGER.warning("Ethernet interface entry #%d from the 'ethernet_interfaces' data model is missing the variable '%s'.", idx, str(e))
+        if not (valid_ethernet_interfaces := self.validate_vars(data_model="ethernet_interfaces", required_keys=required_keys, shutdown=False)):
+            return None
+
+        for interface in valid_ethernet_interfaces:
+            if not self.is_peer_available(peer := interface["peer"]):
                 continue
 
-            if ethernet_interface["shutdown"]:
-                LOGGER.info("Ethernet interface '%s' is shutdown. 'VerifyLLDPNeighbors' is skipped for this interface.", ethernet_interface["name"])
-                continue
-
-            if (peer := ethernet_interface["peer"]) not in self.hostvars or not get(self.hostvars[peer], "is_deployed", default=True):
-                LOGGER.info(
-                    "Peer '%s' is not configured by AVD or is marked as not deployed. 'VerifyLLDPNeighbors' from interface '%s' to this peer is skipped.",
-                    peer,
-                    ethernet_interface["name"],
-                )
-                continue
-
-            custom_field = f"local: {ethernet_interface['name']} - remote: {peer}_{ethernet_interface['peer_interface']}"
+            custom_field = f"local: {interface['name']} - remote: {peer}_{interface['peer_interface']}"
 
             if (dns_domain := get(self.hostvars[peer], "dns_domain")) is not None:
                 peer = f"{peer}.{dns_domain}"
@@ -217,9 +192,9 @@ class AvdTestLLDPTopology(AvdTestBase):
                     "VerifyLLDPNeighbors": {
                         "neighbors": [
                             {
-                                "port": str(ethernet_interface["name"]),
+                                "port": str(interface["name"]),
                                 "neighbor_device": str(peer),
-                                "neighbor_port": str(ethernet_interface["peer_interface"]),
+                                "neighbor_port": str(interface["peer_interface"]),
                             }
                         ],
                         "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},

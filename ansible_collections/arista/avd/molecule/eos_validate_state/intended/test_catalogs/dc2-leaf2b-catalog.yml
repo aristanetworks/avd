@@ -49,16 +49,6 @@ anta.tests.connectivity:
       - LLDP Topology
       custom_field: 'local: Ethernet8 - remote: dc2-leaf2c_Ethernet2'
       description: LLDP topology - validate peer and interface
-- VerifyLLDPNeighbors:
-    neighbors:
-    - neighbor_device: dc1-leaf2b.dc1.local
-      neighbor_port: Ethernet6
-      port: Ethernet6
-    result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet6 - remote: dc1-leaf2b_Ethernet6'
-      description: LLDP topology - validate peer and interface
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.116

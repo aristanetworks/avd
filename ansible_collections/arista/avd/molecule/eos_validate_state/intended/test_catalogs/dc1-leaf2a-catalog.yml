@@ -1,26 +1,6 @@
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf2b.dc1.local
-      neighbor_port: Ethernet3
-      port: Ethernet3
-    result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet3 - remote: dc1-leaf2b_Ethernet3'
-      description: LLDP topology - validate peer and interface
-- VerifyLLDPNeighbors:
-    neighbors:
-    - neighbor_device: dc1-leaf2b.dc1.local
-      neighbor_port: Ethernet4
-      port: Ethernet4
-    result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet4 - remote: dc1-leaf2b_Ethernet4'
-      description: LLDP topology - validate peer and interface
-- VerifyLLDPNeighbors:
-    neighbors:
     - neighbor_device: dc1-spine1.dc1.local
       neighbor_port: Ethernet3
       port: Ethernet1

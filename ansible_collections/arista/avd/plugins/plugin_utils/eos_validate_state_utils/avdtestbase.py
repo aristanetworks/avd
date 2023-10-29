@@ -48,10 +48,12 @@ class AvdTestBase:
         TODO
         """
         if peer not in self.hostvars:
-            LOGGER.warning("Peer %s is not configured by AVD.", peer)
+            msg = f"Peer {peer} is not configured by AVD. {self.__class__.__name__} is skipped."
+            LOGGER.info(msg)
             return False
         elif not get(self.hostvars[peer], "is_deployed", default=True):
-            LOGGER.warning("Peer %s is marked as not deployed.", peer)
+            msg = f"Peer {peer} is marked as not deployed. {self.__class__.__name__} is skipped."
+            LOGGER.info(msg)
             return False
         return True
 
@@ -72,68 +74,83 @@ class AvdTestBase:
         host = host if host else self.device_name
 
         try:
+            if host not in self.hostvars:
+                raise AristaAvdError("Host {host} is missing from the hostvars.")
             peer_interfaces = get(self.hostvars[host], interface_model, required=True)
             peer_interface = get_item(peer_interfaces, "name", interface_name, required=True)
             return get(peer_interface, "ip_address", required=True)
         except AristaAvdMissingVariableError:
-            LOGGER.warning("Host %s interface '%s' IP address is unavailable.", host, interface_name)
+            msg = f"Host {host} interface '{interface_name}' IP address is unavailable. {self.__class__.__name__} is skipped."
+            LOGGER.warning(msg)
             return None
 
-    def validate_vars(self, data_model: str, host: str | None = None, loop_through_items: bool = False, required_keys: str | list[str] | None = None, **kwargs):
+    def safe_get(self, key: str, host: str | None = None):
+        """
+        TODO
+        """
+        host = host if host else self.device_name
+
+        try:
+            data = get(self.hostvars[host], key, required=True)
+            return data
+        except AristaAvdMissingVariableError:
+            msg = f"Key '{key}' is missing from the structured_config. {self.__class__.__name__} is skipped."
+            LOGGER.warning(msg)
+            return None
+
+    def validate_vars(self, data_model: str, host: str | None = None, required_keys: str | list[str] | None = None, **kwargs):
         """
         TODO
         """
 
-        def _log_message(entry: int, key: str, is_missing=False) -> None:
-            msg_type = "missing" if is_missing else "mismatch"
-            msg = f"Entry #{entry} from '{data_model}': Variable '{key}' is {msg_type}. {self.__class__.__name__} is skipped for this entry."
-            LOGGER.warning(msg) if msg_type == "missing" else LOGGER.info(msg)
+        def _log_message(entry: int, key: str, is_missing: bool, value: str | None = None) -> None:
+            """
+            TODO
+            """
+            if is_missing is False and value is None:
+                raise ValueError(f"Error running {self.__class__.__name__}: Key value must be provided when logging a non matching key.")
+            msg_type = "is missing" if is_missing else f"!= {value}"
+            msg = f"Entry #{entry} from '{data_model}': Variable '{key}' {msg_type}. {self.__class__.__name__} is skipped for this entry."
+            LOGGER.warning(msg) if is_missing else LOGGER.info(msg)
 
         host = host if host else self.device_name
 
-        try:
-            data = get(self.hostvars[host], data_model, required=True)
-        except AristaAvdMissingVariableError:
-            msg = f"Data model '{data_model}' is missing from the structured_config. {self.__class__.__name__} is skipped."
-            LOGGER.warning(msg)
-            return None
+        entries = get(self.hostvars[host], data_model, [])
 
-        if loop_through_items:
-            if not required_keys:
-                raise AristaAvdError(message="'required_keys' must be provided when 'loop_through_items' is set to True")
+        if not isinstance(entries, list):
+            raise ValueError(f"Data model '{data_model}' is not a list.")
 
-            required_keys = [required_keys] if isinstance(required_keys, str) else required_keys
+        valid_entries = []
+        for idx, entry in enumerate(entries, start=1):
+            valid_entry = True
 
-            valid_entries = []
-            for idx, entries in enumerate(data, start=1):
-                valid_entry = True
+            # Check the expected key/value pairs first
+            for key, value in kwargs.items():
+                if get(entry, key) is None:
+                    _log_message(entry=idx, key=key, value=value, is_missing=True)
+                    valid_entry = False
+                elif get(entry, key) != value:
+                    _log_message(entry=idx, key=key, value=value, is_missing=False)
+                    valid_entry = False
 
-                # Check the expected key/value pairs first
-                for key, value in kwargs.items():
-                    if (entry_value := get(entries, key)) is None:
-                        _log_message(entry=idx, key=key, is_missing=True)
-                        valid_entry = False
-                    elif entry_value != value:
-                        _log_message(entry=idx, key=key, is_missing=False)
-                        valid_entry = False
+            # Skip this entry if any of the expected values are missing or not matching
+            if not valid_entry:
+                continue
 
-                # Skip this entry if the expected values are not matching
-                if not valid_entry:
-                    continue
+            # Check the required keys
+            if required_keys:
+                required_keys = [required_keys] if isinstance(required_keys, str) else required_keys
 
-                # Check the required_keys
                 for key in required_keys:
-                    if get(entries, key) is None:
+                    if get(entry, key) is None:
                         _log_message(entry=idx, key=key, is_missing=True)
                         valid_entry = False
 
-                # Add this entry to the list
-                if valid_entry:
-                    valid_entries.append(entries)
+            # Validated entries go to the final list
+            if valid_entry:
+                valid_entries.append(entry)
 
-            return valid_entries if valid_entries else None
-
-        return data
+        return valid_entries if valid_entries else None
 
     @property
     def loopback0_mapping(self) -> dict:

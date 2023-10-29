@@ -11,6 +11,16 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
+    - neighbor_device: dc1-leaf1b.dc1.local
+      neighbor_port: Ethernet2
+      port: Ethernet2
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet2 - remote: dc1-leaf1b_Ethernet2'
+      description: LLDP topology - validate peer and interface
+- VerifyLLDPNeighbors:
+    neighbors:
     - neighbor_device: dc1-leaf2a.dc1.local
       neighbor_port: Ethernet2
       port: Ethernet3
@@ -18,16 +28,6 @@ anta.tests.connectivity:
       categories:
       - LLDP Topology
       custom_field: 'local: Ethernet3 - remote: dc1-leaf2a_Ethernet2'
-      description: LLDP topology - validate peer and interface
-- VerifyLLDPNeighbors:
-    neighbors:
-    - neighbor_device: dc1-leaf2b.dc1.local
-      neighbor_port: Ethernet2
-      port: Ethernet4
-    result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet4 - remote: dc1-leaf2b_Ethernet2'
       description: LLDP topology - validate peer and interface
 - VerifyReachability:
     hosts:
@@ -89,13 +89,13 @@ anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet2
-      protocol_status: down
-      state: adminDown
+      protocol_status: up
+      state: up
     result_overwrite:
       categories:
       - Interface State
       custom_field: Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet2
-      description: Ethernet Interface & Line Protocol == \"adminDown\"
+      description: Ethernet Interface & Line Protocol == \"up\"
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet3
@@ -109,13 +109,13 @@ anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet4
-      protocol_status: up
-      state: up
+      protocol_status: down
+      state: adminDown
     result_overwrite:
       categories:
       - Interface State
       custom_field: Ethernet4 - P2P_LINK_TO_DC1-LEAF2B_Ethernet2
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == \"adminDown\"
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Loopback0
