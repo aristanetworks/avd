@@ -3386,9 +3386,9 @@
                     "type": "boolean",
                     "title": "Spanning Tree"
                   },
-                  "storm_control": {
+                  "storm_control_discards": {
                     "type": "boolean",
-                    "title": "Storm Control"
+                    "title": "Storm Control Discards"
                   }
                 },
                 "additionalProperties": false,

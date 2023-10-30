@@ -163,4 +163,4 @@ class AvdTestBGP(AvdTestBase):
             elif neighbor_peer_group_type == "evpn":
                 add_verify_peers_test(description="bgp evpn peer state established (evpn)", afi="evpn", bgp_neighbor_ip=bgp_neighbor_ip)
 
-        return {self.anta_module: anta_tests}
+        return {self.anta_module: anta_tests} if anta_tests.get("bgp") else None

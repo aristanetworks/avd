@@ -4,6 +4,9 @@
 # Default gateway used for the management interface
 mgmt_gateway: 172.16.1.1
 
+### DNS Domain ###
+custom_structured_configuration_dns_domain: dc1.local
+
 # Spine switch group
 spine:
   # Definition of default values that will be configured to all nodes defined in this group

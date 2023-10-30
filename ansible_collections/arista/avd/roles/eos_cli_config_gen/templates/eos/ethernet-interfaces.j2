@@ -41,10 +41,10 @@ interface {{ ethernet_interface.name }}
 {%         elif ethernet_interface.logging.event.spanning_tree is arista.avd.defined(false) %}
    no logging event spanning-tree
 {%         endif %}
-{%         if ethernet_interface.logging.event.storm_control is arista.avd.defined(true) %}
-   logging event storm-control
-{%         elif ethernet_interface.logging.event.storm_control is arista.avd.defined(false) %}
-   no logging event storm-control
+{%         if ethernet_interface.logging.event.storm_control_discards is arista.avd.defined(true) %}
+   logging event storm-control discards
+{%         elif ethernet_interface.logging.event.storm_control_discards is arista.avd.defined(false) %}
+   no logging event storm-control discards
 {%         endif %}
 {%     endif %}
 {%     if ethernet_interface.flowcontrol.received is arista.avd.defined %}
