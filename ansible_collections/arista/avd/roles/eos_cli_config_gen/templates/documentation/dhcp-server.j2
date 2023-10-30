@@ -10,7 +10,6 @@
 {%         do ethernet_interfaces_dhcp_server.append(ethernet_interface) %}
 {%     endif %}
 {% endfor %}
-{# later on this condition will change when top level key dhcp_server is implemented #}
 {% if (ethernet_interfaces_dhcp_server | length > 0 or dhcp_servers is arista.avd.defined) %}
 
 ## DHCP Server

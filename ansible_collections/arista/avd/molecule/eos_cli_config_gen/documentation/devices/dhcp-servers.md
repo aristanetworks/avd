@@ -1,4 +1,4 @@
-# dhcp-server
+# dhcp-servers
 
 ## Table of Contents
 
@@ -62,6 +62,8 @@ dhcp server vrf TEST
    subnet 10.0.0.0/24
       !
       range 10.0.0.10 10.0.0.100
+      !
+      range 10.0.0.110 10.0.0.120
       name TEST1
       dns server 10.1.1.12 10.1.1.13
       lease time 0 days 0 hours 10 minutes

@@ -759,6 +759,10 @@ roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
+### DHCP Servers
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/dhcp-servers.md
 --8<--
 
 ### IP ICMP redirect

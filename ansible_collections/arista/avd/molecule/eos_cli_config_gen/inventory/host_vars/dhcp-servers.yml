@@ -18,6 +18,8 @@ dhcp_servers:
         ranges:
           - start: 10.0.0.10 # required
             end: 10.0.0.100 # required
+          - start: 10.0.0.110 # required
+            end: 10.0.0.120 # required
         dns_servers:
           - 10.1.1.12
           - 10.1.1.13
