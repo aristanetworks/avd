@@ -55,5 +55,5 @@ cv_tags_enabled: True
 # Generate device tags for all devices in the fabric
 # (except where it may be overriden in group_vars/host_vars)
 cv_tags_generate_device:
-  - field: ip_routing
+  - data_path: ip_routing
     name: layer3_routing

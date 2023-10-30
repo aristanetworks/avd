@@ -73,7 +73,7 @@ can be defined as the value for a tag. This allows for tags to be generated with
 
 !!! warning
     - **Tag names cannot have the name of any existing system tags on CloudVision. System tags cannot be emanded with this approach.**
-    - **If the key specified in `field` is not found, the tag is not generated. This avoids having a lot of empty tags.**
+    - **If the key specified in `data_path` is not found, the tag is not generated. This avoids having a lot of empty tags.**
 
 ??? example "Example: Generating device and interface tags"
 
@@ -84,20 +84,20 @@ can be defined as the value for a tag. This allows for tags to be generated with
       # If the keys `peer` or `peer_interface` are not found in the structured_config
       # the respective tags will not be created.
       cv_tags_generate_interface:
-        - field: peer
+        - data_path: peer
           name: peer_device_name
-        - field: peer_interface
+        - data_path: peer_interface
           name: peer_device_interface
 
       cv_tags_generate_device:
         # Each EOS device will have tag called 'ip_routing' which will
         # have a value of 'True' if ip_routing is enabled on the device.
-        - field: ip_routing
+        - data_path: ip_routing
           name: layer3_routing
         # Each EOS device will have tag called 'bgp_router_id' which will
         # have the router_id used for BGP, if it is configured for the device.
-        # Note the use of dot notation for the field.
-        - field: router_bgp.router_id
+        # Note the use of dot notation for the data_path.
+        - data_path: router_bgp.router_id
           name: bgp_router_id
     ```
 

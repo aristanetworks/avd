@@ -2954,15 +2954,15 @@
             "type": "string",
             "title": "Name"
           },
-          "field": {
-            "description": "Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\n",
+          "data_path": {
+            "description": "Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\nFor Example: 'data_path: channel_group.id' would set the tag with the value of the channel id of the interface. If there is no channel id, the tag is not created.\n",
             "type": "string",
-            "title": "Field"
+            "title": "Data Path"
           }
         },
         "required": [
           "name",
-          "field"
+          "data_path"
         ],
         "additionalProperties": false,
         "patternProperties": {
@@ -2982,15 +2982,15 @@
             "type": "string",
             "title": "Name"
           },
-          "field": {
-            "description": "Sturctured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\n",
+          "data_path": {
+            "description": "Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\nFor Example: 'data_path: router_bfd.multihop.interval' would set the tag with the value of the interval for multihop bfd. If this value is not specified in the structured config, the tag is not created.\n",
             "type": "string",
-            "title": "Field"
+            "title": "Data Path"
           }
         },
         "required": [
           "name",
-          "field"
+          "data_path"
         ],
         "additionalProperties": false,
         "patternProperties": {

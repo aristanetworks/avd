@@ -519,9 +519,13 @@ keys:
           convert_to_lower_case: true
           required: true
           type: str
-        field:
-          description: 'Sturctured config field/key path to be used to find the value
+        data_path:
+          description: 'Structured config field/key path to be used to find the value
             for the tag. Dot notation is supported to reference values inside dictionaries.
+
+            For Example: ''data_path: channel_group.id'' would set the tag with the
+            value of the channel id of the interface. If there is no channel id, the
+            tag is not created.
 
             '
           required: true
@@ -545,9 +549,13 @@ keys:
           convert_to_lower_case: true
           required: true
           type: str
-        field:
-          description: 'Sturctured config field/key path to be used to find the value
+        data_path:
+          description: 'Structured config field/key path to be used to find the value
             for the tag. Dot notation is supported to reference values inside dictionaries.
+
+            For Example: ''data_path: router_bfd.multihop.interval'' would set the
+            tag with the value of the interval for multihop bfd. If this value is
+            not specified in the structured config, the tag is not created.
 
             '
           required: true

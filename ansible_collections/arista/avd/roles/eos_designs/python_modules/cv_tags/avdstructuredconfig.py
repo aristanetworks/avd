@@ -86,13 +86,15 @@ class AvdStructuredConfigTags(AvdFacts):
                 )
 
         for generate_tag in get(self._hostvars, "cv_tags_generate_device", []):
-            value = get(self._hostvars, generate_tag["field"], None)
+            value = get(self._hostvars, generate_tag["data_path"], None)
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(
                     f"The CloudVision tag name {generate_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
                 )
             if type(value) in [list, dict]:
-                raise AristaAvdError(f"The field {generate_tag['field']} appears to be a {type(value).__name__}. This is not supported for cloudvision fields.")
+                raise AristaAvdError(
+                    f"The data_path {generate_tag['data_path']} appears to be a {type(value).__name__}. This is not supported for cloudvision data_paths."
+                )
             if value is not None:
                 device_tags.append(self._tag_dict(generate_tag["name"], value))
 
@@ -164,13 +166,15 @@ class AvdStructuredConfigTags(AvdFacts):
         tags = []
 
         for generate_tag in get(self._hostvars, "cv_tags_generate_interface", []):
-            value = get(link, generate_tag["field"])
+            value = get(link, generate_tag["data_path"])
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(
                     f"The CloudVision tag name {generate_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
                 )
             if type(value) in [list, dict]:
-                raise AristaAvdError(f"The field {generate_tag['field']} appears to be a {type(value).__name__}. This is not supported for cloudvision fields.")
+                raise AristaAvdError(
+                    f"The data_path {generate_tag['data_path']} appears to be a {type(value).__name__}. This is not supported for cloudvision data_paths."
+                )
             if value:
                 tags.append(self._tag_dict(generate_tag["name"], value))
         if tags:
