@@ -11,14 +11,12 @@ router_bgp:
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
-    password: 7x4B4rnJhZB438m9+BrBfQ==
     maximum_routes: 12000
     send_community: all
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
     bfd: true
-    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
@@ -37,26 +35,14 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: dc1-pod1-leaf1a_Ethernet1
-  - ip_address: 10.255.255.5
+  - ip_address: 10.255.255.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
     description: dc1-pod1-leaf1b_Ethernet1
-  - ip_address: 10.255.255.9
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65103'
-    description: dc1-pod1-leaf2a_Ethernet1
-  - ip_address: 10.255.255.13
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65103'
-    description: dc1-pod1-leaf2b_Ethernet1
-  - ip_address: 10.255.253.0
+  - ip_address: 10.255.255.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
     description: dc1-super-spine1_Ethernet1
-  - ip_address: 10.255.253.2
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65100'
-    description: dc1-super-spine2_Ethernet1
   - ip_address: 10.255.0.3
     peer_group: EVPN-OVERLAY-PEERS
     description: dc1-pod1-leaf1a
@@ -65,22 +51,10 @@ router_bgp:
     peer_group: EVPN-OVERLAY-PEERS
     description: dc1-pod1-leaf1b
     remote_as: '65102'
-  - ip_address: 10.255.0.5
-    peer_group: EVPN-OVERLAY-PEERS
-    description: dc1-pod1-leaf2a
-    remote_as: '65103'
-  - ip_address: 10.255.0.6
-    peer_group: EVPN-OVERLAY-PEERS
-    description: dc1-pod1-leaf2b
-    remote_as: '65103'
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
       activate: true
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 172.16.1.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -108,7 +82,7 @@ management_interfaces:
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.11/24
-  gateway: 172.16.1.1
+  gateway: null
   type: oob
 management_api_http:
   enable_vrfs:
@@ -121,7 +95,7 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   type: routed
   ip_address: 10.255.255.0/31
 - name: Ethernet2
@@ -130,45 +104,18 @@ ethernet_interfaces:
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-POD1-LEAF1B_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   type: routed
-  ip_address: 10.255.255.4/31
-- name: Ethernet3
-  peer: dc1-pod1-leaf2a
-  peer_interface: Ethernet1
-  peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet1
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 10.255.255.8/31
-- name: Ethernet4
-  peer: dc1-pod1-leaf2b
-  peer_interface: Ethernet1
-  peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet1
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 10.255.255.12/31
+  ip_address: 10.255.255.2/31
 - name: Ethernet10
   peer: dc1-super-spine1
   peer_interface: Ethernet1
   peer_type: super-spine
   description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   type: routed
-  ip_address: 10.255.253.1/31
-- name: Ethernet11
-  peer: dc1-super-spine2
-  peer_interface: Ethernet1
-  peer_type: super-spine
-  description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet1
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 10.255.253.3/31
+  ip_address: 10.255.255.1/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -201,5 +148,7 @@ cv_tags:
     value: pod1
   - name: topology_hint_type
     value: spine
+  - name: topology_hint_rack
+    value: RackB
   - name: layer3_routing
     value: 'True'

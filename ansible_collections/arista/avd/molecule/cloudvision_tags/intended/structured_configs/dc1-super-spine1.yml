@@ -11,7 +11,6 @@ router_bgp:
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
-    password: 7x4B4rnJhZB438m9+BrBfQ==
     maximum_routes: 12000
     send_community: all
   address_family_ipv4:
@@ -22,26 +21,14 @@ router_bgp:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
   neighbors:
-  - ip_address: 10.255.253.1
+  - ip_address: 10.255.255.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
     description: dc1-pod1-spine1_Ethernet10
-  - ip_address: 10.255.253.5
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65101'
-    description: dc1-pod1-spine2_Ethernet10
-  - ip_address: 10.255.254.1
+  - ip_address: 10.255.255.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65121'
     description: dc1-pod2-spine1_Ethernet10
-  - ip_address: 10.255.254.5
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65121'
-    description: dc1-pod2-spine2_Ethernet10
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 172.16.1.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -69,7 +56,7 @@ management_interfaces:
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.1/24
-  gateway: 172.16.1.1
+  gateway: null
   type: oob
 management_api_http:
   enable_vrfs:
@@ -82,36 +69,18 @@ ethernet_interfaces:
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet10
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   type: routed
-  ip_address: 10.255.253.0/31
-- name: Ethernet2
-  peer: dc1-pod1-spine2
-  peer_interface: Ethernet10
-  peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet10
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 10.255.253.4/31
-- name: Ethernet3
+  ip_address: 10.255.255.0/31
+- name: Ethernet4
   peer: dc1-pod2-spine1
   peer_interface: Ethernet10
   peer_type: spine
   description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet10
   shutdown: false
-  mtu: 1500
+  mtu: 9214
   type: routed
-  ip_address: 10.255.254.0/31
-- name: Ethernet4
-  peer: dc1-pod2-spine2
-  peer_interface: Ethernet10
-  peer_type: spine
-  description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet10
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ip_address: 10.255.254.4/31
+  ip_address: 10.255.255.2/31
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
