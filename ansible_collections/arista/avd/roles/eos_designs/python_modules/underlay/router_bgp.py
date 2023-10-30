@@ -85,6 +85,7 @@ class RouterBgpMixin(UtilsMixin):
                     "ip_address": link["peer_ip_address"],
                     "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
                     "remote_as": get(link, "peer_bgp_as"),
+                    "peer": link["peer"],
                     "description": "_".join([link["peer"], link["peer_interface"]]),
                     "bfd": get(link, "bfd"),
                 }

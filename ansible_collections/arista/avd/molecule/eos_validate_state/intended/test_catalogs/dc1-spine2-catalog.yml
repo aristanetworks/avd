@@ -162,17 +162,6 @@ anta.tests.routing.bgp:
       description: ip bgp peer state established (ipv4)
 - VerifyBGPSpecificPeers:
     address_families:
-    - afi: ipv4
-      peers:
-      - 10.255.255.15
-      safi: unicast
-    result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'bgp_neighbor: 10.255.255.15'
-      description: ip bgp peer state established (ipv4)
-- VerifyBGPSpecificPeers:
-    address_families:
     - afi: evpn
       peers:
       - 10.255.0.3
@@ -200,16 +189,6 @@ anta.tests.routing.bgp:
       categories:
       - BGP
       custom_field: 'bgp_neighbor: 10.255.0.5'
-      description: bgp evpn peer state established (evpn)
-- VerifyBGPSpecificPeers:
-    address_families:
-    - afi: evpn
-      peers:
-      - 10.255.0.6
-    result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'bgp_neighbor: 10.255.0.6'
       description: bgp evpn peer state established (evpn)
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:

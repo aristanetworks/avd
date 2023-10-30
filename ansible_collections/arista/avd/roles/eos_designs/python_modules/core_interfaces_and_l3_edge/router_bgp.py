@@ -36,13 +36,21 @@ class RouterBgpMixin(UtilsMixin):
 
             neighbor = {
                 "remote_as": p2p_link["data"]["peer_bgp_as"],
+                "peer": p2p_link["data"]["peer"],
                 "description": p2p_link["data"]["peer"],
                 "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
             }
 
             # RFC5549
             if self.shared_utils.underlay_rfc5549:
-                neighbor_interfaces.append({"name": p2p_link["data"]["interface"], **neighbor})
+                neighbor_interfaces.append(
+                    {
+                        "name": p2p_link["data"]["interface"],
+                        "remote_as": neighbor["remote_as"],
+                        "description": neighbor["description"],
+                        "peer_group": neighbor["peer_group"],
+                    }
+                )
                 continue
 
             # Regular BGP Neighbors

@@ -449,17 +449,6 @@ anta.tests.routing.bgp:
     address_families:
     - afi: ipv4
       peers:
-      - 10.255.1.101
-      safi: unicast
-    result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'bgp_neighbor: 10.255.1.101'
-      description: ip bgp peer state established (ipv4)
-- VerifyBGPSpecificPeers:
-    address_families:
-    - afi: ipv4
-      peers:
       - 10.255.255.8
       safi: unicast
     result_overwrite:

@@ -58,11 +58,13 @@ router_bgp:
   neighbors:
   - ip_address: 10.90.90.90
     peer_group: IPVPN-GATEWAY-PEERS
+    peer: SOME-EBGP-PEER
     description: SOME-EBGP-PEER
     remote_as: '65099.900'
     ebgp_multihop: 15
   - ip_address: 10.80.80.80
     peer_group: IPVPN-GATEWAY-PEERS
+    peer: SOME-IBGP-PEER
     description: SOME-IBGP-PEER
     remote_as: '65555.100'
   vrfs:

@@ -3,14 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import logging
 from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-
-LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestP2PIPReachability(AvdTestBase):
@@ -32,19 +29,21 @@ class AvdTestP2PIPReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if not self.safe_get(key="ethernet_interfaces"):
+        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces")) is None:
             return None
 
         required_keys = ["name", "peer", "peer_interface", "ip_address"]
 
-        if not (valid_ethernet_interfaces := self.validate_vars(data_model="ethernet_interfaces", required_keys=required_keys, type="routed", shutdown=False)):
-            return None
+        for idx, interface in enumerate(ethernet_interfaces):
+            if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, type="routed", shutdown=False):
+                continue
 
-        for interface in valid_ethernet_interfaces:
             if not self.is_peer_available(peer := interface["peer"]):
                 continue
 
-            if not (peer_interface_ip := self.get_interface_ip(interface_model="ethernet_interfaces", interface_name=interface["peer_interface"], host=peer)):
+            if (
+                peer_interface_ip := self.get_interface_ip(interface_model="ethernet_interfaces", interface_name=interface["peer_interface"], host=peer)
+            ) is None:
                 continue
 
             src_ip = str(ip_interface(interface["ip_address"]).ip)
@@ -81,13 +80,13 @@ class AvdTestInbandReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if not self.safe_get(key="management_interfaces"):
+        if (management_interfaces := self.logged_get(key="management_interfaces")) is None:
             return None
 
-        if not (valid_management_interfaces := self.validate_vars(data_model="management_interfaces", required_keys="name", type="inband", shutdown=False)):
-            return None
+        for idx, interface in enumerate(management_interfaces):
+            if not self.validate_data(data=interface, data_path=f"management_interface.[{idx}]", required_keys="name", type="inband", shutdown=False):
+                continue
 
-        for interface in valid_management_interfaces:
             for dst_node, dst_ip in self.loopback0_mapping:
                 if not self.is_peer_available(dst_node):
                     continue
@@ -125,27 +124,25 @@ class AvdTestLoopback0Reachability(AvdTestBase):
         """
         anta_tests = []
 
-        # To be removed once 'l3leaf' check is removed
-        if not (node_type := self.safe_get(key="type")):
+        if not self.validate_data(type="l3leaf"):
             return None
 
-        if node_type == "l3leaf":
-            if not (src_ip := self.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")):
-                return None
+        if (src_ip := self.get_interface_ip(interface_model="loopback_interfaces", interface_name="Loopback0")) is None:
+            return None
 
-            for dst_node, dst_ip in self.loopback0_mapping:
-                if not self.is_peer_available(dst_node):
-                    continue
+        for dst_node, dst_ip in self.loopback0_mapping:
+            if not self.is_peer_available(dst_node):
+                continue
 
-                custom_field = f"Source: {self.device_name} - {src_ip} Destination: {dst_ip}"
-                anta_tests.append(
-                    {
-                        "VerifyReachability": {
-                            "hosts": [{"source": str(ip_interface(src_ip).ip), "destination": dst_ip, "vrf": "default", "repeat": 1}],
-                            "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
-                        }
+            custom_field = f"Source: {self.device_name} - {src_ip} Destination: {dst_ip}"
+            anta_tests.append(
+                {
+                    "VerifyReachability": {
+                        "hosts": [{"source": str(ip_interface(src_ip).ip), "destination": dst_ip, "vrf": "default", "repeat": 1}],
+                        "result_overwrite": {"categories": self.categories, "description": self.description, "custom_field": custom_field},
                     }
-                )
+                }
+            )
 
         return {self.anta_module: anta_tests} if anta_tests else None
 
@@ -170,15 +167,15 @@ class AvdTestLLDPTopology(AvdTestBase):
         """
         anta_tests = []
 
-        if not self.safe_get(key="ethernet_interfaces"):
+        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces")) is None:
             return None
 
         required_keys = ["name", "peer", "peer_interface"]
 
-        if not (valid_ethernet_interfaces := self.validate_vars(data_model="ethernet_interfaces", required_keys=required_keys, shutdown=False)):
-            return None
+        for idx, interface in enumerate(ethernet_interfaces):
+            if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
+                continue
 
-        for interface in valid_ethernet_interfaces:
             if not self.is_peer_available(peer := interface["peer"]):
                 continue
 

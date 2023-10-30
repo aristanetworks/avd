@@ -45,7 +45,13 @@ class AvdTestBase:
 
     def is_peer_available(self, peer: str) -> bool:
         """
-        TODO
+        Check if a peer is deployed by looking at his `is_deployed` key.
+
+        Args:
+            peer (str): The peer to verify
+
+        Returns:
+            bool: True if the peer is deployed, False otherwise
         """
         if peer not in self.hostvars:
             msg = f"Peer {peer} is not configured by AVD. {self.__class__.__name__} is skipped."
@@ -59,19 +65,17 @@ class AvdTestBase:
 
     def get_interface_ip(self, interface_model: str, interface_name: str, host: str | None = None) -> str | None:
         """
-        Retrieve the IP address of a specified peer interface.
+        Retrieve the IP address of a specified host interface.
 
-        Parameters:
-            hostvars (dict): A dictionnary that contains a key for each device with a value of the structured_config.
-                              When using Ansible, this is the equivalent of `task_vars['hostvars']`.
-            peer (str): Peer whose interface information is retrieved.
-            interface_model (str): Type of interface (e.g., ethernet_interfaces).
-            peer_interface_name (str): Name of the peer interface.
+        Args:
+            interface_model (str): Interface model in the structured config (e.g., ethernet_interfaces)
+            interface_name (str): Interface name to retrive the IP
+            host (str): Host to verify. Defaults to the host running the test
 
         Returns:
-          str | None: IP address of the peer interface or None if unavailable.
+            str | None: IP address of the host interface or None if unavailable
         """
-        host = host if host else self.device_name
+        host = host or self.device_name
 
         try:
             if host not in self.hostvars:
@@ -84,73 +88,101 @@ class AvdTestBase:
             LOGGER.warning(msg)
             return None
 
-    def safe_get(self, key: str, host: str | None = None, warning: bool = True):
+    def logged_get(self, key: str, host: str | None = None, logging_level: str = "WARNING"):
         """
-        TODO
+        Attempts to retrieve a value associated with a given key from structured_config and logs if it's missing.
+
+        Args:
+            key (str): The key to retrieve
+            host (str | None): The host from which to retrieve the key. Defaults to the device running the test
+            logging_level (str): The logging level to use for the log message
         """
-        host = host if host else self.device_name
+
+        host = host or self.device_name
 
         try:
             data = get(self.hostvars[host], key, required=True)
             return data
         except AristaAvdMissingVariableError:
-            msg = f"Key '{key}' is missing from the structured_config. {self.__class__.__name__} is skipped."
-            LOGGER.warning(msg) if warning else LOGGER.info(msg)
+            log_msg = f"Key '{key}' is missing from the structured_config. {self.__class__.__name__} is skipped."
+            log_level = logging.getLevelName(logging_level.upper())
+            LOGGER.log(log_level, log_msg)
             return None
 
-    def validate_vars(self, data_model: str, host: str | None = None, required_keys: str | list[str] | None = None, **kwargs):
+    def validate_data(
+        self, data: dict | None = None, data_path: str | None = None, host: str | None = None, required_keys: str | list[str] | None = None, **kwargs
+    ) -> bool:
         """
-        TODO
+        Validates data based on given requirements such as expected key-value pairs and required keys.
+
+        Args:
+            data (dict | None): A data dictionary to be validated. Defaults to the hostvars of the device running the test
+            data_path (str | None): The data path in dot notation. Used for logging purposes. Index or primary key can be used for lists
+            host (str | None): The host from which data should be retrieved. Defaults to the device running the test
+            required_keys (str | list[str] | None: The keys that are expected to be in the data
+            **kwargs: Expected key-value pairs in the data
+
+        Returns:
+            bool: True if the data meets all validation requirements, otherwise False
+
+        Example:
+            >>> validate_data(data={"a": 1, "b": 2}, data_path="some.path", required_keys=["a", "b"], c=3)
+
+            In this case, the function will log a warning message because the key 'c' with value '3' is not found,
+            and it will return False as the data doesn't meet all validation requirements.
         """
 
-        def _log_message(entry: int, key: str, is_missing: bool, value: str | None = None) -> None:
+        def _log_message(key: str, value: str | None = None, is_missing: bool = True, logging_level: str = "WARNING") -> None:
             """
-            TODO
+            Logs a formatted message based on the provided parameters.
+
+            Parameters:
+                key (str): The key to be logged
+                value (str | None): The expected value of the key
+                is_missing (bool): Indicates whether the key is missing
+                logging_level (str): The logging level to use for the log message
             """
             if is_missing is False and value is None:
-                raise AristaAvdError(f"Error running {self.__class__.__name__}: Key value must be provided when logging a non matching key.")
-            msg_type = "is missing" if is_missing else f"!= {value}"
-            msg = f"Entry #{entry} from '{data_model}': Variable '{key}' {msg_type}. {self.__class__.__name__} is skipped for this entry."
-            LOGGER.warning(msg) if is_missing else LOGGER.info(msg)
+                raise ValueError("Error when validating data: The key's value must be provided when logging a non-matching key.")
 
-        host = host if host else self.device_name
+            # Constructing the message
+            dot_notation = f"{data_path}.{key}" if data_path else f"{key}"
+            msg_type = "is missing" if is_missing else f"!= '{value}'"
+            log_msg = f"Key '{dot_notation}' {msg_type}. {self.__class__.__name__} is skipped."
 
-        entries = get(self.hostvars[host], data_model, [])
+            # Logging the message
 
-        if not isinstance(entries, list):
-            raise AristaAvdError(f"Data model '{data_model}' is not a list.")
+            log_level = logging.getLevelName(logging_level.upper())
+            LOGGER.log(log_level, log_msg)
 
-        valid_entries = []
-        for idx, entry in enumerate(entries, start=1):
-            valid_entry = True
+        host = host or self.device_name
+        data = data or get(self.hostvars, host, {})
 
-            # Check the expected key/value pairs first
-            for key, value in kwargs.items():
-                if get(entry, key) is None:
-                    _log_message(entry=idx, key=key, value=value, is_missing=True)
-                    valid_entry = False
-                elif get(entry, key) != value:
-                    _log_message(entry=idx, key=key, value=value, is_missing=False)
-                    valid_entry = False
+        valid = True
 
-            # Skip this entry if any of the expected values are missing or not matching
-            if not valid_entry:
-                continue
+        # Check the expected key/value pairs first
+        for key, value in kwargs.items():
+            actual_value = get(data, key)
+            if actual_value is None:
+                _log_message(key=key, value=value, is_missing=True)
+                valid = False
+            elif actual_value != value:
+                _log_message(key=key, value=value, is_missing=False, logging_level="INFO")
+                valid = False
 
-            # Check the required keys
-            if required_keys:
-                required_keys = [required_keys] if isinstance(required_keys, str) else required_keys
+        # Return False if any of the expected values are missing or not matching
+        if not valid:
+            return False
 
-                for key in required_keys:
-                    if get(entry, key) is None:
-                        _log_message(entry=idx, key=key, is_missing=True)
-                        valid_entry = False
+        # Check the required keys
+        if required_keys:
+            required_keys = [required_keys] if isinstance(required_keys, str) else required_keys
+            for key in required_keys:
+                if get(data, key) is None:
+                    _log_message(key=key, is_missing=True)
+                    valid = False
 
-            # Validated entries go to the final list
-            if valid_entry:
-                valid_entries.append(entry)
-
-        return valid_entries if valid_entries else None
+        return valid
 
     @property
     def loopback0_mapping(self) -> dict:

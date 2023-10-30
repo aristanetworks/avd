@@ -42,13 +42,16 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
     description: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
   - ip_address: 172.31.255.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
+    peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
     description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
     description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
     remote_as: '65001'
   redistribute_routes:

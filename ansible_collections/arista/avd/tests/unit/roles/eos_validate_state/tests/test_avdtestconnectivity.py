@@ -56,7 +56,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Entry #1 from 'ethernet_interfaces': Variable 'peer' is missing. AvdTestLLDPTopology is skipped for this entry.",
+        "expected_log": "Key 'ethernet_interfaces.[0].peer' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -70,7 +70,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Entry #1 from 'ethernet_interfaces': Variable 'name' is missing. AvdTestLLDPTopology is skipped for this entry.",
+        "expected_log": "Key 'ethernet_interfaces.[0].name' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -88,7 +88,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Entry #1 from 'ethernet_interfaces': Variable 'shutdown' is missing. AvdTestLLDPTopology is skipped for this entry.",
+        "expected_log": "Key 'ethernet_interfaces.[0].shutdown' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -102,7 +102,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Entry #1 from 'ethernet_interfaces': Variable 'peer_interface' is missing. AvdTestLLDPTopology is skipped for this entry.",
+        "expected_log": "Key 'ethernet_interfaces.[0].peer_interface' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -160,7 +160,7 @@ DATA: list[dict] = [
                 }
             ]
         },
-        "expected_log": "Entry #2 from 'ethernet_interfaces': Variable 'shutdown' != False. AvdTestLLDPTopology is skipped for this entry.",
+        "expected_log": "Key 'ethernet_interfaces.[1].shutdown' != 'False'. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "INFO",
     },
     {

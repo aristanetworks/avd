@@ -297,6 +297,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                 {
                     "ip_address": neighbor_ip,
                     "peer_group": peer_group_name,
+                    "peer": self.shared_utils.mlag_peer,
                     "description": self.shared_utils.mlag_peer,
                 }
             ]
