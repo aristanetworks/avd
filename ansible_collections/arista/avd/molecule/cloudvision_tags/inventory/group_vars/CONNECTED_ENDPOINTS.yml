@@ -10,7 +10,7 @@ servers:
       # Device ports where the server ports are connected.
       switch_ports: [ Ethernet5, Ethernet5 ]
       # Device names where the server ports are connected.
-      switches: [ dc1-pod1-leaf1a, dc1-leaf1b ]
+      switches: [ dc1-pod1-leaf1a, dc1-pod1-leaf1b ]
       # VLANs that will be configured on these ports.
       vlans: 11-12,21-22
       # Native VLAN to be used on these ports.
@@ -25,30 +25,3 @@ servers:
         description: PortChannel dc1-pod1-leaf1-server1
         # Port channel mode for LACP.
         mode: active
-
-    - endpoint_ports: [ iLO ]
-      switch_ports: [ Ethernet5 ]
-      switches: [ dc1-pod1-leaf1c ]
-      vlans: 11
-      mode: access
-      spanning_tree_portfast: edge
-
-  dc1-pod1-leaf2-server1:
-    adapters:
-    - endpoint_ports: [ PCI1, PCI2 ]
-      switch_ports: [ Ethernet5, Ethernet5 ]
-      switches: [ dc1-pod1-leaf2a, dc1-leaf2b ]
-      vlans: 11-12,21-22
-      native_vlan: 4092
-      mode: trunk
-      spanning_tree_portfast: edge
-      port_channel:
-        description: PortChannel dc1-pod1-leaf2-server1
-        mode: active
-
-    - endpoint_ports: [ iLO ]
-      switch_ports: [ Ethernet5 ]
-      switches: [ dc1-pod1-leaf2c ]
-      vlans: 11
-      mode: access
-      spanning_tree_portfast: edge

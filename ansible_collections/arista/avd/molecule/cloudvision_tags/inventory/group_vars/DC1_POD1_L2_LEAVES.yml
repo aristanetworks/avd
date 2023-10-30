@@ -1,8 +1,6 @@
 ---
 type: l2leaf
 
-pod_name: pod1
-
 # Test overriding default topology hint
 # associated with l2leafs for leafs in this
 # group. These leafs should be set to edge

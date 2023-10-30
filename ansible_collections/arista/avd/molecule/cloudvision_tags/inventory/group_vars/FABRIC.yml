@@ -35,25 +35,10 @@ local_users:
     role: network-admin
     no_password: true
 
-# BGP peer groups passwords
-bgp_peer_groups:
-  # all passwords set to "arista"
-  evpn_overlay_peers:
-    password: Q4fqtbqcZ7oQuKfuWtNGRQ==
-  ipv4_underlay_peers:
-    password: 7x4B4rnJhZB438m9+BrBfQ==
-  mlag_ipv4_underlay_peer:
-    password: 4b21pAdCvWeAqpcKDFMdWw==
-
-# P2P interfaces MTU, includes VLANs 4093 and 4094 that are over peer-link
-# If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
-# p2p_uplinks_mtu: 1500
-p2p_uplinks_mtu: 1500
-
 cv_tags_enabled: True
 
 # Generate device tags for all devices in the fabric
-# (except where it may be overriden in group_vars/host_vars)
+# (except where it may be overridden in group_vars/host_vars)
 cv_tags_generate_device:
   - data_path: ip_routing
     name: layer3_routing

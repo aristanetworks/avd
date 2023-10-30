@@ -1,8 +1,6 @@
 ---
 type: l3leaf
 
-pod_name: pod2
-
 # Define the cv_tags directly,
 # overriding anything that was generated.
 # This will also test the case where a device

@@ -1,8 +1,6 @@
 ---
 type: l3leaf
 
-pod_name: pod1
-
 cv_tags_generate_interface:
   - data_path: peer_interface
     name: peer_device_interface
