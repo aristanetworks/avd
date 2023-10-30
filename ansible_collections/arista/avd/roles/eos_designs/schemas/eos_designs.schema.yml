@@ -427,7 +427,7 @@ keys:
       description: Generic Device
   core_interfaces:
     type: dict
-    $ref: '#/$defs/l3_edge'
+    $ref: eos_designs#/$defs/l3_edge
   custom_structured_configuration_list_merge:
     documentation_options:
       table: custom-structured-configuration
@@ -585,6 +585,42 @@ keys:
             '
           required: true
           type: str
+  cv_topology:
+    documentation_options:
+      table: cv-topology
+    type: list
+    description: 'Generate AVD configurations directly from the given CloudVision
+      topology.
+
+      Activate this feature by setting `use_cv_topology` to `true`.
+
+      Requires `default_interfaces` to be set for the relevant platforms and node
+      types to detect the proper interface roles automatically.
+
+      Neighbor hostnames must match the inventory hostnames of the AVD inventory to
+      be taken into consideration.'
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+        platform:
+          type: str
+          required: true
+        interfaces:
+          type: list
+          required: true
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+              neighbor:
+                type: str
+              neighbor_interface:
+                type: str
   cvp_ingestauth_key:
     documentation_options:
       table: cloudvision-settings
@@ -1114,7 +1150,7 @@ keys:
   is_deployed:
     documentation_options:
       table: is-deployed
-    description: 'Is device already deployed in the fabric.
+    description: 'If the device is already deployed in the fabric.
 
       When set to false, interfaces toward this device may be shutdown depending on
       the `shutdown_interfaces_towards_undeployed_peers` setting.
@@ -1150,6 +1186,7 @@ keys:
     description: These fabric level parameters can be used with core_interfaces running
       ISIS, and may be overridden on link profile or link level.
   isis_default_is_type:
+    display_name: ISIS Default IS Type
     documentation_options:
       table: isis-settings
     type: str
@@ -1195,7 +1232,7 @@ keys:
         default: 10000
   l3_edge:
     type: dict
-    $ref: '#/$defs/l3_edge'
+    $ref: eos_designs#/$defs/l3_edge
   local_users:
     documentation_options:
       table: management-settings
@@ -1323,7 +1360,7 @@ keys:
     type: list
     items:
       type: dict
-      $ref: '#/$defs/adapter_config'
+      $ref: eos_designs#/$defs/adapter_config
       keys:
         switches:
           type: list
@@ -2198,9 +2235,9 @@ keys:
               speed_groups:
                 type: list
                 items:
-                  type: int
+                  type: str
                   convert_types:
-                  - str
+                  - int
   pod_name:
     documentation_options:
       table: fabric-topology
@@ -2231,7 +2268,7 @@ keys:
       '
     items:
       type: dict
-      $ref: '#/$defs/adapter_config'
+      $ref: eos_designs#/$defs/adapter_config
       keys:
         profile:
           type: str
@@ -2257,6 +2294,7 @@ keys:
         - aes67-r16-2016
         default: aes67-r16-2016
       domain:
+        type: int
         $ref: eos_cli_config_gen#/keys/ptp/keys/domain
       auto_clock_identity:
         type: bool
@@ -2528,6 +2566,7 @@ keys:
           type: dict
           keys:
             host:
+              type: str
               $ref: eos_cli_config_gen#/keys/snmp_server/keys/hosts/items/keys/host
             vrf:
               type: str
@@ -2553,16 +2592,22 @@ keys:
                 configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
                 to configure the SNMP host under multiple VRFs.
       communities:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
       ipv4_acls:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls
       ipv6_acls:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls
       views:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
       groups:
+        type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/groups
       traps:
+        type: dict
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/traps
   source_interfaces:
     documentation_options:
@@ -2719,7 +2764,7 @@ keys:
 
       '
     items:
-      $ref: '#/$defs/svi'
+      $ref: eos_designs#/$defs/svi
       type: dict
       keys:
         profile:
@@ -2829,7 +2874,8 @@ keys:
       all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them
       away because of AS Path loop detection.
 
-      Note this key is ignored when EVPN is configured.
+      Note that this setting cannot be used while there are EVPN services present
+      in the default VRF.
 
       '
     default: false
@@ -3033,6 +3079,13 @@ keys:
       enable:
         type: bool
         default: false
+  use_cv_topology:
+    documentation_options:
+      table: cv-topology
+    type: bool
+    description: 'Generate AVD configurations directly from a given CloudVision topology.
+
+      See `cv_topology` for details.'
   vtep_vvtep_ip:
     documentation_options:
       table: overlay-settings
@@ -3055,19 +3108,19 @@ keys:
     default: false
 dynamic_keys:
   connected_endpoints_keys.key:
-    $ref: '#/$defs/connected_endpoints'
+    $ref: eos_designs#/$defs/connected_endpoints
     type: list
     display_name: Connected Endpoints
     documentation_options:
       table: connected-endpoints
   network_services_keys.name:
-    $ref: '#/$defs/network_services'
+    $ref: eos_designs#/$defs/network_services
     type: list
     display_name: Network Services
     documentation_options:
       table: network-services
   node_type_keys.key:
-    $ref: '#/$defs/node_type'
+    $ref: eos_designs#/$defs/node_type
     type: dict
     documentation_options:
       table: node-type-structure
@@ -3077,10 +3130,10 @@ $defs:
     keys:
       speed:
         type: str
-        description: 'Set adapter speed: `< interface_speed >`, `forced < interface_speed
-          >`, `auto < interface_speed >`.
+        description: 'Set adapter speed in the format `<interface_speed>` or `forced
+          <interface_speed>` or `auto <interface_speed>`.
 
-          If not specified will be auto.
+          If not specified speed will be auto.
 
           '
       description:
@@ -3364,11 +3417,14 @@ $defs:
                 default: percent
                 description: Optional variable and is hardware dependent.
           broadcast:
-            $ref: '#/$defs/adapter_config/keys/storm_control/keys/all'
+            type: dict
+            $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
           multicast:
-            $ref: '#/$defs/adapter_config/keys/storm_control/keys/all'
+            type: dict
+            $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
           unknown_unicast:
-            $ref: '#/$defs/adapter_config/keys/storm_control/keys/all'
+            type: dict
+            $ref: eos_designs#/$defs/adapter_config/keys/storm_control/keys/all
       monitor_sessions:
         type: list
         description: Used to define switchports as source or destination for monitoring
@@ -3699,7 +3755,7 @@ $defs:
           type: list
           description: A list of adapters, group by adapters leveraging the same port-profile.
           items:
-            $ref: '#/$defs/adapter_config'
+            $ref: eos_designs#/$defs/adapter_config
             type: dict
             keys:
               switch_ports:
@@ -3787,7 +3843,7 @@ $defs:
         convert_types:
         - dict
         primary_key: name
-        $ref: '#/$defs/p2p_links'
+        $ref: eos_designs#/$defs/p2p_links
         items:
           type: dict
           keys:
@@ -3797,7 +3853,7 @@ $defs:
                 can be inherited from a profile.
       p2p_links:
         type: list
-        $ref: '#/$defs/p2p_links'
+        $ref: eos_designs#/$defs/p2p_links
         items:
           type: dict
           keys:
@@ -4056,6 +4112,17 @@ $defs:
                 items:
                   type: str
                   description: Group_prefix/mask.
+              access_list_name:
+                type: str
+                description: 'List of groups to associate with the RP address set
+                  in ''rp''.
+
+                  If access_list_name is set, a standard access-list will be configured
+                  matching these groups.
+
+                  Otherwise the groups are configured directly on the RP command.
+
+                  '
         igmp_snooping_querier:
           documentation_options:
             table: network-services-multicast-settings
@@ -4426,6 +4493,17 @@ $defs:
                       items:
                         type: str
                         description: Group_prefix/mask.
+                    access_list_name:
+                      type: str
+                      description: 'List of groups to associate with the RP addresses
+                        set in ''rps''.
+
+                        If access_list_name is set, a standard access-list will be
+                        configured matching these groups.
+
+                        Otherwise the groups are configured directly on the RP command.
+
+                        '
               evpn_l2_multi_domain:
                 documentation_options:
                   table: network-services-multicast-settings
@@ -4450,7 +4528,7 @@ $defs:
 
                   '
                 items:
-                  $ref: '#/$defs/svi'
+                  $ref: eos_designs#/$defs/svi
                   type: dict
                   keys:
                     id:
@@ -5405,7 +5483,21 @@ $defs:
             description: 'Set point-to-Point interface speed and will apply to uplink
               interfaces on both ends.
 
-              interface_speed or forced interface_speed or auto interface_speed.
+              (Uplink switch interface speed can be overridden with `uplink_switch_interface_speed`).
+
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
+
+              '
+            type: str
+          uplink_switch_interface_speed:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: 'Set point-to-Point interface speed for the uplink switch
+              interface only.
+
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
 
               '
             type: str
@@ -5930,8 +6022,8 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: 'Set MLAG interface speed.
 
-              < interface_speed or forced interface_speed or auto interface_speed
-              >.
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>`
+              or `auto <interface_speed>`.
 
               '
             type: str
@@ -6193,7 +6285,7 @@ $defs:
               new_key: inband_mgmt_subnet
               remove_in_version: 5.0.0
             type: str
-            $ref: '#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet'
+            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_subnet
           inband_management_vlan:
             documentation_options:
               table: node-type-inband-management-configuration
@@ -6202,7 +6294,7 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
-            $ref: '#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan'
+            $ref: eos_designs#/$defs/node_type/keys/defaults/keys/inband_mgmt_vlan
           mpls_overlay_role:
             documentation_options:
               table: node-type-mpls-configuration
@@ -6263,6 +6355,12 @@ $defs:
                 - smpte2059-2
                 - aes67-r16-2016
                 default: aes67-r16-2016
+              mlag:
+                description: Configure PTP on the MLAG peer-link port-channel when
+                  PTP is enabled. By default PTP will not be configured on the MLAG
+                  peer-link port-channel.
+                type: bool
+                default: false
               domain:
                 type: int
                 convert_types:
@@ -6448,7 +6546,7 @@ $defs:
         - dict
         primary_key: group
         items:
-          $ref: '#/$defs/node_type/keys/defaults'
+          $ref: eos_designs#/$defs/node_type/keys/defaults
           type: dict
           keys:
             group:
@@ -6461,7 +6559,7 @@ $defs:
 
                 '
             nodes:
-              $ref: '#/$defs/node_type/keys/nodes'
+              $ref: eos_designs#/$defs/node_type/keys/nodes
               description: Define variables per node.
               type: list
       nodes:
@@ -6471,7 +6569,7 @@ $defs:
         - dict
         primary_key: name
         items:
-          $ref: '#/$defs/node_type/keys/defaults'
+          $ref: eos_designs#/$defs/node_type/keys/defaults
           type: dict
           keys:
             name:
@@ -6493,7 +6591,8 @@ $defs:
             '
         speed:
           type: str
-          description: The values can be speed or auto speed or forced speed.
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
         ip_pool:
           type: str
           description: P2P pool name. IP Pool defined under p2p_links_ip_pools. A
@@ -6648,7 +6747,7 @@ $defs:
             since it can be either ethernet_interfaces or port_channel_interfaces.'
   svi:
     type: dict
-    $ref: '#/$defs/svi_settings'
+    $ref: eos_designs#/$defs/svi_settings
     keys:
       nodes:
         type: list
@@ -6663,7 +6762,7 @@ $defs:
           '
         items:
           type: dict
-          $ref: '#/$defs/svi_settings'
+          $ref: eos_designs#/$defs/svi_settings
           keys:
             node:
               type: str

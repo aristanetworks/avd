@@ -1,0 +1,44 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - dps interfaces #}
+{% if dps_interfaces is arista.avd.defined %}
+
+### DPS Interfaces
+
+#### DPS Interfaces Summary
+
+| Interface | IP address | Shutdown | MTU | Flow tracker(s) | TCP MSS Ceiling |
+| --------- | ---------- | -------- | --- | --------------- | --------------- |
+{%     for dps_interface in dps_interfaces | arista.avd.natural_sort('name') %}
+{%         set mtu = dps_interface.mtu | arista.avd.default("-") %}
+{%         set ip_address = dps_interface.ip_address | arista.avd.default("-") %}
+{%         set flow_trackers = [] %}
+{%         if dps_interface.flow_tracker.hardware is arista.avd.defined %}
+{%             do flow_trackers.append("Hardware: " ~ dps_interface.flow_tracker.hardware) %}
+{%         endif %}
+{%         set shutdown = dps_interface.shutdown | arista.avd.default("-") %}
+{%         if dps_interface.flow_tracker.sampled is arista.avd.defined %}
+{%             do flow_trackers.append("Sampled: " ~ dps_interface.flow_tracker.sampled) %}
+{%         endif %}
+{%         set tcp_mss_settings = [] %}
+{%         if dps_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}
+{%             do tcp_mss_settings.append("IPv4: " ~ dps_interface.tcp_mss_ceiling.ipv4) %}
+{%         endif %}
+{%         if dps_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
+{%             do tcp_mss_settings.append("IPv6: " ~ dps_interface.tcp_mss_ceiling.ipv6) %}
+{%         endif %}
+{%         if dps_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
+{%             do tcp_mss_settings.append("Direction: " ~ dps_interface.tcp_mss_ceiling.direction) %}
+{%         endif %}
+| {{ dps_interface.name }} | {{ ip_address }} | {{ shutdown }} | {{ mtu }} | {{ flow_trackers | join("<br>") }} | {{ tcp_mss_settings | join("<br>") }} |
+{%     endfor %}
+
+#### DPS Interfaces Device Configuration
+
+```eos
+{%     include 'eos/dps-interfaces.j2' %}
+```
+{% endif %}

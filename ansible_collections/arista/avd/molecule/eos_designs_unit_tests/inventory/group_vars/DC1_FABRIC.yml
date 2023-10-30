@@ -263,6 +263,7 @@ l3leaf:
         - name: DC1_UNDEPLOYED_LEAF1A
           id: 13
           bgp_as: 65110
+          uplink_switch_interface_speed: 100g-2
           mgmt_ip: 192.168.200.121/24
           uplink_switch_interfaces: [ Ethernet28, Ethernet28, Ethernet28, Ethernet28 ]
         - name: DC1_UNDEPLOYED_LEAF1B
@@ -306,6 +307,8 @@ l2leaf:
           uplink_switch_interfaces: [ Ethernet8, Ethernet8 ]
     - group: DC1_L2LEAF2
       mlag_dual_primary_detection: true
+      uplink_interface_speed: forced 100gfull
+      uplink_switch_interface_speed: 100g-2
       nodes:
         - name: DC1-L2LEAF2A
           id: 9
@@ -373,7 +376,7 @@ platform_speed_groups:
   - platform: 7280R             # Only setting speed-groups on 7280R platform, so only L3leaf should get this setting.
     speeds:
       - speed: 25G
-        speed_groups: [ 3, 2 ]    # Unsorted order, but we should sort output correctly.
+        speed_groups: [ 3, 2, 5/1 ]    # Unsorted order, but we should sort output correctly.
       - speed: 10G
         speed_groups: [ 1, 2, 4 ] # Duplicate speed-group 2. Since we sort on key first the result will be 25G for group 2
 

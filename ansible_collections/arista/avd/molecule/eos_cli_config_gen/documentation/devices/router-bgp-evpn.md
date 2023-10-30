@@ -43,7 +43,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  192.168.255.3 |
+| 65101 | 192.168.255.3 |
 
 | BGP Tuning |
 | ---------- |
@@ -98,10 +98,19 @@ interface Management1
 
 #### Router BGP EVPN Address Family
 
+- Next-hop resolution is __disabled__
+- Next-hop-unchanged is explicitly configured (default behaviour)
+
 ##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
+| ADDITIONAL-PATH-PG-1 | True | default |
+| ADDITIONAL-PATH-PG-2 | True | default |
+| ADDITIONAL-PATH-PG-3 | True | default |
+| ADDITIONAL-PATH-PG-4 | True | default |
+| ADDITIONAL-PATH-PG-5 | True | default |
+| ADDITIONAL-PATH-PG-6 | True | default |
 | EVPN-OVERLAY-PEERS | True | vxlan |
 | MLAG-IPv4-UNDERLAY-PEER | False | default |
 
@@ -232,12 +241,27 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      bgp next-hop-unchanged
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
+      neighbor ADDITIONAL-PATH-PG-1 activate
+      neighbor ADDITIONAL-PATH-PG-1 additional-paths receive
+      neighbor ADDITIONAL-PATH-PG-1 additional-paths send any
+      neighbor ADDITIONAL-PATH-PG-2 activate
+      neighbor ADDITIONAL-PATH-PG-2 additional-paths send backup
+      neighbor ADDITIONAL-PATH-PG-3 activate
+      neighbor ADDITIONAL-PATH-PG-3 additional-paths send ecmp
+      neighbor ADDITIONAL-PATH-PG-4 activate
+      neighbor ADDITIONAL-PATH-PG-4 additional-paths send ecmp limit 42
+      neighbor ADDITIONAL-PATH-PG-5 activate
+      neighbor ADDITIONAL-PATH-PG-5 additional-paths send limit 42
+      neighbor ADDITIONAL-PATH-PG-6 activate
+      no neighbor ADDITIONAL-PATH-PG-6 additional-paths send any
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4

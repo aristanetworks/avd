@@ -1,4 +1,5 @@
 hostname: dc1-leaf1a
+is_deployed: true
 router_bgp:
   as: '65101'
   router_id: 10.255.0.3
@@ -457,3 +458,4 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.10.3
 - name: VRF11
   ip_address: 10.255.11.3
+dns_domain: dc1.local

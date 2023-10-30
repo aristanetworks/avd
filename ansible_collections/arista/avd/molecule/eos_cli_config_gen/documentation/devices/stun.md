@@ -50,9 +50,12 @@ interface Management1
 
 ### STUN Server
 
-| Server local interface |
-| ---------------------- |
-| ethernet1 |
+| Server local interfaces |
+| ----------------------- |
+| Ethernet1 |
+| Ethernet13 |
+| Vlan42 |
+| Vlan666 |
 
 ### STUN Device Configuration
 
@@ -65,5 +68,8 @@ stun
       server-profile server2
          ip address 2.3.4.5
    server
-      local-interface ethernet1
+      local-interface Ethernet1
+      local-interface Ethernet13
+      local-interface Vlan42
+      local-interface Vlan666
 ```

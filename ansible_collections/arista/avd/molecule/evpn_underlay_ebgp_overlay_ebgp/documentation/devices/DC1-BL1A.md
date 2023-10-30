@@ -584,7 +584,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65104|  192.168.255.14 |
+| 65104 | 192.168.255.14 |
 
 | BGP Tuning |
 | ---------- |

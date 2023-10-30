@@ -811,6 +811,17 @@ roles/eos_cli_config_gen/docs/tables/router-l2-vpn.md
 roles/eos_cli_config_gen/docs/tables/router-ospf.md
 --8<--
 
+### Router path selection
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-path-selection.md
+--8<--
+
+### Router service-insertion
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-service-insertion.md
+
 ### Router traffic engineering
 
 --8<--
@@ -835,10 +846,24 @@ roles/eos_cli_config_gen/docs/tables/service-routing-protocols-model.md
 roles/eos_cli_config_gen/docs/tables/static-routes.md
 --8<--
 
+### STUN
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/stun.md
+--8<--
+
 ### VRFs
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/vrfs.md
+--8<--
+
+## Security
+
+### IP Security
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/ip-security.md
 --8<--
 
 ## Switching
@@ -868,6 +893,12 @@ roles/eos_cli_config_gen/docs/tables/vlans.md
 --8<--
 
 ## System settings
+
+### Agents
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/agents.md
+--8<--
 
 ### Hardware counters
 

@@ -1,4 +1,5 @@
 hostname: SVI_PROFILE_NODE_2
+is_deployed: true
 router_bgp:
   as: '65002'
   router_id: 192.168.255.1
@@ -59,7 +60,7 @@ router_bgp:
       - '1:1'
     redistribute_routes:
     - learned
-    vlan: 110-115,210-212,410-412,510-512
+    vlan: 110-115,120-121,210-212,410-412,510-512
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -139,6 +140,12 @@ vlans:
   tenant: svi_profile_tests
 - id: 115
   name: svi_profile_tests_115_description
+  tenant: svi_profile_tests
+- id: 120
+  name: svi_profile_tests_120_description
+  tenant: svi_profile_tests
+- id: 121
+  name: svi_profile_tests_121_description
   tenant: svi_profile_tests
 - id: 210
   name: igmp_snooping_enabled_210
@@ -222,6 +229,16 @@ vlan_interfaces:
   description: set from structured_config on svi_parent_profile.structured_config
   shutdown: false
   ip_address_virtual: 10.1.15.1/24
+  vrf: svi_profile_tests_vrf
+- name: Vlan120
+  tenant: svi_profile_tests
+  description: set from svi_profile struct_config_on_multiple_svis
+  shutdown: true
+  vrf: svi_profile_tests_vrf
+- name: Vlan121
+  tenant: svi_profile_tests
+  description: set from svi_profile struct_config_on_multiple_svis
+  shutdown: true
   vrf: svi_profile_tests_vrf
 - name: Vlan210
   tenant: svi_profile_tests
@@ -339,6 +356,10 @@ vxlan_interface:
         vni: 10114
       - id: 115
         vni: 10115
+      - id: 120
+        vni: 10120
+      - id: 121
+        vni: 10121
       - id: 210
         vni: 10210
       - id: 211

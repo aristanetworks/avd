@@ -18,6 +18,9 @@ qos map dscp {{ dscp_map }}
 {%     for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
 qos map traffic-class {{ tc_map }}
 {%     endfor %}
+{%     for exp_map in qos.map.exp | arista.avd.natural_sort %}
+qos map exp {{ exp_map }}
+{%     endfor %}
 {%     if qos.random_detect.ecn.allow_non_ect.enabled is arista.avd.defined %}
 !
 {%         set ecn_command = "qos random-detect ecn allow non-ect" %}

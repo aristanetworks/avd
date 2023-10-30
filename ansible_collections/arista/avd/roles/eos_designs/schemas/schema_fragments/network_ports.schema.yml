@@ -10,7 +10,7 @@ keys:
     type: list
     items:
       type: dict
-      $ref: "#/$defs/adapter_config"
+      $ref: "eos_designs#/$defs/adapter_config"
       # These keys will take precedence over $ref
       keys:
         switches:

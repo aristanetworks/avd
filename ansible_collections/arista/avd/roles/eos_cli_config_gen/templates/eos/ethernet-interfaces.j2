@@ -41,10 +41,10 @@ interface {{ ethernet_interface.name }}
 {%         elif ethernet_interface.logging.event.spanning_tree is arista.avd.defined(false) %}
    no logging event spanning-tree
 {%         endif %}
-{%         if ethernet_interface.logging.event.storm_control is arista.avd.defined(true) %}
-   logging event storm-control
-{%         elif ethernet_interface.logging.event.storm_control is arista.avd.defined(false) %}
-   no logging event storm-control
+{%         if ethernet_interface.logging.event.storm_control_discards is arista.avd.defined(true) %}
+   logging event storm-control discards
+{%         elif ethernet_interface.logging.event.storm_control_discards is arista.avd.defined(false) %}
+   no logging event storm-control discards
 {%         endif %}
 {%     endif %}
 {%     if ethernet_interface.flowcontrol.received is arista.avd.defined %}
@@ -162,6 +162,9 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
    l2-protocol forwarding profile {{ ethernet_interface.l2_protocol.forwarding_profile }}
+{%     endif %}
+{%     if ethernet_interface.flow_tracker.hardware is arista.avd.defined %}
+   flow tracker hardware {{ ethernet_interface.flow_tracker.hardware }}
 {%     endif %}
 {%     if ethernet_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ ethernet_interface.flow_tracker.sampled }}
@@ -332,6 +335,9 @@ interface {{ ethernet_interface.name }}
    {{ ip_helper_cli }}
 {%         endfor %}
 {%     endif %}
+{%     if ethernet_interface.ip_address is arista.avd.defined("dhcp") and ethernet_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
+   dhcp client accept default-route
+{%     endif %}
 {%     if ethernet_interface.bfd.interval is arista.avd.defined and
           ethernet_interface.bfd.min_rx is arista.avd.defined and
           ethernet_interface.bfd.multiplier is arista.avd.defined %}
@@ -341,6 +347,12 @@ interface {{ ethernet_interface.name }}
    bfd echo
 {%     elif ethernet_interface.bfd.echo is arista.avd.defined(false) %}
    no bfd echo
+{%     endif %}
+{%     if ethernet_interface.dhcp_server_ipv4 is arista.avd.defined(true) %}
+   dhcp server ipv4
+{%     endif %}
+{%     if ethernet_interface.dhcp_server_ipv6 is arista.avd.defined(true) %}
+   dhcp server ipv6
 {%     endif %}
 {%     if ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable

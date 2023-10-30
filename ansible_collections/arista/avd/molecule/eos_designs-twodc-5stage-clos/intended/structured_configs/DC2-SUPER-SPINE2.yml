@@ -1,4 +1,5 @@
 hostname: DC2-SUPER-SPINE2
+is_deployed: true
 router_bgp:
   as: '65200'
   router_id: 172.16.200.2

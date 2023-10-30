@@ -678,6 +678,7 @@ interface Port-Channel14
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   l2 mtu 8000
    mlag 14
    spanning-tree portfast
    spanning-tree bpdufilter enable
@@ -722,6 +723,7 @@ interface Port-Channel18
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   l2 mtu 8000
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
    mlag 18
@@ -738,6 +740,7 @@ interface Port-Channel19
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   l2 mtu 8000
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
    mlag 19
@@ -1243,7 +1246,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65103|  192.168.255.12 |
+| 65103 | 192.168.255.12 |
 
 | BGP Tuning |
 | ---------- |

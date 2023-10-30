@@ -25,8 +25,12 @@
 
 ### STUN Server
 
-| Server local interface |
-| ---------------------- |
+| Server local interfaces |
+| ----------------------- |
+{%         for local_interface in stun.server.local_interfaces | arista.avd.natural_sort %}
+| {{ local_interface }} |
+{%         endfor %}
+{# next is deprecated remove in v5.0.0 #}
 {%         if stun.server.local_interface is arista.avd.defined %}
 | {{ stun.server.local_interface }} |
 {%         endif %}

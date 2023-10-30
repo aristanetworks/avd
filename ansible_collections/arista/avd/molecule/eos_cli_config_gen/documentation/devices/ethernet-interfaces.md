@@ -4,6 +4,8 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [DHCP Server](#dhcp-server)
+  - [DHCP Server interfaces](#dhcp-server-interfaces)
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
@@ -47,6 +49,14 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
 ```
+
+## DHCP Server
+
+### DHCP Server interfaces
+
+| Interface name | DHCP IPv4 | DHCP IPv6 |
+| -------------- | --------- | --------- |
+| Ethernet64 | True | True |
 
 ## Monitoring
 
@@ -186,6 +196,8 @@ sFlow is disabled.
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 | Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 | Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
+| Ethernet63 | DHCP client interface | routed | - | dhcp | default | - | - | - | - |
+| Ethernet64 | DHCP server interface | routed | - | 192.168.42.42/24 | default | - | - | - | - |
 
 ##### IP NAT: Source Static
 
@@ -296,6 +308,7 @@ sFlow is disabled.
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
+   speed forced 100gfull
    bgp session tracker ST1
    no switchport
    ip address 172.31.255.1/31
@@ -388,7 +401,7 @@ interface Ethernet6
    logging event link-status
    logging event congestion-drops
    logging event spanning-tree
-   logging event storm-control
+   logging event storm-control discards
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
@@ -469,7 +482,7 @@ interface Ethernet13
    no logging event link-status
    no logging event congestion-drops
    no logging event spanning-tree
-   no logging event storm-control
+   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
@@ -518,6 +531,7 @@ interface Ethernet19
    switchport
    no lldp transmit
    no lldp receive
+   lldp tlv transmit ztp vlan 666
 !
 interface Ethernet20
    description Port patched through patch-panel to pseudowire
@@ -835,7 +849,7 @@ interface Ethernet61
    no logging event link-status
    no logging event congestion-drops
    no logging event spanning-tree
-   no logging event storm-control
+   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged phone
@@ -847,12 +861,25 @@ interface Ethernet62
    no logging event link-status
    no logging event congestion-drops
    no logging event spanning-tree
-   no logging event storm-control
+   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk tagged phone
    switchport mode trunk phone
    switchport
+!
+interface Ethernet63
+   description DHCP client interface
+   no switchport
+   ip address dhcp
+   dhcp client accept default-route
+!
+interface Ethernet64
+   description DHCP server interface
+   no switchport
+   ip address 192.168.42.42/24
+   dhcp server ipv4
+   dhcp server ipv6
 ```
 
 ## BFD

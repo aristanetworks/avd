@@ -29,7 +29,7 @@ keys:
           description: Interval in seconds for updating interface counters"
         speed:
           type: str
-          description: Speed can be interface_speed or forced interface_speed or auto interface_speed
+          description: Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
           convert_types:
@@ -118,7 +118,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         error_correction_encoding:
           type: dict
           keys:
@@ -253,13 +256,23 @@ keys:
           max: 4094
           convert_types:
             - str
+        # TODO Format to validate ipv4 CIDR or "dhcp"
         ip_address:
           type: str
-          description: IPv4 address/mask
+          description: IPv4 address/mask or "dhcp"
         ip_address_secondaries:
           type: list
           items:
             type: str
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP
+        dhcp_server_ipv4:
+          type: bool
+          description: Enable IPv4 DHCP server.
+        dhcp_server_ipv6:
+          type: bool
+          description: Enable IPv6 DHCP server.
         ip_helpers:
           type: list
           primary_key: ip_helper
@@ -279,6 +292,7 @@ keys:
                 convert_types:
                   - int
         ip_nat:
+          type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
@@ -596,7 +610,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: [ "percent", "pps" ]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -610,7 +624,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: ["percent", "pps"]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -624,7 +638,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: ["percent", "pps"]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -638,7 +652,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: [ "percent", "pps" ]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         logging:
           type: dict
           keys:
@@ -651,7 +665,7 @@ keys:
                   type: bool
                 spanning_tree:
                   type: bool
-                storm_control:
+                storm_control_discards:
                   type: bool
         lldp:
           type: dict

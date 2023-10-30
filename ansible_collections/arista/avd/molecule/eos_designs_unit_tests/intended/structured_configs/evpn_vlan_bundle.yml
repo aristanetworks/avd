@@ -1,4 +1,5 @@
 hostname: evpn_vlan_bundle
+is_deployed: true
 router_bgp:
   as: '65101'
   router_id: 10.10.0.3

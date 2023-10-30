@@ -1,7 +1,7 @@
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf2a
+    - neighbor_device: dc1-leaf2a.dc1.local
       neighbor_port: Ethernet8
       port: Ethernet1
     result_overwrite:
@@ -11,7 +11,7 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf2b
+    - neighbor_device: dc1-leaf2b.dc1.local
       neighbor_port: Ethernet8
       port: Ethernet2
     result_overwrite:
@@ -73,14 +73,6 @@ anta.tests.interfaces:
       - Interface State
       custom_field: Port-Channel1 - DC1_L3_LEAF2_Po8
       description: Port-Channel Interface & Line Protocol == \"up\"
-anta.tests.routing.generic:
-- VerifyRoutingProtocolModel:
-    model: multi-agent
-    result_overwrite:
-      categories:
-      - BGP
-      custom_field: ArBGP
-      description: ArBGP is configured and operating
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:
