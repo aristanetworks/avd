@@ -21,7 +21,7 @@
 {%         for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
    !
    subnet {{ subnet.subnet }}
-{%             for range in subnet.ranges | arista.avd.natural_sort %}
+{%             for range in subnet.ranges | arista.avd.natural_sort("end") | arista.avd.natural_sort("start") %}
       !
       range {{ range.start }} {{ range.end }}
 {%             endfor %}
@@ -41,7 +41,7 @@
 {%         if dhcp_server.disabled | arista.avd.default(false) is true %}
    disabled
 {%         endif %}
-{%         for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort %}
+{%         for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort("vendor_id") %}
    !
    vendor-option ipv4 {{ option.vendor_id }}
 {%             for sub_option in option.sub_options | arista.avd.natural_sort %}
