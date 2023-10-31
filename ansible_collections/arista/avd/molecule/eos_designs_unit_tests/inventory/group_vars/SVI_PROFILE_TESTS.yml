@@ -19,7 +19,11 @@ l3leaf:
     - name: SVI_PROFILE_NODE_2
       id: 1
       bgp_as: 65002
-
+    - name: SVI_PROFILE_NODE_3
+      id: 3
+      bgp_as: 65003
+      filter:
+        tags: [tag-test]
 
 #### ---- Test inheritance of svi structured_configuration ----- ###
 # Test logic for network services: vlan-interfaces
@@ -173,6 +177,11 @@ svi_profiles:
 
   - profile: ospf_enabled_child_profile_3
     parent_profile: ospf_enabled_parent_profile_2
+
+#### ---- Test profile with tag----- ###
+
+  - profile: profile_with_tag
+    tags: [tag-test]
 
 ### --- Network Services Generic base config--- ###
 
@@ -386,3 +395,12 @@ tenants:
             enabled: true
             ip_address_virtual: 10.5.12.1/24
             profile: ospf_enabled_child_profile_3
+
+#### ---- Test profile with tag----- ###
+
+          - id: 601
+            name: tag_testing
+            enabled: true
+            ip_address_virtual: 10.6.0.1/24
+            profile: profile_with_tag
+            #tags: [tag-test] - Tag set on profile

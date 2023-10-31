@@ -189,6 +189,14 @@ router_bgp:
       - 10512:10512
     redistribute_routes:
     - learned
+  - id: 601
+    tenant: svi_profile_tests
+    rd: 192.168.255.1:10601
+    route_targets:
+      both:
+      - 10601:10601
+    redistribute_routes:
+    - learned
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -310,6 +318,9 @@ vlans:
   tenant: svi_profile_tests
 - id: 512
   name: ospf_enabled_512
+  tenant: svi_profile_tests
+- id: 601
+  name: tag_testing
   tenant: svi_profile_tests
 ip_igmp_snooping:
   globally_enabled: true
@@ -452,6 +463,14 @@ vlan_interfaces:
   vrf: svi_profile_tests_vrf
   ospf_area: '0'
   ospf_network_point_to_point: false
+- name: Vlan601
+  tenant: svi_profile_tests
+  tags:
+  - tag-test
+  description: tag_testing
+  shutdown: false
+  ip_address_virtual: 10.6.0.1/24
+  vrf: svi_profile_tests_vrf
 router_ospf:
   process_ids:
   - id: 1
@@ -506,6 +525,8 @@ vxlan_interface:
         vni: 10511
       - id: 512
         vni: 10512
+      - id: 601
+        vni: 10601
       vrfs:
       - name: svi_profile_tests_vrf
         vni: 1
