@@ -6597,6 +6597,41 @@
                 "type": "string",
                 "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
                 "title": "Local ID"
+              },
+              "ike_lifetime": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 24,
+                "description": "IKE lifetime in hours.\n",
+                "title": "Ike Lifetime"
+              },
+              "encryption": {
+                "type": "string",
+                "enum": [
+                  "null",
+                  "3des",
+                  "aes128",
+                  "aes256"
+                ],
+                "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
+                "title": "Encryption"
+              },
+              "dh_group": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  5,
+                  14,
+                  15,
+                  16,
+                  17,
+                  20,
+                  21,
+                  24
+                ],
+                "description": "Diffie-Hellman group for the key exchange.\n",
+                "title": "Dh Group"
               }
             },
             "additionalProperties": false,
