@@ -157,7 +157,7 @@ class AvdTestBase:
             data (dict | None): A data dictionary to be validated. Defaults to the hostvars of the device running the test.
             data_path (str | None): The data path in dot notation. Used for logging purposes. Index or primary key can be used for lists.
             host (str | None): The host from which data should be retrieved. Defaults to the device running the test.
-            required_keys (str | list[str] | None: The keys that are expected to be in the data.
+            required_keys (str | list[str] | None): The keys that are expected to be in the data.
             logging_level (str): Overwrites all default logging levels within this function.
                                 If not provided, the default logging level is 'WARNING' when a key is missing and 'INFO' when his value is not matching.
             **kwargs: Expected key-value pairs in the data.

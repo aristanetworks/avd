@@ -3,13 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import logging
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.avdtestbase import AvdTestBase
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
-
-LOGGER = logging.getLogger(__name__)
 
 
 class AvdTestRoutingTable(AvdTestBase):
