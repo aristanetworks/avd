@@ -16,6 +16,12 @@ port_profiles:
     mode: trunk
     vlans: "210-211"
 
+  - profile: PHONE_WITH_PC
+    mode: trunk phone
+    phone_vlan: 211
+    native_vlan: 210
+    phone_trunk_mode: untagged
+
   - profile: ALL_WITH_SECURITY
     parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
     mode: trunk
@@ -641,6 +647,16 @@ phones:
         native_vlan: 120
         phone_vlan: 113
         phone_trunk_mode: tagged
+
+  - name: PHONE03_port_channel
+    adapters:
+      - endpoint_ports: [ Eth0, Eth1 ]
+        switch_ports: [ Ethernet26, Ethernet26 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: PHONE_WITH_PC
+        port_channel:
+          mode: active
+          description: Port-Channel to Phone
 
 firewalls:
   - name: FIREWALL01
