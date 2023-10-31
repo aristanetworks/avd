@@ -42,7 +42,7 @@ DATA: list[dict] = [
             "DC1-SPINE1": {},
         },
         "expected_result": {},
-        "expected_log": "Key 'ethernet_interfaces' is missing from the structured_config. AvdTestLLDPTopology is skipped.",
+        "expected_log": "Key 'ethernet_interfaces' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -117,7 +117,7 @@ DATA: list[dict] = [
             "DC1-LEAF1A": {"is_deployed": False},
         },
         "expected_result": {},
-        "expected_log": "Peer DC1-LEAF1A is marked as not deployed. AvdTestLLDPTopology is skipped.",
+        "expected_log": "Peer 'DC1-LEAF1A' is marked as not deployed. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "INFO",
     },
     {
@@ -131,7 +131,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Peer HOST-1 is not configured by AVD. AvdTestLLDPTopology is skipped.",
+        "expected_log": "Peer 'HOST-1' is not configured by AVD. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "INFO",
     },
     {

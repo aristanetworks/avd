@@ -68,7 +68,7 @@ DATA: list[dict] = [
         "test_module": "AvdTestBGP",
         "hostvars": {"DC1-SPINE1": {}},
         "expected_result": {},
-        "expected_log": "Key 'router_bgp' is missing from the structured_config. AvdTestBGP is skipped.",
+        "expected_log": "Key 'router_bgp' is missing. AvdTestBGP is skipped.",
         "expected_log_level": "INFO",
     },
     {
@@ -85,7 +85,7 @@ DATA: list[dict] = [
         "hostvars": {"DC1-SPINE1": {"service_routing_protocols_model": "ribd", "router_bgp": {}}},
         "expected_result": {},
         "expected_log": "Key 'service_routing_protocols_model' != 'multi-agent'. AvdTestBGP is skipped.",
-        "expected_log_level": "INFO",
+        "expected_log_level": "WARNING",
     },
     {
         "test_name": "missing-peer-group",
@@ -130,7 +130,7 @@ DATA: list[dict] = [
                 ],
             },
         },
-        "expected_log": "Peer group IPv4-UNDERLAY-PEERS not found. AvdTestBGP is skipped for neighbor DC1-LEAF1A.",
+        "expected_log": "Peer group 'IPv4-UNDERLAY-PEERS' not found. AvdTestBGP is skipped.",
         "expected_log_level": "WARNING",
     },
     {

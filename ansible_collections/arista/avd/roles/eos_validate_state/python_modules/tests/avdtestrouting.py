@@ -102,7 +102,9 @@ class AvdTestBGP(AvdTestBase):
                 }
             )
 
-        if self.logged_get(key="router_bgp", logging_level="INFO") is None or not self.validate_data(service_routing_protocols_model="multi-agent"):
+        if self.logged_get(key="router_bgp", logging_level="INFO") is None or not self.validate_data(
+            service_routing_protocols_model="multi-agent", Logging_level="WARNING"
+        ):
             return None
 
         anta_tests.setdefault("generic", []).append(
@@ -126,14 +128,15 @@ class AvdTestBGP(AvdTestBase):
                 continue
 
             if (neighbor_peer_group := get_item(bgp_peer_groups, "name", bgp_neighbor["peer_group"])) is None:
-                msg = f"Peer group {bgp_neighbor['peer_group']} not found. {self.__class__.__name__} is skipped for neighbor {bgp_neighbor['peer']}."
-                LOGGER.warning(msg)
+                self.log_message(message=f"Peer group '{bgp_neighbor['peer_group']}' not found.", logging_level="WARNING")
                 continue
 
-            data_path = f"router_bgp.peer_groups.{neighbor_peer_group['name']}"
-            if self.validate_data(data=neighbor_peer_group, data_path=data_path, type="ipv4"):
+            if not self.validate_data(data=neighbor_peer_group, data_path=f"router_bgp.peer_groups.{neighbor_peer_group['name']}", required_keys="type"):
+                continue
+
+            if neighbor_peer_group["type"] == "ipv4":
                 add_test(description="ip bgp peer state established (ipv4)", afi="ipv4", safi="unicast", bgp_neighbor_ip=str(bgp_neighbor["ip_address"]))
-            elif self.validate_data(data=neighbor_peer_group, data_path=data_path, type="evpn"):
+            elif neighbor_peer_group["type"] == "evpn":
                 add_test(description="bgp evpn peer state established (evpn)", afi="evpn", bgp_neighbor_ip=str(bgp_neighbor["ip_address"]))
 
         return {self.anta_module: anta_tests} if anta_tests.get("bgp") else None
