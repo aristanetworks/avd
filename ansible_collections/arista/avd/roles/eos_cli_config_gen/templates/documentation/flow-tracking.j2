@@ -13,6 +13,16 @@
 #### Flow Tracking Sampled
 
 Sample: {{ flow_tracking.sampled.sample | arista.avd.default(flow_trackings[0].sample, "default") }}
+{%         if flow_tracking.sampled.hardware_offload is arista.avd.defined %}
+{%             if flow_tracking.sampled.hardware_offload.ipv4 is arista.avd.defined %}
+
+Hardware offload for IPv4 traffic: {{ 'enabled' if flow_tracking.sampled.hardware_offload.ipv4 is true else 'disabled' }}
+{%             endif %}
+{%             if flow_tracking.sampled.hardware_offload.threshold_minimum is arista.avd.defined %}
+
+Minimum number of Samples: {{ flow_tracking.sampled.hardware_offload.threshold_minimum }}
+{%             endif %}
+{%         endif %}
 {%         if flow_tracking.sampled.trackers is arista.avd.defined or flow_trackings[0].trackers is arista.avd.defined %}
 
 ##### Trackers Summary

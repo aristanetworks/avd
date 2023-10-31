@@ -11,6 +11,14 @@ flow tracking sampled
 {%     if flow_tracking.sampled.sample is arista.avd.defined %}
    sample {{ flow_tracking.sampled.sample }}
 {%     endif %}
+{%     if flow_tracking.sampled.hardware_offload is arista.avd.defined %}
+{%         if flow_tracking.sampled.hardware_offload.ipv4 is arista.avd.defined(true) %}
+   hardware offload ipv4
+{%         endif %}
+{%         if flow_tracking.sampled.hardware_offload.threshold_minimum is arista.avd.defined %}
+   hardware offload threshold minimum {{ flow_tracking.sampled.hardware_offload.threshold_minimum }} samples
+{%         endif %}
+{%     endif %}
 {%     for tracker in flow_tracking.sampled.trackers %}
    tracker {{ tracker.name }}
 {%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}

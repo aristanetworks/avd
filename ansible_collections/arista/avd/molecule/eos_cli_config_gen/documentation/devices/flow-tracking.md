@@ -46,6 +46,10 @@ interface Management1
 
 Sample: 666
 
+Hardware offload for IPv4 traffic: enabled
+
+Minimum number of Samples: 2
+
 ##### Trackers Summary
 
 | Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On | Table Size |
@@ -90,6 +94,8 @@ Sample: 666
 !
 flow tracking sampled
    sample 666
+   hardware offload ipv4
+   hardware offload threshold minimum 2 samples
    tracker T1
       record export on inactive timeout 3666
       record export on interval 5666

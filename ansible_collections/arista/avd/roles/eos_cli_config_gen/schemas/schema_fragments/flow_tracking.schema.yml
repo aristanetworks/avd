@@ -19,6 +19,21 @@ keys:
               - str
             min: 1
             max: 4294967295
+          hardware_offload:
+            type: dict
+            keys:
+              ipv4:
+                type: bool
+                description: |-
+                  Configure hardware offload for IPv4 traffic.
+              threshold_minimum:
+                type: int
+                convert_types:
+                  - str
+                min: 1
+                max: 4294967295
+                description: |-
+                  Minimum number of samples.
           trackers:
             type: list
             primary_key: name
