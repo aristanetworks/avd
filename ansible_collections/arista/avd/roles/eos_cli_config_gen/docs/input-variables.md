@@ -586,6 +586,12 @@ roles/eos_cli_config_gen/docs/tables/event-monitor.md
 ### Flow tracking
 
 --8<--
+roles/eos_cli_config_gen/docs/tables/flow-tracking.md
+--8<--
+
+### Flow trackings
+
+--8<--
 roles/eos_cli_config_gen/docs/tables/flow-trackings.md
 --8<--
 
