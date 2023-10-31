@@ -74,6 +74,7 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 100 | SVI_100 | - |
+| 200 | SVI_200 | - |
 
 ### VLANs Device Configuration
 
@@ -81,6 +82,9 @@ vlan internal order ascending range 1006 1199
 !
 vlan 100
    name SVI_100
+!
+vlan 200
+   name SVI_200
 ```
 
 ## Interfaces
@@ -93,10 +97,12 @@ vlan 100
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | BGP-SPINE1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
-| Ethernet2 | BGP-SPINE2_Ethernet1 | *trunk | *100 | *- | *- | 1 |
+| Ethernet1 | BGP-SPINE1_Ethernet1 | *trunk | *100,200 | *- | *- | 1 |
+| Ethernet2 | BGP-SPINE2_Ethernet1 | *trunk | *100,200 | *- | *- | 1 |
 | Ethernet10 |  Endpoint | access | 100 | - | - | - |
 | Ethernet11 |  Endpoint | access | 100 | - | - | - |
+| Ethernet12 |  IP Phone | trunk phone | - | 100 | - | - |
+| Ethernet13 |  IP Phone | trunk phone | - | 100 | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -127,6 +133,24 @@ interface Ethernet11
    switchport access vlan 100
    switchport mode access
    switchport
+!
+interface Ethernet12
+   description IP Phone
+   no shutdown
+   switchport trunk native vlan 100
+   switchport phone vlan 200
+   switchport phone trunk untagged
+   switchport mode trunk phone
+   switchport
+!
+interface Ethernet13
+   description IP Phone
+   no shutdown
+   switchport trunk native vlan 100
+   switchport phone vlan 200
+   switchport phone trunk untagged
+   switchport mode trunk phone
+   switchport
 ```
 
 ### Port-Channel Interfaces
@@ -137,7 +161,7 @@ interface Ethernet11
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | BGP_SPINES_Po1 | switched | trunk | 100 | - | - | - | - | - | - |
+| Port-Channel1 | BGP_SPINES_Po1 | switched | trunk | 100,200 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -147,7 +171,7 @@ interface Port-Channel1
    description BGP_SPINES_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 100
+   switchport trunk allowed vlan 100,200
    switchport mode trunk
 ```
 

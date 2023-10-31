@@ -237,6 +237,18 @@ class UtilsMixin:
 
         return None
 
+    def _get_adapter_phone(self, adapter: dict) -> dict | None:
+        """
+        Return phone settings for one adapter
+        """
+        adapter_phone = {}
+        if (adapter_phone_vlan := get(adapter, "phone_vlan")) is not None:
+            adapter_phone["vlan"] = adapter_phone_vlan
+            adapter_phone["trunk"] = get(adapter, "phone_trunk_mode")
+            return adapter_phone
+
+        return None
+
     def _get_adapter_sflow(self, adapter: dict) -> dict | None:
         if (adapter_sflow := get(adapter, "sflow", default=self.shared_utils.fabric_sflow_endpoints)) is not None:
             return {"enable": adapter_sflow}

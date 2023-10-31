@@ -621,6 +621,27 @@ servers:
             mode: normal
             multiplier: 50
 
+phones:
+  - name: PHONE01_untagged
+    adapters:
+      - endpoint_ports: [ Eth0 ]
+        switch_ports: [ Ethernet8 ]
+        switches: [ DC1-LEAF1A ]
+        mode: trunk phone
+        native_vlan: 120
+        phone_vlan: 113
+        phone_trunk_mode: untagged
+
+  - name: PHONE02_tagged
+    adapters:
+      - endpoint_ports: [ Eth0 ]
+        switch_ports: [ Ethernet9 ]
+        switches: [ DC1-LEAF1A ]
+        mode: trunk phone
+        native_vlan: 120
+        phone_vlan: 113
+        phone_trunk_mode: tagged
+
 firewalls:
   - name: FIREWALL01
     rack: RackB
@@ -632,7 +653,6 @@ firewalls:
         port_channel:
           description: PortChanne1
           mode: active
-
 
 routers:
   - name: ROUTER01

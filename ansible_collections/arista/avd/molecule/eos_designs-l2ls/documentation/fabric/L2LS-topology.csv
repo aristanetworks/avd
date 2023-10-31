@@ -3,6 +3,8 @@ leaf,BGP-LEAF1,Ethernet1,l3spine,BGP-SPINE1,Ethernet1,True
 leaf,BGP-LEAF1,Ethernet2,l3spine,BGP-SPINE2,Ethernet1,True
 leaf,BGP-LEAF1,Ethernet10,network_port,Endpoint,,True
 leaf,BGP-LEAF1,Ethernet11,network_port,Endpoint,,True
+leaf,BGP-LEAF1,Ethernet12,network_port,IP Phone,,True
+leaf,BGP-LEAF1,Ethernet13,network_port,IP Phone,,True
 leaf,BGP-LEAF2,Ethernet1,l3spine,BGP-SPINE1,Ethernet2,True
 leaf,BGP-LEAF2,Ethernet2,l3spine,BGP-SPINE2,Ethernet2,True
 leaf,BGP-LEAF2,Ethernet10,network_port,Endpoint,,True
