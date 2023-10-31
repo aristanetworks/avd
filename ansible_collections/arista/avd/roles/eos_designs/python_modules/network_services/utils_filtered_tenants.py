@@ -133,17 +133,17 @@ class UtilsFilteredTenantsMixin(object):
             bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
             vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.shared_utils.hostname in bgp_peer.get("nodes", [])]
             vrf["static_routes"] = [
-                route for route in vrf.get("static_routes", []) if self.shared_utils.hostname in route.get("nodes", [self.shared_utils.hostname])
+                route for route in get(vrf, "static_routes", default=[]) if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
             ]
             vrf["ipv6_static_routes"] = [
-                route for route in vrf.get("ipv6_static_routes", []) if self.shared_utils.hostname in route.get("nodes", [self.shared_utils.hostname])
+                route for route in get(vrf, "ipv6_static_routes", default=[]) if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
             ]
             vrf["svis"] = self._filtered_svis(vrf)
             vrf["l3_interfaces"] = [
                 l3_interface
-                for l3_interface in vrf.get("l3_interfaces", [])
+                for l3_interface in get(vrf, "l3_interfaces", default=[])
                 if (
-                    self.shared_utils.hostname in l3_interface.get("nodes", [])
+                    self.shared_utils.hostname in get(l3_interface, "nodes", default=[])
                     and l3_interface.get("ip_addresses") is not None
                     and l3_interface.get("interfaces") is not None
                 )
@@ -190,9 +190,9 @@ class UtilsFilteredTenantsMixin(object):
 
             vrf["additional_route_targets"] = [
                 rt
-                for rt in vrf.get("additional_route_targets", [])
+                for rt in get(vrf, "additional_route_targets", default=[])
                 if (
-                    self.shared_utils.hostname in rt.get("nodes", [self.shared_utils.hostname])
+                    self.shared_utils.hostname in get(rt, "nodes", default=[self.shared_utils.hostname])
                     and rt.get("address_family") is not None
                     and rt.get("route_target") is not None
                     and rt.get("type") in ["import", "export"]
