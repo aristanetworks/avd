@@ -6,6 +6,8 @@
   - [Management Interfaces](#management-interfaces)
 - [DHCP Server](#dhcp-server)
   - [DHCP Servers Summary](#dhcp-servers-summary)
+  - [DHCP Server Subnets](#dhcp-server-subnets)
+  - [DHCP Server IPv4 Vendor Options](#dhcp-server-ipv4-vendor-options)
   - [DHCP Server Configuration](#dhcp-server-configuration)
 
 ## Management
@@ -40,10 +42,25 @@ interface Management1
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF |
-| ------------------- | --- |
-| True | - |
-| True | TEST |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
+| ------------------- | --- | --------------- | --------------- |
+| True | - | - | - |
+| True | TEST | testv4.com | testv6.com |
+
+### DHCP Server Subnets
+
+| Subnet | VRF |
+| ------ | --- |
+| 2a00:2::/64 | - |
+| 10.0.0.0/24 | TEST |
+| 10.2.3.0/24 | - |
+
+### DHCP Server IPv4 Vendor Options
+
+| Vendor ID | Sub-option Number | Sub-option Type | Sub-option Data |
+| --------- | ----------------- | --------------- | --------------- |
+| NTP | 1 | string | test |
+| NTP | 42 | ipv4-address | 10.1.1.1 |
 
 ### DHCP Server Configuration
 
@@ -70,6 +87,6 @@ dhcp server vrf TEST
       default-gateway 10.0.0.1
    !
    vendor-option ipv4 NTP
-      sub-option 1 type string data "doge"
+      sub-option 1 type string data "test"
       sub-option 42 type ipv4-address data 10.1.1.1
 ```

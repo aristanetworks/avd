@@ -17,11 +17,43 @@
 
 ### DHCP Servers Summary
 
-| DHCP Server Enabled | VRF |
-| ------------------- | --- |
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
+| ------------------- | --- | --------------- | --------------- |
 {%         for dhcp_server in dhcp_servers | arista.avd.natural_sort %}
-| {{ not dhcp_server.disabled | arista.avd.default(false) }} | {{ dhcp_server.vrf | arista.avd.default("-") }} |
+| {{ not dhcp_server.disabled | arista.avd.default(false) }} | {{ dhcp_server.vrf | arista.avd.default("-") }} | {{ dhcp_server.dns_domain_name_ipv4 | arista.avd.default("-") }} | {{ dhcp_server.dns_domain_name_ipv6 | arista.avd.default("-") }} |
 {%         endfor %}
+{%         set dhcp_server_subnets = [] %}
+{%         set dhcp_vendor_options = [] %}
+{%         for dhcp_server in dhcp_servers | arista.avd.natural_sort %}
+{%             for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
+{%                 do dhcp_server_subnets.append({"subnet": subnet.subnet, "vrf": dhcp_server.vrf | arista.avd.default("-")}) %}
+{%             endfor %}
+{%             for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort("vendor_id") %}
+{%                 do dhcp_vendor_options.append({"vendor_id": option.vendor_id, "sub_options": option.sub_options}) %}
+{%             endfor %}
+{%         endfor %}
+{%         if dhcp_server_subnets | length > 0 %}
+
+### DHCP Server Subnets
+
+| Subnet | VRF |
+| ------ | --- |
+{%             for subnet in dhcp_server_subnets | arista.avd.natural_sort("subnet") %}
+| {{ subnet.subnet }} | {{ subnet.vrf }} |
+{%             endfor %}
+{%         endif %}
+{%         if dhcp_vendor_options | length > 0 %}
+
+### DHCP Server IPv4 Vendor Options
+
+| Vendor ID | Sub-option Number | Sub-option Type | Sub-option Data |
+| --------- | ----------------- | --------------- | --------------- |
+{%             for option in dhcp_vendor_options | arista.avd.natural_sort("vendor_id") %}
+{%                 for sub_option in option.sub_options | arista.avd.natural_sort("number") %}
+| {{ option.vendor_id }} | {{ sub_option.number }} | {{ sub_option.type }} | {{ sub_option.data }} |
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
 
 ### DHCP Server Configuration
 

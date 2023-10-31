@@ -5,7 +5,7 @@
 #}
 {# eos - dhcp servers #}
 {% if dhcp_servers is arista.avd.defined %}
-{%     for dhcp_server in dhcp_servers | arista.avd.natural_sort %}
+{%     for dhcp_server in dhcp_servers | arista.avd.natural_sort(dhcp_sever.vrf | arista.avd.default("default")) %}
 {%         set server_cli = "dhcp server" %}
 {%         if dhcp_server.vrf is arista.avd.defined %}
 {%             set server_cli = server_cli ~ " vrf " ~ dhcp_server.vrf %}
