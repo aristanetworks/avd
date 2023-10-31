@@ -11,7 +11,7 @@ keys:
       table: management-sflow-settings
     type: dict
     description: |-
-      Default enabling of sFlow for varous interface types across the fabric.
+      Default enabling of sFlow for various interface types across the fabric.
       sFlow can also be enabled/disabled under each of the specific data models.
     keys:
       uplinks:
