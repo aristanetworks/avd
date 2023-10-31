@@ -68,6 +68,20 @@ all:
 
 For a complete list of authentication options available with CloudVision Ansible collection, you can read the dedicated page on [arista.cvp collection](https://cvp.avd.sh/en/latest/docs/how-to/cvp-authentication/).
 
+### Role default output directories
+
+Default output directories can be updated by modifying the default role variables:
+
+``` yaml
+--8<--
+roles/eos_config_deploy_cvp/defaults/main/output_directories.yml
+--8<--
+```
+
+!!! tip
+    If updating `root_dir` leverage a relative path from `inventory_dir` to ensure consisten behavior.
+    Example: `root_dir: '{{ inventory_dir}/../outputs'`.
+
 ### Role variables
 
 - **`avd_inventory_to_container_file`**: Inventory YAML file to read inventory from. Default is to read from memory.

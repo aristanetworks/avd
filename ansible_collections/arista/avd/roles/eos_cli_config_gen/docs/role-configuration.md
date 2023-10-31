@@ -8,6 +8,20 @@
 
 Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 
+# Role default output directories
+
+Default output directories can be updated by modifying the default role variables:
+
+``` yaml
+--8<--
+roles/eos_cli_config_gen/defaults/main/output_directories.yml
+--8<--
+```
+
+!!! tip
+    If updating `root_dir` leverage a relative path from `inventory_dir` to ensure consisten behavior.
+    Example: `root_dir: '{{ inventory_dir}/../outputs'`.
+
 ## Input Variables Validation settings
 
 --8<--
