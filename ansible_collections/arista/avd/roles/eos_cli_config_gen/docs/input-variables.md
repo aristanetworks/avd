@@ -851,6 +851,7 @@ roles/eos_cli_config_gen/docs/tables/router-path-selection.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/router-service-insertion.md
+--8<--
 
 ### Router traffic engineering
 
