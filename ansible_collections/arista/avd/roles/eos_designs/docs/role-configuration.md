@@ -19,7 +19,7 @@ roles/eos_designs/defaults/main/output_directories.yml
 ```
 
 !!! tip
-    If updating `root_dir` leverage a relative path from `inventory_dir` to ensure consisten behavior.
+    If updating `root_dir` leverage a relative path from `inventory_dir` to ensure consistent behavior.
     Example: `root_dir: '{{ inventory_dir}/../outputs'`.
 
 ## Input Variables Validation settings
