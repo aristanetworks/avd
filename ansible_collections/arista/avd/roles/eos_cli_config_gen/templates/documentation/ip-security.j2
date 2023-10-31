@@ -11,13 +11,13 @@
 
 ### IKE policies
 
-| Policy name | Local ID |
-| ----------- | -------- |
+| Policy name | IKE lifetime | Encryption | DH group | Local ID |
+| ----------- | ------------ | ---------- | -------- | -------- |
 {%         for ike_policy in ip_security.ike_policies | arista.avd.default([]) %}
-| {{ ike_policy.name }} | {{ ike_policy.local_id | arista.avd.default("-") }} |
+| {{ ike_policy.name }} | {{ ike_policy.ike_lifetime | arista.avd.default("-") }} | {{ ike_policy.encryption | arista.avd.default("-") }} | {{ ike_policy.dh_group | arista.avd.default("-") }} | {{ ike_policy.local_id | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
-{%     if ip_security.ike_policie is arista.avd.defined %}
+{%     if ip_security.sa_policies is arista.avd.defined %}
 
 ### Security Association policies
 
