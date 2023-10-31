@@ -133,10 +133,14 @@ class UtilsFilteredTenantsMixin(object):
             bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
             vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.shared_utils.hostname in bgp_peer.get("nodes", [])]
             vrf["static_routes"] = [
-                route for route in get(vrf, "static_routes", default=[]) if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
+                route
+                for route in get(vrf, "static_routes", default=[])
+                if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
             ]
             vrf["ipv6_static_routes"] = [
-                route for route in get(vrf, "ipv6_static_routes", default=[]) if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
+                route
+                for route in get(vrf, "ipv6_static_routes", default=[])
+                if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
             ]
             vrf["svis"] = self._filtered_svis(vrf)
             vrf["l3_interfaces"] = [
