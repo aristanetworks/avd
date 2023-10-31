@@ -1,4 +1,5 @@
 hostname: dc1-pod2-leaf1a
+is_deployed: true
 router_bgp:
   as: '65122'
   router_id: 10.255.0.7
