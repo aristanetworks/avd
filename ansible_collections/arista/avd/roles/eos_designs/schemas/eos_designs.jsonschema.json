@@ -5035,7 +5035,7 @@
     },
     "fabric_sflow": {
       "type": "object",
-      "description": "Default enabling of sFlow for varous interface types across the fabric.\nsFlow can also be enabled/disabled under each of the specific data models.",
+      "description": "Default enabling of sFlow for various interface types across the fabric.\nsFlow can also be enabled/disabled under each of the specific data models.",
       "properties": {
         "uplinks": {
           "description": "Enable sFlow on all fabric uplinks.",
@@ -20579,7 +20579,7 @@
     },
     "sflow_settings": {
       "type": "object",
-      "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor source-interfaces see \"source_interfaces.sflow\"\nFor default enabling of sFlow for varous interface types across the fabric see \"fabric_sflow\"",
+      "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor source-interfaces see \"source_interfaces.sflow\"\nFor default enabling of sFlow for various interface types across the fabric see \"fabric_sflow\"",
       "properties": {
         "destinations": {
           "type": "array",
@@ -20598,17 +20598,17 @@
               },
               "vrf": {
                 "type": "string",
-                "description": "VRF Name.\nCan be used in combination with \"use_mgmt_interface_vrf\" and \"use_inband_mgmt_vrf\" to configure the destination under multiple VRFs.",
+                "description": "VRF Name.\nCan be used in combination with `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf` to configure the destination under multiple VRFs.",
                 "title": "VRF"
               },
               "use_mgmt_interface_vrf": {
                 "type": "boolean",
-                "description": "Configure the destination under the VRF set with \"mgmt_interface_vrf\". Can be used in combination with \"vrf\" and \"use_inband_mgmt_vrf\" to configure the destination under multiple VRFs.",
+                "description": "Configure the destination under the VRF set with `mgmt_interface_vrf`. Can be used in combination with `vrf` and `use_inband_mgmt_vrf` to configure the destination under multiple VRFs.",
                 "title": "Use Management Interface VRF"
               },
               "use_inband_mgmt_vrf": {
                 "type": "boolean",
-                "description": "Configure the destination under the VRF set with \"inband_mgmt_vrf\". Ignored if inband management is not configured for the device. Can be used in combination with \"vrf\" and \"use_mgmt_interface_vrf\" to configure the destination under multiple VRFs.",
+                "description": "Configure the destination under the VRF set with `inband_mgmt_vrf`. Ignored if inband management is not configured for the device. Can be used in combination with `vrf` and `use_mgmt_interface_vrf` to configure the destination under multiple VRFs.",
                 "title": "Use Inband Management VRF"
               }
             },

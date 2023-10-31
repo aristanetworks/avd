@@ -1202,7 +1202,7 @@ keys:
     documentation_options:
       table: management-sflow-settings
     type: dict
-    description: 'Default enabling of sFlow for varous interface types across the
+    description: 'Default enabling of sFlow for various interface types across the
       fabric.
 
       sFlow can also be enabled/disabled under each of the specific data models.'
@@ -2882,8 +2882,8 @@ keys:
 
       For source-interfaces see "source_interfaces.sflow"
 
-      For default enabling of sFlow for varous interface types across the fabric see
-      "fabric_sflow"'
+      For default enabling of sFlow for various interface types across the fabric
+      see "fabric_sflow"'
     keys:
       destinations:
         type: list
@@ -2903,20 +2903,20 @@ keys:
               type: str
               description: 'VRF Name.
 
-                Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf"
+                Can be used in combination with `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`
                 to configure the destination under multiple VRFs.'
               convert_types:
               - int
             use_mgmt_interface_vrf:
               type: bool
-              description: Configure the destination under the VRF set with "mgmt_interface_vrf".
-                Can be used in combination with "vrf" and "use_inband_mgmt_vrf" to
+              description: Configure the destination under the VRF set with `mgmt_interface_vrf`.
+                Can be used in combination with `vrf` and `use_inband_mgmt_vrf` to
                 configure the destination under multiple VRFs.
             use_inband_mgmt_vrf:
               type: bool
-              description: Configure the destination under the VRF set with "inband_mgmt_vrf".
+              description: Configure the destination under the VRF set with `inband_mgmt_vrf`.
                 Ignored if inband management is not configured for the device. Can
-                be used in combination with "vrf" and "use_mgmt_interface_vrf" to
+                be used in combination with `vrf` and `use_mgmt_interface_vrf` to
                 configure the destination under multiple VRFs.
       structured_config:
         type: dict
