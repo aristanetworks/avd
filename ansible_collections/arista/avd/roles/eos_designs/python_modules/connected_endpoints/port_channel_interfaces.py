@@ -14,6 +14,7 @@ from ansible_collections.arista.avd.plugins.filter.range_expand import range_exp
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
+from ..interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 
@@ -124,8 +125,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
         # Common port_channel_interface settings
         port_channel_interface = {
             "name": port_channel_interface_name,
-            "description": self.shared_utils.interface_descriptions.connected_endpoints_port_channel_interfaces(
-                peer, adapter_description, adapter_port_channel_description
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_port_channel_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=port_channel_interface_name,
+                    peer=peer,
+                    description=adapter_description,
+                    port_channel_description=adapter_port_channel_description,
+                )
             ),
             "type": port_channel_type,
             "shutdown": not get(adapter, "port_channel.enabled", default=True),

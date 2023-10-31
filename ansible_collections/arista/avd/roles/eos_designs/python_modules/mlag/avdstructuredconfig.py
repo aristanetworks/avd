@@ -10,6 +10,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFact
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
+from ..interface_descriptions import InterfaceDescriptionData
+
 
 class AvdStructuredConfigMlag(AvdFacts):
     def render(self):
@@ -145,7 +147,9 @@ class AvdStructuredConfigMlag(AvdFacts):
         port_channel_interface_name = f"Port-Channel{self.shared_utils.mlag_port_channel_id}"
         port_channel_interface = {
             "name": port_channel_interface_name,
-            "description": self.shared_utils.interface_descriptions.mlag_port_channel_interfaces(),
+            "description": self.shared_utils.interface_descriptions.mlag_port_channel_interface(
+                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name)
+            ),
             "type": "switched",
             "shutdown": False,
             "vlans": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans"),
@@ -192,7 +196,9 @@ class AvdStructuredConfigMlag(AvdFacts):
                 "peer": self.shared_utils.mlag_peer,
                 "peer_interface": mlag_interface,
                 "peer_type": "mlag_peer",
-                "description": self.shared_utils.interface_descriptions.mlag_ethernet_interfaces(mlag_interface),
+                "description": self.shared_utils.interface_descriptions.mlag_ethernet_interface(
+                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=mlag_interface, peer_interface=mlag_interface)
+                ),
                 "type": "port-channel-member",
                 "shutdown": False,
                 "channel_group": {
