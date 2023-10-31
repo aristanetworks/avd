@@ -15,7 +15,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_util
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
-# ANTA 0.8.0 currently add some RichHandler to the root logger so need to disable propagation
+# ANTA 0.10.0 currently add some RichHandler to the root logger so need to disable propagation
 LOGGER.propagate = False
 
 
@@ -62,6 +62,22 @@ class ActionModule(ActionBase):
         # TODO once we have pydantic, check the list elements
         if not isinstance(skipped_tests, list):
             raise AnsibleActionFail(f"'skipped_tests' must be a list of dictionnaries, got {skipped_tests}.")
+
+        # Check device filter
+        device_filter = self._task.args.get("device_filter")
+        if not isinstance(device_filter, (str, list)):
+            raise AnsibleActionFail(f"'device_filter' must be a string or a list of string, got {device_filter}.")
+
+        device_filter = [device_filter] if isinstance(device_filter, str) else device_filter
+
+        inventory_manager = task_vars["hostvars"]._inventory
+        host = inventory_manager.get_host(hostname)
+        host_groups = {group.get_name() for group in host.get_groups()}
+
+        if not set(device_filter).intersection(host_groups):
+            result["skipped"] = True
+            result["msg"] = f"Device {hostname} is not part of any group of the device filter: {device_filter}."
+            return result
 
         # Fetching ansible tags for backward compatibility
         ansible_tags = {

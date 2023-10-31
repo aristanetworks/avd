@@ -60,6 +60,12 @@
   ansible-playbook playbooks/fabric-validate.yaml --tags routing_table
   ```
 
+- To target a specific set of devices for your tests, use the `device_filter` option and provide an Ansible inventory group or a list of group that contains the devices you want to test.
+
+  ```shell
+  ansible-playbook playbooks/fabric-validate.yaml -e device_filter=DC1
+  ```
+
 - You can now run the eos_validate_state role in check_mode. This will produce a report of tests that will be performed without running the tests on your network.
 
   ```shell
@@ -185,6 +191,9 @@ skipped_tests: []
 # Logging level for the ANTA libraries
 # Default is warning
 logging_level: "WARNING"
+# Ansible groups filter to run tests against
+# Default is all
+device_filter: ["all"]
 ```
 
 ## Example Playbook
@@ -203,4 +212,7 @@ logging_level: "WARNING"
         use_anta: true
         # To save catalogs
         save_catalog: true
+        # To target and test a specific set of devices
+        device_filter:
+          - DC1
 ```

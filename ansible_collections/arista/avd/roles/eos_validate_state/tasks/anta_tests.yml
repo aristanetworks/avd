@@ -10,6 +10,7 @@
   arista.avd.eos_validate_state_runner:
     logging_level: "{{ logging_level | arista.avd.default('WARNING') }}"
     skipped_tests: "{{ skipped_tests | arista.avd.default([]) }}"
+    device_filter: "{{ device_filter | arista.avd.default('all') }}"
     save_catalog: "{{ save_catalog | arista.avd.default(false) }}"
     device_catalog_output_dir: "{{ test_catalogs_dir }}"
   register: anta_results

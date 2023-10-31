@@ -26,6 +26,7 @@ The plugin provides the following capabilities\:
     \- When using check\_mode, only generate the test catalog and generate a report to preview what would tests be run against each device
     \- Dumping the per\-device catalog to a file.
     \- Backward compatibility with existing ansible tags behavior for eos\_validate\_state to filter categories of tests.
+    \- Option to target a specific set of devices to run tests against.
 
 ## Parameters
 
@@ -37,6 +38,7 @@ The plugin provides the following capabilities\:
 | skipped_tests | list | optional | None |  | A list of dictionaries containing the categories and tests to skip<br>The keys for the dictionnary are <code>categories</code> and <code>tests</code>. |
 |     category | str | True | None |  | The name of one of the AvdTest categories. e.g., <code>AvdTestHardware</code> |
 |     tests | list | optional | None |  | A list of tests in the category. e.g, <code>VerifyRoutingProtocolModel</code> for <code>AvdTestBGP</code> |
+| device_filter | list | False | ['all'] |  | Filter to target specific devices of an Ansible inventory group for ANTA execution. Defaults to the \'all\' group.<br>It can be either a string or a list of strings. |
 
 ## Notes
 
@@ -59,6 +61,8 @@ The plugin provides the following capabilities\:
       - category: AvdTestBGP
         tests:
           - VerifyRoutingProtocolModel
+    device_filter:
+      - DC1
   register: anta_results
 ```
 

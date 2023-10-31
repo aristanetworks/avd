@@ -25,6 +25,7 @@ description:
         - When using check_mode, only generate the test catalog and generate a report to preview what would tests be run against each device
         - Dumping the per-device catalog to a file.
         - Backward compatibility with existing ansible tags behavior for eos_validate_state to filter categories of tests.
+        - Option to target a specific set of devices to run tests against.
 options:
   logging_level:
     description: Controls the log level for the ANTA library. If unset, the Action plugin will set it to "WARNING"
@@ -56,6 +57,14 @@ options:
         type: list
         elements: str
         description: A list of tests in the category. e.g, C(VerifyRoutingProtocolModel) for C(AvdTestBGP)
+  device_filter:
+    description:
+      - Filter to target specific devices of an Ansible inventory group for ANTA execution. Defaults to the 'all' group.
+      - It can be either a string or a list of strings.
+    required: false
+    default: ['all']
+    type: list
+    elements: str
 seealso:
   - name: ANTA website
     description: ANTA documentation
@@ -75,5 +84,7 @@ EXAMPLES = r"""
       - category: AvdTestBGP
         tests:
           - VerifyRoutingProtocolModel
+    device_filter:
+      - DC1
   register: anta_results
 """
