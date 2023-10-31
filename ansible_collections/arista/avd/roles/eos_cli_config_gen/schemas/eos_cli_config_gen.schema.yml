@@ -1086,17 +1086,21 @@ keys:
           type: str
         ipv4_vendor_options:
           type: list
+          primary_key: vendor_id
           items:
             type: dict
             keys:
               vendor_id:
                 type: str
+                convert_types:
+                - int
               sub_options:
                 type: list
+                primary_key: code
                 items:
                   type: dict
                   keys:
-                    number:
+                    code:
                       type: int
                       required: true
                       min: 1
@@ -1115,6 +1119,7 @@ keys:
                       required: true
         subnets:
           type: list
+          primary_key: subnet
           items:
             type: dict
             keys:
@@ -1123,6 +1128,8 @@ keys:
                 required: true
               name:
                 type: str
+                convert_types:
+                - int
               default_gateway:
                 type: str
               dns_servers:
