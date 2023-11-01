@@ -100,9 +100,7 @@ class AvdStructuredConfigSflow(AvdFacts, UtilsMixin):
         if sflow_vrfs:
             sflow["vrfs"] = [{"name": vrf_name, **vrf} for vrf_name, vrf in sflow_vrfs.items()]
 
-        sflow = strip_null_from_data(sflow)
-
-        return sflow
+        return strip_null_from_data(sflow)
 
     @cached_property
     def struct_cfgs(self) -> list[dict] | None:
@@ -110,10 +108,10 @@ class AvdStructuredConfigSflow(AvdFacts, UtilsMixin):
         Various structured_config keys.
 
         Covers:
-        - fabric_sflow.structured_config inserted under sflow.*
+        - sflow_settings.structured_config inserted under sflow.*
         """
         struct_cfgs = []
-        if (struct_cfg := get(self._hostvars, "fabric_sflow.structured_config")) is not None:
+        if (struct_cfg := get(self._hostvars, "sflow_settings.structured_config")) is not None:
             struct_cfgs.append({"sflow": struct_cfg})
 
         return struct_cfgs or None
