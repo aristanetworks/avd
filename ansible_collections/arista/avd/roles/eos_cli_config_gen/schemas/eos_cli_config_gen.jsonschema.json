@@ -12394,6 +12394,79 @@
                         "^_.+$": {}
                       },
                       "title": "Ecn"
+                    },
+                    "drop": {
+                      "description": "Set WRED parameters",
+                      "type": "object",
+                      "properties": {
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "microseconds",
+                                "milliseconds"
+                              ],
+                              "description": "Units to be used for the threshold values.",
+                              "title": "Units"
+                            },
+                            "drop_precedence": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 2,
+                              "description": "Specify Drop Precendence value",
+                              "title": "Drop Precedence"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED maximum-threshold",
+                              "title": "Max"
+                            },
+                            "drop_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "WRED drop probability.",
+                              "title": "Drop Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "WRED weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max",
+                            "drop_probability"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Drop"
                     }
                   },
                   "additionalProperties": false,
@@ -12530,6 +12603,79 @@
                         "^_.+$": {}
                       },
                       "title": "Ecn"
+                    },
+                    "drop": {
+                      "description": "Set WRED parameters",
+                      "type": "object",
+                      "properties": {
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "microseconds",
+                                "milliseconds"
+                              ],
+                              "description": "Units to be used for the threshold values.",
+                              "title": "Units"
+                            },
+                            "drop_precedence": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 2,
+                              "description": "Specify Drop Precendence value",
+                              "title": "Drop Precedence"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED maximum-threshold",
+                              "title": "Max"
+                            },
+                            "drop_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "WRED drop probability.",
+                              "title": "Drop Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "WRED weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max",
+                            "drop_probability"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Drop"
                     }
                   },
                   "additionalProperties": false,

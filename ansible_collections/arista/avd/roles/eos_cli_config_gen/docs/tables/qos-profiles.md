@@ -34,6 +34,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.threshold.max") | Integer | Required |  | Min: 1 | Random-detect ECN maximum-threshold |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_probability</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.threshold.max_probability") | Integer |  |  | Min: 1<br>Max: 100 | Random-detect ECN maximum mark probability |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.threshold.weight") | Integer |  |  | Min: 0<br>Max: 15 | Random-detect ECN weight |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop") | Dictionary |  |  |  | Set WRED parameters |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.units") | String | Required |  | Valid Values:<br>- segments<br>- bytes<br>- kbytes<br>- mbytes<br>- microseconds<br>- milliseconds | Units to be used for the threshold values. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_precedence</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.drop_precedence") | Integer |  |  | Min: 0<br>Max: 2 | Specify Drop Precendence value |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.min") | Integer | Required |  | Min: 1 | WRED minimum-threshold |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.max") | Integer | Required |  | Min: 1 | WRED maximum-threshold |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_probability</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.drop_probability") | Integer | Required |  | Min: 1<br>Max: 100 | WRED drop probability. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "qos_profiles.[].tx_queues.[].random_detect.drop.threshold.weight") | Integer |  |  | Min: 0<br>Max: 15 | WRED weight |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uc_tx_queues</samp>](## "qos_profiles.[].uc_tx_queues") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "qos_profiles.[].uc_tx_queues.[].id") | Integer | Required, Unique |  |  | UC TX queue ID |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bandwidth_percent</samp>](## "qos_profiles.[].uc_tx_queues.[].bandwidth_percent") | Integer |  |  |  |  |
@@ -51,6 +59,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.ecn.threshold.max") | Integer | Required |  | Min: 1 | Random-detect ECN maximum-threshold |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_probability</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.ecn.threshold.max_probability") | Integer |  |  | Min: 1<br>Max: 100 | Random-detect ECN maximum mark probability |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.ecn.threshold.weight") | Integer |  |  | Min: 0<br>Max: 15 | Random-detect ECN weight |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop") | Dictionary |  |  |  | Set WRED parameters |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.units") | String | Required |  | Valid Values:<br>- segments<br>- bytes<br>- kbytes<br>- mbytes<br>- microseconds<br>- milliseconds | Units to be used for the threshold values. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_precedence</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.drop_precedence") | Integer |  |  | Min: 0<br>Max: 2 | Specify Drop Precendence value |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.min") | Integer | Required |  | Min: 1 | WRED minimum-threshold |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.max") | Integer | Required |  | Min: 1 | WRED maximum-threshold |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_probability</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.drop_probability") | Integer | Required |  | Min: 1<br>Max: 100 | WRED drop probability. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "qos_profiles.[].uc_tx_queues.[].random_detect.drop.threshold.weight") | Integer |  |  | Min: 0<br>Max: 15 | WRED weight |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mc_tx_queues</samp>](## "qos_profiles.[].mc_tx_queues") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "qos_profiles.[].mc_tx_queues.[].id") | Integer | Required, Unique |  |  | MC TX queue ID |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bandwidth_percent</samp>](## "qos_profiles.[].mc_tx_queues.[].bandwidth_percent") | Integer |  |  |  |  |
@@ -103,6 +119,14 @@
                   max: <int>
                   max_probability: <int>
                   weight: <int>
+              drop:
+                threshold:
+                  units: <str>
+                  drop_precedence: <int>
+                  min: <int>
+                  max: <int>
+                  drop_probability: <int>
+                  weight: <int>
         uc_tx_queues:
           - id: <int>
             bandwidth_percent: <int>
@@ -119,6 +143,14 @@
                   min: <int>
                   max: <int>
                   max_probability: <int>
+                  weight: <int>
+              drop:
+                threshold:
+                  units: <str>
+                  drop_precedence: <int>
+                  min: <int>
+                  max: <int>
+                  drop_probability: <int>
                   weight: <int>
         mc_tx_queues:
           - id: <int>
