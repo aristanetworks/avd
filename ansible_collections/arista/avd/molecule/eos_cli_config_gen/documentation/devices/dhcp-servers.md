@@ -57,8 +57,8 @@ interface Management1
 
 ### DHCP Server IPv4 Vendor Options
 
-| Vendor ID | Sub-option Number | Sub-option Type | Sub-option Data |
-| --------- | ----------------- | --------------- | --------------- |
+| Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
+| --------- | ----------------| --------------- | --------------- |
 | NTP | 1 | string | test |
 | NTP | 42 | ipv4-address | 10.1.1.1 |
 

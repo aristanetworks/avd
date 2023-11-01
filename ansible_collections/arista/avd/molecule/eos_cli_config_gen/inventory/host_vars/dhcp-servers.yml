@@ -3,10 +3,10 @@ dhcp_servers:
     ipv4_vendor_options:
       - vendor_id: NTP
         sub_options:
-          - number: 42
+          - code: 42
             type: ipv4-address
             data: "10.1.1.1"
-          - number: 1
+          - code: 1
             type: string
             data: "test"
     disabled: false

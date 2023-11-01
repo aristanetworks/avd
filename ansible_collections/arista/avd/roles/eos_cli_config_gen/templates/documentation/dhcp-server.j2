@@ -46,11 +46,11 @@
 
 ### DHCP Server IPv4 Vendor Options
 
-| Vendor ID | Sub-option Number | Sub-option Type | Sub-option Data |
-| --------- | ----------------- | --------------- | --------------- |
+| Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
+| --------- | ----------------| --------------- | --------------- |
 {%             for option in dhcp_vendor_options | arista.avd.natural_sort("vendor_id") %}
-{%                 for sub_option in option.sub_options | arista.avd.natural_sort("number") %}
-| {{ option.vendor_id }} | {{ sub_option.number }} | {{ sub_option.type }} | {{ sub_option.data }} |
+{%                 for sub_option in option.sub_options | arista.avd.natural_sort("code") %}
+| {{ option.vendor_id }} | {{ sub_option.code }} | {{ sub_option.type }} | {{ sub_option.data }} |
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}

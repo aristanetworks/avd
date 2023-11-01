@@ -46,9 +46,9 @@
    vendor-option ipv4 {{ option.vendor_id }}
 {%             for sub_option in option.sub_options | arista.avd.natural_sort %}
 {%                 if sub_option.type == "string" %}
-      sub-option {{ sub_option.number }} type {{ sub_option.type }} data "{{ sub_option.data }}"
+      sub-option {{ sub_option.code }} type {{ sub_option.type }} data "{{ sub_option.data }}"
 {%                 else %}
-      sub-option {{ sub_option.number }} type {{ sub_option.type }} data {{ sub_option.data }}
+      sub-option {{ sub_option.code }} type {{ sub_option.type }} data {{ sub_option.data }}
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
