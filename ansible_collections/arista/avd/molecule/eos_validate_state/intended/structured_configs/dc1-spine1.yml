@@ -122,7 +122,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF1B_Ethernet1
-  shutdown: false
+  shutdown: true
   mtu: 1500
   type: routed
   ip_address: 10.255.255.4/31
@@ -166,3 +166,4 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+dns_domain: dc1.local

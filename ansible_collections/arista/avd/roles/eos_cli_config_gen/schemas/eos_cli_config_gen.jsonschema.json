@@ -728,6 +728,40 @@
             "^_.+$": {}
           },
           "title": "Aging"
+        },
+        "static_entries": {
+          "type": "array",
+          "description": "Static ARP entries.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ipv4_address": {
+                "type": "string",
+                "description": "ARP entry IPv4 address.",
+                "title": "IPv4 Address"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "ARP entry VRF.",
+                "title": "VRF"
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "ARP entry MAC address.",
+                "pattern": "^[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}$",
+                "title": "MAC Address"
+              }
+            },
+            "required": [
+              "ipv4_address",
+              "mac_address"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Static Entries"
         }
       },
       "additionalProperties": false,
@@ -1434,7 +1468,8 @@
         },
         "cvcompression": {
           "type": "string",
-          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\nThis key is deprecated. Support will be removed in AVD version v5.0.0.",
+          "deprecated": true,
           "title": "Cvcompression"
         }
       },
@@ -1603,6 +1638,13 @@
           "shutdown": {
             "type": "boolean",
             "title": "Shutdown"
+          },
+          "mtu": {
+            "type": "integer",
+            "description": "Maximum Transmission Unit in bytes.",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "MTU"
           },
           "ip_address": {
             "type": "string",
@@ -3234,7 +3276,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3259,7 +3301,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3284,7 +3326,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3309,7 +3351,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3344,9 +3386,9 @@
                     "type": "boolean",
                     "title": "Spanning Tree"
                   },
-                  "storm_control": {
+                  "storm_control_discards": {
                     "type": "boolean",
-                    "title": "Storm Control"
+                    "title": "Storm Control Discards"
                   }
                 },
                 "additionalProperties": false,
@@ -9766,6 +9808,7 @@
     },
     "platform": {
       "type": "object",
+      "description": "Every key below this point is platform dependent.",
       "properties": {
         "trident": {
           "type": "object",
@@ -9955,7 +9998,7 @@
         },
         "sand": {
           "type": "object",
-          "description": "Most of the platform sand options are hardware dependant and optional",
+          "description": "Most of the platform sand options are hardware dependent and optional",
           "properties": {
             "qos_maps": {
               "type": "array",
@@ -10028,6 +10071,24 @@
             "^_.+$": {}
           },
           "title": "Sand"
+        },
+        "sfe": {
+          "type": "object",
+          "description": "Sfe (Software Forwarding Engine) settings.",
+          "properties": {
+            "data_plane_cpu_allocation_max": {
+              "type": "integer",
+              "description": "Maximum number of CPUs used for data plane traffic forwarding.",
+              "minimum": 1,
+              "maximum": 128,
+              "title": "Data Plane CPU Allocation Max"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sfe"
         }
       },
       "additionalProperties": false,
@@ -10755,7 +10816,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10780,7 +10841,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10805,7 +10866,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10830,7 +10891,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },

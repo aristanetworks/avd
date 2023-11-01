@@ -430,6 +430,26 @@ keys:
             type: int
             min: 60
             max: 65535
+      static_entries:
+        type: list
+        description: Static ARP entries.
+        items:
+          type: dict
+          keys:
+            ipv4_address:
+              type: str
+              required: true
+              description: ARP entry IPv4 address.
+            vrf:
+              type: str
+              convert_types:
+              - int
+              description: ARP entry VRF.
+            mac_address:
+              type: str
+              description: ARP entry MAC address.
+              required: true
+              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
   as_path:
     type: dict
     keys:
@@ -1000,6 +1020,9 @@ keys:
 
           '
       cvcompression:
+        deprecation:
+          warning: true
+          remove_in_version: v5.0.0
         type: str
         description: 'The default compression scheme when streaming to CloudVision
           is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
@@ -1102,6 +1125,13 @@ keys:
           type: str
         shutdown:
           type: bool
+        mtu:
+          type: int
+          description: Maximum Transmission Unit in bytes.
+          convert_types:
+          - str
+          min: 68
+          max: 65535
         ip_address:
           type: str
           description: IPv4 address/mask.
@@ -1938,7 +1968,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -1954,7 +1984,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -1970,7 +2000,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -1986,7 +2016,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         logging:
           type: dict
           keys:
@@ -1999,7 +2029,7 @@ keys:
                   type: bool
                 spanning_tree:
                   type: bool
-                storm_control:
+                storm_control_discards:
                   type: bool
         lldp:
           type: dict
@@ -5815,6 +5845,7 @@ keys:
                   Example: "as-range 1-100 result accept"'
   platform:
     type: dict
+    description: Every key below this point is platform dependent.
     keys:
       trident:
         type: dict
@@ -5968,7 +5999,7 @@ keys:
                                   '
       sand:
         type: dict
-        description: Most of the platform sand options are hardware dependant and
+        description: Most of the platform sand options are hardware dependent and
           optional
         keys:
           qos_maps:
@@ -6005,6 +6036,17 @@ keys:
                 valid_values:
                 - ingress
                 - egress
+      sfe:
+        type: dict
+        description: Sfe (Software Forwarding Engine) settings.
+        keys:
+          data_plane_cpu_allocation_max:
+            type: int
+            description: Maximum number of CPUs used for data plane traffic forwarding.
+            convert_types:
+            - str
+            min: 1
+            max: 128
   poe:
     type: dict
     keys:
@@ -6466,7 +6508,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -6482,7 +6524,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -6498,7 +6540,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -6514,7 +6556,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         ip_proxy_arp:
           type: bool
         isis_enable:
