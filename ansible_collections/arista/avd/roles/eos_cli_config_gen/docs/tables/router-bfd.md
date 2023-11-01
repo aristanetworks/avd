@@ -31,22 +31,38 @@
 
     ```yaml
     router_bfd:
+
+      # Rate in milliseconds
       interval: <int>
+
+      # Rate in milliseconds
       min_rx: <int>
-      multiplier: <int>
+      multiplier: <int; 3-50>
       multihop:
+
+        # Rate in milliseconds
         interval: <int>
+
+        # Rate in milliseconds
         min_rx: <int>
-        multiplier: <int>
+        multiplier: <int; 3-50>
       sbfd:
         local_interface:
+
+          # Interface Name
           name: <str>
           protocols:
             ipv4: <bool>
             ipv6: <bool>
+
+        # Rate in milliseconds
         initiator_interval: <int>
-        initiator_multiplier: <int>
+        initiator_multiplier: <int; 3-50>
         reflector:
+
+          # Rate in milliseconds
           min_rx: <int>
+
+          # IPv4 address or 32 bit integer
           local_discriminator: <str>
     ```

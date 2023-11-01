@@ -13,7 +13,7 @@ from .utils import render_schema_field
 if TYPE_CHECKING:
     from ..metaschema.meta_schema_model import AvdSchemaField
 
-LEGACY_OUTPUT = True
+LEGACY_OUTPUT = False
 
 
 class TableRow(BaseModel):

@@ -12,5 +12,14 @@
 === "YAML"
 
     ```yaml
+    # Multi-line string with one or more alias commands.
+
+    # Example:
+
+    # ```yaml
+    # aliases: |
+    #   alias wr copy running-config startup-config
+    #   alias siib show ip interface brief
+    # ```
     aliases: <str>
     ```
