@@ -1,0 +1,36 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - router-adaptive-virtual-topology #}
+{% if router_adaptive_virtual_topology is arista.avd.defined %}
+
+### Router Adaptive Virtual Topology
+
+#### Router Adaptive Virtual Topology Summary
+{%     if router_adaptive_virtual_topology.topology_role is arista.avd.defined %}
+
+Topology role: {{ router_adaptive_virtual_topology.topology_role }}
+{%     endif %}
+{%     if router_adaptive_virtual_topology.region is arista.avd.defined or router_adaptive_virtual_topology.zone is arista.avd.defined  or router_adaptive_virtual_topology.site is arista.avd.defined %}
+
+| Hierarchy | Name | ID |
+| --------- | ---- | -- |
+{%         if router_adaptive_virtual_topology.region.name is arista.avd.defined and router_adaptive_virtual_topology.region.id %}
+| Region | {{ router_adaptive_virtual_topology.region.name }} | {{ router_adaptive_virtual_topology.region.id }} |
+{%         endif %}
+{%         if router_adaptive_virtual_topology.zone.name is arista.avd.defined and router_adaptive_virtual_topology.zone.id %}
+| Zone | {{ router_adaptive_virtual_topology.zone.name }} | {{ router_adaptive_virtual_topology.zone.id }} |
+{%         endif %}
+{%         if router_adaptive_virtual_topology.site.name is arista.avd.defined and router_adaptive_virtual_topology.site.id %}
+| Site | {{ router_adaptive_virtual_topology.site.name }} | {{ router_adaptive_virtual_topology.site.id }} |
+{%         endif %}
+{%     endif %}
+
+#### Router Adaptive Virtual Topology Configuration
+
+```eos
+{%     include 'eos/router-adaptive-virtual-topology.j2' %}
+```
+{% endif %}

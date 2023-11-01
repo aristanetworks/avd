@@ -13131,6 +13131,102 @@
       },
       "title": "Route Maps"
     },
+    "router_adaptive_virtual_topology": {
+      "type": "object",
+      "properties": {
+        "topology_role": {
+          "description": "Role name.",
+          "type": "string",
+          "enum": [
+            "edge",
+            "pathfinder",
+            "transit region",
+            "transit zone"
+          ],
+          "title": "Topology Role"
+        },
+        "region": {
+          "type": "object",
+          "description": "Region name and ID.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 255,
+              "title": "ID"
+            }
+          },
+          "required": [
+            "name",
+            "id"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Region"
+        },
+        "zone": {
+          "type": "object",
+          "description": "Zone name and ID.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000,
+              "title": "ID"
+            }
+          },
+          "required": [
+            "name",
+            "id"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Zone"
+        },
+        "site": {
+          "type": "object",
+          "description": "Site name and ID.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000,
+              "title": "ID"
+            }
+          },
+          "required": [
+            "name",
+            "id"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Site"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Router Adaptive Virtual Topology"
+    },
     "router_bfd": {
       "type": "object",
       "properties": {

@@ -7862,6 +7862,59 @@ keys:
                     type: int
                     convert_types:
                     - str
+  router_adaptive_virtual_topology:
+    type: dict
+    keys:
+      topology_role:
+        description: Role name.
+        type: str
+        valid_values:
+        - edge
+        - pathfinder
+        - transit region
+        - transit zone
+      region:
+        type: dict
+        description: Region name and ID.
+        keys:
+          name:
+            type: str
+            required: true
+          id:
+            type: int
+            convert_types:
+            - str
+            required: true
+            min: 1
+            max: 255
+      zone:
+        type: dict
+        description: Zone name and ID.
+        keys:
+          name:
+            type: str
+            required: true
+          id:
+            type: int
+            convert_types:
+            - str
+            required: true
+            min: 1
+            max: 10000
+      site:
+        type: dict
+        description: Site name and ID.
+        keys:
+          name:
+            type: str
+            required: true
+          id:
+            type: int
+            convert_types:
+            - str
+            required: true
+            min: 1
+            max: 10000
   router_bfd:
     type: dict
     keys:
