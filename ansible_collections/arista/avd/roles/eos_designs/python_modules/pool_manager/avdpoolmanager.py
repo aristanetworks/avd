@@ -35,7 +35,7 @@ class AvdPoolManager:
         self.id_files: set[Path] = set()
         self.changed_id_files: set[Path] = set()
 
-    def remove_stale_assignments(self):
+    def remove_stale_assignments(self) -> None:
         """
         Walk through all pools and in-place remove stale assignments and empty pools.
 
