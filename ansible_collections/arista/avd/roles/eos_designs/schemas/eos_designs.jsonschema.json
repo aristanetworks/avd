@@ -5375,6 +5375,11 @@
                     "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                     "title": "L2 MTU"
                   },
+                  "l2_mru": {
+                    "type": "integer",
+                    "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                    "title": "L2 Mru"
+                  },
                   "vlans": {
                     "type": "string",
                     "description": "List of switchport vlans as string\nFor a trunk port this would be a range like \"1-200,300\"\nFor an access port this would be a single vlan \"123\"\n",
@@ -6828,6 +6833,11 @@
                 "type": "integer",
                 "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                 "title": "L2 MTU"
+              },
+              "l2_mru": {
+                "type": "integer",
+                "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                "title": "L2 Mru"
               },
               "vlans": {
                 "type": "string",
@@ -10964,6 +10974,11 @@
                     "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                     "title": "L2 MTU"
                   },
+                  "l2_mru": {
+                    "type": "integer",
+                    "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                    "title": "L2 Mru"
+                  },
                   "vlans": {
                     "type": "string",
                     "description": "List of switchport vlans as string\nFor a trunk port this would be a range like \"1-200,300\"\nFor an access port this would be a single vlan \"123\"\n",
@@ -12417,6 +12432,11 @@
                 "type": "integer",
                 "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                 "title": "L2 MTU"
+              },
+              "l2_mru": {
+                "type": "integer",
+                "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                "title": "L2 Mru"
               },
               "vlans": {
                 "type": "string",
