@@ -1935,15 +1935,21 @@
           },
           "mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "title": "MTU"
           },
           "l2_mtu": {
             "type": "integer",
+            "minimum": 64,
+            "maximum": 65535,
             "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
           },
           "l2_mru": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
             "title": "L2 Mru"
           },
