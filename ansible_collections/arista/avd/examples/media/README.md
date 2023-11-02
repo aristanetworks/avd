@@ -31,7 +31,9 @@ Requirements to use this example:
 - Follow the [installation guide](../../docs/installation/collection-installation.md) for AVD.
 - Run the following playbook to copy the AVD **examples** to your current working directory, for example `ansible-avd-examples`:
 
-`ansible-playbook arista.avd.install_examples`
+```shell
+ansible-playbook arista.avd.install_examples
+```
 
 This will show the following:
 
