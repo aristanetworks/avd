@@ -12,8 +12,15 @@ flow tracking sampled
    sample {{ flow_tracking.sampled.sample }}
 {%     endif %}
 {%     if flow_tracking.sampled.hardware_offload is arista.avd.defined %}
+{%         set hardware_offload_protocols = [] %}
 {%         if flow_tracking.sampled.hardware_offload.ipv4 is arista.avd.defined(true) %}
-   hardware offload ipv4
+{%             do hardware_offload_protocols.append('ipv4') %}
+{%         endif %}
+{%         if flow_tracking.sampled.hardware_offload.ipv6 is arista.avd.defined(true) %}
+{%             do hardware_offload_protocols.append('ipv6') %}
+{%         endif %}
+{%         if hardware_offload_protocols | length > 0 %}
+   hardware offload {{ hardware_offload_protocols | join(' ') }}
 {%         endif %}
 {%         if flow_tracking.sampled.hardware_offload.threshold_minimum is arista.avd.defined %}
    hardware offload threshold minimum {{ flow_tracking.sampled.hardware_offload.threshold_minimum }} samples

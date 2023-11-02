@@ -4572,6 +4572,11 @@
                   "description": "Configure hardware offload for IPv4 traffic.",
                   "title": "IPv4"
                 },
+                "ipv6": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv6 traffic.",
+                  "title": "IPv6"
+                },
                 "threshold_minimum": {
                   "type": "integer",
                   "minimum": 1,

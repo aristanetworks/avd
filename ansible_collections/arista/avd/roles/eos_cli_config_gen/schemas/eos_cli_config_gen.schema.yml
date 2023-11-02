@@ -2725,6 +2725,9 @@ keys:
               ipv4:
                 type: bool
                 description: Configure hardware offload for IPv4 traffic.
+              ipv6:
+                type: bool
+                description: Configure hardware offload for IPv6 traffic.
               threshold_minimum:
                 type: int
                 convert_types:
