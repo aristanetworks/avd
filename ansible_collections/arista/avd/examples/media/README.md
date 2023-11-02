@@ -8,27 +8,27 @@
 
 ## Introduction
 
-This example is meant to be used as the logical second step in introducing AVD to new users, directly following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section. The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, this example can also be used to only generate the output from AVD if required.
+This example is the logical second step in introducing AVD to new users, following the [Introduction to Ansible and AVD](../../docs/getting-started/intro-to-ansible-and-avd.md) section. The idea is that new users with access to virtual switches (using Arista vEOS-lab or cEOS) can learn how to generate configuration and documentation for a complete fabric environment. Users with access to physical switches will have to adapt a few settings. This is all documented inline in the comments included in the YAML files. If a lab with virtual or physical switches is not accessible, this example can also be used to only generate the output from AVD if required
 
-The example includes and describes all the AVD files and their content used, to build a pure Layer 3 Leaf-Spine (L3LS) network covering a single network fabric. No EVPN/VXLAN overlay is used.
+The example includes and describes all the AVD files and their content used to build a pure Layer 3 Leaf-Spine (L3LS) network covering a single network fabric. No EVPN/VXLAN overlay is used.
 
 It is aimed at users in the broadcasting industry interested in building a network capable of Seamless Protection Switching (SMPTE 2022-7) using the following:
 
 - Two (virtual) spine switches, one for Amber and one for Blue
-- Four (virtual) leaf switches, two for Amber and two for Blue, all serving endpoints such as cameras, microphones, multiviewers etc.
-- Two (virtual) leaf switches, used for PTP connectivity to/from the redundant PTP Grandmasters.
+- Four (virtual) leaf switches, two for Amber and two for Blue, all serving endpoints such as cameras, microphones, multiviewers, etc.
+- Two (virtual) leaf switches used for PTP connectivity to/from the redundant PTP Grandmasters.
 
 Ansible playbooks are included to show the following:
 
 - Building the intended configuration and documentation
 - Deploying the configuration directly to the switches using eAPI
-- Deploying the configuration via CloudVision to the switches, thereby including a full change-based workflow with rollback capability etc.
+- Deploying the configuration via CloudVision to the switches, thereby including an entire change-based workflow with rollback capability etc.
 
 ## Installation
 
 Requirements to use this example:
 
-- Follow the installation guide for AVD found [here](../../docs/installation/collection-installation.md).
+- Follow the [installation guide](../../docs/installation/collection-installation.md) for AVD.
 - Run the following playbook to copy the AVD **examples** to your current working directory, for example `ansible-avd-examples`:
 
 `ansible-playbook arista.avd.install_examples`
@@ -75,7 +75,8 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 ### Physical topology
 
-The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
+The drawing below shows the physical topology used in this example. The interface assignments shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology.
+
 ![Figure: Arista Leaf Spine physical topology](images/avd_media_physical_topo.png)
 
 ### IP ranges used
@@ -114,7 +115,7 @@ The drawing below shows the physical topology used in this example. The interfac
 Basic connectivity between the Ansible host and the switches must be established before Ansible can be used to push configurations. You must configure the following on all switches:
 
 - A hostname configured purely for ease of understanding.
-- An IP enabled interface - in this example the dedicated out-of-band management interface is used.
+- An IP enabled interface - in this example, the dedicated out-of-band management interface is used.
 - A username and password with the proper access privileges.
 
 Below is an overview of the basic configuration files included with the example:
@@ -186,7 +187,7 @@ Below is an overview of the basic configuration files included with the example:
 !!! note
     The folder `media/switch-basic-configurations/` contains a file per device for the initial configurations.
 
-## Ansible inventory, group vars and naming scheme
+## Ansible inventory, group vars, and naming scheme
 
 The following drawing shows a graphic overview of the Ansible inventory, group variables, and naming scheme used in this example:
 
@@ -213,13 +214,13 @@ Additionally, groups themselves can be children of another group, for example:
 
 - `AMBER` is a group consisting of the groups `AMBER_SPINES` and `AMBER_LEAVES`
 
-This naming convention makes it possible to extend anything easily, but as always, this can be changed based on your preferences. Just ensure that the names of all groups and hosts are unique.
+This naming convention makes it possible to extend anything easily, but as always, you can change this based on your preferences. Just ensure that the names of all groups and hosts are unique.
 
 ### Content of the inventory.yml file
 
 This section describes the entire `ansible-avd-examples/media/inventory.yml` file used to represent the above topology.
 
-It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host verifies name resolution(e.g., `ping amber-spine1`).
+The hostnames specified in the inventory must exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host verifies name resolution(e.g., `ping amber-spine1`).
 
 Alternatively, if there is no DNS available, or if devices need to be reached using a fully qualified domain name (FQDN), define `ansible_host` to be an IP address or FQDN for each device - see below for an example:
 
@@ -282,7 +283,7 @@ all:
         PTP_LEAVES:
 ```
 
-The above is what is included in this example, *purely* to make it as simple as possible to get started. However, in the future, please do not carry over this practice to a production environment, where an inventory file for an identical topology should look as follows when using DNS:
+The above is included in this example, *purely* to make it as simple as possible to get started. However, in the future, please do not carry over this practice to a production environment, where an inventory file for an identical topology should look as follows when using DNS:
 
 ```yaml title="inventory.yml"
 ---
@@ -340,7 +341,7 @@ all:
 
    - Defines the relevant values required to enable communication with CloudVision.
 
-   - Specifically the hostname (`cvp`) of the CloudVision Portal server used, the username (`ansible`) and password (`ansible`), connection method (`httpapi`), SSL and certificate settings.
+   - Specifically, the hostname (`cvp`) of the CloudVision Portal server used, the username (`ansible`) and password (`ansible`), connection method (`httpapi`), SSL and certificate settings.
 
    - Please note that the username (`ansible`) and password (`ansible`) defined here must exist in CloudVision.
 
@@ -350,7 +351,7 @@ all:
 
     - Creates a group named `NETWORK_SERVICES`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/media/group_vars/NETWORK_SERVICES.yml`).
 
-    - The file's contents, which in this case are specifications of VRFs and VLANs, are then applied to the group's children. In this case, the three groups `AMBER_LEAVES`, `BLUE_LEAVES` and `PTP_LEAVES`.
+    - The file's contents, which in this case are specifications of VRFs and VLANs, are then applied to the group's children. In this case, the three groups `AMBER_LEAVES`, `BLUE_LEAVES`, and `PTP_LEAVES`.
 
 3. `CONNECTED_ENDPOINTS`
 
@@ -360,7 +361,7 @@ all:
 
 ## Defining device types
 
-Since this example covers building an L3LS network, AVD must know about the device types, for example, spines, L3 leaves, L2 leaves, etc. The devices are already grouped in the inventory, so the device types are specified in the group variable files with the following names and content:
+Since this example covers building an L3LS network, AVD must know about the device types, for instance, spines, L3 leaves, L2 leaves, etc. The devices are already grouped in the inventory, so the device types are specified in the group variable files with the following names and content:
 
 === "AMBER_SPINES.yml"
 
@@ -422,7 +423,7 @@ ansible_httpapi_validate_certs: false # (6)!
 ```
 
 1. The Ansible host must use eAPI
-2. Network OS which in this case is Arista EOS
+2. Network OS, which in this case is Arista EOS
 3. The username/password combo
 4. How to escalate privileges to get write access
 5. Use SSL
@@ -568,25 +569,25 @@ validation_report_md: "{{ validation_role.validation_report_md | arista.avd.defa
 
 1. The name of the fabric for internal AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
 2. Defines the node type characteristics of the various nodes used in the media fabric.
-3. Local users/passwords and their privilege levels. In this case, the `ansible` user is set with the password `ansible` and an `admin` user is set with no password.
+3. Local users/passwords and their privilege levels. In this case, the `ansible` user is set with the password `ansible`, and an `admin` user is set with no password.
 4. BGP peer groups and their passwords (all passwords are "arista").
 5. Point-to-point interface MTU, in this case, is set to 1500 since the example uses vEOS, but when using hardware, this should be set to 9214 instead.
-6. Defines which interfaces to use for uplinks and downlinks. In this example they are specified per node type.
-   1. `uplink_interfaces` specify which local interfaces connect to an upstream device.
-   2. `downlink_interfaces` specify which local interfaces connect to a downstream device.
+6. Defines which interfaces to use for uplinks and downlinks. In this example, they are specified per node type.
+   1. `uplink_interfaces` specifies which local interfaces connect to an upstream device.
+   2. `downlink_interfaces` specifies which local interfaces connect to a downstream device.
 7. Relevant settings for the `TerminAttr` software agent on EOS, responsible for streaming telemetry back to CloudVision Portal.
-8. Enables PTP for all leaf-spine links as well as anywhere else where it's configured in the fabric, including a number of auto-generated PTP-related device settings.
+8. Enables PTP for all leaf-spine links and elsewhere PTP is configured in the fabric, including several auto-generated PTP-related device settings.
 9. Enables SSM Multicast.
-10. Defines that authentication and authorization uses local usernames and passwords.
-11. Settings for the management interface on devices. Since the example uses vEOS, it's `Ethernet0`, but when using hardware this should be `Management1` instead.
+10. Defines that authentication and authorization use local usernames and passwords.
+11. Settings for the management interface on devices. Since the example uses vEOS, it's `Ethernet0`, but when using hardware, this should be `Management1` instead.
 12. DNS Server specification. Used in this example primarily to resolve the IP address of the NTP server.
-13. NTP server settings. Correct and synchronized time on EOS is required for proper connectivity to CloudVision Portal. Please note the management interface must be updated if using hardware and not vEOS.
+13. NTP server settings. Correct and synchronized time on EOS is required for proper connectivity to the CloudVision Portal. Please note the management interface must be updated if using hardware and not vEOS.
 14. Specification of the links between the two PTP leaves, dedicated for PTP traffic.
 15. Specifications for the state validation of the actual running network compared to the designed configurations created by Ansible.
 
-## Setting device specific configuration parameters
+## Setting device-specific configuration parameters
 
-The `ansible-avd-examples/media/group_vars/AMBER_LEAVES.yml` file defines settings that apply to all children of the `ANBER_LEAVES` group as specified in the inventory described earlier, in this case the two leaves `amber-leaf1` and `amber-leaf2`.
+The `ansible-avd-examples/media/group_vars/AMBER_LEAVES.yml` file defines settings that apply to all children of the `ANBER_LEAVES` group as specified in the inventory described earlier. In this case, the two leaves `amber-leaf1` and `amber-leaf2`.
 
 ```yaml title="AMBER_LEAVES.yml"
 ---
@@ -625,21 +626,21 @@ media_leaf:
 
 1. `platform` references default settings defined in AVD specific to certain switch platforms.
 2. `loopback_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for Loopback0.
-3. `loopback_ipv4_offset` offsets all assigned loopback IP addresses counting from the beginning of the IP scope. This is required when the same IP pool is used for two different node_types (like media_spine and media_leaf in this example) to avoid overlapping IPs. The offset is "1" in this case because each spine switch uses one loopback address. In a production scenario it is recommended to consider future scale and it might be worth it to increase the offset to account for two or more spine switches. If this is done at a later stage, the loopback addresses would be reassigned, which might not be what you want.
+3. `loopback_ipv4_offset` offsets all assigned loopback IP addresses, counting from the beginning of the IP scope. This is required when the same IP pool is used for two different node_types (like media_spine and media_leaf in this example) to avoid overlapping IP addresses. The offset is "1" because each spine switch uses one loopback address. In a production scenario, it is recommended to consider future scale, and it might be worth it to increase the offset to account for two or more spine switches. If this is done later, the loopback addresses will be reassigned, which might differ from what you want.
 4. `uplink_switches` defines the uplink switches, which are `amber-spine1` and `blue-spine1`.
 5. `max_parallel_uplinks` defines how many parallel uplinks are created between each leaf and spine.
 6. `uplink_ipv4_pool` defines the IP scope from which AVD assigns IPv4 addresses for the uplink interfaces that were just defined.
 7. `spanning_tree_mode` defines the spanning tree mode. In this case, MSTP is used, which is the default. However, other modes are supported should they be required, for example, for connectivity to legacy or third-party vendor environments.
 8. `filter` defines which settings from NETWORK_SERVICES to be applied to this device.
-9. This sets PTP Priority 2 to 1 since it's the amber leaf switches, which are preferred over the blue leaf switches.
-10. `nodes` defines the actual spine switches, using the hostnames defined in the inventory.
+9. This sets PTP Priority 2 to 1 since it's the amber leaf switches that are preferred over the blue leaf switches.
+10. `nodes` defines the leaf switches using the hostnames defined in the inventory.
 11. `id` is used to calculate the various IP addresses, for example, the IPv4 address for the Loopback0 interface. In this case, dc1-spine1 will get the IPv4 address 10.255.0.1/27 assigned to the Loopback0 interface.
 12. `bgp_as` defines the BGP AS number for this particular device.
 13. `mgmt_ip` defines the IPv4 address of the management interface. As stated earlier, Ansible will perform name lookups using the hostnames specified in the inventory unless using the `ansible_host` option. However, there is no automatic mechanism to grab the result of the name lookup and use that to generate the management interface configuration.
 
-## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
+## Specifying network services (VRFs and VLANs) in the Media fabric
 
-The `ansible-avd-examples/media/group_vars/NETWORK_SERVICES.yml` file defines All VRF and VLANs. This means that regardless of where a given VRF or VLAN must exist, its existence is defined in this file, but it does not indicate ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#content-of-the-inventoryyml-file) section.
+The `ansible-avd-examples/media/group_vars/NETWORK_SERVICES.yml` file defines All VRF and VLANs. This means that regardless of where a given VRF or VLAN must exist, its existence is defined in this file, but it does not indicate ***where*** in the fabric it exists. That was done at the bottom of the inventory file described in the [inventory](#content-of-the-inventoryyml-file) section.
 
 ```yaml title="NETWORK_SERVICES.yml"
 ---
@@ -706,11 +707,11 @@ tenants: # (1)!
 
 ```
 
-1. Definition of tenants. Additional level of abstraction in addition to VRFs. In this example just one tenant named `TENANT1` is specified.
+1. Definition of tenants. An additional level of abstraction in addition to VRFs. In this example, just one tenant named `TENANT1` is specified.
 2. VRF definitions inside the tenant.
 3. SVI Definitions for all SVIs within this tenant.
 4. SVI Description.
-5. Tags specified here are used to control the scope of this VLAN throughout the fabric, effectively specifying on which leaf switches this VLAN is configured. These tags are also described in the [Device Configuration](#setting-device-specific-configuration-parameters) section.
+5. Tags specified here are used to control the scope of this VLAN throughout the fabric, effectively setting on which leaf switches this VLAN is configured. These tags are also described in the [Device Configuration](#setting-device-specific-configuration-parameters) section.
 6. IP gateway to be used in the SVI on this particular leaf.
 
 ## Specifying endpoint connectivity in the L3LS fabric
@@ -744,15 +745,15 @@ network_ports:
 ```
 
 1. `switches` defines the switches used, in this case `media-PTP-2`.
-2. `switch_ports` defines the interfaces used in the switches. In this example the server is connected to Ethernet5.
+2. `switch_ports` defines the interfaces used in the switches. In this example, the server is connected to Ethernet5.
 3. `mode` is set to access.
 4. `endpoint_role: bmca` defines that this switchport will be part of the PTP Best Master Clock Algorithm (BMCA), since the endpoint is a PTP Grandmaster.
 
 ## The playbooks
 
-In this example, three playbooks are included, whereof two must be used:
+In this example, three playbooks are included. Please note that only two are required:
 
-1. The first playbook `build.yml` is mandatory and is used to build the structured configuration, documentation and finally the actual EOS CLI configuration.
+1. The first playbook `build.yml`, is mandatory and is used to build the structured configuration, documentation, and the actual EOS CLI configuration.
 2. The second playbook is a choice between:
    1. `deploy.yml` to deploy the configurations generated by `build.yml` directly to the Arista switches using eAPI.
    2. `deploy-cvp.yml` to deploy the configurations generated by `build.yml` to the Arista switches using CloudVision.
@@ -765,7 +766,7 @@ examples/media/build.yml
 --8<--
 ```
 
-1. At the highest level, the name and scope of the playbook is set, which in this example is the entire fabric. For instance, `MEDIA_FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
+1. At the highest level, the name and scope of the playbook are set, which in this example is the entire fabric. For instance, `MEDIA_FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
 2. This task uses the role `arista.avd.eos_designs`, which generates structured configuration for each device. This structured configuration can be found in the `ansible-avd-examples/media/intended/structured_configs` folder.
 3. This task uses the role `arista.avd.eos_cli_config_gen`, which generates the actual Arista EOS CLI configurations found in the `ansible-avd-examples/media/intended/configs` folder, along with the device-specific and fabric wide documentation found in the `ansible-avd-examples/media/documentation/` folder. It relies on the structured configuration generated by `arista.avd.eos_designs`.
 
@@ -777,15 +778,15 @@ examples/media/deploy.yml
 --8<--
 ```
 
-1. At the highest level, the name and scope of the playbook is set, which in this example is the entire fabric. For instance, `MEWDIA_FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
+1. At the highest level, the name and scope of the playbook are set, which in this example is the entire fabric. For instance, `MEDIA_FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
 2. This task uses the role `arista.avd.eos_config_deploy_eapi` to do the following:
-   1. Read the AVD inventory and use this to build the containers topology in CloudVision.
-   2. Looks for configuration previously generated by arista.avd.eos_cli_config_gen and build configlets list, one per device.
+   1. Read the AVD inventory to build the container's topology in CloudVision.
+   2. Look for configurations previously generated by arista.avd.eos_cli_config_gen and build a configlets list, one per device.
    3. Looks for additional configlets to attach to either devices or containers.
    4. Build CloudVision configuration using the `arista.cvp` Ansible collection:
       1. Build configlets on CV
-      2. Create containers topology
-      3. Move devices to container
+      2. Create the container topology
+      3. Move devices to an appropriate container
       4. Bind configlet to device
    5. Deploy Fabric configuration by running all pending tasks (optional, if execute_tasks == true)
 
@@ -797,7 +798,7 @@ examples/media/deploy-cvp.yml
 --8<--
 ```
 
-1. At the highest level, the name and scope of the playbook is set, which in this example is the CloudVision server named `CLOUDVISION`.
+1. At the highest level, the name and scope of the playbook are set, which in this example is the CloudVision server named `CLOUDVISION`.
 2. This task uses the role `arista.avd.eos_config_deploy_cvp` that pushes the generated configuration to the devices in scope.
 3. Specifies to use v3 of the collection.
 
@@ -809,23 +810,23 @@ Please look through the folders and files described above to learn more about th
 
 ### Playbook Run
 
-To build the configurations files, run the playbook called `build.yml`.
+To build the configuration files, run the playbook called `build.yml`.
 
 ``` bash
 ### Build Configurations and Documentation
 ansible-playbook playbooks/build.yml
 ```
 
-After the playbook run finishes, EOS CLI intended configuration files were written to `intended/configs`.
+After the playbook run finishes, EOS CLI intended configuration files will be written to `intended/configs`.
 
-To build and deploy the configurations to your switches directly, using eAPI, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those auth variables are defined in FABRIC.yml.
+To build and deploy the configurations to your switches directly, using eAPI, run the playbook called `deploy.yml`. This assumes that your Ansible host has access and authentication rights to the switches. Those authentication variables are defined in FABRIC.yml.
 
 ``` bash
 ### Deploy Configurations to Devices using eAPI
 ansible-playbook playbooks/deploy.yml
 ```
 
-To build and deploy the configurations to your switches using CloudVision Portal, run the playbook called `deploy-cvp.yml`. This assumes that your CloudVision Portal server has access and authentication rights to the switches. Those auth variables are defined in FABRIC.yml.
+To build and deploy the configurations to your switches using CloudVision Portal, run the playbook called `deploy-cvp.yml`. This assumes that your CloudVision Portal server has access and authentication rights to the switches. Those authentication variables are defined in FABRIC.yml.
 
 ``` bash
 ### Deploy Configurations to Devices Using CloudVision Portal
