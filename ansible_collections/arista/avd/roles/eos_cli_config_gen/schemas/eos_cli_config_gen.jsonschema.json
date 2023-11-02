@@ -4270,6 +4270,196 @@
             },
             "title": "TX Queues"
           },
+          "vrrp_ids": {
+            "type": "array",
+            "description": "VRRP model.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "VRID",
+                  "title": "ID"
+                },
+                "priority_level": {
+                  "type": "integer",
+                  "description": "Instance priority",
+                  "minimum": 1,
+                  "maximum": 254,
+                  "title": "Priority Level"
+                },
+                "advertisement": {
+                  "type": "object",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "description": "Interval in seconds",
+                      "minimum": 1,
+                      "maximum": 255,
+                      "title": "Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Advertisement"
+                },
+                "preempt": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "delay": {
+                      "type": "object",
+                      "properties": {
+                        "minimum": {
+                          "type": "integer",
+                          "description": "Minimum preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
+                          "title": "Minimum"
+                        },
+                        "reload": {
+                          "type": "integer",
+                          "description": "Reload preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
+                          "title": "Reload"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Delay"
+                    }
+                  },
+                  "required": [
+                    "enabled"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Preempt"
+                },
+                "timers": {
+                  "type": "object",
+                  "properties": {
+                    "delay": {
+                      "type": "object",
+                      "properties": {
+                        "reload": {
+                          "type": "integer",
+                          "description": "Delay after reload in seconds.",
+                          "minimum": 0,
+                          "maximum": 3600,
+                          "title": "Reload"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Delay"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Timers"
+                },
+                "tracked_object": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Tracked object name",
+                        "title": "Name"
+                      },
+                      "decrement": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 254,
+                        "description": "Decrement VRRP priority by 1-254",
+                        "title": "Decrement"
+                      },
+                      "shutdown": {
+                        "type": "boolean",
+                        "title": "Shutdown"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "title": "Tracked Object"
+                },
+                "ipv4": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Virtual IPv4 address",
+                      "title": "Address"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "enum": [
+                        2,
+                        3
+                      ],
+                      "title": "Version"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Virtual IPv6 address",
+                      "title": "Address"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "IPv6"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "title": "VRRP IDs"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -23802,6 +23992,8 @@
                 "priority_level": {
                   "type": "integer",
                   "description": "Instance priority",
+                  "minimum": 1,
+                  "maximum": 254,
                   "title": "Priority Level"
                 },
                 "advertisement": {
@@ -23810,6 +24002,8 @@
                     "interval": {
                       "type": "integer",
                       "description": "Interval in seconds",
+                      "minimum": 1,
+                      "maximum": 255,
                       "title": "Interval"
                     }
                   },
@@ -23832,11 +24026,15 @@
                         "minimum": {
                           "type": "integer",
                           "description": "Minimum preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
                           "title": "Minimum"
                         },
                         "reload": {
                           "type": "integer",
                           "description": "Reload preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
                           "title": "Reload"
                         }
                       },
@@ -23865,6 +24063,8 @@
                         "reload": {
                           "type": "integer",
                           "description": "Delay after reload in seconds.",
+                          "minimum": 0,
+                          "maximum": 3600,
                           "title": "Reload"
                         }
                       },
