@@ -7288,6 +7288,11 @@
               "ip_nat": {
                 "type": "object",
                 "properties": {
+                  "service_profile": {
+                    "type": "string",
+                    "description": "NAT interface profile.",
+                    "title": "Service Profile"
+                  },
                   "destination": {
                     "type": "object",
                     "properties": {
@@ -12872,6 +12877,11 @@
               "ip_nat": {
                 "type": "object",
                 "properties": {
+                  "service_profile": {
+                    "type": "string",
+                    "description": "NAT interface profile.",
+                    "title": "Service Profile"
+                  },
                   "destination": {
                     "type": "object",
                     "properties": {
