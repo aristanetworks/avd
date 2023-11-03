@@ -219,8 +219,9 @@ class UplinksMixin:
                         if uplink_port_channel_id is not None:
                             if uplink_port_channel_id != mlag_peer_switch_facts._uplink_port_channel_id:
                                 raise AristaAvdError(
-                                    f"'uplink_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_port_channel_id} and is not matching {mlag_peer_switch_facts._uplink_port_channel_id} set on MLAG peer. "
-                                    f"The 'uplink_port_channel_id' must be matching on MLAG peers."
+                                    f"'uplink_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_port_channel_id} and is not matching"
+                                    f" {mlag_peer_switch_facts._uplink_port_channel_id} set on MLAG peer."
+                                    " The 'uplink_port_channel_id' must be matching on MLAG peers."
                                 )
                     else:
                         uplink["channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_interfaces[0]))
@@ -231,12 +232,13 @@ class UplinksMixin:
                             if uplink_switch_port_channel_id != mlag_peer_switch_facts._uplink_switch_port_channel_id:
                                 mlag_peer_switch_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
                                 raise AristaAvdError(
-                                    f"'uplink_switch_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_switch_port_channel_id} and is not matching {mlag_peer_switch_facts._uplink_switch_port_channel_id} set on MLAG peer. "
-                                    f"The 'uplink_switch_port_channel_id' must be matching on MLAG peers."
+                                    f"'uplink_switch_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_switch_port_channel_id} and is not"
+                                    f" matching {mlag_peer_switch_facts._uplink_switch_port_channel_id} set on MLAG peer."
+                                    " The 'uplink_switch_port_channel_id' must be matching on MLAG peers."
                                 )
                     else:
                         uplink["peer_channel_group_id"] = "".join(re.findall(r"\d", mlag_peer_switch_facts._uplink_switch_interfaces[0]))
-                    
+
                 else:
                     if uplink_port_channel_id is not None:
                         uplink["channel_group_id"] = str(uplink_port_channel_id)
@@ -250,15 +252,11 @@ class UplinksMixin:
                 # produce an error if the switch is MLAG and port-channel ID is above 2000
                 if self.shared_utils.mlag_role:
                     if int(uplink["channel_group_id"]) not in range(1, 2001):
-                        raise AristaAvdError(
-                        f"'channel_group_id' on '{self.shared_utils.hostname}' is invalid. "
-                        f"Only values between 1 and 2000 are supported."
-                    )
+                        raise AristaAvdError(f"'channel_group_id' on '{self.shared_utils.hostname}' is invalid. Only values between 1 and 2000 are supported.")
                     if int(uplink["peer_channel_group_id"]) not in range(1, 2001):
                         raise AristaAvdError(
-                        f"'peer_channel_group_id' on '{self.shared_utils.hostname}' is invalid. "
-                        f"Only values between 1 and 2000 are supported."
-                    )
+                            f"'peer_channel_group_id' on '{self.shared_utils.hostname}' is invalid. Only values between 1 and 2000 are supported."
+                        )
 
                 # Remove vlans if upstream switch does not have them #}
                 if self.shared_utils.enable_trunk_groups:
