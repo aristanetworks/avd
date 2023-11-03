@@ -6,12 +6,22 @@ from __future__ import annotations
 from abc import ABC
 from enum import Enum
 from functools import cached_property
-from typing import Annotated, Any, ClassVar, Generator, List, Literal
+from typing import Annotated, Any, ClassVar, Generator, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, constr
 
 from ..generate_docs.tablerowgen import TableRow, TableRowGenBase, TableRowGenBool, TableRowGenDict, TableRowGenInt, TableRowGenList, TableRowGenStr
 from ..generate_docs.yamllinegen import YamlLine, YamlLineGenBase, YamlLineGenBool, YamlLineGenDict, YamlLineGenInt, YamlLineGenList, YamlLineGenStr
+from ..generate_pydantic.models import PydanticSrcData
+from ..generate_pydantic.pydanticsrcgen import (
+    PydanticSrcGenBase,
+    PydanticSrcGenBool,
+    PydanticSrcGenDict,
+    PydanticSrcGenInt,
+    PydanticSrcGenList,
+    PydanticSrcGenRootDict,
+    PydanticSrcGenStr,
+)
 from .resolvemodel import merge_schema_from_ref
 
 """
@@ -104,6 +114,8 @@ class AvdSchemaBaseModel(BaseModel, ABC):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator: type[TableRowGenBase]
     _yaml_line_generator: type[YamlLineGenBase]
+    # Type of pydantic source generator to use for this schema field.
+    _pydantic_src_generator: type[PydanticSrcGenBase]
 
     # Internal attributes used by schema docs generators
     _key: str | None = None
@@ -123,8 +135,9 @@ class AvdSchemaBaseModel(BaseModel, ABC):
 
     # Signal to __init__ if the $ref in the schema should be resolved before initilizing the pydantic model.
     _resolve_schema: ClassVar[bool] = True
+    _only_resolve_schema: ClassVar[str | None] = None
 
-    def __init__(self, resolve_schema: bool | None = None, **data):
+    def __init__(self, resolve_schema: bool | None = None, only_resolve_schema: str | None = None, **data):
         """
         Overrides BaseModel.__init__(**data).
         Takes a kwarg "resolve_schema" which controls if all subclasses of AvdSchemaBaseModel should expand any $ref in the input schema.
@@ -136,9 +149,11 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         # Setting the resolve_schema attribute on the class, so all sub-classes will inherit this automatically.
         if resolve_schema is not None:
             AvdSchemaBaseModel._resolve_schema = resolve_schema
+        if only_resolve_schema is not None:
+            AvdSchemaBaseModel._only_resolve_schema = only_resolve_schema
 
         if self._resolve_schema:
-            data = merge_schema_from_ref(data)
+            data = merge_schema_from_ref(data, only_resolve_schema=self._only_resolve_schema)
 
         super().__init__(**data)
 
@@ -211,6 +226,14 @@ class AvdSchemaBaseModel(BaseModel, ABC):
         # Using the Type of yaml line generator set in the subclass attribute _yaml_line_generator
         yield from self._yaml_line_generator().generate_yaml_lines(schema=self, target_table=target_table)
 
+    def _generate_pydantic_src(self, class_name: str | None = None) -> PydanticSrcData:
+        """
+        Returns one instance of "PydanticSrc" to be used for generating pydantic models of the schemas.
+        The function is called recursively inside the PydanticSrcGen classes for parsing children.
+        """
+        # Using the Type of yaml line generator set in the subclass attribute _yaml_line_generator
+        return self._pydantic_src_generator().generate_pydantic_src(schema=self, class_name=class_name)
+
 
 class AvdSchemaInt(AvdSchemaBaseModel):
     """
@@ -229,7 +252,7 @@ class AvdSchemaInt(AvdSchemaBaseModel):
 
     # AvdSchema field properties
     type: Literal["int"]
-    convert_types: List[ConvertType] | None = None
+    convert_types: list[ConvertType] | None = None
     """List of types to auto-convert from. For 'int' auto-conversion is supported from 'bool', 'str' and 'float'"""
     default: int | None = None
     """Default value"""
@@ -237,7 +260,7 @@ class AvdSchemaInt(AvdSchemaBaseModel):
     """Minimum value"""
     max: int | None = None
     """Maximum value"""
-    valid_values: List[int] | None = None
+    valid_values: list[int] | None = None
     """List of valid values"""
     dynamic_valid_values: str | None = None
     """
@@ -250,6 +273,8 @@ class AvdSchemaInt(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenInt
     _yaml_line_generator = YamlLineGenInt
+    # Type of pydantic source generator to use for this schema field.
+    _pydantic_src_generator = PydanticSrcGenInt
 
 
 class AvdSchemaBool(AvdSchemaBaseModel):
@@ -268,11 +293,11 @@ class AvdSchemaBool(AvdSchemaBaseModel):
 
     # AvdSchema field properties
     type: Literal["bool"]
-    convert_types: List[ConvertType] | None = None
+    convert_types: list[ConvertType] | None = None
     """List of types to auto-convert from. For 'bool' auto-conversion is supported from 'int' and 'str'"""
     default: bool | None = None
     """Default value"""
-    valid_values: List[bool] | None = None
+    valid_values: list[bool] | None = None
     """List of valid values"""
     dynamic_valid_values: str | None = None
     """
@@ -285,6 +310,8 @@ class AvdSchemaBool(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenBool
     _yaml_line_generator = YamlLineGenBool
+    # Type of pydantic source generator to use for this schema field.
+    _pydantic_src_generator = PydanticSrcGenBool
 
 
 class AvdSchemaStr(AvdSchemaBaseModel):
@@ -318,7 +345,7 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     type: Literal["str"]
     convert_to_lower_case: bool | None = False
     """Convert string value to lower case before performing validation"""
-    convert_types: List[ConvertType] | None = None
+    convert_types: list[ConvertType] | None = None
     """List of types to auto-convert from.\n\nFor 'str' auto-conversion is supported from 'bool' and 'int'"""
     default: str | None = None
     """Default value"""
@@ -334,7 +361,7 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     The regular expression should be valid according to the ECMA 262 dialect.
     Remember to use double escapes.
     """
-    valid_values: List[str] | None = None
+    valid_values: list[str] | None = None
     """List of valid values"""
     dynamic_valid_values: str | None = None
     """
@@ -347,6 +374,8 @@ class AvdSchemaStr(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenStr
     _yaml_line_generator = YamlLineGenStr
+    # Type of pydantic source generator to use for this schema field.
+    _pydantic_src_generator = PydanticSrcGenStr
 
 
 class AvdSchemaList(AvdSchemaBaseModel):
@@ -366,13 +395,13 @@ class AvdSchemaList(AvdSchemaBaseModel):
 
     # AvdSchema field properties
     type: Literal["list"]
-    convert_types: List[ConvertType] | None = None
+    convert_types: list[ConvertType] | None = None
     """
     List of types to auto-convert from.
     For 'list of dicts' auto-conversion is supported from 'dict' if 'primary_key' is set on the list schema.
     For other list item types conversion from dict will use the keys as list items.
     """
-    default: List | None = None
+    default: list | None = None
     """Default value"""
     items: Annotated[AvdSchemaField, Field(discriminator="type")] | None = None
     """Schema for list items"""
@@ -403,6 +432,8 @@ class AvdSchemaList(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenList
     _yaml_line_generator = YamlLineGenList
+    # Type of pydantic source generator to use for this schema field.
+    _pydantic_src_generator = PydanticSrcGenList
 
     @cached_property
     def _descendant_tables(self) -> set[str]:
@@ -507,6 +538,8 @@ class AvdSchemaDict(AvdSchemaBaseModel):
     # Type of schema docs generators to use for this schema field.
     _table_row_generator = TableRowGenDict
     _yaml_line_generator = YamlLineGenDict
+    # Type of pydantic source generator to use for this schema field.
+    _pydantic_src_generator = PydanticSrcGenDict
 
     @cached_property
     def _descendant_tables(self) -> set[str]:
@@ -557,6 +590,9 @@ class AristaAvdSchema(AvdSchemaDict):
 
     This is the schema root dict class providing specific fields and overrides of AvdSchemaDict.
     """
+
+    # Type of pydantic source generator to use for this schema field.
+    _pydantic_src_generator = PydanticSrcGenRootDict
 
     # Internal attributes used by schema docs generators
     @cached_property
