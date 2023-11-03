@@ -11,20 +11,26 @@ from deepmerge import conservative_merger
 from ..store import create_store
 
 
-def merge_schema_from_ref(schema: dict) -> dict:
+def merge_schema_from_ref(schema: dict, only_resolve_schema: str | None = None) -> dict:
     """
     Returns a copy of the schema with any $ref resolved.
 
     If the referenced schema also has a $ref, that too will be resolved.
 
     Any child schemas will _not_ be resolved.
+
+    By setting "only_resolve_schema" it is possible to prevent dicts from other schemas from being resolved.
     """
     if "$ref" not in schema:
         return schema
 
+    if schema.get("type") == "dict" and only_resolve_schema and not str(schema["$ref"]).startswith(only_resolve_schema + "#"):
+        # Do not resolve a dict ref if the ref does not match the given "only_resolve_schema"
+        return schema
+
     schema = deepcopy(schema)
     ref = schema.pop("$ref")
-    ref_schema = merge_schema_from_ref(get_schema_from_ref(ref))
+    ref_schema = merge_schema_from_ref(get_schema_from_ref(ref), only_resolve_schema)
     if ref_schema["type"] != schema["type"]:
         # TODO: Consider if this should be a pyavd specific error
         raise ValueError(

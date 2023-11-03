@@ -17,8 +17,8 @@ def get_hostnames():
     assert Path(VARS_PATH).is_dir()
 
     hostnames = []
-    for device_var_file in iglob(f"{VARS_PATH}/*"):
-        hostnames.append(Path(device_var_file).name.removesuffix(".yaml").removesuffix(".yml").removesuffix(".json"))
+    for device_var_file in iglob(f"{VARS_PATH}/*.json"):
+        hostnames.append(Path(device_var_file).name.removesuffix(".json"))
 
     return hostnames
 
@@ -36,8 +36,8 @@ def all_inputs() -> dict[str, dict]:
     assert Path(VARS_PATH).is_dir()
 
     inputs = {}
-    for device_var_file in iglob(f"{VARS_PATH}/*"):
-        hostname = Path(device_var_file).name.removesuffix(".yaml").removesuffix(".yml").removesuffix(".json")
+    for device_var_file in iglob(f"{VARS_PATH}/*.json"):
+        hostname = Path(device_var_file).name.removesuffix(".json")
         inputs[hostname] = read_vars(device_var_file)
 
     return inputs
@@ -62,7 +62,7 @@ def configs() -> dict:
     assert Path(CONFIGS_PATH).is_dir()
 
     result = {}
-    for filename in iglob(f"{CONFIGS_PATH}/*"):
+    for filename in iglob(f"{CONFIGS_PATH}/*.cfg"):
         hostname = Path(filename).name.removesuffix(".cfg")
         result[hostname] = read_file(filename)
 
@@ -82,7 +82,7 @@ def device_docs() -> dict:
     assert Path(DOCS_PATH).is_dir()
 
     result = {}
-    for filename in iglob(f"{DOCS_PATH}/*"):
+    for filename in iglob(f"{DOCS_PATH}/*.md"):
         hostname = Path(filename).name.removesuffix(".md")
         result[hostname] = read_file(filename)
 
