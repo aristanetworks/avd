@@ -4742,10 +4742,11 @@ $defs:
                       type: str
                       description: Peer group name.
                     remote_as:
-                      type: int
+                      type: str
                       convert_types:
-                      - str
-                      description: Remote ASN.
+                      - int
+                      description: Remote BGP AS <1-4294967295> or AS number in asdot
+                        notation "<1-65535>.<0-65535>".
                     description:
                       type: str
                     password:

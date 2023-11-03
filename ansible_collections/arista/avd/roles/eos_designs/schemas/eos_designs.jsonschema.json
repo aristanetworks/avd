@@ -198,12 +198,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -500,12 +500,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -802,12 +802,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -1104,12 +1104,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -1406,12 +1406,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -1708,12 +1708,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -2010,12 +2010,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
