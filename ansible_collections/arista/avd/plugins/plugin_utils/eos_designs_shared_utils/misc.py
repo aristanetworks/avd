@@ -56,7 +56,7 @@ class MiscMixin:
 
         """
         # Check if we are running from eos_designs_structured_config ("switch" is a dict)
-        if isinstance(switch:=get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch", separator=".."), dict):
+        if isinstance(switch := get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch", separator=".."), dict):
             # Return value of 'self.hostvars.switch.id' or None
             return switch.get("id")
 
