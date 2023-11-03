@@ -528,6 +528,41 @@ $defs:
                       description: |
                         SVI profile name to apply.
                         SVI can refer to one svi_profile which again can refer to another svi_profile to inherit settings in up to two levels (svi -> svi_profile -> svi_parent_profile).
+                    tags:
+                      type: list
+                      description: |
+                        Tags leveraged for networks services filtering.
+                        Tags are matched against "filter.tags" defined under node type settings.
+                        Tags are also matched against the "node_group" name under node type settings.
+                      default: ["all"]
+                      items:
+                        type: str
+                        convert_types:
+                          - int
+                        description: Tag value.
+                    nodes:
+                      type: list
+                      primary_key: node
+                      convert_types:
+                        - dict
+                      items:
+                        type: dict
+                        $ref: "eos_designs#/$defs/svi_settings"
+                        keys:
+                          node:
+                            type: str
+                          tags:
+                            type: list
+                            description: |
+                              Tags leveraged for networks services filtering.
+                              Tags are matched against "filter.tags" defined under node type settings.
+                              Tags are also matched against the "node_group" name under node type settings.
+                            default: ["all"]
+                            items:
+                              type: str
+                              convert_types:
+                                - int
+                              description: Tag value.
               l3_interfaces:
                 documentation_options:
                   table: network-services-vrfs-l3-interfaces-settings
