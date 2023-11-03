@@ -185,7 +185,7 @@ def test_avdpoolmanager_pool(id: str, hostvars_list: list[dict], expected_ids: l
         mocked_file_write: mock.MagicMock = mocked_open.return_value.write
 
         # Initialize pool_manager and feed to shared_utils.
-        pool_manager = AvdPoolManager("mydir")
+        pool_manager = AvdPoolManager(DUMMYDIR)
 
         for index, hostvars in enumerate(hostvars_list):
             shared_utils = SharedUtils(hostvars, object())
