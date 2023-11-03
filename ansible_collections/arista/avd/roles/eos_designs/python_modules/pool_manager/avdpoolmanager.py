@@ -35,7 +35,7 @@ class AvdPoolManager:
         self.id_files: set[Path] = set()
         self.changed_id_files: set[Path] = set()
 
-    def remove_stale_assignments(self) -> None:
+    def _remove_stale_assignments(self) -> None:
         """
         Walk through all pools and in-place remove stale assignments and empty pools.
 
@@ -50,9 +50,9 @@ class AvdPoolManager:
             id_data = self.id_pool_data(id_file)
             for id_pool in id_data["id_pools"]:
                 # Remove id_assignments that were not accesses using "last_accessed".
-                id_assignments_count = len(id_pool["id_assignments"])
+                len_before_removing_stale_entries = len(id_pool["id_assignments"])
                 id_pool["id_assignments"] = [id_assignment for id_assignment in id_pool["id_assignments"] if id_assignment.pop("accessed", False)]
-                if id_assignments_count != len(id_pool["id_assignments"]):
+                if len_before_removing_stale_entries != len(id_pool["id_assignments"]):
                     self.changed_id_files.add(id_file)
 
             # Remove pools if there are no assignments left.
@@ -69,7 +69,7 @@ class AvdPoolManager:
 
         Data is sorted to ensure a consistent layout.
         """
-        self.remove_stale_assignments()
+        self._remove_stale_assignments()
         for id_file in self.changed_id_files:
             id_data = self.id_pool_data(id_file)
             for id_pool in id_data["id_pools"]:
@@ -87,6 +87,15 @@ class AvdPoolManager:
 
     @lru_cache
     def id_pool_data(self, id_file: Path) -> dict:
+        """
+        Return the content of the given file.
+        If the file does not exist, it will be created - including all directories.
+        lru_cache ensures that we work with a cached copy of the data.
+        Other functions will inplace update this cached data.
+
+        Args:
+            id_file: File to read id_pool_data from.
+        """
         if not id_file.exists():
             # Try to create the dir and file.
             id_file.parent.mkdir(mode=0o775, parents=True, exist_ok=True)
@@ -98,7 +107,7 @@ class AvdPoolManager:
         if not isinstance(id_data, dict) or not isinstance(id_data.get("id_pools"), list):
             raise AristaAvdError(f"Invalid ID pool manager data when reading {id_file}. Expecting {'id_pools': []}")
 
-        # Since we assigned a new ID, we have to mark the id pool as changed to have it saved once the build is done.
+        # Add the path to the list of all id_files. Used later for finding stale entries.
         self.id_files.add(id_file)
 
         return id_data
@@ -154,8 +163,9 @@ class AvdPoolManager:
             id_assignment["accessed"] = True
             return id_assignment["id"]
 
-        pool_sorted_on_id = sorted(id_pool["id_assignments"], key=lambda x: x.get("id"))
-        first_available_id = next((index for index, id_assignment in enumerate(pool_sorted_on_id + [{"id": 0}], 1) if id_assignment["id"] != index))
+        existing_ids = set(map(lambda x: x.get("id"), id_pool["id_assignments"]))
+        available_ids = set(range(1, len(existing_ids) + 2)) - existing_ids
+        first_available_id = next(iter(available_ids))
         id_assignment = {
             "id": first_available_id,
             "hostname": shared_utils.hostname,
