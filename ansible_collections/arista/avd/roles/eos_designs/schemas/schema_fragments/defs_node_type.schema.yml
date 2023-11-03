@@ -296,7 +296,8 @@ $defs:
             max: 999999
             description: |
               Only applicable when uplink_type == "port-channel".
-              By default the uplink switch Port-channel ID will be set to the number of the lowest member interface defined in the uplink_switch_interfaces.
+              By default the uplink switch Port-channel ID will be set to the number of the first interface defined under `uplink_switch_interfaces`.
+              For MLAG this is taken from the first MLAG switch.
               For example:
                 member ports [ Eth22, Eth23 ] -> ID 22
                 member ports [ Eth11/1, Eth22/1 ] -> ID 111
