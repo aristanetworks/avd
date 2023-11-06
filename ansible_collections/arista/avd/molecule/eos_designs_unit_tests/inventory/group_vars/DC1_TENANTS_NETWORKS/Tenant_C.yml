@@ -4,7 +4,7 @@ tenant_c:
     evpn_l2_multi_domain: false
     bgp_peer_groups:
       - name: Tenant_C_BGP_PEER_GROUP
-        remote_as: 666
+        remote_as: "666"
         description: "Tenant C peer group"
         send_community: all
         next_hop_self: true
@@ -19,7 +19,7 @@ tenant_c:
         route_map_in: TEST_IN
         local_as: 777
       - name: Tenant_C_BGP_PEER_GROUP2
-        remote_as: 667
+        remote_as: "667"
         description: "Tenant C peer group2"
         update_source: lo0
     vrfs:
@@ -48,7 +48,7 @@ tenant_c:
             ip_address_virtual: 10.3.50.1/24
         bgp_peer_groups:
           - name: Tenant_C_WAN_Zone_BGP_PEER_GROUP
-            remote_as: 666
+            remote_as: "666"
             description: "Tenant C VRF WAN Zone peer group"
             send_community: all
             next_hop_self: true

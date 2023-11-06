@@ -6,6 +6,7 @@ from collections import ChainMap
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_ip_from_pool
 
 from .utils import UtilsMixin
 
@@ -22,17 +23,10 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
     """
 
     def _ip(self, pool: str, prefixlen: int, subnet_offset: int, ip_offset: int) -> str:
-        pool_network = ipaddress.ip_network(pool, strict=False)
-        prefixlen_diff = prefixlen - pool_network.prefixlen
-        subnet_size = (int(pool_network.hostmask) + 1) >> prefixlen_diff
-        if (subnet_offset + 1) * subnet_size > pool_network.num_addresses:
-            raise AristaAvdError(f"Unable to get {subnet_offset + 1} /{prefixlen} subnets from pool {pool}")
-        subnet = ipaddress.ip_network((int(pool_network.network_address) + subnet_offset * subnet_size, prefixlen))
-        try:
-            ip = subnet[ip_offset]
-        except IndexError as e:
-            raise AristaAvdError(f"Unable to get {ip_offset+1} hosts in subnet {subnet} taken from pool {pool}") from e
-        return str(ip)
+        """
+        Shortcut to get_ip_from_pool in case any custom subclasses are using this
+        """
+        return get_ip_from_pool(pool, prefixlen, subnet_offset, ip_offset)
 
     def _template(self, template_path, **kwargs):
         template_vars = ChainMap(kwargs, self._hostvars)
@@ -47,17 +41,17 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         """
         if self._fabric_ipaddress_mlag_algorithm == "odd_id":
             offset = self._mlag_odd_id_based_offset
-            return self._ip(pool, 31, offset, ip_offset)
+            return get_ip_from_pool(pool, 31, offset, ip_offset)
 
         if self._fabric_ipaddress_mlag_algorithm == "same_subnet":
             pool_network = ipaddress.ip_network(pool, strict=False)
             if pool_network.prefixlen != 31:
                 raise AristaAvdError("MLAG same_subnet addressing requires the pool to be a /31")
-            return self._ip(pool, 31, 0, ip_offset)
+            return get_ip_from_pool(pool, 31, 0, ip_offset)
 
         # Use default first_id
         offset = self._mlag_primary_id - 1
-        return self._ip(pool, 31, offset, ip_offset)
+        return get_ip_from_pool(pool, 31, offset, ip_offset)
 
     def mlag_ibgp_peering_ip_primary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """
@@ -162,7 +156,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
-        return self._ip(self._uplink_ipv4_pool, 31, offset, 1)
+        return get_ip_from_pool(self._uplink_ipv4_pool, 31, offset, 1)
 
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
         """
@@ -179,7 +173,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
-        return self._ip(self._uplink_ipv4_pool, 31, offset, 0)
+        return get_ip_from_pool(self._uplink_ipv4_pool, 31, offset, 0)
 
     def router_id(self) -> str:
         """
@@ -197,7 +191,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._id + self._loopback_ipv4_offset
-        return self._ip(self._loopback_ipv4_pool, 32, offset, 0)
+        return get_ip_from_pool(self._loopback_ipv4_pool, 32, offset, 0)
 
     def ipv6_router_id(self) -> str:
         """
@@ -215,7 +209,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._id + self._loopback_ipv6_offset
-        return self._ip(self._loopback_ipv6_pool, 128, offset, 0)
+        return get_ip_from_pool(self._loopback_ipv6_pool, 128, offset, 0)
 
     def vtep_ip_mlag(self) -> str:
         """
@@ -235,7 +229,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._mlag_primary_id + self._loopback_ipv4_offset
-        return self._ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)
+        return get_ip_from_pool(self._vtep_loopback_ipv4_pool, 32, offset, 0)
 
     def vtep_ip(self) -> str:
         """
@@ -253,4 +247,41 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
             )
 
         offset = self._id + self._loopback_ipv4_offset
-        return self._ip(self._vtep_loopback_ipv4_pool, 32, offset, 0)
+        return get_ip_from_pool(self._vtep_loopback_ipv4_pool, 32, offset, 0)
+
+    def vrf_loopback_ip(self, pool: str) -> str:
+        """
+        Return IP address for a Loopback interface based on the given pool.
+        Default offset from pool is `id + loopback_ipv4_offset`
+
+        Used for "vtep_diagnostic.loopback".
+        """
+        offset = self.shared_utils.id + self.shared_utils.loopback_ipv4_offset
+        return get_ip_from_pool(pool, 32, offset, 0)
+
+    def evpn_underlay_l3_multicast_group(
+        self,
+        underlay_l3_multicast_group_ipv4_pool: str,
+        vrf_vni: int,
+        vrf_id: int,
+        evpn_underlay_l3_multicast_group_ipv4_pool_offset: int,
+    ) -> str:
+        """
+        Return IP address to be used for EVPN underlay L3 multicast group
+
+        TODO: Change algorithm to use VRF ID instead of VRF VNI as offset.
+        """
+        offset = vrf_vni - 1 + evpn_underlay_l3_multicast_group_ipv4_pool_offset
+        return get_ip_from_pool(underlay_l3_multicast_group_ipv4_pool, 32, offset, 0)
+
+    def evpn_underlay_l2_multicast_group(
+        self,
+        underlay_l2_multicast_group_ipv4_pool: str,
+        vlan_id: int,
+        underlay_l2_multicast_group_ipv4_pool_offset: int,
+    ) -> str:
+        """
+        Return IP address to be used for EVPN underlay L2 multicast group
+        """
+        offset = vlan_id - 1 + underlay_l2_multicast_group_ipv4_pool_offset
+        return get_ip_from_pool(underlay_l2_multicast_group_ipv4_pool, 32, offset, 0)
