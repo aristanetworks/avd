@@ -47,7 +47,7 @@ To start using a dev container:
 - Open VSCode command pallette and pick `Dev Containers: Rebuild and Reopen in Container`
 - Wait until the build will finish and enjoy running AVD in a container.
 
-If you want to use specific AVD release, use following `devcontainer.json`:
+If you want to use a specific AVD release, use the following `devcontainer.json`:
 
 ```json
 {
