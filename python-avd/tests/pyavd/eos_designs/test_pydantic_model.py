@@ -9,6 +9,35 @@ from pydantic_core import ValidationError
 
 SCHEMA = AvdSchemaTools(schema_id="eos_designs").avdschema.resolved_schema
 
+CSC_DATA = {
+    "fabric_name": "test",
+    "custom_structured_configuration_router_bgp": {"as": 123},
+    "csc_loopback_interfaces": [{"name": "Loopback0"}],
+}
+
+CSC_TESTS = [
+    # (prefix, expected structured config)
+    (None, [{"key": "custom_structured_configuration_router_bgp", "value": {"router_bgp": {"as": "123"}}}]),  # Notice the auto conversion to string.
+    (["csc_"], [{"key": "csc_loopback_interfaces", "value": {"loopback_interfaces": CSC_DATA["csc_loopback_interfaces"]}}]),
+]
+
+
+@pytest.mark.parametrize(("prefix", "expected_data"), CSC_TESTS)
+def test_eos_designs_custom_structured_configuration(prefix: str, expected_data: dict):
+    data = {**CSC_DATA, "custom_structured_configuration_prefix": prefix}
+    loaded_model = EosDesigns(**data)
+    assert hasattr(loaded_model, "custom_structured_configurations")
+    assert isinstance(loaded_model.custom_structured_configurations, list)
+    returned_data = []
+    for entry in loaded_model.custom_structured_configurations:
+        assert isinstance(entry, EosDesigns.CustomStructuredConfiguration)
+        returned_data.append(entry.model_dump(exclude_defaults=True, exclude_unset=True, by_alias=True))
+
+    assert returned_data == expected_data
+
+    # Ensure the keys got popped before validation.
+    assert not [key for key in (loaded_model.model_extra or {}) if key.startswith(prefix)]
+
 
 def test_eos_designs_with_valid_data(hostname: str, all_inputs: dict):
     """

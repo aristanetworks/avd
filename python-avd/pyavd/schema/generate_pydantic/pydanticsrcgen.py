@@ -18,11 +18,8 @@ class PydanticSrcGenBase(ABC):
     # TODO:
     # Optimize ref handling?
     # add deprecation handling
-    # convert_types
-    # valid_values
     # dynamic_valid_values
     # format
-    # dynamic_keys
     # Create a base model for lists so child items can be rendered by their own generators instead of trying to handle it inside lists.
 
     def generate_pydantic_src(self, schema: AvdSchemaField, class_name: str | None = None) -> PydanticFieldSrc:
@@ -243,9 +240,13 @@ class PydanticSrcGenList(PydanticSrcGenBase):
 
     def get_base_classes(self) -> list[str]:
         if not self.schema.items or not self.schema.items.field_ref:
-            return []
+            # Using special AvdDictBaseModel to handle custom data starting with _.
+            return ["AvdDictBaseModel"]
 
         return [generate_class_name_from_ref(self.schema.items.field_ref)]
+
+    def get_default(self) -> str:
+        return str(self.schema.default).replace("'", '"')
 
 
 class PydanticSrcGenDict(PydanticSrcGenBase):
@@ -272,16 +273,20 @@ class PydanticSrcGenDict(PydanticSrcGenBase):
 
     def get_base_classes(self) -> list[str]:
         if not self.schema.field_ref:
-            return []
+            # Using special AvdDictBaseModel to handle custom data starting with _.
+            return ["AvdDictBaseModel"]
 
         return [generate_class_name_from_ref(self.schema.field_ref)]
 
-    def get_imports(self) -> set[str] | None:
-        if not self.schema.field_ref:
-            return None
+    def get_imports(self) -> set[str]:
+        imports = set()
+        if self.schema.field_ref:
+            schema_name = self.schema.field_ref.split("#", maxsplit=1)[0]
+            imports.add(f"from .{schema_name} import {generate_class_name(schema_name)}")
+        else:
+            imports = {"from .models import AvdDictBaseModel"}
 
-        schema_name = self.schema.field_ref.split("#", maxsplit=1)[0]
-        return {f"from .{schema_name} import {generate_class_name(schema_name)}"}
+        return imports
 
     def get_children_classes_and_fields(self) -> ([PydanticModelSrc], [AvdSchemaField]):
         classes = []
@@ -294,27 +299,121 @@ class PydanticSrcGenDict(PydanticSrcGenBase):
                 if fieldsrc.cls:
                     classes.append(fieldsrc.cls)
 
-        if self.schema.dynamic_keys:
-            dyn_classes = []
-            dyn_fields = []
-            for childschema in self.schema.dynamic_keys.values():
-                fieldsrc = childschema._generate_pydantic_src()
-                if fieldsrc.field:
-                    dyn_fields.append(fieldsrc.field)
-                if fieldsrc.cls:
-                    dyn_classes.append(fieldsrc.cls)
-
-            dynamic_keys_cls = PydanticModelSrc(
-                name="_DynamicKeys",
-                classes=dyn_classes,
-                fields=dyn_fields,
-                description="Internal classes used for building dynamic schemas",
-            )
-            classes.append(dynamic_keys_cls)
-
         return classes, fields
 
 
 class PydanticSrcGenRootDict(PydanticSrcGenDict):
     def get_field(self) -> PydanticFieldSrc | None:
         return None
+
+    def get_base_classes(self) -> list[str]:
+        if self.get_class_name() == "EosDesigns":
+            return ["AvdEosDesignsRootDictBaseModel"]
+        return ["BaseModel"]
+
+    def get_imports(self) -> set[str]:
+        imports = super().get_imports() or set()
+        if self.get_class_name() == "EosDesigns":
+            imports.add("from .models import AvdEosDesignsRootDictBaseModel")
+        return imports
+
+    def get_children_classes_and_fields(self) -> ([PydanticModelSrc], [AvdSchemaField]):
+        classes, fields = super().get_children_classes_and_fields()
+        classes.append(
+            PydanticModelSrc(
+                name="CustomStructuredConfiguration",
+                classes=[],
+                fields=[
+                    PydanticFieldSrc(
+                        name="key",
+                        type_hints=[FieldTypeHintSrc(field_type="str")],
+                        description="Complete key including prefix",
+                        optional=False,
+                    ),
+                    PydanticFieldSrc(
+                        name="value",
+                        type_hints=[FieldTypeHintSrc(field_type="EosCliConfigGen")],
+                        description="Structured config including the suffix part of the key.",
+                        optional=False,
+                    ),
+                ],
+            )
+        )
+        fields.append(
+            PydanticFieldSrc(
+                name="custom_structured_configurations",
+                type_hints=[FieldTypeHintSrc(field_type="list", list_item_type="CustomStructuredConfiguration")],
+            )
+        )
+        if self.schema.dynamic_keys:
+            """
+            Build a data model like this:
+            dynamic_keys:
+              _dynamic_key_maps:
+                - dynamic_keys_path: "node_type_keys.key"
+                  model_key: "node_type_keys"
+              node_type_keys:
+                - key: "l2leaf"
+                  value: NodeTypeKeysKey
+            }
+            """
+            dyn_classes = []
+            dyn_fields = []
+            _dynamic_key_maps = []
+            for dynamic_keys_path, childschema in self.schema.dynamic_keys.items():
+                # dynamic_key_type will be "node_type_keys", "connected_endpoints_keys" or "network_services_keys"
+                dynamic_key_type = dynamic_keys_path.split(".", maxsplit=1)[0]
+                dynamic_key_model_name = generate_class_name(f"dynamic_{dynamic_key_type}")
+                _dynamic_key_maps.append({"dynamic_keys_path": dynamic_keys_path, "model_key": dynamic_key_type})
+                fieldsrc = childschema._generate_pydantic_src()
+                # Overriding the details from the autocreated field. This way we can reuse the field definition with types and type hints
+                fieldsrc.field.name = "value"
+                fieldsrc.field.description = "Value of dynamic key"
+                dyn_classes.append(
+                    PydanticModelSrc(
+                        name=dynamic_key_model_name,
+                        classes=[fieldsrc.cls],
+                        fields=[
+                            PydanticFieldSrc(
+                                name="key",
+                                type_hints=[FieldTypeHintSrc(field_type="str")],
+                                description="Key used as dynamic key",
+                                optional=False,
+                            ),
+                            fieldsrc.field,
+                        ],
+                    )
+                )
+                dyn_fields.append(
+                    PydanticFieldSrc(
+                        name=dynamic_key_type,
+                        type_hints=[FieldTypeHintSrc(field_type="list", list_item_type=dynamic_key_model_name)],
+                        description=f"List of dynamic '{dynamic_key_type}'.",
+                    )
+                )
+            dyn_fields.append(
+                PydanticFieldSrc(
+                    name="_dynamic_key_maps",
+                    type_hints=[FieldTypeHintSrc(field_type="list", list_item_type="dict")],
+                    description="Internal list of mappings from dynamic_keys_path to model_key.",
+                    default_value=str(_dynamic_key_maps),
+                    optional=False,
+                )
+            )
+            classes.append(
+                PydanticModelSrc(
+                    name="DynamicKeys",
+                    classes=dyn_classes,
+                    fields=dyn_fields,
+                    description="Data models for dynamic keys",
+                )
+            )
+            fields.append(
+                PydanticFieldSrc(
+                    name="dynamic_keys",
+                    type_hints=[FieldTypeHintSrc(field_type="DynamicKeys")],
+                    description="Dynamic keys",
+                )
+            )
+
+        return classes, fields

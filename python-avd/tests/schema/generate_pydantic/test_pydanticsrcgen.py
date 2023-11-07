@@ -5,18 +5,20 @@ import json
 import sys
 from importlib import import_module
 from pathlib import Path
+from unittest import mock
 
 import pytest
 from pydantic import BaseModel
 
 # Override global path to load schema from source instead of any installed version.
-# Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
-sys.path.insert(0, str(Path(__file__).parents[3].joinpath("pyavd")))
+sys.path.insert(0, str(Path(__file__).parents[3]))
 
-from schema.constants import STORE
-from schema.generate_pydantic.models import PydanticFileSrc
-from schema.generate_pydantic.utils import generate_class_name
-from schema.metaschema.meta_schema_model import AristaAvdSchema
+import pyavd.schema.models
+import pyavd.schema.types
+from pyavd.schema.constants import STORE
+from pyavd.schema.generate_pydantic.models import PydanticFileSrc
+from pyavd.schema.generate_pydantic.utils import generate_class_name
+from pyavd.schema.metaschema.meta_schema_model import AristaAvdSchema
 
 TEST_DATA = [
     ("eos_cli_config_gen", "ethernet-interfaces.json"),
@@ -55,7 +57,8 @@ def test_load_model_without_data(schema_name: str):
     Imports the generated pydantic models and initializes them with no data.
     Assert that default values are hidden with "exclude_unset=True" and otherwise not.
     """
-    module = import_module(f"artifacts.{schema_name}")
+    with mock.patch.dict(sys.modules, {"artifacts.types": pyavd.schema.types, "artifacts.models": pyavd.schema.models}):
+        module = import_module(f"artifacts.{schema_name}")
     class_name = generate_class_name(schema_name)
     Cls = getattr(module, class_name)
     assert issubclass(Cls, BaseModel)
@@ -74,7 +77,8 @@ def test_load_model_with_data(schema_name: str, data_file: str, artifacts_path: 
     Imports the generated pydantic models and initializes them with no data.
     Assert that default values are hidden with "exclude_unset=True" and otherwise not.
     """
-    module = import_module(f"artifacts.{schema_name}")
+    with mock.patch.dict(sys.modules, {"artifacts.types": pyavd.schema.types, "artifacts.models": pyavd.schema.models}):
+        module = import_module(f"artifacts.{schema_name}")
     class_name = generate_class_name(schema_name)
     Cls = getattr(module, class_name)
     assert issubclass(Cls, BaseModel)

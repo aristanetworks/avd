@@ -161,6 +161,13 @@ repos:
         files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
         pass_filenames: false
 
+      - id: schemas
+        name: Build Pydantic models from AVD Schemas
+        entry: sh -c 'exec python-avd/scripts/build-pydantic-models.py'
+        language: system
+        files: ansible_collections/arista/avd/roles/[a-z_]+/schemas
+        pass_filenames: false
+
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.32.1
     hooks:
