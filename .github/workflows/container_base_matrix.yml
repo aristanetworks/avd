@@ -6,9 +6,9 @@ on:
     branches:
       - devel
     paths:
-    - avd-containers/base/**
-    - .github/workflows/container_build_template.yml
-    - .github/workflows/container_base_matrix.yml
+      - avd-containers/base/**
+      - .github/workflows/container_build_template.yml
+      - .github/workflows/container_base_matrix.yml
   workflow_dispatch:
     branches:
       - devel
