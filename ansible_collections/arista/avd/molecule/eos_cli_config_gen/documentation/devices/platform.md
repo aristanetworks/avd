@@ -86,6 +86,12 @@ interface Management1
 | 1 | 7 |
 | 2 | 15 |
 
+#### Platform Software Forwarding Engine Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Maximum CPU Allocation | 42 |
+
 ### Platform Configuration
 
 ```eos
@@ -98,4 +104,5 @@ platform sand lag hardware-only
 platform sand lag mode 512x32
 platform sand forwarding mode arad
 platform sand multicast replication default ingress
+platform sfe data-plane cpu allocation maximum 42
 ```

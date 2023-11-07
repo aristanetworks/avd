@@ -69,8 +69,6 @@ The below requirements are needed on the host that executes this module.
 | stage | any | optional | inventory | Valid values:<br>- <code>inventory</code> | The stage during which executing the plugin. It could be \'inventory\' or \'task\'<br>Given the expected usage of this plugin at the beginning of the run. It is hard\-coded to \'inventory\' |
 | _valid_extensions | list | optional | ['.yml', '.yaml', '.json'] |  | Check all of these extensions when looking for \'variable\' files, which should be YAML, JSON, or vaulted versions.<br>This affects vars\_files, include\_vars, inventory, and vars plugins, among others. |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

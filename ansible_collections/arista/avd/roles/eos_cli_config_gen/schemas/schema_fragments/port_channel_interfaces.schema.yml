@@ -330,7 +330,7 @@ keys:
                   valid_values:
                     - percent
                     - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -346,7 +346,7 @@ keys:
                   valid_values:
                     - percent
                     - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -362,7 +362,7 @@ keys:
                   valid_values:
                     - percent
                     - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -378,7 +378,7 @@ keys:
                   valid_values:
                     - percent
                     - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         ip_proxy_arp:
           type: bool
         isis_enable:
@@ -569,6 +569,7 @@ keys:
           type: str
           description: IPv4 address/mask
         ip_nat:
+          type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
         ipv6_enable:
           type: bool
@@ -686,7 +687,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         bgp:
           type: dict
           keys:

@@ -1,4 +1,5 @@
 hostname: DC1-BL1A
+is_deployed: true
 router_bgp:
   as: '65104'
   router_id: 192.168.255.14
@@ -165,7 +166,7 @@ router_bgp:
       route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
       local_as: '123'
     - ip_address: 123.1.1.11
-      remote_as: '1234'
+      remote_as: '65000.100'
       password: oBztv71m2uhR7hh58/OCNA==
       description: External IPv4 BGP peer
       send_community: standard extended
@@ -276,14 +277,16 @@ service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
   speed_groups:
-  - speed_group: 1
+  - speed_group: '1'
     serdes: 10G
-  - speed_group: 2
+  - speed_group: '2'
     serdes: 25G
-  - speed_group: 3
+  - speed_group: '3'
     serdes: 25G
-  - speed_group: 4
+  - speed_group: '4'
     serdes: 10G
+  - speed_group: 5/1
+    serdes: 25G
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910

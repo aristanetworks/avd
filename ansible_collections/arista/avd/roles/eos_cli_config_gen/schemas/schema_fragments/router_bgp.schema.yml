@@ -11,7 +11,7 @@ keys:
     keys:
       as:
         type: str
-        description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+        description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
         convert_types:
           - int
       router_id:
@@ -106,8 +106,8 @@ keys:
           wait_install:
             type: bool
             description: |
-               Do not advertise reachability to a prefix until that prefix has been installed in hardware.
-               This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
+              Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+              This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
       bgp_cluster_id:
         type: str
         description: IP Address A.B.C.D
@@ -166,7 +166,7 @@ keys:
               type: str
               convert_types:
                 - int
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
       peer_groups:
         type: list
         primary_key: name
@@ -183,12 +183,12 @@ keys:
               description: Key only used for documentation or validation purposes
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
                 - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
                 - int
             description:
@@ -351,12 +351,12 @@ keys:
               type: str
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
                 - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
                 - int
             as_path:
@@ -636,6 +636,9 @@ keys:
               description: VLAN range as string. Example "100-200,300"
               convert_types:
                 - int
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on the Router BGP, VLAN-aware-bundle definition in the final EOS configuration
       vlans:
         type: list
         primary_key: id
@@ -825,6 +828,34 @@ keys:
                   valid_values:
                     - "vxlan"
                     - "mpls"
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                            - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                            - str
+                          min: 2
+                          max: 64
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -851,6 +882,11 @@ keys:
                 convert_types:
                   - str
                 description: Time (in seconds) to purge a MAC duplication issue
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           route:
             type: dict
             keys:
@@ -858,6 +894,8 @@ keys:
                 type: str
                 valid_values:
                   - "discard"
+          next_hop_unchanged:
+            type: bool
       address_family_rtc:
         type: dict
         keys:
@@ -1032,6 +1070,42 @@ keys:
                   type: str
                 route_map:
                   type: str
+      address_family_ipv4_sr_te:
+        type: dict
+        keys:
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
       address_family_ipv6:
         type: dict
         keys:
@@ -1182,6 +1256,126 @@ keys:
                   description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
                 route_map:
                   type: str
+      address_family_ipv6_sr_te:
+        type: dict
+        keys:
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
+      address_family_link_state:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                      - "deny"
+                      - "deny-in-out"
+                      - "permit"
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                      - "deny"
+                      - "deny-in-out"
+                      - "permit"
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                missing_policy:
+                  type: dict
+                  keys:
+                    direction_in_action:
+                      type: str
+                      valid_values:
+                        - "deny"
+                        - "deny-in-out"
+                        - "permit"
+                    direction_out_action:
+                      type: str
+                      valid_values:
+                        - "deny"
+                        - "deny-in-out"
+                        - "permit"
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                missing_policy:
+                  type: dict
+                  keys:
+                    direction_in_action:
+                      type: str
+                      valid_values:
+                        - "deny"
+                        - "deny-in-out"
+                        - "permit"
+                    direction_out_action:
+                      type: str
+                      valid_values:
+                        - "deny"
+                        - "deny-in-out"
+                        - "permit"
+          path_selection:
+            type: dict
+            keys:
+              roles:
+                type: dict
+                keys:
+                  producer:
+                    type: bool
+                  consumer:
+                    type: bool
+                  propagator:
+                    type: bool
       address_family_flow_spec_ipv4:
         type: dict
         keys:
@@ -1274,6 +1468,127 @@ keys:
                   description: Peer-group name
                 activate:
                   type: bool
+      address_family_path_selection:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
+                  send:
+                    type: dict
+                    keys:
+                      any:
+                        type: bool
+                      backup:
+                        type: bool
+                      ecmp:
+                        type: bool
+                      ecmp_limit:
+                        type: int
+                        description: Amount of ECMP paths to send
+                        convert_types:
+                          - str
+                        min: 2
+                        max: 64
+                      limit:
+                        type: int
+                        description: Amount of paths to send
+                        convert_types:
+                          - str
+                        min: 2
+                        max: 64
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+              - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    install:
+                      type: bool
+                    install_ecmp_primary:
+                      type: bool
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                            - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                            - str
+                          min: 2
+                          max: 64
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    install:
+                      type: bool
+                    install_ecmp_primary:
+                      type: bool
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                            - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                            - str
+                          min: 2
+                          max: 64
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -1428,6 +1743,8 @@ keys:
                         type: list
                         items:
                           type: str
+                      route_map:
+                        type: str
                 export:
                   type: list
                   primary_key: address_family
@@ -1443,6 +1760,8 @@ keys:
                         type: list
                         items:
                           type: str
+                      route_map:
+                        type: str
             router_id:
               description: in IP address format A.B.C.D
               type: str
@@ -1498,7 +1817,7 @@ keys:
                       If both are defined, peer_filter takes precedence
                   remote_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+                    description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
                     convert_types:
                       - int
             neighbors:
@@ -1516,7 +1835,7 @@ keys:
                     description: Peer-group name
                   remote_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+                    description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
                     convert_types:
                       - int
                   password:
@@ -1548,7 +1867,7 @@ keys:
                       - str
                   local_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+                    description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
                     convert_types:
                       - int
                   as_path:
@@ -1650,7 +1969,7 @@ keys:
                     description: Interface name
                   remote_as:
                     type: str
-                    description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+                    description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
                     convert_types:
                       - int
                   peer_group:

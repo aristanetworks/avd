@@ -1,0 +1,71 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dps_interfaces:
+    type: list
+    primary_key: name
+    min_length: 1
+    max_length: 1
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: |-
+            "Dps1" is currently the only supported interface.
+          valid_values:
+            - Dps1
+        description:
+          type: str
+        shutdown:
+          type: bool
+        mtu:
+          type: int
+          description: Maximum Transmission Unit in bytes.
+          convert_types:
+            - str
+          min: 68
+          max: 65535
+        ip_address:
+          type: str
+          description: IPv4 address/mask.
+        flow_tracker:
+          type: dict
+          keys:
+            sampled:
+              type: str
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name,
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+                - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+                - str
+            direction:
+              type: str
+              valid_values: ["ingress", "egress"]
+              description: |-
+                Optional direction ('ingress', 'egress')  for tcp mss ceiling.
+        eos_cli:
+          type: str
+          description: |-
+            Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.

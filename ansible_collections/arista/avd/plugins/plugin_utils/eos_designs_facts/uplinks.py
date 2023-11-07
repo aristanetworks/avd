@@ -41,12 +41,20 @@ class UplinksMixin:
     @cached_property
     def _uplink_interfaces(self: EosDesignsFacts) -> list:
         return range_expand(
-            default(get(self.shared_utils.switch_data_combined, "uplink_interfaces"), get(self.shared_utils.default_interfaces, "uplink_interfaces"), [])
+            default(
+                get(self.shared_utils.switch_data_combined, "uplink_interfaces"),
+                get(self.shared_utils.cv_topology_config, "uplink_interfaces"),
+                get(self.shared_utils.default_interfaces, "uplink_interfaces"),
+                [],
+            )
         )
 
     @cached_property
     def _uplink_switch_interfaces(self: EosDesignsFacts) -> list:
-        uplink_switch_interfaces = get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces")
+        uplink_switch_interfaces = default(
+            get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces"),
+            get(self.shared_utils.cv_topology_config, "uplink_switch_interfaces"),
+        )
         if uplink_switch_interfaces is not None:
             return uplink_switch_interfaces
 
@@ -120,6 +128,9 @@ class UplinksMixin:
                 if self.shared_utils.uplink_bfd:
                     uplink["bfd"] = True
 
+                if self.shared_utils.uplink_switch_interface_speed is not None:
+                    uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
+
                 if self.shared_utils.uplink_ptp is not None:
                     uplink["ptp"] = self.shared_utils.uplink_ptp
                 elif self.shared_utils.ptp_enabled:
@@ -173,6 +184,9 @@ class UplinksMixin:
 
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
+
+                if self.shared_utils.uplink_switch_interface_speed is not None:
+                    uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
 
                 if self.shared_utils.uplink_ptp is not None:
                     uplink["ptp"] = self.shared_utils.uplink_ptp

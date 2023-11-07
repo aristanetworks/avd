@@ -1,4 +1,5 @@
 hostname: AUTO_BGP_ASN_LEAF1B
+is_deployed: true
 router_bgp:
   as: '65102'
   router_id: 192.168.255.4

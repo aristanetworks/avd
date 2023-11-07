@@ -70,7 +70,7 @@
 ##### IPv6
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
+| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 {%         for vlan_interface in vlan_interfaces_ipv6 | arista.avd.natural_sort('name') %}
 {%             set row_vrf = vlan_interface.vrf | arista.avd.default('default') %}
 {%             set row_ip_addr = vlan_interface.ipv6_address | arista.avd.default('-') %}

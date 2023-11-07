@@ -29,7 +29,7 @@ keys:
           description: Interval in seconds for updating interface counters"
         speed:
           type: str
-          description: Speed can be interface_speed or forced interface_speed or auto interface_speed
+          description: Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
           convert_types:
@@ -118,7 +118,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         error_correction_encoding:
           type: dict
           keys:
@@ -253,13 +256,23 @@ keys:
           max: 4094
           convert_types:
             - str
+        # TODO Format to validate ipv4 CIDR or "dhcp"
         ip_address:
           type: str
-          description: IPv4 address/mask
+          description: IPv4 address/mask or "dhcp"
         ip_address_secondaries:
           type: list
           items:
             type: str
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP
+        dhcp_server_ipv4:
+          type: bool
+          description: Enable IPv4 DHCP server.
+        dhcp_server_ipv6:
+          type: bool
+          description: Enable IPv6 DHCP server.
         ip_helpers:
           type: list
           primary_key: ip_helper
@@ -279,7 +292,12 @@ keys:
                 convert_types:
                   - int
         ip_nat:
+          type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
+          keys:
+            service_profile:
+              type: str
+              description: NAT interface profile.
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -596,7 +614,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: [ "percent", "pps" ]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -610,7 +628,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: ["percent", "pps"]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -624,7 +642,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: ["percent", "pps"]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -638,7 +656,7 @@ keys:
                   type: str
                   default: "percent"
                   valid_values: [ "percent", "pps" ]
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         logging:
           type: dict
           keys:
@@ -651,7 +669,7 @@ keys:
                   type: bool
                 spanning_tree:
                   type: bool
-                storm_control:
+                storm_control_discards:
                   type: bool
         lldp:
           type: dict
@@ -979,6 +997,234 @@ keys:
         port_profile:
           type: str
           description: Key only used for documentation or validation purposes
+        uc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                required: true
+                description: TX-Queue ID
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            description: Indicate the units to be used for the threshold values
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 256000000
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            convert_types:
+                              - str
+                            min: 1
+                            max: 256000000
+                            description: Set the random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN max-mark-probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN weight
+        tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+            - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                required: true
+                description: TX-Queue ID
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            type: str
+                            required: true
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            description: Indicate the units to be used for the threshold values
+                          min:
+                            type: int
+                            min: 1
+                            max: 256000000
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            convert_types:
+                              - str
+                            min: 1
+                            max: 256000000
+                            description: Set the random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN max-mark-probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: Set the random-detect ECN weight
+        vrrp_ids:
+          type: list
+          description: VRRP model.
+          primary_key: id
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                description: VRID
+              priority_level:
+                type: int
+                convert_types:
+                  - str
+                description: Instance priority
+                min: 1
+                max: 254
+              advertisement:
+                type: dict
+                keys:
+                  interval:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Interval in seconds
+                    min: 1
+                    max: 255
+              preempt:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  delay:
+                    type: dict
+                    keys:
+                      minimum:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Minimum preempt delay in seconds
+                        min: 0
+                        max: 3600
+                      reload:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Reload preempt delay in seconds
+                        min: 0
+                        max: 3600
+              timers:
+                type: dict
+                keys:
+                  delay:
+                    type: dict
+                    keys:
+                      reload:
+                        type: int
+                        description: Delay after reload in seconds.
+                        convert_types:
+                          - str
+                        min: 0
+                        max: 3600
+              tracked_object:
+                type: list
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Tracked object name
+                    decrement:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 1
+                      max: 254
+                      description: Decrement VRRP priority by 1-254
+                    shutdown:
+                      type: bool
+              ipv4:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv4 address
+                  version:
+                    type: int
+                    convert_types:
+                      - str
+                    valid_values:
+                      - 2
+                      - 3
+              ipv6:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv6 address
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration

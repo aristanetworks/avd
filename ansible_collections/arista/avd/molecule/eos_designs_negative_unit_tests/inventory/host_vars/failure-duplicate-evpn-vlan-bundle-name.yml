@@ -1,0 +1,50 @@
+# Enable vlan aware bundles
+evpn_vlan_aware_bundles: true
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    # LOOPBACK AND VTEP MANAGEMENT
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+    # Possibility to prevent configuration of Tenant VRFs and SVIs. This allows support for centralized routing.
+    evpn_services_l2_only: true
+  nodes:
+    - name: failure-duplicate-evpn-vlan-bundle-name
+      id: 3
+      bgp_as: 65101
+      filter:
+        tags: [fabric, ipmi, storageProd]
+
+tenants:
+  - name: StorageProd
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 10
+        name: bundle1 # Notice this is the same name the evpn_vlan_bundle.
+        tags: ['storageProd']
+      - id: 20
+        name: storage_prod
+        tags: ['storageProd']
+  - name: FABRIC
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 50
+        name: ipmi
+        tags: ['ipmi']
+        evpn_vlan_bundle: bundle1
+      - id: 60
+        name: ipmi
+        tags: ['fabric']
+        evpn_vlan_bundle: bundle1
+
+evpn_vlan_bundles:
+  - name: bundle1
+    id: 1
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for BGP VLAN-Aware Bundles defined under network services. A common reason is that an 'l2vlan' name overlaps with an 'evpn_vlan_bundle' name.
+  {'name': 'bundle1', 'rd': '10.10.0.3:10010', 'route_targets': {'both': ['10010:10010']}, 'tenant': 'StorageProd', 'vlan': '10'}
+  conflicts with {'name': 'bundle1', 'rd': '10.10.0.3:1', 'route_targets': {'both': ['1:1']}, 'tenant': None, 'vlan': '50,60'}.

@@ -1,0 +1,35 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# AVD State Validation Report #}
+{% if use_anta %}
+eos_validate_state_report:
+{%     set test_id = namespace(value=0) %}
+{%     for node in groups[fabric_name] | arista.avd.natural_sort %}
+{# ANTA Results #}
+{%         for anta_result in hostvars[node].anta_results.results | arista.avd.default([]) %}
+{%             if anta_result.result is not arista.avd.defined("skipped") %}
+{%                 set test_id.value = test_id.value + 1 %}
+- id: {{ test_id.value }}
+  device: "{{ anta_result.name }}"
+  test_category: "{{ anta_result.categories }}"
+  test_description: "{{ anta_result.description }}"
+{%                 if anta_result.custom_field is arista.avd.defined("None") %}
+  test: "{{ anta_result.test }}"
+{%                 else %}
+  test: "{{ anta_result.custom_field }}"
+{%                 endif %}
+{%                 if anta_result.result is arista.avd.defined("success") %}
+  result: "PASS"
+{%                 elif anta_result.result is arista.avd.defined("failure") or anta_result.result is arista.avd.defined("error") %}
+  result: "FAIL"
+  failure_reason: "{{ anta_result.messages }}"
+{%                 elif anta_result.result is arista.avd.defined("unset") %}
+  result: "NOT RUN"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

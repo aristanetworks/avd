@@ -1,0 +1,21 @@
+---
+- name: Converge
+  hosts: FABRIC
+  gather_facts: false
+  vars:
+    root_dir: '{{ playbook_dir }}'
+  tasks:
+    - name: Generate AVD Structured Configurations and Fabric Documentation
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+      vars:
+        avd_data_validation_mode: error
+        avd_data_conversion_mode: error
+    - name: Test eos_validate_state
+      delegate_to: localhost
+      ansible.builtin.import_role:
+        name: arista.avd.eos_validate_state
+      # Save catalogs
+      vars:
+        use_anta: true
+        save_catalog: true

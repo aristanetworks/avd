@@ -388,6 +388,32 @@ keys:
           ipv6_enforcement_disabled:
             type: bool
             description: Configure enforcement for locked IPv6 addresses
+  agents:
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Agent name.
+        environment_variables:
+          type: list
+          primary_key: name
+          min_length: 1
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Environment variable name.
+              value:
+                type: str
+                convert_types:
+                - int
+                - bool
+                required: true
+                description: Environment variable value.
   aliases:
     type: str
     description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
@@ -404,6 +430,26 @@ keys:
             type: int
             min: 60
             max: 65535
+      static_entries:
+        type: list
+        description: Static ARP entries.
+        items:
+          type: dict
+          keys:
+            ipv4_address:
+              type: str
+              required: true
+              description: ARP entry IPv4 address.
+            vrf:
+              type: str
+              convert_types:
+              - int
+              description: ARP entry VRF.
+            mac_address:
+              type: str
+              description: ARP entry MAC address.
+              required: true
+              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
   as_path:
     type: dict
     keys:
@@ -588,14 +634,14 @@ keys:
               type: str
               description: Class-Map Name
             vlan:
-              type: int
+              type: str
               convert_types:
-              - str
+              - int
               description: VLAN value(s) or range(s) of VLAN values
             cos:
-              type: int
+              type: str
               convert_types:
-              - str
+              - int
               description: CoS value(s) or range(s) of CoS values
             ip:
               type: dict
@@ -974,6 +1020,9 @@ keys:
 
           '
       cvcompression:
+        deprecation:
+          warning: true
+          remove_in_version: v5.0.0
         type: str
         description: 'The default compression scheme when streaming to CloudVision
           is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
@@ -1011,6 +1060,8 @@ keys:
           type: str
           description: Server IP or Hostname
       tunnel_requests_disabled:
+        type: bool
+      mlag_peerlink_requests_disabled:
         type: bool
   dns_domain:
     type: str
@@ -1057,6 +1108,69 @@ keys:
             max: 9236
             convert_types:
             - str
+  dps_interfaces:
+    type: list
+    primary_key: name
+    min_length: 1
+    max_length: 1
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: '"Dps1" is currently the only supported interface.'
+          valid_values:
+          - Dps1
+        description:
+          type: str
+        shutdown:
+          type: bool
+        mtu:
+          type: int
+          description: Maximum Transmission Unit in bytes.
+          convert_types:
+          - str
+          min: 68
+          max: 65535
+        ip_address:
+          type: str
+          description: IPv4 address/mask.
+        flow_tracker:
+          type: dict
+          keys:
+            sampled:
+              type: str
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name,
+        tcp_mss_ceiling:
+          type: dict
+          keys:
+            ipv4:
+              type: int
+              description: Segment Size for IPv4.
+              min: 64
+              max: 65495
+              convert_types:
+              - str
+            ipv6:
+              type: int
+              description: Segment Size for IPv6.
+              min: 64
+              max: 65475
+              convert_types:
+              - str
+            direction:
+              type: str
+              valid_values:
+              - ingress
+              - egress
+              description: Optional direction ('ingress', 'egress')  for tcp mss ceiling.
+        eos_cli:
+          type: str
+          description: Multiline String with EOS CLI rendered directly on the Dps
+            interface in the final EOS configuration.
   dynamic_prefix_lists:
     type: list
     items:
@@ -1190,8 +1304,8 @@ keys:
           description: Interval in seconds for updating interface counters"
         speed:
           type: str
-          description: Speed can be interface_speed or forced interface_speed or auto
-            interface_speed
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
           convert_types:
@@ -1306,7 +1420,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         error_correction_encoding:
           type: dict
           keys:
@@ -1450,11 +1567,20 @@ keys:
           - str
         ip_address:
           type: str
-          description: IPv4 address/mask
+          description: IPv4 address/mask or "dhcp"
         ip_address_secondaries:
           type: list
           items:
             type: str
+        dhcp_client_accept_default_route:
+          type: bool
+          description: Install default-route obtained via DHCP
+        dhcp_server_ipv4:
+          type: bool
+          description: Enable IPv4 DHCP server.
+        dhcp_server_ipv6:
+          type: bool
+          description: Enable IPv6 DHCP server.
         ip_helpers:
           type: list
           primary_key: ip_helper
@@ -1474,7 +1600,12 @@ keys:
                 convert_types:
                 - int
         ip_nat:
+          type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
+          keys:
+            service_profile:
+              type: str
+              description: NAT interface profile.
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -1841,7 +1972,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -1857,7 +1988,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -1873,7 +2004,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -1889,7 +2020,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         logging:
           type: dict
           keys:
@@ -1902,7 +2033,7 @@ keys:
                   type: bool
                 spanning_tree:
                   type: bool
-                storm_control:
+                storm_control_discards:
                   type: bool
         lldp:
           type: dict
@@ -2269,6 +2400,246 @@ keys:
         port_profile:
           type: str
           description: Key only used for documentation or validation purposes
+        uc_tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                - str
+                required: true
+                description: TX-Queue ID
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values:
+                            - segments
+                            - bytes
+                            - kbytes
+                            - mbytes
+                            - milliseconds
+                            description: Indicate the units to be used for the threshold
+                              values
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 256000000
+                            convert_types:
+                            - str
+                            description: Set the random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            convert_types:
+                            - str
+                            min: 1
+                            max: 256000000
+                            description: Set the random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                            - str
+                            description: Set the random-detect ECN max-mark-probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                            - str
+                            description: Set the random-detect ECN weight
+        tx_queues:
+          type: list
+          primary_key: id
+          convert_types:
+          - dict
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                - str
+                required: true
+                description: TX-Queue ID
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            type: str
+                            required: true
+                            valid_values:
+                            - segments
+                            - bytes
+                            - kbytes
+                            - mbytes
+                            - milliseconds
+                            description: Indicate the units to be used for the threshold
+                              values
+                          min:
+                            type: int
+                            min: 1
+                            max: 256000000
+                            convert_types:
+                            - str
+                            description: Set the random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            convert_types:
+                            - str
+                            min: 1
+                            max: 256000000
+                            description: Set the random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                            - str
+                            description: Set the random-detect ECN max-mark-probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                            - str
+                            description: Set the random-detect ECN weight
+        vrrp_ids:
+          type: list
+          description: VRRP model.
+          primary_key: id
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                - str
+                description: VRID
+              priority_level:
+                type: int
+                convert_types:
+                - str
+                description: Instance priority
+                min: 1
+                max: 254
+              advertisement:
+                type: dict
+                keys:
+                  interval:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Interval in seconds
+                    min: 1
+                    max: 255
+              preempt:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  delay:
+                    type: dict
+                    keys:
+                      minimum:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Minimum preempt delay in seconds
+                        min: 0
+                        max: 3600
+                      reload:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Reload preempt delay in seconds
+                        min: 0
+                        max: 3600
+              timers:
+                type: dict
+                keys:
+                  delay:
+                    type: dict
+                    keys:
+                      reload:
+                        type: int
+                        description: Delay after reload in seconds.
+                        convert_types:
+                        - str
+                        min: 0
+                        max: 3600
+              tracked_object:
+                type: list
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Tracked object name
+                    decrement:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 254
+                      description: Decrement VRRP priority by 1-254
+                    shutdown:
+                      type: bool
+              ipv4:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv4 address
+                  version:
+                    type: int
+                    convert_types:
+                    - str
+                    valid_values:
+                    - 2
+                    - 3
+              ipv6:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv6 address
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
@@ -2317,6 +2688,7 @@ keys:
 
             '
           valid_values:
+          - on-boot
           - on-logging
           - on-startup-config
         regex:
@@ -2334,7 +2706,48 @@ keys:
     keys:
       enabled:
         type: bool
+  flow_tracking:
+    type: dict
+    keys:
+      sampled:
+        type: dict
+        $ref: eos_cli_config_gen#/$defs/flow_tracking
+        keys:
+          sample:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+          trackers:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                table_size:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 614400
+                  description: 'Maximum number of entries in flow table.
+
+                    '
+                record_export:
+                  type: dict
+                  keys:
+                    mpls:
+                      type: bool
+                      description: Export MPLS forwarding information
+      hardware:
+        type: dict
+        $ref: eos_cli_config_gen#/$defs/flow_tracking
   flow_trackings:
+    deprecation:
+      warning: true
+      new_key: flow_tracking
+      remove_in_version: v5.0.0
     type: list
     primary_key: type
     items:
@@ -2480,9 +2893,9 @@ keys:
           type: dict
           keys:
             speed_group:
-              type: int
+              type: str
               convert_types:
-              - str
+              - int
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g"
@@ -2775,7 +3188,7 @@ keys:
                 convert_types:
                 - str
                 min: 0
-                max: 254
+                max: 255
               ttl_match:
                 type: str
                 valid_values:
@@ -3145,6 +3558,20 @@ keys:
         min: 1
         max: 64
         description: Buffer size in MB
+      profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          $ref: eos_cli_config_gen#/$defs/interface_ip_nat
+          keys:
+            name:
+              type: str
+            vrf:
+              type: str
+              convert_types:
+              - int
+              description: Specify VRF for NAT profile.
       pools:
         type: list
         primary_key: name
@@ -3326,6 +3753,144 @@ keys:
     type: bool
   ip_routing_ipv6_interfaces:
     type: bool
+  ip_security:
+    type: dict
+    keys:
+      ike_policies:
+        type: list
+        description: Internet Security Association and Key Mgmt Protocol.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            local_id:
+              type: str
+              description: 'Local IKE Identification.
+
+                Can be an IPv4 or an IPv6 address.
+
+                '
+      sa_policies:
+        type: list
+        description: Security Association policies.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the SA policy.
+            esp:
+              type: dict
+              keys:
+                integrity:
+                  type: str
+                  valid_values:
+                  - 'null'
+                  - sha1
+                  - sha256
+                encryption:
+                  type: str
+                  valid_values:
+                  - 'null'
+                  - aes128
+                  - aes128gcm128
+                  - aes128gcm64
+                  - aes256
+                  - aes256gcm256
+            pfs_dh_group:
+              type: int
+              convert_types:
+              - str
+              valid_values:
+              - 1
+              - 2
+              - 5
+              - 14
+              - 15
+              - 16
+              - 17
+              - 20
+              - 21
+              - 24
+      profiles:
+        type: list
+        description: IPSec profiles.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the IPsec profile.
+            ike_policy:
+              type: str
+              description: Name of the IKE policy to use in this profile.
+            sa_policy:
+              type: str
+              description: Name of the Security Association to use in this profile.
+            connection:
+              type: str
+              description: IPsec connection (Initiator/Responder/Dynamic).
+              valid_values:
+              - add
+              - start
+              - route
+            shared_key:
+              type: str
+              description: Encrypted password - only type 7 supported.
+            dpd:
+              type: dict
+              description: Dead Peer Detection.
+              keys:
+                interval:
+                  type: int
+                  description: Interval (in seconds) between keep-alive messages.
+                  required: true
+                  convert_types:
+                  - str
+                  min: 2
+                  max: 3600
+                time:
+                  type: int
+                  description: Time (in seconds) after which the action is applied.
+                  required: true
+                  convert_types:
+                  - str
+                  min: 10
+                  max: 3600
+                action:
+                  type: str
+                  description: 'Action to apply
+
+
+                    * ''clear'': Delete all connections
+
+                    * ''hold'': Re-negotiate connection on demand
+
+                    * ''restart'': Restart connection immediately
+
+                    '
+                  required: true
+                  valid_values:
+                  - clear
+                  - hold
+                  - restart
+            mode:
+              type: str
+              description: Ipsec mode type.
+              valid_values:
+              - transport
+              - tunnel
+      key_controller:
+        type: dict
+        keys:
+          profile:
+            type: str
+            description: IPsec profile name to use.
   ip_ssh_client_source_interfaces:
     type: list
     items:
@@ -3515,6 +4080,10 @@ keys:
           max: 4294967295
   ipv6_unicast_routing:
     type: bool
+  is_deployed:
+    description: Key only used for documentation or validation purposes
+    type: bool
+    default: true
   l2_protocol:
     type: dict
     keys:
@@ -4063,7 +4632,6 @@ keys:
     keys:
       license:
         type: dict
-        required: true
         keys:
           license_name:
             type: str
@@ -4073,7 +4641,6 @@ keys:
             required: true
       fips_restrictions:
         type: bool
-        required: true
       profiles:
         type: list
         primary_key: name
@@ -4331,6 +4898,16 @@ keys:
                 ip_access_group:
                   type: str
                   description: ACL name
+                port:
+                  type: int
+                  description: 'GNMI port.
+
+                    Make sure to update the control-plane ACL accordingly in order
+                    for the service to be reachable by external applications.
+
+                    '
+                  convert_types:
+                  - str
           grpc_tunnels:
             type: list
             primary_key: name
@@ -4547,6 +5124,10 @@ keys:
           type: str
         shutdown:
           type: bool
+        speed:
+          type: str
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
         vrf:
@@ -4578,6 +5159,18 @@ keys:
         mac_address:
           type: str
           description: MAC address
+        lldp:
+          type: dict
+          keys:
+            transmit:
+              type: bool
+            receive:
+              type: bool
+            ztp_vlan:
+              type: int
+              convert_types:
+              - str
+              description: ZTP vlan number
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface
@@ -4824,6 +5417,24 @@ keys:
       log_level:
         type: str
         description: SSH daemon log level
+      client_alive:
+        type: dict
+        keys:
+          count_max:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 1000
+            description: Number of keep-alive packets that can be sent without a response
+              before the connection is assumed dead.
+          interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 1000
+            description: Time period (in seconds) to send SSH keep-alive packets.
   management_tech_support:
     type: dict
     keys:
@@ -5356,6 +5967,7 @@ keys:
                   Example: "as-range 1-100 result accept"'
   platform:
     type: dict
+    description: Every key below this point is platform dependent.
     keys:
       trident:
         type: dict
@@ -5509,7 +6121,7 @@ keys:
                                   '
       sand:
         type: dict
-        description: Most of the platform sand options are hardware dependant and
+        description: Most of the platform sand options are hardware dependent and
           optional
         keys:
           qos_maps:
@@ -5546,6 +6158,17 @@ keys:
                 valid_values:
                 - ingress
                 - egress
+      sfe:
+        type: dict
+        description: Sfe (Software Forwarding Engine) settings.
+        keys:
+          data_plane_cpu_allocation_max:
+            type: int
+            description: Maximum number of CPUs used for data plane traffic forwarding.
+            convert_types:
+            - str
+            min: 1
+            max: 128
   poe:
     type: dict
     keys:
@@ -6007,7 +6630,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -6023,7 +6646,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -6039,7 +6662,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -6055,7 +6678,7 @@ keys:
                   valid_values:
                   - percent
                   - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         ip_proxy_arp:
           type: bool
         isis_enable:
@@ -6264,6 +6887,7 @@ keys:
           type: str
           description: IPv4 address/mask
         ip_nat:
+          type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
@@ -6381,7 +7005,10 @@ keys:
           keys:
             sampled:
               type: str
-              description: Flow tracker name
+              description: Sampled flow tracker name.
+            hardware:
+              type: str
+              description: Hardware flow tracker name.
         bgp:
           type: dict
           keys:
@@ -6549,7 +7176,7 @@ keys:
       ttl:
         type: int
         min: 1
-        max: 254
+        max: 255
         convert_types:
         - str
       domain:
@@ -6684,6 +7311,13 @@ keys:
               description: 'Example: "8 9 10 to traffic-class 1"
 
                 '
+          exp:
+            type: list
+            items:
+              type: str
+              description: 'Example "0 to traffic-class 0"
+
+                '
           traffic_class:
             type: list
             items:
@@ -6693,6 +7327,26 @@ keys:
                 '
       rewrite_dscp:
         type: bool
+      random_detect:
+        type: dict
+        description: Global random-detect settings
+        keys:
+          ecn:
+            type: dict
+            description: Global ECN Configuration
+            keys:
+              allow_non_ect:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: 'Allow non-ect and set drop-precedence 1 in a policy
+                      map simultaneously.
+
+                      Check which command is required for your platform.'
+                  chip_based:
+                    type: bool
+                    description: Allow non-ect chip-based
   qos_profiles:
     type: list
     primary_key: name
@@ -6775,9 +7429,113 @@ keys:
                       '
               comment:
                 type: str
-                description: 'Text comment added to queue.
+                description: Text comment added to queue
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values:
+                            - segments
+                            - bytes
+                            - kbytes
+                            - mbytes
+                            - milliseconds
+                            description: 'Units to be used for the threshold values.
 
-                  '
+                              This should be one of segments, byte, kbytes, mbytes.'
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                            - str
+                            description: Random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                            - str
+                            description: Random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                            - str
+                            description: Random-detect ECN maximum mark probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                            - str
+                            description: Random-detect ECN weight
+                  drop:
+                    description: Set WRED parameters
+                    type: dict
+                    keys:
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values:
+                            - segments
+                            - bytes
+                            - kbytes
+                            - mbytes
+                            - microseconds
+                            - milliseconds
+                            description: Units to be used for the threshold values.
+                          drop_precedence:
+                            type: int
+                            required: false
+                            min: 0
+                            max: 2
+                            description: Specify Drop Precendence value
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                            - str
+                            description: WRED minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                            - str
+                            description: WRED maximum-threshold
+                          drop_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                            - str
+                            description: WRED drop probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                            - str
+                            description: WRED weight
         uc_tx_queues:
           type: list
           primary_key: id
@@ -6816,9 +7574,111 @@ keys:
                       '
               comment:
                 type: str
-                description: 'Text comment added to queue.
-
-                  '
+                description: Text comment added to queue
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values:
+                            - segments
+                            - bytes
+                            - kbytes
+                            - mbytes
+                            - milliseconds
+                            description: Unit to be used for the threshold values
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                            - str
+                            description: Random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                            - str
+                            description: Random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                            - str
+                            description: Random-detect ECN maximum mark probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                            - str
+                            description: Random-detect ECN weight
+                  drop:
+                    description: Set WRED parameters
+                    type: dict
+                    keys:
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values:
+                            - segments
+                            - bytes
+                            - kbytes
+                            - mbytes
+                            - microseconds
+                            - milliseconds
+                            description: Units to be used for the threshold values.
+                          drop_precedence:
+                            type: int
+                            required: false
+                            min: 0
+                            max: 2
+                            description: Specify Drop Precendence value
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                            - str
+                            description: WRED minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                            - str
+                            description: WRED maximum-threshold
+                          drop_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                            - str
+                            description: WRED drop probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                            - str
+                            description: WRED weight
         mc_tx_queues:
           type: list
           primary_key: id
@@ -7230,6 +8090,59 @@ keys:
                     type: int
                     convert_types:
                     - str
+  router_adaptive_virtual_topology:
+    type: dict
+    keys:
+      topology_role:
+        description: Role name.
+        type: str
+        valid_values:
+        - edge
+        - pathfinder
+        - transit region
+        - transit zone
+      region:
+        type: dict
+        description: Region name and ID.
+        keys:
+          name:
+            type: str
+            required: true
+          id:
+            type: int
+            convert_types:
+            - str
+            required: true
+            min: 1
+            max: 255
+      zone:
+        type: dict
+        description: Zone name and ID.
+        keys:
+          name:
+            type: str
+            required: true
+          id:
+            type: int
+            convert_types:
+            - str
+            required: true
+            min: 1
+            max: 10000
+      site:
+        type: dict
+        description: Site name and ID.
+        keys:
+          name:
+            type: str
+            required: true
+          id:
+            type: int
+            convert_types:
+            - str
+            required: true
+            min: 1
+            max: 10000
   router_bfd:
     type: dict
     keys:
@@ -7293,7 +8206,7 @@ keys:
     keys:
       as:
         type: str
-        description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+        description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
         convert_types:
         - int
       router_id:
@@ -7469,7 +8382,7 @@ keys:
               type: str
               convert_types:
               - int
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
       peer_groups:
         type: list
         primary_key: name
@@ -7486,12 +8399,12 @@ keys:
               description: Key only used for documentation or validation purposes
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             description:
@@ -7668,12 +8581,12 @@ keys:
               type: str
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             as_path:
@@ -7959,6 +8872,10 @@ keys:
               description: VLAN range as string. Example "100-200,300"
               convert_types:
               - int
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on the Router BGP,
+                VLAN-aware-bundle definition in the final EOS configuration
       vlans:
         type: list
         primary_key: id
@@ -8149,6 +9066,34 @@ keys:
                   valid_values:
                   - vxlan
                   - mpls
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -8176,6 +9121,11 @@ keys:
                 convert_types:
                 - str
                 description: Time (in seconds) to purge a MAC duplication issue
+          next_hop:
+            type: dict
+            keys:
+              resolution_disabled:
+                type: bool
           route:
             type: dict
             keys:
@@ -8183,6 +9133,8 @@ keys:
                 type: str
                 valid_values:
                 - discard
+          next_hop_unchanged:
+            type: bool
       address_family_rtc:
         type: dict
         keys:
@@ -8357,6 +9309,42 @@ keys:
                   type: str
                 route_map:
                   type: str
+      address_family_ipv4_sr_te:
+        type: dict
+        keys:
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
       address_family_ipv6:
         type: dict
         keys:
@@ -8507,6 +9495,126 @@ keys:
                   description: IPv6 prefix "A:B:C:D:E:F:G:H/I"
                 route_map:
                   type: str
+      address_family_ipv6_sr_te:
+        type: dict
+        keys:
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name
+      address_family_link_state:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              missing_policy:
+                type: dict
+                keys:
+                  direction_in_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+                  direction_out_action:
+                    type: str
+                    valid_values:
+                    - deny
+                    - deny-in-out
+                    - permit
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                missing_policy:
+                  type: dict
+                  keys:
+                    direction_in_action:
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+                    direction_out_action:
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                missing_policy:
+                  type: dict
+                  keys:
+                    direction_in_action:
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+                    direction_out_action:
+                      type: str
+                      valid_values:
+                      - deny
+                      - deny-in-out
+                      - permit
+          path_selection:
+            type: dict
+            keys:
+              roles:
+                type: dict
+                keys:
+                  producer:
+                    type: bool
+                  consumer:
+                    type: bool
+                  propagator:
+                    type: bool
       address_family_flow_spec_ipv4:
         type: dict
         keys:
@@ -8599,6 +9707,127 @@ keys:
                   description: Peer-group name
                 activate:
                   type: bool
+      address_family_path_selection:
+        type: dict
+        keys:
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
+                  send:
+                    type: dict
+                    keys:
+                      any:
+                        type: bool
+                      backup:
+                        type: bool
+                      ecmp:
+                        type: bool
+                      ecmp_limit:
+                        type: int
+                        description: Amount of ECMP paths to send
+                        convert_types:
+                        - str
+                        min: 2
+                        max: 64
+                      limit:
+                        type: int
+                        description: Amount of paths to send
+                        convert_types:
+                        - str
+                        min: 2
+                        max: 64
+          neighbors:
+            type: list
+            primary_key: ip_address
+            convert_types:
+            - dict
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    install:
+                      type: bool
+                    install_ecmp_primary:
+                      type: bool
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    install:
+                      type: bool
+                    install_ecmp_primary:
+                      type: bool
+                    receive:
+                      type: bool
+                    send:
+                      type: dict
+                      keys:
+                        any:
+                          type: bool
+                        backup:
+                          type: bool
+                        ecmp:
+                          type: bool
+                        ecmp_limit:
+                          type: int
+                          description: Amount of ECMP paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
+                        limit:
+                          type: int
+                          description: Amount of paths to send
+                          convert_types:
+                          - str
+                          min: 2
+                          max: 64
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -8753,6 +9982,8 @@ keys:
                         type: list
                         items:
                           type: str
+                      route_map:
+                        type: str
                 export:
                   type: list
                   primary_key: address_family
@@ -8768,6 +9999,8 @@ keys:
                         type: list
                         items:
                           type: str
+                      route_map:
+                        type: str
             router_id:
               description: in IP address format A.B.C.D
               type: str
@@ -8839,7 +10072,7 @@ keys:
                   remote_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
             neighbors:
@@ -8858,7 +10091,7 @@ keys:
                   remote_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
                   password:
@@ -8891,7 +10124,7 @@ keys:
                   local_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
                   as_path:
@@ -9000,7 +10233,7 @@ keys:
                   remote_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
                   peer_group:
@@ -9585,6 +10818,7 @@ keys:
         type: str
         description: IPv4 Address
       is_type:
+        display_name: IS Type
         type: str
         valid_values:
         - level-1
@@ -10391,6 +11625,177 @@ keys:
               type: str
               description: Multiline EOS CLI rendered directly on the Router OSPF
                 process ID in the final EOS configuration
+  router_path_selection:
+    type: dict
+    description: Dynamic path selection configuration.
+    keys:
+      peer_dynamic_source:
+        type: str
+        valid_values:
+        - stun
+        description: Source of dynamic peer discovery.
+      path_groups:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Path group name.
+            id:
+              type: int
+              description: Path group ID.
+              convert_types:
+              - str
+              min: 1
+              max: 65535
+            ipsec_profile:
+              type: str
+              description: IPSec profile for the path group.
+            flow_assignment:
+              type: str
+              valid_values:
+              - lan
+              description: Flow assignement `lan` can not be configured in a path
+                group with dynamic peers.
+            local_interfaces:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Local interface name.
+                    pattern: ^Ethernet\d+(/\d+)*(\.\d+)?$
+                  public_address:
+                    type: str
+                    description: Public IP assigned by NAT.
+                  stun:
+                    type: dict
+                    keys:
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 2
+                        description: STUN server-profile names.
+                        items:
+                          type: str
+            local_ips:
+              type: list
+              primary_key: ip_address
+              items:
+                type: dict
+                keys:
+                  ip_address:
+                    type: str
+                  public_address:
+                    type: str
+                    description: Public IP assigned by NAT.
+                  stun:
+                    type: dict
+                    keys:
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 2
+                        description: STUN server-profile names.
+                        items:
+                          type: str
+            dynamic_peers:
+              type: dict
+              description: Flow assignement `lan` can not be configured in a path
+                group with dynamic peers.
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable `peer dynamic`.
+                ip_local:
+                  type: bool
+                  description: Prefer local IP address.
+                ipsec:
+                  type: bool
+                  description: IPsec configuration for dynamic peers.
+            static_peers:
+              type: list
+              primary_key: router_ip
+              items:
+                type: dict
+                keys:
+                  router_ip:
+                    type: str
+                    description: Peer router IP.
+                  name:
+                    type: str
+                    description: Name of the site.
+                  ipv4_addresses:
+                    type: list
+                    description: Static IPv4 addresses.
+                    items:
+                      type: str
+      load_balance_policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Load-balance policy name.
+            path_groups:
+              type: list
+              description: List of path-groups to use for this load balance policy.
+              items:
+                type: str
+      policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: DPS policy name.
+            default_match:
+              type: dict
+              keys:
+                load_balance:
+                  type: str
+                  description: Name of the load-balance policy.
+            rules:
+              type: list
+              primary_key: id
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: int
+                    description: Rule ID.
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 255
+                  application_profile:
+                    type: str
+                    required: true
+                  load_balance:
+                    type: str
+                    description: Name of the load-balance policy.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            path_selection_policy:
+              type: str
+              description: DPS policy name to use for this VRF.
   router_pim_sparse_mode:
     type: dict
     keys:
@@ -10504,9 +11909,17 @@ keys:
                         max: 32
                       override:
                         type: bool
+  router_service_insertion:
+    type: dict
+    description: Configure network services inserted to data forwarding
+    keys:
+      enabled:
+        type: bool
   router_traffic_engineering:
     type: dict
     keys:
+      enabled:
+        type: bool
       router_id:
         type: dict
         keys:
@@ -11231,6 +12644,40 @@ keys:
           - str
           min: 0
           max: 4294967295
+  stun:
+    type: dict
+    description: STUN configuration
+    keys:
+      client:
+        type: dict
+        description: STUN client settings
+        keys:
+          server_profiles:
+            type: list
+            description: List of server profiles for the client
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                ip_address:
+                  type: str
+      server:
+        type: dict
+        description: STUN server settings
+        keys:
+          local_interface:
+            type: str
+            deprecation:
+              warning: true
+              new_key: local_interfaces
+              remove_in_version: v5.0.0
+          local_interfaces:
+            type: list
+            min_length: 1
+            items:
+              type: str
   switchport_default:
     type: dict
     keys:
@@ -11303,9 +12750,29 @@ keys:
                   type: str
                   convert_types:
                   - int
+      l1:
+        type: dict
+        keys:
+          unsupported_speed_action:
+            type: str
+            valid_values:
+            - error
+            - warn
+          unsupported_error_correction_action:
+            type: str
+            valid_values:
+            - error
+            - warn
   tacacs_servers:
     type: dict
     keys:
+      timeout:
+        type: int
+        convert_types:
+        - str
+        description: Timeout in seconds
+        min: 1
+        max: 1000
       hosts:
         type: list
         items:
@@ -11336,6 +12803,9 @@ keys:
               type: int
               convert_types:
               - str
+              description: Timeout in seconds
+              min: 1
+              max: 1000
       policy_unknown_mandatory_attribute_ignore:
         type: bool
   tap_aggregation:
@@ -11888,6 +13358,7 @@ keys:
                 convert_types:
                 - int
         ip_nat:
+          type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
         ipv6_enable:
           type: bool
@@ -12153,6 +13624,8 @@ keys:
                 convert_types:
                 - str
                 description: Instance priority
+                min: 1
+                max: 254
               advertisement:
                 type: dict
                 keys:
@@ -12161,6 +13634,8 @@ keys:
                     convert_types:
                     - str
                     description: Interval in seconds
+                    min: 1
+                    max: 255
               preempt:
                 type: dict
                 keys:
@@ -12175,11 +13650,15 @@ keys:
                         convert_types:
                         - str
                         description: Minimum preempt delay in seconds
+                        min: 0
+                        max: 3600
                       reload:
                         type: int
                         convert_types:
                         - str
                         description: Reload preempt delay in seconds
+                        min: 0
+                        max: 3600
               timers:
                 type: dict
                 keys:
@@ -12191,6 +13670,8 @@ keys:
                         description: Delay after reload in seconds.
                         convert_types:
                         - str
+                        min: 0
+                        max: 3600
               tracked_object:
                 type: list
                 primary_key: name
@@ -12571,6 +14052,78 @@ keys:
             description: Multiline String with EOS CLI rendered directly on the Vxlan
               interface in the final EOS configuration.
 $defs:
+  flow_tracking:
+    type: dict
+    keys:
+      trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Tracker Name
+            record_export:
+              type: dict
+              keys:
+                on_inactive_timeout:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 3000
+                  max: 900000
+                  description: Flow record inactive export timeout in milliseconds
+                on_interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1000
+                  max: 36000000
+                  description: Flow record export interval in milliseconds
+            exporters:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Exporter Name
+                  collector:
+                    type: dict
+                    keys:
+                      host:
+                        type: str
+                        description: Collector IPv4 address or IPv6 address or fully
+                          qualified domain name
+                      port:
+                        type: int
+                        description: Collector Port Number
+                        min: 1
+                        max: 65535
+                        convert_types:
+                        - str
+                  format:
+                    type: dict
+                    keys:
+                      ipfix_version:
+                        type: int
+                        convert_types:
+                        - str
+                  local_interface:
+                    type: str
+                    description: Local Source Interface
+                  template_interval:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 5000
+                    max: 3600000
+                    description: Template interval in milliseconds
+      shutdown:
+        type: bool
+        default: false
   interface_ip_nat:
     type: dict
     keys:
@@ -12597,6 +14150,7 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
+            type: list
             $ref: eos_cli_config_gen#/$defs/interface_ip_nat_static
       source:
         type: dict
@@ -12634,6 +14188,7 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
+            type: list
             $ref: eos_cli_config_gen#/$defs/interface_ip_nat_static
   interface_ip_nat_static:
     type: list

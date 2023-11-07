@@ -12,8 +12,8 @@ $defs:
       speed:
         type: str
         description: |
-          Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.
-          If not specified will be auto.
+          Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          If not specified speed will be auto.
       description:
         type: str
         description: |
@@ -255,11 +255,14 @@ $defs:
                 default: "percent"
                 description: Optional variable and is hardware dependent.
           broadcast:
-            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+            type: dict
+            $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
           multicast:
-            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+            type: dict
+            $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
           unknown_unicast:
-            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+            type: dict
+            $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
       monitor_sessions:
         type: list
         description: Used to define switchports as source or destination for monitoring sessions.

@@ -34,8 +34,6 @@ cli_with_hidden_password: "ip ospf authentication-key 7 {{ vlan_interface.ospf_a
 | ---- | ---- | ----------- |
 | _value | string | The original input or \'\<removed\>\' |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

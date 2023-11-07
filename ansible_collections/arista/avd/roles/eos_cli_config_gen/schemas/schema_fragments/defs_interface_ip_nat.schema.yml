@@ -32,6 +32,7 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
+            type: list
             $ref: "eos_cli_config_gen#/$defs/interface_ip_nat_static"
       source:
         type: dict
@@ -66,4 +67,5 @@ $defs:
                   min: 0
                   max: 4294967295
           static:
+            type: list
             $ref: "eos_cli_config_gen#/$defs/interface_ip_nat_static"

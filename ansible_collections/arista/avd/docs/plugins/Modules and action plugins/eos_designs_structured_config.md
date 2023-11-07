@@ -27,11 +27,11 @@ The \`arista.avd.eos\_designs\_facts\` module is an Ansible Action Plugin provid
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | eos_designs_custom_templates | list | False | None |  | List of dicts for Jinja2 templates to be run after generating the structured configuration |
-|   template | str | True | None |  | Template file.
+|     template | str | True | None |  | Template file.
  |
-|   options | dict | False | None |  | Template options |
-|     list_merge | str | False | append |  | Merge strategy for lists |
-|     strip_empty_keys | bool | False | True |  | Filter out keys from the generated output if value is null/none/undefined<br>Only applies to templates. |
+|     options | dict | False | None |  | Template options |
+|         list_merge | str | False | append |  | Merge strategy for lists |
+|         strip_empty_keys | bool | False | True |  | Filter out keys from the generated output if value is null/none/undefined<br>Only applies to templates. |
 | dest | str | False | None |  | Destination path. If set, the output facts will also be written to this path.<br>Autodetects data format based on file suffix. \'.yml\', \'.yaml\' \-\> YAML, default \-\> JSON |
 | mode | str | False | None |  | File mode \(ex. 0664\) for dest file. See \'ansible.builtin.copy\' module for details. |
 | template_output | bool | False | None |  | If true, the output data will be run through another jinja2 rendering before returning.<br>This is to resolve any input values with inline jinja using variables/facts set by the input templates. |
@@ -54,8 +54,6 @@ The \`arista.avd.eos\_designs\_facts\` module is an Ansible Action Plugin provid
   check_mode: no
   changed_when: False
 ```
-
-## Status
 
 ## Authors
 

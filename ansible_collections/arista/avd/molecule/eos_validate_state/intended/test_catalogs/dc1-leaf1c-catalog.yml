@@ -1,0 +1,72 @@
+anta.tests.connectivity:
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-leaf1a.dc1.local
+      neighbor_port: Ethernet8
+      port: Ethernet1
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet1 - remote: dc1-leaf1a_Ethernet8'
+      description: LLDP topology - validate peer and interface
+anta.tests.hardware:
+- VerifyEnvironmentPower:
+    states:
+    - ok
+- VerifyEnvironmentCooling:
+    states:
+    - ok
+- VerifyTemperature: {}
+- VerifyTransceiversManufacturers:
+    manufacturers:
+    - Arista Networks
+    - Arastra, Inc.
+    - Not Present
+anta.tests.interfaces:
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet1
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet1 - DC1-LEAF1A_Ethernet8
+      description: Ethernet Interface & Line Protocol == \"up\"
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet2
+      protocol_status: down
+      state: adminDown
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet2 - DC1-LEAF1B_Ethernet8
+      description: Ethernet Interface & Line Protocol == \"adminDown\"
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet5
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet5 - dc1-leaf1-server1_iLO
+      description: Ethernet Interface & Line Protocol == \"up\"
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Port-Channel1
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Port-Channel1 - DC1_L3_LEAF1_Po8
+      description: Port-Channel Interface & Line Protocol == \"up\"
+anta.tests.system:
+- VerifyNTP:
+    result_overwrite:
+      categories:
+      - NTP
+      custom_field: NTP
+      description: Synchronised with NTP server

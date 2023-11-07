@@ -79,8 +79,103 @@ keys:
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
               comment:
                 type: str
-                description: |
-                  Text comment added to queue.
+                description: Text comment added to queue
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            description: |-
+                              Units to be used for the threshold values.
+                              This should be one of segments, byte, kbytes, mbytes.
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: Random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: Random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: Random-detect ECN maximum mark probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: Random-detect ECN weight
+                  drop:
+                    description: Set WRED parameters
+                    type: dict
+                    keys:
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"]
+                            description: Units to be used for the threshold values.
+                          drop_precedence:
+                            type: int
+                            required: false
+                            min: 0
+                            max: 2
+                            description: Specify Drop Precendence value
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: WRED minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: WRED maximum-threshold
+                          drop_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: WRED drop probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: WRED weight
+
         uc_tx_queues:
           type: list
           primary_key: id
@@ -115,8 +210,101 @@ keys:
                       Example: "< rate > kbps", "1-100 percent", "< rate > pps"
               comment:
                 type: str
-                description: |
-                  Text comment added to queue.
+                description: Text comment added to queue
+              random_detect:
+                type: dict
+                keys:
+                  ecn:
+                    description: Explicit Congestion Notification
+                    type: dict
+                    keys:
+                      count:
+                        type: bool
+                        description: Enable counter for random-detect ECNs
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
+                            description: Unit to be used for the threshold values
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: Random-detect ECN minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: Random-detect ECN maximum-threshold
+                          max_probability:
+                            type: int
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: Random-detect ECN maximum mark probability
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: Random-detect ECN weight
+                  drop:
+                    description: Set WRED parameters
+                    type: dict
+                    keys:
+                      threshold:
+                        type: dict
+                        keys:
+                          units:
+                            required: true
+                            type: str
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "microseconds", "milliseconds"]
+                            description: Units to be used for the threshold values.
+                          drop_precedence:
+                            type: int
+                            required: false
+                            min: 0
+                            max: 2
+                            description: Specify Drop Precendence value
+                          min:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: WRED minimum-threshold
+                          max:
+                            type: int
+                            required: true
+                            min: 1
+                            convert_types:
+                              - str
+                            description: WRED maximum-threshold
+                          drop_probability:
+                            type: int
+                            required: true
+                            min: 1
+                            max: 100
+                            convert_types:
+                              - str
+                            description: WRED drop probability.
+                          weight:
+                            type: int
+                            min: 0
+                            max: 15
+                            convert_types:
+                              - str
+                            description: WRED weight
+
         mc_tx_queues:
           type: list
           primary_key: id

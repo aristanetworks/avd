@@ -12,3 +12,6 @@ management_ssh:
     - name: mgt
       enable: true
   log_level: debug
+  client_alive:
+    count_max: 42
+    interval: 666

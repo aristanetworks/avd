@@ -6,6 +6,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     ip_address: 172.31.255.1/31
@@ -156,7 +157,7 @@ ethernet_interfaces:
         link_status: true
         congestion_drops: true
         spanning_tree: true
-        storm_control: true
+        storm_control_discards: true
     peer: SRV-POD02
     peer_interface: Eth1
     peer_type: server
@@ -269,7 +270,7 @@ ethernet_interfaces:
         link_status: false
         congestion_drops: false
         spanning_tree: false
-        storm_control: false
+        storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100
@@ -326,6 +327,7 @@ ethernet_interfaces:
     lldp:
       transmit: false
       receive: false
+      ztp_vlan: 666
 
   - name: Ethernet20
     description: Port patched through patch-panel to pseudowire
@@ -830,7 +832,7 @@ ethernet_interfaces:
         link_status: false
         congestion_drops: false
         spanning_tree: false
-        storm_control: false
+        storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100
@@ -845,7 +847,7 @@ ethernet_interfaces:
         link_status: false
         congestion_drops: false
         spanning_tree: false
-        storm_control: false
+        storm_control_discards: false
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100
@@ -853,3 +855,94 @@ ethernet_interfaces:
     phone:
       trunk: "tagged phone"
       vlan: 70
+
+  - name: Ethernet63
+    description: DHCP client interface
+    type: routed
+    ip_address: "dhcp"
+    dhcp_client_accept_default_route: true
+
+  - name: Ethernet64
+    description: DHCP server interface
+    type: routed
+    ip_address: 192.168.42.42/24
+    dhcp_server_ipv4: true
+    dhcp_server_ipv6: true
+
+  - name: Ethernet69
+    description: IP NAT service-profile
+    ip_nat:
+      service_profile: TEST-NAT-PROFILE
+# VRRP
+  - name: Ethernet65
+    description: Multiple VRIDs
+    type: routed
+    shutdown: false
+    ip_address: 192.0.2.2/25
+    ipv6_enable: true
+    ipv6_address: 2001:db8::2/64
+    ipv6_address_link_local: fe80::2/64
+    vrrp_ids:
+      - id: 1
+        priority_level: 105
+        advertisement:
+          interval: 2
+        preempt:
+          enabled: true
+          delay:
+            minimum: 30
+            reload: 800
+        ipv4:
+          address: 192.0.2.1
+      - id: 2
+        preempt:
+          enabled: true
+          delay:
+        ipv6:
+          address: 2001:db8::1
+
+  - name: Ethernet66
+    description: Multiple VRIDs and tracking
+    shutdown: false
+    type: routed
+    ip_address: 192.0.2.2/25
+    ipv6_enable: true
+    ipv6_address: 2001:db8::2/64
+    ipv6_address_link_local: fe80::2/64
+    vrrp_ids:
+      - id: 1
+        priority_level: 105
+        advertisement:
+          interval: 2
+        preempt:
+          enabled: true
+          delay:
+            minimum: 30
+            reload: 800
+        ipv4:
+          address: 192.0.2.1
+        tracked_object:
+          - name: ID1-TrackedObjectDecrement
+            decrement: 5
+          - name: ID1-TrackedObjectShutdown
+            shutdown: true
+      - id: 2
+        preempt:
+          enabled: true
+          delay:
+        ipv6:
+          address: 2001:db8::1
+        tracked_object:
+          - name: ID2-TrackedObjectDecrement
+            decrement: 10
+          - name: ID2-TrackedObjectShutdown
+            shutdown: true
+      - id: 3
+        timers:
+          delay:
+            reload: 900
+        preempt:
+          enabled: false
+        ipv4:
+          address: 100.64.0.1
+          version: 3

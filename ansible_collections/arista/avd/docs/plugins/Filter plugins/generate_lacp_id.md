@@ -34,8 +34,6 @@ lacp_id: "{{ short_esi | arista.avd.generate_lacp_id }}"
 | ---- | ---- | ----------- |
 | _value | string | String based on LACP ID format like 0303.0202.0101 |
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)

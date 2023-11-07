@@ -9,16 +9,24 @@
 ### QOS
 
 #### QOS Summary
-
 {%     if qos.rewrite_dscp is arista.avd.defined(true) %}
+
 QOS rewrite DSCP: **enabled**
 {%     else %}
+
 QOS rewrite DSCP: **disabled**
 {%     endif %}
+{%     if qos.random_detect.ecn.allow_non_ect.enabled is arista.avd.defined %}
+{%         set ecn_command = "QOS random-detect ECN is set to allow **non-ect**" %}
+{%         if qos.random_detect.ecn.allow_non_ect.chip_based is arista.avd.defined(true) %}
+{%             set ecn_command = ecn_command ~ " **chip-based**" %}
+{%         endif %}
 
+{{ ecn_command }}
+{%     endif %}
 {%     if qos.map is arista.avd.defined %}
-##### QOS Mappings
 
+##### QOS Mappings
 {%         if qos.map.cos is arista.avd.defined %}
 
 | COS to Traffic Class mappings |
@@ -27,7 +35,6 @@ QOS rewrite DSCP: **disabled**
 | {{ cos_map | default('-') }} |
 {%             endfor %}
 {%         endif %}
-
 {%         if qos.map.dscp is arista.avd.defined %}
 
 | DSCP to Traffic Class mappings |
@@ -36,7 +43,14 @@ QOS rewrite DSCP: **disabled**
 | {{ dscp_map | default('-') }} |
 {%             endfor %}
 {%         endif %}
+{%         if qos.map.exp is arista.avd.defined %}
 
+| EXP to Traffic Class mappings |
+| ----------------------------- |
+{%             for exp_map in qos.map.exp | arista.avd.natural_sort %}
+| {{ exp_map | default('-') }} |
+{%             endfor %}
+{%         endif %}
 {%         if qos.map.traffic_class is arista.avd.defined %}
 
 | Traffic Class to DSCP or COS mappings |

@@ -21,6 +21,10 @@ keys:
           type: str
         shutdown:
           type: bool
+        speed:
+          type: str
+          description: |-
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
         vrf:
@@ -50,6 +54,18 @@ keys:
         mac_address:
           type: str
           description: MAC address
+        lldp:
+          type: dict
+          keys:
+            transmit:
+              type: bool
+            receive:
+              type: bool
+            ztp_vlan:
+              type: int
+              convert_types:
+                - str
+              description: ZTP vlan number
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface in the final EOS configuration

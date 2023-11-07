@@ -55,8 +55,6 @@ The module is used in \`arista.avd.eos\_designs\` to set facts for devices, whic
   changed_when: false
 ```
 
-## Status
-
 ## Authors
 
 - Arista Ansible Team (@aristanetworks)
