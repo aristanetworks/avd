@@ -89,4 +89,4 @@ If you want to test specific AVD branch or fork without making any changes, use 
 }
 ```
 
-> NOTE: Do not forget to adjust the parameters like AVD version according to you use case.
+> NOTE: Do not forget to adjust the parameters like AVD version according to your use case.
