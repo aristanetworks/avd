@@ -32,7 +32,7 @@ The AVD repository provides a number of pre-build dev container images for vario
 
 - **base** - image that is used to build other variants. It is not intended for direct use.
 - **dev** - an image created for AVD contributors and to support quick testing of AVD branches.
-- **universal** - an image with pre-installed AVD collection that can be used to build and deploy AVD configuration using a specific AVD version.
+- **universal** - an image with pre-installed AVD collection and it's dependencies that can be used to build and deploy AVD configuration using a specific AVD version.
 
 All images are based on [Python Slim](https://hub.docker.com/_/python) with some additional features and extensions pre-installed.
 
