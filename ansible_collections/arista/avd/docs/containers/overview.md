@@ -19,7 +19,7 @@ Building a functional Ansible environment can be a challenging task. A manually 
 - Inconsistent Ansible configuration files
 - etc.
 
-Containers can provide a simple and portable way to build a functional and portable Ansible environment. [Dev Containers](https://containers.dev) bring that to the next level by simplifying container build process and extending the functionality. The [Dev Container Specification](https://github.com/devcontainers/spec) was started by Microsoft and has strong community support. Essentially Dev Containers are powered by following:
+Containers can provide a simple and portable way to build a functional, portable and isolated Ansible environment. [Dev Containers](https://containers.dev) bring that to the next level by simplifying container build process and extending the functionality. The [Dev Container Specification](https://github.com/devcontainers/spec) was started by Microsoft and has strong community support. Essentially Dev Containers are powered by following:
 
 - [Prebuilt images](https://github.com/devcontainers/images)
 - [Features](https://containers.dev/features)
