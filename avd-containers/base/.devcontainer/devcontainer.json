@@ -10,7 +10,6 @@
 
     "features": {
         "ghcr.io/devcontainers/features/common-utils:2":{
-            // do not install zsh to the base to check size diff
             "installZsh": true,
             "installOhMyZsh": true,
             "configureZshAsDefaultShell": true,
