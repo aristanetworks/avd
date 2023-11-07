@@ -61,6 +61,7 @@ router_bgp:
   neighbors:
     - ip_address: 172.31.255.0
       peer_group: IPv4-UNDERLAY-PEERS
+      password: "test1234"
     - ip_address: 172.31.255.2
       peer_group: IPv4-UNDERLAY-PEERS
     - ip_address: 192.168.255.1

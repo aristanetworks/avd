@@ -14570,6 +14570,10 @@
                 "type": "boolean",
                 "title": "Route Reflector Client"
               },
+              "password": {
+                "type": "string",
+                "title": "Password"
+              },
               "passive": {
                 "type": "boolean",
                 "title": "Passive"

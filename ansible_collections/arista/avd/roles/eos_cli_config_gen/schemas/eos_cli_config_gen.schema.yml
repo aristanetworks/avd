@@ -8603,6 +8603,8 @@ keys:
               type: str
             route_reflector_client:
               type: bool
+            password:
+              type: str
             passive:
               type: bool
             shutdown:
