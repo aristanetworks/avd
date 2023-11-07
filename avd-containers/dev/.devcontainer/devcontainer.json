@@ -40,6 +40,7 @@
                 // errors and highlighters
                 "mechatroner.rainbow-csv",
                 "oderwat.indent-rainbow",
+                "shardulm94.trailing-spaces",
                 // excalidraw
                 "pomdtr.excalidraw-editor",
                 // markdown
