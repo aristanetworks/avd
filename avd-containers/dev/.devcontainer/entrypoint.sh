@@ -13,7 +13,7 @@ ansible --version &> /dev/null ||  if [ -f $AVD_DEV_REQ_FILE ]; then
   pip3 install -r ${HOME}/.ansible/collections/ansible_collections/arista/avd/requirements-dev.txt
 fi
 
-# install ansible from any AVD git branch (or it's fork)
+# install ansible from any AVD git branch (or its fork)
 # the ANSIBLE_INSTALL_LOCATION_FORMAT must be "git+https://github.com/${AVD_GITHUB_REPO}.git#/ansible_collections/arista/avd/,${AVD_BRANCH_NAME}"
 # AVD_GITHUB_REPO and AVD_BRANCH_NAME must be defined for ANSIBLE_INSTALL_LOCATION_FORMAT to be crafted successfully
 ansible --version &> /dev/null ||  if ! [ -z "${AVD_GITHUB_REPO}" ] && ! [ -z "${AVD_BRANCH_NAME}" ]; then
