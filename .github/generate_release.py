@@ -23,6 +23,7 @@ SCOPES = [
     "eos_validate_state",
     "plugins",
     "requirements",
+    "containers",
     # Handle multiple scopes ',' are not supported in Github labels and so replaced with '|' by our action
     "eos_designs|eos_cli_config_gen",
     "eos_cli_config_gen|eos_designs",
