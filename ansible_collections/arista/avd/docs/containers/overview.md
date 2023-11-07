@@ -56,7 +56,7 @@ If you want to use a specific AVD release, use the following `devcontainer.json`
 }
 ```
 
-For AVD contributors following configuration is recommended:
+For AVD contributors the following configuration is recommended:
 
 ```json
 {
