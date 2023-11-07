@@ -30,7 +30,7 @@ Dev containers can be run locally or remotely, in a private or public cloud, in 
 
 The AVD repository provides a number of pre-build dev container images for various use cases:
 
-- **base** - image that is used to build other variants. It is not intended for a direct use.
+- **base** - image that is used to build other variants. It is not intended for direct use.
 - **dev** - an image created for AVD contributors and to support quick testing of AVD branches.
 - **universal** - an image with pre-installed AVD collection that can be used to build and deploy AVD configuration using a specific AVD version.
 
