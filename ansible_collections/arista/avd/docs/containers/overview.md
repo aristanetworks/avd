@@ -61,7 +61,7 @@ For AVD contributors following configuration is recommended:
 ```json
 {
     "name": "AVD Development",
-    "image": "ghcr.io/aristanetworks/ansible-avd/dev:python3.11-avd-devel",
+    "image": "ghcr.io/aristanetworks/ansible-avd/dev:python3.11",
     "mounts": [
         "source=${localWorkspaceFolder}/ansible_collections/arista/avd,target=/home/avd/.ansible/collections/ansible_collections/arista/avd,type=bind"
     ],
@@ -77,7 +77,7 @@ If you want to test specific AVD branch or fork without making any changes, use 
 ```json
 {
     "name": "AVD Development",
-    "image": "ghcr.io/aristanetworks/ansible-avd/dev:python3.11-avd-devel",
+    "image": "ghcr.io/aristanetworks/ansible-avd/dev:python3.11",
     "containerEnv": {
         "AVD_GITHUB_REPO": "aristanetworks/ansible-avd",
         "AVD_BRANCH_NAME": "devel"
