@@ -9,19 +9,20 @@ from enum import Enum
 from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated
 
+from .models import AvdDictBaseModel
 from .types import StrConvert
 
 
 class EosCliConfigGen(BaseModel):
     model_config = ConfigDict(defer_build=True, use_enum_values=True)
 
-    class AaaAccounting(BaseModel):
+    class AaaAccounting(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Exec(BaseModel):
+        class Exec(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Console(BaseModel):
+            class Console(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -36,7 +37,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 logging: bool | None = None
 
-            class Default(BaseModel):
+            class Default(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -54,10 +55,10 @@ class EosCliConfigGen(BaseModel):
             console: Console | None = None
             default: Default | None = None
 
-        class System(BaseModel):
+        class System(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Default(BaseModel):
+            class Default(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -73,10 +74,10 @@ class EosCliConfigGen(BaseModel):
 
             default: Default | None = None
 
-        class Dot1x(BaseModel):
+        class Dot1x(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Default(BaseModel):
+            class Default(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -91,10 +92,10 @@ class EosCliConfigGen(BaseModel):
 
             default: Default | None = None
 
-        class Commands(BaseModel):
+        class Commands(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ConsoleItem(BaseModel):
+            class ConsoleItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -113,7 +114,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 logging: bool | None = None
 
-            class DefaultItem(BaseModel):
+            class DefaultItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -140,10 +141,10 @@ class EosCliConfigGen(BaseModel):
         dot1x: Dot1x | None = None
         commands: Commands | None = None
 
-    class AaaAuthentication(BaseModel):
+    class AaaAuthentication(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Login(BaseModel):
+        class Login(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             default: str | None = None
@@ -165,7 +166,7 @@ class EosCliConfigGen(BaseModel):
             group MYGROUP local"
             """
 
-        class Enable(BaseModel):
+        class Enable(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             default: str | None = None
@@ -178,7 +179,7 @@ class EosCliConfigGen(BaseModel):
             group MYGROUP local"
             """
 
-        class Dot1x(BaseModel):
+        class Dot1x(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             default: str | None = None
@@ -189,15 +190,15 @@ class EosCliConfigGen(BaseModel):
             - "group MYGROUP group radius"
             """
 
-        class Policies(BaseModel):
+        class Policies(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Local(BaseModel):
+            class Local(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 allow_nopassword: bool | None = None
 
-            class Lockout(BaseModel):
+            class Lockout(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 failure: int | None = Field(None, ge=1, le=255)
@@ -214,15 +215,15 @@ class EosCliConfigGen(BaseModel):
         dot1x: Dot1x | None = None
         policies: Policies | None = None
 
-    class AaaAuthorization(BaseModel):
+    class AaaAuthorization(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Policy(BaseModel):
+        class Policy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             local_default_role: str | None = None
 
-        class Exec(BaseModel):
+        class Exec(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             default: str | None = None
@@ -235,15 +236,15 @@ class EosCliConfigGen(BaseModel):
             MYGROUP local"
             """
 
-        class Dynamic(BaseModel):
+        class Dynamic(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             dot1x_additional_groups: list[str] | None = Field(None, min_length=1)
 
-        class Commands(BaseModel):
+        class Commands(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PrivilegeItem(BaseModel):
+            class PrivilegeItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 level: Annotated[str, StrConvert(convert_types=(int))] | None = None
@@ -278,17 +279,17 @@ class EosCliConfigGen(BaseModel):
         dynamic: Dynamic | None = None
         commands: Commands | None = None
 
-    class AaaRoot(BaseModel):
+    class AaaRoot(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Secret(BaseModel):
+        class Secret(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sha512_password: str | None = None
 
         secret: Secret | None = None
 
-    class AaaServerGroupsItem(BaseModel):
+    class AaaServerGroupsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class TypeEnum(Enum):
@@ -296,7 +297,7 @@ class EosCliConfigGen(BaseModel):
             value_1 = "radius"
             value_2 = "ldap"
 
-        class ServersItem(BaseModel):
+        class ServersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             server: str | None = None
@@ -315,10 +316,10 @@ class EosCliConfigGen(BaseModel):
         type: TypeEnum | None = None
         servers: list[ServersItem] | None = None
 
-    class AccessListsItem(BaseModel):
+    class AccessListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SequenceNumbersItem(BaseModel):
+        class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sequence: int = None
@@ -338,10 +339,10 @@ class EosCliConfigGen(BaseModel):
         counters_per_entry: bool | None = None
         sequence_numbers: list[SequenceNumbersItem] = None
 
-    class AddressLocking(BaseModel):
+    class AddressLocking(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class LeasesItem(BaseModel):
+        class LeasesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ip: str = None
@@ -353,7 +354,7 @@ class EosCliConfigGen(BaseModel):
             MAC address (hhhh.hhhh.hhhh or hh:hh:hh:hh:hh:hh)
             """
 
-        class LockedAddress(BaseModel):
+        class LockedAddress(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             expiration_mac_disabled: bool | None = None
@@ -378,10 +379,10 @@ class EosCliConfigGen(BaseModel):
         local_interface: str | None = None
         locked_address: LockedAddress | None = None
 
-    class AgentsItem(BaseModel):
+    class AgentsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class EnvironmentVariablesItem(BaseModel):
+        class EnvironmentVariablesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -399,10 +400,10 @@ class EosCliConfigGen(BaseModel):
         """
         environment_variables: list[EnvironmentVariablesItem] | None = Field(None, min_length=1)
 
-    class Arp(BaseModel):
+    class Arp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Aging(BaseModel):
+        class Aging(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             timeout_default: int | None = Field(None, ge=60, le=65535)
@@ -410,7 +411,7 @@ class EosCliConfigGen(BaseModel):
             Timeout in seconds
             """
 
-        class StaticEntriesItem(BaseModel):
+        class StaticEntriesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ipv4_address: str = None
@@ -432,17 +433,17 @@ class EosCliConfigGen(BaseModel):
         Static ARP entries.
         """
 
-    class AsPath(BaseModel):
+    class AsPath(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class RegexModeEnum(Enum):
             value_0 = "asn"
             value_1 = "string"
 
-        class AccessListsItem(BaseModel):
+        class AccessListsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class EntriesItem(BaseModel):
+            class EntriesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -486,7 +487,7 @@ class EosCliConfigGen(BaseModel):
         value_3 = "info"
         value_4 = "debug"
 
-    class Banners(BaseModel):
+    class Banners(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         login: str | None = None
@@ -498,7 +499,7 @@ class EosCliConfigGen(BaseModel):
         Multiline string ending with EOF on the last line
         """
 
-    class BgpGroupsItem(BaseModel):
+    class BgpGroupsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
@@ -509,10 +510,10 @@ class EosCliConfigGen(BaseModel):
         neighbors: list[str] | None = None
         bgp_maintenance_profiles: list[str] | None = None
 
-    class Boot(BaseModel):
+    class Boot(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Secret(BaseModel):
+        class Secret(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class HashAlgorithmEnum(Enum):
@@ -527,13 +528,13 @@ class EosCliConfigGen(BaseModel):
 
         secret: Secret | None = None
 
-    class ClassMaps(BaseModel):
+    class ClassMaps(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class PbrItem(BaseModel):
+        class PbrItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ip(BaseModel):
+            class Ip(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 access_group: str | None = None
@@ -547,10 +548,10 @@ class EosCliConfigGen(BaseModel):
             """
             ip: Ip | None = None
 
-        class QosItem(BaseModel):
+        class QosItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ip(BaseModel):
+            class Ip(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 access_group: str | None = None
@@ -558,7 +559,7 @@ class EosCliConfigGen(BaseModel):
                 IPv4 Access-List Name
                 """
 
-            class Ipv6(BaseModel):
+            class Ipv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 access_group: str | None = None
@@ -584,12 +585,12 @@ class EosCliConfigGen(BaseModel):
         pbr: list[PbrItem] | None = None
         qos: list[QosItem] | None = None
 
-    class Clock(BaseModel):
+    class Clock(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         timezone: str | None = None
 
-    class CommunityListsItem(BaseModel):
+    class CommunityListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
@@ -602,16 +603,16 @@ class EosCliConfigGen(BaseModel):
         Example: "permit GSHUT 65123:123"
         """
 
-    class Cvx(BaseModel):
+    class Cvx(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Services(BaseModel):
+        class Services(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Mcs(BaseModel):
+            class Mcs(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Redis(BaseModel):
+                class Redis(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class PasswordTypeEnum(Enum):
@@ -628,7 +629,7 @@ class EosCliConfigGen(BaseModel):
                 redis: Redis | None = None
                 shutdown: bool | None = None
 
-            class Vxlan(BaseModel):
+            class Vxlan(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class VtepMacLearningEnum(Enum):
@@ -648,13 +649,13 @@ class EosCliConfigGen(BaseModel):
         peer_hosts: list[str] | None = None
         services: Services | None = None
 
-    class DaemonTerminattr(BaseModel):
+    class DaemonTerminattr(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ClustersItem(BaseModel):
+        class ClustersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Cvauth(BaseModel):
+            class Cvauth(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class MethodEnum(Enum):
@@ -724,7 +725,7 @@ class EosCliConfigGen(BaseModel):
             The VRF to use to connect to CloudVision
             """
 
-        class Cvauth(BaseModel):
+        class Cvauth(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class MethodEnum(Enum):
@@ -861,7 +862,7 @@ class EosCliConfigGen(BaseModel):
         no need to change the compression scheme.
         """
 
-    class DaemonsItem(BaseModel):
+    class DaemonsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
@@ -874,23 +875,23 @@ class EosCliConfigGen(BaseModel):
         """
         enabled: bool | None = True
 
-    class DhcpRelay(BaseModel):
+    class DhcpRelay(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         servers: list[str] | None = None
         tunnel_requests_disabled: bool | None = None
         mlag_peerlink_requests_disabled: bool | None = None
 
-    class Dot1x(BaseModel):
+    class Dot1x(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class MacBasedAuthentication(BaseModel):
+        class MacBasedAuthentication(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             delay: int | None = Field(None, ge=0, le=300)
             hold_period: int | None = Field(None, ge=1, le=300)
 
-        class RadiusAvPair(BaseModel):
+        class RadiusAvPair(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             service_type: bool | None = None
@@ -902,13 +903,13 @@ class EosCliConfigGen(BaseModel):
         mac_based_authentication: MacBasedAuthentication | None = None
         radius_av_pair: RadiusAvPair | None = None
 
-    class DpsInterfacesItem(BaseModel):
+    class DpsInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class NameEnum(Enum):
             value_0 = "Dps1"
 
-        class FlowTracker(BaseModel):
+        class FlowTracker(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sampled: str | None = None
@@ -920,7 +921,7 @@ class EosCliConfigGen(BaseModel):
             Hardware flow tracker name,
             """
 
-        class TcpMssCeiling(BaseModel):
+        class TcpMssCeiling(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class DirectionEnum(Enum):
@@ -961,10 +962,10 @@ class EosCliConfigGen(BaseModel):
         Multiline String with EOS CLI rendered directly on the Dps interface in the final EOS configuration.
         """
 
-    class DynamicPrefixListsItem(BaseModel):
+    class DynamicPrefixListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class PrefixList(BaseModel):
+        class PrefixList(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ipv4: str | None = None
@@ -986,7 +987,7 @@ class EosCliConfigGen(BaseModel):
         """
         prefix_list: PrefixList | None = None
 
-    class EnablePassword(BaseModel):
+    class EnablePassword(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class HashAlgorithmEnum(Enum):
@@ -1001,7 +1002,7 @@ class EosCliConfigGen(BaseModel):
         generate the hash on an EOS device.
         """
 
-    class EosCliConfigGenConfiguration(BaseModel):
+    class EosCliConfigGenConfiguration(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         hide_passwords: bool | None = False
@@ -1010,7 +1011,7 @@ class EosCliConfigGen(BaseModel):
         true
         """
 
-    class EosCliConfigGenDocumentation(BaseModel):
+    class EosCliConfigGenDocumentation(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         hide_passwords: bool | None = True
@@ -1019,15 +1020,15 @@ class EosCliConfigGen(BaseModel):
         true
         """
 
-    class Errdisable(BaseModel):
+    class Errdisable(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Detect(BaseModel):
+        class Detect(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             causes: list[str] | None = None
 
-        class Recovery(BaseModel):
+        class Recovery(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             causes: list[str] | None = None
@@ -1039,7 +1040,7 @@ class EosCliConfigGen(BaseModel):
         detect: Detect | None = None
         recovery: Recovery | None = None
 
-    class EthernetInterfacesItem(BaseModel):
+    class EthernetInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class ModeEnum(Enum):
@@ -1048,7 +1049,7 @@ class EosCliConfigGen(BaseModel):
             value_2 = "trunk"
             value_3 = "trunk phone"
 
-        class Phone(BaseModel):
+        class Phone(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TrunkEnum(Enum):
@@ -1060,7 +1061,7 @@ class EosCliConfigGen(BaseModel):
             trunk: TrunkEnum | None = None
             vlan: int | None = Field(None, ge=1, le=4094)
 
-        class L2Protocol(BaseModel):
+        class L2Protocol(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             encapsulation_dot1q_vlan: int | None = None
@@ -1079,7 +1080,7 @@ class EosCliConfigGen(BaseModel):
             value_3 = "l2dot1q"
             value_4 = "port-channel-member"
 
-        class AddressLocking(BaseModel):
+        class AddressLocking(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ipv4: bool | None = None
@@ -1091,7 +1092,7 @@ class EosCliConfigGen(BaseModel):
             Enable address locking for IPv6
             """
 
-        class Flowcontrol(BaseModel):
+        class Flowcontrol(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ReceivedEnum(Enum):
@@ -1101,7 +1102,7 @@ class EosCliConfigGen(BaseModel):
 
             received: ReceivedEnum | None = None
 
-        class FlowTracker(BaseModel):
+        class FlowTracker(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sampled: str | None = None
@@ -1113,14 +1114,14 @@ class EosCliConfigGen(BaseModel):
             Hardware flow tracker name.
             """
 
-        class ErrorCorrectionEncoding(BaseModel):
+        class ErrorCorrectionEncoding(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = True
             fire_code: bool | None = None
             reed_solomon: bool | None = None
 
-        class LinkTrackingGroupsItem(BaseModel):
+        class LinkTrackingGroupsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class DirectionEnum(Enum):
@@ -1133,14 +1134,14 @@ class EosCliConfigGen(BaseModel):
             """
             direction: DirectionEnum | None = None
 
-        class EvpnEthernetSegment(BaseModel):
+        class EvpnEthernetSegment(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class RedundancyEnum(Enum):
                 value_0 = "all-active"
                 value_1 = "single-active"
 
-            class DesignatedForwarderElection(BaseModel):
+            class DesignatedForwarderElection(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class AlgorithmEnum(Enum):
@@ -1160,7 +1161,7 @@ class EosCliConfigGen(BaseModel):
                 subsequent_hold_time: int | None = None
                 candidate_reachability_required: bool | None = None
 
-            class Mpls(BaseModel):
+            class Mpls(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 shared_index: int | None = Field(None, ge=1, le=1024)
@@ -1178,13 +1179,13 @@ class EosCliConfigGen(BaseModel):
             EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx
             """
 
-        class EncapsulationVlan(BaseModel):
+        class EncapsulationVlan(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Client(BaseModel):
+            class Client(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Dot1q(BaseModel):
+                class Dot1q(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     vlan: int | None = None
@@ -1203,10 +1204,10 @@ class EosCliConfigGen(BaseModel):
                 dot1q: Dot1q | None = None
                 unmatched: bool | None = None
 
-            class Network(BaseModel):
+            class Network(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Dot1q(BaseModel):
+                class Dot1q(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     vlan: int | None = None
@@ -1231,7 +1232,7 @@ class EosCliConfigGen(BaseModel):
             Network encapsulations are all optional and skipped if using client unmatched
             """
 
-        class IpHelpersItem(BaseModel):
+        class IpHelpersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ip_helper: str = None
@@ -1244,13 +1245,13 @@ class EosCliConfigGen(BaseModel):
             VRF name
             """
 
-        class IpNat(BaseModel):
+        class IpNat(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Destination(BaseModel):
+            class Destination(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DynamicItem(BaseModel):
+                class DynamicItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     access_list: str = None
@@ -1258,7 +1259,7 @@ class EosCliConfigGen(BaseModel):
                     pool_name: str = None
                     priority: int | None = Field(None, ge=0, le=4294967295)
 
-                class StaticItem(BaseModel):
+                class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionEnum(Enum):
@@ -1303,10 +1304,10 @@ class EosCliConfigGen(BaseModel):
                 dynamic: list[DynamicItem] | None = None
                 static: list[StaticItem] | None = None
 
-            class Source(BaseModel):
+            class Source(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DynamicItem(BaseModel):
+                class DynamicItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class NatTypeEnum(Enum):
@@ -1325,7 +1326,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     priority: int | None = Field(None, ge=0, le=4294967295)
 
-                class StaticItem(BaseModel):
+                class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionEnum(Enum):
@@ -1377,7 +1378,7 @@ class EosCliConfigGen(BaseModel):
             destination: Destination | None = None
             source: Source | None = None
 
-        class Ipv6NdPrefixesItem(BaseModel):
+        class Ipv6NdPrefixesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ipv6_prefix: str = None
@@ -1391,7 +1392,7 @@ class EosCliConfigGen(BaseModel):
             """
             no_autoconfig_flag: bool | None = None
 
-        class Ipv6DhcpRelayDestinationsItem(BaseModel):
+        class Ipv6DhcpRelayDestinationsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             address: str = None
@@ -1412,13 +1413,13 @@ class EosCliConfigGen(BaseModel):
             Override the default link address specified in the relayed DHCP packet
             """
 
-        class Multicast(BaseModel):
+        class Multicast(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ipv4(BaseModel):
+            class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class BoundariesItem(BaseModel):
+                class BoundariesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     boundary: str | None = None
@@ -1430,10 +1431,10 @@ class EosCliConfigGen(BaseModel):
                 boundaries: list[BoundariesItem] | None = None
                 static: bool | None = None
 
-            class Ipv6(BaseModel):
+            class Ipv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class BoundariesItem(BaseModel):
+                class BoundariesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     boundary: str | None = None
@@ -1452,7 +1453,7 @@ class EosCliConfigGen(BaseModel):
             value_1 = "simple"
             value_2 = "message-digest"
 
-        class OspfMessageDigestKeysItem(BaseModel):
+        class OspfMessageDigestKeysItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class HashAlgorithmEnum(Enum):
@@ -1469,10 +1470,10 @@ class EosCliConfigGen(BaseModel):
             Encrypted password - only type 7 supported
             """
 
-        class Pim(BaseModel):
+        class Pim(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ipv4(BaseModel):
+            class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 dr_priority: int | None = Field(None, ge=0, le=429467295)
@@ -1480,12 +1481,12 @@ class EosCliConfigGen(BaseModel):
 
             ipv4: Ipv4 | None = None
 
-        class MacSecurity(BaseModel):
+        class MacSecurity(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             profile: str | None = None
 
-        class ChannelGroup(BaseModel):
+        class ChannelGroup(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ModeEnum(Enum):
@@ -1505,7 +1506,7 @@ class EosCliConfigGen(BaseModel):
             value_0 = "text"
             value_1 = "md5"
 
-        class Poe(BaseModel):
+        class Poe(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class PriorityEnum(Enum):
@@ -1514,7 +1515,7 @@ class EosCliConfigGen(BaseModel):
                 value_2 = "medium"
                 value_3 = "low"
 
-            class Reboot(BaseModel):
+            class Reboot(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ActionEnum(Enum):
@@ -1526,7 +1527,7 @@ class EosCliConfigGen(BaseModel):
                 PoE action for interface
                 """
 
-            class LinkDown(BaseModel):
+            class LinkDown(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ActionEnum(Enum):
@@ -1542,7 +1543,7 @@ class EosCliConfigGen(BaseModel):
                 Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.
                 """
 
-            class Shutdown(BaseModel):
+            class Shutdown(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ActionEnum(Enum):
@@ -1554,7 +1555,7 @@ class EosCliConfigGen(BaseModel):
                 PoE action for interface
                 """
 
-            class Limit(BaseModel):
+            class Limit(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 field_class: int | None = Field(None, alias="class", ge=0, le=8)
@@ -1599,10 +1600,10 @@ class EosCliConfigGen(BaseModel):
             positive detections.
             """
 
-        class Ptp(BaseModel):
+        class Ptp(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
-            class Announce(BaseModel):
+            class Announce(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 interval: int | None = None
@@ -1612,7 +1613,7 @@ class EosCliConfigGen(BaseModel):
                 value_0 = "e2e"
                 value_1 = "p2p"
 
-            class SyncMessage(BaseModel):
+            class SyncMessage(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 interval: int | None = None
@@ -1638,10 +1639,10 @@ class EosCliConfigGen(BaseModel):
             """
             transport: TransportEnum | None = None
 
-        class StormControl(BaseModel):
+        class StormControl(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class All(BaseModel):
+            class All(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class UnitEnum(Enum):
@@ -1657,7 +1658,7 @@ class EosCliConfigGen(BaseModel):
                 Optional field and is hardware dependent
                 """
 
-            class Broadcast(BaseModel):
+            class Broadcast(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class UnitEnum(Enum):
@@ -1673,7 +1674,7 @@ class EosCliConfigGen(BaseModel):
                 Optional field and is hardware dependent
                 """
 
-            class Multicast(BaseModel):
+            class Multicast(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class UnitEnum(Enum):
@@ -1689,7 +1690,7 @@ class EosCliConfigGen(BaseModel):
                 Optional field and is hardware dependent
                 """
 
-            class UnknownUnicast(BaseModel):
+            class UnknownUnicast(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class UnitEnum(Enum):
@@ -1710,10 +1711,10 @@ class EosCliConfigGen(BaseModel):
             multicast: Multicast | None = None
             unknown_unicast: UnknownUnicast | None = None
 
-        class Logging(BaseModel):
+        class Logging(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Event(BaseModel):
+            class Event(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 link_status: bool | None = None
@@ -1723,7 +1724,7 @@ class EosCliConfigGen(BaseModel):
 
             event: Event | None = None
 
-        class Lldp(BaseModel):
+        class Lldp(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             transmit: bool | None = None
@@ -1733,7 +1734,7 @@ class EosCliConfigGen(BaseModel):
             ZTP vlan number
             """
 
-        class VlanTranslationsItem(BaseModel):
+        class VlanTranslationsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class DirectionEnum(Enum):
@@ -1751,7 +1752,7 @@ class EosCliConfigGen(BaseModel):
             """
             direction: DirectionEnum | None = "both"
 
-        class Dot1x(BaseModel):
+        class Dot1x(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class PortControlEnum(Enum):
@@ -1759,7 +1760,7 @@ class EosCliConfigGen(BaseModel):
                 value_1 = "force-authorized"
                 value_2 = "force-unauthorized"
 
-            class Pae(BaseModel):
+            class Pae(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ModeEnum(Enum):
@@ -1767,7 +1768,7 @@ class EosCliConfigGen(BaseModel):
 
                 mode: ModeEnum | None = None
 
-            class AuthenticationFailure(BaseModel):
+            class AuthenticationFailure(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ActionEnum(Enum):
@@ -1777,7 +1778,7 @@ class EosCliConfigGen(BaseModel):
                 action: ActionEnum | None = None
                 allow_vlan: int | None = Field(None, ge=1, le=4094)
 
-            class HostMode(BaseModel):
+            class HostMode(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ModeEnum(Enum):
@@ -1787,14 +1788,14 @@ class EosCliConfigGen(BaseModel):
                 mode: ModeEnum | None = None
                 multi_host_authenticated: bool | None = None
 
-            class MacBasedAuthentication(BaseModel):
+            class MacBasedAuthentication(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
                 always: bool | None = None
                 host_mode_common: bool | None = None
 
-            class Timeout(BaseModel):
+            class Timeout(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 idle_host: int | None = Field(None, ge=10, le=65535)
@@ -1806,16 +1807,16 @@ class EosCliConfigGen(BaseModel):
                 reauth_timeout_ignore: bool | None = None
                 tx_period: int | None = Field(None, ge=1, le=65535)
 
-            class Unauthorized(BaseModel):
+            class Unauthorized(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 access_vlan_membership_egress: bool | None = None
                 native_vlan_membership_egress: bool | None = None
 
-            class Eapol(BaseModel):
+            class Eapol(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class AuthenticationFailureFallbackMba(BaseModel):
+                class AuthenticationFailureFallbackMba(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
@@ -1836,7 +1837,7 @@ class EosCliConfigGen(BaseModel):
             unauthorized: Unauthorized | None = None
             eapol: Eapol | None = None
 
-        class Shape(BaseModel):
+        class Shape(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             rate: str | None = None
@@ -1850,7 +1851,7 @@ class EosCliConfigGen(BaseModel):
             percent"
             """
 
-        class Qos(BaseModel):
+        class Qos(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TrustEnum(Enum):
@@ -1893,10 +1894,10 @@ class EosCliConfigGen(BaseModel):
             value_0 = "edge"
             value_1 = "network"
 
-        class PriorityFlowControl(BaseModel):
+        class PriorityFlowControl(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PrioritiesItem(BaseModel):
+            class PrioritiesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 priority: int = Field(None, ge=0, le=7)
@@ -1905,7 +1906,7 @@ class EosCliConfigGen(BaseModel):
             enabled: bool | None = None
             priorities: list[PrioritiesItem] | None = None
 
-        class Bfd(BaseModel):
+        class Bfd(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             echo: bool | None = None
@@ -1919,10 +1920,10 @@ class EosCliConfigGen(BaseModel):
             """
             multiplier: int | None = Field(None, ge=3, le=50)
 
-        class ServicePolicy(BaseModel):
+        class ServicePolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Pbr(BaseModel):
+            class Pbr(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 input: str | None = None
@@ -1930,7 +1931,7 @@ class EosCliConfigGen(BaseModel):
                 Policy Based Routing Policy-map name
                 """
 
-            class Qos(BaseModel):
+            class Qos(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 input: str = None
@@ -1941,10 +1942,10 @@ class EosCliConfigGen(BaseModel):
             pbr: Pbr | None = None
             qos: Qos | None = None
 
-        class Mpls(BaseModel):
+        class Mpls(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ldp(BaseModel):
+            class Ldp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 interface: bool | None = None
@@ -1953,7 +1954,7 @@ class EosCliConfigGen(BaseModel):
             ip: bool | None = None
             ldp: Ldp | None = None
 
-        class LacpTimer(BaseModel):
+        class LacpTimer(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ModeEnum(Enum):
@@ -1963,10 +1964,10 @@ class EosCliConfigGen(BaseModel):
             mode: ModeEnum | None = None
             multiplier: int | None = Field(None, ge=3, le=3000)
 
-        class Transceiver(BaseModel):
+        class Transceiver(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Media(BaseModel):
+            class Media(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 override: str | None = None
@@ -1976,7 +1977,7 @@ class EosCliConfigGen(BaseModel):
 
             media: Media | None = None
 
-        class TrafficPolicy(BaseModel):
+        class TrafficPolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             input: str | None = None
@@ -1988,7 +1989,7 @@ class EosCliConfigGen(BaseModel):
             Egress traffic policy
             """
 
-        class Bgp(BaseModel):
+        class Bgp(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             session_tracker: str | None = None
@@ -1996,10 +1997,10 @@ class EosCliConfigGen(BaseModel):
             Name of session tracker
             """
 
-        class Sflow(BaseModel):
+        class Sflow(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Egress(BaseModel):
+            class Egress(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enable: bool | None = None
@@ -2008,16 +2009,16 @@ class EosCliConfigGen(BaseModel):
             enable: bool | None = None
             egress: Egress | None = None
 
-        class UcTxQueuesItem(BaseModel):
+        class UcTxQueuesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RandomDetect(BaseModel):
+            class RandomDetect(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Ecn(BaseModel):
+                class Ecn(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Threshold(BaseModel):
+                    class Threshold(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class UnitsEnum(Enum):
@@ -2065,16 +2066,16 @@ class EosCliConfigGen(BaseModel):
             """
             random_detect: RandomDetect | None = None
 
-        class TxQueuesItem(BaseModel):
+        class TxQueuesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RandomDetect(BaseModel):
+            class RandomDetect(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Ecn(BaseModel):
+                class Ecn(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Threshold(BaseModel):
+                    class Threshold(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class UnitsEnum(Enum):
@@ -2122,10 +2123,10 @@ class EosCliConfigGen(BaseModel):
             """
             random_detect: RandomDetect | None = None
 
-        class VrrpIdsItem(BaseModel):
+        class VrrpIdsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Advertisement(BaseModel):
+            class Advertisement(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 interval: int | None = Field(None, ge=1, le=255)
@@ -2133,10 +2134,10 @@ class EosCliConfigGen(BaseModel):
                 Interval in seconds
                 """
 
-            class Preempt(BaseModel):
+            class Preempt(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Delay(BaseModel):
+                class Delay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     minimum: int | None = Field(None, ge=0, le=3600)
@@ -2151,10 +2152,10 @@ class EosCliConfigGen(BaseModel):
                 enabled: bool = None
                 delay: Delay | None = None
 
-            class Timers(BaseModel):
+            class Timers(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Delay(BaseModel):
+                class Delay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     reload: int | None = Field(None, ge=0, le=3600)
@@ -2164,7 +2165,7 @@ class EosCliConfigGen(BaseModel):
 
                 delay: Delay | None = None
 
-            class TrackedObjectItem(BaseModel):
+            class TrackedObjectItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -2177,7 +2178,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 shutdown: bool | None = None
 
-            class Ipv4(BaseModel):
+            class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class VersionEnum(Enum):
@@ -2190,7 +2191,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 version: VersionEnum | None = None
 
-            class Ipv6(BaseModel):
+            class Ipv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 address: str = None
@@ -2416,7 +2417,7 @@ class EosCliConfigGen(BaseModel):
         Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
         """
 
-    class EventHandlersItem(BaseModel):
+    class EventHandlersItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class ActionTypeEnum(Enum):
@@ -2455,21 +2456,21 @@ class EosCliConfigGen(BaseModel):
         Set the action to be non-blocking.
         """
 
-    class EventMonitor(BaseModel):
+    class EventMonitor(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         enabled: bool | None = None
 
-    class FlowTracking(BaseModel):
+    class FlowTracking(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Sampled(BaseModel):
+        class Sampled(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class TrackersItem(BaseModel):
+            class TrackersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class RecordExport(BaseModel):
+                class RecordExport(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     mpls: bool | None = None
@@ -2485,10 +2486,10 @@ class EosCliConfigGen(BaseModel):
                     Flow record export interval in milliseconds
                     """
 
-                class ExportersItem(BaseModel):
+                class ExportersItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Collector(BaseModel):
+                    class Collector(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         host: str | None = None
@@ -2500,7 +2501,7 @@ class EosCliConfigGen(BaseModel):
                         Collector Port Number
                         """
 
-                    class Format(BaseModel):
+                    class Format(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         ipfix_version: int | None = None
@@ -2535,13 +2536,13 @@ class EosCliConfigGen(BaseModel):
             trackers: list[TrackersItem] | None = None
             shutdown: bool | None = False
 
-        class Hardware(BaseModel):
+        class Hardware(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class TrackersItem(BaseModel):
+            class TrackersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class RecordExport(BaseModel):
+                class RecordExport(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     on_inactive_timeout: int | None = Field(None, ge=3000, le=900000)
@@ -2553,10 +2554,10 @@ class EosCliConfigGen(BaseModel):
                     Flow record export interval in milliseconds
                     """
 
-                class ExportersItem(BaseModel):
+                class ExportersItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Collector(BaseModel):
+                    class Collector(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         host: str | None = None
@@ -2568,7 +2569,7 @@ class EosCliConfigGen(BaseModel):
                         Collector Port Number
                         """
 
-                    class Format(BaseModel):
+                    class Format(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         ipfix_version: int | None = None
@@ -2601,16 +2602,16 @@ class EosCliConfigGen(BaseModel):
         sampled: Sampled | None = None
         hardware: Hardware | None = None
 
-    class FlowTrackingsItem(BaseModel):
+    class FlowTrackingsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class TypeEnum(Enum):
             value_0 = "sampled"
 
-        class TrackersItem(BaseModel):
+        class TrackersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RecordExport(BaseModel):
+            class RecordExport(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 on_inactive_timeout: int | None = Field(None, ge=3000, le=900000)
@@ -2626,10 +2627,10 @@ class EosCliConfigGen(BaseModel):
                 Export MPLS forwarding information
                 """
 
-            class ExportersItem(BaseModel):
+            class ExportersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Collector(BaseModel):
+                class Collector(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     host: str | None = None
@@ -2641,7 +2642,7 @@ class EosCliConfigGen(BaseModel):
                     Collector Port Number
                     """
 
-                class Format(BaseModel):
+                class Format(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     ipfix_version: int | None = None
@@ -2680,10 +2681,10 @@ class EosCliConfigGen(BaseModel):
         trackers: list[TrackersItem] | None = None
         shutdown: bool | None = False
 
-    class Hardware(BaseModel):
+    class Hardware(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class AccessList(BaseModel):
+        class AccessList(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class MechanismEnum(Enum):
@@ -2693,7 +2694,7 @@ class EosCliConfigGen(BaseModel):
 
             mechanism: MechanismEnum | None = None
 
-        class SpeedGroupsItem(BaseModel):
+        class SpeedGroupsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             speed_group: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -2705,10 +2706,10 @@ class EosCliConfigGen(BaseModel):
         access_list: AccessList | None = None
         speed_groups: list[SpeedGroupsItem] | None = None
 
-    class HardwareCounters(BaseModel):
+    class HardwareCounters(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class FeaturesItem(BaseModel):
+        class FeaturesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class NameEnum(Enum):
@@ -2835,10 +2836,10 @@ class EosCliConfigGen(BaseModel):
             ```
         """
 
-    class InterfaceDefaults(BaseModel):
+    class InterfaceDefaults(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Ethernet(BaseModel):
+        class Ethernet(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             shutdown: bool | None = None
@@ -2846,7 +2847,7 @@ class EosCliConfigGen(BaseModel):
         ethernet: Ethernet | None = None
         mtu: int | None = None
 
-    class InterfaceGroupsItem(BaseModel):
+    class InterfaceGroupsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
@@ -2857,7 +2858,7 @@ class EosCliConfigGen(BaseModel):
         bgp_maintenance_profiles: list[str] | None = None
         interface_maintenance_profiles: list[str] | None = None
 
-    class InterfaceProfilesItem(BaseModel):
+    class InterfaceProfilesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
@@ -2866,10 +2867,10 @@ class EosCliConfigGen(BaseModel):
         """
         commands: list[str] = None
 
-    class IpAccessListsItem(BaseModel):
+    class IpAccessListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class EntriesItem(BaseModel):
+        class EntriesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ActionEnum(Enum):
@@ -2982,10 +2983,10 @@ class EosCliConfigGen(BaseModel):
         ACL Entries
         """
 
-    class IpCommunityListsItem(BaseModel):
+    class IpCommunityListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class EntriesItem(BaseModel):
+        class EntriesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ActionEnum(Enum):
@@ -3018,7 +3019,7 @@ class EosCliConfigGen(BaseModel):
         """
         entries: list[EntriesItem] = None
 
-    class IpDhcpRelay(BaseModel):
+    class IpDhcpRelay(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         information_option: bool | None = None
@@ -3026,10 +3027,10 @@ class EosCliConfigGen(BaseModel):
         Insert Option-82 information
         """
 
-    class IpDomainLookup(BaseModel):
+    class IpDomainLookup(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SourceInterfacesItem(BaseModel):
+        class SourceInterfacesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -3040,10 +3041,10 @@ class EosCliConfigGen(BaseModel):
 
         source_interfaces: list[SourceInterfacesItem] | None = None
 
-    class IpExtcommunityListsItem(BaseModel):
+    class IpExtcommunityListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class EntriesItem(BaseModel):
+        class EntriesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TypeEnum(Enum):
@@ -3063,10 +3064,10 @@ class EosCliConfigGen(BaseModel):
         """
         entries: list[EntriesItem] = None
 
-    class IpExtcommunityListsRegexpItem(BaseModel):
+    class IpExtcommunityListsRegexpItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class EntriesItem(BaseModel):
+        class EntriesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TypeEnum(Enum):
@@ -3085,16 +3086,16 @@ class EosCliConfigGen(BaseModel):
         """
         entries: list[EntriesItem] = None
 
-    class IpHardware(BaseModel):
+    class IpHardware(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Fib(BaseModel):
+        class Fib(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Optimize(BaseModel):
+            class Optimize(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Prefixes(BaseModel):
+                class Prefixes(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class ProfileEnum(Enum):
@@ -3109,7 +3110,7 @@ class EosCliConfigGen(BaseModel):
 
         fib: Fib | None = None
 
-    class IpHttpClientSourceInterfacesItem(BaseModel):
+    class IpHttpClientSourceInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str | None = None
@@ -3118,10 +3119,10 @@ class EosCliConfigGen(BaseModel):
         """
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
 
-    class IpIgmpSnooping(BaseModel):
+    class IpIgmpSnooping(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Querier(BaseModel):
+        class Querier(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = None
@@ -3137,10 +3138,10 @@ class EosCliConfigGen(BaseModel):
             startup_query_count: int | None = None
             version: int | None = None
 
-        class VlansItem(BaseModel):
+        class VlansItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Querier(BaseModel):
+            class Querier(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -3182,7 +3183,7 @@ class EosCliConfigGen(BaseModel):
         proxy: bool | None = None
         vlans: list[VlansItem] | None = None
 
-    class IpNameServersItem(BaseModel):
+    class IpNameServersItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         ip_address: str | None = None
@@ -3198,16 +3199,16 @@ class EosCliConfigGen(BaseModel):
         Priority value (lower is first)
         """
 
-    class IpNat(BaseModel):
+    class IpNat(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ProfilesItem(BaseModel):
+        class ProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Destination(BaseModel):
+            class Destination(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DynamicItem(BaseModel):
+                class DynamicItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     access_list: str = None
@@ -3215,7 +3216,7 @@ class EosCliConfigGen(BaseModel):
                     pool_name: str = None
                     priority: int | None = Field(None, ge=0, le=4294967295)
 
-                class StaticItem(BaseModel):
+                class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionEnum(Enum):
@@ -3260,10 +3261,10 @@ class EosCliConfigGen(BaseModel):
                 dynamic: list[DynamicItem] | None = None
                 static: list[StaticItem] | None = None
 
-            class Source(BaseModel):
+            class Source(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DynamicItem(BaseModel):
+                class DynamicItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class NatTypeEnum(Enum):
@@ -3282,7 +3283,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     priority: int | None = Field(None, ge=0, le=4294967295)
 
-                class StaticItem(BaseModel):
+                class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionEnum(Enum):
@@ -3335,10 +3336,10 @@ class EosCliConfigGen(BaseModel):
             destination: Destination | None = None
             source: Source | None = None
 
-        class PoolsItem(BaseModel):
+        class PoolsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RangesItem(BaseModel):
+            class RangesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 first_ip: str = None
@@ -3357,10 +3358,10 @@ class EosCliConfigGen(BaseModel):
             ranges: list[RangesItem] | None = None
             utilization_log_threshold: int | None = Field(None, ge=1, le=100)
 
-        class Synchronization(BaseModel):
+        class Synchronization(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PortRange(BaseModel):
+            class PortRange(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 first_port: int | None = Field(None, ge=1024, le=65535)
@@ -3386,16 +3387,16 @@ class EosCliConfigGen(BaseModel):
             port_range: PortRange | None = None
             shutdown: bool | None = None
 
-        class Translation(BaseModel):
+        class Translation(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class AddressSelection(BaseModel):
+            class AddressSelection(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 any: bool | None = None
                 hash_field_source_ip: bool | None = None
 
-            class LowMark(BaseModel):
+            class LowMark(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 percentage: int | None = Field(None, ge=1, le=99)
@@ -3407,10 +3408,10 @@ class EosCliConfigGen(BaseModel):
                 Used to render 'ip nat translation low-mark <host_percentage> host'
                 """
 
-            class MaxEntries(BaseModel):
+            class MaxEntries(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class IpLimitsItem(BaseModel):
+                class IpLimitsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     ip: str = None
@@ -3423,7 +3424,7 @@ class EosCliConfigGen(BaseModel):
                 host_limit: int | None = Field(None, ge=0, le=4294967295)
                 ip_limits: list[IpLimitsItem] | None = None
 
-            class TimeoutsItem(BaseModel):
+            class TimeoutsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ProtocolEnum(Enum):
@@ -3451,7 +3452,7 @@ class EosCliConfigGen(BaseModel):
         synchronization: Synchronization | None = None
         translation: Translation | None = None
 
-    class IpRadiusSourceInterfacesItem(BaseModel):
+    class IpRadiusSourceInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str | None = None
@@ -3463,10 +3464,10 @@ class EosCliConfigGen(BaseModel):
         VRF Name
         """
 
-    class IpSecurity(BaseModel):
+    class IpSecurity(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class IkePoliciesItem(BaseModel):
+        class IkePoliciesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -3479,10 +3480,10 @@ class EosCliConfigGen(BaseModel):
             Can be an IPv4 or an IPv6 address.
             """
 
-        class SaPoliciesItem(BaseModel):
+        class SaPoliciesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
-            class Esp(BaseModel):
+            class Esp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class IntegrityEnum(Enum):
@@ -3520,7 +3521,7 @@ class EosCliConfigGen(BaseModel):
             esp: Esp | None = None
             pfs_dh_group: PfsDhGroupEnum | None = None
 
-        class ProfilesItem(BaseModel):
+        class ProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ConnectionEnum(Enum):
@@ -3528,7 +3529,7 @@ class EosCliConfigGen(BaseModel):
                 value_1 = "start"
                 value_2 = "route"
 
-            class Dpd(BaseModel):
+            class Dpd(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ActionEnum(Enum):
@@ -3587,7 +3588,7 @@ class EosCliConfigGen(BaseModel):
             Ipsec mode type.
             """
 
-        class KeyController(BaseModel):
+        class KeyController(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             profile: str | None = None
@@ -3609,7 +3610,7 @@ class EosCliConfigGen(BaseModel):
         """
         key_controller: KeyController | None = None
 
-    class IpSshClientSourceInterfacesItem(BaseModel):
+    class IpSshClientSourceInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str | None = None
@@ -3618,7 +3619,7 @@ class EosCliConfigGen(BaseModel):
         """
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = "default"
 
-    class IpTacacsSourceInterfacesItem(BaseModel):
+    class IpTacacsSourceInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str | None = None
@@ -3627,10 +3628,10 @@ class EosCliConfigGen(BaseModel):
         """
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = Field(None, title="VRF")
 
-    class Ipv6AccessListsItem(BaseModel):
+    class Ipv6AccessListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SequenceNumbersItem(BaseModel):
+        class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sequence: int = None
@@ -3650,16 +3651,16 @@ class EosCliConfigGen(BaseModel):
         counters_per_entry: bool | None = None
         sequence_numbers: list[SequenceNumbersItem] = None
 
-    class Ipv6Hardware(BaseModel):
+    class Ipv6Hardware(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Fib(BaseModel):
+        class Fib(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Optimize(BaseModel):
+            class Optimize(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Prefixes(BaseModel):
+                class Prefixes(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     profile: str | None = None
@@ -3673,10 +3674,10 @@ class EosCliConfigGen(BaseModel):
 
         fib: Fib | None = None
 
-    class Ipv6PrefixListsItem(BaseModel):
+    class Ipv6PrefixListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SequenceNumbersItem(BaseModel):
+        class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sequence: int = None
@@ -3695,10 +3696,10 @@ class EosCliConfigGen(BaseModel):
         """
         sequence_numbers: list[SequenceNumbersItem] = None
 
-    class Ipv6StandardAccessListsItem(BaseModel):
+    class Ipv6StandardAccessListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SequenceNumbersItem(BaseModel):
+        class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sequence: int = None
@@ -3718,7 +3719,7 @@ class EosCliConfigGen(BaseModel):
         counters_per_entry: bool | None = None
         sequence_numbers: list[SequenceNumbersItem] = None
 
-    class Ipv6StaticRoutesItem(BaseModel):
+    class Ipv6StaticRoutesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
@@ -3743,13 +3744,13 @@ class EosCliConfigGen(BaseModel):
         """
         metric: int | None = Field(None, ge=0, le=4294967295)
 
-    class L2Protocol(BaseModel):
+    class L2Protocol(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ForwardingProfilesItem(BaseModel):
+        class ForwardingProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ProtocolsItem(BaseModel):
+            class ProtocolsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class NameEnum(Enum):
@@ -3772,13 +3773,13 @@ class EosCliConfigGen(BaseModel):
 
         forwarding_profiles: list[ForwardingProfilesItem] | None = None
 
-    class Lacp(BaseModel):
+    class Lacp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class PortId(BaseModel):
+        class PortId(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Range(BaseModel):
+            class Range(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 begin: int | None = None
@@ -3792,7 +3793,7 @@ class EosCliConfigGen(BaseModel):
 
             range: Range | None = None
 
-        class RateLimit(BaseModel):
+        class RateLimit(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             default: bool | None = None
@@ -3813,17 +3814,17 @@ class EosCliConfigGen(BaseModel):
         Set local system LACP priority.
         """
 
-    class LinkTrackingGroupsItem(BaseModel):
+    class LinkTrackingGroupsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
         links_minimum: int | None = Field(None, ge=1, le=100000)
         recovery_delay: int | None = Field(None, ge=0, le=3600)
 
-    class Lldp(BaseModel):
+    class Lldp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class TlvsItem(BaseModel):
+        class TlvsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class NameEnum(Enum):
@@ -3851,7 +3852,7 @@ class EosCliConfigGen(BaseModel):
         tlvs: list[TlvsItem] | None = None
         run: bool | None = None
 
-    class LoadInterval(BaseModel):
+    class LoadInterval(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         default: int | None = None
@@ -3859,7 +3860,7 @@ class EosCliConfigGen(BaseModel):
         Default load interval in seconds
         """
 
-    class LocalUsersItem(BaseModel):
+    class LocalUsersItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class ShellEnum(Enum):
@@ -3900,7 +3901,7 @@ class EosCliConfigGen(BaseModel):
         Specify shell for the user
         """
 
-    class Logging(BaseModel):
+    class Logging(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class ConsoleEnum(Enum):
@@ -3925,7 +3926,7 @@ class EosCliConfigGen(BaseModel):
             value_7 = "emergencies"
             value_8 = "disabled"
 
-        class Buffered(BaseModel):
+        class Buffered(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class LevelEnum(Enum):
@@ -3957,7 +3958,7 @@ class EosCliConfigGen(BaseModel):
             value_8 = "warnings"
             value_9 = "disabled"
 
-        class Synchronous(BaseModel):
+        class Synchronous(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class LevelEnum(Enum):
@@ -3977,7 +3978,7 @@ class EosCliConfigGen(BaseModel):
             Synchronous logging severity level
             """
 
-        class Format(BaseModel):
+        class Format(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TimestampEnum(Enum):
@@ -4031,10 +4032,10 @@ class EosCliConfigGen(BaseModel):
             value_22 = "user"
             value_23 = "uucp"
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class HostsItem(BaseModel):
+            class HostsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ProtocolEnum(Enum):
@@ -4058,13 +4059,13 @@ class EosCliConfigGen(BaseModel):
             """
             hosts: list[HostsItem] | None = None
 
-        class Policy(BaseModel):
+        class Policy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Match(BaseModel):
+            class Match(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class MatchListsItem(BaseModel):
+                class MatchListsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class ActionEnum(Enum):
@@ -4080,13 +4081,13 @@ class EosCliConfigGen(BaseModel):
 
             match: Match | None = None
 
-        class Event(BaseModel):
+        class Event(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class StormControl(BaseModel):
+            class StormControl(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Discards(BaseModel):
+                class Discards(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     field_global: bool | None = Field(None, alias="global")
@@ -4123,20 +4124,20 @@ class EosCliConfigGen(BaseModel):
         policy: Policy | None = None
         event: Event | None = None
 
-    class LoopbackInterfacesItem(BaseModel):
+    class LoopbackInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Mpls(BaseModel):
+        class Mpls(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ldp(BaseModel):
+            class Ldp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 interface: bool | None = None
 
             ldp: Ldp | None = None
 
-        class NodeSegment(BaseModel):
+        class NodeSegment(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ipv4_index: int | None = None
@@ -4178,10 +4179,10 @@ class EosCliConfigGen(BaseModel):
         EOS CLI rendered directly on the loopback interface in the final EOS configuration
         """
 
-    class MacAccessListsItem(BaseModel):
+    class MacAccessListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class EntriesItem(BaseModel):
+        class EntriesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sequence: int | None = None
@@ -4194,13 +4195,13 @@ class EosCliConfigGen(BaseModel):
         counters_per_entry: bool | None = None
         entries: list[EntriesItem] | None = None
 
-    class MacAddressTable(BaseModel):
+    class MacAddressTable(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class NotificationHostFlap(BaseModel):
+        class NotificationHostFlap(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Detection(BaseModel):
+            class Detection(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 window: int | None = Field(None, ge=2, le=300)
@@ -4215,16 +4216,16 @@ class EosCliConfigGen(BaseModel):
         """
         notification_host_flap: NotificationHostFlap | None = None
 
-    class MacSecurity(BaseModel):
+    class MacSecurity(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class License(BaseModel):
+        class License(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             license_name: str = None
             license_key: str = None
 
-        class ProfilesItem(BaseModel):
+        class ProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class CipherEnum(Enum):
@@ -4233,17 +4234,17 @@ class EosCliConfigGen(BaseModel):
                 value_2 = "aes256-gcm"
                 value_3 = "aes256-gcm-xpn"
 
-            class ConnectionKeysItem(BaseModel):
+            class ConnectionKeysItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 id: str = None
                 encrypted_key: str | None = None
                 fallback: bool | None = None
 
-            class Mka(BaseModel):
+            class Mka(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Session(BaseModel):
+                class Session(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     rekey_period: int | None = Field(None, ge=30, le=100000)
@@ -4254,10 +4255,10 @@ class EosCliConfigGen(BaseModel):
                 key_server_priority: int | None = Field(None, ge=0, le=255)
                 session: Session | None = None
 
-            class L2Protocols(BaseModel):
+            class L2Protocols(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class EthernetFlowControl(BaseModel):
+                class EthernetFlowControl(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class ModeEnum(Enum):
@@ -4266,7 +4267,7 @@ class EosCliConfigGen(BaseModel):
 
                     mode: ModeEnum = None
 
-                class Lldp(BaseModel):
+                class Lldp(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class ModeEnum(Enum):
@@ -4292,13 +4293,13 @@ class EosCliConfigGen(BaseModel):
         fips_restrictions: bool | None = None
         profiles: list[ProfilesItem] | None = None
 
-    class Maintenance(BaseModel):
+    class Maintenance(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class InterfaceProfilesItem(BaseModel):
+        class InterfaceProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RateMonitoring(BaseModel):
+            class RateMonitoring(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 load_interval: int | None = None
@@ -4310,7 +4311,7 @@ class EosCliConfigGen(BaseModel):
                 Threshold in kbps
                 """
 
-            class Shutdown(BaseModel):
+            class Shutdown(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 max_delay: int | None = None
@@ -4322,10 +4323,10 @@ class EosCliConfigGen(BaseModel):
             rate_monitoring: RateMonitoring | None = None
             shutdown: Shutdown | None = None
 
-        class BgpProfilesItem(BaseModel):
+        class BgpProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Initiator(BaseModel):
+            class Initiator(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 route_map_inout: str | None = None
@@ -4339,10 +4340,10 @@ class EosCliConfigGen(BaseModel):
             """
             initiator: Initiator | None = None
 
-        class UnitProfilesItem(BaseModel):
+        class UnitProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class OnBoot(BaseModel):
+            class OnBoot(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 duration: int | None = Field(None, ge=300, le=3600)
@@ -4356,10 +4357,10 @@ class EosCliConfigGen(BaseModel):
             """
             on_boot: OnBoot | None = None
 
-        class UnitsItem(BaseModel):
+        class UnitsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Groups(BaseModel):
+            class Groups(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 bgp_groups: list[str] | None = None
@@ -4393,23 +4394,23 @@ class EosCliConfigGen(BaseModel):
         unit_profiles: list[UnitProfilesItem] | None = None
         units: list[UnitsItem] | None = None
 
-    class ManagementAccounts(BaseModel):
+    class ManagementAccounts(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Password(BaseModel):
+        class Password(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             policy: str | None = None
 
         password: Password | None = None
 
-    class ManagementApiGnmi(BaseModel):
+    class ManagementApiGnmi(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Transport(BaseModel):
+        class Transport(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class GrpcItem(BaseModel):
+            class GrpcItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class NotificationTimestampEnum(Enum):
@@ -4449,10 +4450,10 @@ class EosCliConfigGen(BaseModel):
                 applications.
                 """
 
-            class GrpcTunnelsItem(BaseModel):
+            class GrpcTunnelsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Destination(BaseModel):
+                class Destination(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     address: str = None
@@ -4464,7 +4465,7 @@ class EosCliConfigGen(BaseModel):
                     TCP Port
                     """
 
-                class LocalInterface(BaseModel):
+                class LocalInterface(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     name: str = None
@@ -4476,7 +4477,7 @@ class EosCliConfigGen(BaseModel):
                     TCP Port
                     """
 
-                class Target(BaseModel):
+                class Target(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     use_serial_number: bool | None = None
@@ -4515,7 +4516,7 @@ class EosCliConfigGen(BaseModel):
             grpc: list[GrpcItem] | None = None
             grpc_tunnels: list[GrpcTunnelsItem] | None = None
 
-        class EnableVrfsItem(BaseModel):
+        class EnableVrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -4540,10 +4541,10 @@ class EosCliConfigGen(BaseModel):
         currently supported by EOS.
         """
 
-    class ManagementApiHttp(BaseModel):
+    class ManagementApiHttp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class EnableVrfsItem(BaseModel):
+        class EnableVrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -4559,7 +4560,7 @@ class EosCliConfigGen(BaseModel):
             Standard IPv6 ACL name
             """
 
-        class ProtocolHttpsCertificate(BaseModel):
+        class ProtocolHttpsCertificate(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             certificate: str | None = None
@@ -4584,17 +4585,17 @@ class EosCliConfigGen(BaseModel):
         enable_vrfs: list[EnableVrfsItem] | None = None
         protocol_https_certificate: ProtocolHttpsCertificate | None = None
 
-    class ManagementApiModels(BaseModel):
+    class ManagementApiModels(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ProvidersItem(BaseModel):
+        class ProvidersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class NameEnum(Enum):
                 value_0 = "sysdb"
                 value_1 = "smash"
 
-            class PathsItem(BaseModel):
+            class PathsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 path: str | None = None
@@ -4605,12 +4606,12 @@ class EosCliConfigGen(BaseModel):
 
         providers: list[ProvidersItem] | None = None
 
-    class ManagementConsole(BaseModel):
+    class ManagementConsole(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         idle_timeout: int | None = Field(None, ge=0, le=86400)
 
-    class ManagementCvx(BaseModel):
+    class ManagementCvx(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         shutdown: bool | None = None
@@ -4624,10 +4625,10 @@ class EosCliConfigGen(BaseModel):
         VRF Name
         """
 
-    class ManagementDefaults(BaseModel):
+    class ManagementDefaults(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Secret(BaseModel):
+        class Secret(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class HashEnum(Enum):
@@ -4638,14 +4639,14 @@ class EosCliConfigGen(BaseModel):
 
         secret: Secret | None = None
 
-    class ManagementInterfacesItem(BaseModel):
+    class ManagementInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class TypeEnum(Enum):
             value_0 = "oob"
             value_1 = "inband"
 
-        class Lldp(BaseModel):
+        class Lldp(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             transmit: bool | None = None
@@ -4701,16 +4702,16 @@ class EosCliConfigGen(BaseModel):
         Multiline EOS CLI rendered directly on the management interface in the final EOS configuration
         """
 
-    class ManagementSecurity(BaseModel):
+    class ManagementSecurity(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Password(BaseModel):
+        class Password(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PoliciesItem(BaseModel):
+            class PoliciesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Minimum(BaseModel):
+                class Minimum(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     digits: int | None = Field(None, ge=1, le=65535)
@@ -4719,7 +4720,7 @@ class EosCliConfigGen(BaseModel):
                     special: int | None = Field(None, ge=1, le=65535)
                     upper: int | None = Field(None, ge=1, le=65535)
 
-                class Maximum(BaseModel):
+                class Maximum(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     repetitive: int | None = Field(None, ge=1, le=65535)
@@ -4734,13 +4735,13 @@ class EosCliConfigGen(BaseModel):
             encryption_reversible: str | None = None
             policies: list[PoliciesItem] | None = None
 
-        class SslProfilesItem(BaseModel):
+        class SslProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class TrustCertificate(BaseModel):
+            class TrustCertificate(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Requirement(BaseModel):
+                class Requirement(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     basic_constraint_ca: bool | None = None
@@ -4763,10 +4764,10 @@ class EosCliConfigGen(BaseModel):
                 Use system-supplied trust certificates.
                 """
 
-            class ChainCertificate(BaseModel):
+            class ChainCertificate(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Requirement(BaseModel):
+                class Requirement(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     basic_constraint_ca: bool | None = None
@@ -4781,7 +4782,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 requirement: Requirement | None = None
 
-            class Certificate(BaseModel):
+            class Certificate(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 file: str | None = None
@@ -4808,10 +4809,10 @@ class EosCliConfigGen(BaseModel):
         password: Password | None = None
         ssl_profiles: list[SslProfilesItem] | None = None
 
-    class ManagementSsh(BaseModel):
+    class ManagementSsh(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class AccessGroupsItem(BaseModel):
+        class AccessGroupsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -4823,7 +4824,7 @@ class EosCliConfigGen(BaseModel):
             VRF Name
             """
 
-        class Ipv6AccessGroupsItem(BaseModel):
+        class Ipv6AccessGroupsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -4835,7 +4836,7 @@ class EosCliConfigGen(BaseModel):
             VRF Name
             """
 
-        class Hostkey(BaseModel):
+        class Hostkey(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             server: list[str] | None = None
@@ -4843,7 +4844,7 @@ class EosCliConfigGen(BaseModel):
             SSH host key settings
             """
 
-        class Connection(BaseModel):
+        class Connection(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             limit: int | None = Field(None, ge=1, le=100)
@@ -4855,7 +4856,7 @@ class EosCliConfigGen(BaseModel):
             Maximum number of SSH sessions to device from a single host
             """
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -4867,7 +4868,7 @@ class EosCliConfigGen(BaseModel):
             Enable SSH in VRF
             """
 
-        class ClientAlive(BaseModel):
+        class ClientAlive(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             count_max: int | None = Field(None, ge=1, le=1000)
@@ -4910,13 +4911,13 @@ class EosCliConfigGen(BaseModel):
         """
         client_alive: ClientAlive | None = None
 
-    class ManagementTechSupport(BaseModel):
+    class ManagementTechSupport(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class PolicyShowTechSupport(BaseModel):
+        class PolicyShowTechSupport(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ExcludeCommandsItem(BaseModel):
+            class ExcludeCommandsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -4932,7 +4933,7 @@ class EosCliConfigGen(BaseModel):
                 The supported values for type are platform dependent.
                 """
 
-            class IncludeCommandsItem(BaseModel):
+            class IncludeCommandsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 command: str | None = None
@@ -4945,13 +4946,13 @@ class EosCliConfigGen(BaseModel):
 
         policy_show_tech_support: PolicyShowTechSupport | None = None
 
-    class MatchListInput(BaseModel):
+    class MatchListInput(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class StringItem(BaseModel):
+        class StringItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class SequenceNumbersItem(BaseModel):
+            class SequenceNumbersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 sequence: int = None
@@ -4971,10 +4972,10 @@ class EosCliConfigGen(BaseModel):
 
         string: list[StringItem] | None = None
 
-    class McsClient(BaseModel):
+    class McsClient(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class CvxSecondary(BaseModel):
+        class CvxSecondary(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -4984,10 +4985,10 @@ class EosCliConfigGen(BaseModel):
         shutdown: bool | None = None
         cvx_secondary: CvxSecondary | None = None
 
-    class MlagConfiguration(BaseModel):
+    class MlagConfiguration(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class PeerAddressHeartbeat(BaseModel):
+        class PeerAddressHeartbeat(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             peer_ip: str | None = None
@@ -5038,10 +5039,10 @@ class EosCliConfigGen(BaseModel):
         Delay in seconds <0-86400> or 'infinity'
         """
 
-    class MonitorConnectivity(BaseModel):
+    class MonitorConnectivity(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class InterfaceSetsItem(BaseModel):
+        class InterfaceSetsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -5052,7 +5053,7 @@ class EosCliConfigGen(BaseModel):
             specified separated by ","
             """
 
-        class HostsItem(BaseModel):
+        class HostsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -5064,16 +5065,16 @@ class EosCliConfigGen(BaseModel):
             local_interfaces: str | None = None
             url: str | None = None
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class InterfaceSetsItem(BaseModel):
+            class InterfaceSetsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str | None = None
                 interfaces: str | None = None
 
-            class HostsItem(BaseModel):
+            class HostsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str | None = None
@@ -5101,10 +5102,10 @@ class EosCliConfigGen(BaseModel):
         hosts: list[HostsItem] | None = None
         vrfs: list[VrfsItem] | None = None
 
-    class MonitorSessionsItem(BaseModel):
+    class MonitorSessionsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SourcesItem(BaseModel):
+        class SourcesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class DirectionEnum(Enum):
@@ -5112,7 +5113,7 @@ class EosCliConfigGen(BaseModel):
                 value_1 = "tx"
                 value_2 = "both"
 
-            class AccessGroup(BaseModel):
+            class AccessGroup(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -5134,7 +5135,7 @@ class EosCliConfigGen(BaseModel):
             direction: DirectionEnum | None = None
             access_group: AccessGroup | None = None
 
-        class AccessGroup(BaseModel):
+        class AccessGroup(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TypeEnum(Enum):
@@ -5148,7 +5149,7 @@ class EosCliConfigGen(BaseModel):
             ACL Name
             """
 
-        class Truncate(BaseModel):
+        class Truncate(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = None
@@ -5188,10 +5189,10 @@ class EosCliConfigGen(BaseModel):
         sample: int | None = None
         truncate: Truncate | None = None
 
-    class Mpls(BaseModel):
+    class Mpls(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Ldp(BaseModel):
+        class Ldp(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             interface_disabled_default: bool | None = None
@@ -5205,10 +5206,10 @@ class EosCliConfigGen(BaseModel):
         ip: bool | None = None
         ldp: Ldp | None = None
 
-    class NameServer(BaseModel):
+    class NameServer(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Source(BaseModel):
+        class Source(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
@@ -5219,10 +5220,10 @@ class EosCliConfigGen(BaseModel):
         source: Source | None = None
         nodes: list[str] | None = None
 
-    class Ntp(BaseModel):
+    class Ntp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class LocalInterface(BaseModel):
+        class LocalInterface(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -5234,7 +5235,7 @@ class EosCliConfigGen(BaseModel):
             VRF name
             """
 
-        class ServersItem(BaseModel):
+        class ServersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -5263,7 +5264,7 @@ class EosCliConfigGen(BaseModel):
             VRF name
             """
 
-        class AuthenticationKeysItem(BaseModel):
+        class AuthenticationKeysItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class HashAlgorithmEnum(Enum):
@@ -5296,13 +5297,13 @@ class EosCliConfigGen(BaseModel):
         List of trusted-keys as string ex. 10-12,15
         """
 
-    class PatchPanel(BaseModel):
+    class PatchPanel(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class PatchesItem(BaseModel):
+        class PatchesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ConnectorsItem(BaseModel):
+            class ConnectorsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
@@ -5331,10 +5332,10 @@ class EosCliConfigGen(BaseModel):
 
         patches: list[PatchesItem] | None = None
 
-    class PeerFiltersItem(BaseModel):
+    class PeerFiltersItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SequenceNumbersItem(BaseModel):
+        class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sequence: int = None
@@ -5353,26 +5354,26 @@ class EosCliConfigGen(BaseModel):
         """
         sequence_numbers: list[SequenceNumbersItem] = None
 
-    class Platform(BaseModel):
+    class Platform(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Trident(BaseModel):
+        class Trident(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Mmu(BaseModel):
+            class Mmu(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class QueueProfilesItem(BaseModel):
+                class QueueProfilesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class MulticastQueuesItem(BaseModel):
+                    class MulticastQueuesItem(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class UnitEnum(Enum):
                             value_0 = "bytes"
                             value_1 = "cells"
 
-                        class Drop(BaseModel):
+                        class Drop(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                             class PrecedenceEnum(Enum):
@@ -5402,14 +5403,14 @@ class EosCliConfigGen(BaseModel):
                         """
                         drop: Drop | None = None
 
-                    class UnicastQueuesItem(BaseModel):
+                    class UnicastQueuesItem(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class UnitEnum(Enum):
                             value_0 = "bytes"
                             value_1 = "cells"
 
-                        class Drop(BaseModel):
+                        class Drop(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                             class PrecedenceEnum(Enum):
@@ -5455,22 +5456,22 @@ class EosCliConfigGen(BaseModel):
             Memory Management Unit settings.
             """
 
-        class Sand(BaseModel):
+        class Sand(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class QosMapsItem(BaseModel):
+            class QosMapsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 traffic_class: int | None = Field(None, ge=0, le=7)
                 to_network_qos: int | None = Field(None, ge=0, le=63)
 
-            class Lag(BaseModel):
+            class Lag(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 hardware_only: bool | None = None
                 mode: str | None = None
 
-            class MulticastReplication(BaseModel):
+            class MulticastReplication(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class DefaultEnum(Enum):
@@ -5484,7 +5485,7 @@ class EosCliConfigGen(BaseModel):
             forwarding_mode: str | None = None
             multicast_replication: MulticastReplication | None = None
 
-        class Sfe(BaseModel):
+        class Sfe(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             data_plane_cpu_allocation_max: int | None = Field(None, ge=1, le=128)
@@ -5502,10 +5503,10 @@ class EosCliConfigGen(BaseModel):
         Sfe (Software Forwarding Engine) settings.
         """
 
-    class Poe(BaseModel):
+    class Poe(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Reboot(BaseModel):
+        class Reboot(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ActionEnum(Enum):
@@ -5517,7 +5518,7 @@ class EosCliConfigGen(BaseModel):
             PoE action for interface. By default in EOS, reboot action is set to power-off.
             """
 
-        class InterfaceShutdown(BaseModel):
+        class InterfaceShutdown(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ActionEnum(Enum):
@@ -5538,19 +5539,19 @@ class EosCliConfigGen(BaseModel):
         Set the global PoE power behavior for PoE ports when ports are admin down
         """
 
-    class PolicyMaps(BaseModel):
+    class PolicyMaps(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class PbrItem(BaseModel):
+        class PbrItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ClassesItem(BaseModel):
+            class ClassesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Set(BaseModel):
+                class Set(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Nexthop(BaseModel):
+                    class Nexthop(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         ip_address: str | None = None
@@ -5582,13 +5583,13 @@ class EosCliConfigGen(BaseModel):
             """
             classes: list[ClassesItem] | None = None
 
-        class QosItem(BaseModel):
+        class QosItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ClassesItem(BaseModel):
+            class ClassesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Set(BaseModel):
+                class Set(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     cos: int | None = None
@@ -5617,13 +5618,13 @@ class EosCliConfigGen(BaseModel):
         QOS Policy-Maps
         """
 
-    class PortChannelInterfacesItem(BaseModel):
+    class PortChannelInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
-        class Logging(BaseModel):
+        class Logging(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Event(BaseModel):
+            class Event(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 link_status: bool | None = None
@@ -5636,13 +5637,13 @@ class EosCliConfigGen(BaseModel):
             value_2 = "l3dot1q"
             value_3 = "l2dot1q"
 
-        class EncapsulationVlan(BaseModel):
+        class EncapsulationVlan(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Client(BaseModel):
+            class Client(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Dot1q(BaseModel):
+                class Dot1q(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     vlan: int | None = None
@@ -5661,10 +5662,10 @@ class EosCliConfigGen(BaseModel):
                 dot1q: Dot1q | None = None
                 unmatched: bool | None = None
 
-            class Network(BaseModel):
+            class Network(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Dot1q(BaseModel):
+                class Dot1q(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     vlan: int | None = None
@@ -5695,7 +5696,7 @@ class EosCliConfigGen(BaseModel):
             value_2 = "trunk"
             value_3 = "trunk phone"
 
-        class LinkTrackingGroupsItem(BaseModel):
+        class LinkTrackingGroupsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class DirectionEnum(Enum):
@@ -5708,7 +5709,7 @@ class EosCliConfigGen(BaseModel):
             """
             direction: DirectionEnum | None = None
 
-        class Phone(BaseModel):
+        class Phone(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TrunkEnum(Enum):
@@ -5718,7 +5719,7 @@ class EosCliConfigGen(BaseModel):
             trunk: TrunkEnum | None = None
             vlan: int | None = Field(None, ge=1, le=4094)
 
-        class L2Protocol(BaseModel):
+        class L2Protocol(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             encapsulation_dot1q_vlan: int | None = None
@@ -5734,7 +5735,7 @@ class EosCliConfigGen(BaseModel):
             value_0 = "individual"
             value_1 = "static"
 
-        class Qos(BaseModel):
+        class Qos(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TrustEnum(Enum):
@@ -5752,7 +5753,7 @@ class EosCliConfigGen(BaseModel):
             COS value
             """
 
-        class Bfd(BaseModel):
+        class Bfd(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             echo: bool | None = None
@@ -5766,10 +5767,10 @@ class EosCliConfigGen(BaseModel):
             """
             multiplier: int | None = Field(None, ge=3, le=50)
 
-        class ServicePolicy(BaseModel):
+        class ServicePolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Pbr(BaseModel):
+            class Pbr(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 input: str | None = None
@@ -5777,7 +5778,7 @@ class EosCliConfigGen(BaseModel):
                 Policy Based Routing Policy-map name
                 """
 
-            class Qos(BaseModel):
+            class Qos(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 input: str = None
@@ -5788,10 +5789,10 @@ class EosCliConfigGen(BaseModel):
             pbr: Pbr | None = None
             qos: Qos | None = None
 
-        class Mpls(BaseModel):
+        class Mpls(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ldp(BaseModel):
+            class Ldp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 interface: bool | None = None
@@ -5800,7 +5801,7 @@ class EosCliConfigGen(BaseModel):
             ip: bool | None = None
             ldp: Ldp | None = None
 
-        class VlanTranslationsItem(BaseModel):
+        class VlanTranslationsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class DirectionEnum(Enum):
@@ -5818,7 +5819,7 @@ class EosCliConfigGen(BaseModel):
             """
             direction: DirectionEnum | None = "both"
 
-        class Shape(BaseModel):
+        class Shape(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             rate: str | None = None
@@ -5832,10 +5833,10 @@ class EosCliConfigGen(BaseModel):
             percent"
             """
 
-        class StormControl(BaseModel):
+        class StormControl(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class All(BaseModel):
+            class All(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class UnitEnum(Enum):
@@ -5851,7 +5852,7 @@ class EosCliConfigGen(BaseModel):
                 Optional field and is hardware dependent
                 """
 
-            class Broadcast(BaseModel):
+            class Broadcast(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class UnitEnum(Enum):
@@ -5867,7 +5868,7 @@ class EosCliConfigGen(BaseModel):
                 Optional field and is hardware dependent
                 """
 
-            class Multicast(BaseModel):
+            class Multicast(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class UnitEnum(Enum):
@@ -5883,7 +5884,7 @@ class EosCliConfigGen(BaseModel):
                 Optional field and is hardware dependent
                 """
 
-            class UnknownUnicast(BaseModel):
+            class UnknownUnicast(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class UnitEnum(Enum):
@@ -5913,7 +5914,7 @@ class EosCliConfigGen(BaseModel):
             value_0 = "text"
             value_1 = "md5"
 
-        class TrafficPolicy(BaseModel):
+        class TrafficPolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             input: str | None = None
@@ -5925,14 +5926,14 @@ class EosCliConfigGen(BaseModel):
             Egress traffic policy
             """
 
-        class EvpnEthernetSegment(BaseModel):
+        class EvpnEthernetSegment(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class RedundancyEnum(Enum):
                 value_0 = "all-active"
                 value_1 = "single-active"
 
-            class DesignatedForwarderElection(BaseModel):
+            class DesignatedForwarderElection(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class AlgorithmEnum(Enum):
@@ -5952,7 +5953,7 @@ class EosCliConfigGen(BaseModel):
                 subsequent_hold_time: int | None = None
                 candidate_reachability_required: bool | None = None
 
-            class Mpls(BaseModel):
+            class Mpls(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 shared_index: int | None = Field(None, ge=1, le=1024)
@@ -5995,10 +5996,10 @@ class EosCliConfigGen(BaseModel):
             value_0 = "edge"
             value_1 = "network"
 
-        class Ptp(BaseModel):
+        class Ptp(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
-            class Announce(BaseModel):
+            class Announce(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 interval: int | None = None
@@ -6008,7 +6009,7 @@ class EosCliConfigGen(BaseModel):
                 value_0 = "e2e"
                 value_1 = "p2p"
 
-            class SyncMessage(BaseModel):
+            class SyncMessage(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 interval: int | None = None
@@ -6034,13 +6035,13 @@ class EosCliConfigGen(BaseModel):
             """
             transport: TransportEnum | None = None
 
-        class IpNat(BaseModel):
+        class IpNat(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Destination(BaseModel):
+            class Destination(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DynamicItem(BaseModel):
+                class DynamicItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     access_list: str = None
@@ -6048,7 +6049,7 @@ class EosCliConfigGen(BaseModel):
                     pool_name: str = None
                     priority: int | None = Field(None, ge=0, le=4294967295)
 
-                class StaticItem(BaseModel):
+                class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionEnum(Enum):
@@ -6093,10 +6094,10 @@ class EosCliConfigGen(BaseModel):
                 dynamic: list[DynamicItem] | None = None
                 static: list[StaticItem] | None = None
 
-            class Source(BaseModel):
+            class Source(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DynamicItem(BaseModel):
+                class DynamicItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class NatTypeEnum(Enum):
@@ -6115,7 +6116,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     priority: int | None = Field(None, ge=0, le=4294967295)
 
-                class StaticItem(BaseModel):
+                class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionEnum(Enum):
@@ -6163,7 +6164,7 @@ class EosCliConfigGen(BaseModel):
             destination: Destination | None = None
             source: Source | None = None
 
-        class Ipv6NdPrefixesItem(BaseModel):
+        class Ipv6NdPrefixesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ipv6_prefix: str = None
@@ -6177,10 +6178,10 @@ class EosCliConfigGen(BaseModel):
             """
             no_autoconfig_flag: bool | None = None
 
-        class Pim(BaseModel):
+        class Pim(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ipv4(BaseModel):
+            class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 dr_priority: int | None = Field(None, ge=0, le=429467295)
@@ -6193,7 +6194,7 @@ class EosCliConfigGen(BaseModel):
             value_1 = "simple"
             value_2 = "message-digest"
 
-        class OspfMessageDigestKeysItem(BaseModel):
+        class OspfMessageDigestKeysItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class HashAlgorithmEnum(Enum):
@@ -6210,7 +6211,7 @@ class EosCliConfigGen(BaseModel):
             Encrypted password
             """
 
-        class FlowTracker(BaseModel):
+        class FlowTracker(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sampled: str | None = None
@@ -6222,7 +6223,7 @@ class EosCliConfigGen(BaseModel):
             Hardware flow tracker name.
             """
 
-        class Bgp(BaseModel):
+        class Bgp(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             session_tracker: str | None = None
@@ -6230,10 +6231,10 @@ class EosCliConfigGen(BaseModel):
             Name of session tracker
             """
 
-        class Sflow(BaseModel):
+        class Sflow(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Egress(BaseModel):
+            class Egress(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enable: bool | None = None
@@ -6423,10 +6424,10 @@ class EosCliConfigGen(BaseModel):
         Multiline EOS CLI rendered directly on the port-channel interface in the final EOS configuration
         """
 
-    class PrefixListsItem(BaseModel):
+    class PrefixListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SequenceNumbersItem(BaseModel):
+        class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sequence: int = None
@@ -6445,10 +6446,10 @@ class EosCliConfigGen(BaseModel):
         """
         sequence_numbers: list[SequenceNumbersItem] | None = None
 
-    class PriorityFlowControl(BaseModel):
+    class PriorityFlowControl(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Watchdog(BaseModel):
+        class Watchdog(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ActionEnum(Enum):
@@ -6493,14 +6494,14 @@ class EosCliConfigGen(BaseModel):
         """
         watchdog: Watchdog | None = None
 
-    class Ptp(BaseModel):
+    class Ptp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class ModeEnum(Enum):
             value_0 = "boundary"
             value_1 = "transparent"
 
-        class Source(BaseModel):
+        class Source(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ip: str | None = None
@@ -6508,15 +6509,15 @@ class EosCliConfigGen(BaseModel):
             Source IP
             """
 
-        class MessageType(BaseModel):
+        class MessageType(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class General(BaseModel):
+            class General(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 dscp: int | None = None
 
-            class Event(BaseModel):
+            class Event(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 dscp: int | None = None
@@ -6524,13 +6525,13 @@ class EosCliConfigGen(BaseModel):
             general: General | None = None
             event: Event | None = None
 
-        class Monitor(BaseModel):
+        class Monitor(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Threshold(BaseModel):
+            class Threshold(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Drop(BaseModel):
+                class Drop(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     offset_from_master: int | None = Field(None, ge=0, le=1000000000)
@@ -6540,17 +6541,17 @@ class EosCliConfigGen(BaseModel):
                 mean_path_delay: int | None = Field(None, ge=0, le=1000000000)
                 drop: Drop | None = None
 
-            class MissingMessage(BaseModel):
+            class MissingMessage(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Intervals(BaseModel):
+                class Intervals(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     announce: int | None = Field(None, ge=2, le=255)
                     follow_up: int | None = Field(None, ge=2, le=255)
                     sync: int | None = Field(None, ge=2, le=255)
 
-                class SequenceIds(BaseModel):
+                class SequenceIds(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
@@ -6580,10 +6581,10 @@ class EosCliConfigGen(BaseModel):
         message_type: MessageType | None = None
         monitor: Monitor | None = None
 
-    class Qos(BaseModel):
+    class Qos(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Map(BaseModel):
+        class Map(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             cos: list[str] | None = None
@@ -6591,13 +6592,13 @@ class EosCliConfigGen(BaseModel):
             exp: list[str] | None = None
             traffic_class: list[str] | None = None
 
-        class RandomDetect(BaseModel):
+        class RandomDetect(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ecn(BaseModel):
+            class Ecn(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class AllowNonEct(BaseModel):
+                class AllowNonEct(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
@@ -6625,7 +6626,7 @@ class EosCliConfigGen(BaseModel):
         Global random-detect settings
         """
 
-    class QosProfilesItem(BaseModel):
+    class QosProfilesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class TrustEnum(Enum):
@@ -6633,7 +6634,7 @@ class EosCliConfigGen(BaseModel):
             value_1 = "dscp"
             value_2 = "disabled"
 
-        class Shape(BaseModel):
+        class Shape(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             rate: str | None = None
@@ -6642,10 +6643,10 @@ class EosCliConfigGen(BaseModel):
             Example: "< rate > kbps", "1-100 percent", "< rate > pps"
             """
 
-        class ServicePolicy(BaseModel):
+        class ServicePolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Type(BaseModel):
+            class Type(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 qos_input: str | None = None
@@ -6655,14 +6656,14 @@ class EosCliConfigGen(BaseModel):
 
             type: Type | None = None
 
-        class TxQueuesItem(BaseModel):
+        class TxQueuesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class PriorityEnum(Enum):
                 value_0 = "priority strict"
                 value_1 = "no priority"
 
-            class Shape(BaseModel):
+            class Shape(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 rate: str | None = None
@@ -6671,13 +6672,13 @@ class EosCliConfigGen(BaseModel):
                 Example: "< rate > kbps", "1-100 percent", "< rate > pps"
                 """
 
-            class RandomDetect(BaseModel):
+            class RandomDetect(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Ecn(BaseModel):
+                class Ecn(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Threshold(BaseModel):
+                    class Threshold(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class UnitsEnum(Enum):
@@ -6715,10 +6716,10 @@ class EosCliConfigGen(BaseModel):
                     """
                     threshold: Threshold | None = None
 
-                class Drop(BaseModel):
+                class Drop(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Threshold(BaseModel):
+                    class Threshold(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class UnitsEnum(Enum):
@@ -6779,14 +6780,14 @@ class EosCliConfigGen(BaseModel):
             """
             random_detect: RandomDetect | None = None
 
-        class UcTxQueuesItem(BaseModel):
+        class UcTxQueuesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class PriorityEnum(Enum):
                 value_0 = "priority strict"
                 value_1 = "no priority"
 
-            class Shape(BaseModel):
+            class Shape(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 rate: str | None = None
@@ -6795,13 +6796,13 @@ class EosCliConfigGen(BaseModel):
                 Example: "< rate > kbps", "1-100 percent", "< rate > pps"
                 """
 
-            class RandomDetect(BaseModel):
+            class RandomDetect(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Ecn(BaseModel):
+                class Ecn(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Threshold(BaseModel):
+                    class Threshold(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class UnitsEnum(Enum):
@@ -6838,10 +6839,10 @@ class EosCliConfigGen(BaseModel):
                     """
                     threshold: Threshold | None = None
 
-                class Drop(BaseModel):
+                class Drop(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Threshold(BaseModel):
+                    class Threshold(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class UnitsEnum(Enum):
@@ -6902,14 +6903,14 @@ class EosCliConfigGen(BaseModel):
             """
             random_detect: RandomDetect | None = None
 
-        class McTxQueuesItem(BaseModel):
+        class McTxQueuesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class PriorityEnum(Enum):
                 value_0 = "priority strict"
                 value_1 = "no priority"
 
-            class Shape(BaseModel):
+            class Shape(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 rate: str | None = None
@@ -6931,17 +6932,17 @@ class EosCliConfigGen(BaseModel):
             Text comment added to queue.
             """
 
-        class PriorityFlowControl(BaseModel):
+        class PriorityFlowControl(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Watchdog(BaseModel):
+            class Watchdog(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ActionEnum(Enum):
                     value_0 = "drop"
                     value_1 = "notify-only"
 
-                class Timer(BaseModel):
+                class Timer(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     timeout: Annotated[str, StrConvert(convert_types=(int, float))] = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
@@ -6991,7 +6992,7 @@ class EosCliConfigGen(BaseModel):
                 Timer thresholds whilst monitoring queues.
                 """
 
-            class PrioritiesItem(BaseModel):
+            class PrioritiesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 priority: int = Field(None, ge=0, le=7)
@@ -7033,10 +7034,10 @@ class EosCliConfigGen(BaseModel):
         Priority Flow Control settings
         """
 
-    class QueueMonitorLength(BaseModel):
+    class QueueMonitorLength(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class DefaultThresholds(BaseModel):
+        class DefaultThresholds(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             high: int = None
@@ -7049,10 +7050,10 @@ class EosCliConfigGen(BaseModel):
             Low threshold support is platform dependent.
             """
 
-        class Cpu(BaseModel):
+        class Cpu(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Thresholds(BaseModel):
+            class Thresholds(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 high: int = None
@@ -7072,7 +7073,7 @@ class EosCliConfigGen(BaseModel):
         """
         cpu: Cpu | None = None
 
-    class QueueMonitorStreaming(BaseModel):
+    class QueueMonitorStreaming(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         enable: bool | None = None
@@ -7087,10 +7088,10 @@ class EosCliConfigGen(BaseModel):
         max_connections: int | None = Field(None, ge=1, le=100)
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
 
-    class RadiusServer(BaseModel):
+    class RadiusServer(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Attribute32IncludeInAccessReq(BaseModel):
+        class Attribute32IncludeInAccessReq(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             hostname: bool | None = None
@@ -7099,7 +7100,7 @@ class EosCliConfigGen(BaseModel):
             Specify the format of the NAS-Identifier. If 'hostname' is set, this is ignored.
             """
 
-        class DynamicAuthorization(BaseModel):
+        class DynamicAuthorization(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             port: int | None = Field(None, ge=0, le=65535)
@@ -7111,7 +7112,7 @@ class EosCliConfigGen(BaseModel):
             Name of TLS profile
             """
 
-        class HostsItem(BaseModel):
+        class HostsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             host: str = None
@@ -7130,7 +7131,7 @@ class EosCliConfigGen(BaseModel):
         dynamic_authorization: DynamicAuthorization | None = None
         hosts: list[HostsItem] | None = None
 
-    class RadiusServersItem(BaseModel):
+    class RadiusServersItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         host: str | None = None
@@ -7143,7 +7144,7 @@ class EosCliConfigGen(BaseModel):
         Encrypted key
         """
 
-    class Redundancy(BaseModel):
+    class Redundancy(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         protocol: str | None = None
@@ -7151,10 +7152,10 @@ class EosCliConfigGen(BaseModel):
         Redundancy Protocol
         """
 
-    class RolesItem(BaseModel):
+    class RolesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SequenceNumbersItem(BaseModel):
+        class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class ActionEnum(Enum):
@@ -7181,17 +7182,17 @@ class EosCliConfigGen(BaseModel):
         """
         sequence_numbers: list[SequenceNumbersItem] | None = None
 
-    class RouteMapsItem(BaseModel):
+    class RouteMapsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SequenceNumbersItem(BaseModel):
+        class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TypeEnum(Enum):
                 value_0 = "permit"
                 value_1 = "deny"
 
-            class Continue(BaseModel):
+            class Continue(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -7223,7 +7224,7 @@ class EosCliConfigGen(BaseModel):
         """
         sequence_numbers: list[SequenceNumbersItem] = None
 
-    class RouterAdaptiveVirtualTopology(BaseModel):
+    class RouterAdaptiveVirtualTopology(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class TopologyRoleEnum(Enum):
@@ -7232,19 +7233,19 @@ class EosCliConfigGen(BaseModel):
             value_2 = "transit region"
             value_3 = "transit zone"
 
-        class Region(BaseModel):
+        class Region(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
             id: int = Field(None, ge=1, le=255)
 
-        class Zone(BaseModel):
+        class Zone(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
             id: int = Field(None, ge=1, le=10000)
 
-        class Site(BaseModel):
+        class Site(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -7267,10 +7268,10 @@ class EosCliConfigGen(BaseModel):
         Site name and ID.
         """
 
-    class RouterBfd(BaseModel):
+    class RouterBfd(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Multihop(BaseModel):
+        class Multihop(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             interval: int | None = None
@@ -7283,13 +7284,13 @@ class EosCliConfigGen(BaseModel):
             """
             multiplier: int | None = Field(None, ge=3, le=50)
 
-        class Sbfd(BaseModel):
+        class Sbfd(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class LocalInterface(BaseModel):
+            class LocalInterface(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Protocols(BaseModel):
+                class Protocols(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     ipv4: bool | None = None
@@ -7301,7 +7302,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 protocols: Protocols | None = None
 
-            class Reflector(BaseModel):
+            class Reflector(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 min_rx: int | None = None
@@ -7333,17 +7334,17 @@ class EosCliConfigGen(BaseModel):
         multihop: Multihop | None = None
         sbfd: Sbfd | None = None
 
-    class RouterBgp(BaseModel):
+    class RouterBgp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Distance(BaseModel):
+        class Distance(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             external_routes: int = Field(None, ge=1, le=255)
             internal_routes: int = Field(None, ge=1, le=255)
             local_routes: int = Field(None, ge=1, le=255)
 
-        class GracefulRestart(BaseModel):
+        class GracefulRestart(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = None
@@ -7356,7 +7357,7 @@ class EosCliConfigGen(BaseModel):
             Number of seconds
             """
 
-        class GracefulRestartHelper(BaseModel):
+        class GracefulRestartHelper(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = None
@@ -7374,13 +7375,13 @@ class EosCliConfigGen(BaseModel):
             both are configured.
             """
 
-        class MaximumPaths(BaseModel):
+        class MaximumPaths(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             paths: int = Field(None, ge=1, le=600)
             ecmp: int | None = Field(None, ge=1, le=600)
 
-        class Updates(BaseModel):
+        class Updates(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             wait_for_convergence: bool | None = None
@@ -7396,10 +7397,10 @@ class EosCliConfigGen(BaseModel):
             forwarding plane.
             """
 
-        class Bgp(BaseModel):
+        class Bgp(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Default(BaseModel):
+            class Default(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ipv4_unicast: bool | None = None
@@ -7411,13 +7412,13 @@ class EosCliConfigGen(BaseModel):
                 Default activation of IPv4 unicast address-family on all IPv6 neighbors (EOS default == False).
                 """
 
-            class RouteReflectorPreserveAttributes(BaseModel):
+            class RouteReflectorPreserveAttributes(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
                 always: bool | None = None
 
-            class Bestpath(BaseModel):
+            class Bestpath(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 d_path: bool | None = None
@@ -7426,7 +7427,7 @@ class EosCliConfigGen(BaseModel):
             route_reflector_preserve_attributes: RouteReflectorPreserveAttributes | None = None
             bestpath: Bestpath | None = None
 
-        class ListenRangesItem(BaseModel):
+        class ListenRangesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             prefix: str | None = None
@@ -7453,10 +7454,10 @@ class EosCliConfigGen(BaseModel):
             BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
             """
 
-        class PeerGroupsItem(BaseModel):
+        class PeerGroupsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class AsPath(BaseModel):
+            class AsPath(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 remote_as_replace_out: bool | None = None
@@ -7468,20 +7469,20 @@ class EosCliConfigGen(BaseModel):
                 Disable prepending own AS number to AS path
                 """
 
-            class RemovePrivateAs(BaseModel):
+            class RemovePrivateAs(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
                 all: bool | None = None
                 replace_as: bool | None = None
 
-            class RemovePrivateAsIngress(BaseModel):
+            class RemovePrivateAsIngress(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
                 replace_as: bool | None = None
 
-            class DefaultOriginate(BaseModel):
+            class DefaultOriginate(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -7491,7 +7492,7 @@ class EosCliConfigGen(BaseModel):
                 Route-map name
                 """
 
-            class LinkBandwidth(BaseModel):
+            class LinkBandwidth(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -7500,7 +7501,7 @@ class EosCliConfigGen(BaseModel):
                 nn.nn(K|M|G) link speed in bits/second
                 """
 
-            class AllowasIn(BaseModel):
+            class AllowasIn(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -7509,7 +7510,7 @@ class EosCliConfigGen(BaseModel):
                 Number of local ASNs allowed in a BGP update
                 """
 
-            class RibInPrePolicyRetain(BaseModel):
+            class RibInPrePolicyRetain(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -7604,10 +7605,10 @@ class EosCliConfigGen(BaseModel):
             """
             session_tracker: str | None = None
 
-        class NeighborsItem(BaseModel):
+        class NeighborsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class AsPath(BaseModel):
+            class AsPath(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 remote_as_replace_out: bool | None = None
@@ -7619,14 +7620,14 @@ class EosCliConfigGen(BaseModel):
                 Disable prepending own AS number to AS path
                 """
 
-            class DefaultOriginate(BaseModel):
+            class DefaultOriginate(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
                 always: bool | None = None
                 route_map: str | None = None
 
-            class AllowasIn(BaseModel):
+            class AllowasIn(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -7635,7 +7636,7 @@ class EosCliConfigGen(BaseModel):
                 Number of local ASNs allowed in a BGP update
                 """
 
-            class LinkBandwidth(BaseModel):
+            class LinkBandwidth(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -7644,20 +7645,20 @@ class EosCliConfigGen(BaseModel):
                 nn.nn(K|M|G) link speed in bits/second
                 """
 
-            class RibInPrePolicyRetain(BaseModel):
+            class RibInPrePolicyRetain(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
                 all: bool | None = None
 
-            class RemovePrivateAs(BaseModel):
+            class RemovePrivateAs(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
                 all: bool | None = None
                 replace_as: bool | None = None
 
-            class RemovePrivateAsIngress(BaseModel):
+            class RemovePrivateAsIngress(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -7730,7 +7731,7 @@ class EosCliConfigGen(BaseModel):
             remove_private_as_ingress: RemovePrivateAsIngress | None = None
             session_tracker: str | None = None
 
-        class NeighborInterfacesItem(BaseModel):
+        class NeighborInterfacesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -7745,7 +7746,7 @@ class EosCliConfigGen(BaseModel):
             Peer-filter name
             """
 
-        class AggregateAddressesItem(BaseModel):
+        class AggregateAddressesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             prefix: str = None
@@ -7764,17 +7765,17 @@ class EosCliConfigGen(BaseModel):
             Route-map name
             """
 
-        class RedistributeRoutesItem(BaseModel):
+        class RedistributeRoutesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             source_protocol: str = None
             route_map: str | None = None
             include_leaked: bool | None = None
 
-        class VlanAwareBundlesItem(BaseModel):
+        class VlanAwareBundlesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RdEvpnDomain(BaseModel):
+            class RdEvpnDomain(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class DomainEnum(Enum):
@@ -7787,10 +7788,10 @@ class EosCliConfigGen(BaseModel):
                 Route distinguisher
                 """
 
-            class RouteTargets(BaseModel):
+            class RouteTargets(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ImportEvpnDomainsItem(BaseModel):
+                class ImportEvpnDomainsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DomainEnum(Enum):
@@ -7800,7 +7801,7 @@ class EosCliConfigGen(BaseModel):
                     domain: DomainEnum | None = None
                     route_target: str | None = None
 
-                class ExportEvpnDomainsItem(BaseModel):
+                class ExportEvpnDomainsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DomainEnum(Enum):
@@ -7810,7 +7811,7 @@ class EosCliConfigGen(BaseModel):
                     domain: DomainEnum | None = None
                     route_target: str | None = None
 
-                class ImportExportEvpnDomainsItem(BaseModel):
+                class ImportExportEvpnDomainsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DomainEnum(Enum):
@@ -7856,10 +7857,10 @@ class EosCliConfigGen(BaseModel):
             Multiline EOS CLI rendered directly on the Router BGP, VLAN-aware-bundle definition in the final EOS configuration
             """
 
-        class VlansItem(BaseModel):
+        class VlansItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RdEvpnDomain(BaseModel):
+            class RdEvpnDomain(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class DomainEnum(Enum):
@@ -7872,10 +7873,10 @@ class EosCliConfigGen(BaseModel):
                 Route distinguisher
                 """
 
-            class RouteTargets(BaseModel):
+            class RouteTargets(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ImportEvpnDomainsItem(BaseModel):
+                class ImportEvpnDomainsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DomainEnum(Enum):
@@ -7885,7 +7886,7 @@ class EosCliConfigGen(BaseModel):
                     domain: DomainEnum | None = None
                     route_target: str | None = None
 
-                class ExportEvpnDomainsItem(BaseModel):
+                class ExportEvpnDomainsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DomainEnum(Enum):
@@ -7895,7 +7896,7 @@ class EosCliConfigGen(BaseModel):
                     domain: DomainEnum | None = None
                     route_target: str | None = None
 
-                class ImportExportEvpnDomainsItem(BaseModel):
+                class ImportExportEvpnDomainsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DomainEnum(Enum):
@@ -7930,10 +7931,10 @@ class EosCliConfigGen(BaseModel):
             redistribute_routes: list[str] | None = None
             no_redistribute_routes: list[str] | None = None
 
-        class VpwsItem(BaseModel):
+        class VpwsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RouteTargets(BaseModel):
+            class RouteTargets(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 import_export: str | None = None
@@ -7941,7 +7942,7 @@ class EosCliConfigGen(BaseModel):
                 Route Target
                 """
 
-            class PseudowiresItem(BaseModel):
+            class PseudowiresItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -7971,17 +7972,17 @@ class EosCliConfigGen(BaseModel):
             mtu: int | None = None
             pseudowires: list[PseudowiresItem] | None = None
 
-        class AddressFamilyEvpn(BaseModel):
+        class AddressFamilyEvpn(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class NeighborDefault(BaseModel):
+            class NeighborDefault(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class EncapsulationEnum(Enum):
                     value_0 = "vxlan"
                     value_1 = "mpls"
 
-                class NextHopSelfReceivedEvpnRoutes(BaseModel):
+                class NextHopSelfReceivedEvpnRoutes(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enable: bool | None = None
@@ -7994,17 +7995,17 @@ class EosCliConfigGen(BaseModel):
                 """
                 next_hop_self_received_evpn_routes: NextHopSelfReceivedEvpnRoutes | None = None
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class EncapsulationEnum(Enum):
                     value_0 = "vxlan"
                     value_1 = "mpls"
 
-                class AdditionalPaths(BaseModel):
+                class AdditionalPaths(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Send(BaseModel):
+                    class Send(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         any: bool | None = None
@@ -8039,7 +8040,7 @@ class EosCliConfigGen(BaseModel):
                 encapsulation: EncapsulationEnum | None = None
                 additional_paths: AdditionalPaths | None = None
 
-            class EvpnHostflapDetection(BaseModel):
+            class EvpnHostflapDetection(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -8056,12 +8057,12 @@ class EosCliConfigGen(BaseModel):
                 Time (in seconds) to purge a MAC duplication issue
                 """
 
-            class NextHop(BaseModel):
+            class NextHop(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 resolution_disabled: bool | None = None
 
-            class Route(BaseModel):
+            class Route(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ImportMatchFailureActionEnum(Enum):
@@ -8077,13 +8078,13 @@ class EosCliConfigGen(BaseModel):
             route: Route | None = None
             next_hop_unchanged: bool | None = None
 
-        class AddressFamilyRtc(BaseModel):
+        class AddressFamilyRtc(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DefaultRouteTarget(BaseModel):
+                class DefaultRouteTarget(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     only: bool | None = None
@@ -8098,10 +8099,10 @@ class EosCliConfigGen(BaseModel):
 
             peer_groups: list[PeerGroupsItem] | None = None
 
-        class AddressFamilyIpv4(BaseModel):
+        class AddressFamilyIpv4(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class NetworksItem(BaseModel):
+            class NetworksItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 prefix: str = None
@@ -8113,10 +8114,10 @@ class EosCliConfigGen(BaseModel):
                 Route-map name
                 """
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DefaultOriginate(BaseModel):
+                class DefaultOriginate(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     always: bool | None = None
@@ -8125,10 +8126,10 @@ class EosCliConfigGen(BaseModel):
                     Route-map name
                     """
 
-                class NextHop(BaseModel):
+                class NextHop(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class AddressFamilyIpv6(BaseModel):
+                    class AddressFamilyIpv6(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         enabled: bool = None
@@ -8161,10 +8162,10 @@ class EosCliConfigGen(BaseModel):
                 Outbound prefix-list name
                 """
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DefaultOriginate(BaseModel):
+                class DefaultOriginate(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     always: bool | None = None
@@ -8194,10 +8195,10 @@ class EosCliConfigGen(BaseModel):
             peer_groups: list[PeerGroupsItem] | None = None
             neighbors: list[NeighborsItem] | None = None
 
-        class AddressFamilyIpv4Multicast(BaseModel):
+        class AddressFamilyIpv4Multicast(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -8214,7 +8215,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound route-map name
                 """
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ip_address: str = None
@@ -8228,7 +8229,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound route-map name
                 """
 
-            class RedistributeRoutesItem(BaseModel):
+            class RedistributeRoutesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 source_protocol: str = None
@@ -8238,10 +8239,10 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             redistribute_routes: list[RedistributeRoutesItem] | None = None
 
-        class AddressFamilyIpv4SrTe(BaseModel):
+        class AddressFamilyIpv4SrTe(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ip_address: str = None
@@ -8255,7 +8256,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound route-map name
                 """
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -8275,10 +8276,10 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             peer_groups: list[PeerGroupsItem] | None = None
 
-        class AddressFamilyIpv6(BaseModel):
+        class AddressFamilyIpv6(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class NetworksItem(BaseModel):
+            class NetworksItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 prefix: str = None
@@ -8290,7 +8291,7 @@ class EosCliConfigGen(BaseModel):
                 Route-map name
                 """
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -8315,7 +8316,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound prefix-list name
                 """
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ip_address: str = None
@@ -8337,7 +8338,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound prefix-list name
                 """
 
-            class RedistributeRoutesItem(BaseModel):
+            class RedistributeRoutesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 source_protocol: str = None
@@ -8349,13 +8350,13 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             redistribute_routes: list[RedistributeRoutesItem] | None = None
 
-        class AddressFamilyIpv6Multicast(BaseModel):
+        class AddressFamilyIpv6Multicast(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Bgp(BaseModel):
+            class Bgp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class MissingPolicy(BaseModel):
+                class MissingPolicy(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionInActionEnum(Enum):
@@ -8371,7 +8372,7 @@ class EosCliConfigGen(BaseModel):
                     direction_in_action: DirectionInActionEnum | None = None
                     direction_out_action: DirectionOutActionEnum | None = None
 
-                class AdditionalPaths(BaseModel):
+                class AdditionalPaths(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     receive: bool | None = None
@@ -8379,7 +8380,7 @@ class EosCliConfigGen(BaseModel):
                 missing_policy: MissingPolicy | None = None
                 additional_paths: AdditionalPaths | None = None
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ip_address: str = None
@@ -8393,7 +8394,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound route-map name
                 """
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -8402,7 +8403,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 activate: bool | None = None
 
-            class NetworksItem(BaseModel):
+            class NetworksItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 prefix: str = None
@@ -8416,10 +8417,10 @@ class EosCliConfigGen(BaseModel):
             peer_groups: list[PeerGroupsItem] | None = None
             networks: list[NetworksItem] | None = None
 
-        class AddressFamilyIpv6SrTe(BaseModel):
+        class AddressFamilyIpv6SrTe(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ip_address: str = None
@@ -8433,7 +8434,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound route-map name
                 """
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -8453,13 +8454,13 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             peer_groups: list[PeerGroupsItem] | None = None
 
-        class AddressFamilyLinkState(BaseModel):
+        class AddressFamilyLinkState(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Bgp(BaseModel):
+            class Bgp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class MissingPolicy(BaseModel):
+                class MissingPolicy(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionInActionEnum(Enum):
@@ -8477,10 +8478,10 @@ class EosCliConfigGen(BaseModel):
 
                 missing_policy: MissingPolicy | None = None
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class MissingPolicy(BaseModel):
+                class MissingPolicy(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionInActionEnum(Enum):
@@ -8503,10 +8504,10 @@ class EosCliConfigGen(BaseModel):
                 activate: bool | None = None
                 missing_policy: MissingPolicy | None = None
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class MissingPolicy(BaseModel):
+                class MissingPolicy(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionInActionEnum(Enum):
@@ -8526,10 +8527,10 @@ class EosCliConfigGen(BaseModel):
                 activate: bool | None = None
                 missing_policy: MissingPolicy | None = None
 
-            class PathSelection(BaseModel):
+            class PathSelection(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Roles(BaseModel):
+                class Roles(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     producer: bool | None = None
@@ -8543,13 +8544,13 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             path_selection: PathSelection | None = None
 
-        class AddressFamilyFlowSpecIpv4(BaseModel):
+        class AddressFamilyFlowSpecIpv4(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Bgp(BaseModel):
+            class Bgp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class MissingPolicy(BaseModel):
+                class MissingPolicy(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionInActionEnum(Enum):
@@ -8567,13 +8568,13 @@ class EosCliConfigGen(BaseModel):
 
                 missing_policy: MissingPolicy | None = None
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ip_address: str = None
                 activate: bool | None = None
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -8586,13 +8587,13 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             peer_groups: list[PeerGroupsItem] | None = None
 
-        class AddressFamilyFlowSpecIpv6(BaseModel):
+        class AddressFamilyFlowSpecIpv6(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Bgp(BaseModel):
+            class Bgp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class MissingPolicy(BaseModel):
+                class MissingPolicy(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionInActionEnum(Enum):
@@ -8610,13 +8611,13 @@ class EosCliConfigGen(BaseModel):
 
                 missing_policy: MissingPolicy | None = None
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ip_address: str = None
                 activate: bool | None = None
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -8629,16 +8630,16 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             peer_groups: list[PeerGroupsItem] | None = None
 
-        class AddressFamilyPathSelection(BaseModel):
+        class AddressFamilyPathSelection(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Bgp(BaseModel):
+            class Bgp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class AdditionalPaths(BaseModel):
+                class AdditionalPaths(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Send(BaseModel):
+                    class Send(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         any: bool | None = None
@@ -8658,13 +8659,13 @@ class EosCliConfigGen(BaseModel):
 
                 additional_paths: AdditionalPaths | None = None
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class AdditionalPaths(BaseModel):
+                class AdditionalPaths(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Send(BaseModel):
+                    class Send(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         any: bool | None = None
@@ -8688,13 +8689,13 @@ class EosCliConfigGen(BaseModel):
                 activate: bool | None = None
                 additional_paths: AdditionalPaths | None = None
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class AdditionalPaths(BaseModel):
+                class AdditionalPaths(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class Send(BaseModel):
+                    class Send(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         any: bool | None = None
@@ -8725,10 +8726,10 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             peer_groups: list[PeerGroupsItem] | None = None
 
-        class AddressFamilyVpnIpv4(BaseModel):
+        class AddressFamilyVpnIpv4(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -8745,7 +8746,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound route-map name
                 """
 
-            class Route(BaseModel):
+            class Route(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ImportMatchFailureActionEnum(Enum):
@@ -8753,7 +8754,7 @@ class EosCliConfigGen(BaseModel):
 
                 import_match_failure_action: ImportMatchFailureActionEnum | None = None
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ip_address: str = None
@@ -8767,7 +8768,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound route-map name
                 """
 
-            class NeighborDefaultEncapsulationMplsNextHopSelf(BaseModel):
+            class NeighborDefaultEncapsulationMplsNextHopSelf(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 source_interface: str | None = None
@@ -8778,10 +8779,10 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf | None = None
 
-        class AddressFamilyVpnIpv6(BaseModel):
+        class AddressFamilyVpnIpv6(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PeerGroupsItem(BaseModel):
+            class PeerGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -8798,7 +8799,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound route-map name
                 """
 
-            class Route(BaseModel):
+            class Route(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ImportMatchFailureActionEnum(Enum):
@@ -8806,7 +8807,7 @@ class EosCliConfigGen(BaseModel):
 
                 import_match_failure_action: ImportMatchFailureActionEnum | None = None
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ip_address: str = None
@@ -8820,7 +8821,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound route-map name
                 """
 
-            class NeighborDefaultEncapsulationMplsNextHopSelf(BaseModel):
+            class NeighborDefaultEncapsulationMplsNextHopSelf(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 source_interface: str | None = None
@@ -8831,13 +8832,13 @@ class EosCliConfigGen(BaseModel):
             neighbors: list[NeighborsItem] | None = None
             neighbor_default_encapsulation_mpls_next_hop_self: NeighborDefaultEncapsulationMplsNextHopSelf | None = None
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class EvpnMulticastAddressFamily(BaseModel):
+            class EvpnMulticastAddressFamily(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Ipv4(BaseModel):
+                class Ipv4(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     transit: bool | None = None
@@ -8847,17 +8848,17 @@ class EosCliConfigGen(BaseModel):
 
                 ipv4: Ipv4 | None = None
 
-            class RouteTargets(BaseModel):
+            class RouteTargets(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ImportItem(BaseModel):
+                class ImportItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     address_family: str = None
                     route_targets: list[str] | None = None
                     route_map: str | None = None
 
-                class ExportItem(BaseModel):
+                class ExportItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     address_family: str = None
@@ -8867,7 +8868,7 @@ class EosCliConfigGen(BaseModel):
                 field_import: list[ImportItem] | None = Field(None, alias="import")
                 export: list[ExportItem] | None = None
 
-            class NetworksItem(BaseModel):
+            class NetworksItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 prefix: str = None
@@ -8876,7 +8877,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 route_map: str | None = None
 
-            class Updates(BaseModel):
+            class Updates(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 wait_for_convergence: bool | None = None
@@ -8892,7 +8893,7 @@ class EosCliConfigGen(BaseModel):
                 forwarding plane.
                 """
 
-            class ListenRangesItem(BaseModel):
+            class ListenRangesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 prefix: str | None = None
@@ -8919,23 +8920,23 @@ class EosCliConfigGen(BaseModel):
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
                 """
 
-            class NeighborsItem(BaseModel):
+            class NeighborsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class RemovePrivateAs(BaseModel):
+                class RemovePrivateAs(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
                     all: bool | None = None
                     replace_as: bool | None = None
 
-                class RemovePrivateAsIngress(BaseModel):
+                class RemovePrivateAsIngress(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
                     replace_as: bool | None = None
 
-                class AsPath(BaseModel):
+                class AsPath(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     remote_as_replace_out: bool | None = None
@@ -8947,13 +8948,13 @@ class EosCliConfigGen(BaseModel):
                     Disable prepending own AS number to AS path
                     """
 
-                class RibInPrePolicyRetain(BaseModel):
+                class RibInPrePolicyRetain(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
                     all: bool | None = None
 
-                class AllowasIn(BaseModel):
+                class AllowasIn(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
@@ -8962,7 +8963,7 @@ class EosCliConfigGen(BaseModel):
                     Number of local ASNs allowed in a BGP update
                     """
 
-                class DefaultOriginate(BaseModel):
+                class DefaultOriginate(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
@@ -9040,7 +9041,7 @@ class EosCliConfigGen(BaseModel):
                 Outbound prefix-list name
                 """
 
-            class NeighborInterfacesItem(BaseModel):
+            class NeighborInterfacesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -9061,14 +9062,14 @@ class EosCliConfigGen(BaseModel):
                 """
                 description: str | None = None
 
-            class RedistributeRoutesItem(BaseModel):
+            class RedistributeRoutesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 source_protocol: str = None
                 route_map: str | None = None
                 include_leaked: bool | None = None
 
-            class AggregateAddressesItem(BaseModel):
+            class AggregateAddressesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 prefix: str = None
@@ -9081,13 +9082,13 @@ class EosCliConfigGen(BaseModel):
                 attribute_map: str | None = None
                 match_map: str | None = None
 
-            class AddressFamilyIpv4(BaseModel):
+            class AddressFamilyIpv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Bgp(BaseModel):
+                class Bgp(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class MissingPolicy(BaseModel):
+                    class MissingPolicy(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class DirectionInActionEnum(Enum):
@@ -9103,10 +9104,10 @@ class EosCliConfigGen(BaseModel):
                         direction_in_action: DirectionInActionEnum | None = None
                         direction_out_action: DirectionOutActionEnum | None = None
 
-                    class AdditionalPaths(BaseModel):
+                    class AdditionalPaths(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        class Send(BaseModel):
+                        class Send(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             any: bool | None = None
@@ -9129,13 +9130,13 @@ class EosCliConfigGen(BaseModel):
                     missing_policy: MissingPolicy | None = None
                     additional_paths: AdditionalPaths | None = None
 
-                class NeighborsItem(BaseModel):
+                class NeighborsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class NextHop(BaseModel):
+                    class NextHop(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        class AddressFamilyIpv6(BaseModel):
+                        class AddressFamilyIpv6(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             enabled: bool = None
@@ -9155,7 +9156,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     next_hop: NextHop | None = None
 
-                class NetworksItem(BaseModel):
+                class NetworksItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     prefix: str = None
@@ -9168,13 +9169,13 @@ class EosCliConfigGen(BaseModel):
                 neighbors: list[NeighborsItem] | None = None
                 networks: list[NetworksItem] | None = None
 
-            class AddressFamilyIpv6(BaseModel):
+            class AddressFamilyIpv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Bgp(BaseModel):
+                class Bgp(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class MissingPolicy(BaseModel):
+                    class MissingPolicy(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class DirectionInActionEnum(Enum):
@@ -9190,10 +9191,10 @@ class EosCliConfigGen(BaseModel):
                         direction_in_action: DirectionInActionEnum | None = None
                         direction_out_action: DirectionOutActionEnum | None = None
 
-                    class AdditionalPaths(BaseModel):
+                    class AdditionalPaths(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        class Send(BaseModel):
+                        class Send(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             any: bool | None = None
@@ -9216,7 +9217,7 @@ class EosCliConfigGen(BaseModel):
                     missing_policy: MissingPolicy | None = None
                     additional_paths: AdditionalPaths | None = None
 
-                class NeighborsItem(BaseModel):
+                class NeighborsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     ip_address: str = None
@@ -9230,7 +9231,7 @@ class EosCliConfigGen(BaseModel):
                     Outbound route-map name
                     """
 
-                class NetworksItem(BaseModel):
+                class NetworksItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     prefix: str = None
@@ -9243,13 +9244,13 @@ class EosCliConfigGen(BaseModel):
                 neighbors: list[NeighborsItem] | None = None
                 networks: list[NetworksItem] | None = None
 
-            class AddressFamilyIpv4Multicast(BaseModel):
+            class AddressFamilyIpv4Multicast(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Bgp(BaseModel):
+                class Bgp(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class MissingPolicy(BaseModel):
+                    class MissingPolicy(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class DirectionInActionEnum(Enum):
@@ -9265,7 +9266,7 @@ class EosCliConfigGen(BaseModel):
                         direction_in_action: DirectionInActionEnum | None = None
                         direction_out_action: DirectionOutActionEnum | None = None
 
-                    class AdditionalPaths(BaseModel):
+                    class AdditionalPaths(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         receive: bool | None = None
@@ -9273,7 +9274,7 @@ class EosCliConfigGen(BaseModel):
                     missing_policy: MissingPolicy | None = None
                     additional_paths: AdditionalPaths | None = None
 
-                class NeighborsItem(BaseModel):
+                class NeighborsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     ip_address: str = None
@@ -9287,7 +9288,7 @@ class EosCliConfigGen(BaseModel):
                     Outbound route-map name
                     """
 
-                class NetworksItem(BaseModel):
+                class NetworksItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     prefix: str = None
@@ -9300,13 +9301,13 @@ class EosCliConfigGen(BaseModel):
                 neighbors: list[NeighborsItem] | None = None
                 networks: list[NetworksItem] | None = None
 
-            class AddressFamilyIpv6Multicast(BaseModel):
+            class AddressFamilyIpv6Multicast(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Bgp(BaseModel):
+                class Bgp(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class MissingPolicy(BaseModel):
+                    class MissingPolicy(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class DirectionInActionEnum(Enum):
@@ -9322,7 +9323,7 @@ class EosCliConfigGen(BaseModel):
                         direction_in_action: DirectionInActionEnum | None = None
                         direction_out_action: DirectionOutActionEnum | None = None
 
-                    class AdditionalPaths(BaseModel):
+                    class AdditionalPaths(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         receive: bool | None = None
@@ -9330,7 +9331,7 @@ class EosCliConfigGen(BaseModel):
                     missing_policy: MissingPolicy | None = None
                     additional_paths: AdditionalPaths | None = None
 
-                class NeighborsItem(BaseModel):
+                class NeighborsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     ip_address: str = None
@@ -9344,7 +9345,7 @@ class EosCliConfigGen(BaseModel):
                     Outbound route-map name
                     """
 
-                class NetworksItem(BaseModel):
+                class NetworksItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     prefix: str = None
@@ -9357,13 +9358,13 @@ class EosCliConfigGen(BaseModel):
                 neighbors: list[NeighborsItem] | None = None
                 networks: list[NetworksItem] | None = None
 
-            class AddressFamilyFlowSpecIpv4(BaseModel):
+            class AddressFamilyFlowSpecIpv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Bgp(BaseModel):
+                class Bgp(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class MissingPolicy(BaseModel):
+                    class MissingPolicy(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class DirectionInActionEnum(Enum):
@@ -9381,7 +9382,7 @@ class EosCliConfigGen(BaseModel):
 
                     missing_policy: MissingPolicy | None = None
 
-                class NeighborsItem(BaseModel):
+                class NeighborsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     ip_address: str = None
@@ -9390,13 +9391,13 @@ class EosCliConfigGen(BaseModel):
                 bgp: Bgp | None = None
                 neighbors: list[NeighborsItem] | None = None
 
-            class AddressFamilyFlowSpecIpv6(BaseModel):
+            class AddressFamilyFlowSpecIpv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Bgp(BaseModel):
+                class Bgp(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class MissingPolicy(BaseModel):
+                    class MissingPolicy(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class DirectionInActionEnum(Enum):
@@ -9414,7 +9415,7 @@ class EosCliConfigGen(BaseModel):
 
                     missing_policy: MissingPolicy | None = None
 
-                class NeighborsItem(BaseModel):
+                class NeighborsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     ip_address: str = None
@@ -9423,13 +9424,13 @@ class EosCliConfigGen(BaseModel):
                 bgp: Bgp | None = None
                 neighbors: list[NeighborsItem] | None = None
 
-            class AddressFamiliesItem(BaseModel):
+            class AddressFamiliesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Bgp(BaseModel):
+                class Bgp(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class MissingPolicy(BaseModel):
+                    class MissingPolicy(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class DirectionInActionEnum(Enum):
@@ -9448,7 +9449,7 @@ class EosCliConfigGen(BaseModel):
                     missing_policy: MissingPolicy | None = None
                     additional_paths: list[str] | None = None
 
-                class NeighborsItem(BaseModel):
+                class NeighborsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     ip_address: str = None
@@ -9462,10 +9463,10 @@ class EosCliConfigGen(BaseModel):
                     Outbound route-map name
                     """
 
-                class PeerGroupsItem(BaseModel):
+                class PeerGroupsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class NextHop(BaseModel):
+                    class NextHop(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         address_family_ipv6_originate: bool | None = None
@@ -9477,7 +9478,7 @@ class EosCliConfigGen(BaseModel):
                     activate: bool | None = None
                     next_hop: NextHop | None = None
 
-                class NetworksItem(BaseModel):
+                class NetworksItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     prefix: str = None
@@ -9536,7 +9537,7 @@ class EosCliConfigGen(BaseModel):
             Multiline EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
             """
 
-        class SessionTrackersItem(BaseModel):
+        class SessionTrackersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -9599,10 +9600,10 @@ class EosCliConfigGen(BaseModel):
         vrfs: list[VrfsItem] | None = None
         session_trackers: list[SessionTrackersItem] | None = None
 
-    class RouterGeneral(BaseModel):
+    class RouterGeneral(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class RouterId(BaseModel):
+        class RouterId(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ipv4: str | None = None
@@ -9614,10 +9615,10 @@ class EosCliConfigGen(BaseModel):
             IPv6 Address
             """
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class LeakRoutesItem(BaseModel):
+            class LeakRoutesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 source_vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
@@ -9626,10 +9627,10 @@ class EosCliConfigGen(BaseModel):
                 Route-Map Policy
                 """
 
-            class Routes(BaseModel):
+            class Routes(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DynamicPrefixListsItem(BaseModel):
+                class DynamicPrefixListsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     name: str | None = None
@@ -9650,12 +9651,12 @@ class EosCliConfigGen(BaseModel):
         nexthop_fast_failover: bool | None = False
         vrfs: list[VrfsItem] | None = None
 
-    class RouterIgmp(BaseModel):
+    class RouterIgmp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         ssm_aware: bool | None = None
 
-    class RouterIsis(BaseModel):
+    class RouterIsis(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class IsTypeEnum(Enum):
@@ -9663,10 +9664,10 @@ class EosCliConfigGen(BaseModel):
             value_1 = "level-1-2"
             value_2 = "level-2"
 
-        class Timers(BaseModel):
+        class Timers(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class LocalConvergence(BaseModel):
+            class LocalConvergence(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 protected_prefixes: bool | None = None
@@ -9677,12 +9678,12 @@ class EosCliConfigGen(BaseModel):
 
             local_convergence: LocalConvergence | None = None
 
-        class Advertise(BaseModel):
+        class Advertise(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             passive_only: bool | None = None
 
-        class RedistributeRoutesItem(BaseModel):
+        class RedistributeRoutesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class SourceProtocolEnum(Enum):
@@ -9709,10 +9710,10 @@ class EosCliConfigGen(BaseModel):
             ospf_route_type is required with source_protocols 'ospf' and 'ospfv3'
             """
 
-        class AddressFamilyIpv4(BaseModel):
+        class AddressFamilyIpv4(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class FastRerouteTiLfa(BaseModel):
+            class FastRerouteTiLfa(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ModeEnum(Enum):
@@ -9723,7 +9724,7 @@ class EosCliConfigGen(BaseModel):
                     value_0 = "level-1"
                     value_1 = "level-2"
 
-                class Srlg(BaseModel):
+                class Srlg(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enable: bool | None = None
@@ -9736,7 +9737,7 @@ class EosCliConfigGen(BaseModel):
                 Shared Risk Link Group
                 """
 
-            class TunnelSourceLabeledUnicast(BaseModel):
+            class TunnelSourceLabeledUnicast(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -9750,10 +9751,10 @@ class EosCliConfigGen(BaseModel):
             fast_reroute_ti_lfa: FastRerouteTiLfa | None = None
             tunnel_source_labeled_unicast: TunnelSourceLabeledUnicast | None = None
 
-        class AddressFamilyIpv6(BaseModel):
+        class AddressFamilyIpv6(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class FastRerouteTiLfa(BaseModel):
+            class FastRerouteTiLfa(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class ModeEnum(Enum):
@@ -9764,7 +9765,7 @@ class EosCliConfigGen(BaseModel):
                     value_0 = "level-1"
                     value_1 = "level-2"
 
-                class Srlg(BaseModel):
+                class Srlg(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enable: bool | None = None
@@ -9784,10 +9785,10 @@ class EosCliConfigGen(BaseModel):
             maximum_paths: int | None = Field(None, ge=1, le=128)
             fast_reroute_ti_lfa: FastRerouteTiLfa | None = None
 
-        class SegmentRoutingMpls(BaseModel):
+        class SegmentRoutingMpls(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PrefixSegmentsItem(BaseModel):
+            class PrefixSegmentsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 prefix: str | None = None
@@ -9821,10 +9822,10 @@ class EosCliConfigGen(BaseModel):
         address_family_ipv6: AddressFamilyIpv6 | None = None
         segment_routing_mpls: SegmentRoutingMpls | None = None
 
-    class RouterL2Vpn(BaseModel):
+    class RouterL2Vpn(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ArpProxy(BaseModel):
+        class ArpProxy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             prefix_list: str | None = None
@@ -9832,7 +9833,7 @@ class EosCliConfigGen(BaseModel):
             Prefix-list name. ARP Proxying is disabled for IPv4 addresses defined in the prefix-list.
             """
 
-        class NdProxy(BaseModel):
+        class NdProxy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             prefix_list: str | None = None
@@ -9848,10 +9849,10 @@ class EosCliConfigGen(BaseModel):
         nd_rs_flooding_disabled: bool | None = None
         virtual_router_nd_ra_flooding_disabled: bool | None = None
 
-    class RouterMsdp(BaseModel):
+    class RouterMsdp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class GroupLimitsItem(BaseModel):
+        class GroupLimitsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             source_prefix: str = None
@@ -9863,10 +9864,10 @@ class EosCliConfigGen(BaseModel):
             Limit for SAs matching the source address prefix
             """
 
-        class PeersItem(BaseModel):
+        class PeersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class DefaultPeer(BaseModel):
+            class DefaultPeer(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -9875,7 +9876,7 @@ class EosCliConfigGen(BaseModel):
                 Prefix list to filter source of SA messages
                 """
 
-            class MeshGroupsItem(BaseModel):
+            class MeshGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -9883,7 +9884,7 @@ class EosCliConfigGen(BaseModel):
                 Mesh group name
                 """
 
-            class Keepalive(BaseModel):
+            class Keepalive(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 keepalive_timer: int = Field(None, ge=1, le=65535)
@@ -9892,7 +9893,7 @@ class EosCliConfigGen(BaseModel):
                 Must be greater than keepalive timer
                 """
 
-            class SaFilter(BaseModel):
+            class SaFilter(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 in_list: str | None = None
@@ -9923,10 +9924,10 @@ class EosCliConfigGen(BaseModel):
             keepalive: Keepalive | None = None
             sa_filter: SaFilter | None = None
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class GroupLimitsItem(BaseModel):
+            class GroupLimitsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 source_prefix: str = None
@@ -9938,10 +9939,10 @@ class EosCliConfigGen(BaseModel):
                 Limit for SAs matching the source address prefix
                 """
 
-            class PeersItem(BaseModel):
+            class PeersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DefaultPeer(BaseModel):
+                class DefaultPeer(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
@@ -9950,7 +9951,7 @@ class EosCliConfigGen(BaseModel):
                     Prefix list to filter source of SA messages
                     """
 
-                class MeshGroupsItem(BaseModel):
+                class MeshGroupsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     name: str = None
@@ -9958,7 +9959,7 @@ class EosCliConfigGen(BaseModel):
                     Mesh group name
                     """
 
-                class Keepalive(BaseModel):
+                class Keepalive(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     keepalive_timer: int = Field(None, ge=1, le=65535)
@@ -9967,7 +9968,7 @@ class EosCliConfigGen(BaseModel):
                     Must be greater than keepalive timer
                     """
 
-                class SaFilter(BaseModel):
+                class SaFilter(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     in_list: str | None = None
@@ -10029,13 +10030,13 @@ class EosCliConfigGen(BaseModel):
         peers: list[PeersItem] | None = None
         vrfs: list[VrfsItem] | None = None
 
-    class RouterMulticast(BaseModel):
+    class RouterMulticast(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Ipv4(BaseModel):
+        class Ipv4(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
-            class Counters(BaseModel):
+            class Counters(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 rate_period_decay: int | None = Field(None, ge=0, le=600)
@@ -10053,13 +10054,13 @@ class EosCliConfigGen(BaseModel):
                 value_0 = "kernel"
                 value_1 = "sfe"
 
-            class Rpf(BaseModel):
+            class Rpf(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class RoutesItem(BaseModel):
+                class RoutesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class DestinationsItem(BaseModel):
+                    class DestinationsItem(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         nexthop: str = None
@@ -10085,10 +10086,10 @@ class EosCliConfigGen(BaseModel):
             software_forwarding: SoftwareForwardingEnum | None = None
             rpf: Rpf | None = None
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ipv4(BaseModel):
+            class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 routing: bool | None = None
@@ -10099,37 +10100,37 @@ class EosCliConfigGen(BaseModel):
         ipv4: Ipv4 | None = None
         vrfs: list[VrfsItem] | None = None
 
-    class RouterOspf(BaseModel):
+    class RouterOspf(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ProcessIdsItem(BaseModel):
+        class ProcessIdsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Distance(BaseModel):
+            class Distance(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 external: int | None = Field(None, ge=1, le=255)
                 inter_area: int | None = Field(None, ge=1, le=255)
                 intra_area: int | None = Field(None, ge=1, le=255)
 
-            class NetworkPrefixesItem(BaseModel):
+            class NetworkPrefixesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ipv4_prefix: str = None
                 area: str | None = None
 
-            class DistributeListIn(BaseModel):
+            class DistributeListIn(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 route_map: str | None = None
 
-            class Timers(BaseModel):
+            class Timers(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Lsa(BaseModel):
+                class Lsa(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class TxDelay(BaseModel):
+                    class TxDelay(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         initial: int | None = Field(None, ge=0, le=600000)
@@ -10151,7 +10152,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     tx_delay: TxDelay | None = None
 
-                class SpfDelay(BaseModel):
+                class SpfDelay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     initial: int | None = Field(None, ge=0, le=600000)
@@ -10170,7 +10171,7 @@ class EosCliConfigGen(BaseModel):
                 lsa: Lsa | None = None
                 spf_delay: SpfDelay | None = None
 
-            class DefaultInformationOriginate(BaseModel):
+            class DefaultInformationOriginate(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class MetricTypeEnum(Enum):
@@ -10187,7 +10188,7 @@ class EosCliConfigGen(BaseModel):
                 OSPF metric type for default route
                 """
 
-            class SummaryAddressesItem(BaseModel):
+            class SummaryAddressesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 prefix: str = None
@@ -10198,10 +10199,10 @@ class EosCliConfigGen(BaseModel):
                 attribute_map: str | None = None
                 not_advertise: bool | None = None
 
-            class Redistribute(BaseModel):
+            class Redistribute(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Static(BaseModel):
+                class Static(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     route_map: str | None = None
@@ -10210,7 +10211,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     include_leaked: bool | None = None
 
-                class Connected(BaseModel):
+                class Connected(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     route_map: str | None = None
@@ -10219,7 +10220,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     include_leaked: bool | None = None
 
-                class Bgp(BaseModel):
+                class Bgp(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     route_map: str | None = None
@@ -10232,10 +10233,10 @@ class EosCliConfigGen(BaseModel):
                 connected: Connected | None = None
                 bgp: Bgp | None = None
 
-            class AreasItem(BaseModel):
+            class AreasItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
-                class Filter(BaseModel):
+                class Filter(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     networks: list[str] | None = None
@@ -10249,7 +10250,7 @@ class EosCliConfigGen(BaseModel):
                     value_1 = "stub"
                     value_2 = "nssa"
 
-                class DefaultInformationOriginate(BaseModel):
+                class DefaultInformationOriginate(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class MetricTypeEnum(Enum):
@@ -10272,18 +10273,18 @@ class EosCliConfigGen(BaseModel):
                 nssa_only: bool | None = None
                 default_information_originate: DefaultInformationOriginate | None = None
 
-            class MaxMetric(BaseModel):
+            class MaxMetric(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class RouterLsa(BaseModel):
+                class RouterLsa(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class ExternalLsa(BaseModel):
+                    class ExternalLsa(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         override_metric: int | None = Field(None, ge=1, le=16777215)
 
-                    class SummaryLsa(BaseModel):
+                    class SummaryLsa(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         override_metric: int | None = Field(None, ge=1, le=16777215)
@@ -10339,22 +10340,22 @@ class EosCliConfigGen(BaseModel):
 
         process_ids: list[ProcessIdsItem] | None = None
 
-    class RouterPathSelection(BaseModel):
+    class RouterPathSelection(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class PeerDynamicSourceEnum(Enum):
             value_0 = "stun"
 
-        class PathGroupsItem(BaseModel):
+        class PathGroupsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class FlowAssignmentEnum(Enum):
                 value_0 = "lan"
 
-            class LocalInterfacesItem(BaseModel):
+            class LocalInterfacesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Stun(BaseModel):
+                class Stun(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     server_profiles: list[str] = Field(None, min_length=1, max_length=2)
@@ -10372,10 +10373,10 @@ class EosCliConfigGen(BaseModel):
                 """
                 stun: Stun | None = None
 
-            class LocalIpsItem(BaseModel):
+            class LocalIpsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Stun(BaseModel):
+                class Stun(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     server_profiles: list[str] = Field(None, min_length=1, max_length=2)
@@ -10390,7 +10391,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 stun: Stun | None = None
 
-            class DynamicPeers(BaseModel):
+            class DynamicPeers(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -10406,7 +10407,7 @@ class EosCliConfigGen(BaseModel):
                 IPsec configuration for dynamic peers.
                 """
 
-            class StaticPeersItem(BaseModel):
+            class StaticPeersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 router_ip: str = None
@@ -10446,7 +10447,7 @@ class EosCliConfigGen(BaseModel):
             """
             static_peers: list[StaticPeersItem] | None = None
 
-        class LoadBalancePoliciesItem(BaseModel):
+        class LoadBalancePoliciesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -10458,10 +10459,10 @@ class EosCliConfigGen(BaseModel):
             List of path-groups to use for this load balance policy.
             """
 
-        class PoliciesItem(BaseModel):
+        class PoliciesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class DefaultMatch(BaseModel):
+            class DefaultMatch(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 load_balance: str | None = None
@@ -10469,7 +10470,7 @@ class EosCliConfigGen(BaseModel):
                 Name of the load-balance policy.
                 """
 
-            class RulesItem(BaseModel):
+            class RulesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 id: int = Field(None, ge=1, le=255)
@@ -10489,7 +10490,7 @@ class EosCliConfigGen(BaseModel):
             default_match: DefaultMatch | None = None
             rules: list[RulesItem] | None = None
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -10510,13 +10511,13 @@ class EosCliConfigGen(BaseModel):
         policies: list[PoliciesItem] | None = None
         vrfs: list[VrfsItem] | None = None
 
-    class RouterPimSparseMode(BaseModel):
+    class RouterPimSparseMode(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Ipv4(BaseModel):
+        class Ipv4(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RpAddressesItem(BaseModel):
+            class RpAddressesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 address: str = None
@@ -10529,10 +10530,10 @@ class EosCliConfigGen(BaseModel):
                 hashmask: int | None = Field(None, ge=0, le=32)
                 override: bool | None = None
 
-            class AnycastRpsItem(BaseModel):
+            class AnycastRpsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class OtherAnycastRpAddressesItem(BaseModel):
+                class OtherAnycastRpAddressesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     address: str = None
@@ -10558,13 +10559,13 @@ class EosCliConfigGen(BaseModel):
             rp_addresses: list[RpAddressesItem] | None = None
             anycast_rps: list[AnycastRpsItem] | None = None
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ipv4(BaseModel):
+            class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class RpAddressesItem(BaseModel):
+                class RpAddressesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     address: str = None
@@ -10592,30 +10593,30 @@ class EosCliConfigGen(BaseModel):
         ipv4: Ipv4 | None = None
         vrfs: list[VrfsItem] | None = None
 
-    class RouterServiceInsertion(BaseModel):
+    class RouterServiceInsertion(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         enabled: bool | None = None
 
-    class RouterTrafficEngineering(BaseModel):
+    class RouterTrafficEngineering(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class RouterId(BaseModel):
+        class RouterId(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ipv4: str | None = None
             ipv6: str | None = None
 
-        class SegmentRouting(BaseModel):
+        class SegmentRouting(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class PolicyEndpointsItem(BaseModel):
+            class PolicyEndpointsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ColorsItem(BaseModel):
+                class ColorsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class PathGroupItem(BaseModel):
+                    class PathGroupItem(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                         class ExplicitNullEnum(Enum):
@@ -10624,7 +10625,7 @@ class EosCliConfigGen(BaseModel):
                             value_2 = "ipv4 ipv6"
                             value_3 = "none"
 
-                        class SegmentListItem(BaseModel):
+                        class SegmentListItem(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             label_stack: Annotated[str, StrConvert(convert_types=(int))] | None = None
@@ -10662,7 +10663,7 @@ class EosCliConfigGen(BaseModel):
         router_id: RouterId | None = None
         segment_routing: SegmentRouting | None = None
 
-    class ServiceRoutingConfigurationBgp(BaseModel):
+    class ServiceRoutingConfigurationBgp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         no_equals_default: bool | None = None
@@ -10671,19 +10672,19 @@ class EosCliConfigGen(BaseModel):
         value_0 = "multi-agent"
         value_1 = "ribd"
 
-    class ServiceUnsupportedTransceiver(BaseModel):
+    class ServiceUnsupportedTransceiver(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         license_name: str | None = None
         license_key: str | None = None
 
-    class Sflow(BaseModel):
+    class Sflow(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class DestinationsItem(BaseModel):
+            class DestinationsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 destination: str = None
@@ -10708,7 +10709,7 @@ class EosCliConfigGen(BaseModel):
             Source Interface
             """
 
-        class DestinationsItem(BaseModel):
+        class DestinationsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             destination: str = None
@@ -10720,7 +10721,7 @@ class EosCliConfigGen(BaseModel):
             Port Number
             """
 
-        class ExtensionsItem(BaseModel):
+        class ExtensionsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -10732,15 +10733,15 @@ class EosCliConfigGen(BaseModel):
             Enable or Disable Extension
             """
 
-        class Interface(BaseModel):
+        class Interface(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Disable(BaseModel):
+            class Disable(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 default: bool | None = None
 
-            class Egress(BaseModel):
+            class Egress(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enable_default: bool | None = None
@@ -10756,10 +10757,10 @@ class EosCliConfigGen(BaseModel):
             disable: Disable | None = None
             egress: Egress | None = None
 
-        class HardwareAcceleration(BaseModel):
+        class HardwareAcceleration(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ModulesItem(BaseModel):
+            class ModulesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -10792,13 +10793,13 @@ class EosCliConfigGen(BaseModel):
         run: bool | None = None
         hardware_acceleration: HardwareAcceleration | None = None
 
-    class SnmpServer(BaseModel):
+    class SnmpServer(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class EngineIds(BaseModel):
+        class EngineIds(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class RemotesItem(BaseModel):
+            class RemotesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 id: Annotated[str, StrConvert(convert_types=(int))] | None = None
@@ -10817,14 +10818,14 @@ class EosCliConfigGen(BaseModel):
             """
             remotes: list[RemotesItem] | None = None
 
-        class CommunitiesItem(BaseModel):
+        class CommunitiesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class AccessEnum(Enum):
                 value_0 = "ro"
                 value_1 = "rw"
 
-            class AccessListIpv4(BaseModel):
+            class AccessListIpv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str | None = None
@@ -10832,7 +10833,7 @@ class EosCliConfigGen(BaseModel):
                 IPv4 access list name
                 """
 
-            class AccessListIpv6(BaseModel):
+            class AccessListIpv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str | None = None
@@ -10849,7 +10850,7 @@ class EosCliConfigGen(BaseModel):
             access_list_ipv6: AccessListIpv6 | None = None
             view: str | None = None
 
-        class Ipv4AclsItem(BaseModel):
+        class Ipv4AclsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -10858,7 +10859,7 @@ class EosCliConfigGen(BaseModel):
             """
             vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
 
-        class Ipv6AclsItem(BaseModel):
+        class Ipv6AclsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -10867,7 +10868,7 @@ class EosCliConfigGen(BaseModel):
             """
             vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
 
-        class LocalInterfacesItem(BaseModel):
+        class LocalInterfacesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -10876,7 +10877,7 @@ class EosCliConfigGen(BaseModel):
             """
             vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
 
-        class ViewsItem(BaseModel):
+        class ViewsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
@@ -10887,7 +10888,7 @@ class EosCliConfigGen(BaseModel):
             included: bool | None = None
             field_MIB_family_name: str | None = Field(None, alias="MIB_family_name")
 
-        class GroupsItem(BaseModel):
+        class GroupsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class VersionEnum(Enum):
@@ -10919,7 +10920,7 @@ class EosCliConfigGen(BaseModel):
             Notify view
             """
 
-        class UsersItem(BaseModel):
+        class UsersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class VersionEnum(Enum):
@@ -10966,7 +10967,7 @@ class EosCliConfigGen(BaseModel):
             Hashed privacy passphrase if localized is used else cleartext privacy passphrase
             """
 
-        class HostsItem(BaseModel):
+        class HostsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class VersionEnum(Enum):
@@ -10974,7 +10975,7 @@ class EosCliConfigGen(BaseModel):
                 value_1 = "2c"
                 value_2 = "3"
 
-            class UsersItem(BaseModel):
+            class UsersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class AuthenticationLevelEnum(Enum):
@@ -10997,10 +10998,10 @@ class EosCliConfigGen(BaseModel):
             """
             users: list[UsersItem] | None = None
 
-        class Traps(BaseModel):
+        class Traps(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class SnmpTrapsItem(BaseModel):
+            class SnmpTrapsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str | None = None
@@ -11018,7 +11019,7 @@ class EosCliConfigGen(BaseModel):
             """
             snmp_traps: list[SnmpTrapsItem] | None = None
 
-        class VrfsItem(BaseModel):
+        class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -11047,10 +11048,10 @@ class EosCliConfigGen(BaseModel):
         traps: Traps | None = None
         vrfs: list[VrfsItem] | None = None
 
-    class SpanningTree(BaseModel):
+    class SpanningTree(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
-        class EdgePort(BaseModel):
+        class EdgePort(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             bpdufilter_default: bool | None = None
@@ -11062,7 +11063,7 @@ class EosCliConfigGen(BaseModel):
             value_2 = "rapid-pvst"
             value_3 = "none"
 
-        class BpduguardRateLimit(BaseModel):
+        class BpduguardRateLimit(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             default: bool | None = None
@@ -11071,13 +11072,13 @@ class EosCliConfigGen(BaseModel):
             Maximum number of BPDUs per timer interval
             """
 
-        class Mst(BaseModel):
+        class Mst(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Configuration(BaseModel):
+            class Configuration(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class InstancesItem(BaseModel):
+                class InstancesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     id: int = None
@@ -11100,7 +11101,7 @@ class EosCliConfigGen(BaseModel):
             pvst_border: bool | None = None
             configuration: Configuration | None = None
 
-        class MstInstancesItem(BaseModel):
+        class MstInstancesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             id: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -11109,7 +11110,7 @@ class EosCliConfigGen(BaseModel):
             """
             priority: int | None = None
 
-        class RapidPvstInstancesItem(BaseModel):
+        class RapidPvstInstancesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             id: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -11133,10 +11134,10 @@ class EosCliConfigGen(BaseModel):
         """
         rapid_pvst_instances: list[RapidPvstInstancesItem] | None = None
 
-    class StandardAccessListsItem(BaseModel):
+    class StandardAccessListsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class SequenceNumbersItem(BaseModel):
+        class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             sequence: int = None
@@ -11156,7 +11157,7 @@ class EosCliConfigGen(BaseModel):
         counters_per_entry: bool | None = None
         sequence_numbers: list[SequenceNumbersItem] = None
 
-    class StaticRoutesItem(BaseModel):
+    class StaticRoutesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
@@ -11184,13 +11185,13 @@ class EosCliConfigGen(BaseModel):
         """
         metric: int | None = Field(None, ge=0, le=4294967295)
 
-    class Stun(BaseModel):
+    class Stun(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Client(BaseModel):
+        class Client(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ServerProfilesItem(BaseModel):
+            class ServerProfilesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -11201,7 +11202,7 @@ class EosCliConfigGen(BaseModel):
             List of server profiles for the client
             """
 
-        class Server(BaseModel):
+        class Server(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             local_interface: str | None = None
@@ -11216,14 +11217,14 @@ class EosCliConfigGen(BaseModel):
         STUN server settings
         """
 
-    class SwitchportDefault(BaseModel):
+    class SwitchportDefault(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class ModeEnum(Enum):
             value_0 = "routed"
             value_1 = "access"
 
-        class Phone(BaseModel):
+        class Phone(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TrunkEnum(Enum):
@@ -11240,13 +11241,13 @@ class EosCliConfigGen(BaseModel):
         mode: ModeEnum | None = None
         phone: Phone | None = None
 
-    class System(BaseModel):
+    class System(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ControlPlane(BaseModel):
+        class ControlPlane(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class TcpMss(BaseModel):
+            class TcpMss(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 ipv4: int | None = None
@@ -11258,13 +11259,13 @@ class EosCliConfigGen(BaseModel):
                 Segment size
                 """
 
-            class Ipv4AccessGroupsItem(BaseModel):
+            class Ipv4AccessGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 acl_name: str = None
                 vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
 
-            class Ipv6AccessGroupsItem(BaseModel):
+            class Ipv6AccessGroupsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 acl_name: str = None
@@ -11274,7 +11275,7 @@ class EosCliConfigGen(BaseModel):
             ipv4_access_groups: list[Ipv4AccessGroupsItem] | None = None
             ipv6_access_groups: list[Ipv6AccessGroupsItem] | None = None
 
-        class L1(BaseModel):
+        class L1(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class UnsupportedSpeedActionEnum(Enum):
@@ -11291,10 +11292,10 @@ class EosCliConfigGen(BaseModel):
         control_plane: ControlPlane | None = None
         l1: L1 | None = None
 
-    class TacacsServers(BaseModel):
+    class TacacsServers(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class HostsItem(BaseModel):
+        class HostsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class KeyTypeEnum(Enum):
@@ -11325,13 +11326,13 @@ class EosCliConfigGen(BaseModel):
         hosts: list[HostsItem] | None = None
         policy_unknown_mandatory_attribute_ignore: bool | None = None
 
-    class TapAggregation(BaseModel):
+    class TapAggregation(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Mode(BaseModel):
+        class Mode(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Exclusive(BaseModel):
+            class Exclusive(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
@@ -11343,13 +11344,13 @@ class EosCliConfigGen(BaseModel):
 
             exclusive: Exclusive | None = None
 
-        class Mac(BaseModel):
+        class Mac(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
-            class Timestamp(BaseModel):
+            class Timestamp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Header(BaseModel):
+                class Header(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class FormatEnum(Enum):
@@ -11391,10 +11392,10 @@ class EosCliConfigGen(BaseModel):
         """
         mac: Mac | None = None
 
-    class TcamProfile(BaseModel):
+    class TcamProfile(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ProfilesItem(BaseModel):
+        class ProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
@@ -11418,13 +11419,13 @@ class EosCliConfigGen(BaseModel):
         """
         profiles: list[ProfilesItem] | None = None
 
-    class Terminal(BaseModel):
+    class Terminal(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         length: int | None = Field(None, ge=0, le=32767)
         width: int | None = Field(None, ge=10, le=32767)
 
-    class TrackersItem(BaseModel):
+    class TrackersItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
@@ -11440,18 +11441,18 @@ class EosCliConfigGen(BaseModel):
         Property to track
         """
 
-    class TrafficPolicies(BaseModel):
+    class TrafficPolicies(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Options(BaseModel):
+        class Options(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             counter_per_interface: bool | None = None
 
-        class FieldSets(BaseModel):
+        class FieldSets(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ipv4Item(BaseModel):
+            class Ipv4Item(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -11460,7 +11461,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 prefixes: list[str] | None = None
 
-            class Ipv6Item(BaseModel):
+            class Ipv6Item(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -11469,7 +11470,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 prefixes: list[str] | None = None
 
-            class PortsItem(BaseModel):
+            class PortsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -11485,17 +11486,17 @@ class EosCliConfigGen(BaseModel):
             ipv6: list[Ipv6Item] | None = None
             ports: list[PortsItem] | None = None
 
-        class PoliciesItem(BaseModel):
+        class PoliciesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class MatchesItem(BaseModel):
+            class MatchesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class TypeEnum(Enum):
                     value_0 = "ipv4"
                     value_1 = "ipv6"
 
-                class Source(BaseModel):
+                class Source(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     prefixes: list[str] | None = None
@@ -11504,7 +11505,7 @@ class EosCliConfigGen(BaseModel):
                     Field-set prefix lists
                     """
 
-                class Destination(BaseModel):
+                class Destination(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     prefixes: list[str] | None = None
@@ -11513,7 +11514,7 @@ class EosCliConfigGen(BaseModel):
                     Field-set prefix lists
                     """
 
-                class Fragment(BaseModel):
+                class Fragment(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     offset: str | None = None
@@ -11521,7 +11522,7 @@ class EosCliConfigGen(BaseModel):
                     Fragment offset range
                     """
 
-                class ProtocolsItem(BaseModel):
+                class ProtocolsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     protocol: str = None
@@ -11544,7 +11545,7 @@ class EosCliConfigGen(BaseModel):
                     flags: list[str] | None = None
                     icmp_type: list[str] | None = None
 
-                class Actions(BaseModel):
+                class Actions(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     dscp: int | None = None
@@ -11581,10 +11582,10 @@ class EosCliConfigGen(BaseModel):
                 protocols: list[ProtocolsItem] | None = None
                 actions: Actions | None = None
 
-            class DefaultActions(BaseModel):
+            class DefaultActions(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Ipv4(BaseModel):
+                class Ipv4(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     dscp: int | None = None
@@ -11602,7 +11603,7 @@ class EosCliConfigGen(BaseModel):
                     Only supported when action is set to drop
                     """
 
-                class Ipv6(BaseModel):
+                class Ipv6(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     dscp: int | None = None
@@ -11634,10 +11635,10 @@ class EosCliConfigGen(BaseModel):
         field_sets: FieldSets | None = None
         policies: list[PoliciesItem] | None = None
 
-    class TunnelInterfacesItem(BaseModel):
+    class TunnelInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class TcpMssCeiling(BaseModel):
+        class TcpMssCeiling(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class DirectionEnum(Enum):
@@ -11711,7 +11712,7 @@ class EosCliConfigGen(BaseModel):
         Multiline String with EOS CLI rendered directly on the Tunnel interface in the final EOS configuration.
         """
 
-    class VirtualSourceNatVrfsItem(BaseModel):
+    class VirtualSourceNatVrfsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -11723,10 +11724,10 @@ class EosCliConfigGen(BaseModel):
         IPv4 Address
         """
 
-    class VlanInterfacesItem(BaseModel):
+    class VlanInterfacesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
-        class IpHelpersItem(BaseModel):
+        class IpHelpersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ip_helper: str = None
@@ -11742,13 +11743,13 @@ class EosCliConfigGen(BaseModel):
             VRF where DHCP server can be reached
             """
 
-        class IpNat(BaseModel):
+        class IpNat(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Destination(BaseModel):
+            class Destination(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DynamicItem(BaseModel):
+                class DynamicItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     access_list: str = None
@@ -11756,7 +11757,7 @@ class EosCliConfigGen(BaseModel):
                     pool_name: str = None
                     priority: int | None = Field(None, ge=0, le=4294967295)
 
-                class StaticItem(BaseModel):
+                class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionEnum(Enum):
@@ -11801,10 +11802,10 @@ class EosCliConfigGen(BaseModel):
                 dynamic: list[DynamicItem] | None = None
                 static: list[StaticItem] | None = None
 
-            class Source(BaseModel):
+            class Source(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class DynamicItem(BaseModel):
+                class DynamicItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class NatTypeEnum(Enum):
@@ -11823,7 +11824,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     priority: int | None = Field(None, ge=0, le=4294967295)
 
-                class StaticItem(BaseModel):
+                class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                     class DirectionEnum(Enum):
@@ -11871,7 +11872,7 @@ class EosCliConfigGen(BaseModel):
             destination: Destination | None = None
             source: Source | None = None
 
-        class Ipv6NdPrefixesItem(BaseModel):
+        class Ipv6NdPrefixesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             ipv6_prefix: str = None
@@ -11888,7 +11889,7 @@ class EosCliConfigGen(BaseModel):
             """
             no_autoconfig_flag: bool | None = None
 
-        class Ipv6DhcpRelayDestinationsItem(BaseModel):
+        class Ipv6DhcpRelayDestinationsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             address: str = None
@@ -11909,13 +11910,13 @@ class EosCliConfigGen(BaseModel):
             Override the default link address specified in the relayed DHCP packet
             """
 
-        class Multicast(BaseModel):
+        class Multicast(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ipv4(BaseModel):
+            class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class BoundariesItem(BaseModel):
+                class BoundariesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     boundary: str = None
@@ -11924,7 +11925,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     out: bool | None = None
 
-                class SourceRouteExport(BaseModel):
+                class SourceRouteExport(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool = None
@@ -11937,10 +11938,10 @@ class EosCliConfigGen(BaseModel):
                 source_route_export: SourceRouteExport | None = None
                 static: bool | None = None
 
-            class Ipv6(BaseModel):
+            class Ipv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class BoundariesItem(BaseModel):
+                class BoundariesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     boundary: str = None
@@ -11948,7 +11949,7 @@ class EosCliConfigGen(BaseModel):
                     IPv6 access-list name or IPv6 multicast group prefix with mask
                     """
 
-                class SourceRouteExport(BaseModel):
+                class SourceRouteExport(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool = None
@@ -11969,7 +11970,7 @@ class EosCliConfigGen(BaseModel):
             value_1 = "simple"
             value_2 = "message-digest"
 
-        class OspfMessageDigestKeysItem(BaseModel):
+        class OspfMessageDigestKeysItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class HashAlgorithmEnum(Enum):
@@ -11986,10 +11987,10 @@ class EosCliConfigGen(BaseModel):
             Encrypted password
             """
 
-        class Pim(BaseModel):
+        class Pim(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Ipv4(BaseModel):
+            class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 dr_priority: int | None = Field(None, ge=0, le=429467295)
@@ -11998,10 +11999,10 @@ class EosCliConfigGen(BaseModel):
 
             ipv4: Ipv4 | None = None
 
-        class VrrpIdsItem(BaseModel):
+        class VrrpIdsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Advertisement(BaseModel):
+            class Advertisement(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 interval: int | None = Field(None, ge=1, le=255)
@@ -12009,10 +12010,10 @@ class EosCliConfigGen(BaseModel):
                 Interval in seconds
                 """
 
-            class Preempt(BaseModel):
+            class Preempt(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Delay(BaseModel):
+                class Delay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     minimum: int | None = Field(None, ge=0, le=3600)
@@ -12027,10 +12028,10 @@ class EosCliConfigGen(BaseModel):
                 enabled: bool = None
                 delay: Delay | None = None
 
-            class Timers(BaseModel):
+            class Timers(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class Delay(BaseModel):
+                class Delay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     reload: int | None = Field(None, ge=0, le=3600)
@@ -12040,7 +12041,7 @@ class EosCliConfigGen(BaseModel):
 
                 delay: Delay | None = None
 
-            class TrackedObjectItem(BaseModel):
+            class TrackedObjectItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 name: str = None
@@ -12053,7 +12054,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 shutdown: bool | None = None
 
-            class Ipv4(BaseModel):
+            class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class VersionEnum(Enum):
@@ -12066,7 +12067,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 version: VersionEnum | None = None
 
-            class Ipv6(BaseModel):
+            class Ipv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 address: str = None
@@ -12089,7 +12090,7 @@ class EosCliConfigGen(BaseModel):
             ipv4: Ipv4 | None = None
             ipv6: Ipv6 | None = None
 
-        class Vrrp(BaseModel):
+        class Vrrp(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             virtual_router: str | None = None
@@ -12111,13 +12112,13 @@ class EosCliConfigGen(BaseModel):
             Virtual IPv6 address
             """
 
-        class IpAttachedHostRouteExport(BaseModel):
+        class IpAttachedHostRouteExport(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool = None
             distance: int | None = Field(None, ge=1, le=255)
 
-        class Bfd(BaseModel):
+        class Bfd(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             echo: bool | None = None
@@ -12131,10 +12132,10 @@ class EosCliConfigGen(BaseModel):
             """
             multiplier: int | None = Field(None, ge=3, le=50)
 
-        class ServicePolicy(BaseModel):
+        class ServicePolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Pbr(BaseModel):
+            class Pbr(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 input: str | None = None
@@ -12284,14 +12285,14 @@ class EosCliConfigGen(BaseModel):
         Multiline EOS CLI rendered directly on the VLAN interface in the final EOS configuration
         """
 
-    class VlanInternalOrder(BaseModel):
+    class VlanInternalOrder(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class AllocationEnum(Enum):
             value_0 = "ascending"
             value_1 = "descending"
 
-        class Range(BaseModel):
+        class Range(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             beginning: int = Field(None, ge=2, le=4094)
@@ -12306,14 +12307,14 @@ class EosCliConfigGen(BaseModel):
         allocation: AllocationEnum = None
         range: Range = None
 
-    class VlansItem(BaseModel):
+    class VlansItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
         class StateEnum(Enum):
             value_0 = "active"
             value_1 = "suspend"
 
-        class PrivateVlan(BaseModel):
+        class PrivateVlan(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
             class TypeEnum(Enum):
@@ -12342,7 +12343,7 @@ class EosCliConfigGen(BaseModel):
         Key only used for documentation or validation purposes
         """
 
-    class VmtracerSessionsItem(BaseModel):
+    class VmtracerSessionsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
@@ -12358,7 +12359,7 @@ class EosCliConfigGen(BaseModel):
         autovlan_disable: bool | None = None
         source_interface: str | None = None
 
-    class VrfsItem(BaseModel):
+    class VrfsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -12374,21 +12375,21 @@ class EosCliConfigGen(BaseModel):
         Key only used for documentation or validation purposes
         """
 
-    class VxlanInterface(BaseModel):
+    class VxlanInterface(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class Vxlan1(BaseModel):
+        class Vxlan1(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class Vxlan(BaseModel):
+            class Vxlan(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ControllerClient(BaseModel):
+                class ControllerClient(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
 
-                class BfdVtepEvpn(BaseModel):
+                class BfdVtepEvpn(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     interval: int | None = None
@@ -12396,7 +12397,7 @@ class EosCliConfigGen(BaseModel):
                     multiplier: int | None = Field(None, ge=3, le=50)
                     prefix_list: str | None = None
 
-                class Qos(BaseModel):
+                class Qos(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     dscp_propagation_encapsulation: bool | None = None
@@ -12406,7 +12407,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     map_dscp_to_traffic_class_decapsulation: bool | None = None
 
-                class VlansItem(BaseModel):
+                class VlansItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     id: int = None
@@ -12420,7 +12421,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     flood_vteps: list[str] | None = None
 
-                class VrfsItem(BaseModel):
+                class VrfsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     name: Annotated[str, StrConvert(convert_types=(int))] = None
@@ -12468,6 +12469,18 @@ class EosCliConfigGen(BaseModel):
             """
 
         field_Vxlan1: Vxlan1 | None = Field(None, alias="Vxlan1")
+
+    class CustomStructuredConfiguration(BaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        key: str
+        """
+        Complete key including prefix
+        """
+        value: EosCliConfigGen
+        """
+        Structured config including the suffix part of the key.
+        """
 
     aaa_accounting: AaaAccounting | None = None
     aaa_authentication: AaaAuthentication | None = None
@@ -12781,3 +12794,4 @@ class EosCliConfigGen(BaseModel):
     These keys are ignored if the name of the vrf is 'default'
     """
     vxlan_interface: VxlanInterface | None = None
+    custom_structured_configurations: list[CustomStructuredConfiguration] | None = None

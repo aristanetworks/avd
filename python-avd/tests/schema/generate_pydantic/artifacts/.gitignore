@@ -2,5 +2,4 @@
 !.gitignore
 !__init__.py
 !types.py
-!DC1-BL1A.json
-!ethernet-interfaces.json
+!models.py

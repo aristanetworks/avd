@@ -7,6 +7,7 @@ from abc import ABC, abstractmethod
 from textwrap import indent, wrap
 from typing import Literal
 
+import isort
 from pydantic import BaseModel
 
 PYDANTIC_SRC_HEADER = """\
@@ -14,8 +15,9 @@ PYDANTIC_SRC_HEADER = """\
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+"""
+BASE_IMPORTS = """\
 from __future__ import annotations
-
 from pydantic import BaseModel, ConfigDict, Field
 """
 BASE_MODEL_NAME = "BaseModel"
@@ -89,6 +91,11 @@ class PydanticModelSrc(BaseModel):
 
         classsrc = f"class {self.name}({base_classes}):\n"
 
+        if self.description:
+            # Build docstring styled description
+            description = "\n".join(wrap(self.description, width=120, replace_whitespace=False))
+            classsrc += indent(f'"""\n{description}\n"""\n', "    ")
+
         # Pydantic config option to forbid keys in the inputs that are not covered by the model
         model_config_args = ["defer_build=True"]
         if any(isinstance(n, EnumClassSrc) for n in self.classes):
@@ -97,11 +104,6 @@ class PydanticModelSrc(BaseModel):
             model_config_args.append('extra="forbid"')
         if model_config_args:
             classsrc += indent(f"model_config = ConfigDict({', '.join(model_config_args)})\n\n", "    ")
-
-        if self.description:
-            # Build docstring styled description
-            description = "\n".join(wrap(self.description, width=120, replace_whitespace=False))
-            classsrc += indent(f'"""\n{description}\n"""\n', "    ")
 
         if classes := self._render_classes():
             classsrc += f"{classes}\n"
@@ -201,8 +203,7 @@ class PydanticFileSrc(BaseModel):
         Returns Python source code for this file.
         """
         src = f"{PYDANTIC_SRC_HEADER}"
-        if self._render_imports():
-            src += f"{self._render_imports()}\n\n"
+        src += f"{isort.code(BASE_IMPORTS + self._render_imports())}\n\n"
         src += self._render_classes()
         return src
 

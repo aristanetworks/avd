@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from schema.generate_pydantic.models import StrConvertSrc
+from .models import StrConvertSrc
 
 if TYPE_CHECKING:
     from ..metaschema.meta_schema_model import AvdSchemaField
