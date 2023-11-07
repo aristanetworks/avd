@@ -1,5 +1,5 @@
 ---
-# this workflow file is the template 
+# this workflow file is the template
 # that will be triggered by a parent workflow matrix
 
 name: reusable container build workflow
@@ -153,7 +153,7 @@ jobs:
             echo "Verifying if base image is present..."
             docker manifest inspect ghcr.io/${{ github.repository }}/base:python${{ inputs.python_version }} >/dev/null
           fi
-      
+
       - name: setup QEMU for multi-arch builds 🏗️
         if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
         uses: docker/setup-qemu-action@v2
