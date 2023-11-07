@@ -72,7 +72,7 @@ For AVD contributors the following configuration is recommended:
 }
 ```
 
-If you want to test specific AVD branch or fork without making any changes, use following `devcontainer.json`:
+If you want to test specific AVD branch or fork without making any changes, use the following `devcontainer.json`:
 
 ```json
 {
