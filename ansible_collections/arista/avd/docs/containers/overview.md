@@ -6,7 +6,7 @@
 
 # AVD Dev Containers Overview
 
-> WARNING: AVD Dev Container are currently in the early preview phase and not officially supported for any production cases.
+> WARNING: AVD Dev Containers are currently in the early preview phase and not officially supported for any production cases.
 > They can be still very useful for development and testing. Please report any issues and optimization suggestions.
 
 ## Why Dev Containers
