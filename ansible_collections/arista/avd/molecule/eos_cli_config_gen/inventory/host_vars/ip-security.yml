@@ -18,8 +18,8 @@ ip_security:
       pfs_dh_group: 14
     - name: SA-3
       esp:
-        integrity: "null"
-        encryption: "null"
+        integrity: "disabled"
+        encryption: "disabled"
       pfs_dh_group: 17
   profiles:
     - name: Profile-1

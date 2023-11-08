@@ -54,7 +54,7 @@ interface Management1
 | ----------- | ------------- | -------------- | ------------ |
 | SA-1 | - |  aes128 | 14 |
 | SA-2 | - |  aes128 | 14 |
-| SA-3 | null |  null | 17 |
+| SA-3 | disabled |  disabled | 17 |
 
 ### IPSec profiles
 
@@ -92,7 +92,6 @@ ip security
       pfs dh-group 14
    !
    sa policy SA-3
-      esp encryption null
       pfs dh-group 17
    !
    profile Profile-1
