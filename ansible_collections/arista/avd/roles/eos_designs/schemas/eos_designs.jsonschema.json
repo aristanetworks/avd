@@ -3081,7 +3081,7 @@
     },
     "default_mgmt_method": {
       "type": "string",
-      "description": "`default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:\n  - `cv_settings`\n  - `dns_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as source interface.\n`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as source interface.\n`none` means the VRF and or interface must be manually set for each protocol.\nThis can be overriden under the settings for each protocol.\n",
+      "description": "`default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:\n  - `cv_settings`\n  - `dns_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as source interface.\n`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as source interface.\n`none` means the VRF and or interface must be manually set for each protocol.\nThis can be overridden under the settings for each protocol.\n",
       "enum": [
         "oob",
         "inband",
