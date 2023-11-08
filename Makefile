@@ -92,4 +92,4 @@ webdoc-logs: ## View logs
 
 .PHONY: check-avd-404
 check-avd-404: ## Check local 404 links for AVD documentation
-	docker run --rm --network container:webdoc_avd raviqqe/muffet:2.6.1 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -f --max-redirections=3 --timeout=$(MUFFET_TIMEOUT) --rate-limit=1
+	docker run --rm --network container:webdoc_avd raviqqe/muffet:2.6.3 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -e ".*docs.github.com.*" -e "twitter.com" -f --max-redirections=3 --timeout=$(MUFFET_TIMEOUT) --rate-limit=1 --buffer-size 8192
