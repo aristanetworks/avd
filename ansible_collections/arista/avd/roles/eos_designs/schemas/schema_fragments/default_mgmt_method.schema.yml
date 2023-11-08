@@ -20,7 +20,7 @@ keys:
       `oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as source interface.
       `inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as source interface.
       `none` means the VRF and or interface must be manually set for each protocol.
-      This can be overriden under the settings for each protocol.
+      This can be overridden under the settings for each protocol.
     valid_values:
       - oob
       - inband
