@@ -294,6 +294,10 @@ keys:
         ip_nat:
           type: dict
           $ref: "eos_cli_config_gen#/$defs/interface_ip_nat"
+          keys:
+            service_profile:
+              type: str
+              description: NAT interface profile.
         ipv6_enable:
           type: bool
         ipv6_address:
@@ -665,7 +669,7 @@ keys:
                   type: bool
                 spanning_tree:
                   type: bool
-                storm_control:
+                storm_control_discards:
                   type: bool
         lldp:
           type: dict
@@ -1117,6 +1121,110 @@ keys:
                             convert_types:
                               - str
                             description: Set the random-detect ECN weight
+        vrrp_ids:
+          type: list
+          description: VRRP model.
+          primary_key: id
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                  - str
+                description: VRID
+              priority_level:
+                type: int
+                convert_types:
+                  - str
+                description: Instance priority
+                min: 1
+                max: 254
+              advertisement:
+                type: dict
+                keys:
+                  interval:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Interval in seconds
+                    min: 1
+                    max: 255
+              preempt:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  delay:
+                    type: dict
+                    keys:
+                      minimum:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Minimum preempt delay in seconds
+                        min: 0
+                        max: 3600
+                      reload:
+                        type: int
+                        convert_types:
+                          - str
+                        description: Reload preempt delay in seconds
+                        min: 0
+                        max: 3600
+              timers:
+                type: dict
+                keys:
+                  delay:
+                    type: dict
+                    keys:
+                      reload:
+                        type: int
+                        description: Delay after reload in seconds.
+                        convert_types:
+                          - str
+                        min: 0
+                        max: 3600
+              tracked_object:
+                type: list
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Tracked object name
+                    decrement:
+                      type: int
+                      convert_types:
+                        - str
+                      min: 1
+                      max: 254
+                      description: Decrement VRRP priority by 1-254
+                    shutdown:
+                      type: bool
+              ipv4:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv4 address
+                  version:
+                    type: int
+                    convert_types:
+                      - str
+                    valid_values:
+                      - 2
+                      - 3
+              ipv6:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv6 address
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration
