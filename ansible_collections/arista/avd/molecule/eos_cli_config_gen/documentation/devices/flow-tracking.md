@@ -44,7 +44,9 @@ interface Management1
 
 #### Flow Tracking Sampled
 
-Sample: 666
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 |
+| ----------- | ------------------- | ------------------------- | ------------------------- |
+| 666 | 2 | enabled | disabled |
 
 ##### Trackers Summary
 
@@ -90,6 +92,8 @@ Sample: 666
 !
 flow tracking sampled
    sample 666
+   hardware offload ipv4
+   hardware offload threshold minimum 2 samples
    tracker T1
       record export on inactive timeout 3666
       record export on interval 5666

@@ -455,7 +455,9 @@ event-handler evpn-blacklist-recovery
 
 #### Flow Tracking Sampled
 
-Sample: 666
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 |
+| ----------- | ------------------- | ------------------------- | ------------------------- |
+| 666 | default | disabled | disabled |
 
 ##### Trackers Summary
 
