@@ -222,5 +222,25 @@ DATA: list[dict] = [
         "expected_log": "Peer group 'IPv4-UNDERLAY-PEERS' from the 'peer_groups' list of the 'router_bgp' data model is missing the variable 'type'.",
         "expected_log_level": "WARNING",
     },
+    {
+        "test_name": "missing-the-only-neighbor-ip-address",
+        "test_module": "AvdTestBGP",
+        "hostvars": {
+            "DC1-SPINE1": {
+                "service_routing_protocols_model": "multi-agent",
+                "router_bgp": {
+                    "as": "65100",
+                    "router_id": "10.1.0.1",
+                    "peer_groups": [{"name": "IPv4-UNDERLAY-PEERS", "type": "ipv4"}],
+                    "neighbors": [
+                        {"peer_group": "IPv4-UNDERLAY-PEERS"},
+                    ],
+                },
+            }
+        },
+        "expected_result": {},
+        "expected_log": "Neighbor entry #1 from the 'neighbors' list of the 'router_bgp' data model is missing the variable 'ip_address'.",
+        "expected_log_level": "WARNING",
+    },
 ]
 """Data for `ansible_collections.arista.avd.roles.eos_validate_state.python_modules.tests.avdtestrouting.py` unit tests"""

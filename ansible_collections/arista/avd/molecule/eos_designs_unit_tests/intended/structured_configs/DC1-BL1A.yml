@@ -166,7 +166,7 @@ router_bgp:
       route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
       local_as: '123'
     - ip_address: 123.1.1.11
-      remote_as: '1234'
+      remote_as: '65000.100'
       password: oBztv71m2uhR7hh58/OCNA==
       description: External IPv4 BGP peer
       send_community: standard extended

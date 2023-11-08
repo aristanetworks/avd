@@ -1,14 +1,7 @@
+# Role Defaults - output directories
+
 # Root directory where to build output structure
 root_dir: '{{ inventory_dir }}'
-
-# Documentation folders
-# Main documentation folder
-documentation_dir_name: 'documentation'
-documentation_dir: '{{ root_dir }}/{{ documentation_dir_name }}'
-
-# Device documentation
-devices_dir_name: 'devices'
-devices_dir: '{{ documentation_dir }}/{{ devices_dir_name }}'
 
 # AVD configurations output
 # Main output directory
@@ -19,12 +12,10 @@ output_dir: '{{ root_dir }}/{{ output_dir_name }}'
 structured_dir_name: 'structured_configs'
 structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
 
+# Output for structured YAML files for CVP:
+structured_cvp_dir_name: 'cvp'
+structured_cvp_dir: '{{ structured_dir }}/{{ structured_cvp_dir_name }}'
+
 # EOS Configuration Directory name
 eos_config_dir_name: 'configs'
 eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
-
-avd_structured_config_file_format: "yml"
-
-# Input Variable Validation
-avd_data_conversion_mode: "debug"
-avd_data_validation_mode: "warning"

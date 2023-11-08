@@ -281,6 +281,12 @@ roles/eos_cli_config_gen/docs/tables/traffic-policies.md
 
 ## Interfaces
 
+### DPS interfaces
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/dps-interfaces.md
+--8<--
+
 ### Errdisable
 
 --8<--
@@ -429,6 +435,12 @@ roles/eos_cli_config_gen/docs/tables/dns-domain.md
 roles/eos_cli_config_gen/docs/tables/domain-list.md
 --8<--
 
+### Hostname
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/hostname.md
+--8<--
+
 ### IP domain lookup
 
 --8<--
@@ -545,6 +557,12 @@ roles/eos_cli_config_gen/docs/tables/cvx.md
 roles/eos_cli_config_gen/docs/tables/eos-cli.md
 --8<--
 
+### Is deployed
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/is-deployed.md
+--8<--
+
 ### Management CVX
 
 --8<--
@@ -584,6 +602,12 @@ roles/eos_cli_config_gen/docs/tables/event-monitor.md
 --8<--
 
 ### Flow tracking
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/flow-tracking.md
+--8<--
+
+### Flow trackings
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/flow-trackings.md
@@ -676,6 +700,12 @@ roles/eos_cli_config_gen/docs/tables/router-pim-sparse-mode.md
 --8<--
 
 ## Quality of Service
+
+### Priority flow control
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/priority-flow-control.md
+--8<--
 
 ### QoS
 
@@ -775,6 +805,12 @@ roles/eos_cli_config_gen/docs/tables/ipv6-unicast-routing.md
 roles/eos_cli_config_gen/docs/tables/mpls.md
 --8<--
 
+### Router adaptive virtual topology
+
+--8<--
+router-adaptive-virtual-topology.md
+--8<--
+
 ### Router BFD
 
 --8<--
@@ -821,6 +857,7 @@ roles/eos_cli_config_gen/docs/tables/router-path-selection.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/router-service-insertion.md
+--8<--
 
 ### Router traffic engineering
 
