@@ -16,7 +16,7 @@ ip security
 {%         if ike_policy.ike_lifetime is arista.avd.defined %}
       ike-lifetime {{ ike_policy.ike_lifetime }}
 {%         endif %}
-{%         if ike_policy.encryption is arista.avd.defined %}
+{%         if ike_policy.encryption is arista.avd.defined and ike_policy.encryption != "disabled" %}
       encryption {{ ike_policy.encryption }}
 {%         endif %}
 {%         if ike_policy.dh_group is arista.avd.defined %}
@@ -26,10 +26,10 @@ ip security
 {%     for sa_policy in ip_security.sa_policies | arista.avd.default([]) %}
    !
    sa policy {{ sa_policy.name }}
-{%         if sa_policy.esp.intergrity is arista.avd.defined %}
+{%         if sa_policy.esp.intergrity is arista.avd.defined and sa_policy.esp.intergrity != "disabled" %}
       esp intergrity {{ sa_policy.esp.intergrity }}
 {%         endif %}
-{%         if sa_policy.esp.encryption is arista.avd.defined %}
+{%         if sa_policy.esp.encryption is arista.avd.defined and sa_policy.esp.encryption != "disabled" %}
       esp encryption {{ sa_policy.esp.encryption }}
 {%         endif %}
 {%         if sa_policy.pfs_dh_group is arista.avd.defined %}
