@@ -198,12 +198,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -500,12 +500,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -802,12 +802,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -1104,12 +1104,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -1406,12 +1406,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -1708,12 +1708,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -2010,12 +2010,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -7306,6 +7306,11 @@
               "ip_nat": {
                 "type": "object",
                 "properties": {
+                  "service_profile": {
+                    "type": "string",
+                    "description": "NAT interface profile.",
+                    "title": "Service Profile"
+                  },
                   "destination": {
                     "type": "object",
                     "properties": {
@@ -9169,6 +9174,196 @@
                   }
                 },
                 "title": "TX Queues"
+              },
+              "vrrp_ids": {
+                "type": "array",
+                "description": "VRRP model.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "VRID",
+                      "title": "ID"
+                    },
+                    "priority_level": {
+                      "type": "integer",
+                      "description": "Instance priority",
+                      "minimum": 1,
+                      "maximum": 254,
+                      "title": "Priority Level"
+                    },
+                    "advertisement": {
+                      "type": "object",
+                      "properties": {
+                        "interval": {
+                          "type": "integer",
+                          "description": "Interval in seconds",
+                          "minimum": 1,
+                          "maximum": 255,
+                          "title": "Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Advertisement"
+                    },
+                    "preempt": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "delay": {
+                          "type": "object",
+                          "properties": {
+                            "minimum": {
+                              "type": "integer",
+                              "description": "Minimum preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Minimum"
+                            },
+                            "reload": {
+                              "type": "integer",
+                              "description": "Reload preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Reload"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Delay"
+                        }
+                      },
+                      "required": [
+                        "enabled"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Preempt"
+                    },
+                    "timers": {
+                      "type": "object",
+                      "properties": {
+                        "delay": {
+                          "type": "object",
+                          "properties": {
+                            "reload": {
+                              "type": "integer",
+                              "description": "Delay after reload in seconds.",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Reload"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Delay"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Timers"
+                    },
+                    "tracked_object": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Tracked object name",
+                            "title": "Name"
+                          },
+                          "decrement": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 254,
+                            "description": "Decrement VRRP priority by 1-254",
+                            "title": "Decrement"
+                          },
+                          "shutdown": {
+                            "type": "boolean",
+                            "title": "Shutdown"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      },
+                      "title": "Tracked Object"
+                    },
+                    "ipv4": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Virtual IPv4 address",
+                          "title": "Address"
+                        },
+                        "version": {
+                          "type": "integer",
+                          "enum": [
+                            2,
+                            3
+                          ],
+                          "title": "Version"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv4"
+                    },
+                    "ipv6": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Virtual IPv6 address",
+                          "title": "Address"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv6"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "id"
+                  ]
+                },
+                "title": "VRRP IDs"
               },
               "eos_cli": {
                 "type": "string",
@@ -12908,6 +13103,11 @@
               "ip_nat": {
                 "type": "object",
                 "properties": {
+                  "service_profile": {
+                    "type": "string",
+                    "description": "NAT interface profile.",
+                    "title": "Service Profile"
+                  },
                   "destination": {
                     "type": "object",
                     "properties": {
@@ -14772,6 +14972,196 @@
                 },
                 "title": "TX Queues"
               },
+              "vrrp_ids": {
+                "type": "array",
+                "description": "VRRP model.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "VRID",
+                      "title": "ID"
+                    },
+                    "priority_level": {
+                      "type": "integer",
+                      "description": "Instance priority",
+                      "minimum": 1,
+                      "maximum": 254,
+                      "title": "Priority Level"
+                    },
+                    "advertisement": {
+                      "type": "object",
+                      "properties": {
+                        "interval": {
+                          "type": "integer",
+                          "description": "Interval in seconds",
+                          "minimum": 1,
+                          "maximum": 255,
+                          "title": "Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Advertisement"
+                    },
+                    "preempt": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "delay": {
+                          "type": "object",
+                          "properties": {
+                            "minimum": {
+                              "type": "integer",
+                              "description": "Minimum preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Minimum"
+                            },
+                            "reload": {
+                              "type": "integer",
+                              "description": "Reload preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Reload"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Delay"
+                        }
+                      },
+                      "required": [
+                        "enabled"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Preempt"
+                    },
+                    "timers": {
+                      "type": "object",
+                      "properties": {
+                        "delay": {
+                          "type": "object",
+                          "properties": {
+                            "reload": {
+                              "type": "integer",
+                              "description": "Delay after reload in seconds.",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Reload"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Delay"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Timers"
+                    },
+                    "tracked_object": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Tracked object name",
+                            "title": "Name"
+                          },
+                          "decrement": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 254,
+                            "description": "Decrement VRRP priority by 1-254",
+                            "title": "Decrement"
+                          },
+                          "shutdown": {
+                            "type": "boolean",
+                            "title": "Shutdown"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      },
+                      "title": "Tracked Object"
+                    },
+                    "ipv4": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Virtual IPv4 address",
+                          "title": "Address"
+                        },
+                        "version": {
+                          "type": "integer",
+                          "enum": [
+                            2,
+                            3
+                          ],
+                          "title": "Version"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv4"
+                    },
+                    "ipv6": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Virtual IPv6 address",
+                          "title": "Address"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv6"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "id"
+                  ]
+                },
+                "title": "VRRP IDs"
+              },
               "eos_cli": {
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -15783,18 +16173,6 @@
                   "type": "string",
                   "description": "By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.\nThe rt_override allows us to override this value and statically define it.\nrd_override will default to rt_override or vni_override if set.\n\nrd_override supports two formats:\n  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).\n  - A full RD string with colon seperator which will override the full RD.\n",
                   "title": "Rd Override"
-                },
-                "tags": {
-                  "type": "array",
-                  "description": "Tags leveraged for networks services filtering.\nTags are matched against \"filter.tags\" defined under node type settings.\nTags are also matched against the \"node_group\" name under node type settings.\n",
-                  "default": [
-                    "all"
-                  ],
-                  "items": {
-                    "type": "string",
-                    "description": "Tag value."
-                  },
-                  "title": "Tags"
                 },
                 "trunk_groups": {
                   "type": "array",
@@ -16962,6 +17340,8 @@
                           "priority_level": {
                             "type": "integer",
                             "description": "Instance priority",
+                            "minimum": 1,
+                            "maximum": 254,
                             "title": "Priority Level"
                           },
                           "advertisement": {
@@ -16970,6 +17350,8 @@
                               "interval": {
                                 "type": "integer",
                                 "description": "Interval in seconds",
+                                "minimum": 1,
+                                "maximum": 255,
                                 "title": "Interval"
                               }
                             },
@@ -16992,11 +17374,15 @@
                                   "minimum": {
                                     "type": "integer",
                                     "description": "Minimum preempt delay in seconds",
+                                    "minimum": 0,
+                                    "maximum": 3600,
                                     "title": "Minimum"
                                   },
                                   "reload": {
                                     "type": "integer",
                                     "description": "Reload preempt delay in seconds",
+                                    "minimum": 0,
+                                    "maximum": 3600,
                                     "title": "Reload"
                                   }
                                 },
@@ -17025,6 +17411,8 @@
                                   "reload": {
                                     "type": "integer",
                                     "description": "Delay after reload in seconds.",
+                                    "minimum": 0,
+                                    "maximum": 3600,
                                     "title": "Reload"
                                   }
                                 },
@@ -17417,18 +17805,6 @@
             "type": "string",
             "description": "By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.\nThe rt_override allows us to override this value and statically define it.\nrd_override will default to rt_override or vni_override if set.\n\nrd_override supports two formats:\n  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).\n  - A full RD string with colon seperator which will override the full RD.\n",
             "title": "Rd Override"
-          },
-          "tags": {
-            "type": "array",
-            "description": "Tags leveraged for networks services filtering.\nTags are matched against \"filter.tags\" defined under node type settings.\nTags are also matched against the \"node_group\" name under node type settings.\n",
-            "default": [
-              "all"
-            ],
-            "items": {
-              "type": "string",
-              "description": "Tag value."
-            },
-            "title": "Tags"
           },
           "trunk_groups": {
             "type": "array",
@@ -18596,6 +18972,8 @@
                     "priority_level": {
                       "type": "integer",
                       "description": "Instance priority",
+                      "minimum": 1,
+                      "maximum": 254,
                       "title": "Priority Level"
                     },
                     "advertisement": {
@@ -18604,6 +18982,8 @@
                         "interval": {
                           "type": "integer",
                           "description": "Interval in seconds",
+                          "minimum": 1,
+                          "maximum": 255,
                           "title": "Interval"
                         }
                       },
@@ -18626,11 +19006,15 @@
                             "minimum": {
                               "type": "integer",
                               "description": "Minimum preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
                               "title": "Minimum"
                             },
                             "reload": {
                               "type": "integer",
                               "description": "Reload preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
                               "title": "Reload"
                             }
                           },
@@ -18659,6 +19043,8 @@
                             "reload": {
                               "type": "integer",
                               "description": "Delay after reload in seconds.",
+                              "minimum": 0,
+                              "maximum": 3600,
                               "title": "Reload"
                             }
                           },

@@ -4454,6 +4454,53 @@ $defs:
                         (svi -> svi_profile -> svi_parent_profile).
 
                         '
+                    tags:
+                      type: list
+                      description: 'Tags leveraged for networks services filtering.
+
+                        Tags are matched against "filter.tags" defined under node
+                        type settings.
+
+                        Tags are also matched against the "node_group" name under
+                        node type settings.
+
+                        '
+                      default:
+                      - all
+                      items:
+                        type: str
+                        convert_types:
+                        - int
+                        description: Tag value.
+                    nodes:
+                      type: list
+                      primary_key: node
+                      convert_types:
+                      - dict
+                      items:
+                        type: dict
+                        $ref: eos_designs#/$defs/svi_settings
+                        keys:
+                          node:
+                            type: str
+                          tags:
+                            type: list
+                            description: 'Tags leveraged for networks services filtering.
+
+                              Tags are matched against "filter.tags" defined under
+                              node type settings.
+
+                              Tags are also matched against the "node_group" name
+                              under node type settings.
+
+                              '
+                            default:
+                            - all
+                            items:
+                              type: str
+                              convert_types:
+                              - int
+                              description: Tag value.
               l3_interfaces:
                 documentation_options:
                   table: network-services-vrfs-l3-interfaces-settings
@@ -4715,10 +4762,11 @@ $defs:
                       type: str
                       description: Peer group name.
                     remote_as:
-                      type: int
+                      type: str
                       convert_types:
-                      - str
-                      description: Remote ASN.
+                      - int
+                      description: Remote BGP AS <1-4294967295> or AS number in asdot
+                        notation "<1-65535>.<0-65535>".
                     description:
                       type: str
                     password:
@@ -6826,22 +6874,6 @@ $defs:
           assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type'
           for details).\n  - A full RD string with colon seperator which will override
           the full RD.\n"
-      tags:
-        type: list
-        description: 'Tags leveraged for networks services filtering.
-
-          Tags are matched against "filter.tags" defined under node type settings.
-
-          Tags are also matched against the "node_group" name under node type settings.
-
-          '
-        default:
-        - all
-        items:
-          type: str
-          convert_types:
-          - int
-          description: Tag value.
       trunk_groups:
         type: list
         items:
