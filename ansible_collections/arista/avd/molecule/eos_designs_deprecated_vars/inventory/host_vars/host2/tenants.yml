@@ -5,7 +5,7 @@ tenants:
   TENANT_B:
     bgp_peer_groups:
       Tenant_C_BGP_PEER_GROUP:
-        remote_as: 666
+        remote_as: "666"
         description: "Tenant C peer group"
         send_community: all
         next_hop_self: true

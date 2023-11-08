@@ -8206,7 +8206,7 @@ keys:
     keys:
       as:
         type: str
-        description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+        description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
         convert_types:
         - int
       router_id:
@@ -8382,7 +8382,7 @@ keys:
               type: str
               convert_types:
               - int
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
       peer_groups:
         type: list
         primary_key: name
@@ -8399,12 +8399,12 @@ keys:
               description: Key only used for documentation or validation purposes
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             description:
@@ -8581,12 +8581,12 @@ keys:
               type: str
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             as_path:
@@ -10074,7 +10074,7 @@ keys:
                   remote_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
             neighbors:
@@ -10093,7 +10093,7 @@ keys:
                   remote_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
                   password:
@@ -10126,7 +10126,7 @@ keys:
                   local_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
                   as_path:
@@ -10235,7 +10235,7 @@ keys:
                   remote_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
                   peer_group:
