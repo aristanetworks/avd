@@ -5035,7 +5035,7 @@
     },
     "fabric_sflow": {
       "type": "object",
-      "description": "Default enabling of sFlow for various interface types across the fabric.\nsFlow can also be enabled/disabled under each of the specific data models.",
+      "description": "Default enabling of sFlow for various interface types across the fabric.\nsFlow can also be enabled/disabled under each of the specific data models.\nFor general sFlow settings see `sflow_settings`.",
       "properties": {
         "uplinks": {
           "description": "Enable sFlow on all fabric uplinks.",
@@ -20579,7 +20579,7 @@
     },
     "sflow_settings": {
       "type": "object",
-      "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor source-interfaces see \"source_interfaces.sflow\"\nFor default enabling of sFlow for various interface types across the fabric see \"fabric_sflow\"",
+      "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see \"fabric_sflow\"",
       "properties": {
         "destinations": {
           "type": "array",
@@ -20598,22 +20598,13 @@
               },
               "vrf": {
                 "type": "string",
-                "description": "VRF Name.\nCan be used in combination with `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf` to configure the destination under multiple VRFs.",
+                "description": "The value of `vrf` will be interpreted according to these rules:\n- `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.\n  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf` will configure the NTP server(s) under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as NTP source-interface.\n  An error will be raised if inband management is not configured for the device.\n- Any other string will be used directly as the VRF name but source interface must be set with `sflow.structured_config` as needed.",
                 "title": "VRF"
-              },
-              "use_mgmt_interface_vrf": {
-                "type": "boolean",
-                "description": "Configure the destination under the VRF set with `mgmt_interface_vrf`. Can be used in combination with `vrf` and `use_inband_mgmt_vrf` to configure the destination under multiple VRFs.",
-                "title": "Use Management Interface VRF"
-              },
-              "use_inband_mgmt_vrf": {
-                "type": "boolean",
-                "description": "Configure the destination under the VRF set with `inband_mgmt_vrf`. Ignored if inband management is not configured for the device. Can be used in combination with `vrf` and `use_mgmt_interface_vrf` to configure the destination under multiple VRFs.",
-                "title": "Use Inband Management VRF"
               }
             },
             "required": [
-              "destination"
+              "destination",
+              "vrf"
             ],
             "additionalProperties": false,
             "patternProperties": {
@@ -21150,27 +21141,6 @@
             "^_.+$": {}
           },
           "title": "Radius"
-        },
-        "sflow": {
-          "type": "object",
-          "description": "sFlow source-interfaces.",
-          "properties": {
-            "mgmt_interface": {
-              "type": "boolean",
-              "description": "Configure a sFlow source-interface with the interface set by `mgmt_interface` and the VRF set by `mgmt_interface_vrf`.\n`mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.",
-              "title": "Management Interface"
-            },
-            "inband_mgmt_interface": {
-              "type": "boolean",
-              "description": "Configure a sFlow source-interface with the interface set by `inband_mgmt_interface` and the VRF set by `inband_mgmt_vrf`.\n`inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.",
-              "title": "Inband Management Interface"
-            }
-          },
-          "additionalProperties": false,
-          "patternProperties": {
-            "^_.+$": {}
-          },
-          "title": "Sflow"
         },
         "snmp": {
           "type": "object",

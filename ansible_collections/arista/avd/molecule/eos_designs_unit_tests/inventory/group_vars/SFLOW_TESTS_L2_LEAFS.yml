@@ -1,6 +1,11 @@
 ---
 type: l2leaf
 
+sflow_settings:
+  destinations:
+    - destination: 10.10.10.10
+      vrf: use_inband_mgmt_vrf
+
 l2leaf:
   defaults:
     platform: vEOS-lab
@@ -22,9 +27,3 @@ l2leaf:
       uplink_switch_interfaces:
         - Ethernet17
         - Ethernet17
-
-# Overriding the global setting to get inband_mgmt for l2 leafs.
-source_interfaces:
-  sflow:
-    mgmt_interface: true
-    inband_mgmt_interface: true

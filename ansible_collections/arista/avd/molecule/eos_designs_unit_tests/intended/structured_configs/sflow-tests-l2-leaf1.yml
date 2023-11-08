@@ -77,25 +77,6 @@ sflow:
   run: true
   destinations:
   - destination: 10.10.10.10
-  - destination: 10.10.10.11
-    port: 1234
-  - destination: 10.10.10.15
-  - destination: 10.10.10.16
-  - destination: 10.10.10.17
   source_interface: Vlan4092
-  vrfs:
-  - name: sflowvrf
-    destinations:
-    - destination: 10.10.10.12
-    - destination: 10.10.10.14
-    - destination: 10.10.10.16
-    - destination: 10.10.10.17
-    source_interface: Loopback321
-  - name: MGMT
-    destinations:
-    - destination: 10.10.10.13
-    - destination: 10.10.10.14
-    - destination: 10.10.10.17
-    source_interface: Management1
 metadata:
   platform: vEOS-lab
