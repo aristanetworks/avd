@@ -12,13 +12,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "ip_security.ike_policies.[].name") | String | Required, Unique |  |  | Policy name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_id</samp>](## "ip_security.ike_policies.[].local_id") | String |  |  |  | Local IKE Identification.<br>Can be an IPv4 or an IPv6 address.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ike_lifetime</samp>](## "ip_security.ike_policies.[].ike_lifetime") | Integer |  |  | Min: 1<br>Max: 24 | IKE lifetime in hours.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.ike_policies.[].encryption") | String |  |  | Valid Values:<br>- null<br>- 3des<br>- aes128<br>- aes256 | Local IKE Identification.<br>Can be an IPv4 or an IPv6 address.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.ike_policies.[].encryption") | String |  |  | Valid Values:<br>- disabled<br>- 3des<br>- aes128<br>- aes256 | Local IKE Identification.<br>Can be an IPv4 or an IPv6 address.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dh_group</samp>](## "ip_security.ike_policies.[].dh_group") | Integer |  |  | Valid Values:<br>- 1<br>- 2<br>- 5<br>- 14<br>- 15<br>- 16<br>- 17<br>- 20<br>- 21<br>- 24 | Diffie-Hellman group for the key exchange.<br> |
     | [<samp>&nbsp;&nbsp;sa_policies</samp>](## "ip_security.sa_policies") | List, items: Dictionary |  |  |  | Security Association policies. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "ip_security.sa_policies.[].name") | String | Required, Unique |  |  | Name of the SA policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "ip_security.sa_policies.[].name") | String | Required, Unique |  |  | Name of the SA policy. The "null" value is deprecated and will be removed on AVD 5.0.0 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;esp</samp>](## "ip_security.sa_policies.[].esp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;integrity</samp>](## "ip_security.sa_policies.[].esp.integrity") | String |  |  | Valid Values:<br>- null<br>- sha1<br>- sha256 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.sa_policies.[].esp.encryption") | String |  |  | Valid Values:<br>- null<br>- aes128<br>- aes128gcm128<br>- aes128gcm64<br>- aes256<br>- aes256gcm256 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;integrity</samp>](## "ip_security.sa_policies.[].esp.integrity") | String |  |  | Valid Values:<br>- disabled<br>- sha1<br>- sha256<br>- null |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encryption</samp>](## "ip_security.sa_policies.[].esp.encryption") | String |  |  | Valid Values:<br>- disabled<br>- aes128<br>- aes128gcm128<br>- aes128gcm64<br>- aes256<br>- aes256gcm256<br>- null |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pfs_dh_group</samp>](## "ip_security.sa_policies.[].pfs_dh_group") | Integer |  |  | Valid Values:<br>- 1<br>- 2<br>- 5<br>- 14<br>- 15<br>- 16<br>- 17<br>- 20<br>- 21<br>- 24 |  |
     | [<samp>&nbsp;&nbsp;profiles</samp>](## "ip_security.profiles") | List, items: Dictionary |  |  |  | IPSec profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "ip_security.profiles.[].name") | String | Required, Unique |  |  | Name of the IPsec profile. |

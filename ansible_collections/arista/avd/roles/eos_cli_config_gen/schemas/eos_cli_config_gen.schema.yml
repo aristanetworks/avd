@@ -3801,7 +3801,7 @@ keys:
             encryption:
               type: str
               valid_values:
-              - 'null'
+              - disabled
               - 3des
               - aes128
               - aes256
@@ -3837,25 +3837,28 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy.
+              description: Name of the SA policy. The "null" value is deprecated and
+                will be removed on AVD 5.0.0
             esp:
               type: dict
               keys:
                 integrity:
                   type: str
                   valid_values:
-                  - 'null'
+                  - disabled
                   - sha1
                   - sha256
+                  - 'null'
                 encryption:
                   type: str
                   valid_values:
-                  - 'null'
+                  - disabled
                   - aes128
                   - aes128gcm128
                   - aes128gcm64
                   - aes256
                   - aes256gcm256
+                  - 'null'
             pfs_dh_group:
               type: int
               convert_types:
