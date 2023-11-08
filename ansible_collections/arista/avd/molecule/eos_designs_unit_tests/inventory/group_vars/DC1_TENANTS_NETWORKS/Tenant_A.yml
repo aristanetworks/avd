@@ -153,7 +153,7 @@ tenant_a:
             nodes: [DC1-BL1A, DC1-BL1B]
         bgp_peers:
           - ip_address: 123.1.1.10
-            remote_as: 1234
+            remote_as: "1234"
             password: "oBztv71m2uhR7hh58/OCNA=="
             description: External IPv4 BGP peer
             send_community: standard extended
@@ -170,7 +170,7 @@ tenant_a:
             route_map_out: RM-123-1-1-10-OUT
             local_as: 123
           - ip_address: 123.1.1.11
-            remote_as: 1234
+            remote_as: "65000.100"
             password: "oBztv71m2uhR7hh58/OCNA=="
             description: External IPv4 BGP peer
             send_community: standard extended
