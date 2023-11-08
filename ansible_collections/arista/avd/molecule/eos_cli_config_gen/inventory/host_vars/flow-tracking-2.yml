@@ -1,0 +1,15 @@
+---
+### Flow Tracking
+
+flow_tracking:
+  sampled:
+    sample: 666
+    hardware_offload:
+      ipv4: true
+      ipv6: true
+    trackers:
+      - name: T21
+        record_export:
+          on_inactive_timeout: 3666
+          on_interval: 5666
+          mpls: true

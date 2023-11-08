@@ -4564,6 +4564,33 @@
               "maximum": 4294967295,
               "title": "Sample"
             },
+            "hardware_offload": {
+              "type": "object",
+              "properties": {
+                "ipv4": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv4 traffic.",
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv6 traffic.",
+                  "title": "IPv6"
+                },
+                "threshold_minimum": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295,
+                  "description": "Minimum number of samples.",
+                  "title": "Threshold Minimum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Hardware Offload"
+            },
             "trackers": {
               "type": "array",
               "items": {
@@ -14569,6 +14596,10 @@
               "route_reflector_client": {
                 "type": "boolean",
                 "title": "Route Reflector Client"
+              },
+              "password": {
+                "type": "string",
+                "title": "Password"
               },
               "passive": {
                 "type": "boolean",

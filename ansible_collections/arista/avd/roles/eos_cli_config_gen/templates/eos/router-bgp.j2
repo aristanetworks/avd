@@ -312,7 +312,7 @@ router bgp {{ router_bgp.as }}
    {{ neighbor_rib_in_pre_policy_retain_cli }}
 {%         endif %}
 {%         if neighbor.password is arista.avd.defined %}
-  neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password | arista.avd.hide_passwords(hide_passwords) }}
+   neighbor {{ neighbor.ip_address }} password 7 {{ neighbor.password | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%         if neighbor.passive is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} passive
