@@ -241,13 +241,13 @@ class UtilsMixin:
         """
         Return phone settings for one adapter
         """
-        adapter_phone = {}
-        if (adapter_phone_vlan := get(adapter, "phone_vlan")) is not None:
-            adapter_phone["vlan"] = adapter_phone_vlan
-            adapter_phone["trunk"] = get(adapter, "phone_trunk_mode")
-            return adapter_phone
+        if (adapter_phone_vlan := get(adapter, "phone_vlan")) is None:
+            return None
 
-        return None
+        return {
+            "vlan": adapter_phone_vlan,
+            "trunk": get(adapter, "phone_trunk_mode"),
+        }
 
     def _get_adapter_sflow(self, adapter: dict) -> dict | None:
         if (adapter_sflow := get(adapter, "sflow", default=self.shared_utils.fabric_sflow_endpoints)) is not None:

@@ -79,7 +79,7 @@ $defs:
           - "untagged phone"
         description: |-
           Specify if the phone traffic is tagged or untagged.
-          If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used.
+          If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
       trunk_groups:
         type: list
         items:
