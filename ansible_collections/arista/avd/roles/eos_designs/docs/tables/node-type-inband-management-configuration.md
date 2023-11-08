@@ -145,6 +145,13 @@
         # This key is deprecated.
         # Support will be removed in AVD version 5.0.0.
         # Use <samp>inband_mgmt_subnet</samp> instead.
+        inband_mgmt_ipv6_address: <str>
+        inband_mgmt_ipv6_subnet: <str>
+        inband_mgmt_ipv6_gateway: <str>
+        inband_mgmt_description: <str>
+        inband_mgmt_vlan_name: <str>
+        inband_mgmt_vrf: <str>
+        inband_mgmt_mtu: <int>
         inband_management_subnet: <str>
 
         # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
@@ -245,6 +252,13 @@
               # This key is deprecated.
               # Support will be removed in AVD version 5.0.0.
               # Use <samp>inband_mgmt_subnet</samp> instead.
+              inband_mgmt_ipv6_address: <str>
+              inband_mgmt_ipv6_subnet: <str>
+              inband_mgmt_ipv6_gateway: <str>
+              inband_mgmt_description: <str>
+              inband_mgmt_vlan_name: <str>
+              inband_mgmt_vrf: <str>
+              inband_mgmt_mtu: <int>
               inband_management_subnet: <str>
 
               # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
@@ -332,6 +346,13 @@
           # This key is deprecated.
           # Support will be removed in AVD version 5.0.0.
           # Use <samp>inband_mgmt_subnet</samp> instead.
+          inband_mgmt_ipv6_address: <str>
+          inband_mgmt_ipv6_subnet: <str>
+          inband_mgmt_ipv6_gateway: <str>
+          inband_mgmt_description: <str>
+          inband_mgmt_vlan_name: <str>
+          inband_mgmt_vrf: <str>
+          inband_mgmt_mtu: <int>
           inband_management_subnet: <str>
 
           # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
@@ -425,6 +446,13 @@
           # This key is deprecated.
           # Support will be removed in AVD version 5.0.0.
           # Use <samp>inband_mgmt_subnet</samp> instead.
+          inband_mgmt_ipv6_address: <str>
+          inband_mgmt_ipv6_subnet: <str>
+          inband_mgmt_ipv6_gateway: <str>
+          inband_mgmt_description: <str>
+          inband_mgmt_vlan_name: <str>
+          inband_mgmt_vrf: <str>
+          inband_mgmt_mtu: <int>
           inband_management_subnet: <str>
 
           # VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).

@@ -832,6 +832,48 @@ $defs:
               This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
             type: str
             format: ipv4
+          inband_mgmt_ipv6_address:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |
+              IPv6 address assigned to the inband management interface set with 'inband_mgmt_vlan'.
+              This overrides 'inband_mgmt_ipv6_subnet', hence all behavior of 'inband_mgmt_ipv6_subnet' is removed.
+
+              If this is set the VLAN and SVI will only be created on the L2 switch and added to uplink trunk.
+              The VLAN and SVI on the parent switches must be created using network services data models.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv6
+          inband_mgmt_ipv6_subnet:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |
+              Optional IPv6 prefix assigned to inband management SVIs on L2 switches (switches using port-channels as uplinks).
+              Parent l3leafs will have SVI with "ipv6 virtual-router" and host-route injection based on ARP.
+              This allows all l3leafs to reuse the same subnet across multiple racks without VXLAN extension.
+              SVI IP address will be assigned as follows:
+              virtual-router: <subnet> + 1
+              l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+              l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+              l2leafs       : <subnet> + 3 + <l2leaf id>
+              GW on l2leafs : <subnet> + 1
+              Assign range larger than total l2leafs + 5
+
+              Setting is ignored if 'inband_mgmt_ipv6_address' is set.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv6_cidr
+          inband_mgmt_ipv6_gateway:
+            documentation_options:
+              table: node-type-inband-management-configuration
+            description: |
+              Default gateway configured in the 'inband_mgmt_vrf' when using 'inband_mgmt_ipv6_address'. Otherwise gateway is derived from 'inband_mgmt_ipv6_subnet' if set.
+
+              This setting is applicable to L2 switches (switches using port-channel trunks as uplinks).
+            type: str
+            format: ipv6
           inband_mgmt_description:
             documentation_options:
               table: node-type-inband-management-configuration

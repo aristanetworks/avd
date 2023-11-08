@@ -29,6 +29,15 @@ l3leaf:
     - name: inband-mgmt-parent-vrf
       inband_mgmt_vrf: INBANDMGMT
       id: 2
+  node_groups:
+    - group: inband-mgmt-parents-dualstack
+      mlag_peer_ipv4_pool: 100.64.0.0/24
+      mlag_peer_l3_ipv4_pool: 100.64.1.0/24
+      nodes:
+      - name: inband-mgmt-parent-dualstack1
+        id: 3
+      - name: inband-mgmt-parent-dualstack2
+        id: 4
 
 l2leaf:
   defaults:
@@ -54,6 +63,20 @@ l2leaf:
       # This vlan name overrides the vlan name from tenants.
       inband_mgmt_vlan_name: MYVLANNAME
       id: 3
+    - name: inband-mgmt-dualstack-subnets
+      inband_mgmt_vlan: 104
+      uplink_switches: [inband-mgmt-parent-dualstack1, inband-mgmt-parent-dualstack2]
+      inband_mgmt_subnet: 192.168.104.0/24
+      inband_mgmt_ipv6_subnet: 2a00:104::/64
+      id: 4
+    - name: inband-mgmt-dualstack-ips
+      inband_mgmt_vlan: 105
+      uplink_switches: [inband-mgmt-parent-dualstack1, inband-mgmt-parent-dualstack2]
+      inband_mgmt_ip: 192.168.105.22/24
+      inband_mgmt_gateway: 192.168.105.1
+      inband_mgmt_ipv6_address: 2a00:105::123/64
+      inband_mgmt_ipv6_gateway: 2a00:105::1
+      id: 5
 
 tenants:
   - name: INBAND_MGMT_TESTS
@@ -65,3 +88,17 @@ tenants:
             name: Inband management vlan
             vxlan: false
             ip_address: 192.168.103.1/24
+          - id: 105
+            name: Inband_management_vlan_ipv6
+            vxlan: false
+            ip_virtual_router_addresses: [192.168.105.1]
+            ipv6_virtual_router_addresses: [2a00:105::1]
+            nodes:
+              - node: inband-mgmt-parent-dualstack1
+                ip_address: 192.168.105.2
+                ipv6_address: 2a00:105::2/64
+                ipv6_enable: true
+              - node: inband-mgmt-parent-dualstack2
+                ip_address: 192.168.105.3
+                ipv6_address: 2a00:105::3/64
+                ipv6_enable: true

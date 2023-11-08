@@ -184,6 +184,8 @@ vlan_interfaces:
   ip_address: 192.168.101.2/24
   ip_virtual_router_addresses:
   - 192.168.101.1
+  debug:
+    v6_network: false
   ip_attached_host_route_export:
     enabled: true
     distance: 19
@@ -194,6 +196,8 @@ vlan_interfaces:
   ip_address: 192.168.102.2/24
   ip_virtual_router_addresses:
   - 192.168.102.1
+  debug:
+    v6_network: false
   ip_attached_host_route_export:
     enabled: true
     distance: 19

@@ -16,7 +16,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 class AvdStructuredConfigInbandManagement(AvdFacts):
     @cached_property
     def vlans(self) -> list | None:
-        if not self._inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
+        if not self._inband_management_parent_vlans and not (self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6):
             return None
 
         vlan_cfg = {
@@ -24,7 +24,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             "name": self.shared_utils.inband_mgmt_vlan_name,
         }
 
-        if self.shared_utils.configure_inband_mgmt:
+        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
             return [{"id": self.shared_utils.inband_mgmt_vlan, **vlan_cfg}]
 
         if self._inband_management_parent_vlans:
@@ -37,14 +37,14 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         """
         VLAN interfaces can be our own management interface and/or SVIs created on behalf of child switches using us as uplink_switch.
         """
-        if not self._inband_management_parent_vlans and not self.shared_utils.configure_inband_mgmt:
+        if not self._inband_management_parent_vlans and not (self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6):
             return None
 
-        if self.shared_utils.configure_inband_mgmt:
+        if self.shared_utils.configure_inband_mgmt or self.shared_utils.configure_inband_mgmt_ipv6:
             return [self.get_local_inband_mgmt_interface_cfg()]
 
         if self._inband_management_parent_vlans:
-            return [self.get_parent_svi_cfg(vlan, subnet) for vlan, subnet in self._inband_management_parent_vlans.items()]
+            return [self.get_parent_svi_cfg(vlan, subnet["ipv4"], subnet["ipv6"]) for vlan, subnet in self._inband_management_parent_vlans.items()]
 
     @cached_property
     def static_routes(self) -> list | None:
@@ -56,6 +56,21 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                 {
                     "destination_address_prefix": "0.0.0.0/0",
                     "gateway": self.shared_utils.inband_mgmt_gateway,
+                    "vrf": self.shared_utils.inband_mgmt_vrf,
+                }
+            )
+        ]
+
+    @cached_property
+    def ipv6_static_routes(self) -> list | None:
+        if not self.shared_utils.configure_inband_mgmt_ipv6 or self.shared_utils.inband_mgmt_ipv6_gateway is None:
+            return None
+
+        return [
+            strip_empties_from_dict(
+                {
+                    "destination_address_prefix": "::/0",
+                    "gateway": self.shared_utils.inband_mgmt_ipv6_gateway,
                     "vrf": self.shared_utils.inband_mgmt_vrf,
                 }
             )
@@ -110,13 +125,44 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         sequence_numbers = [
             {
                 "sequence": (index + 1) * 10,
-                "action": f"permit {subnet}",
+                "action": f"permit {subnet['ipv4']}",
             }
             for index, subnet in enumerate(self._inband_management_parent_vlans.values())
         ]
         return [
             {
                 "name": "PL-L2LEAF-INBAND-MGMT",
+                "sequence_numbers": sequence_numbers,
+            }
+        ]
+
+    @cached_property
+    def ipv6_prefix_lists(self) -> list | None:
+        if not self._inband_management_parent_vlans:
+            return None
+
+        if self.shared_utils.inband_mgmt_vrf is not None:
+            return None
+
+        if not self.shared_utils.underlay_bgp:
+            return None
+
+        if not self.shared_utils.underlay_filter_redistribute_connected:
+            return None
+
+        if not self.shared_utils.configure_inband_mgmt_ipv6:
+            return None
+
+        sequence_numbers = [
+            {
+                "sequence": (index + 1) * 10,
+                "action": f"permit {subnet['ipv6']}",
+            }
+            for index, subnet in enumerate(self._inband_management_parent_vlans.values())
+        ]
+        return [
+            {
+                "name": "IPv6-PL-L2LEAF-INBAND-MGMT",
                 "sequence_numbers": sequence_numbers,
             }
         ]
@@ -135,8 +181,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         if not self.shared_utils.underlay_filter_redistribute_connected:
             return None
 
-        return [
-            {
+        route_map = {
                 "name": "RM-CONN-2-BGP",
                 "sequence_numbers": [
                     {
@@ -147,7 +192,11 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                     }
                 ],
             }
-        ]
+
+        if self.shared_utils.configure_inband_mgmt_ipv6:
+            route_map["sequence_numbers"].append({"sequence": 30, "type": "permit", "match": ["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]})
+
+        return [route_map]
 
     @cached_property
     def _inband_management_parent_vlans(self) -> dict:
@@ -162,7 +211,8 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             if (vlan := peer_facts.get("inband_mgmt_vlan")) is None:
                 continue
 
-            if (subnet := peer_facts.get("inband_mgmt_subnet")) in subnets:
+            subnet = {"ipv4": peer_facts.get("inband_mgmt_subnet"), "ipv6": peer_facts.get("inband_mgmt_ipv6_subnet")}
+            if subnet in subnets:
                 continue
 
             subnets.append(subnet)
@@ -179,19 +229,44 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                 "mtu": self.shared_utils.inband_mgmt_mtu,
                 "vrf": self.shared_utils.inband_mgmt_vrf,
                 "ip_address": self.shared_utils.inband_mgmt_ip,
+                "ipv6_enable": None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
+                "ipv6_address": self.shared_utils.inband_mgmt_ipv6_address,
                 "type": "inband_mgmt",
             }
         )
 
-    def get_parent_svi_cfg(self, vlan: int, subnet: str) -> dict:
-        network = ip_network(subnet, strict=False)
+    def get_parent_svi_cfg(self, vlan: int, subnet: str, ipv6_subnet: str) -> dict:
+        network = False
+        v6_network = False
+        ip_address = None
+        gateway = None
+        ipv6_address = None
+        v6_gateway = None
+
+        if subnet is not None:
+            network = ip_network(subnet, strict=False)
+
+        if ipv6_subnet is not None:
+            v6_network = ip_network(ipv6_subnet, strict=False)
 
         if self.shared_utils.mlag_role == "secondary":
-            ip = str(network[3])
+            if network:
+                ip = str(network[3])
+            if v6_network:
+                ipv6 = str(v6_network[3])
         else:
-            ip = str(network[2])
-        ip_address = f"{ip}/{network.prefixlen}"
-        gateway = str(network[1])
+            if network:
+                ip = str(network[2])
+            if v6_network:
+                ipv6 = str(v6_network[2])
+
+        if network:
+            ip_address = f"{ip}/{network.prefixlen}"
+            gateway = str(network[1])
+
+        if v6_network:
+            ipv6_address = f"{ipv6}/{v6_network.prefixlen}"
+            v6_gateway = str(v6_network[1])
 
         return strip_empties_from_dict(
             {
@@ -202,6 +277,10 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                 "vrf": self.shared_utils.inband_mgmt_vrf,
                 "ip_address": ip_address,
                 "ip_virtual_router_addresses": [gateway],
+                "ipv6_enable": None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
+                "ipv6_address": ipv6_address,
+                "ipv6_virtual_router_addresses": [v6_gateway],
+                "debug": {"ipv6_subnet": ipv6_subnet, "v6_network": v6_network, "ipv6_address": ipv6_address, "v6_gateway": v6_gateway},
                 "ip_attached_host_route_export": {
                     "enabled": True,
                     "distance": 19,
