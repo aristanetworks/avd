@@ -26,35 +26,15 @@
         "vscode": {
             "extensions": [
                 // Git essentials.
-                "piotrpalarz.vscode-gitignore-generator",
-                "mhutchie.git-graph",
-                "eamodio.gitlens",
-                "donjayamanne.githistory",
                 "github.vscode-pull-request-github",
                 // Python.
                 "ms-python.python",
-                "donjayamanne.python-extension-pack",
-                "njpwerner.autodocstring",
                 "ms-python.vscode-pylance",
-                // Spell checker.
-                "streetsidesoftware.code-spell-checker",
                 // Errors and highlighters.
                 "mechatroner.rainbow-csv",
                 "oderwat.indent-rainbow",
-                "shardulm94.trailing-spaces",
                 // Excalidraw.
-                "pomdtr.excalidraw-editor",
-                // Markdown.
-                "yzhang.markdown-all-in-one",
-                "bierner.markdown-checkbox",
-                "DavidAnson.vscode-markdownlint",
-                // Jinja.
-                "samuelcolvin.jinjahtml",
-                "wholroyd.jinja",
-                // Various tools.
-                "tuxtina.json2yaml",
-                "vscode-icons-team.vscode-icons",
-                "mutantdino.resourcemonitor"
+                "pomdtr.excalidraw-editor"
             ]
         }
     }
