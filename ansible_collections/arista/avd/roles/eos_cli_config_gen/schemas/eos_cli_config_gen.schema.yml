@@ -3795,9 +3795,7 @@ keys:
               - str
               min: 1
               max: 24
-              description: 'IKE lifetime in hours.
-
-                '
+              description: IKE lifetime in hours.
             encryption:
               type: str
               valid_values:
@@ -3807,9 +3805,7 @@ keys:
               - aes256
               description: 'Local IKE Identification.
 
-                Can be an IPv4 or an IPv6 address.
-
-                '
+                Can be an IPv4 or an IPv6 address.'
             dh_group:
               type: int
               convert_types:
@@ -3825,9 +3821,7 @@ keys:
               - 20
               - 21
               - 24
-              description: 'Diffie-Hellman group for the key exchange.
-
-                '
+              description: Diffie-Hellman group for the key exchange.
       sa_policies:
         type: list
         description: Security Association policies.
@@ -3838,7 +3832,7 @@ keys:
             name:
               type: str
               description: Name of the SA policy. The "null" value is deprecated and
-                will be removed on AVD 5.0.0
+                will be removed in AVD 5.0.0
             esp:
               type: dict
               keys:

@@ -6602,7 +6602,7 @@
                 "type": "integer",
                 "minimum": 1,
                 "maximum": 24,
-                "description": "IKE lifetime in hours.\n",
+                "description": "IKE lifetime in hours.",
                 "title": "Ike Lifetime"
               },
               "encryption": {
@@ -6613,7 +6613,7 @@
                   "aes128",
                   "aes256"
                 ],
-                "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
+                "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.",
                 "title": "Encryption"
               },
               "dh_group": {
@@ -6630,7 +6630,7 @@
                   21,
                   24
                 ],
-                "description": "Diffie-Hellman group for the key exchange.\n",
+                "description": "Diffie-Hellman group for the key exchange.",
                 "title": "Dh Group"
               }
             },
@@ -6652,7 +6652,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Name of the SA policy. The \"null\" value is deprecated and will be removed on AVD 5.0.0",
+                "description": "Name of the SA policy. The \"null\" value is deprecated and will be removed in AVD 5.0.0",
                 "title": "Name"
               },
               "esp": {
