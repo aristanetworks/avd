@@ -41,7 +41,7 @@ All images are based on [Python Slim](https://hub.docker.com/_/python) with some
 
 Currently the only supported option is using [VSCode](https://code.visualstudio.com/) to start a dev container.
 
-To start using a dev container:
+To start using the containers for running AVD:
 
 - Install [VScode Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/tutorial)
 - Add `.devcontainer/devcontainer.json` to your repository containing the AVD inventory (check examples below for possible dev container definitions).
