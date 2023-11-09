@@ -70,6 +70,9 @@ vlans:
   name: MLAG_PEER
   trunk_groups:
   - MLAG
+- id: 1
+  name: SVI_1
+  tenant: L2LS_BGP
 - id: 100
   name: SVI_100
   tenant: L2LS_BGP
@@ -86,6 +89,11 @@ vlan_interfaces:
   ip_address: 192.168.254.1/31
   no_autostate: true
   mtu: 9214
+- name: Vlan1
+  tenant: L2LS_BGP
+  description: SVI_1
+  shutdown: false
+  ip_address_virtual: 10.1.1.1/24
 - name: Vlan100
   tenant: L2LS_BGP
   description: SVI_100
@@ -115,7 +123,7 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 100,200
+  vlans: 1,100,200
   mlag: 1
 - name: Port-Channel2
   description: BGP-LEAF2_Po1

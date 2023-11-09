@@ -125,6 +125,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 1 | SVI_1 | - |
 | 100 | SVI_100 | - |
 | 200 | SVI_200 | - |
 | 220 | SVI_220 | - |
@@ -133,6 +134,9 @@ vlan internal order ascending range 1006 1199
 ### VLANs Device Configuration
 
 ```eos
+!
+vlan 1
+   name SVI_1
 !
 vlan 100
    name SVI_100
@@ -158,7 +162,7 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | BGP-LEAF1_Ethernet2 | *trunk | *100,200 | *- | *- | 1 |
+| Ethernet1 | BGP-LEAF1_Ethernet2 | *trunk | *1,100,200 | *- | *- | 1 |
 | Ethernet2 | BGP-LEAF2_Ethernet2 | *trunk | *100 | *- | *- | 2 |
 | Ethernet3 | MLAG_PEER_BGP-SPINE1_Ethernet3 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_BGP-SPINE1_Ethernet4 | *trunk | *- | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
@@ -211,7 +215,7 @@ interface Ethernet5
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | BGP-LEAF1_Po1 | switched | trunk | 100,200 | - | - | - | - | 1 | - |
+| Port-Channel1 | BGP-LEAF1_Po1 | switched | trunk | 1,100,200 | - | - | - | - | 1 | - |
 | Port-Channel2 | BGP-LEAF2_Po1 | switched | trunk | 100 | - | - | - | - | 2 | - |
 | Port-Channel3 | MLAG_PEER_BGP-SPINE1_Po3 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
@@ -223,7 +227,7 @@ interface Port-Channel1
    description BGP-LEAF1_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 100,200
+   switchport trunk allowed vlan 1,100,200
    switchport mode trunk
    mlag 1
 !
@@ -277,6 +281,7 @@ interface Loopback0
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan1 | SVI_1 | default | - | False |
 | Vlan100 | SVI_100 | default | - | False |
 | Vlan200 | SVI_200 | default | - | False |
 | Vlan220 | SVI_220 | default | - | False |
@@ -286,6 +291,7 @@ interface Loopback0
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan1 |  default  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan100 |  default  |  -  |  10.1.100.1/24  |  -  |  -  |  -  |  -  |
 | Vlan200 |  default  |  -  |  10.1.200.1/24  |  -  |  -  |  -  |  -  |
 | Vlan220 |  default  |  -  |  10.1.220.1/24  |  -  |  -  |  -  |  -  |
@@ -294,6 +300,11 @@ interface Loopback0
 #### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan1
+   description SVI_1
+   no shutdown
+   ip address virtual 10.1.1.1/24
 !
 interface Vlan100
    description SVI_100

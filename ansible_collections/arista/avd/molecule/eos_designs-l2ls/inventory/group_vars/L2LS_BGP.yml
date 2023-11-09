@@ -9,6 +9,10 @@ tenants:
     vrfs:
       - name: default
         svis:
+          - id: 1
+            name: SVI_1
+            ip_address_virtual: 10.1.1.1/24
+            enabled: true
           - id: 100
             name: SVI_100
             ip_address_virtual: 10.1.100.1/24
@@ -43,7 +47,14 @@ network_ports:
     phone_trunk_mode: untagged
     mode: trunk phone
     description: IP Phone
-
+  - switches:
+      - "BGP-LEAF1"
+    switch_ports:
+      - "Ethernet14"
+    phone_vlan: 200
+    phone_trunk_mode: untagged
+    mode: trunk phone
+    description: IP Phone with no native VLAN
 core_interfaces:
   p2p_links:
     - subnet: 192.168.253.4/31

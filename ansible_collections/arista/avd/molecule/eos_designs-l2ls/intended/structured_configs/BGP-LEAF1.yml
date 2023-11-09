@@ -76,14 +76,27 @@ ethernet_interfaces:
   phone:
     vlan: 200
     trunk: untagged
+- name: Ethernet14
+  peer: IP Phone with no native VLAN
+  peer_type: network_port
+  description: IP Phone with no native VLAN
+  shutdown: false
+  type: switched
+  mode: trunk phone
+  phone:
+    vlan: 200
+    trunk: untagged
 port_channel_interfaces:
 - name: Port-Channel1
   description: BGP_SPINES_Po1
   type: switched
   shutdown: false
   mode: trunk
-  vlans: 100,200
+  vlans: 1,100,200
 vlans:
+- id: 1
+  name: SVI_1
+  tenant: L2LS_BGP
 - id: 100
   name: SVI_100
   tenant: L2LS_BGP

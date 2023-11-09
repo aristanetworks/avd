@@ -51,8 +51,9 @@ class VlansMixin:
             # No need to check further, since the list is now containing all vlans.
             return set(range(1, 4094)), trunk_groups
         elif adapter_settings.get("mode", "") == "trunk phone":
-            # Phone trunk, leave vlans empty
-            pass
+            # # EOS default native VLAN is VLAN 1
+            if "native_vlan" not in adapter_settings:
+                vlans.add(1)
         else:
             # No vlans or mode defined so this is an access port with only vlan 1 allowed
             vlans.add(1)
