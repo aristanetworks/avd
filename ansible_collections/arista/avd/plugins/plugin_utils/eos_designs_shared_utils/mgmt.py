@@ -60,6 +60,8 @@ class MgmtMixin:
     def default_mgmt_method(self: SharedUtils) -> str | None:
         """
         This is only executed if some protocol looks for the default value, so we can raise here to ensure a working config.
+
+        The check for 'inband_mgmt_interface' relies on other indirect checks done in that code.
         """
         default_mgmt_method = get(self.hostvars, "default_mgmt_method", default="oob")
         if default_mgmt_method == "oob":
