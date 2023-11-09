@@ -44,18 +44,22 @@ router_bgp:
   - name: Ethernet1
     peer_group: UNDERLAY_PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet1
   - name: Ethernet2
     peer_group: UNDERLAY_PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1
   - name: Ethernet3
     peer_group: UNDERLAY_PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1
   - name: Ethernet4
     peer_group: UNDERLAY_PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet1
   address_family_evpn:
     peer_groups:

@@ -8734,6 +8734,9 @@ keys:
               type: str
               convert_types:
               - int
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes
             peer_group:
               type: str
               default: Peer-group name

@@ -14795,6 +14795,11 @@
                 "type": "string",
                 "title": "Remote As"
               },
+              "peer": {
+                "type": "string",
+                "description": "Key only used for documentation or validation purposes",
+                "title": "Peer"
+              },
               "peer_group": {
                 "type": "string",
                 "default": "Peer-group name",

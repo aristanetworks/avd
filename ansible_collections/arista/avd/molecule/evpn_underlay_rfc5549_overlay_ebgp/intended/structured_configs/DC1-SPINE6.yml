@@ -49,10 +49,12 @@ router_bgp:
   - name: Ethernet1
     peer_group: UNDERLAY_PEERS
     remote_as: '65107'
+    peer: DC1-LEAF4A
     description: DC1-LEAF4A_Ethernet1
   - name: Ethernet2
     peer_group: UNDERLAY_PEERS
     remote_as: '65107'
+    peer: DC1-LEAF4B
     description: DC1-LEAF4B_Ethernet1
   address_family_evpn:
     peer_groups:
