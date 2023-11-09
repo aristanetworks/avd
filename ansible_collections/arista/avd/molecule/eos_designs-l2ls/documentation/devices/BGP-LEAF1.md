@@ -111,6 +111,14 @@ vlan 200
 
 *Inherited from Port-Channel Interface
 
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet12 | trunk phone | 100 | 200 | untagged |
+| Ethernet13 | trunk phone | 100 | 200 | untagged |
+| Ethernet14 | trunk phone | 1 | 200 | untagged |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos

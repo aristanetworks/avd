@@ -87,6 +87,12 @@ sFlow is disabled.
 
 *Inherited from Port-Channel Interface
 
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Port-Channel12 | trunk phone | 100 | 70 | untagged |
+
 ##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
