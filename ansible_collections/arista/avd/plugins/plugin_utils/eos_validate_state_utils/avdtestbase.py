@@ -23,9 +23,9 @@ class AvdTestBase:
         Initialize the AvdTestBase class.
 
         Args:
-            device_name (str): The current device name for which the plugin is being run
-            hostvars (dict): A dictionnary that contains a key for each device with a value of the structured_config
-                           when using Ansible, this is the equivalent of `task_vars['hostvars']`
+            device_name (str): The current device name for which the plugin is being run.
+            hostvars (dict): A dictionnary that contains a key for each device with a value of the structured_config.
+                           When using Ansible, this is the equivalent of `task_vars['hostvars']`.
         """
         self.hostvars = hostvars
         self.device_name = device_name
@@ -43,13 +43,13 @@ class AvdTestBase:
         """
         return getattr(self, "test_definition", None) or {}
 
-    def log_message(
+    def log_skip_message(
         self, message=None, key: str | None = None, value=None, key_path: str | None = None, is_missing: bool = True, logging_level: str = "INFO"
     ) -> None:
         """
-        Flexible logging function that logs a formatted message based on the provided parameters.
+        Logging function that logs the test being skipped appended to a formatted message based on the provided parameters.
 
-        Parameters:
+        Args:
             message (Any | None): The message to be logged. If provided, it will be logged as is, ignoring other parameters.
             key (str | None): The key to be logged.
             value (Any | None): The expected value of the key. Must be provided when logging an invalid value.
@@ -75,6 +75,7 @@ class AvdTestBase:
             msg_type = "is missing" if is_missing else f"!= '{value}'"
             log_msg = f"Key '{dot_notation}' {msg_type}."
 
+        # Appending the skipped test
         log_msg += f" {self.__class__.__name__} is skipped."
 
         # Logging the message
@@ -92,10 +93,10 @@ class AvdTestBase:
             bool: True if the peer is deployed, False otherwise.
         """
         if peer not in self.hostvars:
-            self.log_message(message=f"Peer '{peer}' is not configured by AVD.")
+            self.log_skip_message(message=f"Peer '{peer}' is not configured by AVD.")
             return False
         elif not get(self.hostvars[peer], "is_deployed", default=True):
-            self.log_message(message=f"Peer '{peer}' is marked as not deployed.")
+            self.log_skip_message(message=f"Peer '{peer}' is marked as not deployed.")
             return False
         return True
 
@@ -120,7 +121,7 @@ class AvdTestBase:
             peer_interface = get_item(peer_interfaces, "name", interface_name, required=True)
             return get(peer_interface, "ip_address", required=True)
         except AristaAvdMissingVariableError:
-            self.log_message(message=f"Host '{host}' interface '{interface_name}' IP address is unavailable.", logging_level="WARNING")
+            self.log_skip_message(message=f"Host '{host}' interface '{interface_name}' IP address is unavailable.", logging_level="WARNING")
             return None
 
     def logged_get(self, key: str, host: str | None = None, logging_level: str = "WARNING"):
@@ -135,10 +136,9 @@ class AvdTestBase:
         host = host or self.device_name
 
         try:
-            data = get(self.hostvars[host], key, required=True)
-            return data
+            return get(self.hostvars[host], key, required=True)
         except AristaAvdMissingVariableError:
-            self.log_message(key=key, logging_level=logging_level)
+            self.log_skip_message(key=key, logging_level=logging_level)
             return None
 
     def validate_data(
@@ -147,7 +147,7 @@ class AvdTestBase:
         data_path: str | None = None,
         host: str | None = None,
         required_keys: str | list[str] | None = None,
-        Logging_level: str | None = None,
+        logging_level: str | None = None,
         **kwargs,
     ) -> bool:
         """
@@ -180,10 +180,10 @@ class AvdTestBase:
         for key, value in kwargs.items():
             actual_value = get(data, key)
             if actual_value is None:
-                self.log_message(key=key, value=value, key_path=data_path, is_missing=True, logging_level=Logging_level or "WARNING")
+                self.log_skip_message(key=key, value=value, key_path=data_path, is_missing=True, logging_level=logging_level or "WARNING")
                 valid = False
             elif actual_value != value:
-                self.log_message(key=key, value=value, key_path=data_path, is_missing=False, logging_level=Logging_level or "INFO")
+                self.log_skip_message(key=key, value=value, key_path=data_path, is_missing=False, logging_level=logging_level or "INFO")
                 valid = False
 
         # Return False if any of the expected values are missing or not matching
@@ -195,7 +195,7 @@ class AvdTestBase:
             required_keys = [required_keys] if isinstance(required_keys, str) else required_keys
             for key in required_keys:
                 if get(data, key) is None:
-                    self.log_message(key=key, key_path=data_path, is_missing=True, logging_level=Logging_level or "WARNING")
+                    self.log_skip_message(key=key, key_path=data_path, is_missing=True, logging_level=logging_level or "WARNING")
                     valid = False
         return valid
 

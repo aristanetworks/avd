@@ -125,7 +125,7 @@ class AvdTestBGP(AvdTestBase):
                 continue
 
             if (neighbor_peer_group := get_item(bgp_peer_groups, "name", bgp_neighbor["peer_group"])) is None:
-                self.log_message(message=f"Peer group '{bgp_neighbor['peer_group']}' not found.", logging_level="WARNING")
+                self.log_skip_message(message=f"Peer group '{bgp_neighbor['peer_group']}' not found.", logging_level="WARNING")
                 continue
 
             if not self.validate_data(data=neighbor_peer_group, data_path=f"router_bgp.peer_groups.{neighbor_peer_group['name']}", required_keys="type"):
