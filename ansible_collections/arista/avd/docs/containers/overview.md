@@ -57,21 +57,7 @@ If you want to use a specific AVD release, use the following `devcontainer.json`
 }
 ```
 
-For AVD contributors the following configuration is recommended:
-
-```json
-{
-    "name": "AVD Development",
-    "image": "ghcr.io/aristanetworks/ansible-avd/dev:python3.11",
-    "mounts": [
-        "source=${localWorkspaceFolder}/ansible_collections/arista/avd,target=/home/avd/.ansible/collections/ansible_collections/arista/avd,type=bind"
-    ],
-    // Run entrypoint script manually as it's ignored by dev container CLI otherwise.
-    // The dev entrypoint is used to install ansible collections and requirements, as they are not included with the dev version.
-    // "true" is required to exit "onCreateCommand" without entering ZSH.
-    "onCreateCommand": "/bin/entrypoint.sh true"
-}
-```
+For AVD contributors the dev container is part of the AVD repository.
 
 If you want to test specific AVD branch or fork without making any changes, use the following `devcontainer.json`:
 
