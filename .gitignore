@@ -56,7 +56,6 @@ coverage.xml
 *context/
 *_build/
 Containerfile
-Dockerfile
 
 # Django stuff:
 *.log
