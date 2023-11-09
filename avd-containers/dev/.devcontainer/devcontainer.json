@@ -1,5 +1,5 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/python
+// README at: https://github.com/devcontainers/templates/tree/main/src/python.
 {
 	"build": {
         "dockerfile": "./Dockerfile",
@@ -15,7 +15,7 @@
             "version": "latest",
             "dockerDashComposeVersion": "none"
         },
-        // add sshd to support gh cli codespace cp
+        // Add sshd to support gh cli codespace cp.
         "ghcr.io/devcontainers/features/sshd:1": {
             "version": "latest"
         }
@@ -23,33 +23,33 @@
     "customizations": {
         "vscode": {
             "extensions": [
-                // git essentials
+                // Git essentials.
                 "piotrpalarz.vscode-gitignore-generator",
                 "mhutchie.git-graph",
                 "eamodio.gitlens",
                 "donjayamanne.githistory",
                 "github.vscode-pull-request-github",
-                // python
+                // Python.
                 "ms-python.python",
                 "donjayamanne.python-extension-pack",
                 "njpwerner.autodocstring",
                 "ms-python.vscode-pylance",
-                // spell checker
+                // Spell checker.
                 "streetsidesoftware.code-spell-checker",
-                // errors and highlighters
+                // Errors and highlighters.
                 "mechatroner.rainbow-csv",
                 "oderwat.indent-rainbow",
                 "shardulm94.trailing-spaces",
-                // excalidraw
+                // Excalidraw.
                 "pomdtr.excalidraw-editor",
-                // markdown
+                // Markdown.
                 "yzhang.markdown-all-in-one",
                 "bierner.markdown-checkbox",
                 "DavidAnson.vscode-markdownlint",
-                // jinja
+                // Jinja.
                 "samuelcolvin.jinjahtml",
                 "wholroyd.jinja",
-                // various tools
+                // Various tools
                 "tuxtina.json2yaml",
                 "vscode-icons-team.vscode-icons",
                 "mutantdino.resourcemonitor"

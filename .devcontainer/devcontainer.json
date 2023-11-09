@@ -4,15 +4,15 @@
     "mounts": [
         "source=${localWorkspaceFolder}/ansible_collections/arista/avd,target=/home/avd/.ansible/collections/ansible_collections/arista/avd,type=bind"
     ],
-    // the AVD collection can also be installed from any git branch
-    // comment mount section if this is the case
+    // The AVD collection can also be installed from any git branch.
+    // Comment mount section if this is the case.
     //
     // "containerEnv": {
     //     "AVD_GITHUB_REPO": "aristanetworks/ansible-avd",
     //     "AVD_BRANCH_NAME": "devel"
     // },
-    // run entrypoint script manually as it's ignored by dev container CLI otherwise
-    // the dev entrypoint is used to install ansible collections and requirements, as they are not included with the dev version
-    // true is required to exit "onCreateCommand" without entering ZSH
+    // Run entrypoint script manually as it's ignored by dev container CLI otherwise.
+    // The dev entrypoint is used to install Ansible collections and requirements, as they are not included with the dev version.
+    // "true" is required to exit "onCreateCommand" without entering ZSH.
     "onCreateCommand": "/bin/entrypoint.sh true"
 }

@@ -6,20 +6,21 @@
 
 # AVD Dev Containers Overview
 
-> WARNING: AVD Dev Containers are currently in the early preview phase and not officially supported for any production cases.
-> They can still be very useful for development and testing. Please report any issues and optimization suggestions.
+!!! warning
+    AVD Dev Containers are currently in the early preview phase and not officially supported for any production cases.
+    They can still be very useful for development and testing. Please report any issues and optimization suggestions.
 
 ## Why Dev Containers
 
 Building a functional Ansible environment can be a challenging task. A manually created Ansible environment can be broken due to number of reasons:
 
-- Problems with Python and Ansible versions
-- Broken dependencies
-- Interpreter path issues
-- Inconsistent Ansible configuration files
+- Problems with Python and Ansible versions.
+- Broken dependencies.
+- Interpreter path issues.
+- Inconsistent Ansible configuration files.
 - etc.
 
-Containers can provide a simple and portable way to build a functional, portable and isolated Ansible environment. [Dev Containers](https://containers.dev) bring that to the next level by simplifying container build process and extending the functionality. The [Dev Container Specification](https://github.com/devcontainers/spec) was started by Microsoft and has strong community support. Essentially Dev Containers are powered by following:
+Containers can provide a simple way to build a functional, portable and isolated Ansible environment. [Dev Containers](https://containers.dev) bring that to the next level by simplifying the container build process and extending the functionality. The [Dev Container Specification](https://github.com/devcontainers/spec) was started by Microsoft and has strong community support. Essentially Dev Containers are powered by following:
 
 - [Prebuilt images](https://github.com/devcontainers/images)
 - [Features](https://containers.dev/features)
@@ -44,8 +45,8 @@ To start using a dev container:
 
 - Install [VScode Dev Containers extension](https://code.visualstudio.com/docs/devcontainers/tutorial)
 - Add `.devcontainer/devcontainer.json` to your AVD repository (check examples below for possible dev container definitions).
-- Open VSCode command pallette and pick `Dev Containers: Rebuild and Reopen in Container`
-- Wait until the build will finish and enjoy running AVD in a container.
+- Open VSCode command pallette and pick `Dev Containers: Rebuild and Reopen in Container`.
+- Wait until the build finish and enjoy running AVD in a container.
 
 If you want to use a specific AVD release, use the following `devcontainer.json`:
 
@@ -65,9 +66,9 @@ For AVD contributors the following configuration is recommended:
     "mounts": [
         "source=${localWorkspaceFolder}/ansible_collections/arista/avd,target=/home/avd/.ansible/collections/ansible_collections/arista/avd,type=bind"
     ],
-    // run entrypoint script manually as it's ignored by dev container CLI otherwise
-    // the dev entrypoint is used to install ansible collections and requirements, as they are not included with the dev version
-    // true is required to exit "onCreateCommand" without entering ZSH
+    // Run entrypoint script manually as it's ignored by dev container CLI otherwise.
+    // The dev entrypoint is used to install ansible collections and requirements, as they are not included with the dev version.
+    // "true" is required to exit "onCreateCommand" without entering ZSH.
     "onCreateCommand": "/bin/entrypoint.sh true"
 }
 ```
@@ -82,11 +83,12 @@ If you want to test specific AVD branch or fork without making any changes, use 
         "AVD_GITHUB_REPO": "aristanetworks/ansible-avd",
         "AVD_BRANCH_NAME": "devel"
     },
-    // run entrypoint script manually as it's ignored by dev container CLI otherwise
-    // the dev entrypoint is used to install ansible collections and requirements, as they are not included with the dev version
-    // true is required to exit "onCreateCommand" without entering ZSH
+    // Run entrypoint script manually as it's ignored by dev container CLI otherwise.
+    // The dev entrypoint is used to install ansible collections and requirements, as they are not included with the dev version.
+    // "true" is required to exit "onCreateCommand" without entering ZSH.
     "onCreateCommand": "/bin/entrypoint.sh true"
 }
 ```
 
-> NOTE: Do not forget to adjust the parameters like AVD version according to your use case.
+!!! note
+    Do not forget to adjust the parameters like AVD version according to your use case.

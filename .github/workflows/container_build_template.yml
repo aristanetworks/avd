@@ -1,41 +1,41 @@
 ---
-# this workflow file is the template
-# that will be triggered by a parent workflow matrix
+# This workflow file is the template
+# that will be triggered by specific container build workflows.
 
-name: reusable container build workflow
+name: Reusable build container workflow
 
 env:
-  # BUILDX_NO_DEFAULT_ATTESTATIONS must be set to build only arm64 and amd64 images
-  # the devcontainers/ci@v0.3 build will fail if this env variable is not set
+  # BUILDX_NO_DEFAULT_ATTESTATIONS must be set to build only arm64 and amd64 images.
+  # The devcontainers/ci@v0.3 build will fail if this env variable is not set.
   BUILDX_NO_DEFAULT_ATTESTATIONS: 1
 
 on:
   workflow_call:
     inputs:
-      # container name, e.g. base, dev, etc.
+      # Container name, e.g. "base", "dev", etc.
       container_name:
         required: true
         type: string
-      # container tags, e.g. "latest,python3.11" or "latest,python3.11-avd4.1.0"
-      # container tags are optional as they are auto-generated if not provided
+      # Container tags, e.g. "latest,python3.11" or "latest,python3.11-avd4.1.0".
+      # Container tags are optional as they are auto-generated if not provided.
       container_tags:
         required: false
         type: string
-      # platform, e.g. linux/amd64, linux/arm64/v8
-      # default is just fine if there is no intention to release a special build
+      # Platform, e.g. "linux/amd64", "linux/arm64/v8".
+      # "default" is just fine if there is no intention to release a special build.
       platform:
         required: false
         type: string
         default: linux/arm64/v8,linux/amd64
-      # from_image, e.g. python, alpine, etc.
-      # currently we only support python-slim, this is a future knob
+      # From image, e.g. "python", "alpine", etc.
+      # Currently we only support python-slim, so this is a future knob.
       from_image:
         required: false
         type: string
         default: python
-      # from_variant, e.g. 3.11-slim-bullseye
-      # this is auto-generated for python-slim based builds
-      # only specify for special builds
+      # From variant, e.g. "3.11-slim-bullseye".
+      # This is auto-generated for python-slim based builds.
+      # Only specify for special builds.
       from_variant:
         required: false
         type: string
@@ -58,19 +58,15 @@ on:
 jobs:
   build_image:
     runs-on: ubuntu-22.04
-
     steps:
-
       - name: Starting container build
         run: echo "Starting container build. Be patient. 🐢"
-
       - name: Checkout code ✅
         uses: actions/checkout@v4
-
-      # build image tags based on Python version and AVD version (if defined)
-      # if container_tags is not defined, then image_tags will be auto-generated
-      # if container_tags is latest, it will be added to auto-generated image_tags
-      # if container_tags is defined and not latest, it will be used as is
+      # Build image tags based on Python version and AVD version (if defined).
+      # If container_tags is not defined, then image_tags will be auto-generated.
+      # If container_tags is latest, it will be added to auto-generated image_tags.
+      # If container_tags is defined and not latest, it will be used as-is.
       - name: Build image tags 🏷️
         id: build-tags
         run: |
@@ -107,11 +103,11 @@ jobs:
       - name: Generate from_image and from_variant parameters 🐍
         id: generate-from-parameters
         # Logic:
-        # 1) only python-slim images are supported at the moment
-        # 2) base image must be built first from official python image
-        # 3) all other images will be built from the base image
-        # 4) from_image and from_variant can be passed transparently to the build step
-        #    but that is not implemented currently
+        # 1) Only python-slim images are supported at the moment.
+        # 2) Base image must be built first from official python image.
+        # 3) All other images will be built from the base image.
+        # 4) "from_image" and "from_variant" can be passed transparently to the build step,
+        #    but that is not implemented currently.
         run: |
           if [ "${{ inputs.from_image }}" == "python" ]; then
             if [ "${{ inputs.container_name }}" == "base" ]; then
@@ -126,13 +122,13 @@ jobs:
             exit 1
           fi
 
-      - name: find ansible-core version 🔥
+      - name: Find ansible-core version 🔥
         id: find-ansible-core-version
         run: |
           ANSIBLE_CORE_VERSION=$(cat ansible_collections/arista/avd/requirements-dev.txt| grep ansible-core)
           echo "ansible_core_version=$ANSIBLE_CORE_VERSION" >> $GITHUB_OUTPUT
 
-      - name: find ansible install location
+      - name: Find ansible install location
         id: find-ansible-install-location
         run: |
           ANSIBLE_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git#/ansible_collections/arista/avd/,${{ github.ref_name }}"
@@ -140,7 +136,7 @@ jobs:
 
       # This check is temporarily deactivated, will be rewised in later PRs
       #
-      # - name: check if image is already present
+      # - name: Check if image is already present
       #   # this step will check if image was already pushed before to avoid re-writing
       #   # also if it's not a base image, this step will verify presence of the corresponding base image
       #   id: check-image-presence
@@ -156,13 +152,13 @@ jobs:
       #       docker manifest inspect ghcr.io/${{ github.repository }}/base:python${{ inputs.python_version }} >/dev/null
       #     fi
 
-      - name: setup QEMU for multi-arch builds 🏗️
+      - name: Setup QEMU for multi-arch builds 🏗️
         # if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
         uses: docker/setup-qemu-action@v3
         with:
           platforms: ${{ inputs.platform }}
 
-      - name: setup Docker buildX for multi-arch builds 🏗️
+      - name: Setup Docker buildX for multi-arch builds 🏗️
         # if: ${{ steps.check-image-presence.outputs.not_present == '1' }}
         uses: docker/setup-buildx-action@v3
 
