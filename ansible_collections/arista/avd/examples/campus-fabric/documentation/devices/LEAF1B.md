@@ -327,54 +327,54 @@ vlan 4094
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
-| Ethernet1 | trunk phone | 110 | 120 | untagged
-| Ethernet2 | trunk phone | 110 | 120 | untagged
-| Ethernet3 | trunk phone | 110 | 120 | untagged
-| Ethernet4 | trunk phone | 110 | 120 | untagged
-| Ethernet5 | trunk phone | 110 | 120 | untagged
-| Ethernet6 | trunk phone | 110 | 120 | untagged
-| Ethernet7 | trunk phone | 110 | 120 | untagged
-| Ethernet8 | trunk phone | 110 | 120 | untagged
-| Ethernet9 | trunk phone | 110 | 120 | untagged
-| Ethernet10 | trunk phone | 110 | 120 | untagged
-| Ethernet11 | trunk phone | 110 | 120 | untagged
-| Ethernet12 | trunk phone | 110 | 120 | untagged
-| Ethernet13 | trunk phone | 110 | 120 | untagged
-| Ethernet14 | trunk phone | 110 | 120 | untagged
-| Ethernet15 | trunk phone | 110 | 120 | untagged
-| Ethernet16 | trunk phone | 110 | 120 | untagged
-| Ethernet17 | trunk phone | 110 | 120 | untagged
-| Ethernet18 | trunk phone | 110 | 120 | untagged
-| Ethernet19 | trunk phone | 110 | 120 | untagged
-| Ethernet20 | trunk phone | 110 | 120 | untagged
-| Ethernet21 | trunk phone | 110 | 120 | untagged
-| Ethernet22 | trunk phone | 110 | 120 | untagged
-| Ethernet23 | trunk phone | 110 | 120 | untagged
-| Ethernet24 | trunk phone | 110 | 120 | untagged
-| Ethernet25 | trunk phone | 110 | 120 | untagged
-| Ethernet26 | trunk phone | 110 | 120 | untagged
-| Ethernet27 | trunk phone | 110 | 120 | untagged
-| Ethernet28 | trunk phone | 110 | 120 | untagged
-| Ethernet29 | trunk phone | 110 | 120 | untagged
-| Ethernet30 | trunk phone | 110 | 120 | untagged
-| Ethernet31 | trunk phone | 110 | 120 | untagged
-| Ethernet32 | trunk phone | 110 | 120 | untagged
-| Ethernet33 | trunk phone | 110 | 120 | untagged
-| Ethernet34 | trunk phone | 110 | 120 | untagged
-| Ethernet35 | trunk phone | 110 | 120 | untagged
-| Ethernet36 | trunk phone | 110 | 120 | untagged
-| Ethernet37 | trunk phone | 110 | 120 | untagged
-| Ethernet38 | trunk phone | 110 | 120 | untagged
-| Ethernet39 | trunk phone | 110 | 120 | untagged
-| Ethernet40 | trunk phone | 110 | 120 | untagged
-| Ethernet41 | trunk phone | 110 | 120 | untagged
-| Ethernet42 | trunk phone | 110 | 120 | untagged
-| Ethernet43 | trunk phone | 110 | 120 | untagged
-| Ethernet44 | trunk phone | 110 | 120 | untagged
-| Ethernet45 | trunk phone | 110 | 120 | untagged
-| Ethernet46 | trunk phone | 110 | 120 | untagged
-| Ethernet47 | trunk phone | 110 | 120 | untagged
-| Ethernet48 | trunk phone | 110 | 120 | untagged
+| Ethernet1 | trunk phone | 110 | 120 | untagged |
+| Ethernet2 | trunk phone | 110 | 120 | untagged |
+| Ethernet3 | trunk phone | 110 | 120 | untagged |
+| Ethernet4 | trunk phone | 110 | 120 | untagged |
+| Ethernet5 | trunk phone | 110 | 120 | untagged |
+| Ethernet6 | trunk phone | 110 | 120 | untagged |
+| Ethernet7 | trunk phone | 110 | 120 | untagged |
+| Ethernet8 | trunk phone | 110 | 120 | untagged |
+| Ethernet9 | trunk phone | 110 | 120 | untagged |
+| Ethernet10 | trunk phone | 110 | 120 | untagged |
+| Ethernet11 | trunk phone | 110 | 120 | untagged |
+| Ethernet12 | trunk phone | 110 | 120 | untagged |
+| Ethernet13 | trunk phone | 110 | 120 | untagged |
+| Ethernet14 | trunk phone | 110 | 120 | untagged |
+| Ethernet15 | trunk phone | 110 | 120 | untagged |
+| Ethernet16 | trunk phone | 110 | 120 | untagged |
+| Ethernet17 | trunk phone | 110 | 120 | untagged |
+| Ethernet18 | trunk phone | 110 | 120 | untagged |
+| Ethernet19 | trunk phone | 110 | 120 | untagged |
+| Ethernet20 | trunk phone | 110 | 120 | untagged |
+| Ethernet21 | trunk phone | 110 | 120 | untagged |
+| Ethernet22 | trunk phone | 110 | 120 | untagged |
+| Ethernet23 | trunk phone | 110 | 120 | untagged |
+| Ethernet24 | trunk phone | 110 | 120 | untagged |
+| Ethernet25 | trunk phone | 110 | 120 | untagged |
+| Ethernet26 | trunk phone | 110 | 120 | untagged |
+| Ethernet27 | trunk phone | 110 | 120 | untagged |
+| Ethernet28 | trunk phone | 110 | 120 | untagged |
+| Ethernet29 | trunk phone | 110 | 120 | untagged |
+| Ethernet30 | trunk phone | 110 | 120 | untagged |
+| Ethernet31 | trunk phone | 110 | 120 | untagged |
+| Ethernet32 | trunk phone | 110 | 120 | untagged |
+| Ethernet33 | trunk phone | 110 | 120 | untagged |
+| Ethernet34 | trunk phone | 110 | 120 | untagged |
+| Ethernet35 | trunk phone | 110 | 120 | untagged |
+| Ethernet36 | trunk phone | 110 | 120 | untagged |
+| Ethernet37 | trunk phone | 110 | 120 | untagged |
+| Ethernet38 | trunk phone | 110 | 120 | untagged |
+| Ethernet39 | trunk phone | 110 | 120 | untagged |
+| Ethernet40 | trunk phone | 110 | 120 | untagged |
+| Ethernet41 | trunk phone | 110 | 120 | untagged |
+| Ethernet42 | trunk phone | 110 | 120 | untagged |
+| Ethernet43 | trunk phone | 110 | 120 | untagged |
+| Ethernet44 | trunk phone | 110 | 120 | untagged |
+| Ethernet45 | trunk phone | 110 | 120 | untagged |
+| Ethernet46 | trunk phone | 110 | 120 | untagged |
+| Ethernet47 | trunk phone | 110 | 120 | untagged |
+| Ethernet48 | trunk phone | 110 | 120 | untagged |
 
 #### Ethernet Interfaces Device Configuration
 

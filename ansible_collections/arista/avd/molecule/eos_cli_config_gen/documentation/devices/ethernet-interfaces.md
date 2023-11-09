@@ -179,9 +179,9 @@ sFlow is disabled.
 
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
-| Ethernet13 | trunk phone | 100 | 70 | untagged
-| Ethernet61 | trunk phone | 100 | 70 | untagged phone
-| Ethernet62 | trunk phone | 100 | 70 | tagged phone
+| Ethernet13 | trunk phone | 100 | 70 | untagged |
+| Ethernet61 | trunk phone | 100 | 70 | untagged phone |
+| Ethernet62 | trunk phone | 100 | 70 | tagged phone |
 
 ##### Multicast Routing
 
