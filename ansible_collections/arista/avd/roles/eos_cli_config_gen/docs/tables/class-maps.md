@@ -9,11 +9,11 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>class_maps</samp>](## "class_maps") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;pbr</samp>](## "class_maps.pbr") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "class_maps.pbr.[].name") | String | Required, Unique |  |  | Class-Map Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "class_maps.pbr.[].name") | String | Required, Unique |  |  | Class-Map Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "class_maps.pbr.[].ip") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "class_maps.pbr.[].ip.access_group") | String |  |  |  | Standard Access-List Name |
     | [<samp>&nbsp;&nbsp;qos</samp>](## "class_maps.qos") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "class_maps.qos.[].name") | String | Required, Unique |  |  | Class-Map Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "class_maps.qos.[].name") | String | Required, Unique |  |  | Class-Map Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "class_maps.qos.[].vlan") | String |  |  |  | VLAN value(s) or range(s) of VLAN values |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cos</samp>](## "class_maps.qos.[].cos") | String |  |  |  | CoS value(s) or range(s) of CoS values |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "class_maps.qos.[].ip") | Dictionary |  |  |  |  |
@@ -26,15 +26,29 @@
     ```yaml
     class_maps:
       pbr:
-        - name: <str>
+
+          # Class-Map Name
+        - name: <str; required; unique>
           ip:
+
+            # Standard Access-List Name
             access_group: <str>
       qos:
-        - name: <str>
+
+          # Class-Map Name
+        - name: <str; required; unique>
+
+          # VLAN value(s) or range(s) of VLAN values
           vlan: <str>
+
+          # CoS value(s) or range(s) of CoS values
           cos: <str>
           ip:
+
+            # IPv4 Access-List Name
             access_group: <str>
           ipv6:
+
+            # IPv6 Access-List Name
             access_group: <str>
     ```

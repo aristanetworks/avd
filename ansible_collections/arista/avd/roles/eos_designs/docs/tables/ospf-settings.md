@@ -15,8 +15,8 @@
 === "YAML"
 
     ```yaml
-    underlay_ospf_area: <str>
-    underlay_ospf_bfd_enable: <bool>
-    underlay_ospf_max_lsa: <int>
-    underlay_ospf_process_id: <int>
+    underlay_ospf_area: <str; default="0.0.0.0">
+    underlay_ospf_bfd_enable: <bool; default=False>
+    underlay_ospf_max_lsa: <int; default=12000>
+    underlay_ospf_process_id: <int; default=100>
     ```

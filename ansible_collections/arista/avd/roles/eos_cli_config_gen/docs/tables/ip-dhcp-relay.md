@@ -14,5 +14,7 @@
 
     ```yaml
     ip_dhcp_relay:
+
+      # Insert Option-82 information
       information_option: <bool>
     ```

@@ -13,6 +13,9 @@
 === "YAML"
 
     ```yaml
+    # Control fabric documentation generation.
     eos_designs_documentation:
-      connected_endpoints: <bool>
+
+      # Generate fabric-wide documentation for connected endpoints.
+      connected_endpoints: <bool; default=False>
     ```

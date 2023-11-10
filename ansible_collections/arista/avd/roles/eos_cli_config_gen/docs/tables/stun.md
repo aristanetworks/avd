@@ -10,23 +10,33 @@
     | [<samp>stun</samp>](## "stun") | Dictionary |  |  |  | STUN configuration |
     | [<samp>&nbsp;&nbsp;client</samp>](## "stun.client") | Dictionary |  |  |  | STUN client settings |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;server_profiles</samp>](## "stun.client.server_profiles") | List, items: Dictionary |  |  |  | List of server profiles for the client |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "stun.client.server_profiles.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "stun.client.server_profiles.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "stun.client.server_profiles.[].ip_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;server</samp>](## "stun.server") | Dictionary |  |  |  | STUN server settings |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "stun.server.local_interface") <span style="color:red">deprecated</span> | String |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version v5.0.0. Use <samp>local_interfaces</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_interfaces</samp>](## "stun.server.local_interfaces") | List, items: String |  |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "stun.server.local_interfaces.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "stun.server.local_interfaces.[]") | String |  |  |  |  |
 
 === "YAML"
 
     ```yaml
+    # STUN configuration
     stun:
+
+      # STUN client settings
       client:
+
+        # List of server profiles for the client
         server_profiles:
-          - name: <str>
+          - name: <str; required; unique>
             ip_address: <str>
+
+      # STUN server settings
       server:
+        # This key is deprecated.
+        # Support will be removed in AVD version v5.0.0.
+        # Use <samp>local_interfaces</samp> instead.
         local_interface: <str>
-        local_interfaces:
+        local_interfaces: # >=1 items
           - <str>
     ```
