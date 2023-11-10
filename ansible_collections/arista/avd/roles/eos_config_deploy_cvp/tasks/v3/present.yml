@@ -17,7 +17,7 @@
   arista.cvp.cv_task_v3:
     tasks: "{{ cvp_configlets_status.taskIds }}"
   when:
-    - cvp_configlets_status.taskIds | length > 0
+    - (cvp_configlets_status is defined) and (cvp_configlets_status.taskIds | length > 0)
     - execute_tasks|bool
 
 - name: "Building Containers topology on {{ inventory_hostname }}"
@@ -29,11 +29,11 @@
   register: cvp_container_results
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
-  tags: [apply, containers, provision]
+  tags: [apply]
   arista.cvp.cv_task_v3:
     tasks: "{{ cvp_container_results.taskIds }}"
   when:
-    - cvp_container_results.taskIds | length > 0
+    - (cvp_container_results is defined) and (cvp_container_results.taskIds | length > 0)
     - execute_tasks|bool
 
 - name: "Configure devices on {{ inventory_hostname }}"
@@ -51,5 +51,5 @@
   arista.cvp.cv_task_v3:
     tasks: "{{ cvp_devices_results.taskIds }}"
   when:
-    - cvp_devices_results.taskIds | length > 0
+    - (cvp_devices_results is defined) and (cvp_devices_results.taskIds | length > 0)
     - execute_tasks|bool
