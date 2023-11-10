@@ -19,8 +19,12 @@
     ```yaml
     queue_monitor_streaming:
       enable: <bool>
+
+      # Name of IP ACL
       ip_access_group: <str>
+
+      # Name of IPv6 ACL
       ipv6_access_group: <str>
-      max_connections: <int>
+      max_connections: <int; 1-100>
       vrf: <str>
     ```

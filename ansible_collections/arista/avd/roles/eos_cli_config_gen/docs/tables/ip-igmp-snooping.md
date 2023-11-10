@@ -25,7 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "ip_igmp_snooping.querier.version") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;proxy</samp>](## "ip_igmp_snooping.proxy") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;vlans</samp>](## "ip_igmp_snooping.vlans") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "ip_igmp_snooping.vlans.[].id") | Integer | Required, Unique |  |  | VLAN ID |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "ip_igmp_snooping.vlans.[].id") | Integer | Required, Unique |  |  | VLAN ID |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ip_igmp_snooping.vlans.[].enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;querier</samp>](## "ip_igmp_snooping.vlans.[].querier") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ip_igmp_snooping.vlans.[].querier.enabled") | Boolean |  |  |  |  |
@@ -45,13 +45,17 @@
 
     ```yaml
     ip_igmp_snooping:
-      globally_enabled: <bool>
+
+      # Activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
+      globally_enabled: <bool; default=True>
       robustness_variable: <int>
       restart_query_interval: <int>
       interface_restart_query: <int>
       fast_leave: <bool>
       querier:
         enabled: <bool>
+
+        # IP Address
         address: <str>
         query_interval: <int>
         max_response_time: <int>
@@ -62,10 +66,14 @@
         version: <int>
       proxy: <bool>
       vlans:
-        - id: <int>
+
+          # VLAN ID
+        - id: <int; required; unique>
           enabled: <bool>
           querier:
             enabled: <bool>
+
+            # IP Address
             address: <str>
             query_interval: <int>
             max_response_time: <int>
@@ -76,5 +84,7 @@
             version: <int>
           max_groups: <int>
           fast_leave: <bool>
+
+          # Global proxy settings should be enabled before enabling per-vlan
           proxy: <bool>
     ```
