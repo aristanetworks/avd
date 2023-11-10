@@ -61,13 +61,13 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
   servers:
   - name: 192.168.200.5
     vrf: MGMT
     preferred: true
-  local_interface:
-    name: Management1
-    vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackE DC1-L2LEAF1A

@@ -22,8 +22,7 @@ keys:
           - `use_inband_mgmt_vrf` will configure the NTP server(s) under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as NTP local-interface.
             An error will be raised if inband management is not configured for the device.
           - Any other string will be used directly as the VRF name but local interface must be set with `custom_structured_configuration_ntp` if needed.
-
-          Required if `servers` is set.
+          If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
       servers:
         type: list
         description: |-

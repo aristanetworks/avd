@@ -157,13 +157,13 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
   servers:
   - name: 192.168.200.5
     vrf: MGMT
     preferred: true
-  local_interface:
-    name: Management1
-    vrf: MGMT
 vlans:
 - id: 4094
   tenant: system

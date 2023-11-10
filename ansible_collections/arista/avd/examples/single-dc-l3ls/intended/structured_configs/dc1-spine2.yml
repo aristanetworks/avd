@@ -131,13 +131,13 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
   servers:
   - name: 0.pool.ntp.org
     vrf: MGMT
     preferred: true
-  local_interface:
-    name: Management1
-    vrf: MGMT
 ethernet_interfaces:
 - name: Ethernet1
   peer: dc1-leaf1a

@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
@@ -23,23 +24,33 @@ class NtpMixin(UtilsMixin):
         ntp set based on "ntp_settings" data-model.
         """
         ntp_settings = get(self._hostvars, "ntp_settings")
-
         if not ntp_settings:
             return None
 
         # Since the eos_cli_config_gen data model almost matches, we can copy most data directly.
-        # Below we pop the server_vrf option and insert local_interface and vrf for each server
-        ntp = {**ntp_settings}
-        ntp.pop("server_vrf", None)
+        ntp = strip_null_from_data(
+            {
+                "authenticate": ntp_settings.get("authenticate"),
+                "authenticate_servers_only": ntp_settings.get("authenticate_servers_only"),
+                "authentication_keys": ntp_settings.get("authentication_keys"),
+                "trusted_keys": ntp_settings.get("trusted_keys"),
+            }
+        )
 
-        if "servers" not in ntp:
+        if "servers" not in ntp_settings:
             # Quick return if we have no servers.
             return ntp or None
 
-        # Get server_vrf from the original settings and replace with relevant VRF.
-        # Notice "server_vrf" is only required if "servers" is set.
+        # Get server_vrf from ntp_settings and configure with the relevant VRF.
         # Also set relevant local interface.
-        server_vrf = get(ntp_settings, "server_vrf", required=True)
+        server_vrf = get(ntp_settings, "server_vrf")
+        if server_vrf is None:
+            server_vrf = self.shared_utils.default_mgmt_protocol_vrf
+            ntp["local_interface"] = {
+                "name": self.shared_utils.default_mgmt_protocol_interface,
+                "vrf": server_vrf,
+            }
+
         if server_vrf == "use_mgmt_interface_vrf":
             has_mgmt_ip = (self.shared_utils.mgmt_ip is not None) or (self.shared_utils.ipv6_mgmt_ip is not None)
             if not has_mgmt_ip:
@@ -48,7 +59,7 @@ class NtpMixin(UtilsMixin):
             server_vrf = self.shared_utils.mgmt_interface_vrf
             ntp["local_interface"] = {
                 "name": self.shared_utils.mgmt_interface,
-                "vrf": self.shared_utils.mgmt_interface_vrf,
+                "vrf": server_vrf,
             }
         elif server_vrf == "use_inband_mgmt_vrf":
             if self.shared_utils.inband_mgmt_interface is None:
@@ -58,15 +69,16 @@ class NtpMixin(UtilsMixin):
             server_vrf = self.shared_utils.inband_mgmt_vrf or "default"
             ntp["local_interface"] = {
                 "name": self.shared_utils.inband_mgmt_interface,
-                "vrf": self.shared_utils.inband_mgmt_vrf or "default",
+                "vrf": server_vrf,
             }
 
+        ntp["servers"] = []
         # First server is set with preferred
         first = True
-        for server in ntp["servers"]:
-            server["vrf"] = server_vrf
+        for server in ntp_settings["servers"]:
+            ntp["servers"].append({**server, "vrf": server_vrf})
             if first:
-                server["preferred"] = True
+                ntp["servers"][-1]["preferred"] = True
                 first = False
 
-        return ntp or None
+        return ntp

@@ -22,6 +22,14 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ntp:
+  authenticate: true
+  authenticate_servers_only: true
+  authentication_keys:
+  - id: 1
+    hash_algorithm: sha1
+    key: someobfuscatedkey
+    key_type: '7'
+  trusted_keys: '1'
   servers:
   - name: 10.10.10.1
     vrf: default
@@ -34,13 +42,5 @@ ntp:
     minpoll: 3
     version: 4
     vrf: default
-  authenticate: true
-  authenticate_servers_only: true
-  authentication_keys:
-  - id: 1
-    hash_algorithm: sha1
-    key: someobfuscatedkey
-    key_type: '7'
-  trusted_keys: '1'
 ip_igmp_snooping:
   globally_enabled: true

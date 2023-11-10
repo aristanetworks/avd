@@ -15,14 +15,14 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ntp:
+  local_interface:
+    name: Vlan4092
+    vrf: INBAND_MGMT
   servers:
   - name: 10.10.10.1
     vrf: INBAND_MGMT
     preferred: true
   - name: 10.10.10.2
-    vrf: INBAND_MGMT
-  local_interface:
-    name: Vlan4092
     vrf: INBAND_MGMT
 ip_igmp_snooping:
   globally_enabled: true
