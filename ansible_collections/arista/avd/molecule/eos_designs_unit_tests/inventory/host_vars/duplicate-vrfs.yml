@@ -5,19 +5,19 @@
 # are accepted by `filter.tenants` on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
 
 type: l3leaf
-l3leaf:
-  defaults:
-    loopback_ipv4_pool: 192.168.255.0/24
-    vtep_loopback_ipv4_pool: 192.168.254.0/24
-    virtual_router_mac_address: 00:dc:00:00:00:0a
-  nodes:
-    - name: duplicate-vrfs
-      id: 101
-      bgp_as: 101
-      filter:
-        tenants:
-          - TENANT1
-          - DUPLICATE_TENANT1
+
+# Using node to set node settings instead of setting them under l3leaf.
+# This is possible because this is a hostvar file, so only one device will read this.
+node:
+  loopback_ipv4_pool: 192.168.255.0/24
+  vtep_loopback_ipv4_pool: 192.168.254.0/24
+  virtual_router_mac_address: 00:dc:00:00:00:0a
+  id: 101
+  bgp_as: 101
+  filter:
+    tenants:
+      - TENANT1
+      - DUPLICATE_TENANT1
 
 tenants:
   - name: TENANT1

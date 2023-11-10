@@ -24,13 +24,14 @@ class SwitchDataMixin:
     @cached_property
     def switch_data(self: SharedUtils) -> dict:
         """
-        internal _switch_data containing inherited vars from fabric_topology data model
+        internal _switch_data containing inherited vars from fabric_topology data model and "node"
 
-        Vars are inherited like:
+        Vars are inherited like (last "wins"):
         <node_type_key>.defaults ->
             <node_type_key>.node_groups.[<node_group>] ->
                 <node_type_key>.node_groups.[<node_group>].nodes.[<node>] ->
-                    <node_type_key>.nodes.[<node>]
+                    <node_type_key>.nodes.[<node>] ->
+                        node
 
         Returns
         -------
@@ -47,8 +48,9 @@ class SwitchDataMixin:
         node_config = {}
         hostname = self.hostname
 
+        # Loading data from node_type_key (ex. l3leaf)
         node_type_key = self.node_type_key_data["key"]
-        node_type_config = get(self.hostvars, f"{node_type_key}", required=True)
+        node_type_config = get(self.hostvars, f"{node_type_key}", default={})
         nodes = convert_dicts(node_type_config.get("nodes", []), "name")
 
         for node in nodes:
@@ -72,8 +74,18 @@ class SwitchDataMixin:
         # Load defaults
         defaults_config = get(node_type_config, "defaults", default={})
 
+        # Load data from "node" key
+        node_key_config = get(self.hostvars, "node", default={})
+
         # Merge node data -> node_group data -> defaults into combined
-        switch_data["combined"] = merge(defaults_config, switch_data["node_group"], node_config, list_merge="replace", destructive_merge=False)
+        switch_data["combined"] = merge(
+            defaults_config,
+            switch_data["node_group"],
+            node_config,
+            node_key_config,
+            list_merge="replace",
+            destructive_merge=False,
+        )
 
         return switch_data
 

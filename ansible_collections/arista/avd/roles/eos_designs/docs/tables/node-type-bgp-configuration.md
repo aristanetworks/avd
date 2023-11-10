@@ -39,6 +39,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_role</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].evpn_role") | String |  |  | Valid Values:<br>- client<br>- server<br>- none | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_route_servers</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "&lt;node_type_keys.key&gt;.nodes.[].evpn_route_servers.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>node</samp>](## "node") | Dictionary |  |  |  | This key should _only_ be set in hostvars since it is applied unconditionally and overrides any other setting under the node type keys like `l3leaf` or `spine`.<br>It is useful when generating device setting from other systems and sources, since the values can be set with a static path per device instead of having to insert it into the common `<node_type_key>` data structure.<br>Since MLAG groupings are currently picked up from node_groups with two members, MLAG devices must still be defined under the relevant `<node_type_key>`. |
+    | [<samp>&nbsp;&nbsp;bgp_as</samp>](## "node.bgp_as") | String |  |  |  | Required with eBGP. |
+    | [<samp>&nbsp;&nbsp;bgp_defaults</samp>](## "node.bgp_defaults") | List, items: String |  |  |  | List of EOS commands to apply to BGP daemon. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node.bgp_defaults.[].&lt;str&gt;") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;evpn_role</samp>](## "node.evpn_role") | String |  |  | Valid Values:<br>- client<br>- server<br>- none | Acting role in EVPN control plane.<br>Default is set in node_type definition from node_type_keys.<br> |
+    | [<samp>&nbsp;&nbsp;evpn_route_servers</samp>](## "node.evpn_route_servers") | List, items: String |  |  |  | List of nodes acting as EVPN Route-Servers / Route-Reflectors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "node.evpn_route_servers.[].&lt;str&gt;") | String |  |  |  |  |
 
 === "YAML"
 
@@ -75,4 +82,11 @@
           evpn_role: <str>
           evpn_route_servers:
             - <str>
+    node:
+      bgp_as: <str>
+      bgp_defaults:
+        - <str>
+      evpn_role: <str>
+      evpn_route_servers:
+        - <str>
     ```
