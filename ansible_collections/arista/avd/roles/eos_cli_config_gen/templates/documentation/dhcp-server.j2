@@ -35,10 +35,14 @@
 {%                     set subnet_lease_time = "-" %}
 {%                 endif %}
 {%                 set subnet_default_gw = subnet.default_gateway | arista.avd.default("-") %}
-{%                 set subnet_ranges = [] %}
-{%                 for range in subnet.ranges | arista.avd.natural_sort("start") %}
-{%                     do subnet_ranges.append(range.start ~ "-" ~ range.end) %}
-{%                 endfor %}
+{%                 if subnet.ranges is arista.avd.defined and subnet.ranges | length > 0 %}
+{%                     set subnet_ranges = [] %}
+{%                     for range in subnet.ranges | arista.avd.natural_sort("start") %}
+{%                         do subnet_ranges.append(range.start ~ "-" ~ range.end) %}
+{%                     endfor %}
+{%                 else %}
+{%                     set subnet_ranges = ["-"] %}
+{%                 endif %}
 {%                 do dhcp_server_subnets.append({"subnet": subnet.subnet, "vrf": dhcp_server_vrf, "dns_servers": subnet_dns_servers, "lease_time": subnet_lease_time, "default_gateway": subnet_default_gw , "ranges": subnet_ranges | join(", ")}) %}
 {%             endfor %}
 {%             for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort("vendor_id") %}

@@ -35,3 +35,13 @@ dhcp_servers:
   - subnets:
       - subnet: 10.2.3.0/24
       - subnet: 2a00:2::/64
+
+  - vrf: VRF01
+    subnets:
+      - subnet: 192.168.0.0/24
+    disabled: true
+
+  - vrf: AVRF
+    subnets:
+      - subnet: 172.16.254.0/24
+        default_gateway: 172.16.254.1
