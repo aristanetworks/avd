@@ -8,6 +8,7 @@ from .get_device_structured_config import get_device_structured_config
 from .validate_inputs import validate_inputs
 from .validate_structured_config import validate_structured_config
 from .validation_result import ValidationResult
+from .vendor.eos_designs.pool_manager import AvdPoolManager
 
 """ Library for running Arista Validated Designs (AVD) in Python
 """
@@ -27,4 +28,5 @@ __all__ = [
     "validate_inputs",
     "validate_structured_config",
     "ValidationResult",
+    "AvdPoolManager",
 ]

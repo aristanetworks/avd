@@ -85,6 +85,7 @@ plugins:
         python:
           paths:
             - python-avd
+            - ansible_collections/arista/avd/roles/eos_designs/python_modules
 markdown_extensions:
   - admonition
   - attr_list

@@ -5,13 +5,14 @@ from glob import iglob
 from pathlib import Path
 
 import pytest
-from pyavd import get_avd_facts
+from pyavd import AvdPoolManager, get_avd_facts
 
 from ..utils import read_file, read_vars
 
-VARS_PATH = Path(Path(__file__).parent, "../artifacts/eos_designs_unit_tests/vars")
-STRUCTURED_CONFIGS_PATH = Path(Path(__file__).parent, "../artifacts/eos_designs_unit_tests/structured_configs")
-CONFIGS_PATH = Path(Path(__file__).parent, "../artifacts/eos_designs_unit_tests/configs")
+OUTPUT_DIR = Path(Path(__file__).parent, "../artifacts/eos_designs_unit_tests")
+VARS_PATH = OUTPUT_DIR.joinpath("vars")
+STRUCTURED_CONFIGS_PATH = OUTPUT_DIR.joinpath("structured_configs")
+CONFIGS_PATH = OUTPUT_DIR.joinpath("configs")
 
 
 def get_hostnames():
@@ -45,11 +46,20 @@ def all_inputs() -> dict[str, dict]:
 
 
 @pytest.fixture(scope="module")
-def avd_facts(all_inputs: dict):
+def pool_manager() -> dict:
+    """
+    Return instance of AvdPoolManager initialized with output_dir=OUTPUT_DIR
+    """
+    assert Path(OUTPUT_DIR).is_dir()
+    return AvdPoolManager(OUTPUT_DIR)
+
+
+@pytest.fixture(scope="module")
+def avd_facts(all_inputs: dict, pool_manager: AvdPoolManager):
     """
     Test get_avd_facts
     """
-    return get_avd_facts(all_inputs)
+    return get_avd_facts(all_inputs, pool_manager=pool_manager)
 
 
 @pytest.fixture(scope="module", params=get_hostnames())

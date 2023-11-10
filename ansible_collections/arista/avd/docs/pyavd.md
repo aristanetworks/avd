@@ -86,7 +86,6 @@ md-toc>=8.1.8
 ::: pyavd.validate_inputs
     options:
       show_root_toc_entry: false
-      paths: ../../../../python-avd
 
 ::: pyavd.get_avd_facts
     options:
@@ -99,7 +98,6 @@ md-toc>=8.1.8
 ::: pyavd.validate_structured_config
     options:
       show_root_toc_entry: false
-      paths: ../../../../python-avd
 
 ::: pyavd.get_device_config
     options:
@@ -112,4 +110,7 @@ md-toc>=8.1.8
 ::: pyavd.validation_result
     options:
       show_root_toc_entry: false
-      paths: ../../../../python-avd
+
+::: pool_manager.avdpoolmanager
+    options:
+      show_root_toc_entry: false

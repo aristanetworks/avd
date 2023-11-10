@@ -8,7 +8,9 @@ from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.pool_manager import AvdPoolManager
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
@@ -39,6 +41,40 @@ class MiscMixin:
 
     @cached_property
     def id(self: SharedUtils) -> int | None:
+        """
+        Node ID.
+        Will be sourced from different places depending on the context.
+
+        If running under eos_designs_structured_config:
+            Use 'self.hostvars.switch.id' or None
+
+        If running under eos_designs_facts and pool manager is activated:
+            Use pool manager
+
+        If running under eos_designs_facts and pool manager is _not_ activated:
+            Use 'self.switch_data_combined.id' which is the ID defined in the node type config or None.
+
+        """
+        # Check if we are running from eos_designs_structured_config ("switch" is a dict)
+        if isinstance(switch := get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch", separator=".."), dict):
+            # Return value of 'self.hostvars.switch.id' or None
+            return switch.get("id")
+
+        # We are running from eos_designs_facts.
+        # Check if pool manager is activated.
+        if get(self.hostvars, "fabric_numbering.id.algorithm") == "pool_manager":
+            if not isinstance(self.pool_manager, AvdPoolManager):
+                raise AristaAvdError("'fabric_numbering.id.algorithm' is set to 'pool_manager' but no AvdPoolManager instance is available.")
+
+            if (id := get(self.switch_data_combined, "id")) is not None:
+                raise AristaAvdError(
+                    "When 'fabric_numbering.id.algorithm' is set to 'pool_manager', 'id' must not be set under node settings. "
+                    f"Got 'id: {id}' for '{self.hostname}'"
+                )
+
+            return self.pool_manager.get_id(self)
+
+        # Pool manager is not activated. Return 'id' from node settings or None.
         return get(self.switch_data_combined, "id")
 
     @cached_property

@@ -1,0 +1,33 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  fabric_numbering:
+    description: Automatic assignment of numbers for settings like Node ID.
+    type: dict
+    keys:
+      id:
+        type: dict
+        description: Assignement of Node ID.
+        keys:
+          algorithm:
+            type: str
+            default: static
+            valid_values:
+              - static
+              - pool_manager
+            description: |-
+              IDs will be automatically assigned according to the configured algorithm.
+              - `static` will use the statically set IDs under node setting.
+              - `pool_manager` will activate the pool manager for ID pools.
+          pools_file:
+            type: str
+            description: |-
+              Path to file to use for storing ID pool data when using "pool_manager" as algorithm.
+              By default the path is "intended/data/<fabric_name>-ids.yml".
+
+              Note: Since the pool manager will remove stale entries after every run, each fabric should be using it's own file.

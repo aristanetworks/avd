@@ -9,6 +9,7 @@ import cProfile
 import pstats
 
 from ansible.errors import AnsibleActionFail
+from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
@@ -16,6 +17,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_util
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.pool_manager import AvdPoolManager
 
 
 class ActionModule(ActionBase):
@@ -34,6 +36,7 @@ class ActionModule(ActionBase):
         self.template_output = self._task.args.get("template_output", False)
         self._conversion_mode = self._task.args.get("conversion_mode")
         self._validation_mode = self._task.args.get("validation_mode")
+        output_dir = self._task.args.get("output_dir")
 
         groups = task_vars.get("groups", {})
         fabric_name = self._templar.template(task_vars.get("fabric_name", ""))
@@ -55,7 +58,9 @@ class ActionModule(ActionBase):
         # Get updated templar instance to be passed along to our simplified "templater"
         self.templar = get_templar(self, task_vars)
 
-        avd_switch_facts_instances = self.create_avd_switch_facts_instances(fabric_hosts, hostvars, result)
+        pool_manager = AvdPoolManager(output_dir)
+
+        avd_switch_facts_instances = self.create_avd_switch_facts_instances(fabric_hosts, hostvars, result, pool_manager)
         if result.get("failed"):
             # Stop here if any of the devices failed input data validation
             return result
@@ -78,6 +83,9 @@ class ActionModule(ActionBase):
             for peer in host_topology_peers:
                 avd_topology_peers.setdefault(peer, []).append(host)
 
+        # Save any updated pools.
+        pool_manager.save_updated_pools(Dumper=AnsibleDumper)
+
         result["ansible_facts"] = {
             "avd_switch_facts": avd_switch_facts,
             "avd_overlay_peers": avd_overlay_peers,
@@ -91,7 +99,7 @@ class ActionModule(ActionBase):
 
         return result
 
-    def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object, result: dict) -> dict:
+    def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object, result: dict, pool_manager: AvdPoolManager) -> dict:
         """
         Fetch hostvars for all hosts and perform data conversion & validation.
         Initialize all instances of EosDesignsFacts and insert various references into the variable space.
@@ -135,7 +143,7 @@ class ActionModule(ActionBase):
             host_hostvars = dict(hostvars.get(host))
 
             # Initialize SharedUtils class to be passed to EosDesignsFacts below.
-            shared_utils = SharedUtils(hostvars=host_hostvars, templar=self.templar)
+            shared_utils = SharedUtils(hostvars=host_hostvars, templar=self.templar, pool_manager=pool_manager)
 
             # Insert dynamic keys into the input data if not set.
             # These keys are required by the schema, but the default values are set inside shared_utils.

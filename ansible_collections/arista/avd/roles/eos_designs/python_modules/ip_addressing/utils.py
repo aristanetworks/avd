@@ -16,6 +16,11 @@ class UtilsMixin:
     """
     Mixin Class with internal functions.
     Class should only be used as Mixin to an AvdIpAddressing class
+
+    Functions here serve as an abstraction to shared_utils, so we can change shared_utils
+    without affecting third party AvdPoolManager subclasses.
+
+    Should be kept backwards compatible in minor versions.
     """
 
     @cached_property
@@ -92,7 +97,10 @@ class UtilsMixin:
 
         # Verify a mix of odd and even IDs
         if (self._mlag_primary_id % 2) == (self._mlag_secondary_id % 2):
-            raise AristaAvdError("MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID")
+            raise AristaAvdError(
+                "MLAG compact addressing mode requires all MLAG pairs to have a single odd and even ID. "
+                f"Found '{self.shared_utils.hostname}: {self.shared_utils.id}' and '{self.shared_utils.mlag_peer}:{self.shared_utils.mlag_peer_id}'"
+            )
 
         odd_id = self._mlag_primary_id
         if odd_id % 2 == 0:

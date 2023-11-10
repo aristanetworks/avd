@@ -14,6 +14,11 @@ class UtilsMixin:
     """
     Mixin Class with internal functions.
     Class should only be used as Mixin to an AvdInterfaceDescriptions class
+
+    Functions here serve as an abstraction to shared_utils, so we can change shared_utils
+    without affecting third party AvdPoolManager subclasses.
+
+    Should be kept backwards compatible in minor versions.
     """
 
     _hostvars: dict
