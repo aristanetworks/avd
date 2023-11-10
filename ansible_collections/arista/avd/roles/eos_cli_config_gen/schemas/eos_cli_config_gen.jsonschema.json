@@ -6608,12 +6608,11 @@
               "encryption": {
                 "type": "string",
                 "enum": [
-                  "disabled",
                   "3des",
                   "aes128",
                   "aes256"
                 ],
-                "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.",
+                "description": "IKE encryption algorithm.",
                 "title": "Encryption"
               },
               "dh_group": {

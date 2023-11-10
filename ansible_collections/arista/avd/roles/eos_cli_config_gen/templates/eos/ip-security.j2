@@ -16,7 +16,7 @@ ip security
 {%         if ike_policy.ike_lifetime is arista.avd.defined %}
       ike-lifetime {{ ike_policy.ike_lifetime }}
 {%         endif %}
-{%         if ike_policy.encryption is arista.avd.defined and ike_policy.encryption != "disabled" %}
+{%         if ike_policy.encryption is arista.avd.defined %}
       encryption {{ ike_policy.encryption }}
 {%         endif %}
 {%         if ike_policy.dh_group is arista.avd.defined %}

@@ -34,13 +34,10 @@ keys:
             encryption:
               type: str
               valid_values:
-                - disabled
                 - 3des
                 - aes128
                 - aes256
-              description: |-
-                Local IKE Identification.
-                Can be an IPv4 or an IPv6 address.
+              description: IKE encryption algorithm.
             dh_group:
               type: int
               convert_types:
