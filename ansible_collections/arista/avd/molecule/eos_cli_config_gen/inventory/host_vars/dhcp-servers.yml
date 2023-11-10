@@ -9,6 +9,9 @@ dhcp_servers:
           - code: 1
             type: string
             data: "test"
+          - code: 66
+            type: "array ipv4-address"
+            data: 1.1.1.1 2.2.2.2
     disabled: false
     dns_domain_name_ipv4: testv4.com
     dns_domain_name_ipv6: testv6.com
@@ -16,10 +19,10 @@ dhcp_servers:
       - subnet: 10.0.0.0/24 # required
         name: TEST1
         ranges:
-          - start: 10.0.0.10 # required
-            end: 10.0.0.100 # required
           - start: 10.0.0.110 # required
             end: 10.0.0.120 # required
+          - start: 10.0.0.10 # required
+            end: 10.0.0.100 # required
         dns_servers:
           - 10.1.1.12
           - 10.1.1.13

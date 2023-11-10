@@ -19,41 +19,54 @@
 
 | DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
 | ------------------- | --- | --------------- | --------------- |
-{%         for dhcp_server in dhcp_servers | arista.avd.natural_sort %}
-| {{ not dhcp_server.disabled | arista.avd.default(false) }} | {{ dhcp_server.vrf | arista.avd.default("-") }} | {{ dhcp_server.dns_domain_name_ipv4 | arista.avd.default("-") }} | {{ dhcp_server.dns_domain_name_ipv6 | arista.avd.default("-") }} |
+{%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
+{%             set dhcp_server_vrf = dhcp_server.vrf | arista.avd.default("-") %}
+| {{ not dhcp_server.disabled | arista.avd.default(false) }} | {{ dhcp_server_vrf }} | {{ dhcp_server.dns_domain_name_ipv4 | arista.avd.default("-") }} | {{ dhcp_server.dns_domain_name_ipv6 | arista.avd.default("-") }} |
 {%         endfor %}
-{%         set dhcp_server_subnets = [] %}
-{%         set dhcp_vendor_options = [] %}
-{%         for dhcp_server in dhcp_servers | arista.avd.natural_sort %}
+{%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
+{%             set dhcp_server_vrf = dhcp_server.vrf | arista.avd.default("default") %}
+{%             set dhcp_server_subnets = [] %}
+{%             set dhcp_vendor_options = [] %}
 {%             for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
-{%                 do dhcp_server_subnets.append({"subnet": subnet.subnet, "vrf": dhcp_server.vrf | arista.avd.default("-")}) %}
+{%                 set subnet_dns_servers = subnet.dns_servers | arista.avd.default(["-"]) | join(", ") %}
+{%                 if subnet.lease_time is arista.avd.defined %}
+{%                     set subnet_lease_time = subnet.lease_time.days ~ " days, " ~ subnet.lease_time.hours ~ " hours, " ~ subnet.lease_time.minutes ~ " minutes" %}
+{%                 else %}
+{%                     set subnet_lease_time = "-" %}
+{%                 endif %}
+{%                 set subnet_default_gw = subnet.default_gateway | arista.avd.default("-") %}
+{%                 set subnet_ranges = [] %}
+{%                 for range in subnet.ranges | arista.avd.natural_sort("start") %}
+{%                     do subnet_ranges.append(range.start ~ "-" ~ range.end) %}
+{%                 endfor %}
+{%                 do dhcp_server_subnets.append({"subnet": subnet.subnet, "vrf": dhcp_server_vrf, "dns_servers": subnet_dns_servers, "lease_time": subnet_lease_time, "default_gateway": subnet_default_gw , "ranges": subnet_ranges | join(", ")}) %}
 {%             endfor %}
 {%             for option in dhcp_server.ipv4_vendor_options | arista.avd.natural_sort("vendor_id") %}
 {%                 do dhcp_vendor_options.append({"vendor_id": option.vendor_id, "sub_options": option.sub_options}) %}
 {%             endfor %}
-{%         endfor %}
-{%         if dhcp_server_subnets | length > 0 %}
+{%             if dhcp_server_subnets | length > 0 %}
 
-### DHCP Server Subnets
+#### VRF {{ dhcp_server_vrf }} DHCP Server Subnets
 
-| Subnet | VRF |
-| ------ | --- |
-{%             for subnet in dhcp_server_subnets | arista.avd.natural_sort("subnet") %}
-| {{ subnet.subnet }} | {{ subnet.vrf }} |
-{%             endfor %}
-{%         endif %}
-{%         if dhcp_vendor_options | length > 0 %}
+| Subnet | VRF | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | --- | ----------- | --------------- | ---------- | ------ |
+{%                 for subnet in dhcp_server_subnets %}
+| {{ subnet.subnet }} | {{ subnet.vrf }} | {{ subnet.dns_servers }} | {{ subnet.default_gateway }} | {{ subnet.lease_time }} | {{ subnet.ranges }} |
+{%                 endfor %}
+{%             endif %}
+{%             if dhcp_vendor_options | length > 0 %}
 
-### DHCP Server IPv4 Vendor Options
+#### VRF {{ dhcp_server_vrf }} DHCP Server IPv4 Vendor Options
 
 | Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
 | --------- | ----------------| --------------- | --------------- |
-{%             for option in dhcp_vendor_options | arista.avd.natural_sort("vendor_id") %}
-{%                 for sub_option in option.sub_options | arista.avd.natural_sort("code") %}
+{%                 for option in dhcp_vendor_options | arista.avd.natural_sort("vendor_id") %}
+{%                     for sub_option in option.sub_options | arista.avd.natural_sort("code") %}
 | {{ option.vendor_id }} | {{ sub_option.code }} | {{ sub_option.type }} | {{ sub_option.data }} |
+{%                     endfor %}
 {%                 endfor %}
-{%             endfor %}
-{%         endif %}
+{%             endif %}
+{%         endfor %}
 
 ### DHCP Server Configuration
 

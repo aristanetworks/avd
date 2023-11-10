@@ -6,8 +6,6 @@
   - [Management Interfaces](#management-interfaces)
 - [DHCP Server](#dhcp-server)
   - [DHCP Servers Summary](#dhcp-servers-summary)
-  - [DHCP Server Subnets](#dhcp-server-subnets)
-  - [DHCP Server IPv4 Vendor Options](#dhcp-server-ipv4-vendor-options)
   - [DHCP Server Configuration](#dhcp-server-configuration)
 
 ## Management
@@ -44,23 +42,29 @@ interface Management1
 
 | DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
 | ------------------- | --- | --------------- | --------------- |
-| True | - | - | - |
 | True | TEST | testv4.com | testv6.com |
+| True | - | - | - |
 
-### DHCP Server Subnets
+#### VRF TEST DHCP Server Subnets
 
-| Subnet | VRF |
-| ------ | --- |
-| 2a00:2::/64 | - |
-| 10.0.0.0/24 | TEST |
-| 10.2.3.0/24 | - |
+| Subnet | VRF | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | --- | ----------- | --------------- | ---------- | ------ |
+| 10.0.0.0/24 | TEST | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
 
-### DHCP Server IPv4 Vendor Options
+#### VRF TEST DHCP Server IPv4 Vendor Options
 
 | Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
 | --------- | ----------------| --------------- | --------------- |
 | NTP | 1 | string | test |
 | NTP | 42 | ipv4-address | 10.1.1.1 |
+| NTP | 66 | array ipv4-address | 1.1.1.1 2.2.2.2 |
+
+#### VRF default DHCP Server Subnets
+
+| Subnet | VRF | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | --- | ----------- | --------------- | ---------- | ------ |
+| 2a00:2::/64 | default | - | - | - |  |
+| 10.2.3.0/24 | default | - | - | - |  |
 
 ### DHCP Server Configuration
 
@@ -89,4 +93,5 @@ dhcp server vrf TEST
    vendor-option ipv4 NTP
       sub-option 1 type string data "test"
       sub-option 42 type ipv4-address data 10.1.1.1
+      sub-option 66 type array ipv4-address data 1.1.1.1 2.2.2.2
 ```
