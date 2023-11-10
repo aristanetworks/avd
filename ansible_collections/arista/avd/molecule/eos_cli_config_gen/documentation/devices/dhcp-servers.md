@@ -49,15 +49,15 @@ interface Management1
 
 #### VRF AVRF DHCP Server Subnets
 
-| Subnet | VRF | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | --- | ----------- | --------------- | ---------- | ------ |
-| 172.16.254.0/24 | AVRF | - | 172.16.254.1 | - | - |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| 172.16.254.0/24 | - | - | 172.16.254.1 | - | - |
 
 #### VRF TEST DHCP Server Subnets
 
-| Subnet | VRF | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | --- | ----------- | --------------- | ---------- | ------ |
-| 10.0.0.0/24 | TEST | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
 
 #### VRF TEST DHCP Server IPv4 Vendor Options
 
@@ -69,16 +69,16 @@ interface Management1
 
 #### VRF VRF01 DHCP Server Subnets
 
-| Subnet | VRF | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | --- | ----------- | --------------- | ---------- | ------ |
-| 192.168.0.0/24 | VRF01 | - | - | - | - |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| 192.168.0.0/24 | - | - | - | - | - |
 
 #### VRF default DHCP Server Subnets
 
-| Subnet | VRF | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | --- | ----------- | --------------- | ---------- | ------ |
-| 2a00:2::/64 | default | - | - | - | - |
-| 10.2.3.0/24 | default | - | - | - | - |
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| 2a00:2::/64 | - | - | - | - | - |
+| 10.2.3.0/24 | - | - | - | - | - |
 
 ### DHCP Server Configuration
 
