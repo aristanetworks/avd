@@ -13,7 +13,7 @@ keys:
     description: |-
       sFlow settings.
       The sFlow process will only be configured if any interface is enabled for sFlow.
-      For default enabling of sFlow for various interface types across the fabric see "fabric_sflow"
+      For default enabling of sFlow for various interface types across the fabric see "fabric_sflow".
     keys:
       destinations:
         type: list
@@ -23,13 +23,14 @@ keys:
             destination:
               type: str
               required: true
-              description: |-
-                sFlow destination IP address.
+              description: sFlow destination name or IP address.
             port:
               type: int
-              description: Port number
+              description: UDP Port number. The default port number for sFlow is 6343.
               convert_types:
                 - str
+              min: 1
+              max: 65535
             vrf:
               required: true
               type: str

@@ -20579,7 +20579,7 @@
     },
     "sflow_settings": {
       "type": "object",
-      "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see \"fabric_sflow\"",
+      "description": "sFlow settings.\nThe sFlow process will only be configured if any interface is enabled for sFlow.\nFor default enabling of sFlow for various interface types across the fabric see \"fabric_sflow\".",
       "properties": {
         "destinations": {
           "type": "array",
@@ -20588,12 +20588,14 @@
             "properties": {
               "destination": {
                 "type": "string",
-                "description": "sFlow destination IP address.",
+                "description": "sFlow destination name or IP address.",
                 "title": "Destination"
               },
               "port": {
                 "type": "integer",
-                "description": "Port number",
+                "description": "UDP Port number. The default port number for sFlow is 6343.",
+                "minimum": 1,
+                "maximum": 65535,
                 "title": "Port"
               },
               "vrf": {

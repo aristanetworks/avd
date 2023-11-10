@@ -14,10 +14,10 @@
     | [<samp>&nbsp;&nbsp;l3_edge</samp>](## "fabric_sflow.l3_edge") | Boolean |  |  |  | Enable sFlow on all p2p_links defined under l3_edge. |
     | [<samp>&nbsp;&nbsp;core_interfaces</samp>](## "fabric_sflow.core_interfaces") | Boolean |  |  |  | Enable sFlow on all p2p_links defined under core_interfaces. |
     | [<samp>&nbsp;&nbsp;mlag_interfaces</samp>](## "fabric_sflow.mlag_interfaces") | Boolean |  |  |  | Enable sFlow on all MLAG peer interfaces. |
-    | [<samp>sflow_settings</samp>](## "sflow_settings") | Dictionary |  |  |  | sFlow settings.<br>The sFlow process will only be configured if any interface is enabled for sFlow.<br>For default enabling of sFlow for various interface types across the fabric see "fabric_sflow" |
+    | [<samp>sflow_settings</samp>](## "sflow_settings") | Dictionary |  |  |  | sFlow settings.<br>The sFlow process will only be configured if any interface is enabled for sFlow.<br>For default enabling of sFlow for various interface types across the fabric see "fabric_sflow". |
     | [<samp>&nbsp;&nbsp;destinations</samp>](## "sflow_settings.destinations") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;destination</samp>](## "sflow_settings.destinations.[].destination") | String | Required |  |  | sFlow destination IP address. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "sflow_settings.destinations.[].port") | Integer |  |  |  | Port number |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;destination</samp>](## "sflow_settings.destinations.[].destination") | String | Required |  |  | sFlow destination name or IP address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "sflow_settings.destinations.[].port") | Integer |  |  | Min: 1<br>Max: 65535 | UDP Port number. The default port number for sFlow is 6343. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "sflow_settings.destinations.[].vrf") | String | Required |  |  | The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the NTP server(s) under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as NTP source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- Any other string will be used directly as the VRF name but source interface must be set with `sflow.structured_config` as needed. |
     | [<samp>&nbsp;&nbsp;structured_config</samp>](## "sflow_settings.structured_config") | Dictionary |  |  |  | Custom structured config added under sflow for eos_cli_config_gen |
 
@@ -49,15 +49,15 @@
 
     # sFlow settings.
     # The sFlow process will only be configured if any interface is enabled for sFlow.
-    # For default enabling of sFlow for various interface types across the fabric see "fabric_sflow"
+    # For default enabling of sFlow for various interface types across the fabric see "fabric_sflow".
     sflow_settings:
       destinations:
 
-          # sFlow destination IP address.
+          # sFlow destination name or IP address.
         - destination: <str; required>
 
-          # Port number
-          port: <int>
+          # UDP Port number. The default port number for sFlow is 6343.
+          port: <int; 1-65535>
 
           # The value of `vrf` will be interpreted according to these rules:
           # - `use_mgmt_interface_vrf` will configure the sFlow destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as sFlow source-interface.
