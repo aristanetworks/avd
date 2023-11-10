@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - dhcp relay #}
 {% if dhcp_relay is arista.avd.defined %}
 
@@ -7,9 +12,14 @@
 {%     if dhcp_relay.tunnel_requests_disabled is arista.avd.defined(true) %}
 
 - DHCP Relay is disabled for tunnelled requests
-{%     elif dhcp_relay.tunnel_requests_disabled is arista.avd.defined(false) %}
+{%     else %}
 
 - DHCP Relay is enabled for tunnelled requests
+{%     endif %}
+{%     if dhcp_relay.mlag_peerlink_requests_disabled is arista.avd.defined(true) %}
+- DHCP Relay is disabled for MLAG peer-link requests
+{%     else %}
+- DHCP Relay is enabled for MLAG peer-link requests
 {%     endif %}
 {%     if dhcp_relay.servers is arista.avd.defined %}
 

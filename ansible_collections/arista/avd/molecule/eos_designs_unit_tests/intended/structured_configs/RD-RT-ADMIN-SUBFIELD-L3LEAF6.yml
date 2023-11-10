@@ -1,3 +1,5 @@
+hostname: RD-RT-ADMIN-SUBFIELD-L3LEAF6
+is_deployed: true
 router_bgp:
   as: '65006'
   router_id: 192.168.255.6
@@ -55,7 +57,7 @@ router_bgp:
     rd: 65535:10001
     route_targets:
       both:
-      - 10001:10001
+      - 1:10001
     redistribute_routes:
     - learned
   - id: 2
@@ -63,7 +65,23 @@ router_bgp:
     rd: 65535:10002
     route_targets:
       both:
-      - 10002:10002
+      - 2:10002
+    redistribute_routes:
+    - learned
+  - id: 3
+    tenant: Tenant_A
+    rd: 65535:33333
+    route_targets:
+      both:
+      - 3333:3333
+    redistribute_routes:
+    - learned
+  - id: 4
+    tenant: Tenant_A
+    rd: 33333:33333
+    route_targets:
+      both:
+      - 3333:3333
     redistribute_routes:
     - learned
 static_routes:
@@ -131,6 +149,12 @@ vlans:
 - id: 2
   name: VLAN_2
   tenant: Tenant_A
+- id: 3
+  name: VLAN_3
+  tenant: Tenant_A
+- id: 4
+  name: VLAN_4
+  tenant: Tenant_A
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
@@ -151,6 +175,22 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.0.2.1/24
   vrf: TEST1
+- name: Vlan3
+  tenant: Tenant_A
+  tags:
+  - test_l3
+  description: VLAN_3
+  shutdown: false
+  ip_address_virtual: 10.0.3.1/24
+  vrf: TEST1
+- name: Vlan4
+  tenant: Tenant_A
+  tags:
+  - test_l3
+  description: VLAN_4
+  shutdown: false
+  ip_address_virtual: 10.0.4.1/24
+  vrf: TEST1
 vxlan_interface:
   Vxlan1:
     description: RD-RT-ADMIN-SUBFIELD-L3LEAF6_VTEP
@@ -159,9 +199,13 @@ vxlan_interface:
       source_interface: Loopback1
       vlans:
       - id: 1
-        vni: 10001
+        vni: 80001
       - id: 2
-        vni: 10002
+        vni: 80002
+      - id: 3
+        vni: 80003
+      - id: 4
+        vni: 80004
       vrfs:
       - name: TEST1
-        vni: 11
+        vni: 22

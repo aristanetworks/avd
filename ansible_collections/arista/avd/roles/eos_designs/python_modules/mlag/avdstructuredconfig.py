@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -160,6 +163,17 @@ class AvdStructuredConfigMlag(AvdFacts):
             # Retain legacy order
             port_channel_interface["trunk_groups"].reverse()
 
+        if (self.shared_utils.fabric_sflow_mlag_interfaces) is not None:
+            port_channel_interface["sflow"] = {"enable": self.shared_utils.fabric_sflow_mlag_interfaces}
+
+        if self.shared_utils.ptp_enabled and self.shared_utils.ptp_mlag:
+            ptp_config = {}
+            ptp_config.update(self.shared_utils.ptp_profile)
+            ptp_config["enable"] = True
+            ptp_config.pop("profile", None)
+            # Apply ptp config to port-channel
+            port_channel_interface["ptp"] = ptp_config
+
         return [strip_empties_from_dict(port_channel_interface)]
 
     @cached_property
@@ -254,6 +268,7 @@ class AvdStructuredConfigMlag(AvdFacts):
         Return structured config for router bgp
 
         Peer group and underlay MLAG iBGP peering is created only for BGP underlay.
+        For other underlay protocols the MLAG peer-group may be created as part of the network services logic.
         """
 
         if not (self.shared_utils.mlag_l3 is True and self.shared_utils.underlay_bgp):
@@ -264,9 +279,6 @@ class AvdStructuredConfigMlag(AvdFacts):
         router_bgp = self._router_bgp_mlag_peer_group()
 
         # Underlay MLAG peering
-        if not self.shared_utils.underlay_bgp:
-            return strip_empties_from_dict(router_bgp)
-
         if self.shared_utils.underlay_rfc5549:
             vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.mlag_peer_vlan)
             neighbor_interface_name = f"Vlan{vlan}"
@@ -307,6 +319,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             "next_hop_self": True,
             "description": self.shared_utils.mlag_peer,
             "password": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["password"],
+            "bfd": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["bfd"],
             "maximum_routes": 12000,
             "send_community": "all",
             "struct_cfg": self.shared_utils.bgp_peer_groups["mlag_ipv4_underlay_peer"]["structured_config"],
@@ -314,7 +327,7 @@ class AvdStructuredConfigMlag(AvdFacts):
         if self.shared_utils.mlag_ibgp_origin_incomplete is True:
             peer_group["route_map_in"] = "RM-MLAG-PEER-IN"
 
-        router_bgp["peer_groups"] = [peer_group]
+        router_bgp["peer_groups"] = [strip_empties_from_dict(peer_group)]
 
         if self.shared_utils.underlay_ipv6:
             router_bgp["address_family_ipv6"] = {
@@ -328,7 +341,7 @@ class AvdStructuredConfigMlag(AvdFacts):
 
         address_family_ipv4_peer_group = {"name": peer_group_name, "activate": True}
         if self.shared_utils.underlay_rfc5549:
-            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6_originate": True}
+            address_family_ipv4_peer_group["next_hop"] = {"address_family_ipv6": {"enabled": True, "originate": True}}
 
         router_bgp["address_family_ipv4"] = {"peer_groups": [address_family_ipv4_peer_group]}
 

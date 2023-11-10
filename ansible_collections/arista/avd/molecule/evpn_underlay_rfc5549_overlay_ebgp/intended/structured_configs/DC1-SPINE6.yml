@@ -1,3 +1,5 @@
+hostname: DC1-SPINE6
+is_deployed: true
 router_bgp:
   as: '65001'
   router_id: 192.168.255.6
@@ -31,7 +33,9 @@ router_bgp:
     - name: UNDERLAY_PEERS
       activate: true
       next_hop:
-        address_family_ipv6_originate: true
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   address_family_ipv6:

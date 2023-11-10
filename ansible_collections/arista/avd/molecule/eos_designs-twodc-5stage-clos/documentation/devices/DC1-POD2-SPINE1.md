@@ -168,11 +168,11 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet3 | routed | - | 172.16.12.1/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet3 | routed | - | 172.16.12.65/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet1 | routed | - | 172.17.120.0/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-RS2_Ethernet2 | routed | - | 172.17.10.10/31 | default | 1500 | False | - | - |
-| Ethernet5 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet5 | routed | - | 11.1.1.18/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet3 | routed | - | 172.16.12.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet3 | routed | - | 172.16.12.65/31 | default | - | False | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet1 | routed | - | 172.17.120.0/31 | default | - | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-RS2_Ethernet2 | routed | - | 172.17.10.10/31 | default | - | False | - | - |
+| Ethernet5 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet5 | routed | - | 11.1.1.18/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -181,7 +181,6 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet3
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.12.1/31
@@ -191,7 +190,6 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet3
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.12.65/31
@@ -201,7 +199,6 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet1
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.120.0/31
@@ -211,7 +208,6 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-RS2_Ethernet2
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.17.10.10/31
    service-profile QOS-PROFILE
@@ -219,7 +215,6 @@ interface Ethernet4
 interface Ethernet5
    description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet5
    no shutdown
-   mtu 1500
    no switchport
    ip address 11.1.1.18/31
 ```
@@ -309,7 +304,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65120|  172.16.120.1 |
+| 65120 | 172.16.120.1 |
 
 | BGP Tuning |
 | ---------- |

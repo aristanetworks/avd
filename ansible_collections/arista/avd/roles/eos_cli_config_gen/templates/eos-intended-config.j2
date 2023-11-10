@@ -1,9 +1,16 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# Device Configuration #}
 {# context used to hide password and keys #}
-{% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords %}
+{% set hide_passwords = eos_cli_config_gen_configuration.hide_passwords | arista.avd.default(false) %}
 {% include 'eos/rancid-content-type.j2' %}
 {# System Boot Configuration #}
 {% include 'eos/boot.j2' %}
+{# Agents #}
+{% include 'eos/agents.j2' %}
 {# terminal settings #}
 {% include 'eos/terminal.j2' %}
 {# cli prompt #}
@@ -31,6 +38,7 @@
 {# event monitor #}
 {% include 'eos/event-monitor.j2' %}
 {# flow tracking #}
+{% include 'eos/flow-tracking.j2' %}
 {% include 'eos/flow-trackings.j2' %}
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
@@ -64,6 +72,8 @@
 {% include 'eos/mac-security.j2' %}
 {# IP NAT - Part 1#}
 {% include 'eos/ip-nat-part1.j2' %}
+{# platform - trident#}
+{% include 'eos/platform-trident.j2' %}
 {# hostname #}
 {% include 'eos/hostname.j2' %}
 {# domain lookup #}
@@ -76,6 +86,8 @@
 {% include 'eos/domain-list.j2' %}
 {# Object Tracking #}
 {% include 'eos/trackers.j2' %}
+{# router path-selection #}
+{% include 'eos/router-path-selection.j2' %}
 {# ntp #}
 {% include 'eos/ntp.j2' %}
 {# poe #}
@@ -86,7 +98,9 @@
 {% include 'eos/radius-servers.j2' %}
 {# radius server #}
 {% include 'eos/radius-server.j2' %}
-{# router l2-vpn#}
+{# router adaptive-virtual-topology #}
+{% include 'eos/router-adaptive-virtual-topology.j2' %}
+{# router l2-vpn #}
 {% include 'eos/router-l2-vpn.j2' %}
 {# sflow #}
 {% include 'eos/sflow.j2' %}
@@ -94,6 +108,8 @@
 {% include 'eos/redundancy.j2' %}
 {# qos-profiles #}
 {% include 'eos/qos-profiles.j2' %}
+{# router service-inserion #}
+{% include 'eos/router-service-insertion.j2' %}
 {# snmp settings #}
 {% include 'eos/snmp-server.j2' %}
 {# hardware configuration #}
@@ -118,6 +134,8 @@
 {% include 'eos/roles.j2' %}
 {# address locking #}
 {% include 'eos/address-locking.j2' %}
+{# system l1 #}
+{% include 'eos/system-l1.j2' %}
 {# Tap Aggregation #}
 {% include 'eos/tap-aggregation.j2' %}
 {# clock #}
@@ -130,8 +148,12 @@
 {% include 'eos/link-tracking-groups.j2' %}
 {# CVX #}
 {% include 'eos/cvx.j2' %}
+{# IP Security #}
+{% include 'eos/ip-security.j2' %}
 {# Port-Channel Interfaces #}
 {% include 'eos/port-channel-interfaces.j2' %}
+{# DPS Interfaces #}
+{% include 'eos/dps-interfaces.j2' %}
 {# Ethernet Interfaces #}
 {% include 'eos/ethernet-interfaces.j2' %}
 {# Loopback Interfaces #}
@@ -192,6 +214,8 @@
 {% include 'eos/monitor-sessions.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
+{# eos - priority flow control #}
+{% include 'eos/priority-flow-control.j2' %}
 {# Community-lists #}
 {% include 'eos/community-lists.j2' %}
 {# Community-lists, improved data model #}
@@ -268,10 +292,10 @@
 {% include 'eos/traffic-policies.j2' %}
 {# banner #}
 {% include 'eos/banners.j2' %}
-{# ip http client source interfaces #}
-{% include 'eos/ip-http-client-source-interfaces.j2' %}
-{# ip ssh client source interfaces #}
-{% include 'eos/ip-ssh-client-source-interfaces.j2' %}
+{# ip client source interfaces #}
+{% include 'eos/ip-client-source-interfaces.j2' %}
+{# management accounts #}
+{% include 'eos/management-accounts.j2' %}
 {# management api http #}
 {% include 'eos/management-api-http.j2' %}
 {# management console #}
@@ -286,12 +310,16 @@
 {% include 'eos/management-api-models.j2' %}
 {# management security #}
 {% include 'eos/management-security.j2' %}
+{# stun #}
+{% include 'eos/stun.j2' %}
 {# 802.1x Global #}
 {% include 'eos/dot1x.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
 {# management tech-support #}
 {% include 'eos/management-tech-support.j2' %}
+{# platform apply #}
+{% include 'eos/platform-apply.j2' %}
 {# EOS CLI #}
 {% include 'eos/eos-cli.j2' %}
 {# custom templates #}

@@ -1,0 +1,102 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  source_interfaces:
+    documentation_options:
+      table: management-source-interfaces-settings
+    type: dict
+    description: |-
+      Configure source-interfaces based on the management interfaces set for other `eos_designs` data models.
+      By default, no source-interfaces will be configured. They can still be configured manually using `eos_cli_config_gen` and custom structured configuration.
+      EOS supports a single source-interface per VRF, so an error will be raised in case of conflicts.
+      Errors will also be raised if an interface is not found for a device.
+    keys:
+      domain_lookup:
+        type: dict
+        description: IP Domain Lookup source-interfaces.
+        keys:
+          mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP Domain Lookup source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
+              `mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.
+          inband_mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP Domain Lookup source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.
+      http_client:
+        type: dict
+        description: IP HTTP Client source-interfaces.
+        keys:
+          mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP HTTP Client source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
+              `mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.
+          inband_mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP HTTP Client source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.
+      radius:
+        type: dict
+        description: IP Radius source-interfaces.
+        keys:
+          mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP Radius source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
+              `mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.
+          inband_mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP Radius source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.
+      snmp:
+        type: dict
+        description: SNMP local-interfaces.
+        keys:
+          mgmt_interface:
+            type: bool
+            description: |-
+              Configure a SNMP local-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
+              `mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.
+          inband_mgmt_interface:
+            type: bool
+            description: |-
+              Configure a SNMP local-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.
+      ssh_client:
+        type: dict
+        description: IP SSH Client source-interfaces.
+        keys:
+          mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP SSH Client source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
+              `mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.
+          inband_mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP SSH Client source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.
+      tacacs:
+        type: dict
+        description: IP Tacacs source-interfaces.
+        keys:
+          mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP Tacacs source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
+              `mgmt_interface` is typically the out-of-band Management interface, and can be set under the node settings, platform settings or as a group/host var.
+          inband_mgmt_interface:
+            type: bool
+            description: |-
+              Configure an IP Tacacs source-interface with the interface set by `inband_mgmt_interface` for the VRF set by `inband_mgmt_vrf`.
+              `inband_mgmt_interface` is typically a loopback or SVI interface, and can be set under the node settings.

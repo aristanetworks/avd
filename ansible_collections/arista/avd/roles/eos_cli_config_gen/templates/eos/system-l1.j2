@@ -1,0 +1,16 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - system l1 #}
+{% if system.l1 is arista.avd.defined %}
+!
+system l1
+{%     if system.l1.unsupported_speed_action is arista.avd.defined %}
+   unsupported speed action {{ system.l1.unsupported_speed_action }}
+{%     endif %}
+{%     if system.l1.unsupported_error_correction_action is arista.avd.defined %}
+   unsupported error-correction action {{ system.l1.unsupported_error_correction_action }}
+{%     endif %}
+{% endif %}

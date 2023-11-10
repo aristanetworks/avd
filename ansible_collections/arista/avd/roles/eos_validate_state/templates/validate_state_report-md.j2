@@ -1,6 +1,12 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {% set validate_state_report = namespace() %}
 {% set validate_state_report.tests_passed = 0 %}
 {% set validate_state_report.tests_failed = 0 %}
+{% set validate_state_report.tests_not_run = 0 %}
 {% set validate_state_report.total_tests_passed = 0 %}
 {% set validate_state_report.total_tests_failed = 0 %}
 {% set validate_state_report.total_tests = 0 %}
@@ -21,7 +27,6 @@
 {% endfor %}
 {% set validate_state_report.duts = validate_state_report.duts | unique  %}
 {% set validate_state_report.test_categories = validate_state_report.test_categories | unique  %}
-
 # Validate State Report
 
 **Table of Contents:**
@@ -51,12 +56,15 @@
 {%             elif report_entry.result is arista.avd.defined("FAIL")  %}
 {%                 set validate_state_report.tests_failed = validate_state_report.tests_failed + 1 %}
 {%                 do validate_state_report.test_categories_failed.append(report_entry.test_category) %}
+{%             elif report_entry.result is arista.avd.defined("NOT RUN")  %}
+{%                 set validate_state_report.tests_not_run = validate_state_report.tests_not_run + 1 %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
-| {{ dut }} |  {{ validate_state_report.tests_passed + validate_state_report.tests_failed }} | {{ validate_state_report.tests_passed }} | {{ validate_state_report.tests_failed }} | {{ validate_state_report.test_categories_failed | default('-', true) | unique | join(', ') }} |
+| {{ dut }} |  {{ validate_state_report.tests_passed + validate_state_report.tests_failed + validate_state_report.tests_not_run }} | {{ validate_state_report.tests_passed }} | {{ validate_state_report.tests_failed }} | {{ validate_state_report.test_categories_failed | default('-', true) | unique | join(', ') }} |
 {%     set validate_state_report.tests_passed = 0 %}
 {%     set validate_state_report.tests_failed = 0 %}
+{%     set validate_state_report.tests_not_run = 0 %}
 {%     set validate_state_report.test_categories_failed = [] %}
 {% endfor %}
 
@@ -71,12 +79,15 @@
 {%                 set validate_state_report.tests_passed = validate_state_report.tests_passed + 1 %}
 {%             elif report_entry.result is arista.avd.defined("FAIL") %}
 {%                 set validate_state_report.tests_failed = validate_state_report.tests_failed + 1 %}
+{%             elif report_entry.result is arista.avd.defined("NOT RUN")  %}
+{%                 set validate_state_report.tests_not_run = validate_state_report.tests_not_run + 1 %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
-| {{ test_category }} |  {{ validate_state_report.tests_passed + validate_state_report.tests_failed }} | {{ validate_state_report.tests_passed }} | {{ validate_state_report.tests_failed }} |
+| {{ test_category }} |  {{ validate_state_report.tests_passed + validate_state_report.tests_failed + validate_state_report.tests_not_run }} | {{ validate_state_report.tests_passed }} | {{ validate_state_report.tests_failed }} |
 {%     set validate_state_report.tests_passed = 0 %}
 {%     set validate_state_report.tests_failed = 0 %}
+{%     set validate_state_report.tests_not_run = 0 %}
 {% endfor %}
 
 ## Failed Test Results Summary

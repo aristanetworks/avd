@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - platform #}
 {% if platform is arista.avd.defined %}
 !
@@ -21,6 +26,11 @@ platform sand forwarding mode {{ platform.sand.forwarding_mode }}
 {%         endif %}
 {%         if platform.sand.multicast_replication.default is arista.avd.defined %}
 platform sand multicast replication default {{ platform.sand.multicast_replication.default }}
+{%         endif %}
+{%     endif %}
+{%     if platform.sfe is arista.avd.defined %}
+{%         if platform.sfe.data_plane_cpu_allocation_max is arista.avd.defined %}
+platform sfe data-plane cpu allocation maximum {{ platform.sfe.data_plane_cpu_allocation_max }}
 {%         endif %}
 {%     endif %}
 {% endif %}

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -62,7 +65,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 "name": interface_name,
                                 "peer_type": "l3_interface",
                                 "ip_address": l3_interface["ip_addresses"][node_index],
-                                "mtu": l3_interface.get("mtu"),
+                                "mtu": l3_interface.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
                                 "shutdown": not l3_interface.get("enabled", True),
                                 "description": interface_description,
                                 "eos_cli": l3_interface.get("raw_eos_cli"),
@@ -88,7 +91,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                                 interface["vrf"] = vrf["name"]
 
                             if get(l3_interface, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
-                                interface["ospf_area"] = l3_interface["ospf"].get("area", 0)
+                                interface["ospf_area"] = l3_interface["ospf"].get("area", "0")
                                 interface["ospf_network_point_to_point"] = l3_interface["ospf"].get("point_to_point", False)
                                 interface["ospf_cost"] = l3_interface["ospf"].get("cost")
                                 ospf_authentication = l3_interface["ospf"].get("authentication")

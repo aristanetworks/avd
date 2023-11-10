@@ -1,3 +1,5 @@
+hostname: mgmt_interface_ipv6
+is_deployed: true
 ipv6_static_routes:
 - vrf: MGMT
   destination_address_prefix: ::/0

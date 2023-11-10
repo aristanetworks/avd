@@ -1,3 +1,5 @@
+hostname: DC1-BL1B
+is_deployed: true
 router_bgp:
   as: '65104'
   router_id: 192.168.255.11

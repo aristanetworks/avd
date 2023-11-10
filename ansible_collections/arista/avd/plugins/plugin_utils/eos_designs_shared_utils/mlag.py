@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -47,7 +50,14 @@ class MlagMixin:
 
     @cached_property
     def mlag_interfaces(self: SharedUtils) -> list:
-        return range_expand(default(get(self.switch_data_combined, "mlag_interfaces"), get(self.default_interfaces, "mlag_interfaces"), []))
+        return range_expand(
+            default(
+                get(self.switch_data_combined, "mlag_interfaces"),
+                get(self.cv_topology_config, "mlag_interfaces"),
+                get(self.default_interfaces, "mlag_interfaces"),
+                [],
+            )
+        )
 
     @cached_property
     def mlag_interfaces_speed(self: SharedUtils) -> str | None:

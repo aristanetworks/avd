@@ -1,0 +1,13 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - management accounts #}
+{% if management_accounts is arista.avd.defined %}
+!
+management accounts
+{%     if management_accounts.password.policy is arista.avd.defined %}
+   password policy {{ management_accounts.password.policy }}
+{%     endif %}
+{% endif %}

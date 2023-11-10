@@ -1,0 +1,36 @@
+---
+# Role defaults - main
+
+# Filter to apply on cv_device to target only devices involved in Fabric
+device_filter: 'all'
+
+# Define inventory group to consider root of container topology
+container_root: '{{ fabric_name }}'
+
+# Configure prefix to append to configlets on CloudVision
+configlets_prefix: 'AVD-{{ fabric_name }}-'
+
+# State management to know if module should create/update or delete fabric
+state: 'present'
+
+# CVP Deployment methodology, whether to execute or stage tasks
+execute_tasks: false
+
+# Version of the Cloudvision collection to use for upload
+cv_collection: v3
+
+# For "inventory_to_container" the inventory is read from memory unless 'avd_inventory_to_container_file' is set
+avd_inventory_to_container_file: null
+
+# Apply mode for cv_container_v3
+container_apply_mode: "loose"
+
+# Apply mode for cv_device_v3
+device_apply_mode: "loose"
+
+# Search key for cv_device_v3 - 'fqdn', 'hostname', 'serialNumber'
+device_search_key: "hostname"
+
+# Inventory mode for cv_device_v3 - strict fails on any missing device. loose ignores missing devices
+# NOT set as default, to avoid setting the argument on older arista.cvp versions
+# device_inventory_mode: "strict"

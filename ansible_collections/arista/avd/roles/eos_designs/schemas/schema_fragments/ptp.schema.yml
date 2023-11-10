@@ -1,0 +1,28 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ptp:
+    documentation_options:
+      table: ptp
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      profile:
+        type: str
+        valid_values:
+          - "aes67"
+          - "smpte2059-2"
+          - "aes67-r16-2016"
+        default: "aes67-r16-2016"
+      domain:
+        type: int
+        $ref: "eos_cli_config_gen#/keys/ptp/keys/domain"
+      auto_clock_identity:
+        type: bool
+        default: true

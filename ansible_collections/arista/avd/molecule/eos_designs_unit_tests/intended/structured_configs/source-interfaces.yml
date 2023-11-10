@@ -1,0 +1,68 @@
+hostname: source-interfaces
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: default
+  ip_routing: false
+- name: INBANDMGMT
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: default
+  ip_address: 192.168.0.2/24
+  gateway: null
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: default
+  enable_https: true
+ip_radius_source_interfaces:
+- name: Management1
+- name: Vlan4092
+  vrf: INBANDMGMT
+ip_tacacs_source_interfaces:
+- name: Management1
+- name: Vlan4092
+  vrf: INBANDMGMT
+ip_ssh_client_source_interfaces:
+- name: Management1
+- name: Vlan4092
+  vrf: INBANDMGMT
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+  - name: Vlan4092
+    vrf: INBANDMGMT
+ip_http_client_source_interfaces:
+- name: Management1
+- name: Vlan4092
+  vrf: INBANDMGMT
+snmp_server:
+  local_interfaces:
+  - name: Management1
+  - name: Vlan4092
+    vrf: INBANDMGMT
+ip_igmp_snooping:
+  globally_enabled: true
+vlans:
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  vrf: INBANDMGMT
+  ip_address: 10.20.30.40/24
+  type: inband_mgmt
+static_routes:
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 10.20.30.1
+  vrf: INBANDMGMT

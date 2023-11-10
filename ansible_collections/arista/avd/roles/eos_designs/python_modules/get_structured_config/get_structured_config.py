@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from collections import ChainMap
@@ -10,10 +13,9 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from ..base import AvdStructuredConfigBase
 from ..connected_endpoints import AvdStructuredConfigConnectedEndpoints
-from ..core_interfaces import AvdStructuredConfigCoreInterfaces
+from ..core_interfaces_and_l3_edge import AvdStructuredConfigCoreInterfacesAndL3Edge
 from ..custom_structured_configuration import AvdStructuredConfigCustomStructuredConfiguration
 from ..inband_management import AvdStructuredConfigInbandManagement
-from ..l3_edge import AvdStructuredConfigL3Edge
 from ..mlag import AvdStructuredConfigMlag
 from ..network_services import AvdStructuredConfigNetworkServices
 from ..overlay import AvdStructuredConfigOverlay
@@ -24,8 +26,7 @@ AVD_STRUCTURED_CONFIG_CLASSES = [
     AvdStructuredConfigMlag,
     AvdStructuredConfigUnderlay,
     AvdStructuredConfigOverlay,
-    AvdStructuredConfigCoreInterfaces,
-    AvdStructuredConfigL3Edge,
+    AvdStructuredConfigCoreInterfacesAndL3Edge,
     AvdStructuredConfigNetworkServices,
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,
@@ -56,7 +57,7 @@ def get_structured_config(
     # Insert dynamic keys into the input data if not set.
     # These keys are required by the schema, but the default values are set inside shared_utils.
     vars.setdefault("node_type_keys", shared_utils.node_type_keys)
-    vars.setdefault("connected_endpoint_keys", shared_utils.connected_endpoints_keys)
+    vars.setdefault("connected_endpoints_keys", shared_utils.connected_endpoints_keys)
     vars.setdefault("network_services_keys", shared_utils.network_services_keys)
 
     # Validate input data

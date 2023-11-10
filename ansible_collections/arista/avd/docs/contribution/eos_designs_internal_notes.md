@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # EOS Designs internal notes
 
 !!! Warning
@@ -79,7 +85,7 @@ The facts can be inspected in a file per device by running the `arista.avd.eos_d
 ```mermaid
 classDiagram
   direction LR
-  class eos_designs_facts["arista.avd.eos_designs_facts"]{
+  class eos_designs_facts{
     - Verify devices are in one fabric group
     - Read and template default role_vars
     - Read and validate Hostvars for all devices
@@ -89,7 +95,7 @@ classDiagram
     - Run "render" method on all EosDesignsFacts instances
     - Build facts from data returned by "render"
   }
-  class ActionBase["Ansible ActionBase"]{
+  class ActionBase{
   }
   class AvdSchemaTools{
   }
@@ -122,7 +128,7 @@ attributes/cached_properties will be rendered.
 
 The base class has a few important methods:
 
-- `keys()` return a list of attributes not beginning with an undercore and where the attribute is decorated with `cached_property`.
+- `keys()` return a list of attributes not beginning with an underscore and where the attribute is decorated with `cached_property`.
   These attributes represent the keys in the emulated dict.
 - `render()` loop over every attribute returned by `keys()` and return a dict with all the returned `cached_properties`, except
   `cached_property` with a value of `None` which will be skipped.
@@ -142,7 +148,7 @@ TODO
 The class is instantiated once per device. Methods may use references to other device instances using `hostvars.avd_switch_facts`,
 which is a dict of `EosDesignsfacts` instances covering all devices.
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_facts/)
+See the source code [here](../../plugins/plugin_utils/eos_designs_facts/__init__.py)
 
 ```mermaid
 classDiagram
@@ -173,7 +179,7 @@ classDiagram
 
 ### SharedUtils
 
-See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/)
+See the source code [here](../../plugins/plugin_utils/eos_designs_shared_utils/__init__.py)
 
 ```mermaid
 classDiagram
@@ -226,17 +232,16 @@ Subclasses are typically using Mixin classes to split all the attributes/`cached
 
 Source code:
 
-- [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/)
+- [AvdStructuredConfigBase](../../roles/eos_designs/python_modules/base/__init__.py)
   (Unfortunate naming. Base here refers to base configurations. Not a Base class.)
-- [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/)
-- [AvdStructuredConfigCoreInterfaces](../../roles/eos_designs/python_modules/core_interfaces/)
-- [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/)
-- [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/)
-- [AvdStructuredConfigL3Edge](../../roles/eos_designs/python_modules/l3_edge/)
-- [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/)
-- [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/)
-- [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/)
-- [AvdStructuredConfigUnderlay](../../roles/eos_designs/python_modules/underlay/)
+- [AvdStructuredConfigConnectedEndpoints](../../roles/eos_designs/python_modules/connected_endpoints/__init__.py)
+- [AvdStructuredConfigCoreInterfacesAndL3Edge](../../roles/eos_designs/python_modules/core_interfaces_and_l3_edge/__init__.py)
+- [AvdStructuredConfigCustomStructuredConfiguration](../../roles/eos_designs/python_modules/custom_structured_configuration/__init__.py)
+- [AvdStructuredConfigInbandManagement](../../roles/eos_designs/python_modules/inband_management/__init__.py)
+- [AvdStructuredConfigMlag](../../roles/eos_designs/python_modules/mlag/__init__.py)
+- [AvdStructuredConfigNetworkServices](../../roles/eos_designs/python_modules/network_services/__init__.py)
+- [AvdStructuredConfigOverlay](../../roles/eos_designs/python_modules/overlay/__init__.py)
+- [AvdStructuredConfigUnderlay](../../roles/eos_designs/python_modules/underlay/__init__.py)
 
 ```mermaid
 classDiagram
@@ -246,30 +251,27 @@ classDiagram
   }
   class AvdStructuredConfigBase
   class AvdStructuredConfigConnectedEndpoints
-  class AvdStructuredConfigCoreInterfaces
+  class AvdStructuredConfigCoreInterfacesAndL3Edge
   class AvdStructuredConfigCustomStructuredConfiguration
   class AvdStructuredConfigInbandManagement
-  class AvdStructuredConfigL3Edge
   class AvdStructuredConfigMlag
   class AvdStructuredConfigNetworkServices
   class AvdStructuredConfigOverlay
   class AvdStructuredConfigUnderlay
   AvdFacts <|-- AvdStructuredConfigBase : extends
   AvdFacts <|-- AvdStructuredConfigConnectedEndpoints : extends
-  AvdFacts <|-- AvdStructuredConfigCoreInterfaces : extends
+  AvdFacts <|-- AvdStructuredConfigCoreInterfacesAndL3Edge : extends
   AvdFacts <|-- AvdStructuredConfigCustomStructuredConfiguration : extends
   AvdFacts <|-- AvdStructuredConfigInbandManagement : extends
-  AvdFacts <|-- AvdStructuredConfigL3Edge : extends
   AvdFacts <|-- AvdStructuredConfigMlag : extends
   AvdFacts <|-- AvdStructuredConfigNetworkServices : extends
   AvdFacts <|-- AvdStructuredConfigOverlay : extends
   AvdFacts <|-- AvdStructuredConfigUnderlay : extends
   AvdStructuredConfigBase --* SharedUtils
   AvdStructuredConfigConnectedEndpoints --* SharedUtils
-  AvdStructuredConfigCoreInterfaces --* SharedUtils
+  AvdStructuredConfigCoreInterfacesAndL3Edge --* SharedUtils
   AvdStructuredConfigCustomStructuredConfiguration --* SharedUtils
   AvdStructuredConfigInbandManagement --* SharedUtils
-  AvdStructuredConfigL3Edge --* SharedUtils
   AvdStructuredConfigMlag --* SharedUtils
   AvdStructuredConfigNetworkServices --* SharedUtils
   AvdStructuredConfigOverlay --* SharedUtils
@@ -281,7 +283,7 @@ classDiagram
 ### avd_switch_facts
 
 The following model is set as `eos_designs_facts`. Most keys are optional depending on the
-usecase and configuration. The use of each key is tracked in the sections below.
+use case and configuration. The use of each key is tracked in the sections below.
 
 ```yaml
 avd_switch_facts:
@@ -413,7 +415,7 @@ outside of that, so any inline Jinja2 could not use these values.
 | switch.local_endpoint_trunk_groups | Complex calculations leveraging data from peers leading to compact output, so instead of repeating in multiple areas, we do it once and store the result. |
 | switch.mlag_ip | mlag_ip must be available to the mlag peer. |
 | switch.mlag_l3_ip | mlag_l3_ip must be available to the mlag peer. |
-| switch.mgmt_ip | mgmp_ip must be available to the mlag peer. |
+| switch.mgmt_ip | mgmt_ip must be available to the mlag peer. |
 | switch.uplink_peers | These are used to generate the "avd_topology_peers" fact covering downlinks for all devices in eos_designs_facts action plugin. |
 | switch.dc_name | Used for underlay HER flood-list calculations when using scope dc_name
 | switch.bgp_as | Known use of inline jinja in customer deployments |

@@ -353,6 +353,7 @@ interface Port-Channel5
    switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
+   l2 mtu 8000
    mlag 5
    storm-control broadcast level 1
    storm-control multicast level 1

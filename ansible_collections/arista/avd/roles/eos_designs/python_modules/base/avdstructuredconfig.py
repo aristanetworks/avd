@@ -1,18 +1,42 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
-from hashlib import sha1
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.filter.snmp_hash import hash_passphrase
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from .snmp_server import SnmpServerMixin
 
-class AvdStructuredConfigBase(AvdFacts):
+
+class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
+    """
+    The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
+
+    "get_structured_config" imports, instantiates and run the .render() method on the class.
+    .render() runs all class methods not starting with _ and of type @cached property and inserts the returned data into
+    a dict with the name of the method as key. This means that each key in the final dict corresponds to a method.
+
+    The Class uses AvdFacts, as the base class, to inherit the _hostvars, keys and other attributes.
+    Other methods are included as "Mixins" to make the files more managable.
+
+    The order of the @cached_properties methods imported from Mixins will also control the order in the output.
+    """
+
+    @cached_property
+    def hostname(self) -> str:
+        return self.shared_utils.hostname
+
+    @cached_property
+    def is_deployed(self) -> bool:
+        return self.shared_utils.is_deployed
+
     @cached_property
     def serial_number(self) -> str | None:
         """
@@ -231,6 +255,7 @@ class AvdStructuredConfigBase(AvdFacts):
             else:
                  <updating as cvp_on_prem ip>
         """
+        # cvp_instance_ip will be removed in AVD5.0
         cvp_instance_ip = get(self._hostvars, "cvp_instance_ip")
         cvp_instance_ip_list = get(self._hostvars, "cvp_instance_ips", [])
         if cvp_instance_ip is not None:
@@ -350,89 +375,15 @@ class AvdStructuredConfigBase(AvdFacts):
         return None
 
     @cached_property
-    def snmp_server(self) -> dict | None:
+    def interface_defaults(self) -> dict | None:
         """
-        snmp_server set based on snmp_settings data-model, using various snmp_settings information.
-
-        if snmp_settings.compute_local_engineid is True we will use sha1 to create a
-        unique local_engine_id value based on hostname and mgmt_ip facts.
-
-        If user.version is set to 'v3', compute_local_engineid and compute_v3_user_localized_key are set to 'True'
-        we will use hash_passphrase filter to create an instance of hashlib._hashlib.HASH corresponding to the auth_type
-        value based on various snmp_settings.users information.
+        interface_defaults set based on default_interface_mtu
         """
-        if (snmp_settings := get(self._hostvars, "snmp_settings")) is None:
-            return None
-
-        snmp_server = {}
-
-        local_engine_id = None
-
-        if snmp_settings.get("compute_local_engineid") is True:
-            compute_source = get(snmp_settings, "compute_local_engineid_source", default="hostname_and_ip")
-            if compute_source == "hostname_and_ip":
-                local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.mgmt_ip}".encode("utf-8")).hexdigest()
-            elif compute_source == "system_mac":
-                if self.shared_utils.system_mac_address is None:
-                    raise AristaAvdMissingVariableError("default_engine_id_from_system_mac: true requires system_mac_address to be set!")
-                # the default engine id on switches is derived as per the following formula
-                local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
-            else:
-                # Unknown mode
-                raise AristaAvdError(
-                    f"'{compute_source}' is not a valid value to compute the engine ID, accepted values are 'hostname_and_ip' and 'system_mac'"
-                )
-
-            snmp_server["engine_ids"] = {"local": local_engine_id}
-
-        if (contact := snmp_settings.get("contact")) is not None:
-            snmp_server["contact"] = contact
-
-        if snmp_settings.get("location") is not None:
-            location_elements = [
-                get(self._hostvars, "fabric_name"),
-                self.shared_utils.dc_name,
-                self.shared_utils.pod_name,
-                get(self.shared_utils.switch_data_combined, "rack"),
-                self.shared_utils.hostname,
-            ]
-            location_elements = [location for location in location_elements if location is not None]
-            snmp_location = " ".join(location_elements)
-            snmp_server["location"] = snmp_location
-
-        users = snmp_settings.get("users")
-        if users is not None:
-            snmp_server["users"] = []
-            for user in users:
-                version = get(user, "version")
-                user_dict = {"name": get(user, "name"), "group": get(user, "group"), "version": version}
-                compute_v3_user_localized_key = snmp_settings.get("compute_v3_user_localized_key")
-                if version == "v3":
-                    if local_engine_id is not None and compute_v3_user_localized_key is True:
-                        user_dict["localized"] = local_engine_id
-
-                    auth = user.get("auth")
-                    auth_passphrase = user.get("auth_passphrase")
-                    if auth is not None and auth_passphrase is not None:
-                        user_dict["auth"] = auth
-                        if local_engine_id is not None and compute_v3_user_localized_key is True:
-                            hash_filter = {"passphrase": auth_passphrase, "auth": auth, "engine_id": local_engine_id}
-                            user_dict["auth_passphrase"] = hash_passphrase(hash_filter)
-                        else:
-                            user_dict["auth_passphrase"] = auth_passphrase
-
-                        priv = user.get("priv")
-                        priv_passphrase = user.get("priv_passphrase")
-                        if priv is not None and priv_passphrase is not None:
-                            user_dict["priv"] = priv
-                            if local_engine_id is not None and compute_v3_user_localized_key is True:
-                                hash_filter.update({"passphrase": priv_passphrase, "priv": priv})
-                                user_dict["priv_passphrase"] = hash_passphrase(hash_filter)
-                            else:
-                                user_dict["priv_passphrase"] = priv_passphrase
-                snmp_server["users"].append(user_dict)
-
-        return snmp_server
+        if self.shared_utils.default_interface_mtu is not None:
+            return {
+                "mtu": self.shared_utils.default_interface_mtu,
+            }
+        return None
 
     @cached_property
     def spanning_tree(self) -> dict | None:
@@ -666,6 +617,10 @@ class AvdStructuredConfigBase(AvdFacts):
             default_priority2 = self.id % 256
         """
         if not self.shared_utils.ptp_enabled:
+            # Since we have overlapping data model "ptp" between eos_designs and eos_cli_config_gen,
+            # we need to overwrite the input dict if set but not enabled.
+            if get(self._hostvars, "ptp") is not None:
+                return {}
             return None
 
         default_ptp_domain = get(self._hostvars, "ptp.domain", default=127)
@@ -680,7 +635,8 @@ class AvdStructuredConfigBase(AvdFacts):
 
             priority2 = self.shared_utils.id % 256
 
-        if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=True) is True:
+        default_auto_clock_identity = get(self._hostvars, "ptp.auto_clock_identity", default=True)
+        if get(self.shared_utils.switch_data_combined, "ptp.auto_clock_identity", default=default_auto_clock_identity) is True:
             clock_identity_prefix = get(self.shared_utils.switch_data_combined, "ptp.clock_identity_prefix", default="00:1C:73")
             default_clock_identity = f"{clock_identity_prefix}:{priority1:02x}:00:{priority2:02x}"
 
@@ -739,4 +695,73 @@ class AvdStructuredConfigBase(AvdFacts):
         platform_raw_eos_cli = get(self.shared_utils.platform_settings, "raw_eos_cli")
         if raw_eos_cli is not None or platform_raw_eos_cli is not None:
             return "\n".join(filter(None, [raw_eos_cli, platform_raw_eos_cli]))
+        return None
+
+    @cached_property
+    def ip_radius_source_interfaces(self) -> list | None:
+        """
+        Parse source_interfaces.radius and return list of source_interfaces.
+        """
+        if (inputs := self._source_interfaces.get("radius")) is None:
+            return None
+
+        if source_interfaces := self._build_source_interfaces(inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP Radius"):
+            return source_interfaces
+
+        return None
+
+    @cached_property
+    def ip_tacacs_source_interfaces(self) -> list | None:
+        """
+        Parse source_interfaces.tacacs and return list of source_interfaces.
+        """
+        if (inputs := self._source_interfaces.get("tacacs")) is None:
+            return None
+
+        if source_interfaces := self._build_source_interfaces(inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP Tacacs"):
+            return source_interfaces
+
+        return None
+
+    @cached_property
+    def ip_ssh_client_source_interfaces(self) -> list | None:
+        """
+        Parse source_interfaces.ssh_client and return list of source_interfaces.
+        """
+        if (inputs := self._source_interfaces.get("ssh_client")) is None:
+            return None
+
+        if source_interfaces := self._build_source_interfaces(inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP SSH Client"):
+            return source_interfaces
+
+        return None
+
+    @cached_property
+    def ip_domain_lookup(self) -> dict | None:
+        """
+        Parse source_interfaces.domain_lookup and return dict with nested source_interfaces list.
+        """
+        if (inputs := self._source_interfaces.get("domain_lookup")) is None:
+            return None
+
+        if source_interfaces := self._build_source_interfaces(
+            inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP Domain Lookup"
+        ):
+            return {"source_interfaces": source_interfaces}
+
+        return None
+
+    @cached_property
+    def ip_http_client_source_interfaces(self) -> list | None:
+        """
+        Parse source_interfaces.http_client and return list of source_interfaces.
+        """
+        if (inputs := self._source_interfaces.get("http_client")) is None:
+            return None
+
+        if source_interfaces := self._build_source_interfaces(
+            inputs.get("mgmt_interface", False), inputs.get("inband_mgmt_interface", False), "IP HTTP Client"
+        ):
+            return source_interfaces
+
         return None

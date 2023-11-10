@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -64,13 +67,15 @@ class ActionModule(ActionBase):
             validation_mode = self._task.args.get("validation_mode")
             output_schema = self._task.args.get("output_schema")
             output_schema_id = self._task.args.get("output_schema_id")
+            set_switch_fact = self._task.args.get("set_switch_fact", True)
 
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
 
         hostname = task_vars["inventory_hostname"]
 
-        task_vars["switch"] = get(task_vars, f"avd_switch_facts..{hostname}..switch", separator="..", default={})
+        if set_switch_fact:
+            task_vars["switch"] = get(task_vars, f"avd_switch_facts..{hostname}..switch", separator="..", default={})
 
         # Read ansible variables and perform templating to support inline jinja2
         for var in task_vars:
@@ -100,13 +105,13 @@ class ActionModule(ActionBase):
         # Initialize SharedUtils class to be passed to each python_module below.
         shared_utils = SharedUtils(hostvars=template_vars, templar=self.templar)
 
-        # Insert dynamic keys into the input data if not set.
-        # These keys are required by the schema, but the default values are set inside shared_utils.
-        task_vars.setdefault("node_type_keys", shared_utils.node_type_keys)
-        task_vars.setdefault("connected_endpoint_keys", shared_utils.connected_endpoints_keys)
-        task_vars.setdefault("network_services_keys", shared_utils.network_services_keys)
-
         if schema or schema_id:
+            # Insert dynamic keys into the input data if not set.
+            # These keys are required by the schema, but the default values are set inside shared_utils.
+            task_vars.setdefault("node_type_keys", shared_utils.node_type_keys)
+            task_vars.setdefault("connected_endpoints_keys", shared_utils.connected_endpoints_keys)
+            task_vars.setdefault("network_services_keys", shared_utils.network_services_keys)
+
             # Load schema tools and perform conversion and validation
             avdschematools = AvdSchemaTools(
                 hostname=hostname,
@@ -268,7 +273,8 @@ class ActionModule(ActionBase):
         else:
             result["ansible_facts"] = output
 
-        result["ansible_facts"]["switch"] = task_vars.get("switch")
+        if set_switch_fact:
+            result["ansible_facts"]["switch"] = task_vars.get("switch")
 
         if cprofile_file:
             profiler.disable()

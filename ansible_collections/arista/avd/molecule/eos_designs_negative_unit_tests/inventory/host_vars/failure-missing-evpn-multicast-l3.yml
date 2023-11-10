@@ -1,0 +1,43 @@
+type: l3leaf
+underlay_multicast: true
+evpn_multicast: false
+
+l3leaf:
+  defaults:
+    # LOOPBACK AND VTEP MANAGEMENT
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+  nodes:
+    - name: failure-missing-evpn-multicast-l3
+      id: 3
+      bgp_as: 65101
+      filter:
+        tags: ['evpn-multicast-l3']
+
+tenants:
+  - name: FABRIC
+    mac_vrf_vni_base: 10000
+    evpn_l3_multicast:
+      enabled: true
+      evpn_underlay_l3_multicast_group_ipv4_pool: 232.0.0.0/20
+    vrfs:
+      - name: Tenant_A_OP_Zone_MC
+        description: "Tenant_A_OP_Zone"
+        vrf_vni: 10
+        vtep_diagnostic:
+          loopback: 31
+          loopback_ip_range: 10.255.1.0/24
+        svis:
+          # SVI as string
+          - id: '210'
+            name: Tenant_A_OP_Zone_1
+            tags: ['evpn-multicast-l3']
+          # SVI as integer
+          - id: 211
+            vni_override: 10110 #10111 would be the calculated value.
+            name: Tenant_A_OP_Zone_2
+            tags: ['evpn-multicast-l3']
+
+expected_error_message: >-
+  'evpn_l3_multicast: true' under VRF Tenant_A_OP_Zone_MC or Tenant FABRIC; this requires 'evpn_multicast' to also be set to true.

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -9,8 +12,8 @@ $defs:
       speed:
         type: str
         description: |
-          Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.
-          If not specified will be auto.
+          Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          If not specified speed will be auto.
       description:
         type: str
         description: |
@@ -120,6 +123,10 @@ $defs:
               - "aes67"
               - "aes67-r16-2016"
               - "smpte2059-2"
+      sflow:
+        type: bool
+        description: |
+          Configures sFlow on the interface. Overrides `fabric_sflow` setting.
       link_tracking:
         type: dict
         description: |
@@ -223,6 +230,10 @@ $defs:
               - str
             min: 1
             max: 10
+      poe:
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/poe
+        type: dict
+        description: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
       storm_control:
         type: dict
         description: Storm control settings applied on port toward the endpoint.
@@ -244,11 +255,14 @@ $defs:
                 default: "percent"
                 description: Optional variable and is hardware dependent.
           broadcast:
-            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+            type: dict
+            $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
           multicast:
-            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+            type: dict
+            $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
           unknown_unicast:
-            $ref: "#/$defs/adapter_config/keys/storm_control/keys/all"
+            type: dict
+            $ref: "eos_designs#/$defs/adapter_config/keys/storm_control/keys/all"
       monitor_sessions:
         type: list
         description: Used to define switchports as source or destination for monitoring sessions.
@@ -434,6 +448,10 @@ $defs:
           short_esi:
             type: str
             description: In format xxxx:xxxx:xxxx or "auto".
+            deprecation:
+              warning: true
+              remove_in_version: "5.0.0"
+              new_key: ethernet_segment.short_esi
           lacp_fallback:
             type: dict
             description: LACP fallback configuration.
@@ -509,10 +527,16 @@ $defs:
             description: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
           structured_config:
             type: dict
-            description: Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen.
+            description: Custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items/"
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
       structured_config:
         type: dict
-        description: Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen.
+        description: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+        documentation_options:
+          hide_keys: true
+        $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"

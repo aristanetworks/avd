@@ -166,9 +166,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2 | routed | - | 172.16.21.64/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2 | routed | - | 172.16.21.66/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet6 | routed | - | 11.1.2.3/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2 | routed | - | 172.16.21.64/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2 | routed | - | 172.16.21.66/31 | default | - | False | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet6 | routed | - | 11.1.2.3/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -177,7 +177,6 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.16.21.64/31
    ptp enable
@@ -186,7 +185,6 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2
    no shutdown
-   mtu 1500
    no switchport
    ip address 172.16.21.66/31
    ptp enable
@@ -195,7 +193,6 @@ interface Ethernet2
 interface Ethernet4
    description P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet6
    no shutdown
-   mtu 1500
    no switchport
    ip address 11.1.2.3/31
 ```
@@ -285,7 +282,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65200|  172.16.200.2 |
+| 65200 | 172.16.200.2 |
 
 | BGP Tuning |
 | ---------- |

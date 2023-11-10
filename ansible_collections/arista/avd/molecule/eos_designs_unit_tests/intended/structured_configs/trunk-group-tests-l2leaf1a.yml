@@ -1,3 +1,5 @@
+hostname: trunk-group-tests-l2leaf1a
+is_deployed: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -27,25 +29,25 @@ vlans:
   name: svi100_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
+  - MLAG
   - TG_100
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   - UPLINK
 - id: 200
   name: svi200_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
+  - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   - UPLINK
 - id: 300
   name: svi300_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
+  - MLAG
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   - UPLINK
 - id: 398
   name: svi398_without_trunk_groups
@@ -57,25 +59,25 @@ vlans:
   name: l2vlan110_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
+  - MLAG
   - TG_100
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   - UPLINK
 - id: 210
   name: l2vlan210_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
+  - MLAG
   - TG_200
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   - UPLINK
 - id: 310
   name: l2vlan310_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
   trunk_groups:
+  - MLAG
   - TG_300
   - TG_NOT_MATCHING_ANY_SERVERS
-  - MLAG
   - UPLINK
 - id: 399
   name: l2vlan399_without_trunk_groups

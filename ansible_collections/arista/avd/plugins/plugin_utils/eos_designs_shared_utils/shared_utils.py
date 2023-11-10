@@ -1,5 +1,9 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from .bgp_peer_groups import BgpPeerGroupsMixin
 from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
+from .cv_topology import CvTopology
 from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
@@ -25,6 +29,7 @@ class SharedUtils(
     InterfaceDescriptionsMixin,
     IpAddressingMixin,
     LinkTrackingGroupsMixin,
+    CvTopology,
     MgmtMixin,
     MlagMixin,
     MiscMixin,

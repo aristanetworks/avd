@@ -1,3 +1,5 @@
+hostname: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1
+is_deployed: true
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending

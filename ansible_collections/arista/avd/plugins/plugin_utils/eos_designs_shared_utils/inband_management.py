@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -39,7 +42,10 @@ class InbandManagementMixin:
         return get(self.switch_data_combined, "inband_mgmt_description", default="Inband Management")
 
     @cached_property
-    def inband_mgmt_mtu(self: SharedUtils) -> str:
+    def inband_mgmt_mtu(self: SharedUtils) -> int | None:
+        if not self.platform_settings_feature_support_per_interface_mtu:
+            return None
+
         return get(self.switch_data_combined, "inband_mgmt_mtu", default=1500)
 
     @cached_property

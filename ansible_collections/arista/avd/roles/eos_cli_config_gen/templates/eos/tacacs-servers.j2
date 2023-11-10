@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - tacacs servers #}
 {% if tacacs_servers is arista.avd.defined %}
 !
@@ -23,5 +28,8 @@
 {%     endfor %}
 {%     if tacacs_servers.policy_unknown_mandatory_attribute_ignore is arista.avd.defined(true) %}
 tacacs-server policy unknown-mandatory-attribute ignore
+{%     endif %}
+{%     if tacacs_servers.timeout is arista.avd.defined %}
+tacacs-server timeout {{ tacacs_servers.timeout }}
 {%     endif %}
 {% endif %}

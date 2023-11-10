@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - management ssh #}
 {% if management_ssh is arista.avd.defined %}
 !
@@ -30,6 +35,12 @@ management ssh
 {%     endif %}
 {%     if management_ssh.connection.per_host is arista.avd.defined %}
    connection per-host {{ management_ssh.connection.per_host }}
+{%     endif %}
+{%     if management_ssh.client_alive.interval is arista.avd.defined %}
+   client-alive interval {{ management_ssh.client_alive.interval }}
+{%     endif %}
+{%     if management_ssh.client_alive.count_max is arista.avd.defined %}
+   client-alive count-max {{ management_ssh.client_alive.count_max }}
 {%     endif %}
 {%     if management_ssh.cipher is arista.avd.defined %}
    cipher {{ management_ssh.cipher | join(" ") }}

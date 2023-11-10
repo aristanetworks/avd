@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - ip nat part 1 (translation, kernel_buffer_size) #}
 {% if ip_nat is arista.avd.defined %}
 !
@@ -28,4 +33,14 @@ ip nat translation max-entries {{ ip_limit.limit }} {{ ip_limit.ip }}
 {%     if ip_nat.kernel_buffer_size is arista.avd.defined %}
 ip nat kernel buffer size {{ ip_nat.kernel_buffer_size }}
 {%     endif %}
+{%     for profile in ip_nat.profiles | arista.avd.natural_sort("name") %}
+!
+{%         set nat_profile_def = "ip nat profile " ~ profile.name %}
+{%         if profile.vrf is arista.avd.defined %}
+{%             set nat_profile_def = nat_profile_def ~ " vrf " ~ profile.name %}
+{%         endif %}
+{{ nat_profile_def }}
+{%         set interface_ip_nat = profile %}
+{%         include 'eos/interface-ip-nat.j2' %}
+{%     endfor %}
 {% endif %}

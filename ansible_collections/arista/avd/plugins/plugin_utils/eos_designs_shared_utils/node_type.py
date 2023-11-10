@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -117,6 +120,8 @@ class NodeTypeMixin:
     def vtep(self: SharedUtils) -> bool:
         """
         vtep set based on
+        <node_type_key>.nodes.[].vtep and
         node_type_keys.<node_type_key>.vtep
         """
-        return get(self.node_type_key_data, "vtep", default=False)
+        default_vtep = get(self.node_type_key_data, "vtep")
+        return get(self.switch_data_combined, "vtep", default=default_vtep) is True

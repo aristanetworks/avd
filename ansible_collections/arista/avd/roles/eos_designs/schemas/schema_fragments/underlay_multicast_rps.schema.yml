@@ -1,0 +1,59 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  underlay_multicast_rps:
+    documentation_options:
+      table: fabric-settings
+    description: |
+      List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
+      The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).
+      If multiple nodes are configured under 'nodes' for the same RP address, they will be configured
+      according to the 'underlay_multicast_anycast_rp.mode' setting.
+
+      Requires 'underlay_multicast: true'.
+    type: list
+    primary_key: rp
+    items:
+      type: dict
+      keys:
+        rp:
+          type: str
+          description: RP IPv4 address.
+        nodes:
+          type: list
+          description: |
+            List of nodes where a Loopback interface with the RP address will be configured.
+          primary_key: name
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Hostname.
+              loopback_number:
+                type: int
+                convert_types:
+                  - str
+                required: true
+              description:
+                type: str
+                description: Interface description.
+                default: PIM RP
+        groups:
+          type: list
+          description: |
+            List of groups to associate with the RP address set in 'rp'.
+            If access_list_name is set, a standard access-list will be configured matching these groups.
+            Otherwise the groups are configured directly on the RP command.
+          items:
+            type: str
+            description: Multicast Group IPv4 prefix/mask.
+        access_list_name:
+          type: str
+          description: |
+            Name of standard Access-List.

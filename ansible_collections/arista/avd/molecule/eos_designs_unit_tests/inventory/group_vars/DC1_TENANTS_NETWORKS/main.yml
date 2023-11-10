@@ -14,20 +14,23 @@ svi_profiles:
     name: GENERIC Name V6
     mtu: 1560
     enabled: false
-    ipv6_address_virtual: 2001:db8:451::1/64
+    ipv6_address_virtuals:
+      - 2001:db8:451::1/64
   - profile: GENERIC_DUAL_STACK
     name: GENERIC DUAL STACK v4 and v6
     mtu: 1560
     enabled: false
     ip_address_virtual: 10.4.12.254/24
-    ipv6_address_virtual: 2001:db8:412::1/64
+    ipv6_address_virtuals:
+      - 2001:db8:412::1/64
     ipv6_enable: false
   - profile: TEST_SVI_NODE_INHERIT
     name: Test the SVI and node config inheritance
     mtu: 1560
     enabled: false
     ip_address_virtual: 10.4.13.254/24
-    ipv6_address_virtual: 2001:db8:413::1/64
+    ipv6_address_virtuals:
+      - 2001:db8:413::1/64
     ip_helpers:
       - ip_helper: 1.1.1.1
         source_interface: lo101

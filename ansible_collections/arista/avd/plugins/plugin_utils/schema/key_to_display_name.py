@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 WORDLIST = {
     "aaa": "AAA",
     "af": "AF",
@@ -16,10 +19,13 @@ WORDLIST = {
     "dns": "DNS",
     "dot1br": "dot1br",
     "dot1x": "dot1x",
+    "dps": "DPS",
     "dr": "DR",
     "dscp": "DSCP",
+    "ecmp": "ECMP",
     "eos": "EOS",
     "evpn": "EVPN",
+    "exp": "EXP",
     "fcs": "FCS",
     "gnmi": "gNMI",
     "http": "HTTP",
@@ -31,7 +37,6 @@ WORDLIST = {
     "ip": "IP",
     "ipv4": "IPv4",
     "ipv6": "IPv6",
-    "is": "IS",
     "isis": "ISIS",
     "lacp": "LACP",
     "lag": "LAG",
@@ -73,6 +78,7 @@ WORDLIST = {
     "srlg": "SRLG",
     "ssh": "SSH",
     "ssl": "SSL",
+    "stun": "STUN",
     "svi": "SVI",
     "tcam": "TCAM",
     "tcp": "TCP",

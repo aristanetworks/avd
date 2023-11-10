@@ -1,3 +1,5 @@
+hostname: cvp-instance-ips-onprem-token
+is_deployed: true
 service_routing_protocols_model: multi-agent
 daemon_terminattr:
   cvaddrs:

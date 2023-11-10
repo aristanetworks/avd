@@ -1,0 +1,46 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - dps interfaces #}
+{% for dps_interface in dps_interfaces | arista.avd.natural_sort('name') %}
+!
+interface {{ dps_interface.name }}
+{%     if dps_interface.description is arista.avd.defined %}
+   description {{ dps_interface.description }}
+{%     endif %}
+{%     if dps_interface.shutdown is arista.avd.defined(true) %}
+   shutdown
+{%     elif dps_interface.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
+{%     if dps_interface.mtu is arista.avd.defined %}
+   mtu {{ dps_interface.mtu }}
+{%     endif %}
+{%     if dps_interface.flow_tracker.hardware is arista.avd.defined %}
+   flow tracker hardware {{ dps_interface.flow_tracker.hardware }}
+{%     endif %}
+{%     if dps_interface.flow_tracker.sampled is arista.avd.defined %}
+   flow tracker sampled {{ dps_interface.flow_tracker.sampled }}
+{%     endif %}
+{%     if dps_interface.ip_address is arista.avd.defined %}
+   ip address {{ dps_interface.ip_address }}
+{%     endif %}
+{%     if dps_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or dps_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
+{%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
+{%         if dps_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv4 " ~ dps_interface.tcp_mss_ceiling.ipv4 %}
+{%         endif %}
+{%         if dps_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv6 " ~ dps_interface.tcp_mss_ceiling.ipv6 %}
+{%         endif %}
+{%         if dps_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " " ~ dps_interface.tcp_mss_ceiling.direction %}
+{%         endif %}
+   {{ tcp_mss_ceiling_cli }}
+{%     endif %}
+{%     if  dps_interface.eos_cli is arista.avd.defined %}
+   {{ dps_interface.eos_cli | indent(3, false) }}
+{%     endif %}
+{% endfor %}

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -22,7 +25,7 @@ keys:
           size:
             type: int
             convert_types:
-            - str
+              - str
             min: 10
             max: 2147483647
           level:
@@ -71,13 +74,14 @@ keys:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
             name:
               type: str
-              required: true
+              convert_types:
+                - int
               description: VRF name
             source_interface:
               type: str
@@ -86,13 +90,12 @@ keys:
               type: list
               primary_key: name
               convert_types:
-              - dict
+                - dict
               items:
                 type: dict
                 keys:
                   name:
                     type: str
-                    required: true
                     description: Syslog server name
                   protocol:
                     type: str
@@ -103,7 +106,7 @@ keys:
                     items:
                       type: int
                       convert_types:
-                      - str
+                        - str
       policy:
         type: dict
         keys:
@@ -114,14 +117,31 @@ keys:
                 type: list
                 primary_key: name
                 convert_types:
-                - dict
+                  - dict
                 items:
                   type: dict
                   keys:
                     name:
                       type: str
-                      required: true
                       description: Match list
                     action:
                       type: str
                       valid_values: ["discard"]
+      event:
+        type: dict
+        keys:
+          storm_control:
+            type: dict
+            keys:
+              discards:
+                type: dict
+                keys:
+                  global:
+                    type: bool
+                  interval:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 10
+                    max: 65535
+                    description: Logging interval in seconds

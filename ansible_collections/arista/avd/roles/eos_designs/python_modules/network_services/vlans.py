@@ -1,7 +1,11 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate
 
 from .utils import UtilsMixin
@@ -92,6 +96,6 @@ class VlansMixin(UtilsMixin):
                 trunk_groups.append(self._trunk_groups_mlag_name)
             if self.shared_utils.uplink_type == "port-channel":
                 trunk_groups.append(self._trunk_groups_uplink_name)
-            vlans_vlan["trunk_groups"] = trunk_groups
+            vlans_vlan["trunk_groups"] = natural_sort(trunk_groups)
 
         return vlans_vlan

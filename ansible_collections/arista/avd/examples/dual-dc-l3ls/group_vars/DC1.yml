@@ -42,14 +42,10 @@ l3leaf:
     loopback_ipv4_offset: 2
     # Definition of pool of IPs to be used as Virtual Tunnel EndPoint (VXLAN origin and destination IPs)
     vtep_loopback_ipv4_pool: 10.255.1.0/27
-    # Interfaces connecting this device towards the upper level of the hierarchy (Spines in this case)
-    uplink_interfaces: ['Ethernet1', 'Ethernet2']
     # Ansible hostname of the devices used to establish neighborship (IP assignments and BGP peering)
     uplink_switches: ['dc1-spine1', 'dc1-spine2']
     # Definition of pool of IPs to be used in P2P links
     uplink_ipv4_pool: 10.255.255.0/26
-    # MLAG Peer link physical interface definition
-    mlag_interfaces: ['Ethernet3', 'Ethernet4']
     # Definition of pool of IPs to be used for MLAG peer-link connectivity
     mlag_peer_ipv4_pool: 10.255.1.64/27
     # iBGP Peering between MLAG peers
@@ -117,7 +113,6 @@ l3leaf:
 l2leaf:
   defaults:
     platform: vEOS-lab
-    uplink_interfaces: ['Ethernet1', 'Ethernet2']
     spanning_tree_mode: mstp
 
   node_groups:

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -26,6 +29,8 @@ keys:
                 vrf:
                   type: str
                   description: VRF name is optional
+                  convert_types:
+                    - int
                 notification_timestamp:
                   type: str
                   valid_values: ["send-time", "last-change-time"]
@@ -37,6 +42,13 @@ keys:
                 ip_access_group:
                   type: str
                   description: ACL name
+                port:
+                  type: int
+                  description: |
+                      GNMI port.
+                      Make sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.
+                  convert_types:
+                    - str
           grpc_tunnels:
             type: list
             primary_key: name
@@ -58,6 +70,8 @@ keys:
                 vrf:
                   type: str
                   description: VRF name
+                  convert_types:
+                    - int
                 destination:
                   type: dict
                   keys:
@@ -71,7 +85,7 @@ keys:
                       max: 65535
                       required: true
                       convert_types:
-                      - str
+                        - str
                       description: TCP Port
                 local_interface:
                   type: dict
@@ -86,7 +100,7 @@ keys:
                       max: 65535
                       required: true
                       convert_types:
-                      - str
+                        - str
                       description: TCP Port
                 target:
                   type: dict
@@ -108,7 +122,7 @@ keys:
           remove_in_version: "5.0.0"
         primary_key: name
         convert_types:
-        - dict
+          - dict
         description: |
           These should not be mixed with the new keys above.
         items:
@@ -117,6 +131,8 @@ keys:
             name:
               type: str
               description: VRF name
+              convert_types:
+                - int
             access_group:
               type: str
               description: Standard IPv4 ACL name

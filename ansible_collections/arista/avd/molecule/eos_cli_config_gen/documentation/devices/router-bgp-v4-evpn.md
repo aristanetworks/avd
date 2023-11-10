@@ -43,7 +43,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  192.168.255.3 |
+| 65101 | 192.168.255.3 |
 
 | BGP Tuning |
 | ---------- |
@@ -249,6 +249,8 @@ router bgp 65101
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor TEST_PEER_GRP next-hop address-family ipv6 originate
+      neighbor TEST_PEER_GRP activate
    !
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11
@@ -278,8 +280,6 @@ router bgp 65101
          bgp additional-paths install
          bgp additional-paths receive
          bgp additional-paths send ecmp
-         neighbor TEST_PEER_GRP activate
-         neighbor TEST_PEER_GRP next-hop address-family ipv6 originate
          neighbor 10.2.3.4 activate
          neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
          neighbor 10.2.3.5 activate

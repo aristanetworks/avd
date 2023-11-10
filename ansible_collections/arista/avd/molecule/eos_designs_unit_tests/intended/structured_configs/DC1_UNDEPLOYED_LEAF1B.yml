@@ -1,3 +1,5 @@
+hostname: DC1_UNDEPLOYED_LEAF1B
+is_deployed: false
 router_bgp:
   as: '65111'
   router_id: 192.168.255.22
@@ -105,6 +107,7 @@ router_bgp:
         - '12:12'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
@@ -124,6 +127,7 @@ router_bgp:
         - '13:13'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
@@ -164,6 +168,7 @@ router_bgp:
         - 65000:789
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.24
       peer_group: MLAG-PEERS
@@ -183,6 +188,7 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 172.31.11.24
       peer_group: MLAG-PEERS
@@ -363,14 +369,16 @@ service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
   speed_groups:
-  - speed_group: 1
+  - speed_group: '1'
     serdes: 10G
-  - speed_group: 2
+  - speed_group: '2'
     serdes: 25G
-  - speed_group: 3
+  - speed_group: '3'
     serdes: 25G
-  - speed_group: 4
+  - speed_group: '4'
     serdes: 10G
+  - speed_group: 5/1
+    serdes: 25G
 daemon_terminattr:
   cvaddrs:
   - 192.168.200.11:9910
@@ -391,9 +399,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS DC1_UNDEPLOYED_LEAF1B
 spanning_tree:
   root_super: true
   mode: mstp
@@ -463,6 +468,9 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS DC1_UNDEPLOYED_LEAF1B
 vlans:
 - id: 4090
   tenant: system
@@ -903,6 +911,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -924,6 +940,12 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.251.24/31
+  - sequence: 20
+    action: permit 172.31.11.24/31
 router_bfd:
   multihop:
     interval: 1200

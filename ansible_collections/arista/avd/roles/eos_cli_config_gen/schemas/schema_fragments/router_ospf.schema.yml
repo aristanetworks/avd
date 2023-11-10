@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -23,6 +26,8 @@ keys:
             vrf:
               type: str
               description: VRF Name for OSPF Process
+              convert_types:
+                - int
             passive_interface_default:
               type: bool
             router_id:
@@ -147,6 +152,19 @@ keys:
               keys:
                 always:
                   type: bool
+                metric:
+                  type: int
+                  convert_types:
+                    - str
+                  description: Metric for default route
+                  min: 1
+                  max: 65535
+                metric_type:
+                  type: int
+                  convert_types:
+                    - str
+                  valid_values: [1, 2]
+                  description: OSPF metric type for default route
             summary_addresses:
               type: list
               primary_key: prefix
@@ -282,3 +300,6 @@ keys:
                           max: 16777215
             mpls_ldp_sync_default:
               type: bool
+            eos_cli:
+              type: str
+              description: Multiline EOS CLI rendered directly on the Router OSPF process ID in the final EOS configuration

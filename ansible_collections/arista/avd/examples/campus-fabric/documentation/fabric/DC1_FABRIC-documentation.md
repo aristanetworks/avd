@@ -19,7 +19,7 @@
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
 | DC1_FABRIC | leaf | LEAF1A | 172.100.100.103/24 | cEOSLab | Provisioned | - |
 | DC1_FABRIC | leaf | LEAF1B | 172.100.100.104/24 | cEOSLab | Provisioned | - |
-| DC1_FABRIC | leaf | LEAF2A | 172.100.100.105/24 | cEOSLab | Provisioned | - |
+| DC1_FABRIC | leaf | LEAF2A | 172.100.100.105/24 | 720XP | Provisioned | - |
 | DC1_FABRIC | leaf | LEAF3A | 172.100.100.106/24 | cEOSLab | Provisioned | - |
 | DC1_FABRIC | leaf | LEAF3B | 172.100.100.107/24 | cEOSLab | Provisioned | - |
 | DC1_FABRIC | leaf | LEAF3C | 172.100.100.108/24 | cEOSLab | Provisioned | - |

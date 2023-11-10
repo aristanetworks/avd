@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# doc - sflow #}
 {% if sflow is arista.avd.defined or sflow_interfaces | length > 0 %}
 
@@ -53,6 +58,13 @@ sFlow is disabled.
 {%     if sflow.interface.disable.default is arista.avd.defined(true) %}
 
 sFlow is disabled on all interfaces by default.
+{%     endif %}
+{%     if sflow.interface.egress.enable_default is arista.avd.defined(true) and sflow.interface.egress.unmodified is arista.avd.defined(false) %}
+
+Egress sFlow is enabled on all interfaces by default.
+{%     elif sflow.interface.egress.enable_default is arista.avd.defined(true) and sflow.interface.egress.unmodified is arista.avd.defined(true) %}
+
+Unmodified egress sFlow is enabled on all interfaces by default.
 {%     endif %}
 {%     if sflow.hardware_acceleration.enabled is arista.avd.defined(true) %}
 

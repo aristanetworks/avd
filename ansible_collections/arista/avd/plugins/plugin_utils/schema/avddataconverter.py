@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from typing import Generator
@@ -111,14 +114,14 @@ class AvdDataConverter:
         for index, item in enumerate(data):
             # Perform type conversion of the items data if required based on "convert_types"
             if "convert_types" in items:
-                yield from self.convert_types(items["convert_types"], data, index, items, path + [f"[{index}]"])
+                yield from self.convert_types(items["convert_types"], data, index, items, path + [index])
 
             # Convert to lower case if set in schema and item is a string
             if items.get("convert_to_lower_case") and isinstance(item, str):
                 data[index] = item.lower()
 
             # Dive in to child items/schema
-            yield from self.convert_data(item, items, path + [f"[{index}]"])
+            yield from self.convert_data(item, items, path + [index])
 
     def convert_types(self, convert_types: list, data: dict | list, index: str | int, schema: dict, path: list[str]):
         """
@@ -146,9 +149,6 @@ class AvdDataConverter:
             if not (schema_type == "int" and isinstance(value, bool)):
                 return
 
-        # Prepare string for var path used in warning messages.
-        path_str = ".".join(path)
-
         for convert_type in convert_types:
             if isinstance(value, SCHEMA_TO_PY_TYPE_MAP.get(convert_type)):
                 if schema_type in SIMPLE_CONVERTERS:
@@ -173,7 +173,7 @@ class AvdDataConverter:
                         # No change - when input is list and have the correct format in all items
                         return
 
-                    yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
+                    yield AvdConversionWarning(key=path, oldtype=convert_type, newtype=schema_type)
 
                 elif convert_type == "dict" and schema_type == "list":
                     try:
@@ -183,7 +183,7 @@ class AvdDataConverter:
                         # TODO: Log message
                         return
 
-                    yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
+                    yield AvdConversionWarning(key=path, oldtype=convert_type, newtype=schema_type)
 
                 elif convert_type == "str" and schema_type == "list":
                     try:
@@ -193,7 +193,7 @@ class AvdDataConverter:
                         # TODO: Log message
                         return
 
-                    yield AvdConversionWarning(key=path_str, oldtype=convert_type, newtype=schema_type)
+                    yield AvdConversionWarning(key=path, oldtype=convert_type, newtype=schema_type)
 
     def deprecation(self, deprecation: dict, data, schema: dict, path: list):
         """
@@ -210,7 +210,7 @@ class AvdDataConverter:
             return
 
         yield AvdDeprecationWarning(
-            key=".".join(path),
+            key=path,
             new_key=deprecation.get("new_key"),
             remove_in_version=deprecation.get("remove_in_version"),
             remove_after_date=deprecation.get("remove_after_date"),

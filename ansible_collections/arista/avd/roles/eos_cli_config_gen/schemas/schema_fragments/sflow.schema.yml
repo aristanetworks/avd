@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -10,29 +13,31 @@ keys:
       sample:
         type: int
         convert_types:
-        - str
+          - str
       dangerous:
         type: bool
       polling_interval:
         type: int
         convert_types:
-        - str
+          - str
         description: Polling interval in seconds
       vrfs:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
             name:
               type: str
+              convert_types:
+                - int
             destinations:
               type: list
               primary_key: destination
               convert_types:
-              - dict
+                - dict
               items:
                 type: dict
                 keys:
@@ -43,7 +48,7 @@ keys:
                     type: int
                     description: Port Number
                     convert_types:
-                    - str
+                      - str
             source:
               type: str
               description: |
@@ -56,7 +61,7 @@ keys:
         type: list
         primary_key: destination
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
@@ -67,7 +72,7 @@ keys:
               type: int
               description: Port Number
               convert_types:
-              - str
+                - str
       source:
         type: str
         description: |
@@ -97,6 +102,18 @@ keys:
             keys:
               default:
                 type: bool
+          egress:
+            type: dict
+            keys:
+              enable_default:
+                type: bool
+                description: |
+                  Enable egress sFlow by default.
+              unmodified:
+                type: bool
+                description: |
+                  Enable egress sFlow unmodified.
+                  Platform dependent feature.
       run:
         type: bool
       hardware_acceleration:
@@ -107,7 +124,7 @@ keys:
           sample:
             type: int
             convert_types:
-            - str
+              - str
           modules:
             type: list
             primary_key: name

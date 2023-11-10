@@ -1,3 +1,5 @@
+hostname: AUTO_BGP_UNGROUPED_LEAF6
+is_deployed: true
 router_bgp:
   as: '65110'
   router_id: 192.168.255.12

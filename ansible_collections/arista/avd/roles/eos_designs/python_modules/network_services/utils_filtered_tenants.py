@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -7,6 +10,7 @@ from ansible_collections.arista.avd.plugins.filter.default import default
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item, unique
 
@@ -129,54 +133,70 @@ class UtilsFilteredTenantsMixin(object):
             bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
             vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.shared_utils.hostname in bgp_peer.get("nodes", [])]
             vrf["static_routes"] = [
-                route for route in vrf.get("static_routes", []) if self.shared_utils.hostname in route.get("nodes", [self.shared_utils.hostname])
+                route
+                for route in get(vrf, "static_routes", default=[])
+                if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
             ]
             vrf["ipv6_static_routes"] = [
-                route for route in vrf.get("ipv6_static_routes", []) if self.shared_utils.hostname in route.get("nodes", [self.shared_utils.hostname])
+                route
+                for route in get(vrf, "ipv6_static_routes", default=[])
+                if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
             ]
             vrf["svis"] = self._filtered_svis(vrf)
             vrf["l3_interfaces"] = [
                 l3_interface
-                for l3_interface in vrf.get("l3_interfaces", [])
+                for l3_interface in get(vrf, "l3_interfaces", default=[])
                 if (
-                    self.shared_utils.hostname in l3_interface.get("nodes", [])
+                    self.shared_utils.hostname in get(l3_interface, "nodes", default=[])
                     and l3_interface.get("ip_addresses") is not None
                     and l3_interface.get("interfaces") is not None
                 )
             ]
 
-            if self._evpn_multicast:
-                vrf["_evpn_l3_multicast_enabled"] = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
+            if self.shared_utils.vtep is True:
+                evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
+                if evpn_l3_multicast_enabled is True and self._evpn_multicast is not True:
+                    raise AristaAvdError(
+                        f"'evpn_l3_multicast: true' under VRF {vrf['name']} or Tenant {tenant['name']}; this requires 'evpn_multicast' to also be set to true."
+                    )
 
-                rps = []
-                for rp_address in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
-                    if self.shared_utils.hostname in get(rp_address, "nodes", default=[self.shared_utils.hostname]):
-                        for rp_ip in get(
-                            rp_address,
-                            "rps",
-                            required=True,
-                            org_key=f"pim_rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
-                        ):
-                            if rp_groups := get(rp_address, "groups"):
-                                rps.append({"address": rp_ip, "groups": rp_groups})
-                            else:
-                                rps.append({"address": rp_ip})
-                if rps:
-                    vrf["_pim_rp_addresses"] = rps
+                if self._evpn_multicast:
+                    vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
 
-                for evpn_peg in default(get(vrf, "evpn_l3_multicast.evpn_peg"), get(tenant, "evpn_l3_multicast.evpn_peg"), []):
-                    if self.shared_utils.hostname in evpn_peg.get("nodes", [self.shared_utils.hostname]) and rps:
-                        vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
-                        break
+                    rps = []
+                    for rp_entry in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
+                        if self.shared_utils.hostname in get(rp_entry, "nodes", default=[self.shared_utils.hostname]):
+                            for rp_ip in get(
+                                rp_entry,
+                                "rps",
+                                required=True,
+                                org_key=f"pim_rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
+                            ):
+                                rp_address = {"address": rp_ip}
+                                if (rp_groups := get(rp_entry, "groups")) is not None:
+                                    if (acl := rp_entry.get("access_list_name")) is not None:
+                                        rp_address["access_lists"] = [acl]
+                                    else:
+                                        rp_address["groups"] = rp_groups
+
+                                rps.append(rp_address)
+
+                    if rps:
+                        vrf["_pim_rp_addresses"] = rps
+
+                    for evpn_peg in default(get(vrf, "evpn_l3_multicast.evpn_peg"), get(tenant, "evpn_l3_multicast.evpn_peg"), []):
+                        if self.shared_utils.hostname in evpn_peg.get("nodes", [self.shared_utils.hostname]) and rps:
+                            vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
+                            break
 
             if vrf["svis"] or vrf["l3_interfaces"] or "all" in always_include_vrfs_in_tenants or tenant["name"] in always_include_vrfs_in_tenants:
                 filtered_vrfs.append(vrf)
 
             vrf["additional_route_targets"] = [
                 rt
-                for rt in vrf.get("additional_route_targets", [])
+                for rt in get(vrf, "additional_route_targets", default=[])
                 if (
-                    self.shared_utils.hostname in rt.get("nodes", [self.shared_utils.hostname])
+                    self.shared_utils.hostname in get(rt, "nodes", default=[self.shared_utils.hostname])
                     and rt.get("address_family") is not None
                     and rt.get("route_target") is not None
                     and rt.get("type") in ["import", "export"]

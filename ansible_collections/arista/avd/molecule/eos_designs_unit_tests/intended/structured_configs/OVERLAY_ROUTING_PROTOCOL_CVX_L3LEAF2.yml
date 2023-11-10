@@ -1,3 +1,5 @@
+hostname: OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF2
+is_deployed: true
 router_bgp:
   as: '65002'
   router_id: 192.168.254.2

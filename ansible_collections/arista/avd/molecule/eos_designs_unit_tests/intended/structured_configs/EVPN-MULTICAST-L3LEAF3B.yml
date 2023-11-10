@@ -1,3 +1,5 @@
+hostname: EVPN-MULTICAST-L3LEAF3B
+is_deployed: true
 router_bgp:
   as: '65105'
   router_id: 192.168.255.7
@@ -1318,3 +1320,11 @@ router_pim_sparse_mode:
       - address: 10.1.50.100
         groups:
         - 232.0.112.0/21
+      - address: 10.1.50.150
+        access_lists:
+        - RPS_ACL_VRF_Tenant_E_2
+standard_access_lists:
+- name: RPS_ACL_VRF_Tenant_E_2
+  sequence_numbers:
+  - sequence: 10
+    action: permit 232.0.136.0/21

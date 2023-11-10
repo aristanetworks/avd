@@ -16,12 +16,8 @@ dependency:
 driver:
   name: delegated
 platforms:
-  - name: ethernet_interfaces
-    image: avdteam/base:3.8-v2.0
-    pre_build_image: true
+  - name: dummy
     managed: false
-    groups:
-      - all
 provisioner:
   name: ansible
   config_options:

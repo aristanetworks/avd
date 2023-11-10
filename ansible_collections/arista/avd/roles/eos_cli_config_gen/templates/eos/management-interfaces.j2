@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - management interfaces #}
 {% for management_interface in management_interfaces | arista.avd.natural_sort('name') %}
 !
@@ -9,6 +14,9 @@ interface {{ management_interface.name }}
    shutdown
 {%     elif management_interface.shutdown is arista.avd.defined(false) %}
    no shutdown
+{%     endif %}
+{%     if management_interface.speed is arista.avd.defined %}
+   speed {{ management_interface.speed }}
 {%     endif %}
 {%     if management_interface.mtu is arista.avd.defined %}
    mtu {{ management_interface.mtu }}
@@ -27,6 +35,15 @@ interface {{ management_interface.name }}
 {%     endif %}
 {%     if management_interface.ipv6_address is arista.avd.defined %}
    ipv6 address {{ management_interface.ipv6_address }}
+{%     endif %}
+{%     if management_interface.lldp.transmit is arista.avd.defined(false) %}
+   no lldp transmit
+{%     endif %}
+{%     if management_interface.lldp.receive is arista.avd.defined(false) %}
+   no lldp receive
+{%     endif %}
+{%     if management_interface.lldp.ztp_vlan is arista.avd.defined %}
+   lldp tlv transmit ztp vlan {{ management_interface.lldp.ztp_vlan }}
 {%     endif %}
 {%     if management_interface.eos_cli is arista.avd.defined %}
    {{ management_interface.eos_cli | indent(3, false) }}

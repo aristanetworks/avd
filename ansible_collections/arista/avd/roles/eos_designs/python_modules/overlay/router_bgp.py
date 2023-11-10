@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -5,7 +8,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 from .utils import UtilsMixin
 
@@ -53,7 +56,7 @@ class RouterBgpMixin(UtilsMixin):
             "name": self.shared_utils.bgp_peer_groups[pg_name]["name"],
             "type": pg_type,
             "update_source": "Loopback0",
-            "bfd": True,
+            "bfd": self.shared_utils.bgp_peer_groups[pg_name]["bfd"],
             "password": self.shared_utils.bgp_peer_groups[pg_name]["password"],
             "send_community": "all",
             "maximum_routes": 0,
@@ -89,10 +92,8 @@ class RouterBgpMixin(UtilsMixin):
         elif self.shared_utils.overlay_routing_protocol == "ibgp":
             if self.shared_utils.overlay_mpls is True:
                 # MPLS OVERLAY peer group
-                local_as = str(_as) if (_as := get(self.shared_utils.switch_data_combined, "ipvpn_gateway.local_as")) is not None else None
                 mpls_peer_group = {
                     **self._generate_base_peer_group("mpls", "mpls_overlay_peers"),
-                    "local_as": local_as,
                     "remote_as": self.shared_utils.bgp_as,
                 }
 
@@ -118,12 +119,10 @@ class RouterBgpMixin(UtilsMixin):
 
         # same for ebgp and ibgp
         if self.shared_utils.overlay_ipvpn_gateway is True:
-            local_as = str(_as) if (_as := get(self.shared_utils.switch_data_combined, "ipvpn_gateway.local_as")) is not None else None
-
             peer_groups.append(
                 {
                     **self._generate_base_peer_group("mpls", "ipvpn_gateway_peers"),
-                    "local_as": local_as,
+                    "local_as": self._ipvpn_gateway_local_as,
                     "maximum_routes": get(self.shared_utils.switch_data_combined, "ipvpn_gateway.maximum_routes", default=0),
                 }
             )
@@ -374,6 +373,10 @@ class RouterBgpMixin(UtilsMixin):
             neighbor = self._create_neighbor(
                 data["ip_address"], ipvpn_gw_peer, self.shared_utils.bgp_peer_groups["ipvpn_gateway_peers"]["name"], remote_as=data["bgp_as"]
             )
+            # Add ebgp_multihop if the gw peer is an ebgp peer.
+            if data["bgp_as"] != default(self._ipvpn_gateway_local_as, self.shared_utils.bgp_as):
+                neighbor["ebgp_multihop"] = self.shared_utils.evpn_ebgp_gateway_multihop
+
             neighbors.append(neighbor)
 
         if neighbors:

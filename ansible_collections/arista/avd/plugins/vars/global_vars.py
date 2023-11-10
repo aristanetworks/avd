@@ -1,85 +1,71 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-DOCUMENTATION = """
-    name: global_vars
-    version_added: "4.0.0"
-    short_description: Variable plugins to allow loading global_vars with less precedence than group_vars or host_vars
-    requirements:
-        - This plugin should run at the `inventory` stage (default) before all other variable plugins, to inject the variables before any group and host vars.
+DOCUMENTATION = r"""
+---
+name: global_vars
+author: Arista Ansible Team (@aristanetworks)
+version_added: "4.0.0"
+short_description: Variable plugins to allow loading global_vars with less precedence than group_vars or host_vars
+requirements:
+  - This plugin should run at the `inventory` stage (default) before all other variable plugins to inject the variables before any group and host vars.
+description:
+  - Loads variables from variable files specified in ansible.cfg or in the environment variable.
+  - Assign the loaded variables to the 'all' inventory group.
+  - Files are restricted by extension to one of .yaml, .json, .yml, or no extension.
+  - Hidden files (starting with '.') and backup files (ending with '~') are ignored.
+  - Only applies to inventory sources that are existing paths.
+  - HORIZONTALLINE
+  - B(ansible.cfg only example)
+  - 1 - Enable the plugin in C(ansible.cfg) - DO NOT REMOVE C(host_group_vars).
+  - C([defaults])
+  - C(vars_plugins_enabled = arista.avd.global_vars, host_group_vars)
+  - C([vars_global_vars])
+  - C(paths = ../relative/path/to/my/global/vars/file/or/dir)
+  - 2 - Run your playbook
+  - C(ansible-playbook -i inventory.yml playbook.yml)
+  - HORIZONTALLINE
+  - B(ansible.cfg + environment variable example)
+  - 1 - Enable the plugin in C(ansible.cfg) - DO NOT REMOVE C(host_group_vars).
+  - C([defaults])
+  - C(vars_plugins_enabled = arista.avd.global_vars, host_group_vars)
+  - 2 - Run your playbook
+  - C(ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml)
+
+options:
+  paths:
+    required: true
+    type: list
+    elements: string
+    ini:
+      - key: paths
+        section: vars_global_vars
+    env:
+      - name: ARISTA_AVD_GLOBAL_VARS_PATHS
     description:
-        - Loads variables from variable files specified in ansible.cfg or in the environment variable.
-        - Assign the loaded variables to the 'all' inventory group.
-        - Files are restricted by extension to one of .yaml, .json, .yml or no extension.
-        - Hidden files (starting with '.') and backup files (ending with '~') files are ignored.
-        - Only applies to inventory sources that are existing paths.
-    options:
-      paths:
-        required: true
-        type: list
-        elements: string
-        ini:
-          - key: paths
-            section: vars_global_vars
-        env:
-          - name: ARISTA_AVD_GLOBAL_VARS_PATHS
-        description:
-          - List of relative paths, relative to the inventory file.
-          - If path is a directory, all the valid files inside are loaded in alphabetical order.
-          - If the environment variable is set, it takes precedence over ansible.cfg.
-      stage:
-        default: inventory
-        choices: ["inventory"]
-        description:
-          - The stage during which executing the plugin. It could be 'inventory' or 'task'
-          - Given the expected usage of this plugin at the beginning of the run. It is hardcoded to 'inventory'
-      _valid_extensions:
-        default: [".yml", ".yaml", ".json"]
-        description:
-          - Check all of these extensions when looking for 'variable' files which should be YAML or JSON or vaulted versions of these.
-          - This affects vars_files, include_vars, inventory and vars plugins among others.
-        ini:
-          - key: yaml_valid_extensions
-            section: defaults
-        type: list
-        elements: string
-"""
-
-# Cannot use EXAMPLES or ansible-lint complains.
-VARS_EXAMPLES = r"""
-# `ansible.cfg` only example
-
-1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
-
-    ```ini
-    [defaults]
-    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
-
-    [vars_global_vars]
-    paths = ../relative/path/to/my/global/vars/file/or/dir
-    ```
-
-2. Run your playbook
-
-    ```shell
-    ansible-playbook -i inventory.yml playbook.yml
-    ```
-
-# `ansible.cfg` + environement variable example
-
-1. Enable the plugin in `ansible.cfg` - DO NOT REMOVE host_group_vars.
-
-    ```ini
-    [defaults]
-    vars_plugins_enabled = arista.avd.global_vars, host_group_vars
-    ```
-
-2. Run your playbook
-
-    ```shell
-    ARISTA_AVD_GLOBAL_VARS_PATHS=../relative/path/to/my/global/vars/file/or/dir ansible-playbook -i inventory.yml playbook.yml
-    ```
+      - List of relative paths relative to the inventory file.
+      - If path is a directory, all the valid files inside are loaded alphabetically.
+      - If the environment variable is set, it takes precedence over ansible.cfg.
+  stage:
+    default: inventory
+    choices: ["inventory"]
+    description:
+      - The stage during which executing the plugin. It could be 'inventory' or 'task'
+      - Given the expected usage of this plugin at the beginning of the run. It is hard-coded to 'inventory'
+  _valid_extensions:
+    default: [".yml", ".yaml", ".json"]
+    description:
+      - Check all of these extensions when looking for 'variable' files, which should be YAML, JSON, or vaulted versions.
+      - This affects vars_files, include_vars, inventory, and vars plugins, among others.
+    ini:
+      - key: yaml_valid_extensions
+        section: defaults
+    type: list
+    elements: string
 """
 
 

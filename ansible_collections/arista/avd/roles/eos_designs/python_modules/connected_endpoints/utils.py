@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -5,7 +8,8 @@ from functools import cached_property
 from hashlib import sha256
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.esi_management import generate_esi, generate_route_target
+from ansible_collections.arista.avd.plugins.filter.generate_esi import generate_esi
+from ansible_collections.arista.avd.plugins.filter.generate_route_target import generate_route_target
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
@@ -24,7 +28,7 @@ class UtilsMixin:
     @cached_property
     def _filtered_connected_endpoints(self) -> list:
         """
-        Return list of endpoints defined under one of the keys in "connected_endpoint_keys"
+        Return list of endpoints defined under one of the keys in "connected_endpoints_keys"
         which are connected to this switch.
 
         Adapters are filtered to contain only the ones connected to this switch.
@@ -55,9 +59,14 @@ class UtilsMixin:
 
                     filtered_adapters.append(adapter_settings)
 
-                connected_endpoint["adapters"] = filtered_adapters
-                connected_endpoint["type"] = connected_endpoints_key["type"]
-                filtered_connected_endpoints.append(connected_endpoint)
+                if filtered_adapters:
+                    filtered_connected_endpoints.append(
+                        {
+                            **connected_endpoint,
+                            "adapters": filtered_adapters,
+                            "type": connected_endpoints_key["type"],
+                        }
+                    )
 
         return filtered_connected_endpoints
 
@@ -94,7 +103,7 @@ class UtilsMixin:
 
         # short_esi is only set when called from sub-interface port-channels.
         if short_esi is None:
-            # Setting short_esi under port_channel will be deprecated in AVD4.0
+            # Setting short_esi under port_channel will be removed in AVD5.0
             port_channel_short_esi = get(adapter, "port_channel.short_esi")
             if (short_esi := get(adapter, "ethernet_segment.short_esi", default=port_channel_short_esi)) is None:
                 return None
@@ -218,3 +227,18 @@ class UtilsMixin:
         ptp_config.pop("profile", None)
 
         return ptp_config
+
+    def _get_adapter_poe(self, adapter: dict) -> dict | None:
+        """
+        Return poe settings for one adapter
+        """
+        if self.shared_utils.platform_settings_feature_support_poe:
+            return get(adapter, "poe")
+
+        return None
+
+    def _get_adapter_sflow(self, adapter: dict) -> dict | None:
+        if (adapter_sflow := get(adapter, "sflow", default=self.shared_utils.fabric_sflow_endpoints)) is not None:
+            return {"enable": adapter_sflow}
+
+        return None

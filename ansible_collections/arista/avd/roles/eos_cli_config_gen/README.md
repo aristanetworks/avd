@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+
 # eos_cli_config_gen
 
 ## Overview
@@ -34,13 +40,17 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 ## Requirements
 
-Requirements are located here: [avd-requirements](../../README.md#Requirements)
+Requirements are located in the [collection installation guide](../../docs/installation/collection-installation.md)
 
 ## Input Variables
 
-- The input variables are documented in the [Input Variables](docs/Input Variables.md) section.
-- Available features and variables may vary by platforms, refer to documentation on arista.com for specifics.
-- All values are optional.
+The input variables are documented in the [Input Variables](docs/input-variables.md) section.
+
+## Role Configuration
+
+The role configuration variables are documented in the [Role Configuration](docs/role-configuration.md) section.
+
+Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 
 ## License
 

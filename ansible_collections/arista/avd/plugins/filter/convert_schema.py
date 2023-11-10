@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
@@ -11,6 +14,35 @@ from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools i
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtodocumentationschemaconverter import AvdToDocumentationSchemaConverter
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdtojsonschemaconverter import AvdToJsonSchemaConverter
 
+DOCUMENTATION = r"""
+---
+name: convert_schema
+collection: arista.avd
+author: Arista Ansible Team (@aristanetworks)
+version_added: "3.8"
+short_description: Convert AVD Schema to a chosen output format.
+description: Only for internal use.
+positional: _input
+options:
+  _input:
+    type: string
+    description: ID of AVD Schema.
+    required: true
+    choices: ["eos_cli_config_gen" , "eos_designs"]
+  type:
+    type: string
+    description: Type of schema to convert to.
+    required: true
+    choices: ["documentation_tables", "jsonschema"]
+"""
+
+RETURN = r"""
+---
+_value:
+  description: Schema of the requested type.
+  type: any
+"""
+
 
 def convert_schema(schema_id: str, type: str):
     """
@@ -22,7 +54,7 @@ def convert_schema(schema_id: str, type: str):
     ----------
     schema_id : str, ["eos_cli_config_gen" , "eos_designs"]
         ID of AVD Schema
-    type : str, ["documentation", "jsonschema"]
+    type : str, ["documentation_tables", "jsonschema"]
         Type of schema to convert to
 
     Returns
@@ -45,14 +77,14 @@ def convert_schema(schema_id: str, type: str):
     if validation_results:
         raise AnsibleFilterError("Invalid schema!")
 
-    if type == "documentation":
-        return AvdToDocumentationSchemaConverter(avdschema).convert_schema()
+    if type == "documentation_tables":
+        return AvdToDocumentationSchemaConverter(avdschema).convert_schema_to_tables()
 
     elif type == "jsonschema":
         return AvdToJsonSchemaConverter(avdschema).convert_schema()
 
     else:
-        raise AristaAvdError(f"Filter arista.avd.convert_schema requires type 'documentation' or 'jsonschema'. Got {type}")
+        raise AristaAvdError(f"Filter arista.avd.convert_schema requires type 'documentation_tables' or 'jsonschema'. Got {type}")
 
 
 class FilterModule(object):

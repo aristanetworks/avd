@@ -88,7 +88,7 @@ tenants:
         trunk_groups: [ TG_NOT_MATCHING_ANY_SERVERS ]
 
 servers:
-  server_with_tg_100:
+  - name: server_with_tg_100
     adapters:
       - endpoint_ports: [ Nic1 ]
         switch_ports: [ Ethernet11 ]
@@ -96,7 +96,7 @@ servers:
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_100 ]
         mode: trunk
         enabled: true
-  server_with_tg_200:
+  - name: server_with_tg_200
     adapters:
       - endpoint_ports: [ Nic1, Nic2, Nic3 ]
         switch_ports: [ Ethernet12, Ethernet12, Ethernet12 ]
@@ -104,7 +104,7 @@ servers:
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS, TG_200 ]
         mode: trunk
         enabled: true
-  server_with_tg_300:
+  - name: server_with_tg_300
     adapters:
       - endpoint_ports: [ Nic1, Nic2, Nic3, Nic4 ]
         switch_ports: [ Ethernet13, Ethernet13, Ethernet13, Ethernet13 ]

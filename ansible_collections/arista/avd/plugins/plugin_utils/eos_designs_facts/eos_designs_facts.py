@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -49,7 +52,7 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, UplinksM
         """
         Exposed in avd_switch_facts
         """
-        return get(self._hostvars, "is_deployed", default=True)
+        return self.shared_utils.is_deployed
 
     @cached_property
     def serial_number(self) -> str | None:

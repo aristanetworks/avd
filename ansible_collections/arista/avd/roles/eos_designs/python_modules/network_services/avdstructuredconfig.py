@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
 from .eos_cli import EosCliMixin
@@ -15,6 +18,7 @@ from .router_isis import RouterIsisMixin
 from .router_multicast import RouterMulticastMixin
 from .router_ospf import RouterOspfMixin
 from .router_pim_sparse_mode import RouterPimSparseModeMixin
+from .standard_access_lists import StandardAccessListsMixin
 from .static_routes import StaticRoutesMixin
 from .struct_cfgs import StructCfgsMixin
 from .virtual_source_nat_vrfs import VirtualSourceNatVrfsMixin
@@ -48,6 +52,7 @@ class AvdStructuredConfigNetworkServices(
     RouterIsisMixin,
     RouterMulticastMixin,
     RouterPimSparseModeMixin,
+    StandardAccessListsMixin,
 ):
     """
     The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.

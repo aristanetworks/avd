@@ -43,7 +43,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  192.168.255.3 |
+| 65101 | 192.168.255.3 |
 
 | BGP Tuning |
 | ---------- |
@@ -225,6 +225,7 @@ router bgp 65101
       neighbor 2001:db8::1 prefix-list PL-FOO-v6-OUT out
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
+      redistribute ospf include leaked
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
    session tracker ST1
       recovery delay 666 seconds

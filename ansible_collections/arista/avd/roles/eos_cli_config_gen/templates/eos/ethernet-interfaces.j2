@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - ethernet interfaces #}
 {% set POE_CLASS_MAP = {0: "15.40", 1: "4.00", 2: "7.00", 3: "15.40", 4: "30.00", 5: "45.00", 6: "60.00", 7: "75.00", 8: "90.00"} %}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
@@ -36,10 +41,10 @@ interface {{ ethernet_interface.name }}
 {%         elif ethernet_interface.logging.event.spanning_tree is arista.avd.defined(false) %}
    no logging event spanning-tree
 {%         endif %}
-{%         if ethernet_interface.logging.event.storm_control is arista.avd.defined(true) %}
-   logging event storm-control
-{%         elif ethernet_interface.logging.event.storm_control is arista.avd.defined(false) %}
-   no logging event storm-control
+{%         if ethernet_interface.logging.event.storm_control_discards is arista.avd.defined(true) %}
+   logging event storm-control discards
+{%         elif ethernet_interface.logging.event.storm_control_discards is arista.avd.defined(false) %}
+   no logging event storm-control discards
 {%         endif %}
 {%     endif %}
 {%     if ethernet_interface.flowcontrol.received is arista.avd.defined %}
@@ -158,6 +163,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
    l2-protocol forwarding profile {{ ethernet_interface.l2_protocol.forwarding_profile }}
 {%     endif %}
+{%     if ethernet_interface.flow_tracker.hardware is arista.avd.defined %}
+   flow tracker hardware {{ ethernet_interface.flow_tracker.hardware }}
+{%     endif %}
 {%     if ethernet_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ ethernet_interface.flow_tracker.sampled }}
 {%     endif %}
@@ -270,6 +278,12 @@ interface {{ ethernet_interface.name }}
 {%         if ethernet_interface.dot1x.reauthorization_request_limit is arista.avd.defined %}
    dot1x reauthorization request limit {{ ethernet_interface.dot1x.reauthorization_request_limit }}
 {%         endif %}
+{%         if ethernet_interface.dot1x.unauthorized.access_vlan_membership_egress is arista.avd.defined(true) %}
+   dot1x unauthorized access vlan membership egress
+{%         endif %}
+{%         if ethernet_interface.dot1x.unauthorized.native_vlan_membership_egress is arista.avd.defined(true) %}
+   dot1x unauthorized native vlan membership egress
+{%         endif %}
 {%         if ethernet_interface.dot1x.eapol is arista.avd.defined %}
 {%             if ethernet_interface.dot1x.eapol.disabled is arista.avd.defined(true) %}
    dot1x eapol disabled
@@ -321,6 +335,9 @@ interface {{ ethernet_interface.name }}
    {{ ip_helper_cli }}
 {%         endfor %}
 {%     endif %}
+{%     if ethernet_interface.ip_address is arista.avd.defined("dhcp") and ethernet_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
+   dhcp client accept default-route
+{%     endif %}
 {%     if ethernet_interface.bfd.interval is arista.avd.defined and
           ethernet_interface.bfd.min_rx is arista.avd.defined and
           ethernet_interface.bfd.multiplier is arista.avd.defined %}
@@ -330,6 +347,12 @@ interface {{ ethernet_interface.name }}
    bfd echo
 {%     elif ethernet_interface.bfd.echo is arista.avd.defined(false) %}
    no bfd echo
+{%     endif %}
+{%     if ethernet_interface.dhcp_server_ipv4 is arista.avd.defined(true) %}
+   dhcp server ipv4
+{%     endif %}
+{%     if ethernet_interface.dhcp_server_ipv6 is arista.avd.defined(true) %}
+   dhcp server ipv6
 {%     endif %}
 {%     if ethernet_interface.ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
@@ -453,6 +476,9 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ip_nat is arista.avd.defined %}
 {%         set interface_ip_nat = ethernet_interface.ip_nat %}
 {%         include 'eos/interface-ip-nat.j2' %}
+{%         if ethernet_interface.ip_nat.service_profile is arista.avd.defined %}
+   ip nat service-profile {{ ethernet_interface.ip_nat.service_profile }}
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interface.ospf_cost is arista.avd.defined %}
    ip ospf cost {{ ethernet_interface.ospf_cost }}
@@ -675,6 +701,59 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.traffic_policy.output is arista.avd.defined %}
    traffic-policy output {{ ethernet_interface.traffic_policy.output }}
+{%     endif %}
+{%     for tx_queue in ethernet_interface.tx_queues | arista.avd.natural_sort('id') %}
+{%         include 'eos/ethernet-interface-tx-queues.j2' %}
+{%     endfor %}
+{%     for uc_tx_queue in ethernet_interface.uc_tx_queues | arista.avd.natural_sort('id') %}
+{%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
+{%     endfor %}
+{%     if ethernet_interface.vrrp_ids is arista.avd.defined %}
+{%         for vrid in ethernet_interface.vrrp_ids | arista.avd.natural_sort('id') if vrid.id is arista.avd.defined %}
+{%             if vrid.priority_level is arista.avd.defined %}
+   vrrp {{ vrid.id }} priority-level {{ vrid.priority_level }}
+{%             endif %}
+{%             if vrid.advertisement.interval is arista.avd.defined %}
+   vrrp {{ vrid.id }} advertisement interval {{ vrid.advertisement.interval }}
+{%             endif %}
+{%             if vrid.preempt.enabled is arista.avd.defined(true) and (
+                  vrid.preempt.delay.minimum is arista.avd.defined or
+                  vrid.preempt.delay.reload is arista.avd.defined) %}
+{%                 set delay_cli = 'vrrp ' ~ vrid.id ~ ' preempt delay' %}
+{%                 if vrid.preempt.delay.minimum is arista.avd.defined %}
+{%                     set delay_cli = delay_cli ~ ' minimum ' ~ vrid.preempt.delay.minimum %}
+{%                 endif %}
+{%                 if vrid.preempt.delay.reload is arista.avd.defined %}
+{%                     set delay_cli = delay_cli ~ ' reload ' ~ vrid.preempt.delay.reload %}
+{%                 endif %}
+   {{ delay_cli }}
+{%             elif vrid.preempt.enabled is arista.avd.defined(false) %}
+   no vrrp {{ vrid.id }} preempt
+{%             endif %}
+{%             if vrid.timers.delay.reload is arista.avd.defined %}
+   vrrp {{ vrid.id }} timers delay reload {{ vrid.timers.delay.reload }}
+{%             endif %}
+{%             if vrid.ipv4.address is arista.avd.defined %}
+   vrrp {{ vrid.id }} ipv4 {{ vrid.ipv4.address }}
+{%             endif %}
+{%             if vrid.ipv4.version is arista.avd.defined %}
+   vrrp {{ vrid.id }} ipv4 version {{ vrid.ipv4.version }}
+{%             endif %}
+{%             if vrid.ipv6.address is arista.avd.defined %}
+   vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
+{%             endif %}
+{%             for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
+{%                 if tracked_obj.name is arista.avd.defined %}
+{%                     set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}
+{%                     if tracked_obj.decrement is arista.avd.defined %}
+{%                         set tracked_obj_cli = tracked_obj_cli ~ " decrement " ~ tracked_obj.decrement %}
+{%                     elif tracked_obj.shutdown is arista.avd.defined(true) %}
+{%                         set tracked_obj_cli = tracked_obj_cli ~ " shutdown" %}
+{%                     endif %}
+   {{ tracked_obj_cli }}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
 {%     endif %}
 {%     if ethernet_interface.eos_cli is arista.avd.defined %}
    {{ ethernet_interface.eos_cli | indent(3, false) }}

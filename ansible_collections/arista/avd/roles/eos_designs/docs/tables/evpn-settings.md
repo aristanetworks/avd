@@ -1,0 +1,47 @@
+<!--
+  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Use of this source code is governed by the Apache License 2.0
+  ~ that can be found in the LICENSE file.
+  -->
+=== "Table"
+
+    | Variable | Type | Required | Default | Value Restrictions | Description |
+    | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>evpn_ebgp_gateway_inter_domain</samp>](## "evpn_ebgp_gateway_inter_domain") | Boolean |  |  |  |  |
+    | [<samp>evpn_ebgp_gateway_multihop</samp>](## "evpn_ebgp_gateway_multihop") | Integer |  | `15` |  | Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.<br>Adapt the value for your specific topology.<br> |
+    | [<samp>evpn_ebgp_multihop</samp>](## "evpn_ebgp_multihop") | Integer |  | `3` |  | Default of 3, the recommended value for a 3 stage spine and leaf topology.<br>Set to a higher value to allow for very large and complex topologies.<br> |
+    | [<samp>evpn_hostflap_detection</samp>](## "evpn_hostflap_detection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;enabled</samp>](## "evpn_hostflap_detection.enabled") | Boolean |  | `True` |  | If set to false it will disable EVPN host-flap detection. |
+    | [<samp>&nbsp;&nbsp;threshold</samp>](## "evpn_hostflap_detection.threshold") | Integer |  | `5` |  | Minimum number of MAC moves that indicate a MAC duplication issue. |
+    | [<samp>&nbsp;&nbsp;window</samp>](## "evpn_hostflap_detection.window") | Integer |  | `180` |  | Time (in seconds) to detect a MAC duplication issue. |
+    | [<samp>&nbsp;&nbsp;expiry_timeout</samp>](## "evpn_hostflap_detection.expiry_timeout") | Integer |  |  |  | Time (in seconds) to purge a MAC duplication issue. |
+    | [<samp>evpn_import_pruning</samp>](## "evpn_import_pruning") | Boolean |  | `False` |  | Enable VPN import pruning (Min. EOS 4.24.2F).<br>The Route Target extended communities carried by incoming VPN paths will be examined.<br>If none of those Route Targets have been configured for import, the path will be immediately discarded.<br> |
+    | [<samp>evpn_multicast</samp>](## "evpn_multicast") | Boolean |  | `False` |  | General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must also be configured under the Network Services (tenants).<br>Requires "underlay_multicast: true" and IGMP snooping enabled globally (default).<br>For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.<br>Warning !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP and 722XP<br>  The Following default platform setting will be configured: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"<br>  All forwarding agents will be restarted when this configuration is applied.<br>  You can tune the settings by overriding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"<br>  Please contact an Arista representative for help with determining the appropriate values for your environment.<br> |
+    | [<samp>evpn_overlay_bgp_rtc</samp>](## "evpn_overlay_bgp_rtc") | Boolean |  | `False` |  | Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F).<br>Requires use eBGP as overlay protocol.<br> |
+    | [<samp>evpn_prevent_readvertise_to_server</samp>](## "evpn_prevent_readvertise_to_server") | Boolean |  | `False` |  | Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in large-scale networks, where convergence will be quicker by not returning all updates received<br>from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.<br> |
+    | [<samp>evpn_rd_type</samp>](## "evpn_rd_type") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>overlay_rd_type</samp> instead.</span> |
+    | [<samp>evpn_rt_type</samp>](## "evpn_rt_type") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>overlay_rt_type</samp> instead.</span> |
+    | [<samp>evpn_short_esi_prefix</samp>](## "evpn_short_esi_prefix") | String |  | `0000:0000:` |  | Configure prefix for "short_esi" values. |
+    | [<samp>evpn_vlan_aware_bundles</samp>](## "evpn_vlan_aware_bundles") | Boolean |  | `False` |  | Enable vlan aware bundles for EVPN MAC-VRF. |
+    | [<samp>fabric_evpn_encapsulation</samp>](## "fabric_evpn_encapsulation") | String |  | `vxlan` | Valid Values:<br>- vxlan<br>- mpls | Should be set to mpls for evpn-mpls scenario. |
+    | [<samp>vxlan_vlan_aware_bundles</samp>](## "vxlan_vlan_aware_bundles") <span style="color:red">removed</span> | Boolean |  | `False` |  | <span style="color:red">This key was removed. Support was removed in AVD version 4.0.0. Use <samp>evpn_vlan_aware_bundles</samp> instead.</span> |
+
+=== "YAML"
+
+    ```yaml
+    evpn_ebgp_gateway_inter_domain: <bool>
+    evpn_ebgp_gateway_multihop: <int>
+    evpn_ebgp_multihop: <int>
+    evpn_hostflap_detection:
+      enabled: <bool>
+      threshold: <int>
+      window: <int>
+      expiry_timeout: <int>
+    evpn_import_pruning: <bool>
+    evpn_multicast: <bool>
+    evpn_overlay_bgp_rtc: <bool>
+    evpn_prevent_readvertise_to_server: <bool>
+    evpn_short_esi_prefix: <str>
+    evpn_vlan_aware_bundles: <bool>
+    fabric_evpn_encapsulation: <str>
+    ```

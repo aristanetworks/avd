@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -26,7 +29,7 @@ class UtilsMixin:
         This cannot be loaded in shared_utils since it will not be calculated until EosDesignsFacts has been rendered
         and shared_utils are shared between EosDesignsFacts and AvdStructuredConfig classes like this one.
         """
-        return get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[])
+        return natural_sort(get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[]))
 
     @cached_property
     def _underlay_filter_peer_as_route_maps_asns(self) -> list:
@@ -36,8 +39,8 @@ class UtilsMixin:
         if self.shared_utils.underlay_filter_peer_as is False:
             return []
 
-        # using set comprehension with `{}`
-        return list({link["peer_bgp_as"] for link in self._underlay_links if link["type"] == "underlay_p2p"})
+        # using set comprehension with `{}` to remove duplicates and then run natural_sort to convert to list.
+        return natural_sort({link["peer_bgp_as"] for link in self._underlay_links if link["type"] == "underlay_p2p"})
 
     @cached_property
     def _underlay_links(self) -> list:
@@ -46,6 +49,9 @@ class UtilsMixin:
         """
         underlay_links = []
         underlay_links.extend(self._uplinks)
+        if self.shared_utils.fabric_sflow_uplinks is not None:
+            for uplink in underlay_links:
+                uplink.update({"sflow": {"enable": self.shared_utils.fabric_sflow_uplinks}})
 
         for peer in self._avd_peers:
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
@@ -59,7 +65,7 @@ class UtilsMixin:
                         "peer_is_deployed": peer_facts["is_deployed"],
                         "peer_bgp_as": get(peer_facts, "bgp_as"),
                         "type": get(uplink, "type", required=True),
-                        "speed": get(uplink, "speed"),
+                        "speed": get(uplink, "peer_speed", default=get(uplink, "speed")),
                         "ip_address": get(uplink, "peer_ip_address"),
                         "peer_ip_address": get(uplink, "ip_address"),
                         "channel_group_id": get(uplink, "peer_channel_group_id"),
@@ -74,6 +80,7 @@ class UtilsMixin:
                         "short_esi": get(uplink, "peer_short_esi"),
                         "underlay_multicast": get(uplink, "underlay_multicast"),
                         "ipv6_enable": get(uplink, "ipv6_enable"),
+                        "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
                         "structured_config": get(uplink, "structured_config"),
                     }
                     underlay_links.append(strip_empties_from_dict(link))

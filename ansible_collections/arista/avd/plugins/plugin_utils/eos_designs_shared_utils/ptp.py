@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -53,6 +56,10 @@ class PtpMixin:
     def ptp_enabled(self: SharedUtils) -> bool:
         default_ptp_enabled = get(self.hostvars, "ptp.enabled")
         return get(self.switch_data_combined, "ptp.enabled", default=default_ptp_enabled) is True
+
+    @cached_property
+    def ptp_mlag(self: SharedUtils) -> bool:
+        return get(self.switch_data_combined, "ptp.mlag") is True
 
     @cached_property
     def ptp_profile_name(self: SharedUtils) -> str:

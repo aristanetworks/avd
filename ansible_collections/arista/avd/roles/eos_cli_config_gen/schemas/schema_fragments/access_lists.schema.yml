@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -9,22 +12,11 @@ keys:
     convert_types:
       - dict
     display_name: IP Extended Access-Lists (legacy model)
-    description: |
-      AVD currently supports 2 different data models for extended ACLs:
-
-      - The legacy `access_lists` data model, for compatibility with existing deployments
-      - The improved `ip_access_lists` data model, for access to more EOS features
-
-      Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
-      Access list names must be unique.
-
-      The legacy data model supports simplified ACL definition with `sequence` to `action` mapping:
     items:
       type: dict
       keys:
         name:
           type: str
-          required: true
           description: Access-list Name
         counters_per_entry:
           type: bool
@@ -39,7 +31,6 @@ keys:
             keys:
               sequence:
                 type: int
-                required: true
                 description: Sequence ID
                 convert_types:
                   - str

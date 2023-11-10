@@ -94,6 +94,8 @@ platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
+    feature_support:
+      per_interface_mtu: false # Removes mtu command from all interfaces
 
 custom_structured_configuration_list_merge: 'append'
 
@@ -126,3 +128,74 @@ node_type_keys:
     type: super-spine
   - key: overlay_controller
     type: overlay-controller
+
+use_cv_topology: true
+cv_topology:
+  - hostname: DC1-RS1
+    platform: vEOS-LAB
+    interfaces:
+      - name: Ethernet1
+        neighbor: DC1-SUPER-SPINE1
+        neighbor_interface: Ethernet5
+      - name: Ethernet2
+        neighbor: DC1-POD1-SPINE1
+        neighbor_interface: Ethernet6
+      - name: Ethernet3
+        neighbor: DC1-POD1-LEAF1A
+        neighbor_interface: Ethernet4
+  - hostname: DC1.POD1.LEAF2A
+    platform: vEOS-LAB
+    interfaces:
+      - name: Ethernet1
+        neighbor: DC1-POD1-SPINE1
+        neighbor_interface: Ethernet4
+      - name: Ethernet11
+        neighbor: DC1-POD1-SPINE1
+        neighbor_interface: Ethernet7
+      - name: Ethernet2
+        neighbor: DC1-POD1-SPINE2
+        neighbor_interface: Ethernet4
+      - name: Ethernet12
+        neighbor: DC1-POD1-SPINE2
+        neighbor_interface: Ethernet7
+      - name: Ethernet5
+        neighbor: DC1-POD1-LEAF2B
+        neighbor_interface: Ethernet5
+      - name: Ethernet6
+        neighbor: DC1-POD1-LEAF2B
+        neighbor_interface: Ethernet6
+  - hostname: DC1-POD1-LEAF2B
+    platform: vEOS-LAB
+    interfaces:
+      - name: Ethernet1
+        neighbor: DC1-POD1-SPINE1
+        neighbor_interface: Ethernet5
+      - name: Ethernet11
+        neighbor: DC1-POD1-SPINE1
+        neighbor_interface: Ethernet8
+      - name: Ethernet2
+        neighbor: DC1-POD1-SPINE2
+        neighbor_interface: Ethernet5
+      - name: Ethernet12
+        neighbor: DC1-POD1-SPINE2
+        neighbor_interface: Ethernet8
+      - name: Ethernet5
+        neighbor: DC1.POD1.LEAF2A
+        neighbor_interface: Ethernet5
+      - name: Ethernet6
+        neighbor: DC1.POD1.LEAF2A
+        neighbor_interface: Ethernet6
+
+# Providing select default interfaces to be used by `use_cv_topology`
+# for automatically deriving the topology from the given `cv_topology`
+default_interfaces:
+  - platforms: [ vEOS-LAB ]
+    types: [ overlay-controller ]
+    uplink_interfaces: [ Ethernet1-10 ]
+  - platforms: [ vEOS-LAB ]
+    types: [ overlay-controller ]
+    uplink_interfaces: [ Ethernet1-10 ]
+  - platforms: [ vEOS-LAB ]
+    types: [ l3leaf ]
+    uplink_interfaces: [ Ethernet1-2, Ethernet11-12 ]
+    mlag_interfaces: [ Ethernet5-6 ]

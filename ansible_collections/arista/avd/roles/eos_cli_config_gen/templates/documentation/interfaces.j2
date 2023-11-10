@@ -1,6 +1,12 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {% if switchport_default is arista.avd.defined
        or interface_defaults is arista.avd.defined
        or interface_profiles is arista.avd.defined
+       or dps_interfaces is arista.avd.defined
        or ethernet_interfaces is arista.avd.defined
        or port_channel_interfaces is arista.avd.defined
        or loopback_interfaces is arista.avd.defined
@@ -15,6 +21,8 @@
 {%     include 'documentation/interface-defaults.j2' %}
 {## Interface Profiles #}
 {%     include 'documentation/interface-profiles.j2' %}
+{## DPS Interfaces #}
+{%     include 'documentation/dps-interfaces.j2' %}
 {## Ethernet Interfaces #}
 {%     include 'documentation/ethernet-interfaces.j2' %}
 {## Port-Channel Interfaces #}

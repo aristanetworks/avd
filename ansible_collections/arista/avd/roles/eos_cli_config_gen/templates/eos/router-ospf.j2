@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - router ospf #}
 {% for process_id in router_ospf.process_ids | arista.avd.natural_sort('id') %}
 !
@@ -116,6 +121,12 @@ router ospf {{ process_id.id }}
 {%         if process_id.default_information_originate.always is arista.avd.defined(true) %}
 {%             set default_information_originate_cli = default_information_originate_cli ~ " always" %}
 {%         endif %}
+{%         if process_id.default_information_originate.metric is arista.avd.defined %}
+{%             set default_information_originate_cli = default_information_originate_cli ~ " metric " ~ process_id.default_information_originate.metric %}
+{%         endif %}
+{%         if process_id.default_information_originate.metric_type is arista.avd.defined %}
+{%             set default_information_originate_cli = default_information_originate_cli ~ " metric-type " ~ process_id.default_information_originate.metric_type %}
+{%         endif %}
    {{ default_information_originate_cli }}
 {%     endif %}
 {%     if process_id.redistribute.static is defined %}
@@ -193,5 +204,8 @@ router ospf {{ process_id.id }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
+{%     endif %}
+{%     if process_id.eos_cli is arista.avd.defined %}
+   {{ process_id.eos_cli | indent(3, false) }}
 {%     endif %}
 {% endfor %}

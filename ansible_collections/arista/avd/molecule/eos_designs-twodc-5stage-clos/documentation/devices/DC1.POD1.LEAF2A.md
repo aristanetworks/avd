@@ -275,11 +275,11 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.110.9/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | routed | - | 172.17.110.11/31 | default | 1500 | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | routed | - | 100.100.100.101/24 | default | 1500 | False | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7 | routed | - | 172.17.110.13/31 | default | 1500 | False | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7 | routed | - | 172.17.110.15/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.110.9/31 | default | - | False | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | routed | - | 172.17.110.11/31 | default | - | False | - | - |
+| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | routed | - | 100.100.100.101/24 | default | - | False | - | - |
+| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7 | routed | - | 172.17.110.13/31 | default | - | False | - | - |
+| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7 | routed | - | 172.17.110.15/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -288,7 +288,6 @@ vlan 4094
 interface Ethernet1
    description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.9/31
@@ -298,7 +297,6 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.11/31
@@ -328,14 +326,12 @@ interface Ethernet6
 interface Ethernet7
    description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6
    no shutdown
-   mtu 1500
    no switchport
    ip address 100.100.100.101/24
 !
 interface Ethernet11
    description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.13/31
@@ -345,7 +341,6 @@ interface Ethernet11
 interface Ethernet12
    description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7
    no shutdown
-   mtu 1500
    mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.15/31
@@ -538,8 +533,8 @@ interface Loopback102
 | Vlan1100 | test_svi | vrf_with_loopbacks_from_overlapping_pool | - | False |
 | Vlan1101 | test_svi | vrf_with_loopbacks_from_pod_pools | - | False |
 | Vlan1102 | test_svi | vrf_with_loopbacks_dc1_pod1_only | - | False |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4085 | L2LEAF_INBAND_MGMT | default | - | False |
+| Vlan4094 | MLAG_PEER | default | - | False |
 
 ##### IPv4
 
@@ -608,7 +603,6 @@ interface Vlan1102
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
-   mtu 1500
    ip address 172.21.110.2/24
    ip attached-host route export 19
    ip virtual-router address 172.21.110.1
@@ -616,7 +610,6 @@ interface Vlan4085
 interface Vlan4094
    description MLAG_PEER
    no shutdown
-   mtu 1500
    no autostate
    ip address 172.20.110.2/31
 ```
@@ -753,7 +746,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65112.100|  172.16.110.4 |
+| 65112.100 | 172.16.110.4 |
 
 | BGP Tuning |
 | ---------- |

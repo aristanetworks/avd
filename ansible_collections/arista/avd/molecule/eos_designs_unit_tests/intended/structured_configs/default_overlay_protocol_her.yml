@@ -1,3 +1,5 @@
+hostname: default_overlay_protocol_her
+is_deployed: true
 router_bgp:
   as: '65000'
   router_id: 192.168.0.42

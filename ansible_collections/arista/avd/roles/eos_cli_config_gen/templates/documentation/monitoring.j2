@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# SFlow Interfaces #}
 {% set sflow_interfaces = [] %}
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
@@ -22,6 +27,7 @@
        or vmtracer_sessions is arista.avd.defined
        or event_handlers is arista.avd.defined
        or flow_trackings is arista.avd.defined
+       or flow_tracking is arista.avd.defined
        or trackers is arista.avd.defined
        or sflow_interfaces | length > 0 %}
 
@@ -49,7 +55,7 @@
 {## Event Handler #}
 {%     include 'documentation/event-handlers.j2' %}
 {## Flow Tracking #}
-{%     include 'documentation/flow-trackings.j2' %}
+{%     include 'documentation/flow-tracking.j2' %}
 {## Object Tracking #}
 {%     include 'documentation/trackers.j2' %}
 {% endif %}

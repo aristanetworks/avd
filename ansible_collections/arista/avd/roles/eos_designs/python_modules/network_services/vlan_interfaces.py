@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -81,7 +84,7 @@ class VlanInterfacesMixin(UtilsMixin):
             "ip_address": svi.get("ip_address"),
             "ipv6_address": svi.get("ipv6_address"),
             "ipv6_enable": svi.get("ipv6_enable"),
-            "mtu": svi.get("mtu"),
+            "mtu": svi.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "eos_cli": svi.get("raw_eos_cli"),
             "struct_cfg": svi.get("structured_config"),
         }
@@ -151,7 +154,7 @@ class VlanInterfacesMixin(UtilsMixin):
                 vlan_interface_config["ip_helpers"] = ip_helpers
 
         if get(svi, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
-            vlan_interface_config["ospf_area"] = svi["ospf"].get("area", 0)
+            vlan_interface_config["ospf_area"] = svi["ospf"].get("area", "0")
             vlan_interface_config["ospf_network_point_to_point"] = svi["ospf"].get("point_to_point", False)
             vlan_interface_config["ospf_cost"] = svi["ospf"].get("cost")
             ospf_authentication = svi["ospf"].get("authentication")
@@ -175,6 +178,10 @@ class VlanInterfacesMixin(UtilsMixin):
         return vlan_interface_config
 
     def _get_vlan_interface_config_for_mlag_peering(self, vrf) -> dict:
+        """
+        Build config for MLAG peering SVI for the given SVI.
+        Called from vlan_interfaces and prefix_lists
+        """
         vlan_interface_config = {
             "tenant": vrf["tenant"],
             "type": "underlay_peering",

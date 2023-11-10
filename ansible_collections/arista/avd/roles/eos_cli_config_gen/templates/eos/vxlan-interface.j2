@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# j2lint: disable=V1 #}
 {# eos - vxlan interface #}
 {% if vxlan_interface.Vxlan1 is arista.avd.defined %}
@@ -54,6 +59,11 @@ interface Vxlan1
    vxlan qos dscp propagation encapsulation
 {%     elif vxlan_interface.Vxlan1.vxlan.qos.dscp_propagation_encapsulation is arista.avd.defined(false) %}
    no vxlan qos dscp propagation encapsulation
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation is arista.avd.defined(true) %}
+   vxlan qos ecn propagation
+{%     elif vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation is arista.avd.defined(false) %}
+   no vxlan qos ecn propagation
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(true) %}
    vxlan qos map dscp to traffic-class decapsulation

@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - logging #}
 {% if logging is arista.avd.defined %}
 !
@@ -27,6 +32,12 @@ logging console {{ logging.console }}
 no logging monitor
 {%     elif logging.monitor is arista.avd.defined %}
 logging monitor {{ logging.monitor }}
+{%     endif %}
+{%     if logging.event.storm_control.discards.global is arista.avd.defined(true) %}
+logging event storm-control discards global
+{%     endif %}
+{%     if logging.event.storm_control.discards.interval is arista.avd.defined %}
+logging event storm-control discards interval {{ logging.event.storm_control.discards.interval }}
 {%     endif %}
 {%     if logging.synchronous.level is arista.avd.defined('disabled') %}
 no logging synchronous

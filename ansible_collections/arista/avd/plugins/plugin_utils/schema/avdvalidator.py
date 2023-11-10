@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from collections import ChainMap
 from copy import deepcopy
 
@@ -65,32 +68,38 @@ def _keys_validator(validator, keys: dict, instance: dict, schema: dict):
     if "$ref" in schema:
         return
 
-    # Compile and add any "dynamic_keys" to "keys"
-    dynamic_keys = schema.get("dynamic_keys", {})
-    for dynamic_key, childschema in dynamic_keys.items():
+    # Compile schema_dynamic_keys and add to "dynamic_keys"
+    schema_dynamic_keys = schema.get("dynamic_keys", {})
+    dynamic_keys = {}
+    for dynamic_key, childschema in schema_dynamic_keys.items():
         resolved_keys = get_all(instance, dynamic_key)
         for resolved_key in resolved_keys:
-            keys.setdefault(resolved_key, childschema)
+            dynamic_keys.setdefault(resolved_key, childschema)
 
     # Resolve $ref for child keys, to support schema actions below which operates on the child schema
-    for key, childschema in keys.items():
+    # Add the final merged child_schema to a new dict "resolved_keys" to avoid touching the original
+    resolved_keys = {}
+    all_keys = ChainMap(keys, dynamic_keys)
+    for key, childschema in all_keys.items():
         if key in instance and "$ref" in childschema:
             scope, resolved = validator.resolver.resolve(childschema["$ref"])
             merged_childschema = deepcopy(resolved)
             always_merger.merge(merged_childschema, childschema)
             merged_childschema.pop("$ref", None)
-            keys[key] = merged_childschema
+            resolved_keys[key] = merged_childschema
+        else:
+            resolved_keys[key] = all_keys[key]
 
     # Validation of "allow_other_keys"
     if not schema.get("allow_other_keys", False):
         # Check that instance only contains the schema keys
-        invalid_keys = ", ".join([key for key in instance if key not in keys and key[0] != "_"])
+        invalid_keys = ", ".join([key for key in instance if key not in resolved_keys and key[0] != "_"])
         if invalid_keys:
             yield jsonschema.ValidationError(f"Unexpected key(s) '{invalid_keys}' found in dict.")
 
     # Run over child keys and check for required and update child schema with dynamic valid values before
     # descending into validation of child schema.
-    for key, childschema in keys.items():
+    for key, childschema in resolved_keys.items():
         if instance.get(key) is None:
             # Validation of "required" on child keys
             if childschema.get("required"):
@@ -208,7 +217,7 @@ class AvdValidator:
                     "list": jsonschema._types.is_array,
                     "int": jsonschema._types.is_integer,
                 }
-            )
+            ),
             # version="0.1",
         )
 

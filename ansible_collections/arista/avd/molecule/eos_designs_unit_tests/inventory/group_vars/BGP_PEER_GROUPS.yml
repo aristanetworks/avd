@@ -1,0 +1,124 @@
+# Minimum config to only test the specific feature.
+# This is in no way a "good" or working config.
+# Everything is tweaked to trigger config generation of all the different peer-groups
+
+node_type_keys:
+  - key: l3leaf
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    default_evpn_encapsulation: vxlan
+    default_overlay_address_families: [ vpn-ipv4, evpn ]
+  - key: pe
+    type: pe
+    mpls_lsr: true
+    default_mpls_overlay_role: client
+    default_evpn_role: client
+    network_services:
+      l1: true
+      l2: true
+      l3: true
+    default_overlay_routing_protocol: ibgp
+    default_underlay_routing_protocol: isis-sr
+    default_overlay_address_families: [ evpn ]
+    default_evpn_encapsulation: mpls
+
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    bfd: true
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for ipv4_underlay_peers via structured_config
+  mlag_ipv4_underlay_peer:
+    bfd: true
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for mlag_ipv4_underlay_peer via structured_config
+  evpn_overlay_peers:
+    bfd: false
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for evpn_overlay_peers via structured_config
+  evpn_overlay_core:
+    bfd: false
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for evpn_overlay_core via structured_config
+  mpls_overlay_peers:
+    bfd: false
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for mpls_overlay_peers via structured_config
+  rr_overlay_peers:
+    bfd: false
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for rr_overlay_peers via structured_config
+  ipvpn_gateway_peers:
+    bfd: false
+    # Custom structured config added under router_bgp.peer_groups.<name> for eos_cli_config_gen
+    structured_config:
+      description: Description for ipvpn_gateway_peers via structured_config
+
+type: l3leaf
+mgmt_gateway: 192.168.0.1
+overlay_routing_protocol: ibgp
+bgp_as: 65001
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 192.168.253.0/24
+    mlag_interfaces: [ Ethernet3 ]
+  node_groups:
+    - group: mlag
+      nodes:
+        - name: bgp-peer-groups-1
+          id: 103
+          bgp_as: 103
+          evpn_route_servers: [ bgp-peer-groups-2 ]
+          mpls_route_reflectors: [ bgp-peer-groups-2 ]
+          mpls_overlay_role: client
+          evpn_gateway:
+            evpn_l3:
+              enabled: true
+        - name: bgp-peer-groups-2
+          id: 104
+          bgp_as: 104
+          evpn_role: server
+          mpls_overlay_role: server
+
+pe:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    is_type: level-1-2
+    node_sid_base: 100
+    isis_system_id_prefix: '0000.0002'
+  node_groups:
+    - group: bgp-peer-groups-3
+      nodes:
+        - name: bgp-peer-groups-3
+          id: 106
+          bgp_as: 106
+          evpn_role: client
+          mpls_overlay_role: client
+          ipvpn_gateway:
+            enabled: true
+
+# MPLS Beta code is hardcoded to look for this dictionary.
+rr:
+  node_groups:
+    - group: dummy
+      nodes:
+        - name: bgp-peer-groups-1
+        - name: bgp-peer-groups-2

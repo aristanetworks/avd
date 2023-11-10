@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 ---
 - name: "Load CVP device information for {{ inventory_hostname }}"
   tags: [build, provision, online]
@@ -39,6 +42,7 @@
     devices: "{{ cvp_devices }}"  # noqa: args[module]
     state: present
     apply_mode: "{{ device_apply_mode }}"
+    inventory_mode: "{{ device_inventory_mode | default(omit) }}"
     search_key: "{{ device_search_key }}"
   register: cvp_devices_results
 

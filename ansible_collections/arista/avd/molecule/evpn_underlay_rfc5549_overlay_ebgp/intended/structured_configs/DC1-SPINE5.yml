@@ -1,3 +1,5 @@
+hostname: DC1-SPINE5
+is_deployed: true
 router_bgp:
   as: '65001'
   router_id: 192.168.255.5
@@ -31,7 +33,9 @@ router_bgp:
     - name: UNDERLAY_PEERS
       activate: true
       next_hop:
-        address_family_ipv6_originate: true
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   address_family_ipv6:
@@ -50,6 +54,14 @@ router_bgp:
     peer_group: UNDERLAY_PEERS
     remote_as: '65106'
     description: DC1-LEAF3B_Ethernet1
+  - name: Ethernet3
+    peer_group: UNDERLAY_PEERS
+    remote_as: '65106'
+    description: DC1-LEAF3A_Ethernet2
+  - name: Ethernet4
+    peer_group: UNDERLAY_PEERS
+    remote_as: '65106'
+    description: DC1-LEAF3B_Ethernet2
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -131,6 +143,24 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: l3leaf
   description: P2P_LINK_TO_DC1-LEAF3B_Ethernet1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ipv6_enable: true
+- name: Ethernet3
+  peer: DC1-LEAF3A
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-LEAF3A_Ethernet2
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ipv6_enable: true
+- name: Ethernet4
+  peer: DC1-LEAF3B
+  peer_interface: Ethernet2
+  peer_type: l3leaf
+  description: P2P_LINK_TO_DC1-LEAF3B_Ethernet2
   shutdown: false
   mtu: 1500
   type: routed

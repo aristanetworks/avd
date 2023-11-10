@@ -72,6 +72,7 @@ leaf:
           uplink_switches: [SPINE2]
           uplink_switch_interfaces: [Ethernet1]
     - group: IDF2
+      platform: 720XP
       mlag: false
       filter:
         tags: [ "210", "220", "230" ]

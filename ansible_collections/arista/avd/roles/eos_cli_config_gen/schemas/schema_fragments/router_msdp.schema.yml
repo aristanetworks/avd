@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -12,7 +15,7 @@ keys:
       rejected_limit:
         type: int
         convert_types:
-        - str
+          - str
         description: Maximum number of rejected SA messages allowed in cache
         min: 0
         max: 40000
@@ -21,7 +24,7 @@ keys:
       connection_retry_interval:
         type: int
         convert_types:
-        - str
+          - str
         min: 1
         max: 65535
       group_limits:
@@ -33,11 +36,10 @@ keys:
             source_prefix:
               type: str
               description: Source address prefix
-              required: true
             limit:
               type: int
               convert_types:
-              - str
+                - str
               description: Limit for SAs matching the source address prefix
               min: 0
               max: 40000
@@ -50,7 +52,6 @@ keys:
           keys:
             ipv4_address:
               type: str
-              required: true
               description: Peer IP Address
             default_peer:
               type: dict
@@ -70,7 +71,7 @@ keys:
             sa_limit:
               type: int
               convert_types:
-              - str
+                - str
               description: Maximum number of SA messages allowed in cache
               min: 0
               max: 40000
@@ -82,7 +83,6 @@ keys:
                 keys:
                   name:
                     type: str
-                    required: true
                     description: Mesh group name
             keepalive:
               type: dict
@@ -90,14 +90,14 @@ keys:
                 keepalive_timer:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   required: true
                   min: 1
                   max: 65535
                 hold_timer:
                   type: int
                   convert_types:
-                  - str
+                    - str
                   required: true
                   description: Must be greater than keepalive timer
                   min: 1
@@ -119,15 +119,16 @@ keys:
           keys:
             name:
               type: str
-              required: true
               description: VRF name
+              convert_types:
+                - int
             originator_id_local_interface:
               type: str
               description: Interface to use for originator ID
             rejected_limit:
               type: int
               convert_types:
-              - str
+                - str
               description: Maximum number of rejected SA messages allowed in cache
               min: 0
               max: 40000
@@ -136,7 +137,7 @@ keys:
             connection_retry_interval:
               type: int
               convert_types:
-              - str
+                - str
               min: 1
               max: 65535
             group_limits:
@@ -148,11 +149,10 @@ keys:
                   source_prefix:
                     type: str
                     description: Source address prefix
-                    required: true
                   limit:
                     type: int
                     convert_types:
-                    - str
+                      - str
                     description: Limit for SAs matching the source address prefix
                     min: 0
                     max: 40000
@@ -165,7 +165,6 @@ keys:
                 keys:
                   ipv4_address:
                     type: str
-                    required: true
                     description: Peer IP Address
                   default_peer:
                     type: dict
@@ -185,7 +184,7 @@ keys:
                   sa_limit:
                     type: int
                     convert_types:
-                    - str
+                      - str
                     description: Maximum number of SA messages allowed in cache
                     min: 0
                     max: 40000
@@ -197,7 +196,6 @@ keys:
                       keys:
                         name:
                           type: str
-                          required: true
                           description: Mesh group name
                   keepalive:
                     type: dict
@@ -205,14 +203,14 @@ keys:
                       keepalive_timer:
                         type: int
                         convert_types:
-                        - str
+                          - str
                         required: true
                         min: 1
                         max: 65535
                       hold_timer:
                         type: int
                         convert_types:
-                        - str
+                          - str
                         required: true
                         description: Must be greater than keepalive timer
                         min: 1

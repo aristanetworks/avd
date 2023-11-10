@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -28,13 +31,12 @@ keys:
           Multiple CloudVision clusters
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
             name:
               type: str
-              required: true
               description: Cluster Name
             cvaddrs:
               type: list
@@ -96,6 +98,8 @@ keys:
               type: str
               description: |
                 The VRF to use to connect to CloudVision
+              convert_types:
+                - int
       cvauth:
         type: dict
         description: |
@@ -147,6 +151,8 @@ keys:
         type: str
         description: |
           The VRF to use to connect to CloudVision
+        convert_types:
+          - int
       cvgnmi:
         type: bool
         description: |
@@ -206,6 +212,9 @@ keys:
         description: |
           Subscribe to dynamic device configuration from CloudVision (TerminAttr default is false).
       cvcompression:
+        deprecation:
+          warning: true
+          remove_in_version: v5.0.0
         type: str
         description: |
           The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.

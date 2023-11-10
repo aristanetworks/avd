@@ -101,6 +101,8 @@ router_bgp:
     redistribute_routes:
       - source_protocol: static
         route_map: RM-IPV6-STATIC-TO-BGP
+      - source_protocol: ospf
+        include_leaked: true
   neighbors:
     - ip_address: 192.0.3.1
       remote_as: 65432

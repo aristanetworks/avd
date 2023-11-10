@@ -1,0 +1,149 @@
+hostname: evpn_vlan_bundle
+is_deployed: true
+router_bgp:
+  as: '65101'
+  router_id: 10.10.0.3
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  vlan_aware_bundles:
+  - name: bundle1
+    rd: 10.10.0.3:201
+    route_targets:
+      both:
+      - 201:201
+    redistribute_routes:
+    - learned
+    vlan: 50,60
+    eos_cli: 'vlan add 1000
+
+      '
+  - name: bundle2
+    rd: 1.1.1.1:222
+    route_targets:
+      both:
+      - 202:111
+    redistribute_routes:
+    - learned
+    vlan: 70,80
+  - name: storage_prod
+    tenant: StorageProd
+    rd: 10.10.0.3:10010
+    route_targets:
+      both:
+      - 10010:10010
+    redistribute_routes:
+    - learned
+    vlan: 10,20
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.10.0.3/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 10.11.0.3/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.0.0/24 eq 32
+  - sequence: 20
+    action: permit 10.11.0.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+vlans:
+- id: 50
+  name: ipmi
+  tenant: FABRIC
+- id: 60
+  name: ipmi
+  tenant: FABRIC
+- id: 70
+  name: vmotion
+  tenant: FABRIC
+- id: 80
+  name: vstorage
+  tenant: FABRIC
+- id: 10
+  name: storage_prod
+  tenant: StorageProd
+- id: 20
+  name: storage_prod
+  tenant: StorageProd
+ip_igmp_snooping:
+  globally_enabled: true
+vxlan_interface:
+  Vxlan1:
+    description: evpn_vlan_bundle_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      vlans:
+      - id: 50
+        vni: 10050
+      - id: 60
+        vni: 10060
+      - id: 70
+        vni: 10070
+      - id: 80
+        vni: 10080
+      - id: 10
+        vni: 10010
+      - id: 20
+        vni: 10020

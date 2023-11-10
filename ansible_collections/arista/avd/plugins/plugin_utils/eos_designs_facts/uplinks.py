@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -5,9 +8,10 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, unique
 
 if TYPE_CHECKING:
     from .eos_designs_facts import EosDesignsFacts
@@ -37,12 +41,20 @@ class UplinksMixin:
     @cached_property
     def _uplink_interfaces(self: EosDesignsFacts) -> list:
         return range_expand(
-            default(get(self.shared_utils.switch_data_combined, "uplink_interfaces"), get(self.shared_utils.default_interfaces, "uplink_interfaces"), [])
+            default(
+                get(self.shared_utils.switch_data_combined, "uplink_interfaces"),
+                get(self.shared_utils.cv_topology_config, "uplink_interfaces"),
+                get(self.shared_utils.default_interfaces, "uplink_interfaces"),
+                [],
+            )
         )
 
     @cached_property
     def _uplink_switch_interfaces(self: EosDesignsFacts) -> list:
-        uplink_switch_interfaces = get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces")
+        uplink_switch_interfaces = default(
+            get(self.shared_utils.switch_data_combined, "uplink_switch_interfaces"),
+            get(self.shared_utils.cv_topology_config, "uplink_switch_interfaces"),
+        )
         if uplink_switch_interfaces is not None:
             return uplink_switch_interfaces
 
@@ -112,16 +124,24 @@ class UplinksMixin:
                 uplink["type"] = "underlay_p2p"
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
+
                 if self.shared_utils.uplink_bfd:
                     uplink["bfd"] = True
+
+                if self.shared_utils.uplink_switch_interface_speed is not None:
+                    uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
+
                 if self.shared_utils.uplink_ptp is not None:
                     uplink["ptp"] = self.shared_utils.uplink_ptp
                 elif self.shared_utils.ptp_enabled:
                     uplink["ptp"] = {"enable": True}
+
                 if self.shared_utils.uplink_macsec is not None:
                     uplink["mac_security"] = self.shared_utils.uplink_macsec
+
                 if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
                     uplink["underlay_multicast"] = True
+
                 if self.shared_utils.underlay_rfc5549:
                     uplink["ipv6_enable"] = True
                 else:
@@ -164,6 +184,14 @@ class UplinksMixin:
 
                 if self.shared_utils.uplink_interface_speed is not None:
                     uplink["speed"] = self.shared_utils.uplink_interface_speed
+
+                if self.shared_utils.uplink_switch_interface_speed is not None:
+                    uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
+
+                if self.shared_utils.uplink_ptp is not None:
+                    uplink["ptp"] = self.shared_utils.uplink_ptp
+                elif self.shared_utils.ptp_enabled:
+                    uplink["ptp"] = {"enable": True}
 
                 if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
                     # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
@@ -223,12 +251,13 @@ class UplinksMixin:
         """
         Exposed in avd_switch_facts
 
-        List of all uplink peers
+        List of all **unique** uplink peers
 
         These are used to generate the "avd_topology_peers" fact covering downlinks for all devices.
         """
         uplink_switches = self.shared_utils.uplink_switches
-        return [uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices]
+        # Making sure each peer is unique
+        return natural_sort(unique(uplink_switch for uplink_switch in uplink_switches if uplink_switch in self.shared_utils.all_fabric_devices))
 
     @cached_property
     def _default_downlink_interfaces(self: EosDesignsFacts) -> list:

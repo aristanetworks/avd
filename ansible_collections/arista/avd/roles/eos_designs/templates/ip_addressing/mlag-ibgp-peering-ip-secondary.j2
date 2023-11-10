@@ -1,1 +1,6 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {{ vrf.mlag_ibgp_peering_ipv4_pool | ansible.utils.ipaddr('subnet') | ansible.utils.ipmath(((switch.mlag_switch_ids.primary - 1) * 2) + 1) }}

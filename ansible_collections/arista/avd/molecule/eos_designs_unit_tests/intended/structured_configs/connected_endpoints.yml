@@ -1,3 +1,5 @@
+hostname: connected_endpoints
+is_deployed: true
 service_routing_protocols_model: multi-agent
 vlan_internal_order:
   allocation: ascending
@@ -56,6 +58,30 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
+- name: Ethernet9
+  peer: SERVER_WITH_PLAYVAR_DESCRIPTION
+  peer_type: server
+  description: test of var set under play vars
+  shutdown: false
+  type: switched
+- name: Ethernet10
+  peer: OLD_SW-1/7
+  peer_type: server
+  description: PHYSICAL_PORT_DESCRIPTION_1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 10
+    mode: active
+- name: Ethernet11
+  peer: OLD_SW-1/7
+  peer_type: server
+  description: PHYSICAL_PORT_DESCRIPTION_2
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 10
+    mode: active
 port_channel_interfaces:
 - name: Port-Channel5
   description: OLD_SW-1/5_PORT_CHANNEL_DESCRIPTION
@@ -63,5 +89,9 @@ port_channel_interfaces:
   shutdown: false
 - name: Port-Channel7
   description: PHYSICAL_PORT_DESCRIPTION_PORT_CHANNEL_DESCRIPTION
+  type: switched
+  shutdown: false
+- name: Port-Channel10
+  description: OLD_SW-1/7_PORT_CHANNEL_DESCRIPTION
   type: switched
   shutdown: false

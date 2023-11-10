@@ -1,0 +1,79 @@
+---
+
+# Ansible Playbook to export vars from ansible-avd molecule scenarios
+# Must load inventory from file in source molecule scenario
+# Must give destination path as extra-var like "-e testdir=eos_designs_unit_tests"
+
+- name: Copy files from molecule scenario
+  gather_facts: false
+  connection: local
+  hosts: all,!prompt ## Excluding prompt because the unsafe marker is lost during the export of hostvars.
+  vars:
+    scenario_dir: "{{ inventory_dir }}/.."
+    pyavd_test_artifacts_dir: "{{ playbook_dir }}/../tests/artifacts"
+    tacacs_key_set_as_play_var: "071B245F5A" ## setting dummy value to avoid error for key set in molecule playbook
+    string_set_as_play_var: "test of var set under play vars" ## setting dummy value to avoid error for key set in molecule playbook
+  tasks:
+    - name: Clear directory
+      ansible.builtin.file:
+        path: "{{ pyavd_test_artifacts_dir }}/{{ testdir }}"
+        state: absent
+      run_once: true
+      delegate_to: localhost
+
+    - name: Create directories
+      ansible.builtin.file:
+        path: "{{ pyavd_test_artifacts_dir }}/{{ testdir }}/{{ item }}"
+        state: directory
+        mode: 0775
+      run_once: true
+      loop:
+        - vars
+        - configs
+        - structured_configs
+      delegate_to: localhost
+
+    - name: Copy structured_configs
+      ansible.builtin.shell:
+        cmd: "cp -rT {{ scenario_dir }}/intended/structured_configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/structured_configs/"
+      run_once: true
+      delegate_to: localhost
+      when: lookup("ansible.builtin.first_found", scenario_dir ~ "/intended/structured_configs", skip=true)
+
+    - name: Copy configs
+      ansible.builtin.shell:
+        cmd: "cp -rT {{ scenario_dir }}/intended/configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/configs/"
+      run_once: true
+      delegate_to: localhost
+
+    - name: Copy documentation
+      ansible.builtin.shell:
+        cmd: "cp -rT {{ scenario_dir }}/documentation/devices/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/documentation/"
+      run_once: true
+      delegate_to: localhost
+      when: lookup("ansible.builtin.first_found", scenario_dir ~ "/documentation/devices", skip=true)
+
+    - name: Set fact with hostvars to force templating
+      ansible.builtin.set_fact:
+        templated_hostvars: "{{ hostvars[inventory_hostname] }}"
+      delegate_to: localhost
+      vars:
+        # Variables required to run Molecule test data outside Ansible without getting "undefined" errors.
+        playbook_dir: "playbook_dir"
+        switch:
+          mgmt_interface: Management1
+          mgmt_vrf: MGMT
+          id: 6
+
+    - name: Export hostvars
+      ansible.builtin.copy:
+        content: "{{ templated_hostvars | to_json(sort_keys=false) }}"
+        dest: "{{ pyavd_test_artifacts_dir }}/{{ testdir }}/vars/{{ inventory_hostname }}.json"
+      delegate_to: localhost
+      vars:
+        # Variables required to run Molecule test data outside Ansible without getting "undefined" errors.
+        playbook_dir: "playbook_dir"
+        switch:
+          mgmt_interface: Management1
+          mgmt_vrf: MGMT
+          id: 6

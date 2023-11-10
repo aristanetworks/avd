@@ -46,6 +46,9 @@ sflow:
   interface:
     disable:
       default: true
+    egress:
+      enable_default: true
+      unmodified: true
   hardware_acceleration:
     enabled: true
     sample: 1024

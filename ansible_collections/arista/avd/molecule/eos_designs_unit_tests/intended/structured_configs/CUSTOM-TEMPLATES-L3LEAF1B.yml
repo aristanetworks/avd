@@ -1,3 +1,5 @@
+hostname: CUSTOM-TEMPLATES-L3LEAF1B
+is_deployed: true
 router_bgp:
   as: '65101'
   router_id: 192.168.255.22

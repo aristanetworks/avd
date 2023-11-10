@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -44,6 +47,15 @@ class RouteMapsMixin(UtilsMixin):
                         "sequence": 30,
                         "type": "permit",
                         "match": ["ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6"],
+                    }
+                )
+
+            if self.shared_utils.underlay_multicast_rp_interfaces is not None:
+                sequence_numbers.append(
+                    {
+                        "sequence": 40,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-LOOPBACKS-PIM-RP"],
                     }
                 )
 

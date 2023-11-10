@@ -1,5 +1,11 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - router traffic engineering #}
-{% if router_traffic_engineering is arista.avd.defined %}
+{# for AVD 5.0.0, the first part of the if statement will be removed #}
+{% if router_traffic_engineering is arista.avd.defined or router_traffic_engineering.enabled is arista.avd.defined(true) %}
 !
 router traffic-engineering
 {%     if router_traffic_engineering.segment_routing is arista.avd.defined %}

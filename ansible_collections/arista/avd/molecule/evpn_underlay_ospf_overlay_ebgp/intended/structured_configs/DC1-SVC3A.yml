@@ -1,3 +1,5 @@
+hostname: DC1-SVC3A
+is_deployed: true
 router_bgp:
   as: '65103'
   router_id: 192.168.255.8

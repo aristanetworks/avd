@@ -1,0 +1,19 @@
+hostname: default_interface_mtu_hostvars
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+interface_defaults:
+  mtu: 1234
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ip_igmp_snooping:
+  globally_enabled: true

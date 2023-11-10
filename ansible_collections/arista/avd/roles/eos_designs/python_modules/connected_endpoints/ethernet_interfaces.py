@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
@@ -7,7 +10,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item, replace_or_append_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, replace_or_append_item
 
 from .utils import UtilsMixin
 
@@ -59,14 +62,14 @@ class EthernetInterfacesMixin(UtilsMixin):
                         continue
 
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
-                    if (found_eth_interface := get_item(non_overwritable_ethernet_interfaces, "name", ethernet_interface["name"])) is not None:
-                        raise AristaAvdError(
-                            f"Duplicate interface name {ethernet_interface['name']} found while generating ethernet_interfaces for connected_endpoint:"
-                            f" {connected_endpoint['name']}, endpoint_interface: {ethernet_interface['peer_interface']}. Description on duplicate interface:"
-                            f" {found_eth_interface['description']}"
-                        )
+                    append_if_not_duplicate(
+                        list_of_dicts=non_overwritable_ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_interface,
+                        context="Ethernet Interfaces defined under connected_endpoints",
+                        context_keys=["name", "peer_interface"],
+                    )
 
-                    non_overwritable_ethernet_interfaces.append(ethernet_interface)
                     replace_or_append_item(ethernet_interfaces, "name", ethernet_interface)
 
         if ethernet_interfaces:
@@ -88,6 +91,20 @@ class EthernetInterfacesMixin(UtilsMixin):
         channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
         short_esi = self._get_short_esi(adapter, channel_group_id)
 
+        # check lengths of lists
+        nodes_length = len(adapter["switches"])
+        if len(adapter["switch_ports"]) != nodes_length or ("descriptions" in adapter and len(adapter["descriptions"]) != nodes_length):
+            raise AristaAvdError(
+                f"Length of lists 'switches', 'switch_ports', and 'descriptions' (if used) must match for adapter. Check configuration for {peer}, adapter"
+                f" switch_ports {adapter['switch_ports']}."
+            )
+
+        # if 'descriptions' is set, it is preferred
+        if (interface_descriptions := adapter.get("descriptions")) is not None:
+            interface_description = interface_descriptions[node_index]
+        else:
+            interface_description = adapter.get("description")
+
         # Common ethernet_interface settings
         ethernet_interface = {
             "name": adapter["switch_ports"][node_index],
@@ -95,7 +112,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             "peer_interface": peer_interface,
             "peer_type": connected_endpoint["type"],
             "port_profile": adapter.get("profile"),
-            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, adapter.get("description")),
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, interface_description),
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
             "eos_cli": adapter.get("raw_eos_cli"),
@@ -126,7 +143,7 @@ class EthernetInterfacesMixin(UtilsMixin):
             ethernet_interface.update(
                 {
                     "type": "switched",
-                    "mtu": adapter.get("mtu"),
+                    "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
                     "l2_mtu": adapter.get("l2_mtu"),
                     "mode": adapter.get("mode"),
                     "vlans": adapter.get("vlans"),
@@ -139,7 +156,9 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "storm_control": self._get_adapter_storm_control(adapter),
                     "service_profile": adapter.get("qos_profile"),
                     "dot1x": adapter.get("dot1x"),
+                    "poe": self._get_adapter_poe(adapter),
                     "ptp": self._get_adapter_ptp(adapter),
+                    "sflow": self._get_adapter_sflow(adapter),
                     "evpn_ethernet_segment": self._get_adapter_evpn_ethernet_segment_cfg(
                         adapter, short_esi, node_index, connected_endpoint, "auto", "single-active"
                     ),

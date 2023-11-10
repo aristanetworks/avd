@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - management api gnmi #}
 {% if management_api_gnmi is arista.avd.defined %}
 !
@@ -23,6 +28,9 @@ management api gnmi
    transport grpc {{ transport.name }}
 {%                     if transport.ssl_profile is arista.avd.defined %}
       ssl profile {{ transport.ssl_profile }}
+{%                     endif %}
+{%                     if transport.port is arista.avd.defined %}
+      port {{ transport.port }}
 {%                     endif %}
 {%                     if transport.vrf is arista.avd.defined %}
       vrf {{ transport.vrf }}

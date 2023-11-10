@@ -1,3 +1,5 @@
+hostname: DC2-RS1
+is_deployed: true
 router_bgp:
   as: '65201'
   router_id: 172.16.20.1
@@ -79,8 +81,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-snmp_server:
-  location: TWODC_5STAGE_CLOS DC2 DC2-RS1
 spanning_tree:
   mode: none
 local_users:
@@ -105,6 +105,8 @@ management_api_http:
   - name: MGMT
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC2 DC2-RS1
 ethernet_interfaces:
 - name: Ethernet1
   peer: DC2-SUPER-SPINE1
@@ -112,7 +114,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet3
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.20.1/31
@@ -122,7 +123,6 @@ ethernet_interfaces:
   peer_type: super-spine
   description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet6
   shutdown: false
-  mtu: 1500
   service_profile: QOS-PROFILE
   type: routed
   ip_address: 172.17.20.3/31

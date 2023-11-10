@@ -1,17 +1,6 @@
-# Copyright 2021 Arista Networks
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# Copyright (c) 2021-2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 
 DOCUMENTATION = r"""
 ---
@@ -19,7 +8,9 @@ module: eos_designs_structured_config
 version_added: "4.0.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Generate AVD EOS Designs structured configuration
-description:
+description: |-
+  The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
+
   - Validates input variables according to eos_designs schema
   - Generates structured configuration
   - Optionally run any custom jinja2 YAML templates and merge result onto structured configuration
@@ -49,16 +40,16 @@ options:
             default: 'append'
             type: str
           strip_empty_keys:
-            description: |
-              Filter out keys from the generated output if value is null/none/undefined
-              Only applies to templates.
+            description:
+              - Filter out keys from the generated output if value is null/none/undefined
+              - Only applies to templates.
             required: false
             default: true
             type: bool
   dest:
-    description: |
-      Destination path. If set, the output facts will also be written to this path.
-      Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
+    description:
+      - Destination path. If set, the output facts will also be written to this path.
+      - Autodetects data format based on file suffix. '.yml', '.yaml' -> YAML, default -> JSON
     required: false
     type: str
   mode:
@@ -66,9 +57,9 @@ options:
     required: false
     type: str
   template_output:
-    description: |
-      If true the output data will be run through another jinja2 rendering before returning.
-      This is to resolve any input values with inline jinja using variables/facts set by the input templates.
+    description:
+      - If true, the output data will be run through another jinja2 rendering before returning.
+      - This is to resolve any input values with inline jinja using variables/facts set by the input templates.
     required: false
     type: bool
   conversion_mode:
@@ -110,6 +101,7 @@ options:
 """
 
 EXAMPLES = r"""
+---
 - name: Generate device configuration in structured format
   arista.avd.eos_designs_structured_config:
     templates:

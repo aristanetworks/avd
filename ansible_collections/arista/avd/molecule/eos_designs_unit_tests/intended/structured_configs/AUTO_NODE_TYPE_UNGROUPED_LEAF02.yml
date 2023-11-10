@@ -1,3 +1,5 @@
+hostname: AUTO_NODE_TYPE_UNGROUPED_LEAF02
+is_deployed: true
 router_bgp:
   as: '65102'
   router_id: 192.168.255.4

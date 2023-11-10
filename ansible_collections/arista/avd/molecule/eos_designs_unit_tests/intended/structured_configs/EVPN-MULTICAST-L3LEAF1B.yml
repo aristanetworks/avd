@@ -1,3 +1,5 @@
+hostname: EVPN-MULTICAST-L3LEAF1B
+is_deployed: true
 router_bgp:
   as: '65101'
   router_id: 192.168.255.4
@@ -1592,6 +1594,9 @@ router_pim_sparse_mode:
         groups:
         - 232.0.0.0/21
       - address: 10.40.40.40
+      - address: 10.20.20.30
+        access_lists:
+        - RP_ACL_VRF_OVERRIDE
   - name: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
     ipv4:
       rp_addresses:
@@ -1608,3 +1613,27 @@ router_pim_sparse_mode:
         - 232.0.112.0/21
       - address: 10.1.51.130
       - address: 10.1.52.130
+      - address: 10.1.51.140
+        access_lists:
+        - RPS_ACL_VRF_Tenant_E_1
+      - address: 10.1.52.140
+        access_lists:
+        - RPS_ACL_VRF_Tenant_E_1
+      - address: 10.1.50.150
+        access_lists:
+        - RPS_ACL_VRF_Tenant_E_2
+standard_access_lists:
+- name: RP_ACL_VRF_OVERRIDE
+  sequence_numbers:
+  - sequence: 10
+    action: permit 232.1.0.0/21
+- name: RPS_ACL_VRF_Tenant_E_1
+  sequence_numbers:
+  - sequence: 10
+    action: permit 232.0.120.0/21
+  - sequence: 20
+    action: permit 232.0.128.0/21
+- name: RPS_ACL_VRF_Tenant_E_2
+  sequence_numbers:
+  - sequence: 10
+    action: permit 232.0.136.0/21

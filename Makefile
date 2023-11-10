@@ -1,8 +1,6 @@
 CURRENT_DIR = $(shell pwd)
 # option to run ansible-test sanity: must be either venv or docker (default is docker)
 ANSIBLE_TEST_MODE ?= docker
-# Root path for MKDOCS content
-WEBDOC_BUILD = ansible_collections/arista/avd/docs/_build
 MUFFET_TIMEOUT ?= 60
 
 .PHONY: help
@@ -10,11 +8,26 @@ help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 #########################################
-# Ansible Collection actions		 	#
+# Ansible Collection actions		#
 #########################################
 .PHONY: collection-build
 collection-build: ## Build arista.cvp collection locally
 	ansible-galaxy collection build --force ansible_collections/arista/avd
+
+#########################################
+# pyavd actions                 #
+#########################################
+.PHONY: pyavd-build
+pyavd-build: ## Build pyavd python package locally
+	cd python-avd && $(MAKE) clean build
+
+.PHONY: pyavd-test
+pyavd-test: ## Test pyavd python code
+	cd python-avd && $(MAKE) clean && tox -r
+
+.PHONY: pyavd-publish
+pyavd-publish: ## Build and publish pyavd python package
+	cd python-avd && $(MAKE) clean build publish
 
 #########################################
 # Code Validation using ansible-test 	#

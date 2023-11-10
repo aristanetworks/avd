@@ -1,0 +1,44 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - platform trident #}
+{% if platform is arista.avd.defined %}
+{%     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
+!
+platform trident mmu queue profile {{ profile.name }}
+{%         for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
+{%             if queue.reserved is arista.avd.defined %}
+{%                 set reserved_cli = "egress unicast queue " ~ queue.id ~ " reserved" %}
+{%                 if queue.unit is arista.avd.defined %}
+{%                     set reserved_cli = reserved_cli ~ " " ~ queue.unit %}
+{%                 endif %}
+{%                 set reserved_cli = reserved_cli ~ " " ~ queue.reserved %}
+    {{ reserved_cli }}
+{%             endif %}
+{%             if queue.threshold is arista.avd.defined %}
+    egress unicast queue {{ queue.id }} threshold {{ queue.threshold }}
+{%             endif %}
+{%             if queue.drop is arista.avd.defined %}
+    egress unicast queue {{ queue.id }} drop-precedence {{ queue.drop.precedence }} drop-threshold {{ queue.drop.threshold }}
+{%             endif %}
+{%         endfor %}
+{%         for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
+{%             if queue.reserved is arista.avd.defined %}
+{%                 set reserved_cli = "egress multicast queue " ~ queue.id ~ " reserved" %}
+{%                 if queue.unit is arista.avd.defined %}
+{%                     set reserved_cli = reserved_cli ~ " " ~ queue.unit %}
+{%                 endif %}
+{%                 set reserved_cli = reserved_cli ~ " " ~ queue.reserved %}
+    {{ reserved_cli }}
+{%             endif %}
+{%             if queue.threshold is arista.avd.defined %}
+    egress multicast queue {{ queue.id }} threshold {{ queue.threshold }}
+{%             endif %}
+{%             if queue.drop is arista.avd.defined %}
+    egress multicast queue {{ queue.id }} drop-precedence {{ queue.drop.precedence }} drop-threshold {{ queue.drop.threshold }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 import ipaddress
@@ -5,7 +8,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 from .utils_filtered_tenants import UtilsFilteredTenantsMixin
@@ -61,6 +64,8 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                 continue
 
             if "evpn" in vrf_default.get("address_families", ["evpn"]):
+                if self.shared_utils.underlay_filter_peer_as:
+                    raise AristaAvdError("'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF.")
                 return True
 
         return False
@@ -167,6 +172,15 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             vlan_id = base_vlan + int(vrf_id) - 1
 
         return vlan_id
+
+    def _mlag_ibgp_peering_redistribute(self, vrf, tenant) -> bool:
+        """
+        Returns True if MLAG IBGP Peering subnet should be redistributed for the given vrf/tenant.
+        False otherwise.
+
+        Does _not_ include checks if the peering is enabled at all, so that should be checked first.
+        """
+        return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), True) is True
 
     @cached_property
     def _configure_bgp_mlag_peer_group(self) -> bool:

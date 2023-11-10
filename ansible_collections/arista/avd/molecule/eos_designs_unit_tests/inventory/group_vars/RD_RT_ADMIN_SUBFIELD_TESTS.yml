@@ -45,11 +45,13 @@ l3leaf:
 tenants:
 # igmp_snooping_querier enable on Tenant
   - name: Tenant_A
-    mac_vrf_vni_base: 10000
+    mac_vrf_id_base: 10000
+    mac_vrf_vni_base: 80000
     vrfs:
       - name: TEST1
         description: "TEST1"
-        vrf_vni: 11
+        vrf_id: 11
+        vrf_vni: 22
         svis:
           - id: 1
             name: "VLAN_1"
@@ -61,3 +63,17 @@ tenants:
             tags: ['test_l3']
             enabled: True
             ip_address_virtual: 10.0.2.1/24
+          - id: 3
+            name: "VLAN_3"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.3.1/24
+            rt_override: 3333
+            rd_override: 33333
+          - id: 4
+            name: "VLAN_4"
+            tags: ['test_l3']
+            enabled: True
+            ip_address_virtual: 10.0.4.1/24
+            rt_override: 3333:3333
+            rd_override: 33333:33333

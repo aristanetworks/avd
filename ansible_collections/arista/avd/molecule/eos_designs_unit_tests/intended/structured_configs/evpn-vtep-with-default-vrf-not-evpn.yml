@@ -1,3 +1,5 @@
+hostname: evpn-vtep-with-default-vrf-not-evpn
+is_deployed: true
 router_bgp:
   as: '101'
   router_id: 192.168.255.109

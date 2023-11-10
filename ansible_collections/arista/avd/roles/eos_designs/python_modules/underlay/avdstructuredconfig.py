@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
 from .ethernet_interfaces import EthernetInterfacesMixin
@@ -8,7 +11,10 @@ from .prefix_lists import PrefixListsMixin
 from .route_maps import RouteMapsMixin
 from .router_bgp import RouterBgpMixin
 from .router_isis import RouterIsisMixin
+from .router_msdp import RouterMsdpMixin
 from .router_ospf import RouterOspfMixin
+from .router_pim_sparse_mode import RouterPimSparseModeMixin
+from .standard_access_lists import StandardAccessListsMixin
 from .vlans import VlansMixin
 
 
@@ -23,6 +29,9 @@ class AvdStructuredConfigUnderlay(
     PrefixListsMixin,
     RouteMapsMixin,
     RouterIsisMixin,
+    RouterMsdpMixin,
+    RouterPimSparseModeMixin,
+    StandardAccessListsMixin,
     MplsMixin,
 ):
     """

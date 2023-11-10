@@ -1,0 +1,44 @@
+---
+# Minimum config to only test the specific feature.
+# This tests the VRFs and SNMP hosts only using inband management VRF.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-settings-2
+      id: 43
+      inband_mgmt_ip: 192.168.0.1/24
+      inband_mgmt_interface: Vlan123
+      # inband_mgmt_vrf: default ("default" by default)
+
+snmp_settings:
+  enable_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
+  enable_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
+  vrfs:
+    - name: SNMPVRF
+      enable: true
+  hosts:
+    - host: 10.6.75.125
+      vrf: SNMPVRF
+      use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    - host: 10.6.75.126
+      use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
+      version: 3
+      users:
+        - username: USER-WRITE
+          authentication_level: auth
+    - host: 10.6.75.127
+      vrf: SNMPVRF
+      use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
+      use_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    - host: 10.6.75.128
+      use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
+      use_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
+      version: 3
+      users:
+        - username: USER-WRITE
+          authentication_level: auth

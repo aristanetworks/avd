@@ -1,3 +1,5 @@
+hostname: DC1-LEAF4A
+is_deployed: true
 router_bgp:
   as: '65107'
   router_id: 192.168.255.14
@@ -45,11 +47,15 @@ router_bgp:
     - name: MLAG_PEER
       activate: true
       next_hop:
-        address_family_ipv6_originate: true
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: UNDERLAY_PEERS
       activate: true
       next_hop:
-        address_family_ipv6_originate: true
+        address_family_ipv6:
+          enabled: true
+          originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   neighbor_interfaces:

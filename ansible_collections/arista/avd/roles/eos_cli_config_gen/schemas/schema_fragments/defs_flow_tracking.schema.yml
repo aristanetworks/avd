@@ -1,0 +1,79 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  flow_tracking:
+    type: dict
+    keys:
+      trackers:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Tracker Name
+            record_export:
+              type: dict
+              keys:
+                on_inactive_timeout:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 3000
+                  max: 900000
+                  description: Flow record inactive export timeout in milliseconds
+                on_interval:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 1000
+                  max: 36000000
+                  description: Flow record export interval in milliseconds
+            exporters:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Exporter Name
+                  collector:
+                    type: dict
+                    keys:
+                      host:
+                        type: str
+                        description: Collector IPv4 address or IPv6 address or fully qualified domain name
+                      port:
+                        type: int
+                        description: Collector Port Number
+                        min: 1
+                        max: 65535
+                        convert_types:
+                          - str
+                  format:
+                    type: dict
+                    keys:
+                      ipfix_version:
+                        type: int
+                        convert_types:
+                          - str
+                  local_interface:
+                    type: str
+                    description: Local Source Interface
+                  template_interval:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 5000
+                    max: 3600000
+                    description: Template interval in milliseconds
+      shutdown:
+        type: bool
+        default: false

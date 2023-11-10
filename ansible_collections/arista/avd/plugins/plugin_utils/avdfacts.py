@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -62,3 +65,7 @@ class AvdFacts:
         Empty values are removed from the returned data.
         """
         return {key: getattr(self, key) for key in self.keys() if getattr(self, key) is not None}
+
+    def clear_cache(self):
+        for key in self.keys() + self.internal_keys():
+            self.__dict__.pop(key, None)

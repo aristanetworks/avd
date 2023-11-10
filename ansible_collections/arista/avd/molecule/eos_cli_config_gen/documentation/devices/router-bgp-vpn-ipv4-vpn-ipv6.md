@@ -43,7 +43,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65103|  192.168.255.3 |
+| 65103 | 192.168.255.3 |
 
 | BGP Tuning |
 | ---------- |
@@ -131,7 +131,7 @@ router bgp 65103
    neighbor 2001:cafe:192:168::4 send-community
    !
    address-family vpn-ipv4
-      domain identifier 3900000
+      domain identifier 65000:0
       neighbor MPLS-IBGP-PEERS activate
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN4 in
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT4 out
@@ -142,7 +142,7 @@ router bgp 65103
       route import match-failure action discard
    !
    address-family vpn-ipv6
-      domain identifier 3900000
+      domain identifier 65000:0
       neighbor MPLS-IBGP-PEERS activate
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-IN6 in
       neighbor MPLS-IBGP-PEERS route-map RM-IBGP-PEER-OUT6 out

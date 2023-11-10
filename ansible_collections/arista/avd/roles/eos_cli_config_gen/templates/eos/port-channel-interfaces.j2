@@ -1,3 +1,8 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
 {# eos - port channel interfaces #}
 {% for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort('name') %}
 !
@@ -104,6 +109,9 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.l2_protocol.forwarding_profile is arista.avd.defined %}
    l2-protocol forwarding profile {{ port_channel_interface.l2_protocol.forwarding_profile }}
 {%     endif %}
+{%     if port_channel_interface.flow_tracker.hardware is arista.avd.defined %}
+   flow tracker hardware {{ port_channel_interface.flow_tracker.hardware }}
+{%     endif %}
 {%     if port_channel_interface.flow_tracker.sampled is arista.avd.defined %}
    flow tracker sampled {{ port_channel_interface.flow_tracker.sampled }}
 {%     endif %}
@@ -152,6 +160,9 @@ interface {{ port_channel_interface.name }}
    no snmp trap link-change
 {%     elif port_channel_interface.snmp_trap_link_change is arista.avd.defined(true) %}
    snmp trap link-change
+{%     endif %}
+{%     if port_channel_interface.l2_mtu is arista.avd.defined %}
+   l2 mtu {{ port_channel_interface.l2_mtu }}
 {%     endif %}
 {%     if port_channel_interface.lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interface.lacp_id }}

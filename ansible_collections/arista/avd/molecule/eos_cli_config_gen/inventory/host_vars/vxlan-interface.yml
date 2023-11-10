@@ -13,6 +13,7 @@ vxlan_interface:
       qos:
         dscp_propagation_encapsulation: true
         map_dscp_to_traffic_class_decapsulation: true
+        ecn_propagation: true
       bfd_vtep_evpn:
         interval: 300
         min_rx: 300

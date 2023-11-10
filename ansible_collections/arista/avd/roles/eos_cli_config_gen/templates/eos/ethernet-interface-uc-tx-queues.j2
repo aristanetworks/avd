@@ -1,0 +1,56 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - uc-tx-queue profiles #}
+   !
+   uc-tx-queue {{ uc_tx_queue.id }}
+{% if uc_tx_queue.comment is arista.avd.defined %}
+{%     for comment_line in uc_tx_queue.comment.splitlines() | arista.avd.default([]) %}
+      !! {{ comment_line }}
+{%     endfor %}
+{% endif %}
+{% if uc_tx_queue.bandwidth_percent is arista.avd.defined %}
+      bandwidth percent {{ uc_tx_queue.bandwidth_percent }}
+{% elif uc_tx_queue.bandwidth_guaranteed_percent is arista.avd.defined %}
+      bandwidth guaranteed percent {{ uc_tx_queue.bandwidth_guaranteed_percent }}
+{% endif %}
+{% if uc_tx_queue.priority is arista.avd.defined %}
+      {{ uc_tx_queue.priority }}
+{% endif %}
+{% if uc_tx_queue.shape.rate is arista.avd.defined %}
+      shape rate {{ uc_tx_queue.shape.rate }}
+{% endif %}
+{% if uc_tx_queue.random_detect is arista.avd.defined %}
+{%     if uc_tx_queue.random_detect.ecn.count is arista.avd.defined(true) %}
+      random-detect ecn count
+{%     endif %}
+{%     if uc_tx_queue.random_detect.ecn.threshold.min is arista.avd.defined and uc_tx_queue.random_detect.ecn.threshold.max is arista.avd.defined and uc_tx_queue.random_detect.ecn.threshold.units is arista.avd.defined %}
+{%         set units = uc_tx_queue.random_detect.ecn.threshold.units %}
+{%         set ecn_command = "random-detect ecn" %}
+{%         set ecn_command = ecn_command ~ " minimum-threshold " ~ uc_tx_queue.random_detect.ecn.threshold.min ~ " " ~ units %}
+{%         set ecn_command = ecn_command ~ " maximum-threshold " ~ uc_tx_queue.random_detect.ecn.threshold.max ~ " " ~ units %}
+{%         if uc_tx_queue.random_detect.ecn.threshold.max_probability is arista.avd.defined %}
+{%             set ecn_command = ecn_command ~ " max-mark-probability " ~ uc_tx_queue.random_detect.ecn.threshold.max_probability %}
+{%         endif %}
+{%         if uc_tx_queue.random_detect.ecn.threshold.weight is arista.avd.defined %}
+{%             set ecn_command = ecn_command ~ " weight " ~ uc_tx_queue.random_detect.ecn.threshold.weight %}
+{%         endif %}
+      {{ ecn_command }}
+{%     endif %}
+{%     if uc_tx_queue.random_detect.drop.threshold.min is arista.avd.defined and uc_tx_queue.random_detect.drop.threshold.max is arista.avd.defined and uc_tx_queue.random_detect.drop.threshold.units is arista.avd.defined  %}
+{%         set units = uc_tx_queue.random_detect.drop.threshold.units %}
+{%         set drop_command = "random-detect drop" %}
+{%         if uc_tx_queue.random_detect.drop.threshold.drop_precedence is arista.avd.defined %}
+{%             set drop_command = drop_command ~ " drop-precedence " ~ uc_tx_queue.random_detect.drop.threshold.drop_precedence %}
+{%         endif %}
+{%         set drop_command = drop_command ~ " minimum-threshold " ~ uc_tx_queue.random_detect.drop.threshold.min ~ " " ~ units %}
+{%         set drop_command = drop_command ~ " maximum-threshold " ~ uc_tx_queue.random_detect.drop.threshold.max ~ " " ~ units %}
+{%         set drop_command = drop_command ~ " drop-probability " ~ uc_tx_queue.random_detect.drop.threshold.drop_probability %}
+{%         if uc_tx_queue.random_detect.drop.threshold.weight is arista.avd.defined %}
+{%             set drop_command = drop_command ~ " weight " ~ uc_tx_queue.random_detect.drop.threshold.weight %}
+{%         endif %}
+      {{ drop_command }}
+{%     endif %}
+{% endif %}

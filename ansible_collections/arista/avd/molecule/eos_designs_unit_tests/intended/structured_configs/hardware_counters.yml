@@ -1,3 +1,5 @@
+hostname: hardware_counters
+is_deployed: true
 service_routing_protocols_model: multi-agent
 hardware_counters:
   features:

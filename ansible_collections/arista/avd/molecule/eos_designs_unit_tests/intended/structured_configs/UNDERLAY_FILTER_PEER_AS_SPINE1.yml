@@ -1,3 +1,5 @@
+hostname: UNDERLAY_FILTER_PEER_AS_SPINE1
+is_deployed: true
 router_bgp:
   as: '65000'
   router_id: 192.168.255.1

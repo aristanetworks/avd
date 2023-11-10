@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
@@ -28,6 +31,7 @@ class MgmtMixin:
             get(self.switch_data_combined, "mgmt_interface"),
             self.platform_settings.get("management_interface"),
             get(self.hostvars, "mgmt_interface"),
+            get(self.cv_topology_config, "mgmt_interface"),
             "Management1",
         )
 

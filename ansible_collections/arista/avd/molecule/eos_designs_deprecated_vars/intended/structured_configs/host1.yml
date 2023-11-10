@@ -1,0 +1,149 @@
+hostname: host1
+router_bgp:
+  as: '101'
+  router_id: 192.168.255.101
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - 192.168.200.12:9910
+  - 192.168.200.13:9910
+  - 192.168.200.11:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.255.101/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 192.168.254.101/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/24 eq 32
+  - sequence: 20
+    action: permit 192.168.254.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+ip_igmp_snooping:
+  globally_enabled: true
+vxlan_interface:
+  Vxlan1:
+    description: host1_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+ethernet_interfaces:
+- name: Ethernet12
+  peer: server01_ESI
+  peer_interface: Eth1
+  peer_type: server
+  port_profile: TENANT_A_B
+  description: server01_ESI_Eth1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 12
+    mode: active
+- name: Ethernet13
+  peer: server01_ESI
+  peer_interface: Eth6
+  peer_type: server
+  description: server01_ESI_Eth6
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 13
+    mode: active
+- name: Ethernet10
+  peer: ROUTER01
+  peer_interface: Eth1
+  peer_type: router
+  port_profile: Tenant_X_LT
+  description: ROUTER01_Eth1
+  shutdown: false
+  type: switched
+port_channel_interfaces:
+- name: Port-Channel12
+  description: server01_ESI_PortChanne1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 110-111,210-211
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0101
+    route_target: 03:03:02:02:01:01
+  lacp_id: 0303.0202.0101
+- name: Port-Channel13
+  description: server01_ESI_PortChanne1
+  type: switched
+  shutdown: false
+  mtu: 1601
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0303:0202:0102
+    route_target: 03:03:02:02:01:02
+  lacp_id: 0303.0202.0102

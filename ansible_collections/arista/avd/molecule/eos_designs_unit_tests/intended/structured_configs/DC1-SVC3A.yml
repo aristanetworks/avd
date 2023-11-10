@@ -1,3 +1,5 @@
+hostname: DC1-SVC3A
+is_deployed: true
 router_bgp:
   as: '65103'
   router_id: 192.168.255.12
@@ -105,6 +107,7 @@ router_bgp:
         - '12:12'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-PEERS
@@ -124,6 +127,7 @@ router_bgp:
         - '13:13'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-PEERS
@@ -164,6 +168,7 @@ router_bgp:
         - 65000:789
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.7
       peer_group: MLAG-PEERS
@@ -183,6 +188,7 @@ router_bgp:
         - '11:11'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 172.31.11.7
       peer_group: MLAG-PEERS
@@ -381,9 +387,6 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 8.8.8.8
   vrf: MGMT
-snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS DC1-SVC3A
 spanning_tree:
   root_super: true
   mode: mstp
@@ -447,6 +450,9 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+snmp_server:
+  contact: example@example.com
+  location: EOS_DESIGNS_UNIT_TESTS DC1-SVC3A
 vlans:
 - id: 4090
   tenant: system
@@ -1038,6 +1044,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC1-L2LEAF2A_Ethernet1
+  speed: 100g-2
   shutdown: false
   type: port-channel-member
   channel_group:
@@ -1048,6 +1055,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: l2leaf
   description: DC1-L2LEAF2B_Ethernet1
+  speed: 100g-2
   shutdown: false
   type: port-channel-member
   channel_group:
@@ -1471,6 +1479,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
@@ -1492,6 +1508,12 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.251.6/31
+  - sequence: 20
+    action: permit 172.31.11.6/31
 router_bfd:
   multihop:
     interval: 1200

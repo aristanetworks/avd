@@ -44,7 +44,30 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| forwarding_table_partition | 2 |
+| Forwarding Table Partition | 2 |
+| MMU Applied Profile | mc_example_profile |
+
+#### Trident MMU QUEUE PROFILES
+
+**mc_example_profile**
+
+| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
+| ---- | ------------ | --------- | -------- | --------------- |
+| Unicast | 1 | - | 0 bytes | - |
+| Unicast | 2 | 1/8 | 0 cells | - |
+| Multicast | 0 | - | 0 bytes | - |
+| Multicast | 1 | 1/64 | 0 cells | - |
+| Multicast | 7 | 1/64 | 0 cells | - |
+
+**unused_profile**
+
+| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
+| ---- | ------------ | --------- | -------- | --------------- |
+| Unicast | 1 | - | 0 bytes | - |
+| Unicast | 2 | 1/8 | 0 cells | - |
+| Unicast | 7 | - | - bytes | - |
+| Multicast | 0 | - | 0 bytes | - |
+| Multicast | 1 | 8 | 0 cells | - |
 
 #### Platform Sand Summary
 
@@ -63,6 +86,12 @@ interface Management1
 | 1 | 7 |
 | 2 | 15 |
 
+#### Platform Software Forwarding Engine Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Maximum CPU Allocation | 42 |
+
 ### Platform Configuration
 
 ```eos
@@ -75,4 +104,5 @@ platform sand lag hardware-only
 platform sand lag mode 512x32
 platform sand forwarding mode arad
 platform sand multicast replication default ingress
+platform sfe data-plane cpu allocation maximum 42
 ```

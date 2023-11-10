@@ -1,5 +1,6 @@
 ### Tacacs+ Servers
 tacacs_servers:
+  timeout: 10
   hosts:
     - host: 10.10.10.157
       vrf: mgt
@@ -11,7 +12,8 @@ tacacs_servers:
       single_connection: false
     - host: 10.10.10.158
       vrf: default
-      key: 071B245F5A
+      # Testing of play_vars in eos_cli_config_gen
+      key: "{{ tacacs_key_set_as_play_var }}"
       key_type: 7
     - host: 10.10.10.159
       vrf: default
@@ -90,9 +92,11 @@ aaa_accounting:
     console:
       type: start-stop
       group: TACACS
+      logging: true
     default:
       type: start-stop
       group: TACACS
+      logging: true
   system:
     default:
       type: start-stop

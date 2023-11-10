@@ -67,12 +67,14 @@ username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9s
 
 #### TACACS Servers
 
-| VRF | TACACS Servers | Single-Connection |
-| --- | -------------- | ----------------- |
-| mgt | 10.10.10.157 | True |
-| default | 10.10.10.249 | False |
-| default | 10.10.10.158 | False |
-| default | 10.10.10.159 | False |
+| VRF | TACACS Servers | Single-Connection | Timeout |
+| --- | -------------- | ----------------- | ------- |
+| mgt | 10.10.10.157 | True | - |
+| default | 10.10.10.249 | False | 23 |
+| default | 10.10.10.158 | False | - |
+| default | 10.10.10.159 | False | - |
+
+Global timeout: 10 seconds
 
 #### TACACS Servers Device Configuration
 
@@ -82,6 +84,7 @@ tacacs-server host 10.10.10.157 single-connection vrf mgt key 7 <removed>
 tacacs-server host 10.10.10.158 key 7 <removed>
 tacacs-server host 10.10.10.159 key 8a <removed>
 tacacs-server host 10.10.10.249 timeout 23 key 7 <removed>
+tacacs-server timeout 10
 ```
 
 ### RADIUS Server
@@ -199,10 +202,10 @@ aaa authorization commands 10,15 default group tacacs+ local
 
 | Type | Commands | Record type | Group | Logging |
 | ---- | -------- | ----------- | ----- | ------- |
-| Exec - Console | - | start-stop | TACACS | - |
+| Exec - Console | - | start-stop | TACACS | True |
 | Commands - Console | all | start-stop | TACACS | True |
 | Commands - Console | 0 | start-stop |  -  | True |
-| Exec - Default | - | start-stop | TACACS | - |
+| Exec - Default | - | start-stop | TACACS | True |
 | System - Default | - | start-stop | TACACS | - |
 | Dot1x - Default  | - | start-stop | RADIUS | - |
 | Commands - Default | all | start-stop | TACACS | True |
@@ -211,10 +214,10 @@ aaa authorization commands 10,15 default group tacacs+ local
 #### AAA Accounting Device Configuration
 
 ```eos
-aaa accounting exec console start-stop group TACACS
+aaa accounting exec console start-stop group TACACS logging
 aaa accounting commands all console start-stop group TACACS logging
 aaa accounting commands 0 console start-stop logging
-aaa accounting exec default start-stop group TACACS
+aaa accounting exec default start-stop group TACACS logging
 aaa accounting system default start-stop group TACACS
 aaa accounting dot1x default start-stop group RADIUS
 aaa accounting commands all default start-stop group TACACS logging

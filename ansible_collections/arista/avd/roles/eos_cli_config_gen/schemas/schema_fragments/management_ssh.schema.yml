@@ -1,3 +1,6 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
@@ -18,6 +21,8 @@ keys:
             vrf:
               type: str
               description: VRF Name
+              convert_types:
+                - int
       ipv6_access_groups:
         type: list
         items:
@@ -29,10 +34,12 @@ keys:
             vrf:
               type: str
               description: VRF Name
+              convert_types:
+                - int
       idle_timeout:
         type: int
         convert_types:
-        - str
+          - str
         min: 0
         max: 86400
         description: Idle timeout in minutes
@@ -68,14 +75,14 @@ keys:
           limit:
             type: int
             convert_types:
-            - str
+              - str
             min: 1
             max: 100
             description: Maximum total number of SSH sessions to device
           per_host:
             type: int
             convert_types:
-            - str
+              - str
             min: 1
             max: 20
             description: Maximum number of SSH sessions to device from a single host
@@ -83,17 +90,35 @@ keys:
         type: list
         primary_key: name
         convert_types:
-        - dict
+          - dict
         items:
           type: dict
           keys:
             name:
               type: str
-              required: true
               description: VRF Name
+              convert_types:
+                - int
             enable:
               description: Enable SSH in VRF
               type: bool
       log_level:
         type: str
         description: SSH daemon log level
+      client_alive:
+        type: dict
+        keys:
+          count_max:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 1000
+            description: Number of keep-alive packets that can be sent without a response before the connection is assumed dead.
+          interval:
+            type: int
+            convert_types:
+              - str
+            min: 1
+            max: 1000
+            description: Time period (in seconds) to send SSH keep-alive packets.

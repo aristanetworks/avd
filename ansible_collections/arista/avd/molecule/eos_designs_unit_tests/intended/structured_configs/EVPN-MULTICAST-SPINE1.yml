@@ -1,3 +1,5 @@
+hostname: EVPN-MULTICAST-SPINE1
+is_deployed: true
 router_bgp:
   as: '65001'
   router_id: 192.168.255.1

@@ -43,7 +43,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65100|  10.50.64.15 |
+| 65100 | 10.50.64.15 |
 
 | BGP Tuning |
 | ---------- |
@@ -243,6 +243,7 @@ router bgp 65100
    vrf Tenant_A
       rd 10.50.64.15:30001
       route-target import evpn 1:30001
+      route-target import evpn route-map RM-DENY-DEFAULT
       route-target export evpn 1:30001
       redistribute connected
    !
@@ -250,4 +251,5 @@ router bgp 65100
       rd 10.50.64.15:30002
       route-target import evpn 1:30002
       route-target export evpn 1:30002
+      route-target export evpn route-map RM-DEFAULT-EXTRA-COMM
 ```

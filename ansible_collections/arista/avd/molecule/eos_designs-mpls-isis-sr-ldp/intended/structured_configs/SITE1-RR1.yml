@@ -1,3 +1,5 @@
+hostname: SITE1-RR1
+is_deployed: true
 router_bgp:
   as: '65000'
   router_id: 100.70.0.8
