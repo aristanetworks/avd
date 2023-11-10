@@ -52,6 +52,8 @@ class AvdStructuredConfigSflow(AvdFacts):
             vrf = get(destination, "vrf")
             if vrf is None:
                 vrf = self.shared_utils.default_mgmt_protocol_vrf
+                source_interface = self.shared_utils.default_mgmt_protocol_interface
+
             elif vrf == "use_mgmt_interface_vrf":
                 if (self.shared_utils.mgmt_ip is None) and (self.shared_utils.ipv6_mgmt_ip is None):
                     raise AristaAvdMissingVariableError(
