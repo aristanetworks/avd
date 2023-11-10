@@ -52,9 +52,9 @@ interface Management1
 
 | Policy name | ESP Integrity | ESP Encryption | PFS DH Group |
 | ----------- | ------------- | -------------- | ------------ |
-| SA-1 | - |  aes128 | 14 |
-| SA-2 | - |  aes128 | 14 |
-| SA-3 | disabled |  disabled | 17 |
+| SA-1 | - | aes128 | 14 |
+| SA-2 | - | aes128 | 14 |
+| SA-3 | disabled | disabled | 17 |
 
 ### IPSec profiles
 
