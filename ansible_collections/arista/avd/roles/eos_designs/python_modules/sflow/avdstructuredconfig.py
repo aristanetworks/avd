@@ -49,8 +49,10 @@ class AvdStructuredConfigSflow(AvdFacts):
         sflow_vrfs = {}
 
         for destination in natural_sort(destinations, "destination"):
-            vrf = get(destination, "vrf", required=True)
-            if vrf == "use_mgmt_interface_vrf":
+            vrf = get(destination, "vrf")
+            if vrf is None:
+                vrf = self.shared_utils.default_mgmt_protocol_vrf
+            elif vrf == "use_mgmt_interface_vrf":
                 if (self.shared_utils.mgmt_ip is None) and (self.shared_utils.ipv6_mgmt_ip is None):
                     raise AristaAvdMissingVariableError(
                         "Unable to configure sFlow source-interface with 'use_mgmt_interface_vrf' since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set."

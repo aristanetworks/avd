@@ -77,6 +77,12 @@ sflow:
   run: true
   destinations:
   - destination: 10.10.10.10
+  - destination: 10.10.10.11
   source_interface: Vlan4092
+  vrfs:
+  - name: MGMT
+    destinations:
+    - destination: 10.10.10.12
+    source_interface: Management1
 metadata:
   platform: vEOS-lab

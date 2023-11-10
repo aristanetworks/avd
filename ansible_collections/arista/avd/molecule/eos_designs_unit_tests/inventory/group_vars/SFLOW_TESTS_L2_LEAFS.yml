@@ -1,10 +1,15 @@
 ---
 type: l2leaf
 
+default_mgmt_method: inband
+
 sflow_settings:
   destinations:
     - destination: 10.10.10.10
       vrf: use_inband_mgmt_vrf
+    - destination: 10.10.10.11
+    - destination: 10.10.10.12
+      vrf: use_mgmt_interface_vrf
 
 l2leaf:
   defaults:
@@ -12,6 +17,7 @@ l2leaf:
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['sflow-tests-leaf3', 'sflow-tests-leaf4']
     inband_mgmt_subnet: "10.254.254.0/24"
+
   nodes:
     - name: sflow-tests-l2-leaf1
       id: 1
@@ -19,7 +25,6 @@ l2leaf:
       uplink_switch_interfaces:
         - Ethernet16
         - Ethernet16
-
 
     - name: sflow-tests-l2-leaf2
       id: 2

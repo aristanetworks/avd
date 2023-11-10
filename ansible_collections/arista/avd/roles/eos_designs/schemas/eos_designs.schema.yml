@@ -2902,7 +2902,6 @@ keys:
               min: 1
               max: 65535
             vrf:
-              required: true
               type: str
               description: "The value of `vrf` will be interpreted according to these
                 rules:\n- `use_mgmt_interface_vrf` will configure the sFlow destination
@@ -2914,12 +2913,13 @@ keys:
                 error will be raised if inband management is not configured for the
                 device.\n- Any other string will be used directly as the VRF name
                 but source interface must be set with `sflow.structured_config` as
-                needed."
+                needed.\nIf not set, the VRF is automatically picked up from the global
+                setting `default_mgmt_method`."
               convert_types:
               - int
       structured_config:
         type: dict
-        description: Custom structured config added under sflow for eos_cli_config_gen
+        description: Custom structured config added under `sflow` for `eos_cli_config_gen`.
   shutdown_interfaces_towards_undeployed_peers:
     documentation_options:
       table: fabric-settings

@@ -154,6 +154,7 @@ sflow:
   - name: MGMT
     destinations:
     - destination: 10.10.10.10
+    - destination: 10.10.10.11
     source_interface: Management1
   - name: sflowvrf
     destinations:
