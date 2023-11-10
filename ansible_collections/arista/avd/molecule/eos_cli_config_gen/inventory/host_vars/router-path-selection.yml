@@ -70,6 +70,7 @@ router_path_selection:
   load_balance_policies:
     # Out of order to test sorting
     - name: LB-P-2
+      latency: 42
       path_groups:
         - PG-1
     - name: LB-P-1

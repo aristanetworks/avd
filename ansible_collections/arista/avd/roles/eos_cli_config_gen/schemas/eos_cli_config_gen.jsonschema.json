@@ -20641,6 +20641,13 @@
                 "description": "Load-balance policy name.",
                 "title": "Name"
               },
+              "latency": {
+                "type": "integer",
+                "description": "One way delay requirement for this load balance policy in milliseconds.",
+                "minimum": 0,
+                "maximum": 10000,
+                "title": "Latency"
+              },
               "path_groups": {
                 "type": "array",
                 "description": "List of path-groups to use for this load balance policy.",

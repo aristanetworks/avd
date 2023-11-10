@@ -77,10 +77,10 @@
 
 #### Load-balance policies
 
-| Policy name | Path group(s) |
-| ----------- | ------------- |
+| Policy name | Latency | Path group(s) |
+| ----------- | ------- | ------------- |
 {%         for load_balance_policy in router_path_selection.load_balance_policies | arista.avd.natural_sort('name') %}
-| {{ load_balance_policy.name }} | {{ load_balance_policy.path_groups | arista.avd.natural_sort() | join("<br>") }} |
+| {{ load_balance_policy.name }} | {{ load_balance_policy.latency | arista.avd.default("-") }} | {{ load_balance_policy.path_groups | arista.avd.natural_sort() | join("<br>") }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_path_selection.policies is arista.avd.defined %}

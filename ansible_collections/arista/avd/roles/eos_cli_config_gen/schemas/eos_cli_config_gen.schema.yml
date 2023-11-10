@@ -11824,6 +11824,14 @@ keys:
             name:
               type: str
               description: Load-balance policy name.
+            latency:
+              type: int
+              description: One way delay requirement for this load balance policy
+                in milliseconds.
+              convert_types:
+              - str
+              min: 0
+              max: 10000
             path_groups:
               type: list
               description: List of path-groups to use for this load balance policy.

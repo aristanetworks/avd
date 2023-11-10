@@ -78,6 +78,9 @@ router path-selection
 {%     for load_balance_policy in router_path_selection.load_balance_policies | arista.avd.natural_sort('name') %}
    !
    load-balance policy {{ load_balance_policy.name }}
+{%         if load_balance_policy.latency is arista.avd.defined %}
+      latency {{ load_balance_policy.latency }}
+{%         endif %}
 {%         for path_group_name in load_balance_policy.path_groups | arista.avd.default([]) %}
       path-group {{ path_group_name }}
 {%         endfor %}

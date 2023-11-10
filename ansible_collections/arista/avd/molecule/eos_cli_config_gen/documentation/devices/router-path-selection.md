@@ -112,10 +112,10 @@ interface Management1
 
 #### Load-balance policies
 
-| Policy name | Path group(s) |
-| ----------- | ------------- |
-| LB-P-1 | PG-2<br>PG-3 |
-| LB-P-2 | PG-1 |
+| Policy name | Latency | Path group(s) |
+| ----------- | ------- | ------------- |
+| LB-P-1 | - | PG-2<br>PG-3 |
+| LB-P-2 | 42 | PG-1 |
 
 #### DPS policies
 
@@ -206,6 +206,7 @@ router path-selection
       path-group PG-2
    !
    load-balance policy LB-P-2
+      latency 42
       path-group PG-1
    !
    policy DPS-P-1
