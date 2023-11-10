@@ -2926,6 +2926,146 @@
       ],
       "title": "Custom Structured Configuration Prefix"
     },
+    "cv_settings": {
+      "type": "object",
+      "description": "Settings for configuring CloudVision telemetry streaming and provisioning.\n\n`cv_settings` replaces the following deprecated keys, which are ignored when `cv_settings` is set:\n- `cvp_ingestauth_key`\n- `cvp_instance_ip`\n- `cvp_instance_ips`\n- `cvp_token_file`\n- `terminattr_disable_aaa`\n- `terminattr_ingestexclude`\n- `terminattr_ingestgrpcurl_port`\n- `terminattr_smashexcludes`",
+      "properties": {
+        "cvaas_clusters": {
+          "type": "array",
+          "description": "CloudVision as a Service clusters.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Cluster Name.\nOnly used when configuring multiple clusters.",
+                "title": "Name"
+              },
+              "server": {
+                "type": "string",
+                "pattern": "^[a-z1-9\\.-]+\\.arista\\.io",
+                "description": "CVaaS Server name like 'www.arista.io' or 'www.cv-prod-euwest-2.arista.io'.",
+                "title": "Server"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "The VRF used to connect to CloudVision.\n- `use_mgmt_interface_vrf` will use VRF set with `mgmt_interface_vrf`.\n  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf` will use the VRF set with `inband_mgmt_vrf`.\n  An error will be raised if inband management is not configured for the device.\n- Any other string will be used directly as the VRF name.",
+                "title": "VRF"
+              },
+              "token_file": {
+                "type": "string",
+                "description": "Path to the onboarding token used for certificate based authentication.\nThe path is on the EOS device and the token file must be copied to the device first.",
+                "default": "/tmp/cv-onboarding-token",
+                "title": "Token File"
+              }
+            },
+            "required": [
+              "server",
+              "vrf",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Cvaas Clusters"
+        },
+        "onprem_clusters": {
+          "type": "array",
+          "description": "On-premise CloudVision clusters.",
+          "items": {
+            "type": "object",
+            "description": "Unless `key` is set, TerminAttr will be configured with certificate based authentication.\nThe default token path is '/tmp/token', and the token must be copied to the device first.",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Cluster Name.\nOnly used when configuring multiple clusters.",
+                "title": "Name"
+              },
+              "servers": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 3,
+                "description": "CloudVision servers that makes up one cluster.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Server FQDN or IP address.",
+                      "title": "Name"
+                    },
+                    "port": {
+                      "type": "integer",
+                      "default": 9910,
+                      "title": "Port"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Servers"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "The VRF used to connect to CloudVision.\n- `use_mgmt_interface_vrf` will use VRF set with `mgmt_interface_vrf`.\n  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf` will use the VRF set with `inband_mgmt_vrf`.\n  An error will be raised if inband management is not configured for the device.\n- Any other string will be used directly as the VRF name.",
+                "title": "VRF"
+              },
+              "key": {
+                "type": "string",
+                "description": "Key-based authentication is deprecated in CloudVision and is not supported starting from CloudVision 2023.1.0.",
+                "title": "Key"
+              },
+              "token_file": {
+                "type": "string",
+                "description": "Path to the onboarding token used for certificate based authentication.\nThe path is on the EOS device and the token file must be copied to the device first.",
+                "default": "/tmp/token",
+                "title": "Token File"
+              }
+            },
+            "required": [
+              "servers",
+              "vrf",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Onprem Clusters"
+        },
+        "terminattr_ingestexclude": {
+          "type": "string",
+          "description": "Exclude paths from Sysdb on the ingest side.",
+          "default": "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent",
+          "title": "TerminAttr Ingestexclude"
+        },
+        "terminattr_smashexcludes": {
+          "type": "string",
+          "description": "Exclude paths from the shared memory table.",
+          "default": "ale,flexCounter,hardware,kni,pulse,strata",
+          "title": "TerminAttr Smashexcludes"
+        },
+        "terminattr_disable_aaa": {
+          "type": "boolean",
+          "description": "Disable AAA authorization and accounting.\nWhen setting this flag, all commands pushed from CloudVision are applied directly to the CLI without authorization",
+          "default": false,
+          "title": "TerminAttr Disable AAA"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Cv Settings"
+    },
     "cv_topology": {
       "type": "array",
       "description": "Generate AVD configurations directly from the given CloudVision topology.\nActivate this feature by setting `use_cv_topology` to `true`.\nRequires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.",
@@ -2983,18 +3123,20 @@
     },
     "cvp_ingestauth_key": {
       "type": "string",
-      "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication:\n- On-premise using token onboarding. Default token path is '/tmp/token'.\n- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.\nToken must be copied to the device first.",
+      "description": "On-premise CVP ingest auth key. If set, TerminAttr will be configured with key-based authentication for on-premise CVP.\nIf not set, TerminAttr will be configured with certificate based authentication:\n- On-premise using token onboarding. Default token path is '/tmp/token'.\n- CVaaS using token-secure onboarding. Default token path is '/tmp/cv-onboarding-token'.\nToken must be copied to the device first.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cv_settings.onprem_clusters[].key</samp> instead.",
+      "deprecated": true,
       "title": "CVP Ingestauth Key"
     },
     "cvp_instance_ip": {
       "type": "string",
-      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cvp_instance_ips</samp> instead.",
+      "description": "IPv4 address or DNS name for CloudVision.\nThis variable only supports an on-premise single-node cluster or the DNS name of a CloudVision as a Service instance.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas.server</samp> instead.",
       "deprecated": true,
       "title": "CVP Instance IP"
     },
     "cvp_instance_ips": {
       "type": "array",
-      "description": "List of IPv4 addresses or DNS names for CloudVision.\nFor on-premise CloudVision enter all the nodes of the cluster.\nFor CloudVision as a Service enter the DNS name of the instance.\n`eos_designs` only supports one CloudVision cluster.\n",
+      "description": "List of IPv4 addresses or DNS names for CloudVision.\nFor on-premise CloudVision enter all the nodes of the cluster.\nFor CloudVision as a Service enter the DNS name of the instance.\n`eos_designs` only supports one CloudVision cluster.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas.server</samp> instead.",
+      "deprecated": true,
       "items": {
         "type": "string",
         "description": "IPv4 address or DNS name for CloudVision"
@@ -3003,7 +3145,8 @@
     },
     "cvp_token_file": {
       "type": "string",
-      "description": "cvp_token_file is the path to the token file on the switch.\nIf not set the default locations for on-premise or CVaaS will be used.\nSee cvp_ingestauth_key for details.",
+      "description": "cvp_token_file is the path to the token file on the switch.\nIf not set the default locations for on-premise or CVaaS will be used.\nSee cvp_ingestauth_key for details.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cv_settings.onprem_clusters[].token_file or cv_settings.cvaas.token_file</samp> instead.",
+      "deprecated": true,
       "title": "CVP Token File"
     },
     "dc_name": {
@@ -19305,7 +19448,8 @@
     "terminattr_ingestgrpcurl_port": {
       "type": "integer",
       "default": 9910,
-      "description": "Port number used for Terminattr connection to an on-premise CloudVision cluster.\nThe port number is always 443 when using CloudVision as a Service, so this value is ignored.",
+      "description": "Port number used for Terminattr connection to an on-premise CloudVision cluster.\nThe port number is always 443 when using CloudVision as a Service, so this value is ignored.\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>cv_settings.onprem_clusters[].servers[].port</samp> instead.",
+      "deprecated": true,
       "title": "TerminAttr Ingestgrpcurl Port"
     },
     "terminattr_smashexcludes": {

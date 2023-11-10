@@ -14,11 +14,13 @@ local_users:
     sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
 
 # Cloud Vision server
-cvp_instance_ips:
-  - 192.168.200.11
-
-cvp_ingestauth_key: telarista
-terminattr_disable_aaa: false
+cv_settings:
+  onprem_clusters:
+    - name: test
+      vrf: use_mgmt_interface_vrf
+      servers:
+        - name: 192.168.200.11
+      key: telarista
 
 # OOB Management network default gateway.
 mgmt_gateway: 192.168.200.5

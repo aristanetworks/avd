@@ -12,10 +12,11 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from .daemon_terminattr import DaemonTerminattrMixin
 from .snmp_server import SnmpServerMixin
 
 
-class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
+class AvdStructuredConfigBase(AvdFacts, DaemonTerminattrMixin, SnmpServerMixin):
     """
     The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
 
@@ -242,57 +243,6 @@ class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
             for speed_group in natural_sort(tmp_speed_groups):
                 hardware["speed_groups"].append({"speed_group": speed_group, "serdes": tmp_speed_groups[speed_group]})
             return hardware
-
-    @cached_property
-    def daemon_terminattr(self) -> dict | None:
-        """
-        daemon_terminattr set based on cvp_instance_ip and cvp_instance_ips variables
-
-        Updating cvaddrs and cvauth considering conditions for cvaas and cvp_on_prem IPs
-
-            if 'arista.io' in cvp_instance_ip:
-                 <updating as cvaas_ip>
-            else:
-                 <updating as cvp_on_prem ip>
-        """
-        # cvp_instance_ip will be removed in AVD5.0
-        cvp_instance_ip = get(self._hostvars, "cvp_instance_ip")
-        cvp_instance_ip_list = get(self._hostvars, "cvp_instance_ips", [])
-        if cvp_instance_ip is not None:
-            cvp_instance_ip_list.append(cvp_instance_ip)
-        if not cvp_instance_ip_list:
-            return None
-
-        daemon_terminattr = {"cvaddrs": []}
-        for cvp_instance_ip in cvp_instance_ip_list:
-            if "arista.io" in cvp_instance_ip:
-                # updating for cvaas_ips
-                daemon_terminattr["cvaddrs"].append(f"{cvp_instance_ip}:443")
-                daemon_terminattr["cvauth"] = {
-                    "method": "token-secure",
-                    "token_file": get(self._hostvars, "cvp_token_file", "/tmp/cv-onboarding-token"),
-                }
-            else:
-                # updating for cvp_on_prem_ips
-                cv_address = f"{cvp_instance_ip}:{get(self._hostvars, 'terminattr_ingestgrpcurl_port', default=9910)}"
-                daemon_terminattr["cvaddrs"].append(cv_address)
-                if (cvp_ingestauth_key := get(self._hostvars, "cvp_ingestauth_key")) is not None:
-                    daemon_terminattr["cvauth"] = {
-                        "method": "key",
-                        "key": cvp_ingestauth_key,
-                    }
-                else:
-                    daemon_terminattr["cvauth"] = {
-                        "method": "token",
-                        "token_file": get(self._hostvars, "cvp_token_file", "/tmp/token"),
-                    }
-
-        daemon_terminattr["cvvrf"] = self.shared_utils.mgmt_interface_vrf
-        daemon_terminattr["smashexcludes"] = get(self._hostvars, "terminattr_smashexcludes", default="ale,flexCounter,hardware,kni,pulse,strata")
-        daemon_terminattr["ingestexclude"] = get(self._hostvars, "terminattr_ingestexclude", default="/Sysdb/cell/1/agent,/Sysdb/cell/2/agent")
-        daemon_terminattr["disable_aaa"] = get(self._hostvars, "terminattr_disable_aaa", False)
-
-        return daemon_terminattr
 
     @cached_property
     def vlan_internal_order(self) -> dict:

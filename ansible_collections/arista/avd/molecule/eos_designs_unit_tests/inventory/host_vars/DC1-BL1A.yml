@@ -11,7 +11,13 @@ override_ip_name_servers:
     vrf: MGMT
 
 # Testing empty key
-cvp_ingestauth_key: ""
+cv_settings:
+  onprem_clusters:
+    - name: test
+      vrf: use_mgmt_interface_vrf
+      servers:
+        - name: 192.168.200.11
+      key: ""
 
 # Testing overlay loopback description override
 overlay_loopback_description: "MY_OVERLAY_LOOPBACK"

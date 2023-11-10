@@ -11,3 +11,7 @@ keys:
       table: cloudvision-settings
     type: str
     default: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+    deprecation:
+      warning: true
+      new_key: cv_settings.terminattr_ingestexclude
+      remove_in_version: "5.0.0"

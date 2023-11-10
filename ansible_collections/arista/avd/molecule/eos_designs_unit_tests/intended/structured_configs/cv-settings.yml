@@ -1,0 +1,73 @@
+hostname: cv-settings
+is_deployed: true
+service_routing_protocols_model: multi-agent
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: INBAND_MGMT_VRF
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.2/24
+  gateway: null
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+daemon_terminattr:
+  clusters:
+  - name: cvaas_oob
+    cvaddrs:
+    - www.arista.io:443
+    cvauth:
+      method: token-secure
+      token_file: /tmp/cv-onboarding-token
+    cvvrf: MGMT
+  - name: cvaas_inband
+    cvaddrs:
+    - www.cv-prod-euwest-2.arista.io:443
+    cvauth:
+      method: token-secure
+      token_file: /tmp/cv-onboarding-token
+    cvvrf: INBAND_MGMT_VRF
+  - name: onprem_oob
+    cvaddrs:
+    - onprem_oob1:9911
+    - onprem_oob2:9910
+    - onprem_oob3:9910
+    cvauth:
+      method: key
+      key: keys-are-deprecated
+    cvvrf: MGMT
+  - name: onprem_inband
+    cvaddrs:
+    - onprem_inband_1:9910
+    cvauth:
+      method: token
+      token_file: /tmp/anothertoken
+    cvvrf: INBAND_MGMT_VRF
+  disable_aaa: true
+  ingestexclude: excludethis
+  smashexcludes: excludethat
+ip_igmp_snooping:
+  globally_enabled: true
+vlans:
+- id: 4092
+  tenant: system
+  name: INBAND_MGMT
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  mtu: 1500
+  vrf: INBAND_MGMT_VRF
+  ip_address: 172.17.0.2/24
+  type: inband_mgmt

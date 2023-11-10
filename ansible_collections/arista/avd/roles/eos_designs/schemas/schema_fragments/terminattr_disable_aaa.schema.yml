@@ -11,3 +11,7 @@ keys:
       table: cloudvision-settings
     type: bool
     default: False
+    deprecation:
+      warning: true
+      new_key: cv_settings.terminattr_disable_aaa
+      remove_in_version: "5.0.0"

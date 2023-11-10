@@ -351,11 +351,13 @@ default_interfaces: # (5)!
     platforms: [ default ]
     uplink_interfaces: [ Ethernet1-2 ]
 
-cvp_instance_ips:
-  - 192.168.1.12 # (6)!
-terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
-terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
-terminattr_disable_aaa: true
+cv_settings: # (6)!
+  onprem_clusters:
+    - name: example
+      vrf: use_mgmt_interface_vrf
+      servers:
+        - name: 192.168.1.12
+  terminattr_disable_aaa: true
 
 name_servers: # (7)!
   - 192.168.1.1

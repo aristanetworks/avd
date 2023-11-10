@@ -14,3 +14,7 @@ keys:
       cvp_token_file is the path to the token file on the switch.
       If not set the default locations for on-premise or CVaaS will be used.
       See cvp_ingestauth_key for details.
+    deprecation:
+      warning: true
+      new_key: cv_settings.onprem_clusters[].token_file or cv_settings.cvaas.token_file
+      remove_in_version: "5.0.0"
