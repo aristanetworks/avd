@@ -68,8 +68,11 @@ def test_eos_designs_with_invalid_data(hostname: str, all_inputs: dict):
         structured_config.update({"bgp_peer_groups": {"invalid_key": "some_value"}})
         updated = "bgp_peer_groups.invalid_key"
 
-    with pytest.raises(ValidationError, match=rf"{updated}\n  Extra inputs are not permitted"):
+    with pytest.raises(ValidationError) as exc_info:
         EosDesigns(**structured_config)
+    errors = exc_info.value.errors()
+    msgs = set(error["msg"] for error in errors)
+    assert msgs == {"Extra inputs are not permitted"}
 
 
 def test_eos_cli_config_gen_with_valid_data(hostname: str, structured_configs: dict):
@@ -103,5 +106,8 @@ def test_eos_cli_config_gen_with_invalid_data(hostname: str, structured_configs:
         structured_config.update({"ethernet_interfaces": [{"name": "dummy", "invalid_key": "some_value"}]})
         updated = "ethernet_interfaces.0.invalid_key"
 
-    with pytest.raises(ValidationError, match=rf"{updated}\n  Extra inputs are not permitted"):
+    with pytest.raises(ValidationError) as exc_info:
         EosCliConfigGen(**structured_config)
+    errors = exc_info.value.errors()
+    msgs = set(error["msg"] for error in errors)
+    assert msgs == {"Extra inputs are not permitted"}

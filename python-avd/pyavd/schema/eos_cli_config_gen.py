@@ -2467,6 +2467,22 @@ class EosCliConfigGen(BaseModel):
         class Sampled(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
+            class HardwareOffload(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                ipv4: bool | None = None
+                """
+                Configure hardware offload for IPv4 traffic.
+                """
+                ipv6: bool | None = None
+                """
+                Configure hardware offload for IPv6 traffic.
+                """
+                threshold_minimum: int | None = Field(None, ge=1, le=4294967295)
+                """
+                Minimum number of samples.
+                """
+
             class TrackersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -2533,6 +2549,7 @@ class EosCliConfigGen(BaseModel):
                 exporters: list[ExportersItem] | None = None
 
             sample: int | None = Field(None, ge=1, le=4294967295)
+            hardware_offload: HardwareOffload | None = None
             trackers: list[TrackersItem] | None = None
             shutdown: bool | None = False
 
@@ -3468,7 +3485,24 @@ class EosCliConfigGen(BaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         class IkePoliciesItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, extra="forbid")
+            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+
+            class EncryptionEnum(Enum):
+                value_0 = "3des"
+                value_1 = "aes128"
+                value_2 = "aes256"
+
+            class DhGroupEnum(Enum):
+                value_0 = 1
+                value_1 = 2
+                value_2 = 5
+                value_3 = 14
+                value_4 = 15
+                value_5 = 16
+                value_6 = 17
+                value_7 = 20
+                value_8 = 21
+                value_9 = 24
 
             name: str = None
             """
@@ -3479,6 +3513,18 @@ class EosCliConfigGen(BaseModel):
             Local IKE Identification.
             Can be an IPv4 or an IPv6 address.
             """
+            ike_lifetime: int | None = Field(None, ge=1, le=24)
+            """
+            IKE lifetime in hours.
+            """
+            encryption: EncryptionEnum | None = None
+            """
+            IKE encryption algorithm.
+            """
+            dh_group: DhGroupEnum | None = None
+            """
+            Diffie-Hellman group for the key exchange.
+            """
 
         class SaPoliciesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -3487,17 +3533,19 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
 
                 class IntegrityEnum(Enum):
-                    value_0 = "null"
+                    value_0 = "disabled"
                     value_1 = "sha1"
                     value_2 = "sha256"
+                    value_3 = "null"
 
                 class EncryptionEnum(Enum):
-                    value_0 = "null"
+                    value_0 = "disabled"
                     value_1 = "aes128"
                     value_2 = "aes128gcm128"
                     value_3 = "aes128gcm64"
                     value_4 = "aes256"
                     value_5 = "aes256gcm256"
+                    value_6 = "null"
 
                 integrity: IntegrityEnum | None = None
                 encryption: EncryptionEnum | None = None
@@ -3516,7 +3564,7 @@ class EosCliConfigGen(BaseModel):
 
             name: str = None
             """
-            Name of the SA policy.
+            Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0
             """
             esp: Esp | None = None
             pfs_dh_group: PfsDhGroupEnum | None = None
@@ -7680,6 +7728,7 @@ class EosCliConfigGen(BaseModel):
             """
             description: str | None = None
             route_reflector_client: bool | None = None
+            password: str | None = None
             passive: bool | None = None
             shutdown: bool | None = None
             update_source: str | None = None
