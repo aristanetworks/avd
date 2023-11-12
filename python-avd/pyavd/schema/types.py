@@ -23,3 +23,27 @@ class StrConvert(GroupedMetadata):
             yield BeforeValidator(lambda v: v.lower() if isinstance(v, str) else v)
         if self.convert_types is not None:
             yield BeforeValidator(lambda v: str(v) if isinstance(v, self.convert_types) else v)
+
+
+class IntConvert(GroupedMetadata):
+    def __init__(
+        self,
+        convert_types: tuple[type] | None = None,
+    ):
+        self.convert_types = convert_types
+
+    def __iter__(self) -> Iterator[BaseMetadata]:
+        if self.convert_types is not None:
+            yield BeforeValidator(lambda v: int(v) if isinstance(v, self.convert_types) else v)
+
+
+class BoolConvert(GroupedMetadata):
+    def __init__(
+        self,
+        convert_types: tuple[type] | None = None,
+    ):
+        self.convert_types = convert_types
+
+    def __iter__(self) -> Iterator[BaseMetadata]:
+        if self.convert_types is not None:
+            yield BeforeValidator(lambda v: bool(v) if isinstance(v, self.convert_types) else v)

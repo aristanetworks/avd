@@ -84,6 +84,7 @@ def test_load_model_with_data(schema_name: str, data_file: str, artifacts_path: 
     assert issubclass(Cls, BaseModel)
 
     data = load_data_file(artifacts_path.joinpath(data_file))
+
     # Initialize the loaded class with data.
     model: BaseModel = Cls(**data)
 

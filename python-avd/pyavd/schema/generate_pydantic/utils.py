@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .models import StrConvertSrc
+from .models import BoolConvertSrc, IntConvertSrc, StrConvertSrc
 
 if TYPE_CHECKING:
     from ..metaschema.meta_schema_model import AvdSchemaField
@@ -108,16 +108,28 @@ def get_imports_from_type_hints(type_hints: list[str]) -> set[str] | None:
     return imports or None
 
 
-def get_annotations_for_field(schema: AvdSchemaField) -> list[StrConvertSrc]:
-    if schema.type != "str":
-        return []
-
+def get_annotations_for_field(schema: AvdSchemaField) -> list[BoolConvertSrc | IntConvertSrc | StrConvertSrc]:
     annotations = []
-    annotation = StrConvertSrc(
-        convert_types=schema.convert_types,
-        to_lower=schema.convert_to_lower_case,
-    )
-    if annotation:
-        annotations.append(annotation)
+    if schema.type == "str":
+        annotation = StrConvertSrc(
+            convert_types=schema.convert_types,
+            to_lower=schema.convert_to_lower_case,
+        )
+        if annotation:
+            annotations.append(annotation)
+
+    elif schema.type == "int":
+        annotation = IntConvertSrc(
+            convert_types=schema.convert_types,
+        )
+        if annotation:
+            annotations.append(annotation)
+
+    elif schema.type == "bool":
+        annotation = BoolConvertSrc(
+            convert_types=schema.convert_types,
+        )
+        if annotation:
+            annotations.append(annotation)
 
     return annotations

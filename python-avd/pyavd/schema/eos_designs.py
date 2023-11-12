@@ -12,7 +12,7 @@ from typing_extensions import Annotated
 
 from .eos_cli_config_gen import EosCliConfigGen
 from .models import AvdDictBaseModel, AvdEosDesignsRootDictBaseModel
-from .types import StrConvert
+from .types import IntConvert, StrConvert
 
 
 class EosDesigns(AvdEosDesignsRootDictBaseModel):
@@ -36,9 +36,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     class BfdMultihop(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        interval: int = Field(None, ge=50, le=60000)
-        min_rx: int = Field(None, ge=50, le=60000)
-        multiplier: int = Field(None, ge=3, le=50)
+        interval: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+        min_rx: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+        multiplier: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=3, le=50)
 
     class BgpDistance(EosCliConfigGen.RouterBgp.Distance, BaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -52,7 +52,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Enable or disable graceful-restart for all BGP peers.
         """
-        restart_time: int | None = Field(300, ge=1, le=3600)
+        restart_time: Annotated[int, IntConvert(convert_types=(str))] | None = Field(300, ge=1, le=3600)
         """
         Restart time in seconds.
         """
@@ -249,7 +249,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             IPv4 address/Mask.
             """
-            prefix_size: int | None = Field(31, ge=8, le=31)
+            prefix_size: Annotated[int, IntConvert(convert_types=(str))] | None = Field(31, ge=8, le=31)
             """
             Subnet mask size.
             """
@@ -293,7 +293,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
             """
-            id: int | None = None
+            id: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Unique id per subnet_summary. Used to calculate ip addresses.
             Required with ip_pool. ID starting from 1.
@@ -341,7 +341,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             Add this interface to underlay routing protocol.
             """
             isis_hello_padding: bool | None = False
-            isis_metric: int | None = None
+            isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
             isis_circuit_type: IsisCircuitTypeEnum | None = None
             isis_authentication_mode: IsisAuthenticationModeEnum | None = None
             isis_authentication_key: str | None = None
@@ -356,7 +356,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
             """
-            mtu: int | None = None
+            mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             MTU for this P2P link. Default value same as p2p_uplinks_mtu.
             """
@@ -438,7 +438,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             P2P profile name. Profile defined under p2p_profiles.
             """
-            id: int | None = None
+            id: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Unique id per subnet_summary. Used to calculate ip addresses.
             Required with ip_pool. ID starting from 1.
@@ -482,7 +482,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             Add this interface to underlay routing protocol.
             """
             isis_hello_padding: bool | None = False
-            isis_metric: int | None = None
+            isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
             isis_circuit_type: IsisCircuitTypeEnum | None = None
             isis_authentication_mode: IsisAuthenticationModeEnum | None = None
             isis_authentication_key: str | None = None
@@ -497,7 +497,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
             """
-            mtu: int | None = None
+            mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             MTU for this P2P link. Default value same as p2p_uplinks_mtu.
             """
@@ -671,7 +671,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Command to execute
         """
-        delay: int | None = None
+        delay: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Event-handler delay in seconds
         """
@@ -695,15 +695,15 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         If set to false it will disable EVPN host-flap detection.
         """
-        threshold: int | None = 5
+        threshold: Annotated[int, IntConvert(convert_types=(str))] | None = 5
         """
         Minimum number of MAC moves that indicate a MAC duplication issue.
         """
-        window: int | None = 180
+        window: Annotated[int, IntConvert(convert_types=(str))] | None = 180
         """
         Time (in seconds) to detect a MAC duplication issue.
         """
-        expiry_timeout: int | None = None
+        expiry_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Time (in seconds) to purge a MAC duplication issue.
         """
@@ -724,7 +724,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Specify an EVPN vlan-aware-bundle name.
         EVPN vlan-aware-bundles group L2 VLANs and define common settings.
         """
-        id: int = None
+        id: Annotated[int, IntConvert(convert_types=(str))] = None
         """
         "id" may be used for vlan-aware-bundle RD/RT ID so it should not overlap with l2vlan IDs which are not part of this
         bundle.
@@ -813,11 +813,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         class Range(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            beginning: int = Field(None, ge=2, le=4094)
+            beginning: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=2, le=4094)
             """
             First VLAN ID.
             """
-            ending: int = Field(None, ge=2, le=4094)
+            ending: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=2, le=4094)
             """
             Last VLAN ID.
             """
@@ -844,7 +844,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
 
         enabled: bool | None = False
         protection: ProtectionEnum | None = None
-        local_convergence_delay: int | None = 10000
+        local_convergence_delay: Annotated[int, IntConvert(convert_types=(str))] | None = 10000
         """
         Local convergence delay in milliseconds.
         """
@@ -863,7 +863,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             IPv4 address/Mask.
             """
-            prefix_size: int | None = Field(31, ge=8, le=31)
+            prefix_size: Annotated[int, IntConvert(convert_types=(str))] | None = Field(31, ge=8, le=31)
             """
             Subnet mask size.
             """
@@ -907,7 +907,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
             """
-            id: int | None = None
+            id: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Unique id per subnet_summary. Used to calculate ip addresses.
             Required with ip_pool. ID starting from 1.
@@ -955,7 +955,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             Add this interface to underlay routing protocol.
             """
             isis_hello_padding: bool | None = False
-            isis_metric: int | None = None
+            isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
             isis_circuit_type: IsisCircuitTypeEnum | None = None
             isis_authentication_mode: IsisAuthenticationModeEnum | None = None
             isis_authentication_key: str | None = None
@@ -970,7 +970,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
             """
-            mtu: int | None = None
+            mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             MTU for this P2P link. Default value same as p2p_uplinks_mtu.
             """
@@ -1052,7 +1052,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             P2P profile name. Profile defined under p2p_profiles.
             """
-            id: int | None = None
+            id: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Unique id per subnet_summary. Used to calculate ip addresses.
             Required with ip_pool. ID starting from 1.
@@ -1096,7 +1096,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             Add this interface to underlay routing protocol.
             """
             isis_hello_padding: bool | None = False
-            isis_metric: int | None = None
+            isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
             isis_circuit_type: IsisCircuitTypeEnum | None = None
             isis_authentication_mode: IsisAuthenticationModeEnum | None = None
             isis_authentication_key: str | None = None
@@ -1111,7 +1111,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             MPLS parameters. Default value is true for ldp underlay variants, otherwise false.
             """
-            mtu: int | None = None
+            mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             MTU for this P2P link. Default value same as p2p_uplinks_mtu.
             """
@@ -1171,7 +1171,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         If true, the user will be removed and all other settings are ignored.
         Useful for removing the default "admin" user.
         """
-        privilege: int | None = Field(None, ge=0, le=15)
+        privilege: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=15)
         """
         Initial privilege level with local EXEC authorization.
         """
@@ -1198,7 +1198,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     class MacAddressTable(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        aging_time: int | None = Field(None, ge=0, le=1000000)
+        aging_time: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000)
         """
         Aging time in seconds 10-1000000.
         Enter 0 to disable aging.
@@ -1214,7 +1214,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     class MlagIbgpPeeringVrfs(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        base_vlan: int | None = Field(3000, ge=1, le=4093)
+        base_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3000, ge=1, le=4093)
 
     class NetworkPortsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -1308,7 +1308,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     value_1 = "drop"
 
                 action: ActionEnum | None = None
-                allow_vlan: int | None = Field(None, ge=1, le=4094)
+                allow_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
             class HostMode(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -1330,14 +1330,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             class Timeout(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                idle_host: int | None = Field(None, ge=10, le=65535)
-                quiet_period: int | None = Field(None, ge=1, le=65535)
+                idle_host: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=10, le=65535)
+                quiet_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                 reauth_period: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
                 Range 60-4294967295 or "server".
                 """
                 reauth_timeout_ignore: bool | None = None
-                tx_period: int | None = Field(None, ge=1, le=65535)
+                tx_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
             port_control: PortControlEnum | None = None
             port_control_force_authorized_phone: bool | None = None
@@ -1347,7 +1347,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             host_mode: HostMode | None = None
             mac_based_authentication: MacBasedAuthentication | None = None
             timeout: Timeout | None = None
-            reauthorization_request_limit: int | None = Field(None, ge=1, le=10)
+            reauthorization_request_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=10)
 
         class Poe(EosCliConfigGen.EthernetInterfacesItem.Poe, BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1454,7 +1454,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     ACL name.
                     """
-                    priority: int | None = None
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                 direction: DirectionEnum | None = None
                 access_group: AccessGroup | None = None
@@ -1480,13 +1480,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
-                    size: int | None = None
+                    size: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Size in bytes
                     """
 
                 encapsulation_gre_metadata_tx: bool | None = None
-                header_remove_size: int | None = None
+                header_remove_size: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Number of bytes to remove from header.
                 """
@@ -1507,7 +1507,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                   "100 kbps"
                   "10 mbps"
                 """
-                sample: int | None = None
+                sample: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 truncate: Truncate | None = None
 
             name: str = None
@@ -1590,7 +1590,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 """
                 Currently only static mode is supported.
                 """
-                timeout: int | None = None
+                timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Timeout in seconds. EOS default is 90 seconds.
                 """
@@ -1606,7 +1606,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 """
                 LACP mode for interface members.
                 """
-                multiplier: int | None = None
+                multiplier: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
                 """
@@ -1617,9 +1617,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 class EncapsulationVlan(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    client_dot1q: int | None = Field(None, ge=1, le=4094)
+                    client_dot1q: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
-                number: int | None = None
+                number: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Subinterface number
                 """
@@ -1628,7 +1628,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 In format xxxx:xxxx:xxxx or "auto"
                 Required for multihomed port-channels with subinterfaces
                 """
-                vlan_id: int | None = Field(None, ge=1, le=4094)
+                vlan_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
                 """
                 VLAN ID to bridge.
                 Default is subinterface number.
@@ -1648,7 +1648,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             Port-Channel Mode.
             """
-            channel_id: int | None = None
+            channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Port-Channel ID.
             If no channel_id is specified, an id is generated from the first switch port in the port channel.
@@ -1742,12 +1742,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Interface mode.
         """
-        mtu: int | None = Field(None, ge=68, le=65535)
-        l2_mtu: int | None = Field(None, ge=68, le=9416)
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
+        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=9416)
         """
         This should only be defined for platforms supporting the "l2 mtu" CLI command.
         """
-        native_vlan: int | None = Field(None, ge=1, le=4094)
+        native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
         """
         Native VLAN for a trunk port.
         If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
@@ -2206,11 +2206,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         class ReloadDelay(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            mlag: int | None = Field(None, ge=0, le=86400)
+            mlag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=86400)
             """
             In seconds.
             """
-            non_mlag: int | None = Field(None, ge=0, le=86400)
+            non_mlag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=86400)
             """
             In seconds.
             """
@@ -2252,7 +2252,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         reload_delay: ReloadDelay | None = None
         tcam_profile: str | None = None
         lag_hardware_only: bool | None = None
-        default_interface_mtu: int | None = Field(None, ge=68, le=65535)
+        default_interface_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
         """
         Default interface MTU configured on EOS under "interface defaults".
         Takes precedence over the root key
@@ -2369,7 +2369,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     value_1 = "drop"
 
                 action: ActionEnum | None = None
-                allow_vlan: int | None = Field(None, ge=1, le=4094)
+                allow_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
             class HostMode(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -2391,14 +2391,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             class Timeout(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                idle_host: int | None = Field(None, ge=10, le=65535)
-                quiet_period: int | None = Field(None, ge=1, le=65535)
+                idle_host: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=10, le=65535)
+                quiet_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                 reauth_period: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
                 Range 60-4294967295 or "server".
                 """
                 reauth_timeout_ignore: bool | None = None
-                tx_period: int | None = Field(None, ge=1, le=65535)
+                tx_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
             port_control: PortControlEnum | None = None
             port_control_force_authorized_phone: bool | None = None
@@ -2408,7 +2408,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             host_mode: HostMode | None = None
             mac_based_authentication: MacBasedAuthentication | None = None
             timeout: Timeout | None = None
-            reauthorization_request_limit: int | None = Field(None, ge=1, le=10)
+            reauthorization_request_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=10)
 
         class Poe(EosCliConfigGen.EthernetInterfacesItem.Poe, BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2515,7 +2515,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     ACL name.
                     """
-                    priority: int | None = None
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                 direction: DirectionEnum | None = None
                 access_group: AccessGroup | None = None
@@ -2541,13 +2541,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
-                    size: int | None = None
+                    size: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Size in bytes
                     """
 
                 encapsulation_gre_metadata_tx: bool | None = None
-                header_remove_size: int | None = None
+                header_remove_size: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Number of bytes to remove from header.
                 """
@@ -2568,7 +2568,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                   "100 kbps"
                   "10 mbps"
                 """
-                sample: int | None = None
+                sample: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 truncate: Truncate | None = None
 
             name: str = None
@@ -2651,7 +2651,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 """
                 Currently only static mode is supported.
                 """
-                timeout: int | None = None
+                timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Timeout in seconds. EOS default is 90 seconds.
                 """
@@ -2667,7 +2667,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 """
                 LACP mode for interface members.
                 """
-                multiplier: int | None = None
+                multiplier: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
                 """
@@ -2678,9 +2678,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 class EncapsulationVlan(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    client_dot1q: int | None = Field(None, ge=1, le=4094)
+                    client_dot1q: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
-                number: int | None = None
+                number: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Subinterface number
                 """
@@ -2689,7 +2689,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 In format xxxx:xxxx:xxxx or "auto"
                 Required for multihomed port-channels with subinterfaces
                 """
-                vlan_id: int | None = Field(None, ge=1, le=4094)
+                vlan_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
                 """
                 VLAN ID to bridge.
                 Default is subinterface number.
@@ -2709,7 +2709,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             Port-Channel Mode.
             """
-            channel_id: int | None = None
+            channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Port-Channel ID.
             If no channel_id is specified, an id is generated from the first switch port in the port channel.
@@ -2791,12 +2791,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Interface mode.
         """
-        mtu: int | None = Field(None, ge=68, le=65535)
-        l2_mtu: int | None = Field(None, ge=68, le=9416)
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
+        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=9416)
         """
         This should only be defined for platforms supporting the "l2 mtu" CLI command.
         """
-        native_vlan: int | None = Field(None, ge=1, le=4094)
+        native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
         """
         Native VLAN for a trunk port.
         If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
@@ -2885,7 +2885,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
 
         enabled: bool | None = None
         profile: ProfileEnum | None = "aes67-r16-2016"
-        domain: int | None = Field(None, ge=0, le=255)
+        domain: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
         auto_clock_identity: bool | None = True
 
     class PtpProfilesItem(AvdDictBaseModel):
@@ -2894,13 +2894,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         class Announce(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            interval: int | None = Field(None, ge=-7, le=4)
-            timeout: int | None = Field(None, ge=2, le=255)
+            interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=-7, le=4)
+            timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
 
         class SyncMessage(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            interval: int | None = Field(None, ge=-7, le=3)
+            interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=-7, le=3)
 
         class TransportEnum(Enum):
             value_0 = "ipv4"
@@ -2913,7 +2913,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         PTP announce interval.
         """
-        delay_req: int | None = Field(None, ge=-7, le=8)
+        delay_req: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=-7, le=8)
         sync_message: SyncMessage | None = None
         """
         PTP sync message interval.
@@ -3390,7 +3390,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 IPv4_address
                 If not set, IP address of "Loopback0" will be used.
                 """
-                version: VersionEnum | None = None
+                version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
                 """
                 IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                 """
@@ -3412,7 +3412,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         value_3 = "sha384"
                         value_4 = "sha512"
 
-                    id: int | None = None
+                    id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     hash_algorithm: HashAlgorithmEnum | None = "sha512"
                     key: str | None = None
                     """
@@ -3425,7 +3425,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 """
                 OSPF area ID.
                 """
-                cost: int | None = None
+                cost: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 OSPF link cost.
                 """
@@ -3532,7 +3532,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             IP helper for DHCP relay
             """
-            vni_override: int | None = Field(None, ge=1, le=16777215)
+            vni_override: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=16777215)
             """
             By default the VNI will be derived from "mac_vrf_vni_base".
             The vni_override allows us to override this value and
@@ -3588,7 +3588,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             Extend this SVI over VXLAN.
             """
-            mtu: int | None = None
+            mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Interface MTU.
             """
@@ -3649,7 +3649,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             IPv4_address
             If not set, IP address of "Loopback0" will be used.
             """
-            version: VersionEnum | None = None
+            version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
             """
             IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
             """
@@ -3671,7 +3671,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     value_3 = "sha384"
                     value_4 = "sha512"
 
-                id: int | None = None
+                id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 hash_algorithm: HashAlgorithmEnum | None = "sha512"
                 key: str | None = None
                 """
@@ -3684,7 +3684,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             OSPF area ID.
             """
-            cost: int | None = None
+            cost: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             OSPF link cost.
             """
@@ -3803,7 +3803,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         IP helper for DHCP relay
         """
-        vni_override: int | None = Field(None, ge=1, le=16777215)
+        vni_override: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=16777215)
         """
         By default the VNI will be derived from "mac_vrf_vni_base".
         The vni_override allows us to override this value and
@@ -3859,7 +3859,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Extend this SVI over VXLAN.
         """
-        mtu: int | None = None
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Interface MTU.
         """
@@ -3927,7 +3927,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             Hostname.
             """
-            loopback_number: int = None
+            loopback_number: Annotated[int, IntConvert(convert_types=(str))] = None
             description: str | None = "PIM RP"
             """
             Interface description.
@@ -4084,7 +4084,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 value_1 = "drop"
 
                             action: ActionEnum | None = None
-                            allow_vlan: int | None = Field(None, ge=1, le=4094)
+                            allow_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
                         class HostMode(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -4106,14 +4106,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         class Timeout(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            idle_host: int | None = Field(None, ge=10, le=65535)
-                            quiet_period: int | None = Field(None, ge=1, le=65535)
+                            idle_host: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=10, le=65535)
+                            quiet_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                             reauth_period: Annotated[str, StrConvert(convert_types=(int))] | None = None
                             """
                             Range 60-4294967295 or "server".
                             """
                             reauth_timeout_ignore: bool | None = None
-                            tx_period: int | None = Field(None, ge=1, le=65535)
+                            tx_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
                         port_control: PortControlEnum | None = None
                         port_control_force_authorized_phone: bool | None = None
@@ -4123,7 +4123,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         host_mode: HostMode | None = None
                         mac_based_authentication: MacBasedAuthentication | None = None
                         timeout: Timeout | None = None
-                        reauthorization_request_limit: int | None = Field(None, ge=1, le=10)
+                        reauthorization_request_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=10)
 
                     class Poe(EosCliConfigGen.EthernetInterfacesItem.Poe, BaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -4230,7 +4230,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 """
                                 ACL name.
                                 """
-                                priority: int | None = None
+                                priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                             direction: DirectionEnum | None = None
                             access_group: AccessGroup | None = None
@@ -4256,13 +4256,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                 enabled: bool | None = None
-                                size: int | None = None
+                                size: Annotated[int, IntConvert(convert_types=(str))] | None = None
                                 """
                                 Size in bytes
                                 """
 
                             encapsulation_gre_metadata_tx: bool | None = None
-                            header_remove_size: int | None = None
+                            header_remove_size: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             """
                             Number of bytes to remove from header.
                             """
@@ -4283,7 +4283,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                               "100 kbps"
                               "10 mbps"
                             """
-                            sample: int | None = None
+                            sample: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             truncate: Truncate | None = None
 
                         name: str = None
@@ -4366,7 +4366,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             Currently only static mode is supported.
                             """
-                            timeout: int | None = None
+                            timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             """
                             Timeout in seconds. EOS default is 90 seconds.
                             """
@@ -4382,7 +4382,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             LACP mode for interface members.
                             """
-                            multiplier: int | None = None
+                            multiplier: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             """
                             Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
                             """
@@ -4393,9 +4393,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             class EncapsulationVlan(AvdDictBaseModel):
                                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                client_dot1q: int | None = Field(None, ge=1, le=4094)
+                                client_dot1q: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
-                            number: int | None = None
+                            number: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             """
                             Subinterface number
                             """
@@ -4404,7 +4404,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             In format xxxx:xxxx:xxxx or "auto"
                             Required for multihomed port-channels with subinterfaces
                             """
-                            vlan_id: int | None = Field(None, ge=1, le=4094)
+                            vlan_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
                             """
                             VLAN ID to bridge.
                             Default is subinterface number.
@@ -4424,7 +4424,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Port-Channel Mode.
                         """
-                        channel_id: int | None = None
+                        channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         Port-Channel ID.
                         If no channel_id is specified, an id is generated from the first switch port in the port channel.
@@ -4522,12 +4522,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Interface mode.
                     """
-                    mtu: int | None = Field(None, ge=68, le=65535)
-                    l2_mtu: int | None = Field(None, ge=68, le=9416)
+                    mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
+                    l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=9416)
                     """
                     This should only be defined for platforms supporting the "l2 mtu" CLI command.
                     """
-                    native_vlan: int | None = Field(None, ge=1, le=4094)
+                    native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
                     """
                     Native VLAN for a trunk port.
                     If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
@@ -4656,7 +4656,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     IPv4_address/Mask
                     """
-                    underlay_l2_multicast_group_ipv4_pool_offset: int | None = None
+                    underlay_l2_multicast_group_ipv4_pool_offset: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                 class EvpnL3Multicast(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -4678,7 +4678,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     IPv4_address/Mask
                     """
-                    evpn_underlay_l3_multicast_group_ipv4_pool_offset: int | None = None
+                    evpn_underlay_l3_multicast_group_ipv4_pool_offset: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     evpn_peg: list[EvpnPegItem] | None = None
                     """
                     For each group of nodes, allow configuration of EVPN PEG options.
@@ -4723,7 +4723,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Default IP address of Loopback0
                     """
-                    version: VersionEnum | None = 2
+                    version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = 2
 
                 class VrfsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -4759,7 +4759,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             IPv4_address/Mask.
                             """
 
-                        loopback: int | None = Field(None, ge=2, le=2100)
+                        loopback: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=2100)
                         """
                         Loopback interface number, required when vtep_diagnotics defined.
                         """
@@ -4804,7 +4804,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
 
                         enabled: bool | None = None
-                        process_id: int | None = None
+                        process_id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         If not set, "vrf_id" will be used.
                         """
@@ -4812,7 +4812,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         If not set, switch router_id will be used.
                         """
-                        max_lsa: int | None = None
+                        max_lsa: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         bfd: bool | None = False
                         redistribute_bgp: RedistributeBgp | None = None
                         redistribute_connected: RedistributeConnected | None = None
@@ -4910,7 +4910,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 IPv4_address
                                 If not set, IP address of "Loopback0" will be used.
                                 """
-                                version: VersionEnum | None = None
+                                version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
                                 """
                                 IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                                 """
@@ -4932,7 +4932,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                         value_3 = "sha384"
                                         value_4 = "sha512"
 
-                                    id: int | None = None
+                                    id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                                     hash_algorithm: HashAlgorithmEnum | None = "sha512"
                                     key: str | None = None
                                     """
@@ -4945,7 +4945,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 """
                                 OSPF area ID.
                                 """
-                                cost: int | None = None
+                                cost: Annotated[int, IntConvert(convert_types=(str))] | None = None
                                 """
                                 OSPF link cost.
                                 """
@@ -5058,7 +5058,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             IP helper for DHCP relay
                             """
-                            vni_override: int | None = Field(None, ge=1, le=16777215)
+                            vni_override: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=16777215)
                             """
                             By default the VNI will be derived from "mac_vrf_vni_base".
                             The vni_override allows us to override this value and
@@ -5114,7 +5114,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             Extend this SVI over VXLAN.
                             """
-                            mtu: int | None = None
+                            mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             """
                             Interface MTU.
                             """
@@ -5175,7 +5175,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             IPv4_address
                             If not set, IP address of "Loopback0" will be used.
                             """
-                            version: VersionEnum | None = None
+                            version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
                             """
                             IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                             """
@@ -5197,7 +5197,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                     value_3 = "sha384"
                                     value_4 = "sha512"
 
-                                id: int | None = None
+                                id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                                 hash_algorithm: HashAlgorithmEnum | None = "sha512"
                                 key: str | None = None
                                 """
@@ -5210,7 +5210,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             OSPF area ID.
                             """
-                            cost: int | None = None
+                            cost: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             """
                             OSPF link cost.
                             """
@@ -5245,7 +5245,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
 
                             pass
 
-                        id: int = Field(None, ge=1, le=4096)
+                        id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=4096)
                         """
                         SVI interface id and VLAN id.
                         """
@@ -5335,7 +5335,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         IP helper for DHCP relay
                         """
-                        vni_override: int | None = Field(None, ge=1, le=16777215)
+                        vni_override: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=16777215)
                         """
                         By default the VNI will be derived from "mac_vrf_vni_base".
                         The vni_override allows us to override this value and
@@ -5391,7 +5391,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Extend this SVI over VXLAN.
                         """
-                        mtu: int | None = None
+                        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         Interface MTU.
                         """
@@ -5429,7 +5429,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                     value_3 = "sha384"
                                     value_4 = "sha512"
 
-                                id: int | None = None
+                                id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                                 hash_algorithm: HashAlgorithmEnum | None = "sha512"
                                 key: str | None = None
                                 """
@@ -5442,7 +5442,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             OSPF area ID.
                             """
-                            cost: int | None = None
+                            cost: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             """
                             OSPF link cost.
                             """
@@ -5464,7 +5464,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             pass
 
                         interfaces: list[str] | None = None
-                        encapsulation_dot1q_vlan: list[int] | None = None
+                        encapsulation_dot1q_vlan: list[Annotated[int, IntConvert(convert_types=(str))]] | None = None
                         """
                         For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
                         """
@@ -5476,7 +5476,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         "descriptions" has precedence over "description".
                         """
                         enabled: bool | None = None
-                        mtu: int | None = None
+                        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         ospf: Ospf | None = None
                         """
                         OSPF interface configuration.
@@ -5513,13 +5513,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Track next-hop using BFD.
                         """
-                        distance: int | None = Field(None, ge=1, le=255)
-                        tag: int | None = Field(None, ge=0, le=4294967295)
+                        distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+                        tag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                         name: str | None = None
                         """
                         description.
                         """
-                        metric: int | None = Field(None, ge=0, le=4294967295)
+                        metric: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                         interface: str | None = None
                         nodes: list[str] | None = None
 
@@ -5535,13 +5535,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Track next-hop using BFD.
                         """
-                        distance: int | None = Field(None, ge=1, le=255)
-                        tag: int | None = Field(None, ge=0, le=4294967295)
+                        distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+                        tag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                         name: str | None = None
                         """
                         description.
                         """
-                        metric: int | None = Field(None, ge=0, le=4294967295)
+                        metric: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                         interface: str | None = None
                         nodes: list[str] | None = None
 
@@ -5579,13 +5579,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>.
                         """
-                        maximum_routes: int | None = Field(None, ge=0, le=4294967294)
+                        maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967294)
                         """
                         Maximum number of routes (0 means unlimited).
                         """
                         default_originate: DefaultOriginate | None = None
                         update_source: str | None = None
-                        ebgp_multihop: int | None = Field(None, ge=1, le=255)
+                        ebgp_multihop: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
                         """
                         Time-to-live in range of hops.
                         """
@@ -5628,7 +5628,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Local BGP ASN.
                         eg. "65001.1200".
                         """
-                        weight: int | None = Field(None, ge=0, le=65535)
+                        weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
                         bfd: bool | None = None
                         shutdown: bool | None = None
 
@@ -5689,7 +5689,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     VRF description.
                     """
-                    vrf_vni: int | None = Field(None, ge=1, le=16777215)
+                    vrf_vni: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=16777215)
                     """
                     Required if "vrf_id" is not set.
                     The VRF VNI range is not limited, but if vrf_id is not set, "vrf_vni" is used for
@@ -5700,7 +5700,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     If vrf_vni > 10000 make sure to
                     adjust "mac_vrf_vni_base" accordingly to avoid overlap.
                     """
-                    vrf_id: int | None = None
+                    vrf_id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Required if "vrf_vni" is not set.
                     "vrf_id" is used as default value for "vrf_vni" and "ospf.process_id" unless those are
@@ -5736,7 +5736,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a
                     VRF will change this default and/or override the tenant-wide setting.
                     """
-                    mlag_ibgp_peering_vlan: int | None = Field(None, ge=1, le=4096)
+                    mlag_ibgp_peering_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4096)
                     """
                     Manually define the VLAN used on the MLAG pair for the iBGP session.
                     By default this parameter is calculated using the
@@ -5864,7 +5864,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         IPv4_address
                         If not set, IP address of "Loopback0" will be used.
                         """
-                        version: VersionEnum | None = 2
+                        version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = 2
 
                     class Bgp(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -5886,11 +5886,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         This configuration will not be applied to vlan aware bundles.
                         """
 
-                    id: int = Field(None, ge=1, le=4094)
+                    id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=4094)
                     """
                     VLAN ID
                     """
-                    vni_override: int | None = Field(None, ge=1, le=16777215)
+                    vni_override: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=16777215)
                     """
                     By default the VNI will be derived from mac_vrf_vni_base.
                     The vni_override, allows to override this value and statically
@@ -5973,7 +5973,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     class SubinterfacesItem(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        number: int = None
+                        number: Annotated[int, IntConvert(convert_types=(str))] = None
                         """
                         Subinterface number
                         """
@@ -5991,7 +5991,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             mode: ModeEnum | None = None
                             short_esi: str | None = None
 
-                        id: int = None
+                        id: Annotated[int, IntConvert(convert_types=(str))] = None
                         """
                         Pseudowire ID on this endpoint.
                         """
@@ -6032,14 +6032,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 Networks services can be filtered by
                 tenant name.
                 """
-                mac_vrf_vni_base: int | None = Field(None, ge=0, le=16770000)
+                mac_vrf_vni_base: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=16770000)
                 """
                 Base number for MAC VRF VXLAN Network Identifier (required with VXLAN).
                 VXLAN VNI is derived from the base number with
                 simple addition.
                 i.e. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
                 """
-                mac_vrf_id_base: int | None = Field(None, ge=0, le=16770000)
+                mac_vrf_id_base: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=16770000)
                 """
                 If not set, "mac_vrf_vni_base" will be used.
                 Base number for MAC VRF RD/RT ID (Required unless mac_vrf_vni_base is set)
@@ -6047,13 +6047,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 i.e. mac_vrf_id_base = 10000, svi 100 = RD/RT 10100, svi 300 =
                 RD/RT 10300.
                 """
-                vlan_aware_bundle_number_base: int | None = 0
+                vlan_aware_bundle_number_base: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                 """
                 Base number for VLAN aware bundle RD/RT.
                 The "Assigned Number" part of RD/RT is derived from vrf_vni +
                 vlan_aware_bundle_number_base.
                 """
-                pseudowire_rt_base: int | None = None
+                pseudowire_rt_base: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Pseudowire RT base, used to generate route targets for VPWS services.
                 Avoid overlapping route target spaces between
@@ -6196,11 +6196,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             Tracking group name.
                             """
-                            recovery_delay: int | None = Field(None, ge=0, le=3600)
+                            recovery_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                             """
                             default -> platform_settings_mlag_reload_delay -> 300.
                             """
-                            links_minimum: int | None = Field(None, ge=1, le=100000)
+                            links_minimum: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100000)
 
                         enabled: bool | None = False
                         groups: list[GroupsItem] | None = Field([{"name": "LT_GROUP1"}], validate_default=True)
@@ -6215,11 +6215,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         enabled: bool | None = False
-                        size: int | None = 128
+                        size: Annotated[int, IntConvert(convert_types=(str))] | None = 128
                         """
                         Recommended size > = number of ports in the switch.
                         """
-                        offset: int | None = 0
+                        offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Offset is used to avoid overlapping port-id ranges of different switches.
                         Useful when a "connected-endpoint" is
@@ -6364,7 +6364,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Enable D-path for use with BGP bestpath selection algorithm.
                         """
-                        maximum_routes: int | None = 0
+                        maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Maximum routes to accept from IPVPN remote peers.
                         """
@@ -6400,8 +6400,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         class Dscp(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            general_messages: int | None = None
-                            event_messages: int | None = None
+                            general_messages: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                            event_messages: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                         class Monitor(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -6412,11 +6412,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 class Drop(AvdDictBaseModel):
                                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                    offset_from_master: int | None = Field(None, ge=0, le=1000000000)
-                                    mean_path_delay: int | None = Field(None, ge=0, le=1000000000)
+                                    offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
+                                    mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
 
-                                offset_from_master: int | None = Field(250, ge=0, le=1000000000)
-                                mean_path_delay: int | None = Field(1500, ge=0, le=1000000000)
+                                offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(250, ge=0, le=1000000000)
+                                mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(1500, ge=0, le=1000000000)
                                 drop: Drop | None = None
 
                             class MissingMessage(AvdDictBaseModel):
@@ -6425,18 +6425,18 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 class Intervals(AvdDictBaseModel):
                                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                    announce: int | None = Field(None, ge=2, le=255)
-                                    follow_up: int | None = Field(None, ge=2, le=255)
-                                    sync: int | None = Field(None, ge=2, le=255)
+                                    announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                                    follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                                    sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
 
                                 class SequenceIds(AvdDictBaseModel):
                                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                     enabled: bool | None = True
-                                    announce: int | None = Field(3, ge=2, le=255)
-                                    delay_resp: int | None = Field(3, ge=2, le=255)
-                                    follow_up: int | None = Field(3, ge=2, le=255)
-                                    sync: int | None = Field(3, ge=2, le=255)
+                                    announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                    delay_resp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                    follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                    sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
 
                                 intervals: Intervals | None = None
                                 sequence_ids: SequenceIds | None = None
@@ -6452,12 +6452,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG
                         peer-link port-channel.
                         """
-                        domain: int | None = Field(127, ge=0, le=255)
-                        priority1: int | None = Field(None, ge=0, le=255)
+                        domain: Annotated[int, IntConvert(convert_types=(str))] | None = Field(127, ge=0, le=255)
+                        priority1: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
                         """
                         default -> automatically set based on node_type.
                         """
-                        priority2: int | None = Field(None, ge=0, le=255)
+                        priority2: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
                         """
                         default -> (node_id modulus 256).
                         """
@@ -6485,7 +6485,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         the recommended behaviour.
                         This can be set manually if required, for example, to a value of "10.1.2.3".
                         """
-                        ttl: int | None = None
+                        ttl: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         forward_unicast: bool | None = False
                         """
                         Enable PTP unicast forwarding.
@@ -6493,7 +6493,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         dscp: Dscp | None = None
                         monitor: Monitor | None = None
 
-                    id: int | None = None
+                    id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Unique identifier used for IP addressing and other algorithms.
                     """
@@ -6596,14 +6596,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Speed should be set in the format
                     `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    max_uplink_switches: int | None = None
+                    max_uplink_switches: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Maximum number of uplink switches.
                     Changing this value may change IP Addressing on uplinks.
                     Can be used to reserve IP
                     space for future expansions.
                     """
-                    max_parallel_uplinks: int | None = None
+                    max_parallel_uplinks: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Number of parallel links towards uplink switches.
                     Changing this value may change interface naming on uplinks (and
@@ -6614,7 +6614,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Enable bfd on uplink interfaces.
                     """
-                    uplink_native_vlan: int | None = Field(None, ge=1, le=4094)
+                    uplink_native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
                     """
                     Only applicable to switches with layer-2 port-channel uplinks.
                     A suspended (disabled) vlan will be created in both ends
@@ -6683,12 +6683,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     (4.4 hexadecimal).
                     """
-                    isis_maximum_paths: int | None = None
+                    isis_maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Number of path to configure in ECMP for ISIS.
                     """
                     is_type: IsTypeEnum | None = "level-2"
-                    node_sid_base: int | None = 0
+                    node_sid_base: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
                     """
@@ -6700,7 +6700,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     IPv4 subnet for VTEP-Loopback allocation.
                     """
-                    loopback_ipv4_offset: int | None = 0
+                    loopback_ipv4_offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Offset all assigned loopback IP addresses.
                     Required when the < loopback_ipv4_pool > is same for 2 different node_types
@@ -6712,7 +6712,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     IPv6 subnet for Loopback0 allocation.
                     """
-                    loopback_ipv6_offset: int | None = 0
+                    loopback_ipv6_offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Offset all assigned loopback IPv6 addresses.
                     Required when the < loopback_ipv6_pool > is same for 2 different node_types
@@ -6808,7 +6808,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                     <interface_speed>`.
                     """
-                    mlag_peer_l3_vlan: int | None = Field(4093, ge=0, le=4094)
+                    mlag_peer_l3_vlan: Annotated[int, IntConvert(convert_types=(str, bool))] | None = Field(4093, ge=0, le=4094)
                     """
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used
@@ -6820,7 +6820,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Required when MLAG leafs present in
                     topology and they are using a separate L3 peering VLAN.
                     """
-                    mlag_peer_vlan: int | None = Field(4094, ge=1, le=4094)
+                    mlag_peer_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(4094, ge=1, le=4094)
                     """
                     MLAG Peer Link (control link) SVI interface id.
                     """
@@ -6831,7 +6831,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Required when MLAG leafs present
                     in topology.
                     """
-                    mlag_port_channel_id: int | None = None
+                    mlag_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     If not set, the mlag port-channel id is generated based on the digits of the first interface present in
                     'mlag_interfaces'.
@@ -6842,7 +6842,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                     """
                     spanning_tree_mode: SpanningTreeModeEnum | None = None
-                    spanning_tree_priority: int | None = 32768
+                    spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
                     spanning_tree_root_super: bool | None = False
                     virtual_router_mac_address: str | None = None
                     """
@@ -6859,7 +6859,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either
                     'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                     """
-                    inband_mgmt_vlan: int | None = 4092
+                    inband_mgmt_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = 4092
                     """
                     VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
                     When using
@@ -6963,7 +6963,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     This setting is applicable to L2 switches (switches using port-
                     channel trunks as uplinks).
                     """
-                    inband_management_vlan: int | None = 4092
+                    inband_management_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = 4092
                     """
                     VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
                     When using
@@ -7006,11 +7006,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 """
                                 Tracking group name.
                                 """
-                                recovery_delay: int | None = Field(None, ge=0, le=3600)
+                                recovery_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                                 """
                                 default -> platform_settings_mlag_reload_delay -> 300.
                                 """
-                                links_minimum: int | None = Field(None, ge=1, le=100000)
+                                links_minimum: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100000)
 
                             enabled: bool | None = False
                             groups: list[GroupsItem] | None = Field([{"name": "LT_GROUP1"}], validate_default=True)
@@ -7025,11 +7025,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             enabled: bool | None = False
-                            size: int | None = 128
+                            size: Annotated[int, IntConvert(convert_types=(str))] | None = 128
                             """
                             Recommended size > = number of ports in the switch.
                             """
-                            offset: int | None = 0
+                            offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                             """
                             Offset is used to avoid overlapping port-id ranges of different switches.
                             Useful when a "connected-endpoint" is
@@ -7174,7 +7174,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             Enable D-path for use with BGP bestpath selection algorithm.
                             """
-                            maximum_routes: int | None = 0
+                            maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                             """
                             Maximum routes to accept from IPVPN remote peers.
                             """
@@ -7210,8 +7210,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             class Dscp(AvdDictBaseModel):
                                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                general_messages: int | None = None
-                                event_messages: int | None = None
+                                general_messages: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                                event_messages: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                             class Monitor(AvdDictBaseModel):
                                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7222,11 +7222,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                     class Drop(AvdDictBaseModel):
                                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                        offset_from_master: int | None = Field(None, ge=0, le=1000000000)
-                                        mean_path_delay: int | None = Field(None, ge=0, le=1000000000)
+                                        offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
+                                        mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
 
-                                    offset_from_master: int | None = Field(250, ge=0, le=1000000000)
-                                    mean_path_delay: int | None = Field(1500, ge=0, le=1000000000)
+                                    offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(250, ge=0, le=1000000000)
+                                    mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(1500, ge=0, le=1000000000)
                                     drop: Drop | None = None
 
                                 class MissingMessage(AvdDictBaseModel):
@@ -7235,18 +7235,18 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                     class Intervals(AvdDictBaseModel):
                                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                        announce: int | None = Field(None, ge=2, le=255)
-                                        follow_up: int | None = Field(None, ge=2, le=255)
-                                        sync: int | None = Field(None, ge=2, le=255)
+                                        announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                                        follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                                        sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
 
                                     class SequenceIds(AvdDictBaseModel):
                                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                         enabled: bool | None = True
-                                        announce: int | None = Field(3, ge=2, le=255)
-                                        delay_resp: int | None = Field(3, ge=2, le=255)
-                                        follow_up: int | None = Field(3, ge=2, le=255)
-                                        sync: int | None = Field(3, ge=2, le=255)
+                                        announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                        delay_resp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                        follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                        sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
 
                                     intervals: Intervals | None = None
                                     sequence_ids: SequenceIds | None = None
@@ -7262,12 +7262,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG
                             peer-link port-channel.
                             """
-                            domain: int | None = Field(127, ge=0, le=255)
-                            priority1: int | None = Field(None, ge=0, le=255)
+                            domain: Annotated[int, IntConvert(convert_types=(str))] | None = Field(127, ge=0, le=255)
+                            priority1: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
                             """
                             default -> automatically set based on node_type.
                             """
-                            priority2: int | None = Field(None, ge=0, le=255)
+                            priority2: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
                             """
                             default -> (node_id modulus 256).
                             """
@@ -7295,7 +7295,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             the recommended behaviour.
                             This can be set manually if required, for example, to a value of "10.1.2.3".
                             """
-                            ttl: int | None = None
+                            ttl: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             forward_unicast: bool | None = False
                             """
                             Enable PTP unicast forwarding.
@@ -7307,7 +7307,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         The Node Name is used as "hostname".
                         """
-                        id: int | None = None
+                        id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         Unique identifier used for IP addressing and other algorithms.
                         """
@@ -7410,14 +7410,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Speed should be set in the format
                         `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                         """
-                        max_uplink_switches: int | None = None
+                        max_uplink_switches: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         Maximum number of uplink switches.
                         Changing this value may change IP Addressing on uplinks.
                         Can be used to reserve IP
                         space for future expansions.
                         """
-                        max_parallel_uplinks: int | None = None
+                        max_parallel_uplinks: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         Number of parallel links towards uplink switches.
                         Changing this value may change interface naming on uplinks (and
@@ -7428,7 +7428,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Enable bfd on uplink interfaces.
                         """
-                        uplink_native_vlan: int | None = Field(None, ge=1, le=4094)
+                        uplink_native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
                         """
                         Only applicable to switches with layer-2 port-channel uplinks.
                         A suspended (disabled) vlan will be created in both ends
@@ -7497,12 +7497,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         (4.4 hexadecimal).
                         """
-                        isis_maximum_paths: int | None = None
+                        isis_maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         Number of path to configure in ECMP for ISIS.
                         """
                         is_type: IsTypeEnum | None = "level-2"
-                        node_sid_base: int | None = 0
+                        node_sid_base: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
                         """
@@ -7514,7 +7514,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         IPv4 subnet for VTEP-Loopback allocation.
                         """
-                        loopback_ipv4_offset: int | None = 0
+                        loopback_ipv4_offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Offset all assigned loopback IP addresses.
                         Required when the < loopback_ipv4_pool > is same for 2 different node_types
@@ -7526,7 +7526,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         IPv6 subnet for Loopback0 allocation.
                         """
-                        loopback_ipv6_offset: int | None = 0
+                        loopback_ipv6_offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Offset all assigned loopback IPv6 addresses.
                         Required when the < loopback_ipv6_pool > is same for 2 different node_types
@@ -7622,7 +7622,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                         <interface_speed>`.
                         """
-                        mlag_peer_l3_vlan: int | None = Field(4093, ge=0, le=4094)
+                        mlag_peer_l3_vlan: Annotated[int, IntConvert(convert_types=(str, bool))] | None = Field(4093, ge=0, le=4094)
                         """
                         Underlay L3 peering SVI interface id.
                         If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used
@@ -7634,7 +7634,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Required when MLAG leafs present in
                         topology and they are using a separate L3 peering VLAN.
                         """
-                        mlag_peer_vlan: int | None = Field(4094, ge=1, le=4094)
+                        mlag_peer_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(4094, ge=1, le=4094)
                         """
                         MLAG Peer Link (control link) SVI interface id.
                         """
@@ -7645,7 +7645,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Required when MLAG leafs present
                         in topology.
                         """
-                        mlag_port_channel_id: int | None = None
+                        mlag_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         If not set, the mlag port-channel id is generated based on the digits of the first interface present in
                         'mlag_interfaces'.
@@ -7656,7 +7656,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                         """
                         spanning_tree_mode: SpanningTreeModeEnum | None = None
-                        spanning_tree_priority: int | None = 32768
+                        spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
                         spanning_tree_root_super: bool | None = False
                         virtual_router_mac_address: str | None = None
                         """
@@ -7673,7 +7673,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either
                         'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                         """
-                        inband_mgmt_vlan: int | None = 4092
+                        inband_mgmt_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = 4092
                         """
                         VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
                         When using
@@ -7777,7 +7777,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         This setting is applicable to L2 switches (switches using port-
                         channel trunks as uplinks).
                         """
-                        inband_management_vlan: int | None = 4092
+                        inband_management_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = 4092
                         """
                         VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
                         When using
@@ -7814,11 +7814,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             Tracking group name.
                             """
-                            recovery_delay: int | None = Field(None, ge=0, le=3600)
+                            recovery_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                             """
                             default -> platform_settings_mlag_reload_delay -> 300.
                             """
-                            links_minimum: int | None = Field(None, ge=1, le=100000)
+                            links_minimum: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100000)
 
                         enabled: bool | None = False
                         groups: list[GroupsItem] | None = Field([{"name": "LT_GROUP1"}], validate_default=True)
@@ -7833,11 +7833,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         enabled: bool | None = False
-                        size: int | None = 128
+                        size: Annotated[int, IntConvert(convert_types=(str))] | None = 128
                         """
                         Recommended size > = number of ports in the switch.
                         """
-                        offset: int | None = 0
+                        offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Offset is used to avoid overlapping port-id ranges of different switches.
                         Useful when a "connected-endpoint" is
@@ -7982,7 +7982,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Enable D-path for use with BGP bestpath selection algorithm.
                         """
-                        maximum_routes: int | None = 0
+                        maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Maximum routes to accept from IPVPN remote peers.
                         """
@@ -8018,8 +8018,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         class Dscp(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            general_messages: int | None = None
-                            event_messages: int | None = None
+                            general_messages: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                            event_messages: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                         class Monitor(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -8030,11 +8030,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 class Drop(AvdDictBaseModel):
                                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                    offset_from_master: int | None = Field(None, ge=0, le=1000000000)
-                                    mean_path_delay: int | None = Field(None, ge=0, le=1000000000)
+                                    offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
+                                    mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
 
-                                offset_from_master: int | None = Field(250, ge=0, le=1000000000)
-                                mean_path_delay: int | None = Field(1500, ge=0, le=1000000000)
+                                offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(250, ge=0, le=1000000000)
+                                mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(1500, ge=0, le=1000000000)
                                 drop: Drop | None = None
 
                             class MissingMessage(AvdDictBaseModel):
@@ -8043,18 +8043,18 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 class Intervals(AvdDictBaseModel):
                                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                    announce: int | None = Field(None, ge=2, le=255)
-                                    follow_up: int | None = Field(None, ge=2, le=255)
-                                    sync: int | None = Field(None, ge=2, le=255)
+                                    announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                                    follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                                    sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
 
                                 class SequenceIds(AvdDictBaseModel):
                                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                     enabled: bool | None = True
-                                    announce: int | None = Field(3, ge=2, le=255)
-                                    delay_resp: int | None = Field(3, ge=2, le=255)
-                                    follow_up: int | None = Field(3, ge=2, le=255)
-                                    sync: int | None = Field(3, ge=2, le=255)
+                                    announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                    delay_resp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                    follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                    sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
 
                                 intervals: Intervals | None = None
                                 sequence_ids: SequenceIds | None = None
@@ -8070,12 +8070,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG
                         peer-link port-channel.
                         """
-                        domain: int | None = Field(127, ge=0, le=255)
-                        priority1: int | None = Field(None, ge=0, le=255)
+                        domain: Annotated[int, IntConvert(convert_types=(str))] | None = Field(127, ge=0, le=255)
+                        priority1: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
                         """
                         default -> automatically set based on node_type.
                         """
-                        priority2: int | None = Field(None, ge=0, le=255)
+                        priority2: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
                         """
                         default -> (node_id modulus 256).
                         """
@@ -8103,7 +8103,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         the recommended behaviour.
                         This can be set manually if required, for example, to a value of "10.1.2.3".
                         """
-                        ttl: int | None = None
+                        ttl: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         forward_unicast: bool | None = False
                         """
                         Enable PTP unicast forwarding.
@@ -8121,7 +8121,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Define variables per node.
                     """
-                    id: int | None = None
+                    id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Unique identifier used for IP addressing and other algorithms.
                     """
@@ -8224,14 +8224,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Speed should be set in the format
                     `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    max_uplink_switches: int | None = None
+                    max_uplink_switches: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Maximum number of uplink switches.
                     Changing this value may change IP Addressing on uplinks.
                     Can be used to reserve IP
                     space for future expansions.
                     """
-                    max_parallel_uplinks: int | None = None
+                    max_parallel_uplinks: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Number of parallel links towards uplink switches.
                     Changing this value may change interface naming on uplinks (and
@@ -8242,7 +8242,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Enable bfd on uplink interfaces.
                     """
-                    uplink_native_vlan: int | None = Field(None, ge=1, le=4094)
+                    uplink_native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
                     """
                     Only applicable to switches with layer-2 port-channel uplinks.
                     A suspended (disabled) vlan will be created in both ends
@@ -8311,12 +8311,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     (4.4 hexadecimal).
                     """
-                    isis_maximum_paths: int | None = None
+                    isis_maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Number of path to configure in ECMP for ISIS.
                     """
                     is_type: IsTypeEnum | None = "level-2"
-                    node_sid_base: int | None = 0
+                    node_sid_base: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
                     """
@@ -8328,7 +8328,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     IPv4 subnet for VTEP-Loopback allocation.
                     """
-                    loopback_ipv4_offset: int | None = 0
+                    loopback_ipv4_offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Offset all assigned loopback IP addresses.
                     Required when the < loopback_ipv4_pool > is same for 2 different node_types
@@ -8340,7 +8340,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     IPv6 subnet for Loopback0 allocation.
                     """
-                    loopback_ipv6_offset: int | None = 0
+                    loopback_ipv6_offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Offset all assigned loopback IPv6 addresses.
                     Required when the < loopback_ipv6_pool > is same for 2 different node_types
@@ -8436,7 +8436,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                     <interface_speed>`.
                     """
-                    mlag_peer_l3_vlan: int | None = Field(4093, ge=0, le=4094)
+                    mlag_peer_l3_vlan: Annotated[int, IntConvert(convert_types=(str, bool))] | None = Field(4093, ge=0, le=4094)
                     """
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used
@@ -8448,7 +8448,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Required when MLAG leafs present in
                     topology and they are using a separate L3 peering VLAN.
                     """
-                    mlag_peer_vlan: int | None = Field(4094, ge=1, le=4094)
+                    mlag_peer_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(4094, ge=1, le=4094)
                     """
                     MLAG Peer Link (control link) SVI interface id.
                     """
@@ -8459,7 +8459,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Required when MLAG leafs present
                     in topology.
                     """
-                    mlag_port_channel_id: int | None = None
+                    mlag_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     If not set, the mlag port-channel id is generated based on the digits of the first interface present in
                     'mlag_interfaces'.
@@ -8470,7 +8470,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                     """
                     spanning_tree_mode: SpanningTreeModeEnum | None = None
-                    spanning_tree_priority: int | None = 32768
+                    spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
                     spanning_tree_root_super: bool | None = False
                     virtual_router_mac_address: str | None = None
                     """
@@ -8487,7 +8487,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either
                     'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                     """
-                    inband_mgmt_vlan: int | None = 4092
+                    inband_mgmt_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = 4092
                     """
                     VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
                     When using
@@ -8591,7 +8591,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     This setting is applicable to L2 switches (switches using port-
                     channel trunks as uplinks).
                     """
-                    inband_management_vlan: int | None = 4092
+                    inband_management_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = 4092
                     """
                     VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
                     When using
@@ -8631,11 +8631,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             Tracking group name.
                             """
-                            recovery_delay: int | None = Field(None, ge=0, le=3600)
+                            recovery_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                             """
                             default -> platform_settings_mlag_reload_delay -> 300.
                             """
-                            links_minimum: int | None = Field(None, ge=1, le=100000)
+                            links_minimum: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100000)
 
                         enabled: bool | None = False
                         groups: list[GroupsItem] | None = Field([{"name": "LT_GROUP1"}], validate_default=True)
@@ -8650,11 +8650,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         enabled: bool | None = False
-                        size: int | None = 128
+                        size: Annotated[int, IntConvert(convert_types=(str))] | None = 128
                         """
                         Recommended size > = number of ports in the switch.
                         """
-                        offset: int | None = 0
+                        offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Offset is used to avoid overlapping port-id ranges of different switches.
                         Useful when a "connected-endpoint" is
@@ -8799,7 +8799,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Enable D-path for use with BGP bestpath selection algorithm.
                         """
-                        maximum_routes: int | None = 0
+                        maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Maximum routes to accept from IPVPN remote peers.
                         """
@@ -8835,8 +8835,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         class Dscp(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            general_messages: int | None = None
-                            event_messages: int | None = None
+                            general_messages: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                            event_messages: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                         class Monitor(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -8847,11 +8847,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 class Drop(AvdDictBaseModel):
                                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                    offset_from_master: int | None = Field(None, ge=0, le=1000000000)
-                                    mean_path_delay: int | None = Field(None, ge=0, le=1000000000)
+                                    offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
+                                    mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
 
-                                offset_from_master: int | None = Field(250, ge=0, le=1000000000)
-                                mean_path_delay: int | None = Field(1500, ge=0, le=1000000000)
+                                offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(250, ge=0, le=1000000000)
+                                mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(1500, ge=0, le=1000000000)
                                 drop: Drop | None = None
 
                             class MissingMessage(AvdDictBaseModel):
@@ -8860,18 +8860,18 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 class Intervals(AvdDictBaseModel):
                                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                    announce: int | None = Field(None, ge=2, le=255)
-                                    follow_up: int | None = Field(None, ge=2, le=255)
-                                    sync: int | None = Field(None, ge=2, le=255)
+                                    announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                                    follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                                    sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
 
                                 class SequenceIds(AvdDictBaseModel):
                                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                     enabled: bool | None = True
-                                    announce: int | None = Field(3, ge=2, le=255)
-                                    delay_resp: int | None = Field(3, ge=2, le=255)
-                                    follow_up: int | None = Field(3, ge=2, le=255)
-                                    sync: int | None = Field(3, ge=2, le=255)
+                                    announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                    delay_resp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                    follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
+                                    sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3, ge=2, le=255)
 
                                 intervals: Intervals | None = None
                                 sequence_ids: SequenceIds | None = None
@@ -8887,12 +8887,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG
                         peer-link port-channel.
                         """
-                        domain: int | None = Field(127, ge=0, le=255)
-                        priority1: int | None = Field(None, ge=0, le=255)
+                        domain: Annotated[int, IntConvert(convert_types=(str))] | None = Field(127, ge=0, le=255)
+                        priority1: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
                         """
                         default -> automatically set based on node_type.
                         """
-                        priority2: int | None = Field(None, ge=0, le=255)
+                        priority2: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
                         """
                         default -> (node_id modulus 256).
                         """
@@ -8920,7 +8920,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         the recommended behaviour.
                         This can be set manually if required, for example, to a value of "10.1.2.3".
                         """
-                        ttl: int | None = None
+                        ttl: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         forward_unicast: bool | None = False
                         """
                         Enable PTP unicast forwarding.
@@ -8932,7 +8932,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     The Node Name is used as "hostname".
                     """
-                    id: int | None = None
+                    id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Unique identifier used for IP addressing and other algorithms.
                     """
@@ -9035,14 +9035,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Speed should be set in the format
                     `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
                     """
-                    max_uplink_switches: int | None = None
+                    max_uplink_switches: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Maximum number of uplink switches.
                     Changing this value may change IP Addressing on uplinks.
                     Can be used to reserve IP
                     space for future expansions.
                     """
-                    max_parallel_uplinks: int | None = None
+                    max_parallel_uplinks: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Number of parallel links towards uplink switches.
                     Changing this value may change interface naming on uplinks (and
@@ -9053,7 +9053,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Enable bfd on uplink interfaces.
                     """
-                    uplink_native_vlan: int | None = Field(None, ge=1, le=4094)
+                    uplink_native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
                     """
                     Only applicable to switches with layer-2 port-channel uplinks.
                     A suspended (disabled) vlan will be created in both ends
@@ -9122,12 +9122,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     (4.4 hexadecimal).
                     """
-                    isis_maximum_paths: int | None = None
+                    isis_maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Number of path to configure in ECMP for ISIS.
                     """
                     is_type: IsTypeEnum | None = "level-2"
-                    node_sid_base: int | None = 0
+                    node_sid_base: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
                     """
@@ -9139,7 +9139,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     IPv4 subnet for VTEP-Loopback allocation.
                     """
-                    loopback_ipv4_offset: int | None = 0
+                    loopback_ipv4_offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Offset all assigned loopback IP addresses.
                     Required when the < loopback_ipv4_pool > is same for 2 different node_types
@@ -9151,7 +9151,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     IPv6 subnet for Loopback0 allocation.
                     """
-                    loopback_ipv6_offset: int | None = 0
+                    loopback_ipv6_offset: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Offset all assigned loopback IPv6 addresses.
                     Required when the < loopback_ipv6_pool > is same for 2 different node_types
@@ -9247,7 +9247,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                     <interface_speed>`.
                     """
-                    mlag_peer_l3_vlan: int | None = Field(4093, ge=0, le=4094)
+                    mlag_peer_l3_vlan: Annotated[int, IntConvert(convert_types=(str, bool))] | None = Field(4093, ge=0, le=4094)
                     """
                     Underlay L3 peering SVI interface id.
                     If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used
@@ -9259,7 +9259,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Required when MLAG leafs present in
                     topology and they are using a separate L3 peering VLAN.
                     """
-                    mlag_peer_vlan: int | None = Field(4094, ge=1, le=4094)
+                    mlag_peer_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(4094, ge=1, le=4094)
                     """
                     MLAG Peer Link (control link) SVI interface id.
                     """
@@ -9270,7 +9270,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Required when MLAG leafs present
                     in topology.
                     """
-                    mlag_port_channel_id: int | None = None
+                    mlag_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     If not set, the mlag port-channel id is generated based on the digits of the first interface present in
                     'mlag_interfaces'.
@@ -9281,7 +9281,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                     """
                     spanning_tree_mode: SpanningTreeModeEnum | None = None
-                    spanning_tree_priority: int | None = 32768
+                    spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
                     spanning_tree_root_super: bool | None = False
                     virtual_router_mac_address: str | None = None
                     """
@@ -9298,7 +9298,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     On L2 switches, this defaults to Vlan<inband_mgmt_vlan> if either
                     'inband_mgmt_subnet' or 'inband_mgmt_ip' is set.
                     """
-                    inband_mgmt_vlan: int | None = 4092
+                    inband_mgmt_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = 4092
                     """
                     VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
                     When using
@@ -9402,7 +9402,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     This setting is applicable to L2 switches (switches using port-
                     channel trunks as uplinks).
                     """
-                    inband_management_vlan: int | None = 4092
+                    inband_management_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = 4092
                     """
                     VLAN number used for inband management on L2 switches (switches using port-channel trunks as uplinks).
                     When using
@@ -9518,7 +9518,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     It is best practice to disable activation.
     """
     bgp_distance: BgpDistance | None = None
-    bgp_ecmp: int | None = 4
+    bgp_ecmp: Annotated[int, IntConvert(convert_types=(str))] | None = 4
     """
     Maximum ECMP for BGP multi-path.
     """
@@ -9529,7 +9529,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     Its neighbors (receiving speakers) may retain routing information from the restarting
     speaker while a BGP session with it is being re-established, reducing route flapping.
     """
-    bgp_maximum_paths: int | None = Field(4, ge=1, le=512)
+    bgp_maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = Field(4, ge=1, le=512)
     """
     Maximum Paths for BGP multi-path.
     """
@@ -9747,13 +9747,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     in the field.
     """
     evpn_ebgp_gateway_inter_domain: bool | None = None
-    evpn_ebgp_gateway_multihop: int | None = 15
+    evpn_ebgp_gateway_multihop: Annotated[int, IntConvert(convert_types=(str))] | None = 15
     """
     Default of 15, considering a large value to avoid BGP reachability issues in very complex DCI networks.
     Adapt the value
     for your specific topology.
     """
-    evpn_ebgp_multihop: int | None = 3
+    evpn_ebgp_multihop: Annotated[int, IntConvert(convert_types=(str))] | None = 3
     """
     Default of 3, the recommended value for a 3 stage spine and leaf topology.
     Set to a higher value to allow for very large
@@ -9850,12 +9850,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     link level.
     """
     isis_default_is_type: IsisDefaultIsTypeEnum | None = Field("level-2", title="ISIS Default IS Type")
-    isis_default_metric: int | None = 50
+    isis_default_metric: Annotated[int, IntConvert(convert_types=(str))] | None = 50
     """
     These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or
     link level.
     """
-    isis_maximum_paths: int | None = None
+    isis_maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = None
     """
     Number of path to configure in ECMP for ISIS.
     """
@@ -10041,7 +10041,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     When using 32-bit ASN/number the VNI can only be a 16-bit number. Alternatively use vlan_id/vrf_id as assigned number.
     For 16-bit ASN/number the assigned number can be a 32-bit number.
     """
-    p2p_uplinks_mtu: int | None = Field(9214, ge=68, le=65535)
+    p2p_uplinks_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(9214, ge=68, le=65535)
     """
     Point to Point Links MTU.
     """
@@ -10213,7 +10213,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     """
     terminattr_disable_aaa: bool | None = False
     terminattr_ingestexclude: str | None = "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
-    terminattr_ingestgrpcurl_port: int | None = 9910
+    terminattr_ingestgrpcurl_port: Annotated[int, IntConvert(convert_types=(str))] | None = 9910
     """
     Port number used for Terminattr connection to an on-premise CloudVision cluster.
     The port number is always 443 when
@@ -10293,8 +10293,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     """
     underlay_ospf_area: Annotated[str, StrConvert(convert_types=(int))] | None = "0.0.0.0"
     underlay_ospf_bfd_enable: bool | None = False
-    underlay_ospf_max_lsa: int | None = 12000
-    underlay_ospf_process_id: int | None = 100
+    underlay_ospf_max_lsa: Annotated[int, IntConvert(convert_types=(str))] | None = 12000
+    underlay_ospf_process_id: Annotated[int, IntConvert(convert_types=(str))] | None = 100
     underlay_rfc5549: bool | None = False
     """
     Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.

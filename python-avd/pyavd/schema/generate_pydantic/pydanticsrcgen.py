@@ -319,6 +319,9 @@ class PydanticSrcGenRootDict(PydanticSrcGenDict):
 
     def get_children_classes_and_fields(self) -> ([PydanticModelSrc], [AvdSchemaField]):
         classes, fields = super().get_children_classes_and_fields()
+        if self.get_class_name() != "EosDesigns":
+            return classes, fields
+
         classes.append(
             PydanticModelSrc(
                 name="CustomStructuredConfiguration",
