@@ -9,6 +9,7 @@ from unittest import mock
 
 import pytest
 from pydantic import BaseModel
+from pytest_benchmark.fixture import BenchmarkFixture
 
 # Override global path to load schema from source instead of any installed version.
 sys.path.insert(0, str(Path(__file__).parents[3]))
@@ -21,6 +22,9 @@ from pyavd.schema.generate_pydantic.utils import generate_class_name
 from pyavd.schema.metaschema.meta_schema_model import AristaAvdSchema
 
 TEST_DATA = [
+    # (schema_name: str, data_file: str | none)
+    ("eos_cli_config_gen", None),
+    ("eos_designs", None),
     ("eos_cli_config_gen", "ethernet-interfaces.json"),
     ("eos_designs", "DC1-BL1A.json"),
 ]
@@ -51,8 +55,8 @@ def test_generate_pydantic_src(schema_name: str):
         file.write(str(src_file_contents))
 
 
-@pytest.mark.parametrize("schema_name", STORE.keys())
-def test_load_model_without_data(schema_name: str):
+@pytest.mark.parametrize("schema_name,data_file", TEST_DATA)
+def test_import_and_load_model(schema_name: str, data_file: str, artifacts_path: Path):
     """
     Imports the generated pydantic models and initializes them with no data.
     Assert that default values are hidden with "exclude_unset=True" and otherwise not.
@@ -63,19 +67,38 @@ def test_load_model_without_data(schema_name: str):
     Cls = getattr(module, class_name)
     assert issubclass(Cls, BaseModel)
 
-    # Initialize the loaded class without data.
-    model: BaseModel = Cls()
+    if data_file is None:
+        data = {}
+    else:
+        data = load_data_file(artifacts_path.joinpath(data_file))
+
+    # Initialize the loaded class with data.
+    model = Cls(**data)
 
     assert isinstance(model, BaseModel)
-    assert model.model_dump(by_alias=True, exclude_unset=True) == {}
-    assert model.model_dump(by_alias=True) != {}
+    if data:
+        # Data is a full data set, meaning it might include other stuff than what we cover in the model.
+        # So we just check that we can dump something and it contains some keys.
+        assert model.model_dump(by_alias=True, exclude_unset=True)
+    else:
+        # Data is empty so we can verify that nothing is dumped if input is empty
+        assert model.model_dump(by_alias=True, exclude_unset=True) == data
+    assert model.model_dump(by_alias=True) != data
+
+
+@pytest.mark.parametrize("schema_name", STORE.keys())
+def test_benchmark_import(schema_name: str, benchmark: BenchmarkFixture):
+    """
+    Benchmark imports the generated pydantic models.
+    """
+    with mock.patch.dict(sys.modules, {"artifacts.types": pyavd.schema.types, "artifacts.models": pyavd.schema.models}):
+        benchmark(import_module, f"artifacts.{schema_name}")
 
 
 @pytest.mark.parametrize("schema_name,data_file", TEST_DATA)
-def test_load_model_with_data(schema_name: str, data_file: str, artifacts_path: Path):
+def test_benchmark_init(schema_name: str, data_file: str, artifacts_path: Path, benchmark: BenchmarkFixture):
     """
-    Imports the generated pydantic models and initializes them with no data.
-    Assert that default values are hidden with "exclude_unset=True" and otherwise not.
+    Benchmark initialization of the generated pydantic models.
     """
     with mock.patch.dict(sys.modules, {"artifacts.types": pyavd.schema.types, "artifacts.models": pyavd.schema.models}):
         module = import_module(f"artifacts.{schema_name}")
@@ -83,10 +106,10 @@ def test_load_model_with_data(schema_name: str, data_file: str, artifacts_path: 
     Cls = getattr(module, class_name)
     assert issubclass(Cls, BaseModel)
 
-    data = load_data_file(artifacts_path.joinpath(data_file))
+    if data_file is None:
+        data = {}
+    else:
+        data = load_data_file(artifacts_path.joinpath(data_file))
 
     # Initialize the loaded class with data.
-    model: BaseModel = Cls(**data)
-
-    assert isinstance(model, BaseModel)
-    assert model.model_dump(by_alias=True, exclude_unset=True)
+    benchmark(Cls, **data)
