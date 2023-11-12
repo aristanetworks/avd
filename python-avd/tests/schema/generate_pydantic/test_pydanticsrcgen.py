@@ -92,7 +92,14 @@ def test_benchmark_import(schema_name: str, benchmark: BenchmarkFixture):
     Benchmark imports the generated pydantic models.
     """
     with mock.patch.dict(sys.modules, {"artifacts.types": pyavd.schema.types, "artifacts.models": pyavd.schema.models}):
-        benchmark(import_module, f"artifacts.{schema_name}")
+
+        def importer(module):
+            for schema_name in STORE.keys():
+                if f"artifacts.{schema_name}" in sys.modules:
+                    del sys.modules[f"artifacts.{schema_name}"]
+            import_module(module)
+
+        benchmark(importer, f"artifacts.{schema_name}")
 
 
 @pytest.mark.parametrize("schema_name,data_file", TEST_DATA)
