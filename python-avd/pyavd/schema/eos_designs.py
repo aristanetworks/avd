@@ -587,6 +587,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         List of downlink interfaces or downlink interface ranges.
         """
 
+    class DefaultMgmtMethodEnum(Enum):
+        value_0 = "oob"
+        value_1 = "inband"
+        value_2 = "none"
+
     class DefaultNodeTypesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -9696,6 +9701,22 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     """
     Default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device
     (either directly or through inheritance).
+    """
+    default_mgmt_method: DefaultMgmtMethodEnum | None = "oob"
+    """
+    `default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring
+    protocols configured with `eos_designs`:
+      - `cv_settings`
+      - `dns_settings`
+      - `ntp_settings`
+      - `sflow_settings`
+    `oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source
+    interface.
+    `inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and
+    `inband_mgmt_interface` as the source interface.
+    `none` means the VRF and or interface must be manually set for each
+    protocol.
+    This can be overridden under the settings for each protocol.
     """
     default_node_types: list[DefaultNodeTypesItem] | None = None
     """
