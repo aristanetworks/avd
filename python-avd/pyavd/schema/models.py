@@ -12,7 +12,7 @@ from ..vendor.utils import get, get_all
 
 class AvdDictBaseModel(BaseModel):
     """
-    Special base model for dicts, where keys with leading _ are stored in self._custom_data with no further validation.
+    Special base model for dicts, where keys with leading _ are stored in custom_data with no further validation (Using Any).
     The keys are popped from the input model to still enforce the model config "extra" for allow or forbid extra keys.
 
     This class does not apply to the root dict, since we do not want to parse all given data for _.
@@ -21,7 +21,8 @@ class AvdDictBaseModel(BaseModel):
     custom_data: dict[str, Any] | None = None
 
     @model_validator(mode="before")
-    def _extract_custom_data(self, data: Any) -> dict:
+    @classmethod
+    def _extract_custom_data(cls, data: Any) -> dict:
         """
         Find any keys starting with _ and *move* them under custom_data
         """
@@ -42,7 +43,8 @@ class AvdEosDesignsRootDictBaseModel(BaseModel):
     """
 
     @model_validator(mode="before")
-    def _extract_custom_structured_configuration(self, data: Any) -> dict:
+    @classmethod
+    def _extract_custom_structured_configuration(cls, data: Any) -> dict:
         """
         Find any keys starting with any prefix defined under "custom_structured_configuration_prefix" and *move* them under "custom_structured_configurations"
         ```yaml
@@ -81,7 +83,8 @@ class AvdEosDesignsRootDictBaseModel(BaseModel):
         return data
 
     @model_validator(mode="before")
-    def _extract_dynamic_keys(self, data: Any) -> dict:
+    @classmethod
+    def _extract_dynamic_keys(cls, data: Any) -> dict:
         """
         Extract content of dynamic keys and insert into data under this model:
         ```yaml
@@ -105,7 +108,6 @@ class AvdEosDesignsRootDictBaseModel(BaseModel):
         if not isinstance(data, dict):
             return data
 
-        cls = self.__class__
         if getattr(cls, "dynamic_keys", None) is None:
             return data
 

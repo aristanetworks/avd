@@ -309,3 +309,55 @@ class StrConvertSrc(AnnotationSrc):
 
     def get_imports(self) -> set:
         return {"from .types import StrConvert"}
+
+
+class IntConvertSrc(AnnotationSrc):
+    """
+    Dataclass containing the inputs for generating python source code for one "IntConvert" annotation.
+    """
+
+    convert_types: list[str] | None = None
+
+    def __str__(self) -> str:
+        """
+        Returns python source code for one IntConverter annotation
+        Like "IntConvert(convert_types=(int))"
+        """
+        args = []
+        if self.convert_types:
+            # Building argument like "convert_type=(float, str)"
+            args.append(f"convert_types=({', '.join(self.convert_types)})")
+
+        return f"IntConvert({', '.join(args)})"
+
+    def __bool__(self) -> bool:
+        return bool(self.convert_types)
+
+    def get_imports(self) -> set:
+        return {"from .types import IntConvert"}
+
+
+class BoolConvertSrc(AnnotationSrc):
+    """
+    Dataclass containing the inputs for generating python source code for one "BoolConvert" annotation.
+    """
+
+    convert_types: list[str] | None = None
+
+    def __str__(self) -> str:
+        """
+        Returns python source code for one BoolConverter annotation
+        Like "BoolConvert(convert_types=(int))"
+        """
+        args = []
+        if self.convert_types:
+            # Building argument like "convert_type=(int, str)"
+            args.append(f"convert_types=({', '.join(self.convert_types)})")
+
+        return f"BoolConvert({', '.join(args)})"
+
+    def __bool__(self) -> bool:
+        return bool(self.convert_types)
+
+    def get_imports(self) -> set:
+        return {"from .types import BoolConvert"}

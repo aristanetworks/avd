@@ -10,7 +10,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated
 
 from .models import AvdDictBaseModel
-from .types import StrConvert
+from .types import IntConvert, StrConvert
 
 
 class EosCliConfigGen(BaseModel):
@@ -201,9 +201,9 @@ class EosCliConfigGen(BaseModel):
             class Lockout(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                failure: int | None = Field(None, ge=1, le=255)
-                duration: int | None = Field(None, ge=1, le=4294967295)
-                window: int | None = Field(None, ge=1, le=4294967295)
+                failure: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+                duration: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4294967295)
+                window: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4294967295)
 
             on_failure_log: bool | None = None
             on_success_log: bool | None = None
@@ -322,7 +322,7 @@ class EosCliConfigGen(BaseModel):
         class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            sequence: int = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             Sequence ID
             """
@@ -888,14 +888,14 @@ class EosCliConfigGen(BaseModel):
         class MacBasedAuthentication(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            delay: int | None = Field(None, ge=0, le=300)
-            hold_period: int | None = Field(None, ge=1, le=300)
+            delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=300)
+            hold_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=300)
 
         class RadiusAvPair(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             service_type: bool | None = None
-            framed_mtu: int | None = Field(None, ge=68, le=9236)
+            framed_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=9236)
 
         system_auth_control: bool | None = None
         protocol_lldp_bypass: bool | None = None
@@ -928,11 +928,11 @@ class EosCliConfigGen(BaseModel):
                 value_0 = "ingress"
                 value_1 = "egress"
 
-            ipv4: int | None = Field(None, ge=64, le=65495)
+            ipv4: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=64, le=65495)
             """
             Segment Size for IPv4.
             """
-            ipv6: int | None = Field(None, ge=64, le=65475)
+            ipv6: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=64, le=65475)
             """
             Segment Size for IPv6.
             """
@@ -947,7 +947,7 @@ class EosCliConfigGen(BaseModel):
         """
         description: str | None = None
         shutdown: bool | None = None
-        mtu: int | None = Field(None, ge=68, le=65535)
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
         """
         Maximum Transmission Unit in bytes.
         """
@@ -1032,7 +1032,7 @@ class EosCliConfigGen(BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             causes: list[str] | None = None
-            interval: int | None = Field(300, ge=30, le=86400)
+            interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(300, ge=30, le=86400)
             """
             Interval in seconds
             """
@@ -1059,12 +1059,12 @@ class EosCliConfigGen(BaseModel):
                 value_3 = "untagged phone"
 
             trunk: TrunkEnum | None = None
-            vlan: int | None = Field(None, ge=1, le=4094)
+            vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
         class L2Protocol(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            encapsulation_dot1q_vlan: int | None = None
+            encapsulation_dot1q_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Vlan tag to configure on sub-interface
             """
@@ -1149,7 +1149,7 @@ class EosCliConfigGen(BaseModel):
                     value_1 = "preference"
 
                 algorithm: AlgorithmEnum | None = None
-                preference_value: int | None = Field(None, ge=0, le=65535)
+                preference_value: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
                 """
                 Preference_value is only used when "algorithm" is "preference"
                 """
@@ -1157,15 +1157,15 @@ class EosCliConfigGen(BaseModel):
                 """
                 Dont_preempt is only used when "algorithm" is "preference"
                 """
-                hold_time: int | None = None
-                subsequent_hold_time: int | None = None
+                hold_time: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                subsequent_hold_time: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 candidate_reachability_required: bool | None = None
 
             class Mpls(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                shared_index: int | None = Field(None, ge=1, le=1024)
-                tunnel_flood_filter_time: int | None = None
+                shared_index: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=1024)
+                tunnel_flood_filter_time: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             identifier: str | None = None
             """
@@ -1188,15 +1188,15 @@ class EosCliConfigGen(BaseModel):
                 class Dot1q(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    vlan: int | None = None
+                    vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Client VLAN ID
                     """
-                    outer: int | None = None
+                    outer: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Client Outer VLAN ID
                     """
-                    inner: int | None = None
+                    inner: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Client Inner VLAN ID
                     """
@@ -1210,15 +1210,15 @@ class EosCliConfigGen(BaseModel):
                 class Dot1q(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    vlan: int | None = None
+                    vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Network VLAN ID
                     """
-                    outer: int | None = None
+                    outer: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Network outer VLAN ID
                     """
-                    inner: int | None = None
+                    inner: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Network inner VLAN ID
                     """
@@ -1257,7 +1257,7 @@ class EosCliConfigGen(BaseModel):
                     access_list: str = None
                     comment: str | None = None
                     pool_name: str = None
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
                 class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -1281,7 +1281,7 @@ class EosCliConfigGen(BaseModel):
                     EOS might
                     remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
                     """
-                    group: int | None = Field(None, ge=1, le=65535)
+                    group: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     'access_list' and 'group' are mutual exclusive
                     """
@@ -1289,14 +1289,14 @@ class EosCliConfigGen(BaseModel):
                     """
                     IPv4 address
                     """
-                    original_port: int | None = Field(None, ge=1, le=65535)
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    original_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                     protocol: ProtocolEnum | None = None
                     translated_ip: str = None
                     """
                     IPv4 address
                     """
-                    translated_port: int | None = Field(None, ge=1, le=65535)
+                    translated_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     requires 'original_port'
                     """
@@ -1324,7 +1324,7 @@ class EosCliConfigGen(BaseModel):
                     required if 'nat_type' is pool, pool-address-only or pool-full-cone
                     ignored if 'nat_type' is overload
                     """
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
                 class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -1348,7 +1348,7 @@ class EosCliConfigGen(BaseModel):
                     EOS might
                     remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
                     """
-                    group: int | None = Field(None, ge=1, le=65535)
+                    group: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     'access_list' and 'group' are mutual exclusive
                     """
@@ -1356,14 +1356,14 @@ class EosCliConfigGen(BaseModel):
                     """
                     IPv4 address
                     """
-                    original_port: int | None = Field(None, ge=1, le=65535)
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    original_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                     protocol: ProtocolEnum | None = None
                     translated_ip: str = None
                     """
                     IPv4 address
                     """
-                    translated_port: int | None = Field(None, ge=1, le=65535)
+                    translated_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     requires 'original_port'
                     """
@@ -1463,7 +1463,7 @@ class EosCliConfigGen(BaseModel):
                 value_3 = "sha384"
                 value_4 = "sha512"
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             hash_algorithm: HashAlgorithmEnum | None = None
             key: str | None = None
             """
@@ -1476,7 +1476,7 @@ class EosCliConfigGen(BaseModel):
             class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                dr_priority: int | None = Field(None, ge=0, le=429467295)
+                dr_priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=429467295)
                 sparse_mode: bool | None = None
 
             ipv4: Ipv4 | None = None
@@ -1494,7 +1494,7 @@ class EosCliConfigGen(BaseModel):
                 value_1 = "active"
                 value_2 = "passive"
 
-            id: int | None = None
+            id: Annotated[int, IntConvert(convert_types=(str))] | None = None
             mode: ModeEnum | None = None
 
         class IsisCircuitTypeEnum(Enum):
@@ -1538,7 +1538,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 PoE action for interface
                 """
-                power_off_delay: int | None = Field(None, ge=1, le=86400)
+                power_off_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=86400)
                 """
                 Number of seconds to delay shutting the power off after a link down event occurs. Default value is 5 seconds in EOS.
                 """
@@ -1558,7 +1558,7 @@ class EosCliConfigGen(BaseModel):
             class Limit(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                field_class: int | None = Field(None, alias="class", ge=0, le=8)
+                field_class: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, alias="class", ge=0, le=8)
                 watts: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                 fixed: bool | None = None
                 """
@@ -1606,8 +1606,8 @@ class EosCliConfigGen(BaseModel):
             class Announce(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                interval: int | None = None
-                timeout: int | None = None
+                interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             class DelayMechanismEnum(Enum):
                 value_0 = "e2e"
@@ -1616,7 +1616,7 @@ class EosCliConfigGen(BaseModel):
             class SyncMessage(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                interval: int | None = None
+                interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             class RoleEnum(Enum):
                 value_0 = "master"
@@ -1629,7 +1629,7 @@ class EosCliConfigGen(BaseModel):
 
             enable: bool | None = None
             announce: Announce | None = None
-            delay_req: int | None = None
+            delay_req: Annotated[int, IntConvert(convert_types=(str))] | None = None
             delay_mechanism: DelayMechanismEnum | None = None
             sync_message: SyncMessage | None = None
             role: RoleEnum | None = None
@@ -1729,7 +1729,7 @@ class EosCliConfigGen(BaseModel):
 
             transmit: bool | None = None
             receive: bool | None = None
-            ztp_vlan: int | None = None
+            ztp_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             ZTP vlan number
             """
@@ -1746,7 +1746,7 @@ class EosCliConfigGen(BaseModel):
             """
             List of vlans as string (only one vlan if direction is "both")
             """
-            to: int | None = None
+            to: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             VLAN ID
             """
@@ -1776,7 +1776,7 @@ class EosCliConfigGen(BaseModel):
                     value_1 = "drop"
 
                 action: ActionEnum | None = None
-                allow_vlan: int | None = Field(None, ge=1, le=4094)
+                allow_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
             class HostMode(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -1798,14 +1798,14 @@ class EosCliConfigGen(BaseModel):
             class Timeout(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                idle_host: int | None = Field(None, ge=10, le=65535)
-                quiet_period: int | None = Field(None, ge=1, le=65535)
+                idle_host: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=10, le=65535)
+                quiet_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                 reauth_period: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
                 Value can be 60-4294967295 or 'server'
                 """
                 reauth_timeout_ignore: bool | None = None
-                tx_period: int | None = Field(None, ge=1, le=65535)
+                tx_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
             class Unauthorized(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1820,7 +1820,7 @@ class EosCliConfigGen(BaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
-                    timeout: int | None = Field(None, ge=0, le=65535)
+                    timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
 
                 disabled: bool | None = None
                 authentication_failure_fallback_mba: AuthenticationFailureFallbackMba | None = None
@@ -1833,7 +1833,7 @@ class EosCliConfigGen(BaseModel):
             host_mode: HostMode | None = None
             mac_based_authentication: MacBasedAuthentication | None = None
             timeout: Timeout | None = None
-            reauthorization_request_limit: int | None = Field(None, ge=1, le=10)
+            reauthorization_request_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=10)
             unauthorized: Unauthorized | None = None
             eapol: Eapol | None = None
 
@@ -1860,11 +1860,11 @@ class EosCliConfigGen(BaseModel):
                 value_2 = "disabled"
 
             trust: TrustEnum | None = None
-            dscp: int | None = None
+            dscp: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             DSCP value
             """
-            cos: int | None = None
+            cos: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             COS value
             """
@@ -1900,7 +1900,7 @@ class EosCliConfigGen(BaseModel):
             class PrioritiesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                priority: int = Field(None, ge=0, le=7)
+                priority: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=7)
                 no_drop: bool | None = None
 
             enabled: bool | None = None
@@ -1910,15 +1910,15 @@ class EosCliConfigGen(BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             echo: bool | None = None
-            interval: int | None = None
+            interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Interval in milliseconds
             """
-            min_rx: int | None = None
+            min_rx: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Rate in milliseconds
             """
-            multiplier: int | None = Field(None, ge=3, le=50)
+            multiplier: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=50)
 
         class ServicePolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1962,7 +1962,7 @@ class EosCliConfigGen(BaseModel):
                 value_1 = "normal"
 
             mode: ModeEnum | None = None
-            multiplier: int | None = Field(None, ge=3, le=3000)
+            multiplier: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=3000)
 
         class Transceiver(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2032,19 +2032,19 @@ class EosCliConfigGen(BaseModel):
                         """
                         Indicate the units to be used for the threshold values
                         """
-                        min: int = Field(None, ge=1, le=256000000)
+                        min: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=256000000)
                         """
                         Set the random-detect ECN minimum-threshold
                         """
-                        max: int = Field(None, ge=1, le=256000000)
+                        max: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=256000000)
                         """
                         Set the random-detect ECN maximum-threshold
                         """
-                        max_probability: int | None = Field(None, ge=1, le=100)
+                        max_probability: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100)
                         """
                         Set the random-detect ECN max-mark-probability
                         """
-                        weight: int | None = Field(None, ge=0, le=15)
+                        weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=15)
                         """
                         Set the random-detect ECN weight
                         """
@@ -2060,7 +2060,7 @@ class EosCliConfigGen(BaseModel):
                 Explicit Congestion Notification
                 """
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             TX-Queue ID
             """
@@ -2089,19 +2089,19 @@ class EosCliConfigGen(BaseModel):
                         """
                         Indicate the units to be used for the threshold values
                         """
-                        min: int | None = Field(None, ge=1, le=256000000)
+                        min: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=256000000)
                         """
                         Set the random-detect ECN minimum-threshold
                         """
-                        max: int = Field(None, ge=1, le=256000000)
+                        max: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=256000000)
                         """
                         Set the random-detect ECN maximum-threshold
                         """
-                        max_probability: int = Field(None, ge=1, le=100)
+                        max_probability: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=100)
                         """
                         Set the random-detect ECN max-mark-probability
                         """
-                        weight: int | None = Field(None, ge=0, le=15)
+                        weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=15)
                         """
                         Set the random-detect ECN weight
                         """
@@ -2117,7 +2117,7 @@ class EosCliConfigGen(BaseModel):
                 Explicit Congestion Notification
                 """
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             TX-Queue ID
             """
@@ -2129,7 +2129,7 @@ class EosCliConfigGen(BaseModel):
             class Advertisement(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                interval: int | None = Field(None, ge=1, le=255)
+                interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
                 """
                 Interval in seconds
                 """
@@ -2140,11 +2140,11 @@ class EosCliConfigGen(BaseModel):
                 class Delay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    minimum: int | None = Field(None, ge=0, le=3600)
+                    minimum: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                     """
                     Minimum preempt delay in seconds
                     """
-                    reload: int | None = Field(None, ge=0, le=3600)
+                    reload: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                     """
                     Reload preempt delay in seconds
                     """
@@ -2158,7 +2158,7 @@ class EosCliConfigGen(BaseModel):
                 class Delay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    reload: int | None = Field(None, ge=0, le=3600)
+                    reload: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                     """
                     Delay after reload in seconds.
                     """
@@ -2172,7 +2172,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Tracked object name
                 """
-                decrement: int | None = Field(None, ge=1, le=254)
+                decrement: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=254)
                 """
                 Decrement VRRP priority by 1-254
                 """
@@ -2189,7 +2189,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Virtual IPv4 address
                 """
-                version: VersionEnum | None = None
+                version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
 
             class Ipv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2199,11 +2199,11 @@ class EosCliConfigGen(BaseModel):
                 Virtual IPv6 address
                 """
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             VRID
             """
-            priority_level: int | None = Field(None, ge=1, le=254)
+            priority_level: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=254)
             """
             Instance priority
             """
@@ -2217,7 +2217,7 @@ class EosCliConfigGen(BaseModel):
         name: str = None
         description: str | None = None
         shutdown: bool | None = None
-        load_interval: int | None = Field(None, ge=0, le=600)
+        load_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=600)
         """
         Interval in seconds for updating interface counters"
         """
@@ -2225,8 +2225,8 @@ class EosCliConfigGen(BaseModel):
         """
         Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         """
-        mtu: int | None = None
-        l2_mtu: int | None = None
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
         """
@@ -2237,7 +2237,7 @@ class EosCliConfigGen(BaseModel):
         For an access port this would
         be a single vlan "123"
         """
-        native_vlan: int | None = None
+        native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
         native_vlan_tag: bool | None = None
         """
         If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
@@ -2263,12 +2263,12 @@ class EosCliConfigGen(BaseModel):
         error_correction_encoding: ErrorCorrectionEncoding | None = None
         link_tracking_groups: list[LinkTrackingGroupsItem] | None = None
         evpn_ethernet_segment: EvpnEthernetSegment | None = None
-        encapsulation_dot1q_vlan: int | None = None
+        encapsulation_dot1q_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         VLAN tag to configure on sub-interface
         """
         encapsulation_vlan: EncapsulationVlan | None = None
-        vlan_id: int | None = Field(None, ge=1, le=4094)
+        vlan_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
         ip_address: str | None = None
         """
         IPv4 address/mask or "dhcp"
@@ -2328,7 +2328,7 @@ class EosCliConfigGen(BaseModel):
         """
         ospf_network_point_to_point: bool | None = None
         ospf_area: Annotated[str, StrConvert(convert_types=(int))] | None = None
-        ospf_cost: int | None = None
+        ospf_cost: Annotated[int, IntConvert(convert_types=(str))] | None = None
         ospf_authentication: OspfAuthenticationEnum | None = None
         ospf_authentication_key: str | None = None
         """
@@ -2343,7 +2343,7 @@ class EosCliConfigGen(BaseModel):
         ISIS instance
         """
         isis_passive: bool | None = None
-        isis_metric: int | None = None
+        isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
         isis_network_point_to_point: bool | None = None
         isis_circuit_type: IsisCircuitTypeEnum | None = None
         isis_hello_padding: bool | None = None
@@ -2384,7 +2384,7 @@ class EosCliConfigGen(BaseModel):
         service_policy: ServicePolicy | None = None
         mpls: Mpls | None = None
         lacp_timer: LacpTimer | None = None
-        lacp_port_priority: int | None = Field(None, ge=0, le=65535)
+        lacp_port_priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
         transceiver: Transceiver | None = None
         ip_proxy_arp: bool | None = None
         traffic_policy: TrafficPolicy | None = None
@@ -2439,7 +2439,7 @@ class EosCliConfigGen(BaseModel):
         """
         Command to execute
         """
-        delay: int | None = None
+        delay: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Event-handler delay in seconds
         """
@@ -2478,7 +2478,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Configure hardware offload for IPv6 traffic.
                 """
-                threshold_minimum: int | None = Field(None, ge=1, le=4294967295)
+                threshold_minimum: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4294967295)
                 """
                 Minimum number of samples.
                 """
@@ -2493,11 +2493,11 @@ class EosCliConfigGen(BaseModel):
                     """
                     Export MPLS forwarding information
                     """
-                    on_inactive_timeout: int | None = Field(None, ge=3000, le=900000)
+                    on_inactive_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3000, le=900000)
                     """
                     Flow record inactive export timeout in milliseconds
                     """
-                    on_interval: int | None = Field(None, ge=1000, le=36000000)
+                    on_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1000, le=36000000)
                     """
                     Flow record export interval in milliseconds
                     """
@@ -2512,7 +2512,7 @@ class EosCliConfigGen(BaseModel):
                         """
                         Collector IPv4 address or IPv6 address or fully qualified domain name
                         """
-                        port: int | None = Field(None, ge=1, le=65535)
+                        port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                         """
                         Collector Port Number
                         """
@@ -2520,7 +2520,7 @@ class EosCliConfigGen(BaseModel):
                     class Format(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        ipfix_version: int | None = None
+                        ipfix_version: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                     name: str = None
                     """
@@ -2532,12 +2532,12 @@ class EosCliConfigGen(BaseModel):
                     """
                     Local Source Interface
                     """
-                    template_interval: int | None = Field(None, ge=5000, le=3600000)
+                    template_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=5000, le=3600000)
                     """
                     Template interval in milliseconds
                     """
 
-                table_size: int | None = Field(None, ge=1, le=614400)
+                table_size: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=614400)
                 """
                 Maximum number of entries in flow table.
                 """
@@ -2548,7 +2548,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 exporters: list[ExportersItem] | None = None
 
-            sample: int | None = Field(None, ge=1, le=4294967295)
+            sample: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4294967295)
             hardware_offload: HardwareOffload | None = None
             trackers: list[TrackersItem] | None = None
             shutdown: bool | None = False
@@ -2562,11 +2562,11 @@ class EosCliConfigGen(BaseModel):
                 class RecordExport(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    on_inactive_timeout: int | None = Field(None, ge=3000, le=900000)
+                    on_inactive_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3000, le=900000)
                     """
                     Flow record inactive export timeout in milliseconds
                     """
-                    on_interval: int | None = Field(None, ge=1000, le=36000000)
+                    on_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1000, le=36000000)
                     """
                     Flow record export interval in milliseconds
                     """
@@ -2581,7 +2581,7 @@ class EosCliConfigGen(BaseModel):
                         """
                         Collector IPv4 address or IPv6 address or fully qualified domain name
                         """
-                        port: int | None = Field(None, ge=1, le=65535)
+                        port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                         """
                         Collector Port Number
                         """
@@ -2589,7 +2589,7 @@ class EosCliConfigGen(BaseModel):
                     class Format(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        ipfix_version: int | None = None
+                        ipfix_version: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                     name: str = None
                     """
@@ -2601,7 +2601,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     Local Source Interface
                     """
-                    template_interval: int | None = Field(None, ge=5000, le=3600000)
+                    template_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=5000, le=3600000)
                     """
                     Template interval in milliseconds
                     """
@@ -2631,11 +2631,11 @@ class EosCliConfigGen(BaseModel):
             class RecordExport(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                on_inactive_timeout: int | None = Field(None, ge=3000, le=900000)
+                on_inactive_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3000, le=900000)
                 """
                 Flow record inactive export timeout in milliseconds
                 """
-                on_interval: int | None = Field(None, ge=1000, le=36000000)
+                on_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1000, le=36000000)
                 """
                 Flow record export interval in milliseconds
                 """
@@ -2654,7 +2654,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     Collector IPv4 address or IPv6 address or fully qualified domain name
                     """
-                    port: int | None = Field(None, ge=1, le=65535)
+                    port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     Collector Port Number
                     """
@@ -2662,7 +2662,7 @@ class EosCliConfigGen(BaseModel):
                 class Format(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    ipfix_version: int | None = None
+                    ipfix_version: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                 name: str = None
                 """
@@ -2674,7 +2674,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Local Source Interface
                 """
-                template_interval: int | None = Field(None, ge=5000, le=3600000)
+                template_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=5000, le=3600000)
                 """
                 Template interval in milliseconds
                 """
@@ -2685,7 +2685,7 @@ class EosCliConfigGen(BaseModel):
             """
             record_export: RecordExport | None = None
             exporters: list[ExportersItem] | None = None
-            table_size: int | None = Field(None, ge=1, le=614400)
+            table_size: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=614400)
             """
             Maximum number of entries in flow table.
             """
@@ -2694,7 +2694,7 @@ class EosCliConfigGen(BaseModel):
         """
         Flow Tracking Type - only 'sampled' supported for now
         """
-        sample: int | None = Field(None, ge=1, le=4294967295)
+        sample: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4294967295)
         trackers: list[TrackersItem] | None = None
         shutdown: bool | None = False
 
@@ -2862,7 +2862,7 @@ class EosCliConfigGen(BaseModel):
             shutdown: bool | None = None
 
         ethernet: Ethernet | None = None
-        mtu: int | None = None
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
     class InterfaceGroupsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2914,7 +2914,7 @@ class EosCliConfigGen(BaseModel):
                 value_2 = "lt"
                 value_3 = "neq"
 
-            sequence: int | None = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             ACL entry sequence number.
             """
@@ -2958,7 +2958,7 @@ class EosCliConfigGen(BaseModel):
             """
             Log matches against this rule.
             """
-            ttl: int | None = Field(None, ge=0, le=255)
+            ttl: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
             """
             TTL value
             """
@@ -2983,7 +2983,7 @@ class EosCliConfigGen(BaseModel):
             """
             DSCP value or name.
             """
-            vlan_number: int | None = None
+            vlan_number: Annotated[int, IntConvert(convert_types=(str))] | None = None
             vlan_inner: bool | None = False
             vlan_mask: str | None = None
             """
@@ -3147,13 +3147,13 @@ class EosCliConfigGen(BaseModel):
             """
             IP Address
             """
-            query_interval: int | None = None
-            max_response_time: int | None = None
-            last_member_query_interval: int | None = None
-            last_member_query_count: int | None = None
-            startup_query_interval: int | None = None
-            startup_query_count: int | None = None
-            version: int | None = None
+            query_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            max_response_time: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            last_member_query_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            last_member_query_count: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            startup_query_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            startup_query_count: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            version: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
         class VlansItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3166,21 +3166,21 @@ class EosCliConfigGen(BaseModel):
                 """
                 IP Address
                 """
-                query_interval: int | None = None
-                max_response_time: int | None = None
-                last_member_query_interval: int | None = None
-                last_member_query_count: int | None = None
-                startup_query_interval: int | None = None
-                startup_query_count: int | None = None
-                version: int | None = None
+                query_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                max_response_time: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                last_member_query_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                last_member_query_count: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                startup_query_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                startup_query_count: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                version: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             VLAN ID
             """
             enabled: bool | None = None
             querier: Querier | None = None
-            max_groups: int | None = None
+            max_groups: Annotated[int, IntConvert(convert_types=(str))] | None = None
             fast_leave: bool | None = None
             proxy: bool | None = None
             """
@@ -3192,9 +3192,9 @@ class EosCliConfigGen(BaseModel):
         Activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per
         vlan.
         """
-        robustness_variable: int | None = None
-        restart_query_interval: int | None = None
-        interface_restart_query: int | None = None
+        robustness_variable: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        restart_query_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        interface_restart_query: Annotated[int, IntConvert(convert_types=(str))] | None = None
         fast_leave: bool | None = None
         querier: Querier | None = None
         proxy: bool | None = None
@@ -3211,7 +3211,7 @@ class EosCliConfigGen(BaseModel):
         """
         VRF Name
         """
-        priority: int | None = Field(None, ge=0, le=4)
+        priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4)
         """
         Priority value (lower is first)
         """
@@ -3231,7 +3231,7 @@ class EosCliConfigGen(BaseModel):
                     access_list: str = None
                     comment: str | None = None
                     pool_name: str = None
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
                 class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -3255,7 +3255,7 @@ class EosCliConfigGen(BaseModel):
                     EOS might
                     remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
                     """
-                    group: int | None = Field(None, ge=1, le=65535)
+                    group: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     'access_list' and 'group' are mutual exclusive
                     """
@@ -3263,14 +3263,14 @@ class EosCliConfigGen(BaseModel):
                     """
                     IPv4 address
                     """
-                    original_port: int | None = Field(None, ge=1, le=65535)
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    original_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                     protocol: ProtocolEnum | None = None
                     translated_ip: str = None
                     """
                     IPv4 address
                     """
-                    translated_port: int | None = Field(None, ge=1, le=65535)
+                    translated_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     requires 'original_port'
                     """
@@ -3298,7 +3298,7 @@ class EosCliConfigGen(BaseModel):
                     required if 'nat_type' is pool, pool-address-only or pool-full-cone
                     ignored if 'nat_type' is overload
                     """
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
                 class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -3322,7 +3322,7 @@ class EosCliConfigGen(BaseModel):
                     EOS might
                     remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
                     """
-                    group: int | None = Field(None, ge=1, le=65535)
+                    group: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     'access_list' and 'group' are mutual exclusive
                     """
@@ -3330,14 +3330,14 @@ class EosCliConfigGen(BaseModel):
                     """
                     IPv4 address
                     """
-                    original_port: int | None = Field(None, ge=1, le=65535)
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    original_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                     protocol: ProtocolEnum | None = None
                     translated_ip: str = None
                     """
                     IPv4 address
                     """
-                    translated_port: int | None = Field(None, ge=1, le=65535)
+                    translated_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     requires 'original_port'
                     """
@@ -3367,13 +3367,13 @@ class EosCliConfigGen(BaseModel):
                 """
                 IPv4 address
                 """
-                first_port: int | None = Field(None, ge=1, le=65535)
-                last_port: int | None = Field(None, ge=1, le=65535)
+                first_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                last_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
             name: str = None
-            prefix_length: int = Field(None, ge=16, le=32)
+            prefix_length: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=16, le=32)
             ranges: list[RangesItem] | None = None
-            utilization_log_threshold: int | None = Field(None, ge=1, le=100)
+            utilization_log_threshold: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100)
 
         class Synchronization(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3381,15 +3381,15 @@ class EosCliConfigGen(BaseModel):
             class PortRange(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                first_port: int | None = Field(None, ge=1024, le=65535)
-                last_port: int | None = Field(None, ge=1024, le=65535)
+                first_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1024, le=65535)
+                last_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1024, le=65535)
                 """
                 >= first_port
                 """
                 split_disabled: bool | None = None
 
             description: str | None = None
-            expiry_interval: int | None = Field(None, ge=60, le=3600)
+            expiry_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=60, le=3600)
             """
             in seconds
             """
@@ -3416,11 +3416,11 @@ class EosCliConfigGen(BaseModel):
             class LowMark(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                percentage: int | None = Field(None, ge=1, le=99)
+                percentage: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=99)
                 """
                 Used to render 'ip nat translation low-mark <percentage>'
                 """
-                host_percentage: int | None = Field(None, ge=1, le=99)
+                host_percentage: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=99)
                 """
                 Used to render 'ip nat translation low-mark <host_percentage> host'
                 """
@@ -3435,10 +3435,10 @@ class EosCliConfigGen(BaseModel):
                     """
                     IPv4 address
                     """
-                    limit: int = Field(None, ge=0, le=4294967295)
+                    limit: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=4294967295)
 
-                limit: int | None = Field(None, ge=0, le=4294967295)
-                host_limit: int | None = Field(None, ge=0, le=4294967295)
+                limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
+                host_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                 ip_limits: list[IpLimitsItem] | None = None
 
             class TimeoutsItem(AvdDictBaseModel):
@@ -3449,7 +3449,7 @@ class EosCliConfigGen(BaseModel):
                     value_1 = "udp"
 
                 protocol: ProtocolEnum = None
-                timeout: int = Field(None, ge=0, le=4294967295)
+                timeout: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=4294967295)
                 """
                 in seconds
                 """
@@ -3460,7 +3460,7 @@ class EosCliConfigGen(BaseModel):
             max_entries: MaxEntries | None = None
             timeouts: list[TimeoutsItem] | None = None
 
-        kernel_buffer_size: int | None = Field(None, ge=1, le=64)
+        kernel_buffer_size: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=64)
         """
         Buffer size in MB
         """
@@ -3513,7 +3513,7 @@ class EosCliConfigGen(BaseModel):
             Local IKE Identification.
             Can be an IPv4 or an IPv6 address.
             """
-            ike_lifetime: int | None = Field(None, ge=1, le=24)
+            ike_lifetime: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=24)
             """
             IKE lifetime in hours.
             """
@@ -3521,7 +3521,7 @@ class EosCliConfigGen(BaseModel):
             """
             IKE encryption algorithm.
             """
-            dh_group: DhGroupEnum | None = None
+            dh_group: Annotated[DhGroupEnum, IntConvert(convert_types=(str))] | None = None
             """
             Diffie-Hellman group for the key exchange.
             """
@@ -3567,7 +3567,7 @@ class EosCliConfigGen(BaseModel):
             Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0
             """
             esp: Esp | None = None
-            pfs_dh_group: PfsDhGroupEnum | None = None
+            pfs_dh_group: Annotated[PfsDhGroupEnum, IntConvert(convert_types=(str))] | None = None
 
         class ProfilesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -3585,11 +3585,11 @@ class EosCliConfigGen(BaseModel):
                     value_1 = "hold"
                     value_2 = "restart"
 
-                interval: int = Field(None, ge=2, le=3600)
+                interval: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=2, le=3600)
                 """
                 Interval (in seconds) between keep-alive messages.
                 """
-                time: int = Field(None, ge=10, le=3600)
+                time: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=10, le=3600)
                 """
                 Time (in seconds) after which the action is applied.
                 """
@@ -3682,7 +3682,7 @@ class EosCliConfigGen(BaseModel):
         class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            sequence: int = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             Sequence ID
             """
@@ -3728,7 +3728,7 @@ class EosCliConfigGen(BaseModel):
         class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            sequence: int = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             Sequence ID
             """
@@ -3750,7 +3750,7 @@ class EosCliConfigGen(BaseModel):
         class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            sequence: int = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             Sequence ID
             """
@@ -3784,13 +3784,13 @@ class EosCliConfigGen(BaseModel):
         """
         Track next-hop using BFD
         """
-        distance: int | None = Field(None, ge=1, le=255)
-        tag: int | None = Field(None, ge=0, le=4294967295)
+        distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+        tag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
         name: str | None = None
         """
         Description
         """
-        metric: int | None = Field(None, ge=0, le=4294967295)
+        metric: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
     class L2Protocol(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3903,7 +3903,7 @@ class EosCliConfigGen(BaseModel):
     class LoadInterval(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        default: int | None = None
+        default: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Default load interval in seconds
         """
@@ -3925,7 +3925,7 @@ class EosCliConfigGen(BaseModel):
         If true, the user will be removed and all other settings are ignored.
         Useful for removing the default "admin" user.
         """
-        privilege: int | None = Field(None, ge=0, le=15)
+        privilege: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=15)
         """
         Initial privilege level with local EXEC authorization.
         """
@@ -3988,7 +3988,7 @@ class EosCliConfigGen(BaseModel):
                 value_7 = "warnings"
                 value_8 = "disabled"
 
-            size: int | None = Field(None, ge=10, le=2147483647)
+            size: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=10, le=2147483647)
             level: LevelEnum | None = None
             """
             Buffer logging severity level
@@ -4095,7 +4095,7 @@ class EosCliConfigGen(BaseModel):
                 Syslog server name
                 """
                 protocol: ProtocolEnum | None = "udp"
-                ports: list[int] | None = None
+                ports: list[Annotated[int, IntConvert(convert_types=(str))]] | None = None
 
             name: Annotated[str, StrConvert(convert_types=(int))] = None
             """
@@ -4139,7 +4139,7 @@ class EosCliConfigGen(BaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     field_global: bool | None = Field(None, alias="global")
-                    interval: int | None = Field(None, ge=10, le=65535)
+                    interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=10, le=65535)
                     """
                     Logging interval in seconds
                     """
@@ -4188,8 +4188,8 @@ class EosCliConfigGen(BaseModel):
         class NodeSegment(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            ipv4_index: int | None = None
-            ipv6_index: int | None = None
+            ipv4_index: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            ipv6_index: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
         name: str = None
         """
@@ -4219,7 +4219,7 @@ class EosCliConfigGen(BaseModel):
         ISIS instance name
         """
         isis_passive: bool | None = None
-        isis_metric: int | None = None
+        isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
         isis_network_point_to_point: bool | None = None
         node_segment: NodeSegment | None = None
         eos_cli: str | None = None
@@ -4233,7 +4233,7 @@ class EosCliConfigGen(BaseModel):
         class EntriesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            sequence: int | None = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] | None = None
             action: str | None = None
 
         name: str = None
@@ -4252,13 +4252,13 @@ class EosCliConfigGen(BaseModel):
             class Detection(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                window: int | None = Field(None, ge=2, le=300)
-                moves: int | None = Field(None, ge=2, le=10)
+                window: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=300)
+                moves: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=10)
 
             logging: bool | None = None
             detection: Detection | None = None
 
-        aging_time: int | None = None
+        aging_time: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Aging time in seconds
         """
@@ -4295,12 +4295,12 @@ class EosCliConfigGen(BaseModel):
                 class Session(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    rekey_period: int | None = Field(None, ge=30, le=100000)
+                    rekey_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=30, le=100000)
                     """
                     Rekey period in seconds
                     """
 
-                key_server_priority: int | None = Field(None, ge=0, le=255)
+                key_server_priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
                 session: Session | None = None
 
             class L2Protocols(AvdDictBaseModel):
@@ -4350,11 +4350,11 @@ class EosCliConfigGen(BaseModel):
             class RateMonitoring(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                load_interval: int | None = None
+                load_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Load Interval in Seconds
                 """
-                threshold: int | None = None
+                threshold: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Threshold in kbps
                 """
@@ -4362,7 +4362,7 @@ class EosCliConfigGen(BaseModel):
             class Shutdown(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                max_delay: int | None = None
+                max_delay: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Max delay in seconds
                 """
@@ -4394,7 +4394,7 @@ class EosCliConfigGen(BaseModel):
             class OnBoot(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                duration: int | None = Field(None, ge=300, le=3600)
+                duration: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=300, le=3600)
                 """
                 On-boot in seconds
                 """
@@ -4491,7 +4491,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 ACL name
                 """
-                port: int | None = None
+                port: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 GNMI port.
                 Make sure to update the control-plane ACL accordingly in order for the service to be reachable by external
@@ -4508,7 +4508,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     IP address or hostname
                     """
-                    port: int = Field(None, ge=1, le=65535)
+                    port: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
                     """
                     TCP Port
                     """
@@ -4520,7 +4520,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     Interface name
                     """
-                    port: int = Field(None, ge=1, le=65535)
+                    port: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
                     """
                     TCP Port
                     """
@@ -4657,7 +4657,7 @@ class EosCliConfigGen(BaseModel):
     class ManagementConsole(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        idle_timeout: int | None = Field(None, ge=0, le=86400)
+        idle_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=86400)
 
     class ManagementCvx(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -4699,7 +4699,7 @@ class EosCliConfigGen(BaseModel):
 
             transmit: bool | None = None
             receive: bool | None = None
-            ztp_vlan: int | None = None
+            ztp_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             ZTP vlan number
             """
@@ -4762,23 +4762,23 @@ class EosCliConfigGen(BaseModel):
                 class Minimum(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    digits: int | None = Field(None, ge=1, le=65535)
-                    length: int | None = Field(None, ge=1, le=65535)
-                    lower: int | None = Field(None, ge=1, le=65535)
-                    special: int | None = Field(None, ge=1, le=65535)
-                    upper: int | None = Field(None, ge=1, le=65535)
+                    digits: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    length: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    lower: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    special: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    upper: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
                 class Maximum(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    repetitive: int | None = Field(None, ge=1, le=65535)
-                    sequential: int | None = Field(None, ge=1, le=65535)
+                    repetitive: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    sequential: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
                 name: str = None
                 minimum: Minimum | None = None
                 maximum: Maximum | None = None
 
-            minimum_length: int | None = Field(None, ge=1, le=32)
+            minimum_length: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=32)
             encryption_key_common: bool | None = None
             encryption_reversible: str | None = None
             policies: list[PoliciesItem] | None = None
@@ -4895,11 +4895,11 @@ class EosCliConfigGen(BaseModel):
         class Connection(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            limit: int | None = Field(None, ge=1, le=100)
+            limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100)
             """
             Maximum total number of SSH sessions to device
             """
-            per_host: int | None = Field(None, ge=1, le=20)
+            per_host: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=20)
             """
             Maximum number of SSH sessions to device from a single host
             """
@@ -4919,18 +4919,18 @@ class EosCliConfigGen(BaseModel):
         class ClientAlive(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            count_max: int | None = Field(None, ge=1, le=1000)
+            count_max: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=1000)
             """
             Number of keep-alive packets that can be sent without a response before the connection is assumed dead.
             """
-            interval: int | None = Field(None, ge=1, le=1000)
+            interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=1000)
             """
             Time period (in seconds) to send SSH keep-alive packets.
             """
 
         access_groups: list[AccessGroupsItem] | None = None
         ipv6_access_groups: list[Ipv6AccessGroupsItem] | None = None
-        idle_timeout: int | None = Field(None, ge=0, le=86400)
+        idle_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=86400)
         """
         Idle timeout in minutes
         """
@@ -5003,7 +5003,7 @@ class EosCliConfigGen(BaseModel):
             class SequenceNumbersItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                sequence: int = None
+                sequence: Annotated[int, IntConvert(convert_types=(str))] = None
                 """
                 Sequence ID
                 """
@@ -5049,7 +5049,7 @@ class EosCliConfigGen(BaseModel):
             """
 
         domain_id: str | None = None
-        heartbeat_interval: int | None = None
+        heartbeat_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Heartbeat interval in milliseconds
         """
@@ -5062,15 +5062,15 @@ class EosCliConfigGen(BaseModel):
         IPv4 Address
         """
         peer_address_heartbeat: PeerAddressHeartbeat | None = None
-        dual_primary_detection_delay: int | None = Field(None, ge=0, le=86400)
+        dual_primary_detection_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=86400)
         """
         Delay in seconds
         """
-        dual_primary_recovery_delay_mlag: int | None = Field(None, ge=0, le=86400)
+        dual_primary_recovery_delay_mlag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=86400)
         """
         Delay in seconds
         """
-        dual_primary_recovery_delay_non_mlag: int | None = Field(None, ge=0, le=86400)
+        dual_primary_recovery_delay_non_mlag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=86400)
         """
         Delay in seconds
         """
@@ -5144,7 +5144,7 @@ class EosCliConfigGen(BaseModel):
             hosts: list[HostsItem] | None = None
 
         shutdown: bool | None = None
-        interval: int | None = None
+        interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
         interface_sets: list[InterfaceSetsItem] | None = None
         local_interfaces: str | None = None
         hosts: list[HostsItem] | None = None
@@ -5174,7 +5174,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 ACL Name
                 """
-                priority: int | None = None
+                priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             name: str | None = None
             """
@@ -5201,7 +5201,7 @@ class EosCliConfigGen(BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = None
-            size: int | None = None
+            size: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Size in bytes
             """
@@ -5213,7 +5213,7 @@ class EosCliConfigGen(BaseModel):
         sources: list[SourcesItem] | None = None
         destinations: list[str] | None = None
         encapsulation_gre_metadata_tx: bool | None = None
-        header_remove_size: int | None = None
+        header_remove_size: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Number of bytes to remove from header
         """
@@ -5234,7 +5234,7 @@ class EosCliConfigGen(BaseModel):
           "100 kbps"
           "10 mbps"
         """
-        sample: int | None = None
+        sample: Annotated[int, IntConvert(convert_types=(str))] | None = None
         truncate: Truncate | None = None
 
     class Mpls(AvdDictBaseModel):
@@ -5292,21 +5292,21 @@ class EosCliConfigGen(BaseModel):
             """
             burst: bool | None = None
             iburst: bool | None = None
-            key: int | None = Field(None, ge=1, le=65535)
+            key: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
             local_interface: str | None = None
             """
             Source interface
             """
-            maxpoll: int | None = Field(None, ge=3, le=17)
+            maxpoll: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=17)
             """
             Value of maxpoll between 3 - 17 (Logarithmic)
             """
-            minpoll: int | None = Field(None, ge=3, le=17)
+            minpoll: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=17)
             """
             Value of minpoll between 3 - 17 (Logarithmic)
             """
             preferred: bool | None = None
-            version: int | None = Field(None, ge=1, le=4)
+            version: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4)
             vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
             """
             VRF name
@@ -5324,7 +5324,7 @@ class EosCliConfigGen(BaseModel):
                 value_1 = "7"
                 value_2 = "8a"
 
-            id: int = Field(None, ge=1, le=65534)
+            id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65534)
             """
             Key identifier
             """
@@ -5386,7 +5386,7 @@ class EosCliConfigGen(BaseModel):
         class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            sequence: int = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             Sequence ID
             """
@@ -5435,12 +5435,12 @@ class EosCliConfigGen(BaseModel):
                             Example: 7/8 or 3/4 or 1/2
                             """
 
-                        id: int = Field(None, ge=0, le=7)
+                        id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=7)
                         unit: UnitEnum | None = None
                         """
                         Unit to be used for the reservation value. If not specified, default is bytes.
                         """
-                        reserved: int | None = None
+                        reserved: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         Amount of memory that should be reserved for this
                         queue.
@@ -5472,12 +5472,12 @@ class EosCliConfigGen(BaseModel):
                             Example: 7/8 or 3/4 or 1/2
                             """
 
-                        id: int = Field(None, ge=0, le=7)
+                        id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=7)
                         unit: UnitEnum | None = None
                         """
                         Unit to be used for the reservation value. If not specified, default is bytes.
                         """
-                        reserved: int | None = None
+                        reserved: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         Amount of memory that should be reserved for this
                         queue.
@@ -5510,8 +5510,8 @@ class EosCliConfigGen(BaseModel):
             class QosMapsItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                traffic_class: int | None = Field(None, ge=0, le=7)
-                to_network_qos: int | None = Field(None, ge=0, le=63)
+                traffic_class: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=7)
+                to_network_qos: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=63)
 
             class Lag(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -5536,7 +5536,7 @@ class EosCliConfigGen(BaseModel):
         class Sfe(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            data_plane_cpu_allocation_max: int | None = Field(None, ge=1, le=128)
+            data_plane_cpu_allocation_max: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=128)
             """
             Maximum number of CPUs used for data plane traffic forwarding.
             """
@@ -5614,7 +5614,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Class Name
                 """
-                index: int | None = None
+                index: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 drop: bool | None = None
                 """
                 'drop' and 'set' are mutually exclusive
@@ -5640,10 +5640,10 @@ class EosCliConfigGen(BaseModel):
                 class Set(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    cos: int | None = None
+                    cos: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     dscp: Annotated[str, StrConvert(convert_types=(int))] | None = None
-                    traffic_class: int | None = None
-                    drop_precedence: int | None = None
+                    traffic_class: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                    drop_precedence: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                 name: str = None
                 """
@@ -5694,15 +5694,15 @@ class EosCliConfigGen(BaseModel):
                 class Dot1q(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    vlan: int | None = None
+                    vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Client VLAN ID
                     """
-                    outer: int | None = None
+                    outer: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Client Outer VLAN ID
                     """
-                    inner: int | None = None
+                    inner: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Client Inner VLAN ID
                     """
@@ -5716,15 +5716,15 @@ class EosCliConfigGen(BaseModel):
                 class Dot1q(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    vlan: int | None = None
+                    vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Network VLAN ID
                     """
-                    outer: int | None = None
+                    outer: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Network Outer VLAN ID
                     """
-                    inner: int | None = None
+                    inner: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Network Inner VLAN ID
                     """
@@ -5765,12 +5765,12 @@ class EosCliConfigGen(BaseModel):
                 value_1 = "untagged"
 
             trunk: TrunkEnum | None = None
-            vlan: int | None = Field(None, ge=1, le=4094)
+            vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
         class L2Protocol(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            encapsulation_dot1q_vlan: int | None = None
+            encapsulation_dot1q_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Vlan tag to configure on sub-interface
             """
@@ -5792,11 +5792,11 @@ class EosCliConfigGen(BaseModel):
                 value_2 = "disabled"
 
             trust: TrustEnum | None = None
-            dscp: int | None = None
+            dscp: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             DSCP value
             """
-            cos: int | None = None
+            cos: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             COS value
             """
@@ -5805,15 +5805,15 @@ class EosCliConfigGen(BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             echo: bool | None = None
-            interval: int | None = None
+            interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Interval in milliseconds
             """
-            min_rx: int | None = None
+            min_rx: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Rate in milliseconds
             """
-            multiplier: int | None = Field(None, ge=3, le=50)
+            multiplier: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=50)
 
         class ServicePolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -5861,7 +5861,7 @@ class EosCliConfigGen(BaseModel):
             """
             List of vlans as string (only one vlan if direction is "both")
             """
-            to: int | None = None
+            to: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             VLAN ID
             """
@@ -5989,7 +5989,7 @@ class EosCliConfigGen(BaseModel):
                     value_1 = "preference"
 
                 algorithm: AlgorithmEnum | None = None
-                preference_value: int | None = Field(None, ge=0, le=65535)
+                preference_value: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
                 """
                 Preference_value is only used when "algorithm" is "preference"
                 """
@@ -5997,15 +5997,15 @@ class EosCliConfigGen(BaseModel):
                 """
                 Dont_preempt is only used when "algorithm" is "preference"
                 """
-                hold_time: int | None = None
-                subsequent_hold_time: int | None = None
+                hold_time: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                subsequent_hold_time: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 candidate_reachability_required: bool | None = None
 
             class Mpls(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                shared_index: int | None = Field(None, ge=1, le=1024)
-                tunnel_flood_filter_time: int | None = None
+                shared_index: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=1024)
+                tunnel_flood_filter_time: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             identifier: str | None = None
             """
@@ -6050,8 +6050,8 @@ class EosCliConfigGen(BaseModel):
             class Announce(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                interval: int | None = None
-                timeout: int | None = None
+                interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                timeout: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             class DelayMechanismEnum(Enum):
                 value_0 = "e2e"
@@ -6060,7 +6060,7 @@ class EosCliConfigGen(BaseModel):
             class SyncMessage(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                interval: int | None = None
+                interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             class RoleEnum(Enum):
                 value_0 = "master"
@@ -6073,7 +6073,7 @@ class EosCliConfigGen(BaseModel):
 
             enable: bool | None = None
             announce: Announce | None = None
-            delay_req: int | None = None
+            delay_req: Annotated[int, IntConvert(convert_types=(str))] | None = None
             delay_mechanism: DelayMechanismEnum | None = None
             sync_message: SyncMessage | None = None
             role: RoleEnum | None = None
@@ -6095,7 +6095,7 @@ class EosCliConfigGen(BaseModel):
                     access_list: str = None
                     comment: str | None = None
                     pool_name: str = None
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
                 class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -6119,7 +6119,7 @@ class EosCliConfigGen(BaseModel):
                     EOS might
                     remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
                     """
-                    group: int | None = Field(None, ge=1, le=65535)
+                    group: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     'access_list' and 'group' are mutual exclusive
                     """
@@ -6127,14 +6127,14 @@ class EosCliConfigGen(BaseModel):
                     """
                     IPv4 address
                     """
-                    original_port: int | None = Field(None, ge=1, le=65535)
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    original_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                     protocol: ProtocolEnum | None = None
                     translated_ip: str = None
                     """
                     IPv4 address
                     """
-                    translated_port: int | None = Field(None, ge=1, le=65535)
+                    translated_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     requires 'original_port'
                     """
@@ -6162,7 +6162,7 @@ class EosCliConfigGen(BaseModel):
                     required if 'nat_type' is pool, pool-address-only or pool-full-cone
                     ignored if 'nat_type' is overload
                     """
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
                 class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -6186,7 +6186,7 @@ class EosCliConfigGen(BaseModel):
                     EOS might
                     remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
                     """
-                    group: int | None = Field(None, ge=1, le=65535)
+                    group: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     'access_list' and 'group' are mutual exclusive
                     """
@@ -6194,14 +6194,14 @@ class EosCliConfigGen(BaseModel):
                     """
                     IPv4 address
                     """
-                    original_port: int | None = Field(None, ge=1, le=65535)
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    original_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                     protocol: ProtocolEnum | None = None
                     translated_ip: str = None
                     """
                     IPv4 address
                     """
-                    translated_port: int | None = Field(None, ge=1, le=65535)
+                    translated_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     requires 'original_port'
                     """
@@ -6232,7 +6232,7 @@ class EosCliConfigGen(BaseModel):
             class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                dr_priority: int | None = Field(None, ge=0, le=429467295)
+                dr_priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=429467295)
                 sparse_mode: bool | None = None
 
             ipv4: Ipv4 | None = None
@@ -6252,7 +6252,7 @@ class EosCliConfigGen(BaseModel):
                 value_3 = "sha384"
                 value_4 = "sha512"
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             hash_algorithm: HashAlgorithmEnum | None = None
             key: str | None = None
             """
@@ -6295,7 +6295,7 @@ class EosCliConfigGen(BaseModel):
         description: str | None = None
         logging: Logging | None = None
         shutdown: bool | None = None
-        l2_mtu: int | None = None
+        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
         """
@@ -6313,7 +6313,7 @@ class EosCliConfigGen(BaseModel):
         Interface will not be
         listed in device documentation, unless "type" is set.
         """
-        encapsulation_dot1q_vlan: int | None = None
+        encapsulation_dot1q_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         VLAN tag to configure on sub-interface
         """
@@ -6322,9 +6322,9 @@ class EosCliConfigGen(BaseModel):
         VRF name
         """
         encapsulation_vlan: EncapsulationVlan | None = None
-        vlan_id: int | None = Field(None, ge=1, le=4094)
+        vlan_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
         mode: ModeEnum | None = None
-        native_vlan: int | None = None
+        native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         If setting both native_vlan and native_vlan_tag, native_vlan_tag takes precedence
         """
@@ -6335,13 +6335,13 @@ class EosCliConfigGen(BaseModel):
         link_tracking_groups: list[LinkTrackingGroupsItem] | None = None
         phone: Phone | None = None
         l2_protocol: L2Protocol | None = None
-        mtu: int | None = None
-        mlag: int | None = Field(None, ge=1, le=2000)
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        mlag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=2000)
         """
         MLAG ID
         """
         trunk_groups: list[str] | None = None
-        lacp_fallback_timeout: int | None = Field(90, ge=0, le=300)
+        lacp_fallback_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(90, ge=0, le=300)
         """
         Timeout in seconds
         """
@@ -6364,7 +6364,7 @@ class EosCliConfigGen(BaseModel):
         ISIS instance
         """
         isis_passive: bool | None = None
-        isis_metric: int | None = None
+        isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
         isis_network_point_to_point: bool | None = None
         isis_circuit_type: IsisCircuitTypeEnum | None = None
         isis_hello_padding: bool | None = None
@@ -6445,7 +6445,7 @@ class EosCliConfigGen(BaseModel):
         """
         ospf_network_point_to_point: bool | None = None
         ospf_area: Annotated[str, StrConvert(convert_types=(int))] | None = None
-        ospf_cost: int | None = None
+        ospf_cost: Annotated[int, IntConvert(convert_types=(str))] | None = None
         ospf_authentication: OspfAuthenticationEnum | None = None
         ospf_authentication_key: str | None = None
         """
@@ -6478,7 +6478,7 @@ class EosCliConfigGen(BaseModel):
         class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            sequence: int = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             Sequence ID
             """
@@ -6563,12 +6563,12 @@ class EosCliConfigGen(BaseModel):
             class General(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                dscp: int | None = None
+                dscp: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             class Event(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                dscp: int | None = None
+                dscp: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             general: General | None = None
             event: Event | None = None
@@ -6582,11 +6582,11 @@ class EosCliConfigGen(BaseModel):
                 class Drop(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    offset_from_master: int | None = Field(None, ge=0, le=1000000000)
-                    mean_path_delay: int | None = Field(None, ge=0, le=1000000000)
+                    offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
+                    mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
 
-                offset_from_master: int | None = Field(None, ge=0, le=1000000000)
-                mean_path_delay: int | None = Field(None, ge=0, le=1000000000)
+                offset_from_master: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
+                mean_path_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=1000000000)
                 drop: Drop | None = None
 
             class MissingMessage(AvdDictBaseModel):
@@ -6595,18 +6595,18 @@ class EosCliConfigGen(BaseModel):
                 class Intervals(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    announce: int | None = Field(None, ge=2, le=255)
-                    follow_up: int | None = Field(None, ge=2, le=255)
-                    sync: int | None = Field(None, ge=2, le=255)
+                    announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                    follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                    sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
 
                 class SequenceIds(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
-                    announce: int | None = Field(None, ge=2, le=255)
-                    delay_resp: int | None = Field(None, ge=2, le=255)
-                    follow_up: int | None = Field(None, ge=2, le=255)
-                    sync: int | None = Field(None, ge=2, le=255)
+                    announce: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                    delay_resp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                    follow_up: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
+                    sync: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=255)
 
                 intervals: Intervals | None = None
                 sequence_ids: SequenceIds | None = None
@@ -6622,10 +6622,10 @@ class EosCliConfigGen(BaseModel):
         The clock-id in xx:xx:xx:xx:xx:xx format
         """
         source: Source | None = None
-        priority1: int | None = Field(None, ge=0, le=255)
-        priority2: int | None = Field(None, ge=0, le=255)
-        ttl: int | None = Field(None, ge=1, le=255)
-        domain: int | None = Field(None, ge=0, le=255)
+        priority1: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
+        priority2: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
+        ttl: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+        domain: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
         message_type: MessageType | None = None
         monitor: Monitor | None = None
 
@@ -6741,19 +6741,19 @@ class EosCliConfigGen(BaseModel):
                         Units to be used for the threshold values.
                         This should be one of segments, byte, kbytes, mbytes.
                         """
-                        min: int = Field(None, ge=1)
+                        min: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1)
                         """
                         Random-detect ECN minimum-threshold
                         """
-                        max: int = Field(None, ge=1)
+                        max: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1)
                         """
                         Random-detect ECN maximum-threshold
                         """
-                        max_probability: int | None = Field(None, ge=1, le=100)
+                        max_probability: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100)
                         """
                         Random-detect ECN maximum mark probability
                         """
-                        weight: int | None = Field(None, ge=0, le=15)
+                        weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=15)
                         """
                         Random-detect ECN weight
                         """
@@ -6786,19 +6786,19 @@ class EosCliConfigGen(BaseModel):
                         """
                         Specify Drop Precendence value
                         """
-                        min: int = Field(None, ge=1)
+                        min: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1)
                         """
                         WRED minimum-threshold
                         """
-                        max: int = Field(None, ge=1)
+                        max: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1)
                         """
                         WRED maximum-threshold
                         """
-                        drop_probability: int = Field(None, ge=1, le=100)
+                        drop_probability: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=100)
                         """
                         WRED drop probability.
                         """
-                        weight: int | None = Field(None, ge=0, le=15)
+                        weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=15)
                         """
                         WRED weight
                         """
@@ -6814,12 +6814,12 @@ class EosCliConfigGen(BaseModel):
                 Set WRED parameters
                 """
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             TX-Queue ID
             """
-            bandwidth_percent: int | None = None
-            bandwidth_guaranteed_percent: int | None = None
+            bandwidth_percent: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            bandwidth_guaranteed_percent: Annotated[int, IntConvert(convert_types=(str))] | None = None
             priority: PriorityEnum | None = None
             shape: Shape | None = None
             comment: str | None = None
@@ -6864,19 +6864,19 @@ class EosCliConfigGen(BaseModel):
                         """
                         Unit to be used for the threshold values
                         """
-                        min: int = Field(None, ge=1)
+                        min: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1)
                         """
                         Random-detect ECN minimum-threshold
                         """
-                        max: int = Field(None, ge=1)
+                        max: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1)
                         """
                         Random-detect ECN maximum-threshold
                         """
-                        max_probability: int | None = Field(None, ge=1, le=100)
+                        max_probability: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100)
                         """
                         Random-detect ECN maximum mark probability
                         """
-                        weight: int | None = Field(None, ge=0, le=15)
+                        weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=15)
                         """
                         Random-detect ECN weight
                         """
@@ -6909,19 +6909,19 @@ class EosCliConfigGen(BaseModel):
                         """
                         Specify Drop Precendence value
                         """
-                        min: int = Field(None, ge=1)
+                        min: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1)
                         """
                         WRED minimum-threshold
                         """
-                        max: int = Field(None, ge=1)
+                        max: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1)
                         """
                         WRED maximum-threshold
                         """
-                        drop_probability: int = Field(None, ge=1, le=100)
+                        drop_probability: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=100)
                         """
                         WRED drop probability.
                         """
-                        weight: int | None = Field(None, ge=0, le=15)
+                        weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=15)
                         """
                         WRED weight
                         """
@@ -6937,12 +6937,12 @@ class EosCliConfigGen(BaseModel):
                 Set WRED parameters
                 """
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             UC TX queue ID
             """
-            bandwidth_percent: int | None = None
-            bandwidth_guaranteed_percent: int | None = None
+            bandwidth_percent: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            bandwidth_guaranteed_percent: Annotated[int, IntConvert(convert_types=(str))] | None = None
             priority: PriorityEnum | None = None
             shape: Shape | None = None
             comment: str | None = None
@@ -6967,12 +6967,12 @@ class EosCliConfigGen(BaseModel):
                 Example: "< rate > kbps", "1-100 percent", "< rate > pps"
                 """
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             MC TX queue ID
             """
-            bandwidth_percent: int | None = None
-            bandwidth_guaranteed_percent: int | None = None
+            bandwidth_percent: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            bandwidth_guaranteed_percent: Annotated[int, IntConvert(convert_types=(str))] | None = None
             priority: PriorityEnum | None = None
             shape: Shape | None = None
             comment: str | None = None
@@ -7043,7 +7043,7 @@ class EosCliConfigGen(BaseModel):
             class PrioritiesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                priority: int = Field(None, ge=0, le=7)
+                priority: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=7)
                 """
                 Priority queue number (COS value)
                 """
@@ -7070,8 +7070,8 @@ class EosCliConfigGen(BaseModel):
         Profile-Name
         """
         trust: TrustEnum | None = None
-        cos: int | None = None
-        dscp: int | None = None
+        cos: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        dscp: Annotated[int, IntConvert(convert_types=(str))] | None = None
         shape: Shape | None = None
         service_policy: ServicePolicy | None = None
         tx_queues: list[TxQueuesItem] | None = None
@@ -7088,11 +7088,11 @@ class EosCliConfigGen(BaseModel):
         class DefaultThresholds(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            high: int = None
+            high: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             Default high threshold for Ethernet Interfaces.
             """
-            low: int | None = None
+            low: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Default low threshold for Ethernet Interfaces.
             Low threshold support is platform dependent.
@@ -7104,14 +7104,14 @@ class EosCliConfigGen(BaseModel):
             class Thresholds(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                high: int = None
-                low: int | None = None
+                high: Annotated[int, IntConvert(convert_types=(str))] = None
+                low: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             thresholds: Thresholds | None = None
 
         enabled: bool = None
         default_thresholds: DefaultThresholds | None = None
-        log: int | None = None
+        log: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Logging interval in seconds
         """
@@ -7133,7 +7133,7 @@ class EosCliConfigGen(BaseModel):
         """
         Name of IPv6 ACL
         """
-        max_connections: int | None = Field(None, ge=1, le=100)
+        max_connections: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100)
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
 
     class RadiusServer(AvdDictBaseModel):
@@ -7151,7 +7151,7 @@ class EosCliConfigGen(BaseModel):
         class DynamicAuthorization(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            port: int | None = Field(None, ge=0, le=65535)
+            port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
             """
             TCP Port
             """
@@ -7168,8 +7168,8 @@ class EosCliConfigGen(BaseModel):
             Host IP address or name
             """
             vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
-            timeout: int | None = Field(None, ge=1, le=1000)
-            retransmit: int | None = Field(None, ge=0, le=100)
+            timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=1000)
+            retransmit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=100)
             key: str | None = None
             """
             Encrypted key
@@ -7210,7 +7210,7 @@ class EosCliConfigGen(BaseModel):
                 value_0 = "permit"
                 value_1 = "deny"
 
-            sequence: int | None = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Sequence number
             """
@@ -7244,9 +7244,9 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
-                sequence_number: int | None = None
+                sequence_number: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
-            sequence: int = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             Sequence ID
             """
@@ -7285,19 +7285,19 @@ class EosCliConfigGen(BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
-            id: int = Field(None, ge=1, le=255)
+            id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=255)
 
         class Zone(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
-            id: int = Field(None, ge=1, le=10000)
+            id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=10000)
 
         class Site(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str = None
-            id: int = Field(None, ge=1, le=10000)
+            id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=10000)
 
         topology_role: TopologyRoleEnum | None = None
         """
@@ -7388,19 +7388,19 @@ class EosCliConfigGen(BaseModel):
         class Distance(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            external_routes: int = Field(None, ge=1, le=255)
-            internal_routes: int = Field(None, ge=1, le=255)
-            local_routes: int = Field(None, ge=1, le=255)
+            external_routes: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=255)
+            internal_routes: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=255)
+            local_routes: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=255)
 
         class GracefulRestart(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = None
-            restart_time: int | None = Field(None, ge=1, le=3600)
+            restart_time: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3600)
             """
             Number of seconds
             """
-            stalepath_time: int | None = Field(None, ge=1, le=3600)
+            stalepath_time: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3600)
             """
             Number of seconds
             """
@@ -7409,7 +7409,7 @@ class EosCliConfigGen(BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = None
-            restart_time: int | None = Field(None, ge=1, le=100000000)
+            restart_time: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=100000000)
             """
             Number of seconds
             graceful-restart-help long-lived and restart-time are mutually exclusive in CLI.
@@ -7426,8 +7426,8 @@ class EosCliConfigGen(BaseModel):
         class MaximumPaths(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            paths: int = Field(None, ge=1, le=600)
-            ecmp: int | None = Field(None, ge=1, le=600)
+            paths: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=600)
+            ecmp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=600)
 
         class Updates(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7553,7 +7553,7 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
-                times: int | None = Field(None, ge=1, le=10)
+                times: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=10)
                 """
                 Number of local ASNs allowed in a BGP update
                 """
@@ -7605,7 +7605,7 @@ class EosCliConfigGen(BaseModel):
             """
             route_reflector_client: bool | None = None
             bfd: bool | None = None
-            ebgp_multihop: int | None = Field(None, ge=1, le=255)
+            ebgp_multihop: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
             """
             Time-to-live in range of hops
             """
@@ -7617,7 +7617,7 @@ class EosCliConfigGen(BaseModel):
             """
             'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
             """
-            maximum_routes: int | None = Field(None, ge=0, le=4294967294)
+            maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967294)
             """
             Maximum number of routes (0 means unlimited)
             """
@@ -7630,7 +7630,7 @@ class EosCliConfigGen(BaseModel):
             maximum_routes_warning_only: bool | None = None
             link_bandwidth: LinkBandwidth | None = None
             allowas_in: AllowasIn | None = None
-            weight: int | None = Field(None, ge=0, le=65535)
+            weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
             timers: str | None = None
             """
             BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
@@ -7679,7 +7679,7 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
-                times: int | None = Field(None, ge=1, le=10)
+                times: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=10)
                 """
                 Number of local ASNs allowed in a BGP update
                 """
@@ -7736,7 +7736,7 @@ class EosCliConfigGen(BaseModel):
             Source Interface
             """
             bfd: bool | None = None
-            weight: int | None = Field(None, ge=0, le=65535)
+            weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
             timers: str | None = None
             """
             BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
@@ -7754,7 +7754,7 @@ class EosCliConfigGen(BaseModel):
             """
             'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
             """
-            maximum_routes: int | None = Field(None, ge=0, le=4294967294)
+            maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967294)
             """
             Maximum number of routes (0 means unlimited)
             """
@@ -7766,7 +7766,7 @@ class EosCliConfigGen(BaseModel):
             """
             maximum_routes_warning_only: bool | None = None
             allowas_in: AllowasIn | None = None
-            ebgp_multihop: int | None = Field(None, ge=1, le=255)
+            ebgp_multihop: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
             """
             Time-to-live in range of hops
             """
@@ -7962,7 +7962,7 @@ class EosCliConfigGen(BaseModel):
                 export_evpn_domains: list[ExportEvpnDomainsItem] | None = None
                 import_export_evpn_domains: list[ImportExportEvpnDomainsItem] | None = None
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             tenant: str | None = None
             """
             Key only used for documentation or validation purposes
@@ -7998,11 +7998,11 @@ class EosCliConfigGen(BaseModel):
                 """
                 Pseudowire name
                 """
-                id_local: int | None = None
+                id_local: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Must match id_remote on other pe
                 """
-                id_remote: int | None = None
+                id_remote: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Must match id_local on other pe
                 """
@@ -8018,7 +8018,7 @@ class EosCliConfigGen(BaseModel):
             route_targets: RouteTargets | None = None
             mpls_control_word: bool | None = None
             label_flow: bool | None = None
-            mtu: int | None = None
+            mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
             pseudowires: list[PseudowiresItem] | None = None
 
         class AddressFamilyEvpn(AvdDictBaseModel):
@@ -8060,11 +8060,11 @@ class EosCliConfigGen(BaseModel):
                         any: bool | None = None
                         backup: bool | None = None
                         ecmp: bool | None = None
-                        ecmp_limit: int | None = Field(None, ge=2, le=64)
+                        ecmp_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                         """
                         Amount of ECMP paths to send
                         """
-                        limit: int | None = Field(None, ge=2, le=64)
+                        limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                         """
                         Amount of paths to send
                         """
@@ -8093,15 +8093,15 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
-                window: int | None = Field(None, ge=0, le=4294967295)
+                window: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                 """
                 Time (in seconds) to detect a MAC duplication issue
                 """
-                threshold: int | None = Field(None, ge=0, le=4294967295)
+                threshold: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                 """
                 Minimum number of MAC moves that indicate a MAC Duplication issue
                 """
-                expiry_timeout: int | None = Field(None, ge=0, le=4294967295)
+                expiry_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                 """
                 Time (in seconds) to purge a MAC duplication issue
                 """
@@ -8694,11 +8694,11 @@ class EosCliConfigGen(BaseModel):
                         any: bool | None = None
                         backup: bool | None = None
                         ecmp: bool | None = None
-                        ecmp_limit: int | None = Field(None, ge=2, le=64)
+                        ecmp_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                         """
                         Amount of ECMP paths to send
                         """
-                        limit: int | None = Field(None, ge=2, le=64)
+                        limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                         """
                         Amount of paths to send
                         """
@@ -8720,11 +8720,11 @@ class EosCliConfigGen(BaseModel):
                         any: bool | None = None
                         backup: bool | None = None
                         ecmp: bool | None = None
-                        ecmp_limit: int | None = Field(None, ge=2, le=64)
+                        ecmp_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                         """
                         Amount of ECMP paths to send
                         """
-                        limit: int | None = Field(None, ge=2, le=64)
+                        limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                         """
                         Amount of paths to send
                         """
@@ -8750,11 +8750,11 @@ class EosCliConfigGen(BaseModel):
                         any: bool | None = None
                         backup: bool | None = None
                         ecmp: bool | None = None
-                        ecmp_limit: int | None = Field(None, ge=2, le=64)
+                        ecmp_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                         """
                         Amount of ECMP paths to send
                         """
-                        limit: int | None = Field(None, ge=2, le=64)
+                        limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                         """
                         Amount of paths to send
                         """
@@ -9007,7 +9007,7 @@ class EosCliConfigGen(BaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
-                    times: int | None = Field(None, ge=1, le=10)
+                    times: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=10)
                     """
                     Number of local ASNs allowed in a BGP update
                     """
@@ -9035,7 +9035,7 @@ class EosCliConfigGen(BaseModel):
                 Remove private AS numbers in outbound AS path
                 """
                 remove_private_as_ingress: RemovePrivateAsIngress | None = None
-                weight: int | None = Field(None, ge=0, le=65535)
+                weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
                 local_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
                 BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
@@ -9062,7 +9062,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'
                 """
-                maximum_routes: int | None = None
+                maximum_routes: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 maximum_routes_warning_limit: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
                 Maximum number of routes after which a warning is issued (0 means never warn) or
@@ -9162,11 +9162,11 @@ class EosCliConfigGen(BaseModel):
                             any: bool | None = None
                             backup: bool | None = None
                             ecmp: bool | None = None
-                            ecmp_limit: int | None = Field(None, ge=2, le=64)
+                            ecmp_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                             """
                             Amount of ECMP paths to send
                             """
-                            limit: int | None = Field(None, ge=2, le=64)
+                            limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                             """
                             Amount of paths to send
                             """
@@ -9249,11 +9249,11 @@ class EosCliConfigGen(BaseModel):
                             any: bool | None = None
                             backup: bool | None = None
                             ecmp: bool | None = None
-                            ecmp_limit: int | None = Field(None, ge=2, le=64)
+                            ecmp_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                             """
                             Amount of ECMP paths to send
                             """
-                            limit: int | None = Field(None, ge=2, le=64)
+                            limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=2, le=64)
                             """
                             Amount of paths to send
                             """
@@ -9593,7 +9593,7 @@ class EosCliConfigGen(BaseModel):
             """
             Name of session tracker
             """
-            recovery_delay: int | None = Field(None, ge=1, le=3600)
+            recovery_delay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3600)
             """
             Recovery delay in seconds
             """
@@ -9720,7 +9720,7 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 protected_prefixes: bool | None = None
-                delay: int | None = 10000
+                delay: Annotated[int, IntConvert(convert_types=(str))] | None = 10000
                 """
                 Delay in milliseconds.
                 """
@@ -9796,7 +9796,7 @@ class EosCliConfigGen(BaseModel):
                 """
 
             enabled: bool | None = None
-            maximum_paths: int | None = Field(None, ge=1, le=128)
+            maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=128)
             fast_reroute_ti_lfa: FastRerouteTiLfa | None = None
             tunnel_source_labeled_unicast: TunnelSourceLabeledUnicast | None = None
 
@@ -9831,7 +9831,7 @@ class EosCliConfigGen(BaseModel):
                 """
 
             enabled: bool | None = None
-            maximum_paths: int | None = Field(None, ge=1, le=128)
+            maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=128)
             fast_reroute_ti_lfa: FastRerouteTiLfa | None = None
 
         class SegmentRoutingMpls(AvdDictBaseModel):
@@ -9841,7 +9841,7 @@ class EosCliConfigGen(BaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 prefix: str | None = None
-                index: int | None = None
+                index: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             enabled: bool | None = None
             router_id: str | None = None
@@ -9908,7 +9908,7 @@ class EosCliConfigGen(BaseModel):
             """
             Source address prefix
             """
-            limit: int = Field(None, ge=0, le=40000)
+            limit: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=40000)
             """
             Limit for SAs matching the source address prefix
             """
@@ -9936,8 +9936,8 @@ class EosCliConfigGen(BaseModel):
             class Keepalive(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                keepalive_timer: int = Field(None, ge=1, le=65535)
-                hold_timer: int = Field(None, ge=1, le=65535)
+                keepalive_timer: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
+                hold_timer: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
                 """
                 Must be greater than keepalive timer
                 """
@@ -9965,7 +9965,7 @@ class EosCliConfigGen(BaseModel):
             """
             Disable the MSDP peer
             """
-            sa_limit: int | None = Field(None, ge=0, le=40000)
+            sa_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=40000)
             """
             Maximum number of SA messages allowed in cache
             """
@@ -9983,7 +9983,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Source address prefix
                 """
-                limit: int = Field(None, ge=0, le=40000)
+                limit: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=40000)
                 """
                 Limit for SAs matching the source address prefix
                 """
@@ -10011,8 +10011,8 @@ class EosCliConfigGen(BaseModel):
                 class Keepalive(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    keepalive_timer: int = Field(None, ge=1, le=65535)
-                    hold_timer: int = Field(None, ge=1, le=65535)
+                    keepalive_timer: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
+                    hold_timer: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65535)
                     """
                     Must be greater than keepalive timer
                     """
@@ -10040,7 +10040,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Disable the MSDP peer
                 """
-                sa_limit: int | None = Field(None, ge=0, le=40000)
+                sa_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=40000)
                 """
                 Maximum number of SA messages allowed in cache
                 """
@@ -10056,12 +10056,12 @@ class EosCliConfigGen(BaseModel):
             """
             Interface to use for originator ID
             """
-            rejected_limit: int | None = Field(None, ge=0, le=40000)
+            rejected_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=40000)
             """
             Maximum number of rejected SA messages allowed in cache
             """
             forward_register_packets: bool | None = None
-            connection_retry_interval: int | None = Field(None, ge=1, le=65535)
+            connection_retry_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
             group_limits: list[GroupLimitsItem] | None = None
             peers: list[PeersItem] | None = None
 
@@ -10069,12 +10069,12 @@ class EosCliConfigGen(BaseModel):
         """
         Interface to use for originator ID
         """
-        rejected_limit: int | None = Field(None, ge=0, le=40000)
+        rejected_limit: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=40000)
         """
         Maximum number of rejected SA messages allowed in cache
         """
         forward_register_packets: bool | None = None
-        connection_retry_interval: int | None = Field(None, ge=1, le=65535)
+        connection_retry_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
         group_limits: list[GroupLimitsItem] | None = None
         peers: list[PeersItem] | None = None
         vrfs: list[VrfsItem] | None = None
@@ -10088,7 +10088,7 @@ class EosCliConfigGen(BaseModel):
             class Counters(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                rate_period_decay: int | None = Field(None, ge=0, le=600)
+                rate_period_decay: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=600)
                 """
                 Rate in seconds
                 """
@@ -10116,7 +10116,7 @@ class EosCliConfigGen(BaseModel):
                         """
                         Next-hop IP address or interface name
                         """
-                        distance: int | None = Field(None, ge=1, le=255)
+                        distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
                         """
                         Administrative distance for this route
                         """
@@ -10158,9 +10158,9 @@ class EosCliConfigGen(BaseModel):
             class Distance(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                external: int | None = Field(None, ge=1, le=255)
-                inter_area: int | None = Field(None, ge=1, le=255)
-                intra_area: int | None = Field(None, ge=1, le=255)
+                external: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+                inter_area: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+                intra_area: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
 
             class NetworkPrefixesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -10182,20 +10182,20 @@ class EosCliConfigGen(BaseModel):
                     class TxDelay(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        initial: int | None = Field(None, ge=0, le=600000)
+                        initial: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=600000)
                         """
                         Delay to generate first occurrence of LSA in msecs
                         """
-                        min: int | None = Field(None, ge=1, le=600000)
+                        min: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=600000)
                         """
                         Min delay between originating the same LSA in msecs
                         """
-                        max: int | None = Field(None, ge=1, le=600000)
+                        max: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=600000)
                         """
                         1-600000 Maximum delay between originating the same LSA in msec
                         """
 
-                    rx_min_interval: int | None = Field(None, ge=0, le=600000)
+                    rx_min_interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=600000)
                     """
                     Min interval in msecs between accepting the same LSA
                     """
@@ -10204,15 +10204,15 @@ class EosCliConfigGen(BaseModel):
                 class SpfDelay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    initial: int | None = Field(None, ge=0, le=600000)
+                    initial: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=600000)
                     """
                     Initial SPF schedule delay in msecs
                     """
-                    min: int | None = Field(None, ge=0, le=65535000)
+                    min: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535000)
                     """
                     Min Hold time between two SPFs in msecs
                     """
-                    max: int | None = Field(None, ge=0, le=65535000)
+                    max: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535000)
                     """
                     Max wait time between two SPFs in msecs
                     """
@@ -10228,11 +10228,11 @@ class EosCliConfigGen(BaseModel):
                     value_1 = 2
 
                 always: bool | None = None
-                metric: int | None = Field(None, ge=1, le=65535)
+                metric: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                 """
                 Metric for default route
                 """
-                metric_type: MetricTypeEnum | None = None
+                metric_type: Annotated[MetricTypeEnum, IntConvert(convert_types=(str))] | None = None
                 """
                 OSPF metric type for default route
                 """
@@ -10306,11 +10306,11 @@ class EosCliConfigGen(BaseModel):
                         value_0 = 1
                         value_1 = 2
 
-                    metric: int | None = Field(None, ge=1, le=65535)
+                    metric: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     Metric for default route
                     """
-                    metric_type: MetricTypeEnum | None = None
+                    metric_type: Annotated[MetricTypeEnum, IntConvert(convert_types=(str))] | None = None
                     """
                     OSPF metric type for default route
                     """
@@ -10331,12 +10331,12 @@ class EosCliConfigGen(BaseModel):
                     class ExternalLsa(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        override_metric: int | None = Field(None, ge=1, le=16777215)
+                        override_metric: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=16777215)
 
                     class SummaryLsa(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        override_metric: int | None = Field(None, ge=1, le=16777215)
+                        override_metric: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=16777215)
 
                     external_lsa: ExternalLsa | None = None
                     include_stub: bool | None = None
@@ -10349,7 +10349,7 @@ class EosCliConfigGen(BaseModel):
 
                 router_lsa: RouterLsa | None = None
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             OSPF Process ID
             """
@@ -10369,17 +10369,17 @@ class EosCliConfigGen(BaseModel):
             bfd_adjacency_state_any: bool | None = None
             no_passive_interfaces: list[str] | None = None
             distribute_list_in: DistributeListIn | None = None
-            max_lsa: int | None = None
+            max_lsa: Annotated[int, IntConvert(convert_types=(str))] | None = None
             timers: Timers | None = None
             default_information_originate: DefaultInformationOriginate | None = None
             summary_addresses: list[SummaryAddressesItem] | None = None
             redistribute: Redistribute | None = None
-            auto_cost_reference_bandwidth: int | None = None
+            auto_cost_reference_bandwidth: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Bandwidth in mbps
             """
             areas: list[AreasItem] | None = None
-            maximum_paths: int | None = Field(None, ge=1, le=128)
+            maximum_paths: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=128)
             max_metric: MaxMetric | None = None
             mpls_ldp_sync_default: bool | None = None
             eos_cli: str | None = None
@@ -10476,7 +10476,7 @@ class EosCliConfigGen(BaseModel):
             """
             Path group name.
             """
-            id: int | None = Field(None, ge=1, le=65535)
+            id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
             """
             Path group ID.
             """
@@ -10522,7 +10522,7 @@ class EosCliConfigGen(BaseModel):
             class RulesItem(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                id: int = Field(None, ge=1, le=255)
+                id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=255)
                 """
                 Rule ID.
                 """
@@ -10589,7 +10589,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     Other Anycast RP Address
                     """
-                    register_count: int | None = None
+                    register_count: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
                 address: str = None
                 """
@@ -10682,15 +10682,15 @@ class EosCliConfigGen(BaseModel):
                             Label Stack as string.
                             Example: "100 2000 30"
                             """
-                            weight: int | None = None
-                            index: int | None = None
+                            weight: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                            index: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
-                        preference: int | None = None
+                        preference: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         explicit_null: ExplicitNullEnum | None = None
                         segment_list: list[SegmentListItem] | None = None
 
-                    value: int = None
-                    binding_sid: int | None = None
+                    value: Annotated[int, IntConvert(convert_types=(str))] = None
+                    binding_sid: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     description: str | None = None
                     name: str | None = None
                     sbfd_remote_discriminator: Annotated[str, StrConvert(convert_types=(int))] | None = None
@@ -10740,7 +10740,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Sflow Destination IP Address
                 """
-                port: int | None = None
+                port: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 Port Number
                 """
@@ -10765,7 +10765,7 @@ class EosCliConfigGen(BaseModel):
             """
             Sflow Destination IP Address
             """
-            port: int | None = None
+            port: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Port Number
             """
@@ -10816,12 +10816,12 @@ class EosCliConfigGen(BaseModel):
                 enabled: bool | None = True
 
             enabled: bool | None = None
-            sample: int | None = None
+            sample: Annotated[int, IntConvert(convert_types=(str))] | None = None
             modules: list[ModulesItem] | None = None
 
-        sample: int | None = None
+        sample: Annotated[int, IntConvert(convert_types=(str))] | None = None
         dangerous: bool | None = None
-        polling_interval: int | None = None
+        polling_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Polling interval in seconds
         """
@@ -10859,7 +10859,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Hostname or IP of remote engine
                 """
-                udp_port: int | None = None
+                udp_port: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
             local: Annotated[str, StrConvert(convert_types=(int))] | None = None
             """
@@ -10990,7 +10990,7 @@ class EosCliConfigGen(BaseModel):
             Hostname or ip of remote engine
             The remote_address and udp_port are used for remote users
             """
-            udp_port: int | None = None
+            udp_port: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             udp_port will not be used if no remote_address is configured
             """
@@ -11116,7 +11116,7 @@ class EosCliConfigGen(BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             default: bool | None = None
-            count: int | None = None
+            count: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Maximum number of BPDUs per timer interval
             """
@@ -11130,7 +11130,7 @@ class EosCliConfigGen(BaseModel):
                 class InstancesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    id: int = None
+                    id: Annotated[int, IntConvert(convert_types=(str))] = None
                     """
                     Instance ID
                     """
@@ -11141,7 +11141,7 @@ class EosCliConfigGen(BaseModel):
                     """
 
                 name: str | None = None
-                revision: int | None = None
+                revision: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 """
                 0-65535
                 """
@@ -11157,7 +11157,7 @@ class EosCliConfigGen(BaseModel):
             """
             Instance ID
             """
-            priority: int | None = None
+            priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
         class RapidPvstInstancesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -11167,13 +11167,13 @@ class EosCliConfigGen(BaseModel):
             "< vlan_id >, < vlan_id >-< vlan_id >"
             Example: 105,202,505-506
             """
-            priority: int | None = None
+            priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
         root_super: bool | None = None
         edge_port: EdgePort | None = None
         mode: ModeEnum | None = None
         bpduguard_rate_limit: BpduguardRateLimit | None = None
-        rstp_priority: int | None = None
+        rstp_priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
         mst: Mst | None = None
         mst_instances: list[MstInstancesItem] | None = None
         no_spanning_tree_vlan: Annotated[str, StrConvert(convert_types=(int))] | None = None
@@ -11189,7 +11189,7 @@ class EosCliConfigGen(BaseModel):
         class SequenceNumbersItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            sequence: int = None
+            sequence: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             Sequence ID
             """
@@ -11226,13 +11226,13 @@ class EosCliConfigGen(BaseModel):
         """
         Track next-hop using BFD
         """
-        distance: int | None = Field(None, ge=1, le=255)
-        tag: int | None = Field(None, ge=0, le=4294967295)
+        distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
+        tag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
         name: str | None = None
         """
         Description
         """
-        metric: int | None = Field(None, ge=0, le=4294967295)
+        metric: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
     class Stun(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -11280,9 +11280,9 @@ class EosCliConfigGen(BaseModel):
                 value_0 = "tagged"
                 value_1 = "untagged"
 
-            cos: int | None = Field(None, ge=0, le=7)
+            cos: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=7)
             trunk: TrunkEnum | None = None
-            vlan: int | None = Field(None, ge=1, le=4094)
+            vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
             """
             VLAN ID
             """
@@ -11363,12 +11363,12 @@ class EosCliConfigGen(BaseModel):
             """
             key_type: Annotated[KeyTypeEnum, StrConvert(convert_types=(int))] | None = "7"
             single_connection: bool | None = None
-            timeout: int | None = Field(None, ge=1, le=1000)
+            timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=1000)
             """
             Timeout in seconds
             """
 
-        timeout: int | None = Field(None, ge=1, le=1000)
+        timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=1000)
         """
         Timeout in seconds
         """
@@ -11407,7 +11407,7 @@ class EosCliConfigGen(BaseModel):
                         value_1 = "64-bit"
 
                     format: FormatEnum | None = None
-                    eth_type: int | None = None
+                    eth_type: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     EtherType
                     """
@@ -11597,8 +11597,8 @@ class EosCliConfigGen(BaseModel):
                 class Actions(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    dscp: int | None = None
-                    traffic_class: int | None = None
+                    dscp: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                    traffic_class: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Traffic class ID
                     """
@@ -11637,8 +11637,8 @@ class EosCliConfigGen(BaseModel):
                 class Ipv4(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    dscp: int | None = None
-                    traffic_class: int | None = None
+                    dscp: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                    traffic_class: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Traffic class ID
                     """
@@ -11655,8 +11655,8 @@ class EosCliConfigGen(BaseModel):
                 class Ipv6(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    dscp: int | None = None
-                    traffic_class: int | None = None
+                    dscp: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                    traffic_class: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     """
                     Traffic class ID
                     """
@@ -11694,11 +11694,11 @@ class EosCliConfigGen(BaseModel):
                 value_0 = "ingress"
                 value_1 = "egress"
 
-            ipv4: int | None = Field(None, ge=64, le=65495)
+            ipv4: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=64, le=65495)
             """
             Segment Size for IPv4
             """
-            ipv6: int | None = Field(None, ge=64, le=65475)
+            ipv6: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=64, le=65475)
             """
             Segment Size for IPv6
             """
@@ -11713,7 +11713,7 @@ class EosCliConfigGen(BaseModel):
         """
         description: str | None = None
         shutdown: bool | None = None
-        mtu: int | None = Field(None, ge=68, le=65535)
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
         vrf: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
         VRF Name
@@ -11804,7 +11804,7 @@ class EosCliConfigGen(BaseModel):
                     access_list: str = None
                     comment: str | None = None
                     pool_name: str = None
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
                 class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -11828,7 +11828,7 @@ class EosCliConfigGen(BaseModel):
                     EOS might
                     remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
                     """
-                    group: int | None = Field(None, ge=1, le=65535)
+                    group: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     'access_list' and 'group' are mutual exclusive
                     """
@@ -11836,14 +11836,14 @@ class EosCliConfigGen(BaseModel):
                     """
                     IPv4 address
                     """
-                    original_port: int | None = Field(None, ge=1, le=65535)
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    original_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                     protocol: ProtocolEnum | None = None
                     translated_ip: str = None
                     """
                     IPv4 address
                     """
-                    translated_port: int | None = Field(None, ge=1, le=65535)
+                    translated_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     requires 'original_port'
                     """
@@ -11871,7 +11871,7 @@ class EosCliConfigGen(BaseModel):
                     required if 'nat_type' is pool, pool-address-only or pool-full-cone
                     ignored if 'nat_type' is overload
                     """
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
 
                 class StaticItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
@@ -11895,7 +11895,7 @@ class EosCliConfigGen(BaseModel):
                     EOS might
                     remove this keyword in the configuration. So, check the configuration on targeted HW/SW.
                     """
-                    group: int | None = Field(None, ge=1, le=65535)
+                    group: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     'access_list' and 'group' are mutual exclusive
                     """
@@ -11903,14 +11903,14 @@ class EosCliConfigGen(BaseModel):
                     """
                     IPv4 address
                     """
-                    original_port: int | None = Field(None, ge=1, le=65535)
-                    priority: int | None = Field(None, ge=0, le=4294967295)
+                    original_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                    priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
                     protocol: ProtocolEnum | None = None
                     translated_ip: str = None
                     """
                     IPv4 address
                     """
-                    translated_port: int | None = Field(None, ge=1, le=65535)
+                    translated_port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
                     """
                     requires 'original_port'
                     """
@@ -11978,7 +11978,7 @@ class EosCliConfigGen(BaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool = None
-                    administrative_distance: int | None = Field(None, ge=1, le=255)
+                    administrative_distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
 
                 boundaries: list[BoundariesItem] | None = None
                 """
@@ -12002,7 +12002,7 @@ class EosCliConfigGen(BaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool = None
-                    administrative_distance: int | None = Field(None, ge=1, le=255)
+                    administrative_distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
 
                 boundaries: list[BoundariesItem] | None = None
                 """
@@ -12029,7 +12029,7 @@ class EosCliConfigGen(BaseModel):
                 value_3 = "sha384"
                 value_4 = "sha512"
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             hash_algorithm: HashAlgorithmEnum | None = None
             key: str | None = None
             """
@@ -12042,7 +12042,7 @@ class EosCliConfigGen(BaseModel):
             class Ipv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                dr_priority: int | None = Field(None, ge=0, le=429467295)
+                dr_priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=429467295)
                 sparse_mode: bool | None = None
                 local_interface: str | None = None
 
@@ -12054,7 +12054,7 @@ class EosCliConfigGen(BaseModel):
             class Advertisement(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                interval: int | None = Field(None, ge=1, le=255)
+                interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
                 """
                 Interval in seconds
                 """
@@ -12065,11 +12065,11 @@ class EosCliConfigGen(BaseModel):
                 class Delay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    minimum: int | None = Field(None, ge=0, le=3600)
+                    minimum: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                     """
                     Minimum preempt delay in seconds
                     """
-                    reload: int | None = Field(None, ge=0, le=3600)
+                    reload: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                     """
                     Reload preempt delay in seconds
                     """
@@ -12083,7 +12083,7 @@ class EosCliConfigGen(BaseModel):
                 class Delay(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    reload: int | None = Field(None, ge=0, le=3600)
+                    reload: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=3600)
                     """
                     Delay after reload in seconds.
                     """
@@ -12097,7 +12097,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Tracked object name
                 """
-                decrement: int | None = Field(None, ge=1, le=254)
+                decrement: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=254)
                 """
                 Decrement VRRP priority by 1-254
                 """
@@ -12114,7 +12114,7 @@ class EosCliConfigGen(BaseModel):
                 """
                 Virtual IPv4 address
                 """
-                version: VersionEnum | None = None
+                version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
 
             class Ipv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -12124,11 +12124,11 @@ class EosCliConfigGen(BaseModel):
                 Virtual IPv6 address
                 """
 
-            id: int = None
+            id: Annotated[int, IntConvert(convert_types=(str))] = None
             """
             VRID
             """
-            priority_level: int | None = Field(None, ge=1, le=254)
+            priority_level: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=254)
             """
             Instance priority
             """
@@ -12146,12 +12146,12 @@ class EosCliConfigGen(BaseModel):
             """
             Virtual Router ID
             """
-            priority: int | None = None
+            priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Instance priority
             """
-            advertisement_interval: int | None = None
-            preempt_delay_minimum: int | None = None
+            advertisement_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            preempt_delay_minimum: Annotated[int, IntConvert(convert_types=(str))] | None = None
             ipv4: str | None = None
             """
             Virtual IPv4 address
@@ -12165,21 +12165,21 @@ class EosCliConfigGen(BaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool = None
-            distance: int | None = Field(None, ge=1, le=255)
+            distance: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
 
         class Bfd(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             echo: bool | None = None
-            interval: int | None = None
+            interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Rate in milliseconds
             """
-            min_rx: int | None = None
+            min_rx: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Minimum RX hold time in milliseconds
             """
-            multiplier: int | None = Field(None, ge=3, le=50)
+            multiplier: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=50)
 
         class ServicePolicy(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -12204,11 +12204,11 @@ class EosCliConfigGen(BaseModel):
         """
         VRF name
         """
-        arp_aging_timeout: int | None = Field(None, ge=1, le=65535)
+        arp_aging_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
         """
         In seconds
         """
-        arp_cache_dynamic_capacity: int | None = Field(None, ge=0, le=4294967295)
+        arp_cache_dynamic_capacity: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=4294967295)
         arp_gratuitous_accept: bool | None = None
         arp_monitor_mac_address: bool | None = None
         ip_proxy_arp: bool | None = None
@@ -12225,7 +12225,7 @@ class EosCliConfigGen(BaseModel):
         """
         ip_address_virtual_secondaries: list[str] | None = None
         ip_igmp: bool | None = None
-        ip_igmp_version: int | None = Field(None, ge=1, le=3)
+        ip_igmp_version: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=3)
         ip_helpers: list[IpHelpersItem] | None = None
         """
         List of DHCP servers
@@ -12282,7 +12282,7 @@ class EosCliConfigGen(BaseModel):
         multicast: Multicast | None = None
         ospf_network_point_to_point: bool | None = None
         ospf_area: Annotated[str, StrConvert(convert_types=(int))] | None = None
-        ospf_cost: int | None = None
+        ospf_cost: Annotated[int, IntConvert(convert_types=(str))] | None = None
         ospf_authentication: OspfAuthenticationEnum | None = None
         ospf_authentication_key: str | None = None
         """
@@ -12298,9 +12298,9 @@ class EosCliConfigGen(BaseModel):
         ISIS instance name
         """
         isis_passive: bool | None = None
-        isis_metric: int | None = None
+        isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
         isis_network_point_to_point: bool | None = None
-        mtu: int | None = None
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
         no_autostate: bool | None = None
         vrrp_ids: list[VrrpIdsItem] | None = None
         """
@@ -12344,11 +12344,11 @@ class EosCliConfigGen(BaseModel):
         class Range(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            beginning: int = Field(None, ge=2, le=4094)
+            beginning: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=2, le=4094)
             """
             First VLAN ID.
             """
-            ending: int = Field(None, ge=2, le=4094)
+            ending: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=2, le=4094)
             """
             Last VLAN ID.
             """
@@ -12371,12 +12371,12 @@ class EosCliConfigGen(BaseModel):
                 value_1 = "isolated"
 
             type: TypeEnum | None = None
-            primary_vlan: int | None = None
+            primary_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Primary VLAN ID
             """
 
-        id: int = None
+        id: Annotated[int, IntConvert(convert_types=(str))] = None
         """
         VLAN ID
         """
@@ -12441,9 +12441,9 @@ class EosCliConfigGen(BaseModel):
                 class BfdVtepEvpn(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    interval: int | None = None
-                    min_rx: int | None = None
-                    multiplier: int | None = Field(None, ge=3, le=50)
+                    interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                    min_rx: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                    multiplier: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=50)
                     prefix_list: str | None = None
 
                 class Qos(AvdDictBaseModel):
@@ -12459,11 +12459,11 @@ class EosCliConfigGen(BaseModel):
                 class VlansItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    id: int = None
+                    id: Annotated[int, IntConvert(convert_types=(str))] = None
                     """
                     VLAN ID
                     """
-                    vni: int | None = None
+                    vni: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     multicast_group: str | None = None
                     """
                     IP Multicast Group Address
@@ -12477,7 +12477,7 @@ class EosCliConfigGen(BaseModel):
                     """
                     VRF Name
                     """
-                    vni: int | None = None
+                    vni: Annotated[int, IntConvert(convert_types=(str))] | None = None
                     multicast_group: str | None = None
                     """
                     IP Multicast Group Address
@@ -12492,7 +12492,7 @@ class EosCliConfigGen(BaseModel):
                 Client to CVX Controllers
                 """
                 mlag_source_interface: str | None = None
-                udp_port: int | None = None
+                udp_port: Annotated[int, IntConvert(convert_types=(str))] | None = None
                 virtual_router_encapsulation_mac_address: str | None = None
                 """
                 "mlag-system-id" or ethernet_address (H.H.H)
@@ -12518,18 +12518,6 @@ class EosCliConfigGen(BaseModel):
             """
 
         field_Vxlan1: Vxlan1 | None = Field(None, alias="Vxlan1")
-
-    class CustomStructuredConfiguration(BaseModel):
-        model_config = ConfigDict(defer_build=True, extra="forbid")
-
-        key: str
-        """
-        Complete key including prefix
-        """
-        value: EosCliConfigGen
-        """
-        Structured config including the suffix part of the key.
-        """
 
     aaa_accounting: AaaAccounting | None = None
     aaa_authentication: AaaAuthentication | None = None
@@ -12691,7 +12679,7 @@ class EosCliConfigGen(BaseModel):
     interface_groups: list[InterfaceGroupsItem] | None = Field(None, title="Maintenance Interface Groups")
     interface_profiles: list[InterfaceProfilesItem] | None = None
     ip_access_lists: list[IpAccessListsItem] | None = Field(None, title="IP Extended Access-Lists (improved model)")
-    ip_access_lists_max_entries: int | None = None
+    ip_access_lists_max_entries: Annotated[int, IntConvert(convert_types=(str))] | None = None
     """
     Limit ACL entries defined under the `ip_access_lists`.
     """
@@ -12843,4 +12831,3 @@ class EosCliConfigGen(BaseModel):
     These keys are ignored if the name of the vrf is 'default'
     """
     vxlan_interface: VxlanInterface | None = None
-    custom_structured_configurations: list[CustomStructuredConfiguration] | None = None
