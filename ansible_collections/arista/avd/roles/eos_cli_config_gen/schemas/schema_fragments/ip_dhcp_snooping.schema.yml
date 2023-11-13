@@ -25,18 +25,17 @@ keys:
             convert_types:
             - int
             description: |
-              "< none > or <0 - 255>"
+              "none" or <0 - 255>
           circuit_id_type_format:
             type: str
-            convert_types:
-            - int
             description: |
-              "< %h:%p > Hostname and interface name or
-              < %p:%v> Interface name and VLAN ID"
+              - "%h:%p" Hostname and interface name or
+              - "%p:%v" Interface name and VLAN ID
       vlan:
         type: str
         convert_types:
         - int
         description: |
+          VLAN range as string.
           "< vlan_id >, < vlan_id >-< vlan_id >"
           Example: 15,16,17,18

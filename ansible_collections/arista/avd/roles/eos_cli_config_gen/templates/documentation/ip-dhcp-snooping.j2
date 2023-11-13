@@ -4,11 +4,11 @@
  that can be found in the LICENSE file.
 #}
 {# doc - ip dhcp snooping #}
-{% if ip_dhcp_snooping is defined and ip_dhcp_snooping is not none %}
+{% if ip_dhcp_snooping is arista.avd.defined %}
 
 ## IP DHCP Snooping
-
 {%     if ip_dhcp_snooping.enabled is arista.avd.defined(true) %}
+
 IP DHCP Snooping is enabled
 {%     endif %}
 {%     if ip_dhcp_snooping.bridging is arista.avd.defined(true) %}
@@ -25,7 +25,7 @@ IP DHCP Snooping Insertion of Option 82 is enabled
 {%     if ip_dhcp_snooping.information_option.circuit_id_type.format is arista.avd.defined %}
 - IP DHCP Snooping Circuit-ID Format: {{ ip_dhcp_snooping.information_option.circuit_id_type_format }}
 {%     endif %}
-{%     if ip_dhcp_snooping.vlan is defined and ip_dhcp_snooping.vlan is not none %}
+{%     if ip_dhcp_snooping.vlan is arista.avd.defined %}
 
 IP DHCP Snooping enabled VLAN: {{ ip_dhcp_snooping.vlan }}
 {%     endif %}
