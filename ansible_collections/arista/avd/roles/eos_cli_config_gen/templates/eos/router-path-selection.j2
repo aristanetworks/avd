@@ -92,15 +92,13 @@ router path-selection
 {%         endif %}
 {# TODO remove inplace update once Ansible 2.13 is dropped and use groupby default instead #}
 {%         for path_group in load_balance_policy.path_groups | arista.avd.default([]) %}
-{%             if path_group.priority is not arista.avd.defined %}
-{%                 do path_group.update({"priority": 1}) %}
-{%             endif %}
+{%             do path_group.update({"_priority": path_group.priority | arista.avd.default(1)}) %}
 {%         endfor %}
-{%         for priority, entries in load_balance_policy.path_groups | groupby("priority") %}
+{%         for priority, entries in load_balance_policy.path_groups | groupby("_priority") %}
 {%             for entry in entries | arista.avd.natural_sort("name") %}
 {%                 set path_group_cli = "path-group " ~ entry.name %}
-{%                 if priority != 1 %}
-{%                     set path_group_cli = path_group_cli ~ " priority " ~ priority %}
+{%                 if entry.priority is arista.avd.defined %}
+{%                     set path_group_cli = path_group_cli ~ " priority " ~ entry.priority %}
 {%                 endif %}
       {{ path_group_cli }}
 {%             endfor %}

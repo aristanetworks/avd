@@ -143,7 +143,9 @@ keys:
               max: 10000
             loss_rate:
               type: str
-              description: Loss Rate requirement for this load balance policy in milliseconds.
+              description: |-
+                Loss Rate requirement in percentage for this load balance policy.
+                Value between 0.00 and 100.00 %
               convert_types:
                 - int
                 - float
@@ -162,12 +164,11 @@ keys:
                     type: int
                     description: |-
                       Priority for this path-group.
-                      Default is 1 and not rendred in EOS cli.
+                      The EOS default value is 1.
                     convert_types:
                       - str
                     min: 1
                     max: 65535
-                    default: 1
       policies:
         type: list
         primary_key: name
