@@ -25,9 +25,10 @@ keys:
               - int
             description: |-
               "none" or <0 - 255>
-          circuit_id_type_format:
+          circuit_id_format:
             type: str
             description: |-
+              Required if `circuit_id_type` is set.
               - "%h:%p" Hostname and interface name or
               - "%p:%v" Interface name and VLAN ID
             valid_values:

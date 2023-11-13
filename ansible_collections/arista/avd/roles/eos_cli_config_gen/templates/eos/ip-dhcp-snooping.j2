@@ -14,8 +14,8 @@ ip dhcp snooping bridging
 ip dhcp snooping
 {%         endif %}
 {%         if ip_dhcp_snooping.information_option.enabled is arista.avd.defined(true) %}
-{%             if ip_dhcp_snooping.information_option.circuit_id_type is arista.avd.defined and ip_dhcp_snooping.information_option.circuit_id_type_format is arista.avd.defined %}
-ip dhcp snooping information option circuit-id type {{ ip_dhcp_snooping.information_option.circuit_id_type }} format {{ ip_dhcp_snooping.information_option.circuit_id_type_format }}
+{%             if ip_dhcp_snooping.information_option.circuit_id_type is arista.avd.defined and ip_dhcp_snooping.information_option.circuit_id_format is arista.avd.defined %}
+ip dhcp snooping information option circuit-id type {{ ip_dhcp_snooping.information_option.circuit_id_type }} format {{ ip_dhcp_snooping.information_option.circuit_id_format }}
 {%             else %}
 ip dhcp snooping information option
 {%             endif %}

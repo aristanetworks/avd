@@ -22,8 +22,8 @@ IP DHCP Snooping Insertion of Option 82 is enabled
 {%     if ip_dhcp_snooping.information_option.circuit_id_type is arista.avd.defined %}
 - IP DHCP Snooping Circuit-ID Suboption: {{ ip_dhcp_snooping.information_option.circuit_id_type }}
 {%     endif %}
-{%     if ip_dhcp_snooping.information_option.circuit_id_type.format is arista.avd.defined %}
-- IP DHCP Snooping Circuit-ID Format: {{ ip_dhcp_snooping.information_option.circuit_id_type_format }}
+{%     if ip_dhcp_snooping.information_option.circuit_id_format is arista.avd.defined %}
+- IP DHCP Snooping Circuit-ID Format: {{ ip_dhcp_snooping.information_option.circuit_id_format }}
 {%     endif %}
 {%     if ip_dhcp_snooping.vlan is arista.avd.defined %}
 

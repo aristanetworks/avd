@@ -6,5 +6,5 @@ ip_dhcp_snooping:
   information_option:
     enabled: true
     circuit_id_type: 10
-    circuit_id_type_format: '%h:%p'
+    circuit_id_format: '%h:%p'
   vlan: "10,20,500,1000-2000"
