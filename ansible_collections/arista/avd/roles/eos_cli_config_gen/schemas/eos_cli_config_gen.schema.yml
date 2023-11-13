@@ -3338,9 +3338,10 @@ keys:
             type: str
             description: '- "%h:%p" Hostname and interface name or
 
-              - "%p:%v" Interface name and VLAN ID
-
-              '
+              - "%p:%v" Interface name and VLAN ID'
+            valid_values:
+            - '%h:%p'
+            - '%p:%v'
       vlan:
         type: str
         convert_types:

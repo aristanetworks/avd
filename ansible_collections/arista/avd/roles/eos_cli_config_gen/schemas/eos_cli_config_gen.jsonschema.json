@@ -5590,7 +5590,11 @@
             },
             "circuit_id_type_format": {
               "type": "string",
-              "description": "- \"%h:%p\" Hostname and interface name or\n- \"%p:%v\" Interface name and VLAN ID\n",
+              "description": "- \"%h:%p\" Hostname and interface name or\n- \"%p:%v\" Interface name and VLAN ID",
+              "enum": [
+                "%h:%p",
+                "%p:%v"
+              ],
               "title": "Circuit ID Type Format"
             }
           },
