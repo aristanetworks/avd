@@ -1951,7 +1951,7 @@
             "minimum": 68,
             "maximum": 65535,
             "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
-            "title": "L2 Mru"
+            "title": "L2 MRU"
           },
           "vlans": {
             "type": "string",
@@ -10914,7 +10914,7 @@
             "minimum": 68,
             "maximum": 65535,
             "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
-            "title": "L2 Mru"
+            "title": "L2 MRU"
           },
           "vlans": {
             "type": "string",
