@@ -12,5 +12,6 @@
   arista.cvp.cv_task_v3:
     tasks: "{{ cvp_configlets_status.taskIds }}"
   when:
+    - cvp_configlets_status.taskIds is arista.avd.defined
     - cvp_configlets_status.taskIds | length > 0
     - execute_tasks|bool
