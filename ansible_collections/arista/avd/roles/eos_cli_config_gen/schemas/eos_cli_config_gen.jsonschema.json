@@ -5580,12 +5580,12 @@
           "properties": {
             "enabled": {
               "type": "boolean",
-              "description": "\"Enable insertion of option-82 in DHCP request packets\"\n",
+              "description": "Enable insertion of option-82 in DHCP request packets",
               "title": "Enabled"
             },
             "circuit_id_type": {
               "type": "string",
-              "description": "\"none\" or <0 - 255>\n",
+              "description": "\"none\" or <0 - 255>",
               "title": "Circuit ID Type"
             },
             "circuit_id_type_format": {
