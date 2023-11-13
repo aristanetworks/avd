@@ -38,7 +38,7 @@ keys:
             - str
         l2_mtu:
           type: int
-          min: 64
+          min: 68
           max: 65535
           convert_types:
             - str
