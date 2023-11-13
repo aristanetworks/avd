@@ -3331,23 +3331,23 @@ keys:
             type: str
             convert_types:
             - int
-            description: '"< none > or <0 - 255>"
+            description: '"none" or <0 - 255>
 
               '
           circuit_id_type_format:
             type: str
-            convert_types:
-            - int
-            description: '"< %h:%p > Hostname and interface name or
+            description: '- "%h:%p" Hostname and interface name or
 
-              < %p:%v> Interface name and VLAN ID"
+              - "%p:%v" Interface name and VLAN ID
 
               '
       vlan:
         type: str
         convert_types:
         - int
-        description: '"< vlan_id >, < vlan_id >-< vlan_id >"
+        description: 'VLAN range as string.
+
+          "< vlan_id >, < vlan_id >-< vlan_id >"
 
           Example: 15,16,17,18'
   ip_domain_lookup:

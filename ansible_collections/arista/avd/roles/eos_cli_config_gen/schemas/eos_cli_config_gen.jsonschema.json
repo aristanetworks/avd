@@ -5585,12 +5585,12 @@
             },
             "circuit_id_type": {
               "type": "string",
-              "description": "\"< none > or <0 - 255>\"\n",
+              "description": "\"none\" or <0 - 255>\n",
               "title": "Circuit ID Type"
             },
             "circuit_id_type_format": {
               "type": "string",
-              "description": "\"< %h:%p > Hostname and interface name or\n< %p:%v> Interface name and VLAN ID\"\n",
+              "description": "- \"%h:%p\" Hostname and interface name or\n- \"%p:%v\" Interface name and VLAN ID\n",
               "title": "Circuit ID Type Format"
             }
           },
@@ -5602,7 +5602,7 @@
         },
         "vlan": {
           "type": "string",
-          "description": "\"< vlan_id >, < vlan_id >-< vlan_id >\"\nExample: 15,16,17,18",
+          "description": "VLAN range as string.\n\"< vlan_id >, < vlan_id >-< vlan_id >\"\nExample: 15,16,17,18",
           "title": "VLAN"
         }
       },
