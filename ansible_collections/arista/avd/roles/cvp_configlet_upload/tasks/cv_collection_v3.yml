@@ -14,4 +14,4 @@
   when:
     - cvp_configlets_status.taskIds is arista.avd.defined
     - cvp_configlets_status.taskIds | length > 0
-    - execute_tasks|bool
+    - execute_tasks | bool
