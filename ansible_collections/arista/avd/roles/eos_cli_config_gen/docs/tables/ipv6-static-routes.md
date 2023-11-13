@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>ipv6_static_routes</samp>](## "ipv6_static_routes") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- vrf</samp>](## "ipv6_static_routes.[].vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;-&nbsp;vrf</samp>](## "ipv6_static_routes.[].vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination_address_prefix</samp>](## "ipv6_static_routes.[].destination_address_prefix") | String |  |  |  | IPv6 Network/Mask |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "ipv6_static_routes.[].interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;gateway</samp>](## "ipv6_static_routes.[].gateway") | String |  |  |  | IPv6 Address |
@@ -23,12 +23,20 @@
     ```yaml
     ipv6_static_routes:
       - vrf: <str>
+
+        # IPv6 Network/Mask
         destination_address_prefix: <str>
         interface: <str>
+
+        # IPv6 Address
         gateway: <str>
+
+        # Track next-hop using BFD
         track_bfd: <bool>
-        distance: <int>
-        tag: <int>
+        distance: <int; 1-255>
+        tag: <int; 0-4294967295>
+
+        # Description
         name: <str>
-        metric: <int>
+        metric: <int; 0-4294967295>
     ```

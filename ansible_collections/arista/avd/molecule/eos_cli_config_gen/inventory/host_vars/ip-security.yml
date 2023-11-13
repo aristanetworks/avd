@@ -3,6 +3,9 @@ ip_security:
   ike_policies:
     - name: IKE-1
       local_id: 192.168.100.1
+      ike_lifetime: 24
+      encryption: aes256
+      dh_group: 20
     - name: IKE-2
   sa_policies:
     - name: SA-1
@@ -15,8 +18,8 @@ ip_security:
       pfs_dh_group: 14
     - name: SA-3
       esp:
-        integrity: "null"
-        encryption: "null"
+        integrity: disabled
+        encryption: disabled
       pfs_dh_group: 17
   profiles:
     - name: Profile-1

@@ -12,5 +12,6 @@
 === "YAML"
 
     ```yaml
-    is_deployed: <bool>
+    # Key only used for documentation or validation purposes
+    is_deployed: <bool; default=True>
     ```

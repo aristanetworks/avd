@@ -455,7 +455,9 @@ event-handler evpn-blacklist-recovery
 
 #### Flow Tracking Sampled
 
-Sample: 666
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 |
+| ----------- | ------------------- | ------------------------- | ------------------------- |
+| 666 | default | disabled | disabled |
 
 ##### Trackers Summary
 
@@ -847,7 +849,7 @@ interface Tunnel4
 ##### IPv6
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
+| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - |
 | Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - |
 | Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - |

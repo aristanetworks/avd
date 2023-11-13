@@ -635,6 +635,23 @@ keys:
           items:
             type: str
             description: Interface range or interface.
+  default_mgmt_method:
+    documentation_options:
+      table: management-interface-settings
+    type: str
+    description: "`default_mgmt_method` controls the default VRF and source interface
+      used for the following management and monitoring protocols configured with `eos_designs`:\n
+      \ - `cv_settings`\n  - `dns_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob`
+      means the protocols will be configured with the VRF set by `mgmt_interface_vrf`
+      and `mgmt_interface` as the source interface.\n`inband` means the protocols
+      will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface`
+      as the source interface.\n`none` means the VRF and or interface must be manually
+      set for each protocol.\nThis can be overridden under the settings for each protocol.\n"
+    valid_values:
+    - oob
+    - inband
+    - none
+    default: oob
   default_node_types:
     type: list
     primary_key: node_type
@@ -4434,6 +4451,53 @@ $defs:
                         (svi -> svi_profile -> svi_parent_profile).
 
                         '
+                    tags:
+                      type: list
+                      description: 'Tags leveraged for networks services filtering.
+
+                        Tags are matched against "filter.tags" defined under node
+                        type settings.
+
+                        Tags are also matched against the "node_group" name under
+                        node type settings.
+
+                        '
+                      default:
+                      - all
+                      items:
+                        type: str
+                        convert_types:
+                        - int
+                        description: Tag value.
+                    nodes:
+                      type: list
+                      primary_key: node
+                      convert_types:
+                      - dict
+                      items:
+                        type: dict
+                        $ref: eos_designs#/$defs/svi_settings
+                        keys:
+                          node:
+                            type: str
+                          tags:
+                            type: list
+                            description: 'Tags leveraged for networks services filtering.
+
+                              Tags are matched against "filter.tags" defined under
+                              node type settings.
+
+                              Tags are also matched against the "node_group" name
+                              under node type settings.
+
+                              '
+                            default:
+                            - all
+                            items:
+                              type: str
+                              convert_types:
+                              - int
+                              description: Tag value.
               l3_interfaces:
                 documentation_options:
                   table: network-services-vrfs-l3-interfaces-settings
@@ -4695,10 +4759,11 @@ $defs:
                       type: str
                       description: Peer group name.
                     remote_as:
-                      type: int
+                      type: str
                       convert_types:
-                      - str
-                      description: Remote ASN.
+                      - int
+                      description: Remote BGP AS <1-4294967295> or AS number in asdot
+                        notation "<1-65535>.<0-65535>".
                     description:
                       type: str
                     password:
@@ -6806,22 +6871,6 @@ $defs:
           assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type'
           for details).\n  - A full RD string with colon seperator which will override
           the full RD.\n"
-      tags:
-        type: list
-        description: 'Tags leveraged for networks services filtering.
-
-          Tags are matched against "filter.tags" defined under node type settings.
-
-          Tags are also matched against the "node_group" name under node type settings.
-
-          '
-        default:
-        - all
-        items:
-          type: str
-          convert_types:
-          - int
-          description: Tag value.
       trunk_groups:
         type: list
         items:

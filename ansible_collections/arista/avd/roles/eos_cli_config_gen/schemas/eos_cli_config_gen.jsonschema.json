@@ -4281,6 +4281,196 @@
             },
             "title": "TX Queues"
           },
+          "vrrp_ids": {
+            "type": "array",
+            "description": "VRRP model.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "VRID",
+                  "title": "ID"
+                },
+                "priority_level": {
+                  "type": "integer",
+                  "description": "Instance priority",
+                  "minimum": 1,
+                  "maximum": 254,
+                  "title": "Priority Level"
+                },
+                "advertisement": {
+                  "type": "object",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "description": "Interval in seconds",
+                      "minimum": 1,
+                      "maximum": 255,
+                      "title": "Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Advertisement"
+                },
+                "preempt": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "delay": {
+                      "type": "object",
+                      "properties": {
+                        "minimum": {
+                          "type": "integer",
+                          "description": "Minimum preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
+                          "title": "Minimum"
+                        },
+                        "reload": {
+                          "type": "integer",
+                          "description": "Reload preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
+                          "title": "Reload"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Delay"
+                    }
+                  },
+                  "required": [
+                    "enabled"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Preempt"
+                },
+                "timers": {
+                  "type": "object",
+                  "properties": {
+                    "delay": {
+                      "type": "object",
+                      "properties": {
+                        "reload": {
+                          "type": "integer",
+                          "description": "Delay after reload in seconds.",
+                          "minimum": 0,
+                          "maximum": 3600,
+                          "title": "Reload"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Delay"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Timers"
+                },
+                "tracked_object": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Tracked object name",
+                        "title": "Name"
+                      },
+                      "decrement": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 254,
+                        "description": "Decrement VRRP priority by 1-254",
+                        "title": "Decrement"
+                      },
+                      "shutdown": {
+                        "type": "boolean",
+                        "title": "Shutdown"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "title": "Tracked Object"
+                },
+                "ipv4": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Virtual IPv4 address",
+                      "title": "Address"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "enum": [
+                        2,
+                        3
+                      ],
+                      "title": "Version"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Virtual IPv6 address",
+                      "title": "Address"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "IPv6"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "title": "VRRP IDs"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -4384,6 +4574,33 @@
               "minimum": 1,
               "maximum": 4294967295,
               "title": "Sample"
+            },
+            "hardware_offload": {
+              "type": "object",
+              "properties": {
+                "ipv4": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv4 traffic.",
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv6 traffic.",
+                  "title": "IPv6"
+                },
+                "threshold_minimum": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295,
+                  "description": "Minimum number of samples.",
+                  "title": "Threshold Minimum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Hardware Offload"
             },
             "trackers": {
               "type": "array",
@@ -6391,6 +6608,40 @@
                 "type": "string",
                 "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
                 "title": "Local ID"
+              },
+              "ike_lifetime": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 24,
+                "description": "IKE lifetime in hours.",
+                "title": "Ike Lifetime"
+              },
+              "encryption": {
+                "type": "string",
+                "enum": [
+                  "3des",
+                  "aes128",
+                  "aes256"
+                ],
+                "description": "IKE encryption algorithm.",
+                "title": "Encryption"
+              },
+              "dh_group": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  5,
+                  14,
+                  15,
+                  16,
+                  17,
+                  20,
+                  21,
+                  24
+                ],
+                "description": "Diffie-Hellman group for the key exchange.",
+                "title": "Dh Group"
               }
             },
             "additionalProperties": false,
@@ -6411,7 +6662,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Name of the SA policy.",
+                "description": "Name of the SA policy. The \"null\" value is deprecated and will be removed in AVD 5.0.0",
                 "title": "Name"
               },
               "esp": {
@@ -6420,21 +6671,23 @@
                   "integrity": {
                     "type": "string",
                     "enum": [
-                      "null",
+                      "disabled",
                       "sha1",
-                      "sha256"
+                      "sha256",
+                      "null"
                     ],
                     "title": "Integrity"
                   },
                   "encryption": {
                     "type": "string",
                     "enum": [
-                      "null",
+                      "disabled",
                       "aes128",
                       "aes128gcm128",
                       "aes128gcm64",
                       "aes256",
-                      "aes256gcm256"
+                      "aes256gcm256",
+                      "null"
                     ],
                     "title": "Encryption"
                   }
@@ -13809,7 +14062,7 @@
       "properties": {
         "as": {
           "type": "string",
-          "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+          "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
           "title": "As"
         },
         "router_id": {
@@ -14052,7 +14305,7 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Remote As"
               }
             },
@@ -14080,12 +14333,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Local As"
               },
               "description": {
@@ -14359,12 +14612,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Local As"
               },
               "as_path": {
@@ -14395,6 +14648,10 @@
               "route_reflector_client": {
                 "type": "boolean",
                 "title": "Route Reflector Client"
+              },
+              "password": {
+                "type": "string",
+                "title": "Password"
               },
               "passive": {
                 "type": "boolean",
@@ -17237,7 +17494,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                       "title": "Remote As"
                     }
                   },
@@ -17264,7 +17521,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                       "title": "Remote As"
                     },
                     "password": {
@@ -17324,7 +17581,7 @@
                     },
                     "local_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                       "title": "Local As"
                     },
                     "as_path": {
@@ -17506,7 +17763,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                       "title": "Remote As"
                     },
                     "peer_group": {
@@ -23818,6 +24075,8 @@
                 "priority_level": {
                   "type": "integer",
                   "description": "Instance priority",
+                  "minimum": 1,
+                  "maximum": 254,
                   "title": "Priority Level"
                 },
                 "advertisement": {
@@ -23826,6 +24085,8 @@
                     "interval": {
                       "type": "integer",
                       "description": "Interval in seconds",
+                      "minimum": 1,
+                      "maximum": 255,
                       "title": "Interval"
                     }
                   },
@@ -23848,11 +24109,15 @@
                         "minimum": {
                           "type": "integer",
                           "description": "Minimum preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
                           "title": "Minimum"
                         },
                         "reload": {
                           "type": "integer",
                           "description": "Reload preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
                           "title": "Reload"
                         }
                       },
@@ -23881,6 +24146,8 @@
                         "reload": {
                           "type": "integer",
                           "description": "Delay after reload in seconds.",
+                          "minimum": 0,
+                          "maximum": 3600,
                           "title": "Reload"
                         }
                       },

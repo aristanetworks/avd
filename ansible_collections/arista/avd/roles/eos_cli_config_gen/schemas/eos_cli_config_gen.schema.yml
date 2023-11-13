@@ -2550,6 +2550,110 @@ keys:
                             convert_types:
                             - str
                             description: Set the random-detect ECN weight
+        vrrp_ids:
+          type: list
+          description: VRRP model.
+          primary_key: id
+          items:
+            type: dict
+            keys:
+              id:
+                type: int
+                convert_types:
+                - str
+                description: VRID
+              priority_level:
+                type: int
+                convert_types:
+                - str
+                description: Instance priority
+                min: 1
+                max: 254
+              advertisement:
+                type: dict
+                keys:
+                  interval:
+                    type: int
+                    convert_types:
+                    - str
+                    description: Interval in seconds
+                    min: 1
+                    max: 255
+              preempt:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  delay:
+                    type: dict
+                    keys:
+                      minimum:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Minimum preempt delay in seconds
+                        min: 0
+                        max: 3600
+                      reload:
+                        type: int
+                        convert_types:
+                        - str
+                        description: Reload preempt delay in seconds
+                        min: 0
+                        max: 3600
+              timers:
+                type: dict
+                keys:
+                  delay:
+                    type: dict
+                    keys:
+                      reload:
+                        type: int
+                        description: Delay after reload in seconds.
+                        convert_types:
+                        - str
+                        min: 0
+                        max: 3600
+              tracked_object:
+                type: list
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Tracked object name
+                    decrement:
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 254
+                      description: Decrement VRRP priority by 1-254
+                    shutdown:
+                      type: bool
+              ipv4:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv4 address
+                  version:
+                    type: int
+                    convert_types:
+                    - str
+                    valid_values:
+                    - 2
+                    - 3
+              ipv6:
+                type: dict
+                keys:
+                  address:
+                    type: str
+                    required: true
+                    description: Virtual IPv6 address
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
@@ -2629,6 +2733,22 @@ keys:
             - str
             min: 1
             max: 4294967295
+          hardware_offload:
+            type: dict
+            keys:
+              ipv4:
+                type: bool
+                description: Configure hardware offload for IPv4 traffic.
+              ipv6:
+                type: bool
+                description: Configure hardware offload for IPv6 traffic.
+              threshold_minimum:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 4294967295
+                description: Minimum number of samples.
           trackers:
             type: list
             primary_key: name
@@ -3683,6 +3803,36 @@ keys:
                 Can be an IPv4 or an IPv6 address.
 
                 '
+            ike_lifetime:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 24
+              description: IKE lifetime in hours.
+            encryption:
+              type: str
+              valid_values:
+              - 3des
+              - aes128
+              - aes256
+              description: IKE encryption algorithm.
+            dh_group:
+              type: int
+              convert_types:
+              - str
+              valid_values:
+              - 1
+              - 2
+              - 5
+              - 14
+              - 15
+              - 16
+              - 17
+              - 20
+              - 21
+              - 24
+              description: Diffie-Hellman group for the key exchange.
       sa_policies:
         type: list
         description: Security Association policies.
@@ -3692,25 +3842,28 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy.
+              description: Name of the SA policy. The "null" value is deprecated and
+                will be removed in AVD 5.0.0
             esp:
               type: dict
               keys:
                 integrity:
                   type: str
                   valid_values:
-                  - 'null'
+                  - disabled
                   - sha1
                   - sha256
+                  - 'null'
                 encryption:
                   type: str
                   valid_values:
-                  - 'null'
+                  - disabled
                   - aes128
                   - aes128gcm128
                   - aes128gcm64
                   - aes256
                   - aes256gcm256
+                  - 'null'
             pfs_dh_group:
               type: int
               convert_types:
@@ -8124,7 +8277,7 @@ keys:
     keys:
       as:
         type: str
-        description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+        description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
         convert_types:
         - int
       router_id:
@@ -8300,7 +8453,7 @@ keys:
               type: str
               convert_types:
               - int
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
       peer_groups:
         type: list
         primary_key: name
@@ -8317,12 +8470,12 @@ keys:
               description: Key only used for documentation or validation purposes
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             description:
@@ -8499,12 +8652,12 @@ keys:
               type: str
             remote_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             local_as:
               type: str
-              description: BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>
+              description: BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>"
               convert_types:
               - int
             as_path:
@@ -8521,6 +8674,8 @@ keys:
               type: str
             route_reflector_client:
               type: bool
+            password:
+              type: str
             passive:
               type: bool
             shutdown:
@@ -9990,7 +10145,7 @@ keys:
                   remote_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
             neighbors:
@@ -10009,7 +10164,7 @@ keys:
                   remote_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
                   password:
@@ -10042,7 +10197,7 @@ keys:
                   local_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
                   as_path:
@@ -10151,7 +10306,7 @@ keys:
                   remote_as:
                     type: str
                     description: BGP AS <1-4294967295> or AS number in asdot notation
-                      <1-65535>.<0-65535>
+                      "<1-65535>.<0-65535>"
                     convert_types:
                     - int
                   peer_group:
@@ -13542,6 +13697,8 @@ keys:
                 convert_types:
                 - str
                 description: Instance priority
+                min: 1
+                max: 254
               advertisement:
                 type: dict
                 keys:
@@ -13550,6 +13707,8 @@ keys:
                     convert_types:
                     - str
                     description: Interval in seconds
+                    min: 1
+                    max: 255
               preempt:
                 type: dict
                 keys:
@@ -13564,11 +13723,15 @@ keys:
                         convert_types:
                         - str
                         description: Minimum preempt delay in seconds
+                        min: 0
+                        max: 3600
                       reload:
                         type: int
                         convert_types:
                         - str
                         description: Reload preempt delay in seconds
+                        min: 0
+                        max: 3600
               timers:
                 type: dict
                 keys:
@@ -13580,6 +13743,8 @@ keys:
                         description: Delay after reload in seconds.
                         convert_types:
                         - str
+                        min: 0
+                        max: 3600
               tracked_object:
                 type: list
                 primary_key: name

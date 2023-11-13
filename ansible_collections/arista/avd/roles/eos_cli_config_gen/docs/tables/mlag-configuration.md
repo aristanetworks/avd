@@ -27,16 +27,38 @@
     ```yaml
     mlag_configuration:
       domain_id: <str>
+
+      # Heartbeat interval in milliseconds
       heartbeat_interval: <int>
+
+      # Local Interface Name
       local_interface: <str>
+
+      # IPv4 Address
       peer_address: <str>
       peer_address_heartbeat:
+
+        # IPv4 Address
         peer_ip: <str>
+
+        # VRF Name
         vrf: <str>
-      dual_primary_detection_delay: <int>
-      dual_primary_recovery_delay_mlag: <int>
-      dual_primary_recovery_delay_non_mlag: <int>
+
+      # Delay in seconds
+      dual_primary_detection_delay: <int; 0-86400>
+
+      # Delay in seconds
+      dual_primary_recovery_delay_mlag: <int; 0-86400>
+
+      # Delay in seconds
+      dual_primary_recovery_delay_non_mlag: <int; 0-86400>
+
+      # Port-Channel interface name
       peer_link: <str>
+
+      # Delay in seconds <0-86400> or 'infinity'
       reload_delay_mlag: <str>
+
+      # Delay in seconds <0-86400> or 'infinity'
       reload_delay_non_mlag: <str>
     ```

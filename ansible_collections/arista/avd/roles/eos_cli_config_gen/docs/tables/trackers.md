@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>trackers</samp>](## "trackers") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;- name</samp>](## "trackers.[].name") | String | Required, Unique |  |  | Name of tracker object |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "trackers.[].name") | String | Required, Unique |  |  | Name of tracker object |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "trackers.[].interface") | String | Required |  |  | Name of tracked interface |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tracked_property</samp>](## "trackers.[].tracked_property") | String |  | `line-protocol` |  | Property to track |
 
@@ -16,7 +16,13 @@
 
     ```yaml
     trackers:
-      - name: <str>
-        interface: <str>
-        tracked_property: <str>
+
+        # Name of tracker object
+      - name: <str; required; unique>
+
+        # Name of tracked interface
+        interface: <str; required>
+
+        # Property to track
+        tracked_property: <str; default="line-protocol">
     ```

@@ -20,5 +20,7 @@
       fib:
         optimize:
           prefixes:
+
+            # Pre-defined profile 'internet' or user-defined profile name
             profile: <str>
     ```
