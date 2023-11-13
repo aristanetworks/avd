@@ -382,13 +382,13 @@
 
         # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         speed: <str>
-        mtu: <int>
+        mtu: <int; 68-65535>
 
         # "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
-        l2_mtu: <int>
+        l2_mtu: <int; 64-65535>
 
         # "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
-        l2_mru: <int>
+        l2_mru: <int; 68-65535>
 
         # List of switchport vlans as string
         # For a trunk port this would be a range like "1-200,300"
