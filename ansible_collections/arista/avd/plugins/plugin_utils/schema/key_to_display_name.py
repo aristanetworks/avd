@@ -52,6 +52,7 @@ WORDLIST = {
     "mka": "MKA",
     "mlag": "MLAG",
     "mpls": "MPLS",
+    "mru": "MRU",
     "mtu": "MTU",
     "nd": "ND",
     "ntp": "NTP",
