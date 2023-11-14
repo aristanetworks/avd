@@ -10859,6 +10859,50 @@
       },
       "title": "Monitor Connectivity"
     },
+    "monitor_layer1": {
+      "type": "object",
+      "properties": {
+        "logging_mac_faults": {
+          "type": "boolean",
+          "description": " ",
+          "title": "Logging MAC Faults"
+        },
+        "logging_transciever": {
+          "type": "object",
+          "description": " ",
+          "properties": {
+            "enable": {
+              "type": "boolean",
+              "description": " ",
+              "title": "Enable"
+            },
+            "dom": {
+              "type": "boolean",
+              "description": " ",
+              "title": "Dom"
+            },
+            "communication": {
+              "type": "boolean",
+              "description": " ",
+              "title": "Communication"
+            }
+          },
+          "required": [
+            "enable"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Logging Transciever"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Monitor Layer1"
+    },
     "monitor_sessions": {
       "type": "array",
       "items": {
