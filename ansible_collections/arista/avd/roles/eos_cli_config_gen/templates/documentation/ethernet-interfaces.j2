@@ -188,7 +188,7 @@
 {%     endif %}
 {# Phone Interfaces #}
 {%     set phone_interfaces = [] %}
-{%     for interface in ethernet_interfaces + port_channel_interfaces | arista.avd.natural_sort('name') %}
+{%     for interface in ethernet_interfaces | arista.avd.natural_sort('name') + port_channel_interfaces | arista.avd.natural_sort('name') %}
 {%         if interface.phone is arista.avd.defined %}
 {%             do phone_interfaces.append(interface) %}
 {%         endif %}
