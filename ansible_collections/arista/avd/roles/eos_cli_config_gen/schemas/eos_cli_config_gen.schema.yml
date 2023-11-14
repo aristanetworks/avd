@@ -5721,6 +5721,26 @@ keys:
                     type: str
                   url:
                     type: str
+  monitor_layer1:
+    type: dict
+    keys:
+      logging_mac_faults:
+        type: bool
+        description: ' '
+      logging_transciever:
+        type: dict
+        description: ' '
+        keys:
+          enable:
+            required: true
+            type: bool
+            description: ' '
+          dom:
+            type: bool
+            description: ' '
+          communication:
+            type: bool
+            description: ' '
   monitor_sessions:
     type: list
     convert_types:
