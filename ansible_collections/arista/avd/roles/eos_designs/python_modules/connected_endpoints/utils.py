@@ -237,12 +237,23 @@ class UtilsMixin:
 
         return None
 
-    def _get_adapter_phone(self, adapter: dict) -> dict | None:
+    def _get_adapter_phone(self, adapter: dict, connected_endpoint: dict) -> dict | None:
         """
         Return phone settings for one adapter
         """
         if (adapter_phone_vlan := get(adapter, "phone_vlan")) is None:
             return None
+
+        # Verify that "mode" is set to "trunk phone"
+        if get(adapter, "mode") != "trunk phone":
+            raise AristaAvdError(f"Setting 'phone_vlan' requires 'mode: trunk phone' to be set on connected endpoint '{connected_endpoint['name']}'.")
+
+        # Verify that "vlans" is not set, since data vlan is picked up from 'native_vlan'.
+        if get(adapter, "vlans") is not None:
+            raise AristaAvdError(
+                "With 'phone_vlan' and 'mode: trunk phone' the data VLAN is set via 'native_vlan' instead of 'vlans'. Found 'vlans' on connected endpoint"
+                f" '{connected_endpoint['name']}'."
+            )
 
         return {
             "vlan": adapter_phone_vlan,

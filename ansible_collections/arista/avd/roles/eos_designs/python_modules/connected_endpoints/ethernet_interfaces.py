@@ -150,7 +150,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
                     "native_vlan_tag": adapter.get("native_vlan_tag"),
                     "native_vlan": adapter.get("native_vlan"),
-                    "phone": self._get_adapter_phone(adapter),
+                    "phone": self._get_adapter_phone(adapter, connected_endpoint),
                     "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
                     "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                     "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
