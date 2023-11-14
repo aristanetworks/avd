@@ -32,14 +32,26 @@ keys:
           description: Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
             - str
         l2_mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
             - str
           description: |
             "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
+        l2_mru:
+          type: int
+          min: 68
+          max: 65535
+          convert_types:
+            - str
+          description: |
+            "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
         vlans:
           type: str
           convert_types:

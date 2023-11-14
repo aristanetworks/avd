@@ -832,6 +832,7 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   l2_mtu: 8000
+  l2_mru: 9000
   vlans: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
@@ -1121,6 +1122,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -1173,6 +1175,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: access
   vlans: '210'
   spanning_tree_portfast: network
@@ -1221,6 +1224,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: access
   vlans: '210'
   spanning_tree_portfast: network

@@ -43,11 +43,10 @@ $defs:
         max: 65535
       l2_mtu:
         type: int
-        convert_types:
-          - str
-        min: 68
-        max: 9416
-        description: This should only be defined for platforms supporting the "l2 mtu" CLI command.
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/l2_mtu
+      l2_mru:
+        type: int
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/l2_mru
       native_vlan:
         type: int
         convert_types:
