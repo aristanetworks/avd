@@ -32,6 +32,7 @@
 - Hardware tests are now collapsed.
 - Some description of tests have been updated to be more precise.
 - Sorting of the test results is now done per device as opposed to per category.
+- All tests will be skipped for a device flagged as undeployed using the host level variable [`is_deployed: false`](https://avd.sh/en/stable/roles/eos_designs/docs/input-variables.html#flagging-a-device-as-not-deployed). Additionally, all tests take into account the `is_deployed` variable value and skip tests accordingly.
 - BGP tests will only run if `service_routing_protocols_model` is set to `multi-agent` in the structured configuration file.
 
 !!! note

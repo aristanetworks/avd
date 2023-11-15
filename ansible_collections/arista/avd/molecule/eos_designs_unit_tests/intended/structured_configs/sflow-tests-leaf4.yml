@@ -40,17 +40,21 @@ router_bgp:
   neighbors:
   - ip_address: 10.254.1.104
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: sflow-tests-leaf3
     description: sflow-tests-leaf3
   - ip_address: 10.254.2.20
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
+    peer: sflow-tests-spine1
     description: sflow-tests-spine1_Ethernet7
   - ip_address: 10.254.2.22
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
+    peer: sflow-tests-spine1
     description: sflow-tests-spine1_Ethernet8
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: sflow-tests-spine1
     description: sflow-tests-spine1
     remote_as: '65200'
   redistribute_routes:
