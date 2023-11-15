@@ -5,8 +5,8 @@
 /ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.jsonschema.json  linguist-generated=true
 
 # Collapsing generated tables from PR diff by default
-/ansible_collections/arista/avd/roles/eos_cli_config_gen/tables/*  linguist-generated=true
-/ansible_collections/arista/avd/roles/eos_designs/tables/*  linguist-generated=true
+/ansible_collections/arista/avd/roles/eos_cli_config_gen/tables/*  linguist-generated=true -merge -diff
+/ansible_collections/arista/avd/roles/eos_designs/tables/*  linguist-generated=true -merge -diff
 
 # Collapsing generated plugins doc from PR diff by default
 /ansible_collections/arista/avd/docs/plugins/*  linguist-generated=true
