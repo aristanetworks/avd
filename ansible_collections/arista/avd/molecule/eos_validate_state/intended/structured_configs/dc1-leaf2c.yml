@@ -55,7 +55,7 @@ ethernet_interfaces:
   peer_interface: Ethernet8
   peer_type: l3leaf
   description: DC1-LEAF2B_Ethernet8
-  shutdown: false
+  shutdown: true
   type: port-channel-member
   channel_group:
     id: 1

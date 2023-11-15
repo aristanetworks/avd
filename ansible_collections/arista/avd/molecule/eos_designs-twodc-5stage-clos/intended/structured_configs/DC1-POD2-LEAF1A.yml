@@ -40,23 +40,28 @@ router_bgp:
   - ip_address: 172.17.120.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65120'
+    peer: DC1-POD2-SPINE1
     description: DC1-POD2-SPINE1_Ethernet3
   - ip_address: 172.17.120.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65120'
+    peer: DC1-POD2-SPINE2
     description: DC1-POD2-SPINE2_Ethernet3
   - ip_address: 172.17.10.13
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
+    peer: DC1-RS2
     description: DC1-RS2_Ethernet3
     bfd: true
   - ip_address: 172.16.120.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-POD2-SPINE1
     description: DC1-POD2-SPINE1
     remote_as: '65120'
     route_map_out: RM-EVPN-FILTER-AS65120
   - ip_address: 172.16.120.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-POD2-SPINE2
     description: DC1-POD2-SPINE2
     remote_as: '65120'
     route_map_out: RM-EVPN-FILTER-AS65120

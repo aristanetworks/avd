@@ -44,6 +44,7 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.20
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: AUTO_BGP_ASN_LEAF7A
     description: AUTO_BGP_ASN_LEAF7A
   redistribute_routes:
   - source_protocol: connected

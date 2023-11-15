@@ -71,42 +71,52 @@ router_bgp:
   - ip_address: 172.31.254.224
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet24
   - ip_address: 172.31.254.226
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet24
   - ip_address: 172.31.254.228
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet24
   - ip_address: 172.31.254.230
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet24
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE2
     description: DC1-SPINE2
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE3
     description: DC1-SPINE3
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE4
     description: DC1-SPINE4
     remote_as: '65001'
   - ip_address: 100.70.0.1
     peer_group: IPVPN-INTERWORKING-PEERS
+    peer: rr1
     description: rr1
     remote_as: '64512'
     ebgp_multihop: 15
   - ip_address: 100.70.0.2
     peer_group: IPVPN-INTERWORKING-PEERS
+    peer: rr2
     description: rr2
     remote_as: '64512'
     ebgp_multihop: 15
