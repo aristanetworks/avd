@@ -10,6 +10,7 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
+  - [ISIS CLNS interfaces](#isis-clns-interfaces)
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -90,6 +91,12 @@
 | L2LS_ISIS | ISIS-SPINE1 | 192.168.255.1/32 |
 | L2LS_OSPF | OSPF-SPINE1 | 192.168.255.1/32 |
 | L2LS_OSPF | OSPF-SPINE2 | 192.168.255.2/32 |
+
+### ISIS CLNS interfaces
+
+| POD | Node | CLNS Address |
+| --- | ---- | ------------ |
+| L2LS_ISIS | ISIS-SPINE1 | 49.0001.0001.0000.0001.00 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
