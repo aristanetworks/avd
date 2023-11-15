@@ -77,7 +77,7 @@
 
 #### Load-balance policies
 
-| Policy name | Jitter (ms) | Latency (ms) | Loss Rate (%) | Path groups (priority) | Hop count lowest |
+| Policy Name | Jitter (ms) | Latency (ms) | Loss Rate (%) | Path Groups (priority) | Hop Count Lowest |
 | ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
 {%         for load_balance_policy in router_path_selection.load_balance_policies | arista.avd.natural_sort('name') %}
 {%             set hop_count_lowest = load_balance_policy.hop_count_lowest | arista.avd.default(false) %}
