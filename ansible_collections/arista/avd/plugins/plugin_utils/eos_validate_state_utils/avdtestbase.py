@@ -24,7 +24,7 @@ class AvdTestBase:
 
         Args:
             device_name (str): The current device name for which the plugin is being run.
-            hostvars (dict): A dictionnary that contains a key for each device with a value of the structured_config.
+            hostvars (dict): A dictionary that contains a key for each device with a value of the structured_config.
                            When using Ansible, this is the equivalent of `task_vars['hostvars']`.
         """
         self.hostvars = hostvars
