@@ -1,5 +1,5 @@
 mkdocs
-mkdocs-material==9.0.15
+mkdocs-material<10
 mkdocs-material-extensions
 pymdown-extensions
 mdx_truly_sane_lists

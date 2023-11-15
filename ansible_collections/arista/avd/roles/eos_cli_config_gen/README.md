@@ -14,7 +14,7 @@ The **eos_cli_config_gen** role:
 
 - Designed to generate the intended configuration offline, without relying on switch current state information.
 - Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)
-- Facilitates the evaluation of the configuration post deployment with [eos_validate_state](../eos_validate_state) role.
+- Facilitates the evaluation of the configuration post deployment with [eos_validate_state](../eos_validate_state/README.md) role.
 
 ## Role Inputs and Outputs
 
