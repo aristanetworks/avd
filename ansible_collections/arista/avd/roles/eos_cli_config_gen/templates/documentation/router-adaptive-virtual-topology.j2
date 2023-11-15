@@ -28,6 +28,39 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 {%         endif %}
 {%     endif %}
 
+#### AVT Profiles
+| Profile name | Load balance policy | Internet exit policy |
+| ------------ | ------------------- | -------------------- |
+{%     for profile in router_adaptive_virtual_topology.profiles | arista.avd.natural_sort('name') %}
+| {{ profile.name }} | {{ profile.load_balance_policy | arista.avd.default("-") }} | {{ profile.internet_exit_policy | arista.avd.default("-") }} |
+{%     endfor %}
+
+#### AVT Policies
+{%     for policy in router_adaptive_virtual_topology.policies | arista.avd.natural_sort('name') %}
+
+##### AVT policy {{ policy.name }}
+| Application profile | AVT Profile | Traffic Class | DSCP |
+| ------------------- | ----------- | ------------- | ---- |
+{%         for matcher in policy.match_clauses %}
+| {{ matcher.application_profile }} | {{ matcher.avt_profile }} | {{ matcher.traffic_class | arista.avd.default("-") }} | {{ matcher.dscp | arista.avd.default("-") }}
+{%         endfor %}
+{%     endfor %}
+
+#### VRFs configuration
+{%     for vrf in router_adaptive_virtual_topology.vrfs | arista.avd.natural_sort('name') %}
+
+##### VRF{{ vrf.name }}
+
+| AVT policy |
+| ---------- |
+| {{ vrf.policy | arista.avd.default("-") }}
+
+| AVT Profile | AVT ID |
+| ----------- | ------ |
+{%         for profiles in vrf.profiles | arista.avd.natural_sort('id') %}
+| {{ profile.name }} | {{ profile.id }} |
+{%         endfor %}
+{%     endfor %}
 #### Router Adaptive Virtual Topology Configuration
 
 ```eos
