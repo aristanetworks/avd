@@ -3,21 +3,30 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{# eos - monitor layer1 #}
+{# doc - monitor layer1 #}
 {% if monitor_layer1.logging_mac_fault is arista.avd.defined(true) or monitor_layer1.logging_transceiver is arista.avd.defined %}
-!
-monitor layer1
+
+## Monitor Layer1 Logging
+
+| Logging |
+| ------- |
+{%     if monitor_layer1.logging_mac_fault is arista.avd.defined(true) %}
+| mac fault |
+{%     endif %}
 {%     if monitor_layer1.logging_transceiver.enable is arista.avd.defined(true) %}
 {%         if monitor_layer1.logging_transceiver.dom is arista.avd.defined(true) %}
-   logging transceiver dom
+| transceiver dom |
 {%         endif %}
 {%         if monitor_layer1.logging_transceiver.communication is arista.avd.defined(true) %}
-   logging transceiver communication
+| transceiver communication |
 {%         elif monitor_layer1.logging_transceiver.dom is not arista.avd.defined %}
-   logging transceiver
+| transceiver |
 {%         endif %}
 {%     endif %}
-{%     if monitor_layer1.logging_mac_fault is arista.avd.defined(true) %}
-   logging mac fault
-{%     endif %}
+
+### Monitor Layer1 Device Configuration
+
+```eos
+{%     include 'eos/monitor-layer1.j2' %}
+```
 {% endif %}
