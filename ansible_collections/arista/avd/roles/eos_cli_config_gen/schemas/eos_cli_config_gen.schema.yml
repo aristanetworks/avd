@@ -11824,7 +11824,7 @@ keys:
             name:
               type: str
               description: Load-balance policy name.
-            hop_count_lowest:
+            lowest_hop_count:
               type: bool
               description: Prefer paths with lowest hop-count.
             jitter:

@@ -79,7 +79,7 @@ router_path_selection:
         - name: PG-1
           priority: 1
     - name: LB-P-1
-      hop_count_lowest: true
+      lowest_hop_count: true
       loss_rate: 17
       path_groups:
         # checking priority 1 comes first
