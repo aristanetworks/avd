@@ -49,16 +49,6 @@ anta.tests.connectivity:
       - LLDP Topology
       custom_field: 'local: Ethernet8 - remote: dc2-leaf2c_Ethernet2'
       description: LLDP topology - validate peer and interface
-- VerifyLLDPNeighbors:
-    neighbors:
-    - neighbor_device: dc1-leaf2b.dc1.local
-      neighbor_port: Ethernet6
-      port: Ethernet6
-    result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet6 - remote: dc1-leaf2b_Ethernet6'
-      description: LLDP topology - validate peer and interface
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.116
@@ -80,17 +70,6 @@ anta.tests.connectivity:
       categories:
       - IP Reachability
       custom_field: 'Source: dc2-leaf2b_Ethernet2 - Destination: dc2-spine2_Ethernet4'
-      description: ip reachability test p2p links
-- VerifyReachability:
-    hosts:
-    - destination: 192.168.100.2
-      repeat: 1
-      source: 192.168.100.3
-      vrf: default
-    result_overwrite:
-      categories:
-      - IP Reachability
-      custom_field: 'Source: dc2-leaf2b_Ethernet6 - Destination: dc1-leaf2b_Ethernet6'
       description: ip reachability test p2p links
 - VerifyReachability:
     hosts:
@@ -146,17 +125,6 @@ anta.tests.connectivity:
       categories:
       - Loopback0 Reachability
       custom_field: 'Source: dc2-leaf2b - 10.255.128.16/32 Destination: 10.255.0.5'
-      description: Loopback0 Reachability
-- VerifyReachability:
-    hosts:
-    - destination: 10.255.0.6
-      repeat: 1
-      source: 10.255.128.16
-      vrf: default
-    result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc2-leaf2b - 10.255.128.16/32 Destination: 10.255.0.6'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
@@ -529,27 +497,6 @@ anta.tests.routing.bgp:
       - BGP
       custom_field: 'bgp_neighbor: 10.255.128.12'
       description: bgp evpn peer state established (evpn)
-- VerifyBGPSpecificPeers:
-    address_families:
-    - afi: evpn
-      peers:
-      - 10.255.0.6
-    result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'bgp_neighbor: 10.255.0.6'
-      description: bgp evpn peer state established (evpn)
-- VerifyBGPSpecificPeers:
-    address_families:
-    - afi: ipv4
-      peers:
-      - 192.168.100.2
-      safi: unicast
-    result_overwrite:
-      categories:
-      - BGP
-      custom_field: 'bgp_neighbor: 192.168.100.2'
-      description: ip bgp peer state established (ipv4)
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
@@ -598,14 +545,6 @@ anta.tests.routing.generic:
       description: Remote Lo0 address
     routes:
     - 10.255.0.5
-- VerifyRoutingTableEntry:
-    result_overwrite:
-      categories:
-      - Routing Table
-      custom_field: 10.255.0.6
-      description: Remote Lo0 address
-    routes:
-    - 10.255.0.6
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:

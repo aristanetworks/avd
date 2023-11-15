@@ -62,15 +62,19 @@ router_bgp:
   neighbors:
   - ip_address: 100.70.0.5
     peer_group: MPLS-OVERLAY-PEERS
+    peer: SITE1-LER1
     description: SITE1-LER1
   - ip_address: 100.70.0.6
     peer_group: MPLS-OVERLAY-PEERS
+    peer: SITE1-LER2
     description: SITE1-LER2
   - ip_address: 100.70.0.7
     peer_group: MPLS-OVERLAY-PEERS
+    peer: SITE2-LER1
     description: SITE2-LER1
   - ip_address: 100.70.0.9
     peer_group: RR-OVERLAY-PEERS
+    peer: SITE2-RR1
     description: SITE2-RR1
 static_routes:
 - vrf: MGMT

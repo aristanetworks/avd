@@ -14692,6 +14692,11 @@
                 },
                 "title": "As Path"
               },
+              "peer": {
+                "type": "string",
+                "description": "Key only used for documentation or validation purposes",
+                "title": "Peer"
+              },
               "description": {
                 "type": "string",
                 "title": "Description"
@@ -14923,6 +14928,11 @@
               "remote_as": {
                 "type": "string",
                 "title": "Remote As"
+              },
+              "peer": {
+                "type": "string",
+                "description": "Key only used for documentation or validation purposes",
+                "title": "Peer"
               },
               "peer_group": {
                 "type": "string",
