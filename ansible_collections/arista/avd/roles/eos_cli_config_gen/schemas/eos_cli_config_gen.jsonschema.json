@@ -10617,6 +10617,22 @@
                 "^_.+$": {}
               },
               "title": "Multicast Replication"
+            },
+            "mdb": {
+              "type": "object",
+              "description": "MDB Configuration",
+              "properties": {
+                "profile": {
+                  "type": "string",
+                  "description": "Set MDB profile",
+                  "title": "Profile"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Mdb"
             }
           },
           "additionalProperties": false,

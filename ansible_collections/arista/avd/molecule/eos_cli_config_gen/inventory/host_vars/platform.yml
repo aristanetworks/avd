@@ -65,5 +65,7 @@ platform:
     multicast_replication:
       default: ingress
     forwarding_mode: arad
+    mdb:
+      profile: balanced
   sfe:
     data_plane_cpu_allocation_max: 42

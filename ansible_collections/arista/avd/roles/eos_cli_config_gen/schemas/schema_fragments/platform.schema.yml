@@ -167,6 +167,14 @@ keys:
               default:
                 type: str
                 valid_values: ["ingress", "egress"]
+          mdb:
+            type: dict
+            description: MDB Configuration
+            keys:
+              profile:
+                type: str
+                description: Set MDB profile
+
       sfe:
         type: dict
         description: Sfe (Software Forwarding Engine) settings.

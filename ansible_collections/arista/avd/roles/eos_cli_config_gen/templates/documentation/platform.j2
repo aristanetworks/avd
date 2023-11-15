@@ -58,6 +58,9 @@
 {%             if platform.sand.multicast_replication.default is arista.avd.defined %}
 | Default Multicast Replication | {{ platform.sand.multicast_replication.default }} |
 {%             endif %}
+{%             if platform.sand.mdb.profile is arista.avd.defined %}
+| MDB Profile | {{ platform.sand.mdb.profile }} |
+{%             endif %}
 {%             if platform.sand.qos_maps is arista.avd.defined %}
 
 ##### Internal Network QOS Mapping

@@ -40,6 +40,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;forwarding_mode</samp>](## "platform.sand.forwarding_mode") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multicast_replication</samp>](## "platform.sand.multicast_replication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "platform.sand.multicast_replication.default") | String |  |  | Valid Values:<br>- <code>ingress</code><br>- <code>egress</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mdb</samp>](## "platform.sand.mdb") | Dictionary |  |  |  | MDB Configuration |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "platform.sand.mdb.profile") | String |  |  |  | Set MDB profile |
     | [<samp>&nbsp;&nbsp;sfe</samp>](## "platform.sfe") | Dictionary |  |  |  | Sfe (Software Forwarding Engine) settings. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;data_plane_cpu_allocation_max</samp>](## "platform.sfe.data_plane_cpu_allocation_max") | Integer |  |  | Min: 1<br>Max: 128 | Maximum number of CPUs used for data plane traffic forwarding. |
 
@@ -106,6 +108,12 @@
         forwarding_mode: <str>
         multicast_replication:
           default: <str; "ingress" | "egress">
+
+        # MDB Configuration
+        mdb:
+
+          # Set MDB profile
+          profile: <str>
 
       # Sfe (Software Forwarding Engine) settings.
       sfe:

@@ -27,6 +27,9 @@ platform sand forwarding mode {{ platform.sand.forwarding_mode }}
 {%         if platform.sand.multicast_replication.default is arista.avd.defined %}
 platform sand multicast replication default {{ platform.sand.multicast_replication.default }}
 {%         endif %}
+{%         if platform.sand.mdb.profile is arista.avd.defined %}
+platform sand mdb profile {{ platform.sand.mdb.profile }}
+{%         endif %}
 {%     endif %}
 {%     if platform.sfe is arista.avd.defined %}
 {%         if platform.sfe.data_plane_cpu_allocation_max is arista.avd.defined %}

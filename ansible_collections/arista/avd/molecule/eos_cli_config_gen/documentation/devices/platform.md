@@ -77,6 +77,7 @@ interface Management1
 | Hardware Only Lag | True |
 | Lag Mode | 512x32 |
 | Default Multicast Replication | ingress |
+| MDB Profile | balanced |
 
 ##### Internal Network QOS Mapping
 
@@ -104,5 +105,6 @@ platform sand lag hardware-only
 platform sand lag mode 512x32
 platform sand forwarding mode arad
 platform sand multicast replication default ingress
+platform sand mdb profile balanced
 platform sfe data-plane cpu allocation maximum 42
 ```
