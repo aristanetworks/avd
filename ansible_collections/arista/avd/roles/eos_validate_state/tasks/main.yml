@@ -42,19 +42,34 @@
 ##  Run eos_validate_state using ANTA  ##
 #########################################
 
-- name: Run eos_validate_state_runner leveraging ANTA
+- name: Include ANTA tests
   ansible.builtin.include_tasks: "anta_tests.yml"
-  when: use_anta
+  when: use_anta | bool   # Ensure that `use_anta` is evaluated as a boolean when using `-e` or `--extra-vars`
   tags:
     - always
 
-#####################################
-##  Run ansible assert eos_validate_state  ##
-#####################################
+- name: Create validation reports from ANTA tests
+  arista.avd.eos_validate_state_reports:
+    csv_report_path: "{{ eos_validate_state_csv_report_path }}"
+    md_report_path: "{{ eos_validate_state_md_report_path }}"
+    validation_report_csv: "{{ validation_report_csv }}"
+    validation_report_md: "{{ validation_report_md }}"
+    only_failed_tests: "{{ only_failed_tests }}"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+  when: use_anta | bool
+  tags:
+    - always
+    - reports
 
-- name: Run ansible assert tests
+#############################################
+##  Run ansible assert eos_validate_state  ##
+#############################################
+
+- name: Include Ansible assert tests
   ansible.builtin.include_tasks: "ansible_tests.yml"
-  when: not use_anta
+  when: not use_anta | bool
   tags:
     - always
 
@@ -64,6 +79,7 @@
 
 - name: Create reports
   ansible.builtin.include_tasks: "reports.yml"
+  when: not use_anta | bool
   tags:
     - always
     - reports

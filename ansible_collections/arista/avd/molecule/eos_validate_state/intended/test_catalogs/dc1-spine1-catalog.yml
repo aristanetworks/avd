@@ -75,17 +75,29 @@ anta.tests.connectivity:
       description: ip reachability test p2p links
 anta.tests.hardware:
 - VerifyEnvironmentPower:
+    result_overwrite:
+      categories:
+      - Hardware
     states:
     - ok
 - VerifyEnvironmentCooling:
+    result_overwrite:
+      categories:
+      - Hardware
     states:
     - ok
-- VerifyTemperature: {}
+- VerifyTemperature:
+    result_overwrite:
+      categories:
+      - Hardware
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
+    result_overwrite:
+      categories:
+      - Hardware
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:

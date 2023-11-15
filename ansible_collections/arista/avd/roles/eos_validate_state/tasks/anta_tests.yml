@@ -14,5 +14,5 @@
     device_catalog_output_dir: "{{ test_catalogs_dir }}"
   register: anta_results
   check_mode: false
-  when: use_anta
+  when: use_anta | bool
   tags: always

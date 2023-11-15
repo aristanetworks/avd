@@ -29,10 +29,24 @@ class AvdTestHardware(AvdTestBase):
         xcvr_manufacturers.append("Not Present")
 
         anta_tests = [
-            {"VerifyEnvironmentPower": {"states": get(self.hostvars[self.device_name], "validation_role.pwr_supply_states", ["ok"])}},
-            {"VerifyEnvironmentCooling": {"states": get(self.hostvars[self.device_name], "validation_role.fan_states", ["ok"])}},
-            {"VerifyTemperature": {}},
-            {"VerifyTransceiversManufacturers": {"manufacturers": xcvr_manufacturers}},
+            {
+                "VerifyEnvironmentPower": {
+                    "states": get(self.hostvars[self.device_name], "validation_role.pwr_supply_states", ["ok"]),
+                    "result_overwrite": {"categories": self.categories},
+                }
+            },
+            {
+                "VerifyEnvironmentCooling": {
+                    "states": get(self.hostvars[self.device_name], "validation_role.fan_states", ["ok"]),
+                    "result_overwrite": {"categories": self.categories},
+                }
+            },
+            {
+                "VerifyTemperature": {
+                    "result_overwrite": {"categories": self.categories},
+                }
+            },
+            {"VerifyTransceiversManufacturers": {"manufacturers": xcvr_manufacturers, "result_overwrite": {"categories": self.categories}}},
         ]
 
         return {self.anta_module: anta_tests}

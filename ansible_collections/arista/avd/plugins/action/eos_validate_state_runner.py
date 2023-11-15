@@ -6,7 +6,9 @@ from __future__ import absolute_import, annotations, division, print_function
 __metaclass__ = type
 
 import logging
+import tempfile
 
+import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
@@ -15,7 +17,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_util
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
-# ANTA 0.8.0 currently add some RichHandler to the root logger so need to disable propagation
+# ANTA 0.10.0 currently add some RichHandler to the root logger so need to disable propagation
 LOGGER.propagate = False
 
 
@@ -85,10 +87,15 @@ class ActionModule(ActionBase):
                 dry_run=ansible_check_mode,
                 yaml_dumper=AnsibleNoAliasDumper,
             )
+            # Create the temp YAML file to save the ANTA results
+            with tempfile.NamedTemporaryFile(mode="w+", encoding="UTF-8", suffix=".yml", delete=False) as temp_file:
+                # Each YAML document in the file represents a single test result
+                temp_file.write(yaml.dump_all(anta_results, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130))
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
 
-        result["results"] = anta_results
+        # Add the temp file path to the Ansible result
+        result["results_temp_file"] = temp_file.name
 
         return result
 

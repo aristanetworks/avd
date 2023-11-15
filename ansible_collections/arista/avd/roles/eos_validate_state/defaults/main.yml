@@ -40,6 +40,12 @@ accepted_pwr_supply_states: "{{ validation_role.pwr_supply_states | arista.avd.d
 # Allow different states for fans
 accepted_fan_states: "{{ validation_role.fan_states | arista.avd.default(['ok']) }}"
 
+# Generate CSV results file
+validation_report_csv: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"
+
+# Generate MD results file
+validation_report_md: "{{ validation_role.validation_report_md | arista.avd.default(true) }}"
+
 # Print only FAILED tests
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 
