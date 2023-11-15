@@ -19,4 +19,47 @@ router adaptive-virtual-topology
 {%     if router_adaptive_virtual_topology.site.name is arista.avd.defined and router_adaptive_virtual_topology.site.id %}
    site {{ router_adaptive_virtual_topology.site.name }} id {{ router_adaptive_virtual_topology.site.id }}
 {%     endif %}
+{#    AVT Profiles #}
+{%     for profile in router_adaptive_virtual_topology.profiles | arista.avd.natural_sort('name') %}
+   !
+   profile {{ profile.name }}
+{%         if profile.nameload_balance_policy is arista.avd.defined %}
+      path-selection load-balance {{ profile.nameload_balance_policy }}
+{%         endif %}
+{%         if profile.internet_exit_policy is arista.avd.defined %}
+      internet-exit policy {{ profile.internet_exit_policy }}
+{%         endif %}
+{%     endfor %}
+{#    AVT Policies #}
+{%     for policy in router_adaptive_virtual_topology.policies | arista.avd.natural_sort('name') %}
+   !
+   policy {{ policy.name }}
+{%         for match_clause in policy.match_clauses %}
+{%             if match_clause.application_profile is arista.avd.defined %}
+{%                 if match_clause.avt_profile is arista.avd.defined %}
+      match application-profile {{ match_clause.application_profile }}
+         profile {{ match_clause.avt_profile }}
+{%                     if match_clause.traffic_class is arista.avd.defined %}
+         traffic-class {{ match_clause.traffic_class }}
+{%                     endif %}
+{%                     if match_clause.dscp is arista.avd.defined %}
+         dscp {{ match_clause.dscp }}
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{#   VRFs #}
+{%     for vrf in router_adaptive_virtual_topology.vrfs | arista.avd.natural_sort('name') %}
+   !
+   vrf {{ vrf.name }}
+{%         if vrf.policy is arista.avd.defined %}
+      policy {{ vrf.policy }}
+{%         endif %}
+{%         for profile in vrf.profiles | arista.avd.natural_sort('id') %}
+{%             if profile.name is arista.avd.defined %}
+      profile {{ profile.name }} id {{ profile.id }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
 {% endif %}
