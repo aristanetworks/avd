@@ -635,6 +635,23 @@ keys:
           items:
             type: str
             description: Interface range or interface.
+  default_mgmt_method:
+    documentation_options:
+      table: management-interface-settings
+    type: str
+    description: "`default_mgmt_method` controls the default VRF and source interface
+      used for the following management and monitoring protocols configured with `eos_designs`:\n
+      \ - `cv_settings`\n  - `dns_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob`
+      means the protocols will be configured with the VRF set by `mgmt_interface_vrf`
+      and `mgmt_interface` as the source interface.\n`inband` means the protocols
+      will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface`
+      as the source interface.\n`none` means the VRF and or interface must be manually
+      set for each protocol.\nThis can be overridden under the settings for each protocol.\n"
+    valid_values:
+    - oob
+    - inband
+    - none
+    default: oob
   default_node_types:
     type: list
     primary_key: node_type
@@ -3052,12 +3069,10 @@ $defs:
         max: 65535
       l2_mtu:
         type: int
-        convert_types:
-        - str
-        min: 68
-        max: 9416
-        description: This should only be defined for platforms supporting the "l2
-          mtu" CLI command.
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/l2_mtu
+      l2_mru:
+        type: int
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/l2_mru
       native_vlan:
         type: int
         convert_types:

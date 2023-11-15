@@ -1935,12 +1935,23 @@
           },
           "mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "title": "MTU"
           },
           "l2_mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
+          },
+          "l2_mru": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+            "title": "L2 MRU"
           },
           "vlans": {
             "type": "string",
@@ -4564,6 +4575,33 @@
               "maximum": 4294967295,
               "title": "Sample"
             },
+            "hardware_offload": {
+              "type": "object",
+              "properties": {
+                "ipv4": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv4 traffic.",
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv6 traffic.",
+                  "title": "IPv6"
+                },
+                "threshold_minimum": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295,
+                  "description": "Minimum number of samples.",
+                  "title": "Threshold Minimum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Hardware Offload"
+            },
             "trackers": {
               "type": "array",
               "items": {
@@ -6570,6 +6608,40 @@
                 "type": "string",
                 "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
                 "title": "Local ID"
+              },
+              "ike_lifetime": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 24,
+                "description": "IKE lifetime in hours.",
+                "title": "Ike Lifetime"
+              },
+              "encryption": {
+                "type": "string",
+                "enum": [
+                  "3des",
+                  "aes128",
+                  "aes256"
+                ],
+                "description": "IKE encryption algorithm.",
+                "title": "Encryption"
+              },
+              "dh_group": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  5,
+                  14,
+                  15,
+                  16,
+                  17,
+                  20,
+                  21,
+                  24
+                ],
+                "description": "Diffie-Hellman group for the key exchange.",
+                "title": "Dh Group"
               }
             },
             "additionalProperties": false,
@@ -6590,7 +6662,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Name of the SA policy.",
+                "description": "Name of the SA policy. The \"null\" value is deprecated and will be removed in AVD 5.0.0",
                 "title": "Name"
               },
               "esp": {
@@ -6599,21 +6671,23 @@
                   "integrity": {
                     "type": "string",
                     "enum": [
-                      "null",
+                      "disabled",
                       "sha1",
-                      "sha256"
+                      "sha256",
+                      "null"
                     ],
                     "title": "Integrity"
                   },
                   "encryption": {
                     "type": "string",
                     "enum": [
-                      "null",
+                      "disabled",
                       "aes128",
                       "aes128gcm128",
                       "aes128gcm64",
                       "aes256",
-                      "aes256gcm256"
+                      "aes256gcm256",
+                      "null"
                     ],
                     "title": "Encryption"
                   }
@@ -10830,8 +10904,17 @@
           },
           "l2_mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
+          },
+          "l2_mru": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+            "title": "L2 MRU"
           },
           "vlans": {
             "type": "string",
@@ -11054,6 +11137,8 @@
           },
           "mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "title": "MTU"
           },
           "mlag": {
@@ -14574,6 +14659,10 @@
               "route_reflector_client": {
                 "type": "boolean",
                 "title": "Route Reflector Client"
+              },
+              "password": {
+                "type": "string",
+                "title": "Password"
               },
               "passive": {
                 "type": "boolean",

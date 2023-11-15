@@ -313,6 +313,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge

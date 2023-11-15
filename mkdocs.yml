@@ -179,6 +179,8 @@ nav:
   - Release Notes: docs/release-notes/4.x.x.md
   - Porting Guide: docs/porting-guides/4.x.x.md
   - pyavd: docs/pyavd.md
+  - AVD Dev Containers:
+      - Overview: docs/containers/overview.md
   - About:
       - AVD on Ansible Galaxy: https://galaxy.ansible.com/arista/avd
       - Arista CVP Collection: https://cvp.avd.sh/en/latest/

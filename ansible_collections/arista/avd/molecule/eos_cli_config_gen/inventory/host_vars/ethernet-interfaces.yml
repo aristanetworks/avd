@@ -8,6 +8,8 @@ ethernet_interfaces:
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
     speed: forced 100gfull
     mtu: 1500
+    l2_mtu: 8000
+    l2_mru: 8000
     type: routed
     ip_address: 172.31.255.1/31
     link_tracking_groups:

@@ -24,6 +24,7 @@ port_profiles:
     spanning_tree_bpduguard: disabled
     spanning_tree_portfast: edge
     l2_mtu: 8000
+    l2_mru: 9000
     storm_control:
       all:
         level: 10.0
@@ -45,6 +46,7 @@ port_profiles:
     spanning_tree_bpduguard: enabled
     spanning_tree_portfast: edge
     l2_mtu: 8000
+    l2_mru: 9000
     storm_control:
       all:
         level: 10

@@ -12,16 +12,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;counters</samp>](## "router_multicast.ipv4.counters") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rate_period_decay</samp>](## "router_multicast.ipv4.counters.rate_period_decay") | Integer |  |  | Min: 0<br>Max: 600 | Rate in seconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;routing</samp>](## "router_multicast.ipv4.routing") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multipath</samp>](## "router_multicast.ipv4.multipath") | String |  |  | Valid Values:<br>- none<br>- deterministic<br>- deterministic color<br>- deterministic router-id |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;software_forwarding</samp>](## "router_multicast.ipv4.software_forwarding") | String |  |  | Valid Values:<br>- kernel<br>- sfe |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;multipath</samp>](## "router_multicast.ipv4.multipath") | String |  |  | Valid Values:<br>- <code>none</code><br>- <code>deterministic</code><br>- <code>deterministic color</code><br>- <code>deterministic router-id</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;software_forwarding</samp>](## "router_multicast.ipv4.software_forwarding") | String |  |  | Valid Values:<br>- <code>kernel</code><br>- <code>sfe</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rpf</samp>](## "router_multicast.ipv4.rpf") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routes</samp>](## "router_multicast.ipv4.rpf.routes") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- source_prefix</samp>](## "router_multicast.ipv4.rpf.routes.[].source_prefix") | String | Required |  |  | Source address A.B.C.D or Source prefix A.B.C.D/E |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_prefix</samp>](## "router_multicast.ipv4.rpf.routes.[].source_prefix") | String | Required |  |  | Source address A.B.C.D or Source prefix A.B.C.D/E |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destinations</samp>](## "router_multicast.ipv4.rpf.routes.[].destinations") | List, items: Dictionary | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- nexthop</samp>](## "router_multicast.ipv4.rpf.routes.[].destinations.[].nexthop") | String | Required |  |  | Next-hop IP address or interface name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;nexthop</samp>](## "router_multicast.ipv4.rpf.routes.[].destinations.[].nexthop") | String | Required |  |  | Next-hop IP address or interface name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;distance</samp>](## "router_multicast.ipv4.rpf.routes.[].destinations.[].distance") | Integer |  |  | Min: 1<br>Max: 255 | Administrative distance for this route |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_multicast.vrfs") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "router_multicast.vrfs.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_multicast.vrfs.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_multicast.vrfs.[].ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routing</samp>](## "router_multicast.vrfs.[].ipv4.routing") | Boolean |  |  |  |  |
 
@@ -31,18 +31,26 @@
     router_multicast:
       ipv4:
         counters:
-          rate_period_decay: <int>
+
+          # Rate in seconds
+          rate_period_decay: <int; 0-600>
         routing: <bool>
-        multipath: <str>
-        software_forwarding: <str>
+        multipath: <str; "none" | "deterministic" | "deterministic color" | "deterministic router-id">
+        software_forwarding: <str; "kernel" | "sfe">
         rpf:
           routes:
-            - source_prefix: <str>
-              destinations:
-                - nexthop: <str>
-                  distance: <int>
+
+              # Source address A.B.C.D or Source prefix A.B.C.D/E
+            - source_prefix: <str; required>
+              destinations: # required
+
+                  # Next-hop IP address or interface name
+                - nexthop: <str; required>
+
+                  # Administrative distance for this route
+                  distance: <int; 1-255>
       vrfs:
-        - name: <str>
+        - name: <str; required; unique>
           ipv4:
             routing: <bool>
     ```

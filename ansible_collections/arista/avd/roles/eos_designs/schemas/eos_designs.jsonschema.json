@@ -3079,6 +3079,17 @@
       },
       "title": "Default Interfaces"
     },
+    "default_mgmt_method": {
+      "type": "string",
+      "description": "`default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:\n  - `cv_settings`\n  - `dns_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and or interface must be manually set for each protocol.\nThis can be overridden under the settings for each protocol.\n",
+      "enum": [
+        "oob",
+        "inband",
+        "none"
+      ],
+      "default": "oob",
+      "title": "Default Management Method"
+    },
     "default_node_types": {
       "type": "array",
       "description": "Uses hostname matches against a regular expression to determine the node type.",
@@ -4442,9 +4453,16 @@
           "l2_mtu": {
             "type": "integer",
             "minimum": 68,
-            "maximum": 9416,
-            "description": "This should only be defined for platforms supporting the \"l2 mtu\" CLI command.",
+            "maximum": 65535,
+            "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
+          },
+          "l2_mru": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+            "title": "L2 MRU"
           },
           "native_vlan": {
             "type": "integer",
@@ -5372,8 +5390,17 @@
                   },
                   "l2_mtu": {
                     "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
                     "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                     "title": "L2 MTU"
+                  },
+                  "l2_mru": {
+                    "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
+                    "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                    "title": "L2 MRU"
                   },
                   "vlans": {
                     "type": "string",
@@ -5596,6 +5623,8 @@
                   },
                   "mtu": {
                     "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
                     "title": "MTU"
                   },
                   "mlag": {
@@ -6822,12 +6851,23 @@
               },
               "mtu": {
                 "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
                 "title": "MTU"
               },
               "l2_mtu": {
                 "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
                 "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                 "title": "L2 MTU"
+              },
+              "l2_mru": {
+                "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
+                "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                "title": "L2 MRU"
               },
               "vlans": {
                 "type": "string",
@@ -10221,9 +10261,16 @@
           "l2_mtu": {
             "type": "integer",
             "minimum": 68,
-            "maximum": 9416,
-            "description": "This should only be defined for platforms supporting the \"l2 mtu\" CLI command.",
+            "maximum": 65535,
+            "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
+          },
+          "l2_mru": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+            "title": "L2 MRU"
           },
           "native_vlan": {
             "type": "integer",
@@ -11151,8 +11198,17 @@
                   },
                   "l2_mtu": {
                     "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
                     "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                     "title": "L2 MTU"
+                  },
+                  "l2_mru": {
+                    "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
+                    "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                    "title": "L2 MRU"
                   },
                   "vlans": {
                     "type": "string",
@@ -11375,6 +11431,8 @@
                   },
                   "mtu": {
                     "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
                     "title": "MTU"
                   },
                   "mlag": {
@@ -12601,12 +12659,23 @@
               },
               "mtu": {
                 "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
                 "title": "MTU"
               },
               "l2_mtu": {
                 "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
                 "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                 "title": "L2 MTU"
+              },
+              "l2_mru": {
+                "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
+                "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                "title": "L2 MRU"
               },
               "vlans": {
                 "type": "string",

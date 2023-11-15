@@ -12,5 +12,6 @@
 === "YAML"
 
     ```yaml
+    # MAC address (hh:hh:hh:hh:hh:hh)
     ip_virtual_router_mac_address: <str>
     ```

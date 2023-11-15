@@ -8,16 +8,24 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  | See (+) on YAML tab |  | Endpoints connecting to the fabric can be grouped by using separate keys.<br>The keys can be customized to provide a better better organization or grouping of your data.<br>`connected_endpoints_keys` should be defined in the top level group_vars for the fabric.<br>The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.<br> |
-    | [<samp>&nbsp;&nbsp;- key</samp>](## "connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints_keys.[].description") | String |  |  |  | Description used for documentation. |
 
 === "YAML"
 
     ```yaml
+    # Endpoints connecting to the fabric can be grouped by using separate keys.
+    # The keys can be customized to provide a better better organization or grouping of your data.
+    # `connected_endpoints_keys` should be defined in the top level group_vars for the fabric.
+    # The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
     connected_endpoints_keys: # (1)!
-      - key: <str>
+      - key: <str; required; unique>
+
+        # Type used for documentation.
         type: <str>
+
+        # Description used for documentation.
         description: <str>
     ```
 

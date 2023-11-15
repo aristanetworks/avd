@@ -1,0 +1,28 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  default_mgmt_method:
+    documentation_options:
+      table: management-interface-settings
+    type: str
+    description: |
+      `default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:
+        - `cv_settings`
+        - `dns_settings`
+        - `ntp_settings`
+        - `sflow_settings`
+
+      `oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+      `inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.
+      `none` means the VRF and or interface must be manually set for each protocol.
+      This can be overridden under the settings for each protocol.
+    valid_values:
+      - oob
+      - inband
+      - none
+    default: oob

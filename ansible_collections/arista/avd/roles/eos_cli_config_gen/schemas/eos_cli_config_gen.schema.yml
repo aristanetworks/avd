@@ -1308,14 +1308,28 @@ keys:
             <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
         l2_mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
           description: '"l2_mtu" should only be defined for platforms supporting the
             "l2 mtu" CLI
+
+            '
+        l2_mru:
+          type: int
+          min: 68
+          max: 65535
+          convert_types:
+          - str
+          description: '"l2_mru" should only be defined for platforms supporting the
+            "l2 mru" CLI
 
             '
         vlans:
@@ -2719,6 +2733,22 @@ keys:
             - str
             min: 1
             max: 4294967295
+          hardware_offload:
+            type: dict
+            keys:
+              ipv4:
+                type: bool
+                description: Configure hardware offload for IPv4 traffic.
+              ipv6:
+                type: bool
+                description: Configure hardware offload for IPv6 traffic.
+              threshold_minimum:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 4294967295
+                description: Minimum number of samples.
           trackers:
             type: list
             primary_key: name
@@ -3773,6 +3803,36 @@ keys:
                 Can be an IPv4 or an IPv6 address.
 
                 '
+            ike_lifetime:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 24
+              description: IKE lifetime in hours.
+            encryption:
+              type: str
+              valid_values:
+              - 3des
+              - aes128
+              - aes256
+              description: IKE encryption algorithm.
+            dh_group:
+              type: int
+              convert_types:
+              - str
+              valid_values:
+              - 1
+              - 2
+              - 5
+              - 14
+              - 15
+              - 16
+              - 17
+              - 20
+              - 21
+              - 24
+              description: Diffie-Hellman group for the key exchange.
       sa_policies:
         type: list
         description: Security Association policies.
@@ -3782,25 +3842,28 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy.
+              description: Name of the SA policy. The "null" value is deprecated and
+                will be removed in AVD 5.0.0
             esp:
               type: dict
               keys:
                 integrity:
                   type: str
                   valid_values:
-                  - 'null'
+                  - disabled
                   - sha1
                   - sha256
+                  - 'null'
                 encryption:
                   type: str
                   valid_values:
-                  - 'null'
+                  - disabled
                   - aes128
                   - aes128gcm128
                   - aes128gcm64
                   - aes256
                   - aes256gcm256
+                  - 'null'
             pfs_dh_group:
               type: int
               convert_types:
@@ -6311,10 +6374,22 @@ keys:
           type: bool
         l2_mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
           description: '"l2_mtu" should only be defined for platforms supporting the
             "l2 mtu" CLI
+
+            '
+        l2_mru:
+          type: int
+          min: 68
+          max: 65535
+          convert_types:
+          - str
+          description: '"l2_mru" should only be defined for platforms supporting the
+            "l2 mru" CLI
 
             '
         vlans:
@@ -6470,6 +6545,8 @@ keys:
               description: L2 protocol forwarding profile
         mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
         mlag:
@@ -8606,6 +8683,8 @@ keys:
               type: str
             route_reflector_client:
               type: bool
+            password:
+              type: str
             passive:
               type: bool
             shutdown:

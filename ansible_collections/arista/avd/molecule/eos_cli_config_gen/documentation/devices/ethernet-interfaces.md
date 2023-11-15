@@ -175,6 +175,14 @@ sFlow is disabled.
 | Ethernet1 | EVPN_MH_ES1 | upstream |
 | Ethernet3 | EVPN_MH_ES2 | downstream |
 
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet13 | trunk phone | 100 | 70 | untagged |
+| Ethernet61 | trunk phone | 100 | 70 | untagged phone |
+| Ethernet62 | trunk phone | 100 | 70 | tagged phone |
+
 ##### Multicast Routing
 
 | Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
@@ -330,6 +338,8 @@ interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
    speed forced 100gfull
+   l2 mtu 8000
+   l2 mru 8000
    bgp session tracker ST1
    no switchport
    ip address 172.31.255.1/31
