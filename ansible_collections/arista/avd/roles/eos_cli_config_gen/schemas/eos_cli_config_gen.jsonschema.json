@@ -709,6 +709,247 @@
       "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
       "title": "Aliases"
     },
+    "application_traffic_recognition": {
+      "type": "object",
+      "description": "Application traffic recognition configuration.",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "description": "Space to add new categories or modify existing categories.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the category.",
+                "title": "Name"
+              },
+              "applications_and_services": {
+                "type": "array",
+                "description": "Application and service pair.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the application.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Supported service of the application.",
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications And Services"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Categories"
+        },
+        "port_range_sets": {
+          "type": "array",
+          "description": "Define range of ports.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the port set.",
+                "title": "Name"
+              },
+              "ports": {
+                "type": "array",
+                "description": "Set of port ranges.",
+                "items": {
+                  "type": "string",
+                  "description": "Port range formatted as start-end ( ex - 2400-2500 )."
+                },
+                "title": "Ports"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Port Range Sets"
+        },
+        "prefix_sets": {
+          "type": "array",
+          "description": "Define prefix sets.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the prefix set.",
+                "title": "Name"
+              },
+              "prefixes": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "description": "Ip prefix to match against the source/destination IP in packets (ex- 1.2.3.0/24)."
+                },
+                "title": "Prefixes"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Prefix Sets"
+        },
+        "user_defined_ipv4_applications": {
+          "type": "array",
+          "description": "List of user defined ipv4 applications.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the application.",
+                "title": "Name"
+              },
+              "src_prefix_set_name": {
+                "type": "string",
+                "description": "Specify a defined prefix set name.",
+                "title": "Src Prefix Set Name"
+              },
+              "dest_prefix_set_name": {
+                "type": "string",
+                "description": "Specify a defined prefix set name.",
+                "title": "Dest Prefix Set Name"
+              },
+              "protocol": {
+                "type": "string",
+                "description": "Protocol to match the packets against.",
+                "title": "Protocol"
+              },
+              "src_port_set_name": {
+                "type": "string",
+                "description": "Specify a defined port range name. Used to match against the src port in packets.",
+                "title": "Src Port Set Name"
+              },
+              "dest_port_set_name": {
+                "type": "string",
+                "description": "Specify a defined port range name. Used to match against the dest port in packets.",
+                "title": "Dest Port Set Name"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "User Defined IPv4 Applications"
+        },
+        "application_profiles": {
+          "type": "array",
+          "description": "Profiles is a collection of applications and categories with/without services.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the application profile.",
+                "title": "Name"
+              },
+              "applications": {
+                "type": "array",
+                "description": "Specify list of application and service pair to be part of the application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of an application.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "One of the supported services of the application.",
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications"
+              },
+              "transports": {
+                "type": "array",
+                "description": "List of transport protocols.",
+                "items": {
+                  "type": "string",
+                  "description": "Transport name."
+                },
+                "title": "Transports"
+              },
+              "categories": {
+                "type": "array",
+                "description": "Categories under this application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of a category.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service name. Matches applications supporting the service.",
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Categories"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Application Profiles"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Application Traffic Recognition"
+    },
     "arp": {
       "type": "object",
       "properties": {

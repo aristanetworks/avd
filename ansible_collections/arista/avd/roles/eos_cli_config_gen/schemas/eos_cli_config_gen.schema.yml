@@ -419,6 +419,133 @@ keys:
     description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
       |\n  alias wr copy running-config startup-config\n  alias siib show ip interface
       brief\n```"
+  application_traffic_recognition:
+    type: dict
+    description: Application traffic recognition configuration.
+    keys:
+      categories:
+        type: list
+        description: Space to add new categories or modify existing categories.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the category.
+            applications_and_services:
+              type: list
+              description: Application and service pair.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Name of the application.
+                  service:
+                    type: str
+                    description: Supported service of the application.
+      port_range_sets:
+        type: list
+        description: Define range of ports.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the port set.
+            ports:
+              type: list
+              description: Set of port ranges.
+              items:
+                type: str
+                description: Port range formatted as start-end ( ex - 2400-2500 ).
+      prefix_sets:
+        type: list
+        description: Define prefix sets.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the prefix set.
+            prefixes:
+              type: list
+              items:
+                type: str
+                description: Ip prefix to match against the source/destination IP
+                  in packets (ex- 1.2.3.0/24).
+      user_defined_ipv4_applications:
+        type: list
+        description: List of user defined ipv4 applications.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the application.
+            src_prefix_set_name:
+              type: str
+              description: Specify a defined prefix set name.
+            dest_prefix_set_name:
+              type: str
+              description: Specify a defined prefix set name.
+            protocol:
+              type: str
+              description: Protocol to match the packets against.
+            src_port_set_name:
+              type: str
+              description: Specify a defined port range name. Used to match against
+                the src port in packets.
+            dest_port_set_name:
+              type: str
+              description: Specify a defined port range name. Used to match against
+                the dest port in packets.
+      application_profiles:
+        type: list
+        description: Profiles is a collection of applications and categories with/without
+          services.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the application profile.
+            applications:
+              type: list
+              description: Specify list of application and service pair to be part
+                of the application profile.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Name of an application.
+                  service:
+                    type: str
+                    description: One of the supported services of the application.
+            transports:
+              type: list
+              description: List of transport protocols.
+              items:
+                type: str
+                description: Transport name.
+            categories:
+              type: list
+              description: Categories under this application profile.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Name of a category.
+                  service:
+                    type: str
+                    description: Service name. Matches applications supporting the
+                      service.
   arp:
     type: dict
     keys:
