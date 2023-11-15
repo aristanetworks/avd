@@ -20641,10 +20641,10 @@
                 "description": "Load-balance policy name.",
                 "title": "Name"
               },
-              "hop_count_lower": {
+              "hop_count_lowest": {
                 "type": "boolean",
                 "description": "Prefer paths with lowest hop-count.",
-                "title": "Hop Count Lower"
+                "title": "Hop Count Lowest"
               },
               "jitter": {
                 "type": "integer",
