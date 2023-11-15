@@ -73,29 +73,30 @@ class ActionModule(ActionBase):
         # For now we support the existing behavior of eos_validate_state, all hosts from the play
         ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
 
-        # Initialize an empty ResultsManager that will be used to store results and statistics
+        # List to track all results temp files for each host
+        temp_files = []
+
         try:
+            # Initialize an empty ResultsManager that will be used to store results and statistics
             test_results = ResultsManager(only_failed_tests=only_failed_tests)
-        except Exception as error:
-            raise AnsibleActionFail(f"Error while initializing ResultsManager: {str(error)}") from error
 
-        for host in sorted(ansible_play_hosts_all):
-            # Getting the host results temp file saved by eos_validate_state_runner action plugin
-            temp_file = get(hostvars[host], "anta_results.results_temp_file")
-            if not isinstance(temp_file, str) or not Path(temp_file).exists():
-                display.warning(f"Results temporary file path is invalid or does not exist for host {host}.")
-                continue
-            try:
-                # Process the host test results
-                for test_result in _test_results_stream(temp_file):
-                    test_results.update_results(test_result)
-            except Exception as error:
-                display.warning(f"Error while processing the test results of host {host}: {str(error)}")
+            for host in sorted(ansible_play_hosts_all):
+                # Getting the host results temp file saved by eos_validate_state_runner action plugin
+                temp_file = get(hostvars[host], "anta_results.results_temp_file")
+                if not isinstance(temp_file, str) or not Path(temp_file).exists():
+                    display.warning(f"Results temporary file path is invalid or does not exist for host {host}.")
+                    continue
 
-            # Delete the host results temp file
-            Path(temp_file).unlink()
+                # Track the temp file
+                temp_files.append(temp_file)
 
-        try:
+                try:
+                    # Process the host test results
+                    for test_result in _test_results_stream(temp_file):
+                        test_results.update_results(test_result)
+                except Exception as error:
+                    display.warning(f"Error while processing the test results of host {host}: {str(error)}")
+
             # Generate the CSV report
             if validation_report_csv:
                 with open(csv_report_path, "w", encoding="UTF-8", newline="\n") as csvfile:
@@ -107,11 +108,18 @@ class ActionModule(ActionBase):
                 with open(md_report_path, "w", encoding="UTF-8") as mdfile:
                     md_report = ValidateStateReport(mdfile=mdfile, results=test_results)
                     md_report.generate_report()
-        except Exception as error:
-            raise AnsibleActionFail(f"Error while generating the reports: {str(error)}") from error
 
-        # Make sure the ResultsManager temp file is getting closed and deleted
-        if test_results.tmp_test_results_file and not test_results.tmp_test_results_file.closed:
-            test_results.tmp_test_results_file.close()
+        except Exception as error:
+            raise AnsibleActionFail(f"Error during plugin execution: {str(error)}") from error
+
+        finally:
+            # Cleanup for each host's temporary file
+            for file_path in temp_files:
+                if Path(file_path).exists():
+                    Path(file_path).unlink()
+
+            # Cleanup for the ResultsManager temp file
+            if test_results.tmp_test_results_file and not test_results.tmp_test_results_file.closed:
+                test_results.tmp_test_results_file.close()
 
         return result

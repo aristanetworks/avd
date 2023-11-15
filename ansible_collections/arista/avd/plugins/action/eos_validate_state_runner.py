@@ -6,12 +6,13 @@ from __future__ import absolute_import, annotations, division, print_function
 __metaclass__ = type
 
 import logging
-import tempfile
+from pathlib import Path
+from tempfile import NamedTemporaryFile
 
-import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
+from yaml import dump_all
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, get_anta_results
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler
@@ -93,10 +94,20 @@ class ActionModule(ActionBase):
                 dry_run=ansible_check_mode,
                 yaml_dumper=AnsibleNoAliasDumper,
             )
+
+            # TODO Move the temp file stuff to a function
+            temp_file_prefix = f"{hostname}_"
+            temp_file_directory = Path("/tmp")
+
+            # Search for leftover temp files with the hostname prefix and delete them.
+            for file in temp_file_directory.glob(f"{temp_file_prefix}*"):
+                file.unlink(missing_ok=True)
+
             # Create the temp YAML file to save the ANTA results
-            with tempfile.NamedTemporaryFile(mode="w+", encoding="UTF-8", suffix=".yml", delete=False) as temp_file:
+            with NamedTemporaryFile(mode="w+", encoding="UTF-8", suffix=".yml", prefix=f"{hostname}_", dir=str(temp_file_directory), delete=False) as temp_file:
                 # Each YAML document in the file represents a single test result
-                temp_file.write(yaml.dump_all(anta_results, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130))
+                temp_file.write(dump_all(anta_results, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130))
+
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
 
