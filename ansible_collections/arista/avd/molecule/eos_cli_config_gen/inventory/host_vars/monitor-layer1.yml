@@ -1,0 +1,7 @@
+---
+monitor_layer1:
+  logging_mac_fault: true
+  logging_transceiver:
+    enable: true
+    dom: true
+    communication: true
