@@ -12,9 +12,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 from yaml import safe_load_all
 
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.csv_report import CSVReport
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.md_report import ValidateStateReport
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils.results_manager import ResultsManager
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import CSVReport, ResultsManager, ValidateStateReport
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
@@ -81,6 +79,11 @@ class ActionModule(ActionBase):
             test_results = ResultsManager(only_failed_tests=only_failed_tests)
 
             for host in sorted(ansible_play_hosts_all):
+                # Hosts marked as not deployed do not have any results
+                if not get(hostvars[host], "is_deployed"):
+                    display.warning(f"No test results for host {host} since it's marked as not deployed.")
+                    continue
+
                 # Getting the host results temp file saved by eos_validate_state_runner action plugin
                 temp_file = get(hostvars[host], "anta_results.results_temp_file")
                 if not isinstance(temp_file, str) or not Path(temp_file).exists():

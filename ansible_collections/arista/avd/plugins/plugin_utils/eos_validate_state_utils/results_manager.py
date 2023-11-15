@@ -38,8 +38,8 @@ class ResultsManager:
         self.total_tests_passed: int = 0
         self.total_tests_failed: int = 0
         self.total_tests_skipped: int = 0
-        self.dut_stats: dict[str, dict[str, int]] = {}
-        self.category_stats: dict[str, dict[str, int]] = {}
+        self.dut_stats: dict[str, dict] = {}
+        self.category_stats: dict[str, dict] = {}
         self.failed_tests: list[dict] = []
         self.only_failed_tests: bool = only_failed_tests
 

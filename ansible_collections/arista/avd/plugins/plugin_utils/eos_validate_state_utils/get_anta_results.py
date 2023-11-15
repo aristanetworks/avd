@@ -21,7 +21,8 @@ if TYPE_CHECKING:
 try:
     from anta.inventory import AntaInventory
     from anta.loader import setup_logging
-    from anta.result_manager import ResultManager, TestResult
+    from anta.result_manager import ResultManager
+    from anta.result_manager.models import TestResult
     from anta.runner import main as anta_runner
 
     HAS_ANTA = True
@@ -65,7 +66,7 @@ def get_anta_results(
     anta_device: AntaDevice,
     hostvars: dict,
     logging_level: str,
-    skipped_tests: dict,
+    skipped_tests: list[dict],
     ansible_tags: dict | None = None,
     save_catalog_name: str | None = None,
     dry_run: bool = False,

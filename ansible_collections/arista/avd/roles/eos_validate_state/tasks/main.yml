@@ -48,6 +48,10 @@
   tags:
     - always
 
+#######################################
+##  Generate reports from ANTA tests ##
+#######################################
+
 - name: Create validation reports from ANTA tests
   arista.avd.eos_validate_state_reports:
     csv_report_path: "{{ eos_validate_state_csv_report_path }}"
@@ -58,14 +62,17 @@
   delegate_to: localhost
   run_once: true
   check_mode: false
-  when: use_anta | bool
+  when:
+    - use_anta | bool
+    - validation_report_csv | bool
+    - validation_report_md | bool
   tags:
     - always
     - reports
 
-#############################################
-##  Run ansible assert eos_validate_state  ##
-#############################################
+########################################################
+##  Run eos_validate_state using Ansible assert tests ##
+########################################################
 
 - name: Include Ansible assert tests
   ansible.builtin.include_tasks: "ansible_tests.yml"
@@ -73,11 +80,11 @@
   tags:
     - always
 
-####################################
-##       Validation Reports       ##
-####################################
+#################################################
+##  Generate reports from Ansible assert tests ##
+#################################################
 
-- name: Create reports
+- name: Include Ansible assert tests report tasks
   ansible.builtin.include_tasks: "reports.yml"
   when: not use_anta | bool
   tags:

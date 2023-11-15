@@ -62,7 +62,8 @@ class ActionModule(ActionBase):
 
         save_catalog_name = None
         if save_catalog:
-            if device_catalog_output_dir := self._task.args.get("device_catalog_output_dir"):
+            device_catalog_output_dir = self._task.args.get("device_catalog_output_dir")
+            if device_catalog_output_dir is not None:
                 save_catalog_name = f"{device_catalog_output_dir}/{hostname}-catalog.yml"
             else:
                 raise AnsibleActionFail("'device_catalog_output_dir' must be set when 'save_catalog' is True.")
@@ -94,27 +95,44 @@ class ActionModule(ActionBase):
                 dry_run=ansible_check_mode,
                 yaml_dumper=AnsibleNoAliasDumper,
             )
-
-            # TODO Move the temp file stuff to a function
-            temp_file_prefix = f"{hostname}_"
-            temp_file_directory = Path("/tmp")
-
-            # Search for leftover temp files with the hostname prefix and delete them.
-            for file in temp_file_directory.glob(f"{temp_file_prefix}*"):
-                file.unlink(missing_ok=True)
-
-            # Create the temp YAML file to save the ANTA results
-            with NamedTemporaryFile(mode="w+", encoding="UTF-8", suffix=".yml", prefix=f"{hostname}_", dir=str(temp_file_directory), delete=False) as temp_file:
-                # Each YAML document in the file represents a single test result
-                temp_file.write(dump_all(anta_results, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130))
+            # Call the function to handle temp file creation
+            temp_file_name = create_temp_file(hostname, anta_results)
 
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
 
         # Add the temp file path to the Ansible result
-        result["results_temp_file"] = temp_file.name
+        result["results_temp_file"] = temp_file_name
 
         return result
+
+
+def create_temp_file(hostname: str, anta_results: list[dict]) -> str:
+    """
+    Create a temporary YAML file to save all test results from ANTA.
+    The function will also search for leftover temp files in the `/tmp` folder and delete them.
+
+    The temp file is saved in `/tmp` with a prefix of `<hostname>_` and `.yml` extension.
+
+    Args:
+      hostname (str): Current inventory device that is running the plugin.
+      anta_results (list[dict]): The list of ANTA results that will be saved in the YAML file.
+
+    Returns:
+      str: The absolute path of the temp file.
+    """
+    temp_file_prefix = f"{hostname}_"
+    temp_file_directory = Path("/tmp")
+
+    # Search for leftover temp files with the hostname prefix and delete them.
+    for file in temp_file_directory.glob(f"{temp_file_prefix}*"):
+        file.unlink(missing_ok=True)
+
+    # Create the temp YAML file to save the ANTA results
+    with NamedTemporaryFile(mode="w+", encoding="UTF-8", suffix=".yml", prefix=f"{hostname}_", dir=str(temp_file_directory), delete=False) as temp_file:
+        # Each YAML document in the file represents a single test result
+        temp_file.write(dump_all(anta_results, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130))
+        return temp_file.name
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:

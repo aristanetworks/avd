@@ -6,7 +6,7 @@ from __future__ import annotations
 import re
 from abc import ABC, abstractmethod
 from json import loads
-from typing import TYPE_CHECKING, Generator
+from typing import TYPE_CHECKING, Generator, Type
 
 if TYPE_CHECKING:
     from io import TextIOWrapper
@@ -31,7 +31,7 @@ class MDReportBase(ABC):
         self.results: ResultsManager = results
 
     @abstractmethod
-    def generate_section(self):
+    def generate_section(self) -> None:
         """
         Abstract method to generate a specific section of the markdown report.
         Must be implemented by subclasses.
@@ -83,7 +83,7 @@ class ValidateStateReport(MDReportBase):
     Generates the `# Validate State Report` section of the markdown report.
     """
 
-    def generate_report(self, cls=None, is_root=True) -> None:
+    def generate_report(self, cls: Type | None = None, is_root: bool = True) -> None:
         """
         Recursively generates report sections for each inner classes.
 
