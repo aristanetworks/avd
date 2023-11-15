@@ -812,7 +812,7 @@ roles/eos_cli_config_gen/docs/tables/mpls.md
 ### Router adaptive virtual topology
 
 --8<--
-router-adaptive-virtual-topology.md
+roles/eos_cli_config_gen/docs/tables/router-adaptive-virtual-topology.md
 --8<--
 
 ### Router BFD
