@@ -49,6 +49,43 @@ Topology role: transit region
 | Zone | Canada | 2 |
 | Site | Ottawa | 99 |
 
+#### AVT Profiles
+
+| Profile name | Load balance policy | Internet exit policy |
+| ------------ | ------------------- | -------------------- |
+| office365 | - | - |
+| scavenger | scavenger-lb | scavenger-ie |
+| video | - | video-ie |
+| voice | voice-lb | - |
+
+#### AVT Policies
+
+##### AVT policy production
+| Application profile | AVT Profile | Traffic Class | DSCP |
+| ------------------- | ----------- | ------------- | ---- |
+| videoApps | - | - | -
+| criticalApps | crit | 7 | 45
+| audioApps | audio | 6 | -
+| mfgApp | crit | - | 54
+| hrApp | hr | - | -
+
+#### VRFs configuration
+
+##### VRF blue
+
+| AVT Profile | AVT ID |
+| ----------- | ------ |
+| video | 1 |
+
+##### VRF red
+| AVT policy |
+| ---------- |
+| production
+
+| AVT Profile | AVT ID |
+| ----------- | ------ |
+| video | 1 |
+| voice | 2 |
 #### Router Adaptive Virtual Topology Configuration
 
 ```eos
@@ -58,4 +95,39 @@ router adaptive-virtual-topology
    region North_America id 1
    zone Canada id 2
    site Ottawa id 99
+   !
+   profile office365
+   !
+   profile scavenger
+      path-selection load-balance scavenger-lb
+      internet-exit policy scavenger-ie
+   !
+   profile video
+      internet-exit policy video-ie
+   !
+   profile voice
+      path-selection load-balance voice-lb
+   !
+   policy production
+      match application-profile videoApps
+      match application-profile criticalApps
+         profile crit
+         traffic-class 7
+         dscp 45
+      match application-profile audioApps
+         profile audio
+         traffic-class 6
+      match application-profile mfgApp
+         profile crit
+         dscp 54
+      match application-profile hrApp
+         profile hr
+   !
+   vrf blue
+      profile video id 1
+   !
+   vrf red
+      policy production
+      profile video id 1
+      profile voice id 2
 ```
