@@ -67,7 +67,7 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 
 | AVT Profile | AVT ID |
 | ----------- | ------ |
-{%             for profiles in vrf.profiles | arista.avd.natural_sort('id') %}
+{%             for profile in vrf.profiles | arista.avd.natural_sort('id') %}
 | {{ profile.name }} | {{ profile.id }} |
 {%             endfor %}
 {%         endfor %}
