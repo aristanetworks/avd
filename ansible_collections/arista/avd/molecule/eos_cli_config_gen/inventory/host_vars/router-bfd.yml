@@ -16,6 +16,7 @@ router_bfd:
         ipv6: true
     initiator_interval: 500
     initiator_multiplier: 3
+    initiator_measurement_round_trip: true
     reflector:
       min_rx: 600
       local_discriminator: 155.1.3.1

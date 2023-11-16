@@ -14309,6 +14309,11 @@
               "maximum": 50,
               "title": "Initiator Multiplier"
             },
+            "initiator_measurement_round_trip": {
+              "type": "boolean",
+              "description": "Enable round-trip delay measurement",
+              "title": "Initiator Measurement Round Trip"
+            },
             "reflector": {
               "type": "object",
               "properties": {
