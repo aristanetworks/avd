@@ -28,8 +28,12 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 {%         endif %}
 {%     endif %}
 
+<<<<<<< HEAD
 {%     if router_adaptive_virtual_topology.profiles is arista.avd.defined
         and router_adaptive_virtual_topology.profiles | length > 0 %}
+=======
+{%     if router_adaptive_virtual_topology.profiles | length > 0 %}
+>>>>>>> c21d067519285d8f70be5183230b6e1a8c3be029
 #### AVT Profiles
 
 | Profile name | Load balance policy | Internet exit policy |
