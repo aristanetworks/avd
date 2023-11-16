@@ -28,7 +28,8 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 {%         endif %}
 {%     endif %}
 
-{%     if router_adaptive_virtual_topology.profiles | length > 0 %}
+{%     if router_adaptive_virtual_topology.profiles is arista.avd.defined
+        and router_adaptive_virtual_topology.profiles | length > 0 %}
 #### AVT Profiles
 
 | Profile name | Load balance policy | Internet exit policy |
@@ -38,9 +39,9 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 {%         endfor %}
 {%     endif %}
 
-{%     if router_adaptive_virtual_topology.policies | length > 0 %}
+{%     if router_adaptive_virtual_topology.policies is arista.avd.defined
+        and router_adaptive_virtual_topology.policies | length > 0 %}
 #### AVT Policies
-
 {%         for policy in router_adaptive_virtual_topology.policies | arista.avd.natural_sort('name') %}
 
 ##### AVT policy {{ policy.name }}
@@ -52,16 +53,17 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 {%         endfor %}
 {%     endif %}
 
-{%     if router_adaptive_virtual_topology.vrfs | length > 0 %}
+{%     if router_adaptive_virtual_topology.vrfs is arista.avd.defined
+        and router_adaptive_virtual_topology.vrfs | length > 0 %}
 #### VRFs configuration
-
 {%         for vrf in router_adaptive_virtual_topology.vrfs | arista.avd.natural_sort('name') %}
 
 ##### VRF {{ vrf.name }}
-
+{%             if vrf.policy is arista.avd.defined %}
 | AVT policy |
 | ---------- |
 | {{ vrf.policy | arista.avd.default("-") }}
+{%             endif %}
 
 | AVT Profile | AVT ID |
 | ----------- | ------ |
