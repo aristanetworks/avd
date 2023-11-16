@@ -237,7 +237,7 @@ Configurations for the above tools can be found in:
 
 ## AVD Plugins usage
 
-Plugins documentation is available [here](../../plugins/README.md)
+See the menu on the left for Ansible Collection Plugins.
 
 ### PLUGIN-1 - Test if a variable exists
 
