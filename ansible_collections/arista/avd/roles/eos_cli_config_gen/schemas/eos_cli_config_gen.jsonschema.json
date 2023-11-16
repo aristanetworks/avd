@@ -7621,7 +7621,7 @@
                 "fqdn",
                 "ipv4"
               ],
-              "description": "Hostname format",
+              "description": "Hostname format in syslogs. For hostname _only_, remove the line. (default EOS CLI behaviour).",
               "title": "Hostname"
             },
             "sequence_numbers": {
