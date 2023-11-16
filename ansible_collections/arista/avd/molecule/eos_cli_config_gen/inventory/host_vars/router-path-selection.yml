@@ -70,12 +70,27 @@ router_path_selection:
   load_balance_policies:
     # Out of order to test sorting
     - name: LB-P-2
+      latency: 42
+      jitter: 666
+      loss_rate: "42.42"
       path_groups:
-        - PG-1
+        # checking priority 1 comes first
+        - name: PG-3
+        - name: PG-1
+          priority: 1
     - name: LB-P-1
+      lowest_hop_count: true
+      loss_rate: 17
       path_groups:
-        - PG-3
-        - PG-2
+        # checking priority 1 comes first
+        - name: PG-5
+        - name: PG-3
+          priority: 666
+        # Checking ordering for same priority
+        - name: PG-4
+          priority: 42
+        - name: PG-2
+          priority: 42
   policies:
     # Out of order to test sorting
     - name: DPS-P-2
