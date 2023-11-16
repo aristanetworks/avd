@@ -41,44 +41,53 @@ router_bgp:
   - ip_address: 172.17.10.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
+    peer: DC1-SUPER-SPINE1
     description: DC1-SUPER-SPINE1_Ethernet5
     bfd: true
   - ip_address: 172.17.10.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
+    peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Ethernet6
     bfd: true
   - ip_address: 172.17.10.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65111.100'
+    peer: DC1-POD1-LEAF1A
     description: DC1-POD1-LEAF1A_Ethernet4
     bfd: true
   - ip_address: 172.16.210.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC2-POD1-LEAF1A
     description: DC2-POD1-LEAF1A
     remote_as: '65211'
     route_map_out: RM-EVPN-FILTER-AS65211
   - ip_address: 172.16.210.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC2-POD1-SPINE1
     description: DC2-POD1-SPINE1
     remote_as: '65210'
     route_map_out: RM-EVPN-FILTER-AS65210
   - ip_address: 172.16.20.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC2-RS1
     description: DC2-RS1
     remote_as: '65201'
     route_map_out: RM-EVPN-FILTER-AS65201
   - ip_address: 172.16.200.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC2-SUPER-SPINE1
     description: DC2-SUPER-SPINE1
     remote_as: '65200'
     route_map_out: RM-EVPN-FILTER-AS65200
   - ip_address: 172.16.110.5
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B
     remote_as: '65112.100'
   - ip_address: 172.16.110.4
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A
     remote_as: '65112.100'
   address_family_evpn:

@@ -305,7 +305,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def _create_neighbor(self, ip_address: str, name: str, peer_group: str, remote_as: str = None) -> dict:
         """ """
-        neighbor = {"ip_address": ip_address, "peer_group": peer_group, "description": name}
+        neighbor = {"ip_address": ip_address, "peer_group": peer_group, "peer": name, "description": name}
 
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             if remote_as is None:

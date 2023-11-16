@@ -41,26 +41,32 @@ router_bgp:
   - ip_address: 172.16.12.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
+    peer: DC1-SUPER-SPINE1
     description: DC1-SUPER-SPINE1_Ethernet3
   - ip_address: 172.16.12.64
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
+    peer: DC1-SUPER-SPINE2
     description: DC1-SUPER-SPINE2_Ethernet3
   - ip_address: 172.17.120.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65121'
+    peer: DC1-POD2-LEAF1A
     description: DC1-POD2-LEAF1A_Ethernet1
   - ip_address: 172.17.10.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
+    peer: DC1-RS2
     description: DC1-RS2_Ethernet2
     bfd: true
   - ip_address: 172.16.120.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-POD2-LEAF1A
     description: DC1-POD2-LEAF1A
     remote_as: '65121'
   - ip_address: 11.1.1.19
     remote_as: '65210'
+    peer: DC2-POD1-SPINE1
     description: DC2-POD1-SPINE1
     peer_group: IPv4-UNDERLAY-PEERS
   address_family_evpn:
