@@ -124,11 +124,51 @@ keys:
             name:
               type: str
               description: Load-balance policy name.
+            lowest_hop_count:
+              type: bool
+              description: Prefer paths with lowest hop-count.
+            jitter:
+              type: int
+              description: Jitter requirement for this load balance policy in milliseconds.
+              convert_types:
+                - str
+              min: 0
+              max: 10000
+            latency:
+              type: int
+              description: One way delay requirement for this load balance policy in milliseconds.
+              convert_types:
+                - str
+              min: 0
+              max: 10000
+            loss_rate:
+              type: str
+              description: |-
+                Loss Rate requirement in percentage for this load balance policy.
+                Value between 0.00 and 100.00 %
+              convert_types:
+                - int
+                - float
+              pattern: "^\\d+(\\.\\d{1,2})?$"
             path_groups:
               type: list
+              primary_key: name
               description: List of path-groups to use for this load balance policy.
               items:
-                type: str
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Path-group name
+                  priority:
+                    type: int
+                    description: |-
+                      Priority for this path-group.
+                      The EOS default value is 1.
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
       policies:
         type: list
         primary_key: name

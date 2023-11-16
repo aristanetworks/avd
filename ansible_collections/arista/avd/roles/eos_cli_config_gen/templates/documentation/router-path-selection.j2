@@ -77,10 +77,24 @@
 
 #### Load-balance policies
 
-| Policy name | Path group(s) |
-| ----------- | ------------- |
+| Policy Name | Jitter (ms) | Latency (ms) | Loss Rate (%) | Path Groups (priority) | Lowest Hop Count |
+| ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
 {%         for load_balance_policy in router_path_selection.load_balance_policies | arista.avd.natural_sort('name') %}
-| {{ load_balance_policy.name }} | {{ load_balance_policy.path_groups | arista.avd.natural_sort() | join("<br>") }} |
+{%             set lowest_hop_count = load_balance_policy.lowest_hop_count | arista.avd.default(false) %}
+{%             set jitter = load_balance_policy.jitter | arista.avd.default("-") %}
+{%             set latency = load_balance_policy.latency | arista.avd.default("-") %}
+{%             set loss_rate = load_balance_policy.loss_rate | arista.avd.default("-") %}
+{%             set path_groups_list = [] %}
+{# TODO remove inplace update once Ansible 2.13 is dropped and use groupby default instead #}
+{%             for path_group in load_balance_policy.path_groups | arista.avd.default([]) %}
+{%                 do path_group.update({"_priority": path_group.priority | arista.avd.default(1)}) %}
+{%             endfor %}
+{%             for priority, entries in load_balance_policy.path_groups | groupby("_priority") %}
+{%                 for entry in entries | arista.avd.natural_sort("name") %}
+{%                     do path_groups_list.append(entry.name ~ " (" ~ priority ~ ")") %}
+{%                 endfor %}
+{%             endfor %}
+| {{ load_balance_policy.name }} | {{ jitter }} | {{ latency }} | {{ loss_rate }} | {{ path_groups_list | join("<br>") }} | {{ lowest_hop_count }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_path_selection.policies is arista.avd.defined %}
