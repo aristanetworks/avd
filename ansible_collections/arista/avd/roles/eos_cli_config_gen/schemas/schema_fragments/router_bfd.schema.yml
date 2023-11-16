@@ -55,6 +55,9 @@ keys:
             type: int
             min: 3
             max: 50
+          initiator_measurement_round_trip:
+            type: bool
+            description: Enable round-trip delay measurement
           reflector:
             type: dict
             keys:

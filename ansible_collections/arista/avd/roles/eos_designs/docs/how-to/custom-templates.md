@@ -1,10 +1,14 @@
+---
+# This title is used for search results
+title: Custom Templates for eos_designs
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
 
-# Custom Templates
+# Custom Templates for eos_designs
 
 With Custom Templates for the `eos_designs` role, the user can create additional structured configuration variables that would otherwise not be created by the built-in templates.
 These additional variables will then be available for use by other AVD roles.
