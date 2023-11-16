@@ -60,16 +60,20 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 
 ##### VRF {{ vrf.name }}
 {%             if vrf.policy is arista.avd.defined %}
+
 | AVT policy |
 | ---------- |
 | {{ vrf.policy | arista.avd.default("-") }}
 {%             endif %}
 
+{%             if vrf.profiles is is arista.avd.defined
+                and vrf.profiles | length > 0 %}
 | AVT Profile | AVT ID |
 | ----------- | ------ |
-{%             for profile in vrf.profiles | arista.avd.natural_sort('id') %}
+{%                 for profile in vrf.profiles | arista.avd.natural_sort('id') %}
 | {{ profile.name }} | {{ profile.id }} |
-{%             endfor %}
+{%                 endfor %}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 #### Router Adaptive Virtual Topology Configuration
