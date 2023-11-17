@@ -101,6 +101,7 @@ WORDLIST = {
     "vrrp": "VRRP",
     "vxlan": "VxLAN",
     "ztp": "ZTP",
+    "mdb": "MDB",
 }
 
 
