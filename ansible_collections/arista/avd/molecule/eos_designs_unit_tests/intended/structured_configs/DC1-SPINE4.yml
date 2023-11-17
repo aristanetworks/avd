@@ -41,113 +41,141 @@ router_bgp:
   - ip_address: 172.31.254.7
     peer_group: UNDERLAY-PEERS
     remote_as: '65101'
+    peer: DC1-LEAF1A
     description: DC1-LEAF1A_Ethernet30
   - ip_address: 172.31.254.43
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
+    peer: DC1-LEAF2A
     description: DC1-LEAF2A_Ethernet54/1
   - ip_address: 172.31.254.45
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
+    peer: DC1-LEAF2A
     description: DC1-LEAF2A_Ethernet55/1
   - ip_address: 172.31.254.75
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
+    peer: DC1-LEAF2B
     description: DC1-LEAF2B_Ethernet54/1
   - ip_address: 172.31.254.77
     peer_group: UNDERLAY-PEERS
     remote_as: '65102'
+    peer: DC1-LEAF2B
     description: DC1-LEAF2B_Ethernet55/1
   - ip_address: 172.31.254.103
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
+    peer: DC1-SVC3A
     description: DC1-SVC3A_Ethernet52/1
   - ip_address: 172.31.254.135
     peer_group: UNDERLAY-PEERS
     remote_as: '65103'
+    peer: DC1-SVC3B
     description: DC1-SVC3B_Ethernet52/1
   - ip_address: 172.31.254.167
     peer_group: UNDERLAY-PEERS
     remote_as: '65104'
+    peer: DC1-BL1A
     description: DC1-BL1A_Ethernet4
   - ip_address: 172.31.254.199
     peer_group: UNDERLAY-PEERS
     remote_as: '65105'
+    peer: DC1-BL1B
     description: DC1-BL1B_Ethernet4
   - ip_address: 172.31.254.231
     peer_group: UNDERLAY-PEERS
     remote_as: '65106'
+    peer: DC1-BL2A
     description: DC1-BL2A_Ethernet4
   - ip_address: 172.31.255.7
     peer_group: UNDERLAY-PEERS
     remote_as: '65107'
+    peer: DC1-BL2B
     description: DC1-BL2B_Ethernet4
   - ip_address: 172.31.255.39
     peer_group: UNDERLAY-PEERS
     remote_as: '65108'
+    peer: DC1-CL1A
     description: DC1-CL1A_Ethernet4
   - ip_address: 172.31.255.71
     peer_group: UNDERLAY-PEERS
     remote_as: '65109'
+    peer: DC1-CL1B
     description: DC1-CL1B_Ethernet4
   - ip_address: 172.31.255.135
     peer_group: UNDERLAY-PEERS
     remote_as: '65110'
+    peer: DC1_UNDEPLOYED_LEAF1A
     description: DC1_UNDEPLOYED_LEAF1A_Ethernet52/1
   - ip_address: 172.31.255.167
     peer_group: UNDERLAY-PEERS
     remote_as: '65111'
+    peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B_Ethernet52/1
   - ip_address: 192.168.255.14
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-BL1A
     description: DC1-BL1A
     remote_as: '65104'
   - ip_address: 192.168.255.15
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-BL1B
     description: DC1-BL1B
     remote_as: '65105'
   - ip_address: 192.168.255.16
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-BL2A
     description: DC1-BL2A
     remote_as: '65106'
   - ip_address: 192.168.255.17
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-BL2B
     description: DC1-BL2B
     remote_as: '65107'
   - ip_address: 192.168.255.18
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-CL1A
     description: DC1-CL1A
     remote_as: '65108'
   - ip_address: 192.168.255.19
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-CL1B
     description: DC1-CL1B
     remote_as: '65109'
   - ip_address: 192.168.255.9
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-LEAF1A
     description: DC1-LEAF1A
     remote_as: '65101'
   - ip_address: 192.168.255.10
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-LEAF2A
     description: DC1-LEAF2A
     remote_as: '65102'
   - ip_address: 192.168.255.11
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-LEAF2B
     description: DC1-LEAF2B
     remote_as: '65102'
   - ip_address: 192.168.255.12
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SVC3A
     description: DC1-SVC3A
     remote_as: '65103'
   - ip_address: 192.168.255.13
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SVC3B
     description: DC1-SVC3B
     remote_as: '65103'
   - ip_address: 192.168.255.21
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1_UNDEPLOYED_LEAF1A
     description: DC1_UNDEPLOYED_LEAF1A
     remote_as: '65110'
   - ip_address: 192.168.255.22
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B
     remote_as: '65111'
   address_family_evpn:

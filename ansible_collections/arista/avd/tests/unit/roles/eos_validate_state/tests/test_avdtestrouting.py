@@ -18,11 +18,13 @@ DATA: list[dict] = [
                     "router_id": "10.1.0.1",
                     "peer_groups": [{"name": "IPv4-UNDERLAY-PEERS", "type": "ipv4"}, {"name": "EVPN-OVERLAY-PEERS", "type": "evpn"}],
                     "neighbors": [
-                        {"ip_address": "10.1.255.1", "peer_group": "IPv4-UNDERLAY-PEERS"},
-                        {"ip_address": "10.1.0.6", "peer_group": "EVPN-OVERLAY-PEERS"},
+                        {"ip_address": "10.1.255.1", "peer": "DC1-LEAF1A", "peer_group": "IPv4-UNDERLAY-PEERS"},
+                        {"ip_address": "10.1.0.6", "peer": "DC1-LEAF1B", "peer_group": "EVPN-OVERLAY-PEERS"},
                     ],
                 },
-            }
+            },
+            "DC1-LEAF1A": {},
+            "DC1-LEAF1B": {},
         },
         "expected_result": {
             "anta.tests.routing": {
@@ -66,7 +68,7 @@ DATA: list[dict] = [
         "test_module": "AvdTestBGP",
         "hostvars": {"DC1-SPINE1": {}},
         "expected_result": {},
-        "expected_log": "Variable 'router_bgp' is missing from the structured_config. AvdTestBGP is skipped.",
+        "expected_log": "Key 'router_bgp' is missing. AvdTestBGP is skipped.",
         "expected_log_level": "INFO",
     },
     {
@@ -74,7 +76,7 @@ DATA: list[dict] = [
         "test_module": "AvdTestBGP",
         "hostvars": {"DC1-SPINE1": {"router_bgp": {}}},
         "expected_result": {},
-        "expected_log": "Variable 'service_routing_protocols_model' is missing from the structured_config. AvdTestBGP is skipped.",
+        "expected_log": "Key 'service_routing_protocols_model' is missing. AvdTestBGP is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -82,7 +84,7 @@ DATA: list[dict] = [
         "test_module": "AvdTestBGP",
         "hostvars": {"DC1-SPINE1": {"service_routing_protocols_model": "ribd", "router_bgp": {}}},
         "expected_result": {},
-        "expected_log": "Variable 'service_routing_protocols_model' is NOT set to 'multi-agent'. AvdTestBGP is skipped.",
+        "expected_log": "Key 'service_routing_protocols_model' != 'multi-agent'. AvdTestBGP is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -96,11 +98,13 @@ DATA: list[dict] = [
                     "router_id": "10.1.0.1",
                     "peer_groups": [{"name": "EVPN-OVERLAY-PEERS", "type": "evpn"}],
                     "neighbors": [
-                        {"ip_address": "10.1.255.1", "peer_group": "IPv4-UNDERLAY-PEERS"},
-                        {"ip_address": "10.1.0.6", "peer_group": "EVPN-OVERLAY-PEERS"},
+                        {"ip_address": "10.1.255.1", "peer": "DC1-LEAF1A", "peer_group": "IPv4-UNDERLAY-PEERS"},
+                        {"ip_address": "10.1.0.6", "peer": "DC1-LEAF1B", "peer_group": "EVPN-OVERLAY-PEERS"},
                     ],
                 },
-            }
+            },
+            "DC1-LEAF1A": {},
+            "DC1-LEAF1B": {},
         },
         "expected_result": {
             "anta.tests.routing": {
@@ -126,7 +130,7 @@ DATA: list[dict] = [
                 ],
             },
         },
-        "expected_log": "Peer group 'IPv4-UNDERLAY-PEERS' dictionary is missing from the 'peer_groups' list of the 'router_bgp' data model.",
+        "expected_log": "Peer group 'IPv4-UNDERLAY-PEERS' not found. AvdTestBGP is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -140,11 +144,12 @@ DATA: list[dict] = [
                     "router_id": "10.1.0.1",
                     "peer_groups": [{"name": "IPv4-UNDERLAY-PEERS", "type": "ipv4"}, {"name": "EVPN-OVERLAY-PEERS", "type": "evpn"}],
                     "neighbors": [
-                        {"peer_group": "IPv4-UNDERLAY-PEERS"},
-                        {"ip_address": "10.1.0.6", "peer_group": "EVPN-OVERLAY-PEERS"},
+                        {"peer": "DC1-LEAF1A", "peer_group": "IPv4-UNDERLAY-PEERS"},
+                        {"ip_address": "10.1.0.6", "peer": "DC1-LEAF1B", "peer_group": "EVPN-OVERLAY-PEERS"},
                     ],
                 },
-            }
+            },
+            "DC1-LEAF1B": {},
         },
         "expected_result": {
             "anta.tests.routing": {
@@ -170,7 +175,7 @@ DATA: list[dict] = [
                 ],
             },
         },
-        "expected_log": "Neighbor entry #1 from the 'neighbors' list of the 'router_bgp' data model is missing the variable 'ip_address'.",
+        "expected_log": "Key 'router_bgp.neighbors.[0].ip_address' is missing. AvdTestBGP is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -189,11 +194,13 @@ DATA: list[dict] = [
                         {"name": "EVPN-OVERLAY-PEERS", "type": "evpn"},
                     ],
                     "neighbors": [
-                        {"ip_address": "10.1.255.1", "peer_group": "IPv4-UNDERLAY-PEERS"},
-                        {"ip_address": "10.1.0.6", "peer_group": "EVPN-OVERLAY-PEERS"},
+                        {"ip_address": "10.1.255.1", "peer": "DC1-LEAF1A", "peer_group": "IPv4-UNDERLAY-PEERS"},
+                        {"ip_address": "10.1.0.6", "peer": "DC1-LEAF1B", "peer_group": "EVPN-OVERLAY-PEERS"},
                     ],
                 },
-            }
+            },
+            "DC1-LEAF1A": {},
+            "DC1-LEAF1B": {},
         },
         "expected_result": {
             "anta.tests.routing": {
@@ -219,7 +226,7 @@ DATA: list[dict] = [
                 ],
             },
         },
-        "expected_log": "Peer group 'IPv4-UNDERLAY-PEERS' from the 'peer_groups' list of the 'router_bgp' data model is missing the variable 'type'.",
+        "expected_log": "Key 'router_bgp.peer_groups.IPv4-UNDERLAY-PEERS.type' is missing. AvdTestBGP is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -233,13 +240,13 @@ DATA: list[dict] = [
                     "router_id": "10.1.0.1",
                     "peer_groups": [{"name": "IPv4-UNDERLAY-PEERS", "type": "ipv4"}],
                     "neighbors": [
-                        {"peer_group": "IPv4-UNDERLAY-PEERS"},
+                        {"peer": "DC1-LEAF1A", "peer_group": "IPv4-UNDERLAY-PEERS"},
                     ],
                 },
             }
         },
         "expected_result": {},
-        "expected_log": "Neighbor entry #1 from the 'neighbors' list of the 'router_bgp' data model is missing the variable 'ip_address'.",
+        "expected_log": "Key 'router_bgp.neighbors.[0].ip_address' is missing. AvdTestBGP is skipped.",
         "expected_log_level": "WARNING",
     },
 ]

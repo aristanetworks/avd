@@ -53,9 +53,9 @@ interface Management1
 
 #### Router BFD SBFD Summary
 
-| Initiator Interval | Initiator Multiplier | Reflector Minimum RX | Reflector Local-Discriminator |
+| Initiator Interval | Initiator Multiplier | Initiator Round-Trip | Reflector Minimum RX | Reflector Local-Discriminator |
 | ------------------ | -------------------- | -------------------- | ----------------------------- |
-| 500 | 3 | 600 | 155.1.3.1 |
+| 500 | 3 | True | 600 | 155.1.3.1 |
 
 #### Router BFD Device Configuration
 
@@ -68,6 +68,7 @@ router bfd
    sbfd
       local-interface Loopback0 ipv4 ipv6
       initiator interval 500 multiplier 3
+      initiator measurement delay round-trip
       reflector min-rx 600
       reflector local-discriminator 155.1.3.1
 ```

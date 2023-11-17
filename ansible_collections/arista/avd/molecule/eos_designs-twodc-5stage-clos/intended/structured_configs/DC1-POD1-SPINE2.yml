@@ -30,30 +30,37 @@ router_bgp:
   - ip_address: 172.16.11.2
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
+    peer: DC1-SUPER-SPINE1
     description: DC1-SUPER-SPINE1_Ethernet2
   - ip_address: 172.16.11.66
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
+    peer: DC1-SUPER-SPINE2
     description: DC1-SUPER-SPINE2_Ethernet2
   - ip_address: 172.17.110.3
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65111.100'
+    peer: DC1-POD1-LEAF1A
     description: DC1-POD1-LEAF1A_Ethernet2
   - ip_address: 172.17.110.11
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
+    peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A_Ethernet2
   - ip_address: 172.17.110.19
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
+    peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Ethernet2
   - ip_address: 172.17.110.15
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
+    peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A_Ethernet12
   - ip_address: 172.17.110.23
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65112.100'
+    peer: DC1-POD1-LEAF2B
     description: DC1-POD1-LEAF2B_Ethernet12
 static_routes:
 - vrf: MGMT

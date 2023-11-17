@@ -286,6 +286,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                 {
                     "name": neighbor_interface_name,
                     "peer_group": peer_group_name,
+                    "peer": self.shared_utils.mlag_peer,
                     "remote_as": self.shared_utils.bgp_as,
                     "description": self.shared_utils.mlag_peer,
                 }
@@ -297,6 +298,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                 {
                     "ip_address": neighbor_ip,
                     "peer_group": peer_group_name,
+                    "peer": self.shared_utils.mlag_peer,
                     "description": self.shared_utils.mlag_peer,
                 }
             ]

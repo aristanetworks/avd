@@ -1,10 +1,14 @@
+---
+# This title is used for search results
+title: Custom Templates for eos_cli_config_gen
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
 
-# Custom Templates
+# Custom Templates for eos_cli_config_gen
 
 With Custom Templates for the `eos_cli_config_gen` role, the user can create additional CLI configurations for features not covered by the built-in templates.
 

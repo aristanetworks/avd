@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: Input variables for eos_designs
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
@@ -872,7 +876,13 @@ Both data models support variable inheritance from profiles defined under [`port
 
     To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
     `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
-    Transformation from abstraction to network values is managed by a [filter_plugin](../../../plugins/README.md) and provides following result:
+    Transformation from abstraction to network values is managed by the following Ansible filter plugins:
+
+    - [`arista.avd.generate_esi`](../../../docs/plugins/Filter%20plugins/generate_esi.md)
+    - [`arista.avd.generate_lacp_id`](../../../docs/plugins/Filter%20plugins/generate_lacp_id.md).
+    - [`arista.avd.generate_route_target`](../../../docs/plugins/Filter%20plugins/generate_route_target.md).
+
+    The plugins provides the following result:
 
     - *EVPN ESI*: 000:000:0303:0202:0101
     - *LACP ID*: 0303.0202.0101

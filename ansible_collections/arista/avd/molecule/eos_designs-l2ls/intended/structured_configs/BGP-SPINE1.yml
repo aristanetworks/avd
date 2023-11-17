@@ -33,9 +33,11 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.254.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: BGP-SPINE2
     description: BGP-SPINE2
   - ip_address: 192.168.253.5
     remote_as: '65000'
+    peer: DUMMY-CORE
     description: DUMMY-CORE
     peer_group: IPv4-UNDERLAY-PEERS
   redistribute_routes:

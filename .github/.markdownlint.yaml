@@ -33,6 +33,10 @@ MD013:
 MD024:
   siblings_only: true
 
+# Multiple top-level headings in the same document
+MD025:
+  front_matter_title: ""
+
 # MD029/ol-prefix - Ordered list item prefix
 MD029:
   # List style
@@ -63,7 +67,6 @@ MD035:
 # since we're using front-matter, this
 MD041:
   false
-
 
 # proper-names - proper names to have the correct capitalization
 # probably not entirely helpful in a technical writing environment.

@@ -7621,7 +7621,7 @@
                 "fqdn",
                 "ipv4"
               ],
-              "description": "Hostname format",
+              "description": "Hostname format in syslogs. For hostname _only_, remove the line. (default EOS CLI behaviour).",
               "title": "Hostname"
             },
             "sequence_numbers": {
@@ -14029,6 +14029,11 @@
               "maximum": 50,
               "title": "Initiator Multiplier"
             },
+            "initiator_measurement_round_trip": {
+              "type": "boolean",
+              "description": "Enable round-trip delay measurement",
+              "title": "Initiator Measurement Round Trip"
+            },
             "reflector": {
               "type": "object",
               "properties": {
@@ -14647,6 +14652,11 @@
                 },
                 "title": "As Path"
               },
+              "peer": {
+                "type": "string",
+                "description": "Key only used for documentation or validation purposes",
+                "title": "Peer"
+              },
               "description": {
                 "type": "string",
                 "title": "Description"
@@ -14878,6 +14888,11 @@
               "remote_as": {
                 "type": "string",
                 "title": "Remote As"
+              },
+              "peer": {
+                "type": "string",
+                "description": "Key only used for documentation or validation purposes",
+                "title": "Peer"
               },
               "peer_group": {
                 "type": "string",
@@ -20641,11 +20656,57 @@
                 "description": "Load-balance policy name.",
                 "title": "Name"
               },
+              "lowest_hop_count": {
+                "type": "boolean",
+                "description": "Prefer paths with lowest hop-count.",
+                "title": "Lowest Hop Count"
+              },
+              "jitter": {
+                "type": "integer",
+                "description": "Jitter requirement for this load balance policy in milliseconds.",
+                "minimum": 0,
+                "maximum": 10000,
+                "title": "Jitter"
+              },
+              "latency": {
+                "type": "integer",
+                "description": "One way delay requirement for this load balance policy in milliseconds.",
+                "minimum": 0,
+                "maximum": 10000,
+                "title": "Latency"
+              },
+              "loss_rate": {
+                "type": "string",
+                "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00 %",
+                "pattern": "^\\d+(\\.\\d{1,2})?$",
+                "title": "Loss Rate"
+              },
               "path_groups": {
                 "type": "array",
                 "description": "List of path-groups to use for this load balance policy.",
                 "items": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Path-group name",
+                      "title": "Name"
+                    },
+                    "priority": {
+                      "type": "integer",
+                      "description": "Priority for this path-group.\nThe EOS default value is 1.",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Priority"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Path Groups"
               }

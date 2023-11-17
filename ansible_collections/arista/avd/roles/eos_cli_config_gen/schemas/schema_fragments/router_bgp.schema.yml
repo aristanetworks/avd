@@ -369,6 +369,9 @@ keys:
                 prepend_own_disabled:
                   type: bool
                   description: Disable prepending own AS number to AS path
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes
             description:
               type: str
             route_reflector_client:
@@ -497,6 +500,9 @@ keys:
               type: str
               convert_types:
                 - int
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes
             peer_group:
               type: str
               default: Peer-group name

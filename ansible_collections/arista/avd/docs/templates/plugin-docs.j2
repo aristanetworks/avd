@@ -4,6 +4,10 @@
  that can be found in the LICENSE file.
 #}
 {# Based on https://github.com/xlab-steampunk/ansible-doc-extractor/blob/master/src/ansible_doc_extractor/templates/module.md.j2 #}
+---
+# This title is used for search results
+title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0

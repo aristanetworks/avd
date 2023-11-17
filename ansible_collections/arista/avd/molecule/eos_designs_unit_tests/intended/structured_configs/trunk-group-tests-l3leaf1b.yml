@@ -42,6 +42,7 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.247.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: trunk-group-tests-l3leaf1a
     description: trunk-group-tests-l3leaf1a
   redistribute_routes:
   - source_protocol: connected
