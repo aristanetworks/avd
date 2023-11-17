@@ -10549,6 +10549,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name
                 networks:
                   type: list
                   primary_key: prefix

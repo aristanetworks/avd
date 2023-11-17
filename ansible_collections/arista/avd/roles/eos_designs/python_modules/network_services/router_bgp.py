@@ -246,7 +246,14 @@ class RouterBgpMixin(UtilsMixin):
                 for bgp_peer in vrf["bgp_peers"]:
                     peer_ip = bgp_peer.pop("ip_address")
                     address_family = f"address_family_ipv{ipaddress.ip_address(peer_ip).version}"
-                    neighbor = {"ip_address": peer_ip, "activate": True}
+                    neighbor = strip_empties_from_dict(
+                        {
+                            "ip_address": peer_ip,
+                            "activate": True,
+                            "prefix_list_in": bgp_peer.pop("prefix_list_in", None),
+                            "prefix_list_out": bgp_peer.pop("prefix_list_out", None),
+                        }
+                    )
                     bgp_vrf.setdefault(address_family, {}).setdefault("neighbors", []).append(neighbor)
 
                     if bgp_peer.get("set_ipv4_next_hop") is not None or bgp_peer.get("set_ipv6_next_hop") is not None:

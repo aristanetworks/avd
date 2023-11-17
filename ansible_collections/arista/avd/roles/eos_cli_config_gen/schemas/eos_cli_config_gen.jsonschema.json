@@ -18210,6 +18210,16 @@
                           "type": "string",
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
+                        },
+                        "prefix_list_in": {
+                          "type": "string",
+                          "description": "Inbound prefix-list name",
+                          "title": "Prefix List In"
+                        },
+                        "prefix_list_out": {
+                          "type": "string",
+                          "description": "Outbound prefix-list name",
+                          "title": "Prefix List Out"
                         }
                       },
                       "additionalProperties": false,
