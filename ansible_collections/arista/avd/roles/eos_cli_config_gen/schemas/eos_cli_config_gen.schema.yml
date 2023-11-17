@@ -10305,9 +10305,17 @@ keys:
                   prefix_list_in:
                     type: str
                     description: Inbound prefix-list name
+                    deprecation:
+                      warning: true
+                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in
+                      remove_in_version: 5.0.0
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name
+                    deprecation:
+                      warning: true
+                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out
+                      remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -10440,6 +10448,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name
                       next_hop:
                         type: dict
                         keys:
@@ -10736,7 +10750,7 @@ keys:
               deprecation:
                 warning: true
                 new_key: address_family_*
-                remove_in_version: v5.0.0
+                remove_in_version: 5.0.0
               items:
                 type: dict
                 keys:

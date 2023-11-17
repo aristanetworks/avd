@@ -1066,6 +1066,8 @@ router isis EVPN_UNDERLAY
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
+| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
+| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 
@@ -1209,6 +1211,16 @@ router bgp 65101
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       redistribute connected
       redistribute static route-map RM-CONN-2-BGP
+      !
+      address-family ipv4
+         neighbor 10.2.3.4 activate
+         neighbor 10.2.3.4 prefix-list PL-TEST-IN-AF4 in
+         neighbor 10.2.3.4 prefix-list PL-TEST-OUT-AF4 out
+         neighbor 10.2.3.5 activate
+         neighbor 10.2.3.5 prefix-list PL-TEST-IN in
+         neighbor 10.2.3.5 prefix-list PL-TEST-OUT out
+         neighbor 10.255.251.1 prefix-list PL-TEST-IN in
+         neighbor 10.255.251.1 prefix-list PL-TEST-OUT out
       !
       address-family ipv4
          neighbor TEST_PEER_GRP activate
