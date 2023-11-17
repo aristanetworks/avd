@@ -9,6 +9,16 @@ anta.tests.connectivity:
       - LLDP Topology
       custom_field: 'local: Ethernet1 - remote: dc1-leaf1a_Ethernet8'
       description: LLDP topology - validate peer and interface
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc1-leaf1b.dc1.local
+      neighbor_port: Ethernet8
+      port: Ethernet2
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet2 - remote: dc1-leaf1b_Ethernet8'
+      description: LLDP topology - validate peer and interface
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     states:
@@ -36,13 +46,13 @@ anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet2
-      protocol_status: down
-      state: adminDown
+      protocol_status: up
+      state: up
     result_overwrite:
       categories:
       - Interface State
       custom_field: Ethernet2 - DC1-LEAF1B_Ethernet8
-      description: Ethernet Interface & Line Protocol == \"adminDown\"
+      description: Ethernet Interface & Line Protocol == \"up\"
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet5

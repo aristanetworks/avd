@@ -42,6 +42,7 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.224.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: MLAG_SAME_SUBNET_L3LEAF1A
     description: MLAG_SAME_SUBNET_L3LEAF1A
   redistribute_routes:
   - source_protocol: connected

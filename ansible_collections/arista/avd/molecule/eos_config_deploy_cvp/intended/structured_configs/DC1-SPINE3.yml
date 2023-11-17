@@ -41,57 +41,71 @@ router_bgp:
   - ip_address: 172.31.255.5
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
+    peer: DC1-LEAF1A
     description: DC1-LEAF1A_Ethernet3
   - ip_address: 172.31.255.13
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
+    peer: DC1-LEAF2A
     description: DC1-LEAF2A_Ethernet3
   - ip_address: 172.31.255.21
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
+    peer: DC1-LEAF2B
     description: DC1-LEAF2B_Ethernet3
   - ip_address: 172.31.255.29
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65103'
+    peer: DC1-SVC3A
     description: DC1-SVC3A_Ethernet3
   - ip_address: 172.31.255.37
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65103'
+    peer: DC1-SVC3B
     description: DC1-SVC3B_Ethernet3
   - ip_address: 172.31.255.45
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65104'
+    peer: DC1-BL1A
     description: DC1-BL1A_Ethernet3
   - ip_address: 172.31.255.53
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65104'
+    peer: DC1-BL1B
     description: DC1-BL1B_Ethernet3
   - ip_address: 192.168.255.10
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-BL1A
     description: DC1-BL1A
     remote_as: '65104'
   - ip_address: 192.168.255.11
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-BL1B
     description: DC1-BL1B
     remote_as: '65104'
   - ip_address: 192.168.255.5
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-LEAF1A
     description: DC1-LEAF1A
     remote_as: '65101'
   - ip_address: 192.168.255.6
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-LEAF2A
     description: DC1-LEAF2A
     remote_as: '65102'
   - ip_address: 192.168.255.7
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-LEAF2B
     description: DC1-LEAF2B
     remote_as: '65102'
   - ip_address: 192.168.255.8
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SVC3A
     description: DC1-SVC3A
     remote_as: '65103'
   - ip_address: 192.168.255.9
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SVC3B
     description: DC1-SVC3B
     remote_as: '65103'
   address_family_evpn:
