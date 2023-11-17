@@ -132,4 +132,3 @@ keys:
                     type: str
                     description: Service name. Matches applications supporting this service.
                     valid_values: ["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
-
