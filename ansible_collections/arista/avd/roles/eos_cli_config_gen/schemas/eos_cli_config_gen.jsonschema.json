@@ -738,6 +738,15 @@
                     "service": {
                       "type": "string",
                       "description": "Supported service of the application.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
                       "title": "Service"
                     }
                   },
@@ -892,6 +901,15 @@
                     "service": {
                       "type": "string",
                       "description": "One of the supported services of the application.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
                       "title": "Service"
                     }
                   },
@@ -907,7 +925,19 @@
                 "description": "List of transport protocols.",
                 "items": {
                   "type": "string",
-                  "description": "Transport name."
+                  "description": "Transport name.",
+                  "enum": [
+                    "http",
+                    "https",
+                    "udp",
+                    "tcp",
+                    "ip",
+                    "ip6",
+                    "ssl",
+                    "rtp",
+                    "sctp",
+                    "quic"
+                  ]
                 },
                 "title": "Transports"
               },
@@ -924,7 +954,16 @@
                     },
                     "service": {
                       "type": "string",
-                      "description": "Service name. Matches applications supporting the service.",
+                      "description": "Service name. Matches applications supporting this service.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
                       "title": "Service"
                     }
                   },

@@ -445,6 +445,14 @@ keys:
                   service:
                     type: str
                     description: Supported service of the application.
+                    valid_values:
+                    - audio-video
+                    - chat
+                    - default
+                    - file-transfer
+                    - networking-protocols
+                    - peer-to-peer
+                    - software-update
       port_range_sets:
         type: list
         description: Define range of ports.
@@ -527,12 +535,31 @@ keys:
                   service:
                     type: str
                     description: One of the supported services of the application.
+                    valid_values:
+                    - audio-video
+                    - chat
+                    - default
+                    - file-transfer
+                    - networking-protocols
+                    - peer-to-peer
+                    - software-update
             transports:
               type: list
               description: List of transport protocols.
               items:
                 type: str
                 description: Transport name.
+                valid_values:
+                - http
+                - https
+                - udp
+                - tcp
+                - ip
+                - ip6
+                - ssl
+                - rtp
+                - sctp
+                - quic
             categories:
               type: list
               description: Categories under this application profile.
@@ -544,8 +571,16 @@ keys:
                     description: Name of a category.
                   service:
                     type: str
-                    description: Service name. Matches applications supporting the
+                    description: Service name. Matches applications supporting this
                       service.
+                    valid_values:
+                    - audio-video
+                    - chat
+                    - default
+                    - file-transfer
+                    - networking-protocols
+                    - peer-to-peer
+                    - software-update
   arp:
     type: dict
     keys:

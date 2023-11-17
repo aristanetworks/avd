@@ -1,0 +1,139 @@
+{#
+    Copyright (c) 2023 Arista Networks, Inc.
+    Use of this source code is governed by the Apache License 2.0
+    that can be found in the LICENSE file.
+   #}
+   {# doc - application traffic recognition #}
+{% if application_traffic_recognition is arista.avd.defined %}
+   !
+
+### Application Traffic Recognition
+
+#### Application Traffic Recognition Summary
+
+##### Categories
+{%     for category in application_traffic_recognition.categories | arista.avd.natural_sort('name') %}
+{%         if category.name is arista.avd.defined %}
+
+###### Category {{category.name}}
+
+####### Application And Services
+
+| Application Name | Service |
+| -------- | -------- |
+{%             for app_details in category.applications_and_services %}
+ | {{ app_details.name }} | {{ app_details.service | arista.avd.default("-") }} |
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+
+{%     if application_traffic_recognition.port_range_sets is arista.avd.defined %}
+##### Port Range Sets
+{%         for port_range in application_traffic_recognition.port_range_sets %}
+{%             if port_range.name is arista.avd.defined %}
+
+###### Port Set {{port_range.name}}
+
+| Port Ranges |
+[ -------- ]
+{%                 for port in port_range.ports %}
+| {{ port }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+{%     if application_traffic_recognition.prefix_sets is arista.avd.defined %}
+##### Prefix Sets
+{%         for prefix_set in application_traffic_recognition.prefix_sets %}
+{%             if prefix_set.name is arista.avd.defined %}
+
+###### Prefix Set {{prefix_set.name}}
+
+| Prefixes |
+| -------- |
+{%                 for prefix in prefix_set.prefixes %}
+| {{ prefix }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+{%     if application_traffic_recognition.user_defined_ipv4_applications is arista.avd.defined %}
+##### User Defined Ipv4 Applications
+{%         for application in application_traffic_recognition.user_defined_ipv4_applications %}
+
+| Setting | Application Name |
+| ------ | -------- |
+{%             if application.name is arista.avd.defined %}
+| application ipv4 | {{ application.name }} |
+
+{%                 if application.src_prefix_set_name is arista.avd.defined %}
+
+###### Source Prefix for the Application
+
+| Setting | Prefix Set Name |
+| ------ | -------- |
+| source prefix field-set | {{ application.src_prefix_set_name }} |
+{%                 endif %}
+
+{%                 if application.dest_prefix_set_name is arista.avd.defined %}
+
+###### Destination Prefix for the Application
+
+| Setting | Prefix Set Name |
+| ------ | -------- |
+| destination prefix field-set | {{ application.src_prefix_set_name }} |
+{%                 endif %}
+
+{%                 if application.protocol is arista.avd.defined %}
+
+###### Protocol, Source Port and Destination Port Name
+
+| Protocol Name | Source Port Set | Destination Port Set |
+| ------ | -------- | -------- |
+| {{ application.protocol }} | {{ application.src_port_set_name | arista.avd.default("-") }} | {{ application.dest_port_set_name | arista.avd.default("-") }} |
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+{%     if application_traffic_recognition.application_profiles is arista.avd.defined %}
+##### Application Profile Details
+{%         for application_profile in application_traffic_recognition.application_profiles %}
+
+###### Application Profile Name {{ application_profile.name }}
+{%             if application_profile.applications is arista.avd.defined or application_profile.categories is arista.avd.defined %}
+
+###### Category, Applications and Services under Application Profile
+
+| Setting | Application/Category Name | Service |
+| ------ | -------- | -------- |
+{%                 for application in application_profile.applications %}
+| application | {{ application.name }} | {{ applciation.service | arista.avd.default("-") }} |
+{%                 endfor %}
+{%                 for category in application_profile.categories %}
+| category | {{ category.name }} | {{ category.service | arista.avd.default("-") }} |
+{%                 endfor %}
+{%             endif %}
+
+{%             if application_profile.transports is arista.avd.defined %}
+
+###### Underlying transports for application
+
+| transport name |
+| ----- |
+{%                 for transport in application_profile.transports %}
+| {{ transport }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+#### Router Application-Traffic-Recognition Device Configuration
+
+```eos
+{%     include 'eos/application-traffic-recognition.j2' %}
+```
+{% endif %}
+

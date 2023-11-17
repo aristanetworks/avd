@@ -1,0 +1,56 @@
+### router_path_selection ###
+# NOTE that this leverage all possible knobs and this config is **NOT** valid on
+# an actual device
+
+application_traffic_recognition:
+  categories:
+    - name: category1
+      applications_and_services:
+        - name: app1
+          service: chat
+        - name: app1
+          service: audio-video
+        - name: app2
+    - name: best-effort
+      applications_and_services:
+        - name: app1
+          service: software-update
+        - name: app3
+          service: software-update
+  port_range_sets:
+    - name: src_port_set1
+      ports:
+        - 2400-2500
+        - 2900-3000
+    - name: dest_port_set1
+      ports:
+        - 2300-2350
+  prefix_sets:
+    - name: src_prefix_set1
+      prefixes:
+        - 1.2.3.0/24
+    - name: dest_prefix_set1
+      prefixes:
+        - 2.3.4.0/24
+  user_defined_ipv4_applications:
+    - name: user_defined_app1
+      protocol: udp
+      src_prefix_set_name: src_prefix_set1
+      dest_prefix_set_name: dest_prefix_set1
+      src_port_set_name: src_port_set1
+      dest_port_set_name: dest_port_set1
+  application_profiles:
+    - name: app_profile_1
+      applications:
+        - name: user_defined_app1
+        - name: app1
+          service: chat
+        - name: app1
+          service: audio-video
+      transports:
+        - http
+        - udp
+      categories:
+        - name: best-effort
+        - name: category1
+          service: audio-video
