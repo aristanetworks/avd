@@ -1308,14 +1308,28 @@ keys:
             <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
         l2_mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
           description: '"l2_mtu" should only be defined for platforms supporting the
             "l2 mtu" CLI
+
+            '
+        l2_mru:
+          type: int
+          min: 68
+          max: 65535
+          convert_types:
+          - str
+          description: '"l2_mru" should only be defined for platforms supporting the
+            "l2 mru" CLI
 
             '
         vlans:
@@ -4473,7 +4487,8 @@ keys:
             valid_values:
             - fqdn
             - ipv4
-            description: Hostname format
+            description: Hostname format in syslogs. For hostname _only_, remove the
+              line. (default EOS CLI behaviour).
           sequence_numbers:
             type: bool
             description: 'Add sequence numbers to log messages
@@ -6397,10 +6412,22 @@ keys:
           type: bool
         l2_mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
           description: '"l2_mtu" should only be defined for platforms supporting the
             "l2 mtu" CLI
+
+            '
+        l2_mru:
+          type: int
+          min: 68
+          max: 65535
+          convert_types:
+          - str
+          description: '"l2_mru" should only be defined for platforms supporting the
+            "l2 mru" CLI
 
             '
         vlans:
@@ -6556,6 +6583,8 @@ keys:
               description: L2 protocol forwarding profile
         mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
         mlag:
@@ -8278,6 +8307,9 @@ keys:
             type: int
             min: 3
             max: 50
+          initiator_measurement_round_trip:
+            type: bool
+            description: Enable round-trip delay measurement
           reflector:
             type: dict
             keys:
@@ -8685,6 +8717,9 @@ keys:
                 prepend_own_disabled:
                   type: bool
                   description: Disable prepending own AS number to AS path
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes
             description:
               type: str
             route_reflector_client:
@@ -8819,6 +8854,9 @@ keys:
               type: str
               convert_types:
               - int
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes
             peer_group:
               type: str
               default: Peer-group name
@@ -11833,11 +11871,53 @@ keys:
             name:
               type: str
               description: Load-balance policy name.
+            lowest_hop_count:
+              type: bool
+              description: Prefer paths with lowest hop-count.
+            jitter:
+              type: int
+              description: Jitter requirement for this load balance policy in milliseconds.
+              convert_types:
+              - str
+              min: 0
+              max: 10000
+            latency:
+              type: int
+              description: One way delay requirement for this load balance policy
+                in milliseconds.
+              convert_types:
+              - str
+              min: 0
+              max: 10000
+            loss_rate:
+              type: str
+              description: 'Loss Rate requirement in percentage for this load balance
+                policy.
+
+                Value between 0.00 and 100.00 %'
+              convert_types:
+              - int
+              - float
+              pattern: ^\d+(\.\d{1,2})?$
             path_groups:
               type: list
+              primary_key: name
               description: List of path-groups to use for this load balance policy.
               items:
-                type: str
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Path-group name
+                  priority:
+                    type: int
+                    description: 'Priority for this path-group.
+
+                      The EOS default value is 1.'
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
       policies:
         type: list
         primary_key: name

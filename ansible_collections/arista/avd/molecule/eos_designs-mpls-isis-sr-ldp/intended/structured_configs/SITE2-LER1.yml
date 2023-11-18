@@ -48,9 +48,11 @@ router_bgp:
   neighbors:
   - ip_address: 100.70.0.8
     peer_group: MPLS-OVERLAY-PEERS
+    peer: SITE1-RR1
     description: SITE1-RR1
   - ip_address: 100.70.0.9
     peer_group: MPLS-OVERLAY-PEERS
+    peer: SITE2-RR1
     description: SITE2-RR1
   vrfs:
   - name: TENANT_B_INTRA

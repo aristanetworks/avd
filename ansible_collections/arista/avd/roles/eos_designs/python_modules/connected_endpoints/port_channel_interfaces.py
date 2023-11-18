@@ -144,6 +144,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 {
                     "mode": adapter.get("mode"),
                     "l2_mtu": adapter.get("l2_mtu"),
+                    "l2_mru": adapter.get("l2_mru"),
                     "vlans": adapter.get("vlans"),
                     "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
                     "native_vlan_tag": adapter.get("native_vlan_tag"),

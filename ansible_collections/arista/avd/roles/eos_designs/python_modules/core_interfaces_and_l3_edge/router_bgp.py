@@ -36,6 +36,7 @@ class RouterBgpMixin(UtilsMixin):
 
             neighbor = {
                 "remote_as": p2p_link["data"]["peer_bgp_as"],
+                "peer": p2p_link["data"]["peer"],
                 "description": p2p_link["data"]["peer"],
                 "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
             }

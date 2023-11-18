@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: AVD example for a MPLS-VPN based WAN Network
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
