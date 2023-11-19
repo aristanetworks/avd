@@ -32,6 +32,8 @@ class MDReportBase(ABC):
         """Abstract method to generate a specific section of the markdown report.
 
         Must be implemented by subclasses.
+
+        # TODO: Most of subclasses methods are similar so move this here and override if necessary
         """
 
     def generate_header_name(self) -> str:

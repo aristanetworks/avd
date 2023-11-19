@@ -121,16 +121,16 @@ class ActionModule(ActionBase):
 
 
 def create_temp_file(hostname: str, anta_results: list[dict]) -> str:
-    """Create a temporary YAML file to save all test results from ANTA.
+    """Create a temporary JSON file to save all test results from ANTA.
 
     The function will also search for leftover temp files in the `/tmp` folder and delete them.
 
-    The temp file is saved in `/tmp` with a prefix of `<hostname>_` and `.yml` extension.
+    The temp file is saved in `/tmp` with a prefix of `<hostname>_` and `.json` extension.
 
     Args:
     ----
       hostname (str): Current inventory device that is running the plugin.
-      anta_results (list[dict]): The list of ANTA results that will be saved in the YAML file.
+      anta_results (list[dict]): The list of ANTA results that will be saved in the JSON file.
 
     Returns:
     -------

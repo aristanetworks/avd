@@ -107,7 +107,7 @@ class ActionModule(ActionBase):
                     for test_result in _test_results_gen(temp_file):
                         test_results.update_results(test_result)
                 except Exception as error:
-                    display.warning(f"Error while processing the test results of host {host}: {error!s}")
+                    display.warning(f"Error while processing the test results of host {host}: {error}.")
 
             # Generate the CSV report
             if validation_report_csv:
