@@ -5,33 +5,35 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
+import cProfile
+import pstats
+from json import load
 from pathlib import Path
 from typing import Generator
 
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
-from yaml import safe_load_all
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import CSVReport, ResultsManager, ValidateStateReport
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
-def _test_results_stream(input_path: str) -> Generator[dict, None, None]:
-    """
-    Streams test results from a YAML file for a specific host.
+def _test_results_gen(input_path: str) -> Generator[dict, None, None]:
+    """Generate test results from a JSON file for a specific host.
 
-    Each YAML document in the file represents a single test result. This function
-    opens the temporary file created by the `eos_validate_state_runner` action plugin,
-    reads it, and yields each test result as a dictionary.
+    This function opens the JSON temporary file created by the `eos_validate_state_runner` action plugin
+    and yields each test result as a dictionary.
 
     Args:
-      input_path (str): Path to the temporary YAML file containing test results for a host.
+    ----
+      input_path (str): Path to the temporary JSON file containing test results for a host.
 
     Yields:
+    ------
       Generator[dict, None, None]: Test result as a dictionary.
     """
-    with open(input_path, "r", encoding="UTF-8") as file:
-        yield from safe_load_all(stream=file)
+    with Path(input_path).open(encoding="UTF-8") as file:
+        yield from load(file)
 
 
 class ActionModule(ActionBase):
@@ -42,7 +44,14 @@ class ActionModule(ActionBase):
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
 
+        # Profiling
+        cprofile_file = self._task.args.get("cprofile_file")
+        if cprofile_file:
+            profiler = cProfile.Profile()
+            profiler.enable()
+
         # Get task arguments and validate them
+        # TODO: Create helper functions
         only_failed_tests = self._task.args.get("only_failed_tests", False)
         if not isinstance(only_failed_tests, bool):
             raise AnsibleActionFail(f"'only_failed_tests' must be a boolean, got {only_failed_tests}.")
@@ -95,25 +104,25 @@ class ActionModule(ActionBase):
 
                 try:
                     # Process the host test results
-                    for test_result in _test_results_stream(temp_file):
+                    for test_result in _test_results_gen(temp_file):
                         test_results.update_results(test_result)
                 except Exception as error:
-                    display.warning(f"Error while processing the test results of host {host}: {str(error)}")
+                    display.warning(f"Error while processing the test results of host {host}: {error!s}")
 
             # Generate the CSV report
             if validation_report_csv:
-                with open(csv_report_path, "w", encoding="UTF-8", newline="\n") as csvfile:
+                with Path(csv_report_path).open("w", encoding="UTF-8", newline="\n") as csvfile:
                     csv_report = CSVReport(csvfile=csvfile, results=test_results)
                     csv_report.generate_report()
 
             # Generate the MD report
             if validation_report_md:
-                with open(md_report_path, "w", encoding="UTF-8") as mdfile:
+                with Path(md_report_path).open("w", encoding="UTF-8") as mdfile:
                     md_report = ValidateStateReport(mdfile=mdfile, results=test_results)
                     md_report.generate_report()
 
         except Exception as error:
-            raise AnsibleActionFail(f"Error during plugin execution: {str(error)}") from error
+            raise AnsibleActionFail(f"Error during plugin execution: {error}") from error
 
         finally:
             # Cleanup for each host's temporary file
@@ -121,8 +130,9 @@ class ActionModule(ActionBase):
                 if Path(file_path).exists():
                     Path(file_path).unlink()
 
-            # Cleanup for the ResultsManager temp file
-            if test_results.tmp_test_results_file and not test_results.tmp_test_results_file.closed:
-                test_results.tmp_test_results_file.close()
+        if cprofile_file:
+            profiler.disable()
+            stats = pstats.Stats(profiler).sort_stats("cumtime")
+            stats.dump_stats(cprofile_file)
 
         return result

@@ -5,14 +5,16 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
+import cProfile
 import logging
+import pstats
+from json import dumps
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
-from yaml import dump_all
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, get_anta_results
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler
@@ -36,6 +38,12 @@ class ActionModule(ActionBase):
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
+
+        # Profiling
+        cprofile_file = self._task.args.get("cprofile_file")
+        if cprofile_file:
+            profiler = cProfile.Profile()
+            profiler.enable()
 
         hostname = task_vars["inventory_hostname"]
         ansible_connection = self._connection
@@ -104,21 +112,28 @@ class ActionModule(ActionBase):
         # Add the temp file path to the Ansible result
         result["results_temp_file"] = temp_file_name
 
+        if cprofile_file:
+            profiler.disable()
+            stats = pstats.Stats(profiler).sort_stats("cumtime")
+            stats.dump_stats(cprofile_file)
+
         return result
 
 
 def create_temp_file(hostname: str, anta_results: list[dict]) -> str:
-    """
-    Create a temporary YAML file to save all test results from ANTA.
+    """Create a temporary YAML file to save all test results from ANTA.
+
     The function will also search for leftover temp files in the `/tmp` folder and delete them.
 
     The temp file is saved in `/tmp` with a prefix of `<hostname>_` and `.yml` extension.
 
     Args:
+    ----
       hostname (str): Current inventory device that is running the plugin.
       anta_results (list[dict]): The list of ANTA results that will be saved in the YAML file.
 
     Returns:
+    -------
       str: The absolute path of the temp file.
     """
     temp_file_prefix = f"{hostname}_"
@@ -128,19 +143,20 @@ def create_temp_file(hostname: str, anta_results: list[dict]) -> str:
     for file in temp_file_directory.glob(f"{temp_file_prefix}*"):
         file.unlink(missing_ok=True)
 
-    # Create the temp YAML file to save the ANTA results
-    with NamedTemporaryFile(mode="w+", encoding="UTF-8", suffix=".yml", prefix=f"{hostname}_", dir=str(temp_file_directory), delete=False) as temp_file:
-        # Each YAML document in the file represents a single test result
-        temp_file.write(dump_all(anta_results, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130))
+    # Create the temp JSON file to save the ANTA results
+    with NamedTemporaryFile(mode="w", encoding="UTF-8", suffix=".json", prefix=f"{hostname}_", dir=str(temp_file_directory), delete=False) as temp_file:
+        # Serialize to JSON and write to the temp file
+        temp_file.write(dumps(anta_results, indent=2, sort_keys=False))
         return temp_file.name
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
-    """
-    Create a Filter to add the hostname to generate logs,
+    """Create a Filter to add the hostname to generate logs.
+
     Add a Handler to copy the logs from the plugin into Ansible output based on their level
 
     Args:
+    ----
       hostname (str): Current Inventory device being used to augment the logs with <hostname>
       result (dict): The ansible dictionary used for the results
     """

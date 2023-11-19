@@ -3,114 +3,95 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from json import dumps
-from tempfile import TemporaryFile
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from io import TextIOWrapper
+from collections import defaultdict
 
 
 class ResultsManager:
-    """
-    Manages and stores test results from eos_validate_state running ANTA.
+    """Manages and stores test results from eos_validate_state running ANTA.
 
-    This class processes individual test results, categorizes them based on their outcomes,
-    and maintains statistics on various aspects like total tests passed, failed, and skipped.
+    This class processes individual test result and maintains statistics like total tests passed, failed, and skipped.
 
-    It also handles temporary storage of all test results if needed.
-
-    An instance of this class holding all results can then be passed to the report classes to
-    generate the validation reports.
+    An instance of this class holding all results and statistics can be used to generate the validation reports.
     """
 
-    def __init__(self, only_failed_tests: bool = True):
-        """
-        Initializes the ResultsManager with default values and optional temporary file
-        creation to hold all test results.
+    def __init__(self, *, only_failed_tests: bool = True) -> None:
+        """Initialize the ResultsManager with default values and stats counters set to 0.
 
         Args:
-            only_failed_tests (bool): Flag to determine if only failed tests are considered.
-                                      Defaults to True. If set to False, a temporary file will
-                                      be created to hold all test results.
+        ----
+            only_failed_tests (bool): Flag to determine if only failed tests are saved.
+                                      Defaults to True. If set to False, all tests will be saved.
         """
         self.test_id: int = 0
         self.total_tests_passed: int = 0
         self.total_tests_failed: int = 0
         self.total_tests_skipped: int = 0
-        self.dut_stats: dict[str, dict] = {}
-        self.category_stats: dict[str, dict] = {}
+        self.dut_stats: defaultdict = defaultdict(
+            lambda: {
+                "tests_passed": 0,
+                "tests_failed": 0,
+                "tests_skipped": 0,
+                "categories_failed": set(),
+                "categories_skipped": set(),
+            },
+        )
+        self.category_stats: defaultdict = defaultdict(
+            lambda: {
+                "tests_passed": 0,
+                "tests_failed": 0,
+                "tests_skipped": 0,
+            },
+        )
         self.failed_tests: list[dict] = []
+        self.all_tests: list[dict] = []
         self.only_failed_tests: bool = only_failed_tests
 
-        # Initialize a temp file to hold all test results
-        self.tmp_test_results_file: TextIOWrapper | None = TemporaryFile(mode="w+", encoding="UTF-8") if not only_failed_tests else None
-
     def parse_result(self, result: dict) -> dict:
-        """
-        Parses a single test result and converts it into a standardized format for the reports.
+        """Parse a single test result and converts it into a standardized format for the reports.
 
         Args:
+        ----
             result (dict): The test result data to parse.
 
         Returns:
+        -------
             dict: The parsed and standardized test result.
         """
-
         # All AVD tests have a single category and overwrite the native ANTA tests categories
-        categories = result.get("categories", [])
-        new_test_category = categories[0] if categories else ""
+        new_test_category = result.get("categories", [""])[0]
 
-        # Convert the ANTA test result
-        if (anta_result := result.get("result", "")) == "success":
-            new_result = "PASS"
-        elif anta_result == "failure" or anta_result == "error":
-            new_result = "FAIL"
-        elif anta_result == "skipped" or anta_result == "unset":
-            new_result = "SKIPPED"
-        else:
-            new_result = ""
-
-        # Since AVD tests can have the same description and category, ANTA's custom_field is used to differentiate tests
-        custom_field = result.get("custom_field", "")
-        new_test = result.get("test", "") if custom_field == "None" else custom_field
+        # Mapping the ANTA results
+        result_mapping = {"success": "PASS", "failure": "FAIL", "error": "FAIL", "skipped": "SKIPPED", "unset": "SKIPPED"}
+        anta_result = result.get("result", "")
+        new_result = result_mapping.get(anta_result, "")
 
         # Create the parsed result dictionary
-        parsed_result = {
+        return {
             "test_id": self.test_id,
             "node": result.get("name", ""),
             "test_category": new_test_category,
             "test_description": result.get("description", ""),
-            "test": new_test,
+            # Since AVD tests can have the same description and category, ANTA's custom_field is used to differentiate tests
+            "test": result.get("custom_field", "") if result.get("custom_field") != "None" else result.get("test", ""),
             "result": new_result,
             "failure_reasons": result.get("messages", []),
         }
 
-        return parsed_result
-
     def update_results(self, result: dict) -> None:
-        """
-        Updates the internal statistics and test results based on the given test result.
+        """Update the internal statistics and test results based on the given test result.
 
         Args:
+        ----
             result (dict): The test result data to be added and processed.
         """
-
-        # Update the test_id counter when we add a result
         self.test_id += 1
-
-        # Parse and convert the result data
         parsed_result = self.parse_result(result)
-
-        # Update the statistics
+        test_result = parsed_result["result"]
         category = parsed_result["test_category"]
         dut = parsed_result["node"]
-        if category not in self.category_stats:
-            self.category_stats[category] = {"tests_passed": 0, "tests_failed": 0, "tests_skipped": 0}
-        if dut not in self.dut_stats:
-            self.dut_stats[dut] = {"tests_passed": 0, "tests_failed": 0, "tests_skipped": 0, "categories_failed": set(), "categories_skipped": set()}
 
-        test_result = parsed_result["result"]
+        # Process the test result
+        # TODO: Simplify this
         if test_result == "PASS":
             self.total_tests_passed += 1
             self.dut_stats[dut]["tests_passed"] += 1
@@ -127,16 +108,15 @@ class ResultsManager:
             self.category_stats[category]["tests_skipped"] += 1
             self.dut_stats[dut]["categories_skipped"].add(category)
 
-        # Update the temp results if we want all tests and not only the failed tests
-        if self.tmp_test_results_file and not self.only_failed_tests:
-            self.tmp_test_results_file.write(dumps(parsed_result) + "\n")
+        if not self.only_failed_tests:
+            self.all_tests.append(parsed_result)
 
     @property
     def total_tests(self) -> int:
-        """
-        Calculates the total number of tests processed.
+        """Calculates the total number of tests processed.
 
-        Returns:
+        Returns
+        -------
             int: The total number of tests.
         """
         return self.total_tests_passed + self.total_tests_failed + self.total_tests_skipped
