@@ -14,7 +14,7 @@ Arista Validated Designs (AVD) is an extensible data model that defines Arista's
 
 - **Flexibility with Open Data Models:** Extensible fabric-wide network models, simplifying configuration, delivering consistency, and reducing errors
 - **Simplification through Multi-Domain Automation:** A framework that can automate the data center, campus or wide area network, enabled by a consistent EOS software image and management platform
-- **Comprehensive Workflows:** Automating the full life cycle of network provisioning from config generation to pre and post-deployment validation, and self-documentation of the network
+- **Comprehensive Workflows:** Automating the full life cycle of network provisioning from config generation to pre- and post-deployment validation, and self-documentation of the network
 
 ## Reference designs
 
@@ -22,7 +22,7 @@ Arista Validated Designs (AVD) is an extensible data model that defines Arista's
 
 ## AVD Ansible Collection
 
-[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System (EOS)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
+[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running Arista's **Extensible Operating System® (EOS®)** natively through it's **EOS API (eAPI)** or [**CloudVision Portal (CVP)**](https://www.arista.com/en/products/eos/eos-cloudvision). The collection includes a set of Ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs.
 
 Full documentation for the collection:
 
@@ -47,7 +47,7 @@ This repository provides content for Arista's **arista.avd** collection. The fol
 
 ### Collection installation
 
-Ansible galaxy hosts all stable versions of the `arista.avd` collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.arista.com/stable/docs/installation/collection-installation.html).
+Ansible Galaxy hosts all stable versions of the `arista.avd` collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content. Please follow the collection installation [guide](https://avd.arista.com/stable/docs/installation/collection-installation.html).
 
 ### Examples
 

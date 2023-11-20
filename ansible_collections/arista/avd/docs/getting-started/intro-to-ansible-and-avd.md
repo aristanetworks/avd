@@ -8,16 +8,16 @@
 
 ## Day 1 Operation (i.e. provisioning a network from scratch)
 
-Imagine being asked to configure a **layer 3 leaf spine (L3LS)** network from scratch:
+Imagine being asked to configure a **Layer 3 leaf spine (L3LS)** network from scratch:
 
 ![Figure: Arista Leaf Spine topology](../_media/getting-started/single-dc-topology-physical.png)
 
-Traditionally one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software
-image and configuration. Of course, the configuration would be manually generated, using snippets from the relevant Arista design guides, or copying/pasting from existing devices. Configurations would have to be manually adapted to each and every device, which is time-consuming and prone to errors. Consider what would happen if a new pair of leaf switches or new VRFs/VLANs are added to the network - changes would need to be made to most of the devices.
+Traditionally, one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software
+image and configuration. Of course, the configuration would be manually generated, using snippets from the relevant Arista design guides, or copying/pasting from existing devices. Configurations would have to be manually adapted to each and every device, which is time consuming and prone to errors. Consider what would happen if a new pair of leaf switches or new VRFs/VLANs are added to the network - changes would need to be made to most of the devices.
 
-Using Arista Validated Designs (AVD), this task is automated, greatly simplified, and made considerably faster. All the basic network configuration is guaranteed to be identical across the entire fabric from day one. No longer do you have to manually inspect each device for errors or differences. AVD will ensure the consistency and accuracy of your configuration not only for initial deployment but for all subsequent network changes.
+Using Arista Validated Designs (AVD), this task is automated, greatly simplified, and made considerably faster. All the basic network configuration is guaranteed to be identical across the entire fabric from day one. No longer do you have to manually inspect each device for errors or differences. AVD will ensure the consistency and accuracy of your configuration not only for initial deployment, but for all subsequent network changes.
 
-AVD is also based on best practice from [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides), meaning you get the full benefit of Arista's experience in deploying large scale leaf spine fabrics. AVD fully integrates with Arista CloudVision, which adds a change control workflow, continuous compliance check, and network topology overview as well as real-time streaming telemetry including flow-based data and more.
+AVD is also based on best practice from [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides), meaning you get the full benefit of Arista's experience in deploying large scale leaf-spine fabrics. AVD fully integrates with Arista CloudVision, which adds a change control workflow, continuous compliance check, and network topology overview as well as real-time streaming telemetry including flow-based data and more.
 
 ## What is Ansible?
 
@@ -28,14 +28,14 @@ is an automation engine that can be used for many purposes including:
 - Configuration management
 - Application deployment
 
-It's easily extended through the use of Ansible Collections - essentially prepackaged groups of Ansible components such as playbooks, roles, modules and plugins - that are distributed through [Ansible Galaxy](https://galaxy.ansible.com/home).
+It's easily extended through the use of Ansible Collections - essentially prepackaged groups of Ansible components such as playbooks, roles, modules, and plugins - that are distributed through [Ansible Galaxy](https://galaxy.ansible.com/home).
 
 Between the core Ansible software and third-party-contributed collections, we can use Ansible to carry out almost any
 automated task on a network, server, or cloud platform in a consistent, secure, and distributed way.
 
 Consistency of tasks carried out is assured through idempotency - that the outcome of an operation is only performed once and only if necessary, no matter how many times that process is carried out. A simple example of idempotency would be a pair of on/off buttons for a machine - no matter how many times you push 'on,' the device will only turn on once.
 
-Unlike other tools, Ansible doesn't use a proprietary communications mechanism or agent on the device being managed. Instead, it leverages industry-standard protocols for device access, including SSH and REST APIs. This also means that Ansible doesn't require the setup of any unique infrastructure - it's entirely possible to automate tasks using nothing but your laptop or desktop computer (but a central deployment server is recommended).
+Unlike other tools, Ansible does not use a proprietary communications mechanism or agent on the device being managed. Instead, it leverages industry-standard protocols for device access, including SSH and REST APIs. This also means that Ansible does not require the setup of any unique infrastructure - it is entirely possible to automate tasks using nothing but your laptop or desktop computer (but a central deployment server is recommended).
 
 Ansible describes tasks in a structured language called [YAML](https://yaml.org). Unlike other languages such as
 JSON and XML, YAML was designed to be human-readable. YAML will be covered further later on in the section
@@ -55,7 +55,7 @@ Ansible can run on almost anything, but in production scenarios, Ansible is typi
 Arista and accepts third-party contributions on GitHub at [aristanetworks/ansible-avd](https://github.com/aristanetworks/ansible-avd).
 
 While Ansible is the core automation engine, AVD is an Ansible Collection described above. It provides roles, modules, and plugins
-that allows the user to generate and deploy best-practice configurations to a layer three leaf-spine network.
+that allows the user to generate and deploy best-practice configurations to a Layer 3 leaf-spine network.
 
 ![Figure: Arista Leaf Spine topology](../_media/getting-started/ansible-avd.png)
 
@@ -65,7 +65,7 @@ When designing an EVPN/VXLAN L3LS fabric, you do not need to spend hours reading
 
 AVD is an opinionated collection, meaning field experiences and best practices from actual deployments at Arista customers are included. With AVD, users get up and running quickly without inventing every part of the network configuration from scratch. This means the user must provide only the most basic information to get a new fabric up and running.
 
-Parameters which need to be defined by the user include (but aren't limited to):
+Parameters which need to be defined by the user include (but are not limited to):
 
 - Username/password for network devices and CloudVision
 - OOB management IP range
@@ -86,10 +86,10 @@ It's important to note when and perhaps more importantly, when not to use AVD.
 AVD is designed to generate and deploy complete configuration files where the network device's running configuration is entirely replaced. As such, caution should be exercised when running AVD against an existing manually configured network. We can take various approaches under such circumstances:
 
 - Compare AVD-generated configurations against device running configurations; make changes to the AVD input data and iterate until the configurations are functionally equivalent.
-- Use AVD to generate partial configurations that we can be apply to devices in such a way that won't destroy existing manual configuration.
+- Use AVD to generate partial configurations that we can be apply to devices in such a way that will not destroy the existing manual configuration.
 - Use AVD to generate configurations part-based on automation, part-based on manual configuration included into AVD using AVD's `structured_configuration`, `raw_eos_cli` or `custom_template` facilities.
 
-Automating the provisioning of network infrastructure makes the most sense when the network is built from repeatable building blocks. These allow for code reuse and the abstraction of data. For example, point-to-point links are allocated IP subnets from a much larger pool in most leaf-spine networks. This is a tedious job for a human to design and configure but is an ideal candidate to be automated. However, automation may take longer to achieve in a network that has evolved rather than been designed from the ground up.
+Automating the provisioning of network infrastructure makes the most sense when the network is built from repeatable building blocks. These allow for code reuse and the abstraction of data. For example, point-to-point links are allocated IP subnets from a much larger pool in most leaf-spine networks. This is a tedious job for a human to design and configure, but is an ideal candidate to be automated. However, automation may take longer to achieve in a network that has evolved rather than one designed from the ground up.
 
 ## Change your mindset and culture
 
@@ -109,7 +109,7 @@ This is defined in the Ansible ***inventory***. Per the official Ansible documen
 
 Please note that the example above is taken from the Ansible AVD Examples repository, specifically the `Single-DC-L3LS`.
 
-The exact name of the inventory file isn't important, but is provided to Ansible in the `ansible.cfg` file for the project or as `ansible-playbook -i ./inventory.yml` when later running Ansible.
+The exact name of the inventory file is not important, but is provided to Ansible in the `ansible.cfg` file for the project or as `ansible-playbook -i ./inventory.yml` when later running Ansible.
 
 ### Inventories
 
@@ -135,7 +135,7 @@ all:
                   ansible_host: 172.16.1.12
 ```
 
-However, going forward, we expect that all hostnames specified are resolvable hence the entire inventory file appears as follows:
+However, going forward, we expect that all hostnames specified are resolvable, hence the entire inventory file appears as follows:
 
 ```yaml
 ---
