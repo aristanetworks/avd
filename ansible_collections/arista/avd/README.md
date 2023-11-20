@@ -34,7 +34,7 @@ Full documentation for the collection:
 This repository provides content for Arista's **arista.avd** collection. The following roles are included.
 
 - [**arista.avd.eos_designs**](roles/eos_designs/README.md) - Opinionated Data model to assist with the deployment of Arista Validated Designs.
-- [**arista.avd.eos_cli_config_gen**](roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
+- [**arista.avd.eos_cli_config_gen**](roles/eos_cli_config_gen/README.md) - Generate Arista EOS CLI syntax and device documentation.
 - [**arista.avd.eos_config_deploy_cvp**](roles/eos_config_deploy_cvp/README.md) - Deploys intended configuration via CloudVision.
 - [**arista.avd.eos_config_deploy_eapi**](roles/eos_config_deploy_eapi/README.md) - Deploys intended configuration via eAPI.
 - [**arista.avd.cvp_configlet_upload**](roles/cvp_configlet_upload/README.md) - Uploads configlets from a local folder to CloudVision Server.
