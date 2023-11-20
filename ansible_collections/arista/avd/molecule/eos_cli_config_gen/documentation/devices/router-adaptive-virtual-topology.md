@@ -78,6 +78,7 @@ Topology role: transit region
 | video | 1 |
 
 ##### VRF red
+
 | AVT policy |
 | ---------- |
 | production
