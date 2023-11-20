@@ -1963,14 +1963,14 @@ keys:
                     description: Inbound prefix-list name
                     deprecation:
                       warning: true
-                      new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in"
+                      new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in"
                       remove_in_version: 5.0.0
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name
                     deprecation:
                       warning: true
-                      new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out"
+                      new_key: "router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out"
                       remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list

@@ -17753,13 +17753,13 @@
                     },
                     "prefix_list_in": {
                       "type": "string",
-                      "description": "Inbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in</samp> instead.",
+                      "description": "Inbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in</samp> instead.",
                       "deprecated": true,
                       "title": "Prefix List In"
                     },
                     "prefix_list_out": {
                       "type": "string",
-                      "description": "Outbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out</samp> instead.",
+                      "description": "Outbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out</samp> instead.",
                       "deprecated": true,
                       "title": "Prefix List Out"
                     }
