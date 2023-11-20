@@ -66,7 +66,7 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 | {{ vrf.policy | arista.avd.default("-") }}
 {%             endif %}
 
-{%             if vrf.profiles is is arista.avd.defined
+{%             if vrf.profiles is arista.avd.defined
                 and vrf.profiles | length > 0 %}
 | AVT Profile | AVT ID |
 | ----------- | ------ |
