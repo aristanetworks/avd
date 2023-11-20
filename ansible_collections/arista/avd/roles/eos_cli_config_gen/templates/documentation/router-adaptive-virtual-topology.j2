@@ -27,9 +27,9 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 | Site | {{ router_adaptive_virtual_topology.site.name }} | {{ router_adaptive_virtual_topology.site.id }} |
 {%         endif %}
 {%     endif %}
-
 {%     if router_adaptive_virtual_topology.profiles is arista.avd.defined
         and router_adaptive_virtual_topology.profiles | length > 0 %}
+
 #### AVT Profiles
 
 | Profile name | Load balance policy | Internet exit policy |
@@ -38,13 +38,14 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 | {{ profile.name }} | {{ profile.load_balance_policy | arista.avd.default("-") }} | {{ profile.internet_exit_policy | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
-
 {%     if router_adaptive_virtual_topology.policies is arista.avd.defined
         and router_adaptive_virtual_topology.policies | length > 0 %}
+
 #### AVT Policies
 {%         for policy in router_adaptive_virtual_topology.policies | arista.avd.natural_sort('name') %}
 
 ##### AVT policy {{ policy.name }}
+
 | Application profile | AVT Profile | Traffic Class | DSCP |
 | ------------------- | ----------- | ------------- | ---- |
 {%             for matcher in policy.match_clauses %}
@@ -52,9 +53,9 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
-
 {%     if router_adaptive_virtual_topology.vrfs is arista.avd.defined
         and router_adaptive_virtual_topology.vrfs | length > 0 %}
+
 #### VRFs configuration
 {%         for vrf in router_adaptive_virtual_topology.vrfs | arista.avd.natural_sort('name') %}
 
@@ -65,9 +66,9 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 | ---------- |
 | {{ vrf.policy | arista.avd.default("-") }}
 {%             endif %}
-
 {%             if vrf.profiles is arista.avd.defined
                 and vrf.profiles | length > 0 %}
+
 | AVT Profile | AVT ID |
 | ----------- | ------ |
 {%                 for profile in vrf.profiles | arista.avd.natural_sort('id') %}
@@ -76,6 +77,7 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+
 #### Router Adaptive Virtual Topology Configuration
 
 ```eos

@@ -61,6 +61,7 @@ Topology role: transit region
 #### AVT Policies
 
 ##### AVT policy production
+
 | Application profile | AVT Profile | Traffic Class | DSCP |
 | ------------------- | ----------- | ------------- | ---- |
 | videoApps | - | - | -
@@ -87,6 +88,7 @@ Topology role: transit region
 | ----------- | ------ |
 | video | 1 |
 | voice | 2 |
+
 #### Router Adaptive Virtual Topology Configuration
 
 ```eos
