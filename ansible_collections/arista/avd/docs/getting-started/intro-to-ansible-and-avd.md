@@ -61,7 +61,7 @@ that allows the user to generate and deploy best-practice configurations to a la
 
 The illustration above shows the AVD collection as a box with a red background on the right-hand side.
 
-When designing an EVPN/VXLAN L3LS fabric, you don't need to spend hours reading through the [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides). Instead, the AVD collection will implement those rules and guidelines.
+When designing an EVPN/VXLAN L3LS fabric, you do not need to spend hours reading through the [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides). Instead, the AVD collection will implement those rules and guidelines.
 
 AVD is an opinionated collection, meaning field experiences and best practices from actual deployments at Arista customers are included. With AVD, users get up and running quickly without inventing every part of the network configuration from scratch. This means the user must provide only the most basic information to get a new fabric up and running.
 
@@ -135,7 +135,7 @@ all:
                   ansible_host: 172.16.1.12
 ```
 
-However, going forward, we expect that all hostnames specified are resolvable hence the entire inventory file looks as follows:
+However, going forward, we expect that all hostnames specified are resolvable hence the entire inventory file appears as follows:
 
 ```yaml
 ---
@@ -170,11 +170,11 @@ all:
             DC1_L2_LEAVES:
 ```
 
-Don't confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible, including Arista switches.
+Do not confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible, including Arista switches.
 
 The settings inside the inventory.yml file are defined in a tree-like structure using ***groups***. Groups can contain hosts or other groups - making it easier to apply a common configuration to a group of devices.
 
-The ***all*** line at the top is a default group that contains all ***hosts***, i.e., all switches. So don't worry too much about that for now.
+The ***all*** line at the top is a default group that contains all ***hosts***, i.e., all switches. So do not worry too much about that for now.
 
 The ***children:*** keyword is used to define "groups of groups," i.e., just an internal keyword to differentiate between hosts and groups.
 
@@ -190,7 +190,7 @@ More information about Ansible inventories can be found [here](https://docs.ansi
 ### Organizing host and group variables
 
 AVD makes use of variables defined in the inventory to generate the EOS configuration files necessary to configure the devices. While these
-variables can be stored in the main inventory file described earlier, it's highly recommended to use separate files for host and group
+variables can be stored in the main inventory file described earlier, it is highly recommended to use separate files for host and group
 variables. Like the inventory.yml file, the host and group variables are also stored in dedicated folders named accordingly in YAML files.
 
 ### Group Variables
@@ -274,7 +274,7 @@ local_users:
     no_password: true
 ```
 
-The above snippet defines a number of defaults that apply to all children of FABRIC along with configuration specific to each leaf pair and finally each individual leaf switch.
+The snippet above defines a number of defaults that apply to all children of FABRIC along with configurations specific to each leaf pair and finally each individual leaf switch.
 
 We can override group variables by specifying host variables for specific devices. (see [DEFAULT_HASH_BEHAVIOUR](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-hash-behaviour)). The order of precedence is (from lowest to highest):
 
@@ -360,11 +360,11 @@ While this play shows both the `eos_designs` and `eos_cli_config_gen` roles used
 
 ## Source of Truth
 
-In a legacy network where configuration isn't administered centrally, you have very little control of the relationship between the configuration you *intend* to be applied to the network and the configuration *running* on the network. You might have centralized low-level design documents describing how the network should function in great detail, but you don't have much but the best intentions to ensure that your **entire** network is working as you intended. As a result, it takes only a single configuration mistake on a single device to create havoc.
+In a legacy network where configuration is not administered centrally, you have very little control of the relationship between the configuration you *intend* to be applied to the network and the configuration *running* on the network. You might have centralized low-level design documents describing how the network should function in great detail, but you do not have much but the best intentions to ensure that your **entire** network is working as you intended. As a result, it takes only a single configuration mistake on a single device to create havoc.
 
-Since operating many networking devices also typically results in having many networking engineers, there is even more room for error. Different people do things differently, and repetitive tasks aren't always executed in the same manner.
+Since operating many networking devices also typically results in having many networking engineers, there is even more room for error. Different people do things differently, and repetitive tasks are not always executed in the same manner.
 
-With AVD, you define not only the topology of your network centrally but also which services are used where in a central repository of text files. Furthermore, because this data is stored in text files, it's possible to apply version control (for example, using tools like git, subversion, or mercurial) to this source of truth, giving you visibility of when the intended configuration was changed and by who.
+With AVD, you define not only the topology of your network centrally, but also which services are used where in a central repository of text files. Furthermore, because this data is stored in text files, it is possible to apply version control (for example, using tools like git, subversion, or mercurial) to this source of truth, giving you visibility of when the intended configuration was changed and by who.
 
 This source of truth means you have a complete overview of your entire designed network configuration without having to look at individual network devices. An additional benefit of AVD is that by design, you always have a backup of your network configuration. Including automated documentation in markdown format, you no longer have to remember to update documentation about which interface is connected to which device, etc., whenever you change something on a device. Instead, it's all done automatically based on the configuration built and applied to the network devices by Ansible every time you execute the playbooks.
 
@@ -375,7 +375,7 @@ Below you will find two examples of documentation automatically created by Ansib
 
 ## How do I use AVD?
 
-AVD comes with pre-built templates that you can either use as-is or adapt to your liking.
+AVD comes with pre-built templates that you can use either as-is or adapt to your liking.
 
 Once the templates reflect your desired network configuration, you deploy the configuration either directly to the Arista EOS devices or to
 Configlets within CloudVision. This is typically executed from the CLI - for example, from your Ansible AVD Examples directory.
@@ -481,7 +481,7 @@ These tasks, while relatively simple, can be time-consuming simply because they 
 - Adding/removing new leaf switches.
 - Adding/removing new VLANs.
 - Creating/modifying/deleting port profiles.
-- Configuring/modifying ports towards end systems.
+- Configuring/modifying ports toward end systems.
 
 Making these changes could involve many hours of planning to generate configuration snippets to apply during a change window.
 
