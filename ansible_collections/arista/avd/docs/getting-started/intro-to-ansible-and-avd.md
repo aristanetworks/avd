@@ -375,7 +375,7 @@ Below you will find two examples of documentation automatically created by Ansib
 
 ## How do I use AVD?
 
-AVD comes with pre-built templates that you can use either as-is or adapt to your liking.
+AVD comes with pre-built templates that you can either use as-is or adapt to your liking.
 
 Once the templates reflect your desired network configuration, you deploy the configuration either directly to the Arista EOS devices or to
 Configlets within CloudVision. This is typically executed from the CLI - for example, from your Ansible AVD Examples directory.
