@@ -49,7 +49,7 @@ Topology role: {{ router_adaptive_virtual_topology.topology_role }}
 | Application profile | AVT Profile | Traffic Class | DSCP |
 | ------------------- | ----------- | ------------- | ---- |
 {%             for matcher in policy.match_clauses %}
-| {{ matcher.application_profile }} | {{ matcher.avt_profile | arista.avd.default("-") }} | {{ matcher.traffic_class | arista.avd.default("-") }} | {{ matcher.dscp | arista.avd.default("-") }}
+| {{ matcher.application_profile }} | {{ matcher.avt_profile | arista.avd.default("-") }} | {{ matcher.traffic_class | arista.avd.default("-") }} | {{ matcher.dscp | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
