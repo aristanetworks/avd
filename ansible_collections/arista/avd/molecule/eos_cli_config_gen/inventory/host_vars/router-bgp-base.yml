@@ -64,6 +64,8 @@ router_bgp:
     - prefix: 2.2.1.0/24
     - prefix: 1.12.1.0/24
       as_set: true
+      advertise_map: ADV-MAP
+      supress_map: SUP-MAP
       summary_only: true
       attribute_map: RM-ATTRIBUTE
       match_map: RM-MATCH
