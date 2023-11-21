@@ -52,6 +52,7 @@ IP DHCP Snooping enabled VLAN: 10,20,500,1000-2000
 ```eos
 !
 ip dhcp snooping bridging
+ip dhcp snooping information option
 ip dhcp snooping information option circuit-id type 10 format %h:%p
 ip dhcp snooping vlan 10,20,500,1000-2000
 ```

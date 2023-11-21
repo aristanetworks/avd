@@ -4,24 +4,20 @@
     that can be found in the LICENSE file.
 #}
 {# eos - ip dhcp snooping #}
-{% if ip_dhcp_snooping is arista.avd.defined %}
-{%     if ip_dhcp_snooping.enabled is arista.avd.defined(true) %}
-{%         if ip_dhcp_snooping.bridging is arista.avd.defined(true) %}
+{% if ip_dhcp_snooping.enabled is arista.avd.defined(true) %}
 !
+{%     if ip_dhcp_snooping.bridging is arista.avd.defined(true) %}
 ip dhcp snooping bridging
-{%         else %}
-!
+{%     else %}
 ip dhcp snooping
-{%         endif %}
-{%         if ip_dhcp_snooping.information_option.enabled is arista.avd.defined(true) %}
-{%             if ip_dhcp_snooping.information_option.circuit_id_type is arista.avd.defined and ip_dhcp_snooping.information_option.circuit_id_format is arista.avd.defined %}
-ip dhcp snooping information option circuit-id type {{ ip_dhcp_snooping.information_option.circuit_id_type }} format {{ ip_dhcp_snooping.information_option.circuit_id_format }}
-{%             else %}
+{%     endif %}
+{%     if ip_dhcp_snooping.information_option.enabled is arista.avd.defined(true) %}
 ip dhcp snooping information option
-{%             endif %}
+{%         if ip_dhcp_snooping.information_option.circuit_id_type is arista.avd.defined and ip_dhcp_snooping.information_option.circuit_id_format is arista.avd.defined %}
+ip dhcp snooping information option circuit-id type {{ ip_dhcp_snooping.information_option.circuit_id_type }} format {{ ip_dhcp_snooping.information_option.circuit_id_format }}
 {%         endif %}
-{%         if ip_dhcp_snooping.vlan is arista.avd.defined %}
+{%     endif %}
+{%     if ip_dhcp_snooping.vlan is arista.avd.defined %}
 ip dhcp snooping vlan {{ ip_dhcp_snooping.vlan }}
-{%         endif %}
 {%     endif %}
 {% endif %}
