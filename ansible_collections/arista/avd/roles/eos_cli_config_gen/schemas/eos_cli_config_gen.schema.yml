@@ -328,6 +328,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -622,6 +624,8 @@ keys:
                 access_group:
                   type: str
                   description: Standard Access-List Name
+                  convert_types:
+                  - int
       qos:
         type: list
         primary_key: name
@@ -649,12 +653,16 @@ keys:
                 access_group:
                   type: str
                   description: IPv4 Access-List Name
+                  convert_types:
+                  - int
             ipv6:
               type: dict
               keys:
                 access_group:
                   type: str
                   description: IPv6 Access-List Name
+                  convert_types:
+                  - int
   clock:
     type: dict
     keys:
@@ -3112,6 +3120,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         entries:
@@ -4033,6 +4043,8 @@ keys:
         name:
           type: str
           description: IPv6 Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4115,6 +4127,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4686,6 +4700,8 @@ keys:
         name:
           type: str
           description: MAC Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         entries:
@@ -12770,6 +12786,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -13649,15 +13667,23 @@ keys:
         access_group_in:
           type: str
           description: IPv4 access-list name
+          convert_types:
+          - int
         access_group_out:
           type: str
           description: IPv4 access-list name
+          convert_types:
+          - int
         ipv6_access_group_in:
           type: str
           description: IPv6 access-list name
+          convert_types:
+          - int
         ipv6_access_group_out:
           type: str
           description: IPv6 access-list name
+          convert_types:
+          - int
         multicast:
           type: dict
           keys:
@@ -13676,6 +13702,8 @@ keys:
                         type: str
                         description: IPv4 access-list name or IPv4 multicast group
                           prefix with mask
+                        convert_types:
+                        - int
                       out:
                         type: bool
                 source_route_export:
@@ -13707,6 +13735,8 @@ keys:
                         type: str
                         description: IPv6 access-list name or IPv6 multicast group
                           prefix with mask
+                        convert_types:
+                        - int
                 source_route_export:
                   type: dict
                   keys:
