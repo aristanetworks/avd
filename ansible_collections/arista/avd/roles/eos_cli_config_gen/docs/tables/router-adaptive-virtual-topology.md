@@ -24,11 +24,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;internet_exit_policy</samp>](## "router_adaptive_virtual_topology.profiles.[].internet_exit_policy") | String |  |  |  | Name of the internet exit policy. |
     | [<samp>&nbsp;&nbsp;policies</samp>](## "router_adaptive_virtual_topology.policies") | List, items: Dictionary |  |  |  | A sequence of application profiles mapped to some virtual topologies. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.policies.[].name") | String | Required, Unique |  |  | Policy name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_clauses</samp>](## "router_adaptive_virtual_topology.policies.[].match_clauses") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_profile</samp>](## "router_adaptive_virtual_topology.policies.[].match_clauses.[].application_profile") | String |  |  |  | Application profile name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;avt_profile</samp>](## "router_adaptive_virtual_topology.policies.[].match_clauses.[].avt_profile") | String |  |  |  | AVT Profile name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "router_adaptive_virtual_topology.policies.[].match_clauses.[].dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "router_adaptive_virtual_topology.policies.[].match_clauses.[].traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;matches</samp>](## "router_adaptive_virtual_topology.policies.[].matches") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_profile</samp>](## "router_adaptive_virtual_topology.policies.[].matches.[].application_profile") | String |  |  |  | Application profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;avt_profile</samp>](## "router_adaptive_virtual_topology.policies.[].matches.[].avt_profile") | String |  |  |  | AVT Profile name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "router_adaptive_virtual_topology.policies.[].matches.[].dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "router_adaptive_virtual_topology.policies.[].matches.[].traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_adaptive_virtual_topology.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_adaptive_virtual_topology.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "router_adaptive_virtual_topology.vrfs.[].policy") | String |  |  |  | AVT Policy name. |
@@ -74,7 +74,7 @@
 
           # Policy name.
         - name: <str; required; unique>
-          match_clauses:
+          matches:
 
               # Application profile name.
             - application_profile: <str>

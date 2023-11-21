@@ -21,7 +21,7 @@ router_adaptive_virtual_topology:
       internet_exit_policy: scavenger-ie
   policies:
     - name: production
-      match_clauses:
+      matches:
         - application_profile: videoApps
         - application_profile: criticalApps
           avt_profile: crit

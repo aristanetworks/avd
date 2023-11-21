@@ -13972,7 +13972,7 @@
                 "description": "Policy name.",
                 "title": "Name"
               },
-              "match_clauses": {
+              "matches": {
                 "type": "array",
                 "items": {
                   "type": "object",
@@ -14007,7 +14007,7 @@
                     "^_.+$": {}
                   }
                 },
-                "title": "Match Clauses"
+                "title": "Matches"
               }
             },
             "additionalProperties": false,
