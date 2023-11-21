@@ -23,8 +23,8 @@ class CSVReport:
             csvfile (TextIOWrapper): An open file object to write the CSV data into.
             results (ResultsManager): The ResultsManager instance containing all test results.
         """
-        self.csvfile: TextIOWrapper = csvfile
-        self.results: ResultsManager = results
+        self.csvfile = csvfile
+        self.results = results
 
     def generate_rows(self) -> Generator[dict, None, None]:
         """Generate rows of test result data for the CSV report.
@@ -46,6 +46,7 @@ class CSVReport:
         writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
+        # writerows seems to perfom better when writing in batches
         batch_size = 5000
         batch = []
 

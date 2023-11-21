@@ -22,11 +22,11 @@ class ResultsManager:
             only_failed_tests (bool): Flag to determine if only failed tests are saved.
                                       Defaults to True. If set to False, all tests will be saved.
         """
-        self.test_id: int = 0
-        self.total_tests_passed: int = 0
-        self.total_tests_failed: int = 0
-        self.total_tests_skipped: int = 0
-        self.dut_stats: defaultdict = defaultdict(
+        self.test_id = 0
+        self.total_tests_passed = 0
+        self.total_tests_failed = 0
+        self.total_tests_skipped = 0
+        self.dut_stats = defaultdict(
             lambda: {
                 "tests_passed": 0,
                 "tests_failed": 0,
@@ -35,18 +35,18 @@ class ResultsManager:
                 "categories_skipped": set(),
             },
         )
-        self.category_stats: defaultdict = defaultdict(
+        self.category_stats = defaultdict(
             lambda: {
                 "tests_passed": 0,
                 "tests_failed": 0,
                 "tests_skipped": 0,
             },
         )
-        self.failed_tests: list[dict] = []
-        self.all_tests: list[dict] = []
-        self.only_failed_tests: bool = only_failed_tests
+        self.failed_tests = []
+        self.all_tests = []
+        self.only_failed_tests = only_failed_tests
 
-    def parse_result(self, result: dict) -> dict:
+    def _parse_result(self, result: dict) -> dict:
         """Parse a single test result and converts it into a standardized format for the reports.
 
         Args:
@@ -77,6 +77,33 @@ class ResultsManager:
             "failure_reasons": result.get("messages", []),
         }
 
+    def _increment_stats(self, test_result: str, dut: str, category: str) -> None:
+        """Increment test statistics based on the test result.
+
+        Args:
+        ----
+            test_result (str): The test result.
+            dut (str): The name of the device under test.
+            category (str): The category of the test.
+        """
+        stats_mapping = {
+            "PASS": ("total_tests_passed", "tests_passed"),
+            "FAIL": ("total_tests_failed", "tests_failed", "categories_failed"),
+            "SKIPPED": ("total_tests_skipped", "tests_skipped", "categories_skipped"),
+        }
+        stats_to_increment = stats_mapping.get(test_result, ())
+
+        for stat in stats_to_increment:
+            if hasattr(self, stat):
+                setattr(self, stat, getattr(self, stat) + 1)
+            if stat in self.dut_stats[dut]:
+                if isinstance(self.dut_stats[dut][stat], set):
+                    self.dut_stats[dut][stat].add(category)
+                else:
+                    self.dut_stats[dut][stat] += 1
+            if stat in self.category_stats[category]:
+                self.category_stats[category][stat] += 1
+
     def update_results(self, result: dict) -> None:
         """Update the internal statistics and test results based on the given test result.
 
@@ -85,29 +112,15 @@ class ResultsManager:
             result (dict): The test result data to be added and processed.
         """
         self.test_id += 1
-        parsed_result = self.parse_result(result)
+        parsed_result = self._parse_result(result)
         test_result = parsed_result["result"]
         category = parsed_result["test_category"]
         dut = parsed_result["node"]
 
-        # Process the test result
-        # TODO: Simplify this
-        if test_result == "PASS":
-            self.total_tests_passed += 1
-            self.dut_stats[dut]["tests_passed"] += 1
-            self.category_stats[category]["tests_passed"] += 1
-        elif test_result == "FAIL":
-            self.total_tests_failed += 1
-            self.dut_stats[dut]["tests_failed"] += 1
-            self.category_stats[category]["tests_failed"] += 1
-            self.dut_stats[dut]["categories_failed"].add(category)
-            self.failed_tests.append(parsed_result)
-        elif test_result == "SKIPPED":
-            self.total_tests_skipped += 1
-            self.dut_stats[dut]["tests_skipped"] += 1
-            self.category_stats[category]["tests_skipped"] += 1
-            self.dut_stats[dut]["categories_skipped"].add(category)
+        self._increment_stats(test_result, dut, category)
 
+        if test_result == "FAIL":
+            self.failed_tests.append(parsed_result)
         if not self.only_failed_tests:
             self.all_tests.append(parsed_result)
 

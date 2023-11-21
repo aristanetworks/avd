@@ -36,7 +36,35 @@ def _test_results_gen(input_path: str) -> Generator[dict, None, None]:
         yield from load(file)
 
 
+def _generate_report(report_path: str, report_class: type, test_results: ResultsManager) -> None:
+    """Generate a report using the specified report class.
+
+    Args:
+    ----
+        report_path: The path to the report file.
+        report_class: The class used to generate the report.
+        test_results: The ResultsManager object containing the test results.
+    """
+    with Path(report_path).open("w", encoding="UTF-8") as report_file:
+        report = report_class(report_file, test_results)
+        report.generate_report()
+
+
 class ActionModule(ActionBase):
+    def _validate_arg_boolean(self, arg_name: str, *, default_value: bool) -> bool:
+        """Validate if a task argument is a boolean."""
+        arg_value = self._task.args.get(arg_name, default_value)
+        if not isinstance(arg_value, bool):
+            raise AnsibleActionFail(f"'{arg_name}' must be a boolean, got {arg_value}.")
+        return arg_value
+
+    def _validate_report_path(self, arg_name: str) -> str:
+        """Validate if a task path argument is valid and exists."""
+        path_value = self._task.args.get(arg_name)
+        if not isinstance(path_value, str) or not Path(path_value).parent.exists():
+            raise AnsibleActionFail(f"'{arg_name}' must be a valid path and its directory must exist.")
+        return path_value
+
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
             task_vars = {}
@@ -51,54 +79,35 @@ class ActionModule(ActionBase):
             profiler.enable()
 
         # Get task arguments and validate them
-        # TODO: Create helper functions
-        only_failed_tests = self._task.args.get("only_failed_tests", False)
-        if not isinstance(only_failed_tests, bool):
-            raise AnsibleActionFail(f"'only_failed_tests' must be a boolean, got {only_failed_tests}.")
-
-        validation_report_csv = self._task.args.get("validation_report_csv", True)
-        if not isinstance(validation_report_csv, bool):
-            raise AnsibleActionFail(f"'validation_report_csv' must be a boolean, got {validation_report_csv}.")
-
-        validation_report_md = self._task.args.get("validation_report_md", True)
-        if not isinstance(validation_report_md, bool):
-            raise AnsibleActionFail(f"'validation_report_md' must be a boolean, got {validation_report_md}.")
+        only_failed_tests = self._validate_arg_boolean("only_failed_tests", default_value=False)
+        validation_report_csv = self._validate_arg_boolean("validation_report_csv", default_value=True)
+        validation_report_md = self._validate_arg_boolean("validation_report_md", default_value=True)
 
         if validation_report_csv:
-            csv_report_path = self._task.args.get("csv_report_path")
-            if not isinstance(csv_report_path, str) or not Path(csv_report_path).parent.exists():
-                raise AnsibleActionFail("'csv_report_path' must be a valid path and his directory must exist.")
-
+            csv_report_path = self._validate_report_path("csv_report_path")
         if validation_report_md:
-            md_report_path = self._task.args.get("md_report_path")
-            if not isinstance(md_report_path, str) or not Path(md_report_path).parent.exists():
-                raise AnsibleActionFail("'md_report_path' must be a valid path and his directory must exist.")
+            md_report_path = self._validate_report_path("md_report_path")
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand
         hostvars = task_vars["hostvars"]
-
         # For now we support the existing behavior of eos_validate_state, all hosts from the play
         ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
-
         # List to track all results temp files for each host
         temp_files = []
 
         try:
             # Initialize an empty ResultsManager that will be used to store results and statistics
             test_results = ResultsManager(only_failed_tests=only_failed_tests)
-
             for host in sorted(ansible_play_hosts_all):
                 # Hosts marked as not deployed do not have any results
                 if not get(hostvars[host], "is_deployed"):
                     display.warning(f"No test results for host {host} since it's marked as not deployed.")
                     continue
-
                 # Getting the host results temp file saved by eos_validate_state_runner action plugin
                 temp_file = get(hostvars[host], "anta_results.results_temp_file")
                 if not isinstance(temp_file, str) or not Path(temp_file).exists():
                     display.warning(f"Results temporary file path is invalid or does not exist for host {host}.")
                     continue
-
                 # Track the temp file
                 temp_files.append(temp_file)
 
@@ -109,26 +118,18 @@ class ActionModule(ActionBase):
                 except Exception as error:
                     display.warning(f"Error while processing the test results of host {host}: {error}.")
 
-            # Generate the CSV report
+            # Generate the reports
             if validation_report_csv:
-                with Path(csv_report_path).open("w", encoding="UTF-8", newline="\n") as csvfile:
-                    csv_report = CSVReport(csvfile=csvfile, results=test_results)
-                    csv_report.generate_report()
-
-            # Generate the MD report
+                _generate_report(report_path=csv_report_path, report_class=CSVReport, test_results=test_results)
             if validation_report_md:
-                with Path(md_report_path).open("w", encoding="UTF-8") as mdfile:
-                    md_report = ValidateStateReport(mdfile=mdfile, results=test_results)
-                    md_report.generate_report()
+                _generate_report(report_path=md_report_path, report_class=ValidateStateReport, test_results=test_results)
 
         except Exception as error:
             raise AnsibleActionFail(f"Error during plugin execution: {error}") from error
-
         finally:
             # Cleanup for each host's temporary file
             for file_path in temp_files:
-                if Path(file_path).exists():
-                    Path(file_path).unlink()
+                Path(file_path).unlink(missing_ok=True)
 
         if cprofile_file:
             profiler.disable()

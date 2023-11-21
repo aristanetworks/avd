@@ -5,7 +5,7 @@ from __future__ import annotations
 
 import re
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, ClassVar, Generator
+from typing import TYPE_CHECKING, Callable, ClassVar, Generator
 
 if TYPE_CHECKING:
     from io import TextIOWrapper
@@ -24,16 +24,14 @@ class MDReportBase(ABC):
             mdfile (TextIOWrapper): An open file object to write the markdown data into.
             results (ResultsManager): The ResultsManager instance containing all test results.
         """
-        self.mdfile: TextIOWrapper = mdfile
-        self.results: ResultsManager = results
+        self.mdfile = mdfile
+        self.results = results
 
     @abstractmethod
     def generate_section(self) -> None:
         """Abstract method to generate a specific section of the markdown report.
 
         Must be implemented by subclasses.
-
-        # TODO: Most of subclasses methods are similar so move this here and override if necessary
         """
 
     def generate_header_name(self) -> str:
@@ -49,6 +47,19 @@ class MDReportBase(ABC):
         """
         class_name = self.__class__.__name__
         return re.sub(r"(?<!^)(?=[A-Z])", " ", class_name).title()
+
+    def generate_table(self, table_header: list[str], row_generator: Callable[[], Generator[str, None, None]]) -> None:
+        """Generate a table with a header and multiple rows.
+
+        Args:
+        ----
+            table_header (list[str]): The table header.
+            row_generator (Callable): The rows generator function.
+        """
+        self.write_table_header(table_header)
+        for row in row_generator():
+            self.mdfile.write(row)
+        self.mdfile.write("\n")
 
     def write_header(self, heading_level: int) -> None:
         """Write a markdown header to the markdown file.
@@ -131,14 +142,17 @@ class ValidateStateReport(MDReportBase):
                 "| ----------- | ------------------ | ------------------ | ------------------- |",
             ]
 
+            def generate_rows(self) -> Generator[str, None, None]:
+                """Generate the rows of the results table."""
+                yield (
+                    f"| {self.results.total_tests} | {self.results.total_tests_passed} | {self.results.total_tests_failed} |"
+                    f" {self.results.total_tests_skipped} |\n"
+                )
+
             def generate_section(self) -> None:
                 """Generate the `### Summary Totals` section of the markdown report."""
                 self.write_header(heading_level=3)
-                self.write_table_header(self.TABLE_HEADER)
-                self.mdfile.write(
-                    f"| {self.results.total_tests} | {self.results.total_tests_passed} | {self.results.total_tests_failed} |"
-                    f" {self.results.total_tests_skipped} |\n\n",
-                )
+                self.generate_table(table_header=self.TABLE_HEADER, row_generator=self.generate_rows)
 
         class SummaryTotalsDevicesUnderTests(MDReportBase):
             """Generate the `### Summary Totals Devices Under Tests` section of the markdown report."""
@@ -162,10 +176,7 @@ class ValidateStateReport(MDReportBase):
             def generate_section(self) -> None:
                 """Generate the `### Summary Totals Devices Under Tests` section of the markdown report."""
                 self.write_header(heading_level=3)
-                self.write_table_header(self.TABLE_HEADER)
-                for row in self.generate_rows():
-                    self.mdfile.write(row)
-                self.mdfile.write("\n")
+                self.generate_table(table_header=self.TABLE_HEADER, row_generator=self.generate_rows)
 
         class SummaryTotalsPerCategory(MDReportBase):
             """Generate the `### Summary Totals Per Category` section of the markdown report."""
@@ -184,10 +195,7 @@ class ValidateStateReport(MDReportBase):
             def generate_section(self) -> None:
                 """Generate the `### Summary Totals Per Category` section of the markdown report."""
                 self.write_header(heading_level=3)
-                self.write_table_header(self.TABLE_HEADER)
-                for row in self.generate_rows():
-                    self.mdfile.write(row)
-                self.mdfile.write("\n")
+                self.generate_table(table_header=self.TABLE_HEADER, row_generator=self.generate_rows)
 
     class FailedTestResultsSummary(MDReportBase):
         """Generate the `## Failed Test Results Summary` section of the markdown report."""
@@ -209,10 +217,7 @@ class ValidateStateReport(MDReportBase):
         def generate_section(self) -> None:
             """Generate the `## Failed Test Results Summary` section of the markdown report."""
             self.write_header(heading_level=2)
-            self.write_table_header(self.TABLE_HEADER)
-            for row in self.generate_rows():
-                self.mdfile.write(row)
-            self.mdfile.write("\n")
+            self.generate_table(table_header=self.TABLE_HEADER, row_generator=self.generate_rows)
 
     class AllTestResults(MDReportBase):
         """Generates the `## All Test Results` section of the markdown report.
@@ -241,7 +246,4 @@ class ValidateStateReport(MDReportBase):
             """
             if not self.results.only_failed_tests:
                 self.write_header(heading_level=2)
-                self.write_table_header(self.TABLE_HEADER)
-                for row in self.generate_rows():
-                    self.mdfile.write(row)
-                self.mdfile.write("\n")
+                self.generate_table(table_header=self.TABLE_HEADER, row_generator=self.generate_rows)
