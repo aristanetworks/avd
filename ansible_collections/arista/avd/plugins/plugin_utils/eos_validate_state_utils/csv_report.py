@@ -38,11 +38,15 @@ class CSVReport:
         results = self.results.failed_tests if self.results.only_failed_tests else self.results.all_tests
 
         for result in results:
-            yield {**result, "failure_reasons": ";".join(result["failure_reasons"])}
+            yield {
+                **result,
+                "failure_reasons": ";".join(result["failure_reasons"]),
+                "test_categories": ";".join(result["test_categories"]),
+            }
 
     def generate_report(self) -> None:
         """Generate and writes the CSV report using the collected test results."""
-        fieldnames = ["test_id", "node", "test_category", "test_description", "test", "result", "failure_reasons"]
+        fieldnames = ["test_id", "node", "test_categories", "test_description", "test", "result", "failure_reasons"]
         writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames)
         writer.writeheader()
 

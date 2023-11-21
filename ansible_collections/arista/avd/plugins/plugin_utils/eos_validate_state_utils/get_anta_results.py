@@ -135,7 +135,14 @@ def get_anta_results(
     results: list[dict] = loads(manager.get_results(output_format="json"))
 
     # Return sorted results
-    return sorted(results, key=lambda result: (result["categories"], result["custom_field"]))
+    return sorted(
+        results,
+        key=lambda result: (
+            result.get("categories", [""])[0].lower(),
+            result.get("description", "").lower(),
+            result.get("custom_field", "").lower(),
+        ),
+    )
 
 
 def _create_dry_run_report(device_name: str, tests: list[tuple], manager: ResultManager) -> None:
@@ -158,6 +165,4 @@ def _create_dry_run_report(device_name: str, tests: list[tuple], manager: Result
         categories = result_overwrite.get("categories", test_class.categories)
         custom_field = result_overwrite.get("custom_field", None)
 
-        manager.add_test_result(
-            TestResult(name=device_name, test=test_class.name, categories=categories, description=description, custom_field=custom_field, messages=["Dry run!"])
-        )
+        manager.add_test_result(TestResult(name=device_name, test=test_class.name, categories=categories, description=description, custom_field=custom_field))

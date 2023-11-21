@@ -21,29 +21,17 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 anta.tests.hardware:
 - VerifyEnvironmentPower:
-    result_overwrite:
-      categories:
-      - Hardware
     states:
     - ok
 - VerifyEnvironmentCooling:
-    result_overwrite:
-      categories:
-      - Hardware
     states:
     - ok
-- VerifyTemperature:
-    result_overwrite:
-      categories:
-      - Hardware
+- VerifyTemperature: {}
 - VerifyTransceiversManufacturers:
     manufacturers:
     - Arista Networks
     - Arastra, Inc.
     - Not Present
-    result_overwrite:
-      categories:
-      - Hardware
 anta.tests.interfaces:
 - VerifyInterfacesStatus:
     interfaces:
@@ -54,7 +42,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet1 - DC2-LEAF1A_Ethernet8
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet2
@@ -64,7 +52,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet2 - DC2-LEAF1B_Ethernet8
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet5
@@ -74,7 +62,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet5 - dc2-leaf1-server1_iLO
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Port-Channel1
@@ -84,7 +72,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Port-Channel1 - DC2_L3_LEAF1_Po8
-      description: Port-Channel Interface & Line Protocol == \"up\"
+      description: Port-Channel Interface & Line Protocol == 'up'
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:

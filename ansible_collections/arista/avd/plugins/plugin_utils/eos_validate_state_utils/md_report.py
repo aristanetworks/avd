@@ -201,16 +201,17 @@ class ValidateStateReport(MDReportBase):
         """Generate the `## Failed Test Results Summary` section of the markdown report."""
 
         TABLE_HEADER: ClassVar[list[str]] = [
-            "| Test ID | Node | Test Category | Test Description | Test | Test Result | Failure Reasons |",
-            "| ------- | ---- | ------------- | ---------------- | ---- | ----------- | --------------- |",
+            "| Test ID | Node | Test Categories | Test Description | Test | Test Result | Failure Reasons |",
+            "| ------- | ---- | --------------- | ---------------- | ---- | ----------- | --------------- |",
         ]
 
         def generate_rows(self) -> Generator[str, None, None]:
             """Generate the rows of the results table."""
             for result in self.results.failed_tests:
-                failure_reasons = "\n".join(result["failure_reasons"])
+                failure_reasons = ", ".join(result["failure_reasons"])
+                categories = ", ".join(result["test_categories"])
                 yield (
-                    f"| {result['test_id'] or '-'} | {result['node'] or '-'} | {result['test_category'] or '-'} | {result['test_description'] or '-'} |"
+                    f"| {result['test_id'] or '-'} | {result['node'] or '-'} | {categories or '-'} | {result['test_description'] or '-'} |"
                     f" {result['test'] or '-'} | {result['result'] or '-'} | {failure_reasons or '-'} |\n"
                 )
 
@@ -226,16 +227,17 @@ class ValidateStateReport(MDReportBase):
         """
 
         TABLE_HEADER: ClassVar[list[str]] = [
-            "| Test ID | Node | Test Category | Test Description | Test | Test Result | Failure Reasons |",
-            "| ------- | ---- | ------------- | ---------------- | ---- | ----------- | --------------- |",
+            "| Test ID | Node | Test Categories | Test Description | Test | Test Result | Failure Reasons |",
+            "| ------- | ---- | --------------- | ---------------- | ---- | ----------- | --------------- |",
         ]
 
         def generate_rows(self) -> Generator[str, None, None]:
             """Generate the rows of the results table."""
             for result in self.results.all_tests:
-                failure_reasons = "\n".join(result["failure_reasons"])
+                failure_reasons = ", ".join(result["failure_reasons"])
+                categories = ", ".join(result["test_categories"])
                 yield (
-                    f"| {result['test_id'] or '-'} | {result['node'] or '-'} | {result['test_category'] or '-'} | {result['test_description'] or '-'} |"
+                    f"| {result['test_id'] or '-'} | {result['node'] or '-'} | {categories or '-'} | {result['test_description'] or '-'} |"
                     f" {result['test'] or '-'} | {result['result'] or '-'} | {failure_reasons or '-'} |\n"
                 )
 
