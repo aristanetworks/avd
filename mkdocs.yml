@@ -69,12 +69,16 @@ extra_javascript:
 plugins:
   - exclude:
       glob:
+        - .*
+        - changelogs/*
         - molecule/*
         - tests/*
+        - plugins/README.md
         - docs/release-notes/1.0.x.md
         - docs/release-notes/1.1.x.md
         - docs/release-notes/2.x.x.md
         - docs/release-notes/3.x.x.md
+        - roles/*/docs/tables/*
   - include_dir_to_nav
   - git-revision-date-localized:
       type: date
@@ -95,9 +99,6 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite

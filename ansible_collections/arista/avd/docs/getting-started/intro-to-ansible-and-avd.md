@@ -698,10 +698,10 @@ This takes place without manual intervention and with very little chance for hum
 
 Below are a number of links to additional documentation about Ansible AVD and Ansible in general:
 
-- [Role documentation for eos_design](../../roles/eos_designs)
-- [Role documentation for eos_cli_config_gen](../../roles/eos_cli_config_gen)
+- [Role documentation for eos_design](../../roles/eos_designs/README.md)
+- [Role documentation for eos_cli_config_gen](../../roles/eos_cli_config_gen/README.md)
 - [RedHat Ansible Tower Documentation](https://docs.ansible.com/ansible/latest/reference_appendices/tower.html)
-- [Role documentation for eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi)
+- [Role documentation for eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp/README.md) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi/README.md)
 
 ## Next steps
 
