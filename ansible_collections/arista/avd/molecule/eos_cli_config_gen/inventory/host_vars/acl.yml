@@ -81,4 +81,3 @@ standard_access_lists:
         action: "permit 172.16.0.0/12"
       - sequence: 40
         action: "permit 192.168.0.0/16"
-        
