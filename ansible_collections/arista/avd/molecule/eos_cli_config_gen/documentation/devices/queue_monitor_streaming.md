@@ -4,6 +4,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [Queue Monitor](#queue-monitor)
+  - [Queue Monitor Streaming](#queue-monitor-streaming)
+  - [Queue Monitor Configuration](#queue-monitor-configuration)
 
 ## Management
 
@@ -31,4 +34,25 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+## Queue Monitor
+
+### Queue Monitor Streaming
+
+
+| Enabled | IP Access Group | IPv6 Access Group | Max Connections | Vrf |
+| ------- | --------------- | ----------------- | --------------- | --- |
+| True | ACL-QMS | ACLv6-QMS | 5 | test |
+
+### Queue Monitor Configuration
+
+```eos
+!
+queue-monitor streaming
+   max-connections 5
+   ip access-group ACL-QMS
+   ipv6 access-group ACL-QMS
+   vrf test
+   no shutdown
 ```
