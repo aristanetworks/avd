@@ -20,7 +20,7 @@ keys:
           enable:
             required: true
             type: bool
-            description: "Enable transcieve monitoring logging."
+            description: "Enable transciever monitoring logging."
           dom:
             type: bool
             description: "Enable transceiver digital optical monitoring (DOM) logging."
