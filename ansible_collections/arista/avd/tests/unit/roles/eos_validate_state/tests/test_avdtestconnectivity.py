@@ -42,7 +42,7 @@ DATA: list[dict] = [
             "DC1-SPINE1": {},
         },
         "expected_result": {},
-        "expected_log": "Variable 'ethernet_interfaces' is missing from the structured_config. AvdTestLLDPTopology is skipped.",
+        "expected_log": "Key 'ethernet_interfaces' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -56,7 +56,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Ethernet interface entry #1 from the 'ethernet_interfaces' data model is missing the variable 'peer'.",
+        "expected_log": "Key 'ethernet_interfaces.[0].peer' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -70,7 +70,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Ethernet interface entry #1 from the 'ethernet_interfaces' data model is missing the variable 'name'.",
+        "expected_log": "Key 'ethernet_interfaces.[0].name' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -88,7 +88,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Ethernet interface entry #1 from the 'ethernet_interfaces' data model is missing the variable 'shutdown'.",
+        "expected_log": "Key 'ethernet_interfaces.[0].shutdown' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -102,7 +102,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": "Ethernet interface entry #1 from the 'ethernet_interfaces' data model is missing the variable 'peer_interface'.",
+        "expected_log": "Key 'ethernet_interfaces.[0].peer_interface' is missing. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "WARNING",
     },
     {
@@ -117,9 +117,7 @@ DATA: list[dict] = [
             "DC1-LEAF1A": {"is_deployed": False},
         },
         "expected_result": {},
-        "expected_log": (
-            "Peer 'DC1-LEAF1A' is not configured by AVD or is marked as not deployed. 'VerifyLLDPNeighbors' from interface 'Ethernet1' to this peer is skipped."
-        ),
+        "expected_log": "Peer 'DC1-LEAF1A' is marked as not deployed. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "INFO",
     },
     {
@@ -133,9 +131,7 @@ DATA: list[dict] = [
             }
         },
         "expected_result": {},
-        "expected_log": (
-            "Peer 'HOST-1' is not configured by AVD or is marked as not deployed. 'VerifyLLDPNeighbors' from interface 'Ethernet1' to this peer is skipped."
-        ),
+        "expected_log": "Peer 'HOST-1' is not configured by AVD. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "INFO",
     },
     {
@@ -164,7 +160,7 @@ DATA: list[dict] = [
                 }
             ]
         },
-        "expected_log": "Ethernet interface 'Ethernet2' is shutdown. 'VerifyLLDPNeighbors' is skipped for this interface.",
+        "expected_log": "Key 'ethernet_interfaces.[1].shutdown' != 'False'. AvdTestLLDPTopology is skipped.",
         "expected_log_level": "INFO",
     },
     {

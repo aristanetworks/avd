@@ -35,9 +35,11 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.255.1
     peer_group: OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
   - ip_address: 192.168.255.4
     peer_group: OVERLAY-PEERS
+    peer: DC1-SPINE4
     description: DC1-SPINE4
 static_routes:
 - vrf: MGMT

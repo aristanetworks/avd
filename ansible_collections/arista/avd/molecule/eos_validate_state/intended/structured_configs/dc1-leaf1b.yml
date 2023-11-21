@@ -1,5 +1,5 @@
 hostname: dc1-leaf1b
-is_deployed: false
+is_deployed: true
 router_bgp:
   as: '65101'
   router_id: 10.255.0.4
@@ -43,21 +43,26 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.1.96
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: dc1-leaf1a
     description: dc1-leaf1a
   - ip_address: 10.255.255.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
+    peer: dc1-spine1
     description: dc1-spine1_Ethernet2
   - ip_address: 10.255.255.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65100'
+    peer: dc1-spine2
     description: dc1-spine2_Ethernet2
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: dc1-spine1
     description: dc1-spine1
     remote_as: '65100'
   - ip_address: 10.255.0.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: dc1-spine2
     description: dc1-spine2
     remote_as: '65100'
   redistribute_routes:
