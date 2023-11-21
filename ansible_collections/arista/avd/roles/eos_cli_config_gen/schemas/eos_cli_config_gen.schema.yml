@@ -3326,6 +3326,43 @@ keys:
       information_option:
         type: bool
         description: Insert Option-82 information
+  ip_dhcp_snooping:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      bridging:
+        type: bool
+      information_option:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable insertion of option-82 in DHCP request packets
+          circuit_id_type:
+            type: str
+            convert_types:
+            - int
+            description: '"none" or <0 - 255>'
+          circuit_id_format:
+            type: str
+            description: 'Required if `circuit_id_type` is set.
+
+              - "%h:%p" Hostname and interface name
+
+              - "%p:%v" Interface name and VLAN ID'
+            valid_values:
+            - '%h:%p'
+            - '%p:%v'
+      vlan:
+        type: str
+        convert_types:
+        - int
+        description: 'VLAN range as string.
+
+          "< vlan_id >, < vlan_id >-< vlan_id >"
+
+          Example: 15,16,17,18'
   ip_domain_lookup:
     type: dict
     keys:

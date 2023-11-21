@@ -1,0 +1,23 @@
+{#
+    Copyright (c) 2023 Arista Networks, Inc.
+    Use of this source code is governed by the Apache License 2.0
+    that can be found in the LICENSE file.
+#}
+{# eos - ip dhcp snooping #}
+{% if ip_dhcp_snooping.enabled is arista.avd.defined(true) %}
+!
+{%     if ip_dhcp_snooping.bridging is arista.avd.defined(true) %}
+ip dhcp snooping bridging
+{%     else %}
+ip dhcp snooping
+{%     endif %}
+{%     if ip_dhcp_snooping.information_option.enabled is arista.avd.defined(true) %}
+ip dhcp snooping information option
+{%         if ip_dhcp_snooping.information_option.circuit_id_type is arista.avd.defined and ip_dhcp_snooping.information_option.circuit_id_format is arista.avd.defined %}
+ip dhcp snooping information option circuit-id type {{ ip_dhcp_snooping.information_option.circuit_id_type }} format {{ ip_dhcp_snooping.information_option.circuit_id_format }}
+{%         endif %}
+{%     endif %}
+{%     if ip_dhcp_snooping.vlan is arista.avd.defined %}
+ip dhcp snooping vlan {{ ip_dhcp_snooping.vlan }}
+{%     endif %}
+{% endif %}
