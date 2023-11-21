@@ -201,6 +201,7 @@ $defs:
                   description: Group_prefix/mask.
               access_list_name:
                 type: str
+                convert_types: [ int ]
                 description: |
                   List of groups to associate with the RP address set in 'rp'.
                   If access_list_name is set, a standard access-list will be configured matching these groups.
@@ -487,6 +488,7 @@ $defs:
                         description: Group_prefix/mask.
                     access_list_name:
                       type: str
+                      convert_types: [ int ]
                       description: |
                         List of groups to associate with the RP addresses set in 'rps'.
                         If access_list_name is set, a standard access-list will be configured matching these groups.
