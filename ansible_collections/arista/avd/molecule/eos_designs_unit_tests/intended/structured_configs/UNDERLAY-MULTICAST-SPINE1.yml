@@ -37,33 +37,41 @@ router_bgp:
   - ip_address: 172.31.255.1
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
+    peer: UNDERLAY-MULTICAST-L3LEAF1A
     description: UNDERLAY-MULTICAST-L3LEAF1A_Ethernet1
   - ip_address: 172.31.255.5
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65101'
+    peer: UNDERLAY-MULTICAST-L3LEAF1B
     description: UNDERLAY-MULTICAST-L3LEAF1B_Ethernet1
   - ip_address: 172.31.255.9
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
+    peer: UNDERLAY-MULTICAST-L3LEAF2A
     description: UNDERLAY-MULTICAST-L3LEAF2A_Ethernet1
   - ip_address: 172.31.255.13
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65102'
+    peer: UNDERLAY-MULTICAST-L3LEAF2B
     description: UNDERLAY-MULTICAST-L3LEAF2B_Ethernet1
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: UNDERLAY-MULTICAST-L3LEAF1A
     description: UNDERLAY-MULTICAST-L3LEAF1A
     remote_as: '65101'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
+    peer: UNDERLAY-MULTICAST-L3LEAF1B
     description: UNDERLAY-MULTICAST-L3LEAF1B
     remote_as: '65101'
   - ip_address: 192.168.255.5
     peer_group: EVPN-OVERLAY-PEERS
+    peer: UNDERLAY-MULTICAST-L3LEAF2A
     description: UNDERLAY-MULTICAST-L3LEAF2A
     remote_as: '65102'
   - ip_address: 192.168.255.6
     peer_group: EVPN-OVERLAY-PEERS
+    peer: UNDERLAY-MULTICAST-L3LEAF2B
     description: UNDERLAY-MULTICAST-L3LEAF2B
     remote_as: '65102'
   address_family_evpn:
