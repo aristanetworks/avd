@@ -182,6 +182,8 @@ tenant_a:
             nodes: [DC1-BL1A, DC1-BL1B]
             route_map_in: RM-123-1-1-11-IN
             route_map_out: RM-123-1-1-11-OUT
+            prefix_list_in: PL-TEST-IN-AF4
+            prefix_list_out: PL-TEST-OUT-AF4
             local_as: 123
             bfd: true
           - ip_address: fd5a:fe45:8831:06c5::a
@@ -189,6 +191,8 @@ tenant_a:
             send_community: all
             nodes: [DC1-BL1A, DC1-BL1B]
             set_ipv6_next_hop: fd5a:fe45:8831:06c5::1
+            prefix_list_in: PL-TEST-IN-AF6
+            prefix_list_out: PL-TEST-OUT-AF6
           - ip_address: fd5a:fe45:8831:06c5::b
             remote_as: 12345
             nodes: [DC1-BL1A, DC1-BL1B]

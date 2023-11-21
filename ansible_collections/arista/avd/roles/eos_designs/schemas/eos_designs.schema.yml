@@ -4836,10 +4836,16 @@ $defs:
                       description: Route-map name.
                     prefix_list_in:
                       type: str
-                      description: Prefix list name.
+                      description: 'Inbound prefix list name.
+
+                        The prefix-list will be associated under the IPv4 or IPv6
+                        address family based on the IP address.'
                     prefix_list_out:
                       type: str
-                      description: Prefix list name.
+                      description: 'Outbound prefix list name.
+
+                        The prefix-list will be associated under the IPv4 or IPv6
+                        address family based on the IP address.'
                     local_as:
                       type: str
                       convert_types:
