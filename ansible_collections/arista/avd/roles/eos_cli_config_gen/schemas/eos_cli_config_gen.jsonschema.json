@@ -5601,7 +5601,7 @@
             },
             "circuit_id_format": {
               "type": "string",
-              "description": "Required if `circuit_id_type` is set.\n- \"%h:%p\" Hostname and interface name or\n- \"%p:%v\" Interface name and VLAN ID",
+              "description": "Required if `circuit_id_type` is set.\n- \"%h:%p\" Hostname and interface name\n- \"%p:%v\" Interface name and VLAN ID",
               "enum": [
                 "%h:%p",
                 "%p:%v"

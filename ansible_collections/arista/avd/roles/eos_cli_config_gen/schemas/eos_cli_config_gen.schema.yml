@@ -3348,7 +3348,7 @@ keys:
             type: str
             description: 'Required if `circuit_id_type` is set.
 
-              - "%h:%p" Hostname and interface name or
+              - "%h:%p" Hostname and interface name
 
               - "%p:%v" Interface name and VLAN ID'
             valid_values:
