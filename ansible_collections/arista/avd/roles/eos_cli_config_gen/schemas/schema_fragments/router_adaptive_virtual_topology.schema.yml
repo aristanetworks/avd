@@ -84,7 +84,7 @@ keys:
             name:
               type: str
               description: Policy name.
-            match_clauses:
+            matches:
               type: list
               items:
                 type: dict

@@ -34,17 +34,17 @@ router adaptive-virtual-topology
 {%     for policy in router_adaptive_virtual_topology.policies | arista.avd.natural_sort('name') %}
    !
    policy {{ policy.name }}
-{%         for match_clause in policy.match_clauses %}
-{%             if match_clause.application_profile is arista.avd.defined %}
-      match application-profile {{ match_clause.application_profile }}
-{%                 if match_clause.avt_profile is arista.avd.defined %}
-         profile {{ match_clause.avt_profile }}
+{%         for match in policy.matches %}
+{%             if match.application_profile is arista.avd.defined %}
+      match application-profile {{ match.application_profile }}
+{%                 if match.avt_profile is arista.avd.defined %}
+         profile {{ match.avt_profile }}
 {%                 endif %}
-{%                 if match_clause.traffic_class is arista.avd.defined %}
-         traffic-class {{ match_clause.traffic_class }}
+{%                 if match.traffic_class is arista.avd.defined %}
+         traffic-class {{ match.traffic_class }}
 {%                 endif %}
-{%                 if match_clause.dscp is arista.avd.defined %}
-         dscp {{ match_clause.dscp }}
+{%                 if match.dscp is arista.avd.defined %}
+         dscp {{ match.dscp }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
@@ -54,11 +54,11 @@ router adaptive-virtual-topology
    !
    vrf {{ vrf.name }}
 {%         if vrf.policy is arista.avd.defined %}
-      policy {{ vrf.policy }}
+      avt policy {{ vrf.policy }}
 {%         endif %}
 {%         for profile in vrf.profiles | arista.avd.natural_sort('id') %}
 {%             if profile.name is arista.avd.defined and profile.id is arista.avd.defined %}
-      profile {{ profile.name }} id {{ profile.id }}
+      avt profile {{ profile.name }} id {{ profile.id }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
