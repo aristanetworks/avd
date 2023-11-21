@@ -12,7 +12,7 @@ keys:
     keys:
       logging_mac_fault:
         type: bool
-        description: "Enable mac fault loggin."
+        description: "Enable MAC fault logging."
       logging_transceiver:
         type: dict
         description: "Configure transceiver monitoring logging."
