@@ -23,7 +23,7 @@ keys:
             description: "Enable transciever monitoring logging."
           dom:
             type: bool
-            description: "Enable transceiver digital optical monitoring (DOM) logging."
+            description: "Enable transceiver Digital Optical Monitoring (DOM) logging."
           communication:
             type: bool
             description: "Enable transceiver SMBus fail and reset logging."
