@@ -328,6 +328,7 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types: [ int ]
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -466,6 +467,7 @@ keys:
             name:
               type: str
               description: Access List Name
+              convert_types: [ int ]
             entries:
               type: list
               items:
@@ -3112,6 +3114,7 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types: [ int ]
         counters_per_entry:
           type: bool
         entries:
@@ -3996,6 +3999,7 @@ keys:
         name:
           type: str
           description: IPv6 Access-list Name
+          convert_types: [ int ]
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4078,6 +4082,7 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types: [ int ]
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4649,6 +4654,7 @@ keys:
         name:
           type: str
           description: MAC Access-list Name
+          convert_types: [ int ]
         counters_per_entry:
           type: bool
         entries:
@@ -11960,6 +11966,7 @@ keys:
                   type: list
                   items:
                     type: str
+                    convert_types: [ int ]
                 priority:
                   type: int
                   min: 0
@@ -12030,6 +12037,7 @@ keys:
                         type: list
                         items:
                           type: str
+                          convert_types: [ int ]
                       priority:
                         type: int
                         min: 0
@@ -12352,12 +12360,14 @@ keys:
                 name:
                   type: str
                   description: IPv4 access list name
+                  convert_types: [ int ]
             access_list_ipv6:
               type: dict
               keys:
                 name:
                   type: str
                   description: IPv6 access list name
+                  convert_types: [ int ]
             view:
               type: str
       ipv4_acls:
@@ -12711,6 +12721,7 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types: [ int ]
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -14269,6 +14280,7 @@ $defs:
               keys:
                 access_list:
                   type: str
+                  convert_types: [ int ]
                 comment:
                   type: str
                 pool_name:
@@ -14294,6 +14306,7 @@ $defs:
               keys:
                 access_list:
                   type: str
+                  convert_types: [ int ]
                 comment:
                   type: str
                 nat_type:
@@ -14329,6 +14342,7 @@ $defs:
       keys:
         access_list:
           type: str
+          convert_types: [ int ]
           description: '''access_list'' and ''group'' are mutual exclusive'
         comment:
           type: str
