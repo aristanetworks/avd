@@ -8,7 +8,7 @@ type: dict
 keys:
   monitor_layer1:
     type: dict
-    description: "Enable SYSLOG messages on transceiver SMBus communication failures"
+    description: "Enable SYSLOG messages on transceiver SMBus communication failures."
     keys:
       logging_mac_fault:
         type: bool
