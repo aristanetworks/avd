@@ -42,7 +42,7 @@ interface Management1
 
 
 | Enabled | IP Access Group | IPv6 Access Group | Max Connections | Vrf |
-| ------- | --------------- | ----------------- | --------------- | --- |
+| :-------: | :---------------: | :-----------------: | :---------------: | :---: |
 | True | ACL-QMS | ACLv6-QMS | 5 | test |
 
 ### Queue Monitor Configuration

@@ -21,7 +21,7 @@
 {%         set cpu_low = queue_monitor_length.cpu.thersholds.low | arista.avd.default('-') %}
 
 | Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | tx-latency | CPU Thresholds High | CPU Thresholds Low |
-| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| ------- | ---------------- | :-----------------------: | :----------------------: | --------- | ---------- | :-------------------: | :------------------: |
 | {{ enabled }} | {{ log }} | {{ default_high }} | {{ default_low }} | {{ notifying }} | {{ tx_latency }} | {{ cpu_high }} | {{ cpu_low }} |
 {%     endif %}
 {%     if queue_monitor_streaming is arista.avd.defined %}
@@ -35,7 +35,7 @@
 {%         set max_connections = queue_monitor_streaming.max_connections | arista.avd.default('-') %}
 
 | Enabled | IP Access Group | IPv6 Access Group | Max Connections | Vrf |
-| ------- | --------------- | ----------------- | --------------- | --- |
+| :-------: | :---------------: | :-----------------: | :---------------: | :---: |
 | {{ enabled }} | {{ ip_acl }} | {{ ipv6_acl }} | {{ max_connections }} | {{ vrf }} |
 {%     endif %}
 

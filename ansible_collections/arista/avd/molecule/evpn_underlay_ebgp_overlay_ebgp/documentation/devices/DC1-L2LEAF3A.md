@@ -29,6 +29,9 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+- [Queue Monitor](#queue-monitor)
+  - [Queue Monitor Length](#queue-monitor-length)
+  - [Queue Monitor Configuration](#queue-monitor-configuration)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [VRF Instances](#vrf-instances)
@@ -379,6 +382,23 @@ no ip routing vrf MGMT
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+```
+
+## Queue Monitor
+
+### Queue Monitor Length
+
+
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | tx-latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | :-----------------------: | :----------------------: | --------- | ---------- | :-------------------: | :------------------: |
+| True | 5 | - | - | - | - | - | - |
+
+### Queue Monitor Configuration
+
+```eos
+!
+queue-monitor length
+queue-monitor length log 5
 ```
 
 ## Multicast

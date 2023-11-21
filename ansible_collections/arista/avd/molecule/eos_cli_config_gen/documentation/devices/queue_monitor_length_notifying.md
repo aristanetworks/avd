@@ -42,7 +42,7 @@ interface Management1
 
 
 | Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | tx-latency | CPU Thresholds High | CPU Thresholds Low |
-| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| ------- | ---------------- | :-----------------------: | :----------------------: | --------- | ---------- | :-------------------: | :------------------: |
 | True | - | 100 | - | False | - | - | - |
 
 ### Queue Monitor Configuration
