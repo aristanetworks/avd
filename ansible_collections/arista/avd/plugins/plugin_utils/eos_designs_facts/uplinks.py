@@ -110,9 +110,9 @@ class UplinksMixin:
             if uplink_switch_port_channel_id is not None:
                 if uplink_switch_port_channel_id != peer_uplink_switch_port_channel_id:
                     raise AristaAvdError(
-                        f"'uplink_switch_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_switch_port_channel_id} and is not matching"
-                        f" {peer_uplink_switch_port_channel_id} set on MLAG peer."
-                        " The 'uplink_switch_port_channel_id' must be matching on MLAG peers."
+                        f"'uplink_switch_port_channel_id'expected_error_message on '{self.shared_utils.hostname}' is set to {uplink_switch_port_channel_id} and"
+                        f" is not matching {peer_uplink_switch_port_channel_id} set on MLAG peer. The 'uplink_switch_port_channel_id' must be matching on MLAG"
+                        " peers."
                     )
             return peer_uplink_switch_port_channel_id
 
