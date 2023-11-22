@@ -7,6 +7,25 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>custom_platform_settings</samp>](## "custom_platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
+    | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "custom_platform_settings.[].platforms") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "custom_platform_settings.[].platforms.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trident_forwarding_table_partition</samp>](## "custom_platform_settings.[].trident_forwarding_table_partition") | String |  |  |  | Only applied when evpn_multicast is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;reload_delay</samp>](## "custom_platform_settings.[].reload_delay") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "custom_platform_settings.[].reload_delay.mlag") | Integer |  |  | Min: 0<br>Max: 86400 | In seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;non_mlag</samp>](## "custom_platform_settings.[].reload_delay.non_mlag") | Integer |  |  | Min: 0<br>Max: 86400 | In seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tcam_profile</samp>](## "custom_platform_settings.[].tcam_profile") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lag_hardware_only</samp>](## "custom_platform_settings.[].lag_hardware_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "custom_platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "custom_platform_settings.[].feature_support") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "custom_platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "custom_platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "custom_platform_settings.[].feature_support.poe") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "custom_platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;platforms</samp>](## "platform_settings.[].platforms") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "platform_settings.[].platforms.[]") | String |  |  |  |  |
@@ -42,7 +61,48 @@
 === "YAML"
 
     ```yaml
-    platform_settings: # (1)!
+    custom_platform_settings: # (1)!
+      - platforms:
+          - <str>
+
+        # Only applied when evpn_multicast is true.
+        trident_forwarding_table_partition: <str>
+        reload_delay:
+
+          # In seconds.
+          mlag: <int; 0-86400>
+
+          # In seconds.
+          non_mlag: <int; 0-86400>
+        tcam_profile: <str>
+        lag_hardware_only: <bool>
+
+        # Default interface MTU configured on EOS under "interface defaults".
+        # Takes precedence over the root key "default_interface_mtu".
+        default_interface_mtu: <int; 68-65535>
+        feature_support:
+          queue_monitor_length_notify: <bool; default=True>
+          interface_storm_control: <bool; default=True>
+          poe: <bool; default=False>
+
+          # Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
+          # Effectively this means that all settings regarding interface MTU will be ignored if this is false.
+          # Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"
+          per_interface_mtu: <bool; default=True>
+
+          # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
+          # Can be overridden by setting "bgp_update_wait_install" host/group_vars.
+          bgp_update_wait_install: <bool; default=True>
+
+          # Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+          # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
+          # Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
+          bgp_update_wait_for_convergence: <bool; default=True>
+        management_interface: <str; default="Management1">
+
+        # EOS CLI rendered directly on the root level of the final EOS configuration.
+        raw_eos_cli: <str>
+    platform_settings: # (2)!
       - platforms:
           - <str>
 
@@ -112,6 +172,141 @@
     ```
 
     1. Default Value
+
+        ```yaml
+        custom_platform_settings:
+        - feature_support:
+            queue_monitor_length_notify: false
+          platforms:
+          - default
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            queue_monitor_length_notify: false
+          platforms:
+          - 7050X3
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
+            131072
+        - feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+          platforms:
+          - 720XP
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
+            131072
+        - feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+          management_interface: Management0
+          platforms:
+          - '750'
+          - '755'
+          - '758'
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+          platforms:
+          - 720DP
+          - 722XP
+          - 710P
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - lag_hardware_only: true
+          platforms:
+          - 7280R
+          - 7280R2
+          - 7020R
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+          tcam_profile: vxlan-routing
+        - platforms:
+          - 7280R3
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+        - lag_hardware_only: true
+          management_interface: Management0
+          platforms:
+          - 7500R
+          - 7500R2
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+          tcam_profile: vxlan-routing
+        - management_interface: Management0
+          platforms:
+          - 7500R3
+          - 7800R3
+          reload_delay:
+            mlag: 900
+            non_mlag: 1020
+        - feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: true
+            queue_monitor_length_notify: false
+          management_interface: Management1/1
+          platforms:
+          - 7358X4
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - management_interface: Management0
+          platforms:
+          - 7368X4
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - management_interface: Management0
+          platforms:
+          - 7300X3
+          reload_delay:
+            mlag: 1200
+            non_mlag: 1320
+          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
+            131072
+        - feature_support:
+            bgp_update_wait_for_convergence: false
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          platforms:
+          - VEOS
+          - VEOS-LAB
+          - vEOS
+          - vEOS-lab
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        - feature_support:
+            bgp_update_wait_for_convergence: false
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          management_interface: Management0
+          platforms:
+          - CEOS
+          - cEOS
+          - ceos
+          - cEOSLab
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+        ```
+
+    2. Default Value
 
         ```yaml
         platform_settings:

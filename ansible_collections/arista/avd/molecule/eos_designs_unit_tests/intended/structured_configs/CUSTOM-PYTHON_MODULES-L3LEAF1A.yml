@@ -212,7 +212,7 @@ ethernet_interfaces:
 - name: Ethernet1
   peer: CUSTOM-PYTHON_MODULES-SPINE1
   peer_interface: Ethernet1
-  peer_type: spine
+  peer_type: custom_spine
   description: TEST_CUSTOM_PREFIX_P2P_LINK_TO_CUSTOM-PYTHON_MODULES-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214

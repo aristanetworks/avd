@@ -6,9 +6,21 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
+  custom_node_type_keys:
+    $ref: eos_designs#/keys/node_type_keys
+    type: list
+    documentation_options:
+      table: node-type-keys
+    description: |-
+      Define Custom Node Type Keys, to specify the properties of each node type in the fabric.
+      This allows for complete customization of the fabric layout and functionality.
+      `custom_node_type_keys` should be defined in top level group_var for the fabric.
+      These values will be merged with the defaults; keys named the same as a default node_type_key will override the default.
   node_type_keys:
     type: list
-    description: |
+    documentation_options:
+      table: node-type-keys
+    description: |-
       Define Node Type Keys, to specify the properties of each node type in the fabric.
       This allows for complete customization of the fabric layout and functionality.
       `node_type_keys` should be defined in top level group_var for the fabric.
