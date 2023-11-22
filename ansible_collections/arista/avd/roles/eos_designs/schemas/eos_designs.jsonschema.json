@@ -2454,6 +2454,11 @@
                 "description": "IPv4 address/Mask. Subnet used on this P2P link.",
                 "title": "Subnet"
               },
+              "vrf": {
+                "type": "string",
+                "description": "VRF to configure on each device and interface of the link.",
+                "title": "VRF"
+              },
               "ip": {
                 "type": "array",
                 "description": "Specific IP addresses used on this P2P link.",
@@ -2697,6 +2702,11 @@
                 "type": "string",
                 "description": "IPv4 address/Mask. Subnet used on this P2P link.",
                 "title": "Subnet"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF to configure on each device and interface of the link.",
+                "title": "VRF"
               },
               "ip": {
                 "type": "array",
@@ -3774,6 +3784,11 @@
                 "description": "IPv4 address/Mask. Subnet used on this P2P link.",
                 "title": "Subnet"
               },
+              "vrf": {
+                "type": "string",
+                "description": "VRF to configure on each device and interface of the link.",
+                "title": "VRF"
+              },
               "ip": {
                 "type": "array",
                 "description": "Specific IP addresses used on this P2P link.",
@@ -4017,6 +4032,11 @@
                 "type": "string",
                 "description": "IPv4 address/Mask. Subnet used on this P2P link.",
                 "title": "Subnet"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF to configure on each device and interface of the link.",
+                "title": "VRF"
               },
               "ip": {
                 "type": "array",

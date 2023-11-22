@@ -6595,6 +6595,9 @@ $defs:
         subnet:
           type: str
           description: IPv4 address/Mask. Subnet used on this P2P link.
+        vrf:
+          type: str
+          description: VRF to configure on each device and interface of the link.
         ip:
           type: list
           description: Specific IP addresses used on this P2P link.

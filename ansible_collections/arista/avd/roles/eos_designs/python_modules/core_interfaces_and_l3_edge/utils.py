@@ -222,7 +222,7 @@ class UtilsMixin:
             interface_cfg["ip_address"] = ip[index]
 
         if p2p_link.get("include_in_underlay_protocol", True) is True:
-            if self.shared_utils.underlay_rfc5549 or p2p_link.get("ipv6_enable") is True:
+            if self._p2p_link_ipv6_enabled(p2p_link):
                 interface_cfg["ipv6_enable"] = True
 
             if self.shared_utils.underlay_ospf:
@@ -319,3 +319,9 @@ class UtilsMixin:
     @cached_property
     def _p2p_links_sflow(self) -> bool | None:
         return get(self._hostvars, f"fabric_sflow.{self.data_model}")
+
+    def _p2p_link_ipv6_enabled(self, p2p_link: dict) -> bool:
+        """
+        Return True if IPv6 should be enabled on the link
+        """
+        return p2p_link.get("include_in_underlay_protocol", True) is True and (self.shared_utils.underlay_rfc5549 or p2p_link.get("ipv6_enable") is True)
