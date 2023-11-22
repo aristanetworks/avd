@@ -722,6 +722,7 @@ roles/eos_designs/docs/tables/management-sflow-settings.md
 
 --8<--
 roles/eos_designs/docs/tables/management-snmp-settings.md
+--8<--
 
 ## System settings
 
