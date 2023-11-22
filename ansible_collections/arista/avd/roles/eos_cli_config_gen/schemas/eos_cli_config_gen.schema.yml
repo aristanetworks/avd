@@ -328,6 +328,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -622,6 +624,8 @@ keys:
                 access_group:
                   type: str
                   description: Standard Access-List Name
+                  convert_types:
+                  - int
       qos:
         type: list
         primary_key: name
@@ -649,12 +653,16 @@ keys:
                 access_group:
                   type: str
                   description: IPv4 Access-List Name
+                  convert_types:
+                  - int
             ipv6:
               type: dict
               keys:
                 access_group:
                   type: str
                   description: IPv6 Access-List Name
+                  convert_types:
+                  - int
   clock:
     type: dict
     keys:
@@ -3112,6 +3120,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         entries:
@@ -3326,6 +3336,43 @@ keys:
       information_option:
         type: bool
         description: Insert Option-82 information
+  ip_dhcp_snooping:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      bridging:
+        type: bool
+      information_option:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable insertion of option-82 in DHCP request packets
+          circuit_id_type:
+            type: str
+            convert_types:
+            - int
+            description: '"none" or <0 - 255>'
+          circuit_id_format:
+            type: str
+            description: 'Required if `circuit_id_type` is set.
+
+              - "%h:%p" Hostname and interface name
+
+              - "%p:%v" Interface name and VLAN ID'
+            valid_values:
+            - '%h:%p'
+            - '%p:%v'
+      vlan:
+        type: str
+        convert_types:
+        - int
+        description: 'VLAN range as string.
+
+          "< vlan_id >, < vlan_id >-< vlan_id >"
+
+          Example: 15,16,17,18'
   ip_domain_lookup:
     type: dict
     keys:
@@ -3996,6 +4043,8 @@ keys:
         name:
           type: str
           description: IPv6 Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4078,6 +4127,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4649,6 +4700,8 @@ keys:
         name:
           type: str
           description: MAC Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         entries:
@@ -10305,9 +10358,19 @@ keys:
                   prefix_list_in:
                     type: str
                     description: Inbound prefix-list name
+                    deprecation:
+                      warning: true
+                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in
+                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in
+                      remove_in_version: 5.0.0
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name
+                    deprecation:
+                      warning: true
+                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out
+                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out
+                      remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -10440,6 +10503,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name
                       next_hop:
                         type: dict
                         keys:
@@ -10535,6 +10604,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name
                 networks:
                   type: list
                   primary_key: prefix
@@ -10736,7 +10811,7 @@ keys:
               deprecation:
                 warning: true
                 new_key: address_family_*
-                remove_in_version: v5.0.0
+                remove_in_version: 5.0.0
               items:
                 type: dict
                 keys:
@@ -12711,6 +12786,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -13590,15 +13667,23 @@ keys:
         access_group_in:
           type: str
           description: IPv4 access-list name
+          convert_types:
+          - int
         access_group_out:
           type: str
           description: IPv4 access-list name
+          convert_types:
+          - int
         ipv6_access_group_in:
           type: str
           description: IPv6 access-list name
+          convert_types:
+          - int
         ipv6_access_group_out:
           type: str
           description: IPv6 access-list name
+          convert_types:
+          - int
         multicast:
           type: dict
           keys:
@@ -13617,6 +13702,8 @@ keys:
                         type: str
                         description: IPv4 access-list name or IPv4 multicast group
                           prefix with mask
+                        convert_types:
+                        - int
                       out:
                         type: bool
                 source_route_export:
@@ -13648,6 +13735,8 @@ keys:
                         type: str
                         description: IPv6 access-list name or IPv6 multicast group
                           prefix with mask
+                        convert_types:
+                        - int
                 source_route_export:
                   type: dict
                   keys:

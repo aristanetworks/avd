@@ -158,6 +158,8 @@ router_bgp:
         activate: true
       - ip_address: 123.1.1.11
         activate: true
+        prefix_list_in: PL-TEST-IN-AF4
+        prefix_list_out: PL-TEST-OUT-AF4
     neighbors:
     - ip_address: 123.1.1.10
       remote_as: '1234'
@@ -198,6 +200,8 @@ router_bgp:
       neighbors:
       - ip_address: fd5a:fe45:8831:06c5::a
         activate: true
+        prefix_list_in: PL-TEST-IN-AF6
+        prefix_list_out: PL-TEST-OUT-AF6
       - ip_address: fd5a:fe45:8831:06c5::b
         activate: true
     updates:
