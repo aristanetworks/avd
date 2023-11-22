@@ -13,7 +13,7 @@ keys:
     description: |-
       sFlow settings.
       The sFlow process will only be configured if any interface is enabled for sFlow.
-      For default enabling of sFlow for various interface types across the fabric see "fabric_sflow".
+      For default enabling of sFlow for various interface types across the fabric see `fabric_sflow`.
     keys:
       destinations:
         type: list
