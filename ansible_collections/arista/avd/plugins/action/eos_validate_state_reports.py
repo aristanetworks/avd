@@ -36,20 +36,6 @@ def _test_results_gen(input_path: str) -> Generator[dict, None, None]:
         yield from load(file)
 
 
-def _generate_report(report_path: str, report_class: type, test_results: ResultsManager) -> None:
-    """Generate a report using the specified report class.
-
-    Args:
-    ----
-        report_path: The path to the report file.
-        report_class: The class used to generate the report.
-        test_results: The ResultsManager object containing the test results.
-    """
-    with Path(report_path).open("w", encoding="UTF-8") as report_file:
-        report = report_class(report_file, test_results)
-        report.generate_report()
-
-
 class ActionModule(ActionBase):
     def _validate_arg_boolean(self, arg_name: str, *, default_value: bool) -> bool:
         """Validate if a task argument is a boolean."""
@@ -99,12 +85,13 @@ class ActionModule(ActionBase):
             # Initialize an empty ResultsManager that will be used to store results and statistics
             test_results = ResultsManager(only_failed_tests=only_failed_tests)
             for host in sorted(ansible_play_hosts_all):
+                host_hostvars = hostvars[host]
                 # Hosts marked as not deployed do not have any results
-                if not get(hostvars[host], "is_deployed"):
+                if not get(host_hostvars, "is_deployed", default=True):
                     display.warning(f"No test results for host {host} since it's marked as not deployed.")
                     continue
                 # Getting the host results temp file saved by eos_validate_state_runner action plugin
-                temp_file = get(hostvars[host], "anta_results.results_temp_file")
+                temp_file = get(host_hostvars, "anta_results.results_temp_file")
                 if not isinstance(temp_file, str) or not Path(temp_file).exists():
                     display.warning(f"Results temporary file path is invalid or does not exist for host {host}.")
                     continue
@@ -120,9 +107,13 @@ class ActionModule(ActionBase):
 
             # Generate the reports
             if validation_report_csv:
-                _generate_report(report_path=csv_report_path, report_class=CSVReport, test_results=test_results)
+                with Path(csv_report_path).open("w", encoding="UTF-8") as report_file:
+                    csv_report = CSVReport(report_file, test_results)
+                    csv_report.generate_report()
             if validation_report_md:
-                _generate_report(report_path=md_report_path, report_class=ValidateStateReport, test_results=test_results)
+                with Path(md_report_path).open("w", encoding="UTF-8") as report_file:
+                    md_report = ValidateStateReport(report_file, test_results)
+                    md_report.generate_report()
 
         except Exception as error:
             raise AnsibleActionFail(f"Error during plugin execution: {error}") from error

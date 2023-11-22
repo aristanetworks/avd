@@ -34,6 +34,7 @@ class ResultsManager:
                 "tests_passed": 0,
                 "tests_failed": 0,
                 "tests_skipped": 0,
+                "tests_not_run": 0,
                 "categories_failed": set(),
                 "categories_skipped": set(),
             },
@@ -43,6 +44,7 @@ class ResultsManager:
                 "tests_passed": 0,
                 "tests_failed": 0,
                 "tests_skipped": 0,
+                "tests_not_run": 0,
             },
         )
         self.failed_tests = []
@@ -95,6 +97,7 @@ class ResultsManager:
             "PASS": ("total_tests_passed", "tests_passed"),
             "FAIL": ("total_tests_failed", "tests_failed", "categories_failed"),
             "SKIPPED": ("total_tests_skipped", "tests_skipped", "categories_skipped"),
+            "NOT RUN": ("total_tests_not_run", "tests_not_run"),
         }
         stats_to_increment = stats_mapping.get(test_result, ())
 
@@ -127,8 +130,6 @@ class ResultsManager:
 
         if test_result == "FAIL":
             self.failed_tests.append(parsed_result)
-        elif test_result == "NOT RUN":
-            self.total_tests_not_run += 1
         if not self.only_failed_tests:
             self.all_tests.append(parsed_result)
 

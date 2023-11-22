@@ -165,12 +165,12 @@ class ValidateStateReport(MDReportBase):
             def generate_rows(self) -> Generator[str, None, None]:
                 """Generate the rows of the results table."""
                 for dut, stat in self.results.dut_stats.items():
-                    total_tests = stat["tests_passed"] + stat["tests_failed"] + stat["tests_skipped"]
+                    total_tests = stat["tests_passed"] + stat["tests_failed"] + stat["tests_skipped"] + stat["tests_not_run"]
                     categories_failed = ", ".join(sorted(stat["categories_failed"]))
                     categories_skipped = ", ".join(sorted(stat["categories_skipped"]))
                     yield (
-                        f"| {dut} | {total_tests} | {stat['tests_passed']} | {stat['tests_failed']} | {stat['tests_skipped']} | {categories_failed} |"
-                        f" {categories_skipped} |\n"
+                        f"| {dut} | {total_tests} | {stat['tests_passed']} | {stat['tests_failed']} | {stat['tests_skipped']} | {categories_failed or '-'} |"
+                        f" {categories_skipped or '-'} |\n"
                     )
 
             def generate_section(self) -> None:
@@ -189,7 +189,7 @@ class ValidateStateReport(MDReportBase):
             def generate_rows(self) -> Generator[str, None, None]:
                 """Generate the rows of the results table."""
                 for category, stat in self.results.category_stats.items():
-                    total_tests = stat["tests_passed"] + stat["tests_failed"] + stat["tests_skipped"]
+                    total_tests = stat["tests_passed"] + stat["tests_failed"] + stat["tests_skipped"] + stat["tests_not_run"]
                     yield f"| {category} | {total_tests} | {stat['tests_passed']} | {stat['tests_failed']} | {stat['tests_skipped']} |\n"
 
             def generate_section(self) -> None:
