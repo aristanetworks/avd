@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, replace_or_append_item
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
@@ -150,6 +150,11 @@ class NodeTypeKeysMixin:
         default_node_type_keys_for_our_design = get(DEFAULT_NODE_TYPE_KEYS, design_type)
         node_type_keys = get(self.hostvars, "node_type_keys", default=default_node_type_keys_for_our_design)
         node_type_keys = convert_dicts(node_type_keys, "key")
+        custom_node_type_keys = get(self.hostvars, "custom_node_type_keys", default=[])
+
+        for node_type_key in custom_node_type_keys:
+            replace_or_append_item(node_type_keys, "key", node_type_key)
+
         return node_type_keys
 
     @cached_property
