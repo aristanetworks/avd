@@ -38,7 +38,7 @@ router adaptive-virtual-topology
 {%             if match.application_profile is arista.avd.defined %}
       match application-profile {{ match.application_profile }}
 {%                 if match.avt_profile is arista.avd.defined %}
-         profile {{ match.avt_profile }}
+         avt profile {{ match.avt_profile }}
 {%                 endif %}
 {%                 if match.traffic_class is arista.avd.defined %}
          traffic-class {{ match.traffic_class }}
