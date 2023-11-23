@@ -19,11 +19,35 @@
 
 | DUT | Total Tests | Tests Passed | Tests Failed | Tests Skipped | Categories Failed | Categories Skipped |
 | --- | ----------- | ------------ | ------------ | ------------- | ----------------- | ------------------ |
+| dc1-leaf1a | 67 | 0 | 0 | 0 | - | - |
+| dc1-leaf1b | 67 | 0 | 0 | 0 | - | - |
+| dc1-leaf1c | 11 | 0 | 0 | 0 | - | - |
+| dc1-leaf2a | 69 | 0 | 0 | 0 | - | - |
+| dc1-leaf2c | 10 | 0 | 0 | 0 | - | - |
+| dc1-spine1 | 23 | 0 | 0 | 0 | - | - |
+| dc1-spine2 | 23 | 0 | 0 | 0 | - | - |
+| dc2-leaf1a | 67 | 0 | 0 | 0 | - | - |
+| dc2-leaf1b | 67 | 0 | 0 | 0 | - | - |
+| dc2-leaf1c | 11 | 0 | 0 | 0 | - | - |
+| dc2-leaf2a | 72 | 0 | 0 | 0 | - | - |
+| dc2-leaf2b | 68 | 0 | 0 | 0 | - | - |
+| dc2-leaf2c | 11 | 0 | 0 | 0 | - | - |
+| dc2-spine1 | 27 | 0 | 0 | 0 | - | - |
+| dc2-spine2 | 27 | 0 | 0 | 0 | - | - |
 
 ### Summary Totals Per Category
 
 | Test Category | Total Tests | Tests Passed | Tests Failed | Tests Skipped |
 | ------------- | ----------- | ------------ | ------------ | ------------- |
+| BGP | 77 | 0 | 0 | 0 |
+| Hardware | 60 | 0 | 0 | 0 |
+| Interface State | 193 | 0 | 0 | 0 |
+| IP Reachability | 30 | 0 | 0 | 0 |
+| LLDP Topology | 56 | 0 | 0 | 0 |
+| Loopback0 Reachability | 77 | 0 | 0 | 0 |
+| MLAG | 7 | 0 | 0 | 0 |
+| NTP | 15 | 0 | 0 | 0 |
+| Routing Table | 105 | 0 | 0 | 0 |
 
 ## Failed Test Results Summary
 
