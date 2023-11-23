@@ -425,26 +425,27 @@ keys:
     keys:
       categories:
         type: list
-        description: Space to add new categories or modify existing categories.
+        description: List of categories.
         primary_key: name
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Name of the category.
-            applications_and_services:
+              description: Category name.
+            applications:
               type: list
-              description: Application and service pair.
+              description: List of applications.
               items:
                 type: dict
                 keys:
                   name:
                     type: str
-                    description: Name of the application.
+                    description: Application name.
                   service:
                     type: str
-                    description: Supported service of the application.
+                    description: If no service is specified, all supported services
+                      of the application are considered.
                     valid_values:
                     - audio-video
                     - chat
@@ -453,88 +454,96 @@ keys:
                     - networking-protocols
                     - peer-to-peer
                     - software-update
-      port_range_sets:
-        type: list
-        description: Define range of ports.
-        primary_key: name
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Name of the port set.
-            ports:
-              type: list
-              description: Set of port ranges.
-              items:
-                type: str
-                description: Port range formatted as start-end ( ex - 2400-2500 ).
-      prefix_sets:
-        type: list
-        description: Define prefix sets.
-        primary_key: name
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Name of the prefix set.
-            prefixes:
-              type: list
-              items:
-                type: str
-                description: Ip prefix to match against the source/destination IP
-                  in packets (ex- 1.2.3.0/24).
-      user_defined_ipv4_applications:
-        type: list
-        description: List of user defined ipv4 applications.
-        primary_key: name
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: Name of the application.
-            src_prefix_set_name:
-              type: str
-              description: Specify a defined prefix set name.
-            dest_prefix_set_name:
-              type: str
-              description: Specify a defined prefix set name.
-            protocol:
-              type: str
-              description: Protocol to match the packets against.
-            src_port_set_name:
-              type: str
-              description: Specify a defined port range name. Used to match against
-                the src port in packets.
-            dest_port_set_name:
-              type: str
-              description: Specify a defined port range name. Used to match against
-                the dest port in packets.
+      field_sets:
+        type: dict
+        keys:
+          l4_ports:
+            type: list
+            primary_key: name
+            description: L4 port field-set.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: L4 port field-set name.
+                port_values:
+                  type: list
+                  items:
+                    type: str
+                    description: 'Port values or range of port values.
+
+                      Port values are between 0 and 65535.'
+                    pattern: ^\d+(\-\d+)?$
+          ipv4_prefixes:
+            type: list
+            primary_key: name
+            description: Ipv4 prefix field set.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv4 prefix field-set name.
+                prefix_values:
+                  type: list
+                  items:
+                    type: str
+                    description: IP prefix (ex- 1.2.3.0/24).
+                    pattern: ^\(?:[0-9]{1,3}\.){3}[0-9]{1,3}/[0-9]{1,2}$
+      applications:
+        type: dict
+        keys:
+          ipv4_applications:
+            type: list
+            description: List of user defined ipv4 applications.
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Application name.
+                src_prefix_set_name:
+                  type: str
+                  description: Source prefix set name.
+                dest_prefix_set_name:
+                  type: str
+                  description: Destination prefix set name.
+                protocol:
+                  type: str
+                  description: Protocol name.
+                src_port_set_name:
+                  type: str
+                  description: Source l4 port field set name.
+                dest_port_set_name:
+                  type: str
+                  description: Destination l4 port field set name.
       application_profiles:
         type: list
-        description: Profiles is a collection of applications and categories with/without
-          services.
+        description: Group of applications.
         items:
           type: dict
           keys:
             name:
               type: str
-              description: Name of the application profile.
+              description: Application Profile name.
             applications:
               type: list
-              description: Specify list of application and service pair to be part
-                of the application profile.
+              description: List of applications part of the application profile.
               items:
                 type: dict
                 keys:
                   name:
                     type: str
-                    description: Name of an application.
+                    description: Application Name.
                   service:
                     type: str
-                    description: One of the supported services of the application.
+                    description: 'Service Name.
+
+                      Actual supported services for an application are subset of
+
+                      mentioned valid values and is application dependent.'
                     valid_values:
                     - audio-video
                     - chat
@@ -571,8 +580,11 @@ keys:
                     description: Name of a category.
                   service:
                     type: str
-                    description: Service name. Matches applications supporting this
-                      service.
+                    description: 'Service name.
+
+                      Actual supported services for an application are subset of
+
+                      mentioned valid values and is application dependent.'
                     valid_values:
                     - audio-video
                     - chat
