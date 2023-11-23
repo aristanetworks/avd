@@ -19,17 +19,6 @@ router adaptive-virtual-topology
 {%     if router_adaptive_virtual_topology.site.name is arista.avd.defined and router_adaptive_virtual_topology.site.id %}
    site {{ router_adaptive_virtual_topology.site.name }} id {{ router_adaptive_virtual_topology.site.id }}
 {%     endif %}
-{#    AVT Profiles #}
-{%     for profile in router_adaptive_virtual_topology.profiles | arista.avd.natural_sort('name') %}
-   !
-   profile {{ profile.name }}
-{%         if profile.load_balance_policy is arista.avd.defined %}
-      path-selection load-balance {{ profile.load_balance_policy }}
-{%         endif %}
-{%         if profile.internet_exit_policy is arista.avd.defined %}
-      internet-exit policy {{ profile.internet_exit_policy }}
-{%         endif %}
-{%     endfor %}
 {#    AVT Policies #}
 {%     for policy in router_adaptive_virtual_topology.policies | arista.avd.natural_sort('name') %}
    !
@@ -48,6 +37,17 @@ router adaptive-virtual-topology
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
+{%     endfor %}
+{#    AVT Profiles #}
+{%     for profile in router_adaptive_virtual_topology.profiles | arista.avd.natural_sort('name') %}
+   !
+   profile {{ profile.name }}
+{%         if profile.load_balance_policy is arista.avd.defined %}
+      path-selection load-balance {{ profile.load_balance_policy }}
+{%         endif %}
+{%         if profile.internet_exit_policy is arista.avd.defined %}
+      internet-exit policy {{ profile.internet_exit_policy }}
+{%         endif %}
 {%     endfor %}
 {#   VRFs #}
 {%     for vrf in router_adaptive_virtual_topology.vrfs | arista.avd.natural_sort('name') %}
