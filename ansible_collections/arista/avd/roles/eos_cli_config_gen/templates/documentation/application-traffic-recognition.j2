@@ -20,7 +20,7 @@
 
 | Application Name | Service |
 | ---------------- | ------- |
-{%                     for app_details in category.applications %}
+{%                     for app_details in category.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service') %}
 | {{ app_details.name }} | {{ app_details.service | arista.avd.default("-") }} |
 {%                     endfor %}
 {%                 endif %}
@@ -33,13 +33,14 @@
 {%         if application_traffic_recognition.field_sets.l4_ports is arista.avd.defined %}
 
 ##### l4 Port Sets
-{%             for port_set in application_traffic_recognition.field_sets.l4_ports %}
+{%             for port_set in application_traffic_recognition.field_sets.l4_ports | arista.avd.natural_sort('name') %}
 {%                 if port_set.name is arista.avd.defined %}
 
 ###### l4 Port Set {{port_set.name}}
 
 | Ports |
 | ----- |
+{%                     do port_set.port_values.sort() %}
 {%                     for port in port_set.port_values %}
 | {{ port }} |
 {%                     endfor %}
@@ -49,13 +50,14 @@
 {%         if application_traffic_recognition.field_sets.ipv4_prefixes is arista.avd.defined %}
 
 ##### Ipv4 Prefix Sets
-{%             for prefix_set in application_traffic_recognition.field_sets.ipv4_prefixes %}
+{%             for prefix_set in application_traffic_recognition.field_sets.ipv4_prefixes | arista.avd.natural_sort('name')  %}
 {%                 if prefix_set.name is arista.avd.defined %}
 
 ###### Ipv4 Prefix Set {{prefix_set.name}}
 
 | Prefixes |
 | -------- |
+{%                     do prefix_set.prefix_values.sort() %}
 {%                     for prefix in prefix_set.prefix_values %}
 | {{ prefix }} |
 {%                     endfor %}
@@ -106,7 +108,7 @@
 {%     if application_traffic_recognition.application_profiles is arista.avd.defined %}
 
 #### Application Profile Details
-{%         for application_profile in application_traffic_recognition.application_profiles %}
+{%         for application_profile in application_traffic_recognition.application_profiles | arista.avd.natural_sort('name') %}
 
 ##### Application Profile Name {{ application_profile.name }}
 {%             if application_profile.applications is arista.avd.defined %}
@@ -115,7 +117,7 @@
 
 | Setting | Application | Service |
 | ------- | ----------- | ------- |
-{%                 for application in application_profile.applications %}
+{%                 for application in application_profile.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service') %}
 | application | {{ application.name }} | {{ application.service | arista.avd.default("-") }} |
 {%                 endfor %}
 {%             endif %}
@@ -125,7 +127,7 @@
 
 | Setting | Category | Service |
 | ------- | -------- | ------- |
-{%                 for category in application_profile.categories %}
+{%                 for category in application_profile.categories | arista.avd.natural_sort('name') | arista.avd.natural_sort('service') %}
 | category | {{ category.name }} | {{ category.service | arista.avd.default("-") }} |
 {%                 endfor %}
 {%             endif %}
@@ -135,6 +137,7 @@
 
 | Transport name |
 | -------------- |
+{%                 do application_profile.transports.sort %}
 {%                 for transport in application_profile.transports %}
 | {{ transport }} |
 {%                 endfor %}

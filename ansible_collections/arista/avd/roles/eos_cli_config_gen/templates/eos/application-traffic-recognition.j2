@@ -9,7 +9,7 @@
 application traffic recognition
 {%     if application_traffic_recognition.applications is arista.avd.defined %}
 {%         if application_traffic_recognition.applications.ipv4_applications is arista.avd.defined %}
-{%             for application in application_traffic_recognition.applications.ipv4_applications %}
+{%             for application in application_traffic_recognition.applications.ipv4_applications | arista.avd.natural_sort('name') %}
 {%                 if application.name is arista.avd.defined %}
    !
    application ipv4 {{ application.name }}
@@ -38,7 +38,7 @@ application traffic recognition
 {%         if category.name is arista.avd.defined %}
    !
    category {{ category.name }}
-{%             for app_details in category.applications %}
+{%             for app_details in category.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service') %}
 {%                 if app_details.service is  arista.avd.defined %}
       application {{ app_details.name }} service {{ app_details.service }}
 {%                 else %}
@@ -47,31 +47,35 @@ application traffic recognition
 {%             endfor %}
 {%         endif %}
 {%     endfor %}
-{%     for application_profile in application_traffic_recognition.application_profiles %}
+{%     for application_profile in application_traffic_recognition.application_profiles | arista.avd.natural_sort('name') %}
    !
    application-profile {{ application_profile.name }}
-{%         for application in application_profile.applications %}
+{%         for application in application_profile.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service') %}
 {%             if application.service is arista.avd.defined %}
       application {{ application.name }} service {{ application.service }}
 {%             else %}
       application {{ application.name }}
 {%             endif %}
 {%         endfor %}
-{%         for transport in application_profile.transports %}
+{%         if application_profile.transports is arista.avd.defined %}
+{%             do application_profile.transports.sort() %}
+{%             for transport in application_profile.transports %}
       application {{ transport }} transport
-{%         endfor %}
-{%         for category in application_profile.categories %}
-{%             if category.service is arista.avd.defined %}
+{%             endfor %}
+{%             for category in application_profile.categories %}
+{%                 if category.service is arista.avd.defined %}
       category {{ category.name }} service {{ category.service }}
-{%             else %}
+{%                 else %}
       category {{ category.name }}
-{%             endif %}
-{%         endfor %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
 {%     if application_traffic_recognition.field_sets is arista.avd.defined %}
 {%         if application_traffic_recognition.field_sets.l4_ports is arista.avd.defined %}
-{%             for port_set in application_traffic_recognition.field_sets.l4_ports %}
+{%             for port_set in application_traffic_recognition.field_sets.l4_ports | arista.avd.natural_sort('name') %}
 {%                 if port_set.name is arista.avd.defined %}
+{%                     do port_set.port_values.sort() %}
    !
    field-set l4-port {{ port_set.name }}
       {{ port_set.port_values | join(", ") }}
@@ -79,8 +83,9 @@ application traffic recognition
 {%             endfor %}
 {%         endif %}
 {%         if application_traffic_recognition.field_sets.ipv4_prefixes is arista.avd.defined %}
-{%             for prefix_set in application_traffic_recognition.field_sets.ipv4_prefixes %}
+{%             for prefix_set in application_traffic_recognition.field_sets.ipv4_prefixes | arista.avd.natural_sort('name') %}
 {%                 if prefix_set.name is arista.avd.defined %}
+{%                     do prefix_set.prefix_values.sort() %}
    !
    field-set ipv4 prefix {{ prefix_set.name }}
       {{ prefix_set.prefix_values | join(" ") }}
