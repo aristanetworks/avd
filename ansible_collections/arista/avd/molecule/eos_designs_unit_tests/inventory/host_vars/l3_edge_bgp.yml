@@ -85,3 +85,11 @@ l3_edge:
           - node: peer6
             interfaces: [ Ethernet7, Ethernet8 ]
       include_in_underlay_protocol: true
+
+    # P2P link with underlay routing, IP and IPv6 and vrf.
+    - nodes: [l3_edge_bgp, peer7]
+      interfaces: [ethernet9, ethernet9]
+      ip: [192.168.7.2/31, 192.168.7.3/31]
+      vrf: BGP-VRF
+      as: [65000, 65002]
+      ipv6_enable: true

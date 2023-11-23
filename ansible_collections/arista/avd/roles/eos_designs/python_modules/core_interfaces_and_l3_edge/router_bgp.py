@@ -28,7 +28,7 @@ class RouterBgpMixin(UtilsMixin):
         neighbors = []
         neighbor_interfaces = []
         for p2p_link in self._filtered_p2p_links:
-            if not (p2p_link.get("include_in_underlay_protocol", True) is True):
+            if p2p_link.get("include_in_underlay_protocol", True) is not True:
                 continue
 
             if p2p_link["data"]["bgp_as"] is None or p2p_link["data"]["peer_bgp_as"] is None:
@@ -54,13 +54,45 @@ class RouterBgpMixin(UtilsMixin):
             if p2p_link["data"]["bgp_as"] != self.shared_utils.bgp_as:
                 neighbor["local_as"] = p2p_link["data"]["bgp_as"]
 
+            # Add temporary vrf - poped later
+            if (vrf := p2p_link["data"].get("vrf")) is not None and vrf != "default":
+                neighbor["vrf"] = vrf
+
             # Remove None values
             neighbor = {key: value for key, value in neighbor.items() if value is not None}
 
             neighbors.append({"ip_address": p2p_link["data"]["peer_ip"].split("/")[0], **neighbor})
 
         router_bgp = {}
+
         if neighbors:
+            # Handle vrfs
+            for neighbor in neighbors:
+                vrf = neighbor.pop("vrf", None)
+                if vrf is not None:
+                    router_bgp["address_family_ipv4"] = {
+                        "neighbors": [
+                            {
+                                "ip_address": neighbor["ip_address"],
+                                "activate": False,
+                            }
+                        ]
+                    }
+                    # TODO add rd /rt / handle IPv6 -> probably need an external function
+                    router_bgp.setdefault("vrfs", []).append(
+                        {
+                            "name": vrf,
+                            "address_family_ipv4": {
+                                "neighbors": [
+                                    {
+                                        "ip_address": neighbor["ip_address"],
+                                        "activate": True,
+                                    }
+                                ],
+                            },
+                        }
+                    )
+
             router_bgp["neighbors"] = neighbors
 
         if neighbor_interfaces:

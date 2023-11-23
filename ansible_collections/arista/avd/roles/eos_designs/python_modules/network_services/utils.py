@@ -11,7 +11,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_util
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
-from .utils_filtered_tenants import UtilsFilteredTenantsMixin
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.utils.utils_filtered_tenants import UtilsFilteredTenantsMixin
 
 
 class UtilsMixin(UtilsFilteredTenantsMixin):

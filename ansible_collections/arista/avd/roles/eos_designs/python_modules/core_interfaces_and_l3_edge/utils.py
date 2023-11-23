@@ -10,12 +10,13 @@ from itertools import islice
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError, AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.utils.utils_filtered_tenants import UtilsFilteredTenantsMixin
 
 
-class UtilsMixin:
+class UtilsMixin(UtilsFilteredTenantsMixin):
     """
     Mixin Class with internal functions.
     Class should only be used as Mixin to a AvdStructuredConfig class
@@ -24,6 +25,13 @@ class UtilsMixin:
     # Set type hints for Attributes of the main class as needed
     _hostvars: dict
     shared_utils: SharedUtils
+
+    def _is_subinterface(self, interface_name: str) -> bool:
+        """
+        Expects a valid interface_name, not validated
+        Returns True if the interface_name is a subinterface, False otherwise
+        """
+        return "." in interface_name
 
     @cached_property
     def _p2p_links_profiles(self) -> list:
@@ -104,6 +112,47 @@ class UtilsMixin:
         p2p_link["ip"] = [f"{ip}/{subnet.prefixlen}" for ip in islice(subnet.hosts(), 2)]
         return p2p_link
 
+    def _get_p2p_port_channel_data(self, port_channel: dict, peer: str, nodes: list[str]) -> dict:
+        """
+        Format the port_channel_data
+        * port_channel is {self.data_model}.p2p_links.[].port_channel dict
+        * peer is the remote device name
+        * nodes is the list of nodes for the p2p_links used for error message
+        """
+        node_child_interfaces = get(port_channel, "nodes_child_interfaces", {})
+        # Convert to new data models
+        node_child_interfaces = convert_dicts(node_child_interfaces, primary_key="node", secondary_key="interfaces")
+        if member_interfaces := get_item(node_child_interfaces, "node", self.shared_utils.hostname, default={}).get("interfaces"):
+            # Port-channel
+            peer_member_interfaces = get_item(
+                node_child_interfaces,
+                "node",
+                peer,
+                required=True,
+                var_name=f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces",
+            )["interfaces"]
+
+            if len(member_interfaces) != len(peer_member_interfaces):
+                raise AristaAvdError(
+                    f"When configuring port-channel members under {self.data_model}, the node_child_interfaces list MUST be of the same size for both"
+                    f" peers. Check the configuration for {nodes}"
+                )
+
+            po_id = int("".join(re.findall(r"\d", member_interfaces[0])))
+            peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
+            return {
+                "interface": f"Port-Channel{po_id}",
+                "peer_interface": f"Port-Channel{peer_id}",
+                "port_channel_id": po_id,
+                "port_channel_members": [
+                    {
+                        "interface": interface,
+                        "peer_interface": peer_member_interfaces[index],
+                    }
+                    for index, interface in enumerate(member_interfaces)
+                ],
+            }
+
     def _get_p2p_data(self, p2p_link: dict) -> dict:
         """
         Parses p2p_link data model and extracts information which is easier to parse.
@@ -118,19 +167,22 @@ class UtilsMixin:
               - interface: <interface on this node>
                 peer_interface: <interface on peer>
             ip: <ip if set | None>
+            vrf: <vrf is set | None>
             peer_ip: <peer ip if set | None>
             bgp_as: <as if set | None>
             peer_bgp_as: <peer as if set | None>
         }
+
+        This function also verifies that the subinterfaces key is not present if one of the
+        two ends of the link is a subinterface
         """
-        index = p2p_link["nodes"].index(self.shared_utils.hostname)
+
+        nodes = p2p_link["nodes"]
+        index = nodes.index(self.shared_utils.hostname)
         peer_index = (index + 1) % 2
-        peer = p2p_link["nodes"][peer_index]
+        peer = nodes[peer_index]
         peer_facts = self.shared_utils.get_peer_facts(peer, required=False)
-        if peer_facts is None:
-            peer_type = "other"
-        else:
-            peer_type = peer_facts.get("type", "other")
+        peer_type = "other" if peer_facts is None else peer_facts.get("type", "other")
 
         # Set ip or fallback to list with None values
         ip = get(p2p_link, "ip", default=[None, None])
@@ -147,51 +199,38 @@ class UtilsMixin:
             "bgp_as": str(bgp_as[index]),
             "peer_bgp_as": str(bgp_as[peer_index]),
             "description": descriptions[index],
+            "vrf": get(p2p_link, "vrf"),
         }
 
-        node_child_interfaces = get(p2p_link, "port_channel.nodes_child_interfaces")
-        # Convert to new data models
-        node_child_interfaces = convert_dicts(node_child_interfaces, primary_key="node", secondary_key="interfaces")
-        if member_interfaces := get_item(node_child_interfaces, "node", self.shared_utils.hostname, default={}).get("interfaces"):
-            # Port-channel
-            peer_member_interfaces = get_item(
-                node_child_interfaces,
-                "node",
-                peer,
-                required=True,
-                var_name=f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces",
-            )["interfaces"]
-            id = int("".join(re.findall(r"\d", member_interfaces[0])))
-            peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
-            data.update(
-                {
-                    "interface": f"Port-Channel{id}",
-                    "peer_interface": f"Port-Channel{peer_id}",
-                    "port_channel_id": id,
-                    "port_channel_members": [
-                        {
-                            "interface": interface,
-                            "peer_interface": peer_member_interfaces[index],
-                        }
-                        for index, interface in enumerate(member_interfaces)
-                    ],
-                }
-            )
-            return data
+        port_channel = p2p_link.get("port_channel")
+        subinterfaces = p2p_link.get("subinterfaces")
 
-        if "interfaces" in p2p_link:
+        if subinterfaces and port_channel:
+            raise AristaAvdError(f"Cannot set both 'subinterfaces' and 'port_channel' for {self.data_model}. Check the configuration for nodes {nodes}")
+
+        if port_channel:
+            data.update(self._get_p2p_port_channel_data(port_channel, peer, nodes))
+            return data
+        if (interfaces := p2p_link.get("interfaces")) is not None:
+            if subinterfaces is not None and any(self._is_subinterface(iface) for iface in interfaces):
+                raise AristaAvdError(
+                    f"The 'subinterfaces' key MUST NOT be set when using a subinterface on either end of {self.data_model}.p2p_links. This is the case for"
+                    f" {nodes} configured with {interfaces}."
+                )
             # Ethernet
             data.update(
                 {
-                    "interface": p2p_link["interfaces"][index],
-                    "peer_interface": p2p_link["interfaces"][peer_index],
+                    "interface": interfaces[index],
+                    "peer_interface": interfaces[peer_index],
                     "port_channel_id": None,
                     "port_channel_members": [],
                 }
             )
             return data
 
-        raise AristaAvdMissingVariableError(f"{self.data_model}.p2p_links must have either 'interfaces' or 'port_channel' with correct members set.")
+        raise AristaAvdMissingVariableError(
+            f"{self.data_model}.p2p_links must have either 'interfaces' or 'port_channel' with correct members set. Check the configuration for {nodes}"
+        )
 
     def _get_common_interface_cfg(self, p2p_link: dict) -> dict:
         """
@@ -204,6 +243,7 @@ class UtilsMixin:
         peer = p2p_link["data"]["peer"]
         peer_interface = p2p_link["data"]["peer_interface"]
         default_description = f"P2P_LINK_TO_{peer}_{peer_interface}"
+
         interface_cfg = {
             "name": p2p_link["data"]["interface"],
             "peer": peer,
@@ -212,6 +252,7 @@ class UtilsMixin:
             "description": get(p2p_link, "data.description", default=default_description),
             "type": "routed",
             "shutdown": False,
+            "vrf": get(p2p_link, "vrf"),
             "mtu": p2p_link.get("mtu", self.shared_utils.p2p_uplinks_mtu) if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "service_profile": p2p_link.get("qos_profile", self.shared_utils.p2p_uplinks_qos_profile),
             "eos_cli": p2p_link.get("raw_eos_cli"),

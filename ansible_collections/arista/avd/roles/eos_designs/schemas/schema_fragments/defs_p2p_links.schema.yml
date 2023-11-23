@@ -46,17 +46,21 @@ $defs:
           description: Nodes where this link should be configured.
           items:
             type: str
-            description: |
+            description: |-
               The values can be < node_a >, < node_b >.
               ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].
         interfaces:
           type: list
-          description: Interfaces where this link should be configured and Required unless using port-channels.
+          description: |-
+            Interfaces where this link should be configured and Required unless using `port_channel`.
+            If `port_channel` is set, `interfaces` is ignored.
+
+            The value can be like < node_a_interface >, < node_b_interface >.
+            ex. - [ Ethernet2, Ethernet2 ].
+
+            NOTE: If a subinterface is used in the list, the `subinterfaces` key CANNOT be defined.
           items:
             type: str
-            description: |
-              The value can be like < node_a_interface >, < node_b_interface >.
-              ex. - [ Ethernet2, Ethernet2 ].
         as:
           type: list
           description: |
@@ -129,8 +133,48 @@ $defs:
         macsec_profile:
           type: str
           description: MAC security profile.
+        subinterfaces:
+          type: list
+          primary_key: vrf
+          description: |-
+            Configure subinterfaces, each in their own VRF under the interface
+            The subinterface are the same on each end.
+            The VRF are the same on each end.
+
+            This key is NOT supported if one of the interface in `interfaces` is already a subinterface.
+            This key CANNOT be used in conjunction with `port_channel`.
+          items:
+            type: dict
+            keys:
+              vrf:
+                type: str
+                description: |-
+                  Name of the VRF to configure for this subinterface
+                  The VRF MUST exist in `network_services`
+              subinterface_id:
+                type: int
+                convert_types:
+                  - str
+                description: |-
+                  Optional ID to overwrite the default one used from the VRF.
+                  `vrf_id` is used otherwise.
+              description:
+                type: str
+                description: |-
+                  Optional description for the subinterface.
+              structured_config:
+                type: dict
+                documentation_options:
+                  hide_keys: true
+                description: |-
+                  Custom structured config for the subinterface.
+                  Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+                # Schema ref not implemented since we do not know which of the schemas to look at.
+                # $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
         port_channel:
-          description: Port-channel parameters.
+          description: |-
+            Port-channel parameters.
+            This key CANNOT be used in conjunction with `subinterfaces`.
           type: dict
           keys:
             mode:

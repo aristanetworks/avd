@@ -1,0 +1,25 @@
+---
+# Minimum config to only test the specific feature.
+type: spine
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: failure-p2p-links-different-length-port-channel-members
+      id: 1
+
+l3_edge:
+  p2p_links:
+    - nodes: [failure-p2p-links-different-length-port-channel-members, peer1]
+      id: 1
+      port_channel:
+        nodes_child_interfaces:
+          - node: failure-p2p-links-different-length-port-channel-members
+            interfaces: [Ethernet1, Ethernet2]
+          - node: peer1
+            interfaces: [Ethernet1]
+
+expected_error_message: >-
+  When configuring port-channel members under l3_edge, the node_child_interfaces list MUST be of the same size for both peers. Check the configuration for ['failure-p2p-links-different-length-port-channel-members', 'peer1']

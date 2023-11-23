@@ -1,0 +1,19 @@
+---
+# Minimum config to only test the specific feature.
+type: spine
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: failure-p2p-links-no-interfaces-no-port-channel
+      id: 1
+
+l3_edge:
+  p2p_links:
+    - nodes: [failure-p2p-links-no-interfaces-no-port-channel, peer1]
+      id: 1
+
+expected_error_message: >-
+  l3_edge.p2p_links must have either 'interfaces' or 'port_channel' with correct members set. Check the configuration for ['failure-p2p-links-no-interfaces-no-port-channel', 'peer1']

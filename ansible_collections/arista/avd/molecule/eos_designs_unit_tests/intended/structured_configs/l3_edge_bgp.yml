@@ -20,9 +20,18 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+    neighbors:
+    - ip_address: 192.168.7.3
+      activate: false
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
+  vrfs:
+  - name: BGP-VRF
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 192.168.7.3
+        activate: true
   neighbors:
   - ip_address: 192.168.0.3
     remote_as: '65002'
@@ -48,6 +57,11 @@ router_bgp:
     remote_as: '65006'
     peer: peer6
     description: peer6
+    peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 192.168.7.3
+    remote_as: '65002'
+    peer: peer7
+    description: peer7
     peer_group: IPv4-UNDERLAY-PEERS
 service_routing_protocols_model: multi-agent
 ip_routing: true
@@ -172,6 +186,17 @@ ethernet_interfaces:
   channel_group:
     id: 7
     mode: active
+- name: ethernet9
+  peer: peer7
+  peer_interface: ethernet9
+  peer_type: other
+  description: P2P_LINK_TO_peer7_ethernet9
+  type: routed
+  shutdown: false
+  vrf: BGP-VRF
+  mtu: 9214
+  ip_address: 192.168.7.2/31
+  ipv6_enable: true
 port_channel_interfaces:
 - name: Port-Channel5
   peer: peer5

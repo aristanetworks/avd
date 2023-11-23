@@ -1,0 +1,22 @@
+---
+# Minimum config to only test the specific feature.
+type: spine
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: failure-p2p-links-subinterfaces-key-with-subinterface-in-interfaces
+      id: 1
+
+l3_edge:
+  p2p_links:
+    - nodes: [failure-p2p-links-subinterfaces-key-with-subinterface-in-interfaces, peer1]
+      id: 1
+      interfaces: [Ethernet1.42, Ethernet42.1]
+      subinterfaces:
+        - vrf: TEST
+
+expected_error_message: >-
+  The 'subinterfaces' key MUST NOT be set when using a subinterface on either end of l3_edge.p2p_links. This is the case for ['failure-p2p-links-subinterfaces-key-with-subinterface-in-interfaces', 'peer1'] configured with ['Ethernet1.42', 'Ethernet42.1'].

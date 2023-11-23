@@ -23,9 +23,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].ip.[]") | String |  |  |  | Node IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.p2p_links_profiles.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "l3_edge.p2p_links_profiles.[].nodes") | List, items: String |  |  |  | Nodes where this link should be configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].nodes.[]") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links_profiles.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].interfaces.[]") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].nodes.[]") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ]. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links_profiles.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using `port_channel`.<br>If `port_channel` is set, `interfaces` is ignored.<br><br>The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br><br>NOTE: If a subinterface is used in the list, the `subinterfaces` key CANNOT be defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "l3_edge.p2p_links_profiles.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links_profiles.[].as.[]") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links_profiles.[].descriptions") | List, items: String |  |  |  | Interface description. |
@@ -45,7 +45,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "l3_edge.p2p_links_profiles.[].sflow") | Boolean |  |  |  | Enable sFlow. Overrides `fabric_sflow` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "l3_edge.p2p_links_profiles.[].macsec_profile") | String |  |  |  | MAC security profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links_profiles.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "l3_edge.p2p_links_profiles.[].subinterfaces") | List, items: Dictionary |  |  |  | Configure subinterfaces, each in their own VRF under the interface<br>The subinterface are the same on each end.<br>The VRF are the same on each end.<br><br>This key is NOT supported if one of the interface in `interfaces` is already a subinterface.<br>This key CANNOT be used in conjunction with `port_channel`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vrf</samp>](## "l3_edge.p2p_links_profiles.[].subinterfaces.[].vrf") | String | Required, Unique |  |  | Name of the VRF to configure for this subinterface<br>The VRF MUST exist in `network_services` |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_id</samp>](## "l3_edge.p2p_links_profiles.[].subinterfaces.[].subinterface_id") | Integer |  |  |  | Optional ID to overwrite the default one used from the VRF.<br>`vrf_id` is used otherwise. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.p2p_links_profiles.[].subinterfaces.[].description") | String |  |  |  | Optional description for the subinterface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.p2p_links_profiles.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the subinterface.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links_profiles.[].port_channel") | Dictionary |  |  |  | Port-channel parameters.<br>This key CANNOT be used in conjunction with `subinterfaces`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.mode") | String |  | `active` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "l3_edge.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
@@ -55,7 +60,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.p2p_links_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for interfaces<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces. |
     | [<samp>&nbsp;&nbsp;p2p_links</samp>](## "l3_edge.p2p_links") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;nodes</samp>](## "l3_edge.p2p_links.[].nodes") | List, items: String | Required |  |  | Nodes where this link should be configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].nodes.[]") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].nodes.[]") | String |  |  |  | The values can be < node_a >, < node_b >.<br>ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ]. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.p2p_links.[].profile") | String |  |  |  | P2P profile name. Profile defined under p2p_profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "l3_edge.p2p_links.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
@@ -65,8 +70,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.p2p_links.[].ip") | List, items: String |  |  |  | Specific IP addresses used on this P2P link. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].ip.[]") | String |  |  |  | Node IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.p2p_links.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using port-channels. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].interfaces.[]") | String |  |  |  | The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "l3_edge.p2p_links.[].interfaces") | List, items: String |  |  |  | Interfaces where this link should be configured and Required unless using `port_channel`.<br>If `port_channel` is set, `interfaces` is ignored.<br><br>The value can be like < node_a_interface >, < node_b_interface >.<br>ex. - [ Ethernet2, Ethernet2 ].<br><br>NOTE: If a subinterface is used in the list, the `subinterfaces` key CANNOT be defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;as</samp>](## "l3_edge.p2p_links.[].as") | List, items: String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].as.[]") | String |  |  |  | The values can be like ["node_a_as", "node_b_as"]. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "l3_edge.p2p_links.[].descriptions") | List, items: String |  |  |  | Interface description. |
@@ -86,7 +91,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "l3_edge.p2p_links.[].sflow") | Boolean |  |  |  | Enable sFlow. Overrides `fabric_sflow` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.p2p_links.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;macsec_profile</samp>](## "l3_edge.p2p_links.[].macsec_profile") | String |  |  |  | MAC security profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "l3_edge.p2p_links.[].subinterfaces") | List, items: Dictionary |  |  |  | Configure subinterfaces, each in their own VRF under the interface<br>The subinterface are the same on each end.<br>The VRF are the same on each end.<br><br>This key is NOT supported if one of the interface in `interfaces` is already a subinterface.<br>This key CANNOT be used in conjunction with `port_channel`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vrf</samp>](## "l3_edge.p2p_links.[].subinterfaces.[].vrf") | String | Required, Unique |  |  | Name of the VRF to configure for this subinterface<br>The VRF MUST exist in `network_services` |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_id</samp>](## "l3_edge.p2p_links.[].subinterfaces.[].subinterface_id") | Integer |  |  |  | Optional ID to overwrite the default one used from the VRF.<br>`vrf_id` is used otherwise. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.p2p_links.[].subinterfaces.[].description") | String |  |  |  | Optional description for the subinterface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.p2p_links.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the subinterface.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "l3_edge.p2p_links.[].port_channel") | Dictionary |  |  |  | Port-channel parameters.<br>This key CANNOT be used in conjunction with `subinterfaces`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "l3_edge.p2p_links.[].port_channel.mode") | String |  | `active` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
@@ -146,11 +156,14 @@
               # ex.- [ core-1-isis-sr-ldp, core-2-ospf-ldp ].
             - <str>
 
-          # Interfaces where this link should be configured and Required unless using port-channels.
-          interfaces:
+          # Interfaces where this link should be configured and Required unless using `port_channel`.
+          # If `port_channel` is set, `interfaces` is ignored.
 
-              # The value can be like < node_a_interface >, < node_b_interface >.
-              # ex. - [ Ethernet2, Ethernet2 ].
+          # The value can be like < node_a_interface >, < node_b_interface >.
+          # ex. - [ Ethernet2, Ethernet2 ].
+
+          # NOTE: If a subinterface is used in the list, the `subinterfaces` key CANNOT be defined.
+          interfaces:
             - <str>
 
           # AS numbers for BGP.
@@ -201,7 +214,31 @@
           # MAC security profile.
           macsec_profile: <str>
 
+          # Configure subinterfaces, each in their own VRF under the interface
+          # The subinterface are the same on each end.
+          # The VRF are the same on each end.
+
+          # This key is NOT supported if one of the interface in `interfaces` is already a subinterface.
+          # This key CANNOT be used in conjunction with `port_channel`.
+          subinterfaces:
+
+              # Name of the VRF to configure for this subinterface
+              # The VRF MUST exist in `network_services`
+            - vrf: <str; required; unique>
+
+              # Optional ID to overwrite the default one used from the VRF.
+              # `vrf_id` is used otherwise.
+              subinterface_id: <int>
+
+              # Optional description for the subinterface.
+              description: <str>
+
+              # Custom structured config for the subinterface.
+              # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+              structured_config: <dict>
+
           # Port-channel parameters.
+          # This key CANNOT be used in conjunction with `subinterfaces`.
           port_channel:
             mode: <str; default="active">
             nodes_child_interfaces:
@@ -254,11 +291,14 @@
           # Allows turning on ipv6 for the link or profile (also autodetected based on underlay_rfc5549 and include_in_underlay_protocol).
           ipv6_enable: <bool; default=False>
 
-          # Interfaces where this link should be configured and Required unless using port-channels.
-          interfaces:
+          # Interfaces where this link should be configured and Required unless using `port_channel`.
+          # If `port_channel` is set, `interfaces` is ignored.
 
-              # The value can be like < node_a_interface >, < node_b_interface >.
-              # ex. - [ Ethernet2, Ethernet2 ].
+          # The value can be like < node_a_interface >, < node_b_interface >.
+          # ex. - [ Ethernet2, Ethernet2 ].
+
+          # NOTE: If a subinterface is used in the list, the `subinterfaces` key CANNOT be defined.
+          interfaces:
             - <str>
 
           # AS numbers for BGP.
@@ -309,7 +349,31 @@
           # MAC security profile.
           macsec_profile: <str>
 
+          # Configure subinterfaces, each in their own VRF under the interface
+          # The subinterface are the same on each end.
+          # The VRF are the same on each end.
+
+          # This key is NOT supported if one of the interface in `interfaces` is already a subinterface.
+          # This key CANNOT be used in conjunction with `port_channel`.
+          subinterfaces:
+
+              # Name of the VRF to configure for this subinterface
+              # The VRF MUST exist in `network_services`
+            - vrf: <str; required; unique>
+
+              # Optional ID to overwrite the default one used from the VRF.
+              # `vrf_id` is used otherwise.
+              subinterface_id: <int>
+
+              # Optional description for the subinterface.
+              description: <str>
+
+              # Custom structured config for the subinterface.
+              # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+              structured_config: <dict>
+
           # Port-channel parameters.
+          # This key CANNOT be used in conjunction with `subinterfaces`.
           port_channel:
             mode: <str; default="active">
             nodes_child_interfaces:
