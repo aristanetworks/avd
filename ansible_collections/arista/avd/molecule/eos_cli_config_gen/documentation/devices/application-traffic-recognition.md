@@ -4,7 +4,11 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Application Traffic Recognition](#application-traffic-recognition)
+- [Application Traffic Recognition](#application-traffic-recognition)
+  - [Categories](#categories)
+  - [Field Sets](#field-sets)
+  - [Applications](#applications-2)
+  - [Application Profile Details](#application-profile-details)
   - [Router Application-Traffic-Recognition Device Configuration](#router-application-traffic-recognition-device-configuration)
 
 ## Management
@@ -35,22 +39,22 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-### Application Traffic Recognition
+## Application Traffic Recognition
 
-#### Categories
+### Categories
 
-##### Category best-effort
+#### Category best-effort
 
-###### Applications
+##### Applications
 
 | Application Name | Service |
 | ---------------- | ------- |
 | aimini | peer-to-peer |
 | apple_update | software-update |
 
-##### Category category1
+#### Category category1
 
-###### Applications
+##### Applications
 
 | Application Name | Service |
 | ---------------- | ------- |
@@ -58,158 +62,58 @@ interface Management1
 | aim | chat |
 | anydesk | - |
 
-#### Field Sets
+### Field Sets
 
-##### l4 Port Sets
+#### L4 Port Sets
 
-###### l4 Port Set dest_port_set1
+| Name | Ports |
+| ---- | ----- |
+| dest_port_set1 | 2300-2350 |
+| dest_port_set2 | 3300-3350 |
+| src_port_set1 | 2400-2500<br>2900-3000 |
+| src_port_set2 | 5700-5800<br>6500-6600 |
 
-| Ports |
-| ----- |
-| 2300-2350 |
+#### IPv4 Prefix Sets
 
-###### l4 Port Set dest_port_set2
+| Name | Prefixes |
+| ---- | ----- |
+| dest_prefix_set1 | 2.3.4.0/24 |
+| dest_prefix_set2 | 4.4.4.0/24 |
+| src_prefix_set1 | 1.2.3.0/24<br>1.2.5.0/24 |
+| src_prefix_set2 | 2.2.2.0/24<br>3.3.3.0/24 |
 
-| Ports |
-| ----- |
-| 3300-3350 |
+### Applications
 
-###### l4 Port Set src_port_set1
+#### IPv4 Applications
 
-| Ports |
-| ----- |
-| 2400-2500 |
-| 2900-3000 |
+| Name | Source Prefix | Destination Prefix | Protocol | Source Port | Destination Port |
+| ---- | ------------- | ------------------ | -------- | ----------- | ---------------- |
+| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp<br>tcp | src_port_set1 | dest_port_set1 |
+| user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | udp | src_port_set2 | dest_port_set2 |
 
-###### l4 Port Set src_port_set2
+### Application Profile Details
 
-| Ports |
-| ----- |
-| 5700-5800 |
-| 6500-6600 |
+#### Application Profile Name app_profile_1
 
-##### Ipv4 Prefix Sets
-
-###### Ipv4 Prefix Set dest_prefix_set1
-
-| Prefixes |
-| -------- |
-| 2.3.4.0/24 |
-
-###### Ipv4 Prefix Set dest_prefix_set2
-
-| Prefixes |
-| -------- |
-| 4.4.4.0/24 |
-
-###### Ipv4 Prefix Set src_prefix_set1
-
-| Prefixes |
-| -------- |
-| 1.2.3.0/24 |
-| 1.2.5.0/24 |
-
-###### Ipv4 Prefix Set src_prefix_set2
-
-| Prefixes |
-| -------- |
-| 2.2.2.0/24 |
-| 3.3.3.0/24 |
-
-#### Applications
-
-##### Ipv4 Applications
-
-| Setting | Application Name |
-| ------- | ---------------- |
-| application ipv4 | user_defined_app1 |
-
-###### Source Prefix for the Application
-
-| Setting | Prefix Set Name |
-| ------- | --------------- |
-| source prefix field-set | src_prefix_set1 |
-
-###### Destination Prefix for the Application
-
-| Setting | Prefix Set Name |
-| ------- | --------------- |
-| destination prefix field-set | src_prefix_set1 |
-
-###### Protocol, Source Port and Destination Port Name
-
-| Protocol Name | Source Port Set | Destination Port Set |
-| ------------- | --------------- | -------------------- |
-| udp | src_port_set1 | dest_port_set1 |
-| Setting | Application Name |
-| ------- | ---------------- |
-| application ipv4 | user_defined_app2 |
-
-###### Source Prefix for the Application
-
-| Setting | Prefix Set Name |
-| ------- | --------------- |
-| source prefix field-set | src_prefix_set2 |
-
-###### Destination Prefix for the Application
-
-| Setting | Prefix Set Name |
-| ------- | --------------- |
-| destination prefix field-set | src_prefix_set2 |
-
-###### Protocol, Source Port and Destination Port Name
-
-| Protocol Name | Source Port Set | Destination Port Set |
-| ------------- | --------------- | -------------------- |
-| udp | src_port_set2 | dest_port_set2 |
-
-#### Application Profile Details
-
-##### Application Profile Name app_profile_1
-
-##### Applications and Services under Application Profile
-
-| Setting | Application | Service |
-| ------- | ----------- | ------- |
+| Type | Name | Service |
+| ---- | ---- | ------- |
 | application | aim | audio-video |
 | application | aim | chat |
 | application | user_defined_app1 | - |
-
-##### Category and Services under Application Profile
-
-| Setting | Category | Service |
-| ------- | -------- | ------- |
-| category | category1 | audio-video |
 | category | best-effort | - |
+| category | category1 | audio-video |
+| transport | http | - |
+| transport | udp | - |
 
-##### Underlying transports for application
+#### Application Profile Name app_profile_2
 
-| Transport name |
-| -------------- |
-| udp |
-| http |
-
-##### Application Profile Name app_profile_2
-
-##### Applications and Services under Application Profile
-
-| Setting | Application | Service |
-| ------- | ----------- | ------- |
+| Type | Name | Service |
+| ---- | ---- | ------- |
 | application | aim | audio-video |
 | application | user_defined_app2 | - |
-
-##### Category and Services under Application Profile
-
-| Setting | Category | Service |
-| ------- | -------- | ------- |
 | category | category1 | chat |
-
-##### Underlying transports for application
-
-| Transport name |
-| -------------- |
-| https |
-| quic |
+| transport | https | - |
+| transport | quic | - |
 
 ### Router Application-Traffic-Recognition Device Configuration
 
@@ -220,6 +124,7 @@ application traffic recognition
    application ipv4 user_defined_app1
       source prefix field-set src_prefix_set1
       destination prefix field-set dest_prefix_set1
+      protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp source port field-set src_port_set1 destination port field-set dest_port_set1
    !
    application ipv4 user_defined_app2
@@ -252,18 +157,6 @@ application traffic recognition
       application quic transport
       category category1 service chat
    !
-   field-set l4-port dest_port_set1
-      2300-2350
-   !
-   field-set l4-port dest_port_set2
-      3300-3350
-   !
-   field-set l4-port src_port_set1
-      2400-2500, 2900-3000
-   !
-   field-set l4-port src_port_set2
-      5700-5800, 6500-6600
-   !
    field-set ipv4 prefix dest_prefix_set1
       2.3.4.0/24
    !
@@ -275,4 +168,16 @@ application traffic recognition
    !
    field-set ipv4 prefix src_prefix_set2
       2.2.2.0/24 3.3.3.0/24
+   !
+   field-set l4-port dest_port_set1
+      2300-2350
+   !
+   field-set l4-port dest_port_set2
+      3300-3350
+   !
+   field-set l4-port src_port_set1
+      2400-2500, 2900-3000
+   !
+   field-set l4-port src_port_set2
+      5700-5800, 6500-6600
 ```

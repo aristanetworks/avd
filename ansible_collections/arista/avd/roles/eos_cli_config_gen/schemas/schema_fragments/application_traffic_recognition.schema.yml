@@ -31,7 +31,11 @@ keys:
                     description: Application name.
                   service:
                     type: str
-                    description: If no service is specified, all supported services of the application are considered.
+                    description: |-
+                      Service Name.
+                      Specific service to target for this application.
+                      If no service is specified, all supported services of the application are matched.
+                      Not all valid values are valid for all applications, check on EOS CLI.
                     valid_values: ["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
 
       field_sets:
@@ -58,7 +62,7 @@ keys:
           ipv4_prefixes:
             type: list
             primary_key: name
-            description: Ipv4 prefix field set.
+            description: IPv4 prefix field set.
             items:
               type: dict
               keys:
@@ -76,7 +80,7 @@ keys:
         keys:
           ipv4_applications:
             type: list
-            description: List of user defined ipv4 applications.
+            description: List of user defined IPv4 applications.
             primary_key: name
             items:
               type: dict
@@ -90,9 +94,11 @@ keys:
                 dest_prefix_set_name:
                   type: str
                   description: Destination prefix set name.
-                protocol:
-                  type: str
-                  description: Protocol name.
+                protocols:
+                  type: list
+                  items:
+                    type: str
+                    description: Protocol name.
                 src_port_set_name:
                   type: str
                   description: Source l4 port field set name.
@@ -121,8 +127,9 @@ keys:
                     type: str
                     description: |-
                       Service Name.
-                      Actual supported services for an application are subset of
-                      mentioned valid values and is application dependent.
+                      Specific service to target for this application.
+                      If no service is specified, all supported services of the application are matched.
+                      Not all valid values are valid for all applications, check on EOS CLI.
                     valid_values: ["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
             transports:
               type: list
@@ -143,7 +150,8 @@ keys:
                   service:
                     type: str
                     description: |-
-                      Service name.
-                      Actual supported services for an application are subset of
-                      mentioned valid values and is application dependent.
+                      Service Name.
+                      Specific service to target for this application.
+                      If no service is specified, all supported services of the application are matched.
+                      Not all valid values are valid for all applications, check on EOS CLI.
                     valid_values: ["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
