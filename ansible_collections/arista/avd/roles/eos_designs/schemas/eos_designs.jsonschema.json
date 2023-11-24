@@ -5191,7 +5191,7 @@
                 "type": "array",
                 "description": "Manual preference as described above, required only for preference algorithm.",
                 "items": {
-                  "type": "string"
+                  "type": "integer"
                 },
                 "title": "Designated Forwarder Preferences"
               },
@@ -10999,7 +10999,7 @@
                 "type": "array",
                 "description": "Manual preference as described above, required only for preference algorithm.",
                 "items": {
-                  "type": "string"
+                  "type": "integer"
                 },
                 "title": "Designated Forwarder Preferences"
               },

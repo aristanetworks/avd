@@ -3461,9 +3461,9 @@ $defs:
             description: Manual preference as described above, required only for preference
               algorithm.
             items:
-              type: str
+              type: int
               convert_types:
-              - int
+              - str
           dont_preempt:
             type: bool
             description: Disable preemption for single-active forwarding when auto/manual
