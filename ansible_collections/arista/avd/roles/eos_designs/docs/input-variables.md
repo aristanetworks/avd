@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: Input variables for eos_designs
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
@@ -872,7 +876,13 @@ Both data models support variable inheritance from profiles defined under [`port
 
     To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
     `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
-    Transformation from abstraction to network values is managed by a [filter_plugin](../../../plugins/README.md) and provides following result:
+    Transformation from abstraction to network values is managed by the following Ansible filter plugins:
+
+    - [`arista.avd.generate_esi`](../../../docs/plugins/Filter%20plugins/generate_esi.md)
+    - [`arista.avd.generate_lacp_id`](../../../docs/plugins/Filter%20plugins/generate_lacp_id.md).
+    - [`arista.avd.generate_route_target`](../../../docs/plugins/Filter%20plugins/generate_route_target.md).
+
+    The plugins provides the following result:
 
     - *EVPN ESI*: 000:000:0303:0202:0101
     - *LACP ID*: 0303.0202.0101
@@ -1129,18 +1139,18 @@ roles/eos_designs/docs/tables/network-services-multicast-settings.md
 
 ### SVI profiles settings
 
-Optional profiles to share common settings for SVIs
+SVI profiles can be leveraged to share common settings between SVIs.
 
-Keys are the same as used under SVIs. Keys defined under SVIs take precedence.
+- Keys are the same as those used under SVI settings, except for the `tags` key.
+- Keys defined under SVIs take precedence.
+- Structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
 
-Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:
-
-1. svi.nodes[inventory_hostname].structured_config
-2. svi_profile.nodes[inventory_hostname].structured_config
-3. svi_parent_profile.nodes[inventory_hostname].structured_config
-4. svi.structured_config
-5. svi_profile.structured_config
-6. svi_parent_profile.structured_config
+  1. svi.nodes[inventory_hostname].structured_config
+  2. svi_profile.nodes[inventory_hostname].structured_config
+  3. svi_parent_profile.nodes[inventory_hostname].structured_config
+  4. svi.structured_config
+  5. svi_profile.structured_config
+  6. svi_parent_profile.structured_config
 
 --8<--
 roles/eos_designs/docs/tables/svi-profiles.md

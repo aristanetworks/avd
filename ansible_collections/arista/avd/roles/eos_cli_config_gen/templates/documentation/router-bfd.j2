@@ -33,13 +33,14 @@
 
 #### Router BFD SBFD Summary
 
-| Initiator Interval | Initiator Multiplier | Reflector Minimum RX | Reflector Local-Discriminator |
+| Initiator Interval | Initiator Multiplier | Initiator Round-Trip | Reflector Minimum RX | Reflector Local-Discriminator |
 | ------------------ | -------------------- | -------------------- | ----------------------------- |
 {%         set init_interval = router_bfd.sbfd.initiator_interval | arista.avd.default('-') %}
 {%         set init_multiplier = router_bfd.sbfd.initiator_multiplier | arista.avd.default('-') %}
+{%         set init_round_trip = router_bfd.sbfd.initiator_measurement_round_trip | arista.avd.default('-') %}
 {%         set ref_min_rx = router_bfd.sbfd.reflector.min_rx | arista.avd.default('-') %}
 {%         set ref_discriminator = router_bfd.sbfd.reflector.local_discriminator | arista.avd.default('-') %}
-| {{ init_interval }} | {{ init_multiplier }} | {{ ref_min_rx }} | {{ ref_discriminator }} |
+| {{ init_interval }} | {{ init_multiplier }} | {{ init_round_trip }} | {{ ref_min_rx }} | {{ ref_discriminator }} |
 {%     endif %}
 
 #### Router BFD Device Configuration

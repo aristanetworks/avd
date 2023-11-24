@@ -455,7 +455,9 @@ event-handler evpn-blacklist-recovery
 
 #### Flow Tracking Sampled
 
-Sample: 666
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 |
+| ----------- | ------------------- | ------------------------- | ------------------------- |
+| 666 | default | disabled | disabled |
 
 ##### Trackers Summary
 
@@ -847,7 +849,7 @@ interface Tunnel4
 ##### IPv6
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
+| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan1 | default | - | fc00:10:10:1::1/64 | - | - | - | - | - | - |
 | Vlan2 | default | 1b11:3a00:22b0:5200::15/64 | fc00:10:10:2::1/64, fc00:10:11:2::1/64, fc00:10:12:2::1/64 | - | - | - | True | - | - |
 | Vlan3 | default | 1b11:3a00:22b3:5200::15/64 | - | fc00:10:10:3::1/64 | - | - | - | - | - |
@@ -1064,6 +1066,8 @@ router isis EVPN_UNDERLAY
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
+| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
+| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 
@@ -1207,6 +1211,16 @@ router bgp 65101
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       redistribute connected
       redistribute static route-map RM-CONN-2-BGP
+      !
+      address-family ipv4
+         neighbor 10.2.3.4 activate
+         neighbor 10.2.3.4 prefix-list PL-TEST-IN-AF4 in
+         neighbor 10.2.3.4 prefix-list PL-TEST-OUT-AF4 out
+         neighbor 10.2.3.5 activate
+         neighbor 10.2.3.5 prefix-list PL-TEST-IN in
+         neighbor 10.2.3.5 prefix-list PL-TEST-OUT out
+         neighbor 10.255.251.1 prefix-list PL-TEST-IN in
+         neighbor 10.255.251.1 prefix-list PL-TEST-OUT out
       !
       address-family ipv4
          neighbor TEST_PEER_GRP activate

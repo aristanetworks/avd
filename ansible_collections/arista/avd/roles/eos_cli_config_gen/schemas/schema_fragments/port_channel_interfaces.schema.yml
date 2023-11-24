@@ -30,10 +30,20 @@ keys:
           type: bool
         l2_mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
             - str
           description: |
             "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
+        l2_mru:
+          type: int
+          min: 68
+          max: 65535
+          convert_types:
+            - str
+          description: |
+            "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
         vlans:
           type: str
           convert_types:
@@ -177,6 +187,8 @@ keys:
               description: L2 protocol forwarding profile
         mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
             - str
         mlag:
@@ -330,7 +342,7 @@ keys:
                   valid_values:
                     - percent
                     - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             broadcast:
               type: dict
               keys:
@@ -346,7 +358,7 @@ keys:
                   valid_values:
                     - percent
                     - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             multicast:
               type: dict
               keys:
@@ -362,7 +374,7 @@ keys:
                   valid_values:
                     - percent
                     - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
             unknown_unicast:
               type: dict
               keys:
@@ -378,7 +390,7 @@ keys:
                   valid_values:
                     - percent
                     - pps
-                  description: Optional field and is hardware dependant
+                  description: Optional field and is hardware dependent
         ip_proxy_arp:
           type: bool
         isis_enable:

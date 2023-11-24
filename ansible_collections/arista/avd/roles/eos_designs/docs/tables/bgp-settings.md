@@ -63,53 +63,118 @@
 === "YAML"
 
     ```yaml
+    # AS number to use to configure overlay when "overlay_routing_protocol" == ibgp.
     bgp_as: <str>
-    bgp_default_ipv4_unicast: <bool>
+
+    # Default activation of IPv4 unicast address-family on all IPv4 neighbors.
+    # It is best practice to disable activation.
+    bgp_default_ipv4_unicast: <bool; default=False>
     bgp_distance:
-      external_routes: <int>
-      internal_routes: <int>
-      local_routes: <int>
-    bgp_ecmp: <int>
+      external_routes: <int; 1-255; required>
+      internal_routes: <int; 1-255; required>
+      local_routes: <int; 1-255; required>
+
+    # Maximum ECMP for BGP multi-path.
+    bgp_ecmp: <int; default=4>
+
+    # BGP graceful-restart allows a BGP speaker with separate control plane and data plane processing to continue forwarding traffic during a BGP restart.
+    # Its neighbors (receiving speakers) may retain routing information from the restarting speaker while a BGP session with it is being re-established, reducing route flapping.
     bgp_graceful_restart:
-      enabled: <bool>
-      restart_time: <int>
-    bgp_maximum_paths: <int>
+
+      # Enable or disable graceful-restart for all BGP peers.
+      enabled: <bool; default=False; required>
+
+      # Restart time in seconds.
+      restart_time: <int; 1-3600; default=300>
+
+    # Maximum Paths for BGP multi-path.
+    bgp_maximum_paths: <int; 1-512; default=4>
+
+    # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
+    # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
     bgp_peer_groups:
       ipv4_underlay_peers:
-        name: <str>
+
+        # Name of peer group.
+        name: <str; default="IPv4-UNDERLAY-PEERS">
+
+        # Type 7 encrypted password.
         password: <str>
-        bfd: <bool>
+        bfd: <bool; default=False>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
         structured_config: <dict>
       mlag_ipv4_underlay_peer:
-        name: <str>
+
+        # Name of peer group.
+        name: <str; default="MLAG-IPv4-UNDERLAY-PEER">
+
+        # Type 7 encrypted password.
         password: <str>
-        bfd: <bool>
+        bfd: <bool; default=False>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
         structured_config: <dict>
       evpn_overlay_peers:
-        name: <str>
+
+        # Name of peer group.
+        name: <str; default="EVPN-OVERLAY-PEERS">
+
+        # Type 7 encrypted password.
         password: <str>
-        bfd: <bool>
+        bfd: <bool; default=True>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
         structured_config: <dict>
       evpn_overlay_core:
-        name: <str>
+
+        # Name of peer group.
+        name: <str; default="EVPN-OVERLAY-CORE">
+
+        # Type 7 encrypted password.
         password: <str>
-        bfd: <bool>
+        bfd: <bool; default=True>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
         structured_config: <dict>
       mpls_overlay_peers:
-        name: <str>
+
+        # Name of peer group.
+        name: <str; default="MPLS-OVERLAY-PEERS">
+
+        # Type 7 encrypted password.
         password: <str>
-        bfd: <bool>
+        bfd: <bool; default=True>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
         structured_config: <dict>
       rr_overlay_peers:
-        name: <str>
+
+        # Name of peer group.
+        name: <str; default="RR-OVERLAY-PEERS">
+
+        # Type 7 encrypted password.
         password: <str>
-        bfd: <bool>
+        bfd: <bool; default=True>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
         structured_config: <dict>
       ipvpn_gateway_peers:
-        name: <str>
+
+        # Name of peer group.
+        name: <str; default="IPVPN-GATEWAY-PEERS">
+
+        # Type 7 encrypted password.
         password: <str>
-        bfd: <bool>
+        bfd: <bool; default=True>
+
+        # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
         structured_config: <dict>
+
+    # Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+    # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
     bgp_update_wait_install: <bool>
+
+    # Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
     bgp_update_wait_for_convergence: <bool>
     ```

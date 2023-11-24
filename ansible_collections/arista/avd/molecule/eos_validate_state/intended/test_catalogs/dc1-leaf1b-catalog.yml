@@ -1,7 +1,7 @@
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf1a
+    - neighbor_device: dc1-leaf1a.dc1.local
       neighbor_port: Ethernet3
       port: Ethernet3
     result_overwrite:
@@ -11,7 +11,7 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf1a
+    - neighbor_device: dc1-leaf1a.dc1.local
       neighbor_port: Ethernet4
       port: Ethernet4
     result_overwrite:
@@ -21,7 +21,7 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-spine1
+    - neighbor_device: dc1-spine1.dc1.local
       neighbor_port: Ethernet2
       port: Ethernet1
     result_overwrite:
@@ -31,7 +31,7 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-spine2
+    - neighbor_device: dc1-spine2.dc1.local
       neighbor_port: Ethernet2
       port: Ethernet2
     result_overwrite:
@@ -41,7 +41,7 @@ anta.tests.connectivity:
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf1c
+    - neighbor_device: dc1-leaf1c.dc1.local
       neighbor_port: Ethernet2
       port: Ethernet8
     result_overwrite:
@@ -125,17 +125,6 @@ anta.tests.connectivity:
       categories:
       - Loopback0 Reachability
       custom_field: 'Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.0.5'
-      description: Loopback0 Reachability
-- VerifyReachability:
-    hosts:
-    - destination: 10.255.0.6
-      repeat: 1
-      source: 10.255.0.4
-      vrf: default
-    result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.0.6'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
@@ -546,14 +535,6 @@ anta.tests.routing.generic:
       description: Remote Lo0 address
     routes:
     - 10.255.0.5
-- VerifyRoutingTableEntry:
-    result_overwrite:
-      categories:
-      - Routing Table
-      custom_field: 10.255.0.6
-      description: Remote Lo0 address
-    routes:
-    - 10.255.0.6
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:

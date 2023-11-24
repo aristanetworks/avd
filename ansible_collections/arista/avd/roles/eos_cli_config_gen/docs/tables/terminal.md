@@ -15,6 +15,6 @@
 
     ```yaml
     terminal:
-      length: <int>
-      width: <int>
+      length: <int; 0-32767>
+      width: <int; 10-32767>
     ```

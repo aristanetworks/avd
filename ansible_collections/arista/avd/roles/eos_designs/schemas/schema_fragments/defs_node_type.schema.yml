@@ -630,7 +630,7 @@ $defs:
               table: node-type-l2-mlag-configuration
             description: |
               Set MLAG interface speed.
-              < interface_speed or forced interface_speed or auto interface_speed >.
+              Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
             type: str
           mlag_peer_l3_vlan:
             documentation_options:

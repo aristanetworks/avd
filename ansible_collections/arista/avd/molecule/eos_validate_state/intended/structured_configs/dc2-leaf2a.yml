@@ -52,29 +52,36 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.129.121
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: dc2-leaf2b
     description: dc2-leaf2b
   - ip_address: 10.255.255.112
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
+    peer: dc2-spine1
     description: dc2-spine1_Ethernet3
   - ip_address: 10.255.255.114
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
+    peer: dc2-spine2
     description: dc2-spine2_Ethernet3
   - ip_address: 10.255.128.11
     peer_group: EVPN-OVERLAY-PEERS
+    peer: dc2-spine1
     description: dc2-spine1
     remote_as: '65200'
   - ip_address: 10.255.128.12
     peer_group: EVPN-OVERLAY-PEERS
+    peer: dc2-spine2
     description: dc2-spine2
     remote_as: '65200'
   - ip_address: 10.255.0.5
     peer_group: EVPN-OVERLAY-CORE
+    peer: dc1-leaf2a
     description: dc1-leaf2a
     remote_as: '65102'
   - ip_address: 192.168.100.0
     remote_as: '65102'
+    peer: dc1-leaf2a
     description: dc1-leaf2a
     peer_group: IPv4-UNDERLAY-PEERS
   redistribute_routes:

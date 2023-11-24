@@ -31,27 +31,29 @@
         - vars
         - configs
         - structured_configs
+        - documentation
       delegate_to: localhost
 
     - name: Copy structured_configs
       ansible.builtin.shell:
-        cmd: "cp -rT {{ scenario_dir }}/intended/structured_configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/structured_configs/"
+        cmd: "cp {{ scenario_dir }}/intended/structured_configs/*.yml {{ pyavd_test_artifacts_dir }}/{{ testdir }}/structured_configs/"
       run_once: true
       delegate_to: localhost
-      when: lookup("ansible.builtin.first_found", scenario_dir ~ "/intended/structured_configs", skip=true)
+      when: lookup("ansible.builtin.fileglob", scenario_dir ~ "/intended/structured_configs/*.yml", skip=true)
 
     - name: Copy configs
       ansible.builtin.shell:
-        cmd: "cp -rT {{ scenario_dir }}/intended/configs/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/configs/"
+        cmd: "cp {{ scenario_dir }}/intended/configs/*.cfg {{ pyavd_test_artifacts_dir }}/{{ testdir }}/configs/"
       run_once: true
       delegate_to: localhost
+      when: lookup("ansible.builtin.fileglob", scenario_dir ~ "/intended/configs/*.cfg", skip=true)
 
     - name: Copy documentation
       ansible.builtin.shell:
-        cmd: "cp -rT {{ scenario_dir }}/documentation/devices/ {{ pyavd_test_artifacts_dir }}/{{ testdir }}/documentation/"
+        cmd: "cp {{ scenario_dir }}/documentation/devices/*.md {{ pyavd_test_artifacts_dir }}/{{ testdir }}/documentation/"
       run_once: true
       delegate_to: localhost
-      when: lookup("ansible.builtin.first_found", scenario_dir ~ "/documentation/devices", skip=true)
+      when: lookup("ansible.builtin.fileglob", scenario_dir ~ "/documentation/devices/*.md", skip=true)
 
     - name: Set fact with hostvars to force templating
       ansible.builtin.set_fact:

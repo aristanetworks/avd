@@ -177,7 +177,7 @@ tenants:
             route_map_out: RM-123-1-1-10-OUT
             local_as: 123
           - ip_address: 123.1.1.11
-            remote_as: 1234
+            remote_as: "1234"
             password: "oBztv71m2uhR7hh58/OCNA=="
             description: External IPv4 BGP peer
             send_community: standard extended
@@ -191,12 +191,12 @@ tenants:
             route_map_out: RM-123-1-1-11-OUT
             local_as: 123
           - ip_address: fd5a:fe45:8831:06c5::a
-            remote_as: 12345
+            remote_as: "12345"
             send_community: all
             nodes: [DC1-BL1A, DC1-BL1B]
             set_ipv6_next_hop: fd5a:fe45:8831:06c5::1
           - ip_address: fd5a:fe45:8831:06c5::b
-            remote_as: 12345
+            remote_as: "12345"
             nodes: [DC1-BL1A, DC1-BL1B]
         svis:
           - id: 150

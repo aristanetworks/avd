@@ -186,6 +186,23 @@
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
+{# Phone Interfaces #}
+{%     set phone_interfaces = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
+{%         if ethernet_interface.phone is arista.avd.defined %}
+{%             do phone_interfaces.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if phone_interfaces | length > 0 %}
+
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+{%         for phone_interface in phone_interfaces %}
+| {{ phone_interface.name }} | {{ phone_interface.mode }} | {{ phone_interface.native_vlan }} | {{ phone_interface.phone.vlan }} | {{ phone_interface.phone.trunk }} |
+{%         endfor %}
+{%     endif %}
 {# Multicast Routing #}
 {%     set multicast_interfaces = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
@@ -384,6 +401,49 @@
 {%             do port_channel_interfaces_isis.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
+{# VRRP #}
+{%     set ethernet_interfaces_vrrp_details = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.default([]) %}
+{%         if ethernet_interface.vrrp_ids is arista.avd.defined %}
+{%             do ethernet_interfaces_vrrp_details.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if ethernet_interfaces_vrrp_details | length > 0 %}
+
+##### VRRP Details
+
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
+{%         for ethernet_interface in ethernet_interfaces_vrrp_details | arista.avd.natural_sort('name') %}
+{%             for vrid in ethernet_interface.vrrp_ids if vrid.id is arista.avd.defined %}
+{%                 set row_id = vrid.id %}
+{%                 set row_prio_level = vrid.priority_level | arista.avd.default('-') %}
+{%                 set row_ad_interval = vrid.advertisement.interval | arista.avd.default('-') %}
+{%                 set row_preempt = "Enabled" %}
+{%                 if vrid.preempt.enabled is arista.avd.defined(false) %}
+{%                     set row_preempt = "Disabled" %}
+{%                 endif %}
+{%                 if vrid.tracked_object is arista.avd.defined %}
+{%                     set row_tracked_object_name = [] %}
+{%                     set row_tracked_object_action = [] %}
+{%                     for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
+{%                         do row_tracked_object_name.append(tracked_obj.name) %}
+{%                         if tracked_obj.shutdown is arista.avd.defined(true) %}
+{%                             do row_tracked_object_action.append("Shutdown") %}
+{%                         elif tracked_obj.decrement is arista.avd.defined %}
+{%                             do row_tracked_object_action.append("Decrement " ~ tracked_obj.decrement) %}
+{%                         endif %}
+{%                     endfor %}
+{%                     set row_tracked_object_name = row_tracked_object_name | join(", ") %}
+{%                     set row_tracked_object_action = row_tracked_object_action | join(", ") %}
+{%                 endif %}
+{%                 set row_ipv4_virt = vrid.ipv4.address | arista.avd.default('-') %}
+{%                 set row_ipv4_vers = vrid.ipv4.version | arista.avd.default('2') %}
+{%                 set row_ipv6_virt = vrid.ipv6.address | arista.avd.default('-') %}
+| {{ ethernet_interface.name }} | {{ row_id }} | {{ row_prio_level }} | {{ row_ad_interval }} | {{ row_preempt }} | {{ row_tracked_object_name | arista.avd.default('-') }} | {{ row_tracked_object_action | arista.avd.default('-') }} | {{ row_ipv4_virt }} | {{ row_ipv4_vers }} | {{ row_ipv6_virt }} |
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
 {%     if ethernet_interfaces_isis | length > 0 or port_channel_interfaces_isis | length > 0 %}
 
 ##### ISIS

@@ -134,6 +134,7 @@ sFlow is disabled.
 | Ethernet60 |  IP NAT Testing | access | - | - | - | - |
 | Ethernet61 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 | Ethernet62 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet69 |  IP NAT service-profile | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -174,6 +175,14 @@ sFlow is disabled.
 | Ethernet1 | EVPN_MH_ES1 | upstream |
 | Ethernet3 | EVPN_MH_ES2 | downstream |
 
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet13 | trunk phone | 100 | 70 | untagged |
+| Ethernet61 | trunk phone | 100 | 70 | untagged phone |
+| Ethernet62 | trunk phone | 100 | 70 | tagged phone |
+
 ##### Multicast Routing
 
 | Interface | IP Version | Static Routes Allowed | Multicast Boundaries |
@@ -198,6 +207,8 @@ sFlow is disabled.
 | Ethernet47 | IP Helper | routed | - | 172.31.255.1/31 | default | - | - | - | - |
 | Ethernet63 | DHCP client interface | routed | - | dhcp | default | - | - | - | - |
 | Ethernet64 | DHCP server interface | routed | - | 192.168.42.42/24 | default | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | routed | - | 192.0.2.2/25 | default | - | False | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | routed | - | 192.0.2.2/25 | default | - | False | - | - |
 
 ##### IP NAT: Source Static
 
@@ -250,6 +261,12 @@ sFlow is disabled.
 | Ethernet60 | ACL5 | POOL5 | 4294967295 | Priority high end |
 | Ethernet60 | ACL6 | POOL6 | 0 | Priority default |
 
+##### IP NAT: Interfaces configured via profile
+
+| Interface | Profile |
+| --------- |-------- |
+| Ethernet69 | TEST-NAT-PROFILE |
+
 ##### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
@@ -258,6 +275,18 @@ sFlow is disabled.
 | Ethernet4 | Molecule IPv6 | routed | - | 2020::2020/64 | default | 9100 | True | True | True | IPv6_ACL_IN | IPv6_ACL_OUT |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | - | - | - |
 | Ethernet55 | DHCPv6 Relay Testing | routed | - | a0::1/64 | default | - | False | - | - | - | - |
+| Ethernet65 | Multiple VRIDs | routed | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
+| Ethernet66 | Multiple VRIDs and tracking | routed | - | 2001:db8::2/64 | default | - | False | - | - | - | - |
+
+##### VRRP Details
+
+| Interface | VRRP-ID | Priority | Advertisement Interval | Preempt | Tracked Object Name(s) | Tracked Object Action(s) | IPv4 Virtual IP | IPv4 VRRP Version | IPv6 Virtual IP |
+| --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
+| Ethernet65 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - |
+| Ethernet65 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 |
+| Ethernet66 | 1 | 105 | 2 | Enabled | ID1-TrackedObjectDecrement, ID1-TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - |
+| Ethernet66 | 2 | - | - | Enabled | ID2-TrackedObjectDecrement, ID2-TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 |
+| Ethernet66 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - |
 
 ##### ISIS
 
@@ -308,6 +337,9 @@ sFlow is disabled.
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
+   speed forced 100gfull
+   l2 mtu 8000
+   l2 mru 8000
    bgp session tracker ST1
    no switchport
    ip address 172.31.255.1/31
@@ -400,7 +432,7 @@ interface Ethernet6
    logging event link-status
    logging event congestion-drops
    logging event spanning-tree
-   logging event storm-control
+   logging event storm-control discards
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
@@ -481,7 +513,7 @@ interface Ethernet13
    no logging event link-status
    no logging event congestion-drops
    no logging event spanning-tree
-   no logging event storm-control
+   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
@@ -530,6 +562,7 @@ interface Ethernet19
    switchport
    no lldp transmit
    no lldp receive
+   lldp tlv transmit ztp vlan 666
 !
 interface Ethernet20
    description Port patched through patch-panel to pseudowire
@@ -847,7 +880,7 @@ interface Ethernet61
    no logging event link-status
    no logging event congestion-drops
    no logging event spanning-tree
-   no logging event storm-control
+   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged phone
@@ -859,7 +892,7 @@ interface Ethernet62
    no logging event link-status
    no logging event congestion-drops
    no logging event spanning-tree
-   no logging event storm-control
+   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk tagged phone
@@ -878,6 +911,47 @@ interface Ethernet64
    ip address 192.168.42.42/24
    dhcp server ipv4
    dhcp server ipv6
+!
+interface Ethernet65
+   description Multiple VRIDs
+   no shutdown
+   no switchport
+   ip address 192.0.2.2/25
+   ipv6 enable
+   ipv6 address 2001:db8::2/64
+   ipv6 address fe80::2/64 link-local
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 2 ipv6 2001:db8::1
+!
+interface Ethernet66
+   description Multiple VRIDs and tracking
+   no shutdown
+   no switchport
+   ip address 192.0.2.2/25
+   ipv6 enable
+   ipv6 address 2001:db8::2/64
+   ipv6 address fe80::2/64 link-local
+   vrrp 1 priority-level 105
+   vrrp 1 advertisement interval 2
+   vrrp 1 preempt delay minimum 30 reload 800
+   vrrp 1 ipv4 192.0.2.1
+   vrrp 1 tracked-object ID1-TrackedObjectDecrement decrement 5
+   vrrp 1 tracked-object ID1-TrackedObjectShutdown shutdown
+   vrrp 2 ipv6 2001:db8::1
+   vrrp 2 tracked-object ID2-TrackedObjectDecrement decrement 10
+   vrrp 2 tracked-object ID2-TrackedObjectShutdown shutdown
+   no vrrp 3 preempt
+   vrrp 3 timers delay reload 900
+   vrrp 3 ipv4 100.64.0.1
+   vrrp 3 ipv4 version 3
+!
+interface Ethernet69
+   description IP NAT service-profile
+   switchport
+   ip nat service-profile TEST-NAT-PROFILE
 ```
 
 ## BFD

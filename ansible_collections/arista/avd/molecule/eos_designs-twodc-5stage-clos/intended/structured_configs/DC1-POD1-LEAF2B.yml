@@ -56,44 +56,54 @@ router_bgp:
   neighbors:
   - ip_address: 172.20.110.2
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: DC1.POD1.LEAF2A
     description: DC1.POD1.LEAF2A
   - ip_address: 172.17.110.16
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
+    peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Ethernet5
   - ip_address: 172.17.110.18
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
+    peer: DC1-POD1-SPINE2
     description: DC1-POD1-SPINE2_Ethernet5
   - ip_address: 172.17.110.20
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
+    peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1_Ethernet8
   - ip_address: 172.17.110.22
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
+    peer: DC1-POD1-SPINE2
     description: DC1-POD1-SPINE2_Ethernet8
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-POD1-LEAF1A
     description: DC1-POD1-LEAF1A
     remote_as: '65111.100'
     route_map_out: RM-EVPN-FILTER-AS65111.100
   - ip_address: 172.16.110.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-POD1-SPINE1
     description: DC1-POD1-SPINE1
     remote_as: '65110.100'
     route_map_out: RM-EVPN-FILTER-AS65110.100
   - ip_address: 172.16.10.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-RS1
     description: DC1-RS1
     remote_as: '65101'
     route_map_out: RM-EVPN-FILTER-AS65101
   - ip_address: 1.1.1.1
     peer_group: EVPN-OVERLAY-CORE
+    peer: HOSTNAME_NOT_IN_ANSIBLE
     description: HOSTNAME_NOT_IN_ANSIBLE
     remote_as: '1111'
   - ip_address: 11.1.0.39
     remote_as: '65211'
+    peer: DC2-POD1-LEAF1A
     description: DC2-POD1-LEAF1A
     peer_group: IPv4-UNDERLAY-PEERS
     bfd: true

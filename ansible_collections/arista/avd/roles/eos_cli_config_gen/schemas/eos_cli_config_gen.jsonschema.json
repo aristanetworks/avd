@@ -655,6 +655,55 @@
       },
       "title": "Address Locking"
     },
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Agent name.",
+            "title": "Name"
+          },
+          "environment_variables": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Environment variable name.",
+                  "title": "Name"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Environment variable value.",
+                  "title": "Value"
+                }
+              },
+              "required": [
+                "value",
+                "name"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Environment Variables"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Agents"
+    },
     "aliases": {
       "type": "string",
       "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
@@ -679,6 +728,40 @@
             "^_.+$": {}
           },
           "title": "Aging"
+        },
+        "static_entries": {
+          "type": "array",
+          "description": "Static ARP entries.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "ipv4_address": {
+                "type": "string",
+                "description": "ARP entry IPv4 address.",
+                "title": "IPv4 Address"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "ARP entry VRF.",
+                "title": "VRF"
+              },
+              "mac_address": {
+                "type": "string",
+                "description": "ARP entry MAC address.",
+                "pattern": "^[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}$",
+                "title": "MAC Address"
+              }
+            },
+            "required": [
+              "ipv4_address",
+              "mac_address"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Static Entries"
         }
       },
       "additionalProperties": false,
@@ -1385,7 +1468,8 @@
         },
         "cvcompression": {
           "type": "string",
-          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.",
+          "description": "The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.\nThere is no need to change the compression scheme.\nThis key is deprecated. Support will be removed in AVD version v5.0.0.",
+          "deprecated": true,
           "title": "Cvcompression"
         }
       },
@@ -1554,6 +1638,13 @@
           "shutdown": {
             "type": "boolean",
             "title": "Shutdown"
+          },
+          "mtu": {
+            "type": "integer",
+            "description": "Maximum Transmission Unit in bytes.",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "MTU"
           },
           "ip_address": {
             "type": "string",
@@ -1839,17 +1930,28 @@
           },
           "speed": {
             "type": "string",
-            "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+            "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
             "title": "Speed"
           },
           "mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "title": "MTU"
           },
           "l2_mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
+          },
+          "l2_mru": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+            "title": "L2 MRU"
           },
           "vlans": {
             "type": "string",
@@ -2310,6 +2412,11 @@
           "ip_nat": {
             "type": "object",
             "properties": {
+              "service_profile": {
+                "type": "string",
+                "description": "NAT interface profile.",
+                "title": "Service Profile"
+              },
               "destination": {
                 "type": "object",
                 "properties": {
@@ -3185,7 +3292,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3210,7 +3317,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3235,7 +3342,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3260,7 +3367,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -3295,9 +3402,9 @@
                     "type": "boolean",
                     "title": "Spanning Tree"
                   },
-                  "storm_control": {
+                  "storm_control_discards": {
                     "type": "boolean",
-                    "title": "Storm Control"
+                    "title": "Storm Control Discards"
                   }
                 },
                 "additionalProperties": false,
@@ -4174,6 +4281,196 @@
             },
             "title": "TX Queues"
           },
+          "vrrp_ids": {
+            "type": "array",
+            "description": "VRRP model.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer",
+                  "description": "VRID",
+                  "title": "ID"
+                },
+                "priority_level": {
+                  "type": "integer",
+                  "description": "Instance priority",
+                  "minimum": 1,
+                  "maximum": 254,
+                  "title": "Priority Level"
+                },
+                "advertisement": {
+                  "type": "object",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "description": "Interval in seconds",
+                      "minimum": 1,
+                      "maximum": 255,
+                      "title": "Interval"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Advertisement"
+                },
+                "preempt": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "delay": {
+                      "type": "object",
+                      "properties": {
+                        "minimum": {
+                          "type": "integer",
+                          "description": "Minimum preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
+                          "title": "Minimum"
+                        },
+                        "reload": {
+                          "type": "integer",
+                          "description": "Reload preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
+                          "title": "Reload"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Delay"
+                    }
+                  },
+                  "required": [
+                    "enabled"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Preempt"
+                },
+                "timers": {
+                  "type": "object",
+                  "properties": {
+                    "delay": {
+                      "type": "object",
+                      "properties": {
+                        "reload": {
+                          "type": "integer",
+                          "description": "Delay after reload in seconds.",
+                          "minimum": 0,
+                          "maximum": 3600,
+                          "title": "Reload"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Delay"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Timers"
+                },
+                "tracked_object": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Tracked object name",
+                        "title": "Name"
+                      },
+                      "decrement": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 254,
+                        "description": "Decrement VRRP priority by 1-254",
+                        "title": "Decrement"
+                      },
+                      "shutdown": {
+                        "type": "boolean",
+                        "title": "Shutdown"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "title": "Tracked Object"
+                },
+                "ipv4": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Virtual IPv4 address",
+                      "title": "Address"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "enum": [
+                        2,
+                        3
+                      ],
+                      "title": "Version"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "description": "Virtual IPv6 address",
+                      "title": "Address"
+                    }
+                  },
+                  "required": [
+                    "address"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "IPv6"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "required": [
+                "id"
+              ]
+            },
+            "title": "VRRP IDs"
+          },
           "eos_cli": {
             "type": "string",
             "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -4277,6 +4574,33 @@
               "minimum": 1,
               "maximum": 4294967295,
               "title": "Sample"
+            },
+            "hardware_offload": {
+              "type": "object",
+              "properties": {
+                "ipv4": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv4 traffic.",
+                  "title": "IPv4"
+                },
+                "ipv6": {
+                  "type": "boolean",
+                  "description": "Configure hardware offload for IPv6 traffic.",
+                  "title": "IPv6"
+                },
+                "threshold_minimum": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4294967295,
+                  "description": "Minimum number of samples.",
+                  "title": "Threshold Minimum"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Hardware Offload"
             },
             "trackers": {
               "type": "array",
@@ -5251,6 +5575,58 @@
       },
       "title": "IP DHCP Relay"
     },
+    "ip_dhcp_snooping": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "bridging": {
+          "type": "boolean",
+          "title": "Bridging"
+        },
+        "information_option": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable insertion of option-82 in DHCP request packets",
+              "title": "Enabled"
+            },
+            "circuit_id_type": {
+              "type": "string",
+              "description": "\"none\" or <0 - 255>",
+              "title": "Circuit ID Type"
+            },
+            "circuit_id_format": {
+              "type": "string",
+              "description": "Required if `circuit_id_type` is set.\n- \"%h:%p\" Hostname and interface name\n- \"%p:%v\" Interface name and VLAN ID",
+              "enum": [
+                "%h:%p",
+                "%p:%v"
+              ],
+              "title": "Circuit ID Format"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Information Option"
+        },
+        "vlan": {
+          "type": "string",
+          "description": "VLAN range as string.\n\"< vlan_id >, < vlan_id >-< vlan_id >\"\nExample: 15,16,17,18",
+          "title": "VLAN"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IP DHCP Snooping"
+    },
     "ip_domain_lookup": {
       "type": "object",
       "properties": {
@@ -5672,6 +6048,290 @@
           "description": "Buffer size in MB",
           "title": "Kernel Buffer Size"
         },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "title": "Name"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "Specify VRF for NAT profile.",
+                "title": "VRF"
+              },
+              "destination": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "pool_name",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Destination"
+              },
+              "source": {
+                "type": "object",
+                "properties": {
+                  "dynamic": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "nat_type": {
+                          "type": "string",
+                          "enum": [
+                            "overload",
+                            "pool",
+                            "pool-address-only",
+                            "pool-full-cone"
+                          ],
+                          "title": "Nat Type"
+                        },
+                        "pool_name": {
+                          "type": "string",
+                          "description": "required if 'nat_type' is pool, pool-address-only or pool-full-cone\nignored if 'nat_type' is overload\n",
+                          "title": "Pool Name"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        }
+                      },
+                      "required": [
+                        "nat_type",
+                        "access_list"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Dynamic"
+                  },
+                  "static": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "access_list": {
+                          "type": "string",
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Access List"
+                        },
+                        "comment": {
+                          "type": "string",
+                          "title": "Comment"
+                        },
+                        "direction": {
+                          "type": "string",
+                          "enum": [
+                            "egress",
+                            "ingress"
+                          ],
+                          "description": "Egress or ingress can be the default. This depends on source/destination, EOS version, and hardware platform.\nEOS might remove this keyword in the configuration. So, check the configuration on targeted HW/SW.\n",
+                          "title": "Direction"
+                        },
+                        "group": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "'access_list' and 'group' are mutual exclusive",
+                          "title": "Group"
+                        },
+                        "original_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Original IP"
+                        },
+                        "original_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "title": "Original Port"
+                        },
+                        "priority": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4294967295,
+                          "title": "Priority"
+                        },
+                        "protocol": {
+                          "type": "string",
+                          "enum": [
+                            "udp",
+                            "tcp"
+                          ],
+                          "title": "Protocol"
+                        },
+                        "translated_ip": {
+                          "type": "string",
+                          "description": "IPv4 address",
+                          "title": "Translated IP"
+                        },
+                        "translated_port": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 65535,
+                          "description": "requires 'original_port'",
+                          "title": "Translated Port"
+                        }
+                      },
+                      "required": [
+                        "translated_ip",
+                        "original_ip"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Static"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Source"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Profiles"
+        },
         "pools": {
           "type": "array",
           "items": {
@@ -6000,6 +6660,40 @@
                 "type": "string",
                 "description": "Local IKE Identification.\nCan be an IPv4 or an IPv6 address.\n",
                 "title": "Local ID"
+              },
+              "ike_lifetime": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 24,
+                "description": "IKE lifetime in hours.",
+                "title": "Ike Lifetime"
+              },
+              "encryption": {
+                "type": "string",
+                "enum": [
+                  "3des",
+                  "aes128",
+                  "aes256"
+                ],
+                "description": "IKE encryption algorithm.",
+                "title": "Encryption"
+              },
+              "dh_group": {
+                "type": "integer",
+                "enum": [
+                  1,
+                  2,
+                  5,
+                  14,
+                  15,
+                  16,
+                  17,
+                  20,
+                  21,
+                  24
+                ],
+                "description": "Diffie-Hellman group for the key exchange.",
+                "title": "Dh Group"
               }
             },
             "additionalProperties": false,
@@ -6020,7 +6714,7 @@
             "properties": {
               "name": {
                 "type": "string",
-                "description": "Name of the SA policy.",
+                "description": "Name of the SA policy. The \"null\" value is deprecated and will be removed in AVD 5.0.0",
                 "title": "Name"
               },
               "esp": {
@@ -6029,21 +6723,23 @@
                   "integrity": {
                     "type": "string",
                     "enum": [
-                      "null",
+                      "disabled",
                       "sha1",
-                      "sha256"
+                      "sha256",
+                      "null"
                     ],
                     "title": "Integrity"
                   },
                   "encryption": {
                     "type": "string",
                     "enum": [
-                      "null",
+                      "disabled",
                       "aes128",
                       "aes128gcm128",
                       "aes128gcm64",
                       "aes256",
-                      "aes256gcm256"
+                      "aes256gcm256",
+                      "null"
                     ],
                     "title": "Encryption"
                   }
@@ -6977,7 +7673,7 @@
                 "fqdn",
                 "ipv4"
               ],
-              "description": "Hostname format",
+              "description": "Hostname format in syslogs. For hostname _only_, remove the line. (default EOS CLI behaviour).",
               "title": "Hostname"
             },
             "sequence_numbers": {
@@ -8277,6 +8973,11 @@
             "type": "boolean",
             "title": "Shutdown"
           },
+          "speed": {
+            "type": "string",
+            "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
+            "title": "Speed"
+          },
           "mtu": {
             "type": "integer",
             "title": "MTU"
@@ -8324,6 +9025,29 @@
             "type": "string",
             "description": "MAC address",
             "title": "MAC Address"
+          },
+          "lldp": {
+            "type": "object",
+            "properties": {
+              "transmit": {
+                "type": "boolean",
+                "title": "Transmit"
+              },
+              "receive": {
+                "type": "boolean",
+                "title": "Receive"
+              },
+              "ztp_vlan": {
+                "type": "integer",
+                "description": "ZTP vlan number",
+                "title": "ZTP VLAN"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "LLDP"
           },
           "eos_cli": {
             "type": "string",
@@ -9689,6 +10413,7 @@
     },
     "platform": {
       "type": "object",
+      "description": "Every key below this point is platform dependent.",
       "properties": {
         "trident": {
           "type": "object",
@@ -9878,7 +10603,7 @@
         },
         "sand": {
           "type": "object",
-          "description": "Most of the platform sand options are hardware dependant and optional",
+          "description": "Most of the platform sand options are hardware dependent and optional",
           "properties": {
             "qos_maps": {
               "type": "array",
@@ -9951,6 +10676,24 @@
             "^_.+$": {}
           },
           "title": "Sand"
+        },
+        "sfe": {
+          "type": "object",
+          "description": "Sfe (Software Forwarding Engine) settings.",
+          "properties": {
+            "data_plane_cpu_allocation_max": {
+              "type": "integer",
+              "description": "Maximum number of CPUs used for data plane traffic forwarding.",
+              "minimum": 1,
+              "maximum": 128,
+              "title": "Data Plane CPU Allocation Max"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Sfe"
         }
       },
       "additionalProperties": false,
@@ -10213,8 +10956,17 @@
           },
           "l2_mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
+          },
+          "l2_mru": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+            "title": "L2 MRU"
           },
           "vlans": {
             "type": "string",
@@ -10437,6 +11189,8 @@
           },
           "mtu": {
             "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
             "title": "MTU"
           },
           "mlag": {
@@ -10678,7 +11432,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10703,7 +11457,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10728,7 +11482,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -10753,7 +11507,7 @@
                       "percent",
                       "pps"
                     ],
-                    "description": "Optional field and is hardware dependant",
+                    "description": "Optional field and is hardware dependent",
                     "title": "Unit"
                   }
                 },
@@ -12256,6 +13010,79 @@
                         "^_.+$": {}
                       },
                       "title": "Ecn"
+                    },
+                    "drop": {
+                      "description": "Set WRED parameters",
+                      "type": "object",
+                      "properties": {
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "microseconds",
+                                "milliseconds"
+                              ],
+                              "description": "Units to be used for the threshold values.",
+                              "title": "Units"
+                            },
+                            "drop_precedence": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 2,
+                              "description": "Specify Drop Precendence value",
+                              "title": "Drop Precedence"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED maximum-threshold",
+                              "title": "Max"
+                            },
+                            "drop_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "WRED drop probability.",
+                              "title": "Drop Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "WRED weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max",
+                            "drop_probability"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Drop"
                     }
                   },
                   "additionalProperties": false,
@@ -12392,6 +13219,79 @@
                         "^_.+$": {}
                       },
                       "title": "Ecn"
+                    },
+                    "drop": {
+                      "description": "Set WRED parameters",
+                      "type": "object",
+                      "properties": {
+                        "threshold": {
+                          "type": "object",
+                          "properties": {
+                            "units": {
+                              "type": "string",
+                              "enum": [
+                                "segments",
+                                "bytes",
+                                "kbytes",
+                                "mbytes",
+                                "microseconds",
+                                "milliseconds"
+                              ],
+                              "description": "Units to be used for the threshold values.",
+                              "title": "Units"
+                            },
+                            "drop_precedence": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 2,
+                              "description": "Specify Drop Precendence value",
+                              "title": "Drop Precedence"
+                            },
+                            "min": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED minimum-threshold",
+                              "title": "Min"
+                            },
+                            "max": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "description": "WRED maximum-threshold",
+                              "title": "Max"
+                            },
+                            "drop_probability": {
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 100,
+                              "description": "WRED drop probability.",
+                              "title": "Drop Probability"
+                            },
+                            "weight": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 15,
+                              "description": "WRED weight",
+                              "title": "Weight"
+                            }
+                          },
+                          "required": [
+                            "units",
+                            "min",
+                            "max",
+                            "drop_probability"
+                          ],
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Threshold"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Drop"
                     }
                   },
                   "additionalProperties": false,
@@ -12993,6 +13893,102 @@
       },
       "title": "Route Maps"
     },
+    "router_adaptive_virtual_topology": {
+      "type": "object",
+      "properties": {
+        "topology_role": {
+          "description": "Role name.",
+          "type": "string",
+          "enum": [
+            "edge",
+            "pathfinder",
+            "transit region",
+            "transit zone"
+          ],
+          "title": "Topology Role"
+        },
+        "region": {
+          "type": "object",
+          "description": "Region name and ID.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 255,
+              "title": "ID"
+            }
+          },
+          "required": [
+            "name",
+            "id"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Region"
+        },
+        "zone": {
+          "type": "object",
+          "description": "Zone name and ID.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000,
+              "title": "ID"
+            }
+          },
+          "required": [
+            "name",
+            "id"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Zone"
+        },
+        "site": {
+          "type": "object",
+          "description": "Site name and ID.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "Name"
+            },
+            "id": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000,
+              "title": "ID"
+            }
+          },
+          "required": [
+            "name",
+            "id"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Site"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Router Adaptive Virtual Topology"
+    },
     "router_bfd": {
       "type": "object",
       "properties": {
@@ -13085,6 +14081,11 @@
               "maximum": 50,
               "title": "Initiator Multiplier"
             },
+            "initiator_measurement_round_trip": {
+              "type": "boolean",
+              "description": "Enable round-trip delay measurement",
+              "title": "Initiator Measurement Round Trip"
+            },
             "reflector": {
               "type": "object",
               "properties": {
@@ -13124,7 +14125,7 @@
       "properties": {
         "as": {
           "type": "string",
-          "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+          "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
           "title": "As"
         },
         "router_id": {
@@ -13367,7 +14368,7 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Remote As"
               }
             },
@@ -13395,12 +14396,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Local As"
               },
               "description": {
@@ -13674,12 +14675,12 @@
               },
               "remote_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Remote As"
               },
               "local_as": {
                 "type": "string",
-                "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                 "title": "Local As"
               },
               "as_path": {
@@ -13703,6 +14704,11 @@
                 },
                 "title": "As Path"
               },
+              "peer": {
+                "type": "string",
+                "description": "Key only used for documentation or validation purposes",
+                "title": "Peer"
+              },
               "description": {
                 "type": "string",
                 "title": "Description"
@@ -13710,6 +14716,10 @@
               "route_reflector_client": {
                 "type": "boolean",
                 "title": "Route Reflector Client"
+              },
+              "password": {
+                "type": "string",
+                "title": "Password"
               },
               "passive": {
                 "type": "boolean",
@@ -13930,6 +14940,11 @@
               "remote_as": {
                 "type": "string",
                 "title": "Remote As"
+              },
+              "peer": {
+                "type": "string",
+                "description": "Key only used for documentation or validation purposes",
+                "title": "Peer"
               },
               "peer_group": {
                 "type": "string",
@@ -14561,6 +15576,56 @@
                       "mpls"
                     ],
                     "title": "Encapsulation"
+                  },
+                  "additional_paths": {
+                    "type": "object",
+                    "properties": {
+                      "receive": {
+                        "type": "boolean",
+                        "title": "Receive"
+                      },
+                      "send": {
+                        "type": "object",
+                        "properties": {
+                          "any": {
+                            "type": "boolean",
+                            "title": "Any"
+                          },
+                          "backup": {
+                            "type": "boolean",
+                            "title": "Backup"
+                          },
+                          "ecmp": {
+                            "type": "boolean",
+                            "title": "ECMP"
+                          },
+                          "ecmp_limit": {
+                            "type": "integer",
+                            "description": "Amount of ECMP paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "ECMP Limit"
+                          },
+                          "limit": {
+                            "type": "integer",
+                            "description": "Amount of paths to send",
+                            "minimum": 2,
+                            "maximum": 64,
+                            "title": "Limit"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "title": "Send"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "title": "Additional Paths"
                   }
                 },
                 "additionalProperties": false,
@@ -16502,7 +17567,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                       "title": "Remote As"
                     }
                   },
@@ -16529,7 +17594,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                       "title": "Remote As"
                     },
                     "password": {
@@ -16589,7 +17654,7 @@
                     },
                     "local_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                       "title": "Local As"
                     },
                     "as_path": {
@@ -16740,12 +17805,14 @@
                     },
                     "prefix_list_in": {
                       "type": "string",
-                      "description": "Inbound prefix-list name",
+                      "description": "Inbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in</samp> instead.",
+                      "deprecated": true,
                       "title": "Prefix List In"
                     },
                     "prefix_list_out": {
                       "type": "string",
-                      "description": "Outbound prefix-list name",
+                      "description": "Outbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out</samp> instead.",
+                      "deprecated": true,
                       "title": "Prefix List Out"
                     }
                   },
@@ -16771,7 +17838,7 @@
                     },
                     "remote_as": {
                       "type": "string",
-                      "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                      "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                       "title": "Remote As"
                     },
                     "peer_group": {
@@ -16990,6 +18057,16 @@
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
                         },
+                        "prefix_list_in": {
+                          "type": "string",
+                          "description": "Inbound prefix-list name",
+                          "title": "Prefix List In"
+                        },
+                        "prefix_list_out": {
+                          "type": "string",
+                          "description": "Outbound prefix-list name",
+                          "title": "Prefix List Out"
+                        },
                         "next_hop": {
                           "type": "object",
                           "properties": {
@@ -17185,6 +18262,16 @@
                           "type": "string",
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
+                        },
+                        "prefix_list_in": {
+                          "type": "string",
+                          "description": "Inbound prefix-list name",
+                          "title": "Prefix List In"
+                        },
+                        "prefix_list_out": {
+                          "type": "string",
+                          "description": "Outbound prefix-list name",
+                          "title": "Prefix List Out"
                         }
                       },
                       "additionalProperties": false,
@@ -19422,6 +20509,394 @@
         "^_.+$": {}
       }
     },
+    "router_path_selection": {
+      "type": "object",
+      "description": "Dynamic path selection configuration.",
+      "properties": {
+        "peer_dynamic_source": {
+          "type": "string",
+          "enum": [
+            "stun"
+          ],
+          "description": "Source of dynamic peer discovery.",
+          "title": "Peer Dynamic Source"
+        },
+        "path_groups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Path group name.",
+                "title": "Name"
+              },
+              "id": {
+                "type": "integer",
+                "description": "Path group ID.",
+                "minimum": 1,
+                "maximum": 65535,
+                "title": "ID"
+              },
+              "ipsec_profile": {
+                "type": "string",
+                "description": "IPSec profile for the path group.",
+                "title": "Ipsec Profile"
+              },
+              "flow_assignment": {
+                "type": "string",
+                "enum": [
+                  "lan"
+                ],
+                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peers.",
+                "title": "Flow Assignment"
+              },
+              "local_interfaces": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Local interface name.",
+                      "pattern": "^Ethernet\\d+(/\\d+)*(\\.\\d+)?$",
+                      "title": "Name"
+                    },
+                    "public_address": {
+                      "type": "string",
+                      "description": "Public IP assigned by NAT.",
+                      "title": "Public Address"
+                    },
+                    "stun": {
+                      "type": "object",
+                      "properties": {
+                        "server_profiles": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 2,
+                          "description": "STUN server-profile names.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Server Profiles"
+                        }
+                      },
+                      "required": [
+                        "server_profiles"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "STUN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Local Interfaces"
+              },
+              "local_ips": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "ip_address": {
+                      "type": "string",
+                      "title": "IP Address"
+                    },
+                    "public_address": {
+                      "type": "string",
+                      "description": "Public IP assigned by NAT.",
+                      "title": "Public Address"
+                    },
+                    "stun": {
+                      "type": "object",
+                      "properties": {
+                        "server_profiles": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 2,
+                          "description": "STUN server-profile names.",
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Server Profiles"
+                        }
+                      },
+                      "required": [
+                        "server_profiles"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "STUN"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "ip_address"
+                  ]
+                },
+                "title": "Local Ips"
+              },
+              "dynamic_peers": {
+                "type": "object",
+                "description": "Flow assignement `lan` can not be configured in a path group with dynamic peers.",
+                "properties": {
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Enable `peer dynamic`.",
+                    "title": "Enabled"
+                  },
+                  "ip_local": {
+                    "type": "boolean",
+                    "description": "Prefer local IP address.",
+                    "title": "IP Local"
+                  },
+                  "ipsec": {
+                    "type": "boolean",
+                    "description": "IPsec configuration for dynamic peers.",
+                    "title": "Ipsec"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Dynamic Peers"
+              },
+              "static_peers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "router_ip": {
+                      "type": "string",
+                      "description": "Peer router IP.",
+                      "title": "Router IP"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Name of the site.",
+                      "title": "Name"
+                    },
+                    "ipv4_addresses": {
+                      "type": "array",
+                      "description": "Static IPv4 addresses.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "title": "IPv4 Addresses"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "router_ip"
+                  ]
+                },
+                "title": "Static Peers"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Path Groups"
+        },
+        "load_balance_policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Load-balance policy name.",
+                "title": "Name"
+              },
+              "lowest_hop_count": {
+                "type": "boolean",
+                "description": "Prefer paths with lowest hop-count.",
+                "title": "Lowest Hop Count"
+              },
+              "jitter": {
+                "type": "integer",
+                "description": "Jitter requirement for this load balance policy in milliseconds.",
+                "minimum": 0,
+                "maximum": 10000,
+                "title": "Jitter"
+              },
+              "latency": {
+                "type": "integer",
+                "description": "One way delay requirement for this load balance policy in milliseconds.",
+                "minimum": 0,
+                "maximum": 10000,
+                "title": "Latency"
+              },
+              "loss_rate": {
+                "type": "string",
+                "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00 %",
+                "pattern": "^\\d+(\\.\\d{1,2})?$",
+                "title": "Loss Rate"
+              },
+              "path_groups": {
+                "type": "array",
+                "description": "List of path-groups to use for this load balance policy.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Path-group name",
+                      "title": "Name"
+                    },
+                    "priority": {
+                      "type": "integer",
+                      "description": "Priority for this path-group.\nThe EOS default value is 1.",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Priority"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
+                },
+                "title": "Path Groups"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Load Balance Policies"
+        },
+        "policies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "DPS policy name.",
+                "title": "Name"
+              },
+              "default_match": {
+                "type": "object",
+                "properties": {
+                  "load_balance": {
+                    "type": "string",
+                    "description": "Name of the load-balance policy.",
+                    "title": "Load Balance"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Default Match"
+              },
+              "rules": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Rule ID.",
+                      "minimum": 1,
+                      "maximum": 255,
+                      "title": "ID"
+                    },
+                    "application_profile": {
+                      "type": "string",
+                      "title": "Application Profile"
+                    },
+                    "load_balance": {
+                      "type": "string",
+                      "description": "Name of the load-balance policy.",
+                      "title": "Load Balance"
+                    }
+                  },
+                  "required": [
+                    "application_profile",
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Rules"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Policies"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name.",
+                "title": "Name"
+              },
+              "path_selection_policy": {
+                "type": "string",
+                "description": "DPS policy name to use for this VRF.",
+                "title": "Path Selection Policy"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Router Path Selection"
+    },
     "router_pim_sparse_mode": {
       "type": "object",
       "properties": {
@@ -19654,6 +21129,10 @@
     "router_traffic_engineering": {
       "type": "object",
       "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
         "router_id": {
           "type": "object",
           "properties": {
@@ -20903,7 +22382,7 @@
       "patternProperties": {
         "^_.+$": {}
       },
-      "title": "Stun"
+      "title": "STUN"
     },
     "switchport_default": {
       "type": "object",
@@ -22737,6 +24216,8 @@
                 "priority_level": {
                   "type": "integer",
                   "description": "Instance priority",
+                  "minimum": 1,
+                  "maximum": 254,
                   "title": "Priority Level"
                 },
                 "advertisement": {
@@ -22745,6 +24226,8 @@
                     "interval": {
                       "type": "integer",
                       "description": "Interval in seconds",
+                      "minimum": 1,
+                      "maximum": 255,
                       "title": "Interval"
                     }
                   },
@@ -22767,11 +24250,15 @@
                         "minimum": {
                           "type": "integer",
                           "description": "Minimum preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
                           "title": "Minimum"
                         },
                         "reload": {
                           "type": "integer",
                           "description": "Reload preempt delay in seconds",
+                          "minimum": 0,
+                          "maximum": 3600,
                           "title": "Reload"
                         }
                       },
@@ -22800,6 +24287,8 @@
                         "reload": {
                           "type": "integer",
                           "description": "Delay after reload in seconds.",
+                          "minimum": 0,
+                          "maximum": 3600,
                           "title": "Reload"
                         }
                       },

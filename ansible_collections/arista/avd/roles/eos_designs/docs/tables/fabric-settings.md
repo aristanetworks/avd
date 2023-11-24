@@ -19,58 +19,155 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.mlag_l3.name") | String |  | `LEAF_PEER_L3` |  |  |
     | [<samp>&nbsp;&nbsp;uplink</samp>](## "trunk_groups.uplink") | Dictionary |  |  |  | Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "trunk_groups.uplink.name") | String |  | `UPLINK` |  |  |
-    | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | `False` |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note this key is ignored when EVPN is configured.<br> |
+    | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | `False` |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note that this setting cannot be used while there are EVPN services present in the default VRF.<br> |
     | [<samp>underlay_filter_redistribute_connected</samp>](## "underlay_filter_redistribute_connected") | Boolean |  | `True` |  | Filter redistribution of connected into the underlay routing protocol.<br>Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.<br>Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.<br> |
     | [<samp>underlay_ipv6</samp>](## "underlay_ipv6") | Boolean |  | `False` |  | This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.<br>Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.<br> |
     | [<samp>underlay_multicast</samp>](## "underlay_multicast") | Boolean |  | `False` |  | Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.<br>Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.<br>No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM).<br>The configuration is intended to be used as multicast underlay for EVPN OISM overlay.<br> |
     | [<samp>underlay_multicast_anycast_rp</samp>](## "underlay_multicast_anycast_rp") | Dictionary |  |  |  | If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured<br>with one of the following methods:<br>- Anycast RP using PIM (RFC4610).<br>- Anycast RP using MSDP (RFC4611).<br><br>NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".<br> |
-    | [<samp>&nbsp;&nbsp;mode</samp>](## "underlay_multicast_anycast_rp.mode") | String |  | `pim` | Valid Values:<br>- pim<br>- msdp |  |
+    | [<samp>&nbsp;&nbsp;mode</samp>](## "underlay_multicast_anycast_rp.mode") | String |  | `pim` | Valid Values:<br>- <code>pim</code><br>- <code>msdp</code> |  |
     | [<samp>underlay_multicast_rps</samp>](## "underlay_multicast_rps") | List, items: Dictionary |  |  |  | List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.<br>The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).<br>If multiple nodes are configured under 'nodes' for the same RP address, they will be configured<br>according to the 'underlay_multicast_anycast_rp.mode' setting.<br><br>Requires 'underlay_multicast: true'.<br> |
-    | [<samp>&nbsp;&nbsp;- rp</samp>](## "underlay_multicast_rps.[].rp") | String | Required, Unique |  |  | RP IPv4 address. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;rp</samp>](## "underlay_multicast_rps.[].rp") | String | Required, Unique |  |  | RP IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "underlay_multicast_rps.[].nodes") | List, items: Dictionary |  |  |  | List of nodes where a Loopback interface with the RP address will be configured.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "underlay_multicast_rps.[].nodes.[].name") | String | Required, Unique |  |  | Hostname. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "underlay_multicast_rps.[].nodes.[].name") | String | Required, Unique |  |  | Hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;loopback_number</samp>](## "underlay_multicast_rps.[].nodes.[].loopback_number") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "underlay_multicast_rps.[].nodes.[].description") | String |  | `PIM RP` |  | Interface description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "underlay_multicast_rps.[].groups") | List, items: String |  |  |  | List of groups to associate with the RP address set in 'rp'.<br>If access_list_name is set, a standard access-list will be configured matching these groups.<br>Otherwise the groups are configured directly on the RP command.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "underlay_multicast_rps.[].groups.[].&lt;str&gt;") | String |  |  |  | Multicast Group IPv4 prefix/mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "underlay_multicast_rps.[].groups.[]") | String |  |  |  | Multicast Group IPv4 prefix/mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_name</samp>](## "underlay_multicast_rps.[].access_list_name") | String |  |  |  | Name of standard Access-List. |
     | [<samp>underlay_rfc5549</samp>](## "underlay_rfc5549") | Boolean |  | `False` |  | Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.<br>Requires "underlay_routing_protocol: ebgp".<br> |
-    | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case<br>Valid Values:<br>- ebgp<br>- ospf<br>- isis<br>- isis-sr<br>- isis-ldp<br>- isis-sr-ldp<br>- ospf-ldp | - The following underlay routing protocols are supported:<br>  - EBGP (default for l3ls-evpn)<br>  - OSPF.<br>  - ISIS.<br>  - ISIS-SR*.<br>  - ISIS-LDP*.<br>  - ISIS-SR-LDP*.<br>  - OSPF-LDP*.<br>- The variables should be applied to all devices in the fabric.<br>*Only supported with core_interfaces data model.<br> |
+    | [<samp>underlay_routing_protocol</samp>](## "underlay_routing_protocol") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>ebgp</code><br>- <code>ospf</code><br>- <code>isis</code><br>- <code>isis-sr</code><br>- <code>isis-ldp</code><br>- <code>isis-sr-ldp</code><br>- <code>ospf-ldp</code> | - The following underlay routing protocols are supported:<br>  - EBGP (default for l3ls-evpn)<br>  - OSPF.<br>  - ISIS.<br>  - ISIS-SR*.<br>  - ISIS-LDP*.<br>  - ISIS-SR-LDP*.<br>  - OSPF-LDP*.<br>- The variables should be applied to all devices in the fabric.<br>*Only supported with core_interfaces data model.<br> |
     | [<samp>uplink_ptp</samp>](## "uplink_ptp") | Dictionary |  |  |  | Enable PTP on all infrastructure links. |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "uplink_ptp.enable") | Boolean |  | `False` |  |  |
 
 === "YAML"
 
     ```yaml
-    enable_trunk_groups: <bool>
-    only_local_vlan_trunk_groups: <bool>
-    p2p_uplinks_mtu: <int>
+    # Enable Trunk Group support across eos_designs.
+    # Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".
+    # *All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.
+    # If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.
+    # See "Details on enable_trunk_groups" below before enabling this feature.
+    enable_trunk_groups: <bool; default=False>
+
+    # A vlan can have many trunk_groups assigned.
+    # To avoid unneeded configuration changes on all leaf switches when a new trunk group is added,
+    # this feature will only configure the vlan trunk groups matched with local connected_endpoints.
+    # See "Details on only_local_vlan_trunk_groups" below.
+    # Requires "enable_trunk_groups: true".
+    only_local_vlan_trunk_groups: <bool; default=False>
+
+    # Point to Point Links MTU.
+    p2p_uplinks_mtu: <int; 68-65535; default=9214>
+
+    # QOS Profile assigned on all infrastructure links.
     p2p_uplinks_qos_profile: <str>
-    shutdown_interfaces_towards_undeployed_peers: <bool>
+
+    # - It is possible to provision configurations for a complete topology but flag devices as undeployed using the host level variable `is_deployed: false`.
+
+    # ```yaml
+    # # Use at the host level
+    # is_deployed: < true or false or default -> true >
+    # ```
+
+    # - By default, this will have no impact within the `eos_designs` role. Configs will still be generated by the `eos_cli_config_gen` role and will still be pushed by the `eos_config_deploy_eapi` directly to devices if used.
+    # - However, if the `eos_config_deploy_cvp` role is used to push configurations, CloudVision will ignore the devices flagged  as `is_deployed: false` and not attempt to configure them.
+    # - If the device is not present in the network due to CloudVision not configuring the device, `eos_validate_state` role will fail tests on peers of the undeployed device trying to verify that interfaces are up.
+    # - To overcome this and shutdown interfaces towards undeployed peers, the variable `shutdown_interfaces_towards_undeployed_peers` can be used, satisfying the `eos_validate_state` role interface tests.
+    # - Again, this is only an issue if `eos_config_deploy_cvp` is used and the devices are not present in the network.
+    shutdown_interfaces_towards_undeployed_peers: <bool; default=False>
     trunk_groups:
+
+      # Trunk Group used for MLAG VLAN (Typically VLAN 4094).
       mlag:
-        name: <str>
+        name: <str; default="MLAG">
+
+      # Trunk Group used for MLAG L3 peering VLAN and for VRF L3 peering VLANs (Typically VLAN 4093).
       mlag_l3:
-        name: <str>
+        name: <str; default="LEAF_PEER_L3">
+
+      # Trunk Group used on L2 Leaf switches when "enable_trunk_groups" is set.
       uplink:
-        name: <str>
-    underlay_filter_peer_as: <bool>
-    underlay_filter_redistribute_connected: <bool>
-    underlay_ipv6: <bool>
-    underlay_multicast: <bool>
+        name: <str; default="UPLINK">
+
+    # Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.
+    # This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return
+    # all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.
+    # Note that this setting cannot be used while there are EVPN services present in the default VRF.
+    underlay_filter_peer_as: <bool; default=False>
+
+    # Filter redistribution of connected into the underlay routing protocol.
+    # Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.
+    # Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.
+    underlay_filter_redistribute_connected: <bool; default=True>
+
+    # This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
+    # Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.
+    underlay_ipv6: <bool; default=False>
+
+    # Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
+    # Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
+    # No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM).
+    # The configuration is intended to be used as multicast underlay for EVPN OISM overlay.
+    underlay_multicast: <bool; default=False>
+
+    # If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured
+    # with one of the following methods:
+    # - Anycast RP using PIM (RFC4610).
+    # - Anycast RP using MSDP (RFC4611).
+
+    # NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".
     underlay_multicast_anycast_rp:
-      mode: <str>
+      mode: <str; "pim" | "msdp"; default="pim">
+
+    # List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
+    # The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).
+    # If multiple nodes are configured under 'nodes' for the same RP address, they will be configured
+    # according to the 'underlay_multicast_anycast_rp.mode' setting.
+
+    # Requires 'underlay_multicast: true'.
     underlay_multicast_rps:
-      - rp: <str>
+
+        # RP IPv4 address.
+      - rp: <str; required; unique>
+
+        # List of nodes where a Loopback interface with the RP address will be configured.
         nodes:
-          - name: <str>
-            loopback_number: <int>
-            description: <str>
+
+            # Hostname.
+          - name: <str; required; unique>
+            loopback_number: <int; required>
+
+            # Interface description.
+            description: <str; default="PIM RP">
+
+        # List of groups to associate with the RP address set in 'rp'.
+        # If access_list_name is set, a standard access-list will be configured matching these groups.
+        # Otherwise the groups are configured directly on the RP command.
         groups:
+
+            # Multicast Group IPv4 prefix/mask.
           - <str>
+
+        # Name of standard Access-List.
         access_list_name: <str>
-    underlay_rfc5549: <bool>
-    underlay_routing_protocol: <str>
+
+    # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
+    # Requires "underlay_routing_protocol: ebgp".
+    underlay_rfc5549: <bool; default=False>
+
+    # - The following underlay routing protocols are supported:
+    #   - EBGP (default for l3ls-evpn)
+    #   - OSPF.
+    #   - ISIS.
+    #   - ISIS-SR*.
+    #   - ISIS-LDP*.
+    #   - ISIS-SR-LDP*.
+    #   - OSPF-LDP*.
+    # - The variables should be applied to all devices in the fabric.
+    # *Only supported with core_interfaces data model.
+    underlay_routing_protocol: <str; "ebgp" | "ospf" | "isis" | "isis-sr" | "isis-ldp" | "isis-sr-ldp" | "ospf-ldp">
+
+    # Enable PTP on all infrastructure links.
     uplink_ptp:
-      enable: <bool>
+      enable: <bool; default=False>
     ```
