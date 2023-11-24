@@ -34,8 +34,8 @@
 {%         set ipv6_acl = queue_monitor_streaming.ipv6_access_group | arista.avd.default('-') %}
 {%         set max_connections = queue_monitor_streaming.max_connections | arista.avd.default('-') %}
 
-| Enabled | IP Access Group | IPv6 Access Group | Max Connections | Vrf |
-| :-------: | :---------------: | :-----------------: | :---------------: | :---: |
+| Enabled | IP Access Group | IPv6 Access Group | Max Connections | VRF |
+| ------- | --------------- | ----------------- | --------------- | --- |
 | {{ enabled }} | {{ ip_acl }} | {{ ipv6_acl }} | {{ max_connections }} | {{ vrf }} |
 {%     endif %}
 
