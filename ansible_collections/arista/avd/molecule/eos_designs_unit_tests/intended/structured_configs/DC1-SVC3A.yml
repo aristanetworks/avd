@@ -818,13 +818,13 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-- name: Port-Channel7
-  description: DC1_L2LEAF2_Po1
+- name: Port-Channel1007
+  description: DC1_L2LEAF2_Po1001
   type: switched
   shutdown: false
   mode: trunk
   vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
-  mlag: 7
+  mlag: 1007
 - name: Port-Channel10
   description: server03_ESI_PortChanne1
   type: switched
@@ -1058,7 +1058,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 7
+    id: 1007
     mode: active
 - name: Ethernet8
   peer: DC1-L2LEAF2B
@@ -1069,7 +1069,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 7
+    id: 1007
     mode: active
 - name: Ethernet49/1
   peer: DC1-SPINE1
