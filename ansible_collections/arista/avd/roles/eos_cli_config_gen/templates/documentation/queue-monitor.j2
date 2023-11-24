@@ -17,8 +17,8 @@
 {%         set default_low = queue_monitor_length.default_thresholds.low | arista.avd.default('-') %}
 {%         set notifying = queue_monitor_length.notifying | arista.avd.default('-') %}
 {%         set tx_latency = queue_monitor_length.tx_latency | arista.avd.default('-') %}
-{%         set cpu_high = queue_monitor_length.cpu.thersholds.high | arista.avd.default('-') %}
-{%         set cpu_low = queue_monitor_length.cpu.thersholds.low | arista.avd.default('-') %}
+{%         set cpu_high = queue_monitor_length.cpu.thresholds.high | arista.avd.default('-') %}
+{%         set cpu_low = queue_monitor_length.cpu.thresholds.low | arista.avd.default('-') %}
 
 | Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
 | ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
