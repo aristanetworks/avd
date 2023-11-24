@@ -201,6 +201,7 @@ $defs:
                   description: Group_prefix/mask.
               access_list_name:
                 type: str
+                convert_types: [ int ]
                 description: |
                   List of groups to associate with the RP address set in 'rp'.
                   If access_list_name is set, a standard access-list will be configured matching these groups.
@@ -487,6 +488,7 @@ $defs:
                         description: Group_prefix/mask.
                     access_list_name:
                       type: str
+                      convert_types: [ int ]
                       description: |
                         List of groups to associate with the RP addresses set in 'rps'.
                         If access_list_name is set, a standard access-list will be configured matching these groups.
@@ -856,10 +858,14 @@ $defs:
                       description: Route-map name.
                     prefix_list_in:
                       type: str
-                      description: Prefix list name.
+                      description: |-
+                        Inbound prefix list name.
+                        The prefix-list will be associated under the IPv4 or IPv6 address family based on the IP address.
                     prefix_list_out:
                       type: str
-                      description: Prefix list name.
+                      description: |-
+                        Outbound prefix list name.
+                        The prefix-list will be associated under the IPv4 or IPv6 address family based on the IP address.
                     local_as:
                       type: str
                       convert_types:

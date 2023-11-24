@@ -55,5 +55,6 @@ keys:
             description: Multicast Group IPv4 prefix/mask.
         access_list_name:
           type: str
+          convert_types: [ int ]
           description: |
             Name of standard Access-List.

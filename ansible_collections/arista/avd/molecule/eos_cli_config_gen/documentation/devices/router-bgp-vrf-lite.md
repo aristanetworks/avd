@@ -225,8 +225,14 @@ router bgp 65001
    vrf RED-C1
       rd 1.0.1.1:102
       neighbor 10.1.1.0 peer group OBS_WAN
-      neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-IN-C1 in
-      neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-OUT-C1 out
+      !
+      address-family ipv4
+         neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-IN-C1 in
+         neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-OUT-C1 out
+      !
+      address-family ipv6
+         neighbor 2001:cafe:192:168::4 prefix-list PL-BGP-V6-RED-IN-C1 in
+         neighbor 2001:cafe:192:168::4 prefix-list PL-BGP-V6-RED-OUT-C1 out
    !
    vrf YELLOW-C1
       rd 1.0.1.1:103

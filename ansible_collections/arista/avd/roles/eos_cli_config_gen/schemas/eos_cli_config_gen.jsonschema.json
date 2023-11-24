@@ -5575,6 +5575,58 @@
       },
       "title": "IP DHCP Relay"
     },
+    "ip_dhcp_snooping": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "bridging": {
+          "type": "boolean",
+          "title": "Bridging"
+        },
+        "information_option": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable insertion of option-82 in DHCP request packets",
+              "title": "Enabled"
+            },
+            "circuit_id_type": {
+              "type": "string",
+              "description": "\"none\" or <0 - 255>",
+              "title": "Circuit ID Type"
+            },
+            "circuit_id_format": {
+              "type": "string",
+              "description": "Required if `circuit_id_type` is set.\n- \"%h:%p\" Hostname and interface name\n- \"%p:%v\" Interface name and VLAN ID",
+              "enum": [
+                "%h:%p",
+                "%p:%v"
+              ],
+              "title": "Circuit ID Format"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Information Option"
+        },
+        "vlan": {
+          "type": "string",
+          "description": "VLAN range as string.\n\"< vlan_id >, < vlan_id >-< vlan_id >\"\nExample: 15,16,17,18",
+          "title": "VLAN"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IP DHCP Snooping"
+    },
     "ip_domain_lookup": {
       "type": "object",
       "properties": {
@@ -17753,12 +17805,14 @@
                     },
                     "prefix_list_in": {
                       "type": "string",
-                      "description": "Inbound prefix-list name",
+                      "description": "Inbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in</samp> instead.",
+                      "deprecated": true,
                       "title": "Prefix List In"
                     },
                     "prefix_list_out": {
                       "type": "string",
-                      "description": "Outbound prefix-list name",
+                      "description": "Outbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out</samp> instead.",
+                      "deprecated": true,
                       "title": "Prefix List Out"
                     }
                   },
@@ -18003,6 +18057,16 @@
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
                         },
+                        "prefix_list_in": {
+                          "type": "string",
+                          "description": "Inbound prefix-list name",
+                          "title": "Prefix List In"
+                        },
+                        "prefix_list_out": {
+                          "type": "string",
+                          "description": "Outbound prefix-list name",
+                          "title": "Prefix List Out"
+                        },
                         "next_hop": {
                           "type": "object",
                           "properties": {
@@ -18198,6 +18262,16 @@
                           "type": "string",
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
+                        },
+                        "prefix_list_in": {
+                          "type": "string",
+                          "description": "Inbound prefix-list name",
+                          "title": "Prefix List In"
+                        },
+                        "prefix_list_out": {
+                          "type": "string",
+                          "description": "Outbound prefix-list name",
+                          "title": "Prefix List Out"
                         }
                       },
                       "additionalProperties": false,

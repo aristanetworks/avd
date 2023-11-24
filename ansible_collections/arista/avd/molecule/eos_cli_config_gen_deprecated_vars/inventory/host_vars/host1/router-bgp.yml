@@ -142,6 +142,33 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: EVPN-OVERLAY-PEERS
+          # prefix_list_in is deprecated in 4.5.0. To be removed in 5.0.0
+          prefix_list_in: PL-TEST-IN
+          # prefix_list_out is deprecated in 4.5.0. To be removed in 5.0.0
+          prefix_list_out: PL-TEST-OUT
+        10.2.3.4:
+          # prefix_list_in is deprecated in 4.5.0. To be removed in 5.0.0
+          # Testing overlap with address family (should be ignored)
+          prefix_list_in: PL-TEST-IN
+          # prefix_list_out is deprecated in 4.5.0. To be removed in 5.0.0
+          # Testing overlap with address family (should be ignored)
+          prefix_list_out: PL-TEST-OUT
+        10.2.3.5:
+          # prefix_list_in is deprecated in 4.5.0. To be removed in 5.0.0
+          # Testing existing in AF but not overlapping (should get configured)
+          prefix_list_in: PL-TEST-IN
+          # prefix_list_out is deprecated in 4.5.0. To be removed in 5.0.0
+          # Testing existing in AF but not overlapping (should get configured)
+          prefix_list_out: PL-TEST-OUT
+      # Part of test of overlaps from VRF neighbors. To be removed in 5.0.0
+      address_family_ipv4:
+        neighbors:
+          - ip_address: 10.2.3.4
+            activate: true
+            prefix_list_in: PL-TEST-IN-AF4
+            prefix_list_out: PL-TEST-OUT-AF4
+          - ip_address: 10.2.3.5
+            activate: true
       # Testing neighbors as dict of dict
       # Dict type is deprecated in 4.0.0. To be removed in 5.0.0
       redistribute_routes:
