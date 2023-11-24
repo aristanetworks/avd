@@ -17,10 +17,6 @@ keys:
         type: dict
         description: "Configure transceiver monitoring logging."
         keys:
-          enable:
-            required: true
-            type: bool
-            description: "Enable transciever monitoring logging."
           dom:
             type: bool
             description: "Enable transceiver Digital Optical Monitoring (DOM) logging."

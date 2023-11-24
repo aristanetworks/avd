@@ -8,21 +8,11 @@
 
 ## Monitor Layer1 Logging
 
-| Logging |
-| ------- |
-{%     if monitor_layer1.logging_mac_fault is arista.avd.defined(true) %}
-| mac fault |
-{%     endif %}
-{%     if monitor_layer1.logging_transceiver.enable is arista.avd.defined(true) %}
-{%         if monitor_layer1.logging_transceiver.dom is arista.avd.defined(true) %}
-| transceiver dom |
-{%         endif %}
-{%         if monitor_layer1.logging_transceiver.communication is arista.avd.defined(true) %}
-| transceiver communication |
-{%         elif monitor_layer1.logging_transceiver.dom is not arista.avd.defined %}
-| transceiver |
-{%         endif %}
-{%     endif %}
+| Logging | State |
+| ------- | ----- |
+| mac fault | {{ 'enabled' if monitor_layer1.logging_mac_fault is arista.avd.defined(true) else 'disabled' }} |
+| transceiver dom | {{ 'enabled' if monitor_layer1.logging_transceiver.dom  is arista.avd.defined(true) else 'disabled' }} |
+| transceiver communication | {{ 'enabled' if monitor_layer1.logging_transceiver.communication  is arista.avd.defined(true) else 'disabled' }} |
 
 ### Monitor Layer1 Device Configuration
 

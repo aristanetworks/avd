@@ -37,11 +37,11 @@ interface Management1
 
 ## Monitor Layer1 Logging
 
-| Logging |
-| ------- |
-| mac fault |
-| transceiver dom |
-| transceiver communication |
+| Logging | State |
+| ------- | ----- |
+| mac fault | enabled |
+| transceiver dom | enabled |
+| transceiver communication | enabled |
 
 ### Monitor Layer1 Device Configuration
 
