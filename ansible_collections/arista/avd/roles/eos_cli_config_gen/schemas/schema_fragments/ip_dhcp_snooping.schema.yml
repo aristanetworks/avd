@@ -1,0 +1,44 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ip_dhcp_snooping:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      bridging:
+        type: bool
+      information_option:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable insertion of option-82 in DHCP request packets
+          circuit_id_type:
+            type: str
+            convert_types:
+              - int
+            description: |-
+              "none" or <0 - 255>
+          circuit_id_format:
+            type: str
+            description: |-
+              Required if `circuit_id_type` is set.
+              - "%h:%p" Hostname and interface name
+              - "%p:%v" Interface name and VLAN ID
+            valid_values:
+              - "%h:%p"
+              - "%p:%v"
+      vlan:
+        type: str
+        convert_types:
+          - int
+        description: |-
+          VLAN range as string.
+          "< vlan_id >, < vlan_id >-< vlan_id >"
+          Example: 15,16,17,18
