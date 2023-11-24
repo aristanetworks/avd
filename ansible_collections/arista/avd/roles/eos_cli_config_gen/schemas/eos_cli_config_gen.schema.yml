@@ -5724,22 +5724,18 @@ keys:
                     type: str
   monitor_layer1:
     type: dict
-    description: Enable SYSLOG messages on transceiver SMBus communication failures
+    description: Enable SYSLOG messages on transceiver SMBus communication failures.
     keys:
       logging_mac_fault:
         type: bool
-        description: Enable mac fault loggin.
+        description: Enable MAC fault logging.
       logging_transceiver:
         type: dict
         description: Configure transceiver monitoring logging.
         keys:
-          enable:
-            required: true
-            type: bool
-            description: Enable transcieve monitoring logging.
           dom:
             type: bool
-            description: Enable transceiver digital optical monitoring (DOM) logging.
+            description: Enable transceiver Digital Optical Monitoring (DOM) logging.
           communication:
             type: bool
             description: Enable transceiver SMBus fail and reset logging.

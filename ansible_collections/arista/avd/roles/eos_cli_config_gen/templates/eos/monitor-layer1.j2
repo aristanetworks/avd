@@ -7,15 +7,11 @@
 {% if monitor_layer1.logging_mac_fault is arista.avd.defined(true) or monitor_layer1.logging_transceiver is arista.avd.defined %}
 !
 monitor layer1
-{%     if monitor_layer1.logging_transceiver.enable is arista.avd.defined(true) %}
-{%         if monitor_layer1.logging_transceiver.dom is arista.avd.defined(true) %}
+{%     if monitor_layer1.logging_transceiver.dom is arista.avd.defined(true) %}
    logging transceiver dom
-{%         endif %}
-{%         if monitor_layer1.logging_transceiver.communication is arista.avd.defined(true) %}
+{%     endif %}
+{%     if monitor_layer1.logging_transceiver.communication is arista.avd.defined(true) %}
    logging transceiver communication
-{%         elif monitor_layer1.logging_transceiver.dom is not arista.avd.defined %}
-   logging transceiver
-{%         endif %}
 {%     endif %}
 {%     if monitor_layer1.logging_mac_fault is arista.avd.defined(true) %}
    logging mac fault
