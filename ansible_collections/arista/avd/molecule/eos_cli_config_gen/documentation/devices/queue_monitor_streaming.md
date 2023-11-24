@@ -40,9 +40,8 @@ interface Management1
 
 ### Queue Monitor Streaming
 
-
-| Enabled | IP Access Group | IPv6 Access Group | Max Connections | Vrf |
-| :-------: | :---------------: | :-----------------: | :---------------: | :---: |
+| Enabled | IP Access Group | IPv6 Access Group | Max Connections | VRF |
+| ------- | --------------- | ----------------- | --------------- | --- |
 | True | ACL-QMS | ACLv6-QMS | 5 | test |
 
 ### Queue Monitor Configuration
@@ -52,7 +51,7 @@ interface Management1
 queue-monitor streaming
    max-connections 5
    ip access-group ACL-QMS
-   ipv6 access-group ACL-QMS
+   ipv6 access-group ACLv6-QMS
    vrf test
    no shutdown
 ```
