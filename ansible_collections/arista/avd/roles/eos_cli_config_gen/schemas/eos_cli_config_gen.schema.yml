@@ -8274,6 +8274,86 @@ keys:
             required: true
             min: 1
             max: 10000
+      profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: AVT Name.
+            load_balance_policy:
+              type: str
+              description: Name of the load-balance policy.
+            internet_exit_policy:
+              type: str
+              description: Name of the internet exit policy.
+      policies:
+        type: list
+        primary_key: name
+        description: A sequence of application profiles mapped to some virtual topologies.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            matches:
+              type: list
+              items:
+                type: dict
+                keys:
+                  application_profile:
+                    type: str
+                    description: Application profile name.
+                  avt_profile:
+                    type: str
+                    description: AVT Profile name.
+                  dscp:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 63
+                    description: Set DSCP for matched traffic.
+                  traffic_class:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 7
+                    description: Set traffic-class for matched traffic.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            policy:
+              type: str
+              description: AVT Policy name.
+            profiles:
+              type: list
+              primary_key: id
+              description: AVT profiles in this VRF.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: AVT profile name.
+                  id:
+                    type: int
+                    description: Unique ID for this AVT (per VRF).
+                    required: true
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 254
   router_bfd:
     type: dict
     keys:
