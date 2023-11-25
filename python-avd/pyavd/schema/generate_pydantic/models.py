@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from textwrap import indent, wrap
-from typing import Literal
 
 import isort
 from pydantic import BaseModel
@@ -74,7 +73,7 @@ class PydanticModelSrc(BaseModel):
     """
 
     name: str
-    classes: list[PydanticModelSrc | EnumClassSrc]
+    classes: list[PydanticModelSrc]
     fields: list[PydanticFieldSrc]
     imports: set[str] | None = None
     base_classes: list[str] | None = None
@@ -98,8 +97,6 @@ class PydanticModelSrc(BaseModel):
 
         # Pydantic config option to forbid keys in the inputs that are not covered by the model
         model_config_args = ["defer_build=True"]
-        if any(isinstance(n, EnumClassSrc) for n in self.classes):
-            model_config_args.append("use_enum_values=True")
         if not self.allow_extra:
             model_config_args.append('extra="forbid"')
         if model_config_args:
@@ -134,45 +131,6 @@ class PydanticModelSrc(BaseModel):
         return imports
 
 
-class EnumClassSrc(BaseModel):
-    """
-    Dataclass containing the elements to generate Python source code for one Enum class.
-
-    Use str() on the instance to render the source code.
-    """
-
-    name: str
-    value_type: Literal["str", "int"]
-    values: list
-
-    def __str__(self) -> str:
-        """
-        Returns Python source code for this class.
-        """
-        class_src = f"class {self.name}(Enum):\n"
-
-        if values := self._render_values():
-            class_src += f"{values}\n"
-        else:
-            class_src += "    pass\n"
-
-        return class_src
-
-    def _render_values(self) -> str:
-        if self.value_type == "int":
-            values = [f"value_{index} = {value}" for index, value in enumerate(self.values)]
-        else:
-            values = [f'value_{index} = "{value}"' for index, value in enumerate(self.values)]
-
-        return indent("\n".join(values), "    ")
-
-    def get_imports(self) -> set:
-        """
-        Returns Python import statements required for this Enum class.
-        """
-        return {"from enum import Enum"}
-
-
 class PydanticSrcData(BaseModel):
     """
     Dataclass contaning a field and an associated class for one schema field including child fields.
@@ -183,9 +141,9 @@ class PydanticSrcData(BaseModel):
     field should be set on all instanced except for the root model
     """
 
-    cls: PydanticModelSrc | EnumClassSrc | None = None
+    cls: PydanticModelSrc | None = None
     """
-    cls can either be a full BaseModel for a 'dict' field or an Enum for 'int' or 'str' fields.
+    cls is a full BaseModel for a 'dict' field.
     """
 
 
@@ -270,6 +228,9 @@ class FieldTypeHintSrc(AnnotationSrc):
         imports = set()
         if self.field_type == "list" and self.list_item_type in [None, "Any"]:
             imports.add("from typing import Any")
+
+        if "Literal[" in self.field_type:
+            imports.add("from typing import Literal")
 
         if not self.annotations:
             return imports

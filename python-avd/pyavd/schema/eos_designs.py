@@ -4,8 +4,7 @@
 
 from __future__ import annotations
 
-from enum import Enum
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 from typing_extensions import Annotated
@@ -16,22 +15,7 @@ from .types import IntConvert, StrConvert
 
 
 class EosDesigns(AvdEosDesignsRootDictBaseModel):
-    model_config = ConfigDict(defer_build=True, use_enum_values=True)
-
-    class AvdDataConversionModeEnum(Enum):
-        value_0 = "disabled"
-        value_1 = "error"
-        value_2 = "warning"
-        value_3 = "info"
-        value_4 = "debug"
-        value_5 = "quiet"
-
-    class AvdDataValidationModeEnum(Enum):
-        value_0 = "disabled"
-        value_1 = "error"
-        value_2 = "warning"
-        value_3 = "info"
-        value_4 = "debug"
+    model_config = ConfigDict(defer_build=True)
 
     class BfdMultihop(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -255,16 +239,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class P2pLinksProfilesItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class IsisCircuitTypeEnum(Enum):
-                value_0 = "level-1"
-                value_1 = "level-2"
-                value_2 = "level-1-2"
-
-            class IsisAuthenticationModeEnum(Enum):
-                value_0 = "md5"
-                value_1 = "text"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class Ptp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -342,8 +317,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             isis_hello_padding: bool | None = False
             isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
-            isis_circuit_type: IsisCircuitTypeEnum | None = None
-            isis_authentication_mode: IsisAuthenticationModeEnum | None = None
+            isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None = None
+            isis_authentication_mode: Literal["md5", "text"] | None = None
             isis_authentication_key: str | None = None
             """
             Type-7 encrypted password.
@@ -396,16 +371,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class P2pLinksItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class IsisCircuitTypeEnum(Enum):
-                value_0 = "level-1"
-                value_1 = "level-2"
-                value_2 = "level-1-2"
-
-            class IsisAuthenticationModeEnum(Enum):
-                value_0 = "md5"
-                value_1 = "text"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class Ptp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -483,8 +449,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             isis_hello_padding: bool | None = False
             isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
-            isis_circuit_type: IsisCircuitTypeEnum | None = None
-            isis_authentication_mode: IsisAuthenticationModeEnum | None = None
+            isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None = None
+            isis_authentication_mode: Literal["md5", "text"] | None = None
             isis_authentication_key: str | None = None
             """
             Type-7 encrypted password.
@@ -540,14 +506,6 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         p2p_links_profiles: list[P2pLinksProfilesItem] | None = None
         p2p_links: list[P2pLinksItem] | None = None
 
-    class CustomStructuredConfigurationListMergeEnum(Enum):
-        value_0 = "replace"
-        value_1 = "append"
-        value_2 = "keep"
-        value_3 = "prepend"
-        value_4 = "append_rp"
-        value_5 = "prepend_rp"
-
     class CvTopologyItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -587,11 +545,6 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         List of downlink interfaces or downlink interface ranges.
         """
 
-    class DefaultMgmtMethodEnum(Enum):
-        value_0 = "oob"
-        value_1 = "inband"
-        value_2 = "none"
-
     class DefaultNodeTypesItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -605,14 +558,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
 
     class Design(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class TypeEnum(Enum):
-            value_0 = "l3ls-evpn"
-            value_1 = "mpls"
-            value_2 = "l2ls"
-
-        type: TypeEnum | None = "l3ls-evpn"
+        type: Literal["l3ls-evpn", "mpls", "l2ls"] | None = "l3ls-evpn"
         """
         By setting the design.type variable, the default node-types and templates described in these documents will be used.
         """
@@ -650,23 +598,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
 
     class EventHandlersItem(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class ActionTypeEnum(Enum):
-            value_0 = "bash"
-            value_1 = "increment"
-            value_2 = "log"
-
-        class TriggerEnum(Enum):
-            value_0 = "on-boot"
-            value_1 = "on-logging"
-            value_2 = "on-startup-config"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
         """
         Event Handler Name
         """
-        action_type: ActionTypeEnum | None = None
+        action_type: Literal["bash", "increment", "log"] | None = None
         action: str | None = None
         """
         Command to execute
@@ -675,7 +613,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Event-handler delay in seconds
         """
-        trigger: TriggerEnum | None = None
+        trigger: Literal["on-boot", "on-logging", "on-startup-config"] | None = None
         """
         Configure event trigger condition.
         """
@@ -763,22 +701,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         bgp: Bgp | None = None
 
-    class FabricEvpnEncapsulationEnum(Enum):
-        value_0 = "vxlan"
-        value_1 = "mpls"
-
     class FabricIpAddressing(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         class Mlag(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class AlgorithmEnum(Enum):
-                value_0 = "first_id"
-                value_1 = "odd_id"
-                value_2 = "same_subnet"
-
-            algorithm: AlgorithmEnum | None = "first_id"
+            algorithm: Literal["first_id", "odd_id", "same_subnet"] | None = "first_id"
             """
             This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.
             Each MLAG link will have a /31 subnet
@@ -804,11 +733,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         pass
 
     class InternalVlanOrder(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class AllocationEnum(Enum):
-            value_0 = "ascending"
-            value_1 = "descending"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         class Range(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -822,28 +747,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             Last VLAN ID.
             """
 
-        allocation: AllocationEnum = None
+        allocation: Literal["ascending", "descending"] = None
         range: Range | None = None
 
-    class IsisDefaultCircuitTypeEnum(Enum):
-        value_0 = "level-1-2"
-        value_1 = "level-1"
-        value_2 = "level-2"
-
-    class IsisDefaultIsTypeEnum(Enum):
-        value_0 = "level-1-2"
-        value_1 = "level-1"
-        value_2 = "level-2"
-
     class IsisTiLfa(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class ProtectionEnum(Enum):
-            value_0 = "link"
-            value_1 = "node"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         enabled: bool | None = False
-        protection: ProtectionEnum | None = None
+        protection: Literal["link", "node"] | None = None
         local_convergence_delay: Annotated[int, IntConvert(convert_types=(str))] | None = 10000
         """
         Local convergence delay in milliseconds.
@@ -869,16 +780,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class P2pLinksProfilesItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class IsisCircuitTypeEnum(Enum):
-                value_0 = "level-1"
-                value_1 = "level-2"
-                value_2 = "level-1-2"
-
-            class IsisAuthenticationModeEnum(Enum):
-                value_0 = "md5"
-                value_1 = "text"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class Ptp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -956,8 +858,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             isis_hello_padding: bool | None = False
             isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
-            isis_circuit_type: IsisCircuitTypeEnum | None = None
-            isis_authentication_mode: IsisAuthenticationModeEnum | None = None
+            isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None = None
+            isis_authentication_mode: Literal["md5", "text"] | None = None
             isis_authentication_key: str | None = None
             """
             Type-7 encrypted password.
@@ -1010,16 +912,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class P2pLinksItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class IsisCircuitTypeEnum(Enum):
-                value_0 = "level-1"
-                value_1 = "level-2"
-                value_2 = "level-1-2"
-
-            class IsisAuthenticationModeEnum(Enum):
-                value_0 = "md5"
-                value_1 = "text"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class Ptp(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1097,8 +990,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             isis_hello_padding: bool | None = False
             isis_metric: Annotated[int, IntConvert(convert_types=(str))] | None = None
-            isis_circuit_type: IsisCircuitTypeEnum | None = None
-            isis_authentication_mode: IsisAuthenticationModeEnum | None = None
+            isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] | None = None
+            isis_authentication_mode: Literal["md5", "text"] | None = None
             isis_authentication_key: str | None = None
             """
             Type-7 encrypted password.
@@ -1155,12 +1048,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         p2p_links: list[P2pLinksItem] | None = None
 
     class LocalUsersItem(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class ShellEnum(Enum):
-            value_0 = "/bin/bash"
-            value_1 = "/bin/sh"
-            value_2 = "/sbin/nologin"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         name: str = None
         """
@@ -1190,7 +1078,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         If set a password will not be configured for this user. "sha512_password" MUST not be defined for this user.
         """
         ssh_key: str | None = None
-        shell: ShellEnum | None = None
+        shell: Literal["/bin/bash", "/bin/sh", "/sbin/nologin"] | None = None
         """
         Specify shell for the user
         """
@@ -1217,60 +1105,19 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         base_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(3000, ge=1, le=4093)
 
     class NetworkPortsItem(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class ModeEnum(Enum):
-            value_0 = "access"
-            value_1 = "dot1q-tunnel"
-            value_2 = "trunk"
-            value_3 = "trunk phone"
-
-        class SpanningTreePortfastEnum(Enum):
-            value_0 = "edge"
-            value_1 = "network"
-
-        class SpanningTreeBpdufilterEnum(Enum):
-            value_0 = "enabled"
-            value_1 = "disabled"
-            value_2 = "True"
-            value_3 = "False"
-            value_4 = "true"
-            value_5 = "false"
-
-        class SpanningTreeBpduguardEnum(Enum):
-            value_0 = "enabled"
-            value_1 = "disabled"
-            value_2 = "True"
-            value_3 = "False"
-            value_4 = "true"
-            value_5 = "false"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         class Flowcontrol(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ReceivedEnum(Enum):
-                value_0 = "received"
-                value_1 = "send"
-                value_2 = "on"
-
-            received: ReceivedEnum | None = None
+            received: Literal["received", "send", "on"] | None = None
 
         class Ptp(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class EndpointRoleEnum(Enum):
-                value_0 = "bmca"
-                value_1 = "default"
-                value_2 = "follower"
-
-            class ProfileEnum(Enum):
-                value_0 = "aes67"
-                value_1 = "aes67-r16-2016"
-                value_2 = "smpte2059-2"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = False
-            endpoint_role: EndpointRoleEnum | None = "follower"
-            profile: ProfileEnum | None = "aes67-r16-2016"
+            endpoint_role: Literal["bmca", "default", "follower"] | None = "follower"
+            profile: Literal["aes67", "aes67-r16-2016", "smpte2059-2"] | None = "aes67-r16-2016"
 
         class LinkTracking(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1285,39 +1132,23 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class Dot1x(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class PortControlEnum(Enum):
-                value_0 = "auto"
-                value_1 = "force-authorized"
-                value_2 = "force-unauthorized"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class Pae(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ModeEnum(Enum):
-                    value_0 = "authenticator"
-
-                mode: ModeEnum | None = None
+                mode: Literal["authenticator"] | None = None
 
             class AuthenticationFailure(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ActionEnum(Enum):
-                    value_0 = "allow"
-                    value_1 = "drop"
-
-                action: ActionEnum | None = None
+                action: Literal["allow", "drop"] | None = None
                 allow_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
             class HostMode(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ModeEnum(Enum):
-                    value_0 = "multi-host"
-                    value_1 = "single-host"
-
-                mode: ModeEnum | None = None
+                mode: Literal["multi-host", "single-host"] | None = None
                 multi_host_authenticated: bool | None = None
 
             class MacBasedAuthentication(AvdDictBaseModel):
@@ -1339,7 +1170,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 reauth_timeout_ignore: bool | None = None
                 tx_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
-            port_control: PortControlEnum | None = None
+            port_control: Literal["auto", "force-authorized", "force-unauthorized"] | None = None
             port_control_force_authorized_phone: bool | None = None
             reauthentication: bool | None = None
             pae: Pae | None = None
@@ -1358,65 +1189,49 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class All(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class UnitEnum(Enum):
-                    value_0 = "percent"
-                    value_1 = "pps"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                 """
                 Configure maximum storm-control level.
                 """
-                unit: UnitEnum | None = "percent"
+                unit: Literal["percent", "pps"] | None = "percent"
                 """
                 Optional variable and is hardware dependent.
                 """
 
             class Broadcast(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class UnitEnum(Enum):
-                    value_0 = "percent"
-                    value_1 = "pps"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                 """
                 Configure maximum storm-control level.
                 """
-                unit: UnitEnum | None = "percent"
+                unit: Literal["percent", "pps"] | None = "percent"
                 """
                 Optional variable and is hardware dependent.
                 """
 
             class Multicast(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class UnitEnum(Enum):
-                    value_0 = "percent"
-                    value_1 = "pps"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                 """
                 Configure maximum storm-control level.
                 """
-                unit: UnitEnum | None = "percent"
+                unit: Literal["percent", "pps"] | None = "percent"
                 """
                 Optional variable and is hardware dependent.
                 """
 
             class UnknownUnicast(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class UnitEnum(Enum):
-                    value_0 = "percent"
-                    value_1 = "pps"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                 """
                 Configure maximum storm-control level.
                 """
-                unit: UnitEnum | None = "percent"
+                unit: Literal["percent", "pps"] | None = "percent"
                 """
                 Optional variable and is hardware dependent.
                 """
@@ -1427,50 +1242,31 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             unknown_unicast: UnknownUnicast | None = None
 
         class MonitorSessionsItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class RoleEnum(Enum):
-                value_0 = "source"
-                value_1 = "destination"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class SourceSettings(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class DirectionEnum(Enum):
-                    value_0 = "rx"
-                    value_1 = "tx"
-                    value_2 = "both"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 class AccessGroup(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class TypeEnum(Enum):
-                        value_0 = "ip"
-                        value_1 = "ipv6"
-                        value_2 = "mac"
-
-                    type: TypeEnum | None = None
+                    type: Literal["ip", "ipv6", "mac"] | None = None
                     name: str | None = None
                     """
                     ACL name.
                     """
                     priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
-                direction: DirectionEnum | None = None
+                direction: Literal["rx", "tx", "both"] | None = None
                 access_group: AccessGroup | None = None
 
             class SessionSettings(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 class AccessGroup(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class TypeEnum(Enum):
-                        value_0 = "ip"
-                        value_1 = "ipv6"
-                        value_2 = "mac"
-
-                    type: TypeEnum | None = None
+                    type: Literal["ip", "ipv6", "mac"] | None = None
                     name: str | None = None
                     """
                     ACL name.
@@ -1514,7 +1310,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             Session name.
             """
-            role: RoleEnum | None = None
+            role: Literal["source", "destination"] | None = None
             source_settings: SourceSettings | None = None
             session_settings: SessionSettings | None = None
             """
@@ -1524,16 +1320,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class EthernetSegment(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class RedundancyEnum(Enum):
-                value_0 = "all-active"
-                value_1 = "single-active"
-
-            class DesignatedForwarderAlgorithmEnum(Enum):
-                value_0 = "auto"
-                value_1 = "modulus"
-                value_2 = "preference"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             short_esi: str = None
             """
@@ -1543,13 +1330,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             Please see the notes under "EVPN A/A ESI dual and single-attached endpoint
             scenarios" before setting `short_esi: auto`.
             """
-            redundancy: RedundancyEnum | None = None
+            redundancy: Literal["all-active", "single-active"] | None = None
             """
             If omitted, Port-Channels use the EOS default of all-active.
             If omitted, Ethernet interfaces are configured as single-
             active.
             """
-            designated_forwarder_algorithm: DesignatedForwarderAlgorithmEnum | None = None
+            designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None = None
             """
             Configure DF algorithm and preferences.
             - auto: Use preference-based algorithm and assign preference based on position
@@ -1573,20 +1360,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class PortChannel(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class ModeEnum(Enum):
-                value_0 = "active"
-                value_1 = "passive"
-                value_2 = "on"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class LacpFallback(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ModeEnum(Enum):
-                    value_0 = "static"
-
-                mode: ModeEnum | None = None
+                mode: Literal["static"] | None = None
                 """
                 Currently only static mode is supported.
                 """
@@ -1596,13 +1375,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 """
 
             class LacpTimer(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ModeEnum(Enum):
-                    value_0 = "normal"
-                    value_1 = "fast"
-
-                mode: ModeEnum | None = None
+                mode: Literal["normal", "fast"] | None = None
                 """
                 LACP mode for interface members.
                 """
@@ -1644,7 +1419,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
 
                 pass
 
-            mode: ModeEnum | None = None
+            mode: Literal["active", "passive", "on"] | None = None
             """
             Port-Channel Mode.
             """
@@ -1738,7 +1513,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.
         """
-        mode: ModeEnum | None = None
+        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None = None
         """
         Interface mode.
         """
@@ -1767,9 +1542,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for
         access ports.
         """
-        spanning_tree_portfast: SpanningTreePortfastEnum | None = None
-        spanning_tree_bpdufilter: Annotated[SpanningTreeBpdufilterEnum, StrConvert(convert_types=(bool))] | None = None
-        spanning_tree_bpduguard: Annotated[SpanningTreeBpduguardEnum, StrConvert(convert_types=(bool))] | None = None
+        spanning_tree_portfast: Literal["edge", "network"] | None = None
+        spanning_tree_bpdufilter: Annotated[Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))] | None = None
+        spanning_tree_bpduguard: Annotated[Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))] | None = None
         flowcontrol: Flowcontrol | None = None
         qos_profile: str | None = None
         """
@@ -1832,39 +1607,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         name: str = None
 
     class NodeTypeKeysItem(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class DefaultEvpnRoleEnum(Enum):
-            value_0 = "none"
-            value_1 = "client"
-            value_2 = "server"
-
-        class DefaultUnderlayRoutingProtocolEnum(Enum):
-            value_0 = "ebgp"
-            value_1 = "ibgp"
-            value_2 = "ospf"
-            value_3 = "ospf-ldp"
-            value_4 = "isis"
-            value_5 = "isis-sr"
-            value_6 = "isis-ldp"
-            value_7 = "isis-sr-ldp"
-            value_8 = "none"
-
-        class DefaultOverlayRoutingProtocolEnum(Enum):
-            value_0 = "ebgp"
-            value_1 = "ibgp"
-            value_2 = "her"
-            value_3 = "cvx"
-            value_4 = "none"
-
-        class DefaultMplsOverlayRoleEnum(Enum):
-            value_0 = "client"
-            value_1 = "server"
-            value_2 = "none"
-
-        class DefaultEvpnEncapsulationEnum(Enum):
-            value_0 = "mpls"
-            value_1 = "vxlan"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         class NetworkServices(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1882,10 +1625,6 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             VRFs, SVIs (if l2 is true).
             Only supported with underlay_router.
             """
-
-        class UplinkTypeEnum(Enum):
-            value_0 = "p2p"
-            value_1 = "port-channel"
 
         class IpAddressing(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2000,7 +1739,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Are endpoints connected to this node type.
         """
-        default_evpn_role: DefaultEvpnRoleEnum | None = "none"
+        default_evpn_role: Literal["none", "client", "server"] | None = "none"
         """
         Default evpn_role. Can be overridden in topology vars.
         """
@@ -2008,17 +1747,19 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Default PTP priority 1
         """
-        default_underlay_routing_protocol: Annotated[DefaultUnderlayRoutingProtocolEnum, StrConvert(to_lower=True)] | None = "ebgp"
+        default_underlay_routing_protocol: Annotated[
+            Literal["ebgp", "ibgp", "ospf", "ospf-ldp", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "none"], StrConvert(to_lower=True)
+        ] | None = "ebgp"
         """
         Set the default underlay routing_protocol.
         Can be overridden by setting "underlay_routing_protocol" host/group_vars.
         """
-        default_overlay_routing_protocol: Annotated[DefaultOverlayRoutingProtocolEnum, StrConvert(to_lower=True)] | None = "ebgp"
+        default_overlay_routing_protocol: Annotated[Literal["ebgp", "ibgp", "her", "cvx", "none"], StrConvert(to_lower=True)] | None = "ebgp"
         """
         Set the default overlay routing_protocol.
         Can be overridden by setting "overlay_routing_protocol" host/group_vars.
         """
-        default_mpls_overlay_role: DefaultMplsOverlayRoleEnum | None = None
+        default_mpls_overlay_role: Literal["client", "server", "none"] | None = None
         """
         Set the default mpls overlay role.
         Acting role in overlay control plane.
@@ -2027,7 +1768,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Set the default overlay address families.
         """
-        default_evpn_encapsulation: Annotated[DefaultEvpnEncapsulationEnum, StrConvert(to_lower=True)] | None = None
+        default_evpn_encapsulation: Annotated[Literal["mpls", "vxlan"], StrConvert(to_lower=True)] | None = None
         """
         Set the default evpn encapsulation.
         """
@@ -2043,7 +1784,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Is this node type a L3 device.
         """
-        uplink_type: UplinkTypeEnum | None = "p2p"
+        uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
         """
         Uplinks must be p2p if "vtep" or "underlay_router" is true.
         """
@@ -2066,17 +1807,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         -%} on any code blocks.
         """
 
-    class OverlayHerFloodListScopeEnum(Enum):
-        value_0 = "fabric"
-        value_1 = "dc"
-
     class OverlayRdType(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class VlanAssignedNumberSubfieldEnum(Enum):
-            value_0 = "mac_vrf_id"
-            value_1 = "mac_vrf_vni"
-            value_2 = "vlan_id"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         admin_subfield: Annotated[str, StrConvert(convert_types=(int))] | None = "overlay_loopback_ip"
         """
@@ -2121,7 +1853,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Total value of
         'vrf_admin_subfield' + 'vrf_admin_subfield_offset' must be <= 4294967295.
         """
-        vlan_assigned_number_subfield: VlanAssignedNumberSubfieldEnum | None = "mac_vrf_id"
+        vlan_assigned_number_subfield: Literal["mac_vrf_id", "mac_vrf_vni", "vlan_id"] | None = "mac_vrf_id"
         """
         The method for deriving RD Assigned Number subfield for VLAN services (second part of RD):
         - 'mac_vrf_id' means
@@ -2134,24 +1866,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         if either 'rd_override', 'rt_override' or 'vni_override' is set (preferred in this order).
         """
 
-    class OverlayRoutingProtocolEnum(Enum):
-        value_0 = "ebgp"
-        value_1 = "ibgp"
-        value_2 = "cvx"
-        value_3 = "her"
-        value_4 = "none"
-
-    class OverlayRoutingProtocolAddressFamilyEnum(Enum):
-        value_0 = "ipv4"
-        value_1 = "ipv6"
-
     class OverlayRtType(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class VlanAssignedNumberSubfieldEnum(Enum):
-            value_0 = "mac_vrf_id"
-            value_1 = "mac_vrf_vni"
-            value_2 = "vlan_id"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         admin_subfield: Annotated[str, StrConvert(convert_types=(int))] | None = "vrf_id"
         """
@@ -2187,7 +1903,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         'vrf_admin_subfield' takes
         precedence for VRF RDs if set. Otherwise the 'admin_subfield' value will be used.
         """
-        vlan_assigned_number_subfield: VlanAssignedNumberSubfieldEnum | None = "mac_vrf_id"
+        vlan_assigned_number_subfield: Literal["mac_vrf_id", "mac_vrf_vni", "vlan_id"] | None = "mac_vrf_id"
         """
         The method for deriving RT Assigned Number subfield for VLAN services (second part of RT):
         - 'mac_vrf_id' means
@@ -2278,60 +1994,19 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         speeds: list[SpeedsItem] | None = None
 
     class PortProfilesItem(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class ModeEnum(Enum):
-            value_0 = "access"
-            value_1 = "dot1q-tunnel"
-            value_2 = "trunk"
-            value_3 = "trunk phone"
-
-        class SpanningTreePortfastEnum(Enum):
-            value_0 = "edge"
-            value_1 = "network"
-
-        class SpanningTreeBpdufilterEnum(Enum):
-            value_0 = "enabled"
-            value_1 = "disabled"
-            value_2 = "True"
-            value_3 = "False"
-            value_4 = "true"
-            value_5 = "false"
-
-        class SpanningTreeBpduguardEnum(Enum):
-            value_0 = "enabled"
-            value_1 = "disabled"
-            value_2 = "True"
-            value_3 = "False"
-            value_4 = "true"
-            value_5 = "false"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         class Flowcontrol(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
-            class ReceivedEnum(Enum):
-                value_0 = "received"
-                value_1 = "send"
-                value_2 = "on"
-
-            received: ReceivedEnum | None = None
+            received: Literal["received", "send", "on"] | None = None
 
         class Ptp(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class EndpointRoleEnum(Enum):
-                value_0 = "bmca"
-                value_1 = "default"
-                value_2 = "follower"
-
-            class ProfileEnum(Enum):
-                value_0 = "aes67"
-                value_1 = "aes67-r16-2016"
-                value_2 = "smpte2059-2"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = False
-            endpoint_role: EndpointRoleEnum | None = "follower"
-            profile: ProfileEnum | None = "aes67-r16-2016"
+            endpoint_role: Literal["bmca", "default", "follower"] | None = "follower"
+            profile: Literal["aes67", "aes67-r16-2016", "smpte2059-2"] | None = "aes67-r16-2016"
 
         class LinkTracking(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2346,39 +2021,23 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class Dot1x(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class PortControlEnum(Enum):
-                value_0 = "auto"
-                value_1 = "force-authorized"
-                value_2 = "force-unauthorized"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class Pae(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ModeEnum(Enum):
-                    value_0 = "authenticator"
-
-                mode: ModeEnum | None = None
+                mode: Literal["authenticator"] | None = None
 
             class AuthenticationFailure(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ActionEnum(Enum):
-                    value_0 = "allow"
-                    value_1 = "drop"
-
-                action: ActionEnum | None = None
+                action: Literal["allow", "drop"] | None = None
                 allow_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
             class HostMode(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ModeEnum(Enum):
-                    value_0 = "multi-host"
-                    value_1 = "single-host"
-
-                mode: ModeEnum | None = None
+                mode: Literal["multi-host", "single-host"] | None = None
                 multi_host_authenticated: bool | None = None
 
             class MacBasedAuthentication(AvdDictBaseModel):
@@ -2400,7 +2059,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 reauth_timeout_ignore: bool | None = None
                 tx_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
-            port_control: PortControlEnum | None = None
+            port_control: Literal["auto", "force-authorized", "force-unauthorized"] | None = None
             port_control_force_authorized_phone: bool | None = None
             reauthentication: bool | None = None
             pae: Pae | None = None
@@ -2419,65 +2078,49 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class All(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class UnitEnum(Enum):
-                    value_0 = "percent"
-                    value_1 = "pps"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                 """
                 Configure maximum storm-control level.
                 """
-                unit: UnitEnum | None = "percent"
+                unit: Literal["percent", "pps"] | None = "percent"
                 """
                 Optional variable and is hardware dependent.
                 """
 
             class Broadcast(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class UnitEnum(Enum):
-                    value_0 = "percent"
-                    value_1 = "pps"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                 """
                 Configure maximum storm-control level.
                 """
-                unit: UnitEnum | None = "percent"
+                unit: Literal["percent", "pps"] | None = "percent"
                 """
                 Optional variable and is hardware dependent.
                 """
 
             class Multicast(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class UnitEnum(Enum):
-                    value_0 = "percent"
-                    value_1 = "pps"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                 """
                 Configure maximum storm-control level.
                 """
-                unit: UnitEnum | None = "percent"
+                unit: Literal["percent", "pps"] | None = "percent"
                 """
                 Optional variable and is hardware dependent.
                 """
 
             class UnknownUnicast(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class UnitEnum(Enum):
-                    value_0 = "percent"
-                    value_1 = "pps"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                 """
                 Configure maximum storm-control level.
                 """
-                unit: UnitEnum | None = "percent"
+                unit: Literal["percent", "pps"] | None = "percent"
                 """
                 Optional variable and is hardware dependent.
                 """
@@ -2488,50 +2131,31 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             unknown_unicast: UnknownUnicast | None = None
 
         class MonitorSessionsItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class RoleEnum(Enum):
-                value_0 = "source"
-                value_1 = "destination"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class SourceSettings(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class DirectionEnum(Enum):
-                    value_0 = "rx"
-                    value_1 = "tx"
-                    value_2 = "both"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 class AccessGroup(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class TypeEnum(Enum):
-                        value_0 = "ip"
-                        value_1 = "ipv6"
-                        value_2 = "mac"
-
-                    type: TypeEnum | None = None
+                    type: Literal["ip", "ipv6", "mac"] | None = None
                     name: str | None = None
                     """
                     ACL name.
                     """
                     priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
-                direction: DirectionEnum | None = None
+                direction: Literal["rx", "tx", "both"] | None = None
                 access_group: AccessGroup | None = None
 
             class SessionSettings(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 class AccessGroup(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    class TypeEnum(Enum):
-                        value_0 = "ip"
-                        value_1 = "ipv6"
-                        value_2 = "mac"
-
-                    type: TypeEnum | None = None
+                    type: Literal["ip", "ipv6", "mac"] | None = None
                     name: str | None = None
                     """
                     ACL name.
@@ -2575,7 +2199,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             Session name.
             """
-            role: RoleEnum | None = None
+            role: Literal["source", "destination"] | None = None
             source_settings: SourceSettings | None = None
             session_settings: SessionSettings | None = None
             """
@@ -2585,16 +2209,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class EthernetSegment(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class RedundancyEnum(Enum):
-                value_0 = "all-active"
-                value_1 = "single-active"
-
-            class DesignatedForwarderAlgorithmEnum(Enum):
-                value_0 = "auto"
-                value_1 = "modulus"
-                value_2 = "preference"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             short_esi: str = None
             """
@@ -2604,13 +2219,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             Please see the notes under "EVPN A/A ESI dual and single-attached endpoint
             scenarios" before setting `short_esi: auto`.
             """
-            redundancy: RedundancyEnum | None = None
+            redundancy: Literal["all-active", "single-active"] | None = None
             """
             If omitted, Port-Channels use the EOS default of all-active.
             If omitted, Ethernet interfaces are configured as single-
             active.
             """
-            designated_forwarder_algorithm: DesignatedForwarderAlgorithmEnum | None = None
+            designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None = None
             """
             Configure DF algorithm and preferences.
             - auto: Use preference-based algorithm and assign preference based on position
@@ -2634,20 +2249,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
 
         class PortChannel(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class ModeEnum(Enum):
-                value_0 = "active"
-                value_1 = "passive"
-                value_2 = "on"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class LacpFallback(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ModeEnum(Enum):
-                    value_0 = "static"
-
-                mode: ModeEnum | None = None
+                mode: Literal["static"] | None = None
                 """
                 Currently only static mode is supported.
                 """
@@ -2657,13 +2264,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 """
 
             class LacpTimer(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                class ModeEnum(Enum):
-                    value_0 = "normal"
-                    value_1 = "fast"
-
-                mode: ModeEnum | None = None
+                mode: Literal["normal", "fast"] | None = None
                 """
                 LACP mode for interface members.
                 """
@@ -2705,7 +2308,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
 
                 pass
 
-            mode: ModeEnum | None = None
+            mode: Literal["active", "passive", "on"] | None = None
             """
             Port-Channel Mode.
             """
@@ -2787,7 +2390,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.
         """
-        mode: ModeEnum | None = None
+        mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None = None
         """
         Interface mode.
         """
@@ -2816,9 +2419,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for
         access ports.
         """
-        spanning_tree_portfast: SpanningTreePortfastEnum | None = None
-        spanning_tree_bpdufilter: Annotated[SpanningTreeBpdufilterEnum, StrConvert(convert_types=(bool))] | None = None
-        spanning_tree_bpduguard: Annotated[SpanningTreeBpduguardEnum, StrConvert(convert_types=(bool))] | None = None
+        spanning_tree_portfast: Literal["edge", "network"] | None = None
+        spanning_tree_bpdufilter: Annotated[Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))] | None = None
+        spanning_tree_bpduguard: Annotated[Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))] | None = None
         flowcontrol: Flowcontrol | None = None
         qos_profile: str | None = None
         """
@@ -2876,20 +2479,15 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
 
     class Ptp(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-        class ProfileEnum(Enum):
-            value_0 = "aes67"
-            value_1 = "smpte2059-2"
-            value_2 = "aes67-r16-2016"
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         enabled: bool | None = None
-        profile: ProfileEnum | None = "aes67-r16-2016"
+        profile: Literal["aes67", "smpte2059-2", "aes67-r16-2016"] | None = "aes67-r16-2016"
         domain: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=255)
         auto_clock_identity: bool | None = True
 
     class PtpProfilesItem(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         class Announce(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2901,9 +2499,6 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
             interval: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=-7, le=3)
-
-        class TransportEnum(Enum):
-            value_0 = "ipv4"
 
         profile: str | None = None
         """
@@ -2918,7 +2513,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         PTP sync message interval.
         """
-        transport: TransportEnum | None = None
+        transport: Literal["ipv4"] | None = None
 
     class QueueMonitorLength(EosCliConfigGen.QueueMonitorLength, BaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2931,16 +2526,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
 
     class Redundancy(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ProtocolEnum(Enum):
-            value_0 = "sso"
-            value_1 = "rpr"
-
-        protocol: ProtocolEnum | None = None
+        protocol: Literal["sso", "rpr"] | None = None
 
     class SnmpSettings(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
         class VrfsItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -2951,30 +2542,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             enable: bool | None = None
 
-        class ComputeLocalEngineidSourceEnum(Enum):
-            value_0 = "hostname_and_ip"
-            value_1 = "system_mac"
-
         class UsersItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class VersionEnum(Enum):
-                value_0 = "v1"
-                value_1 = "v2c"
-                value_2 = "v3"
-
-            class AuthEnum(Enum):
-                value_0 = "md5"
-                value_1 = "sha"
-                value_2 = "sha256"
-                value_3 = "sha384"
-                value_4 = "sha512"
-
-            class PrivEnum(Enum):
-                value_0 = "des"
-                value_1 = "aes"
-                value_2 = "aes192"
-                value_3 = "aes256"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
             """
@@ -2984,36 +2553,26 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             Group name
             """
-            version: VersionEnum | None = None
-            auth: AuthEnum | None = None
+            version: Literal["v1", "v2c", "v3"] | None = None
+            auth: Literal["md5", "sha", "sha256", "sha384", "sha512"] | None = None
             auth_passphrase: str | None = None
             """
             Cleartext passphrase so the recommendation is to use vault. Requires 'auth' to be set.
             """
-            priv: PrivEnum | None = None
+            priv: Literal["des", "aes", "aes192", "aes256"] | None = None
             priv_passphrase: str | None = None
             """
             Cleartext passphrase so the recommendation is to use vault. Requires 'priv' to be set.
             """
 
         class HostsItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class VersionEnum(Enum):
-                value_0 = "1"
-                value_1 = "2c"
-                value_2 = "3"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class UsersItem(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class AuthenticationLevelEnum(Enum):
-                    value_0 = "auth"
-                    value_1 = "noauth"
-                    value_2 = "priv"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 username: str | None = None
-                authentication_level: AuthenticationLevelEnum | None = None
+                authentication_level: Literal["auth", "noauth", "priv"] | None = None
 
             host: str | None = None
             """
@@ -3037,7 +2596,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             device, so if the host is only configured with this VRF, the host will not be configured at all. Can be used in
             combination with "vrf" and "use_mgmt_interface_vrf" to configure the SNMP host under multiple VRFs.
             """
-            version: Annotated[VersionEnum, StrConvert(convert_types=(int))] | None = None
+            version: Annotated[Literal["1", "2c", "3"], StrConvert(convert_types=(int))] | None = None
             community: str | None = None
             """
             Community name
@@ -3045,11 +2604,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             users: list[UsersItem] | None = None
 
         class CommunitiesItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class AccessEnum(Enum):
-                value_0 = "ro"
-                value_1 = "rw"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class AccessListIpv4(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3071,7 +2626,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             Community name
             """
-            access: AccessEnum | None = None
+            access: Literal["ro", "rw"] | None = None
             access_list_ipv4: AccessListIpv4 | None = None
             access_list_ipv6: AccessListIpv6 | None = None
             view: str | None = None
@@ -3106,24 +2661,14 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             field_MIB_family_name: str | None = Field(None, alias="MIB_family_name")
 
         class GroupsItem(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class VersionEnum(Enum):
-                value_0 = "v1"
-                value_1 = "v2c"
-                value_2 = "v3"
-
-            class AuthenticationEnum(Enum):
-                value_0 = "auth"
-                value_1 = "noauth"
-                value_2 = "priv"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             name: str | None = None
             """
             Group name
             """
-            version: VersionEnum | None = None
-            authentication: AuthenticationEnum | None = None
+            version: Literal["v1", "v2c", "v3"] | None = None
+            authentication: Literal["auth", "noauth", "priv"] | None = None
             read: str | None = None
             """
             Read view
@@ -3174,7 +2719,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Generate a local engineId for SNMP using the 'compute_local_engineid_source' method.
         """
-        compute_local_engineid_source: ComputeLocalEngineidSourceEnum | None = "hostname_and_ip"
+        compute_local_engineid_source: Literal["hostname_and_ip", "system_mac"] | None = "hostname_and_ip"
         """
         `compute_local_engineid_source` supports:
         - `hostname_and_ip` generate a local engineId for SNMP by hashing via SHA1
@@ -3374,12 +2919,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 enabled: bool | None = None
 
             class IgmpSnoopingQuerier(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class VersionEnum(Enum):
-                    value_0 = 1
-                    value_1 = 2
-                    value_2 = 3
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 enabled: bool | None = None
                 """
@@ -3390,30 +2930,19 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 IPv4_address
                 If not set, IP address of "Loopback0" will be used.
                 """
-                version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
+                version: Annotated[Literal[1, 2, 3], IntConvert(convert_types=(str))] | None = None
                 """
                 IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                 """
 
             class Ospf(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class AuthenticationEnum(Enum):
-                    value_0 = "simple"
-                    value_1 = "message-digest"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 class MessageDigestKeysItem(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                    class HashAlgorithmEnum(Enum):
-                        value_0 = "md5"
-                        value_1 = "sha1"
-                        value_2 = "sha256"
-                        value_3 = "sha384"
-                        value_4 = "sha512"
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     id: Annotated[int, IntConvert(convert_types=(str))] | None = None
-                    hash_algorithm: HashAlgorithmEnum | None = "sha512"
+                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None = "sha512"
                     key: str | None = None
                     """
                     Type 7 encrypted key.
@@ -3429,7 +2958,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 """
                 OSPF link cost.
                 """
-                authentication: AuthenticationEnum | None = None
+                authentication: Literal["simple", "message-digest"] | None = None
                 simple_auth_key: str | None = None
                 """
                 Password used with simple authentication.
@@ -3633,12 +3162,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             enabled: bool | None = None
 
         class IgmpSnoopingQuerier(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class VersionEnum(Enum):
-                value_0 = 1
-                value_1 = 2
-                value_2 = 3
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             enabled: bool | None = None
             """
@@ -3649,30 +3173,19 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             IPv4_address
             If not set, IP address of "Loopback0" will be used.
             """
-            version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
+            version: Annotated[Literal[1, 2, 3], IntConvert(convert_types=(str))] | None = None
             """
             IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
             """
 
         class Ospf(AvdDictBaseModel):
-            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-            class AuthenticationEnum(Enum):
-                value_0 = "simple"
-                value_1 = "message-digest"
+            model_config = ConfigDict(defer_build=True, extra="forbid")
 
             class MessageDigestKeysItem(AvdDictBaseModel):
-                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                class HashAlgorithmEnum(Enum):
-                    value_0 = "md5"
-                    value_1 = "sha1"
-                    value_2 = "sha256"
-                    value_3 = "sha384"
-                    value_4 = "sha512"
+                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 id: Annotated[int, IntConvert(convert_types=(str))] | None = None
-                hash_algorithm: HashAlgorithmEnum | None = "sha512"
+                hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None = "sha512"
                 key: str | None = None
                 """
                 Type 7 encrypted key.
@@ -3688,7 +3201,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             OSPF link cost.
             """
-            authentication: AuthenticationEnum | None = None
+            authentication: Literal["simple", "message-digest"] | None = None
             simple_auth_key: str | None = None
             """
             Password used with simple authentication.
@@ -3909,13 +3422,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
 
     class UnderlayMulticastAnycastRp(AvdDictBaseModel):
-        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+        model_config = ConfigDict(defer_build=True, extra="forbid")
 
-        class ModeEnum(Enum):
-            value_0 = "pim"
-            value_1 = "msdp"
-
-        mode: ModeEnum | None = "pim"
+        mode: Literal["pim", "msdp"] | None = "pim"
 
     class UnderlayMulticastRpsItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3953,15 +3462,6 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Name of standard Access-List.
         """
 
-    class UnderlayRoutingProtocolEnum(Enum):
-        value_0 = "ebgp"
-        value_1 = "ospf"
-        value_2 = "isis"
-        value_3 = "isis-sr"
-        value_4 = "isis-ldp"
-        value_5 = "isis-sr-ldp"
-        value_6 = "ospf-ldp"
-
     class UplinkPtp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -3993,60 +3493,19 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 class AdaptersItem(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                    class ModeEnum(Enum):
-                        value_0 = "access"
-                        value_1 = "dot1q-tunnel"
-                        value_2 = "trunk"
-                        value_3 = "trunk phone"
-
-                    class SpanningTreePortfastEnum(Enum):
-                        value_0 = "edge"
-                        value_1 = "network"
-
-                    class SpanningTreeBpdufilterEnum(Enum):
-                        value_0 = "enabled"
-                        value_1 = "disabled"
-                        value_2 = "True"
-                        value_3 = "False"
-                        value_4 = "true"
-                        value_5 = "false"
-
-                    class SpanningTreeBpduguardEnum(Enum):
-                        value_0 = "enabled"
-                        value_1 = "disabled"
-                        value_2 = "True"
-                        value_3 = "False"
-                        value_4 = "true"
-                        value_5 = "false"
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     class Flowcontrol(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        class ReceivedEnum(Enum):
-                            value_0 = "received"
-                            value_1 = "send"
-                            value_2 = "on"
-
-                        received: ReceivedEnum | None = None
+                        received: Literal["received", "send", "on"] | None = None
 
                     class Ptp(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                        class EndpointRoleEnum(Enum):
-                            value_0 = "bmca"
-                            value_1 = "default"
-                            value_2 = "follower"
-
-                        class ProfileEnum(Enum):
-                            value_0 = "aes67"
-                            value_1 = "aes67-r16-2016"
-                            value_2 = "smpte2059-2"
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         enabled: bool | None = False
-                        endpoint_role: EndpointRoleEnum | None = "follower"
-                        profile: ProfileEnum | None = "aes67-r16-2016"
+                        endpoint_role: Literal["bmca", "default", "follower"] | None = "follower"
+                        profile: Literal["aes67", "aes67-r16-2016", "smpte2059-2"] | None = "aes67-r16-2016"
 
                     class LinkTracking(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -4061,39 +3520,23 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
 
                     class Dot1x(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                        class PortControlEnum(Enum):
-                            value_0 = "auto"
-                            value_1 = "force-authorized"
-                            value_2 = "force-unauthorized"
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class Pae(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            class ModeEnum(Enum):
-                                value_0 = "authenticator"
-
-                            mode: ModeEnum | None = None
+                            mode: Literal["authenticator"] | None = None
 
                         class AuthenticationFailure(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            class ActionEnum(Enum):
-                                value_0 = "allow"
-                                value_1 = "drop"
-
-                            action: ActionEnum | None = None
+                            action: Literal["allow", "drop"] | None = None
                             allow_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
 
                         class HostMode(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            class ModeEnum(Enum):
-                                value_0 = "multi-host"
-                                value_1 = "single-host"
-
-                            mode: ModeEnum | None = None
+                            mode: Literal["multi-host", "single-host"] | None = None
                             multi_host_authenticated: bool | None = None
 
                         class MacBasedAuthentication(AvdDictBaseModel):
@@ -4115,7 +3558,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             reauth_timeout_ignore: bool | None = None
                             tx_period: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
 
-                        port_control: PortControlEnum | None = None
+                        port_control: Literal["auto", "force-authorized", "force-unauthorized"] | None = None
                         port_control_force_authorized_phone: bool | None = None
                         reauthentication: bool | None = None
                         pae: Pae | None = None
@@ -4134,65 +3577,49 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class All(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                            class UnitEnum(Enum):
-                                value_0 = "percent"
-                                value_1 = "pps"
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                             """
                             Configure maximum storm-control level.
                             """
-                            unit: UnitEnum | None = "percent"
+                            unit: Literal["percent", "pps"] | None = "percent"
                             """
                             Optional variable and is hardware dependent.
                             """
 
                         class Broadcast(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                            class UnitEnum(Enum):
-                                value_0 = "percent"
-                                value_1 = "pps"
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                             """
                             Configure maximum storm-control level.
                             """
-                            unit: UnitEnum | None = "percent"
+                            unit: Literal["percent", "pps"] | None = "percent"
                             """
                             Optional variable and is hardware dependent.
                             """
 
                         class Multicast(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                            class UnitEnum(Enum):
-                                value_0 = "percent"
-                                value_1 = "pps"
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                             """
                             Configure maximum storm-control level.
                             """
-                            unit: UnitEnum | None = "percent"
+                            unit: Literal["percent", "pps"] | None = "percent"
                             """
                             Optional variable and is hardware dependent.
                             """
 
                         class UnknownUnicast(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                            class UnitEnum(Enum):
-                                value_0 = "percent"
-                                value_1 = "pps"
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             level: Annotated[str, StrConvert(convert_types=(int, float))] | None = None
                             """
                             Configure maximum storm-control level.
                             """
-                            unit: UnitEnum | None = "percent"
+                            unit: Literal["percent", "pps"] | None = "percent"
                             """
                             Optional variable and is hardware dependent.
                             """
@@ -4203,50 +3630,31 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         unknown_unicast: UnknownUnicast | None = None
 
                     class MonitorSessionsItem(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                        class RoleEnum(Enum):
-                            value_0 = "source"
-                            value_1 = "destination"
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class SourceSettings(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                            class DirectionEnum(Enum):
-                                value_0 = "rx"
-                                value_1 = "tx"
-                                value_2 = "both"
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             class AccessGroup(AvdDictBaseModel):
-                                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                class TypeEnum(Enum):
-                                    value_0 = "ip"
-                                    value_1 = "ipv6"
-                                    value_2 = "mac"
-
-                                type: TypeEnum | None = None
+                                type: Literal["ip", "ipv6", "mac"] | None = None
                                 name: str | None = None
                                 """
                                 ACL name.
                                 """
                                 priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
 
-                            direction: DirectionEnum | None = None
+                            direction: Literal["rx", "tx", "both"] | None = None
                             access_group: AccessGroup | None = None
 
                         class SessionSettings(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             class AccessGroup(AvdDictBaseModel):
-                                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                                model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                                class TypeEnum(Enum):
-                                    value_0 = "ip"
-                                    value_1 = "ipv6"
-                                    value_2 = "mac"
-
-                                type: TypeEnum | None = None
+                                type: Literal["ip", "ipv6", "mac"] | None = None
                                 name: str | None = None
                                 """
                                 ACL name.
@@ -4290,7 +3698,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Session name.
                         """
-                        role: RoleEnum | None = None
+                        role: Literal["source", "destination"] | None = None
                         source_settings: SourceSettings | None = None
                         session_settings: SessionSettings | None = None
                         """
@@ -4300,16 +3708,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
 
                     class EthernetSegment(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                        class RedundancyEnum(Enum):
-                            value_0 = "all-active"
-                            value_1 = "single-active"
-
-                        class DesignatedForwarderAlgorithmEnum(Enum):
-                            value_0 = "auto"
-                            value_1 = "modulus"
-                            value_2 = "preference"
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         short_esi: str = None
                         """
@@ -4319,13 +3718,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Please see the notes under "EVPN A/A ESI dual and single-attached endpoint
                         scenarios" before setting `short_esi: auto`.
                         """
-                        redundancy: RedundancyEnum | None = None
+                        redundancy: Literal["all-active", "single-active"] | None = None
                         """
                         If omitted, Port-Channels use the EOS default of all-active.
                         If omitted, Ethernet interfaces are configured as single-
                         active.
                         """
-                        designated_forwarder_algorithm: DesignatedForwarderAlgorithmEnum | None = None
+                        designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None = None
                         """
                         Configure DF algorithm and preferences.
                         - auto: Use preference-based algorithm and assign preference based on position
@@ -4349,20 +3748,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
 
                     class PortChannel(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                        class ModeEnum(Enum):
-                            value_0 = "active"
-                            value_1 = "passive"
-                            value_2 = "on"
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class LacpFallback(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            class ModeEnum(Enum):
-                                value_0 = "static"
-
-                            mode: ModeEnum | None = None
+                            mode: Literal["static"] | None = None
                             """
                             Currently only static mode is supported.
                             """
@@ -4372,13 +3763,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
 
                         class LacpTimer(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            class ModeEnum(Enum):
-                                value_0 = "normal"
-                                value_1 = "fast"
-
-                            mode: ModeEnum | None = None
+                            mode: Literal["normal", "fast"] | None = None
                             """
                             LACP mode for interface members.
                             """
@@ -4420,7 +3807,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
 
                             pass
 
-                        mode: ModeEnum | None = None
+                        mode: Literal["active", "passive", "on"] | None = None
                         """
                         Port-Channel Mode.
                         """
@@ -4518,7 +3905,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.
                     """
-                    mode: ModeEnum | None = None
+                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None = None
                     """
                     Interface mode.
                     """
@@ -4547,9 +3934,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and VLAN 1 will be used for
                     access ports.
                     """
-                    spanning_tree_portfast: SpanningTreePortfastEnum | None = None
-                    spanning_tree_bpdufilter: Annotated[SpanningTreeBpdufilterEnum, StrConvert(convert_types=(bool))] | None = None
-                    spanning_tree_bpduguard: Annotated[SpanningTreeBpduguardEnum, StrConvert(convert_types=(bool))] | None = None
+                    spanning_tree_portfast: Literal["edge", "network"] | None = None
+                    spanning_tree_bpdufilter: Annotated[
+                        Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))
+                    ] | None = None
+                    spanning_tree_bpduguard: Annotated[
+                        Literal["enabled", "disabled", "True", "False", "true", "false"], StrConvert(convert_types=(bool))
+                    ] | None = None
                     flowcontrol: Flowcontrol | None = None
                     qos_profile: str | None = None
                     """
@@ -4708,12 +4099,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
 
                 class IgmpSnoopingQuerier(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                    class VersionEnum(Enum):
-                        value_0 = 1
-                        value_1 = 2
-                        value_2 = 3
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     enabled: bool | None = None
                     """
@@ -4723,7 +4109,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Default IP address of Loopback0
                     """
-                    version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = 2
+                    version: Annotated[Literal[1, 2, 3], IntConvert(convert_types=(str))] | None = 2
 
                 class VrfsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -4894,12 +4280,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 enabled: bool | None = None
 
                             class IgmpSnoopingQuerier(AvdDictBaseModel):
-                                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                                class VersionEnum(Enum):
-                                    value_0 = 1
-                                    value_1 = 2
-                                    value_2 = 3
+                                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                 enabled: bool | None = None
                                 """
@@ -4910,30 +4291,19 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 IPv4_address
                                 If not set, IP address of "Loopback0" will be used.
                                 """
-                                version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
+                                version: Annotated[Literal[1, 2, 3], IntConvert(convert_types=(str))] | None = None
                                 """
                                 IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                                 """
 
                             class Ospf(AvdDictBaseModel):
-                                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                                class AuthenticationEnum(Enum):
-                                    value_0 = "simple"
-                                    value_1 = "message-digest"
+                                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                 class MessageDigestKeysItem(AvdDictBaseModel):
-                                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                                    class HashAlgorithmEnum(Enum):
-                                        value_0 = "md5"
-                                        value_1 = "sha1"
-                                        value_2 = "sha256"
-                                        value_3 = "sha384"
-                                        value_4 = "sha512"
+                                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                     id: Annotated[int, IntConvert(convert_types=(str))] | None = None
-                                    hash_algorithm: HashAlgorithmEnum | None = "sha512"
+                                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None = "sha512"
                                     key: str | None = None
                                     """
                                     Type 7 encrypted key.
@@ -4949,7 +4319,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 """
                                 OSPF link cost.
                                 """
-                                authentication: AuthenticationEnum | None = None
+                                authentication: Literal["simple", "message-digest"] | None = None
                                 simple_auth_key: str | None = None
                                 """
                                 Password used with simple authentication.
@@ -5159,12 +4529,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             enabled: bool | None = None
 
                         class IgmpSnoopingQuerier(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                            class VersionEnum(Enum):
-                                value_0 = 1
-                                value_1 = 2
-                                value_2 = 3
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             enabled: bool | None = None
                             """
@@ -5175,30 +4540,19 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             IPv4_address
                             If not set, IP address of "Loopback0" will be used.
                             """
-                            version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = None
+                            version: Annotated[Literal[1, 2, 3], IntConvert(convert_types=(str))] | None = None
                             """
                             IGMP Version (By default EOS uses IGMP version 2 for IGMP querier).
                             """
 
                         class Ospf(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                            class AuthenticationEnum(Enum):
-                                value_0 = "simple"
-                                value_1 = "message-digest"
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             class MessageDigestKeysItem(AvdDictBaseModel):
-                                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                                class HashAlgorithmEnum(Enum):
-                                    value_0 = "md5"
-                                    value_1 = "sha1"
-                                    value_2 = "sha256"
-                                    value_3 = "sha384"
-                                    value_4 = "sha512"
+                                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                 id: Annotated[int, IntConvert(convert_types=(str))] | None = None
-                                hash_algorithm: HashAlgorithmEnum | None = "sha512"
+                                hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None = "sha512"
                                 key: str | None = None
                                 """
                                 Type 7 encrypted key.
@@ -5214,7 +4568,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             OSPF link cost.
                             """
-                            authentication: AuthenticationEnum | None = None
+                            authentication: Literal["simple", "message-digest"] | None = None
                             simple_auth_key: str | None = None
                             """
                             Password used with simple authentication.
@@ -5413,24 +4767,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class Ospf(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                            class AuthenticationEnum(Enum):
-                                value_0 = "simple"
-                                value_1 = "message-digest"
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             class MessageDigestKeysItem(AvdDictBaseModel):
-                                model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                                class HashAlgorithmEnum(Enum):
-                                    value_0 = "md5"
-                                    value_1 = "sha1"
-                                    value_2 = "sha256"
-                                    value_3 = "sha384"
-                                    value_4 = "sha512"
+                                model_config = ConfigDict(defer_build=True, extra="forbid")
 
                                 id: Annotated[int, IntConvert(convert_types=(str))] | None = None
-                                hash_algorithm: HashAlgorithmEnum | None = "sha512"
+                                hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None = "sha512"
                                 key: str | None = None
                                 """
                                 Key password.
@@ -5446,7 +4789,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             OSPF link cost.
                             """
-                            authentication: AuthenticationEnum | None = None
+                            authentication: Literal["simple", "message-digest"] | None = None
                             simple_auth_key: str | None = None
                             """
                             Password used with simple authentication.
@@ -5664,13 +5007,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
 
                     class AdditionalRouteTargetsItem(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                        class TypeEnum(Enum):
-                            value_0 = "import"
-                            value_1 = "export"
-
-                        type: TypeEnum | None = None
+                        type: Literal["import", "export"] | None = None
                         address_family: str | None = None
                         route_target: str | None = None
                         nodes: list[str] | None = None
@@ -5848,12 +5187,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         enabled: bool | None = None
 
                     class IgmpSnoopingQuerier(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                        class VersionEnum(Enum):
-                            value_0 = 1
-                            value_1 = 2
-                            value_2 = 3
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         enabled: bool | None = None
                         """
@@ -5864,7 +5198,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         IPv4_address
                         If not set, IP address of "Loopback0" will be used.
                         """
-                        version: Annotated[VersionEnum, IntConvert(convert_types=(str))] | None = 2
+                        version: Annotated[Literal[1, 2, 3], IntConvert(convert_types=(str))] | None = 2
 
                     class Bgp(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -5965,10 +5299,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     bgp: Bgp | None = None
 
                 class PointToPointServicesItem(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                    class TypeEnum(Enum):
-                        value_0 = "vpws-pseudowire"
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     class SubinterfacesItem(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -5982,13 +5313,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class PortChannel(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                            class ModeEnum(Enum):
-                                value_0 = "active"
-                                value_1 = "on"
-
-                            mode: ModeEnum | None = None
+                            mode: Literal["active", "on"] | None = None
                             short_esi: str | None = None
 
                         id: Annotated[int, IntConvert(convert_types=(str))] = None
@@ -6011,7 +5338,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Pseudowire name
                     """
-                    type: TypeEnum | None = "vpws-pseudowire"
+                    type: Literal["vpws-pseudowire"] | None = "vpws-pseudowire"
                     subinterfaces: list[SubinterfacesItem] | None = None
                     """
                     Subinterfaces will create subinterfaces and additional pseudowires/patch panel config for each endpoint.
@@ -6184,7 +5511,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
                 class Defaults(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     class LinkTracking(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -6255,16 +5582,6 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         pass
-
-                    class IsTypeEnum(Enum):
-                        value_0 = "level-1-2"
-                        value_1 = "level-1"
-                        value_2 = "level-2"
-
-                    class EvpnRoleEnum(Enum):
-                        value_0 = "client"
-                        value_1 = "server"
-                        value_2 = "none"
 
                     class Filter(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -6378,24 +5695,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         remote_peers: list[RemotePeersItem] | None = None
 
-                    class SpanningTreeModeEnum(Enum):
-                        value_0 = "mstp"
-                        value_1 = "rstp"
-                        value_2 = "rapid-pvst"
-                        value_3 = "none"
-
-                    class MplsOverlayRoleEnum(Enum):
-                        value_0 = "client"
-                        value_1 = "server"
-                        value_2 = "none"
-
                     class Ptp(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                        class ProfileEnum(Enum):
-                            value_0 = "aes67"
-                            value_1 = "smpte2059-2"
-                            value_2 = "aes67-r16-2016"
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class Dscp(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -6446,7 +5747,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             missing_message: MissingMessage | None = None
 
                         enabled: bool | None = False
-                        profile: ProfileEnum | None = "aes67-r16-2016"
+                        profile: Literal["aes67", "smpte2059-2", "aes67-r16-2016"] | None = "aes67-r16-2016"
                         mlag: bool | None = False
                         """
                         Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG
@@ -6687,7 +5988,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Number of path to configure in ECMP for ISIS.
                     """
-                    is_type: IsTypeEnum | None = "level-2"
+                    is_type: Literal["level-1-2", "level-1", "level-2"] | None = "level-2"
                     node_sid_base: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
@@ -6738,7 +6039,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     List of EOS commands to apply to BGP daemon.
                     """
-                    evpn_role: EvpnRoleEnum | None = None
+                    evpn_role: Literal["client", "server", "none"] | None = None
                     """
                     Acting role in EVPN control plane.
                     Default is set in node_type definition from node_type_keys.
@@ -6841,7 +6142,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                     """
-                    spanning_tree_mode: SpanningTreeModeEnum | None = None
+                    spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None = None
                     spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
                     spanning_tree_root_super: bool | None = False
                     virtual_router_mac_address: str | None = None
@@ -6971,7 +6272,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and
                     SVI on the parent switches must be created using network services data models.
                     """
-                    mpls_overlay_role: MplsOverlayRoleEnum | None = None
+                    mpls_overlay_role: Literal["client", "server", "none"] | None = None
                     """
                     Set the default mpls overlay role.
                     Acting role in overlay control plane.
@@ -6991,10 +6292,10 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     ptp: Ptp | None = None
 
                 class NodeGroupsItem(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     class NodesItem(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class LinkTracking(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7065,16 +6366,6 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             pass
-
-                        class IsTypeEnum(Enum):
-                            value_0 = "level-1-2"
-                            value_1 = "level-1"
-                            value_2 = "level-2"
-
-                        class EvpnRoleEnum(Enum):
-                            value_0 = "client"
-                            value_1 = "server"
-                            value_2 = "none"
 
                         class Filter(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7188,24 +6479,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             """
                             remote_peers: list[RemotePeersItem] | None = None
 
-                        class SpanningTreeModeEnum(Enum):
-                            value_0 = "mstp"
-                            value_1 = "rstp"
-                            value_2 = "rapid-pvst"
-                            value_3 = "none"
-
-                        class MplsOverlayRoleEnum(Enum):
-                            value_0 = "client"
-                            value_1 = "server"
-                            value_2 = "none"
-
                         class Ptp(AvdDictBaseModel):
-                            model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                            class ProfileEnum(Enum):
-                                value_0 = "aes67"
-                                value_1 = "smpte2059-2"
-                                value_2 = "aes67-r16-2016"
+                            model_config = ConfigDict(defer_build=True, extra="forbid")
 
                             class Dscp(AvdDictBaseModel):
                                 model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7256,7 +6531,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                                 missing_message: MissingMessage | None = None
 
                             enabled: bool | None = False
-                            profile: ProfileEnum | None = "aes67-r16-2016"
+                            profile: Literal["aes67", "smpte2059-2", "aes67-r16-2016"] | None = "aes67-r16-2016"
                             mlag: bool | None = False
                             """
                             Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG
@@ -7501,7 +6776,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Number of path to configure in ECMP for ISIS.
                         """
-                        is_type: IsTypeEnum | None = "level-2"
+                        is_type: Literal["level-1-2", "level-1", "level-2"] | None = "level-2"
                         node_sid_base: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                         """
                         Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
@@ -7552,7 +6827,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         List of EOS commands to apply to BGP daemon.
                         """
-                        evpn_role: EvpnRoleEnum | None = None
+                        evpn_role: Literal["client", "server", "none"] | None = None
                         """
                         Acting role in EVPN control plane.
                         Default is set in node_type definition from node_type_keys.
@@ -7655,7 +6930,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                         """
-                        spanning_tree_mode: SpanningTreeModeEnum | None = None
+                        spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None = None
                         spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
                         spanning_tree_root_super: bool | None = False
                         virtual_router_mac_address: str | None = None
@@ -7785,7 +7060,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and
                         SVI on the parent switches must be created using network services data models.
                         """
-                        mpls_overlay_role: MplsOverlayRoleEnum | None = None
+                        mpls_overlay_role: Literal["client", "server", "none"] | None = None
                         """
                         Set the default mpls overlay role.
                         Acting role in overlay control plane.
@@ -7873,16 +7148,6 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         pass
-
-                    class IsTypeEnum(Enum):
-                        value_0 = "level-1-2"
-                        value_1 = "level-1"
-                        value_2 = "level-2"
-
-                    class EvpnRoleEnum(Enum):
-                        value_0 = "client"
-                        value_1 = "server"
-                        value_2 = "none"
 
                     class Filter(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7996,24 +7261,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         remote_peers: list[RemotePeersItem] | None = None
 
-                    class SpanningTreeModeEnum(Enum):
-                        value_0 = "mstp"
-                        value_1 = "rstp"
-                        value_2 = "rapid-pvst"
-                        value_3 = "none"
-
-                    class MplsOverlayRoleEnum(Enum):
-                        value_0 = "client"
-                        value_1 = "server"
-                        value_2 = "none"
-
                     class Ptp(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                        class ProfileEnum(Enum):
-                            value_0 = "aes67"
-                            value_1 = "smpte2059-2"
-                            value_2 = "aes67-r16-2016"
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class Dscp(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -8064,7 +7313,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             missing_message: MissingMessage | None = None
 
                         enabled: bool | None = False
-                        profile: ProfileEnum | None = "aes67-r16-2016"
+                        profile: Literal["aes67", "smpte2059-2", "aes67-r16-2016"] | None = "aes67-r16-2016"
                         mlag: bool | None = False
                         """
                         Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG
@@ -8315,7 +7564,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Number of path to configure in ECMP for ISIS.
                     """
-                    is_type: IsTypeEnum | None = "level-2"
+                    is_type: Literal["level-1-2", "level-1", "level-2"] | None = "level-2"
                     node_sid_base: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
@@ -8366,7 +7615,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     List of EOS commands to apply to BGP daemon.
                     """
-                    evpn_role: EvpnRoleEnum | None = None
+                    evpn_role: Literal["client", "server", "none"] | None = None
                     """
                     Acting role in EVPN control plane.
                     Default is set in node_type definition from node_type_keys.
@@ -8469,7 +7718,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                     """
-                    spanning_tree_mode: SpanningTreeModeEnum | None = None
+                    spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None = None
                     spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
                     spanning_tree_root_super: bool | None = False
                     virtual_router_mac_address: str | None = None
@@ -8599,7 +7848,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and
                     SVI on the parent switches must be created using network services data models.
                     """
-                    mpls_overlay_role: MplsOverlayRoleEnum | None = None
+                    mpls_overlay_role: Literal["client", "server", "none"] | None = None
                     """
                     Set the default mpls overlay role.
                     Acting role in overlay control plane.
@@ -8619,7 +7868,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     ptp: Ptp | None = None
 
                 class NodesItem(AvdDictBaseModel):
-                    model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
 
                     class LinkTracking(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -8690,16 +7939,6 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         pass
-
-                    class IsTypeEnum(Enum):
-                        value_0 = "level-1-2"
-                        value_1 = "level-1"
-                        value_2 = "level-2"
-
-                    class EvpnRoleEnum(Enum):
-                        value_0 = "client"
-                        value_1 = "server"
-                        value_2 = "none"
 
                     class Filter(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -8813,24 +8052,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         remote_peers: list[RemotePeersItem] | None = None
 
-                    class SpanningTreeModeEnum(Enum):
-                        value_0 = "mstp"
-                        value_1 = "rstp"
-                        value_2 = "rapid-pvst"
-                        value_3 = "none"
-
-                    class MplsOverlayRoleEnum(Enum):
-                        value_0 = "client"
-                        value_1 = "server"
-                        value_2 = "none"
-
                     class Ptp(AvdDictBaseModel):
-                        model_config = ConfigDict(defer_build=True, use_enum_values=True, extra="forbid")
-
-                        class ProfileEnum(Enum):
-                            value_0 = "aes67"
-                            value_1 = "smpte2059-2"
-                            value_2 = "aes67-r16-2016"
+                        model_config = ConfigDict(defer_build=True, extra="forbid")
 
                         class Dscp(AvdDictBaseModel):
                             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -8881,7 +8104,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             missing_message: MissingMessage | None = None
 
                         enabled: bool | None = False
-                        profile: ProfileEnum | None = "aes67-r16-2016"
+                        profile: Literal["aes67", "smpte2059-2", "aes67-r16-2016"] | None = "aes67-r16-2016"
                         mlag: bool | None = False
                         """
                         Configure PTP on the MLAG peer-link port-channel when PTP is enabled. By default PTP will not be configured on the MLAG
@@ -9126,7 +8349,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Number of path to configure in ECMP for ISIS.
                     """
-                    is_type: IsTypeEnum | None = "level-2"
+                    is_type: Literal["level-1-2", "level-1", "level-2"] | None = "level-2"
                     node_sid_base: Annotated[int, IntConvert(convert_types=(str))] | None = 0
                     """
                     Node-SID base for isis-sr underlay variants. Combined with node id to generate ISIS-SR node-SID.
@@ -9177,7 +8400,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     List of EOS commands to apply to BGP daemon.
                     """
-                    evpn_role: EvpnRoleEnum | None = None
+                    evpn_role: Literal["client", "server", "none"] | None = None
                     """
                     Acting role in EVPN control plane.
                     Default is set in node_type definition from node_type_keys.
@@ -9280,7 +8503,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     MLAG Domain ID. If not set the node group name (Set with "group" key) will be used.
                     """
-                    spanning_tree_mode: SpanningTreeModeEnum | None = None
+                    spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None = None
                     spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
                     spanning_tree_root_super: bool | None = False
                     virtual_router_mac_address: str | None = None
@@ -9410,7 +8633,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     When using 'inband_mgmt_ip' the VLAN and SVI will only be created on this device and added to uplink trunk. The VLAN and
                     SVI on the parent switches must be created using network services data models.
                     """
-                    mpls_overlay_role: MplsOverlayRoleEnum | None = None
+                    mpls_overlay_role: Literal["client", "server", "none"] | None = None
                     """
                     Set the default mpls overlay role.
                     Acting role in overlay control plane.
@@ -9472,7 +8695,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Internal list of mappings from dynamic_keys_path to model_key.
         """
 
-    avd_data_conversion_mode: AvdDataConversionModeEnum | None = "debug"
+    avd_data_conversion_mode: Literal["disabled", "error", "warning", "info", "debug", "quiet"] | None = "debug"
     """
     Conversion Mode for AVD input data conversion.
     Input data conversion will perform type conversion of input variables as
@@ -9490,7 +8713,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     messages viewable with -v.
     "quiet" will not produce any messages
     """
-    avd_data_validation_mode: AvdDataValidationModeEnum | None = "warning"
+    avd_data_validation_mode: Literal["disabled", "error", "warning", "info", "debug"] | None = "warning"
     """
     Validation Mode for AVD input data validation.
     Input data validation will validate the input variables according to the
@@ -9584,7 +8807,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     and modify them.
     """
     core_interfaces: CoreInterfaces | None = None
-    custom_structured_configuration_list_merge: CustomStructuredConfigurationListMergeEnum | None = "append_rp"
+    custom_structured_configuration_list_merge: Literal["replace", "append", "keep", "prepend", "append_rp", "prepend_rp"] | None = "append_rp"
     """
     The List-merge strategy used when merging custom structured configurations.
 
@@ -9702,7 +8925,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     Default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device
     (either directly or through inheritance).
     """
-    default_mgmt_method: DefaultMgmtMethodEnum | None = "oob"
+    default_mgmt_method: Literal["oob", "inband", "none"] | None = "oob"
     """
     `default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring
     protocols configured with `eos_designs`:
@@ -9807,7 +9030,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     Enable vlan aware bundles for EVPN MAC-VRF.
     """
     evpn_vlan_bundles: list[EvpnVlanBundlesItem] | None = None
-    fabric_evpn_encapsulation: FabricEvpnEncapsulationEnum | None = "vxlan"
+    fabric_evpn_encapsulation: Literal["vxlan", "mpls"] | None = "vxlan"
     """
     Should be set to mpls for evpn-mpls scenario.
     """
@@ -9844,12 +9067,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     """
     isis_advertise_passive_only: bool | None = False
     isis_area_id: Annotated[str, StrConvert(convert_types=(int, float))] | None = "49.0001"
-    isis_default_circuit_type: IsisDefaultCircuitTypeEnum | None = "level-2"
+    isis_default_circuit_type: Literal["level-1-2", "level-1", "level-2"] | None = "level-2"
     """
     These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or
     link level.
     """
-    isis_default_is_type: IsisDefaultIsTypeEnum | None = Field("level-2", title="ISIS Default IS Type")
+    isis_default_is_type: Literal["level-1-2", "level-1", "level-2"] | None = Field("level-2", title="ISIS Default IS Type")
     isis_default_metric: Annotated[int, IntConvert(convert_types=(str))] | None = 50
     """
     These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden at link profile or
@@ -9961,7 +9184,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     This will make `eos_designs` consider configured VLANs per VTEP, and only
     include the relevant VTEPs to each VNI's flood-list.
     """
-    overlay_her_flood_list_scope: OverlayHerFloodListScopeEnum | None = "fabric"
+    overlay_her_flood_list_scope: Literal["fabric", "dc"] | None = "fabric"
     """
     When using Head-End Replication, set the scope of flood-lists to Fabric or DC.
     By default all VTEPs in the Fabric (part
@@ -10002,7 +9225,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     a problem with large VNIs.
     For 16-bit ASN/number the assigned number can be a 32-bit number.
     """
-    overlay_routing_protocol: Annotated[OverlayRoutingProtocolEnum, StrConvert(to_lower=True)] | None = "ebgp"
+    overlay_routing_protocol: Annotated[Literal["ebgp", "ibgp", "cvx", "her", "none"], StrConvert(to_lower=True)] | None = "ebgp"
     """
     - The following overlay routing protocols are supported:
       - eBGP: Configures fabric with eBGP, default for l3ls-evpn
@@ -10015,7 +9238,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
       -
     none: No overlay configuration will be generated, default for l2ls design.
     """
-    overlay_routing_protocol_address_family: OverlayRoutingProtocolAddressFamilyEnum | None = "ipv4"
+    overlay_routing_protocol_address_family: Literal["ipv4", "ipv6"] | None = "ipv4"
     """
     When set to `ipv6`, enable overlay EVPN peering with IPv6 addresses.
     This feature depends on underlay_ipv6 variable. As
@@ -10300,7 +9523,9 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumbered.
     Requires "underlay_routing_protocol: ebgp".
     """
-    underlay_routing_protocol: Annotated[UnderlayRoutingProtocolEnum, StrConvert(to_lower=True)] | None = None
+    underlay_routing_protocol: Annotated[
+        Literal["ebgp", "ospf", "isis", "isis-sr", "isis-ldp", "isis-sr-ldp", "ospf-ldp"], StrConvert(to_lower=True)
+    ] | None = None
     """
     - The following underlay routing protocols are supported:
       - EBGP (default for l3ls-evpn)

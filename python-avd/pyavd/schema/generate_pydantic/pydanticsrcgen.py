@@ -7,7 +7,7 @@ from abc import ABC
 from keyword import iskeyword
 from typing import TYPE_CHECKING
 
-from .models import EnumClassSrc, FieldTypeHintSrc, PydanticFieldSrc, PydanticModelSrc, PydanticSrcData
+from .models import FieldTypeHintSrc, PydanticFieldSrc, PydanticModelSrc, PydanticSrcData
 from .utils import generate_class_name, generate_class_name_from_ref, get_annotations_for_field
 
 if TYPE_CHECKING:
@@ -68,7 +68,7 @@ class PydanticSrcGenBase(ABC):
 
         return generate_class_name(self.get_key())
 
-    def get_class(self) -> PydanticModelSrc | EnumClassSrc | None:
+    def get_class(self) -> PydanticModelSrc | None:
         return None
 
     def get_key(self) -> str:
@@ -119,15 +119,19 @@ class PydanticSrcGenInt(PydanticSrcGenBase):
 
         return field_args
 
-    def get_class(self) -> PydanticModelSrc | EnumClassSrc | None:
-        if not self.schema.valid_values:
-            return None
+    def get_type_hints(self) -> list[str]:
+        if self.schema.valid_values:
+            valid_values_as_string = [str(valid_value) for valid_value in self.schema.valid_values]
+            field_type = f"Literal[{', '.join(valid_values_as_string)}]"
+        else:
+            field_type = "int"
 
-        return EnumClassSrc(
-            name=f"{self.get_class_name()}Enum",
-            value_type="int",
-            values=self.schema.valid_values,
-        )
+        return [
+            FieldTypeHintSrc(
+                field_type=field_type,
+                annotations=get_annotations_for_field(self.schema),
+            )
+        ]
 
 
 class PydanticSrcGenBool(PydanticSrcGenBase):
@@ -154,8 +158,9 @@ class PydanticSrcGenStr(PydanticSrcGenBase):
             return str(self.schema.default)
 
     def get_type_hints(self) -> list[str]:
-        if cls := self.get_class():
-            field_type = cls.name
+        if self.schema.valid_values:
+            valid_values_with_quotes = [f'"{valid_value}"' for valid_value in self.schema.valid_values]
+            field_type = f"Literal[{', '.join(valid_values_with_quotes)}]"
         else:
             field_type = "str"
 
@@ -165,16 +170,6 @@ class PydanticSrcGenStr(PydanticSrcGenBase):
                 annotations=get_annotations_for_field(self.schema),
             )
         ]
-
-    def get_class(self) -> PydanticModelSrc | EnumClassSrc | None:
-        if not self.schema.valid_values:
-            return None
-
-        return EnumClassSrc(
-            name=f"{self.get_class_name()}Enum",
-            value_type="str",
-            values=self.schema.valid_values,
-        )
 
 
 class PydanticSrcGenList(PydanticSrcGenBase):

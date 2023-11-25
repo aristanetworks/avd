@@ -49,65 +49,6 @@ def generate_class_name_from_ref(ref: str) -> str:
     return ".".join(base_class_elements)
 
 
-def get_type_hints_for_field(schema: AvdSchemaField):
-    """
-    Return list of type hints to apply for the given schema field.
-
-    Kept here instead of in the PydanticSrcGen* since we sometimes need to find the hint for a child schema.
-
-    TODO: Figure out how to get valid_values implemented in combination with convert_to_lower_case
-    """
-    if schema.type == "str":
-        if schema.convert_types and schema.convert_to_lower_case:
-            raise NotImplementedError("schema options 'convert_types' and 'convert_to_lower_case' cannot be combined")
-
-        if schema.convert_to_lower_case:
-            return ["StrToLowerCase"]
-        if not schema.convert_types:
-            # TODO: Change default behavior for strings to always convert from int
-            return ["str"]
-        if "int" in schema.convert_types and "float" in schema.convert_types:
-            return ["StrAcceptingIntFloat"]
-        if "float" in schema.convert_types:
-            return ["StrAcceptingFloat"]
-        return ["StrAcceptingInt"]
-
-    if schema.type == "list":
-        if schema.items is None:
-            return ["list[Any]"]
-        return [f"list[{' | '.join(get_type_hints_for_field(schema.items))}]"]
-
-    return [schema.type]
-
-
-def get_imports_from_type_hints(type_hints: list[str]) -> set[str] | None:
-    """
-    Returns a set with Python import statements needed for the given type hints.
-    """
-    imports = set()
-    types_in_types_file = [
-        "StrToLowerCase",
-        "StrAcceptingIntFloat",
-        "StrAcceptingFloat",
-        "StrAcceptingInt",
-    ]
-    types_from_typing = ["Any", "Annotated"]
-    type_hints_set = set()
-
-    # Expand any list[<hint> | <hint>]
-    for type_hint in type_hints:
-        if type_hint.startswith("Annotated["):
-            type_hints_set.add("Annotated")
-        type_hints_set.update(type_hint.removeprefix("list[").removeprefix("Annotated[").removesuffix("]").split(" | "))
-
-    for type_hint in type_hints_set:
-        if type_hint in types_in_types_file:
-            imports.add(f"from .types import {type_hint}")
-        elif type_hint in types_from_typing:
-            imports.add(f"from typing import {type_hint}")
-    return imports or None
-
-
 def get_annotations_for_field(schema: AvdSchemaField) -> list[BoolConvertSrc | IntConvertSrc | StrConvertSrc]:
     annotations = []
     if schema.type == "str":
