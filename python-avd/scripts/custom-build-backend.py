@@ -63,4 +63,9 @@ def get_requires_for_build_wheel(config_settings=None):
         if make_process.wait() != 0:
             raise RuntimeError("Something went wrong during 'make dep'")
 
+    print("Running 'build-pydantic-models.py' to regenerate Pydantic models from schemas")
+    with Popen("./scripts/build-pydantic-models.py", shell=True) as make_process:
+        if make_process.wait() != 0:
+            raise RuntimeError("Something went wrong during 'build-pydantic-models.py'")
+
     return _orig.get_requires_for_build_wheel(config_settings)

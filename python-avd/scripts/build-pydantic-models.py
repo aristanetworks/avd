@@ -7,12 +7,11 @@ from pathlib import Path
 from sys import path
 
 # Override global path to load schema from source instead of any installed version.
-# Avoids to load from pyavd to avoid relying on pyavd vendor things being generated.
-path.insert(0, str(Path(__file__).parents[1].joinpath("pyavd")))
+path.insert(0, str(Path(__file__).parents[1]))
 
-from schema.constants import SCHEMA_PATHS, STORE
-from schema.generate_pydantic.models import PydanticFileSrc
-from schema.metaschema.meta_schema_model import AristaAvdSchema
+from pyavd.schema.constants import SCHEMA_PATHS, STORE
+from pyavd.schema.generate_pydantic.models import PydanticFileSrc
+from pyavd.schema.metaschema.meta_schema_model import AristaAvdSchema
 
 for schema_name, schema_path in SCHEMA_PATHS.items():
     if schema_name not in STORE:
