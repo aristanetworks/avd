@@ -34,6 +34,7 @@ requires = [
     "pyyaml>=6.0.0",
     "mkdocstrings[python]",
     "pydantic>=2.3.0",
+    "isort",
 ]
 build-backend = "custom-build-backend"
 backend-path = ["scripts"]
