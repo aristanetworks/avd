@@ -280,7 +280,6 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                 "ipv6_enable": None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
                 "ipv6_address": ipv6_address,
                 "ipv6_virtual_router_addresses": [v6_gateway],
-                "debug": {"ipv6_subnet": ipv6_subnet, "v6_network": v6_network, "ipv6_address": ipv6_address, "v6_gateway": v6_gateway},
                 "ip_attached_host_route_export": {
                     "enabled": True,
                     "distance": 19,
