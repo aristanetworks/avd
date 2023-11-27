@@ -4508,6 +4508,11 @@ keys:
             description: 'Add sequence numbers to log messages
 
               '
+          rfc5424:
+            type: bool
+            description: 'Forward logs in RFC5424 format
+
+              '
       facility:
         type: str
         valid_values:
