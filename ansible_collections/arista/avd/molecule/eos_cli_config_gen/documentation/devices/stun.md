@@ -43,10 +43,10 @@ interface Management1
 
 #### Server Profiles
 
-| Server Profile | IP address |
-| -------------- | ---------- |
-| server1 | 1.2.3.4 |
-| server2 | 2.3.4.5 |
+| Server Profile | IP address | SSL Profile |
+| -------------- | ---------- | ----------- |
+| server1 | 1.2.3.4 | pathfinder |
+| server2 | 2.3.4.5 | - |
 
 ### STUN Server
 
@@ -57,6 +57,10 @@ interface Management1
 | Vlan42 |
 | Vlan666 |
 
+| Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime (min) |
+| -------------------- | ----------- | ----------------------------- |
+| 600 | pathfinder | 1200 |
+
 ### STUN Device Configuration
 
 ```eos
@@ -65,6 +69,7 @@ stun
    client
       server-profile server1
          ip address 1.2.3.4
+         ssl profile pathfinder
       server-profile server2
          ip address 2.3.4.5
    server
@@ -72,4 +77,7 @@ stun
       local-interface Ethernet13
       local-interface Vlan42
       local-interface Vlan666
+      binding timeout 600 seconds
+      ssl profile pathfinder
+      ssl connection lifetime 1200 minutes
 ```

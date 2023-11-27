@@ -14,10 +14,10 @@
 
 #### Server Profiles
 
-| Server Profile | IP address |
-| -------------- | ---------- |
+| Server Profile | IP address | SSL Profile |
+| -------------- | ---------- | ----------- |
 {%             for server_profile in stun.client.server_profiles | arista.avd.natural_sort('name') %}
-| {{ server_profile.name }} | {{ server_profile.ip_address }} |
+| {{ server_profile.name }} | {{ server_profile.ip_address }} |  {{ server_profile.ip_address | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -34,6 +34,13 @@
 {%         if stun.server.local_interface is arista.avd.defined %}
 | {{ stun.server.local_interface }} |
 {%         endif %}
+
+| Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime (min) |
+| -------------------- | ----------- | ----------------------------- |
+{%         set bindings_timeout = stun.server.bindings_timeout | arista.avd.default("-") %}
+{%         set ssl_profile = stun.server.ssl_profile | arista.avd.default("-") %}
+{%         set ssl_connection_lifetime = stun.server.ssl_connection_lifetime | arista.avd.default("-") %}
+| {{ bindings_timeout }} | {{ ssl_profile }} | {{ ssl_connection_lifetime }} |
 {%     endif %}
 
 ### STUN Device Configuration

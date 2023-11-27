@@ -14,6 +14,9 @@ stun
 {%             if profile.ip_address is arista.avd.defined %}
          ip address {{ profile.ip_address }}
 {%             endif %}
+{%             if stun.server.ssl_profile is arista.avd.defined %}
+         ssl profile {{ stun.server.ssl_profile }}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if stun.server is arista.avd.defined %}
@@ -23,6 +26,15 @@ stun
 {%         endfor %}
 {%         if stun.server.local_interface is arista.avd.defined %}
       local-interface {{ stun.server.local_interface }}
+{%         endif %}
+{%         if stun.server.bindings_timeout is arista.avd.defined %}
+      binding timeout {{ stun.server.bindings_timeout }} seconds
+{%         endif %}
+{%         if stun.server.ssl_profile is arista.avd.defined %}
+      ssl profile {{ stun.server.ssl_profile }}
+{%         endif %}
+{%         if stun.server.ssl_connection_lifetime is arista.avd.defined %}
+      ssl connection lifetime {{ stun.server.ssl_connection_lifetime }} minutes
 {%         endif %}
 {%     endif %}
 {% endif %}

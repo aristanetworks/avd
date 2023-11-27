@@ -7,6 +7,9 @@ stun:
       - Vlan42
       - Vlan666
       - Ethernet13
+    bindings_timeout: 600
+    ssl_profile: pathfinder
+    ssl_connection_lifetime: 1200
   client:
     server_profiles:
       # The servers are on purpose not in order in order to test the sorting
@@ -14,3 +17,4 @@ stun:
         ip_address: 2.3.4.5
       - name: server1
         ip_address: 1.2.3.4
+        ssl_profile: pathfinder

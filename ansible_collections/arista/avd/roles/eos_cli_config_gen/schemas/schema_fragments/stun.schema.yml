@@ -25,6 +25,9 @@ keys:
                   type: str
                 ip_address:
                   type: str
+                ssl_profile:
+                  type: str
+                  description: SSL profile name
       server:
         type: dict
         description: STUN server settings
@@ -40,3 +43,20 @@ keys:
             min_length: 1
             items:
               type: str
+          bindings_timeout:
+            type: int
+            description: Timeout for bindings stored on STUN server in seconds
+            convert_types:
+              - str
+            min: 10
+            max: 7200
+          ssl_profile:
+            type: str
+            description: SSL profile name
+          ssl_connection_lifetime:
+            type: int
+            description: SSL connection lifetime in minutes (default - 120)
+            convert_types:
+              - str
+            min: 1
+            max: 1440
