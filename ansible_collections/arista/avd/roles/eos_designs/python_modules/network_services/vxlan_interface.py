@@ -22,7 +22,6 @@ class VxlanInterfaceMixin(UtilsMixin):
 
     # Set type hints for Attributes of the main class as needed
     _hostvars: dict
-    _filtered_tenants: list[dict]
 
     @cached_property
     def vxlan_interface(self) -> dict | None:
@@ -59,7 +58,7 @@ class VxlanInterfaceMixin(UtilsMixin):
         vrfs = []
         # vnis is a list of dicts only used for duplication checks across multiple types of objects all having "vni" as a key.
         vnis = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if vlan := self._get_vxlan_interface_config_for_vlan(svi, tenant):
@@ -262,4 +261,4 @@ class VxlanInterfaceMixin(UtilsMixin):
 
     @cached_property
     def _multi_vtep(self) -> bool:
-        return self.shared_utils.mlag is True and self._evpn_multicast is True
+        return self.shared_utils.mlag is True and self.shared_utils.evpn_multicast is True

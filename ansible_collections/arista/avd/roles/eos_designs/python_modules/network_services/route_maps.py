@@ -31,9 +31,9 @@ class RouteMapsMixin(UtilsMixin):
 
         route_maps = []
 
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
-                # BGP Peers are already filtered in _filtered_tenants
+                # BGP Peers are already filtered in filtered_tenants
                 #  so we only have entries with our hostname in them.
                 for bgp_peer in vrf["bgp_peers"]:
                     ipv4_next_hop = bgp_peer.get("set_ipv4_next_hop")

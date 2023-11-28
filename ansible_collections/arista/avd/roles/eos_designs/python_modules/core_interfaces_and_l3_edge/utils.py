@@ -13,10 +13,9 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_util
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
-from ansible_collections.arista.avd.roles.eos_designs.python_modules.utils.utils_filtered_tenants import UtilsFilteredTenantsMixin
 
 
-class UtilsMixin(UtilsFilteredTenantsMixin):
+class UtilsMixin:
     """
     Mixin Class with internal functions.
     Class should only be used as Mixin to a AvdStructuredConfig class

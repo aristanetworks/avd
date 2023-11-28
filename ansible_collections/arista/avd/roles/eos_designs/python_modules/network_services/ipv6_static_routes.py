@@ -28,7 +28,7 @@ class Ipv6StaticRoutesMixin(UtilsMixin):
             return None
 
         ipv6_static_routes = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for static_route in vrf["ipv6_static_routes"]:
                     static_route["vrf"] = vrf["name"]

@@ -29,7 +29,7 @@ class StructCfgsMixin(UtilsMixin):
             return None
 
         vrf_struct_cfgs = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if (structured_config := vrf.get("structured_config")) is not None:
                     # Inserting VRF into structured_config to perform duplication checks

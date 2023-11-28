@@ -78,7 +78,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         Return all the valid VRF on this device based on network_services configuration
         """
         # TODO check as we could end up with duplicates here
-        return [vrf for tenant in self._filtered_tenants for vrf in tenant.get("vrfs", [])]
+        return [vrf for tenant in self.shared_utils.filtered_tenants for vrf in tenant.get("vrfs", [])]
 
     def _get_vrf_id(self) -> list:
         """ """

@@ -30,7 +30,7 @@ class RouterOspfMixin(UtilsMixin):
             return None
 
         ospf_processes = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if get(vrf, "ospf.enabled") is not True:
                     continue
