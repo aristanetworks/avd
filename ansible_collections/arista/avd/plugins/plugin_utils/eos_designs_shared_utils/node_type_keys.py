@@ -55,6 +55,35 @@ DEFAULT_NODE_TYPE_KEYS = {
             "type": "overlay-controller",
             "default_evpn_role": "server",
         },
+        {
+            "key": "edge",
+            "type": "edge",
+            "default_evpn_role": "client",
+            "default_overlay_routing_protocol": "ibgp",
+            "network_services": {
+                "l2": True,
+                "l3": True,
+            },
+            "vtep": True,
+        },
+        {
+            "key": "transit",
+            "type": "transit",
+            "default_evpn_role": "client",
+            "default_overlay_routing_protocol": "ibgp",
+            "network_services": {
+                "l2": True,
+                "l3": True,
+            },
+            "vtep": True,
+        },
+        {
+            "key": "wan_controller",
+            "type": "wan-controller",
+            "default_evpn_role": "server",
+            "default_overlay_routing_protocol": "ibgp",
+            "vtep": True,
+        },
     ],
     "mpls": [
         {
