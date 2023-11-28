@@ -23,6 +23,7 @@
     - "{{ eos_validate_state_dir }}"
     - "{{ output_dir }}"
     - "{{ test_catalogs_dir }}"
+    - "{{ test_results_dir }}"
   delegate_to: localhost
   run_once: true
   check_mode: false

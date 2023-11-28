@@ -20,6 +20,10 @@ test_catalogs_dir: '{{ output_dir }}/{{ test_catalogs_dir_name }}'
 eos_validate_state_name: 'reports'
 eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
 
+# Output for test results JSON files:
+test_results_dir_name: 'test_results'
+test_results_dir: '{{ eos_validate_state_dir }}/{{ test_results_dir_name }}'
+
 # Reports name
 eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
 eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'

@@ -8,7 +8,7 @@ __metaclass__ = type
 import cProfile
 import logging
 import pstats
-from json import dumps
+from json import dump, dumps
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
@@ -20,8 +20,9 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_util
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
-# ANTA 0.10.0 currently add some RichHandler to the root logger so need to disable propagation
+# ANTA currently add some RichHandler to the root logger so need to disable propagation
 LOGGER.propagate = False
+LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
 
 class AnsibleNoAliasDumper(AnsibleDumper):
@@ -30,6 +31,23 @@ class AnsibleNoAliasDumper(AnsibleDumper):
 
 
 class ActionModule(ActionBase):
+    def _get_and_validate_arg(
+        self, argument: str, expected_type: type, default_value: bool | list | str | None = None, allowed_values: list[str] | None = None
+    ) -> bool | list | str:
+        """Validate a task argument, returns the value if the validation succeeds."""
+        result = self._task.args.get(argument, default_value)
+        if not isinstance(result, expected_type) or (allowed_values and result not in allowed_values):
+            allowed = f" in {allowed_values}" if allowed_values else ""
+            raise AnsibleActionFail(f"'{argument}' must be a {expected_type.__name__}{allowed}, got {result}.")
+        return result
+
+    def _get_and_validate_dir_arg(self, argument: str) -> str:
+        """Validate if a task directory argument is valid and exists, returns the value if the validation succeeds."""
+        result = self._task.args.get(argument)
+        if not isinstance(result, str) or not Path(result).exists():
+            raise AnsibleActionFail(f"'{argument}' must be a valid directory path and must exist.")
+        return result
+
     def run(self, tmp=None, task_vars=None):
         self._supports_check_mode = True
 
@@ -39,56 +57,40 @@ class ActionModule(ActionBase):
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
 
-        # Profiling
+        # Setup profiling
         cprofile_file = self._task.args.get("cprofile_file")
         if cprofile_file:
             profiler = cProfile.Profile()
             profiler.enable()
 
+        # Setup variables
         hostname = task_vars["inventory_hostname"]
         ansible_connection = self._connection
         ansible_check_mode = task_vars.get("ansible_check_mode", False)
         is_deployed = task_vars.get("is_deployed", True)
+        ansible_tags = {
+            "ansible_run_tags": task_vars.get("ansible_run_tags", ()),
+            "ansible_skip_tags": task_vars.get("ansible_skip_tags", ()),
+        }
+        # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
+        hostvars = task_vars["hostvars"]
 
+        # Skip all tests if the device is marked as not deployed
         if not is_deployed:
             result["skipped"] = True
             result["msg"] = f"Device {hostname} is marked as not deployed. Skipping all tests."
             return result
 
-        # Handle logging
+        # Setup module logging
         setup_module_logging(hostname, result)
 
         # Get task arguments and validate them
-        logging_level = self._task.args.get("logging_level")
-        VALID_VALUES = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
-        if logging_level is None or not isinstance(logging_level, str) or logging_level not in VALID_VALUES:
-            raise AnsibleActionFail(f"'logging_level' must be a string in {VALID_VALUES}, got {logging_level}")
-
-        save_catalog = self._task.args.get("save_catalog")
-        if not isinstance(save_catalog, bool):
-            raise AnsibleActionFail(f"'save_catalog' must be a boolean, got {save_catalog}.")
-
-        save_catalog_name = None
-        if save_catalog:
-            device_catalog_output_dir = self._task.args.get("device_catalog_output_dir")
-            if device_catalog_output_dir is not None:
-                save_catalog_name = f"{device_catalog_output_dir}/{hostname}-catalog.yml"
-            else:
-                raise AnsibleActionFail("'device_catalog_output_dir' must be set when 'save_catalog' is True.")
-
-        skipped_tests = self._task.args.get("skipped_tests", [])
-        # TODO once we have pydantic, check the list elements
-        if not isinstance(skipped_tests, list):
-            raise AnsibleActionFail(f"'skipped_tests' must be a list of dictionnaries, got {skipped_tests}.")
-
-        # Fetching ansible tags for backward compatibility
-        ansible_tags = {
-            "ansible_run_tags": task_vars.get("ansible_run_tags", ()),
-            "ansible_skip_tags": task_vars.get("ansible_skip_tags", ()),
-        }
-
-        # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
-        hostvars = task_vars["hostvars"]
+        logging_level = self._get_and_validate_arg(argument="logging_level", expected_type=str, default_value="WARNING", allowed_values=LOGGING_LEVELS)
+        skipped_tests = self._get_and_validate_arg(argument="skipped_tests", expected_type=list, default_value=[])
+        save_catalog = self._get_and_validate_arg(argument="save_catalog", expected_type=bool, default_value=False)
+        save_results = self._get_and_validate_arg(argument="save_results", expected_type=bool, default_value=False)
+        save_catalog_name = Path(self._get_and_validate_dir_arg(argument="device_catalog_output_dir")) / f"{hostname}-catalog.yml" if save_catalog else None
+        save_results_name = Path(self._get_and_validate_dir_arg(argument="device_results_output_dir")) / f"{hostname}-results.json" if save_results else None
 
         try:
             anta_device = AnsibleEOSDevice(name=hostname, connection=ansible_connection, check_mode=ansible_check_mode)
@@ -104,7 +106,12 @@ class ActionModule(ActionBase):
                 yaml_dumper=AnsibleNoAliasDumper,
             )
             # Call the function to handle temp file creation
-            temp_file_name = create_temp_file(hostname, anta_results)
+            temp_file_name = _create_temp_file(hostname, anta_results)
+
+            # Save test results
+            if save_results_name:
+                with Path(save_results_name).open("w", encoding="UTF-8") as results_file:
+                    dump(anta_results, results_file, indent=2, sort_keys=False)
 
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
@@ -120,7 +127,7 @@ class ActionModule(ActionBase):
         return result
 
 
-def create_temp_file(hostname: str, anta_results: list[dict]) -> str:
+def _create_temp_file(hostname: str, anta_results: list[dict]) -> str:
     """Create a temporary JSON file to save all test results from ANTA.
 
     The function will also search for leftover temp files in the `/tmp` folder and delete them.

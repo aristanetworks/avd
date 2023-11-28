@@ -37,19 +37,19 @@ def _test_results_gen(input_path: str) -> Generator[dict, None, None]:
 
 
 class ActionModule(ActionBase):
-    def _validate_arg_boolean(self, arg_name: str, *, default_value: bool) -> bool:
-        """Validate if a task argument is a boolean."""
-        arg_value = self._task.args.get(arg_name, default_value)
-        if not isinstance(arg_value, bool):
-            raise AnsibleActionFail(f"'{arg_name}' must be a boolean, got {arg_value}.")
-        return arg_value
+    def _get_and_validate_bool_arg(self, argument: str, *, default_value: bool) -> bool:
+        """Validate if a task argument is a boolean, returns the value if the validation succeeds."""
+        result = self._task.args.get(argument, default_value)
+        if not isinstance(result, bool):
+            raise AnsibleActionFail(f"'{argument}' must be a boolean, got {result}.")
+        return result
 
-    def _validate_report_path(self, arg_name: str) -> str:
-        """Validate if a task path argument is valid and exists."""
-        path_value = self._task.args.get(arg_name)
-        if not isinstance(path_value, str) or not Path(path_value).parent.exists():
-            raise AnsibleActionFail(f"'{arg_name}' must be a valid path and its directory must exist.")
-        return path_value
+    def _get_and_validate_path_arg(self, argument: str) -> str:
+        """Validate if a task path argument is valid and exists, returns the value if the validation succeeds."""
+        result = self._task.args.get(argument)
+        if not isinstance(result, str) or not Path(result).parent.exists():
+            raise AnsibleActionFail(f"'{argument}' must be a valid path and its directory must exist.")
+        return result
 
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
@@ -65,14 +65,14 @@ class ActionModule(ActionBase):
             profiler.enable()
 
         # Get task arguments and validate them
-        only_failed_tests = self._validate_arg_boolean("only_failed_tests", default_value=False)
-        validation_report_csv = self._validate_arg_boolean("validation_report_csv", default_value=True)
-        validation_report_md = self._validate_arg_boolean("validation_report_md", default_value=True)
+        only_failed_tests = self._get_and_validate_bool_arg(argument="only_failed_tests", default_value=False)
+        validation_report_csv = self._get_and_validate_bool_arg(argument="validation_report_csv", default_value=True)
+        validation_report_md = self._get_and_validate_bool_arg(argument="validation_report_md", default_value=True)
 
         if validation_report_csv:
-            csv_report_path = self._validate_report_path("csv_report_path")
+            csv_report_path = self._get_and_validate_path_arg("csv_report_path")
         if validation_report_md:
-            md_report_path = self._validate_report_path("md_report_path")
+            md_report_path = self._get_and_validate_path_arg("md_report_path")
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand
         hostvars = task_vars["hostvars"]
