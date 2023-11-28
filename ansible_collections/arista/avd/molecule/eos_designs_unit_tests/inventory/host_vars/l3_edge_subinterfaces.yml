@@ -1,0 +1,39 @@
+type: spine
+spine:
+  nodes:
+    - name: l3_edge_subinterfaces
+      id: 1
+      evpn_role: "none"
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+      filter:
+        # Forcing the VRF in for the test
+        always_include_vrfs_in_tenants: [tenant]
+
+l3_edge:
+  p2p_links:
+    - nodes: [l3_edge_subinterfaces, peer1]
+      interfaces: [ethernet1, ethernet1]
+      id: 1
+      subinterfaces:
+        - vrf: TEST1
+          description: Custom subif description for VRF TEST1
+        - vrf: TEST2
+          subinterface_id: 666
+        - vrf: TEST3
+          structured_config:
+            mtu: 666
+
+tenants:
+  - name: tenant
+    vrfs:
+      - name: TEST1
+        vrf_id: 1001
+      - name: TEST2
+        # overriden
+        vrf_id: 1002
+      - name: TEST3
+        vrf_vni: 1003
+      # No subif for this VRF
+      - name: TEST4
+        vrf_vni: 1003

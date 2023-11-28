@@ -10,7 +10,6 @@ from ansible_collections.arista.avd.plugins.filter.range_expand import range_exp
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
-
 from ansible_collections.arista.avd.roles.eos_designs.python_modules.utils.utils_filtered_tenants import UtilsFilteredTenantsMixin
 
 

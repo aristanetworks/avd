@@ -20,6 +20,8 @@ class RouterOspfMixin(UtilsMixin):
         Return structured config for router_ospf
         """
 
+        # TODO handle subinterfaces by picking up the VRF OSPF process ids
+        # TODO handle main interface in VRF the same way
         if not self.shared_utils.underlay_ospf:
             return None
 

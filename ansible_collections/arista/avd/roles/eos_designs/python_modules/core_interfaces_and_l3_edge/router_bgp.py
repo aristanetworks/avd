@@ -34,6 +34,10 @@ class RouterBgpMixin(UtilsMixin):
             if p2p_link["data"]["bgp_as"] is None or p2p_link["data"]["peer_bgp_as"] is None:
                 raise AristaAvdMissingVariableError("l3_edge.p2p_links.[].as")
 
+            # TODO handle subinterfaces after
+            if p2p_link.get("subinterfaces") is not None:
+                continue
+
             neighbor = {
                 "remote_as": p2p_link["data"]["peer_bgp_as"],
                 "peer": p2p_link["data"]["peer"],

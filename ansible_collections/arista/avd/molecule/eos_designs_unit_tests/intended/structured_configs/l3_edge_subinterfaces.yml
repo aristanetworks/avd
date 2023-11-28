@@ -1,0 +1,86 @@
+hostname: l3_edge_subinterfaces
+is_deployed: true
+router_bgp:
+  as: '65000'
+  router_id: 1.2.3.1
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 1.2.3.1/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 1.2.3.4/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+ethernet_interfaces:
+- name: ethernet1
+  peer: peer1
+  peer_interface: ethernet1
+  peer_type: other
+  description: P2P_LINK_TO_peer1_ethernet1
+  type: routed
+  shutdown: false
+  mtu: 9214
+- name: ethernet1.1001
+  description: Custom subif description for VRF TEST1
+  type: l3dot1q
+  vrf: TEST1
+  shutdown: false
+  encapsulation_dot1q_vlan: 1001
+- name: ethernet1.666
+  description: P2P_LINK_TO_peer1_ethernet1
+  type: l3dot1q
+  vrf: TEST2
+  shutdown: false
+  encapsulation_dot1q_vlan: 666
+- name: ethernet1.1003
+  description: P2P_LINK_TO_peer1_ethernet1
+  type: l3dot1q
+  vrf: TEST3
+  shutdown: false
+  encapsulation_dot1q_vlan: 1003
+  mtu: 666
