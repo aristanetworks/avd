@@ -78,6 +78,7 @@ ethernet_interfaces:
   description: P2P_LINK_TO_peer4_ethernet4
   type: routed
   shutdown: false
+  vrf: OSPF-VRF
   mtu: 9214
   ip_address: 192.168.0.6/31
   ospf_network_point_to_point: true
