@@ -1,0 +1,55 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  carriers:
+    documentation_options:
+      table: wan-settings
+    description: |-
+      PREVIEW: This key is currently not supported
+      List of carriers used for the WAN configuration.
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Carrier name.
+        description:
+          type: str
+          description: Additional information about the carrier for documentation purposes.
+        ipsec:
+          type: bool
+          description: Flag to configure IPsec on the carrier (default is True).
+        accessibility:
+          type: str
+          description: |-
+            Indicates if the carrier has access to the Internet (`public`)
+            or not (`private).
+          valid_values:
+            - public
+            - private
+        characteristics:
+          type: list
+          description: |-
+            A list of characteristics to assign to the carrier.
+            TODO: Explain further how these are used (or removed before removing preview).
+          items:
+            type: str
+            valid_values:
+              - backup
+              - metered
+        circuit_type:
+          type: str
+          description: |-
+            TBC - edge or transit or both.
+            Unclear if this should be at the carrier level or some other place.
+          valid_values:
+            - edge
+            - transit
+            - both.
