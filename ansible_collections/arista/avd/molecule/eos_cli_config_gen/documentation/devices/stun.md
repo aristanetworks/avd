@@ -57,9 +57,9 @@ interface Management1
 | Vlan42 |
 | Vlan666 |
 
-| Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime (min) |
-| -------------------- | ----------- | ----------------------------- |
-| 600 | pathfinder | 1200 |
+| Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime |
+| -------------------- | ----------- | ----------------------- |
+| 600 | pathfinder | 1200 minutes |
 
 ### STUN Device Configuration
 
@@ -79,5 +79,5 @@ stun
       local-interface Vlan666
       binding timeout 600 seconds
       ssl profile pathfinder
-      ssl connection lifetime 1200 minutes
+      ssl connection lifetime 1300 minutes
 ```

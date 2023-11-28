@@ -9,7 +9,9 @@ stun:
       - Ethernet13
     bindings_timeout: 600
     ssl_profile: pathfinder
-    ssl_connection_lifetime: 1200
+    ssl_connection_lifetime:
+      minutes: 1300
+      hours: 3
   client:
     server_profiles:
       # The servers are on purpose not in order in order to test the sorting

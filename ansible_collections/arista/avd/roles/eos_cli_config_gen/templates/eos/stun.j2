@@ -33,8 +33,12 @@ stun
 {%         if stun.server.ssl_profile is arista.avd.defined %}
       ssl profile {{ stun.server.ssl_profile }}
 {%         endif %}
-{%         if stun.server.ssl_connection_lifetime is arista.avd.defined %}
-      ssl connection lifetime {{ stun.server.ssl_connection_lifetime }} minutes
+{%         if stun.server.ssl_connection_lifetime.minutes is arista.avd.defined %}
+      ssl connection lifetime {{ stun.server.ssl_connection_lifetime.minutes }} minutes
+{%         else %}
+{%             if stun.server.ssl_connection_lifetime.hours is arista.avd.defined %}
+      ssl connection lifetime {{ stun.server.ssl_connection_lifetime.hours }} hours
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {% endif %}

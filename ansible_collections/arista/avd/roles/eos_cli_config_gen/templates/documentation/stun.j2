@@ -35,12 +35,23 @@
 | {{ stun.server.local_interface }} |
 {%         endif %}
 
-| Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime (min) |
-| -------------------- | ----------- | ----------------------------- |
+| Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime |
+| -------------------- | ----------- | ----------------------- |
 {%         set bindings_timeout = stun.server.bindings_timeout | arista.avd.default("-") %}
 {%         set ssl_profile = stun.server.ssl_profile | arista.avd.default("-") %}
-{%         set ssl_connection_lifetime = stun.server.ssl_connection_lifetime | arista.avd.default("-") %}
-| {{ bindings_timeout }} | {{ ssl_profile }} | {{ ssl_connection_lifetime }} |
+{%         if stun.server.ssl_connection_lifetime.minutes is arista.avd.defined %}
+{%             set lifetime = stun.server.ssl_connection_lifetime.minutes %}
+{%             set lifetime_unit = "minutes" %}
+{%         else %}
+{%             if stun.server.ssl_connection_lifetime.hours is arista.avd.defined %}
+{%                 set lifetime = stun.server.ssl_connection_lifetime.hours %}
+{%                 set lifetime_unit = "hours" %}
+{%             else %}
+{%                 set lifetime = arista.avd.default("-") %}
+{%                 set lifetime_unit = "" %}
+{%             endif %}
+{%         endif %}
+| {{ bindings_timeout }} | {{ ssl_profile }} | {{ lifetime }} {{ lifetime_unit }} |
 {%     endif %}
 
 ### STUN Device Configuration

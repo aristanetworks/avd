@@ -11921,9 +11921,7 @@ keys:
                     keys:
                       server_profiles:
                         type: list
-                        required: true
-                        min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str
@@ -11945,7 +11943,7 @@ keys:
                         type: list
                         required: true
                         min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str
@@ -12971,7 +12969,7 @@ keys:
               type: str
           bindings_timeout:
             type: int
-            description: Timeout for bindings stored on STUN server in seconds
+            description: Timeout for bindings stored on STUN server in seconds.
             convert_types:
             - str
             min: 10
@@ -12980,12 +12978,24 @@ keys:
             type: str
             description: SSL profile name
           ssl_connection_lifetime:
-            type: int
-            description: SSL connection lifetime in minutes (default - 120)
-            convert_types:
-            - str
-            min: 1
-            max: 1440
+            type: dict
+            description: SSL connection lifetime in minutes or hours. If both are
+              specified, minutes is given precedence.
+            keys:
+              minutes:
+                type: int
+                description: SSL connection lifetime in minutes (default - 120).
+                convert_types:
+                - str
+                min: 1
+                max: 1440
+              hours:
+                type: int
+                description: SSL connection lifetime in hours (default - 2).
+                convert_types:
+                - str
+                min: 1
+                max: 24
   switchport_default:
     type: dict
     keys:
