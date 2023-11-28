@@ -254,7 +254,3 @@ class MiscMixin:
     def default_interface_mtu(self: SharedUtils) -> int | None:
         default_default_interface_mtu = get(self.hostvars, "default_interface_mtu")
         return get(self.platform_settings, "default_interface_mtu", default=default_default_interface_mtu)
-
-    @cached_property
-    def wan_mode(self: SharedUtils) -> str | None:
-        return get(self.hostvars, "wan_mode", default=None)

@@ -59,6 +59,8 @@ DEFAULT_NODE_TYPE_KEYS = {
             "key": "edge",
             "type": "edge",
             "default_evpn_role": "client",
+            "default_wan_role": "client",
+            "default_sdwan_role": "edge",
             "default_overlay_routing_protocol": "ibgp",
             "network_services": {
                 "l2": True,
@@ -70,6 +72,8 @@ DEFAULT_NODE_TYPE_KEYS = {
             "key": "transit",
             "type": "transit",
             "default_evpn_role": "client",
+            "default_wan_role": "client",
+            "default_sdwan_role": "transit",
             "default_overlay_routing_protocol": "ibgp",
             "network_services": {
                 "l2": True,
@@ -81,6 +85,8 @@ DEFAULT_NODE_TYPE_KEYS = {
             "key": "wan_controller",
             "type": "wan-controller",
             "default_evpn_role": "server",
+            "default_wan_role": "server",
+            "default_sdwan_role": "pathfinder",
             "default_overlay_routing_protocol": "ibgp",
             "vtep": True,
         },
