@@ -2,7 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-# NOTE that this is supposed to be deprecated as per
+# NOTE: This is supposed to be deprecated as per
 # https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_documenting.html#ansible-metadata-block
 # But our doc Jinja2 template renders it as preview which is what we want
 ANSIBLE_METADATA = {"metadata_version": "1.0", "status": ["preview"]}
@@ -38,18 +38,18 @@ options:
     default: false
   csv_report_path:
     description:
-      - Specifies the absolute path where the CSV report will be saved.
+      - The absolute path where the CSV report will be saved.
       - Required if C(validation_report_csv) is set to C(True).
     type: str
   md_report_path:
     description:
-      - Specifies the absolute path where the Markdown report will be saved.
+      - The absolute path where the Markdown report will be saved.
       - Required if C(validation_report_md) is set to C(True).
     type: str
   cprofile_file:
     description:
-      - Specifies the filename for storing cProfile data, which aids in debugging performance issues.
-      - Note that enabling cProfile can itself impact performance, so it should only be used for troubleshooting.
+      - The filename for storing cProfile data, useful for debugging performance issues.
+      - Be aware that enabling cProfile can affect performance, so use it only for troubleshooting.
 seealso:
   - name: ANTA website
     description: Documentation for the ANTA test framework

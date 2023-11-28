@@ -32,9 +32,9 @@ The plugin offers the following functionalities\:
 | validation_report_csv | bool | optional | True |  | Indicates whether a CSV report should be generated. |
 | validation_report_md | bool | optional | True |  | Indicates whether a Markdown report should be generated. |
 | only_failed_tests | bool | optional | False |  | Determines if the generated reports should include only the failed tests. |
-| csv_report_path | str | optional | None |  | Specifies the absolute path where the CSV report will be saved.<br>Required if <code>validation\_report\_csv</code> is set to <code>True</code>. |
-| md_report_path | str | optional | None |  | Specifies the absolute path where the Markdown report will be saved.<br>Required if <code>validation\_report\_md</code> is set to <code>True</code>. |
-| cprofile_file | any | optional | None |  | Specifies the filename for storing cProfile data, which aids in debugging performance issues.<br>Note that enabling cProfile can itself impact performance, so it should only be used for troubleshooting. |
+| csv_report_path | str | optional | None |  | The absolute path where the CSV report will be saved.<br>Required if <code>validation\_report\_csv</code> is set to <code>True</code>. |
+| md_report_path | str | optional | None |  | The absolute path where the Markdown report will be saved.<br>Required if <code>validation\_report\_md</code> is set to <code>True</code>. |
+| cprofile_file | any | optional | None |  | The filename for storing cProfile data, useful for debugging performance issues.<br>Be aware that enabling cProfile can affect performance, so use it only for troubleshooting. |
 
 ## Notes
 
