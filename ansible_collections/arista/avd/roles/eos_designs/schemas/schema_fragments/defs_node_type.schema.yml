@@ -926,6 +926,12 @@ $defs:
           sdwan_site:
             type: dict
             $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site"
+          dps_mss_ipv4:
+            type: int
+            $ref: "eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4"
+          dps_mss_ipv6:
+            type: int
+            $ref: "eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv6"
           ptp:
             documentation_options:
               table: node-type-ptp-configuration

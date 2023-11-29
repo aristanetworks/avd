@@ -50,6 +50,11 @@ loopback_interfaces:
   description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 192.168.42.1/32
+dps_interfaces:
+- name: Dps1
+  tcp_mss_ceiling:
+    ipv4: 1000
+    ipv6: null
 ip_security:
   ike_policies:
   - name: DP-IKE-POLICY
