@@ -20725,6 +20725,9 @@
                           "title": "Server Profiles"
                         }
                       },
+                      "required": [
+                        "server_profiles"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}
@@ -20769,6 +20772,9 @@
                           "title": "Server Profiles"
                         }
                       },
+                      "required": [
+                        "server_profiles"
+                      ],
                       "additionalProperties": false,
                       "patternProperties": {
                         "^_.+$": {}

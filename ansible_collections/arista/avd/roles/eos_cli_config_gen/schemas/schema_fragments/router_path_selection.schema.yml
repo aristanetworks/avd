@@ -57,6 +57,7 @@ keys:
                     keys:
                       server_profiles:
                         type: list
+                        required: true
                         max_length: 12
                         description: STUN server-profile names.
                         items:
@@ -77,6 +78,7 @@ keys:
                     keys:
                       server_profiles:
                         type: list
+                        required: true
                         max_length: 12
                         description: STUN server-profile names.
                         items:
