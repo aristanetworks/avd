@@ -22534,7 +22534,7 @@
             },
             "ssl_connection_lifetime": {
               "type": "object",
-              "description": "SSL connection lifetime in minutes or hours. If both are specified, minutes is given precedence.",
+              "description": "SSL connection lifetime in minutes or hours.\nIf both are specified, minutes is given higher precedence.",
               "properties": {
                 "minutes": {
                   "type": "integer",
