@@ -76,21 +76,17 @@
 {%         for application_profile in application_traffic_recognition.application_profiles | arista.avd.natural_sort('name') %}
 
 #### Application Profile Name {{ application_profile.name }}
-{%             if application_profile.applications is arista.avd.defined %}
+{%             if application_profile.applications is arista.avd.defined or application_profile.categories is arista.avd.defined or application_profile.application_transports is arista.avd.defined %}
 
 | Type | Name | Service |
 | ---- | ---- | ------- |
 {%                 for application in application_profile.applications | arista.avd.natural_sort('service') | arista.avd.natural_sort('name') %}
 | application | {{ application.name }} | {{ application.service | arista.avd.default("-") }} |
 {%                 endfor %}
-{%             endif %}
-{%             if application_profile.categories is arista.avd.defined %}
 {%                 for category in application_profile.categories | arista.avd.natural_sort('service') | arista.avd.natural_sort('name') %}
 | category | {{ category.name }} | {{ category.service | arista.avd.default("-") }} |
 {%                 endfor %}
-{%             endif %}
-{%             if application_profile.transports is arista.avd.defined %}
-{%                 for transport in application_profile.transports | arista.avd.natural_sort() %}
+{%                 for transport in application_profile.application_transports | arista.avd.natural_sort %}
 | transport | {{ transport }} | - |
 {%                 endfor %}
 {%             endif %}

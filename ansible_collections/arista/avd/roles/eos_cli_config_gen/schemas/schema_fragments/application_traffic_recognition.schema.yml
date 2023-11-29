@@ -157,7 +157,7 @@ keys:
                       If no service is specified, all supported services of the application are matched.
                       Not all valid values are valid for all applications, check on EOS CLI.
                     valid_values: ["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
-            transports:
+            application_transports:
               type: list
               description: List of transport protocols.
               items:

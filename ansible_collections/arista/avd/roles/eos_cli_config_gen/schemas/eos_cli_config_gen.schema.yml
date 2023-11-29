@@ -594,7 +594,7 @@ keys:
                     - networking-protocols
                     - peer-to-peer
                     - software-update
-            transports:
+            application_transports:
               type: list
               description: List of transport protocols.
               items:

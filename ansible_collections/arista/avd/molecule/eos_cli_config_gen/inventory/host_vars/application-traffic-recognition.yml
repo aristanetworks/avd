@@ -74,7 +74,7 @@ application_traffic_recognition:
       categories:
         - name: category1
           service: chat
-      transports:
+      application_transports:
         - https
         - quic
     - name: app_profile_1

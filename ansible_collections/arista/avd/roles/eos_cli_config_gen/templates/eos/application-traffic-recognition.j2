@@ -59,19 +59,16 @@ application traffic recognition
       application {{ application.name }}
 {%             endif %}
 {%         endfor %}
-{%         if application_profile.transports is arista.avd.defined %}
-{%             do application_profile.transports.sort() %}
-{%             for transport in application_profile.transports %}
+{%         for transport in application_profile.application_transports | arista.avd.natural_sort %}
       application {{ transport }} transport
-{%             endfor %}
-{%             for category in application_profile.categories %}
-{%                 if category.service is arista.avd.defined %}
+{%         endfor %}
+{%         for category in application_profile.categories | arista.avd.natural_sort %}
+{%             if category.service is arista.avd.defined %}
       category {{ category.name }} service {{ category.service }}
-{%                 else %}
+{%             else %}
       category {{ category.name }}
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
+{%             endif %}
+{%         endfor %}
 {%     endfor %}
 {%     if application_traffic_recognition.field_sets is arista.avd.defined %}
 {%         if application_traffic_recognition.field_sets.ipv4_prefixes is arista.avd.defined %}

@@ -36,8 +36,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;applications</samp>](## "application_traffic_recognition.application_profiles.[].applications") | List, items: Dictionary |  |  |  | List of applications part of the application profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_traffic_recognition.application_profiles.[].applications.[].name") | String |  |  |  | Application Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;service</samp>](## "application_traffic_recognition.application_profiles.[].applications.[].service") | String |  |  | Valid Values:<br>- <code>audio-video</code><br>- <code>chat</code><br>- <code>default</code><br>- <code>file-transfer</code><br>- <code>networking-protocols</code><br>- <code>peer-to-peer</code><br>- <code>software-update</code> | Service Name.<br>Specific service to target for this application.<br>If no service is specified, all supported services of the application are matched.<br>Not all valid values are valid for all applications, check on EOS CLI. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transports</samp>](## "application_traffic_recognition.application_profiles.[].transports") | List, items: String |  |  |  | List of transport protocols. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_traffic_recognition.application_profiles.[].transports.[]") | String |  |  | Valid Values:<br>- <code>http</code><br>- <code>https</code><br>- <code>udp</code><br>- <code>tcp</code><br>- <code>ip</code><br>- <code>ip6</code><br>- <code>ssl</code><br>- <code>rtp</code><br>- <code>sctp</code><br>- <code>quic</code> | Transport name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_transports</samp>](## "application_traffic_recognition.application_profiles.[].application_transports") | List, items: String |  |  |  | List of transport protocols. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_traffic_recognition.application_profiles.[].application_transports.[]") | String |  |  | Valid Values:<br>- <code>http</code><br>- <code>https</code><br>- <code>udp</code><br>- <code>tcp</code><br>- <code>ip</code><br>- <code>ip6</code><br>- <code>ssl</code><br>- <code>rtp</code><br>- <code>sctp</code><br>- <code>quic</code> | Transport name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;categories</samp>](## "application_traffic_recognition.application_profiles.[].categories") | List, items: Dictionary |  |  |  | Categories under this application profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_traffic_recognition.application_profiles.[].categories.[].name") | String |  |  |  | Name of a category. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;service</samp>](## "application_traffic_recognition.application_profiles.[].categories.[].service") | String |  |  | Valid Values:<br>- <code>audio-video</code><br>- <code>chat</code><br>- <code>default</code><br>- <code>file-transfer</code><br>- <code>networking-protocols</code><br>- <code>peer-to-peer</code><br>- <code>software-update</code> | Service Name.<br>Specific service to target for this application.<br>If no service is specified, all supported services of the application are matched.<br>Not all valid values are valid for all applications, check on EOS CLI. |
@@ -140,7 +140,7 @@
               service: <str; "audio-video" | "chat" | "default" | "file-transfer" | "networking-protocols" | "peer-to-peer" | "software-update">
 
           # List of transport protocols.
-          transports:
+          application_transports:
 
               # Transport name.
             - <str; "http" | "https" | "udp" | "tcp" | "ip" | "ip6" | "ssl" | "rtp" | "sctp" | "quic">
