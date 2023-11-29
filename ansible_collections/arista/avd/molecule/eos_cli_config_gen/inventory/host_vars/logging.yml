@@ -9,6 +9,7 @@ logging:
     level:
   format:
     timestamp: traditional year timezone
+    rfc5424: true
   source_interface:
   vrfs:
     - name: mgt
