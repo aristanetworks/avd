@@ -7684,7 +7684,7 @@
             "rfc5424": {
               "type": "boolean",
               "description": "Forward logs in RFC5424 format\n",
-              "title": "RFC5424"
+              "title": "Rfc5424"
             }
           },
           "additionalProperties": false,
