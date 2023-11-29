@@ -1829,6 +1829,10 @@ qos profile test
 | ----------------------- |
 | ethernet1 |
 
+| Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime |
+| -------------------- | ----------- | ----------------------- |
+| - | - | -  |
+
 ### STUN Device Configuration
 
 ```eos
