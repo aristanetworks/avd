@@ -59,7 +59,7 @@ interface Management1
 
 | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime |
 | -------------------- | ----------- | ----------------------- |
-| 600 | pathfinder | 1200 minutes |
+| 600 | pathfinder | 1300 minutes |
 
 ### STUN Device Configuration
 
