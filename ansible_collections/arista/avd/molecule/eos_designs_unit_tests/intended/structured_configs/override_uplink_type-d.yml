@@ -36,6 +36,6 @@ port_channel_interfaces:
   vlans: none
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 192.168.42.2/32

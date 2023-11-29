@@ -1,5 +1,42 @@
 hostname: override_uplink_type-u
 is_deployed: true
+router_bgp:
+  as: '65002'
+  router_id: 192.168.42.1
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+    next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -36,17 +73,23 @@ port_channel_interfaces:
   vlans: none
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: EVPN_Overlay_Peering
   shutdown: false
   ip_address: 192.168.42.1/32
-  ospf_area: 0.0.0.0
-router_ospf:
-  process_ids:
-  - id: 100
-    passive_interface_default: true
-    router_id: 192.168.42.1
-    max_lsa: 12000
-    no_passive_interfaces: []
-    bfd_enable: false
-    redistribute:
-      connected: {}
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.42.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3

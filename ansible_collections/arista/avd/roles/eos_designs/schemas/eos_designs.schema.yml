@@ -1460,7 +1460,8 @@ keys:
           - p2p
           - port-channel
           default: p2p
-          description: Uplinks must be p2p if "vtep" or "underlay_router" is true.
+          description: '`uplink_type` must be "p2p" if `vtep` or `underlay_router`
+            is true.'
         vtep:
           type: bool
           default: false
@@ -5394,7 +5395,8 @@ $defs:
             description: 'Override the default `uplink_type` set at the `node_type_key`
               level.
 
-              Uplinks must be p2p if "vtep" or "underlay_router" is true.'
+              `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for
+              the `node_type_key` definition.'
           uplink_ipv4_pool:
             documentation_options:
               table: node-type-uplink-configuration

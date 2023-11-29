@@ -164,7 +164,7 @@ $defs:
             $ref: "eos_designs#/keys/node_type_keys/items/keys/uplink_type"
             description: |-
               Override the default `uplink_type` set at the `node_type_key` level.
-              Uplinks must be p2p if "vtep" or "underlay_router" is true.
+              `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
           uplink_ipv4_pool:
             documentation_options:
               table: node-type-uplink-configuration
