@@ -47,7 +47,7 @@
 {%                 set lifetime = stun.server.ssl_connection_lifetime.hours %}
 {%                 set lifetime_unit = "hours" %}
 {%             else %}
-{%                 set lifetime = arista.avd.default("-") %}
+{%                 set lifetime = "-" %}
 {%                 set lifetime_unit = "" %}
 {%             endif %}
 {%         endif %}
