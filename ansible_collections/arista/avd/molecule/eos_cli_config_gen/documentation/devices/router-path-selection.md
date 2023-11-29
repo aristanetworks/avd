@@ -112,10 +112,10 @@ interface Management1
 
 #### Load-balance policies
 
-| Policy name | Path group(s) |
-| ----------- | ------------- |
-| LB-P-1 | PG-2<br>PG-3 |
-| LB-P-2 | PG-1 |
+| Policy Name | Jitter (ms) | Latency (ms) | Loss Rate (%) | Path Groups (priority) | Lowest Hop Count |
+| ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
+| LB-P-1 | - | - | 17 | PG-5 (1)<br>PG-2 (42)<br>PG-4 (42)<br>PG-3 (666) | True |
+| LB-P-2 | 666 | 42 | 42.42 | PG-1 (1)<br>PG-3 (1) | False |
 
 #### DPS policies
 
@@ -202,11 +202,19 @@ router path-selection
    path-group PG-4
    !
    load-balance policy LB-P-1
-      path-group PG-3
-      path-group PG-2
+      hop count lowest
+      loss-rate 17
+      path-group PG-5
+      path-group PG-2 priority 42
+      path-group PG-4 priority 42
+      path-group PG-3 priority 666
    !
    load-balance policy LB-P-2
-      path-group PG-1
+      jitter 666
+      latency 42
+      loss-rate 42.42
+      path-group PG-1 priority 1
+      path-group PG-3
    !
    policy DPS-P-1
       default-match

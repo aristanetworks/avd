@@ -5575,6 +5575,58 @@
       },
       "title": "IP DHCP Relay"
     },
+    "ip_dhcp_snooping": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "bridging": {
+          "type": "boolean",
+          "title": "Bridging"
+        },
+        "information_option": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable insertion of option-82 in DHCP request packets",
+              "title": "Enabled"
+            },
+            "circuit_id_type": {
+              "type": "string",
+              "description": "\"none\" or <0 - 255>",
+              "title": "Circuit ID Type"
+            },
+            "circuit_id_format": {
+              "type": "string",
+              "description": "Required if `circuit_id_type` is set.\n- \"%h:%p\" Hostname and interface name\n- \"%p:%v\" Interface name and VLAN ID",
+              "enum": [
+                "%h:%p",
+                "%p:%v"
+              ],
+              "title": "Circuit ID Format"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Information Option"
+        },
+        "vlan": {
+          "type": "string",
+          "description": "VLAN range as string.\n\"< vlan_id >, < vlan_id >-< vlan_id >\"\nExample: 15,16,17,18",
+          "title": "VLAN"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IP DHCP Snooping"
+    },
     "ip_domain_lookup": {
       "type": "object",
       "properties": {
@@ -7621,7 +7673,7 @@
                 "fqdn",
                 "ipv4"
               ],
-              "description": "Hostname format",
+              "description": "Hostname format in syslogs. For hostname _only_, remove the line. (default EOS CLI behaviour).",
               "title": "Hostname"
             },
             "sequence_numbers": {
@@ -13929,6 +13981,151 @@
             "^_.+$": {}
           },
           "title": "Site"
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "AVT Name.",
+                "title": "Name"
+              },
+              "load_balance_policy": {
+                "type": "string",
+                "description": "Name of the load-balance policy.",
+                "title": "Load Balance Policy"
+              },
+              "internet_exit_policy": {
+                "type": "string",
+                "description": "Name of the internet exit policy.",
+                "title": "Internet Exit Policy"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Profiles"
+        },
+        "policies": {
+          "type": "array",
+          "description": "A sequence of application profiles mapped to some virtual topologies.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Policy name.",
+                "title": "Name"
+              },
+              "matches": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "application_profile": {
+                      "type": "string",
+                      "description": "Application profile name.",
+                      "title": "Application Profile"
+                    },
+                    "avt_profile": {
+                      "type": "string",
+                      "description": "AVT Profile name.",
+                      "title": "Avt Profile"
+                    },
+                    "dscp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 63,
+                      "description": "Set DSCP for matched traffic.",
+                      "title": "DSCP"
+                    },
+                    "traffic_class": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 7,
+                      "description": "Set traffic-class for matched traffic.",
+                      "title": "Traffic Class"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Matches"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Policies"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name.",
+                "title": "Name"
+              },
+              "policy": {
+                "type": "string",
+                "description": "AVT Policy name.",
+                "title": "Policy"
+              },
+              "profiles": {
+                "type": "array",
+                "description": "AVT profiles in this VRF.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "AVT profile name.",
+                      "title": "Name"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "description": "Unique ID for this AVT (per VRF).",
+                      "minimum": 1,
+                      "maximum": 254,
+                      "title": "ID"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Profiles"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
         }
       },
       "additionalProperties": false,
@@ -14028,6 +14225,11 @@
               "minimum": 3,
               "maximum": 50,
               "title": "Initiator Multiplier"
+            },
+            "initiator_measurement_round_trip": {
+              "type": "boolean",
+              "description": "Enable round-trip delay measurement",
+              "title": "Initiator Measurement Round Trip"
             },
             "reflector": {
               "type": "object",
@@ -17748,12 +17950,14 @@
                     },
                     "prefix_list_in": {
                       "type": "string",
-                      "description": "Inbound prefix-list name",
+                      "description": "Inbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in</samp> instead.",
+                      "deprecated": true,
                       "title": "Prefix List In"
                     },
                     "prefix_list_out": {
                       "type": "string",
-                      "description": "Outbound prefix-list name",
+                      "description": "Outbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out</samp> instead.",
+                      "deprecated": true,
                       "title": "Prefix List Out"
                     }
                   },
@@ -17998,6 +18202,16 @@
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
                         },
+                        "prefix_list_in": {
+                          "type": "string",
+                          "description": "Inbound prefix-list name",
+                          "title": "Prefix List In"
+                        },
+                        "prefix_list_out": {
+                          "type": "string",
+                          "description": "Outbound prefix-list name",
+                          "title": "Prefix List Out"
+                        },
                         "next_hop": {
                           "type": "object",
                           "properties": {
@@ -18193,6 +18407,16 @@
                           "type": "string",
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
+                        },
+                        "prefix_list_in": {
+                          "type": "string",
+                          "description": "Inbound prefix-list name",
+                          "title": "Prefix List In"
+                        },
+                        "prefix_list_out": {
+                          "type": "string",
+                          "description": "Outbound prefix-list name",
+                          "title": "Prefix List Out"
                         }
                       },
                       "additionalProperties": false,
@@ -20651,11 +20875,57 @@
                 "description": "Load-balance policy name.",
                 "title": "Name"
               },
+              "lowest_hop_count": {
+                "type": "boolean",
+                "description": "Prefer paths with lowest hop-count.",
+                "title": "Lowest Hop Count"
+              },
+              "jitter": {
+                "type": "integer",
+                "description": "Jitter requirement for this load balance policy in milliseconds.",
+                "minimum": 0,
+                "maximum": 10000,
+                "title": "Jitter"
+              },
+              "latency": {
+                "type": "integer",
+                "description": "One way delay requirement for this load balance policy in milliseconds.",
+                "minimum": 0,
+                "maximum": 10000,
+                "title": "Latency"
+              },
+              "loss_rate": {
+                "type": "string",
+                "description": "Loss Rate requirement in percentage for this load balance policy.\nValue between 0.00 and 100.00 %",
+                "pattern": "^\\d+(\\.\\d{1,2})?$",
+                "title": "Loss Rate"
+              },
               "path_groups": {
                 "type": "array",
                 "description": "List of path-groups to use for this load balance policy.",
                 "items": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Path-group name",
+                      "title": "Name"
+                    },
+                    "priority": {
+                      "type": "integer",
+                      "description": "Priority for this path-group.\nThe EOS default value is 1.",
+                      "minimum": 1,
+                      "maximum": 65535,
+                      "title": "Priority"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "name"
+                  ]
                 },
                 "title": "Path Groups"
               }

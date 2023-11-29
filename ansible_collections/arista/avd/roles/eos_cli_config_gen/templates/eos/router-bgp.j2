@@ -1210,6 +1210,12 @@ router bgp {{ router_bgp.as }}
       neighbor interface {{ neighbor_interface.name }} peer-group {{ neighbor_interface.peer_group }} peer-filter {{ neighbor_interface.peer_filter }}
 {%             endif %}
 {%         endfor %}
+{# TODO: AVD5.0 remove tmp_vrf_neighbor_prefix_list_in and tmp_vrf_neighbor_prefix_list_out #}
+{# Special temporary variables set under vrf neighbors but read under vrf address_family_ipv4 #}
+{# This is required to move the deprecated vrfs[].neighbors[].ip_prefix_list_in/out to #}
+{# vrfs[].address_family_ipv4.neighbors[].ip_prefix_list_in/out #}
+{%         set tmp_vrf_neighbor_prefix_list_in = {} %}
+{%         set tmp_vrf_neighbor_prefix_list_out = {} %}
 {%         for neighbor in vrf.neighbors | arista.avd.natural_sort('ip_address') %}
 {%             if neighbor.remote_as is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} remote-as {{ neighbor.remote_as }}
@@ -1336,11 +1342,15 @@ router bgp {{ router_bgp.as }}
 {%             if neighbor.route_map_in is arista.avd.defined %}
       neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_in }} in
 {%             endif %}
+{#             TODO: AVD5.0 remove tmp_vrf_neighbor_prefix_list_in and tmp_vrf_neighbor_prefix_list_out #}
+{#             Special temporary variables set under vrf neighbors but read under vrf address_family_ipv4 #}
+{#             This is required to move the deprecated vrfs[].neighbors[].ip_prefix_list_in/out to #}
+{#             vrfs[].address_family_ipv4.neighbors[].ip_prefix_list_in/out #}
 {%             if neighbor.prefix_list_in is arista.avd.defined %}
-      neighbor {{ neighbor.ip_address }} prefix-list {{ neighbor.prefix_list_in }} in
+{%                 do tmp_vrf_neighbor_prefix_list_in.update({neighbor.ip_address: neighbor.prefix_list_in}) %}
 {%             endif %}
 {%             if neighbor.prefix_list_out is arista.avd.defined %}
-      neighbor {{ neighbor.ip_address }} prefix-list {{ neighbor.prefix_list_out }} out
+{%                 do tmp_vrf_neighbor_prefix_list_out.update({neighbor.ip_address: neighbor.prefix_list_out}) %}
 {%             endif %}
 {%         endfor %}
 {%         for network in vrf.networks | arista.avd.natural_sort('prefix') %}
@@ -1411,7 +1421,8 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
-{%         if vrf.address_family_ipv4 is arista.avd.defined %}
+{#         TODO: AVD5.0 remove tmp_vrf_neighbor_prefix_list_in and tmp_vrf_neighbor_prefix_list_out #}
+{%         if vrf.address_family_ipv4 is arista.avd.defined or tmp_vrf_neighbor_prefix_list_in or tmp_vrf_neighbor_prefix_list_out %}
       !
       address-family ipv4
 {%             if vrf.address_family_ipv4.bgp.missing_policy.direction_in_action is arista.avd.defined %}
@@ -1449,6 +1460,23 @@ router bgp {{ router_bgp.as }}
 {%                 if neighbor.route_map_out is arista.avd.defined %}
          neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
 {%                 endif %}
+{#                 TODO: AVD5.0 remove tmp_vrf_neighbor_prefix_list_in and tmp_vrf_neighbor_prefix_list_out #}
+{%                 if neighbor.prefix_list_in is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} prefix-list {{ neighbor.prefix_list_in }} in
+{%                     if tmp_vrf_neighbor_prefix_list_in[neighbor.ip_address] is arista.avd.defined %}
+{%                         do tmp_vrf_neighbor_prefix_list_in.pop(neighbor.ip_address) %}
+{%                     endif %}
+{%                 elif tmp_vrf_neighbor_prefix_list_in[neighbor.ip_address] is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} prefix-list {{ tmp_vrf_neighbor_prefix_list_in.pop(neighbor.ip_address) }} in
+{%                 endif %}
+{%                 if neighbor.prefix_list_out is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} prefix-list {{ neighbor.prefix_list_out }} out
+{%                     if tmp_vrf_neighbor_prefix_list_out[neighbor.ip_address] is arista.avd.defined %}
+{%                         do tmp_vrf_neighbor_prefix_list_out.pop(neighbor.ip_address) %}
+{%                     endif %}
+{%                 elif tmp_vrf_neighbor_prefix_list_out[neighbor.ip_address] is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} prefix-list {{ tmp_vrf_neighbor_prefix_list_out.pop(neighbor.ip_address) }} out
+{%                 endif %}
 {%                 if neighbor.next_hop.address_family_ipv6.enabled is arista.avd.defined %}
 {%                     if neighbor.next_hop.address_family_ipv6.enabled is arista.avd.defined(true) %}
 {%                         set ipv6_originate_cli = "neighbor " ~ neighbor.ip_address ~ " next-hop address-family ipv6" %}
@@ -1460,6 +1488,13 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
          {{ ipv6_originate_cli }}
 {%                 endif %}
+{%             endfor %}
+{#             TODO: AVD5.0 remove tmp_vrf_neighbor_prefix_list_in and tmp_vrf_neighbor_prefix_list_out #}
+{%             for tmp_neighbor_ip in tmp_vrf_neighbor_prefix_list_in | arista.avd.natural_sort %}
+         neighbor {{ tmp_neighbor_ip }} prefix-list {{ tmp_vrf_neighbor_prefix_list_in[tmp_neighbor_ip] }} in
+{%             endfor %}
+{%             for tmp_neighbor_ip in tmp_vrf_neighbor_prefix_list_out | arista.avd.natural_sort %}
+         neighbor {{ tmp_neighbor_ip }} prefix-list {{ tmp_vrf_neighbor_prefix_list_out[tmp_neighbor_ip] }} out
 {%             endfor %}
 {%             for network in vrf.address_family_ipv4.networks | arista.avd.natural_sort('prefix') %}
 {%                 set network_cli = "network " ~ network.prefix %}
@@ -1537,6 +1572,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%                 if neighbor.route_map_out is arista.avd.defined %}
          neighbor {{ neighbor.ip_address }} route-map {{ neighbor.route_map_out }} out
+{%                 endif %}
+{%                 if neighbor.prefix_list_in is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} prefix-list {{ neighbor.prefix_list_in }} in
+{%                 endif %}
+{%                 if neighbor.prefix_list_out is arista.avd.defined %}
+         neighbor {{ neighbor.ip_address }} prefix-list {{ neighbor.prefix_list_out }} out
 {%                 endif %}
 {%             endfor %}
 {%             for network in vrf.address_family_ipv6.networks | arista.avd.natural_sort('prefix') %}

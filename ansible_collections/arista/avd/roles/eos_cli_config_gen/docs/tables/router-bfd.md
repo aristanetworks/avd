@@ -23,6 +23,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "router_bfd.sbfd.local_interface.protocols.ipv6") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;initiator_interval</samp>](## "router_bfd.sbfd.initiator_interval") | Integer |  |  |  | Rate in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;initiator_multiplier</samp>](## "router_bfd.sbfd.initiator_multiplier") | Integer |  |  | Min: 3<br>Max: 50 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;initiator_measurement_round_trip</samp>](## "router_bfd.sbfd.initiator_measurement_round_trip") | Boolean |  |  |  | Enable round-trip delay measurement |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;reflector</samp>](## "router_bfd.sbfd.reflector") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bfd.sbfd.reflector.min_rx") | Integer |  |  |  | Rate in milliseconds |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_discriminator</samp>](## "router_bfd.sbfd.reflector.local_discriminator") | String |  |  |  | IPv4 address or 32 bit integer |
@@ -58,6 +59,9 @@
         # Rate in milliseconds
         initiator_interval: <int>
         initiator_multiplier: <int; 3-50>
+
+        # Enable round-trip delay measurement
+        initiator_measurement_round_trip: <bool>
         reflector:
 
           # Rate in milliseconds

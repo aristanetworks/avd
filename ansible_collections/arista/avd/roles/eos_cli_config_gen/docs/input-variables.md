@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: Input variables for eos_cli_config_gen
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
@@ -749,6 +753,12 @@ roles/eos_cli_config_gen/docs/tables/dhcp-relay.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
+--8<--
+
+### IP DHCP Snooping
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
 --8<--
 
 ### IP ICMP redirect
