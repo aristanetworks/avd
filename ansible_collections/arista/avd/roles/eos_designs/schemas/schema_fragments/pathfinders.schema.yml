@@ -23,4 +23,3 @@ keys:
         ip_address:
           type: str
           description: The Pathfinder public IP address.
-
