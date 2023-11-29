@@ -19,7 +19,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "stun.server.local_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bindings_timeout</samp>](## "stun.server.bindings_timeout") | Integer |  |  | Min: 10<br>Max: 7200 | Timeout for bindings stored on STUN server in seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "stun.server.ssl_profile") | String |  |  |  | SSL profile name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_connection_lifetime</samp>](## "stun.server.ssl_connection_lifetime") | Dictionary |  |  |  | SSL connection lifetime in minutes or hours. If both are specified, minutes is given precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ssl_connection_lifetime</samp>](## "stun.server.ssl_connection_lifetime") | Dictionary |  |  |  | SSL connection lifetime in minutes or hours.<br>If both are specified, minutes is given higher precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minutes</samp>](## "stun.server.ssl_connection_lifetime.minutes") | Integer |  |  | Min: 1<br>Max: 1440 | SSL connection lifetime in minutes (default - 120). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hours</samp>](## "stun.server.ssl_connection_lifetime.hours") | Integer |  |  | Min: 1<br>Max: 24 | SSL connection lifetime in hours (default - 2). |
 
@@ -55,7 +55,8 @@
         # SSL profile name
         ssl_profile: <str>
 
-        # SSL connection lifetime in minutes or hours. If both are specified, minutes is given precedence.
+        # SSL connection lifetime in minutes or hours.
+        # If both are specified, minutes is given higher precedence.
         ssl_connection_lifetime:
 
           # SSL connection lifetime in minutes (default - 120).

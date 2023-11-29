@@ -18,13 +18,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].name") | String | Required, Unique |  | Pattern: ^Ethernet\d+(/\d+)*(\.\d+)?$ | Local interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_address</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].public_address") | String |  |  |  | Public IP assigned by NAT. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stun</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].stun") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_profiles</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].stun.server_profiles") | List, items: String | Required |  | Max Length: 12 | STUN server-profile names. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_profiles</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].stun.server_profiles") | List, items: String | Required |  | Min Length: 1<br>Max Length: 12 | STUN server-profile names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_path_selection.path_groups.[].local_interfaces.[].stun.server_profiles.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_ips</samp>](## "router_path_selection.path_groups.[].local_ips") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_path_selection.path_groups.[].local_ips.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public_address</samp>](## "router_path_selection.path_groups.[].local_ips.[].public_address") | String |  |  |  | Public IP assigned by NAT. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;stun</samp>](## "router_path_selection.path_groups.[].local_ips.[].stun") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_profiles</samp>](## "router_path_selection.path_groups.[].local_ips.[].stun.server_profiles") | List, items: String | Required |  | Max Length: 12 | STUN server-profile names. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;server_profiles</samp>](## "router_path_selection.path_groups.[].local_ips.[].stun.server_profiles") | List, items: String | Required |  | Min Length: 1<br>Max Length: 12 | STUN server-profile names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_path_selection.path_groups.[].local_ips.[].stun.server_profiles.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_peers</samp>](## "router_path_selection.path_groups.[].dynamic_peers") | Dictionary |  |  |  | Flow assignement `lan` can not be configured in a path group with dynamic peers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_path_selection.path_groups.[].dynamic_peers.enabled") | Boolean |  |  |  | Enable `peer dynamic`. |
@@ -87,7 +87,7 @@
               stun:
 
                 # STUN server-profile names.
-                server_profiles: # <=12 items; required
+                server_profiles: # 1-12 items; required
                   - <str>
           local_ips:
             - ip_address: <str; required; unique>
@@ -97,7 +97,7 @@
               stun:
 
                 # STUN server-profile names.
-                server_profiles: # <=12 items; required
+                server_profiles: # 1-12 items; required
                   - <str>
 
           # Flow assignement `lan` can not be configured in a path group with dynamic peers.

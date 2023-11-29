@@ -17,7 +17,7 @@
 | Server Profile | IP address | SSL Profile |
 | -------------- | ---------- | ----------- |
 {%             for server_profile in stun.client.server_profiles | arista.avd.natural_sort('name') %}
-| {{ server_profile.name }} | {{ server_profile.ip_address }} |  {{ server_profile.ssl_profile | arista.avd.default("-") }} |
+| {{ server_profile.name }} | {{ server_profile.ip_address }} | {{ server_profile.ssl_profile | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -40,18 +40,13 @@
 {%         set bindings_timeout = stun.server.bindings_timeout | arista.avd.default("-") %}
 {%         set ssl_profile = stun.server.ssl_profile | arista.avd.default("-") %}
 {%         if stun.server.ssl_connection_lifetime.minutes is arista.avd.defined %}
-{%             set lifetime = stun.server.ssl_connection_lifetime.minutes %}
-{%             set lifetime_unit = "minutes" %}
+{%             set lifetime = stun.server.ssl_connection_lifetime.minutes ~ " minutes" %}
+{%         elif stun.server.ssl_connection_lifetime.hours is arista.avd.defined %}
+{%             set lifetime = stun.server.ssl_connection_lifetime.hours ~ " hours" %}
 {%         else %}
-{%             if stun.server.ssl_connection_lifetime.hours is arista.avd.defined %}
-{%                 set lifetime = stun.server.ssl_connection_lifetime.hours %}
-{%                 set lifetime_unit = "hours" %}
-{%             else %}
-{%                 set lifetime = "-" %}
-{%                 set lifetime_unit = "" %}
-{%             endif %}
+{%             set lifetime = "-" %}
 {%         endif %}
-| {{ bindings_timeout }} | {{ ssl_profile }} | {{ lifetime }} {{ lifetime_unit }} |
+| {{ bindings_timeout }} | {{ ssl_profile }} | {{ lifetime }} |
 {%     endif %}
 
 ### STUN Device Configuration

@@ -55,7 +55,9 @@ keys:
             description: SSL profile name
           ssl_connection_lifetime:
             type: dict
-            description: SSL connection lifetime in minutes or hours. If both are specified, minutes is given precedence.
+            description: |-
+              SSL connection lifetime in minutes or hours.
+              If both are specified, minutes is given higher precedence.
             keys:
               minutes:
                 type: int

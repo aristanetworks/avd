@@ -20717,6 +20717,7 @@
                       "properties": {
                         "server_profiles": {
                           "type": "array",
+                          "minItems": 1,
                           "maxItems": 12,
                           "description": "STUN server-profile names.",
                           "items": {
@@ -20764,6 +20765,7 @@
                       "properties": {
                         "server_profiles": {
                           "type": "array",
+                          "minItems": 1,
                           "maxItems": 12,
                           "description": "STUN server-profile names.",
                           "items": {
