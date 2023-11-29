@@ -95,16 +95,42 @@ keys:
                   type: str
                   description: Destination prefix set name.
                 protocols:
+                  # Using a dict here because of the custom behavior of UDP and TCP
                   type: list
+                  description: |-
+                    List of protocols to consider for this application.
+
+                    To use port field-sets (source, destination or both), the list
+                    must contain only one protocol.
+                    To set port field-set(s) for both TCP and UDP, use `tcp_udp`.
                   items:
                     type: str
-                    description: Protocol name.
+                    valid_values:
+                      - ahp
+                      - esp
+                      - icmp
+                      - igmp
+                      - ospf
+                      - pim
+                      - rsvp
+                      - tcp
+                      - ucp
+                      - tcp_udp
+                      - vrrp
                 src_port_set_name:
                   type: str
-                  description: Source l4 port field set name.
+                  description: |-
+                    Source l4 port field set name.
+
+                    `src_port_set_name` is only valid if one (and only one) of
+                    `udp` or `tcp` or `tcp_udp` is used in `protocols`.
                 dest_port_set_name:
                   type: str
-                  description: Destination l4 port field set name.
+                  description: |-
+                    Destination l4 port field set name.
+
+                    `dest_port_set_name` is only valid if one (and only one) of
+                    `udp` or `tcp` or `tcp_udp` is used in `protocols`.
       application_profiles:
         type: list
         description: Group of applications.
