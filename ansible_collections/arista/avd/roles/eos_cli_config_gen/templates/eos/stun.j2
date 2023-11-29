@@ -14,7 +14,7 @@ stun
 {%             if profile.ip_address is arista.avd.defined %}
          ip address {{ profile.ip_address }}
 {%             endif %}
-{%             if stun.server.ssl_profile is arista.avd.defined %}
+{%             if profile.ssl_profile is arista.avd.defined %}
          ssl profile {{ stun.server.ssl_profile }}
 {%             endif %}
 {%         endfor %}
