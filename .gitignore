@@ -20,23 +20,22 @@ python-avd/.mypy_cache/
 /*.tar.gz
 ## Ansible galaxy-importer
 /importer_result.json
+## ansible-builder
+/_build
+
 # mkdocs
 /site
 
-#  ansible_collections/arista/avd/tests ignores
+# ansible_collections/arista/avd/tests ignores
 ansible_collections/arista/avd/tests/.mypy_cache/
 
-# molecule
-
-
-
-## Development
-# pyenv
+# Development
+## pyenv
 .python-version
-#.vscode/*
+## .vscode/*
 .vscode/launch.json
 */.vscode/*
 **/.vscode/*
 
-## DS_Store
+# OSX
 *.DS_Store
