@@ -19,6 +19,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_overlay_address_families</samp>](## "node_type_keys.[].default_overlay_address_families") | List, items: String |  |  |  | Set the default overlay address families.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "node_type_keys.[].default_overlay_address_families.[]") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>evpn</code><br>- <code>vpn-ipv4</code><br>- <code>vpn-ipv6</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_evpn_encapsulation</samp>](## "node_type_keys.[].default_evpn_encapsulation") | String |  |  | Value is converted to lower case.<br>Valid Values:<br>- <code>mpls</code><br>- <code>vxlan</code> | Set the default evpn encapsulation.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_wan_role</samp>](## "node_type_keys.[].default_wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code><br>- <code>none</code> | Set the default WAN role.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_sdwan_role</samp>](## "node_type_keys.[].default_sdwan_role") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>pathfinder</code> | Set the default SDWAN role.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_support</samp>](## "node_type_keys.[].mlag_support") | Boolean |  | `False` |  | Can this node type support mlag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;network_services</samp>](## "node_type_keys.[].network_services") | Dictionary |  |  |  | Will network services be deployed on this node type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l1</samp>](## "node_type_keys.[].network_services.l1") | Boolean |  | `False` |  | ?? |
@@ -95,6 +97,12 @@
 
         # Set the default evpn encapsulation.
         default_evpn_encapsulation: <str; "mpls" | "vxlan">
+
+        # Set the default WAN role.
+        default_wan_role: <str; "client" | "server" | "none">
+
+        # Set the default SDWAN role.
+        default_sdwan_role: <str; "edge" | "transit" | "pathfinder">
 
         # Can this node type support mlag.
         mlag_support: <bool; default=False>

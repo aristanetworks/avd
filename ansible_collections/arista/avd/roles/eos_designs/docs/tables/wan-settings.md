@@ -29,12 +29,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  |  |  | Name of the IKE policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.control_plane.sa_policy_name") | String |  |  |  | Name of the SA policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.control_plane.profile_name") | String |  |  |  | Name of the IPSec profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipsec_key</samp>](## "wan_ipsec_profiles.control_plane.ipsec_key") | String | Required |  |  | The IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.control_plane.shared_key") | String | Required |  |  | The IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
     | [<samp>&nbsp;&nbsp;data_plane</samp>](## "wan_ipsec_profiles.data_plane") | Dictionary |  |  |  | The `data_plane` profile uses the following defaults:<br>  * IKE policy name: DP-IKE-POLICY<br>  * SA policy name: DP-SA-POLICY<br>  * Profile name: DP-PROFILE |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.data_plane.ike_policy_name") | String |  |  |  | Name of the IKE policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.data_plane.sa_policy_name") | String |  |  |  | Name of the SA policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.data_plane.profile_name") | String |  |  |  | Name of the IPSec profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipsec_key</samp>](## "wan_ipsec_profiles.data_plane.ipsec_key") | String | Required |  |  | The IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String | Required |  |  | The IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
     | [<samp>wan_mode</samp>](## "wan_mode") | String |  |  | Valid Values:<br>- <code>autovpn</code><br>- <code>sdwan</code> | Select if the WAN should be run using Pathfinder (`sdwan`) or Auto VPN only.<br>The default is `sdwan`<br>PREVIEW: This key is currently not supported |
 
 === "YAML"
@@ -112,7 +112,7 @@
 
         # The IPSec shared key.
         # This variable is sensitive and SHOULD be configured using some vault mechanism.
-        ipsec_key: <str; required>
+        shared_key: <str; required>
 
       # The `data_plane` profile uses the following defaults:
       #   * IKE policy name: DP-IKE-POLICY
@@ -131,7 +131,7 @@
 
         # The IPSec shared key.
         # This variable is sensitive and SHOULD be configured using some vault mechanism.
-        ipsec_key: <str; required>
+        shared_key: <str; required>
 
     # Select if the WAN should be run using Pathfinder (`sdwan`) or Auto VPN only.
     # The default is `sdwan`

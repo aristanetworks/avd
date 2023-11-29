@@ -102,6 +102,22 @@ keys:
             - "vxlan"
           description: |
             Set the default evpn encapsulation.
+        default_wan_role:
+          type: str
+          valid_values:
+            - "client"
+            - "server"
+            - "none"
+          description: |
+            Set the default WAN role.
+        default_sdwan_role:
+          type: str
+          valid_values:
+            - "edge"
+            - "transit"
+            - "pathfinder"
+          description: |
+            Set the default SDWAN role.
         mlag_support:
           type: bool
           default: false

@@ -20,7 +20,7 @@ $defs:
       profile_name:
         type: str
         description: Name of the IPSec profile.
-      ipsec_key:
+      shared_key:
         type: str
         required: True
         description: |-

@@ -1,0 +1,34 @@
+---
+# Testing autovpn
+wan_mode: autovpn
+
+bgp_as: 65000
+
+wan_ipsec_profiles:
+  control_plane:
+    ike_policy_name: AUTOVPN-IKE
+    sa_policy_name: AUTOVPN-SA
+    profile_name: AUTOVPN
+    shared_key: ABCDEF1234567890
+
+default_node_types:
+  - node_type: wan-controller
+    match_hostnames:
+      - "^autovpn-rr$"
+  - node_type: edge
+    match_hostnames:
+      - "^autovpn-edge$"
+
+edge:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+  nodes:
+    - name: autovpn-edge
+      id: 1
+
+wan_controller:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+  nodes:
+    - name: autovpn-rr
+      id: 1

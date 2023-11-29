@@ -5,6 +5,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFact
 
 from .cvx import CvxMixin
 from .ip_extcommunity_lists import IpExtCommunityListsMixin
+from .ip_security import IpSecurityMixin
 from .management_cvx import ManagementCvxMixin
 from .route_maps import RouteMapsMixin
 from .router_bfd import RouterBfdMixin
@@ -15,6 +16,7 @@ class AvdStructuredConfigOverlay(
     AvdFacts,
     CvxMixin,
     IpExtCommunityListsMixin,
+    IpSecurityMixin,
     ManagementCvxMixin,
     RouterBfdMixin,
     RouterBgpMixin,
@@ -41,6 +43,7 @@ class AvdStructuredConfigOverlay(
         - overlay_vpn_ipv4
         - overlay_vpn_ipv6
         """
+        # TODO - check this for WAN
         if any(
             [
                 self.shared_utils.overlay_cvx,

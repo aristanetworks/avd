@@ -1,0 +1,43 @@
+---
+# Testing sdwan
+wan_mode: sdwan
+
+bgp_as: 65000
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+default_node_types:
+  - node_type: wan-controller
+    match_hostnames:
+      - "^sdwan-pathfinder$"
+  - node_type: transit
+    match_hostnames:
+      - "^sdwan-transit$"
+  - node_type: edge
+    match_hostnames:
+      - "^sdwan-edge$"
+
+edge:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+  nodes:
+    - name: sdwan-edge
+      id: 1
+
+transit:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+  nodes:
+    - name: sdwan-transit
+      id: 1
+
+wan_controller:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+  nodes:
+    - name: sdwan-pathfinder
+      id: 1
