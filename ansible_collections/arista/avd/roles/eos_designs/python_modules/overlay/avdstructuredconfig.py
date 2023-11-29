@@ -8,6 +8,7 @@ from .ip_extcommunity_lists import IpExtCommunityListsMixin
 from .ip_security import IpSecurityMixin
 from .management_cvx import ManagementCvxMixin
 from .route_maps import RouteMapsMixin
+from .router_adaptive_virtual_topology import RouterAdaptiveVirtualTopologyMixin
 from .router_bfd import RouterBfdMixin
 from .router_bgp import RouterBgpMixin
 
@@ -18,6 +19,7 @@ class AvdStructuredConfigOverlay(
     IpExtCommunityListsMixin,
     IpSecurityMixin,
     ManagementCvxMixin,
+    RouterAdaptiveVirtualTopologyMixin,
     RouterBfdMixin,
     RouterBgpMixin,
     RouteMapsMixin,

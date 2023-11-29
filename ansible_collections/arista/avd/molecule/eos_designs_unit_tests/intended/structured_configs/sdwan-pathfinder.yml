@@ -86,6 +86,17 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+router_adaptive_virtual_topology:
+  topology_role: pathfinder
+  region:
+    name: AVD_Land
+    id: 42
+  zone:
+    name: danger
+    id: 42
+  site:
+    name: PATHFINDER-SITE
+    id: 42
 router_bfd:
   multihop:
     interval: 300

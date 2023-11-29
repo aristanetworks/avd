@@ -923,6 +923,9 @@ $defs:
             convert_types:
               - "int"
             description: Set BGP cluster id.
+          sdwan_site:
+            type: dict
+            $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site"
           ptp:
             documentation_options:
               table: node-type-ptp-configuration

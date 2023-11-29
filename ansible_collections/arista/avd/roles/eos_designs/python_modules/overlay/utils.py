@@ -257,3 +257,21 @@ class UtilsMixin:
                 org_key=f"switch.overlay.peering_address for {peer_name}",
             ),
         }
+
+    @cached_property
+    def _wan_region(self) -> dict | None:
+        """
+        WAN region for Pathfinder
+        """
+        if not self.shared_utils.sdwan_role:
+            return None
+        return get(self._hostvars, "sdwan_region", None)
+
+    @cached_property
+    def _wan_zone(self) -> dict | None:
+        """
+        WAN zone for Pathfinder
+        """
+        if not self.shared_utils.sdwan_role:
+            return None
+        return get(self._hostvars, "sdwan_zone", None)

@@ -84,6 +84,17 @@ ip_security:
     mode: transport
   key_controller:
     profile: DP-PROFILE
+router_adaptive_virtual_topology:
+  topology_role: transit region
+  region:
+    name: AVD_Land
+    id: 42
+  zone:
+    name: danger
+    id: 42
+  site:
+    name: TRANSIT-SITE
+    id: 2
 router_bfd:
   multihop:
     interval: 300

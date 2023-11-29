@@ -10,6 +10,13 @@ wan_ipsec_profiles:
   data_plane:
     shared_key: ABCDEF1234567890666
 
+sdwan_region:
+  name: AVD_Land
+  id: 42
+sdwan_zone:
+  name: danger
+  id: 42
+
 default_node_types:
   - node_type: wan-controller
     match_hostnames:
@@ -26,6 +33,9 @@ edge:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: sdwan-edge
+      sdwan_site:
+        name: EDGE-SITE
+        id: 1
       id: 1
 
 transit:
@@ -33,6 +43,9 @@ transit:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: sdwan-transit
+      sdwan_site:
+        name: TRANSIT-SITE
+        id: 2
       id: 1
 
 wan_controller:
@@ -40,4 +53,7 @@ wan_controller:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: sdwan-pathfinder
+      sdwan_site:
+        name: PATHFINDER-SITE
+        id: 42
       id: 1
