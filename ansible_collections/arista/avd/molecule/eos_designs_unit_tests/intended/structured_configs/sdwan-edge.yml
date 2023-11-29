@@ -100,5 +100,10 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
+router_path_selection:
+  path_groups: []
+  load_balance_policies:
+  - name: LBPOLICY
+    path_groups: []
 ip_igmp_snooping:
   globally_enabled: true
