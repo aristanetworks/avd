@@ -11,6 +11,7 @@ from .route_maps import RouteMapsMixin
 from .router_adaptive_virtual_topology import RouterAdaptiveVirtualTopologyMixin
 from .router_bfd import RouterBfdMixin
 from .router_bgp import RouterBgpMixin
+from .stun import StunMixin
 
 
 class AvdStructuredConfigOverlay(
@@ -23,6 +24,7 @@ class AvdStructuredConfigOverlay(
     RouterBfdMixin,
     RouterBgpMixin,
     RouteMapsMixin,
+    StunMixin,
 ):
     """
     The AvdStructuredConfig Class is imported used "get_structured_config" to render parts of the structured config.
