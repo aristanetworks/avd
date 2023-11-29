@@ -157,6 +157,14 @@ $defs:
             description: Custom structured config for eos_cli_config_gen.
             type: dict
             $ref: "eos_cli_config_gen#/"
+          uplink_type:
+            documentation_options:
+              table: node-type-uplink-configuration
+            type: str
+            $ref: "eos_designs#/keys/node_type_keys/items/keys/uplink_type"
+            description: |-
+              Override the default `uplink_type` set at the `node_type_key` level.
+              `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for the `node_type_key` definition.
           uplink_ipv4_pool:
             documentation_options:
               table: node-type-uplink-configuration
