@@ -4,7 +4,6 @@
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
 from .cvx import CvxMixin
-from .dps_interfaces import DpsInterfacesMixin
 from .ip_extcommunity_lists import IpExtCommunityListsMixin
 from .ip_security import IpSecurityMixin
 from .management_cvx import ManagementCvxMixin
@@ -19,7 +18,6 @@ from .stun import StunMixin
 class AvdStructuredConfigOverlay(
     AvdFacts,
     CvxMixin,
-    DpsInterfacesMixin,
     IpExtCommunityListsMixin,
     IpSecurityMixin,
     ManagementCvxMixin,

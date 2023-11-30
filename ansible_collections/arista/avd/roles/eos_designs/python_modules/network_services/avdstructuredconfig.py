@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
+from .dps_interfaces import DpsInterfacesMixin
 from .eos_cli import EosCliMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .ip_igmp_snooping import IpIgmpSnoopingMixin
@@ -43,6 +44,7 @@ class AvdStructuredConfigNetworkServices(
     StaticRoutesMixin,
     RouterBgpMixin,
     RouterOspfMixin,
+    DpsInterfacesMixin,
     VrfsMixin,
     EosCliMixin,
     StructCfgsMixin,
