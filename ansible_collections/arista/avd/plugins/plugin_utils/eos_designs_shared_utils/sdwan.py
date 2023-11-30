@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
@@ -34,5 +35,10 @@ class SdwanMixin:
     def sdwan_role(self: SharedUtils) -> str | None:
         if self.underlay_router is True and self.wan_mode == "sdwan":
             default_sdwan_role = get(self.node_type_key_data, "default_sdwan_role", default=None)
-            return get(self.switch_data_combined, "sdwan_role", default=default_sdwan_role)
+            sdwan_role = get(self.switch_data_combined, "sdwan_role", default=default_sdwan_role)
+            if sdwan_role == "pathfinder" and self.wan_role != "server":
+                raise AristaAvdError("'wan_role' must be 'server' when 'sdwan_role' is set to 'pathfinder'")
+            elif sdwan_role in ["transit", "edge"] and self.wan_role != "client":
+                raise AristaAvdError("'wan_role' must be 'client' when 'sdwan_role' is set to 'transit' or 'edge'")
+            return sdwan_role
         return None

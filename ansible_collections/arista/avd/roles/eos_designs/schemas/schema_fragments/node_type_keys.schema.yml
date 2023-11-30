@@ -107,9 +107,12 @@ keys:
           valid_values:
             - "client"
             - "server"
-            - "none"
           description: |
             Set the default WAN role.
+
+            This is used both for AutoVPN and Pathfinder designs.
+            That means if `wan_mode` root key is set to `autovpn` or `sdwan`.
+            `server` indicates that the router is a route-reflector.
         default_sdwan_role:
           type: str
           valid_values:
@@ -118,6 +121,12 @@ keys:
             - "pathfinder"
           description: |
             Set the default SDWAN role.
+
+            This key is used for Pathfinder designs only when the `wan_mode` root
+            key is set to `sdwan`.
+
+            `pathfinder` is only a valid id `wan_role` is `server`.
+            `edge` and `transit` are only valid if `wan_role` is `client`.
         mlag_support:
           type: bool
           default: false
