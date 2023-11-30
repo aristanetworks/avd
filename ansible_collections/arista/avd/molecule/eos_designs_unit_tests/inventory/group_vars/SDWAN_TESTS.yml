@@ -4,6 +4,10 @@ wan_mode: sdwan
 
 bgp_as: 65000
 
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+
 wan_ipsec_profiles:
   control_plane:
     shared_key: ABCDEF1234567890

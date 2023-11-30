@@ -12,21 +12,29 @@ router_bgp:
   updates:
     wait_install: true
   peer_groups:
-  - name: EVPN-OVERLAY-PEERS
-    type: evpn
+  - name: WAN-OVERLAY-PEERS
+    type: wan
     update_source: Loopback0
-    bfd: true
+    password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
-    maximum_routes: 0
+    maximum_routes: 12000
     remote_as: '65000'
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   address_family_evpn:
     peer_groups:
-    - name: EVPN-OVERLAY-PEERS
+    - name: WAN-OVERLAY-PEERS
       activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      additional_paths:
+        receive: true
+        send:
+          any: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:

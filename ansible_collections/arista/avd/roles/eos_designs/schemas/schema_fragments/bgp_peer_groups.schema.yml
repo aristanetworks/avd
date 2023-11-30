@@ -147,6 +147,25 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+      wan_overlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: WAN-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: False
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
