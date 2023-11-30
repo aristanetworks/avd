@@ -50,7 +50,7 @@
 {%         for local_interface in stun.server.local_interfaces | arista.avd.natural_sort %}
 {%             do interface_list.append(local_interface) %}
 {%         endfor %}
-| {{ interface_list | join("<br>") | arista.avd.default("-") }} | {{ bindings_timeout }} | {{ ssl_profile }} | {{ lifetime }} | {{ stun_port }} |
+| {{ interface_list | join("<br>") }} | {{ bindings_timeout }} | {{ ssl_profile }} | {{ lifetime }} | {{ stun_port }} |
 {%     endif %}
 
 ### STUN Device Configuration
