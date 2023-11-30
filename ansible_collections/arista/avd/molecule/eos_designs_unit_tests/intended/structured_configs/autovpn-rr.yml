@@ -115,3 +115,9 @@ dps_interfaces:
 - name: Dps1
   tcp_mss_ceiling:
     ipv4: 1000
+vxlan_interface:
+  Vxlan1:
+    description: autovpn-rr_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback0
