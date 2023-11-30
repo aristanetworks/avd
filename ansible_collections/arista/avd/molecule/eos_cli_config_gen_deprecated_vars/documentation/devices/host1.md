@@ -1829,9 +1829,9 @@ qos profile test
 | ----------------------- |
 | ethernet1 |
 
-| Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime |
-| -------------------- | ----------- | ----------------------- |
-| - | - | - |
+| Server local interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
+| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
+| - | - | - | - | 3478 |
 
 ### STUN Device Configuration
 
