@@ -22483,8 +22483,15 @@
                   },
                   "ssl_profile": {
                     "type": "string",
-                    "description": "SSL profile name",
+                    "description": "SSL profile name.",
                     "title": "SSL Profile"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "Destination port for the request to STUN server.",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Port"
                   }
                 },
                 "additionalProperties": false,
@@ -22529,7 +22536,7 @@
             },
             "ssl_profile": {
               "type": "string",
-              "description": "SSL profile name",
+              "description": "SSL profile name.",
               "title": "SSL Profile"
             },
             "ssl_connection_lifetime": {
@@ -22556,6 +22563,13 @@
                 "^_.+$": {}
               },
               "title": "SSL Connection Lifetime"
+            },
+            "port": {
+              "type": "integer",
+              "description": "Listening port for STUN server (default - 3478).",
+              "minimum": 1,
+              "maximum": 65535,
+              "title": "Port"
             }
           },
           "additionalProperties": false,

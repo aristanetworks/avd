@@ -9,6 +9,7 @@ stun:
       - Ethernet13
     bindings_timeout: 600
     ssl_profile: pathfinder
+    port: 4100
     ssl_connection_lifetime:
       minutes: 1300
       hours: 3
@@ -17,6 +18,7 @@ stun:
       # The servers are on purpose not in order in order to test the sorting
       - name: server2
         ip_address: 2.3.4.5
+        port: 4100
       - name: server1
         ip_address: 1.2.3.4
         ssl_profile: pathfinder

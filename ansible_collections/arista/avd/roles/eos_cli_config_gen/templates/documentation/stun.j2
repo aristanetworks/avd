@@ -14,10 +14,12 @@
 
 #### Server Profiles
 
-| Server Profile | IP address | SSL Profile |
-| -------------- | ---------- | ----------- |
+| Server Profile | IP address | SSL Profile | Port |
+| -------------- | ---------- | ----------- | ---- |
 {%             for server_profile in stun.client.server_profiles | arista.avd.natural_sort('name') %}
-| {{ server_profile.name }} | {{ server_profile.ip_address }} | {{ server_profile.ssl_profile | arista.avd.default("-") }} |
+{%                 set ssl_profile = server_profile.ssl_profile | arista.avd.default("-") %}
+{%                 set stun_port = server_profile.port | arista.avd.default("3478") %}
+| {{ server_profile.name }} | {{ server_profile.ip_address }} | {{ ssl_profile }} | {{ stun_port }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -27,18 +29,16 @@
 
 | Server local interfaces |
 | ----------------------- |
-{%         for local_interface in stun.server.local_interfaces | arista.avd.natural_sort %}
-| {{ local_interface }} |
-{%         endfor %}
 {# next is deprecated remove in v5.0.0 #}
 {%         if stun.server.local_interface is arista.avd.defined %}
 | {{ stun.server.local_interface }} |
 {%         endif %}
 
-| Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime |
-| -------------------- | ----------- | ----------------------- |
+| Server local interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
+| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
 {%         set bindings_timeout = stun.server.bindings_timeout | arista.avd.default("-") %}
 {%         set ssl_profile = stun.server.ssl_profile | arista.avd.default("-") %}
+{%         set stun_port = stun.server.port | arista.avd.default("3478") %}
 {%         if stun.server.ssl_connection_lifetime.minutes is arista.avd.defined %}
 {%             set lifetime = stun.server.ssl_connection_lifetime.minutes ~ " minutes" %}
 {%         elif stun.server.ssl_connection_lifetime.hours is arista.avd.defined %}
@@ -46,7 +46,11 @@
 {%         else %}
 {%             set lifetime = "-" %}
 {%         endif %}
-| {{ bindings_timeout }} | {{ ssl_profile }} | {{ lifetime }} |
+{%         set interface_list = [] %}
+{%         for local_interface in stun.server.local_interfaces | arista.avd.natural_sort %}
+{%             do interface_list.append(local_interface) %}
+{%         endfor %}
+| {{ interface_list | join("<br>") }} | {{ bindings_timeout }} | {{ ssl_profile }} | {{ lifetime }} | {{ stun_port }} |
 {%     endif %}
 
 ### STUN Device Configuration

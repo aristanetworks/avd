@@ -27,7 +27,14 @@ keys:
                   type: str
                 ssl_profile:
                   type: str
-                  description: SSL profile name
+                  description: SSL profile name.
+                port:
+                  type: int
+                  description: Destination port for the request to STUN server.
+                  min: 1
+                  max: 65535
+                  convert_types:
+                    - str
       server:
         type: dict
         description: STUN server settings
@@ -52,7 +59,7 @@ keys:
             max: 7200
           ssl_profile:
             type: str
-            description: SSL profile name
+            description: SSL profile name.
           ssl_connection_lifetime:
             type: dict
             description: |-
@@ -73,3 +80,10 @@ keys:
                   - str
                 min: 1
                 max: 24
+          port:
+            type: int
+            description: Listening port for STUN server (default - 3478).
+            min: 1
+            max: 65535
+            convert_types:
+              - str
