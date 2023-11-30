@@ -19,7 +19,7 @@
 {%             for server_profile in stun.client.server_profiles | arista.avd.natural_sort('name') %}
 {%                 set ssl_profile = server_profile.ssl_profile | arista.avd.default("-") %}
 {%                 set stun_port = server_profile.port | arista.avd.default("3478") %}
-| {{ server_profile.name }} | {{ server_profile.ip_address }} | {{ ssl_profile }} | {{ stun_port }}
+| {{ server_profile.name }} | {{ server_profile.ip_address }} | {{ ssl_profile }} | {{ stun_port }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -27,10 +27,10 @@
 
 ### STUN Server
 
-| Server local interfaces |
-| ----------------------- |
 {# next is deprecated remove in v5.0.0 #}
 {%         if stun.server.local_interface is arista.avd.defined %}
+| Server local interfaces |
+| ----------------------- |
 | {{ stun.server.local_interface }} |
 {%         endif %}
 
