@@ -7,7 +7,7 @@ __metaclass__ = type
 
 import cProfile
 import pstats
-from json import load
+from json import JSONDecodeError, load
 from pathlib import Path
 from typing import Generator
 
@@ -15,6 +15,7 @@ from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import CSVReport, ResultsManager, ValidateStateReport
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 
@@ -32,8 +33,12 @@ def _test_results_gen(input_path: str) -> Generator[dict, None, None]:
     ------
       Generator[dict, None, None]: Test result as a dictionary.
     """
-    with Path(input_path).open(encoding="UTF-8") as file:
-        yield from load(file)
+    try:
+        with Path(input_path).open(encoding="UTF-8") as file:
+            yield from load(file)
+    except (JSONDecodeError, UnicodeDecodeError, OSError) as error:
+        error_message = f"{error.__class__.__name__}: {error}"
+        raise AristaAvdError(error_message) from error
 
 
 class ActionModule(ActionBase):
@@ -78,7 +83,7 @@ class ActionModule(ActionBase):
         hostvars = task_vars["hostvars"]
         # For now we support the existing behavior of eos_validate_state, all hosts from the play
         ansible_play_hosts_all = task_vars.get("ansible_play_hosts_all", [])
-        # List to track all results temp files for each host
+        # List to track each host results temporary file
         temp_files = []
 
         try:
@@ -88,12 +93,12 @@ class ActionModule(ActionBase):
                 host_hostvars = hostvars[host]
                 # Hosts marked as not deployed do not have any results
                 if not get(host_hostvars, "is_deployed", default=True):
-                    display.warning(f"No test results for host {host} since it's marked as not deployed.")
+                    display.warning(f"No test results for host {host} since 'is_deployed' is False.")
                     continue
                 # Getting the host results temp file saved by eos_validate_state_runner action plugin
                 temp_file = get(host_hostvars, "anta_results.results_temp_file")
                 if not isinstance(temp_file, str) or not Path(temp_file).exists():
-                    display.warning(f"Results temporary file path is invalid or does not exist for host {host}.")
+                    display.warning(f"Results temporary file path {temp_file} is invalid or does not exist for host {host}.")
                     continue
                 # Track the temp file
                 temp_files.append(temp_file)
@@ -102,8 +107,8 @@ class ActionModule(ActionBase):
                     # Process the host test results
                     for test_result in _test_results_gen(temp_file):
                         test_results.update_results(test_result)
-                except Exception as error:
-                    display.warning(f"Error while processing the test results of host {host}: {error}.")
+                except AristaAvdError as error:
+                    display.warning(f"Exception raised while processing the test results of host {host}: {error}.")
 
             # Generate the reports
             if validation_report_csv:
@@ -118,7 +123,7 @@ class ActionModule(ActionBase):
         except Exception as error:
             raise AnsibleActionFail(f"Error during plugin execution: {error}") from error
         finally:
-            # Cleanup for each host's temporary file
+            # Cleanup temporary files
             for file_path in temp_files:
                 Path(file_path).unlink(missing_ok=True)
 

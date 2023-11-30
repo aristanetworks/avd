@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import ACRONYM_CATEGORIES
 
 
@@ -121,6 +122,10 @@ class ResultsManager:
             result (dict): The test result data to be added and processed.
         """
         self.test_id += 1
+
+        if not isinstance(result, dict):
+            raise AristaAvdError(message=f"Each test result must be a dictionary, got {result}")
+
         parsed_result = self._parse_result(result)
         test_result = parsed_result["result"]
         categories = parsed_result["test_categories"]
