@@ -28,7 +28,11 @@ class SdwanMixin:
     def wan_role(self: SharedUtils) -> str | None:
         if self.underlay_router is True and self.wan_mode is not None:
             default_wan_role = get(self.node_type_key_data, "default_wan_role", default=None)
-            return get(self.switch_data_combined, "wan_role", default=default_wan_role)
+            wan_role = get(self.switch_data_combined, "wan_role", default=default_wan_role)
+            if wan_role is not None and self.overlay_routing_protocol != "ibgp":
+                raise AristaAvdError("Only 'ibgp' is supported as 'overlay_routing_protocol' for WAN nodes.")
+            return wan_role
+
         return None
 
     @cached_property
