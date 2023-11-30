@@ -45,13 +45,13 @@ interface Management1
 
 | Server Profile | IP address | SSL Profile | Port |
 | -------------- | ---------- | ----------- | ---- |
-| server1 | 1.2.3.4 | pathfinder | 3784 |
+| server1 | 1.2.3.4 | pathfinder | 3478 |
 | server2 | 2.3.4.5 | - | 4100 |
 
 ### STUN Server
 
-| Local interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
-| ---------------- | -------------------- | ----------- | ----------------------- | ---- |
+| Server Local interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
+| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
 | Ethernet1<br>Ethernet13<br>Vlan42<br>Vlan666 | 600 | pathfinder | 1300 minutes | 4100 |
 
 ### STUN Device Configuration
