@@ -7,6 +7,12 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>autovpn_rrs</samp>](## "autovpn_rrs") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>The AutoVPN RRs information for the WAN.<br><br>When the AutoVPN RR is part of the same inventory as the WAN routers,<br>only the name is required. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "autovpn_rrs.[].hostname") | String | Required, Unique |  |  | Pathfinder hostname. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "autovpn_rrs.[].router_id") | String |  |  |  | Pathfinder router_id. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;carriers</samp>](## "autovpn_rrs.[].carriers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "autovpn_rrs.[].carriers.[].name") | String |  |  |  | Carrier name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "autovpn_rrs.[].carriers.[].ip_address") | String |  |  |  | The Pathfinder public IP address. |
     | [<samp>carriers</samp>](## "carriers") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>List of carriers used for the WAN configuration. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "carriers.[].name") | String | Required, Unique |  |  | Carrier name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "carriers.[].description") | String |  |  |  | Additional information about the carrier for documentation purposes. |
@@ -15,9 +21,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;characteristics</samp>](## "carriers.[].characteristics") | List, items: String |  |  |  | A list of characteristics to assign to the carrier.<br>TODO: Explain further how these are used (or removed before removing preview). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "carriers.[].characteristics.[]") | String |  |  | Valid Values:<br>- <code>backup</code><br>- <code>metered</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;circuit_type</samp>](## "carriers.[].circuit_type") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>both.</code> | TBC - edge or transit or both.<br>Unclear if this should be at the carrier level or some other place. |
-    | [<samp>pathfinders</samp>](## "pathfinders") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>The Pathfinder(s) to connect to from this device. |
-    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "pathfinders.[].name") | String | Required, Unique |  |  | Pathfinder hostname. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "pathfinders.[].ip_address") | String |  |  |  | The Pathfinder public IP address. |
+    | [<samp>sdwan_pathfinders</samp>](## "sdwan_pathfinders") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>The Pathfinder(s) information for the WAN.<br><br>When the pathfinder is part of the same inventory as the WAN routers,<br>only the name is required. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "sdwan_pathfinders.[].hostname") | String | Required, Unique |  |  | Pathfinder hostname. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "sdwan_pathfinders.[].router_id") | String |  |  |  | Pathfinder router_id. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;carriers</samp>](## "sdwan_pathfinders.[].carriers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "sdwan_pathfinders.[].carriers.[].name") | String |  |  |  | Carrier name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "sdwan_pathfinders.[].carriers.[].ip_address") | String |  |  |  | The Pathfinder public IP address. |
     | [<samp>sdwan_region</samp>](## "sdwan_region") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Define the SDWAN region for the device. |
     | [<samp>&nbsp;&nbsp;name</samp>](## "sdwan_region.name") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;id</samp>](## "sdwan_region.id") | Integer | Required |  | Min: 1<br>Max: 255 |  |
@@ -40,6 +49,26 @@
 === "YAML"
 
     ```yaml
+    # PREVIEW: This key is currently not supported
+    # The AutoVPN RRs information for the WAN.
+
+    # When the AutoVPN RR is part of the same inventory as the WAN routers,
+    # only the name is required.
+    autovpn_rrs:
+
+        # Pathfinder hostname.
+      - hostname: <str; required; unique>
+
+        # Pathfinder router_id.
+        router_id: <str>
+        carriers:
+
+            # Carrier name.
+          - name: <str>
+
+            # The Pathfinder public IP address.
+            ip_address: <str>
+
     # PREVIEW: This key is currently not supported
     # List of carriers used for the WAN configuration.
     carriers:
@@ -67,14 +96,24 @@
         circuit_type: <str; "edge" | "transit" | "both.">
 
     # PREVIEW: This key is currently not supported
-    # The Pathfinder(s) to connect to from this device.
-    pathfinders:
+    # The Pathfinder(s) information for the WAN.
+
+    # When the pathfinder is part of the same inventory as the WAN routers,
+    # only the name is required.
+    sdwan_pathfinders:
 
         # Pathfinder hostname.
-      - name: <str; required; unique>
+      - hostname: <str; required; unique>
 
-        # The Pathfinder public IP address.
-        ip_address: <str>
+        # Pathfinder router_id.
+        router_id: <str>
+        carriers:
+
+            # Carrier name.
+          - name: <str>
+
+            # The Pathfinder public IP address.
+            ip_address: <str>
 
     # PREVIEW: This key is currently not supported
     # Define the SDWAN region for the device.

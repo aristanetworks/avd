@@ -8,6 +8,10 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
 
+autovpn_rrs:
+  # Not testing the overloading
+  - hostname: autovpn-rr
+
 wan_ipsec_profiles:
   control_plane:
     ike_policy_name: AUTOVPN-IKE

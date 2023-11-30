@@ -275,3 +275,70 @@ class UtilsMixin:
         if not self.shared_utils.sdwan_role:
             return None
         return get(self._hostvars, "sdwan_zone", None)
+
+    @cached_property
+    def _wan_route_reflectors(self) -> dict:
+        """
+        Return a list of wan RR based on the the wan_mode type
+
+        It the RR is part of the inventory, the peer_facts are read.
+        If any key is specified in the variables, it overwrites whatever is in the peer_facts.
+
+        If no peer_fact is found the variables are required in the inventory.
+        """
+        # TODO - need to factor this with other function once we fix
+        # https://github.com/aristanetworks/ansible-avd/issues/3392
+        if not self.shared_utils.wan_mode:
+            return {}
+
+        wan_route_reflectors = {}
+
+        # Could maybe handle this in shared_utils?
+        if self.shared_utils.wan_mode == "autovpn":
+            wan_route_reflectors_list = get(self._hostvars, "autovpn_rrs", default=[])
+        elif self.shared_utils.wan_mode == "sdwan":
+            wan_route_reflectors_list = get(self._hostvars, "sdwan_pathfinders", default=[])
+        else:
+            return {}
+
+        for wan_rr_dict in natural_sort(wan_route_reflectors_list, sort_key="hostname"):
+            # These remote gw can be outside of the inventory
+            wan_rr = wan_rr_dict["hostname"]
+
+            if wan_rr == self.shared_utils.hostname:
+                # Don't add yourself
+                continue
+
+            peer_facts = self.shared_utils.get_peer_facts(wan_rr, required=False)
+
+            wan_rr_result_dict = {}
+
+            # TODO need to test this
+            if peer_facts is not None:
+                # Found a matching server in inventory
+                bgp_as = peer_facts.get("bgp_as")
+
+                wan_rr_result_dict = {
+                    "bgp_as": str(bgp_as) if bgp_as is not None else None,
+                    "router_id": peer_facts.get("router_id"),
+                    "carriers": peer_facts.get("carriers"),
+                }
+
+            # Retrieve the values from the dictionary, making them required if the peer_facts were not found
+            # TODO needs to be improved
+            bgp_as = get(wan_rr_dict, "bgp_as", required=(peer_facts is None))
+            router_id = get(wan_rr_dict, "router_id", required=(peer_facts is None))
+            carriers = get(wan_rr_dict, "carriers", required=(peer_facts is None))
+            update_dict = {
+                    "bgp_as": bgp_as,
+                    "router_id": router_id,
+                    "carriers": carriers,
+            }
+            update_dict = {key: value for key, value in update_dict.items() if value is not None}
+
+            # TODO need a deepmerge
+            wan_rr_result_dict.update(update_dict)
+
+            wan_route_reflectors[wan_rr] = wan_rr_result_dict
+
+        return wan_route_reflectors

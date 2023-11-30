@@ -35,6 +35,11 @@ router_bgp:
         receive: true
         send:
           any: true
+  neighbors:
+  - ip_address: 192.168.42.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: autovpn-rr
+    description: autovpn-rr
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:

@@ -8,6 +8,10 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
 
+sdwan_pathfinders:
+  # Not testing the overloading
+  - hostname: sdwan-pathfinder
+
 wan_ipsec_profiles:
   control_plane:
     shared_key: ABCDEF1234567890

@@ -6,20 +6,14 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  pathfinders:
+  autovpn_rrs:
     documentation_options:
       table: wan-settings
     description: |-
       PREVIEW: This key is currently not supported
-      The Pathfinder(s) to connect to from this device.
+      The AutoVPN RRs information for the WAN.
+
+      When the AutoVPN RR is part of the same inventory as the WAN routers,
+      only the name is required.
     type: list
-    primary_key: name
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          description: Pathfinder hostname.
-        ip_address:
-          type: str
-          description: The Pathfinder public IP address.
+    $ref: "eos_designs#/$defs/wan_rrs"
