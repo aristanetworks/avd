@@ -26,13 +26,13 @@
 {%     if stun.server is arista.avd.defined %}
 
 ### STUN Server
+
 {# next is deprecated remove in v5.0.0 #}
 {%         if stun.server.local_interface is arista.avd.defined %}
 | Server local interfaces |
 | ----------------------- |
 | {{ stun.server.local_interface }} |
 {%         endif %}
-
 | Server local interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
 | ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
 {%         set bindings_timeout = stun.server.bindings_timeout | arista.avd.default("-") %}
