@@ -27,6 +27,7 @@ stun
 {%         for local_interface in stun.server.local_interfaces | arista.avd.natural_sort %}
       local-interface {{ local_interface }}
 {%         endfor %}
+{# Next is deprecated remove in v5.0.0 #}
 {%         if stun.server.local_interface is arista.avd.defined %}
       local-interface {{ stun.server.local_interface }}
 {%         endif %}

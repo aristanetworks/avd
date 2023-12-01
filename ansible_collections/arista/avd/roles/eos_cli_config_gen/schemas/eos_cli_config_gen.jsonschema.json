@@ -22461,15 +22461,15 @@
     },
     "stun": {
       "type": "object",
-      "description": "STUN configuration",
+      "description": "STUN configuration.",
       "properties": {
         "client": {
           "type": "object",
-          "description": "STUN client settings",
+          "description": "STUN client settings.",
           "properties": {
             "server_profiles": {
               "type": "array",
-              "description": "List of server profiles for the client",
+              "description": "List of server profiles for the client.",
               "items": {
                 "type": "object",
                 "properties": {
@@ -22488,7 +22488,7 @@
                   },
                   "port": {
                     "type": "integer",
-                    "description": "Destination port for the request to STUN server.",
+                    "description": "Destination port for the request STUN server (default - 3478).",
                     "minimum": 1,
                     "maximum": 65535,
                     "title": "Port"
@@ -22513,7 +22513,7 @@
         },
         "server": {
           "type": "object",
-          "description": "STUN server settings",
+          "description": "STUN server settings.",
           "properties": {
             "local_interface": {
               "type": "string",

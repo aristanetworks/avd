@@ -8,15 +8,15 @@ type: dict
 keys:
   stun:
     type: dict
-    description: STUN configuration
+    description: STUN configuration.
     keys:
       client:
         type: dict
-        description: STUN client settings
+        description: STUN client settings.
         keys:
           server_profiles:
             type: list
-            description: List of server profiles for the client
+            description: List of server profiles for the client.
             primary_key: name
             items:
               type: dict
@@ -30,14 +30,14 @@ keys:
                   description: SSL profile name.
                 port:
                   type: int
-                  description: Destination port for the request to STUN server.
+                  description: Destination port for the request STUN server (default - 3478).
                   min: 1
                   max: 65535
                   convert_types:
                     - str
       server:
         type: dict
-        description: STUN server settings
+        description: STUN server settings.
         keys:
           local_interface:
             type: str
