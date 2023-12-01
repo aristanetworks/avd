@@ -15,7 +15,7 @@
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
@@ -89,7 +89,7 @@ interface Management1
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -176,7 +176,7 @@ spanning-tree mst 0 priority 4096
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -367,7 +367,6 @@ interface Port-Channel8
 | Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | - |
 | Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | - |
 
-
 #### Loopback Interfaces Device Configuration
 
 ```eos
@@ -541,9 +540,9 @@ service routing protocols model multi-agent
 
 #### Virtual Router MAC Address Summary
 
-##### Virtual Router MAC Address: 00:1c:73:00:00:99
+Virtual Router MAC Address: 00:1c:73:00:00:99
 
-#### Virtual Router MAC Address Configuration
+#### Virtual Router MAC Address Device Configuration
 
 ```eos
 !
@@ -586,8 +585,8 @@ ip routing vrf VRF11
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 172.16.1.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration

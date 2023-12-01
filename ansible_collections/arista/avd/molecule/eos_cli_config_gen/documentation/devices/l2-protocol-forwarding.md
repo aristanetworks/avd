@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [L2 Protocol Forwarding](#l2-protocol-forwarding)
   - [Forwarding Profiles](#forwarding-profiles)
-  - [L2 Protocol Forwarding Configuration](#l2-protocol-forwarding-configuration)
+  - [L2 Protocol Forwarding Device Configuration](#l2-protocol-forwarding-device-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -69,7 +69,7 @@ interface Management1
 | pause | False | - | True |
 | stp | - | True | True |
 
-### L2 Protocol Forwarding Configuration
+### L2 Protocol Forwarding Device Configuration
 
 ```eos
 !

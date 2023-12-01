@@ -5,8 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
-  - [Custom TCAM profiles](#custom-tcam-profiles)
-  - [Hardware TCAM configuration](#hardware-tcam-configuration)
+  - [Custom TCAM Profiles](#custom-tcam-profiles)
+  - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 
 ## Management
 
@@ -38,16 +38,16 @@ interface Management1
 
 ## Hardware TCAM Profile
 
-TCAM profile __`traffic_policy`__ is active
+TCAM profile **`traffic_policy`** is active
 
-### Custom TCAM profiles
+### Custom TCAM Profiles
 
 Following TCAM profiles are configured on device:
 
 - Profile Name: `traffic_policy`
 - Profile Name: `MY_TCAM_PROFILE`
 
-### Hardware TCAM configuration
+### Hardware TCAM Device Configuration
 
 ```eos
 !

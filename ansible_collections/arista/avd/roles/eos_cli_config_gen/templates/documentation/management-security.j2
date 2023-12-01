@@ -102,6 +102,7 @@
 {%     if management_security.password.policies is arista.avd.defined %}
 
 ### Password Policies
+
 | Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
 |-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
 {%         for policy in management_security.password.policies | arista.avd.natural_sort('name') %}
@@ -116,7 +117,7 @@
 {%         endfor %}
 {%     endif %}
 
-### Management Security Configuration
+### Management Security Device Configuration
 
 ```eos
 {%     include 'eos/management-security.j2' %}

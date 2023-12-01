@@ -46,7 +46,7 @@ interface Management1
 | --------- | --- |
 | Loopback0 | MGMT |
 
-#### Management CVX configuration
+#### Management CVX Device Configuration
 
 ```eos
 !

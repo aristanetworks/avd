@@ -46,7 +46,7 @@ interface Management1
 | MyTrackNoProperty | Ethernet1/1 | line-protocol |
 | MyTrackSetProperty | Ethernet2/1 | line-protocol |
 
-#### Object Tracking Configuration
+#### Object Tracking Device Configuration
 
 ```eos
 !

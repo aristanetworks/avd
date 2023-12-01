@@ -71,7 +71,7 @@ Default maintenance unit profile: **UP1**
 | System | - | - | UP1 | No |
 | UNIT1 | INTERFACE_GROUP_1 | BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
 
-#### Maintenance configuration
+#### Maintenance Device Configuration
 
 ```eos
 !

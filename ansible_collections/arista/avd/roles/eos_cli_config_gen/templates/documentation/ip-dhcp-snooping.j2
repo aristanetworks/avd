@@ -20,17 +20,19 @@ IP DHCP Snooping Bridging is enabled
 IP DHCP Snooping Insertion of Option 82 is enabled
 {%     endif %}
 {%     if ip_dhcp_snooping.information_option.circuit_id_type is arista.avd.defined %}
-- IP DHCP Snooping Circuit-ID Suboption: {{ ip_dhcp_snooping.information_option.circuit_id_type }}
+
+IP DHCP Snooping Circuit-ID Suboption: {{ ip_dhcp_snooping.information_option.circuit_id_type }}
 {%     endif %}
 {%     if ip_dhcp_snooping.information_option.circuit_id_format is arista.avd.defined %}
-- IP DHCP Snooping Circuit-ID Format: {{ ip_dhcp_snooping.information_option.circuit_id_format }}
+
+IP DHCP Snooping Circuit-ID Format: {{ ip_dhcp_snooping.information_option.circuit_id_format }}
 {%     endif %}
 {%     if ip_dhcp_snooping.vlan is arista.avd.defined %}
 
 IP DHCP Snooping enabled VLAN: {{ ip_dhcp_snooping.vlan }}
 {%     endif %}
 
-### IP DHCP Snooping Configuration
+### IP DHCP Snooping Device Configuration
 
 ```eos
 {%     include 'eos/ip-dhcp-snooping.j2' %}

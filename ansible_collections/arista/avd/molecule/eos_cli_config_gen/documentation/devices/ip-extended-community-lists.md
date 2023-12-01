@@ -47,7 +47,7 @@ interface Management1
 | TEST1 | deny | 65002:65002 |
 | TEST2 | deny | 65001:65001 |
 
-#### IP Extended Community Lists configuration
+#### IP Extended Community Lists Device Configuration
 
 ```eos
 !
