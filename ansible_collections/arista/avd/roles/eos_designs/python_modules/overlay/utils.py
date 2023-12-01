@@ -330,9 +330,9 @@ class UtilsMixin:
             router_id = get(wan_rr_dict, "router_id", required=(peer_facts is None))
             carriers = get(wan_rr_dict, "carriers", required=(peer_facts is None))
             update_dict = {
-                    "bgp_as": bgp_as,
-                    "router_id": router_id,
-                    "carriers": carriers,
+                "bgp_as": bgp_as,
+                "router_id": router_id,
+                "carriers": carriers,
             }
             update_dict = {key: value for key, value in update_dict.items() if value is not None}
 

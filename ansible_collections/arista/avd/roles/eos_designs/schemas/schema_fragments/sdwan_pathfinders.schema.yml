@@ -20,9 +20,9 @@ keys:
     items:
       type: dict
       keys:
-          hostname:
-            type: str
-            description: Pathfinder hostname.
-          router_id:
-            type: str
-            description: Pathfinder router id.
+        hostname:
+          type: str
+          description: Pathfinder hostname.
+        router_id:
+          type: str
+          description: Pathfinder router id.
