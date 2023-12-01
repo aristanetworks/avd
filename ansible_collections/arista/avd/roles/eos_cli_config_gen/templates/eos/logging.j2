@@ -63,6 +63,9 @@ logging synchronous level {{ logging.synchronous.level | arista.avd.default("cri
 {%     if logging.format.timestamp is arista.avd.defined %}
 logging format timestamp {{ logging.format.timestamp }}
 {%     endif %}
+{%     if logging.format.rfc5424 is arista.avd.defined(true) %}
+logging format rfc5424
+{%     endif %}
 {%     if logging.format.hostname is arista.avd.defined('fqdn') %}
 logging format hostname fqdn
 {%     elif logging.format.hostname is arista.avd.defined('ipv4') %}
