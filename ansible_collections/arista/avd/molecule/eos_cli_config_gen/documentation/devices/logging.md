@@ -53,7 +53,7 @@ interface Management1
 | Timestamp | traditional year timezone |
 | Hostname | hostname |
 | Sequence-numbers | false |
-| RFC5424 | true |
+| RFC5424 | True |
 
 | VRF | Source Interface |
 | --- | ---------------- |
