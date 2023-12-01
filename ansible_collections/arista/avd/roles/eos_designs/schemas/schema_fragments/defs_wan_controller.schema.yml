@@ -16,10 +16,10 @@ $defs:
       keys:
         hostname:
           type: str
-          description: Pathfinder hostname.
+          description: Route-Reflector hostname.
         router_id:
           type: str
-          description: Pathfinder router_id.
+          description: Route-Reflector router id.
         carriers:
           type: list
           items:
@@ -31,4 +31,4 @@ $defs:
               # TODO - should it be multiple IP address
               ip_address:
                 type: str
-                description: The Pathfinder public IP address.
+                description: The public IP address for this carrier.

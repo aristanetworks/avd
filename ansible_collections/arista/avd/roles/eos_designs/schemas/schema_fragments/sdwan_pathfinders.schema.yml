@@ -17,3 +17,12 @@ keys:
       only the name is required.
     type: list
     $ref: "eos_designs#/$defs/wan_rrs"
+    items:
+      type: dict
+      keys:
+          hostname:
+            type: str
+            description: Pathfinder hostname.
+          router_id:
+            type: str
+            description: Pathfinder router id.
