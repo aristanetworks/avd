@@ -4,12 +4,12 @@
  that can be found in the LICENSE file.
 #}
 {# doc - ip dhcp relay #}
-{% if ip_dhcp_relay is defined and ip_dhcp_relay is not none %}
+{% if ip_dhcp_relay is arista.avd.defined %}
 
 ## IP DHCP Relay
 
 ### IP DHCP Relay
-{%     if ip_dhcp_relay.information_option is defined and ip_dhcp_relay.information_option == true %}
+{%     if ip_dhcp_relay.information_option is arista.avd.defined(true) %}
 
 IP DHCP Relay Option 82 is enabled.
 {%     endif %}

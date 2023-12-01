@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# doc - errdisable #}
-{% if errdisable is defined and errdisable is not none %}
+{% if errdisable is arista.avd.defined %}
 
 ## Errdisable
 
@@ -35,7 +35,7 @@
 {%             endfor %}
 {%         endif %}
 
-{%         if errdisable.recovery.interval is defined and errdisable.recovery.interval is not none  %}
+{%         if errdisable.recovery.interval is arista.avd.defined %}
 {%         endif %}
 {%         if errdisable.recovery.causes is defined %}
 |  Detect Cause | Enabled | Interval |
