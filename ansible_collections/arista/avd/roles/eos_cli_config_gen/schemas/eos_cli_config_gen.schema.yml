@@ -2774,6 +2774,8 @@ keys:
         type: dict
         $ref: eos_cli_config_gen#/$defs/flow_tracking
   flow_trackings:
+    documentation_options:
+      table: flow-tracking
     deprecation:
       warning: true
       new_key: flow_tracking
