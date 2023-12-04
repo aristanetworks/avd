@@ -43,10 +43,10 @@ interface Management1
 
 ### Categories
 
-| Category | Application (Service) |
+| Category | Application(Service) |
 | -------- | --------------------- |
-| best-effort | aimini (peer-to-peer)<br>apple_update (software-update) |
-| category1 | aim (audio-video)<br>aim (chat)<br>anydesk (-) |
+| best-effort | aimini(peer-to-peer)<br>apple_update(software-update) |
+| category1 | aim(audio-video)<br>aim(chat)<br>anydesk(-) |
 
 ### Field Sets
 
