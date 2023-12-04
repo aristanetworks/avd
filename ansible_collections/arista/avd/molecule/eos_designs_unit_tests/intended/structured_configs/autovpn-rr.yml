@@ -122,3 +122,6 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Loopback0
+      vrfs:
+      - name: default
+        vni: 100

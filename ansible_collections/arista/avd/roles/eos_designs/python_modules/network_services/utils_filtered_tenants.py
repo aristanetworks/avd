@@ -45,6 +45,26 @@ class UtilsFilteredTenantsMixin(object):
                     tenant["vrfs"] = self._filtered_vrfs(tenant)
                     filtered_tenants.append(tenant)
 
+        # TODO - check if it makes sense here - auto inject VRF default
+        if self.shared_utils.wan_role is not None and all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"]):
+            filtered_tenants.append(
+                {
+                    "name": "WAN_DEFAULT",
+                    "vrfs": [
+                        {
+                            "name": "default",
+                            "vrf_id": 100,
+                            "svis": [],
+                            "l3_interfaces": [],
+                            "bgp_peers": [],
+                            "ipv6_static_routes": [],
+                            "static_routes": [],
+                        }
+                    ],
+                    "l2vlans": [],
+                }
+            )
+
         return natural_sort(filtered_tenants, "name")
 
     def _filtered_l2vlans(self, tenant: dict) -> list[dict]:

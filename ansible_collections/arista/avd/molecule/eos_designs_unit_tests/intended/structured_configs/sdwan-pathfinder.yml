@@ -176,3 +176,6 @@ vxlan_interface:
     vxlan:
       udp_port: 4789
       source_interface: Dps1
+      vrfs:
+      - name: default
+        vni: 100
