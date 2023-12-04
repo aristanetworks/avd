@@ -19,15 +19,18 @@ title: Ansible Collection Role eos_design - WAN preview
 
 ## Overview
 
-The intention is to support both a single AutoVPN design
-[https://www.arista.com/en/cg-veos-router/veos-router-auto-vpn](https://www.arista.com/en/cg-veos-router/veos-router-auto-vpn)
-and Pathfinder
-[https://www.arista.com/en/solutions/enterprise-wan/pathfinder](https://www.arista.com/en/solutions/enterprise-wan/pathfinder).
+The intention is to support both a single [AutoVPN design](https://www.arista.com/en/cg-veos-router/veos-router-auto-vpn) and [Pathfinder](https://www.arista.com/en/solutions/enterprise-wan/pathfinder).
+
+### Design points
+
+* The intent is to be able to support having the different WAN participating devices in different inventories.
 
 ## Known limitations
 
 - As of now, only the fundations of the `eos_designs` functionality for WAN is
     being introduced without any support for LAN and WAN interfaces.
+- The configuration of AVT policies is not supported yet and will be introduced
+    later.
 
 ## `eos_cli_config_gen` support
 
