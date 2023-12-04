@@ -9865,6 +9865,11 @@
       "type": "object",
       "description": "Enable SYSLOG messages on transceiver SMBus communication failures.",
       "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable monitor layer1",
+          "title": "Enabled"
+        },
         "logging_mac_fault": {
           "type": "boolean",
           "description": "Enable MAC fault logging.",
@@ -9892,6 +9897,9 @@
           "title": "Logging Transceiver"
         }
       },
+      "required": [
+        "enabled"
+      ],
       "additionalProperties": false,
       "patternProperties": {
         "^_.+$": {}

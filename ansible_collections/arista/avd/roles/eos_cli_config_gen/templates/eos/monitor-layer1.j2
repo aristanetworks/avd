@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - monitor layer1 #}
-{% if monitor_layer1.logging_mac_fault is arista.avd.defined(true) or monitor_layer1.logging_transceiver is arista.avd.defined %}
+{% if monitor_layer1.enabled is arista.avd.defined(true) %}
 !
 monitor layer1
 {%     if monitor_layer1.logging_transceiver.dom is arista.avd.defined(true) %}

@@ -1,5 +1,6 @@
 ---
 monitor_layer1:
+  enabled: true
   logging_mac_fault: true
   logging_transceiver:
     dom: true
