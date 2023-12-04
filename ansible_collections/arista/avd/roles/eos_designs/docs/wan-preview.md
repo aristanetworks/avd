@@ -13,7 +13,7 @@ title: Ansible Collection Role eos_design - WAN preview
 !!! warning
     The integration of WAN designs to `eos_designs` role is in preview mode.
 
-    Everything is subject to change, is not supported and is may not be complete..
+    Everything is subject to change, is not supported and may not be complete.
 
     If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
 
@@ -49,6 +49,20 @@ and Pathfinder
 
 ### WAN Settings
 
+#### Top level keys
+
 --8<--
 roles/eos_designs/docs/tables/wan-settings.md
+--8<--
+
+#### New node keys
+
+--8<--
+roles/eos_designs/docs/tables/node-type-wan-configuration.md
+--8<--
+
+#### New node type keys
+
+--8<--
+roles/eos_designs/docs/tables/node-type-key-wan-configuration.md
 --8<--

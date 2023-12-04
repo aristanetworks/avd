@@ -103,11 +103,14 @@ keys:
           description: |
             Set the default evpn encapsulation.
         default_wan_role:
+          documentation_options:
+            table: node-type-key-wan-configuration
           type: str
           valid_values:
             - "client"
             - "server"
           description: |
+            PREVIEW: This key is currently not supported
             Set the default WAN role.
 
             This is used both for AutoVPN and Pathfinder designs.
@@ -116,12 +119,15 @@ keys:
 
             Only supported if `overlay_routing_protocol` is set to `ibgp`.
         default_sdwan_role:
+          documentation_options:
+            table: node-type-key-wan-configuration
           type: str
           valid_values:
             - "edge"
             - "transit"
             - "pathfinder"
           description: |
+            PREVIEW: This key is currently not supported
             Set the default SDWAN role.
 
             This key is used for Pathfinder designs only when the `wan_mode` root

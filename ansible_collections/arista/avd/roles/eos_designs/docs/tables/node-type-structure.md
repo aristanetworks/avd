@@ -9,32 +9,12 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>&lt;node_type_keys.key&gt;</samp>](## "<node_type_keys.key>") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sdwan_site</samp>](## "<node_type_keys.key>.defaults.sdwan_site") | Dictionary |  |  |  | Site name and ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.defaults.sdwan_site.name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.defaults.sdwan_site.id") | Integer | Required |  | Min: 1<br>Max: 10000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.defaults.dps_mss_ipv4") | Integer |  |  | Min: 64<br>Max: 65495 | Segment Size for IPv4. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv6</samp>](## "<node_type_keys.key>.defaults.dps_mss_ipv6") | Integer |  |  | Min: 64<br>Max: 65475 | Segment Size for IPv6. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sdwan_site</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].sdwan_site") | Dictionary |  |  |  | Site name and ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].sdwan_site.name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].sdwan_site.id") | Integer | Required |  | Min: 1<br>Max: 10000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].dps_mss_ipv4") | Integer |  |  | Min: 64<br>Max: 65495 | Segment Size for IPv4. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv6</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].dps_mss_ipv6") | Integer |  |  | Min: 64<br>Max: 65475 | Segment Size for IPv6. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sdwan_site</samp>](## "<node_type_keys.key>.node_groups.[].sdwan_site") | Dictionary |  |  |  | Site name and ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].sdwan_site.name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.node_groups.[].sdwan_site.id") | Integer | Required |  | Min: 1<br>Max: 10000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.node_groups.[].dps_mss_ipv4") | Integer |  |  | Min: 64<br>Max: 65495 | Segment Size for IPv4. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv6</samp>](## "<node_type_keys.key>.node_groups.[].dps_mss_ipv6") | Integer |  |  | Min: 64<br>Max: 65475 | Segment Size for IPv6. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sdwan_site</samp>](## "<node_type_keys.key>.nodes.[].sdwan_site") | Dictionary |  |  |  | Site name and ID. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].sdwan_site.name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.nodes.[].sdwan_site.id") | Integer | Required |  | Min: 1<br>Max: 10000 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv4</samp>](## "<node_type_keys.key>.nodes.[].dps_mss_ipv4") | Integer |  |  | Min: 64<br>Max: 65495 | Segment Size for IPv4. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dps_mss_ipv6</samp>](## "<node_type_keys.key>.nodes.[].dps_mss_ipv6") | Integer |  |  | Min: 64<br>Max: 65475 | Segment Size for IPv6. |
 
 === "YAML"
 
@@ -43,17 +23,6 @@
 
       # Define variables for all nodes of this type.
       defaults:
-
-        # Site name and ID.
-        sdwan_site:
-          name: <str; required>
-          id: <int; 1-10000; required>
-
-        # Segment Size for IPv4.
-        dps_mss_ipv4: <int; 64-65495>
-
-        # Segment Size for IPv6.
-        dps_mss_ipv6: <int; 64-65475>
 
       # Define variables related to all nodes part of this group.
       node_groups:
@@ -68,42 +37,9 @@
               # The Node Name is used as "hostname".
             - name: <str; required; unique>
 
-              # Site name and ID.
-              sdwan_site:
-                name: <str; required>
-                id: <int; 1-10000; required>
-
-              # Segment Size for IPv4.
-              dps_mss_ipv4: <int; 64-65495>
-
-              # Segment Size for IPv6.
-              dps_mss_ipv6: <int; 64-65475>
-
-          # Site name and ID.
-          sdwan_site:
-            name: <str; required>
-            id: <int; 1-10000; required>
-
-          # Segment Size for IPv4.
-          dps_mss_ipv4: <int; 64-65495>
-
-          # Segment Size for IPv6.
-          dps_mss_ipv6: <int; 64-65475>
-
       # Define variables per node.
       nodes:
 
           # The Node Name is used as "hostname".
         - name: <str; required; unique>
-
-          # Site name and ID.
-          sdwan_site:
-            name: <str; required>
-            id: <int; 1-10000; required>
-
-          # Segment Size for IPv4.
-          dps_mss_ipv4: <int; 64-65495>
-
-          # Segment Size for IPv6.
-          dps_mss_ipv6: <int; 64-65475>
     ```

@@ -20,7 +20,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accessibility</samp>](## "carriers.[].accessibility") | String |  |  | Valid Values:<br>- <code>public</code><br>- <code>private</code> | Indicates if the carrier has access to the Internet (`public`)<br>or not (`private). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;characteristics</samp>](## "carriers.[].characteristics") | List, items: String |  |  |  | A list of characteristics to assign to the carrier.<br>TODO: Explain further how these are used (or removed before removing preview). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "carriers.[].characteristics.[]") | String |  |  | Valid Values:<br>- <code>backup</code><br>- <code>metered</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;circuit_type</samp>](## "carriers.[].circuit_type") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>both.</code> | TBC - edge or transit or both.<br>Unclear if this should be at the carrier level or some other place. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;circuit_type</samp>](## "carriers.[].circuit_type") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>both</code> | TBC - edge or transit or both.<br>Unclear if this should be at the carrier level or some other place. |
     | [<samp>sdwan_pathfinders</samp>](## "sdwan_pathfinders") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>The Pathfinder(s) information for the WAN.<br><br>When the pathfinder is part of the same inventory as the WAN routers,<br>only the name is required. |
     | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "sdwan_pathfinders.[].hostname") | String | Required, Unique |  |  | Pathfinder hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "sdwan_pathfinders.[].router_id") | String |  |  |  | Pathfinder router id. |
@@ -93,7 +93,7 @@
 
         # TBC - edge or transit or both.
         # Unclear if this should be at the carrier level or some other place.
-        circuit_type: <str; "edge" | "transit" | "both.">
+        circuit_type: <str; "edge" | "transit" | "both">
 
     # PREVIEW: This key is currently not supported
     # The Pathfinder(s) information for the WAN.
