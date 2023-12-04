@@ -30,6 +30,7 @@ class DpsInterfacesMixin(UtilsMixin):
 
         dps1 = {
             "name": "Dps1",
+            "description": "DPS Interface",
             "tcp_mss_ceiling": {
                 "ipv4": get(self.shared_utils.switch_data_combined, "dps_mss_ipv4", 1000),  # TB default, may need to change
             },
@@ -39,9 +40,7 @@ class DpsInterfacesMixin(UtilsMixin):
             dps1["tcp_mss_ceiling"]["ipv6"] = dps_mss_ipv6
 
         if self.shared_utils.sdwan_role:
-            # TODO what IP to use? - do we need to?
-            # TODO - add flow tracker even for virtual devices?
-            # dps1["flow_tracker"] = {"hardware": "flowTracker"}
-            pass
+            # TODO what IP to use? - do we need to - probably need a range for it if so.
+            dps1["flow_tracker"] = {"hardware": "flowTracker"}
 
         return [dps1]

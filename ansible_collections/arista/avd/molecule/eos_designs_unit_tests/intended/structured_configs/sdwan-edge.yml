@@ -67,7 +67,7 @@ management_api_http:
   enable_https: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: Router_ID
   shutdown: false
   ip_address: 192.168.42.1/32
 flow_tracking:
@@ -146,8 +146,11 @@ ip_igmp_snooping:
   globally_enabled: true
 dps_interfaces:
 - name: Dps1
+  description: DPS Interface
   tcp_mss_ceiling:
     ipv4: 1000
+  flow_tracker:
+    hardware: flowTracker
 vxlan_interface:
   Vxlan1:
     description: sdwan-edge_VTEP
