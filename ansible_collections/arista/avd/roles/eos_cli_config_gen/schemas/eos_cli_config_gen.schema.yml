@@ -538,25 +538,49 @@ keys:
                     - pim
                     - rsvp
                     - tcp
-                    - ucp
-                    - tcp_udp
+                    - udp
                     - vrrp
-                src_port_set_name:
+                protocol_ranges:
+                  type: list
+                  description: 'Acccept protocol value(s) or range(s).
+
+                    Protocol values can be between 1 and 255.'
+                  items:
+                    type: str
+                udp_src_port_set_name:
                   type: str
-                  description: 'Source l4 port field set name.
+                  description: 'Source l4 port field set name for udp protocol.
 
 
-                    `src_port_set_name` is only valid if one (and only one) of
+                    Both udp and tcp src port set name ( same or unique ) is accepted
+                    which will render
 
-                    `udp` or `tcp` or `tcp_udp` is used in `protocols`.'
-                dest_port_set_name:
+                    two seperate lines of tcp and udp protocol config.'
+                tcp_src_port_set_name:
                   type: str
-                  description: 'Destination l4 port field set name.
+                  description: 'Source l4 port field set name for tcp protocol.
 
 
-                    `dest_port_set_name` is only valid if one (and only one) of
+                    Both udp and tcp src port set name ( same or unique ) is accepted
+                    which will render
 
-                    `udp` or `tcp` or `tcp_udp` is used in `protocols`.'
+                    two seperate lines of tcp and udp protocol config.'
+                udp_dest_port_set_name:
+                  type: str
+                  description: 'Destination l4 port field set name for udp protocol.
+
+
+                    Both udp and tcp destination port set name ( same or unique )
+                    is accepted which will render
+
+                    two seperate lines of tcp and udp protocol config.'
+                tcp_dest_port_set_name:
+                  type: str
+                  description: 'Destination l4 port field set name for tcp protocol.
+
+                    Both udp and tcp destination port set name ( same or unique )
+                    is accepted which will render two seperate lines of tcp and udp
+                    protocol config.'
       application_profiles:
         type: list
         description: Group of applications.

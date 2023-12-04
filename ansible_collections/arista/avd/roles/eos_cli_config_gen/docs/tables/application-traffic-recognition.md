@@ -28,9 +28,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src_prefix_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].src_prefix_set_name") | String |  |  |  | Source prefix set name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest_prefix_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].dest_prefix_set_name") | String |  |  |  | Destination prefix set name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocols") | List, items: String |  |  |  | List of protocols to consider for this application.<br><br>To use port field-sets (source, destination or both), the list<br>must contain only one protocol.<br>To set port field-set(s) for both TCP and UDP, use `tcp_udp`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocols.[]") | String |  |  | Valid Values:<br>- <code>ahp</code><br>- <code>esp</code><br>- <code>icmp</code><br>- <code>igmp</code><br>- <code>ospf</code><br>- <code>pim</code><br>- <code>rsvp</code><br>- <code>tcp</code><br>- <code>ucp</code><br>- <code>tcp_udp</code><br>- <code>vrrp</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].src_port_set_name") | String |  |  |  | Source l4 port field set name.<br><br>`src_port_set_name` is only valid if one (and only one) of<br>`udp` or `tcp` or `tcp_udp` is used in `protocols`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].dest_port_set_name") | String |  |  |  | Destination l4 port field set name.<br><br>`dest_port_set_name` is only valid if one (and only one) of<br>`udp` or `tcp` or `tcp_udp` is used in `protocols`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocols.[]") | String |  |  | Valid Values:<br>- <code>ahp</code><br>- <code>esp</code><br>- <code>icmp</code><br>- <code>igmp</code><br>- <code>ospf</code><br>- <code>pim</code><br>- <code>rsvp</code><br>- <code>tcp</code><br>- <code>udp</code><br>- <code>vrrp</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_ranges</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocol_ranges") | List, items: String |  |  |  | Acccept protocol value(s) or range(s).<br>Protocol values can be between 1 and 255. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocol_ranges.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_src_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].udp_src_port_set_name") | String |  |  |  | Source l4 port field set name for udp protocol.<br><br>Both udp and tcp src port set name ( same or unique ) is accepted which will render<br>two seperate lines of tcp and udp protocol config. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_src_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].tcp_src_port_set_name") | String |  |  |  | Source l4 port field set name for tcp protocol.<br><br>Both udp and tcp src port set name ( same or unique ) is accepted which will render<br>two seperate lines of tcp and udp protocol config. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_dest_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].udp_dest_port_set_name") | String |  |  |  | Destination l4 port field set name for udp protocol.<br><br>Both udp and tcp destination port set name ( same or unique ) is accepted which will render<br>two seperate lines of tcp and udp protocol config. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_dest_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].tcp_dest_port_set_name") | String |  |  |  | Destination l4 port field set name for tcp protocol.<br>Both udp and tcp destination port set name ( same or unique ) is accepted which will render two seperate lines of tcp and udp protocol config. |
     | [<samp>&nbsp;&nbsp;application_profiles</samp>](## "application_traffic_recognition.application_profiles") | List, items: Dictionary |  |  |  | Group of applications. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_traffic_recognition.application_profiles.[].name") | String |  |  |  | Application Profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;applications</samp>](## "application_traffic_recognition.application_profiles.[].applications") | List, items: Dictionary |  |  |  | List of applications part of the application profile. |
@@ -107,19 +111,34 @@
             # must contain only one protocol.
             # To set port field-set(s) for both TCP and UDP, use `tcp_udp`.
             protocols:
-              - <str; "ahp" | "esp" | "icmp" | "igmp" | "ospf" | "pim" | "rsvp" | "tcp" | "ucp" | "tcp_udp" | "vrrp">
+              - <str; "ahp" | "esp" | "icmp" | "igmp" | "ospf" | "pim" | "rsvp" | "tcp" | "udp" | "vrrp">
 
-            # Source l4 port field set name.
+            # Acccept protocol value(s) or range(s).
+            # Protocol values can be between 1 and 255.
+            protocol_ranges:
+              - <str>
 
-            # `src_port_set_name` is only valid if one (and only one) of
-            # `udp` or `tcp` or `tcp_udp` is used in `protocols`.
-            src_port_set_name: <str>
+            # Source l4 port field set name for udp protocol.
 
-            # Destination l4 port field set name.
+            # Both udp and tcp src port set name ( same or unique ) is accepted which will render
+            # two seperate lines of tcp and udp protocol config.
+            udp_src_port_set_name: <str>
 
-            # `dest_port_set_name` is only valid if one (and only one) of
-            # `udp` or `tcp` or `tcp_udp` is used in `protocols`.
-            dest_port_set_name: <str>
+            # Source l4 port field set name for tcp protocol.
+
+            # Both udp and tcp src port set name ( same or unique ) is accepted which will render
+            # two seperate lines of tcp and udp protocol config.
+            tcp_src_port_set_name: <str>
+
+            # Destination l4 port field set name for udp protocol.
+
+            # Both udp and tcp destination port set name ( same or unique ) is accepted which will render
+            # two seperate lines of tcp and udp protocol config.
+            udp_dest_port_set_name: <str>
+
+            # Destination l4 port field set name for tcp protocol.
+            # Both udp and tcp destination port set name ( same or unique ) is accepted which will render two seperate lines of tcp and udp protocol config.
+            tcp_dest_port_set_name: <str>
 
       # Group of applications.
       application_profiles:

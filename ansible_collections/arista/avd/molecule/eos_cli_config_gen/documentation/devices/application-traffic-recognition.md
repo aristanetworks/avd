@@ -7,7 +7,7 @@
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Categories](#categories)
   - [Field Sets](#field-sets)
-  - [Applications](#applications-2)
+  - [Applications](#applications)
   - [Application Profile Details](#application-profile-details)
   - [Router Application-Traffic-Recognition Device Configuration](#router-application-traffic-recognition-device-configuration)
 
@@ -43,24 +43,10 @@ interface Management1
 
 ### Categories
 
-#### Category best-effort
-
-##### Applications
-
-| Application Name | Service |
-| ---------------- | ------- |
-| aimini | peer-to-peer |
-| apple_update | software-update |
-
-#### Category category1
-
-##### Applications
-
-| Application Name | Service |
-| ---------------- | ------- |
-| aim | audio-video |
-| aim | chat |
-| anydesk | - |
+| Category | Application (Service) |
+| -------- | --------------------- |
+| best-effort | aimini (peer-to-peer)<br>apple_update (software-update) |
+| category1 | aim (audio-video)<br>aim (chat)<br>anydesk (-) |
 
 ### Field Sets
 
@@ -86,10 +72,10 @@ interface Management1
 
 #### IPv4 Applications
 
-| Name | Source Prefix | Destination Prefix | Protocol | Source Port | Destination Port |
-| ---- | ------------- | ------------------ | -------- | ----------- | ---------------- |
-| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp<br>tcp | src_port_set1 | dest_port_set1 |
-| user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | udp | src_port_set2 | dest_port_set2 |
+| Name | Source Prefix | Destination Prefix | Protocol | Protocol Ranges | Tcp Source Port | Tcp Destination Port | Udp Source Port | Udp Destination Port |
+| ---- | ------------- | ------------------ | -------- | --------------- | --------------- | -------------------- | --------------- | -------------------- |
+| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp<br>tcp | 25 | src_port_set1 | dest_port_set1 | src_port_set2 | dest_port_set2 |
+| user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | pim<br>icmp<br>tcp | 21<br>7-11 | - | - | - | - |
 
 ### Application Profile Details
 
@@ -102,8 +88,6 @@ interface Management1
 | application | user_defined_app1 | - |
 | category | best-effort | - |
 | category | category1 | audio-video |
-| transport | http | - |
-| transport | udp | - |
 
 #### Application Profile Name app_profile_2
 
@@ -125,12 +109,16 @@ application traffic recognition
       source prefix field-set src_prefix_set1
       destination prefix field-set dest_prefix_set1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
-      protocol udp source port field-set src_port_set1 destination port field-set dest_port_set1
+      protocol udp source port field-set src_port_set2 destination port field-set dest_port_set2
+      protocol 25
    !
    application ipv4 user_defined_app2
       source prefix field-set src_prefix_set2
       destination prefix field-set dest_prefix_set2
-      protocol udp source port field-set src_port_set2 destination port field-set dest_port_set2
+      protocol icmp
+      protocol pim
+      protocol tcp
+      protocol 7-11, 21
    !
    category best-effort
       application aimini service peer-to-peer
@@ -145,8 +133,6 @@ application traffic recognition
       application aim service audio-video
       application aim service chat
       application user_defined_app1
-      application http transport
-      application udp transport
       category best-effort
       category category1 service audio-video
    !

@@ -13,7 +13,7 @@ help: ## Display help message
 .PHONY: run
 run: ## Execute molecule TEST sequence. By default eos_cli_config_gen. Can be set with MOLECULE=
 	cd .. && \
-	molecule test -vvv --scenario-name $(MOLECULE) -- $(ANSIBLE_OPTIONS)
+	molecule test --scenario-name $(MOLECULE) -- $(ANSIBLE_OPTIONS)
 
 .PHONY: converge
 converge: ## Execute molecule CONVERGE sequence. By default eos_cli_config_gen. Can be set with MOLECULE=
