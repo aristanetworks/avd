@@ -98,7 +98,7 @@ interface Management1
 
 #### Router BGP EVPN Address Family
 
-- Next-hop resolution is __disabled__
+- Next-hop resolution is **disabled**
 - Next-hop-unchanged is explicitly configured (default behaviour)
 
 ##### EVPN Peer Groups

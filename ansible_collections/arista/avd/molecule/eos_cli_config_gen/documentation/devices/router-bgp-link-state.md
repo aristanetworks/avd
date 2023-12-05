@@ -82,7 +82,7 @@ interface Management1
 | PG-1 | True | deny-in-out | permit |
 | PG-2 | False | - | - |
 
-##### Link-State Path Selection configuration
+##### Link-State Path Selection Configuration
 
 | Settings | Value |
 | -------- | ----- |

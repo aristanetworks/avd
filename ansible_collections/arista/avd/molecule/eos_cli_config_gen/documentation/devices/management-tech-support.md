@@ -58,7 +58,7 @@ interface Management1
 | ------- |
 | show version detail \| grep TerminAttr |
 
-#### Policy Configuration
+#### Policy Device Configuration
 
 ```eos
 !

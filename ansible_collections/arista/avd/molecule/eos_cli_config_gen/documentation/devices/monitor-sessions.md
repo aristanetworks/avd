@@ -80,7 +80,7 @@ interface Management1
 | Access Group Name | ipv4ACL |
 | Sample | 50 |
 
-#### Monitor Sessions Configuration
+#### Monitor Sessions Device Configuration
 
 ```eos
 !

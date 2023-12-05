@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [System Boot Settings](#system-boot-settings)
   - [Boot Secret Summary](#boot-secret-summary)
-  - [System Boot Configuration](#system-boot-configuration)
+  - [System Boot Device Configuration](#system-boot-device-configuration)
 
 ## Management
 
@@ -42,7 +42,7 @@ interface Management1
 
 - The md5 hashed Aboot password is configured
 
-### System Boot Configuration
+### System Boot Device Configuration
 
 ```eos
 !
