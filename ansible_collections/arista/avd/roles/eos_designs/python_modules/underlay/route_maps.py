@@ -63,7 +63,7 @@ class RouteMapsMixin(UtilsMixin):
 
         # RM-BGP-AS{{ asn }}-OUT
         for asn in self._underlay_filter_peer_as_route_maps_asns:
-            route_map_name = f"RM-BGP-AS{ asn }-OUT"
+            route_map_name = f"RM-BGP-AS{asn}-OUT"
             route_maps.append(
                 {
                     "name": route_map_name,
@@ -71,7 +71,7 @@ class RouteMapsMixin(UtilsMixin):
                         {
                             "sequence": 10,
                             "type": "deny",
-                            "match": [f"as { asn }"],
+                            "match": [f"as {asn}"],
                         },
                         {
                             "sequence": 20,
