@@ -1,3 +1,5 @@
+hostname: pe1
+is_deployed: true
 router_bgp:
   as: '65001'
   router_id: 10.255.1.1
@@ -11,9 +13,6 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
     type: mpls
@@ -23,12 +22,12 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
+  address_family_evpn:
+    peer_groups: []
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: false
-  address_family_evpn:
-    peer_groups: []
   address_family_vpn_ipv4:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
@@ -38,9 +37,11 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.2.1
     peer_group: MPLS-OVERLAY-PEERS
+    peer: rr1
     description: rr1
   - ip_address: 10.255.2.2
     peer_group: MPLS-OVERLAY-PEERS
+    peer: rr2
     description: rr2
   vrfs:
   - name: C1_VRF1
@@ -72,16 +73,16 @@ router_bgp:
         - '20:20'
     redistribute_routes:
     - source_protocol: connected
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.1.1.3
+        activate: true
     neighbors:
     - ip_address: 10.1.1.3
       remote_as: '65123'
       description: C2_ROUTER1
       send_community: standard
       maximum_routes: 100
-    address_family_ipv4:
-      neighbors:
-      - ip_address: 10.1.1.3
-        activate: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

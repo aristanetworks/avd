@@ -29,7 +29,7 @@ class TestMerge:
         merge_result = {}
         schema = AvdSchema(acl_schema)
         merge(merge_result, acl1, acl2, schema=schema)
-        print(yaml.dump(merge_result, indent=2))
+        # print(yaml.dump(merge_result, indent=2))
         assert merge_result == acl_merged
 
     @pytest.mark.parametrize("schema", [None, AvdSchema(acl_schema)])
@@ -40,5 +40,5 @@ class TestMerge:
         """
         merge_result = {}
         merge(merge_result, acl1, acl2, list_merge="replace", schema=schema)
-        print(yaml.dump(merge_result, indent=2))
+        # print(yaml.dump(merge_result, indent=2))
         assert merge_result == acl2

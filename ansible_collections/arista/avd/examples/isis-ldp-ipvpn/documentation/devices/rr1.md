@@ -376,16 +376,14 @@ router isis CORE
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65001|  10.255.2.1 |
+| 65001 | 10.255.2.1 |
 
 | BGP AS | Cluster ID |
 | ------ | --------- |
-| 65001|  10.255.2.1 |
+| 65001 | 10.255.2.1 |
 
 | BGP Tuning |
 | ---------- |
-| graceful-restart restart-time 300 |
-| graceful-restart |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
@@ -448,8 +446,6 @@ router isis CORE
 router bgp 65001
    router-id 10.255.2.1
    distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
    bgp cluster-id 10.255.2.1
