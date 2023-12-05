@@ -29,8 +29,10 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 - As of now, only the fundations of the `eos_designs` functionality for WAN is
     being introduced without any support for LAN and WAN interfaces.
+    This implies that path-groups are not configured.
 - The configuration of AVT policies is not supported yet and will be introduced
     later.
+- HA for sites will be covered in a future PR
 
 ## `eos_cli_config_gen` support
 
