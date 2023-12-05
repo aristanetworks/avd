@@ -926,8 +926,7 @@ $defs:
           sdwan_site:
             documentation_options:
               table: node-type-wan-configuration
-            type: dict
-            $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site"
+            type: str
           dps_mss_ipv4:
             documentation_options:
               table: node-type-wan-configuration

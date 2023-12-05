@@ -5,6 +5,19 @@ $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
+  autovpn_rrs:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+      The AutoVPN RRs information for the WAN.
+
+
+      When the AutoVPN RR is part of the same inventory as the WAN routers,
+
+      only the name is required.'
+    type: list
+    $ref: eos_designs#/$defs/wan_rrs
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
@@ -326,6 +339,26 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+      wan_overlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: WAN-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: false
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -357,6 +390,54 @@ keys:
       table: bgp-settings
     type: bool
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_for_convergence
+  carriers:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+      List of carriers used for the WAN configuration.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Carrier name.
+        description:
+          type: str
+          description: Additional information about the carrier for documentation
+            purposes.
+        ipsec:
+          type: bool
+          description: Flag to configure IPsec on the carrier (default is True).
+        accessibility:
+          type: str
+          description: 'Indicates if the carrier has access to the Internet (`public`)
+
+            or not (`private).'
+          valid_values:
+          - public
+          - private
+        characteristics:
+          type: list
+          description: 'A list of characteristics to assign to the carrier.
+
+            TODO: Explain further how these are used (or removed before removing preview).'
+          items:
+            type: str
+            valid_values:
+            - backup
+            - metered
+        circuit_type:
+          type: str
+          description: 'TBC - edge or transit or both.
+
+            Unclear if this should be at the carrier level or some other place.'
+          valid_values:
+          - edge
+          - transit
+          - both
   connected_endpoints_keys:
     documentation_options:
       table: connected-endpoints-keys
@@ -1426,6 +1507,51 @@ keys:
           description: 'Set the default evpn encapsulation.
 
             '
+        default_wan_role:
+          documentation_options:
+            table: node-type-key-wan-configuration
+          type: str
+          valid_values:
+          - client
+          - server
+          description: 'PREVIEW: This key is currently not supported
+
+            Set the default WAN role.
+
+
+            This is used both for AutoVPN and Pathfinder designs.
+
+            That means if `wan_mode` root key is set to `autovpn` or `sdwan`.
+
+            `server` indicates that the router is a route-reflector.
+
+
+            Only supported if `overlay_routing_protocol` is set to `ibgp`.
+
+            '
+        default_sdwan_role:
+          documentation_options:
+            table: node-type-key-wan-configuration
+          type: str
+          valid_values:
+          - edge
+          - transit
+          - pathfinder
+          description: 'PREVIEW: This key is currently not supported
+
+            Set the default SDWAN role.
+
+
+            This key is used for Pathfinder designs only when the `wan_mode` root
+
+            key is set to `sdwan`.
+
+
+            `pathfinder` is only a valid id `wan_role` is `server`.
+
+            `edge` and `transit` are only valid if `wan_role` is `client`.
+
+            '
         mlag_support:
           type: bool
           default: false
@@ -2350,6 +2476,67 @@ keys:
         valid_values:
         - sso
         - rpr
+  sdwan_pathfinders:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+      The Pathfinder(s) information for the WAN.
+
+
+      When the pathfinder is part of the same inventory as the WAN routers,
+
+      only the name is required.'
+    type: list
+    $ref: eos_designs#/$defs/wan_rrs
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+          description: Pathfinder hostname.
+        router_id:
+          type: str
+          description: Pathfinder router id.
+  sdwan_regions:
+    documentation_options:
+      table: wan-sdwan-regions
+    description: 'PREVIEW: This key is currently not supported
+
+      Define the SDWAN hierarchy for the device.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/region
+      keys:
+        description:
+          type: str
+        zones:
+          type: list
+          primary_key: name
+          items:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/zone
+            keys:
+              description:
+                type: str
+              sites:
+                type: list
+                primary_key: name
+                items:
+                  type: dict
+                  $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site
+                  keys:
+                    description:
+                      type: str
+                    location:
+                      type: str
+                      description: Will be interpreted
+                    site_contact:
+                      type: str
+                    site_after_hours_contact:
+                      type: str
   serial_number:
     documentation_options:
       table: system-settings
@@ -3063,6 +3250,45 @@ keys:
       remove_in_version: 4.0.0
     type: bool
     default: false
+  wan_ipsec_profiles:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+      Define IPsec profiles parameters for WAN configuration.
+
+
+      If `data_plane` is not defined, `control_plane` information is
+
+      used for both.'
+    type: dict
+    keys:
+      control_plane:
+        type: dict
+        required: true
+        $ref: eos_designs#/$defs/ipsec_profile
+        description: "The `control_plane` profile uses the following defaults:\n  *
+          IKE policy name: CP-IKE-POLICY\n  * SA policy name: CP-SA-POLICY\n  * Profile
+          name: CP-PROFILE"
+      data_plane:
+        type: dict
+        $ref: eos_designs#/$defs/ipsec_profile
+        description: "The `data_plane` profile uses the following defaults:\n  * IKE
+          policy name: DP-IKE-POLICY\n  * SA policy name: DP-SA-POLICY\n  * Profile
+          name: DP-PROFILE"
+  wan_mode:
+    documentation_options:
+      table: wan-settings
+    description: 'Select if the WAN should be run using Pathfinder (`sdwan`) or Auto
+      VPN only.
+
+      The default is `sdwan`
+
+      PREVIEW: This key is currently not supported'
+    type: str
+    valid_values:
+    - autovpn
+    - sdwan
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -3787,6 +4013,25 @@ $defs:
                 items:
                   type: str
                   description: Used for documentation purposes.
+  ipsec_profile:
+    type: dict
+    description: 'PREVIEW: This key is currently not supported'
+    keys:
+      ike_policy_name:
+        type: str
+        description: Name of the IKE policy.
+      sa_policy_name:
+        type: str
+        description: Name of the SA policy.
+      profile_name:
+        type: str
+        description: Name of the IPSec profile.
+      shared_key:
+        type: str
+        required: true
+        description: 'The IPSec shared key.
+
+          This variable is sensitive and SHOULD be configured using some vault mechanism.'
   l3_edge:
     type: dict
     keys:
@@ -6518,6 +6763,20 @@ $defs:
             convert_types:
             - int
             description: Set BGP cluster id.
+          sdwan_site:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+          dps_mss_ipv4:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: int
+            $ref: eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4
+          dps_mss_ipv6:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: int
+            $ref: eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv6
           ptp:
             documentation_options:
               table: node-type-ptp-configuration
@@ -7266,3 +7525,27 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
+  wan_rrs:
+    description: 'PREVIEW: This key is currently not supported'
+    type: list
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+          description: Route-Reflector hostname.
+        router_id:
+          type: str
+          description: Route-Reflector router id.
+        carriers:
+          type: list
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Carrier name.
+              ip_address:
+                type: str
+                description: The public IP address for this carrier.

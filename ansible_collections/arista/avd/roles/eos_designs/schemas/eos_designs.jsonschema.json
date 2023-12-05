@@ -1,6 +1,56 @@
 {
   "type": "object",
   "properties": {
+    "autovpn_rrs": {
+      "description": "PREVIEW: This key is currently not supported\nThe AutoVPN RRs information for the WAN.\n\nWhen the AutoVPN RR is part of the same inventory as the WAN routers,\nonly the name is required.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "description": "Route-Reflector hostname.",
+            "title": "Hostname"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Route-Reflector router id.",
+            "title": "Router ID"
+          },
+          "carriers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Carrier name.",
+                  "title": "Name"
+                },
+                "ip_address": {
+                  "type": "string",
+                  "description": "The public IP address for this carrier.",
+                  "title": "IP Address"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Carriers"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "hostname"
+        ]
+      },
+      "title": "Autovpn Rrs"
+    },
     "avd_data_conversion_mode": {
       "type": "string",
       "enum": [
@@ -2276,6 +2326,308 @@
             "^_.+$": {}
           },
           "title": "Ipvpn Gateway Peers"
+        },
+        "wan_overlay_peers": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "WAN-OVERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "bfd": {
+              "type": "boolean",
+              "default": false,
+              "title": "BFD"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Peer-group name",
+                  "title": "Name"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Key only used for documentation or validation purposes",
+                  "title": "Type"
+                },
+                "remote_as": {
+                  "type": "string",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "title": "Remote As"
+                },
+                "local_as": {
+                  "type": "string",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "title": "Local As"
+                },
+                "description": {
+                  "type": "string",
+                  "title": "Description"
+                },
+                "shutdown": {
+                  "type": "boolean",
+                  "title": "Shutdown"
+                },
+                "as_path": {
+                  "type": "object",
+                  "description": "BGP AS-PATH options",
+                  "properties": {
+                    "remote_as_replace_out": {
+                      "type": "boolean",
+                      "description": "Replace AS number with local AS number",
+                      "title": "Remote As Replace Out"
+                    },
+                    "prepend_own_disabled": {
+                      "type": "boolean",
+                      "description": "Disable prepending own AS number to AS path",
+                      "title": "Prepend Own Disabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "As Path"
+                },
+                "remove_private_as": {
+                  "type": "object",
+                  "description": "Remove private AS numbers in outbound AS path",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "all": {
+                      "type": "boolean",
+                      "title": "All"
+                    },
+                    "replace_as": {
+                      "type": "boolean",
+                      "title": "Replace As"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Remove Private As"
+                },
+                "remove_private_as_ingress": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "replace_as": {
+                      "type": "boolean",
+                      "title": "Replace As"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Remove Private As Ingress"
+                },
+                "peer_filter": {
+                  "type": "string",
+                  "description": "Peer-filter name\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                  "deprecated": true,
+                  "title": "Peer Filter"
+                },
+                "next_hop_unchanged": {
+                  "type": "boolean",
+                  "title": "Next Hop Unchanged"
+                },
+                "update_source": {
+                  "type": "string",
+                  "description": "IP address or interface name",
+                  "title": "Update Source"
+                },
+                "route_reflector_client": {
+                  "type": "boolean",
+                  "title": "Route Reflector Client"
+                },
+                "bfd": {
+                  "type": "boolean",
+                  "title": "BFD"
+                },
+                "ebgp_multihop": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 255,
+                  "description": "Time-to-live in range of hops",
+                  "title": "Ebgp Multihop"
+                },
+                "next_hop_self": {
+                  "type": "boolean",
+                  "title": "Next Hop Self"
+                },
+                "password": {
+                  "type": "string",
+                  "title": "Password"
+                },
+                "passive": {
+                  "type": "boolean",
+                  "title": "Passive"
+                },
+                "default_originate": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "always": {
+                      "type": "boolean",
+                      "title": "Always"
+                    },
+                    "route_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Route Map"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Default Originate"
+                },
+                "send_community": {
+                  "type": "string",
+                  "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'",
+                  "title": "Send Community"
+                },
+                "maximum_routes": {
+                  "type": "integer",
+                  "description": "Maximum number of routes (0 means unlimited)",
+                  "minimum": 0,
+                  "maximum": 4294967294,
+                  "title": "Maximum Routes"
+                },
+                "maximum_routes_warning_limit": {
+                  "type": "string",
+                  "description": "Maximum number of routes after which a warning is issued (0 means never warn) or\nPercentage of maximum number of routes at which to warn (\"<1-100> percent\")\n",
+                  "title": "Maximum Routes Warning Limit"
+                },
+                "maximum_routes_warning_only": {
+                  "type": "boolean",
+                  "title": "Maximum Routes Warning Only"
+                },
+                "link_bandwidth": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "default": {
+                      "type": "string",
+                      "description": "nn.nn(K|M|G) link speed in bits/second",
+                      "title": "Default"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Link Bandwidth"
+                },
+                "allowas_in": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "times": {
+                      "type": "integer",
+                      "description": "Number of local ASNs allowed in a BGP update",
+                      "minimum": 1,
+                      "maximum": 10,
+                      "title": "Times"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Allowas In"
+                },
+                "weight": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 65535,
+                  "title": "Weight"
+                },
+                "timers": {
+                  "type": "string",
+                  "description": "BGP Keepalive and Hold Timer values in seconds as string \"<0-3600> <0-3600>\"",
+                  "title": "Timers"
+                },
+                "rib_in_pre_policy_retain": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "all": {
+                      "type": "boolean",
+                      "title": "All"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Rib In Pre Policy Retain"
+                },
+                "route_map_in": {
+                  "type": "string",
+                  "description": "Inbound route-map name",
+                  "title": "Route Map In"
+                },
+                "route_map_out": {
+                  "type": "string",
+                  "description": "Outbound route-map name",
+                  "title": "Route Map Out"
+                },
+                "bgp_listen_range_prefix": {
+                  "type": "string",
+                  "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                  "deprecated": true,
+                  "title": "BGP Listen Range Prefix"
+                },
+                "session_tracker": {
+                  "type": "string",
+                  "title": "Session Tracker"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Wan Overlay Peers"
         }
       },
       "additionalProperties": false,
@@ -2293,6 +2645,69 @@
       "type": "boolean",
       "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\n",
       "title": "BGP Update Wait For Convergence"
+    },
+    "carriers": {
+      "description": "PREVIEW: This key is currently not supported\nList of carriers used for the WAN configuration.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Carrier name.",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Additional information about the carrier for documentation purposes.",
+            "title": "Description"
+          },
+          "ipsec": {
+            "type": "boolean",
+            "description": "Flag to configure IPsec on the carrier (default is True).",
+            "title": "Ipsec"
+          },
+          "accessibility": {
+            "type": "string",
+            "description": "Indicates if the carrier has access to the Internet (`public`)\nor not (`private).",
+            "enum": [
+              "public",
+              "private"
+            ],
+            "title": "Accessibility"
+          },
+          "characteristics": {
+            "type": "array",
+            "description": "A list of characteristics to assign to the carrier.\nTODO: Explain further how these are used (or removed before removing preview).",
+            "items": {
+              "type": "string",
+              "enum": [
+                "backup",
+                "metered"
+              ]
+            },
+            "title": "Characteristics"
+          },
+          "circuit_type": {
+            "type": "string",
+            "description": "TBC - edge or transit or both.\nUnclear if this should be at the carrier level or some other place.",
+            "enum": [
+              "edge",
+              "transit",
+              "both"
+            ],
+            "title": "Circuit Type"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Carriers"
     },
     "connected_endpoints_keys": {
       "description": "Endpoints connecting to the fabric can be grouped by using separate keys.\nThe keys can be customized to provide a better better organization or grouping of your data.\n`connected_endpoints_keys` should be defined in the top level group_vars for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.\n",
@@ -20185,6 +20600,25 @@
             "description": "Set the default evpn encapsulation.\n",
             "title": "Default EVPN Encapsulation"
           },
+          "default_wan_role": {
+            "type": "string",
+            "enum": [
+              "client",
+              "server"
+            ],
+            "description": "PREVIEW: This key is currently not supported\nSet the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `sdwan`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
+            "title": "Default Wan Role"
+          },
+          "default_sdwan_role": {
+            "type": "string",
+            "enum": [
+              "edge",
+              "transit",
+              "pathfinder"
+            ],
+            "description": "PREVIEW: This key is currently not supported\nSet the default SDWAN role.\n\nThis key is used for Pathfinder designs only when the `wan_mode` root\nkey is set to `sdwan`.\n\n`pathfinder` is only a valid id `wan_role` is `server`.\n`edge` and `transit` are only valid if `wan_role` is `client`.\n",
+            "title": "Default Sdwan Role"
+          },
           "mlag_support": {
             "type": "boolean",
             "default": false,
@@ -26257,6 +26691,166 @@
       },
       "title": "Redundancy"
     },
+    "sdwan_pathfinders": {
+      "description": "PREVIEW: This key is currently not supported\nThe Pathfinder(s) information for the WAN.\n\nWhen the pathfinder is part of the same inventory as the WAN routers,\nonly the name is required.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "description": "Pathfinder hostname.",
+            "title": "Hostname"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Pathfinder router id.",
+            "title": "Router ID"
+          },
+          "carriers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Carrier name.",
+                  "title": "Name"
+                },
+                "ip_address": {
+                  "type": "string",
+                  "description": "The public IP address for this carrier.",
+                  "title": "IP Address"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Carriers"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "hostname"
+        ]
+      },
+      "title": "Sdwan Pathfinders"
+    },
+    "sdwan_regions": {
+      "description": "PREVIEW: This key is currently not supported\nDefine the SDWAN hierarchy for the device.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "zones": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "title": "Description"
+                },
+                "sites": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "title": "Description"
+                      },
+                      "location": {
+                        "type": "string",
+                        "description": "Will be interpreted",
+                        "title": "Location"
+                      },
+                      "site_contact": {
+                        "type": "string",
+                        "title": "Site Contact"
+                      },
+                      "site_after_hours_contact": {
+                        "type": "string",
+                        "title": "Site After Hours Contact"
+                      },
+                      "name": {
+                        "type": "string",
+                        "title": "Name"
+                      },
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10000,
+                        "title": "ID"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "id"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "description": "Site name and ID."
+                  },
+                  "title": "Sites"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "id": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000,
+                  "title": "ID"
+                }
+              },
+              "required": [
+                "name",
+                "id"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "description": "Zone name and ID."
+            },
+            "title": "Zones"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 255,
+            "title": "ID"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "description": "Region name and ID."
+      },
+      "title": "Sdwan Regions"
+    },
     "serial_number": {
       "description": "Serial Number of the device.\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under node type settings.\nIf both are set, the value under node type settings takes precedence.\n",
       "type": "string",
@@ -30418,6 +31012,97 @@
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",
       "type": "string",
       "title": "Vtep Vvtep IP"
+    },
+    "wan_ipsec_profiles": {
+      "description": "PREVIEW: This key is currently not supported\nDefine IPsec profiles parameters for WAN configuration.\n\nIf `data_plane` is not defined, `control_plane` information is\nused for both.",
+      "type": "object",
+      "properties": {
+        "control_plane": {
+          "type": "object",
+          "description": "The `control_plane` profile uses the following defaults:\n  * IKE policy name: CP-IKE-POLICY\n  * SA policy name: CP-SA-POLICY\n  * Profile name: CP-PROFILE",
+          "properties": {
+            "ike_policy_name": {
+              "type": "string",
+              "description": "Name of the IKE policy.",
+              "title": "Ike Policy Name"
+            },
+            "sa_policy_name": {
+              "type": "string",
+              "description": "Name of the SA policy.",
+              "title": "Sa Policy Name"
+            },
+            "profile_name": {
+              "type": "string",
+              "description": "Name of the IPSec profile.",
+              "title": "Profile Name"
+            },
+            "shared_key": {
+              "type": "string",
+              "description": "The IPSec shared key.\nThis variable is sensitive and SHOULD be configured using some vault mechanism.",
+              "title": "Shared Key"
+            }
+          },
+          "required": [
+            "shared_key"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Control Plane"
+        },
+        "data_plane": {
+          "type": "object",
+          "description": "The `data_plane` profile uses the following defaults:\n  * IKE policy name: DP-IKE-POLICY\n  * SA policy name: DP-SA-POLICY\n  * Profile name: DP-PROFILE",
+          "properties": {
+            "ike_policy_name": {
+              "type": "string",
+              "description": "Name of the IKE policy.",
+              "title": "Ike Policy Name"
+            },
+            "sa_policy_name": {
+              "type": "string",
+              "description": "Name of the SA policy.",
+              "title": "Sa Policy Name"
+            },
+            "profile_name": {
+              "type": "string",
+              "description": "Name of the IPSec profile.",
+              "title": "Profile Name"
+            },
+            "shared_key": {
+              "type": "string",
+              "description": "The IPSec shared key.\nThis variable is sensitive and SHOULD be configured using some vault mechanism.",
+              "title": "Shared Key"
+            }
+          },
+          "required": [
+            "shared_key"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Data Plane"
+        }
+      },
+      "required": [
+        "control_plane"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Wan Ipsec Profiles"
+    },
+    "wan_mode": {
+      "description": "Select if the WAN should be run using Pathfinder (`sdwan`) or Auto VPN only.\nThe default is `sdwan`\nPREVIEW: This key is currently not supported",
+      "type": "string",
+      "enum": [
+        "autovpn",
+        "sdwan"
+      ],
+      "title": "Wan Mode"
     }
   },
   "required": [

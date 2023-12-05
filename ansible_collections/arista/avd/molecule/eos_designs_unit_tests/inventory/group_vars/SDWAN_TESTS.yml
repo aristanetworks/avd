@@ -4,6 +4,30 @@ wan_mode: sdwan
 
 bgp_as: 65000
 
+sdwan_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    zones:
+      - name: danger
+        id: 42
+        description: Danger Zone
+        sites:
+          - name: Site421
+            id: 421
+          - name: Site422
+            id: 422
+  - name: AVD_Land_East
+    id: 43
+    description: AVD Region
+    zones:
+      - name: Roswell
+        id: 51
+        description: Zone 51
+        sites:
+          - name: Site511
+            id: 511
+
 bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
@@ -18,12 +42,7 @@ wan_ipsec_profiles:
   data_plane:
     shared_key: ABCDEF1234567890666
 
-sdwan_region:
-  name: AVD_Land
-  id: 42
 sdwan_zone:
-  name: danger
-  id: 42
 
 default_node_types:
   - node_type: wan-controller
@@ -41,9 +60,7 @@ edge:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: sdwan-edge
-      sdwan_site:
-        name: EDGE-SITE
-        id: 1
+      sdwan_site: Site511
       id: 1
 
 transit:
@@ -51,9 +68,7 @@ transit:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: sdwan-transit
-      sdwan_site:
-        name: TRANSIT-SITE
-        id: 2
+      sdwan_site: Site422
       id: 1
 
 wan_controller:
@@ -61,7 +76,5 @@ wan_controller:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: sdwan-pathfinder
-      sdwan_site:
-        name: PATHFINDER-SITE
-        id: 42
+      sdwan_site: Site421
       id: 1

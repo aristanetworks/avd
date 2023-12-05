@@ -27,12 +27,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;carriers</samp>](## "sdwan_pathfinders.[].carriers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "sdwan_pathfinders.[].carriers.[].name") | String |  |  |  | Carrier name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "sdwan_pathfinders.[].carriers.[].ip_address") | String |  |  |  | The public IP address for this carrier. |
-    | [<samp>sdwan_region</samp>](## "sdwan_region") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Define the SDWAN region for the device. |
-    | [<samp>&nbsp;&nbsp;name</samp>](## "sdwan_region.name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;id</samp>](## "sdwan_region.id") | Integer | Required |  | Min: 1<br>Max: 255 |  |
-    | [<samp>sdwan_zone</samp>](## "sdwan_zone") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Define the SDWAN zone for the device. |
-    | [<samp>&nbsp;&nbsp;name</samp>](## "sdwan_zone.name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;id</samp>](## "sdwan_zone.id") | Integer | Required |  | Min: 1<br>Max: 10000 |  |
     | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Define IPsec profiles parameters for WAN configuration.<br><br>If `data_plane` is not defined, `control_plane` information is<br>used for both. |
     | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  | The `control_plane` profile uses the following defaults:<br>  * IKE policy name: CP-IKE-POLICY<br>  * SA policy name: CP-SA-POLICY<br>  * Profile name: CP-PROFILE |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  |  |  | Name of the IKE policy. |
@@ -114,18 +108,6 @@
 
             # The public IP address for this carrier.
             ip_address: <str>
-
-    # PREVIEW: This key is currently not supported
-    # Define the SDWAN region for the device.
-    sdwan_region:
-      name: <str; required>
-      id: <int; 1-255; required>
-
-    # PREVIEW: This key is currently not supported
-    # Define the SDWAN zone for the device.
-    sdwan_zone:
-      name: <str; required>
-      id: <int; 1-10000; required>
 
     # PREVIEW: This key is currently not supported
     # Define IPsec profiles parameters for WAN configuration.

@@ -32,9 +32,9 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
             role = "transit region"
 
         router_adaptive_virtual_topology["topology_role"] = role
-        router_adaptive_virtual_topology["region"] = self._wan_region
-        router_adaptive_virtual_topology["zone"] = self._wan_zone
-        router_adaptive_virtual_topology["site"] = get(self.shared_utils.switch_data_combined, "sdwan_site", required=True)
+        router_adaptive_virtual_topology["region"] = {"name": self._wan_region["name"], "id": self._wan_region["id"]}
+        router_adaptive_virtual_topology["zone"] = {"name": self._wan_zone["name"], "id": self._wan_zone["id"]}
+        router_adaptive_virtual_topology["site"] = {"name": self._wan_site["name"], "id": self._wan_site["id"]}
 
         # TODO - handle Policy/Profile/VRF here
 

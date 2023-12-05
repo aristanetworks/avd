@@ -124,14 +124,14 @@ ip_security:
 router_adaptive_virtual_topology:
   topology_role: edge
   region:
-    name: AVD_Land
-    id: 42
+    name: AVD_Land_East
+    id: 43
   zone:
-    name: danger
-    id: 42
+    name: Roswell
+    id: 51
   site:
-    name: EDGE-SITE
-    id: 1
+    name: Site511
+    id: 511
 router_bfd:
   multihop:
     interval: 300

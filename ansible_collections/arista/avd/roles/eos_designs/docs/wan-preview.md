@@ -23,7 +23,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 ### Design points
 
-* The intent is to be able to support having the different WAN participating devices in different inventories.
+- The intent is to be able to support having the different WAN participating devices in different inventories.
 
 ## Known limitations
 
@@ -56,6 +56,12 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 --8<--
 roles/eos_designs/docs/tables/wan-settings.md
+--8<--
+
+#### WAN hierarchy
+
+--8<--
+roles/eos_designs/docs/tables/wan-sdwan-regions.md
 --8<--
 
 #### New node keys

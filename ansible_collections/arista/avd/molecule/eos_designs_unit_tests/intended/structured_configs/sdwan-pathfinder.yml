@@ -141,14 +141,14 @@ ip_security:
 router_adaptive_virtual_topology:
   topology_role: pathfinder
   region:
-    name: AVD_Land
+    name: AVD_Land_West
     id: 42
   zone:
     name: danger
     id: 42
   site:
-    name: PATHFINDER-SITE
-    id: 42
+    name: Site421
+    id: 421
 router_bfd:
   multihop:
     interval: 300

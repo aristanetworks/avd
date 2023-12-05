@@ -7,7 +7,8 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 
 class UtilsMixin:
@@ -259,13 +260,38 @@ class UtilsMixin:
         }
 
     @cached_property
+    def _wan_site(self) -> dict | None:
+        """
+        Here assuming that sdwan_name is unique across zones and regions
+        """
+        if not self.shared_utils.sdwan_role:
+            return None
+
+        node_defined_site = get(self.shared_utils.switch_data_combined, "sdwan_site", required=True)
+        regions = get(self._hostvars, "sdwan_regions", required=True)
+        for region in regions:
+            zones = get(region, "zones", [])
+            for zone in zones:
+                sites = get(zone, "sites", [])
+                if (site := get_item(sites, "name", node_defined_site)) is not None:
+                    # Storing the zone and region under _wan_site to avoid recomputing all the time
+                    zone_info = zone.copy()
+                    zone_info.pop("sites")
+                    region_info = region.copy()
+                    region_info.pop("zones")
+                    site.update({"zone": zone_info, "region": region_info})
+                    return site
+        # If we reach here we did not find our wan_site in the hierarchy when we should have
+        raise AristaAvdError(f"WAN site {node_defined_site} was not found in the hierarchy defined under 'sdwan_regions'.")
+
+    @cached_property
     def _wan_region(self) -> dict | None:
         """
         WAN region for Pathfinder
         """
         if not self.shared_utils.sdwan_role:
             return None
-        return get(self._hostvars, "sdwan_region", None)
+        return self._wan_site["region"]
 
     @cached_property
     def _wan_zone(self) -> dict | None:
@@ -274,7 +300,7 @@ class UtilsMixin:
         """
         if not self.shared_utils.sdwan_role:
             return None
-        return get(self._hostvars, "sdwan_zone", None)
+        return self._wan_site["zone"]
 
     @cached_property
     def _wan_route_reflectors(self) -> dict:
