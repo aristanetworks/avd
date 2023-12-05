@@ -20,11 +20,9 @@
 | DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
 | ------------------- | --- | --------------- | --------------- |
 {%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
-{%             set dhcp_server_vrf = dhcp_server.vrf | arista.avd.default("-") %}
-| {{ not dhcp_server.disabled | arista.avd.default(false) }} | {{ dhcp_server_vrf }} | {{ dhcp_server.dns_domain_name_ipv4 | arista.avd.default("-") }} | {{ dhcp_server.dns_domain_name_ipv6 | arista.avd.default("-") }} |
+| {{ not dhcp_server.disabled | arista.avd.default(false) }} | {{ dhcp_server.vrf }} | {{ dhcp_server.dns_domain_name_ipv4 | arista.avd.default("-") }} | {{ dhcp_server.dns_domain_name_ipv6 | arista.avd.default("-") }} |
 {%         endfor %}
 {%         for dhcp_server in dhcp_servers | arista.avd.natural_sort("vrf") %}
-{%             set dhcp_server_vrf = dhcp_server.vrf | arista.avd.default("default") %}
 {%             set dhcp_server_subnets = [] %}
 {%             set dhcp_vendor_options = [] %}
 {%             for subnet in dhcp_server.subnets | arista.avd.natural_sort %}
@@ -50,7 +48,7 @@
 {%             endfor %}
 {%             if dhcp_server_subnets | length > 0 %}
 
-#### VRF {{ dhcp_server_vrf }} DHCP Server Subnets
+#### VRF {{ dhcp_server.vrf }} DHCP Server Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
@@ -60,13 +58,25 @@
 {%             endif %}
 {%             if dhcp_vendor_options | length > 0 %}
 
-#### VRF {{ dhcp_server_vrf }} DHCP Server IPv4 Vendor Options
+#### VRF {{ dhcp_server.vrf }} DHCP Server IPv4 Vendor Options
 
 | Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
 | --------- | ----------------| --------------- | --------------- |
 {%                 for option in dhcp_vendor_options | arista.avd.natural_sort("vendor_id") %}
 {%                     for sub_option in option.sub_options | arista.avd.natural_sort("code") %}
-| {{ option.vendor_id }} | {{ sub_option.code }} | {{ sub_option.type }} | {{ sub_option.data }} |
+{%                         if sub_option.string is arista.avd.defined %}
+{%                             set sub_option_type = "string" %}
+{%                             set sub_option_data = sub_option.string %}
+{%                         elif sub_option.ipv4_address is arista.avd.defined %}
+{%                             set sub_option_type = "ipv4-address" %}
+{%                             set sub_option_data = sub_option.ipv4_address %}
+{%                         elif sub_option.array_ipv4_address is arista.avd.defined %}
+{%                             set sub_option_type = "array ipv4-address" %}
+{%                             set sub_option_data = sub_option.array_ipv4_address | join(" ") %}
+{%                         endif %}
+{%                         if sub_option_type is arista.avd.defined %}
+| {{ option.vendor_id }} | {{ sub_option.code }} | {{ sub_option_type }} | {{ sub_option_data }} |
+{%                         endif %}
 {%                     endfor %}
 {%                 endfor %}
 {%             endif %}

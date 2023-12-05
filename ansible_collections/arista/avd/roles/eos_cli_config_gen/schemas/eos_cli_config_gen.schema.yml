@@ -1073,6 +1073,7 @@ keys:
         type: bool
   dhcp_servers:
     type: list
+    primary_key: vrf
     items:
       type: dict
       keys:
@@ -1080,6 +1081,10 @@ keys:
           type: bool
         vrf:
           type: str
+          description: VRF in which to configure the dhcp server, use "default" to
+            indicate default VRF.
+          convert_types:
+          - int
         dns_domain_name_ipv4:
           type: str
         dns_domain_name_ipv6:

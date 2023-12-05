@@ -9,7 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>dhcp_servers</samp>](## "dhcp_servers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;disabled</samp>](## "dhcp_servers.[].disabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "dhcp_servers.[].vrf") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "dhcp_servers.[].vrf") | String | Required, Unique |  |  | VRF in which to configure the dhcp server, use "default" to indicate default VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv4</samp>](## "dhcp_servers.[].dns_domain_name_ipv4") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv6</samp>](## "dhcp_servers.[].dns_domain_name_ipv6") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_vendor_options</samp>](## "dhcp_servers.[].ipv4_vendor_options") | List, items: Dictionary |  |  |  |  |
@@ -37,7 +37,9 @@
     ```yaml
     dhcp_servers:
       - disabled: <bool>
-        vrf: <str>
+
+        # VRF in which to configure the dhcp server, use "default" to indicate default VRF.
+        vrf: <str; required; unique>
         dns_domain_name_ipv4: <str>
         dns_domain_name_ipv6: <str>
         ipv4_vendor_options:

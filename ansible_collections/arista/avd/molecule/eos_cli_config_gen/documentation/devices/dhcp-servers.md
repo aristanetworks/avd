@@ -43,15 +43,24 @@ interface Management1
 | DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv6 DNS Domain |
 | ------------------- | --- | --------------- | --------------- |
 | True | AVRF | - | - |
+| True | defauls | - | - |
+| True | default | - | - |
+| True | defaulu | - | - |
 | True | TEST | testv4.com | testv6.com |
 | False | VRF01 | - | - |
-| True | - | - | - |
 
 #### VRF AVRF DHCP Server Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
 | 172.16.254.0/24 | - | - | 172.16.254.1 | - | - |
+
+#### VRF default DHCP Server Subnets
+
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| 2a00:2::/64 | - | - | - | - | - |
+| 10.2.3.0/24 | - | - | - | - | - |
 
 #### VRF TEST DHCP Server Subnets
 
@@ -73,16 +82,16 @@ interface Management1
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
 | 192.168.0.0/24 | - | - | - | - | - |
 
-#### VRF default DHCP Server Subnets
-
-| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
-| ------ | ---- | ----------- | --------------- | ---------- | ------ |
-| 2a00:2::/64 | - | - | - | - | - |
-| 10.2.3.0/24 | - | - | - | - | - |
-
 ### DHCP Server Configuration
 
 ```eos
+!
+dhcp server vrf AVRF
+   !
+   subnet 172.16.254.0/24
+      default-gateway 172.16.254.1
+!
+dhcp server vrf defauls
 !
 dhcp server
    !
@@ -90,10 +99,7 @@ dhcp server
    !
    subnet 10.2.3.0/24
 !
-dhcp server vrf AVRF
-   !
-   subnet 172.16.254.0/24
-      default-gateway 172.16.254.1
+dhcp server vrf defaulu
 !
 dhcp server vrf TEST
    dns domain name ipv4 testv4.com

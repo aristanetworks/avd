@@ -8,6 +8,7 @@ type: dict
 keys:
   dhcp_servers:
     type: list
+    primary_key: vrf
     items:
       type: dict
       keys:
@@ -15,6 +16,9 @@ keys:
           type: bool
         vrf:
           type: str
+          description: VRF in which to configure the dhcp server, use "default" to indicate default VRF.
+          convert_types:
+          - int
         dns_domain_name_ipv4:
           type: str
         dns_domain_name_ipv6:
@@ -42,13 +46,21 @@ keys:
                       max: 254
                       convert_types:
                         - str
-                    type:
+                    # type:
+                    #   type: str
+                    #   required: true
+                    #   valid_values: ["string", "ipv4-address", "array ipv4-address"]
+                    string:
                       type: str
-                      required: true
-                      valid_values: ["string", "ipv4-address", "array ipv4-address"]
-                    data:
+                    ipv4_address:
                       type: str
-                      required: true
+                    array_ipv4_address:
+                      type: list
+                      items:
+                        type: str
+                    # data:
+                    #   type: str
+                    #   required: true
         subnets:
           type: list
           primary_key: subnet

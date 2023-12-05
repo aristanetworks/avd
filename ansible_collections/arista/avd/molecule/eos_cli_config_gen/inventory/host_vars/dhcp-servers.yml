@@ -1,17 +1,16 @@
 dhcp_servers:
+  - vrf: defauls
+  - vrf: defaulu
   - vrf: TEST
     ipv4_vendor_options:
       - vendor_id: NTP
         sub_options:
           - code: 42
-            type: ipv4-address
-            data: "10.1.1.1"
+            ipv4_address: "10.1.1.1"
           - code: 1
-            type: string
-            data: "test"
+            string: "test"
           - code: 66
-            type: "array ipv4-address"
-            data: 1.1.1.1 2.2.2.2
+            array_ipv4_address: [1.1.1.1, 2.2.2.2]
     disabled: false
     dns_domain_name_ipv4: testv4.com
     dns_domain_name_ipv6: testv6.com
@@ -32,7 +31,8 @@ dhcp_servers:
           minutes: 10
         default_gateway: 10.0.0.1
 
-  - subnets:
+  - vrf: default
+    subnets:
       - subnet: 10.2.3.0/24
       - subnet: 2a00:2::/64
 

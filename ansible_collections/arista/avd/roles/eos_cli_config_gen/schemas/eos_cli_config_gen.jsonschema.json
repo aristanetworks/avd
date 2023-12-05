@@ -1549,6 +1549,7 @@
           },
           "vrf": {
             "type": "string",
+            "description": "VRF in which to configure the dhcp server, use \"default\" to indicate default VRF.",
             "title": "VRF"
           },
           "dns_domain_name_ipv4": {
@@ -1713,7 +1714,10 @@
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        }
+        },
+        "required": [
+          "vrf"
+        ]
       },
       "title": "DHCP Servers"
     },
