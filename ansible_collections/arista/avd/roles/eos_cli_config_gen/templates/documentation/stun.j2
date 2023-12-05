@@ -39,10 +39,7 @@
 {%         else %}
 {%             set lifetime = "-" %}
 {%         endif %}
-{%         set interface_list = [] %}
-{%         for local_interface in stun.server.local_interfaces | arista.avd.natural_sort %}
-{%             do interface_list.append(local_interface) %}
-{%         endfor %}
+{%         set interface_list = stun.server.local_interfaces | arista.avd.natural_sort %}
 {# Next is deprecated remove in v5.0.0 #}
 {%         if stun.server.local_interface is arista.avd.defined %}
 {%             do interface_list.append(stun.server.local_interface) %}
