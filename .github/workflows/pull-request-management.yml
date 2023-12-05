@@ -229,19 +229,21 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario:
-          - 'eos_designs_unit_tests'
-          - 'eos_designs_negative_unit_tests'
-          - 'evpn_underlay_ebgp_overlay_ebgp'
-          - 'evpn_underlay_ospf_overlay_ebgp'
-          - 'evpn_underlay_isis_overlay_ibgp'
-          - 'eos_designs-twodc-5stage-clos'
-          - 'evpn_underlay_rfc5549_overlay_ebgp'
+          - 'eos_designs_deprecated_vars'
           - 'eos_designs-l2ls'
           - 'eos_designs-mpls-isis-sr-ldp'
+          - 'eos_designs_negative_unit_tests'
+          - 'eos_designs-twodc-5stage-clos'
+          - 'eos_designs_unit_tests'
+          - 'evpn_underlay_ebgp_overlay_ebgp'
+          - 'evpn_underlay_isis_overlay_ibgp'
+          - 'evpn_underlay_ospf_overlay_ebgp'
+          - 'evpn_underlay_rfc5549_overlay_ebgp'
           - 'example-campus-fabric'
+          - 'example-dual-dc-l3ls'
+          - 'example-isis-ldp-ipvpn'
           - 'example-l2ls-fabric'
           - 'example-single-dc-l3ls'
-          - 'example-dual-dc-l3ls'
         ansible_version:
           - 'ansible-core<2.17.0 --upgrade'
         # Also test minimum ansible version for one scenario.
