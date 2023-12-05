@@ -133,12 +133,12 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
             False,
             id="invalid ansible version",
         ),
-        pytest.param(
-            "2.12.6",
-            True,
-            True,
-            id="deprecated ansible version",
-        ),
+        # pytest.param(
+        #     "2.12.6",
+        #     True,
+        #     True,
+        #     id="deprecated ansible version",
+        # ),
     ],
 )
 def test__validate_ansible_version(mocked_running_version, deprecated_version, expected_return):
@@ -150,7 +150,7 @@ def test__validate_ansible_version(mocked_running_version, deprecated_version, e
     ret = _validate_ansible_version("arista.avd", mocked_running_version, info, result)
     assert ret == expected_return
     if expected_return is True and deprecated_version is True:
-        # Check for depreecation of Ansible<2.14
+        # Check for depreecation of old Ansible versions (Not used right now)
         assert len(result["deprecations"]) == 1
 
 

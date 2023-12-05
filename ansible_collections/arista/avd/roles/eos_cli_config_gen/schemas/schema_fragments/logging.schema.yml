@@ -62,6 +62,10 @@ keys:
             type: bool
             description: |
               Add sequence numbers to log messages
+          rfc5424:
+            type: bool
+            description: |
+              Forward logs in RFC5424 format
       facility:
         type: str
         valid_values: ["auth", "cron", "daemon", "kern", "local0", "local1", "local2", "local3", "local4",

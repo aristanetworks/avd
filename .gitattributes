@@ -1,0 +1,19 @@
+# Collapsing generated schemas from PR diff by default
+/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.schema.yml  linguist-generated=true -merge -diff
+/ansible_collections/arista/avd/roles/eos_cli_config_gen/schemas/eos_cli_config_gen.jsonschema.json  linguist-generated=true  -merge -diff
+/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.schema.yml  linguist-generated=true  -merge -diff
+/ansible_collections/arista/avd/roles/eos_designs/schemas/eos_designs.jsonschema.json  linguist-generated=true  -merge -diff
+
+# Collapsing generated tables from PR diff by default
+/ansible_collections/arista/avd/roles/eos_cli_config_gen/tables/*  linguist-generated=true -merge -diff
+/ansible_collections/arista/avd/roles/eos_designs/tables/*  linguist-generated=true -merge -diff
+
+# Collapsing generated plugins doc from PR diff by default
+/ansible_collections/arista/avd/docs/plugins/*  linguist-generated=true
+
+# debatable maybe only for some scenarios ?
+# /ansible_collections/arista/avd/molecule/*/documentation/*  linguist-generated=true
+
+# Excluding docs from stats for linguist
+/ansible_collections/arista/avd/roles/*/docs/*  linguist-documentation
+/ansible_collections/arista/avd/docs/*  linguist-documentation

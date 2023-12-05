@@ -2782,6 +2782,8 @@ keys:
         type: dict
         $ref: eos_cli_config_gen#/$defs/flow_tracking
   flow_trackings:
+    documentation_options:
+      table: flow-tracking
     deprecation:
       warning: true
       new_key: flow_tracking
@@ -4506,6 +4508,11 @@ keys:
           sequence_numbers:
             type: bool
             description: 'Add sequence numbers to log messages
+
+              '
+          rfc5424:
+            type: bool
+            description: 'Forward logs in RFC5424 format
 
               '
       facility:

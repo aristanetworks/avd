@@ -1286,7 +1286,7 @@ keys:
           description: "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n
             \ - Ethernet1\n  - Ethernet2-48\n\nAll switch_ports ranges are expanded
             into individual port configurations.\n\nFor more details and examples
-            of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter%20plugins/range_expand.md).\n"
+            of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter_plugins/range_expand.md).\n"
           items:
             type: str
         description:
@@ -1460,7 +1460,8 @@ keys:
           - p2p
           - port-channel
           default: p2p
-          description: Uplinks must be p2p if "vtep" or "underlay_router" is true.
+          description: '`uplink_type` must be "p2p" if `vtep` or `underlay_router`
+            is true.'
         vtep:
           type: bool
           default: false
@@ -5386,6 +5387,16 @@ $defs:
             description: Custom structured config for eos_cli_config_gen.
             type: dict
             $ref: eos_cli_config_gen#/
+          uplink_type:
+            documentation_options:
+              table: node-type-uplink-configuration
+            type: str
+            $ref: eos_designs#/keys/node_type_keys/items/keys/uplink_type
+            description: 'Override the default `uplink_type` set at the `node_type_key`
+              level.
+
+              `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for
+              the `node_type_key` definition.'
           uplink_ipv4_pool:
             documentation_options:
               table: node-type-uplink-configuration
