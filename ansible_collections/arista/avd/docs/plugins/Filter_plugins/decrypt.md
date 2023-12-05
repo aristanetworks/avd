@@ -35,14 +35,14 @@ Note \- For now this filter only supports decryption from type <code>7</code> an
 
 ```yaml
 ---
-# Decrypt BGP password for peer group "IPv4-UNDERLAY-PEERS"
-cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
+- # Decrypt BGP password for peer group "IPv4-UNDERLAY-PEERS"
+  cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
 
-# Decrypt OSPF simple password for interface "Ethernet1"
-cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='ospf_simple', key='Ethernet1') }}"
+- # Decrypt OSPF simple password for interface "Ethernet1"
+  cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='ospf_simple', key='Ethernet1') }}"
 
-# Decrypt OSPF message digest password for Ethernet1, MD5 and key id 1
-cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
+- # Decrypt OSPF message digest password for Ethernet1, MD5 and key id 1
+  cleartext: "{{ encrypted_password | arista.avd.decrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
 ```
 
 ## Return Values

@@ -15,17 +15,13 @@ scenario:
     - destroy
 dependency:
   name: galaxy
+  enabled: false
 driver:
-  name: delegated
-platforms:
-  - name: DC1-POD1-LEAF1A
-    image: avdteam/base:3.8-v2.0
-    pre_build_image: true
+  name: default
+  options:
     managed: false
-    groups:
-      - DC1_POD1_LEAFS
-      - DC1
-      - TWODC_5STAGE_CLOS
+platforms:
+  - name: dummy
 provisioner:
   name: ansible
   config_options:
