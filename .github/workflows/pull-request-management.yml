@@ -126,7 +126,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ "3.8", "3.9", "3.10" ]
+        python_version: [ "3.9", "3.10", "3.11", "3.12" ]
     steps:
       - name: 'Set environment variables'
         run: |
@@ -139,8 +139,7 @@ jobs:
           python-version: ${{ matrix.python_version }}
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
@@ -156,12 +155,11 @@ jobs:
           - 'eos_cli_config_gen_deprecated_vars'
           - 'eos_cli_config_gen_negative_unit_tests'
         ansible_version:
-          - 'ansible-core<2.16.0 --upgrade'
+          - 'ansible-core<2.17.0 --upgrade'
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: 'eos_cli_config_gen'
-            ansible_version: 'ansible-core==2.12.6'
-            galaxy_server: 'https://old-galaxy.ansible.com'
+            ansible_version: 'ansible-core==2.14.0'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
@@ -169,10 +167,6 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - name: 'Set galaxy server'
-        if: ${{ matrix.galaxy_server }}
-        run: |
-          echo "ANSIBLE_GALAXY_SERVER=${{ matrix.galaxy_server }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.6
@@ -200,7 +194,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['dhcp_configuration', 'dhcp_provisioning']
-        ansible_version: ['ansible-core<2.16.0 --upgrade']
+        ansible_version: ['ansible-core<2.17.0 --upgrade']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
@@ -249,16 +243,15 @@ jobs:
           - 'example-single-dc-l3ls'
           - 'example-dual-dc-l3ls'
         ansible_version:
-          - 'ansible-core<2.16.0 --upgrade'
+          - 'ansible-core<2.17.0 --upgrade'
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: 'eos_designs_unit_tests'
-            ansible_version: 'ansible-core==2.12.6'
-            galaxy_server: 'https://old-galaxy.ansible.com'
-          - avd_scenario: 'eos_designs_unit_tests'
-            ansible_version: 'ansible-core>=2.13.1,<2.14.0 --upgrade'
+            ansible_version: 'ansible-core==2.14.0'
           - avd_scenario: 'eos_designs_unit_tests'
             ansible_version: 'ansible-core>=2.14.0,<2.15.0 --upgrade'
+          - avd_scenario: 'eos_designs_unit_tests'
+            ansible_version: 'ansible-core>=2.15.0,<2.16.0 --upgrade'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
@@ -266,10 +259,6 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - name: 'Set galaxy server'
-        if: ${{ matrix.galaxy_server }}
-        run: |
-          echo "ANSIBLE_GALAXY_SERVER=${{ matrix.galaxy_server }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.6
@@ -298,11 +287,10 @@ jobs:
         avd_scenario:
           - 'eos_config_deploy_cvp'
         ansible_version:
-          - 'ansible-core<2.16.0 --upgrade'
+          - 'ansible-core<2.17.0 --upgrade'
         include:
           - avd_scenario: 'eos_config_deploy_cvp'
-            ansible_version: 'ansible-core==2.12.6'
-            galaxy_server: 'https://old-galaxy.ansible.com'
+            ansible_version: 'ansible-core==2.14.0'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.cloudvision == 'true'
     steps:
@@ -310,10 +298,6 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - name: 'Set galaxy server'
-        if: ${{ matrix.galaxy_server }}
-        run: |
-          echo "ANSIBLE_GALAXY_SERVER=${{ matrix.galaxy_server }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.6
@@ -343,11 +327,10 @@ jobs:
         avd_scenario:
           - 'eos_validate_state'
         ansible_version:
-          - 'ansible-core<2.16.0 --upgrade'
+          - 'ansible-core<2.17.0 --upgrade'
         include:
           - avd_scenario: 'eos_validate_state'
-            ansible_version: 'ansible-core==2.12.6'
-            galaxy_server: 'https://old-galaxy.ansible.com'
+            ansible_version: 'ansible-core==2.14.0'
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
     steps:
@@ -355,10 +338,6 @@ jobs:
         run: |
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - name: 'Set galaxy server'
-        if: ${{ matrix.galaxy_server }}
-        run: |
-          echo "ANSIBLE_GALAXY_SERVER=${{ matrix.galaxy_server }}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.6
@@ -390,11 +369,13 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: |
+            3.10
+            3.11
+            3.12
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: 'Run ansible-test sanity'
         run: |
           cd ansible_collections/arista/avd/
@@ -412,11 +393,13 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: |
+            3.10
+            3.11
+            3.12
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: 'Run ansible-test units test cases'
         run: |
           cd ansible_collections/arista/avd/
@@ -434,11 +417,13 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: |
+            3.10
+            3.11
+            3.12
       - name: 'Install Python requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: 'Run ansible-test integration test cases'
         run: |
           cd ansible_collections/arista/avd/
@@ -456,11 +441,13 @@ jobs:
       - name: Set up Python 3
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: |
+            3.10
+            3.11
+            3.12
       - name: 'Install Python & Ansible requirements'
         run: |
-          pip install -r ansible_collections/arista/avd/requirements.txt --upgrade
-          pip install -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install -r ansible_collections/arista/avd/requirements.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
           ansible-galaxy collection install -r ansible_collections/arista/avd/collections.yml
       - name: 'Run ansible-test integration test cases'
         run: |
@@ -518,6 +505,7 @@ jobs:
           python-version: |
             3.10
             3.11
+            3.12
       - name: 'Install tox'
         run: |
           pip install tox --upgrade
