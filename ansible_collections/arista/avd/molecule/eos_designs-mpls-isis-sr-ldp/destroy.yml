@@ -1,6 +1,6 @@
 ---
 - name: Remove output folders
-  hosts: all
+  hosts: MPLS_CORE
   gather_facts: false
   connection: local
   tasks:

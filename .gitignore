@@ -1,138 +1,41 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*.py-e
 *$py.class
 .j2cache/
-
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Ansible builder
-*context/
-*_build/
-Containerfile
-
-# Django stuff:
 *.log
-local_settings.py
-db.sqlite3
 
-# Flask stuff:
-instance/
-.webassets-cache
+# pyavd ignores
+python-avd/build/
+python-avd/dist/
+python-avd/vendor/
+python-avd/tests/artifacts/
+python-avd/pyavd.egg-info/
+python-avd/.tox/
+python-avd/.coverage
+python-avd/.mypy_cache/
 
-# Scrapy stuff:
-.scrapy
+# top level installers
+/*.tar.gz
+## Ansible galaxy-importer
+/importer_result.json
+## ansible-builder
+/_build
 
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
+# mkdocs
 /site
 
-# mypy
-.mypy_cache/
+# ansible_collections/arista/avd/tests ignores
+ansible_collections/arista/avd/tests/.mypy_cache/
 
-.vscode/*
+# Development
+## pyenv
+.python-version
+## .vscode/*
+.vscode/launch.json
 */.vscode/*
 **/.vscode/*
 
-# Installation path for CVP example
-examples/evpn-l3ls-cvp-deployment/collections
-
-# DS_Store
+# OSX
 *.DS_Store
-
-# mkdocs process
-ansible_collections/arista/avd/docs/_build/*.rst
-ansible_collections/arista/avd/docs/media/*
-ansible_collections/arista/avd/docs/contributing.md
-ansible_collections/arista/avd/docs/*.rst
-
-# Molecule AVD build folders
-ansible_collections/arista/avd/molecule/*/config_backup
-
-# Examples config-backup folder
-ansible_collections/arista/avd/examples/*/config_backup
-
-# Ignore TAR GZ files
-*.tar.gz
-
-# Ansible galaxy-importer
-importer_result.json

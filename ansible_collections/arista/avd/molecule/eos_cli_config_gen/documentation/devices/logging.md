@@ -53,6 +53,7 @@ interface Management1
 | Timestamp | traditional year timezone |
 | Hostname | hostname |
 | Sequence-numbers | false |
+| RFC5424 | True |
 
 | VRF | Source Interface |
 | --- | ---------------- |
@@ -87,6 +88,7 @@ logging vrf mgt host 30.30.30.7 100 200 protocol tcp
 logging vrf mgt host 40.40.40.7 300 400
 logging vrf vrf_with_no_source_interface host 1.2.3.4
 logging format timestamp traditional year timezone
+logging format rfc5424
 logging source-interface Loopback0
 logging vrf mgt source-interface Management0
 ```

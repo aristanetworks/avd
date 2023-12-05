@@ -63,7 +63,3 @@ evpn_prevent_readvertise_to_server: true
 
 # VPN import pruning
 evpn_import_pruning: true
-
-# Documentation
-eos_designs_documentation:
-  connected_endpoints: true

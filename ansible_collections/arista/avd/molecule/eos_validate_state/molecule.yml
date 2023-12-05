@@ -11,13 +11,13 @@ scenario:
     - destroy
 dependency:
   name: galaxy
+  enabled: false
 driver:
-  name: delegated
-platforms:
-  - name: dc1-leaf1a
-    # image: avdteam/base:3.8-v2.0
-    # pre_build_image: true
+  name: default
+  options:
     managed: false
+platforms:
+  - name: dummy
 provisioner:
   name: ansible
   config_options:
@@ -27,10 +27,9 @@ provisioner:
       gathering: explicit
   inventory:
     links:
+      hosts: 'inventory/inventory.yml'
       group_vars: 'inventory/group_vars/'
   ansible_args:
-    - --inventory
-    - ${MOLECULE_SCENARIO_DIRECTORY}/inventory/inventory.yml
     - --skip-tags=documentation
     - --check
 verifier:
