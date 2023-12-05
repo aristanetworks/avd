@@ -27,6 +27,7 @@ keys:
                 access_group:
                   type: str
                   description: Standard Access-List Name
+                  convert_types: [ int ]
       qos:
         type: list
         primary_key: name
@@ -54,9 +55,11 @@ keys:
                 access_group:
                   type: str
                   description: IPv4 Access-List Name
+                  convert_types: [ int ]
             ipv6:
               type: dict
               keys:
                 access_group:
                   type: str
                   description: IPv6 Access-List Name
+                  convert_types: [ int ]

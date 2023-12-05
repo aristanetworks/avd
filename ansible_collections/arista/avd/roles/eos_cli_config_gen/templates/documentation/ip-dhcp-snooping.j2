@@ -1,0 +1,38 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ip dhcp snooping #}
+{% if ip_dhcp_snooping is arista.avd.defined %}
+
+## IP DHCP Snooping
+{%     if ip_dhcp_snooping.enabled is arista.avd.defined(true) %}
+
+IP DHCP Snooping is enabled
+{%     endif %}
+{%     if ip_dhcp_snooping.bridging is arista.avd.defined(true) %}
+
+IP DHCP Snooping Bridging is enabled
+{%     endif %}
+{%     if ip_dhcp_snooping.information_option.enabled is arista.avd.defined(true) %}
+
+IP DHCP Snooping Insertion of Option 82 is enabled
+{%     endif %}
+{%     if ip_dhcp_snooping.information_option.circuit_id_type is arista.avd.defined %}
+- IP DHCP Snooping Circuit-ID Suboption: {{ ip_dhcp_snooping.information_option.circuit_id_type }}
+{%     endif %}
+{%     if ip_dhcp_snooping.information_option.circuit_id_format is arista.avd.defined %}
+- IP DHCP Snooping Circuit-ID Format: {{ ip_dhcp_snooping.information_option.circuit_id_format }}
+{%     endif %}
+{%     if ip_dhcp_snooping.vlan is arista.avd.defined %}
+
+IP DHCP Snooping enabled VLAN: {{ ip_dhcp_snooping.vlan }}
+{%     endif %}
+
+### IP DHCP Snooping Configuration
+
+```eos
+{%     include 'eos/ip-dhcp-snooping.j2' %}
+```
+{% endif %}

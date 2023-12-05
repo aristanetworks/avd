@@ -137,13 +137,13 @@ port_channel_interfaces:
   mode: trunk
   trunk_groups:
   - MLAG
-- name: Port-Channel1
-  description: DC1_SVC3_Po7
+- name: Port-Channel1001
+  description: DC1_SVC3_Po1007
   type: switched
   shutdown: false
   mode: trunk
   vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
-  mlag: 1
+  mlag: 1001
 ethernet_interfaces:
 - name: Ethernet3
   peer: DC1-L2LEAF2B
@@ -174,7 +174,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 1
+    id: 1001
     mode: active
 - name: Ethernet2
   peer: DC1-SVC3B
@@ -185,7 +185,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 1
+    id: 1001
     mode: active
 mlag_configuration:
   domain_id: DC1_L2LEAF2

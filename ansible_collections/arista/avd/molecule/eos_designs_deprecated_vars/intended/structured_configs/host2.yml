@@ -1,4 +1,5 @@
 hostname: host2
+is_deployed: true
 router_bgp:
   as: '102'
   router_id: 10.42.0.102

@@ -1286,7 +1286,7 @@ keys:
           description: "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n
             \ - Ethernet1\n  - Ethernet2-48\n\nAll switch_ports ranges are expanded
             into individual port configurations.\n\nFor more details and examples
-            of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter%20plugins/range_expand.md).\n"
+            of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter_plugins/range_expand.md).\n"
           items:
             type: str
         description:
@@ -1460,7 +1460,8 @@ keys:
           - p2p
           - port-channel
           default: p2p
-          description: Uplinks must be p2p if "vtep" or "underlay_router" is true.
+          description: '`uplink_type` must be "p2p" if `vtep` or `underlay_router`
+            is true.'
         vtep:
           type: bool
           default: false
@@ -2915,6 +2916,8 @@ keys:
             description: Multicast Group IPv4 prefix/mask.
         access_list_name:
           type: str
+          convert_types:
+          - int
           description: Name of standard Access-List.
   underlay_ospf_area:
     documentation_options:
@@ -3459,9 +3462,9 @@ $defs:
             description: Manual preference as described above, required only for preference
               algorithm.
             items:
-              type: str
+              type: int
               convert_types:
-              - int
+              - str
           dont_preempt:
             type: bool
             description: Disable preemption for single-active forwarding when auto/manual
@@ -4012,6 +4015,8 @@ $defs:
                   description: Group_prefix/mask.
               access_list_name:
                 type: str
+                convert_types:
+                - int
                 description: 'List of groups to associate with the RP address set
                   in ''rp''.
 
@@ -4393,6 +4398,8 @@ $defs:
                         description: Group_prefix/mask.
                     access_list_name:
                       type: str
+                      convert_types:
+                      - int
                       description: 'List of groups to associate with the RP addresses
                         set in ''rps''.
 
@@ -4836,10 +4843,16 @@ $defs:
                       description: Route-map name.
                     prefix_list_in:
                       type: str
-                      description: Prefix list name.
+                      description: 'Inbound prefix list name.
+
+                        The prefix-list will be associated under the IPv4 or IPv6
+                        address family based on the IP address.'
                     prefix_list_out:
                       type: str
-                      description: Prefix list name.
+                      description: 'Outbound prefix list name.
+
+                        The prefix-list will be associated under the IPv4 or IPv6
+                        address family based on the IP address.'
                     local_as:
                       type: str
                       convert_types:
@@ -5374,6 +5387,16 @@ $defs:
             description: Custom structured config for eos_cli_config_gen.
             type: dict
             $ref: eos_cli_config_gen#/
+          uplink_type:
+            documentation_options:
+              table: node-type-uplink-configuration
+            type: str
+            $ref: eos_designs#/keys/node_type_keys/items/keys/uplink_type
+            description: 'Override the default `uplink_type` set at the `node_type_key`
+              level.
+
+              `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for
+              the `node_type_key` definition.'
           uplink_ipv4_pool:
             documentation_options:
               table: node-type-uplink-configuration
@@ -5514,6 +5537,43 @@ $defs:
             keys:
               profile:
                 type: str
+          uplink_port_channel_id:
+            documentation_options:
+              table: node-type-uplink-configuration
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 999999
+            description: "Only applicable for L2 switches with `uplink_type: port-channel`.\nBy
+              default the uplink Port-channel ID will be set to the number of the
+              lowest member interface defined under `uplink_interfaces`.\nFor example:\n
+              \ member ports [ Eth22, Eth23 ] -> ID 22\n  member ports [ Eth11/1,
+              Eth22/1 ] -> ID 111\nFor MLAG port-channels ID will be based on the
+              lowest member interface on the first MLAG switch.\nThis option overrides
+              the default behavior and statically sets the local Port-channel ID.\nNote!
+              Make sure the ID is unique and does not overlap with autogenerated Port-channel
+              IDs in the Network Services.\nNote! For MLAG pairs the ID must be between
+              1 and 2000 and both MLAG switches must have the same value.\n"
+          uplink_switch_port_channel_id:
+            documentation_options:
+              table: node-type-uplink-configuration
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 999999
+            description: "Only applicable for L2 switches with `uplink_type: port-channel`.\nBy
+              default the uplink switch Port-channel ID will be set to the number
+              of the first interface defined under `uplink_switch_interfaces`.\nFor
+              example:\n  member ports [ Eth22, Eth23 ] -> ID 22\n  member ports [
+              Eth11/1, Eth22/1 ] -> ID 111\nFor MLAG port-channels ID will be based
+              on the lowest member interface on the first MLAG switch.\nThis option
+              overrides the default behavior and statically sets the Port-channel
+              ID on the uplink switch.\nNote! Make sure the ID is unique and does
+              not overlap with autogenerated Port-channel IDs in the Network Services.\nNote!
+              For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches
+              must have the same value.\n"
           uplink_structured_config:
             documentation_options:
               table: node-type-uplink-configuration

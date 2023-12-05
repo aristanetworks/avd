@@ -1,0 +1,45 @@
+default_node_types:
+  - node_type: l2leaf
+    match_hostnames:
+      - ".*l2leaf-."
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*l3leaf-."
+
+fabric_name: fabric_invalid_uplink_port_channel_id_3
+
+l3leaf:
+  defaults:
+    mlag_interfaces: [Ethernet3-4]
+    mlag_peer_ipv4_pool: 10.0.3.0/24
+    mlag_peer_l3_vlan: 4094
+    loopback_ipv4_pool: 10.0.0.0/24
+    vtep_loopback_ipv4_pool: 10.0.1.0/24
+  node_groups:
+    - group: MLAG_PAIR
+      bgp_as: 65123
+      nodes:
+        - name: invalid-uplink-port-channel-id-l3leaf-1
+          id: 1
+        - name: invalid-uplink-port-channel-id-l3leaf-2
+          id: 2
+
+l2leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 10.0.2.0/24
+    mlag_interfaces: [Ethernet3-4]
+    uplink_interfaces: [Ethernet1-2]
+    uplink_switches: [invalid-uplink-port-channel-id-l3leaf-1, invalid-uplink-port-channel-id-l3leaf-2]
+  node_groups:
+    - group: MLAG_PAIR
+      nodes:
+        - name: invalid-uplink-port-channel-id-l2leaf-1
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
+          id: 1
+        - name: invalid-uplink-port-channel-id-l2leaf-2
+          uplink_port_channel_id: 1234 #<<<<< valid ID but set to a different value than primary node
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
+          id: 2
+
+expected_error_message: >-
+  Unexpected failure during module execution: 'uplink_port_channel_id' on 'invalid-uplink-port-channel-id-l2leaf-2' is set to 1234 and is not matching 1 set on MLAG peer. The 'uplink_port_channel_id' must be matching on MLAG peers.
