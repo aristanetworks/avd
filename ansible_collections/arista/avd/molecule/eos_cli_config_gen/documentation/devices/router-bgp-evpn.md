@@ -150,7 +150,7 @@ interface Management1
 
 | VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
 | --- | ------------------- | ------------ | -------------- |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | IPv4: True<br>Transit: False |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>bgp | IPv4: True<br>Transit: False |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | IPv4: True<br>Transit: True |
 | TENANT_A_PROJECT04 | 192.168.255.3:14 | - | IPv4: True<br>Transit: False |
@@ -275,6 +275,7 @@ router bgp 65101
       router-id 192.168.255.3
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.1 maximum-routes 15000 warning-limit 50 percent
+      redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected
    !
    vrf TENANT_A_PROJECT02
