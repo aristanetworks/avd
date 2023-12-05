@@ -1,218 +1,221 @@
 anta.tests.connectivity:
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf1b.dc1.local
+    - neighbor_device: dc2-leaf3b.arista.com
       neighbor_port: Ethernet3
       port: Ethernet3
     result_overwrite:
       categories:
       - LLDP Topology
-      custom_field: 'local: Ethernet3 - remote: dc1-leaf1b_Ethernet3'
+      custom_field: 'local: Ethernet3 - remote: dc2-leaf3b.arista.com_Ethernet3'
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-leaf1b.dc1.local
+    - neighbor_device: dc2-leaf3b.arista.com
       neighbor_port: Ethernet4
       port: Ethernet4
     result_overwrite:
       categories:
       - LLDP Topology
-      custom_field: 'local: Ethernet4 - remote: dc1-leaf1b_Ethernet4'
+      custom_field: 'local: Ethernet4 - remote: dc2-leaf3b.arista.com_Ethernet4'
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-spine1.dc1.local
-      neighbor_port: Ethernet1
+    - neighbor_device: dc2-spine1
+      neighbor_port: Ethernet5
       port: Ethernet1
     result_overwrite:
       categories:
       - LLDP Topology
-      custom_field: 'local: Ethernet1 - remote: dc1-spine1_Ethernet1'
+      custom_field: 'local: Ethernet1 - remote: dc2-spine1_Ethernet5'
       description: LLDP topology - validate peer and interface
 - VerifyLLDPNeighbors:
     neighbors:
-    - neighbor_device: dc1-spine2.dc1.local
-      neighbor_port: Ethernet1
+    - neighbor_device: dc2-spine2
+      neighbor_port: Ethernet5
       port: Ethernet2
     result_overwrite:
       categories:
       - LLDP Topology
-      custom_field: 'local: Ethernet2 - remote: dc1-spine2_Ethernet1'
-      description: LLDP topology - validate peer and interface
-- VerifyLLDPNeighbors:
-    neighbors:
-    - neighbor_device: dc1-leaf1c.dc1.local
-      neighbor_port: Ethernet1
-      port: Ethernet8
-    result_overwrite:
-      categories:
-      - LLDP Topology
-      custom_field: 'local: Ethernet8 - remote: dc1-leaf1c_Ethernet1'
+      custom_field: 'local: Ethernet2 - remote: dc2-spine2_Ethernet5'
       description: LLDP topology - validate peer and interface
 - VerifyReachability:
     hosts:
-    - destination: 10.255.255.0
+    - destination: 10.255.255.120
       repeat: 1
-      source: 10.255.255.1
+      source: 10.255.255.121
       vrf: default
     result_overwrite:
       categories:
       - IP Reachability
-      custom_field: 'Source: dc1-leaf1a_Ethernet1 - Destination: dc1-spine1_Ethernet1'
+      custom_field: 'Source: dc2-leaf3a.arista.com_Ethernet1 - Destination: dc2-spine1_Ethernet5'
       description: ip reachability test p2p links
 - VerifyReachability:
     hosts:
-    - destination: 10.255.255.2
+    - destination: 10.255.255.122
       repeat: 1
-      source: 10.255.255.3
+      source: 10.255.255.123
       vrf: default
     result_overwrite:
       categories:
       - IP Reachability
-      custom_field: 'Source: dc1-leaf1a_Ethernet2 - Destination: dc1-spine2_Ethernet1'
+      custom_field: 'Source: dc2-leaf3a.arista.com_Ethernet2 - Destination: dc2-spine2_Ethernet5'
       description: ip reachability test p2p links
 - VerifyReachability:
     hosts:
-    - destination: 10.255.0.1
+    - destination: 10.255.0.3
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.1'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.0.3'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.1
+      repeat: 1
+      source: 10.255.128.17
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.0.1'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.2
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.2'
-      description: Loopback0 Reachability
-- VerifyReachability:
-    hosts:
-    - destination: 10.255.0.3
-      repeat: 1
-      source: 10.255.0.3
-      vrf: default
-    result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.3'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.0.2'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.4
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.4'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.0.4'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.0.5
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.5'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.0.5'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.11
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.11'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.128.11'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.12
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.12'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.128.12'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.13
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.13'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.128.13'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.14
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.14'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.128.14'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.15
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.15'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.128.15'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.16
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.16'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.128.16'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.17
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.17'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.128.17'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
     - destination: 10.255.128.18
       repeat: 1
-      source: 10.255.0.3
+      source: 10.255.128.17
       vrf: default
     result_overwrite:
       categories:
       - Loopback0 Reachability
-      custom_field: 'Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.18'
+      custom_field: 'Source: dc2-leaf3a.arista.com - 10.255.128.17/32 Destination:
+        10.255.128.18'
       description: Loopback0 Reachability
 anta.tests.hardware:
 - VerifyEnvironmentPower:
@@ -236,7 +239,7 @@ anta.tests.interfaces:
     result_overwrite:
       categories:
       - Interface State
-      custom_field: Ethernet3 - MLAG_PEER_dc1-leaf1b_Ethernet3
+      custom_field: Ethernet3 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet3
       description: Ethernet Interface & Line Protocol == \"up\"
 - VerifyInterfacesStatus:
     interfaces:
@@ -246,7 +249,7 @@ anta.tests.interfaces:
     result_overwrite:
       categories:
       - Interface State
-      custom_field: Ethernet4 - MLAG_PEER_dc1-leaf1b_Ethernet4
+      custom_field: Ethernet4 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet4
       description: Ethernet Interface & Line Protocol == \"up\"
 - VerifyInterfacesStatus:
     interfaces:
@@ -256,7 +259,7 @@ anta.tests.interfaces:
     result_overwrite:
       categories:
       - Interface State
-      custom_field: Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet1
+      custom_field: Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet5
       description: Ethernet Interface & Line Protocol == \"up\"
 - VerifyInterfacesStatus:
     interfaces:
@@ -266,27 +269,17 @@ anta.tests.interfaces:
     result_overwrite:
       categories:
       - Interface State
-      custom_field: Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet1
+      custom_field: Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet5
       description: Ethernet Interface & Line Protocol == \"up\"
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Ethernet8
+    - interface: Ethernet11
       protocol_status: up
       state: up
     result_overwrite:
       categories:
       - Interface State
-      custom_field: Ethernet8 - DC1-LEAF1C_Ethernet1
-      description: Ethernet Interface & Line Protocol == \"up\"
-- VerifyInterfacesStatus:
-    interfaces:
-    - interface: Ethernet5
-      protocol_status: up
-      state: up
-    result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Ethernet5 - dc1-leaf1-server1_PCI1
+      custom_field: Ethernet11 - dc2-leaf3-fw1_e1
       description: Ethernet Interface & Line Protocol == \"up\"
 - VerifyInterfacesStatus:
     interfaces:
@@ -296,27 +289,17 @@ anta.tests.interfaces:
     result_overwrite:
       categories:
       - Interface State
-      custom_field: Port-Channel3 - MLAG_PEER_dc1-leaf1b_Po3
+      custom_field: Port-Channel3 - MLAG_PEER_dc2-leaf3b.arista.com_Po3
       description: Port-Channel Interface & Line Protocol == \"up\"
 - VerifyInterfacesStatus:
     interfaces:
-    - interface: Port-Channel8
+    - interface: Port-Channel11
       protocol_status: up
       state: up
     result_overwrite:
       categories:
       - Interface State
-      custom_field: Port-Channel8 - DC1-LEAF1C_Po1
-      description: Port-Channel Interface & Line Protocol == \"up\"
-- VerifyInterfacesStatus:
-    interfaces:
-    - interface: Port-Channel5
-      protocol_status: up
-      state: up
-    result_overwrite:
-      categories:
-      - Interface State
-      custom_field: Port-Channel5 - dc1-leaf1-server1_PortChannel dc1-leaf1-server1
+      custom_field: Port-Channel11 - dc2-leaf3-fw1_PortChannel
       description: Port-Channel Interface & Line Protocol == \"up\"
 - VerifyInterfacesStatus:
     interfaces:
@@ -460,54 +443,54 @@ anta.tests.routing.bgp:
     address_families:
     - afi: ipv4
       peers:
-      - 10.255.1.97
+      - 10.255.129.125
       safi: unicast
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.1.97'
+      custom_field: 'bgp_neighbor: 10.255.129.125'
       description: ip bgp peer state established (ipv4)
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
       peers:
-      - 10.255.255.0
+      - 10.255.255.120
       safi: unicast
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.255.0'
+      custom_field: 'bgp_neighbor: 10.255.255.120'
       description: ip bgp peer state established (ipv4)
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: ipv4
       peers:
-      - 10.255.255.2
+      - 10.255.255.122
       safi: unicast
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.255.2'
+      custom_field: 'bgp_neighbor: 10.255.255.122'
       description: ip bgp peer state established (ipv4)
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: evpn
       peers:
-      - 10.255.0.1
+      - 10.255.128.11
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.0.1'
+      custom_field: 'bgp_neighbor: 10.255.128.11'
       description: bgp evpn peer state established (evpn)
 - VerifyBGPSpecificPeers:
     address_families:
     - afi: evpn
       peers:
-      - 10.255.0.2
+      - 10.255.128.12
     result_overwrite:
       categories:
       - BGP
-      custom_field: 'bgp_neighbor: 10.255.0.2'
+      custom_field: 'bgp_neighbor: 10.255.128.12'
       description: bgp evpn peer state established (evpn)
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
@@ -517,6 +500,14 @@ anta.tests.routing.generic:
       - BGP
       custom_field: ArBGP
       description: ArBGP is configured and operating
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.0.3
+      description: Remote Lo0 address
+    routes:
+    - 10.255.0.3
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:
@@ -533,14 +524,6 @@ anta.tests.routing.generic:
       description: Remote Lo0 address
     routes:
     - 10.255.0.2
-- VerifyRoutingTableEntry:
-    result_overwrite:
-      categories:
-      - Routing Table
-      custom_field: 10.255.0.3
-      description: Remote Lo0 address
-    routes:
-    - 10.255.0.3
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:
@@ -653,9 +636,14 @@ anta.tests.routing.generic:
       description: Remote VTEP address
     routes:
     - 10.255.129.15
-anta.tests.security:
-- VerifyAPIHttpsSSL:
-    profile: eAPI_SSL_Profile
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.129.17
+      description: Remote VTEP address
+    routes:
+    - 10.255.129.17
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:

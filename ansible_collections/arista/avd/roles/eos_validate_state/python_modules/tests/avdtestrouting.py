@@ -56,7 +56,7 @@ class AvdTestRoutingTable(AvdTestBase):
 
         add_test(mapping=self.loopback0_mapping, description="Remote Lo0 address")
 
-        if get(self.hostvars[self.device_name], "vxlan_interface.Vxlan1.vxlan.source_interface") is not None:
+        if get(self.struct_cfg, "vxlan_interface.Vxlan1.vxlan.source_interface") is not None:
             add_test(mapping=self.vtep_mapping, description="Remote VTEP address")
 
         return {self.anta_module: anta_tests} if anta_tests else None
@@ -113,8 +113,8 @@ class AvdTestBGP(AvdTestBase):
             }
         )
 
-        bgp_peer_groups = get(self.hostvars[self.device_name], "router_bgp.peer_groups", [])
-        bgp_neighbors = get(self.hostvars[self.device_name], "router_bgp.neighbors", [])
+        bgp_peer_groups = get(self.struct_cfg, "router_bgp.peer_groups", [])
+        bgp_neighbors = get(self.struct_cfg, "router_bgp.neighbors", [])
 
         for idx, bgp_neighbor in enumerate(bgp_neighbors):
             # TODO - this matches legacy eos_validate_state BUT works only for neighbors in peer groups...

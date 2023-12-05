@@ -192,6 +192,28 @@ anta.tests.connectivity:
       - Loopback0 Reachability
       custom_field: 'Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.16'
       description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.17
+      repeat: 1
+      source: 10.255.0.4
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.17'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.18
+      repeat: 1
+      source: 10.255.0.4
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc1-leaf1b - 10.255.0.4/32 Destination: 10.255.128.18'
+      description: Loopback0 Reachability
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     states:
@@ -583,6 +605,22 @@ anta.tests.routing.generic:
       description: Remote Lo0 address
     routes:
     - 10.255.128.16
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.128.17
+      description: Remote Lo0 address
+    routes:
+    - 10.255.128.17
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.128.18
+      description: Remote Lo0 address
+    routes:
+    - 10.255.128.18
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:
