@@ -34,10 +34,10 @@ l3leaf:
       mlag_peer_ipv4_pool: 100.64.0.0/24
       mlag_peer_l3_ipv4_pool: 100.64.1.0/24
       nodes:
-      - name: inband-mgmt-parent-dualstack1
-        id: 3
-      - name: inband-mgmt-parent-dualstack2
-        id: 4
+        - name: inband-mgmt-parent-dualstack1
+          id: 3
+        - name: inband-mgmt-parent-dualstack2
+          id: 4
 
 l2leaf:
   defaults:

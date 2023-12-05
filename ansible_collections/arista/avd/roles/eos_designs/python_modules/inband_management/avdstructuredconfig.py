@@ -182,16 +182,16 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
             return None
 
         route_map = {
-                "name": "RM-CONN-2-BGP",
-                "sequence_numbers": [
-                    {
-                        # sequence 10 is set in underlay so avoid setting it here
-                        "sequence": 20,
-                        "type": "permit",
-                        "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"],
-                    }
-                ],
-            }
+            "name": "RM-CONN-2-BGP",
+            "sequence_numbers": [
+                {
+                    # sequence 10 is set in underlay so avoid setting it here
+                    "sequence": 20,
+                    "type": "permit",
+                    "match": ["ip address prefix-list PL-L2LEAF-INBAND-MGMT"],
+                }
+            ],
+        }
 
         if self.shared_utils.configure_inband_mgmt_ipv6:
             route_map["sequence_numbers"].append({"sequence": 30, "type": "permit", "match": ["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]})
