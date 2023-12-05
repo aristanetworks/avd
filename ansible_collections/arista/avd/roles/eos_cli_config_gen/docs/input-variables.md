@@ -611,12 +611,6 @@ roles/eos_cli_config_gen/docs/tables/event-monitor.md
 roles/eos_cli_config_gen/docs/tables/flow-tracking.md
 --8<--
 
-### Flow trackings
-
---8<--
-roles/eos_cli_config_gen/docs/tables/flow-tracking.md
---8<--
-
 ### Load interval
 
 --8<--
