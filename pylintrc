@@ -1,5 +1,11 @@
 # Configuration applied to collection by ansible-test
 # https://github.com/ansible/ansible/blob/devel/test/lib/ansible_test/_data/sanity/pylint/config/collection.cfg
+
+[MASTER]
+ignore-paths=
+  # The cv_client api is generated from proto files, so it should not be linted.
+  ansible_collections/arista/avd/plugins/plugin_utils/cv_client/api/
+
 [MESSAGES CONTROL]
 disable=
     abstract-method,

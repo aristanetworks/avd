@@ -10,3 +10,4 @@ deepmerge>=1.1.0
 cryptography>=38.0.4
 # No anta requirement until the eos_validate_state integration is out of preview.
 # anta>=1.0.0
+betterproto==2.0.0b6
