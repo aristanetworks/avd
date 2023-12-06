@@ -20616,7 +20616,7 @@
               "transit",
               "pathfinder"
             ],
-            "description": "PREVIEW: This key is currently not supported\nSet the default SDWAN role.\n\nThis key is used for Pathfinder designs only when the `wan_mode` root\nkey is set to `sdwan`.\n\n`pathfinder` is only a valid id `wan_role` is `server`.\n`edge` and `transit` are only valid if `wan_role` is `client`.\n",
+            "description": "PREVIEW: This key is currently not supported\nSet the default SDWAN role.\n\nThis key is used for Pathfinder designs only when the `wan_mode` root\nkey is set to `sdwan`.\n\n`pathfinder` is only a valid if `wan_role` is `server`.\n`edge` and `transit` are only valid if `wan_role` is `client`.\n",
             "title": "Default Sdwan Role"
           },
           "mlag_support": {

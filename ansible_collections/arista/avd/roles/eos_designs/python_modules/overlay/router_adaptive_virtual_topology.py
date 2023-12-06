@@ -30,10 +30,12 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
             role = "transit region"
 
         router_adaptive_virtual_topology["topology_role"] = role
+        # TODO confirm if the three keys are needed or not when sdwan_role == "pathfinder".
+        # as per comment on Github
         router_adaptive_virtual_topology["region"] = {"name": self._wan_region["name"], "id": self._wan_region["id"]}
         router_adaptive_virtual_topology["zone"] = {"name": self._wan_zone["name"], "id": self._wan_zone["id"]}
         router_adaptive_virtual_topology["site"] = {"name": self._wan_site["name"], "id": self._wan_site["id"]}
 
-        # TODO - handle Policy/Profile/VRF here
+        # TODO - handle Policy/Profile/VRF here or rather in network_services counterpart.
 
         return router_adaptive_virtual_topology

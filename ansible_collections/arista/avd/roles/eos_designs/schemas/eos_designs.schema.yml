@@ -1547,7 +1547,7 @@ keys:
             key is set to `sdwan`.
 
 
-            `pathfinder` is only a valid id `wan_role` is `server`.
+            `pathfinder` is only a valid if `wan_role` is `server`.
 
             `edge` and `transit` are only valid if `wan_role` is `client`.
 

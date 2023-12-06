@@ -133,7 +133,7 @@ keys:
             This key is used for Pathfinder designs only when the `wan_mode` root
             key is set to `sdwan`.
 
-            `pathfinder` is only a valid id `wan_role` is `server`.
+            `pathfinder` is only a valid if `wan_role` is `server`.
             `edge` and `transit` are only valid if `wan_role` is `client`.
         mlag_support:
           type: bool

@@ -42,8 +42,6 @@ wan_ipsec_profiles:
   data_plane:
     shared_key: ABCDEF1234567890666
 
-sdwan_zone:
-
 default_node_types:
   - node_type: wan-controller
     match_hostnames:

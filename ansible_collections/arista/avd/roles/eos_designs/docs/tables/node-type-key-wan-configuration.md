@@ -10,7 +10,7 @@
     | [<samp>node_type_keys</samp>](## "node_type_keys") | List, items: Dictionary |  |  |  | Define Node Type Keys, to specify the properties of each node type in the fabric.<br>This allows for complete customization of the fabric layout and functionality.<br>`node_type_keys` should be defined in top level group_var for the fabric.<br>The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "node_type_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_wan_role</samp>](## "node_type_keys.[].default_wan_role") | String |  |  | Valid Values:<br>- <code>client</code><br>- <code>server</code> | PREVIEW: This key is currently not supported<br>Set the default WAN role.<br><br>This is used both for AutoVPN and Pathfinder designs.<br>That means if `wan_mode` root key is set to `autovpn` or `sdwan`.<br>`server` indicates that the router is a route-reflector.<br><br>Only supported if `overlay_routing_protocol` is set to `ibgp`.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_sdwan_role</samp>](## "node_type_keys.[].default_sdwan_role") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>pathfinder</code> | PREVIEW: This key is currently not supported<br>Set the default SDWAN role.<br><br>This key is used for Pathfinder designs only when the `wan_mode` root<br>key is set to `sdwan`.<br><br>`pathfinder` is only a valid id `wan_role` is `server`.<br>`edge` and `transit` are only valid if `wan_role` is `client`.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_sdwan_role</samp>](## "node_type_keys.[].default_sdwan_role") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>pathfinder</code> | PREVIEW: This key is currently not supported<br>Set the default SDWAN role.<br><br>This key is used for Pathfinder designs only when the `wan_mode` root<br>key is set to `sdwan`.<br><br>`pathfinder` is only a valid if `wan_role` is `server`.<br>`edge` and `transit` are only valid if `wan_role` is `client`.<br> |
 
 === "YAML"
 
@@ -38,7 +38,7 @@
         # This key is used for Pathfinder designs only when the `wan_mode` root
         # key is set to `sdwan`.
 
-        # `pathfinder` is only a valid id `wan_role` is `server`.
+        # `pathfinder` is only a valid if `wan_role` is `server`.
         # `edge` and `transit` are only valid if `wan_role` is `client`.
         default_sdwan_role: <str; "edge" | "transit" | "pathfinder">
     ```
