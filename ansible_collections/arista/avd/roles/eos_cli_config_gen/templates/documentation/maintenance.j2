@@ -51,7 +51,7 @@ Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista
 | {{ unit.name }} | {{ row_interface_groups }} | {{ row_bgp_groups }} | {{ row_unit_profile }} | {{ row_quiesce }} |
 {%     endfor %}
 
-#### Maintenance configuration
+#### Maintenance Device Configuration
 
 ```eos
 {%     include 'eos/maintenance.j2' %}

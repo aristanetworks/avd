@@ -86,7 +86,6 @@ interface Ethernet1
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | - | default | - |
 
-
 #### Loopback Interfaces Device Configuration
 
 ```eos
@@ -110,7 +109,7 @@ interface Loopback0
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
 
-#### MPLS and LDP Configuration
+#### MPLS and LDP Device Configuration
 
 ```eos
 !

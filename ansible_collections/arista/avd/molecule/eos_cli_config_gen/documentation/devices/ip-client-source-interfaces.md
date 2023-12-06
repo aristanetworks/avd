@@ -54,7 +54,7 @@ interface Management1
 | TFTP | default | Loopback0 |
 | TFTP | MGMT | Management0 |
 
-#### IP Client Source Interfaces Configuration
+#### IP Client Source Interfaces Device Configuration
 
 ```eos
 !

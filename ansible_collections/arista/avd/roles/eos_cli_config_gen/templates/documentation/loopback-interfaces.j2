@@ -36,7 +36,6 @@
 {%         set description = loopback_interface.description | arista.avd.default('-') %}
 | {{ loopback_interface.name }} | {{ description }} | {{ ip }} | {{ ipv6 }} |
 {%     endfor %}
-
 {%     set loopback_interface_isis = namespace() %}
 {%     set loopback_interface_isis.configured = false %}
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort('name') %}
@@ -45,6 +44,7 @@
 {%         endif %}
 {%     endfor %}
 {%     if loopback_interface_isis.configured == true %}
+
 ##### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |

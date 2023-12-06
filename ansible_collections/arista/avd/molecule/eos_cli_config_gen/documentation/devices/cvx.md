@@ -5,8 +5,8 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [CVX](#cvx)
-  - [CVX services](#cvx-services)
-  - [CVX configuration](#cvx-configuration)
+  - [CVX Services](#cvx-services)
+  - [CVX Device Configuration](#cvx-device-configuration)
 
 ## Management
 
@@ -44,14 +44,14 @@ interface Management1
 
 CVX is enabled
 
-### CVX services
+### CVX Services
 
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
 | MCS | True | Redis Password Set |
 | VXLAN | True | VTEP MAC learning: control-plane |
 
-### CVX configuration
+### CVX Device Configuration
 
 ```eos
 !

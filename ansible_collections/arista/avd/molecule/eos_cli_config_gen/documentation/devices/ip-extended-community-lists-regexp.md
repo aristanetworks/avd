@@ -47,7 +47,7 @@ interface Management1
 | TEST1 | deny | .* |
 | TEST2 | deny | 6500[0-1]:650[0-9][0-9] |
 
-#### IP Extended Community RegExp Lists configuration
+#### IP Extended Community RegExp Lists Device Configuration
 
 ```eos
 !

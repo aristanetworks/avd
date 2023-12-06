@@ -1,6 +1,6 @@
 ---
 - name: Configure local folders
-  hosts: all
+  hosts: TOOLS
   gather_facts: false
   connection: local
   vars:

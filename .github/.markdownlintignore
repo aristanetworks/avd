@@ -1,3 +1,5 @@
-ansible_collections/arista/avd/molecule/
-ansible_collections/arista/avd/examples/*/documentation/
+# Regex trigering MD052 - [Missing link or image reference definition: "0-9"] [Context: "[0-9][0-9]"]
+ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/ip-extended-community-lists-regexp.md
+ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/generate-default-config.md
+ansible_collections/arista/avd/molecule/eos_cli_config_gen_deprecated_vars/documentation/devices/host1.md
 ansible_collections/arista/avd/tests/unit/filters/toc_files/

@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Monitor Connectivity](#monitor-connectivity)
   - [Global Configuration](#global-configuration)
-  - [Vrf Configuration](#vrf-configuration)
+  - [VRF Configuration](#vrf-configuration)
   - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
 
 ## Management
@@ -60,7 +60,7 @@ interface Management1
 | --------- | ----------- | ------------ | --------------------- | --- |
 | server1 | server1_connectivity_monitor | 10.10.10.1 | HOST_SET | https://server1.local.com |
 
-### Vrf Configuration
+### VRF Configuration
 
 | Name | Description | Default Interface Set |
 | ---- | ----------- | --------------------- |

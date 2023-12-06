@@ -12,7 +12,7 @@
   - [SSL profile test2-chain-cert Certificates Summary](#ssl-profile-test2-chain-cert-certificates-summary)
   - [SSL profile test2-trust-cert Certificates Summary](#ssl-profile-test2-trust-cert-certificates-summary)
   - [Password Policies](#password-policies)
-  - [Management Security Configuration](#management-security-configuration)
+  - [Management Security Device Configuration](#management-security-device-configuration)
 
 ## Management
 
@@ -92,11 +92,12 @@ interface Management1
 | - | Hostname must be FQDN | - | Enabled |
 
 ### Password Policies
+
 | Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
 |-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
 | AVD_POLICY | > 1 | > 2 | > 3 | > 4 | > 5 | < 6 | < 7 |
 
-### Management Security Configuration
+### Management Security Device Configuration
 
 ```eos
 !

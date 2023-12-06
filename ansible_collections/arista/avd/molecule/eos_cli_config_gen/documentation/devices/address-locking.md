@@ -9,7 +9,7 @@
   - [DHCP Servers](#dhcp-servers)
   - [Leases](#leases)
 - [Address Locking Interfaces](#address-locking-interfaces)
-  - [Address Locking Configuration](#address-locking-configuration)
+  - [Address Locking Device Configuration](#address-locking-device-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
 
@@ -75,7 +75,7 @@ interface Management1
 | Ethernet2 | True | True |
 | Ethernet3 | False | True |
 
-### Address Locking Configuration
+### Address Locking Device Configuration
 
 ```eos
 !
