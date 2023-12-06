@@ -1580,24 +1580,27 @@
                         "maximum": 254,
                         "title": "Code"
                       },
-                      "type": {
+                      "string": {
                         "type": "string",
-                        "enum": [
-                          "string",
-                          "ipv4-address",
-                          "array ipv4-address"
-                        ],
-                        "title": "Type"
+                        "description": "String value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.",
+                        "title": "String"
                       },
-                      "data": {
+                      "ipv4_address": {
                         "type": "string",
-                        "title": "Data"
+                        "description": "IPv4 address value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.",
+                        "title": "IPv4 Address"
+                      },
+                      "array_ipv4_address": {
+                        "type": "array",
+                        "description": "Array of IPv4 addresses for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.",
+                        "items": {
+                          "type": "string"
+                        },
+                        "title": "Array IPv4 Address"
                       }
                     },
                     "required": [
-                      "code",
-                      "type",
-                      "data"
+                      "code"
                     ],
                     "additionalProperties": false,
                     "patternProperties": {

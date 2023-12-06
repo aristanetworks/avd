@@ -46,21 +46,17 @@ keys:
                       max: 254
                       convert_types:
                         - str
-                    # type:
-                    #   type: str
-                    #   required: true
-                    #   valid_values: ["string", "ipv4-address", "array ipv4-address"]
                     string:
                       type: str
+                      description: String value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.
                     ipv4_address:
                       type: str
+                      description: IPv4 address value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.
                     array_ipv4_address:
                       type: list
+                      description: Array of IPv4 addresses for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.
                       items:
                         type: str
-                    # data:
-                    #   type: str
-                    #   required: true
         subnets:
           type: list
           primary_key: subnet
