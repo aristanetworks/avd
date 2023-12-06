@@ -1818,9 +1818,9 @@ qos profile test
 
 ### STUN Server
 
-| Server local interfaces |
-| ----------------------- |
-| ethernet1 |
+| Server Local Interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
+| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
+| Ethernet1 | - | - | - | 3478 |
 
 ### STUN Device Configuration
 
@@ -1828,7 +1828,7 @@ qos profile test
 !
 stun
    server
-      local-interface ethernet1
+      local-interface Ethernet1
 ```
 
 ## Maintenance Mode

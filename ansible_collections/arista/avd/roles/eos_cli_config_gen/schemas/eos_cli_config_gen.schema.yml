@@ -11930,7 +11930,7 @@ keys:
                         type: list
                         required: true
                         min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str
@@ -11952,7 +11952,7 @@ keys:
                         type: list
                         required: true
                         min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str
@@ -12941,15 +12941,15 @@ keys:
           max: 4294967295
   stun:
     type: dict
-    description: STUN configuration
+    description: STUN configuration.
     keys:
       client:
         type: dict
-        description: STUN client settings
+        description: STUN client settings.
         keys:
           server_profiles:
             type: list
-            description: List of server profiles for the client
+            description: List of server profiles for the client.
             primary_key: name
             items:
               type: dict
@@ -12958,9 +12958,20 @@ keys:
                   type: str
                 ip_address:
                   type: str
+                ssl_profile:
+                  type: str
+                  description: SSL profile name.
+                port:
+                  type: int
+                  description: Destination port for the request STUN server (default
+                    - 3478).
+                  min: 1
+                  max: 65535
+                  convert_types:
+                  - str
       server:
         type: dict
-        description: STUN server settings
+        description: STUN server settings.
         keys:
           local_interface:
             type: str
@@ -12973,6 +12984,43 @@ keys:
             min_length: 1
             items:
               type: str
+          bindings_timeout:
+            type: int
+            description: Timeout for bindings stored on STUN server in seconds.
+            convert_types:
+            - str
+            min: 10
+            max: 7200
+          ssl_profile:
+            type: str
+            description: SSL profile name.
+          ssl_connection_lifetime:
+            type: dict
+            description: 'SSL connection lifetime in minutes or hours.
+
+              If both are specified, minutes is given higher precedence.'
+            keys:
+              minutes:
+                type: int
+                description: SSL connection lifetime in minutes (default - 120).
+                convert_types:
+                - str
+                min: 1
+                max: 1440
+              hours:
+                type: int
+                description: SSL connection lifetime in hours (default - 2).
+                convert_types:
+                - str
+                min: 1
+                max: 24
+          port:
+            type: int
+            description: Listening port for STUN server (default - 3478).
+            min: 1
+            max: 65535
+            convert_types:
+            - str
   switchport_default:
     type: dict
     keys:
