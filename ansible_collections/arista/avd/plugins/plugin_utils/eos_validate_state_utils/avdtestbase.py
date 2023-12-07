@@ -9,7 +9,7 @@ from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 LOGGER = logging.getLogger(__name__)
 LOGGING_LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
@@ -31,7 +31,7 @@ class AvdTestBase:
         """
         self.hostvars = hostvars
         self.device_name = device_name
-        self.struct_cfg = self.get_host_struct_cfg(host=device_name)
+        self.structured_config = self.get_host_struct_cfg(host=device_name)
 
     def render(self) -> dict:
         """
@@ -72,8 +72,6 @@ class AvdTestBase:
 
         if not isinstance(struct_cfg, dict):
             struct_cfg = dict(struct_cfg)
-        if not struct_cfg:
-            raise AristaAvdError(f"Host '{host}' structured_config is empty.")
 
         return struct_cfg
 
@@ -114,22 +112,23 @@ class AvdTestBase:
         log_level = logging.getLevelName(logging_level.upper())
         LOGGER.log(log_level, log_msg)
 
-    def is_interface_shutdown(self, interface: dict, host: str | None = None) -> bool:
+    def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
         """
         Check if an interface is shutdown or not, considering EOS defaults.
 
         Args:
-            interface (str): The interface to verify.
+            interface (dict): The interface to verify.
             host (str): Host to verify. Defaults to the host running the test.
 
         Returns:
             bool: Returns the interface shutdown key's value, or `interface_defaults.ethernet` if not available.
                   Returns False if both are absent, which is the default EOS behavior.
         """
-        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.struct_cfg
-        if "shutdown" in interface:
-            return interface["shutdown"]
-        return get(host_struct_cfg, "interface_defaults.ethernet.shutdown", default=False)
+        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.structured_config
+        if "Ethernet" in get(interface, "name", ""):
+            interface["shutdown"] = default(get(interface, "shutdown"), get(host_struct_cfg, "interface_defaults.ethernet.shutdown"), False)
+        else:
+            interface["shutdown"] = get(interface, "shutdown", default=False)
 
     def is_peer_available(self, peer: str) -> bool:
         """
@@ -161,13 +160,13 @@ class AvdTestBase:
         Returns:
             str | None: IP address of the host interface or None if unavailable.
         """
-        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.struct_cfg
+        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.structured_config
         try:
             peer_interfaces = get(host_struct_cfg, interface_model, required=True)
             peer_interface = get_item(peer_interfaces, "name", interface_name, required=True)
             return get(peer_interface, "ip_address", required=True)
         except AristaAvdMissingVariableError:
-            self.log_skip_message(message=f"Host '{host}' interface '{interface_name}' IP address is unavailable.", logging_level="WARNING")
+            self.log_skip_message(message=f"Host '{host or self.device_name}' interface '{interface_name}' IP address is unavailable.", logging_level="WARNING")
             return None
 
     def logged_get(self, key: str, host: str | None = None, logging_level: str = "WARNING"):
@@ -179,7 +178,7 @@ class AvdTestBase:
             host (str | None): The host from which to retrieve the key. Defaults to the device running the test.
             logging_level (str): The logging level to use for the log message.
         """
-        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.struct_cfg
+        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.structured_config
         try:
             return get(host_struct_cfg, key, required=True, separator="..")
         except AristaAvdMissingVariableError:
@@ -216,7 +215,7 @@ class AvdTestBase:
             In this case, the function will log a warning message because the key 'c' with value '3' is not found,
             and it will return False as the data doesn't meet all validation requirements.
         """
-        data = data or (self.get_host_struct_cfg(host=host) if host else self.struct_cfg)
+        data = data or (self.get_host_struct_cfg(host=host) if host else self.structured_config)
         valid = True
 
         # Check the expected key/value pairs first

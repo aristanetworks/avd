@@ -16,6 +16,12 @@ class AvdTestInterfacesState(AvdTestBase):
 
     anta_module = "anta.tests.interfaces"
     categories = ["Interface State"]
+    interface_types = [
+        ("ethernet_interfaces", r"Ethernet Interface & Line Protocol == \"{state}\""),
+        ("port_channel_interfaces", r"Port-Channel Interface & Line Protocol == \"{state}\""),
+        ("vlan_interfaces", r"Vlan Interface & Line Protocol == \"{state}\""),
+        ("loopback_interfaces", r"Loopback Interface Status & Line Protocol == \"{state}\""),
+    ]
 
     @cached_property
     def test_definition(self) -> dict | None:
@@ -58,26 +64,17 @@ class AvdTestInterfacesState(AvdTestBase):
             Returns:
                 tuple[str, str, str]: A tuple containing the state, protocol status and description.
             """
-            if "Loopback" in description_template:
-                return "up", "up", description_template
             if interface["shutdown"]:
                 return "adminDown", "down", description_template.format(state="adminDown")
             return "up", "up", description_template.format(state="up")
 
-        interface_types = [
-            ("ethernet_interfaces", r"Ethernet Interface & Line Protocol == \"{state}\""),
-            ("port_channel_interfaces", r"Port-Channel Interface & Line Protocol == \"{state}\""),
-            ("vlan_interfaces", r"Vlan Interface & Line Protocol == \"{state}\""),
-            ("loopback_interfaces", r"Loopback Interface Status & Line Protocol == \"up\""),
-        ]
-
         required_keys = ["name", "shutdown", "description"]
 
-        for interface_key, description_template in interface_types:
-            interfaces = get(self.struct_cfg, interface_key, [])
+        for interface_key, description_template in self.interface_types:
+            interfaces = get(self.structured_config, interface_key, [])
 
             for idx, interface in enumerate(interfaces):
-                interface["shutdown"] = self.is_interface_shutdown(interface=interface)
+                self.update_interface_shutdown(interface=interface)
                 if not self.validate_data(data=interface, data_path=f"{interface_key}.[{idx}]", required_keys=required_keys):
                     continue
                 state, proto, description = generate_test_details(interface, description_template)
@@ -85,7 +82,7 @@ class AvdTestInterfacesState(AvdTestBase):
 
                 add_test(str(interface["name"]), state, proto, description, custom_field)
 
-        if get(self.struct_cfg, "vxlan_interface.Vxlan1") is not None:
+        if get(self.structured_config, "vxlan_interface.Vxlan1") is not None:
             add_test("Vxlan1", "up", "up", r"Vxlan Interface Status & Line Protocol == \"up\"", "Vxlan1")
 
         return {self.anta_module: anta_tests} if anta_tests else None
