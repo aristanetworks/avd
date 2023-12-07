@@ -786,8 +786,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "description": "Port values or range of port values.\nPort values are between 0 and 65535.",
-                      "pattern": "^\\d+(\\-\\d+)?$"
+                      "description": "Port values or range of port values.\nPort values are between 0 and 65535."
                     },
                     "title": "Port Values"
                   }
@@ -817,8 +816,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "description": "IP prefix (ex- 1.2.3.0/24).",
-                      "pattern": "^\\(?:[0-9]{1,3}\\.){3}[0-9]{1,3}/[0-9]{1,2}$"
+                      "description": "IP prefix (ex- 1.2.3.0/24)."
                     },
                     "title": "Prefix Values"
                   }

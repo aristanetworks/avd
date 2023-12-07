@@ -61,6 +61,8 @@ interface Management1
 | application | user_defined_app1 | - |
 | category | best-effort | - |
 | category | category1 | audio-video |
+| transport | http | - |
+| transport | udp | - |
 
 #### Application Profile Name app_profile_2
 
@@ -136,6 +138,8 @@ application traffic recognition
       application aim service audio-video
       application aim service chat
       application user_defined_app1
+      application http transport
+      application udp transport
       category best-effort
       category category1 service audio-video
    !

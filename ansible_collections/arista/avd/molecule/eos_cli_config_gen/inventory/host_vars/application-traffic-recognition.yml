@@ -92,7 +92,7 @@ application_traffic_recognition:
           service: chat
         - name: aim
           service: audio-video
-      transports:
+      application_transports:
         - udp
         - http
       categories:
