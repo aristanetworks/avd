@@ -57,8 +57,8 @@ class VxlanInterfaceMixin(UtilsMixin):
             vxlan["source_interface"] = "Loopback0"
             vxlan["mlag_source_interface"] = self.shared_utils.vtep_loopback
         # TODO validate Dps1 and ordering
-        elif self.shared_utils.sdwan_role:
-            vxlan["source_interface"] = "Dps1"
+        # elif self.shared_utils.sdwan_role:
+        #    vxlan["source_interface"] = "Dps1"
         elif self.shared_utils.wan_role:
             vxlan["source_interface"] = "Loopback0"
         else:

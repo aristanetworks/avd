@@ -156,7 +156,7 @@ vxlan_interface:
     description: sdwan-transit_VTEP
     vxlan:
       udp_port: 4789
-      source_interface: Dps1
+      source_interface: Loopback0
       vrfs:
       - name: default
         vni: 100
