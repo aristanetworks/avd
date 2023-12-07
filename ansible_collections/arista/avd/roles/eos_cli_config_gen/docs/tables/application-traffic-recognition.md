@@ -27,14 +27,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].name") | String | Required, Unique |  |  | Application name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;src_prefix_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].src_prefix_set_name") | String |  |  |  | Source prefix set name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dest_prefix_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].dest_prefix_set_name") | String |  |  |  | Destination prefix set name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocols") | List, items: String |  |  |  | List of protocols to consider for this application.<br><br>To use port field-sets (source, destination or both), the list<br>must contain only one protocol.<br>To set port field-set(s) for both TCP and UDP, use `tcp_udp`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocols</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocols") | List, items: String |  |  |  | List of protocols to consider for this application.<br><br>To use port field-sets (source, destination or both), the list<br>must contain only one or two protocols, either `tcp` or `udp`.<br>When using both protocols, one line is rendered for each in the configuration,<br>hence the field-sets must have the same value for `tcp_src_port_set_name` and<br>`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`<br>if set in order to generate valid configuration in EOS. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocols.[]") | String |  |  | Valid Values:<br>- <code>ahp</code><br>- <code>esp</code><br>- <code>icmp</code><br>- <code>igmp</code><br>- <code>ospf</code><br>- <code>pim</code><br>- <code>rsvp</code><br>- <code>tcp</code><br>- <code>udp</code><br>- <code>vrrp</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol_ranges</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocol_ranges") | List, items: String |  |  |  | Acccept protocol value(s) or range(s).<br>Protocol values can be between 1 and 255. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].protocol_ranges.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_src_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].udp_src_port_set_name") | String |  |  |  | Source l4 port field set name for udp protocol.<br><br>Both udp and tcp src port set name ( same or unique ) is accepted which will render<br>two seperate lines of tcp and udp protocol config. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_src_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].tcp_src_port_set_name") | String |  |  |  | Source l4 port field set name for tcp protocol.<br><br>Both udp and tcp src port set name ( same or unique ) is accepted which will render<br>two seperate lines of tcp and udp protocol config. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_dest_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].udp_dest_port_set_name") | String |  |  |  | Destination l4 port field set name for udp protocol.<br><br>Both udp and tcp destination port set name ( same or unique ) is accepted which will render<br>two seperate lines of tcp and udp protocol config. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_dest_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].tcp_dest_port_set_name") | String |  |  |  | Destination l4 port field set name for tcp protocol.<br>Both udp and tcp destination port set name ( same or unique ) is accepted which will render two seperate lines of tcp and udp protocol config. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_src_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].udp_src_port_set_name") | String |  |  |  | Source l4 port field set name for udp protocol.<br><br>When the `protocols` list contain both `tcp` and `udp`, this key value<br>must be the same as `tcp_src_port_set_name`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_src_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].tcp_src_port_set_name") | String |  |  |  | Source l4 port field set name for tcp protocol.<br><br>When the `protocols` list contain both `tcp` and `udp`, this key value<br>must be the same as `udp_src_port_set_name`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp_dest_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].udp_dest_port_set_name") | String |  |  |  | Destination l4 port field set name for udp protocol.<br><br>When the `protocols` list contain both `tcp` and `udp`, this key value<br>must be the same as `tcp_dest_port_set_name`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tcp_dest_port_set_name</samp>](## "application_traffic_recognition.applications.ipv4_applications.[].tcp_dest_port_set_name") | String |  |  |  | Destination l4 port field set name for tcp protocol.<br><br>When the `protocols` list contain both `tcp` and `udp`, this key value<br>must be the same as `udp_dest_port_set_name`. |
     | [<samp>&nbsp;&nbsp;application_profiles</samp>](## "application_traffic_recognition.application_profiles") | List, items: Dictionary |  |  |  | Group of applications. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_traffic_recognition.application_profiles.[].name") | String |  |  |  | Application Profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;applications</samp>](## "application_traffic_recognition.application_profiles.[].applications") | List, items: Dictionary |  |  |  | List of applications part of the application profile. |
@@ -108,8 +108,11 @@
             # List of protocols to consider for this application.
 
             # To use port field-sets (source, destination or both), the list
-            # must contain only one protocol.
-            # To set port field-set(s) for both TCP and UDP, use `tcp_udp`.
+            # must contain only one or two protocols, either `tcp` or `udp`.
+            # When using both protocols, one line is rendered for each in the configuration,
+            # hence the field-sets must have the same value for `tcp_src_port_set_name` and
+            # `udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`
+            # if set in order to generate valid configuration in EOS.
             protocols:
               - <str; "ahp" | "esp" | "icmp" | "igmp" | "ospf" | "pim" | "rsvp" | "tcp" | "udp" | "vrrp">
 
@@ -120,24 +123,26 @@
 
             # Source l4 port field set name for udp protocol.
 
-            # Both udp and tcp src port set name ( same or unique ) is accepted which will render
-            # two seperate lines of tcp and udp protocol config.
+            # When the `protocols` list contain both `tcp` and `udp`, this key value
+            # must be the same as `tcp_src_port_set_name`.
             udp_src_port_set_name: <str>
 
             # Source l4 port field set name for tcp protocol.
 
-            # Both udp and tcp src port set name ( same or unique ) is accepted which will render
-            # two seperate lines of tcp and udp protocol config.
+            # When the `protocols` list contain both `tcp` and `udp`, this key value
+            # must be the same as `udp_src_port_set_name`.
             tcp_src_port_set_name: <str>
 
             # Destination l4 port field set name for udp protocol.
 
-            # Both udp and tcp destination port set name ( same or unique ) is accepted which will render
-            # two seperate lines of tcp and udp protocol config.
+            # When the `protocols` list contain both `tcp` and `udp`, this key value
+            # must be the same as `tcp_dest_port_set_name`.
             udp_dest_port_set_name: <str>
 
             # Destination l4 port field set name for tcp protocol.
-            # Both udp and tcp destination port set name ( same or unique ) is accepted which will render two seperate lines of tcp and udp protocol config.
+
+            # When the `protocols` list contain both `tcp` and `udp`, this key value
+            # must be the same as `udp_dest_port_set_name`.
             tcp_dest_port_set_name: <str>
 
       # Group of applications.

@@ -95,14 +95,16 @@ keys:
                   type: str
                   description: Destination prefix set name.
                 protocols:
-                  # Using a dict here because of the custom behavior of UDP and TCP
                   type: list
                   description: |-
                     List of protocols to consider for this application.
 
                     To use port field-sets (source, destination or both), the list
-                    must contain only one protocol.
-                    To set port field-set(s) for both TCP and UDP, use `tcp_udp`.
+                    must contain only one or two protocols, either `tcp` or `udp`.
+                    When using both protocols, one line is rendered for each in the configuration,
+                    hence the field-sets must have the same value for `tcp_src_port_set_name` and
+                    `udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`
+                    if set in order to generate valid configuration in EOS.
                   items:
                     type: str
                     valid_values:
@@ -123,33 +125,36 @@ keys:
                     Protocol values can be between 1 and 255.
                   items:
                     type: str
+                    convert_types:
+                      - int
                 udp_src_port_set_name:
                   type: str
                   description: |-
                     Source l4 port field set name for udp protocol.
 
-                    Both udp and tcp src port set name ( same or unique ) is accepted which will render
-                    two seperate lines of tcp and udp protocol config.
+                    When the `protocols` list contain both `tcp` and `udp`, this key value
+                    must be the same as `tcp_src_port_set_name`.
                 tcp_src_port_set_name:
                   type: str
                   description: |-
                     Source l4 port field set name for tcp protocol.
 
-                    Both udp and tcp src port set name ( same or unique ) is accepted which will render
-                    two seperate lines of tcp and udp protocol config.
+                    When the `protocols` list contain both `tcp` and `udp`, this key value
+                    must be the same as `udp_src_port_set_name`.
                 udp_dest_port_set_name:
                   type: str
                   description: |-
                     Destination l4 port field set name for udp protocol.
 
-                    Both udp and tcp destination port set name ( same or unique ) is accepted which will render
-                    two seperate lines of tcp and udp protocol config.
+                    When the `protocols` list contain both `tcp` and `udp`, this key value
+                    must be the same as `tcp_dest_port_set_name`.
                 tcp_dest_port_set_name:
                   type: str
-                  description: Destination l4 port field set name for tcp protocol.
+                  description: |-
+                    Destination l4 port field set name for tcp protocol.
 
-                    Both udp and tcp destination port set name ( same or unique ) is accepted which will render
-                    two seperate lines of tcp and udp protocol config.
+                    When the `protocols` list contain both `tcp` and `udp`, this key value
+                    must be the same as `udp_dest_port_set_name`.
       application_profiles:
         type: list
         description: Group of applications.

@@ -5,10 +5,10 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Application Traffic Recognition](#application-traffic-recognition)
+  - [Applications](#applications)
+  - [Application Profiles](#application-profiles)
   - [Categories](#categories)
   - [Field Sets](#field-sets)
-  - [Applications](#applications)
-  - [Application Profile Details](#application-profile-details)
   - [Router Application-Traffic-Recognition Device Configuration](#router-application-traffic-recognition-device-configuration)
 
 ## Management
@@ -41,33 +41,6 @@ interface Management1
 
 ## Application Traffic Recognition
 
-### Categories
-
-| Category | Application(Service) |
-| -------- | --------------------- |
-| best-effort | aimini(peer-to-peer)<br>apple_update(software-update) |
-| category1 | aim(audio-video)<br>aim(chat)<br>anydesk(-) |
-
-### Field Sets
-
-#### L4 Port Sets
-
-| Name | Ports |
-| ---- | ----- |
-| dest_port_set1 | 2300-2350 |
-| dest_port_set2 | 3300-3350 |
-| src_port_set1 | 2400-2500<br>2900-3000 |
-| src_port_set2 | 5700-5800<br>6500-6600 |
-
-#### IPv4 Prefix Sets
-
-| Name | Prefixes |
-| ---- | ----- |
-| dest_prefix_set1 | 2.3.4.0/24 |
-| dest_prefix_set2 | 4.4.4.0/24 |
-| src_prefix_set1 | 1.2.3.0/24<br>1.2.5.0/24 |
-| src_prefix_set2 | 2.2.2.0/24<br>3.3.3.0/24 |
-
 ### Applications
 
 #### IPv4 Applications
@@ -77,7 +50,7 @@ interface Management1
 | user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp<br>tcp | 25 | src_port_set1 | dest_port_set1 | src_port_set2 | dest_port_set2 |
 | user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | pim<br>icmp<br>tcp | 21<br>7-11 | - | - | - | - |
 
-### Application Profile Details
+### Application Profiles
 
 #### Application Profile Name app_profile_1
 
@@ -98,6 +71,34 @@ interface Management1
 | category | category1 | chat |
 | transport | https | - |
 | transport | quic | - |
+
+### Categories
+
+| Category | Application(Service) |
+| -------- | --------------------- |
+| best-effort | aimini(peer-to-peer)<br>apple_update(software-update) |
+| category1 | aim(audio-video)<br>aim(chat)<br>anydesk(-) |
+| empty |  |
+
+### Field Sets
+
+#### L4 Port Sets
+
+| Name | Ports |
+| ---- | ----- |
+| dest_port_set1 | 2300-2350 |
+| dest_port_set2 | 3300-3350 |
+| src_port_set1 | 2400-2500<br>2900-3000 |
+| src_port_set2 | 5700-5800<br>6500-6600 |
+
+#### IPv4 Prefix Sets
+
+| Name | Prefixes |
+| ---- | ----- |
+| dest_prefix_set1 | 2.3.4.0/24 |
+| dest_prefix_set2 | 4.4.4.0/24 |
+| src_prefix_set1 | 1.2.3.0/24<br>1.2.5.0/24 |
+| src_prefix_set2 | 2.2.2.0/24<br>3.3.3.0/24 |
 
 ### Router Application-Traffic-Recognition Device Configuration
 
@@ -128,6 +129,8 @@ application traffic recognition
       application aim service audio-video
       application aim service chat
       application anydesk
+   !
+   category empty
    !
    application-profile app_profile_1
       application aim service audio-video

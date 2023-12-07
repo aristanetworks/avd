@@ -17,6 +17,7 @@ application_traffic_recognition:
           service: peer-to-peer
         - name: apple_update
           service: software-update
+    - name: empty
   field_sets:
     l4_ports:
       - name: src_port_set1
