@@ -13,8 +13,6 @@ sdwan_regions:
         id: 42
         description: Danger Zone
         sites:
-          - name: Site421
-            id: 421
           - name: Site422
             id: 422
   - name: AVD_Land_East
@@ -74,5 +72,4 @@ wan_controller:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: sdwan-pathfinder
-      sdwan_site: Site421
       id: 1

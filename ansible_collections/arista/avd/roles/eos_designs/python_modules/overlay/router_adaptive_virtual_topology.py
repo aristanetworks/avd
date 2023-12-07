@@ -17,7 +17,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
     @cached_property
     def router_adaptive_virtual_topology(self) -> dict | None:
         """
-        Return structured config for router path-selection (DPS)
+        Return structured config for router adaptive-virtual-topology (AVT)
         """
         if not self.shared_utils.sdwan_role:
             return None
@@ -25,17 +25,25 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         router_adaptive_virtual_topology = {}
 
         role = self.shared_utils.sdwan_role
-        # TODO add a key at node level to indicate this
         if role == "transit":
             role = "transit region"
 
         router_adaptive_virtual_topology["topology_role"] = role
-        # TODO confirm if the three keys are needed or not when sdwan_role == "pathfinder".
-        # as per comment on Github
-        router_adaptive_virtual_topology["region"] = {"name": self._wan_region["name"], "id": self._wan_region["id"]}
-        router_adaptive_virtual_topology["zone"] = {"name": self._wan_zone["name"], "id": self._wan_zone["id"]}
-        router_adaptive_virtual_topology["site"] = {"name": self._wan_site["name"], "id": self._wan_site["id"]}
 
-        # TODO - handle Policy/Profile/VRF here or rather in network_services counterpart.
+        if role != "pathfinder":
+            router_adaptive_virtual_topology["region"] = {
+                "name": self._wan_region["name"],
+                "id": self._wan_region["id"],
+            }
+            router_adaptive_virtual_topology["zone"] = {
+                "name": self._wan_zone["name"],
+                "id": self._wan_zone["id"],
+            }
+            router_adaptive_virtual_topology["site"] = {
+                "name": self._wan_site["name"],
+                "id": self._wan_site["id"],
+            }
+
+        # TODO - handle Policy/Profile/VRF here or rather in network_services in future PR
 
         return router_adaptive_virtual_topology
