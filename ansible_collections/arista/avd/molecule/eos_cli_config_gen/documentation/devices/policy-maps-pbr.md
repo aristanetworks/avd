@@ -49,7 +49,7 @@ interface Management1
 | CLASS_NEXTHOP | 20 | - | 172.30.1.2 | True |
 | NO_ACTION | - | - | - | - |
 
-#### PBR Policy Maps Configuration
+#### PBR Policy Maps Device Configuration
 
 ```eos
 !

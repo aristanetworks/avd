@@ -55,7 +55,7 @@ interface Management1
 | route | - | ipv4 | test | - | 192.168.0.0/24 | - |
 | route | - | ipv6 | - | - | 2001:db8:cafe::/64 | - |
 
-#### Hardware Counters Configuration
+#### Hardware Counters Device Configuration
 
 ```eos
 !

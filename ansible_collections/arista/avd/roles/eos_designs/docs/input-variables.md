@@ -878,9 +878,9 @@ Both data models support variable inheritance from profiles defined under [`port
     `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
     Transformation from abstraction to network values is managed by the following Ansible filter plugins:
 
-    - [`arista.avd.generate_esi`](../../../docs/plugins/Filter%20plugins/generate_esi.md)
-    - [`arista.avd.generate_lacp_id`](../../../docs/plugins/Filter%20plugins/generate_lacp_id.md).
-    - [`arista.avd.generate_route_target`](../../../docs/plugins/Filter%20plugins/generate_route_target.md).
+    - [`arista.avd.generate_esi`](../../../docs/plugins/Filter_plugins/generate_esi.md)
+    - [`arista.avd.generate_lacp_id`](../../../docs/plugins/Filter_plugins/generate_lacp_id.md).
+    - [`arista.avd.generate_route_target`](../../../docs/plugins/Filter_plugins/generate_route_target.md).
 
     The plugins provides the following result:
 

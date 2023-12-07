@@ -10,7 +10,7 @@
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
@@ -34,13 +34,13 @@
   - [MPLS Interfaces](#mpls-interfaces)
 - [Patch Panel](#patch-panel)
   - [Patch Panel Summary](#patch-panel-summary)
-  - [Patch Panel Configuration](#patch-panel-configuration)
+  - [Patch Panel Device Configuration](#patch-panel-device-configuration)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [EOS CLI](#eos-cli)
+- [EOS CLI Device Configuration](#eos-cli-device-configuration)
 
 ## Management
 
@@ -85,7 +85,7 @@ interface Management1
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -125,7 +125,7 @@ spanning-tree mst 0 priority 4096
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -450,9 +450,9 @@ service routing protocols model multi-agent
 
 #### Virtual Router MAC Address Summary
 
-##### Virtual Router MAC Address: 00:1c:73:00:dc:00
+Virtual Router MAC Address: 00:1c:73:00:dc:00
 
-#### Virtual Router MAC Address Configuration
+#### Virtual Router MAC Address Device Configuration
 
 ```eos
 !
@@ -502,8 +502,8 @@ ipv6 unicast-routing
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
@@ -808,7 +808,7 @@ router bfd
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
 
-#### MPLS and LDP Configuration
+#### MPLS and LDP Device Configuration
 
 ```eos
 !
@@ -841,7 +841,7 @@ mpls ldp
 | TEN_B_site3_site5_eline_vlan_based_1003 | True | Interface | Port-Channel3.1003 | Pseudowire | bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1003 |
 | TEN_B_site3_site5_eline_vlan_based_1004 | True | Interface | Port-Channel3.1004 | Pseudowire | bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1004 |
 
-### Patch Panel Configuration
+### Patch Panel Device Configuration
 
 ```eos
 !
@@ -904,7 +904,7 @@ vrf instance TENANT_B_INTRA
 vrf instance TENANT_B_WAN
 ```
 
-## EOS CLI
+## EOS CLI Device Configuration
 
 ```eos
 !

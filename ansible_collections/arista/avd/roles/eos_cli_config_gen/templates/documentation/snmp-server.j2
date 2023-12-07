@@ -49,6 +49,7 @@
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
 
 #### SNMP ACLs
+
 | IP | ACL | VRF |
 | -- | --- | --- |
 {%         for acl in snmp_server.ipv4_acls %}

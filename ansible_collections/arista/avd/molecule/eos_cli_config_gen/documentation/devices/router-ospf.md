@@ -104,7 +104,6 @@ interface Port-Channel12
 | --------- | ----------- | --- | ------------ |
 | Loopback2 | - | default | - |
 
-
 #### Loopback Interfaces Device Configuration
 
 ```eos
@@ -193,7 +192,7 @@ interface Vlan24
 | 101 | 100 | 100 / 200 / 300 | 100 / 200 / 300 |
 | 200 | 100 | - | - |
 
-#### Router OSPF route summary
+#### Router OSPF Route Summary
 
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
 |------------|--------|-----|---------------------|----------------|

@@ -611,12 +611,6 @@ roles/eos_cli_config_gen/docs/tables/event-monitor.md
 roles/eos_cli_config_gen/docs/tables/flow-tracking.md
 --8<--
 
-### Flow trackings
-
---8<--
-roles/eos_cli_config_gen/docs/tables/flow-trackings.md
---8<--
-
 ### Load interval
 
 --8<--
@@ -753,6 +747,12 @@ roles/eos_cli_config_gen/docs/tables/dhcp-relay.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
+--8<--
+
+### IP DHCP Snooping
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
 --8<--
 
 ### IP ICMP redirect

@@ -23,9 +23,8 @@ scenario:
 dependency:
   name: galaxy
   options:
-    ignore-certs: True
-    ignore-errors: True
     requirements-file: collections.yml
+  # enabled: false
 driver:
   name: docker
 platforms:

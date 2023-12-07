@@ -1,6 +1,6 @@
 ---
 - name: Converge
-  hosts: all
+  hosts: TOOLS
   gather_facts: false
   connection: local
   tasks:

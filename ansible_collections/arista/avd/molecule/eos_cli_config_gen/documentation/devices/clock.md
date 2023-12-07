@@ -40,7 +40,7 @@ interface Management1
 
 Clock Timezone is set to **GMT**.
 
-#### Clock Configuration
+#### Clock Device Configuration
 
 ```eos
 !

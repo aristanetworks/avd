@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Prompt](#prompt)
+- [Prompt Device Configuration](#prompt-device-configuration)
 
 ## Management
 
@@ -34,7 +34,7 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Prompt
+## Prompt Device Configuration
 
 ```eos
 !

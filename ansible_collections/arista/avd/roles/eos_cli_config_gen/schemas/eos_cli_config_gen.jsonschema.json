@@ -5909,6 +5909,58 @@
       },
       "title": "IP DHCP Relay"
     },
+    "ip_dhcp_snooping": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Enabled"
+        },
+        "bridging": {
+          "type": "boolean",
+          "title": "Bridging"
+        },
+        "information_option": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "Enable insertion of option-82 in DHCP request packets",
+              "title": "Enabled"
+            },
+            "circuit_id_type": {
+              "type": "string",
+              "description": "\"none\" or <0 - 255>",
+              "title": "Circuit ID Type"
+            },
+            "circuit_id_format": {
+              "type": "string",
+              "description": "Required if `circuit_id_type` is set.\n- \"%h:%p\" Hostname and interface name\n- \"%p:%v\" Interface name and VLAN ID",
+              "enum": [
+                "%h:%p",
+                "%p:%v"
+              ],
+              "title": "Circuit ID Format"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Information Option"
+        },
+        "vlan": {
+          "type": "string",
+          "description": "VLAN range as string.\n\"< vlan_id >, < vlan_id >-< vlan_id >\"\nExample: 15,16,17,18",
+          "title": "VLAN"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "IP DHCP Snooping"
+    },
     "ip_domain_lookup": {
       "type": "object",
       "properties": {
@@ -7962,6 +8014,11 @@
               "type": "boolean",
               "description": "Add sequence numbers to log messages\n",
               "title": "Sequence Numbers"
+            },
+            "rfc5424": {
+              "type": "boolean",
+              "description": "Forward logs in RFC5424 format\n",
+              "title": "Rfc5424"
             }
           },
           "additionalProperties": false,
@@ -14263,6 +14320,151 @@
             "^_.+$": {}
           },
           "title": "Site"
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "AVT Name.",
+                "title": "Name"
+              },
+              "load_balance_policy": {
+                "type": "string",
+                "description": "Name of the load-balance policy.",
+                "title": "Load Balance Policy"
+              },
+              "internet_exit_policy": {
+                "type": "string",
+                "description": "Name of the internet exit policy.",
+                "title": "Internet Exit Policy"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Profiles"
+        },
+        "policies": {
+          "type": "array",
+          "description": "A sequence of application profiles mapped to some virtual topologies.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Policy name.",
+                "title": "Name"
+              },
+              "matches": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "application_profile": {
+                      "type": "string",
+                      "description": "Application profile name.",
+                      "title": "Application Profile"
+                    },
+                    "avt_profile": {
+                      "type": "string",
+                      "description": "AVT Profile name.",
+                      "title": "Avt Profile"
+                    },
+                    "dscp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 63,
+                      "description": "Set DSCP for matched traffic.",
+                      "title": "DSCP"
+                    },
+                    "traffic_class": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 7,
+                      "description": "Set traffic-class for matched traffic.",
+                      "title": "Traffic Class"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Matches"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Policies"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name.",
+                "title": "Name"
+              },
+              "policy": {
+                "type": "string",
+                "description": "AVT Policy name.",
+                "title": "Policy"
+              },
+              "profiles": {
+                "type": "array",
+                "description": "AVT profiles in this VRF.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "AVT profile name.",
+                      "title": "Name"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "description": "Unique ID for this AVT (per VRF).",
+                      "minimum": 1,
+                      "maximum": 254,
+                      "title": "ID"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Profiles"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
         }
       },
       "additionalProperties": false,
@@ -18087,12 +18289,14 @@
                     },
                     "prefix_list_in": {
                       "type": "string",
-                      "description": "Inbound prefix-list name",
+                      "description": "Inbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in</samp> instead.",
+                      "deprecated": true,
                       "title": "Prefix List In"
                     },
                     "prefix_list_out": {
                       "type": "string",
-                      "description": "Outbound prefix-list name",
+                      "description": "Outbound prefix-list name\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out</samp> instead.",
+                      "deprecated": true,
                       "title": "Prefix List Out"
                     }
                   },
@@ -18337,6 +18541,16 @@
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
                         },
+                        "prefix_list_in": {
+                          "type": "string",
+                          "description": "Inbound prefix-list name",
+                          "title": "Prefix List In"
+                        },
+                        "prefix_list_out": {
+                          "type": "string",
+                          "description": "Outbound prefix-list name",
+                          "title": "Prefix List Out"
+                        },
                         "next_hop": {
                           "type": "object",
                           "properties": {
@@ -18532,6 +18746,16 @@
                           "type": "string",
                           "description": "Outbound route-map name",
                           "title": "Route Map Out"
+                        },
+                        "prefix_list_in": {
+                          "type": "string",
+                          "description": "Inbound prefix-list name",
+                          "title": "Prefix List In"
+                        },
+                        "prefix_list_out": {
+                          "type": "string",
+                          "description": "Outbound prefix-list name",
+                          "title": "Prefix List Out"
                         }
                       },
                       "additionalProperties": false,
@@ -20833,7 +21057,7 @@
                         "server_profiles": {
                           "type": "array",
                           "minItems": 1,
-                          "maxItems": 2,
+                          "maxItems": 12,
                           "description": "STUN server-profile names.",
                           "items": {
                             "type": "string"
@@ -20881,7 +21105,7 @@
                         "server_profiles": {
                           "type": "array",
                           "minItems": 1,
-                          "maxItems": 2,
+                          "maxItems": 12,
                           "description": "STUN server-profile names.",
                           "items": {
                             "type": "string"
@@ -22576,15 +22800,15 @@
     },
     "stun": {
       "type": "object",
-      "description": "STUN configuration",
+      "description": "STUN configuration.",
       "properties": {
         "client": {
           "type": "object",
-          "description": "STUN client settings",
+          "description": "STUN client settings.",
           "properties": {
             "server_profiles": {
               "type": "array",
-              "description": "List of server profiles for the client",
+              "description": "List of server profiles for the client.",
               "items": {
                 "type": "object",
                 "properties": {
@@ -22595,6 +22819,18 @@
                   "ip_address": {
                     "type": "string",
                     "title": "IP Address"
+                  },
+                  "ssl_profile": {
+                    "type": "string",
+                    "description": "SSL profile name.",
+                    "title": "SSL Profile"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "Destination port for the request STUN server (default - 3478).",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Port"
                   }
                 },
                 "additionalProperties": false,
@@ -22616,7 +22852,7 @@
         },
         "server": {
           "type": "object",
-          "description": "STUN server settings",
+          "description": "STUN server settings.",
           "properties": {
             "local_interface": {
               "type": "string",
@@ -22629,6 +22865,50 @@
                 "type": "string"
               },
               "title": "Local Interfaces"
+            },
+            "bindings_timeout": {
+              "type": "integer",
+              "description": "Timeout for bindings stored on STUN server in seconds.",
+              "minimum": 10,
+              "maximum": 7200,
+              "title": "Bindings Timeout"
+            },
+            "ssl_profile": {
+              "type": "string",
+              "description": "SSL profile name.",
+              "title": "SSL Profile"
+            },
+            "ssl_connection_lifetime": {
+              "type": "object",
+              "description": "SSL connection lifetime in minutes or hours.\nIf both are specified, minutes is given higher precedence.",
+              "properties": {
+                "minutes": {
+                  "type": "integer",
+                  "description": "SSL connection lifetime in minutes (default - 120).",
+                  "minimum": 1,
+                  "maximum": 1440,
+                  "title": "Minutes"
+                },
+                "hours": {
+                  "type": "integer",
+                  "description": "SSL connection lifetime in hours (default - 2).",
+                  "minimum": 1,
+                  "maximum": 24,
+                  "title": "Hours"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "SSL Connection Lifetime"
+            },
+            "port": {
+              "type": "integer",
+              "description": "Listening port for STUN server (default - 3478).",
+              "minimum": 1,
+              "maximum": 65535,
+              "title": "Port"
             }
           },
           "additionalProperties": false,
