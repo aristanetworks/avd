@@ -28,7 +28,6 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 - The default VRF is being configured by default on all WAN devices with a
     `vni_id` of 100.
 
-
 ## Known limitations
 
 - As of now, only the fundations of the `eos_designs` functionality for WAN is
