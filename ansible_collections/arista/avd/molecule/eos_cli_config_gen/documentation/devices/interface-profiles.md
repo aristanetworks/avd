@@ -44,7 +44,7 @@ interface Management1
 - TEST-PROFILE-1
 - TEST-PROFILE-2
 
-#### Interface Profiles Configuration
+#### Interface Profiles Device Configuration
 
 ```eos
 !

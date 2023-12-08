@@ -7680,6 +7680,11 @@
               "type": "boolean",
               "description": "Add sequence numbers to log messages\n",
               "title": "Sequence Numbers"
+            },
+            "rfc5424": {
+              "type": "boolean",
+              "description": "Forward logs in RFC5424 format\n",
+              "title": "Rfc5424"
             }
           },
           "additionalProperties": false,
@@ -20718,7 +20723,7 @@
                         "server_profiles": {
                           "type": "array",
                           "minItems": 1,
-                          "maxItems": 2,
+                          "maxItems": 12,
                           "description": "STUN server-profile names.",
                           "items": {
                             "type": "string"
@@ -20766,7 +20771,7 @@
                         "server_profiles": {
                           "type": "array",
                           "minItems": 1,
-                          "maxItems": 2,
+                          "maxItems": 12,
                           "description": "STUN server-profile names.",
                           "items": {
                             "type": "string"
@@ -22461,15 +22466,15 @@
     },
     "stun": {
       "type": "object",
-      "description": "STUN configuration",
+      "description": "STUN configuration.",
       "properties": {
         "client": {
           "type": "object",
-          "description": "STUN client settings",
+          "description": "STUN client settings.",
           "properties": {
             "server_profiles": {
               "type": "array",
-              "description": "List of server profiles for the client",
+              "description": "List of server profiles for the client.",
               "items": {
                 "type": "object",
                 "properties": {
@@ -22480,6 +22485,18 @@
                   "ip_address": {
                     "type": "string",
                     "title": "IP Address"
+                  },
+                  "ssl_profile": {
+                    "type": "string",
+                    "description": "SSL profile name.",
+                    "title": "SSL Profile"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "Destination port for the request STUN server (default - 3478).",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Port"
                   }
                 },
                 "additionalProperties": false,
@@ -22501,7 +22518,7 @@
         },
         "server": {
           "type": "object",
-          "description": "STUN server settings",
+          "description": "STUN server settings.",
           "properties": {
             "local_interface": {
               "type": "string",
@@ -22514,6 +22531,50 @@
                 "type": "string"
               },
               "title": "Local Interfaces"
+            },
+            "bindings_timeout": {
+              "type": "integer",
+              "description": "Timeout for bindings stored on STUN server in seconds.",
+              "minimum": 10,
+              "maximum": 7200,
+              "title": "Bindings Timeout"
+            },
+            "ssl_profile": {
+              "type": "string",
+              "description": "SSL profile name.",
+              "title": "SSL Profile"
+            },
+            "ssl_connection_lifetime": {
+              "type": "object",
+              "description": "SSL connection lifetime in minutes or hours.\nIf both are specified, minutes is given higher precedence.",
+              "properties": {
+                "minutes": {
+                  "type": "integer",
+                  "description": "SSL connection lifetime in minutes (default - 120).",
+                  "minimum": 1,
+                  "maximum": 1440,
+                  "title": "Minutes"
+                },
+                "hours": {
+                  "type": "integer",
+                  "description": "SSL connection lifetime in hours (default - 2).",
+                  "minimum": 1,
+                  "maximum": 24,
+                  "title": "Hours"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "SSL Connection Lifetime"
+            },
+            "port": {
+              "type": "integer",
+              "description": "Listening port for STUN server (default - 3478).",
+              "minimum": 1,
+              "maximum": 65535,
+              "title": "Port"
             }
           },
           "additionalProperties": false,

@@ -41,7 +41,7 @@ interface Management1
 
 Default secret hash is set to md5
 
-#### Management defaults Configuration
+#### Management defaults Device Configuration
 
 ```eos
 !

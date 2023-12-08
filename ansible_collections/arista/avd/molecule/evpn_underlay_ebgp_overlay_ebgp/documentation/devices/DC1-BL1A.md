@@ -12,13 +12,13 @@
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
-  - [Hardware TCAM configuration](#hardware-tcam-configuration)
+  - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
@@ -46,7 +46,7 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
-  - [Platform Configuration](#platform-configuration)
+  - [Platform Device Configuration](#platform-device-configuration)
 
 ## Management
 
@@ -109,7 +109,7 @@ ip name-server vrf MGMT 192.168.200.5
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -177,9 +177,9 @@ snmp-server location DC1_FABRIC DC1-BL1A
 
 ## Hardware TCAM Profile
 
-TCAM profile __`vxlan-routing`__ is active
+TCAM profile **`vxlan-routing`** is active
 
-### Hardware TCAM configuration
+### Hardware TCAM Device Configuration
 
 ```eos
 !
@@ -218,7 +218,7 @@ spanning-tree mst 0 priority 4096
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -390,7 +390,6 @@ interface Ethernet4000
 | Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | - |
 | Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | - |
 
-
 #### Loopback Interfaces Device Configuration
 
 ```eos
@@ -505,9 +504,9 @@ service routing protocols model multi-agent
 
 #### Virtual Router MAC Address Summary
 
-##### Virtual Router MAC Address: 00:dc:00:00:00:0a
+Virtual Router MAC Address: 00:dc:00:00:00:0a
 
-#### Virtual Router MAC Address Configuration
+#### Virtual Router MAC Address Device Configuration
 
 ```eos
 !
@@ -559,8 +558,8 @@ ip routing vrf Tenant_L3_VRF_Zone
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 10.3.4.0/24 | 1.2.3.4 | - | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 1.1.1.0/24 | 10.1.1.1 | vlan101 | 1 | - | - | - |
@@ -936,7 +935,7 @@ vrf instance Tenant_L3_VRF_Zone
 | -------- | ----- |
 | Hardware Only Lag | True |
 
-### Platform Configuration
+### Platform Device Configuration
 
 ```eos
 !

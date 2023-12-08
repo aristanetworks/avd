@@ -5,6 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Errdisable](#errdisable)
+  - [Errdisable Summary](#errdisable-summary)
 
 ## Management
 
@@ -35,6 +36,8 @@ interface Management1
 ```
 
 ## Errdisable
+
+### Errdisable Summary
 
 |  Detect Cause | Enabled |
 | ------------- | ------- |

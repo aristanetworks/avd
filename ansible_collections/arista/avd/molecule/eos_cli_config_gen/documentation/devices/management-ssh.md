@@ -43,7 +43,7 @@ interface Management1
 | ACL-SSH | - |
 | ACL-SSH-VRF | mgt |
 
-#### SSH timeout and management
+#### SSH Timeout and Management
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
@@ -55,7 +55,7 @@ interface Management1
 | ---------------- | ---------------------- |
 | 50 | 10 |
 
-#### Ciphers and algorithms
+#### Ciphers and Algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 |---------|----------------------|----------------|---------------------------|
@@ -67,7 +67,7 @@ interface Management1
 | --- | ------ |
 | mgt | Enabled |
 
-#### Management SSH Configuration
+#### Management SSH Device Configuration
 
 ```eos
 !

@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [DHCP Server](#dhcp-server)
-  - [DHCP Server interfaces](#dhcp-server-interfaces)
+  - [DHCP Server Interfaces](#dhcp-server-interfaces)
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
@@ -21,6 +21,7 @@
 - [Power Over Ethernet (PoE)](#power-over-ethernet-poe)
   - [PoE Summary](#poe-summary)
 - [Quality Of Service](#quality-of-service)
+  - [QOS Interfaces](#qos-interfaces)
 
 ## Management
 
@@ -52,7 +53,7 @@ interface Management1
 
 ## DHCP Server
 
-### DHCP Server interfaces
+### DHCP Server Interfaces
 
 | Interface name | DHCP IPv4 | DHCP IPv6 |
 | -------------- | --------- | --------- |
@@ -975,7 +976,7 @@ interface Ethernet69
 
 ### PIM Sparse Mode
 
-#### PIM Sparse Mode enabled interfaces
+#### PIM Sparse Mode Enabled Interfaces
 
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |
@@ -1021,7 +1022,7 @@ interface Ethernet69
 
 ## Quality Of Service
 
-#### QOS Interfaces
+### QOS Interfaces
 
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |

@@ -76,7 +76,7 @@ interface Management1
 
 #### Router BGP VPN-IPv4 Address Family
 
-- VPN import pruning is __enabled__
+- VPN import pruning is **enabled**
 
 ##### VPN-IPv4 Neighbors
 
@@ -92,7 +92,7 @@ interface Management1
 
 #### Router BGP VPN-IPv6 Address Family
 
-- VPN import pruning is __enabled__
+- VPN import pruning is **enabled**
 
 ##### VPN-IPv6 Neighbors
 

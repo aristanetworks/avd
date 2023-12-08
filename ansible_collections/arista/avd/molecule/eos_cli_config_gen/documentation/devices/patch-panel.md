@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Patch Panel](#patch-panel)
   - [Patch Panel Summary](#patch-panel-summary)
-  - [Patch Panel Configuration](#patch-panel-configuration)
+  - [Patch Panel Device Configuration](#patch-panel-device-configuration)
 
 ## Management
 
@@ -45,7 +45,7 @@ interface Management1
 | TEN_B_site2_site5_eline | True | Interface | Ethernet5 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline |
 | TEN_A_site2_site5_eline | False | Interface | Ethernet6 dot1q vlan 123 | Pseudowire | ldp LDP_PW_1 |
 
-### Patch Panel Configuration
+### Patch Panel Device Configuration
 
 ```eos
 !

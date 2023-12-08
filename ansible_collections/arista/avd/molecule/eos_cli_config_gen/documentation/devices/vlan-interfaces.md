@@ -447,7 +447,7 @@ interface Vlan4094
 
 ### PIM Sparse Mode
 
-#### PIM Sparse Mode enabled interfaces
+#### PIM Sparse Mode Enabled Interfaces
 
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |
