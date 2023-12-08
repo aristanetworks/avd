@@ -29,12 +29,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     description: Description for ipvpn_gateway_peers via structured_config
-  address_family_ipv4:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: false
-    - name: IPVPN-GATEWAY-PEERS
-      activate: false
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
@@ -43,6 +37,12 @@ router_bgp:
     - name: MPLS-OVERLAY-PEERS
       activate: true
     domain_identifier: '65535:1'
+  address_family_ipv4:
+    peer_groups:
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
+    - name: IPVPN-GATEWAY-PEERS
+      activate: false
   address_family_vpn_ipv4:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0

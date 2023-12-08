@@ -7,7 +7,7 @@
 {% if platform is arista.avd.defined %}
 
 ## Platform
-{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined %}
+{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined or platform.sfe is arista.avd.defined %}
 
 ### Platform Summary
 {%         if platform.trident is arista.avd.defined %}
@@ -27,7 +27,7 @@
 #### Trident MMU QUEUE PROFILES
 {%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 
-**{{ profile.name }}**
+##### {{ profile.name }}
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -71,9 +71,19 @@
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
+{%         if platform.sfe is arista.avd.defined %}
+
+#### Platform Software Forwarding Engine Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%             if platform.sfe.data_plane_cpu_allocation_max is arista.avd.defined %}
+| Maximum CPU Allocation | {{ platform.sfe.data_plane_cpu_allocation_max }} |
+{%             endif %}
+{%         endif %}
 {%     endif %}
 
-### Platform Configuration
+### Platform Device Configuration
 
 ```eos
 {%     include 'eos/platform.j2' %}

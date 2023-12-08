@@ -41,49 +41,61 @@ router_bgp:
   - ip_address: 172.31.254.32
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet3/1
   - ip_address: 172.31.254.34
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/3/1
   - ip_address: 172.31.254.36
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/4/1
   - ip_address: 172.31.254.38
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet4/1
   - ip_address: 172.31.254.40
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/3/1
   - ip_address: 172.31.254.42
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet3/1
   - ip_address: 172.31.254.44
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet4/1
   - ip_address: 172.31.254.46
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/4/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE2
     description: DC1-SPINE2
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE3
     description: DC1-SPINE3
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE4
     description: DC1-SPINE4
     remote_as: '65001'
   address_family_evpn:
@@ -471,7 +483,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 13
+    id: 1013
     mode: active
 - name: Ethernet14/1
   peer: DC1.L2LEAF5A
@@ -711,8 +723,8 @@ port_channel_interfaces:
     identifier: 0000:0000:0606:0707:0808
     route_target: 06:06:07:07:08:08
   lacp_id: 0606.0707.0808
-- name: Port-Channel13
-  description: DC1-L2LEAF4A_Po1
+- name: Port-Channel1013
+  description: DC1-L2LEAF4A_Po1001
   type: switched
   shutdown: false
   mode: trunk

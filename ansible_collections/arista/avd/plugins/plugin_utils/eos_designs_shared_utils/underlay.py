@@ -111,4 +111,4 @@ class UnderlayMixin:
 
     @cached_property
     def underlay_filter_peer_as(self: SharedUtils) -> bool:
-        return get(self.hostvars, "underlay_filter_peer_as") is True and self.evpn_role not in ["client", "server"]
+        return get(self.hostvars, "underlay_filter_peer_as") is True

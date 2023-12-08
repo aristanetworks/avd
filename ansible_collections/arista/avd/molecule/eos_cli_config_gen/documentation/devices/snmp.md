@@ -54,6 +54,7 @@ interface Management1
 | remote | DEADBEEFCAFE123456 | 2.2.2.2 | 1337 |
 
 #### SNMP ACLs
+
 | IP | ACL | VRF |
 | -- | --- | --- |
 | IPv4 | SNMP-MGMT | MGMT |

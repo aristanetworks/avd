@@ -47,7 +47,7 @@ interface Management1
 | bar | red | peer-group-baz | downlink-neighbors |
 | foo | - | 169.254.1.1<br>fe80::1 | ixp<br>uplink-neighbors |
 
-#### BGP Groups Configuration
+#### BGP Groups Device Configuration
 
 ```eos
 !
@@ -72,7 +72,7 @@ group bgp foo
 | QSFP_Interface_Group | Ethernet1,5 | uplink-interfaces | Default |
 | SFP_Interface_Group | Ethernet10-20<br>Ethernet30-48 | downlink-interfaces<br>ix-interfaces | downlink-neighbors<br>local-ix |
 
-#### Interface Groups Configuration
+#### Interface Groups Device Configuration
 
 ```eos
 !

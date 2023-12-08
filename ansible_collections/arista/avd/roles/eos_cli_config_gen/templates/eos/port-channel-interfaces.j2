@@ -161,6 +161,12 @@ interface {{ port_channel_interface.name }}
 {%     elif port_channel_interface.snmp_trap_link_change is arista.avd.defined(true) %}
    snmp trap link-change
 {%     endif %}
+{%     if port_channel_interface.l2_mtu is arista.avd.defined %}
+   l2 mtu {{ port_channel_interface.l2_mtu }}
+{%     endif %}
+{%     if port_channel_interface.l2_mru is arista.avd.defined %}
+   l2 mru {{ port_channel_interface.l2_mru }}
+{%     endif %}
 {%     if port_channel_interface.lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interface.lacp_id }}
 {%     endif %}

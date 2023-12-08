@@ -29,12 +29,12 @@ class AvdStructuredConfigMlag(AvdFacts):
         return get(self.shared_utils.trunk_groups, "mlag_l3.name", required=True)
 
     @cached_property
-    def spanning_tree(self):
+    def spanning_tree(self) -> dict:
+        vlans = [self.shared_utils.mlag_peer_vlan]
         if self.shared_utils.mlag_peer_l3_vlan is not None:
-            vlans = [self.shared_utils.mlag_peer_vlan, self.shared_utils.mlag_peer_l3_vlan]
-            return {"no_spanning_tree_vlan": list_compress(vlans)}
+            vlans.append(self.shared_utils.mlag_peer_l3_vlan)
 
-        return {"no_spanning_tree_vlan": self.shared_utils.mlag_peer_vlan}
+        return {"no_spanning_tree_vlan": list_compress(vlans)}
 
     @cached_property
     def vlans(self) -> list:
@@ -216,8 +216,8 @@ class AvdStructuredConfigMlag(AvdFacts):
             "local_interface": f"Vlan{self.shared_utils.mlag_peer_vlan}",
             "peer_address": self.shared_utils.mlag_peer_ip,
             "peer_link": f"Port-Channel{self.shared_utils.mlag_port_channel_id}",
-            "reload_delay_mlag": get(self.shared_utils.platform_settings, "reload_delay.mlag"),
-            "reload_delay_non_mlag": get(self.shared_utils.platform_settings, "reload_delay.non_mlag"),
+            "reload_delay_mlag": str(get(self.shared_utils.platform_settings, "reload_delay.mlag")),
+            "reload_delay_non_mlag": str(get(self.shared_utils.platform_settings, "reload_delay.non_mlag")),
         }
         if (
             get(self.shared_utils.switch_data_combined, "mlag_dual_primary_detection", default=False) is True
@@ -286,6 +286,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                 {
                     "name": neighbor_interface_name,
                     "peer_group": peer_group_name,
+                    "peer": self.shared_utils.mlag_peer,
                     "remote_as": self.shared_utils.bgp_as,
                     "description": self.shared_utils.mlag_peer,
                 }
@@ -297,6 +298,7 @@ class AvdStructuredConfigMlag(AvdFacts):
                 {
                     "ip_address": neighbor_ip,
                     "peer_group": peer_group_name,
+                    "peer": self.shared_utils.mlag_peer,
                     "description": self.shared_utils.mlag_peer,
                 }
             ]

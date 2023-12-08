@@ -22,10 +22,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
-  address_family_ipv4:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: false
   address_family_evpn:
     neighbor_default:
       encapsulation: mpls
@@ -33,6 +29,10 @@ router_bgp:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: MPLS-OVERLAY-PEERS
+      activate: false
   address_family_vpn_ipv4:
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
@@ -48,9 +48,11 @@ router_bgp:
   neighbors:
   - ip_address: 100.70.0.8
     peer_group: MPLS-OVERLAY-PEERS
+    peer: SITE1-RR1
     description: SITE1-RR1
   - ip_address: 100.70.0.9
     peer_group: MPLS-OVERLAY-PEERS
+    peer: SITE2-RR1
     description: SITE2-RR1
   vrfs:
   - name: TENANT_B_INTRA

@@ -12,8 +12,8 @@ $defs:
       speed:
         type: str
         description: |
-          Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.
-          If not specified will be auto.
+          Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          If not specified speed will be auto.
       description:
         type: str
         description: |
@@ -43,11 +43,10 @@ $defs:
         max: 65535
       l2_mtu:
         type: int
-        convert_types:
-          - str
-        min: 68
-        max: 9416
-        description: This should only be defined for platforms supporting the "l2 mtu" CLI command.
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/l2_mtu
+      l2_mru:
+        type: int
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/l2_mru
       native_vlan:
         type: int
         convert_types:
@@ -395,9 +394,9 @@ $defs:
             type: list
             description: Manual preference as described above, required only for preference algorithm.
             items:
-              type: str
+              type: int
               convert_types:
-                - int
+                - str
           dont_preempt:
             type: bool
             description: Disable preemption for single-active forwarding when auto/manual DF preference is configured.

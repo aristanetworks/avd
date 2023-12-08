@@ -39,7 +39,7 @@ interface Management1
 
 ### DNS Domain
 
-#### DNS domain: test.local
+DNS domain: test.local
 
 #### DNS Domain Device Configuration
 

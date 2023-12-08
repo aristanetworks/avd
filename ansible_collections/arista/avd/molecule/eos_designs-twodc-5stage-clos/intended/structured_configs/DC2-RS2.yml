@@ -29,10 +29,12 @@ router_bgp:
   - ip_address: 172.17.20.8
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
+    peer: DC2-SUPER-SPINE1
     description: DC2-SUPER-SPINE1_Ethernet5
   - ip_address: 172.17.20.10
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
+    peer: DC2-SUPER-SPINE1
     description: DC2-SUPER-SPINE1_Ethernet7
 static_routes:
 - vrf: MGMT

@@ -1,0 +1,141 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_adaptive_virtual_topology:
+    type: dict
+    keys:
+      topology_role:
+        description: Role name.
+        type: str
+        valid_values:
+          - "edge"
+          - "pathfinder"
+          - "transit region"
+          - "transit zone"
+      region:
+        type: dict
+        description: Region name and ID.
+        keys:
+          name:
+            type: str
+            required: true
+          id:
+            type: int
+            convert_types:
+              - "str"
+            required: true
+            min: 1
+            max: 255
+      zone:
+        type: dict
+        description: Zone name and ID.
+        keys:
+          name:
+            type: str
+            required: true
+          id:
+            type: int
+            convert_types:
+              - "str"
+            required: true
+            min: 1
+            max: 10000
+      site:
+        type: dict
+        description: Site name and ID.
+        keys:
+          name:
+            type: str
+            required: true
+          id:
+            type: int
+            convert_types:
+              - "str"
+            required: true
+            min: 1
+            max: 10000
+      profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: AVT Name.
+            load_balance_policy:
+              type: str
+              description: Name of the load-balance policy.
+            internet_exit_policy:
+              type: str
+              description: Name of the internet exit policy.
+      policies:
+        type: list
+        primary_key: name
+        description: A sequence of application profiles mapped to some virtual topologies.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            matches:
+              type: list
+              items:
+                type: dict
+                keys:
+                  application_profile:
+                    type: str
+                    description: Application profile name.
+                  avt_profile:
+                    type: str
+                    description: AVT Profile name.
+                  dscp:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 0
+                    max: 63
+                    description: Set DSCP for matched traffic.
+                  traffic_class:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 0
+                    max: 7
+                    description: Set traffic-class for matched traffic.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            policy:
+              type: str
+              description: AVT Policy name.
+            profiles:
+              type: list
+              primary_key: id
+              description: AVT profiles in this VRF.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: AVT profile name.
+                  id:
+                    type: int
+                    description: Unique ID for this AVT (per VRF).
+                    required: true
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 254

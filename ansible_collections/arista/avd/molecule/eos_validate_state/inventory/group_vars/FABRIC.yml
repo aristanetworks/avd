@@ -17,6 +17,9 @@ ansible_httpapi_use_ssl: true
 # Do not try to validate certs
 ansible_httpapi_validate_certs: false
 
+# If a device is set to "is_deployed: false" at the host_vars level, then shutdown interfaces towards undeployed peers.
+shutdown_interfaces_towards_undeployed_peers: true
+
 # Common AVD group variables
 fabric_name: FABRIC
 

@@ -42,21 +42,26 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: UNDERLAY-MULTICAST-L3LEAF1A
     description: UNDERLAY-MULTICAST-L3LEAF1A
   - ip_address: 172.31.255.4
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
+    peer: UNDERLAY-MULTICAST-SPINE1
     description: UNDERLAY-MULTICAST-SPINE1_Ethernet2
   - ip_address: 172.31.255.6
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
+    peer: UNDERLAY-MULTICAST-SPINE2
     description: UNDERLAY-MULTICAST-SPINE2_Ethernet2
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: UNDERLAY-MULTICAST-SPINE1
     description: UNDERLAY-MULTICAST-SPINE1
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: UNDERLAY-MULTICAST-SPINE2
     description: UNDERLAY-MULTICAST-SPINE2
     remote_as: '65001'
   redistribute_routes:

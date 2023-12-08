@@ -1,0 +1,217 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  router_path_selection:
+    type: dict
+    description: Dynamic path selection configuration.
+    keys:
+      peer_dynamic_source:
+        type: str
+        valid_values:
+          - stun
+        description: Source of dynamic peer discovery.
+      path_groups:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Path group name.
+            id:
+              type: int
+              description: Path group ID.
+              convert_types:
+                - str
+              min: 1
+              max: 65535
+            ipsec_profile:
+              type: str
+              description: IPSec profile for the path group.
+            flow_assignment:
+              type: str
+              valid_values:
+                - lan
+              description: Flow assignement `lan` can not be configured in a path group with dynamic peers.
+            local_interfaces:
+              type: list
+              primary_key: name
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Local interface name.
+                    pattern: "^Ethernet\\d+(\/\\d+)*(\\.\\d+)?$"
+                  public_address:
+                    type: str
+                    description: Public IP assigned by NAT.
+                  stun:
+                    type: dict
+                    keys:
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 12
+                        description: STUN server-profile names.
+                        items:
+                          type: str
+            local_ips:
+              type: list
+              primary_key: ip_address
+              items:
+                type: dict
+                keys:
+                  ip_address:
+                    type: str
+                  public_address:
+                    type: str
+                    description: Public IP assigned by NAT.
+                  stun:
+                    type: dict
+                    keys:
+                      server_profiles:
+                        type: list
+                        required: true
+                        min_length: 1
+                        max_length: 12
+                        description: STUN server-profile names.
+                        items:
+                          type: str
+            dynamic_peers:
+              type: dict
+              description: Flow assignement `lan` can not be configured in a path group with dynamic peers.
+              keys:
+                enabled:
+                  type: bool
+                  description: Enable `peer dynamic`.
+                ip_local:
+                  type: bool
+                  description: Prefer local IP address.
+                ipsec:
+                  type: bool
+                  description: IPsec configuration for dynamic peers.
+            static_peers:
+              type: list
+              primary_key: router_ip
+              items:
+                type: dict
+                keys:
+                  router_ip:
+                    type: str
+                    description: Peer router IP.
+                  name:
+                    type: str
+                    description: Name of the site.
+                  ipv4_addresses:
+                    type: list
+                    description: Static IPv4 addresses.
+                    items:
+                      type: str
+      load_balance_policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Load-balance policy name.
+            lowest_hop_count:
+              type: bool
+              description: Prefer paths with lowest hop-count.
+            jitter:
+              type: int
+              description: Jitter requirement for this load balance policy in milliseconds.
+              convert_types:
+                - str
+              min: 0
+              max: 10000
+            latency:
+              type: int
+              description: One way delay requirement for this load balance policy in milliseconds.
+              convert_types:
+                - str
+              min: 0
+              max: 10000
+            loss_rate:
+              type: str
+              description: |-
+                Loss Rate requirement in percentage for this load balance policy.
+                Value between 0.00 and 100.00 %
+              convert_types:
+                - int
+                - float
+              pattern: "^\\d+(\\.\\d{1,2})?$"
+            path_groups:
+              type: list
+              primary_key: name
+              description: List of path-groups to use for this load balance policy.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Path-group name
+                  priority:
+                    type: int
+                    description: |-
+                      Priority for this path-group.
+                      The EOS default value is 1.
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 65535
+      policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: DPS policy name.
+            default_match:
+              type: dict
+              keys:
+                load_balance:
+                  type: str
+                  description: Name of the load-balance policy.
+            rules:
+              type: list
+              primary_key: id
+              items:
+                type: dict
+                keys:
+                  id:
+                    type: int
+                    description: Rule ID.
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 255
+                  application_profile:
+                    type: str
+                    required: true
+                  load_balance:
+                    type: str
+                    description: Name of the load-balance policy.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            path_selection_policy:
+              type: str
+              description: DPS policy name to use for this VRF.

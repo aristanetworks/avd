@@ -68,9 +68,11 @@ class NodeTypeMixin:
     def uplink_type(self: SharedUtils) -> str:
         """
         uplink_type set based on
+        <node_type_key>.nodes.[].uplink_type and
         node_type_keys.<node_type_key>.uplink_type
         """
-        return get(self.node_type_key_data, "uplink_type", default="p2p")
+        default_uplink_type = get(self.node_type_key_data, "uplink_type", default="p2p")
+        return get(self.switch_data_combined, "uplink_type", default=default_uplink_type)
 
     @cached_property
     def network_services_l1(self: SharedUtils) -> bool:

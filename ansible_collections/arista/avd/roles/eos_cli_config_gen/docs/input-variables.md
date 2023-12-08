@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: Input variables for eos_cli_config_gen
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
@@ -281,6 +285,12 @@ roles/eos_cli_config_gen/docs/tables/traffic-policies.md
 
 ## Interfaces
 
+### DPS interfaces
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/dps-interfaces.md
+--8<--
+
 ### Errdisable
 
 --8<--
@@ -429,6 +439,12 @@ roles/eos_cli_config_gen/docs/tables/dns-domain.md
 roles/eos_cli_config_gen/docs/tables/domain-list.md
 --8<--
 
+### Hostname
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/hostname.md
+--8<--
+
 ### IP domain lookup
 
 --8<--
@@ -545,6 +561,12 @@ roles/eos_cli_config_gen/docs/tables/cvx.md
 roles/eos_cli_config_gen/docs/tables/eos-cli.md
 --8<--
 
+### Is deployed
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/is-deployed.md
+--8<--
+
 ### Management CVX
 
 --8<--
@@ -586,7 +608,7 @@ roles/eos_cli_config_gen/docs/tables/event-monitor.md
 ### Flow tracking
 
 --8<--
-roles/eos_cli_config_gen/docs/tables/flow-trackings.md
+roles/eos_cli_config_gen/docs/tables/flow-tracking.md
 --8<--
 
 ### Load interval
@@ -677,6 +699,12 @@ roles/eos_cli_config_gen/docs/tables/router-pim-sparse-mode.md
 
 ## Quality of Service
 
+### Priority flow control
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/priority-flow-control.md
+--8<--
+
 ### QoS
 
 --8<--
@@ -719,6 +747,12 @@ roles/eos_cli_config_gen/docs/tables/dhcp-relay.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
+--8<--
+
+### IP DHCP Snooping
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
 --8<--
 
 ### IP ICMP redirect
@@ -775,6 +809,12 @@ roles/eos_cli_config_gen/docs/tables/ipv6-unicast-routing.md
 roles/eos_cli_config_gen/docs/tables/mpls.md
 --8<--
 
+### Router adaptive virtual topology
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-adaptive-virtual-topology.md
+--8<--
+
 ### Router BFD
 
 --8<--
@@ -809,6 +849,12 @@ roles/eos_cli_config_gen/docs/tables/router-l2-vpn.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/router-ospf.md
+--8<--
+
+### Router path selection
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-path-selection.md
 --8<--
 
 ### Router service-insertion
@@ -888,6 +934,12 @@ roles/eos_cli_config_gen/docs/tables/vlans.md
 --8<--
 
 ## System settings
+
+### Agents
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/agents.md
+--8<--
 
 ### Hardware counters
 

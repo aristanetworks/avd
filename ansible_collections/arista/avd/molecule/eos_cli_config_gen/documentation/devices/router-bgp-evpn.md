@@ -98,13 +98,19 @@ interface Management1
 
 #### Router BGP EVPN Address Family
 
-- Next-hop resolution is __disabled__
+- Next-hop resolution is **disabled**
 - Next-hop-unchanged is explicitly configured (default behaviour)
 
 ##### EVPN Peer Groups
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
+| ADDITIONAL-PATH-PG-1 | True | default |
+| ADDITIONAL-PATH-PG-2 | True | default |
+| ADDITIONAL-PATH-PG-3 | True | default |
+| ADDITIONAL-PATH-PG-4 | True | default |
+| ADDITIONAL-PATH-PG-5 | True | default |
+| ADDITIONAL-PATH-PG-6 | True | default |
 | EVPN-OVERLAY-PEERS | True | vxlan |
 | MLAG-IPv4-UNDERLAY-PEER | False | default |
 
@@ -144,7 +150,7 @@ interface Management1
 
 | VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
 | --- | ------------------- | ------------ | -------------- |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | IPv4: True<br>Transit: False |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>bgp | IPv4: True<br>Transit: False |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | IPv4: True<br>Transit: True |
 | TENANT_A_PROJECT04 | 192.168.255.3:14 | - | IPv4: True<br>Transit: False |
@@ -238,6 +244,19 @@ router bgp 65101
       bgp next-hop-unchanged
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
+      neighbor ADDITIONAL-PATH-PG-1 activate
+      neighbor ADDITIONAL-PATH-PG-1 additional-paths receive
+      neighbor ADDITIONAL-PATH-PG-1 additional-paths send any
+      neighbor ADDITIONAL-PATH-PG-2 activate
+      neighbor ADDITIONAL-PATH-PG-2 additional-paths send backup
+      neighbor ADDITIONAL-PATH-PG-3 activate
+      neighbor ADDITIONAL-PATH-PG-3 additional-paths send ecmp
+      neighbor ADDITIONAL-PATH-PG-4 activate
+      neighbor ADDITIONAL-PATH-PG-4 additional-paths send ecmp limit 42
+      neighbor ADDITIONAL-PATH-PG-5 activate
+      neighbor ADDITIONAL-PATH-PG-5 additional-paths send limit 42
+      neighbor ADDITIONAL-PATH-PG-6 activate
+      no neighbor ADDITIONAL-PATH-PG-6 additional-paths send any
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
@@ -256,6 +275,7 @@ router bgp 65101
       router-id 192.168.255.3
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.1 maximum-routes 15000 warning-limit 50 percent
+      redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected
    !
    vrf TENANT_A_PROJECT02

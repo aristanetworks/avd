@@ -1,6 +1,6 @@
 ---
 - name: Remove output folders
-  hosts: all
+  hosts: FABRIC
   gather_facts: false
   connection: local
   vars:

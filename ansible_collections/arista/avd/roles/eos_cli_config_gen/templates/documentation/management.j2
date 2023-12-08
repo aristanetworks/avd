@@ -26,9 +26,12 @@
        or ip_http_client_source_interfaces is arista.avd.defined
        or ip_ftp_client_source_interfaces is arista.avd.defined
        or ip_tftp_client_source_interfaces is arista.avd.defined
-       or ip_telnet_client_source_interfaces is arista.avd.defined %}
+       or ip_telnet_client_source_interfaces is arista.avd.defined
+       or agent is arista.avd.defined %}
 
 ## Management
+{## Agents #}
+{%     include 'documentation/agents.j2' %}
 {## Management Interface #}
 {%     include 'documentation/management-interfaces.j2' %}
 {## DNS Domain #}

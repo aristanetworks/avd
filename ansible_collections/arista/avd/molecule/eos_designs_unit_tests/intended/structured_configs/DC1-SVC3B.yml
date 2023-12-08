@@ -47,37 +47,46 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.6
     peer_group: MLAG-PEERS
+    peer: DC1-SVC3A
     description: DC1-SVC3A
   - ip_address: 172.31.254.128
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet9/1
   - ip_address: 172.31.254.130
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/9/1
   - ip_address: 172.31.254.132
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/9/1
   - ip_address: 172.31.254.134
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet9/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE2
     description: DC1-SPINE2
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE3
     description: DC1-SPINE3
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE4
     description: DC1-SPINE4
     remote_as: '65001'
   redistribute_routes:
@@ -809,19 +818,20 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-- name: Port-Channel7
-  description: DC1_L2LEAF2_Po1
+- name: Port-Channel1007
+  description: DC1_L2LEAF2_Po1001
   type: switched
   shutdown: false
   mode: trunk
   vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
-  mlag: 7
+  mlag: 1007
 - name: Port-Channel14
   description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
   type: switched
   shutdown: false
   mode: trunk
   l2_mtu: 8000
+  l2_mru: 9000
   vlans: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
@@ -1038,7 +1048,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 7
+    id: 1007
     mode: active
 - name: Ethernet8
   peer: DC1-L2LEAF2B
@@ -1049,7 +1059,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 7
+    id: 1007
     mode: active
 - name: Ethernet49/1
   peer: DC1-SPINE1
@@ -1100,6 +1110,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -1152,6 +1163,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: access
   vlans: '210'
   spanning_tree_portfast: network
@@ -1200,6 +1212,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: access
   vlans: '210'
   spanning_tree_portfast: network

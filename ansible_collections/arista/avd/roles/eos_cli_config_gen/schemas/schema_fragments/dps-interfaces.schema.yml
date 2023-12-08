@@ -24,6 +24,13 @@ keys:
           type: str
         shutdown:
           type: bool
+        mtu:
+          type: int
+          description: Maximum Transmission Unit in bytes.
+          convert_types:
+            - str
+          min: 68
+          max: 65535
         ip_address:
           type: str
           description: IPv4 address/mask.

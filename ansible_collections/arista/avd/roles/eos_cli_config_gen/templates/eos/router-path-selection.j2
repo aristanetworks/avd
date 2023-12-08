@@ -1,0 +1,134 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - router path-selection #}
+{% if router_path_selection is arista.avd.defined %}
+!
+router path-selection
+{%     if router_path_selection.peer_dynamic_source is arista.avd.defined %}
+   peer dynamic source {{ router_path_selection.peer_dynamic_source }}
+{%     endif %}
+{#  path group #}
+{%     for path_group in router_path_selection.path_groups | arista.avd.natural_sort('name') %}
+{%         set path_group_def = "path-group " ~ path_group.name %}
+{%         if path_group.id is arista.avd.defined %}
+{%             set path_group_def = path_group_def ~ " id " ~ path_group.id %}
+{%         endif %}
+   !
+   {{ path_group_def }}
+{%         if path_group.ipsec_profile is arista.avd.defined %}
+      ipsec profile {{ path_group.ipsec_profile }}
+{%         endif %}
+{%         if path_group.flow_assignment is arista.avd.defined %}
+      flow assignment {{ path_group.flow_assignment }}
+{%         endif %}
+{#      local interfaces #}
+{%         for local_interface in path_group.local_interfaces | arista.avd.natural_sort('name') %}
+{%             set local_interface_def = "local interface " ~ local_interface.name %}
+{%             if local_interface.public_address is arista.avd.defined %}
+{%                 set local_interface_def = local_interface_def ~ " public address " ~ local_interface.public_address %}
+{%             endif %}
+      !
+      {{ local_interface_def }}
+{%             if local_interface.stun.server_profiles is arista.avd.defined %}
+         stun server-profile {{ local_interface.stun.server_profiles | join(" ") }}
+{%             endif %}
+{%         endfor %}
+{#      local ips #}
+{%         for local_ip in path_group.local_ips | arista.avd.natural_sort('ip_address') %}
+{%             set local_ip_def = "local ip " ~ local_ip.ip_address %}
+{%             if local_ip.public_address is arista.avd.defined %}
+{%                 set local_ip_def = local_ip_def ~ " public address " ~ local_ip.public_address %}
+{%             endif %}
+      !
+      {{ local_ip_def }}
+{%             if local_ip.stun.server_profiles is arista.avd.defined %}
+         stun server-profile {{ local_ip.stun.server_profiles | join(" ") }}
+{%             endif %}
+{%         endfor %}
+{#      peer dynamic #}
+{%         if path_group.dynamic_peers.enabled is arista.avd.defined(true) %}
+      !
+      peer dynamic
+{%             if path_group.dynamic_peers.ip_local is arista.avd.defined(true) %}
+         ip local
+{%             endif %}
+{%             if path_group.dynamic_peers.ipsec is arista.avd.defined(true) %}
+         ipsec
+{%             elif path_group.dynamic_peers.ipsec is arista.avd.defined(false) %}
+         ipsec disabled
+{%             endif %}
+{%         endif %}
+{#      peer static #}
+{%         for static_peer in path_group.static_peers | arista.avd.natural_sort('router_ip') %}
+      !
+      peer static router-ip {{ static_peer.router_ip }}
+{%             if static_peer.name is arista.avd.defined %}
+         name {{ static_peer.name }}
+{%             endif %}
+{# Not sorting these ipv4 addresses as EOS is reordering them based on a set logic which we cannot predict and changes across python version #}
+{%             for ipv4_address in static_peer.ipv4_addresses | arista.avd.default([]) %}
+         ipv4 address {{ ipv4_address }}
+{%             endfor %}
+{%         endfor %}
+{%     endfor %}
+{#   load-balance policies #}
+{%     for load_balance_policy in router_path_selection.load_balance_policies | arista.avd.natural_sort('name') %}
+   !
+   load-balance policy {{ load_balance_policy.name }}
+{%         if load_balance_policy.lowest_hop_count is arista.avd.defined(true) %}
+      hop count lowest
+{%         endif %}
+{%         if load_balance_policy.jitter is arista.avd.defined %}
+      jitter {{ load_balance_policy.jitter }}
+{%         endif %}
+{%         if load_balance_policy.latency is arista.avd.defined %}
+      latency {{ load_balance_policy.latency }}
+{%         endif %}
+{%         if load_balance_policy.loss_rate is arista.avd.defined %}
+      loss-rate {{ load_balance_policy.loss_rate }}
+{%         endif %}
+{# TODO remove inplace update once Ansible 2.13 is dropped and use groupby default instead #}
+{%         for path_group in load_balance_policy.path_groups | arista.avd.default([]) %}
+{%             do path_group.update({"_priority": path_group.priority | arista.avd.default(1)}) %}
+{%         endfor %}
+{%         for priority, entries in load_balance_policy.path_groups | groupby("_priority") %}
+{%             for entry in entries | arista.avd.natural_sort("name") %}
+{%                 set path_group_cli = "path-group " ~ entry.name %}
+{%                 if entry.priority is arista.avd.defined %}
+{%                     set path_group_cli = path_group_cli ~ " priority " ~ entry.priority %}
+{%                 endif %}
+      {{ path_group_cli }}
+{%             endfor %}
+{%         endfor %}
+{%     endfor %}
+{#   DPS policies #}
+{%     for policy in router_path_selection.policies | arista.avd.natural_sort('name') %}
+   !
+   policy {{ policy.name }}
+{%         if policy.default_match is arista.avd.defined %}
+      default-match
+{%             if policy.default_match.load_balance is arista.avd.defined %}
+         load-balance {{ policy.default_match.load_balance }}
+{%             endif %}
+{%         endif %}
+{%         for rule in policy.rules | arista.avd.natural_sort('id') %}
+{%             if rule.application_profile is arista.avd.defined %}
+      {{ rule.id }} application-profile {{ rule.application_profile }}
+{%                 if rule.load_balance is arista.avd.defined %}
+         load-balance {{ rule.load_balance }}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{#   VRFs #}
+{%     for vrf in router_path_selection.vrfs | arista.avd.natural_sort('name') %}
+   !
+   vrf {{ vrf.name }}
+{%         if vrf.path_selection_policy is arista.avd.defined %}
+      path-selection-policy {{ vrf.path_selection_policy }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

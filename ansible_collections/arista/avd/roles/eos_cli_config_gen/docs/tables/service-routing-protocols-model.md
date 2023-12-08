@@ -7,10 +7,10 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>service_routing_protocols_model</samp>](## "service_routing_protocols_model") | String |  |  | Valid Values:<br>- multi-agent<br>- ribd |  |
+    | [<samp>service_routing_protocols_model</samp>](## "service_routing_protocols_model") | String |  |  | Valid Values:<br>- <code>multi-agent</code><br>- <code>ribd</code> |  |
 
 === "YAML"
 
     ```yaml
-    service_routing_protocols_model: <str>
+    service_routing_protocols_model: <str; "multi-agent" | "ribd">
     ```

@@ -133,18 +133,6 @@ $defs:
           rd_override supports two formats:
             - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).
             - A full RD string with colon seperator which will override the full RD.
-      tags:
-        type: list
-        description: |
-          Tags leveraged for networks services filtering.
-          Tags are matched against "filter.tags" defined under node type settings.
-          Tags are also matched against the "node_group" name under node type settings.
-        default: ["all"]
-        items:
-          type: str
-          convert_types:
-            - int
-          description: Tag value.
       trunk_groups:
         type: list
         items:

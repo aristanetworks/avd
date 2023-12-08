@@ -198,12 +198,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -500,12 +500,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -802,12 +802,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -1104,12 +1104,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -1406,12 +1406,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -1708,12 +1708,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -2010,12 +2010,12 @@
                 },
                 "remote_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Remote As"
                 },
                 "local_as": {
                   "type": "string",
-                  "description": "BGP AS <1-4294967295> or AS number in asdot notation <1-65535>.<0-65535>",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
                   "title": "Local As"
                 },
                 "description": {
@@ -2441,7 +2441,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -2685,7 +2685,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -3078,6 +3078,17 @@
         }
       },
       "title": "Default Interfaces"
+    },
+    "default_mgmt_method": {
+      "type": "string",
+      "description": "`default_mgmt_method` controls the default VRF and source interface used for the following management and monitoring protocols configured with `eos_designs`:\n  - `cv_settings`\n  - `dns_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and or interface must be manually set for each protocol.\nThis can be overridden under the settings for each protocol.\n",
+      "enum": [
+        "oob",
+        "inband",
+        "none"
+      ],
+      "default": "oob",
+      "title": "Default Management Method"
     },
     "default_node_types": {
       "type": "array",
@@ -3807,7 +3818,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -4051,7 +4062,7 @@
               },
               "speed": {
                 "type": "string",
-                "description": "The values can be speed or auto speed or forced speed.",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "ip_pool": {
@@ -4453,7 +4464,7 @@
           },
           "switch_ports": {
             "type": "array",
-            "description": "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n  - Ethernet1\n  - Ethernet2-48\n\nAll switch_ports ranges are expanded into individual port configurations.\n\nFor more details and examples of the `range_expand` syntax, see the [arista.avd.range_expand documentation](../../../plugins/README.md#range_expand-filter)\n",
+            "description": "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n  - Ethernet1\n  - Ethernet2-48\n\nAll switch_ports ranges are expanded into individual port configurations.\n\nFor more details and examples of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter_plugins/range_expand.md).\n",
             "items": {
               "type": "string"
             },
@@ -4466,7 +4477,7 @@
           },
           "speed": {
             "type": "string",
-            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "description": "Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.\nIf not specified speed will be auto.\n",
             "title": "Speed"
           },
           "profile": {
@@ -4500,9 +4511,16 @@
           "l2_mtu": {
             "type": "integer",
             "minimum": 68,
-            "maximum": 9416,
-            "description": "This should only be defined for platforms supporting the \"l2 mtu\" CLI command.",
+            "maximum": 65535,
+            "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
+          },
+          "l2_mru": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+            "title": "L2 MRU"
           },
           "native_vlan": {
             "type": "integer",
@@ -5231,7 +5249,7 @@
                 "type": "array",
                 "description": "Manual preference as described above, required only for preference algorithm.",
                 "items": {
-                  "type": "string"
+                  "type": "integer"
                 },
                 "title": "Designated Forwarder Preferences"
               },
@@ -5430,8 +5448,17 @@
                   },
                   "l2_mtu": {
                     "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
                     "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                     "title": "L2 MTU"
+                  },
+                  "l2_mru": {
+                    "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
+                    "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                    "title": "L2 MRU"
                   },
                   "vlans": {
                     "type": "string",
@@ -5654,6 +5681,8 @@
                   },
                   "mtu": {
                     "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
                     "title": "MTU"
                   },
                   "mlag": {
@@ -5895,7 +5924,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -5920,7 +5949,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -5945,7 +5974,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -5970,7 +5999,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -6875,17 +6904,28 @@
               },
               "speed": {
                 "type": "string",
-                "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "mtu": {
                 "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
                 "title": "MTU"
               },
               "l2_mtu": {
                 "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
                 "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                 "title": "L2 MTU"
+              },
+              "l2_mru": {
+                "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
+                "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                "title": "L2 MRU"
               },
               "vlans": {
                 "type": "string",
@@ -7346,6 +7386,11 @@
               "ip_nat": {
                 "type": "object",
                 "properties": {
+                  "service_profile": {
+                    "type": "string",
+                    "description": "NAT interface profile.",
+                    "title": "Service Profile"
+                  },
                   "destination": {
                     "type": "object",
                     "properties": {
@@ -8221,7 +8266,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -8246,7 +8291,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -8271,7 +8316,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -8296,7 +8341,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -8331,9 +8376,9 @@
                         "type": "boolean",
                         "title": "Spanning Tree"
                       },
-                      "storm_control": {
+                      "storm_control_discards": {
                         "type": "boolean",
-                        "title": "Storm Control"
+                        "title": "Storm Control Discards"
                       }
                     },
                     "additionalProperties": false,
@@ -9210,6 +9255,196 @@
                 },
                 "title": "TX Queues"
               },
+              "vrrp_ids": {
+                "type": "array",
+                "description": "VRRP model.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "VRID",
+                      "title": "ID"
+                    },
+                    "priority_level": {
+                      "type": "integer",
+                      "description": "Instance priority",
+                      "minimum": 1,
+                      "maximum": 254,
+                      "title": "Priority Level"
+                    },
+                    "advertisement": {
+                      "type": "object",
+                      "properties": {
+                        "interval": {
+                          "type": "integer",
+                          "description": "Interval in seconds",
+                          "minimum": 1,
+                          "maximum": 255,
+                          "title": "Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Advertisement"
+                    },
+                    "preempt": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "delay": {
+                          "type": "object",
+                          "properties": {
+                            "minimum": {
+                              "type": "integer",
+                              "description": "Minimum preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Minimum"
+                            },
+                            "reload": {
+                              "type": "integer",
+                              "description": "Reload preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Reload"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Delay"
+                        }
+                      },
+                      "required": [
+                        "enabled"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Preempt"
+                    },
+                    "timers": {
+                      "type": "object",
+                      "properties": {
+                        "delay": {
+                          "type": "object",
+                          "properties": {
+                            "reload": {
+                              "type": "integer",
+                              "description": "Delay after reload in seconds.",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Reload"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Delay"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Timers"
+                    },
+                    "tracked_object": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Tracked object name",
+                            "title": "Name"
+                          },
+                          "decrement": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 254,
+                            "description": "Decrement VRRP priority by 1-254",
+                            "title": "Decrement"
+                          },
+                          "shutdown": {
+                            "type": "boolean",
+                            "title": "Shutdown"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      },
+                      "title": "Tracked Object"
+                    },
+                    "ipv4": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Virtual IPv4 address",
+                          "title": "Address"
+                        },
+                        "version": {
+                          "type": "integer",
+                          "enum": [
+                            2,
+                            3
+                          ],
+                          "title": "Version"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv4"
+                    },
+                    "ipv6": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Virtual IPv6 address",
+                          "title": "Address"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv6"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "id"
+                  ]
+                },
+                "title": "VRRP IDs"
+              },
               "eos_cli": {
                 "type": "string",
                 "description": "Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration",
@@ -9406,7 +9641,7 @@
               "port-channel"
             ],
             "default": "p2p",
-            "description": "Uplinks must be p2p if \"vtep\" or \"underlay_router\" is true.",
+            "description": "`uplink_type` must be \"p2p\" if `vtep` or `underlay_router` is true.",
             "title": "Uplink Type"
           },
           "vtep": {
@@ -10050,7 +10285,7 @@
           },
           "speed": {
             "type": "string",
-            "description": "Set adapter speed: `< interface_speed >`, `forced < interface_speed >`, `auto < interface_speed >`.\nIf not specified will be auto.\n",
+            "description": "Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.\nIf not specified speed will be auto.\n",
             "title": "Speed"
           },
           "description": {
@@ -10084,9 +10319,16 @@
           "l2_mtu": {
             "type": "integer",
             "minimum": 68,
-            "maximum": 9416,
-            "description": "This should only be defined for platforms supporting the \"l2 mtu\" CLI command.",
+            "maximum": 65535,
+            "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
             "title": "L2 MTU"
+          },
+          "l2_mru": {
+            "type": "integer",
+            "minimum": 68,
+            "maximum": 65535,
+            "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+            "title": "L2 MRU"
           },
           "native_vlan": {
             "type": "integer",
@@ -10815,7 +11057,7 @@
                 "type": "array",
                 "description": "Manual preference as described above, required only for preference algorithm.",
                 "items": {
-                  "type": "string"
+                  "type": "integer"
                 },
                 "title": "Designated Forwarder Preferences"
               },
@@ -11014,8 +11256,17 @@
                   },
                   "l2_mtu": {
                     "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
                     "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                     "title": "L2 MTU"
+                  },
+                  "l2_mru": {
+                    "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
+                    "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                    "title": "L2 MRU"
                   },
                   "vlans": {
                     "type": "string",
@@ -11238,6 +11489,8 @@
                   },
                   "mtu": {
                     "type": "integer",
+                    "minimum": 68,
+                    "maximum": 65535,
                     "title": "MTU"
                   },
                   "mlag": {
@@ -11479,7 +11732,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -11504,7 +11757,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -11529,7 +11782,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -11554,7 +11807,7 @@
                               "percent",
                               "pps"
                             ],
-                            "description": "Optional field and is hardware dependant",
+                            "description": "Optional field and is hardware dependent",
                             "title": "Unit"
                           }
                         },
@@ -12459,17 +12712,28 @@
               },
               "speed": {
                 "type": "string",
-                "description": "Speed can be interface_speed or forced interface_speed or auto interface_speed",
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
                 "title": "Speed"
               },
               "mtu": {
                 "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
                 "title": "MTU"
               },
               "l2_mtu": {
                 "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
                 "description": "\"l2_mtu\" should only be defined for platforms supporting the \"l2 mtu\" CLI\n",
                 "title": "L2 MTU"
+              },
+              "l2_mru": {
+                "type": "integer",
+                "minimum": 68,
+                "maximum": 65535,
+                "description": "\"l2_mru\" should only be defined for platforms supporting the \"l2 mru\" CLI\n",
+                "title": "L2 MRU"
               },
               "vlans": {
                 "type": "string",
@@ -12930,6 +13194,11 @@
               "ip_nat": {
                 "type": "object",
                 "properties": {
+                  "service_profile": {
+                    "type": "string",
+                    "description": "NAT interface profile.",
+                    "title": "Service Profile"
+                  },
                   "destination": {
                     "type": "object",
                     "properties": {
@@ -13805,7 +14074,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -13830,7 +14099,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -13855,7 +14124,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -13880,7 +14149,7 @@
                           "percent",
                           "pps"
                         ],
-                        "description": "Optional field and is hardware dependant",
+                        "description": "Optional field and is hardware dependent",
                         "title": "Unit"
                       }
                     },
@@ -13915,9 +14184,9 @@
                         "type": "boolean",
                         "title": "Spanning Tree"
                       },
-                      "storm_control": {
+                      "storm_control_discards": {
                         "type": "boolean",
-                        "title": "Storm Control"
+                        "title": "Storm Control Discards"
                       }
                     },
                     "additionalProperties": false,
@@ -14793,6 +15062,196 @@
                   }
                 },
                 "title": "TX Queues"
+              },
+              "vrrp_ids": {
+                "type": "array",
+                "description": "VRRP model.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "VRID",
+                      "title": "ID"
+                    },
+                    "priority_level": {
+                      "type": "integer",
+                      "description": "Instance priority",
+                      "minimum": 1,
+                      "maximum": 254,
+                      "title": "Priority Level"
+                    },
+                    "advertisement": {
+                      "type": "object",
+                      "properties": {
+                        "interval": {
+                          "type": "integer",
+                          "description": "Interval in seconds",
+                          "minimum": 1,
+                          "maximum": 255,
+                          "title": "Interval"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Advertisement"
+                    },
+                    "preempt": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean",
+                          "title": "Enabled"
+                        },
+                        "delay": {
+                          "type": "object",
+                          "properties": {
+                            "minimum": {
+                              "type": "integer",
+                              "description": "Minimum preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Minimum"
+                            },
+                            "reload": {
+                              "type": "integer",
+                              "description": "Reload preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Reload"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Delay"
+                        }
+                      },
+                      "required": [
+                        "enabled"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Preempt"
+                    },
+                    "timers": {
+                      "type": "object",
+                      "properties": {
+                        "delay": {
+                          "type": "object",
+                          "properties": {
+                            "reload": {
+                              "type": "integer",
+                              "description": "Delay after reload in seconds.",
+                              "minimum": 0,
+                              "maximum": 3600,
+                              "title": "Reload"
+                            }
+                          },
+                          "additionalProperties": false,
+                          "patternProperties": {
+                            "^_.+$": {}
+                          },
+                          "title": "Delay"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "Timers"
+                    },
+                    "tracked_object": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Tracked object name",
+                            "title": "Name"
+                          },
+                          "decrement": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 254,
+                            "description": "Decrement VRRP priority by 1-254",
+                            "title": "Decrement"
+                          },
+                          "shutdown": {
+                            "type": "boolean",
+                            "title": "Shutdown"
+                          }
+                        },
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        },
+                        "required": [
+                          "name"
+                        ]
+                      },
+                      "title": "Tracked Object"
+                    },
+                    "ipv4": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Virtual IPv4 address",
+                          "title": "Address"
+                        },
+                        "version": {
+                          "type": "integer",
+                          "enum": [
+                            2,
+                            3
+                          ],
+                          "title": "Version"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv4"
+                    },
+                    "ipv6": {
+                      "type": "object",
+                      "properties": {
+                        "address": {
+                          "type": "string",
+                          "description": "Virtual IPv6 address",
+                          "title": "Address"
+                        }
+                      },
+                      "required": [
+                        "address"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "IPv6"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "required": [
+                    "id"
+                  ]
+                },
+                "title": "VRRP IDs"
               },
               "eos_cli": {
                 "type": "string",
@@ -15805,18 +16264,6 @@
                   "type": "string",
                   "description": "By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.\nThe rt_override allows us to override this value and statically define it.\nrd_override will default to rt_override or vni_override if set.\n\nrd_override supports two formats:\n  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).\n  - A full RD string with colon seperator which will override the full RD.\n",
                   "title": "Rd Override"
-                },
-                "tags": {
-                  "type": "array",
-                  "description": "Tags leveraged for networks services filtering.\nTags are matched against \"filter.tags\" defined under node type settings.\nTags are also matched against the \"node_group\" name under node type settings.\n",
-                  "default": [
-                    "all"
-                  ],
-                  "items": {
-                    "type": "string",
-                    "description": "Tag value."
-                  },
-                  "title": "Tags"
                 },
                 "trunk_groups": {
                   "type": "array",
@@ -16984,6 +17431,8 @@
                           "priority_level": {
                             "type": "integer",
                             "description": "Instance priority",
+                            "minimum": 1,
+                            "maximum": 254,
                             "title": "Priority Level"
                           },
                           "advertisement": {
@@ -16992,6 +17441,8 @@
                               "interval": {
                                 "type": "integer",
                                 "description": "Interval in seconds",
+                                "minimum": 1,
+                                "maximum": 255,
                                 "title": "Interval"
                               }
                             },
@@ -17014,11 +17465,15 @@
                                   "minimum": {
                                     "type": "integer",
                                     "description": "Minimum preempt delay in seconds",
+                                    "minimum": 0,
+                                    "maximum": 3600,
                                     "title": "Minimum"
                                   },
                                   "reload": {
                                     "type": "integer",
                                     "description": "Reload preempt delay in seconds",
+                                    "minimum": 0,
+                                    "maximum": 3600,
                                     "title": "Reload"
                                   }
                                 },
@@ -17047,6 +17502,8 @@
                                   "reload": {
                                     "type": "integer",
                                     "description": "Delay after reload in seconds.",
+                                    "minimum": 0,
+                                    "maximum": 3600,
                                     "title": "Reload"
                                   }
                                 },
@@ -17439,18 +17896,6 @@
             "type": "string",
             "description": "By default the MAC VRF RD will be derived from mac_vrf_id_base + vlan_id.\nThe rt_override allows us to override this value and statically define it.\nrd_override will default to rt_override or vni_override if set.\n\nrd_override supports two formats:\n  - A single number which will be used in the RD assigned number field instead of mac_vrf_id/mac_vrf_vni (see 'overlay_rd_type' for details).\n  - A full RD string with colon seperator which will override the full RD.\n",
             "title": "Rd Override"
-          },
-          "tags": {
-            "type": "array",
-            "description": "Tags leveraged for networks services filtering.\nTags are matched against \"filter.tags\" defined under node type settings.\nTags are also matched against the \"node_group\" name under node type settings.\n",
-            "default": [
-              "all"
-            ],
-            "items": {
-              "type": "string",
-              "description": "Tag value."
-            },
-            "title": "Tags"
           },
           "trunk_groups": {
             "type": "array",
@@ -18618,6 +19063,8 @@
                     "priority_level": {
                       "type": "integer",
                       "description": "Instance priority",
+                      "minimum": 1,
+                      "maximum": 254,
                       "title": "Priority Level"
                     },
                     "advertisement": {
@@ -18626,6 +19073,8 @@
                         "interval": {
                           "type": "integer",
                           "description": "Interval in seconds",
+                          "minimum": 1,
+                          "maximum": 255,
                           "title": "Interval"
                         }
                       },
@@ -18648,11 +19097,15 @@
                             "minimum": {
                               "type": "integer",
                               "description": "Minimum preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
                               "title": "Minimum"
                             },
                             "reload": {
                               "type": "integer",
                               "description": "Reload preempt delay in seconds",
+                              "minimum": 0,
+                              "maximum": 3600,
                               "title": "Reload"
                             }
                           },
@@ -18681,6 +19134,8 @@
                             "reload": {
                               "type": "integer",
                               "description": "Delay after reload in seconds.",
+                              "minimum": 0,
+                              "maximum": 3600,
                               "title": "Reload"
                             }
                           },
@@ -19044,7 +19499,7 @@
     },
     "underlay_filter_peer_as": {
       "type": "boolean",
-      "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote this key is ignored when EVPN is configured.\n",
+      "description": "Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.\nThis is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return\nall updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.\nNote that this setting cannot be used while there are EVPN services present in the default VRF.\n",
       "default": false,
       "title": "Underlay Filter Peer As"
     },

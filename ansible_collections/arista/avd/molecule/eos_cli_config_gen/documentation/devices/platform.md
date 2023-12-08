@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
-  - [Platform Configuration](#platform-configuration)
+  - [Platform Device Configuration](#platform-device-configuration)
 
 ## Management
 
@@ -49,7 +49,7 @@ interface Management1
 
 #### Trident MMU QUEUE PROFILES
 
-**mc_example_profile**
+##### mc_example_profile
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -59,7 +59,7 @@ interface Management1
 | Multicast | 1 | 1/64 | 0 cells | - |
 | Multicast | 7 | 1/64 | 0 cells | - |
 
-**unused_profile**
+##### unused_profile
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -86,7 +86,13 @@ interface Management1
 | 1 | 7 |
 | 2 | 15 |
 
-### Platform Configuration
+#### Platform Software Forwarding Engine Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Maximum CPU Allocation | 42 |
+
+### Platform Device Configuration
 
 ```eos
 !
@@ -98,4 +104,5 @@ platform sand lag hardware-only
 platform sand lag mode 512x32
 platform sand forwarding mode arad
 platform sand multicast replication default ingress
+platform sfe data-plane cpu allocation maximum 42
 ```

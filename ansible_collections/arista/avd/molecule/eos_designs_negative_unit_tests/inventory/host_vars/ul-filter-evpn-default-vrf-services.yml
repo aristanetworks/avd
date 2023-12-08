@@ -1,0 +1,30 @@
+# Testing mutually exclusive options of using underlay_peer_filter_as and evpn services in the underlay.
+
+underlay_filter_peer_as: true
+
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: ul-filter-evpn-default-vrf-services
+      evpn_role: client
+      bgp_as: 64512
+      id: 1
+
+tenants:
+  - name: TEST-TENANT
+    mac_vrf_vni_base: 1000
+    vrfs:
+      - name: default
+        vrf_id: 1
+        svis:
+          - id: 10
+            name: TEST
+            ip_address_virtual: 10.0.0.1/24
+
+
+expected_error_message: >-
+  'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF.

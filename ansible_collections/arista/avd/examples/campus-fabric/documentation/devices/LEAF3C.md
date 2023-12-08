@@ -15,7 +15,7 @@
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
@@ -114,7 +114,7 @@ ntp server vrf MGMT time.google.com prefer
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -188,7 +188,7 @@ spanning-tree mst 0 priority 16384
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -333,6 +333,107 @@ vlan 330
 | Ethernet97/2 | LEAF3B_Ethernet97/3 | *trunk | *10,310,320,330 | *- | *- | 971 |
 
 *Inherited from Port-Channel Interface
+
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet1 | trunk phone | 310 | 320 | untagged |
+| Ethernet2 | trunk phone | 310 | 320 | untagged |
+| Ethernet3 | trunk phone | 310 | 320 | untagged |
+| Ethernet4 | trunk phone | 310 | 320 | untagged |
+| Ethernet5 | trunk phone | 310 | 320 | untagged |
+| Ethernet6 | trunk phone | 310 | 320 | untagged |
+| Ethernet7 | trunk phone | 310 | 320 | untagged |
+| Ethernet8 | trunk phone | 310 | 320 | untagged |
+| Ethernet9 | trunk phone | 310 | 320 | untagged |
+| Ethernet10 | trunk phone | 310 | 320 | untagged |
+| Ethernet11 | trunk phone | 310 | 320 | untagged |
+| Ethernet12 | trunk phone | 310 | 320 | untagged |
+| Ethernet13 | trunk phone | 310 | 320 | untagged |
+| Ethernet14 | trunk phone | 310 | 320 | untagged |
+| Ethernet15 | trunk phone | 310 | 320 | untagged |
+| Ethernet16 | trunk phone | 310 | 320 | untagged |
+| Ethernet17 | trunk phone | 310 | 320 | untagged |
+| Ethernet18 | trunk phone | 310 | 320 | untagged |
+| Ethernet19 | trunk phone | 310 | 320 | untagged |
+| Ethernet20 | trunk phone | 310 | 320 | untagged |
+| Ethernet21 | trunk phone | 310 | 320 | untagged |
+| Ethernet22 | trunk phone | 310 | 320 | untagged |
+| Ethernet23 | trunk phone | 310 | 320 | untagged |
+| Ethernet24 | trunk phone | 310 | 320 | untagged |
+| Ethernet25 | trunk phone | 310 | 320 | untagged |
+| Ethernet26 | trunk phone | 310 | 320 | untagged |
+| Ethernet27 | trunk phone | 310 | 320 | untagged |
+| Ethernet28 | trunk phone | 310 | 320 | untagged |
+| Ethernet29 | trunk phone | 310 | 320 | untagged |
+| Ethernet30 | trunk phone | 310 | 320 | untagged |
+| Ethernet31 | trunk phone | 310 | 320 | untagged |
+| Ethernet32 | trunk phone | 310 | 320 | untagged |
+| Ethernet33 | trunk phone | 310 | 320 | untagged |
+| Ethernet34 | trunk phone | 310 | 320 | untagged |
+| Ethernet35 | trunk phone | 310 | 320 | untagged |
+| Ethernet36 | trunk phone | 310 | 320 | untagged |
+| Ethernet37 | trunk phone | 310 | 320 | untagged |
+| Ethernet38 | trunk phone | 310 | 320 | untagged |
+| Ethernet39 | trunk phone | 310 | 320 | untagged |
+| Ethernet40 | trunk phone | 310 | 320 | untagged |
+| Ethernet41 | trunk phone | 310 | 320 | untagged |
+| Ethernet42 | trunk phone | 310 | 320 | untagged |
+| Ethernet43 | trunk phone | 310 | 320 | untagged |
+| Ethernet44 | trunk phone | 310 | 320 | untagged |
+| Ethernet45 | trunk phone | 310 | 320 | untagged |
+| Ethernet46 | trunk phone | 310 | 320 | untagged |
+| Ethernet47 | trunk phone | 310 | 320 | untagged |
+| Ethernet48 | trunk phone | 310 | 320 | untagged |
+| Ethernet49 | trunk phone | 310 | 320 | untagged |
+| Ethernet50 | trunk phone | 310 | 320 | untagged |
+| Ethernet51 | trunk phone | 310 | 320 | untagged |
+| Ethernet52 | trunk phone | 310 | 320 | untagged |
+| Ethernet53 | trunk phone | 310 | 320 | untagged |
+| Ethernet54 | trunk phone | 310 | 320 | untagged |
+| Ethernet55 | trunk phone | 310 | 320 | untagged |
+| Ethernet56 | trunk phone | 310 | 320 | untagged |
+| Ethernet57 | trunk phone | 310 | 320 | untagged |
+| Ethernet58 | trunk phone | 310 | 320 | untagged |
+| Ethernet59 | trunk phone | 310 | 320 | untagged |
+| Ethernet60 | trunk phone | 310 | 320 | untagged |
+| Ethernet61 | trunk phone | 310 | 320 | untagged |
+| Ethernet62 | trunk phone | 310 | 320 | untagged |
+| Ethernet63 | trunk phone | 310 | 320 | untagged |
+| Ethernet64 | trunk phone | 310 | 320 | untagged |
+| Ethernet65 | trunk phone | 310 | 320 | untagged |
+| Ethernet66 | trunk phone | 310 | 320 | untagged |
+| Ethernet67 | trunk phone | 310 | 320 | untagged |
+| Ethernet68 | trunk phone | 310 | 320 | untagged |
+| Ethernet69 | trunk phone | 310 | 320 | untagged |
+| Ethernet70 | trunk phone | 310 | 320 | untagged |
+| Ethernet71 | trunk phone | 310 | 320 | untagged |
+| Ethernet72 | trunk phone | 310 | 320 | untagged |
+| Ethernet73 | trunk phone | 310 | 320 | untagged |
+| Ethernet74 | trunk phone | 310 | 320 | untagged |
+| Ethernet75 | trunk phone | 310 | 320 | untagged |
+| Ethernet76 | trunk phone | 310 | 320 | untagged |
+| Ethernet77 | trunk phone | 310 | 320 | untagged |
+| Ethernet78 | trunk phone | 310 | 320 | untagged |
+| Ethernet79 | trunk phone | 310 | 320 | untagged |
+| Ethernet80 | trunk phone | 310 | 320 | untagged |
+| Ethernet81 | trunk phone | 310 | 320 | untagged |
+| Ethernet82 | trunk phone | 310 | 320 | untagged |
+| Ethernet83 | trunk phone | 310 | 320 | untagged |
+| Ethernet84 | trunk phone | 310 | 320 | untagged |
+| Ethernet85 | trunk phone | 310 | 320 | untagged |
+| Ethernet86 | trunk phone | 310 | 320 | untagged |
+| Ethernet87 | trunk phone | 310 | 320 | untagged |
+| Ethernet88 | trunk phone | 310 | 320 | untagged |
+| Ethernet89 | trunk phone | 310 | 320 | untagged |
+| Ethernet90 | trunk phone | 310 | 320 | untagged |
+| Ethernet91 | trunk phone | 310 | 320 | untagged |
+| Ethernet92 | trunk phone | 310 | 320 | untagged |
+| Ethernet93 | trunk phone | 310 | 320 | untagged |
+| Ethernet94 | trunk phone | 310 | 320 | untagged |
+| Ethernet95 | trunk phone | 310 | 320 | untagged |
+| Ethernet96 | trunk phone | 310 | 320 | untagged |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -2355,8 +2456,8 @@ no ip routing vrf MGMT
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 172.100.100.1 | - | 1 | - | - | - |
 | default | 0.0.0.0/0 | 10.10.10.1 | - | 1 | - | - | - |
 

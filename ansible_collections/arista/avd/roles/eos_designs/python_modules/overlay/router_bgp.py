@@ -30,8 +30,8 @@ class RouterBgpMixin(UtilsMixin):
         router_bgp = {
             "bgp_cluster_id": self._bgp_cluster_id(),
             "peer_groups": self._peer_groups(),
-            "address_family_ipv4": self._address_family_ipv4(),
             "address_family_evpn": self._address_family_evpn(),
+            "address_family_ipv4": self._address_family_ipv4(),
             "address_family_rtc": self._address_family_rtc(),
             "bgp": self._bgp_overlay_dpath(),
             "address_family_vpn_ipv4": self._address_family_vpn_ipvx(4),
@@ -305,7 +305,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def _create_neighbor(self, ip_address: str, name: str, peer_group: str, remote_as: str = None) -> dict:
         """ """
-        neighbor = {"ip_address": ip_address, "peer_group": peer_group, "description": name}
+        neighbor = {"ip_address": ip_address, "peer_group": peer_group, "peer": name, "description": name}
 
         if self.shared_utils.overlay_routing_protocol == "ebgp":
             if remote_as is None:

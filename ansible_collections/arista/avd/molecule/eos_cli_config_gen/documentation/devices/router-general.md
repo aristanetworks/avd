@@ -59,7 +59,7 @@ interface Management1
 | BLUE-C2 | DYNAMIC_TEST_PREFIX_LIST_1 |
 | BLUE-C2 | DYNAMIC_TEST_PREFIX_LIST_2 |
 
-#### Router General configuration
+#### Router General Device Configuration
 
 ```eos
 !

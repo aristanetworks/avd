@@ -1,0 +1,31 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - agents #}
+{% if agents is arista.avd.defined %}
+
+### Agents
+{%     for agent in agents | arista.avd.natural_sort('name') %}
+{# For now only environment_variables supported so if not present do not show the agent at all as no config would be rendered #}
+{%         if agent.environment_variables is arista.avd.defined %}
+
+#### Agent {{ agent.name }}
+
+##### Environment Variables
+
+| Name | Value |
+| ---- | ----- |
+{%             for envvar in agent.environment_variables %}
+| {{ envvar.name }} | {{ envvar.value }} |
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+
+#### Agents Device Configuration
+
+```eos
+{%     include 'eos/agents.j2' %}
+```
+{% endif %}

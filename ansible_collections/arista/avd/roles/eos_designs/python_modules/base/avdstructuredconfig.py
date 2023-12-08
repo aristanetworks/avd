@@ -389,7 +389,7 @@ class AvdStructuredConfigBase(AvdFacts, IpNameServersMixin, SnmpServerMixin):
 
         if spanning_tree_mode is not None:
             spanning_tree["mode"] = spanning_tree_mode
-            priority = get(self.shared_utils.switch_data_combined, "spanning_tree_priority", default="32768")
+            priority = get(self.shared_utils.switch_data_combined, "spanning_tree_priority", default=32768)
             if spanning_tree_mode == "mstp":
                 spanning_tree["mst_instances"] = [{"id": "0", "priority": priority}]
             elif spanning_tree_mode == "rapid-pvst":

@@ -13,6 +13,7 @@
 === "YAML"
 
     ```yaml
+    # Configure network services inserted to data forwarding
     router_service_insertion:
       enabled: <bool>
     ```

@@ -62,6 +62,38 @@ router_bgp:
         encapsulation: vxlan
       - name: MLAG-IPv4-UNDERLAY-PEER
         activate: false
+      - name: ADDITIONAL-PATH-PG-1
+        activate: true
+        additional_paths:
+          receive: true
+          send:
+            any: true
+      - name: ADDITIONAL-PATH-PG-2
+        activate: true
+        additional_paths:
+          send:
+            backup: true
+      - name: ADDITIONAL-PATH-PG-3
+        activate: true
+        additional_paths:
+          send:
+            ecmp: true
+      - name: ADDITIONAL-PATH-PG-4
+        activate: true
+        additional_paths:
+          send:
+            ecmp_limit: 42
+      - name: ADDITIONAL-PATH-PG-5
+        activate: true
+        additional_paths:
+          send:
+            limit: 42
+      # Checking the `no neighbor <PG> additional-paths send any is rendered
+      - name: ADDITIONAL-PATH-PG-6
+        activate: true
+        additional_paths:
+          send:
+            any: false
     evpn_hostflap_detection:
       enabled: true
       window: 10
@@ -177,6 +209,10 @@ router_bgp:
           maximum_routes_warning_limit: 50 percent
       redistribute_routes:
         - source_protocol: connected
+        - source_protocol: bgp
+          route_map: RM-REDISTRIBUTE-BGP
+          # this should not do anything as leaked is generated when source protocol is bgp
+          include_leaked: true
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       rd: "192.168.255.3:12"

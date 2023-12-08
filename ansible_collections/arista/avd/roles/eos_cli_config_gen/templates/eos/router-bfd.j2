@@ -32,6 +32,9 @@ router bfd
 {%         if router_bfd.sbfd.initiator_interval is arista.avd.defined and router_bfd.sbfd.initiator_multiplier is arista.avd.defined %}
       initiator interval {{ router_bfd.sbfd.initiator_interval }} multiplier {{ router_bfd.sbfd.initiator_multiplier }}
 {%         endif %}
+{%         if router_bfd.sbfd.initiator_measurement_round_trip is arista.avd.defined(true) %}
+      initiator measurement delay round-trip
+{%         endif %}
 {%         if router_bfd.sbfd.reflector.min_rx is arista.avd.defined %}
       reflector min-rx {{ router_bfd.sbfd.reflector.min_rx }}
 {%         endif %}

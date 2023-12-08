@@ -33,6 +33,7 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.253.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
     description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3A
   redistribute_routes:
   - source_protocol: connected

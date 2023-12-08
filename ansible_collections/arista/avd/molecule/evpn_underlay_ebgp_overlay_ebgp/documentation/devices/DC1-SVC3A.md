@@ -20,7 +20,7 @@
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
@@ -134,7 +134,7 @@ ntp server vrf MGMT 192.168.200.5 prefer
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -259,7 +259,7 @@ spanning-tree mst 0 priority 4096
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -678,6 +678,7 @@ interface Port-Channel14
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   l2 mtu 8000
    mlag 14
    spanning-tree portfast
    spanning-tree bpdufilter enable
@@ -722,6 +723,7 @@ interface Port-Channel18
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   l2 mtu 8000
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
    mlag 18
@@ -738,6 +740,7 @@ interface Port-Channel19
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   l2 mtu 8000
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
    mlag 19
@@ -775,7 +778,6 @@ interface Port-Channel22
 | Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | - |
 | Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | - |
 | Loopback100 | CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC | Tenant_A_OP_Zone | - |
-
 
 #### Loopback Interfaces Device Configuration
 
@@ -1158,9 +1160,9 @@ service routing protocols model multi-agent
 
 #### Virtual Router MAC Address Summary
 
-##### Virtual Router MAC Address: 00:dc:00:00:00:0a
+Virtual Router MAC Address: 00:dc:00:00:00:0a
 
-#### Virtual Router MAC Address Configuration
+#### Virtual Router MAC Address Device Configuration
 
 ```eos
 !
@@ -1224,8 +1226,8 @@ ip routing vrf Tenant_C_WAN_Zone
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.200.5 | - | 1 | - | - | - |
 | Tenant_A_WAN_Zone | 10.3.5.0/24 | - | Null0 | 1 | - | - | - |
 

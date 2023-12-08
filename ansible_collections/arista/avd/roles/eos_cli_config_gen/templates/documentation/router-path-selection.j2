@@ -1,0 +1,135 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - router path-selection #}
+{% if router_path_selection is arista.avd.defined %}
+
+### Router Path-selection
+{%     if router_path_selection.peer_dynamic_source is arista.avd.defined %}
+
+#### Router Path-selection Summary
+
+| Setting | Value |
+| ------  | ----- |
+| Dynamic peers source | {{ router_path_selection.peer_dynamic_source | upper }} |
+{%     endif %}
+{%     if router_path_selection.path_groups is arista.avd.defined %}
+
+#### Path Groups
+{%         for path_group in router_path_selection.path_groups | arista.avd.natural_sort('name') %}
+
+##### Path Group {{ path_group.name }}
+
+| Setting | Value |
+| ------  | ----- |
+| Path Group ID | {{ path_group.id | arista.avd.default("-") }} |
+{%             if path_group.ipsec_profile is arista.avd.defined %}
+| IPSec profile | {{ path_group.ipsec_profile }} |
+{%             endif %}
+{%             if path_group.flow_assignment is arista.avd.defined %}
+| Flow assignment | {{ path_group.flow_assignment | upper }} |
+{%             endif %}
+{%             if path_group.local_interfaces is arista.avd.defined %}
+
+###### Local Interfaces
+
+| Interface name | Public address | STUN server profile(s) |
+| -------------- | -------------- | ---------------------- |
+{%                 for local_interface in path_group.local_interfaces | arista.avd.natural_sort('name') %}
+| {{ local_interface.name }} | {{ local_interface.public_address | arista.avd.default("-") }} | {{ local_interface.stun.server_profiles | arista.avd.default([]) | join("<br>") }} |
+{%                 endfor %}
+{%             endif %}
+{%             if path_group.local_ips is arista.avd.defined %}
+
+###### Local IPs
+
+| IP address | Public address | STUN server profile(s) |
+| ---------- | -------------- | ---------------------- |
+{%                 for local_ip in path_group.local_ips | arista.avd.natural_sort('ip_address') %}
+| {{ local_ip.ip_address }} | {{ local_ip.public_address | arista.avd.default("-") }} | {{ local_ip.stun.server_profiles | arista.avd.default([]) | join("<br>") }} |
+{%                 endfor %}
+{%             endif %}
+{%             if path_group.dynamic_peers.enabled is arista.avd.defined(true) %}
+
+###### Dynamic Peers Settings
+
+| Setting | Value |
+| ------  | ----- |
+| IP Local | {{ path_group.dynamic_peers.ip_local | arista.avd.default("-") }} |
+| IPSec | {{ path_group.dynamic_peers.ipsec | arista.avd.default("-") }} |
+{%             endif %}
+{%             if path_group.static_peers is arista.avd.defined %}
+
+###### Static Peers
+
+| Router IP | Name | IPv4 address(es) |
+| --------- | ---- | ---------------- |
+{%                 for static_peer in path_group.static_peers | arista.avd.natural_sort('router_ip') %}
+{%                     set ipv4_addresses = static_peer.ipv4_addresses | arista.avd.default(["-"]) | join("<br>") %}
+| {{ static_peer.router_ip }} | {{ static_peer.name | arista.avd.default("-") }} | {{ ipv4_addresses }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if router_path_selection.load_balance_policies is arista.avd.defined %}
+
+#### Load-balance Policies
+
+| Policy Name | Jitter (ms) | Latency (ms) | Loss Rate (%) | Path Groups (priority) | Lowest Hop Count |
+| ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
+{%         for load_balance_policy in router_path_selection.load_balance_policies | arista.avd.natural_sort('name') %}
+{%             set lowest_hop_count = load_balance_policy.lowest_hop_count | arista.avd.default(false) %}
+{%             set jitter = load_balance_policy.jitter | arista.avd.default("-") %}
+{%             set latency = load_balance_policy.latency | arista.avd.default("-") %}
+{%             set loss_rate = load_balance_policy.loss_rate | arista.avd.default("-") %}
+{%             set path_groups_list = [] %}
+{# TODO remove inplace update once Ansible 2.13 is dropped and use groupby default instead #}
+{%             for path_group in load_balance_policy.path_groups | arista.avd.default([]) %}
+{%                 do path_group.update({"_priority": path_group.priority | arista.avd.default(1)}) %}
+{%             endfor %}
+{%             for priority, entries in load_balance_policy.path_groups | groupby("_priority") %}
+{%                 for entry in entries | arista.avd.natural_sort("name") %}
+{%                     do path_groups_list.append(entry.name ~ " (" ~ priority ~ ")") %}
+{%                 endfor %}
+{%             endfor %}
+| {{ load_balance_policy.name }} | {{ jitter }} | {{ latency }} | {{ loss_rate }} | {{ path_groups_list | join("<br>") }} | {{ lowest_hop_count }} |
+{%         endfor %}
+{%     endif %}
+{%     if router_path_selection.policies is arista.avd.defined %}
+
+#### DPS Policies
+{%         for policy in router_path_selection.policies | arista.avd.natural_sort('name') %}
+
+##### DPS Policy {{ policy.name }}
+
+| Rule ID | Application profile | Load-balance policy |
+| ------- | ------------------- | ------------------- |
+{%             if policy.default_match is arista.avd.defined %}
+| Default Match | - | {{ policy.default_match.load_balance | arista.avd.default("-") }} |
+{%             endif %}
+{%             for rule in policy.rules | arista.avd.natural_sort('id') %}
+{%                 if rule.application_profile is arista.avd.defined %}
+| {{ rule.id }} | {{ rule.application_profile }} | {{ rule.load_balance | arista.avd.default("-") }} |
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{%     if router_path_selection.vrfs is arista.avd.defined %}
+
+#### VRFs Configuration
+
+| VRF name | DPS policy |
+| -------- | ---------- |
+{%         for vrf in router_path_selection.vrfs | arista.avd.natural_sort('name') %}
+| {{ vrf.name }} | {{ vrf.path_selection_policy | arista.avd.default("-") }} |
+{%         endfor %}
+{%     endif %}
+
+#### Router Path-selection Device Configuration
+
+```eos
+{%     include 'eos/router-path-selection.j2' %}
+```
+{% endif %}

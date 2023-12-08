@@ -81,18 +81,14 @@ interface Port-Channel2
 
 ### Traffic Policies information
 
-**IPv4 Field sets**
+#### IPv4 Field Sets
 
 | Field Set Name | Values |
 | -------------- | ------ |
 | DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 |
 | DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 |
 
-**IPv6 Field sets**
-
-No IPv6 field-set configured.
-
-**L4 Port Field sets**
+#### L4 Port Field Sets
 
 | Field Set Name | Values |
 | -------------- | ------ |
@@ -100,7 +96,7 @@ No IPv6 field-set configured.
 
 #### Traffic Policies
 
-**BLUE-C1-POLICY:**
+##### BLUE-C1-POLICY
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
@@ -110,15 +106,13 @@ No IPv6 field-set configured.
 | BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22 | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C1-POLICY-05 | ipv4 | DEMO-02 | DEMO-01 | tcp | ANY | ANY | action: PASS<br/>traffic-class: 5 |
 
-
-**BLUE-C2-POLICY:**
+##### BLUE-C2-POLICY
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
 | BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | ANY | tcp<br/>icmp | 1,10-20 | ANY | action: PASS<br/>traffic-class: 5 |
 | BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | ANY | tcp<br/>icmp | SERVICE-DEMO | ANY | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
 | BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | ANY | tcp | ANY | ANY | action: DROP<br/>logging |
-
 
 ##### Traffic-Policy Interfaces
 
