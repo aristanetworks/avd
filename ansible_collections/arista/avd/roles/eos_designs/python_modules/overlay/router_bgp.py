@@ -139,7 +139,7 @@ class RouterBgpMixin(UtilsMixin):
             if self._is_mpls_server is True:
                 peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
-            if self.shared_utils.wan_role == "server":
+            if self.shared_utils.wan_role == "server" and len(self._wan_route_reflectors) > 0:
                 peer_groups.append({**self._generate_base_peer_group("wan", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
             if self.shared_utils.wan_role:

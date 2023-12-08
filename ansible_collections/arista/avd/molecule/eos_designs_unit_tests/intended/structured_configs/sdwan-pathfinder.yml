@@ -12,13 +12,6 @@ router_bgp:
   updates:
     wait_install: true
   peer_groups:
-  - name: RR-OVERLAY-PEERS
-    type: wan
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    remote_as: '65000'
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Loopback0
