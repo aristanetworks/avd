@@ -7,12 +7,14 @@ import ssl
 
 from grpclib.client import Channel
 
+from .change_control import ChangeControlMixin
+from .inventory import InventoryMixin
 from .studio import StudioMixin
 from .tag import TagMixin
 from .workspace import WorkspaceMixin
 
 
-class CVClient(StudioMixin, TagMixin, WorkspaceMixin):
+class CVClient(ChangeControlMixin, InventoryMixin, StudioMixin, TagMixin, WorkspaceMixin):
     _channel: Channel | None = None
     _metadata: dict
     _servers: list[str]
@@ -63,5 +65,5 @@ class CVClient(StudioMixin, TagMixin, WorkspaceMixin):
             context = True
 
         if self._channel is None:
-            print(f"Connecting to {self._servers[0]}:{self._port}")
+            # print(f"Connecting to {self._servers[0]}:{self._port}")
             self._channel = Channel(host=self._servers[0], port=self._port, ssl=context)

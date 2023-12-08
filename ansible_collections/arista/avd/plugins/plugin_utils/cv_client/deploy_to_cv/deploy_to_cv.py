@@ -5,15 +5,15 @@ from __future__ import annotations
 
 from ..client import CVClient
 from ..client.exceptions import CVClientException
-from ..models import CloudVision, CVChangeControl, CVDeviceTag, CVInterfaceTag, CVWorkspace, DeployToCvResult, EosConfig, TimeOuts
-from .utils import cv_create_workspace, cv_deploy_device_tags, cv_set_final_state_workspace
+from ..models import CloudVision, CVChangeControl, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVWorkspace, DeployToCvResult, TimeOuts
+from .utils import cv_create_workspace, cv_deploy_device_tags, cv_set_final_state_change_control, cv_set_final_state_workspace
 
 
 async def deploy_to_cv(
     cloudvision: CloudVision,
     workspace: CVWorkspace | None = None,
     change_control: CVChangeControl | None = None,
-    configs: list[EosConfig] | None = None,
+    configs: list[CVEosConfig] | None = None,
     device_tags: list[CVDeviceTag] | None = None,
     interface_tags: list[CVInterfaceTag] | None = None,
     continue_on_errors: bool = False,
@@ -29,7 +29,7 @@ async def deploy_to_cv(
         - TODO: See if we can relax the I&T requirement and add the device if it is missing.
         - TODO: See if we can onboard ZTP devices and/or preprovision.
     - The hostname will we updated in the I&T Studio.
-    - The `serial_number` and `system_mac_address` properties will be inplace updated in the given Device objects.
+    - The `serial_number` and `system_mac_address` properties will be inplace updated in the given CVDevice objects.
 
     TODO: Add something for generic studio inputs.
 
@@ -63,24 +63,23 @@ async def deploy_to_cv(
         - Gather all devices from the given lists.
         - On CV Identify all devices based on hostname, serial number or System MAC address.
             - In-place update device objects.
-        - On CV Create or update existing Workspace with name and description.
-            - In-place update workspace object.
+        + On CV Create or update existing Workspace with name and description.
+            + In-place update workspace object.
         - On CV in "Inventory & Topology Studio" set/verify hostnames.
         - On CV in "Static Configlet Studio" upload configlets and assign to devices.
             - TODO: Decide if we should create a hierarchy or just a single folder for AVD?
-        - On CV add and assign device tags and interface tags.
-        - On CV build, submit, abandon, delete the Workspace as applicable based on requested state.
-            - In-place update workspace and result object.
-        - If not submitting the Workspace return the result object. Otherwise continue.
-        - Wait for Workspace submission to return a change control id.
-            - Update or create a CVChangeControl object and add to result.
+        + On CV add and assign device tags.
+        - On CV add and assign interface tags.
+        + On CV build, submit, abandon, delete the Workspace as applicable based on requested state.
+            + In-place update workspace and result object.
+        + If not submitting the Workspace return the result object. Otherwise continue.
+        ? Wait for Workspace submission to return a change control id.
+            + Update or create a CVChangeControl object and add to result.
         - On CV set description on the created change control and apply the template if given.
         - On CV approve, submit, cancel the Change Control as applicable based on requested state.
         - Return result object.
     """
-    result = DeployToCvResult(workspace=workspace, change_control=change_control)
-    if result.workspace is None:
-        result.workspace = CVWorkspace()
+    result = DeployToCvResult(workspace=workspace or CVWorkspace(), change_control=change_control)
 
     try:
         async with CVClient(servers=cloudvision.servers, token=cloudvision.token, verify_certs=cloudvision.verify_certs) as cv_client:
@@ -98,10 +97,21 @@ async def deploy_to_cv(
 
             # Build, submit or abandon workspace. If failed, we always abandon.
             if result.failed:
-                await cv_client.abandon_workspace(workspace_id=workspace.id)
-                workspace.final_state = "abandoned"
-            else:
-                await cv_set_final_state_workspace(workspace=result.workspace, cv_client=cv_client)
+                await cv_client.abandon_workspace(workspace_id=result.workspace.id)
+                result.workspace.final_state = "abandoned"
+                return result
+
+            await cv_set_final_state_workspace(workspace=result.workspace, cv_client=cv_client)
+
+            if result.workspace.change_control_id is not None:
+                if result.change_control is None:
+                    result.change_control = CVChangeControl()
+                result.change_control.id = result.workspace.change_control_id
+
+            # This is a separate "if" to allow to test stuff on a change control not created by the workspace.
+            # TODO: Remove once we are done with testing (?)
+            if result.change_control is not None and result.change_control.id is not None:
+                await cv_set_final_state_change_control(change_control=result.change_control, cv_client=cv_client)
 
     except CVClientException as e:
         result.errors.append(e)

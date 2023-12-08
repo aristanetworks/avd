@@ -18,21 +18,22 @@ class CloudVision:
 
 @dataclass
 class CVChangeControl:
-    name: str
+    name: str | None = None
     description: str | None = None
     id: str | None = None
     """ `id` should not be set on the request. It will be updated with the ID of the created Change Control. """
     change_control_template: CVChangeControlTemplate | None = None
-    requested_state: Literal["pending approval", "approved", "submitted", "canceled"] = "pending approval"
+    requested_state: Literal["pending approval", "approved", "running", "completed", "deleted"] = "pending approval"
     """
     The requested state for the Change Control.
 
     - `"pending approval"` (default): Leave the Change Control in "pending approval" state.
-    - `"approved"`: Approve the Change Control but do not submit.
-    - `"submitted"`: Approve and submit the workspace.
-    - `"canceled"`: Create and cancel the workspace. Used for dry-run where no changes will be committed to CloudVision.
+    - `"approved"`: Approve the Change Control but do not start.
+    - `"running"`: Approve and start the Change Control. Do not wait for the Change Control to be completed or failed.
+    - `"completed"`: Approve and start the Change Control. Wait for the Change Control to be completed.
+    - `"deleted"`: Create and delete the Change Control. Used for dry-run where no changes will be committed to the network.
     """
-    final_state: Literal["pending approval", "approved", "submitted", "failed", "canceled"] | None = None
+    final_state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
 
 
 @dataclass
@@ -45,14 +46,14 @@ class CVChangeControlTemplate:
 class CVDeviceTag:
     label: str
     value: str
-    device: Device | None = None
+    device: CVDevice | None = None
 
 
 @dataclass
 class CVInterfaceTag:
     label: str
     value: str
-    device: Device | None = None
+    device: CVDevice | None = None
     interface: str | None = None
     """Must be set if device is set"""
 
@@ -75,6 +76,9 @@ class CVWorkspace:
         Used for dry-run where no changes will be committed to CloudVision and the temporary Workspace will be removed to avoid "clutter".
     """
     final_state: Literal["pending", "built", "submitted", "build failed", "abandoned", "deleted"] | None = None
+    """The final state of the Workspace. Do not set this manually."""
+    change_control_id: str | None = None
+    """Do not set this manually."""
 
 
 @dataclass
@@ -83,8 +87,8 @@ class DeployChangeControlResult:
     errors: list = field(default_factory=list)
     warnings: list = field(default_factory=list)
     change_control: CVChangeControl | None = None
-    deployed_devices: list[Device] = field(default_factory=list)
-    skipped_devices: list[Device] = field(default_factory=list)
+    deployed_devices: list[CVDevice] = field(default_factory=list)
+    skipped_devices: list[CVDevice] = field(default_factory=list)
 
 
 @dataclass
@@ -94,12 +98,12 @@ class DeployToCvResult:
     warnings: list = field(default_factory=list)
     workspace: CVWorkspace | None = CVWorkspace()
     change_control: CVChangeControl | None = None
-    # deployed_devices: list[Device] = field(default_factory=list)
-    deployed_configs: list[EosConfig] = field(default_factory=list)
+    # deployed_devices: list[CVDevice] = field(default_factory=list)
+    deployed_configs: list[CVEosConfig] = field(default_factory=list)
     deployed_device_tags: list[CVDeviceTag] = field(default_factory=list)
     deployed_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
-    # skipped_devices: list[Device] = field(default_factory=list)
-    skipped_configs: list[EosConfig] = field(default_factory=list)
+    # skipped_devices: list[CVDevice] = field(default_factory=list)
+    skipped_configs: list[CVEosConfig] = field(default_factory=list)
     skipped_device_tags: list[CVDeviceTag] = field(default_factory=list)
     skipped_interface_tags: list[CVInterfaceTag] = field(default_factory=list)
     removed_configs: list[str] = field(default_factory=list)
@@ -108,7 +112,7 @@ class DeployToCvResult:
 
 
 @dataclass
-class Device:
+class CVDevice:
     hostname: str
     """
     Device hostname or intended hostname.
@@ -117,14 +121,14 @@ class Device:
     """
     serial_number: str | None = None
     system_mac_address: str | None = None
-    _cv_device_id: str | None = None
+    _exists_on_cv: bool | None = None
     """ Do not set this manually. """
 
 
 @dataclass
-class EosConfig:
+class CVEosConfig:
     config: str
-    device: Device
+    device: CVDevice
     config_name: str | None = None
     """ By default the hostname of the device is used as config_name """
 

@@ -109,9 +109,7 @@ class TagMixin:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
                 tag_config = response.value
-                print("----------------")
-                print(tag_config)
-                print("----------------")
+
                 # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag.
                 tag = Tag(key=tag_config.key, creator_type=CreatorType.CREATOR_TYPE_USER)
                 if tag_config.remove:
@@ -228,9 +226,7 @@ class TagMixin:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
                 tag_assignment_config = response.value
-                print("----------------")
-                print(tag_assignment_config)
-                print("----------------")
+
                 # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag assignment.
                 tag_assignment = TagAssignment(key=tag_assignment_config.key, tag_creator_type=CreatorType.CREATOR_TYPE_USER)
                 if tag_assignment_config.remove:
@@ -254,7 +250,7 @@ class TagMixin:
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            tag_assignments: List of tuples where each tuple is in the format (<tag_label>, <tag_value>, <device_id>, <interface_id | None>).
+            tag_assignments: List of tuples where each tuple is in the format (<tag_label>, <tag_value>, <device_id/serial_number>, <interface_name | None>).
             timeout: Timeout in seconds.
 
         TODO: Consider if we should add sub_type.

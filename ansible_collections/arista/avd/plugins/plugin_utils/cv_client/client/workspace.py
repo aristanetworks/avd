@@ -25,8 +25,10 @@ from ..api.arista.workspace.v1 import (
     WorkspaceKey,
     WorkspaceRequest,
     WorkspaceServiceStub,
+    WorkspaceState,
+    WorkspaceStreamRequest,
 )
-from .exceptions import CVWorkspaceBuildFailed, CVWorkspaceBuildTimeout, get_cv_client_exception
+from .exceptions import CVWorkspaceBuildFailed, CVWorkspaceBuildTimeout, CVWorkspaceStateTimeout, get_cv_client_exception
 
 if TYPE_CHECKING:
     from .cv_client import CVClient
@@ -229,7 +231,7 @@ class WorkspaceMixin:
             build_id: Unique identifier for the Build
             build_timeout: Timeout in seconds for the build operation.
             time: Timestamp from which the information is fetched. `now()` if not set.
-            timeout: Timeout in seconds for the subscripe operation.
+            timeout: Timeout in seconds for the subscribe operation.
 
         Returns:
             WorkspaceBuild object after being set including any server-generated values.
@@ -263,3 +265,46 @@ class WorkspaceMixin:
                     return response.value
         except TimeoutError as e:
             raise CVWorkspaceBuildTimeout(f"Build of Workspace ID '{workspace_id}' not completed within timeout of {build_timeout} seconds") from e
+
+    async def wait_for_workspace_states(
+        self: CVClient,
+        workspace_id: str,
+        states: list[WorkspaceState],
+        time: datetime | None = None,
+        state_timeout: float = 30.0,
+        timeout: float = 10.0,
+    ) -> Workspace:
+        """
+        Monitor a Workspace state using arista.workspace.v1.WorkspaceService.Subscribe API
+        Blocks until any of the given states are met or timed out.
+
+        Parameters:
+            workspace_id: Unique identifier the Workspace.
+            states: List of states which we wait for.
+            time: Timestamp from which the information is fetched. `now()` if not set.
+            state_timeout: Timeout in seconds to wait for the states.
+            timeout: Timeout in seconds for the subscribe operation.
+
+        Returns:
+            Workspace object after any of the states are reached.
+
+        Raises:
+            CVWorkspaceStateTimeout: If the timeout expired.
+        """
+        request = WorkspaceStreamRequest(
+            partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id=workspace_id))],
+            time=time,
+        )
+        client = WorkspaceServiceStub(self._channel)
+        try:
+            async with atimeout(state_timeout):
+                responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+                async for response in responses:
+                    if response.value.state not in states:
+                        continue
+
+                    return response.value
+        except TimeoutError as e:
+            raise CVWorkspaceStateTimeout(
+                f"State of Workspace ID '{workspace_id}' not gotten to any of the expected state {states} within timeout of {state_timeout} seconds"
+            ) from e
