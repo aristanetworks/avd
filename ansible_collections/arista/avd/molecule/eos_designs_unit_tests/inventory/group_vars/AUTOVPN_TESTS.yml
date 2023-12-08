@@ -10,7 +10,8 @@ bgp_peer_groups:
 
 autovpn_rrs:
   # Not testing the overloading
-  - hostname: autovpn-rr
+  - hostname: autovpn-rr1
+  - hostname: autovpn-rr2
 
 wan_ipsec_profiles:
   control_plane:
@@ -22,7 +23,7 @@ wan_ipsec_profiles:
 default_node_types:
   - node_type: wan-controller
     match_hostnames:
-      - "^autovpn-rr$"
+      - "^autovpn-rr.*$"
   - node_type: edge
     match_hostnames:
       - "^autovpn-edge$"
@@ -38,5 +39,7 @@ wan_controller:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
-    - name: autovpn-rr
+    - name: autovpn-rr1
       id: 1
+    - name: autovpn-rr2
+      id: 2

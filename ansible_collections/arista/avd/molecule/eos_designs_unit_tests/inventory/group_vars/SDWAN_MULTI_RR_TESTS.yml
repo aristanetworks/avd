@@ -1,0 +1,13 @@
+---
+# Inherit most of the variables from SDWAN_TESTS
+
+sdwan_pathfinders:
+  # Not testing the overloading
+  - hostname: sdwan-pathfinder1
+  - hostname: sdwan-pathfinder2
+  # This one is out of the inventory
+  - hostname: sdwan-pathfinder3
+    router_id: 6.6.6.6
+    carriers:
+      - name: MPLS
+      - name: INET

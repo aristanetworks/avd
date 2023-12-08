@@ -350,9 +350,13 @@ class UtilsMixin:
                     "carriers": peer_facts.get("carriers"),
                 }
 
+            # If overlay_routing_protocol is iBGP then we can use our own AS
+            if self.shared_utils.overlay_routing_protocol == "ibgp":
+                bgp_as = self.shared_utils.bgp_as
+
             # Retrieve the values from the dictionary, making them required if the peer_facts were not found
             # TODO needs to be improved
-            bgp_as = get(wan_rr_dict, "bgp_as", required=(peer_facts is None))
+            bgp_as = get(wan_rr_dict, "bgp_as", required=(peer_facts is None and bgp_as is None)) or bgp_as
             router_id = get(wan_rr_dict, "router_id", required=(peer_facts is None))
             carriers = get(wan_rr_dict, "carriers", required=(peer_facts is None))
             update_dict = {

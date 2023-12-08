@@ -1,4 +1,4 @@
-hostname: autovpn-edge
+hostname: autovpn-rr1
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -12,6 +12,13 @@ router_bgp:
   updates:
     wait_install: true
   peer_groups:
+  - name: RR-OVERLAY-PEERS
+    type: wan
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Loopback0
@@ -19,13 +26,18 @@ router_bgp:
     send_community: all
     maximum_routes: 12000
     remote_as: '65000'
+    route_reflector_client: true
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
   address_family_ipv4:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
+      activate: false
+    - name: RR-OVERLAY-PEERS
       activate: false
   address_family_path_selection:
     peer_groups:
@@ -35,13 +47,14 @@ router_bgp:
         receive: true
         send:
           any: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
   neighbors:
-  - ip_address: 192.168.42.1
-    peer_group: WAN-OVERLAY-PEERS
-    peer: autovpn-rr1
-    description: autovpn-rr1
   - ip_address: 192.168.42.2
-    peer_group: WAN-OVERLAY-PEERS
+    peer_group: RR-OVERLAY-PEERS
     peer: autovpn-rr2
     description: autovpn-rr2
 service_routing_protocols_model: multi-agent
@@ -51,6 +64,8 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+spanning_tree:
+  mode: none
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -80,14 +95,13 @@ ip_security:
       time: 50
       action: clear
     mode: transport
-  key_controller:
-    profile: AUTOVPN
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 router_path_selection:
+  peer_dynamic_source: stun
   path_groups: []
   load_balance_policies:
   - name: LBPOLICY
@@ -99,8 +113,9 @@ router_path_selection:
   vrfs:
   - name: default
     path_selection_policy: dps-policy-default
-ip_igmp_snooping:
-  globally_enabled: true
+stun:
+  server:
+    local_interfaces: []
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -108,7 +123,7 @@ dps_interfaces:
     ipv4: 1000
 vxlan_interface:
   Vxlan1:
-    description: autovpn-edge_VTEP
+    description: autovpn-rr1_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback0

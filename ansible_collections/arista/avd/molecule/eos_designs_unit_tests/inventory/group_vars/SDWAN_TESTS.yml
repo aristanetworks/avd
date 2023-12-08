@@ -43,7 +43,7 @@ wan_ipsec_profiles:
 default_node_types:
   - node_type: wan-controller
     match_hostnames:
-      - "^sdwan-pathfinder$"
+      - "^sdwan-pathfinder.*$"
   - node_type: transit
     match_hostnames:
       - "^sdwan-transit$"
@@ -73,3 +73,17 @@ wan_controller:
   nodes:
     - name: sdwan-pathfinder
       id: 1
+    - name: sdwan-pathfinder1
+      id: 2
+    - name: sdwan-pathfinder2
+      id: 3
+
+carriers:
+  - name: MPLS
+    accessibility: private
+    ipsec: False
+  - name: INET
+    accessibility: public
+  - name: LTE
+    accessibility: public
+    characteristics: [metered]

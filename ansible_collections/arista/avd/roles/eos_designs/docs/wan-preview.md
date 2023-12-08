@@ -24,6 +24,10 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 ### Design points
 
 - The intent is to be able to support having the different WAN participating devices in different inventories.
+- Only iBGP is supported as an overlay_routing_protocol.
+- The default VRF is being configured by default on all WAN devices with a
+    `vni_id` of 100.
+
 
 ## Known limitations
 
