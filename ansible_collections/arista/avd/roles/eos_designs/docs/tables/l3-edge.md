@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_pool</samp>](## "l3_edge.p2p_links_ip_pools.[].ipv4_pool") | String |  |  |  | IPv4 address/Mask. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_size</samp>](## "l3_edge.p2p_links_ip_pools.[].prefix_size") | Integer |  | `31` | Min: 8<br>Max: 31 | Subnet mask size. |
     | [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "l3_edge.p2p_links_profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "l3_edge.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under p2p_links can be inherited from a profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "l3_edge.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "l3_edge.p2p_links_profiles.[].id") | Integer |  |  |  | Unique id per subnet_summary. Used to calculate ip addresses.<br>Required with ip_pool. ID starting from 1.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.p2p_links_profiles.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_pool</samp>](## "l3_edge.p2p_links_profiles.[].ip_pool") | String |  |  |  | P2P pool name. IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link. |
@@ -92,6 +92,53 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "l3_edge.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.p2p_links.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.p2p_links.[].structured_config") | Dictionary |  |  |  | Custom structured config for interfaces<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;l3_interfaces_profiles</samp>](## "l3_edge.l3_interfaces_profiles") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "l3_edge.l3_interfaces_profiles.[].name") | String | Required, Unique |  |  | L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.l3_interfaces_profiles.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "l3_edge.l3_interfaces_profiles.[].vrf") | String |  |  |  | VRF to configure on the interface. (default VRF if not set). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.l3_interfaces_profiles.[].ip") | String |  |  |  | Node IPv4 address/Mask or dhcp. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_client_accept_default_route</samp>](## "l3_edge.l3_interfaces_profiles.[].dhcp_client_accept_default_route") | Boolean |  |  |  | Supported if `ip` is `dhcp`.<br>Accepts default route from DHCP, default False. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.l3_interfaces_profiles.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the interface or profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "l3_edge.l3_interfaces_profiles.[].interface") | String |  |  |  | Must be an Ethernet interface like 'Ethernet2'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "l3_edge.l3_interfaces_profiles.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "l3_edge.l3_interfaces_profiles.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "l3_edge.l3_interfaces_profiles.[].peer_ip") | String |  |  |  | The peer device IP. Used for description and documentation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "l3_edge.l3_interfaces_profiles.[].bgp_as") | String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_bgp_as</samp>](## "l3_edge.l3_interfaces_profiles.[].peer_bgp_as") | String |  |  |  | AS numbers for BGP for the remote peer.<br>If not provided, `bgp_as` is used.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.l3_interfaces_profiles.[].description") | String |  |  |  | Interface description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "l3_edge.l3_interfaces_profiles.[].bfd") | Boolean |  | `False` |  | Enable BFD (only considered for BGP). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.l3_interfaces_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "l3_edge.l3_interfaces_profiles.[].subinterfaces") | List, items: Dictionary |  |  |  | Configure subinterfaces, each in their own VRF under the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vrf</samp>](## "l3_edge.l3_interfaces_profiles.[].subinterfaces.[].vrf") | String | Required, Unique |  |  | Name of the VRF to configure for this subinterface<br>The VRF MUST exist in `network_services` |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_id</samp>](## "l3_edge.l3_interfaces_profiles.[].subinterfaces.[].subinterface_id") | Integer |  |  |  | Optional ID to overwrite the default one used from the VRF.<br>`vrf_id` is used otherwise. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.l3_interfaces_profiles.[].subinterfaces.[].description") | String |  |  |  | Optional description for the subinterface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.l3_interfaces_profiles.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the subinterface.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.l3_interfaces_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.l3_interfaces_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for interfaces |
+    | [<samp>&nbsp;&nbsp;l3_interfaces</samp>](## "l3_edge.l3_interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "l3_edge.l3_interfaces.[].node") | String |  |  |  | Device on which the interface should be configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under l3_interfaces_profiles. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.l3_interfaces.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "l3_edge.l3_interfaces.[].vrf") | String |  |  |  | VRF to configure on the interface. (default VRF if not set). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.l3_interfaces.[].ip") | String |  |  |  | Node IPv4 address/Mask or dhcp. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_client_accept_default_route</samp>](## "l3_edge.l3_interfaces.[].dhcp_client_accept_default_route") | Boolean |  |  |  | Supported if `ip` is `dhcp`.<br>Accepts default route from DHCP, default False. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "l3_edge.l3_interfaces.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the interface or profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "l3_edge.l3_interfaces.[].interface") | String |  |  |  | Must be an Ethernet interface like 'Ethernet2'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "l3_edge.l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "l3_edge.l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "l3_edge.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IP. Used for description and documentation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "l3_edge.l3_interfaces.[].bgp_as") | String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_bgp_as</samp>](## "l3_edge.l3_interfaces.[].peer_bgp_as") | String |  |  |  | AS numbers for BGP for the remote peer.<br>If not provided, `bgp_as` is used.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.l3_interfaces.[].description") | String |  |  |  | Interface description. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "l3_edge.l3_interfaces.[].bfd") | Boolean |  | `False` |  | Enable BFD (only considered for BGP). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "l3_edge.l3_interfaces.[].subinterfaces") | List, items: Dictionary |  |  |  | Configure subinterfaces, each in their own VRF under the interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vrf</samp>](## "l3_edge.l3_interfaces.[].subinterfaces.[].vrf") | String | Required, Unique |  |  | Name of the VRF to configure for this subinterface<br>The VRF MUST exist in `network_services` |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_id</samp>](## "l3_edge.l3_interfaces.[].subinterfaces.[].subinterface_id") | Integer |  |  |  | Optional ID to overwrite the default one used from the VRF.<br>`vrf_id` is used otherwise. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.l3_interfaces.[].subinterfaces.[].description") | String |  |  |  | Optional description for the subinterface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.l3_interfaces.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the subinterface.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for interfaces |
 
 === "YAML"
 
@@ -109,7 +156,7 @@
           prefix_size: <int; 8-31; default=31>
       p2p_links_profiles:
 
-          # P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
+          # P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile.
         - name: <str; required; unique>
 
           # Unique id per subnet_summary. Used to calculate ip addresses.
@@ -316,5 +363,154 @@
 
           # Custom structured config for interfaces
           # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+          structured_config: <dict>
+      l3_interfaces_profiles:
+
+          # L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
+        - name: <str; required; unique>
+
+          # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          speed: <str>
+
+          # VRF to configure on the interface. (default VRF if not set).
+          vrf: <str>
+
+          # Node IPv4 address/Mask or dhcp.
+          ip: <str>
+
+          # Supported if `ip` is `dhcp`.
+          # Accepts default route from DHCP, default False.
+          dhcp_client_accept_default_route: <bool>
+
+          # Allows turning on ipv6 for the interface or profile.
+          ipv6_enable: <bool; default=False>
+
+          # Must be an Ethernet interface like 'Ethernet2'.
+          interface: <str>
+
+          # The peer device name. Used for description and documentation
+          peer: <str>
+
+          # The peer device interface. Used for description and documentation
+          peer_interface: <str>
+
+          # The peer device IP. Used for description and documentation
+          peer_ip: <str>
+
+          # AS numbers for BGP.
+          # Required with bgp peering.
+          bgp_as: <str>
+
+          # AS numbers for BGP for the remote peer.
+          # If not provided, `bgp_as` is used.
+          peer_bgp_as: <str>
+
+          # Interface description.
+          description: <str>
+
+          # Enable BFD (only considered for BGP).
+          bfd: <bool; default=False>
+
+          # QOS service profile.
+          qos_profile: <str>
+
+          # Configure subinterfaces, each in their own VRF under the interface.
+          subinterfaces:
+
+              # Name of the VRF to configure for this subinterface
+              # The VRF MUST exist in `network_services`
+            - vrf: <str; required; unique>
+
+              # Optional ID to overwrite the default one used from the VRF.
+              # `vrf_id` is used otherwise.
+              subinterface_id: <int>
+
+              # Optional description for the subinterface.
+              description: <str>
+
+              # Custom structured config for the subinterface.
+              # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+              structured_config: <dict>
+
+          # EOS CLI rendered directly on the interface in the final EOS configuration.
+          raw_eos_cli: <str>
+
+          # Custom structured config for interfaces
+          structured_config: <dict>
+      l3_interfaces:
+
+          # Device on which the interface should be configured.
+        - node: <str>
+
+          # L3 interface profile name. Profile defined under l3_interfaces_profiles.
+          profile: <str>
+
+          # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+          speed: <str>
+
+          # VRF to configure on the interface. (default VRF if not set).
+          vrf: <str>
+
+          # Node IPv4 address/Mask or dhcp.
+          ip: <str>
+
+          # Supported if `ip` is `dhcp`.
+          # Accepts default route from DHCP, default False.
+          dhcp_client_accept_default_route: <bool>
+
+          # Allows turning on ipv6 for the interface or profile.
+          ipv6_enable: <bool; default=False>
+
+          # Must be an Ethernet interface like 'Ethernet2'.
+          interface: <str>
+
+          # The peer device name. Used for description and documentation
+          peer: <str>
+
+          # The peer device interface. Used for description and documentation
+          peer_interface: <str>
+
+          # The peer device IP. Used for description and documentation
+          peer_ip: <str>
+
+          # AS numbers for BGP.
+          # Required with bgp peering.
+          bgp_as: <str>
+
+          # AS numbers for BGP for the remote peer.
+          # If not provided, `bgp_as` is used.
+          peer_bgp_as: <str>
+
+          # Interface description.
+          description: <str>
+
+          # Enable BFD (only considered for BGP).
+          bfd: <bool; default=False>
+
+          # QOS service profile.
+          qos_profile: <str>
+
+          # Configure subinterfaces, each in their own VRF under the interface.
+          subinterfaces:
+
+              # Name of the VRF to configure for this subinterface
+              # The VRF MUST exist in `network_services`
+            - vrf: <str; required; unique>
+
+              # Optional ID to overwrite the default one used from the VRF.
+              # `vrf_id` is used otherwise.
+              subinterface_id: <int>
+
+              # Optional description for the subinterface.
+              description: <str>
+
+              # Custom structured config for the subinterface.
+              # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
+              structured_config: <dict>
+
+          # EOS CLI rendered directly on the interface in the final EOS configuration.
+          raw_eos_cli: <str>
+
+          # Custom structured config for interfaces
           structured_config: <dict>
     ```

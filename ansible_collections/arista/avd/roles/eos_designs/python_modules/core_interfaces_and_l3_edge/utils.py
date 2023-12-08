@@ -10,7 +10,7 @@ from itertools import islice
 
 from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
@@ -38,6 +38,10 @@ class UtilsMixin:
         return get(self._hostvars, f"{self.data_model}.p2p_links", default=[])
 
     @cached_property
+    def _p2p_links_sflow(self) -> bool | None:
+        return get(self._hostvars, f"fabric_sflow.{self.data_model}")
+
+    @cached_property
     def _filtered_p2p_links(self) -> list:
         """
         Returns a filtered list of p2p_links, which only contains links with our hostname.
@@ -50,7 +54,7 @@ class UtilsMixin:
 
         # Apply p2p_profiles if set. Silently ignoring missing profile.
         if self._p2p_links_profiles:
-            p2p_links = [self._apply_p2p_profile(p2p_link) for p2p_link in p2p_links]
+            p2p_links = [self._apply_profile("p2p_links", p2p_link) for p2p_link in p2p_links]
 
         # Filter to only include p2p_links with our hostname under "nodes"
         p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.get("nodes", [])]
@@ -65,16 +69,26 @@ class UtilsMixin:
 
         return p2p_links
 
-    def _apply_p2p_profile(self, p2p_link: dict) -> dict:
-        if "profile" not in p2p_link:
+    def _apply_profile(self, type: str, target_dict: dict) -> dict:
+        """
+        Apply a profile to
+        """
+        if "profile" not in target_dict:
             # Nothing to do
-            return p2p_link
+            return target_dict
 
-        # Silently ignoring missing profile.
-        profile = get_item(self._p2p_links_profiles, "name", p2p_link["profile"], default={})
-        p2p_link = merge(profile, p2p_link, list_merge="replace", destructive_merge=False)
-        p2p_link.pop("name", None)
-        return p2p_link
+        # Silently ignoring missing profile and wrong types.
+        if type == "l3_interfaces":
+            profile = get_item(self._l3_interfaces_profiles, "name", target_dict["profile"], default={})
+        elif type == "p2p_links":
+            profile = get_item(self._p2p_links_profiles, "name", target_dict["profile"], default={})
+        else:
+            return target_dict
+
+        target_dict = merge(profile, target_dict, list_merge="replace", destructive_merge=False)
+        target_dict.pop("name", None)
+
+        return target_dict
 
     def _resolve_p2p_ips(self, p2p_link: dict) -> dict:
         if "ip" in p2p_link:
@@ -161,13 +175,13 @@ class UtilsMixin:
                 required=True,
                 var_name=f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces",
             )["interfaces"]
-            id = int("".join(re.findall(r"\d", member_interfaces[0])))
+            pc_id = int("".join(re.findall(r"\d", member_interfaces[0])))
             peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
             data.update(
                 {
-                    "interface": f"Port-Channel{id}",
+                    "interface": f"Port-Channel{pc_id}",
                     "peer_interface": f"Port-Channel{peer_id}",
-                    "port_channel_id": id,
+                    "port_channel_id": pc_id,
                     "port_channel_members": [
                         {
                             "interface": interface,
@@ -316,6 +330,123 @@ class UtilsMixin:
             },
         }
 
+    # l3_interfaces here
     @cached_property
-    def _p2p_links_sflow(self) -> bool | None:
+    def _l3_interfaces_profiles(self) -> list:
+        return get(self._hostvars, f"{self.data_model}.l3_interfaces_profiles", default=[])
+
+    @cached_property
+    def _l3_interfaces(self) -> list:
+        return get(self._hostvars, f"{self.data_model}.l3_interfaces", default=[])
+
+    @cached_property
+    def _l3_interfaces_sflow(self) -> bool | None:
         return get(self._hostvars, f"fabric_sflow.{self.data_model}")
+
+    @cached_property
+    def _filtered_l3_interfaces(self) -> list:
+        """
+        Returns a filtered list of l3_interfaces, which only contains interfaces with our hostname.
+        For each interface any referenced profiles are applied and IP addresses are resolved
+        from pools or subnets.
+        """
+        if not (l3_interfaces := self._l3_interfaces):
+            return []
+
+        # Apply p2p_profiles if set. Silently ignoring missing profile.
+        if self._l3_interfaces_profiles:
+            l3_interfaces = [self._apply_profile("l3_interface", l3_interface) for l3_interface in l3_interfaces]
+
+        # Filter to only include l3_interfaces with our hostname under "nodes"
+        l3_interfaces = [l3_interface for l3_interface in l3_interfaces if self.shared_utils.hostname == get(l3_interface, "node", required=True)]
+        if not l3_interfaces:
+            return []
+
+        # Update data to match current p2p_link
+        # This is a bit shady
+        for l3_interface in l3_interfaces:
+            l3_interface["peer_bgp_as"] = l3_interface.get("peer_bgp_as") or l3_interface.get("bgp_as")
+
+        return l3_interfaces
+
+    @cached_property
+    def _valid_vrfs(self) -> list[dict]:
+        """
+        Return all the valid VRF on this device based on network_services configuration
+        """
+        # TODO check as we could end up with duplicates here
+        return [vrf for tenant in self.shared_utils.filtered_tenants for vrf in tenant.get("vrfs", [])]
+
+    def _get_l3_interface_cfg(self, l3_interface: dict) -> dict | None:
+        """
+        TODO
+        only physical interfaces, not sub interfaces
+        """
+        if l3_interface["node"] != self.shared_utils.hostname:
+            return None
+
+        interface_name = l3_interface["interface"]
+        interface_description = l3_interface.get("description") or "TODO"
+        interface_vrf = l3_interface.get("vrf") or "default"
+
+        if interface_vrf and get_item(self._valid_vrfs, "name", interface_vrf) is None:
+            raise AristaAvdError("TODO invalid VRF")
+
+        # TODO extra stuff for DHCP for ip_address
+        interface = {
+            "name": interface_name,
+            "peer_type": "l3_interface",
+            "vrf": interface_vrf if interface_vrf != "default" else None,
+            "ip_address": l3_interface.get("ip"),
+            "shutdown": not l3_interface.get("enabled", True),
+            "type": "routed",
+            "description": interface_description,
+            "service_profile": l3_interface.get("qos_profile"),
+            "eos_cli": l3_interface.get("raw_eos_cli"),
+            "struct_cfg": l3_interface.get("structured_config"),
+        }
+
+        # TODO handle OSPF
+
+        # Strip None values from vlan before adding to list
+        interface = {key: value for key, value in interface.items() if value is not None}
+
+        return interface
+
+    def _get_l3_subinterface_cfg(self, l3_interface: dict, subinterface_dict: dict) -> dict | None:
+        """
+        Return a subinterface structured config.
+        """
+        if l3_interface["node"] != self.shared_utils.hostname:
+            return None
+
+        subif_vrf = get(subinterface_dict, "vrf", required=True)
+        if (vrf_dict := get_item(self._valid_vrfs, "name", subif_vrf)) is None:
+            raise AristaAvdError("TODO invalid VRF for subif")
+
+        subif_id = subinterface_dict.get("subinterface_id") or vrf_dict.get("vrf_vni") or vrf_dict.get("vrf_id")
+
+        interface_name = f"{l3_interface['interface']}.{subif_id}"
+        interface_description = subinterface_dict.get("description") or l3_interface.get("description") or "TODO"
+
+        interface = {
+            "name": interface_name,
+            "peer_type": "l3_subinterface",
+            "vrf": subif_vrf if subif_vrf != "default" else None,
+            "ip_address": l3_interface.get("ip"),
+            "type": "l3dot1q",
+            "encapsulation_dot1q_vlan": subif_id,
+            "description": interface_description,
+            "eos_cli": l3_interface.get("raw_eos_cli"),
+            "struct_cfg": l3_interface.get("structured_config"),
+        }
+
+        if l3_interface.get("dhcp_client_accept_default_route", False):
+            interface["dhcp_client_accept_default_route"] = True
+
+        # TODO handle OSPF
+
+        # Strip None values from vlan before adding to list
+        interface = {key: value for key, value in interface.items() if value is not None}
+
+        return interface

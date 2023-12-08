@@ -56,6 +56,34 @@ class EthernetInterfacesMixin(UtilsMixin):
                     context_keys=["name", "peer", "peer_interface"],
                 )
 
+        for l3_interface in self._filtered_l3_interfaces:
+            # Ethernet interface
+            ethernet_interface = self._get_l3_interface_cfg(l3_interface)
+
+            # Remove None values
+            ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
+
+            append_if_not_duplicate(
+                list_of_dicts=ethernet_interfaces,
+                primary_key="name",
+                new_dict=ethernet_interface,
+                context=f"Ethernet Interfaces defined under {self.data_model} l3_interfaces",
+                context_keys=["name", "peer", "peer_interface"],
+            )
+
+            if (subinterfaces := l3_interface.get("subinterfaces")) is not None:
+                for subinterface_dict in subinterfaces:
+                    # Technically could pass only the VRF name here but more convenient access
+                    subinterface = self._get_l3_subinterface_cfg(l3_interface, subinterface_dict)
+
+                    append_if_not_duplicate(
+                        list_of_dicts=ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=subinterface,
+                        context=f"Ethernet Sub interfaces defined under {self.data_model} l3_interfaces",
+                        context_keys=["name", "peer", "peer_interface"],
+                    )
+
         if ethernet_interfaces:
             return ethernet_interfaces
 

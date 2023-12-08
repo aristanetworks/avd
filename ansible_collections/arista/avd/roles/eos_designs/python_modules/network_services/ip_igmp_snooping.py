@@ -32,7 +32,7 @@ class IpIgmpSnoopingMixin(UtilsMixin):
             return ip_igmp_snooping
 
         vlans = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if vlan := self._ip_igmp_snooping_vlan(svi, tenant):

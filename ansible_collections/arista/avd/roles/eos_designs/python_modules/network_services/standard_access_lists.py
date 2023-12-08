@@ -28,7 +28,7 @@ class StandardAccessListsMixin(UtilsMixin):
             return None
 
         standard_access_lists = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for rp_entry in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
                     if self.shared_utils.hostname in get(rp_entry, "nodes", default=[self.shared_utils.hostname]):
