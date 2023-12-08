@@ -117,9 +117,9 @@ class AvdTestBase:
         Inline update of the shutdown value of an interface dictionary.
 
         The value of `interface['shutdown']` is considered first if it exists, if not False.
-        
+
         For Ethernet interfaces, `interface_defaults` is also considered.
-        
+
         Args:
             interface (dict): The interface to update.
             host (str): Host to verify. Defaults to the host running the test.
