@@ -50,7 +50,7 @@ class AvdTestBase:
         """
         Retrieves and returns the structured configuration for a specified host.
 
-        The function fetches the structured_config from hostvars. It ensures the returned object is a non-empty
+        The function fetches the structured_config from hostvars. It ensures the returned object is a
         dictionary, converting Ansible dictionary-like objects to a standard dictionary if necessary.
 
         Args:
