@@ -510,16 +510,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Queue Monitor Length
 
-| Setting | Value |
-| ------- | ----- |
-| Enabled | True
-| Logging Interval | 5 |
-| Default Thresholds High | - |
-| Default Thresholds Low | - |
-| Notifying | disabled |
-| TX Latency | disabled |
-| CPU Thresholds High | - |
-| CPU Thresholds Low | - |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| True | 5 | - | - | disabled | disabled | - | - |
 
 ### Queue Monitor Configuration
 

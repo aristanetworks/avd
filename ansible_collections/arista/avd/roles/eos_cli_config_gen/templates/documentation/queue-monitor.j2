@@ -19,16 +19,9 @@
 {%         set cpu_high = queue_monitor_length.cpu.thresholds.high | arista.avd.default('-') %}
 {%         set cpu_low = queue_monitor_length.cpu.thresholds.low | arista.avd.default('-') %}
 
-| Setting | Value |
-| ------- | ----- |
-| Enabled | {{ enabled }}
-| Logging Interval | {{ log }} |
-| Default Thresholds High | {{ default_high }} |
-| Default Thresholds Low | {{ default_low }} |
-| Notifying | {{ notifying }} |
-| TX Latency | {{ tx_latency }} |
-| CPU Thresholds High | {{ cpu_high }} |
-| CPU Thresholds Low | {{ cpu_low }} |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| {{ enabled }} | {{ log }} | {{ default_high }} | {{ default_low }} | {{ notifying }} | {{ tx_latency }} | {{ cpu_high }} | {{ cpu_low }} |
 {%     endif %}
 {%     if queue_monitor_streaming is arista.avd.defined %}
 

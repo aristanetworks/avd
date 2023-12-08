@@ -827,16 +827,9 @@ router bfd
 
 ### Queue Monitor Length
 
-| Setting | Value |
-| ------- | ----- |
-| Enabled | True
-| Logging Interval | 5 |
-| Default Thresholds High | - |
-| Default Thresholds Low | - |
-| Notifying | enabled |
-| TX Latency | disabled |
-| CPU Thresholds High | - |
-| CPU Thresholds Low | - |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| True | 5 | - | - | enabled | disabled | - | - |
 
 ### Queue Monitor Configuration
 

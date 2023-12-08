@@ -1259,16 +1259,9 @@ policy-map type pbr PM_PBR_BREAKOUT
 
 ### Queue Monitor Length
 
-| Setting | Value |
-| ------- | ----- |
-| Enabled | True
-| Logging Interval | 100 |
-| Default Thresholds High | - |
-| Default Thresholds Low | - |
-| Notifying | enabled |
-| TX Latency | disabled |
-| CPU Thresholds High | 200000 |
-| CPU Thresholds Low | 100000 |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| True | 100 | - | - | enabled | disabled | 200000 | 100000 |
 
 ### Queue Monitor Configuration
 
