@@ -1116,6 +1116,34 @@ $defs:
                             min: 2
                             max: 255
                             default: 3
+          wan_role:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_wan_role"
+            description: |-
+              PREVIEW: This key is currently not supported
+              Override the default WAN role.
+
+              This is used both for AutoVPN and Pathfinder designs.
+              That means if `wan_mode` root key is set to `autovpn` or `sdwan`.
+              `server` indicates that the router is a route-reflector.
+
+              Only supported if `overlay_routing_protocol` is set to `ibgp`.
+          sdwan_role:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_sdwan_role"
+            description: |-
+              PREVIEW: This key is currently not supported
+              Override the default SDWAN role.
+
+              This key is used for Pathfinder designs only when the `wan_mode` root
+              key is set to `sdwan`.
+
+              `pathfinder` is only a valid if `wan_role` is `server`.
+              `edge` and `transit` are only valid if `wan_role` is `client`.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

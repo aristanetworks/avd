@@ -1,0 +1,16 @@
+---
+wan_mode: autovpn
+type: edge
+
+# Not ibgp
+overlay_routing_protocol: none
+
+edge:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+  nodes:
+    - name: invalid-wan-role-overlay-routing-protocol
+      id: 1
+
+expected_error_message: >-
+  Only 'ibgp' is supported as 'overlay_routing_protocol' for WAN nodes.

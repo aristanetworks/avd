@@ -1,0 +1,17 @@
+---
+wan_mode: sdwan
+type: wan-controller
+
+bgp_as: 65000
+
+wan_controller:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+  nodes:
+    - name: invalid-wan-role-sdwan-role-2
+      # Trying to set pathfinder as RR client
+      wan_role: client
+      id: 1
+
+expected_error_message: >-
+  'wan_role' must be 'server' when 'sdwan_role' is set to 'pathfinder'
