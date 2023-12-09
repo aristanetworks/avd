@@ -7,6 +7,7 @@ from .compile_searchpath import compile_searchpath
 from .default import default
 from .get import get
 from .get_all import get_all
+from .get_and_validate import get_and_validate
 from .get_ip_from_pool import get_ip_from_pool
 from .get_item import get_item
 from .get_templar import get_templar
@@ -17,6 +18,7 @@ from .replace_or_append_item import replace_or_append_item
 from .template import template
 from .template_var import template_var
 from .unique import unique
+from .verify_and_return_path import verify_and_return_path
 from .yaml_dumper import NoAliasDumper
 
 __all__ = [
@@ -38,4 +40,6 @@ __all__ = [
     "PythonToAnsibleContextFilter",
     "PythonToAnsibleHandler",
     "NoAliasDumper",
+    "get_and_validate",
+    "verify_and_return_path",
 ]

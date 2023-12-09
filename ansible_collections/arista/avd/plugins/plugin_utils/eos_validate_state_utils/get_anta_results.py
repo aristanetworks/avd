@@ -82,7 +82,7 @@ def get_anta_results(
       skipped_tests (list[dict]): A list of dictionary
       ansible_tags (dict): An optional dictionary containing the tags to maintain legacy filtering behavior for
                            `eos_validate_state`. This is ignored is `skipped_tests` is set.
-      save_catalog_name (bool): When set, the generated catalog is saved to a file using this name.
+      save_catalog_name (str): When set, the generated catalog is saved to a file using this name.
       dry_run (boolean): if True, no test is actually run, useful in conjunction with save_catalog_name.
       yaml_dumper (Dumper): Dumper to use to dump Anta Catalog, default is NoAliasDumper to avoid anchors.
 

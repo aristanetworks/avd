@@ -5,7 +5,7 @@ from .ansible_eos_device import AnsibleEOSDevice
 from .avdtestbase import AvdTestBase
 from .csv_report import CSVReport
 from .get_anta_results import get_anta_results
-from .md_report import ValidateStateReport
+from .md_report import MDReport
 from .results_manager import ResultsManager
 
-__all__ = ["AnsibleEOSDevice", "get_anta_results", "AvdTestBase", "ValidateStateReport", "CSVReport", "ResultsManager"]
+__all__ = ["AnsibleEOSDevice", "get_anta_results", "AvdTestBase", "MDReport", "CSVReport", "ResultsManager"]

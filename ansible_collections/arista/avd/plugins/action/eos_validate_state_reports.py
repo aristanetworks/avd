@@ -14,9 +14,9 @@ from typing import Generator
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import CSVReport, ResultsManager, ValidateStateReport
+from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import CSVReport, MDReport, ResultsManager
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_and_validate, verify_and_return_path
 
 
 def _test_results_gen(input_path: str) -> Generator[dict, None, None]:
@@ -42,20 +42,6 @@ def _test_results_gen(input_path: str) -> Generator[dict, None, None]:
 
 
 class ActionModule(ActionBase):
-    def _get_and_validate_bool_arg(self, argument: str, *, default_value: bool) -> bool:
-        """Validate if a task argument is a boolean, returns the value if the validation succeeds."""
-        result = self._task.args.get(argument, default_value)
-        if not isinstance(result, bool):
-            raise AnsibleActionFail(f"'{argument}' must be a boolean, got {result}.")
-        return result
-
-    def _get_and_validate_path_arg(self, argument: str) -> str:
-        """Validate if a task path argument is valid and exists, returns the value if the validation succeeds."""
-        result = self._task.args.get(argument)
-        if not isinstance(result, str) or not Path(result).parent.exists():
-            raise AnsibleActionFail(f"'{argument}' must be a valid path and its directory must exist.")
-        return result
-
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
             task_vars = {}
@@ -70,14 +56,11 @@ class ActionModule(ActionBase):
             profiler.enable()
 
         # Get task arguments and validate them
-        only_failed_tests = self._get_and_validate_bool_arg(argument="only_failed_tests", default_value=False)
-        validation_report_csv = self._get_and_validate_bool_arg(argument="validation_report_csv", default_value=True)
-        validation_report_md = self._get_and_validate_bool_arg(argument="validation_report_md", default_value=True)
-
-        if validation_report_csv:
-            csv_report_path = self._get_and_validate_path_arg("csv_report_path")
-        if validation_report_md:
-            md_report_path = self._get_and_validate_path_arg("md_report_path")
+        only_failed_tests = get_and_validate(data=self._task.args, key="only_failed_tests", expected_type=bool, default_value=False)
+        validation_report_csv = get_and_validate(data=self._task.args, key="validation_report_csv", expected_type=bool, default_value=True)
+        validation_report_md = get_and_validate(data=self._task.args, key="validation_report_md", expected_type=bool, default_value=True)
+        csv_report_path = verify_and_return_path(path_input=self._task.args.get("csv_report_path")) if validation_report_csv else None
+        md_report_path = verify_and_return_path(path_input=self._task.args.get("md_report_path")) if validation_report_md else None
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand
         hostvars = task_vars["hostvars"]
@@ -95,11 +78,14 @@ class ActionModule(ActionBase):
                 if not get(host_hostvars, "is_deployed", default=True):
                     display.warning(f"No test results for host {host} since 'is_deployed' is False.")
                     continue
-                # Getting the host results temp file saved by eos_validate_state_runner action plugin
-                temp_file = get(host_hostvars, "anta_results.results_temp_file")
-                if not isinstance(temp_file, str) or not Path(temp_file).exists():
-                    display.warning(f"Results temporary file path {temp_file} is invalid or does not exist for host {host}.")
+                try:
+                    # Getting the host results temp file saved by eos_validate_state_runner action plugin
+                    temp_file = get(host_hostvars, "anta_results.results_temp_file")
+                    verify_and_return_path(path_input=temp_file)
+                except (TypeError, FileNotFoundError) as error:
+                    display.warning(str(error))
                     continue
+
                 # Track the temp file
                 temp_files.append(temp_file)
 
@@ -117,7 +103,7 @@ class ActionModule(ActionBase):
                     csv_report.generate_report()
             if validation_report_md:
                 with Path(md_report_path).open("w", encoding="UTF-8") as report_file:
-                    md_report = ValidateStateReport(report_file, test_results)
+                    md_report = MDReport(report_file, test_results)
                     md_report.generate_report()
 
         except Exception as error:

@@ -8,8 +8,8 @@ __metaclass__ = type
 import cProfile
 import logging
 import pstats
-from json import dump, dumps
-from pathlib import Path
+from json import dumps
+from shutil import copy2
 from tempfile import NamedTemporaryFile
 
 from ansible.errors import AnsibleActionFail
@@ -17,7 +17,12 @@ from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, get_anta_results
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleContextFilter, PythonToAnsibleHandler
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
+    PythonToAnsibleContextFilter,
+    PythonToAnsibleHandler,
+    get_and_validate,
+    verify_and_return_path,
+)
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 # ANTA currently add some RichHandler to the root logger so need to disable propagation
@@ -31,23 +36,6 @@ class AnsibleNoAliasDumper(AnsibleDumper):
 
 
 class ActionModule(ActionBase):
-    def _get_and_validate_arg(
-        self, argument: str, expected_type: type, default_value: bool | list | str | None = None, allowed_values: list[str] | None = None
-    ) -> bool | list | str:
-        """Validate a task argument, returns the value if the validation succeeds."""
-        result = self._task.args.get(argument, default_value)
-        if not isinstance(result, expected_type) or (allowed_values and result not in allowed_values):
-            allowed = f" in {allowed_values}" if allowed_values else ""
-            raise AnsibleActionFail(f"'{argument}' must be a {expected_type.__name__}{allowed}, got {result}.")
-        return result
-
-    def _get_and_validate_dir_arg(self, argument: str) -> str:
-        """Validate if a task directory argument is valid and exists, returns the value if the validation succeeds."""
-        result = self._task.args.get(argument)
-        if not isinstance(result, str) or not Path(result).exists():
-            raise AnsibleActionFail(f"'{argument}' must be a valid directory path and must exist.")
-        return result
-
     def run(self, tmp=None, task_vars=None):
         self._supports_check_mode = True
 
@@ -85,12 +73,13 @@ class ActionModule(ActionBase):
         setup_module_logging(hostname, result)
 
         # Get task arguments and validate them
-        logging_level = self._get_and_validate_arg(argument="logging_level", expected_type=str, default_value="WARNING", allowed_values=LOGGING_LEVELS)
-        skipped_tests = self._get_and_validate_arg(argument="skipped_tests", expected_type=list, default_value=[])
-        save_catalog = self._get_and_validate_arg(argument="save_catalog", expected_type=bool, default_value=False)
-        save_results = self._get_and_validate_arg(argument="save_results", expected_type=bool, default_value=False)
-        save_catalog_name = Path(self._get_and_validate_dir_arg(argument="device_catalog_output_dir")) / f"{hostname}-catalog.yml" if save_catalog else None
-        save_results_name = Path(self._get_and_validate_dir_arg(argument="device_results_output_dir")) / f"{hostname}-results.json" if save_results else None
+        # TODO: Try Except
+        logging_level = get_and_validate(data=self._task.args, key="logging_level", expected_type=str, default_value="WARNING", allowed_values=LOGGING_LEVELS)
+        skipped_tests = get_and_validate(data=self._task.args, key="skipped_tests", expected_type=list, default_value=[])
+        save_catalog = get_and_validate(data=self._task.args, key="save_catalog", expected_type=bool, default_value=False)
+        save_results = get_and_validate(data=self._task.args, key="save_results", expected_type=bool, default_value=False)
+        catalog_path = verify_and_return_path(path_input=self._task.args.get("device_catalog_path")) if save_catalog else None
+        result_path = verify_and_return_path(path_input=self._task.args.get("device_result_path")) if save_results else None
 
         try:
             anta_device = AnsibleEOSDevice(name=hostname, connection=ansible_connection, check_mode=ansible_check_mode)
@@ -100,24 +89,23 @@ class ActionModule(ActionBase):
                 logging_level=logging_level,
                 skipped_tests=skipped_tests,
                 ansible_tags=ansible_tags,
-                save_catalog_name=save_catalog_name,
+                save_catalog_name=catalog_path,
                 # This convert Ansible Check Mode to dry_run
                 dry_run=ansible_check_mode,
                 yaml_dumper=AnsibleNoAliasDumper,
             )
             # Call the function to handle temp file creation
-            temp_file_name = _create_temp_file(hostname, anta_results)
+            temp_file_path = _create_temp_file(hostname, anta_results)
 
-            # Save test results
-            if save_results_name:
-                with Path(save_results_name).open("w", encoding="UTF-8") as results_file:
-                    dump(anta_results, results_file, indent=2, sort_keys=False)
+            # Copy the temp file to the result_path if provided
+            if result_path:
+                copy2(temp_file_path, result_path)
 
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
 
         # Add the temp file path to the Ansible result
-        result["results_temp_file"] = temp_file_name
+        result["results_temp_file"] = temp_file_path
 
         if cprofile_file:
             profiler.disable()
@@ -130,8 +118,6 @@ class ActionModule(ActionBase):
 def _create_temp_file(hostname: str, anta_results: list[dict]) -> str:
     """Create a temporary JSON file to save all test results from ANTA.
 
-    The function will also search for leftover temp files in the `/tmp` folder and delete them.
-
     The temp file is saved in `/tmp` with a prefix of `<hostname>_` and `.json` extension.
 
     Args:
@@ -143,15 +129,8 @@ def _create_temp_file(hostname: str, anta_results: list[dict]) -> str:
     -------
       str: The absolute path of the temp file.
     """
-    temp_file_prefix = f"{hostname}_"
-    temp_file_directory = Path("/tmp")
-
-    # Search for leftover temp files with the hostname prefix and delete them.
-    for file in temp_file_directory.glob(f"{temp_file_prefix}*"):
-        file.unlink(missing_ok=True)
-
     # Create the temp JSON file to save the ANTA results
-    with NamedTemporaryFile(mode="w", encoding="UTF-8", suffix=".json", prefix=f"{hostname}_", dir=str(temp_file_directory), delete=False) as temp_file:
+    with NamedTemporaryFile(mode="w", encoding="UTF-8", suffix=".json", prefix=f"{hostname}_", delete=False) as temp_file:
         # Serialize to JSON and write to the temp file
         temp_file.write(dumps(anta_results, indent=2, sort_keys=False))
         return temp_file.name
