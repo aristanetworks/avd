@@ -221,18 +221,18 @@ class FailedTestResultsSummary(MDReportBase):
     """Generate the `## Failed Test Results Summary` section of the markdown report."""
 
     TABLE_HEADING: ClassVar[list[str]] = [
-        "| Test ID | Node | Test Categories | Test Description | Test | Test Result | Failure Reasons |",
-        "| ------- | ---- | --------------- | ---------------- | ---- | ----------- | --------------- |",
+        "| Test ID | Node | Test Categories | Test Description | Test | Test Result | Messages |",
+        "| ------- | ---- | --------------- | ---------------- | ---- | ----------- | -------- |",
     ]
 
     def generate_rows(self) -> Generator[str, None, None]:
         """Generate the rows of the failed test results table."""
         for result in self.results.failed_tests:
-            failure_reasons = ", ".join(result["failure_reasons"])
+            messages = ", ".join(result["messages"])
             categories = ", ".join(result["test_categories"])
             yield (
                 f"| {result['test_id'] or '-'} | {result['node'] or '-'} | {categories or '-'} | {result['test_description'] or '-'} |"
-                f" {result['test'] or '-'} | {result['result'] or '-'} | {failure_reasons or '-'} |\n"
+                f" {result['test'] or '-'} | {result['result'] or '-'} | {messages or '-'} |\n"
             )
 
     def generate_section(self) -> None:
@@ -248,18 +248,18 @@ class AllTestResults(MDReportBase):
     """
 
     TABLE_HEADING: ClassVar[list[str]] = [
-        "| Test ID | Node | Test Categories | Test Description | Test | Test Result | Failure Reasons |",
-        "| ------- | ---- | --------------- | ---------------- | ---- | ----------- | --------------- |",
+        "| Test ID | Node | Test Categories | Test Description | Test | Test Result | Messages |",
+        "| ------- | ---- | --------------- | ---------------- | ---- | ----------- | -------- |",
     ]
 
     def generate_rows(self) -> Generator[str, None, None]:
         """Generate the rows of the all test results table."""
         for result in self.results.all_tests:
-            failure_reasons = ", ".join(result["failure_reasons"])
+            messages = ", ".join(result["messages"])
             categories = ", ".join(result["test_categories"])
             yield (
                 f"| {result['test_id'] or '-'} | {result['node'] or '-'} | {categories or '-'} | {result['test_description'] or '-'} |"
-                f" {result['test'] or '-'} | {result['result'] or '-'} | {failure_reasons or '-'} |\n"
+                f" {result['test'] or '-'} | {result['result'] or '-'} | {messages or '-'} |\n"
             )
 
     def generate_section(self) -> None:

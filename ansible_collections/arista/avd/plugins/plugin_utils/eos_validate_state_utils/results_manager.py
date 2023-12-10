@@ -8,6 +8,9 @@ from collections import defaultdict
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import ACRONYM_CATEGORIES
 
+RESULTS_MAPPING: dict[str, str] = {"success": "PASS", "failure": "FAIL", "error": "FAIL", "skipped": "SKIPPED", "unset": "NOT RUN"}
+"""Mapping the results from ANTA to what we want in the AVD validate state report."""
+
 
 class ResultsManager:
     """Manages and stores test results from eos_validate_state running ANTA.
@@ -19,6 +22,10 @@ class ResultsManager:
 
     def __init__(self, *, only_failed_tests: bool = True) -> None:
         """Initialize the ResultsManager with default values and stats counters set to 0.
+
+        The class uses defaultdict to automatically initialize statistics for devices under test (DUT) and test categories.
+        This ensures that accessing a stat for a new DUT or category will automatically create an entry with initial
+        zeroed counters and empty sets for failed and skipped categories.
 
         Args:
         ----
@@ -69,9 +76,8 @@ class ResultsManager:
         ]
 
         # Mapping the ANTA results
-        result_mapping = {"success": "PASS", "failure": "FAIL", "error": "FAIL", "skipped": "SKIPPED", "unset": "NOT RUN"}
         anta_result = result.get("result", "")
-        new_result = result_mapping.get(anta_result, "")
+        new_result = RESULTS_MAPPING.get(anta_result, "")
 
         # Create the parsed result dictionary
         return {
@@ -82,7 +88,7 @@ class ResultsManager:
             # Since AVD tests can have the same description and category, ANTA's custom_field is used to differentiate tests
             "test": result.get("custom_field", "") if result.get("custom_field") != "None" else result.get("test", ""),
             "result": new_result,
-            "failure_reasons": result.get("messages", []),
+            "messages": result.get("messages", []),
         }
 
     def _increment_stats(self, test_result: str, dut: str, categories: list[str]) -> None:

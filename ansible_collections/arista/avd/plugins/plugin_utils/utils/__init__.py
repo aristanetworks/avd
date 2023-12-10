@@ -4,13 +4,15 @@
 from .append_if_not_duplicate import append_if_not_duplicate
 from .compare_dicts import compare_dicts
 from .compile_searchpath import compile_searchpath
+from .cprofile_decorator import cprofile
 from .default import default
 from .get import get
 from .get_all import get_all
-from .get_and_validate import get_and_validate
 from .get_ip_from_pool import get_ip_from_pool
 from .get_item import get_item
 from .get_templar import get_templar
+from .get_validated_path import get_validated_path
+from .get_validated_value import get_validated_value
 from .groupby import groupby
 from .load_python_class import load_python_class
 from .python_to_ansible_logging_handler import PythonToAnsibleContextFilter, PythonToAnsibleHandler
@@ -18,7 +20,6 @@ from .replace_or_append_item import replace_or_append_item
 from .template import template
 from .template_var import template_var
 from .unique import unique
-from .verify_and_return_path import verify_and_return_path
 from .yaml_dumper import NoAliasDumper
 
 __all__ = [
@@ -40,6 +41,7 @@ __all__ = [
     "PythonToAnsibleContextFilter",
     "PythonToAnsibleHandler",
     "NoAliasDumper",
-    "get_and_validate",
-    "verify_and_return_path",
+    "get_validated_path",
+    "get_validated_value",
+    "cprofile",
 ]

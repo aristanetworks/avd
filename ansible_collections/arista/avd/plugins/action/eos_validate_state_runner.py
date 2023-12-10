@@ -5,12 +5,9 @@ from __future__ import absolute_import, annotations, division, print_function
 
 __metaclass__ = type
 
-import cProfile
 import logging
-import pstats
-from json import dumps
-from shutil import copy2
-from tempfile import NamedTemporaryFile
+from json import dump
+from typing import TYPE_CHECKING
 
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
@@ -20,9 +17,12 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_util
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     PythonToAnsibleContextFilter,
     PythonToAnsibleHandler,
-    get_and_validate,
-    verify_and_return_path,
+    get_validated_path,
+    get_validated_value,
 )
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 # ANTA currently add some RichHandler to the root logger so need to disable propagation
@@ -36,6 +36,7 @@ class AnsibleNoAliasDumper(AnsibleDumper):
 
 
 class ActionModule(ActionBase):
+    # @cprofile()
     def run(self, tmp=None, task_vars=None):
         self._supports_check_mode = True
 
@@ -44,12 +45,6 @@ class ActionModule(ActionBase):
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
-
-        # Setup profiling
-        cprofile_file = self._task.args.get("cprofile_file")
-        if cprofile_file:
-            profiler = cProfile.Profile()
-            profiler.enable()
 
         # Setup variables
         hostname = task_vars["inventory_hostname"]
@@ -73,13 +68,17 @@ class ActionModule(ActionBase):
         setup_module_logging(hostname, result)
 
         # Get task arguments and validate them
-        # TODO: Try Except
-        logging_level = get_and_validate(data=self._task.args, key="logging_level", expected_type=str, default_value="WARNING", allowed_values=LOGGING_LEVELS)
-        skipped_tests = get_and_validate(data=self._task.args, key="skipped_tests", expected_type=list, default_value=[])
-        save_catalog = get_and_validate(data=self._task.args, key="save_catalog", expected_type=bool, default_value=False)
-        save_results = get_and_validate(data=self._task.args, key="save_results", expected_type=bool, default_value=False)
-        catalog_path = verify_and_return_path(path_input=self._task.args.get("device_catalog_path")) if save_catalog else None
-        result_path = verify_and_return_path(path_input=self._task.args.get("device_result_path")) if save_results else None
+        try:
+            logging_level = get_validated_value(
+                data=self._task.args, key="logging_level", expected_type=str, default_value="WARNING", allowed_values=LOGGING_LEVELS
+            )
+            skipped_tests = get_validated_value(data=self._task.args, key="skipped_tests", expected_type=list, default_value=[])
+            save_catalog = get_validated_value(data=self._task.args, key="save_catalog", expected_type=bool, default_value=False)
+            catalog_path = get_validated_path(path_input=self._task.args.get("device_catalog_path"), parent=True) if save_catalog else None
+            test_results_dir = get_validated_path(path_input=self._task.args.get("test_results_dir"), parent=False)
+        except (TypeError, ValueError, FileNotFoundError) as error:
+            msg = f"Failed to validate task arguments: {error}"
+            raise AnsibleActionFail(msg) from error
 
         try:
             anta_device = AnsibleEOSDevice(name=hostname, connection=ansible_connection, check_mode=ansible_check_mode)
@@ -94,46 +93,31 @@ class ActionModule(ActionBase):
                 dry_run=ansible_check_mode,
                 yaml_dumper=AnsibleNoAliasDumper,
             )
-            # Call the function to handle temp file creation
-            temp_file_path = _create_temp_file(hostname, anta_results)
 
-            # Copy the temp file to the result_path if provided
-            if result_path:
-                copy2(temp_file_path, result_path)
+            # Write the results to a JSON file
+            write_results(hostname=hostname, anta_results=anta_results, test_results_dir=test_results_dir)
 
         except Exception as error:
-            raise AnsibleActionFail(message=str(error)) from error
-
-        # Add the temp file path to the Ansible result
-        result["results_temp_file"] = temp_file_path
-
-        if cprofile_file:
-            profiler.disable()
-            stats = pstats.Stats(profiler).sort_stats("cumtime")
-            stats.dump_stats(cprofile_file)
+            msg = f"Error during plugin execution: {error}"
+            raise AnsibleActionFail(msg) from error
 
         return result
 
 
-def _create_temp_file(hostname: str, anta_results: list[dict]) -> str:
-    """Create a temporary JSON file to save all test results from ANTA.
+def write_results(hostname: str, anta_results: list[dict], test_results_dir: Path) -> None:
+    """Save all test results from ANTA to a JSON file.
 
-    The temp file is saved in `/tmp` with a prefix of `<hostname>_` and `.json` extension.
+    The JSON file name is hardcoded here to make sure we can retrieve it in the report plugin.
 
     Args:
     ----
       hostname (str): Current inventory device that is running the plugin.
       anta_results (list[dict]): The list of ANTA results that will be saved in the JSON file.
-
-    Returns:
-    -------
-      str: The absolute path of the temp file.
+      test_results_dir (Path): The test results directory where the results will be saved.
     """
-    # Create the temp JSON file to save the ANTA results
-    with NamedTemporaryFile(mode="w", encoding="UTF-8", suffix=".json", prefix=f"{hostname}_", delete=False) as temp_file:
-        # Serialize to JSON and write to the temp file
-        temp_file.write(dumps(anta_results, indent=2, sort_keys=False))
-        return temp_file.name
+    result_path = test_results_dir / f"{hostname}-results.json"
+    with result_path.open(mode="w", encoding="UTF-8") as result_file:
+        dump(anta_results, result_file, indent=2, sort_keys=False)
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
