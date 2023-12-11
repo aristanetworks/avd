@@ -480,6 +480,8 @@ keys:
                   type: list
                   items:
                     type: str
+                    convert_types:
+                    - int
                     description: 'Port values or range of port values.
 
                       Port values are between 0 and 65535.'
@@ -497,7 +499,7 @@ keys:
                   type: list
                   items:
                     type: str
-                    description: IP prefix (ex- 1.2.3.0/24).
+                    description: IP prefix (ex 1.2.3.0/24).
       applications:
         type: dict
         keys:
@@ -559,7 +561,7 @@ keys:
                     - int
                 udp_src_port_set_name:
                   type: str
-                  description: 'Source l4 port field set name for udp protocol.
+                  description: 'Name of field set for UDP source ports.
 
 
                     When the `protocols` list contain both `tcp` and `udp`, this key
@@ -568,7 +570,7 @@ keys:
                     must be the same as `tcp_src_port_set_name`.'
                 tcp_src_port_set_name:
                   type: str
-                  description: 'Source l4 port field set name for tcp protocol.
+                  description: 'Name of field set for TCP source ports.
 
 
                     When the `protocols` list contain both `tcp` and `udp`, this key
@@ -577,7 +579,7 @@ keys:
                     must be the same as `udp_src_port_set_name`.'
                 udp_dest_port_set_name:
                   type: str
-                  description: 'Destination l4 port field set name for udp protocol.
+                  description: 'Name of field set for UDP destination ports.
 
 
                     When the `protocols` list contain both `tcp` and `udp`, this key
@@ -586,7 +588,7 @@ keys:
                     must be the same as `tcp_dest_port_set_name`.'
                 tcp_dest_port_set_name:
                   type: str
-                  description: 'Destination l4 port field set name for tcp protocol.
+                  description: 'Name of field set for TCP destination ports.
 
 
                     When the `protocols` list contain both `tcp` and `udp`, this key

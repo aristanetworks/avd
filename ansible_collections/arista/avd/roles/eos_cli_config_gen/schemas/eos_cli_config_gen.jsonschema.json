@@ -816,7 +816,7 @@
                     "type": "array",
                     "items": {
                       "type": "string",
-                      "description": "IP prefix (ex- 1.2.3.0/24)."
+                      "description": "IP prefix (ex 1.2.3.0/24)."
                     },
                     "title": "Prefix Values"
                   }
@@ -892,22 +892,22 @@
                   },
                   "udp_src_port_set_name": {
                     "type": "string",
-                    "description": "Source l4 port field set name for udp protocol.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
+                    "description": "Name of field set for UDP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
                     "title": "UDP Src Port Set Name"
                   },
                   "tcp_src_port_set_name": {
                     "type": "string",
-                    "description": "Source l4 port field set name for tcp protocol.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
+                    "description": "Name of field set for TCP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
                     "title": "TCP Src Port Set Name"
                   },
                   "udp_dest_port_set_name": {
                     "type": "string",
-                    "description": "Destination l4 port field set name for udp protocol.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
+                    "description": "Name of field set for UDP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
                     "title": "UDP Dest Port Set Name"
                   },
                   "tcp_dest_port_set_name": {
                     "type": "string",
-                    "description": "Destination l4 port field set name for tcp protocol.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
+                    "description": "Name of field set for TCP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
                     "title": "TCP Dest Port Set Name"
                   }
                 },

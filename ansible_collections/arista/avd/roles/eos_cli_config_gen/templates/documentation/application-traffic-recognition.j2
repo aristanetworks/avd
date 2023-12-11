@@ -14,8 +14,8 @@
 
 #### IPv4 Applications
 
-| Name | Source Prefix | Destination Prefix | Protocol | Protocol Ranges | Tcp Source Port | Tcp Destination Port | Udp Source Port | Udp Destination Port |
-| ---- | ------------- | ------------------ | -------- | --------------- | --------------- | -------------------- | --------------- | -------------------- |
+| Name | Source Prefix | Destination Prefix | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set |
+| ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ |
 {%             for application in application_traffic_recognition.applications.ipv4_applications | arista.avd.natural_sort('name') %}
 {%                 set src_prefix = application.src_prefix_set_name | arista.avd.default("-") %}
 {%                 set dest_prefix = application.dest_prefix_set_name | arista.avd.default("-") %}
@@ -23,8 +23,8 @@
 {%                 set tcp_dest_port = application.tcp_dest_port_set_name | arista.avd.default("-") %}
 {%                 set udp_src_port = application.udp_src_port_set_name | arista.avd.default("-") %}
 {%                 set udp_dest_port = application.udp_dest_port_set_name | arista.avd.default("-") %}
-{%                 set protocol_ranges = "<br>".join(application.protocol_ranges) | arista.avd.default("-") %}
-{%                 set protocol = "<br>".join(application.protocols) | arista.avd.default("-") %}
+{%                 set protocol_ranges = ", ".join(application.protocol_ranges) | arista.avd.default("-") %}
+{%                 set protocol = ", ".join(application.protocols) | arista.avd.default("-") %}
 | {{ application.name }} | {{ src_prefix }} | {{ dest_prefix }} | {{ protocol }} | {{ protocol_ranges }} | {{ tcp_src_port }} | {{ tcp_dest_port }} | {{ udp_src_port }} | {{ udp_dest_port }} |
 {%             endfor %}
 {%         endif %}
@@ -56,11 +56,15 @@
 ### Categories
 
 | Category | Application(Service) |
-| -------- | --------------------- |
+| -------- | -------------------- |
 {%         for category in application_traffic_recognition.categories | arista.avd.natural_sort('name') %}
 {%             set apps = [] %}
 {%             for app_details in category.applications | arista.avd.natural_sort('service') | arista.avd.natural_sort('name') %}
-{%                 do apps.append( app_details.name + "(" + app_details.service | arista.avd.default("-") + ")" ) %}
+{%                 if app_details.service is arista.avd.defined %}
+{%                     do apps.append( app_details.name + "(" + app_details.service | arista.avd.default("-") + ")" ) %}
+{%                 else %}
+{%                     do apps.append( app_details.name ) %}
+{%                 endif %}
 {%             endfor %}
 | {{ category.name }} | {{ apps | arista.avd.default([]) | join('<br>') }} |
 {%         endfor %}
@@ -76,7 +80,7 @@
 | ---- | ----- |
 {%             for port_set in application_traffic_recognition.field_sets.l4_ports | arista.avd.natural_sort('name') %}
 {%                 do port_set.port_values.sort() %}
-| {{ port_set.name }} | {{ port_set.port_values | arista.avd.default([]) | join('<br>') }} |
+| {{ port_set.name }} | {{ port_set.port_values | arista.avd.default([]) | join(', ') }} |
 {%             endfor %}
 {%         endif %}
 {%         if application_traffic_recognition.field_sets.ipv4_prefixes is arista.avd.defined %}
@@ -84,7 +88,7 @@
 #### IPv4 Prefix Sets
 
 | Name | Prefixes |
-| ---- | ----- |
+| ---- | -------- |
 {%             for prefix_set in application_traffic_recognition.field_sets.ipv4_prefixes | arista.avd.natural_sort('name') %}
 {%                 do prefix_set.prefix_values.sort() %}
 | {{ prefix_set.name }} | {{ prefix_set.prefix_values | arista.avd.default([]) | join('<br>') }} |

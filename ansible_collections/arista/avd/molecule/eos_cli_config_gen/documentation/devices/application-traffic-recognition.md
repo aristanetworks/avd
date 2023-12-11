@@ -45,10 +45,10 @@ interface Management1
 
 #### IPv4 Applications
 
-| Name | Source Prefix | Destination Prefix | Protocol | Protocol Ranges | Tcp Source Port | Tcp Destination Port | Udp Source Port | Udp Destination Port |
-| ---- | ------------- | ------------------ | -------- | --------------- | --------------- | -------------------- | --------------- | -------------------- |
-| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp<br>tcp | 25 | src_port_set1 | dest_port_set1 | src_port_set2 | dest_port_set2 |
-| user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | pim<br>icmp<br>tcp | 21<br>7-11 | - | - | - | - |
+| Name | Source Prefix | Destination Prefix | Protocols | Protocol Ranges | TCP Source Port Set | TCP Destination Port Set | UDP Source Port Set | UDP Destination Port Set |
+| ---- | ------------- | ------------------ | --------- | --------------- | ------------------- | ------------------------ | ------------------- | ------------------------ |
+| user_defined_app1 | src_prefix_set1 | dest_prefix_set1 | udp, tcp | 25 | src_port_set1 | dest_port_set1 | src_port_set2 | dest_port_set2 |
+| user_defined_app2 | src_prefix_set2 | dest_prefix_set2 | pim, icmp, tcp | 21, 7-11 | - | - | - | - |
 
 ### Application Profiles
 
@@ -77,9 +77,9 @@ interface Management1
 ### Categories
 
 | Category | Application(Service) |
-| -------- | --------------------- |
+| -------- | -------------------- |
 | best-effort | aimini(peer-to-peer)<br>apple_update(software-update) |
-| category1 | aim(audio-video)<br>aim(chat)<br>anydesk(-) |
+| category1 | aim(audio-video)<br>aim(chat)<br>anydesk |
 | empty |  |
 
 ### Field Sets
@@ -90,13 +90,13 @@ interface Management1
 | ---- | ----- |
 | dest_port_set1 | 2300-2350 |
 | dest_port_set2 | 3300-3350 |
-| src_port_set1 | 2400-2500<br>2900-3000 |
-| src_port_set2 | 5700-5800<br>6500-6600 |
+| src_port_set1 | 2400-2500, 2900-3000 |
+| src_port_set2 | 5700-5800, 6500-6600 |
 
 #### IPv4 Prefix Sets
 
 | Name | Prefixes |
-| ---- | ----- |
+| ---- | -------- |
 | dest_prefix_set1 | 2.3.4.0/24 |
 | dest_prefix_set2 | 4.4.4.0/24 |
 | src_prefix_set1 | 1.2.3.0/24<br>1.2.5.0/24 |
