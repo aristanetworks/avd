@@ -1,4 +1,8 @@
+# Example to add experimental protos:
+# EXTRA_DIRS="-I ~/go/src/arista/resources" EXTRA_PROTOS="~/go/src/arista/resources/arista/configlet.v1/configlet.proto ~/go/src/arista/resources/arista/configlet.v1/services.gen.proto" make
 VENDORPATH=cloudvision-apis
+EXTRA_PROTOS?=""
+EXTRA_DIRS?=""
 DUMMY := $(shell \
   rm -rf $(VENDORPATH); \
   git clone --single-branch --branch trunk https://github.com/aristanetworks/cloudvision-apis.git $(VENDORPATH); \
@@ -21,7 +25,7 @@ api-dir:
 	rm -rf ./api/*
 
 api-models: api-dir
-	$(PYTHON) -m grpc_tools.protoc -I $(VENDORPATH) --python_betterproto_out=$(APIPATH) $(ALL_PROTOS)
+	$(PYTHON) -m grpc_tools.protoc -I $(VENDORPATH) $(EXTRA_DIRS) --python_betterproto_out=$(APIPATH) $(ALL_PROTOS) $(EXTRA_PROTOS)
 
 api: api-dir api-models  ## Build/refresh gRPC bindings in ./api
 	@rm -rf $(VENDORPATH)
