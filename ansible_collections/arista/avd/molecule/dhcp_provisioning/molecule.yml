@@ -3,7 +3,6 @@
 scenario:
   create_sequence:
     - dependency
-    - create
     - prepare
   converge_sequence:
     - dependency
