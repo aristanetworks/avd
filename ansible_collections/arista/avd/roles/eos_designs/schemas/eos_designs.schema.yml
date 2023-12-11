@@ -595,31 +595,33 @@ keys:
       keys:
         description:
           type: str
-        zones:
+        id:
+          type: int
+          description: The region ID must be unique for the whole WAN deployment.
+        sites:
           type: list
+          description: All sites are placed in a default zone called DEFAULT-ZONE
+            with ID 1.
           primary_key: name
           items:
             type: dict
-            $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/zone
+            $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site
             keys:
               description:
                 type: str
-              sites:
-                type: list
-                primary_key: name
-                items:
-                  type: dict
-                  $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site
-                  keys:
-                    description:
-                      type: str
-                    location:
-                      type: str
-                      description: Will be interpreted
-                    site_contact:
-                      type: str
-                    site_after_hours_contact:
-                      type: str
+              id:
+                type: int
+                description: 'The site ID must be unique within a zone.
+
+                  Given that all the sites are placed in the DEFAULT-ZONE, the site
+                  ID must be unique within a region.'
+              location:
+                type: str
+                description: Will be interpreted
+              site_contact:
+                type: str
+              site_after_hours_contact:
+                type: str
   cv_topology:
     documentation_options:
       table: cv-topology
@@ -6763,6 +6765,10 @@ $defs:
             convert_types:
             - int
             description: Set BGP cluster id.
+          cv_pathfinder_region:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
           cv_pathfinder_site:
             documentation_options:
               table: node-type-wan-configuration

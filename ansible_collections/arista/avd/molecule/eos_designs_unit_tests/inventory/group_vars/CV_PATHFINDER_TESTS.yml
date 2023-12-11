@@ -8,23 +8,15 @@ cv_pathfinder_regions:
   - name: AVD_Land_West
     id: 42
     description: AVD Region
-    zones:
-      - name: danger
-        id: 42
-        description: Danger Zone
-        sites:
-          - name: Site422
-            id: 422
+    sites:
+      - name: Site422
+        id: 422
   - name: AVD_Land_East
     id: 43
     description: AVD Region
-    zones:
-      - name: Roswell
-        id: 51
-        description: Zone 51
-        sites:
-          - name: Site511
-            id: 511
+    sites:
+      - name: Site511
+        id: 511
 
 bgp_peer_groups:
   wan_overlay_peers:
@@ -56,6 +48,7 @@ edge:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: cv-pathfinder-edge
+      cv_pathfinder_region: AVD_Land_East
       cv_pathfinder_site: Site511
       id: 1
 
@@ -64,6 +57,7 @@ transit:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: cv-pathfinder-transit
+      cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site422
       id: 1
 

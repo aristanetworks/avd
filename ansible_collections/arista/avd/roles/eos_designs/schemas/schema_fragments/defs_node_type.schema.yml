@@ -923,6 +923,10 @@ $defs:
             convert_types:
               - "int"
             description: Set BGP cluster id.
+          cv_pathfinder_region:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
           cv_pathfinder_site:
             documentation_options:
               table: node-type-wan-configuration

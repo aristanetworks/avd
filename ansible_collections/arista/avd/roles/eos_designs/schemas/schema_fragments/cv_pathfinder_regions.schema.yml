@@ -20,28 +20,60 @@ keys:
       keys:
         description:
           type: str
-        zones:
+        id:
+          type: int
+          description: |-
+            The region ID must be unique for the whole WAN deployment.
+        sites:
           type: list
+          description: |-
+            All sites are placed in a default zone called DEFAULT-ZONE with ID 1.
           primary_key: name
           items:
             type: dict
-            $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/zone"
+            $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site"
             keys:
               description:
                 type: str
-              sites:
-                type: list
-                primary_key: name
-                items:
-                  type: dict
-                  $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site"
-                  keys:
-                    description:
-                      type: str
-                    location:
-                      type: str
-                      description: Will be interpreted
-                    site_contact:
-                      type: str
-                    site_after_hours_contact:
-                      type: str
+              id:
+                type: int
+                description: |-
+                  The site ID must be unique within a zone.
+                  Given that all the sites are placed in the DEFAULT-ZONE, the site ID must be unique within a region.
+              location:
+                type: str
+                description: Will be interpreted
+              site_contact:
+                type: str
+              site_after_hours_contact:
+                type: str
+        # Model for zones when required
+        #zones:
+        #  type: list
+        #  primary_key: name
+        #  items:
+        #    type: dict
+        #    $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/zone"
+        #    keys:
+        #      description:
+        #        type: str
+        #     id:
+        #       type: int
+        #       description: |-
+        #         The zone ID must be unique per region.
+        #      sites:
+        #        type: list
+        #        primary_key: name
+        #        items:
+        #          type: dict
+        #          $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site"
+        #          keys:
+        #            description:
+        #              type: str
+        #            location:
+        #              type: str
+        #              description: Will be interpreted
+        #            site_contact:
+        #              type: str
+        #            site_after_hours_contact:
+        #              type: str

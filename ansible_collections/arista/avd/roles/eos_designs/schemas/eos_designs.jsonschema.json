@@ -8717,8 +8717,16 @@
             "type": "string",
             "title": "Description"
           },
-          "zones": {
+          "id": {
+            "type": "integer",
+            "description": "The region ID must be unique for the whole WAN deployment.",
+            "minimum": 1,
+            "maximum": 255,
+            "title": "ID"
+          },
+          "sites": {
             "type": "array",
+            "description": "All sites are placed in a default zone called DEFAULT-ZONE with ID 1.",
             "items": {
               "type": "object",
               "properties": {
@@ -8726,88 +8734,51 @@
                   "type": "string",
                   "title": "Description"
                 },
-                "sites": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "description": {
-                        "type": "string",
-                        "title": "Description"
-                      },
-                      "location": {
-                        "type": "string",
-                        "description": "Will be interpreted",
-                        "title": "Location"
-                      },
-                      "site_contact": {
-                        "type": "string",
-                        "title": "Site Contact"
-                      },
-                      "site_after_hours_contact": {
-                        "type": "string",
-                        "title": "Site After Hours Contact"
-                      },
-                      "name": {
-                        "type": "string",
-                        "title": "Name"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 10000,
-                        "title": "ID"
-                      }
-                    },
-                    "required": [
-                      "name",
-                      "id"
-                    ],
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "description": "Site name and ID."
-                  },
-                  "title": "Sites"
+                "id": {
+                  "type": "integer",
+                  "description": "The site ID must be unique within a zone.\nGiven that all the sites are placed in the DEFAULT-ZONE, the site ID must be unique within a region.",
+                  "minimum": 1,
+                  "maximum": 10000,
+                  "title": "ID"
+                },
+                "location": {
+                  "type": "string",
+                  "description": "Will be interpreted",
+                  "title": "Location"
+                },
+                "site_contact": {
+                  "type": "string",
+                  "title": "Site Contact"
+                },
+                "site_after_hours_contact": {
+                  "type": "string",
+                  "title": "Site After Hours Contact"
                 },
                 "name": {
                   "type": "string",
                   "title": "Name"
-                },
-                "id": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 10000,
-                  "title": "ID"
                 }
               },
               "required": [
-                "name",
-                "id"
+                "id",
+                "name"
               ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}
               },
-              "description": "Zone name and ID."
+              "description": "Site name and ID."
             },
-            "title": "Zones"
+            "title": "Sites"
           },
           "name": {
             "type": "string",
             "title": "Name"
-          },
-          "id": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 255,
-            "title": "ID"
           }
         },
         "required": [
-          "name",
-          "id"
+          "id",
+          "name"
         ],
         "additionalProperties": false,
         "patternProperties": {

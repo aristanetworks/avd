@@ -127,8 +127,8 @@ router_adaptive_virtual_topology:
     name: AVD_Land_West
     id: 42
   zone:
-    name: danger
-    id: 42
+    name: DEFAULT-ZONE
+    id: 1
   site:
     name: Site422
     id: 422

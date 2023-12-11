@@ -268,21 +268,8 @@ class UtilsMixin:
             return None
 
         node_defined_site = get(self.shared_utils.switch_data_combined, "cv_pathfinder_site", required=True)
-        regions = get(self._hostvars, "cv_pathfinder_regions", required=True)
-        for region in regions:
-            zones = get(region, "zones", [])
-            for zone in zones:
-                sites = get(zone, "sites", [])
-                if (site := get_item(sites, "name", node_defined_site)) is not None:
-                    # Storing the zone and region under _wan_site to avoid recomputing all the time
-                    zone_info = zone.copy()
-                    zone_info.pop("sites")
-                    region_info = region.copy()
-                    region_info.pop("zones")
-                    site.update({"zone": zone_info, "region": region_info})
-                    return site
-        # If we reach here we did not find our wan_site in the hierarchy when we should have
-        raise AristaAvdError(f"WAN site {node_defined_site} was not found in the hierarchy defined under 'cv_pathfinder_regions'.")
+        sites = get(self._wan_region, "sites", [])
+        return get_item(sites, "name", node_defined_site, required=True)
 
     @cached_property
     def _wan_region(self) -> dict | None:
@@ -291,16 +278,24 @@ class UtilsMixin:
         """
         if not self.shared_utils.cv_pathfinder_role:
             return None
-        return self._wan_site["region"]
+
+        node_defined_region = get(self.shared_utils.switch_data_combined, "cv_pathfinder_region", required=True)
+        regions = get(self._hostvars, "cv_pathfinder_regions", required=True)
+
+        return get_item(regions, "name", node_defined_region, required=True)
 
     @cached_property
     def _wan_zone(self) -> dict | None:
         """
         WAN zone for Pathfinder
+
+        Currently, only default zone DEFAULT-ZONE with ID 1 is supported.
         """
         if not self.shared_utils.cv_pathfinder_role:
             return None
-        return self._wan_site["zone"]
+
+        # Injecting zone DEFAULT-ZONE with id 1.
+        return {"name": "DEFAULT-ZONE", "id": 1}
 
     @cached_property
     def _wan_route_reflectors(self) -> dict:
