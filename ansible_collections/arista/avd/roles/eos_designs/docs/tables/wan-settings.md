@@ -38,7 +38,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.data_plane.sa_policy_name") | String |  |  |  | Name of the SA policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.data_plane.profile_name") | String |  |  |  | Name of the IPSec profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String | Required |  |  | The IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
-    | [<samp>wan_mode</samp>](## "wan_mode") | String |  |  | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.<br>The default is `cv-pathfinder`<br>PREVIEW: This key is currently not supported |
+    | [<samp>wan_mode</samp>](## "wan_mode") | String |  |  | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | PREVIEW: This key is currently not supported<br><br>Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.<br>The default is `cv-pathfinder` |
 
 === "YAML"
 
@@ -154,8 +154,9 @@
         # This variable is sensitive and SHOULD be configured using some vault mechanism.
         shared_key: <str; required>
 
+    # PREVIEW: This key is currently not supported
+
     # Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.
     # The default is `cv-pathfinder`
-    # PREVIEW: This key is currently not supported
     wan_mode: <str; "autovpn" | "cv-pathfinder">
     ```
