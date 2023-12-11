@@ -1,7 +1,6 @@
 ---
 scenario:
   converge_sequence:
-    - create
     - converge
   test_sequence:
     - create
