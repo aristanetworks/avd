@@ -139,6 +139,19 @@ class OAuthConfig(betterproto.Message):
     the provider is disabled.
     """
 
+    bearer_token_introspection_endpoint: Optional[str] = betterproto.message_field(
+        10, wraps=betterproto.TYPE_STRING
+    )
+    """
+    bearer_token_introspection_endpoint is the provider instrospection endpoint
+    used in Bearer Token based login support for CloudVision. This endpoint
+    will be used to verify the bearer token received when an external
+    application is logging in. This is an optional field. CloudVision will only
+    support this feature for a single provider per org, hence only one provider
+    is allowed to have this field set. If not set for any providers,
+    CloudVision determines that Bearer Token based login support is disabled.
+    """
+
 
 @dataclass(eq=False, repr=False)
 class SamlKey(betterproto.Message):
@@ -169,7 +182,7 @@ class SamlConfig(betterproto.Message):
         3, wraps=betterproto.TYPE_STRING
     )
     """
-    idp_metadata_url is the URL that CloudVision uses to fetch the  SAML
+    idp_metadata_url is the URL that CloudVision uses to fetch the SAML
     provider metadata.
     """
 
@@ -208,6 +221,35 @@ class SamlConfig(betterproto.Message):
     """
     force_saml_authn indicates wether or not enable force authentication in
     SAML login. This is an optional field. If not set, it defaults to false.
+    """
+
+    roles_attrname: Optional[str] = betterproto.message_field(
+        9, wraps=betterproto.TYPE_STRING
+    )
+    """
+    roles_attrname specifies the Attribute name for CloudVision roles in the
+    Assertion of SAMLResponse. This is an optional field. If not set,
+    CloudVision determines that mapping roles from the provider is disabled.
+    """
+
+    org_attrname: Optional[str] = betterproto.message_field(
+        10, wraps=betterproto.TYPE_STRING
+    )
+    """
+    org_attrname specifies the Attribute name for CloudVision
+    organization/tenant in the Assertion of SAMLResponse. This is an optional
+    field. CloudVision supports use of certain shared SAML Identity Providers
+    for authenticating users across multiple CloudVision organizations/tenants.
+    In case a given organization uses a shared provider, then, CloudVision
+    needs this attribute to determine if the organization that the shared SAML
+    Identity Provider is sending the assertion for is the same as the one the
+    user requested to be logged into. For an existing user on CloudVision, the
+    user's email is used to determine which organization the user belongs to do
+    the same verification but in case a dynamic user creation is needed and the
+    given user doesn't exist on CloudVision currently then the matching
+    organization attribute from the shared Identity Privder becomes necessary.
+    Dynamic user creation is disabled for a given organization using shared
+    Identity Provider if this attribute is not specified.
     """
 
 
@@ -256,7 +298,15 @@ class OAuthConfigStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each OAuthConfig at end.     * Each OAuthConfig
+    response is fully-specified (all fields set).   * start: Returns the state
+    of each OAuthConfig at start, followed by updates until now.     * Each
+    OAuthConfig response at start is fully-specified, but updates may be
+    partial.   * start and end: Returns the state of each OAuthConfig at start,
+    followed by updates     until end.     * Each OAuthConfig response at start
+    is fully-specified, but updates until end may       be partial. This field
+    is not allowed in the Subscribe RPC.
     """
 
 
@@ -307,6 +357,24 @@ class OAuthConfigSetResponse(betterproto.Message):
     after the time the request was received    - a time-ranged query with
     StartTime==CreatedAt will include this instance.
     """
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigSetSomeRequest(betterproto.Message):
+    values: List["OAuthConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of OAuthConfig values to write. It is possible to
+    provide more values than can fit within either:     - the maxiumum send
+    size of the client     - the maximum receive size of the server If this
+    error occurs you must reduce the number of values sent. See gRPC "maximum
+    message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class OAuthConfigSetSomeResponse(betterproto.Message):
+    key: "OAuthKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
 
 
 @dataclass(eq=False, repr=False)
@@ -399,7 +467,15 @@ class SamlConfigStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each SAMLConfig at end.     * Each SAMLConfig
+    response is fully-specified (all fields set).   * start: Returns the state
+    of each SAMLConfig at start, followed by updates until now.     * Each
+    SAMLConfig response at start is fully-specified, but updates may be
+    partial.   * start and end: Returns the state of each SAMLConfig at start,
+    followed by updates     until end.     * Each SAMLConfig response at start
+    is fully-specified, but updates until end may       be partial. This field
+    is not allowed in the Subscribe RPC.
     """
 
 
@@ -450,6 +526,24 @@ class SamlConfigSetResponse(betterproto.Message):
     after the time the request was received    - a time-ranged query with
     StartTime==CreatedAt will include this instance.
     """
+
+
+@dataclass(eq=False, repr=False)
+class SamlConfigSetSomeRequest(betterproto.Message):
+    values: List["SamlConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of SAMLConfig values to write. It is possible to
+    provide more values than can fit within either:     - the maxiumum send
+    size of the client     - the maximum receive size of the server If this
+    error occurs you must reduce the number of values sent. See gRPC "maximum
+    message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SamlConfigSetSomeResponse(betterproto.Message):
+    key: "SamlKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
 
 
 @dataclass(eq=False, repr=False)
@@ -568,6 +662,24 @@ class OAuthConfigServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def set_some(
+        self,
+        o_auth_config_set_some_request: "OAuthConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["OAuthConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.identityprovider.v1.OAuthConfigService/SetSome",
+            o_auth_config_set_some_request,
+            OAuthConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
     async def delete(
         self,
         o_auth_config_delete_request: "OAuthConfigDeleteRequest",
@@ -675,6 +787,24 @@ class SamlConfigServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def set_some(
+        self,
+        saml_config_set_some_request: "SamlConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["SamlConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.identityprovider.v1.SAMLConfigService/SetSome",
+            saml_config_set_some_request,
+            SamlConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
     async def delete(
         self,
         saml_config_delete_request: "SamlConfigDeleteRequest",
@@ -734,6 +864,12 @@ class OAuthConfigServiceBase(ServiceBase):
     ) -> "OAuthConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def set_some(
+        self, o_auth_config_set_some_request: "OAuthConfigSetSomeRequest"
+    ) -> AsyncIterator["OAuthConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield OAuthConfigSetSomeResponse()
+
     async def delete(
         self, o_auth_config_delete_request: "OAuthConfigDeleteRequest"
     ) -> "OAuthConfigDeleteResponse":
@@ -782,6 +918,17 @@ class OAuthConfigServiceBase(ServiceBase):
         response = await self.set(request)
         await stream.send_message(response)
 
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[OAuthConfigSetSomeRequest, OAuthConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
     async def __rpc_delete(
         self,
         stream: "grpclib.server.Stream[OAuthConfigDeleteRequest, OAuthConfigDeleteResponse]",
@@ -827,6 +974,12 @@ class OAuthConfigServiceBase(ServiceBase):
                 OAuthConfigSetRequest,
                 OAuthConfigSetResponse,
             ),
+            "/arista.identityprovider.v1.OAuthConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                OAuthConfigSetSomeRequest,
+                OAuthConfigSetSomeResponse,
+            ),
             "/arista.identityprovider.v1.OAuthConfigService/Delete": grpclib.const.Handler(
                 self.__rpc_delete,
                 grpclib.const.Cardinality.UNARY_UNARY,
@@ -864,6 +1017,12 @@ class SamlConfigServiceBase(ServiceBase):
         self, saml_config_set_request: "SamlConfigSetRequest"
     ) -> "SamlConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def set_some(
+        self, saml_config_set_some_request: "SamlConfigSetSomeRequest"
+    ) -> AsyncIterator["SamlConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield SamlConfigSetSomeResponse()
 
     async def delete(
         self, saml_config_delete_request: "SamlConfigDeleteRequest"
@@ -913,6 +1072,17 @@ class SamlConfigServiceBase(ServiceBase):
         response = await self.set(request)
         await stream.send_message(response)
 
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[SamlConfigSetSomeRequest, SamlConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
     async def __rpc_delete(
         self,
         stream: "grpclib.server.Stream[SamlConfigDeleteRequest, SamlConfigDeleteResponse]",
@@ -957,6 +1127,12 @@ class SamlConfigServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_UNARY,
                 SamlConfigSetRequest,
                 SamlConfigSetResponse,
+            ),
+            "/arista.identityprovider.v1.SAMLConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                SamlConfigSetSomeRequest,
+                SamlConfigSetSomeResponse,
             ),
             "/arista.identityprovider.v1.SAMLConfigService/Delete": grpclib.const.Handler(
                 self.__rpc_delete,

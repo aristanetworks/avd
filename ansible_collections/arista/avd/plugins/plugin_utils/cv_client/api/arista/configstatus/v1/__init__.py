@@ -116,6 +116,28 @@ class ConfigSyncCode(betterproto.Enum):
     """
 
 
+class ConfigSourceType(betterproto.Enum):
+    """
+    ConfigSourceType indicates the type of source for the proposed/designed
+    configuration for the device
+    """
+
+    CONFIG_SOURCE_TYPE_UNSPECIFIED = 0
+    CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET = 1
+    """
+    CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET - configlet created from
+    the network provisioning workflow.
+    """
+
+    CONFIG_SOURCE_TYPE_STUDIO = 2
+    """CONFIG_SOURCE_TYPE_STUDIO - config generated from a regular studio"""
+
+    CONFIG_SOURCE_TYPE_STUDIO_STATIC = 3
+    """
+    SCONFIG_SOURCE_TYPE_STUDIO_STATIC - static config from studios framework
+    """
+
+
 class ConfigType(betterproto.Enum):
     CONFIG_TYPE_UNSPECIFIED = 0
     CONFIG_TYPE_RUNNING_CONFIG = 1
@@ -169,7 +191,7 @@ class DiffEntry(betterproto.Message):
     b_parent_line_num: Optional[int] = betterproto.message_field(
         4, wraps=betterproto.TYPE_INT32
     )
-    """line number in B of the leading command of the containing block"""
+    """line number of the parent command in B"""
 
     a_line: Optional[str] = betterproto.message_field(5, wraps=betterproto.TYPE_STRING)
     """content of config line in A"""
@@ -183,12 +205,42 @@ class DiffEntry(betterproto.Message):
     b_filter_code: "ConfigFilterCode" = betterproto.enum_field(8)
     """Config filter code of the line in B"""
 
+    a_parent_line_num: Optional[int] = betterproto.message_field(
+        9, wraps=betterproto.TYPE_INT32
+    )
+    """line number of the parent command in A"""
+
 
 @dataclass(eq=False, repr=False)
 class DiffEntries(betterproto.Message):
     """DiffEntries indicates potential multiple lines of config diff"""
 
     values: List["DiffEntry"] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class ConfigSource(betterproto.Message):
+    """
+    ConfigSource describes an individual source of the proposed/designed config
+    """
+
+    source_type: "ConfigSourceType" = betterproto.enum_field(1)
+    source_id: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """
+    source_id identifier to distinguish between multiple instances of the
+    source type source_id is :        configlet name for
+    CONFIG_SOURCE_TYPE_NETWORK_PROVISIONING_CONFIGLET    studio id for
+    CONFIG_SOURCE_TYPE_STUDIO configlet id for CONFIG_SOURCE_TYPE_STUDIO_STATIC
+    """
+
+
+@dataclass(eq=False, repr=False)
+class ConfigSources(betterproto.Message):
+    """ConfigSources is the list of sources of the proposed/designed config"""
+
+    values: List["ConfigSource"] = betterproto.message_field(1)
 
 
 @dataclass(eq=False, repr=False)
@@ -257,10 +309,7 @@ class ConfigSummary(betterproto.Message):
     """The HTTP URI client can use to GET config diff and associated errors"""
 
     digest: Optional[str] = betterproto.message_field(14, wraps=betterproto.TYPE_STRING)
-    """
-    Digest of the config diff. For example, it can be SHA-256 hash of the
-    config diff
-    """
+    """Digest (SHA-256) of the config diff."""
 
 
 @dataclass(eq=False, repr=False)
@@ -286,8 +335,6 @@ class Configuration(betterproto.Message):
     Uri represents the HTTP URI client can use to GET config body and
     associated errors
     """
-
-    error: "ConfigError" = betterproto.message_field(3)
 
 
 @dataclass(eq=False, repr=False)
@@ -336,8 +383,6 @@ class ConfigDiff(betterproto.Message):
     associated errors
     """
 
-    error: "ConfigError" = betterproto.message_field(3)
-
 
 @dataclass(eq=False, repr=False)
 class SummaryKey(betterproto.Message):
@@ -353,7 +398,96 @@ class SummaryKey(betterproto.Message):
 class Summary(betterproto.Message):
     key: "SummaryKey" = betterproto.message_field(1)
     summary: "ConfigSummary" = betterproto.message_field(2)
-    error: "ConfigError" = betterproto.message_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfile(betterproto.Message):
+    """
+    SecurityProfile holds the EOS configuration for the security profile.
+    """
+
+    key: "ConfigKey" = betterproto.message_field(1)
+    """key uniquely identifies the configuration"""
+
+    config: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """config describes the security profile config body"""
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileComplianceSummary(betterproto.Message):
+    """
+    SecurityProfileComplianceSummary holds the compliance summary for security
+    profile configuration.
+    """
+
+    sync: "ConfigSyncCode" = betterproto.enum_field(1)
+    nop_lines: Optional[int] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_INT32
+    )
+    """nop_lines is the number of lines with code no-operation"""
+
+    ignored_lines: Optional[int] = betterproto.message_field(
+        3, wraps=betterproto.TYPE_INT32
+    )
+    """ignored_lines is the number of lines with code IGNORE"""
+
+    added_lines: Optional[int] = betterproto.message_field(
+        4, wraps=betterproto.TYPE_INT32
+    )
+    """added_lines is the number of lines with code ADD"""
+
+    deleted_lines: Optional[int] = betterproto.message_field(
+        5, wraps=betterproto.TYPE_INT32
+    )
+    """deleted_lines is the number of lines with code DELETE"""
+
+    changed_lines: Optional[int] = betterproto.message_field(
+        6, wraps=betterproto.TYPE_INT32
+    )
+    """changed_lines is the Number of lines with code CHANGE"""
+
+    digest: Optional[str] = betterproto.message_field(7, wraps=betterproto.TYPE_STRING)
+    """
+    digest is the digest (SHA-256 hash) of the security profile configuration
+    diff
+    """
+
+    running_config_update_time: datetime = betterproto.message_field(8)
+    """
+    running_config_update_time is the timestamp at which running security
+    profile or running config is updated
+    """
+
+    designed_config_update_time: datetime = betterproto.message_field(9)
+    """
+    designed_config_update_time is the timestamp at which designed security
+    profile or designed config is updated
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffSummary(betterproto.Message):
+    """
+    SecurityProfileDiffSummary holds device compliance summary w.r.t security
+    profile.
+    """
+
+    key: "SummaryKey" = betterproto.message_field(1)
+    """key uniquely identifies the Summary"""
+
+    summary: "SecurityProfileComplianceSummary" = betterproto.message_field(2)
+    """summary is the security profile configuration compliance summary"""
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiff(betterproto.Message):
+    """SecurityProfileDiff holds the security profile configuration diff."""
+
+    key: "ConfigDiffKey" = betterproto.message_field(1)
+    """key represents security profile config diff key"""
+
+    diff: "DiffEntries" = betterproto.message_field(2)
+    """diff represents diff entries"""
 
 
 @dataclass(eq=False, repr=False)
@@ -497,6 +631,229 @@ class ConfigurationStreamResponse(betterproto.Message):
     INITIAL. In a subscription, once all initial data is streamed and the
     client begins to receive modification updates, you should not see INITIAL
     again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileRequest(betterproto.Message):
+    key: "ConfigKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a SecurityProfile instance to retrieve. This value
+    must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileResponse(betterproto.Message):
+    value: "SecurityProfile" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SecurityProfile instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileStreamRequest(betterproto.Message):
+    partial_eq_filter: List["SecurityProfile"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. This field is not allowed in the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileStreamResponse(betterproto.Message):
+    value: "SecurityProfile" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time holds the timestamp of this SecurityProfile's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the SecurityProfile value in this response should
+    be considered. Under non-subscribe requests, this value should always be
+    INITIAL. In a subscription, once all initial data is streamed and the
+    client begins to receive modification updates, you should not see INITIAL
+    again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffRequest(betterproto.Message):
+    key: "ConfigDiffKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a SecurityProfileDiff instance to retrieve. This
+    value must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffResponse(betterproto.Message):
+    value: "SecurityProfileDiff" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SecurityProfileDiff instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffStreamRequest(betterproto.Message):
+    partial_eq_filter: List["SecurityProfileDiff"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. This field is not allowed in the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffStreamResponse(betterproto.Message):
+    value: "SecurityProfileDiff" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time holds the timestamp of this SecurityProfileDiff's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the SecurityProfileDiff value in this response
+    should be considered. Under non-subscribe requests, this value should
+    always be INITIAL. In a subscription, once all initial data is streamed and
+    the client begins to receive modification updates, you should not see
+    INITIAL again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffSummaryRequest(betterproto.Message):
+    key: "SummaryKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a SecurityProfileDiffSummary instance to retrieve.
+    This value must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffSummaryResponse(betterproto.Message):
+    value: "SecurityProfileDiffSummary" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SecurityProfileDiffSummary instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffSummaryStreamRequest(betterproto.Message):
+    partial_eq_filter: List["SecurityProfileDiffSummary"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. This field is not allowed in the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecurityProfileDiffSummaryStreamResponse(betterproto.Message):
+    value: "SecurityProfileDiffSummary" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time holds the timestamp of this SecurityProfileDiffSummary's last
+    modification.
+    """
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the SecurityProfileDiffSummary value in this
+    response should be considered. Under non-subscribe requests, this value
+    should always be INITIAL. In a subscription, once all initial data is
+    streamed and the client begins to receive modification updates, you should
+    not see INITIAL again.
     """
 
 
@@ -675,6 +1032,171 @@ class ConfigurationServiceStub(betterproto.ServiceStub):
             "/arista.configstatus.v1.ConfigurationService/Subscribe",
             configuration_stream_request,
             ConfigurationStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class SecurityProfileServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        security_profile_request: "SecurityProfileRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "SecurityProfileResponse":
+        return await self._unary_unary(
+            "/arista.configstatus.v1.SecurityProfileService/GetOne",
+            security_profile_request,
+            SecurityProfileResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        security_profile_stream_request: "SecurityProfileStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["SecurityProfileStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SecurityProfileService/GetAll",
+            security_profile_stream_request,
+            SecurityProfileStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        security_profile_stream_request: "SecurityProfileStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["SecurityProfileStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SecurityProfileService/Subscribe",
+            security_profile_stream_request,
+            SecurityProfileStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class SecurityProfileDiffServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        security_profile_diff_request: "SecurityProfileDiffRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "SecurityProfileDiffResponse":
+        return await self._unary_unary(
+            "/arista.configstatus.v1.SecurityProfileDiffService/GetOne",
+            security_profile_diff_request,
+            SecurityProfileDiffResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SecurityProfileDiffService/GetAll",
+            security_profile_diff_stream_request,
+            SecurityProfileDiffStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SecurityProfileDiffService/Subscribe",
+            security_profile_diff_stream_request,
+            SecurityProfileDiffStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class SecurityProfileDiffSummaryServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        security_profile_diff_summary_request: "SecurityProfileDiffSummaryRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "SecurityProfileDiffSummaryResponse":
+        return await self._unary_unary(
+            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetOne",
+            security_profile_diff_summary_request,
+            SecurityProfileDiffSummaryResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["SecurityProfileDiffSummaryStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetAll",
+            security_profile_diff_summary_stream_request,
+            SecurityProfileDiffSummaryStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["SecurityProfileDiffSummaryStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/Subscribe",
+            security_profile_diff_summary_stream_request,
+            SecurityProfileDiffSummaryStreamResponse,
             timeout=timeout,
             deadline=deadline,
             metadata=metadata,
@@ -874,6 +1396,221 @@ class ConfigurationServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_STREAM,
                 ConfigurationStreamRequest,
                 ConfigurationStreamResponse,
+            ),
+        }
+
+
+class SecurityProfileServiceBase(ServiceBase):
+    async def get_one(
+        self, security_profile_request: "SecurityProfileRequest"
+    ) -> "SecurityProfileResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, security_profile_stream_request: "SecurityProfileStreamRequest"
+    ) -> AsyncIterator["SecurityProfileStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield SecurityProfileStreamResponse()
+
+    async def subscribe(
+        self, security_profile_stream_request: "SecurityProfileStreamRequest"
+    ) -> AsyncIterator["SecurityProfileStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield SecurityProfileStreamResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[SecurityProfileRequest, SecurityProfileResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[SecurityProfileStreamRequest, SecurityProfileStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[SecurityProfileStreamRequest, SecurityProfileStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.configstatus.v1.SecurityProfileService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                SecurityProfileRequest,
+                SecurityProfileResponse,
+            ),
+            "/arista.configstatus.v1.SecurityProfileService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                SecurityProfileStreamRequest,
+                SecurityProfileStreamResponse,
+            ),
+            "/arista.configstatus.v1.SecurityProfileService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                SecurityProfileStreamRequest,
+                SecurityProfileStreamResponse,
+            ),
+        }
+
+
+class SecurityProfileDiffServiceBase(ServiceBase):
+    async def get_one(
+        self, security_profile_diff_request: "SecurityProfileDiffRequest"
+    ) -> "SecurityProfileDiffResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest"
+    ) -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield SecurityProfileDiffStreamResponse()
+
+    async def subscribe(
+        self, security_profile_diff_stream_request: "SecurityProfileDiffStreamRequest"
+    ) -> AsyncIterator["SecurityProfileDiffStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield SecurityProfileDiffStreamResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[SecurityProfileDiffRequest, SecurityProfileDiffResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[SecurityProfileDiffStreamRequest, SecurityProfileDiffStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[SecurityProfileDiffStreamRequest, SecurityProfileDiffStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.configstatus.v1.SecurityProfileDiffService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                SecurityProfileDiffRequest,
+                SecurityProfileDiffResponse,
+            ),
+            "/arista.configstatus.v1.SecurityProfileDiffService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                SecurityProfileDiffStreamRequest,
+                SecurityProfileDiffStreamResponse,
+            ),
+            "/arista.configstatus.v1.SecurityProfileDiffService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                SecurityProfileDiffStreamRequest,
+                SecurityProfileDiffStreamResponse,
+            ),
+        }
+
+
+class SecurityProfileDiffSummaryServiceBase(ServiceBase):
+    async def get_one(
+        self, security_profile_diff_summary_request: "SecurityProfileDiffSummaryRequest"
+    ) -> "SecurityProfileDiffSummaryResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self,
+        security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest",
+    ) -> AsyncIterator["SecurityProfileDiffSummaryStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield SecurityProfileDiffSummaryStreamResponse()
+
+    async def subscribe(
+        self,
+        security_profile_diff_summary_stream_request: "SecurityProfileDiffSummaryStreamRequest",
+    ) -> AsyncIterator["SecurityProfileDiffSummaryStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield SecurityProfileDiffSummaryStreamResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[SecurityProfileDiffSummaryRequest, SecurityProfileDiffSummaryResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[SecurityProfileDiffSummaryStreamRequest, SecurityProfileDiffSummaryStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[SecurityProfileDiffSummaryStreamRequest, SecurityProfileDiffSummaryStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                SecurityProfileDiffSummaryRequest,
+                SecurityProfileDiffSummaryResponse,
+            ),
+            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                SecurityProfileDiffSummaryStreamRequest,
+                SecurityProfileDiffSummaryStreamResponse,
+            ),
+            "/arista.configstatus.v1.SecurityProfileDiffSummaryService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                SecurityProfileDiffSummaryStreamRequest,
+                SecurityProfileDiffSummaryStreamResponse,
             ),
         }
 

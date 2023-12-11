@@ -20,6 +20,7 @@ import betterproto
 import grpclib
 from betterproto.grpc.grpclib_server import ServiceBase
 
+from .... import fmp as ___fmp__
 from ... import (
     subscriptions as __subscriptions__,
     time as __time__,
@@ -36,10 +37,28 @@ class EventSeverity(betterproto.Enum):
     """EventSeverity is the severity level of the event"""
 
     EVENT_SEVERITY_UNSPECIFIED = 0
+    """
+    EVENT_SEVERITY_UNSPECIFIED is the default value, if the severity is not
+    specified.
+    """
+
     EVENT_SEVERITY_INFO = 1
+    """EVENT_SEVERITY_INFO is used for generally useful information."""
+
     EVENT_SEVERITY_WARNING = 2
+    """EVENT_SEVERITY_WARNING is used for potentially harmful conditions."""
+
     EVENT_SEVERITY_ERROR = 3
+    """
+    EVENT_SEVERITY_ERROR is used for errors events that may allow for continued
+    functioning.
+    """
+
     EVENT_SEVERITY_CRITICAL = 4
+    """
+    EVENT_SEVERITY_CRITICAL is used to designate severe errors that impede
+    functioning.
+    """
 
 
 class ComponentType(betterproto.Enum):
@@ -48,9 +67,61 @@ class ComponentType(betterproto.Enum):
     """
 
     COMPONENT_TYPE_UNSPECIFIED = 0
+    """
+    COMPONENT_TYPE_UNSPECIFIED is the default value, if the type is not
+    specified.
+    """
+
     COMPONENT_TYPE_DEVICE = 1
+    """COMPONENT_TYPE_DEVICE is used for device events."""
+
     COMPONENT_TYPE_INTERFACE = 2
+    """COMPONENT_TYPE_INTERFACE is used for device interface events."""
+
     COMPONENT_TYPE_TURBINE = 3
+    """
+    COMPONENT_TYPE_TURBINE is used for events on the internal CVP turbine
+    components. A turbine is an internal CV streaming analytics backend
+    process.
+    """
+
+    COMPONENT_TYPE_DVS = 4
+    """
+    COMPONENT_TYPE_DVS is used for DVS events. A vSphere Distributed Switch
+    provides centralized management and monitoring of the networking
+    configuration of all workload servers that are associated with the switch.
+    """
+
+    COMPONENT_TYPE_DVS_INTERFACE = 5
+    """COMPONENT_TYPE_DVS_INTERFACE is used for DVS interface events."""
+
+    COMPONENT_TYPE_VM = 6
+    """
+    COMPONENT_TYPE_VM is used for VM events. A VM is a software computer that,
+    like a physical computer, runs an operating system and applications.
+    """
+
+    COMPONENT_TYPE_VM_INTERFACE = 7
+    """COMPONENT_TYPE_VM_INTERFACE is used for VM interface events."""
+
+    COMPONENT_TYPE_WORKLOAD_SERVER = 8
+    """
+    COMPONENT_TYPE_WORKLOAD_SERVER is used for workload server events. A
+    workload server is a server/data storage device on which the hypervisor is
+    installed.
+    """
+
+    COMPONENT_TYPE_WORKLOAD_SERVER_INTERFACE = 9
+    """
+    COMPONENT_TYPE_WORKLOAD_SERVER_INTERFACE is used for workload server
+    interface events.
+    """
+
+    COMPONENT_TYPE_APPLICATION = 10
+    """COMPONENT_TYPE_APPLICATION is used for application-service events."""
+
+    COMPONENT_TYPE_CVP_NODE = 11
+    """COMPONENT_TYPE_CVP_NODE is used for CVP node events."""
 
 
 @dataclass(eq=False, repr=False)
@@ -89,8 +160,25 @@ class EventAck(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class EventRead(betterproto.Message):
+    """EventRead contains read information of an event"""
+
+    read: Optional[bool] = betterproto.message_field(1, wraps=betterproto.TYPE_BOOL)
+    """read is the read state of an event"""
+
+    reader: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """reader is the user that read the event"""
+
+    read_time: datetime = betterproto.message_field(3)
+    """read_time is the time of read"""
+
+
+@dataclass(eq=False, repr=False)
 class EventNoteConfig(betterproto.Message):
-    """EventNoteConfig configures a note"""
+    """
+    EventNoteConfig configures a note NOTE: note is required when used as an
+    argument       to Set.
+    """
 
     note: Optional[str] = betterproto.message_field(1, wraps=betterproto.TYPE_STRING)
     """note is the text of the note"""
@@ -98,7 +186,7 @@ class EventNoteConfig(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EventNote(betterproto.Message):
-    """Eventnote is the state of a note"""
+    """EventNote is the state of a note"""
 
     note: Optional[str] = betterproto.message_field(1, wraps=betterproto.TYPE_STRING)
     """note is the text of the note"""
@@ -111,7 +199,10 @@ class EventNote(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EventKey(betterproto.Message):
-    """EventKey uniquely identifies an event"""
+    """
+    EventKey uniquely identifies an event NOTE: All fields are required when
+    used as an argument       to GetOne, Set or Delete.
+    """
 
     key: Optional[str] = betterproto.message_field(1, wraps=betterproto.TYPE_STRING)
     """key is the event data identifier"""
@@ -132,7 +223,10 @@ class EventData(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EventNotesConfig(betterproto.Message):
-    """EventNotesConfig configures the notes of an event"""
+    """
+    EventNotesConfig configures the notes of an event NOTE: notes is required
+    when used as an argument       to Set.
+    """
 
     notes: Dict[int, "EventNoteConfig"] = betterproto.map_field(
         1, betterproto.TYPE_INT64, betterproto.TYPE_MESSAGE
@@ -142,7 +236,11 @@ class EventNotesConfig(betterproto.Message):
 
 @dataclass(eq=False, repr=False)
 class EventAnnotationConfig(betterproto.Message):
-    """EventAnnotationConfig configures an event annotation"""
+    """
+    EventAnnotationConfig configures an event annotation NOTE: Either 1) key
+    and ack or 2) key and notes or 3) key and read are       required when used
+    as an argument to Set.
+    """
 
     key: "EventKey" = betterproto.message_field(1)
     """key is the event instance identifier"""
@@ -152,6 +250,12 @@ class EventAnnotationConfig(betterproto.Message):
 
     notes: "EventNotesConfig" = betterproto.message_field(3)
     """notes is the notes on an event"""
+
+    read: Optional[bool] = betterproto.message_field(4, wraps=betterproto.TYPE_BOOL)
+    """
+    read is the read state of an event. Setting this implies that an event has
+    been read by a user
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -202,19 +306,27 @@ class Event(betterproto.Message):
     last_updated_time: datetime = betterproto.message_field(10)
     """last_updated_time is the time of the most recent update to the event"""
 
+    read: "EventRead" = betterproto.message_field(11)
+    """read is the read status of the event"""
+
+    rule_id: Optional[str] = betterproto.message_field(
+        12, wraps=betterproto.TYPE_STRING
+    )
+    """rule_id is the label of the rule associated with the event"""
+
 
 @dataclass(eq=False, repr=False)
 class EventRequest(betterproto.Message):
     key: "EventKey" = betterproto.message_field(1)
     """
-    Key uniquely identifies a Event instance to retrieve. This value (and all
-    fields, unless otherwise specified) must be populated.
+    Key uniquely identifies a Event instance to retrieve. This value must be
+    populated.
     """
 
     time: datetime = betterproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data. If no
-    time is given, the server will use the time at twhich it makes the request.
+    time is given, the server will use the time at which it makes the request.
     """
 
 
@@ -248,7 +360,15 @@ class EventStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each Event at end.     * Each Event response is
+    fully-specified (all fields set).   * start: Returns the state of each
+    Event at start, followed by updates until now.     * Each Event response at
+    start is fully-specified, but updates may be partial.   * start and end:
+    Returns the state of each Event at start, followed by updates     until
+    end.     * Each Event response at start is fully-specified, but updates
+    until end may       be partial. This field is not allowed in the Subscribe
+    RPC.
     """
 
 
@@ -280,13 +400,13 @@ class EventAnnotationConfigRequest(betterproto.Message):
     key: "EventKey" = betterproto.message_field(1)
     """
     Key uniquely identifies a EventAnnotationConfig instance to retrieve. This
-    value (and all fields, unless otherwise specified) must be populated.
+    value must be populated.
     """
 
     time: datetime = betterproto.message_field(2)
     """
     Time indicates the time for which you are interested in the data. If no
-    time is given, the server will use the time at twhich it makes the request.
+    time is given, the server will use the time at which it makes the request.
     """
 
 
@@ -320,7 +440,16 @@ class EventAnnotationConfigStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each EventAnnotationConfig at end.     * Each
+    EventAnnotationConfig response is fully-specified (all fields set).   *
+    start: Returns the state of each EventAnnotationConfig at start, followed
+    by updates until now.     * Each EventAnnotationConfig response at start is
+    fully-specified, but updates may be partial.   * start and end: Returns the
+    state of each EventAnnotationConfig at start, followed by updates     until
+    end.     * Each EventAnnotationConfig response at start is fully-specified,
+    but updates until end may       be partial. This field is not allowed in
+    the Subscribe RPC.
     """
 
 
@@ -377,11 +506,29 @@ class EventAnnotationConfigSetResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class EventAnnotationConfigSetSomeRequest(betterproto.Message):
+    values: List["EventAnnotationConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of EventAnnotationConfig values to write. It is
+    possible to provide more values than can fit within either:     - the
+    maxiumum send size of the client     - the maximum receive size of the
+    server If this error occurs you must reduce the number of values sent. See
+    gRPC "maximum message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigSetSomeResponse(betterproto.Message):
+    key: "EventKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
 class EventAnnotationConfigDeleteRequest(betterproto.Message):
     key: "EventKey" = betterproto.message_field(1)
     """
     Key indicates which EventAnnotationConfig instance to remove. This field
-    (and all keys, unless otherwise specified) must always be set.
+    must always be set.
     """
 
 
@@ -399,6 +546,29 @@ class EventAnnotationConfigDeleteResponse(betterproto.Message):
     after the time the request was received    - a time-ranged query with
     StartTime==DeletedAt will not include this instance.
     """
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class EventAnnotationConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "EventKey" = betterproto.message_field(3)
+    """
+    This is the key of the EventAnnotationConfig instance that failed to be
+    deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
 
 
 class EventServiceStub(betterproto.ServiceStub):
@@ -527,6 +697,24 @@ class EventAnnotationConfigServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def set_some(
+        self,
+        event_annotation_config_set_some_request: "EventAnnotationConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["EventAnnotationConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.event.v1.EventAnnotationConfigService/SetSome",
+            event_annotation_config_set_some_request,
+            EventAnnotationConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
     async def delete(
         self,
         event_annotation_config_delete_request: "EventAnnotationConfigDeleteRequest",
@@ -543,6 +731,24 @@ class EventAnnotationConfigServiceStub(betterproto.ServiceStub):
             deadline=deadline,
             metadata=metadata,
         )
+
+    async def delete_all(
+        self,
+        event_annotation_config_delete_all_request: "EventAnnotationConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["EventAnnotationConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.event.v1.EventAnnotationConfigService/DeleteAll",
+            event_annotation_config_delete_all_request,
+            EventAnnotationConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
 
 
 class EventServiceBase(ServiceBase):
@@ -636,11 +842,25 @@ class EventAnnotationConfigServiceBase(ServiceBase):
     ) -> "EventAnnotationConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def set_some(
+        self,
+        event_annotation_config_set_some_request: "EventAnnotationConfigSetSomeRequest",
+    ) -> AsyncIterator["EventAnnotationConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield EventAnnotationConfigSetSomeResponse()
+
     async def delete(
         self,
         event_annotation_config_delete_request: "EventAnnotationConfigDeleteRequest",
     ) -> "EventAnnotationConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self,
+        event_annotation_config_delete_all_request: "EventAnnotationConfigDeleteAllRequest",
+    ) -> AsyncIterator["EventAnnotationConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield EventAnnotationConfigDeleteAllResponse()
 
     async def __rpc_get_one(
         self,
@@ -680,6 +900,17 @@ class EventAnnotationConfigServiceBase(ServiceBase):
         response = await self.set(request)
         await stream.send_message(response)
 
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[EventAnnotationConfigSetSomeRequest, EventAnnotationConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
     async def __rpc_delete(
         self,
         stream: "grpclib.server.Stream[EventAnnotationConfigDeleteRequest, EventAnnotationConfigDeleteResponse]",
@@ -687,6 +918,17 @@ class EventAnnotationConfigServiceBase(ServiceBase):
         request = await stream.recv_message()
         response = await self.delete(request)
         await stream.send_message(response)
+
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[EventAnnotationConfigDeleteAllRequest, EventAnnotationConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
 
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
@@ -714,10 +956,22 @@ class EventAnnotationConfigServiceBase(ServiceBase):
                 EventAnnotationConfigSetRequest,
                 EventAnnotationConfigSetResponse,
             ),
+            "/arista.event.v1.EventAnnotationConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                EventAnnotationConfigSetSomeRequest,
+                EventAnnotationConfigSetSomeResponse,
+            ),
             "/arista.event.v1.EventAnnotationConfigService/Delete": grpclib.const.Handler(
                 self.__rpc_delete,
                 grpclib.const.Cardinality.UNARY_UNARY,
                 EventAnnotationConfigDeleteRequest,
                 EventAnnotationConfigDeleteResponse,
+            ),
+            "/arista.event.v1.EventAnnotationConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                EventAnnotationConfigDeleteAllRequest,
+                EventAnnotationConfigDeleteAllResponse,
             ),
         }

@@ -1,7 +1,7 @@
 VENDORPATH=cloudvision-apis
 DUMMY := $(shell \
   rm -rf $(VENDORPATH); \
-  git clone --single-branch --branch stable https://github.com/aristanetworks/cloudvision-apis.git $(VENDORPATH); \
+  git clone --single-branch --branch trunk https://github.com/aristanetworks/cloudvision-apis.git $(VENDORPATH); \
 )
 
 APIPATH=api

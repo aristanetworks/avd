@@ -25,7 +25,6 @@ from ... import (
     subscriptions as __subscriptions__,
     time as __time__,
 )
-from ...workspace import v1 as __workspace_v1__
 
 
 if TYPE_CHECKING:
@@ -35,486 +34,1342 @@ if TYPE_CHECKING:
 
 
 class TemplateType(betterproto.Enum):
+    """
+    TemplateType defines the set of supported languages that can be used in
+    studio templates.
+    """
+
     TEMPLATE_TYPE_UNSPECIFIED = 0
     TEMPLATE_TYPE_MAKO = 1
+    """
+    TEMPLATE_TYPE_MAKO is the Mako templating language for Python. More
+    information: https://www.makotemplates.org
+    """
+
     TEMPLATE_TYPE_JINJA = 2
+    """
+    TEMPLATE_TYPE_JINJA is the Jinja templating language for Python. More
+    information: https://palletsprojects.com/p/jinja
+    """
+
     TEMPLATE_TYPE_GO = 3
+    """
+    TEMPLATE_TYPE_GO is the Go templating language. More information:
+    https://pkg.go.dev/text/template NOTE: Not all template functions are
+    supported for this type.
+    """
 
 
 class InputFieldType(betterproto.Enum):
+    """
+    InputFieldType defines the set of possible data types for values that can
+    be input into a studio.
+    """
+
     INPUT_FIELD_TYPE_UNSPECIFIED = 0
     INPUT_FIELD_TYPE_BOOLEAN = 1
+    """INPUT_FIELD_TYPE_BOOLEAN is the data type for a boolean value."""
+
     INPUT_FIELD_TYPE_INTEGER = 2
+    """INPUT_FIELD_TYPE_INTEGER is the data type for an integer value."""
+
     INPUT_FIELD_TYPE_FLOAT = 3
+    """INPUT_FIELD_TYPE_FLOAT is the data type for a float value."""
+
     INPUT_FIELD_TYPE_STRING = 4
+    """INPUT_FIELD_TYPE_STRING is the data type for a string value."""
+
     INPUT_FIELD_TYPE_GROUP = 5
+    """
+    INPUT_FIELD_TYPE_GROUP is the data type for an unordered group of inputs of
+    any type. This type is used in cases where inputs are required to be
+    consolidated into an object for use in the template or to attach multiple
+    inputs under a resolver or collection.
+    """
+
     INPUT_FIELD_TYPE_COLLECTION = 6
+    """
+    INPUT_FIELD_TYPE_COLLECTION is the data type for an ordered collection of
+    inputs of the same type. This type is used in cases where multiple input
+    values of the same type should be given for a field, and where ordering
+    matters.
+    """
+
     INPUT_FIELD_TYPE_RESOLVER = 7
+    """
+    INPUT_FIELD_TYPE_RESOLVER is the data type for an input that allows its
+    member input to be assigned based on a tag query match. This type is used
+    in cases where the input value is conditional on a device or a group of
+    devices. The query is resolved at run-time and each affected device is
+    given the value that corresponds to the tag it is assigned to.
+    """
+
+    INPUT_FIELD_TYPE_TAG_MATCHER = 8
+    """
+    INPUT_FIELD_TYPE_TAG_MATCHER is the data type for an input that allows an
+    unordered set of devices or interfaces to be selected. The set of devices
+    or interfaces that are to be selected are specified by a tag query,
+    resolved at run-time.
+    """
 
 
 class ResolverFieldInputMode(betterproto.Enum):
+    """
+    ResolverFieldInputMode defines the set of ways a resolver tag query can be
+    specified in a studio.
+    """
+
     RESOLVER_FIELD_INPUT_MODE_UNSPECIFIED = 0
     RESOLVER_FIELD_INPUT_MODE_SINGLE_DEVICE_TAG = 1
+    """
+    RESOLVER_FIELD_INPUT_MODE_SINGLE_DEVICE_TAG allows devices to be selected
+    based on a single tag label.
+    """
+
     RESOLVER_FIELD_INPUT_MODE_SINGLE_INTERFACE_TAG = 2
+    """
+    RESOLVER_FIELD_INPUT_MODE_SINGLE_INTERFACE_TAG allows interfaces to be
+    selected based on a single tag label.
+    """
+
     RESOLVER_FIELD_INPUT_MODE_MULTI_DEVICE_TAG = 3
+    """
+    RESOLVER_FIELD_INPUT_MODE_MULTI_DEVICE_TAG allows devices to be selected
+    based on any tag label.
+    """
+
     RESOLVER_FIELD_INPUT_MODE_MULTI_INTERFACE_TAG = 4
+    """
+    RESOLVER_FIELD_INPUT_MODE_MULTI_INTERFACE_TAG allows interfaces to be
+    selected based on any tag label.
+    """
 
 
 class ResolverFieldDisplayMode(betterproto.Enum):
+    """
+    ResolverFieldDisplayMode defines the set of ways in which the matching
+    devices or interfaces should be displayed on the UI.
+    """
+
     RESOLVER_FIELD_DISPLAY_MODE_UNSPECIFIED = 0
     RESOLVER_FIELD_DISPLAY_MODE_ALL = 1
+    """
+    RESOLVER_FIELD_DISPLAY_MODE_ALL instructs the UI to show all matching
+    devices or interfaces, including ones that have no inputs.
+    """
+
     RESOLVER_FIELD_DISPLAY_MODE_SPARSE = 2
+    """
+    RESOLVER_FIELD_DISPLAY_MODE_SPARSE instructs the UI to show only matching
+    devices or interfaces that have inputs.
+    """
+
+
+class TagMatcherFieldMode(betterproto.Enum):
+    """
+    TagMatcherFieldMode defines the set of ways a tag query for matching device
+    or interfaces can be specified in a studio.
+    """
+
+    TAG_MATCHER_FIELD_MODE_UNSPECIFIED = 0
+    TAG_MATCHER_FIELD_MODE_SINGLE_DEVICE_TAG = 1
+    """
+    TAG_MATCHER_FIELD_MODE_SINGLE_DEVICE_TAG allows devices to be selected
+    based on a single tag label.
+    """
+
+    TAG_MATCHER_FIELD_MODE_SINGLE_INTERFACE_TAG = 2
+    """
+    TAG_MATCHER_FIELD_MODE_SINGLE_INTERFACE_TAG allows interfaces to be
+    selected based on a single tag label.
+    """
+
+    TAG_MATCHER_FIELD_MODE_MULTI_DEVICE_TAG = 3
+    """
+    TAG_MATCHER_FIELD_MODE_MULTI_DEVICE_TAG allows devices to be selected based
+    on any tag label.
+    """
+
+    TAG_MATCHER_FIELD_MODE_MULTI_INTERFACE_TAG = 4
+    """
+    TAG_MATCHER_FIELD_MODE_MULTI_INTERFACE_TAG allows interfaces to be selected
+    based on any tag label.
+    """
+
+
+class TopologyElement(betterproto.Enum):
+    """
+    TopologyElememt defines the fundamental types of elements in topology.
+    """
+
+    TOPOLOGY_ELEMENT_UNSPECIFIED = 0
+    TOPOLOGY_ELEMENT_DEVICE = 1
+    """TOPOLOGY_ELEMENT_DEVICE indicates a device."""
+
+    TOPOLOGY_ELEMENT_INTERFACE = 2
+    """TOPOLOGY_ELEMENT_INTERFACE indicates an interface."""
+
+    TOPOLOGY_ELEMENT_CONNECTION = 3
+    """TOPOLOGY_ELEMENT_CONNECTION indicates a connection."""
+
+
+class TopologyOperation(betterproto.Enum):
+    """
+    TopologyOperation defines the operations that may be performed on the
+    topology.
+    """
+
+    TOPOLOGY_OPERATION_UNSPECIFIED = 0
+    TOPOLOGY_OPERATION_ADDED = 1
+    """TOPOLOGY_OPERATION_ADDED indicates addition of a TopologyElement."""
+
+    TOPOLOGY_OPERATION_MODIFIED = 2
+    """
+    TOPOLOGY_OPERATION_MODIFIED indicates modification of a TopologyElement.
+    """
+
+    TOPOLOGY_OPERATION_REMOVED = 3
+    """TOPOLOGY_OPERATION_REMOVED indicates removal of a TopologyElement."""
+
+
+class TopologyUpdateStatus(betterproto.Enum):
+    """
+    TopologyUpdateStatus defines the set of statuses that apply to individual
+    topology updates.
+    """
+
+    TOPOLOGY_UPDATE_STATUS_UNSPECIFIED = 0
+    TOPOLOGY_UPDATE_STATUS_NEW = 1
+    """TOPOLOGY_UPDATE_STATUS_NEW indicates the update is new."""
+
+    TOPOLOGY_UPDATE_STATUS_ACCEPTED = 2
+    """TOPOLOGY_UPDATE_STATUS_ACCEPTED indicates the update is accepted."""
+
+    TOPOLOGY_UPDATE_STATUS_IGNORED = 3
+    """TOPOLOGY_UPDATE_STATUS_IGNORED indicates the update is ignored."""
+
+
+class AutofillProviderType(betterproto.Enum):
+    """
+    AutofillProviderType describes the set of possible provided argument types.
+    """
+
+    AUTOFILL_PROVIDER_TYPE_UNSPECIFIED = 0
+    AUTOFILL_PROVIDER_TYPE_USER_SPECIFIED = 1
+    """
+    AUTOFILL_PROVIDER_TYPE_USER_SPECIFIED is when an argument is to be provided
+    at runtime by the user.
+    """
+
+    AUTOFILL_PROVIDER_TYPE_PREDEFINED = 2
+    """
+    AUTOFILL_PROVIDER_TYPE_PREDEFINED is when an argument has a predefined
+    value.
+    """
+
+    AUTOFILL_PROVIDER_TYPE_LINKED = 3
+    """
+    AUTOFILL_PROVIDER_TYPE_LINKED is when an argument is linked to another
+    studio input field.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class StudioKey(betterproto.Message):
-    """Studio key"""
+    """StudioKey uniquely identifies a studio."""
 
     studio_id: Optional[str] = betterproto.message_field(
         1, wraps=betterproto.TYPE_STRING
     )
-    """studio_id is the unique identifier of the studio"""
+    """
+    studio_id uniquely identifies the studio in the workspace indicated by
+    `workspace_id`.
+    """
 
     workspace_id: Optional[str] = betterproto.message_field(
         2, wraps=betterproto.TYPE_STRING
     )
     """
-    workspace_id is the unique identifier of the workspace empty string ("")
-    stands for the "mainline"
+    workspace_id identifies the workspace within which the studio resides.
     """
 
 
 @dataclass(eq=False, repr=False)
 class StudioConfig(betterproto.Message):
-    """Studio configuration"""
+    """
+    StudioConfig holds a configuration for a studio. Changes to fields other
+    than `key` and `remove` are applied to a copy of the mainline.
+    """
 
     key: "StudioKey" = betterproto.message_field(1)
+    """key uniquely identifies the studio."""
+
     remove: Optional[bool] = betterproto.message_field(2, wraps=betterproto.TYPE_BOOL)
     """
-    remove specifies that the resource identified by the key is to be removed
-    from mainline Other data fields are not allowed when this field is set to
-    true
+    remove indicates whether to remove (`true`) or add (`false`, unset) the
+    studio identified by the key if the encompassing workspace merges. Other
+    data fields are not allowed if this field is set to true.
     """
 
     display_name: Optional[str] = betterproto.message_field(
         3, wraps=betterproto.TYPE_STRING
     )
-    """
-    Changes to the below data fields in a workspace are applied on top of
-    mainline content at the time the workspace was created
-    """
+    """display_name is the name of this studio as displayed on the UI."""
 
     description: Optional[str] = betterproto.message_field(
         4, wraps=betterproto.TYPE_STRING
     )
+    """description is a brief description of the studio."""
+
     template: "Template" = betterproto.message_field(5)
+    """
+    template is a script that builds the device configuration from the inputs
+    that are described by `input_schema`.
+    """
+
     input_schema: "InputSchema" = betterproto.message_field(6)
+    """
+    input_schema is the schema for the studio inputs that are processed by
+    `template`.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class StudioSummary(betterproto.Message):
+    """StudioSummary holds basic information about a studio."""
+
+    key: "StudioKey" = betterproto.message_field(1)
+    """key uniquely identifies the studio."""
+
+    display_name: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """display_name is the name of this studio as displayed on the UI."""
+
+    description: Optional[str] = betterproto.message_field(
+        3, wraps=betterproto.TYPE_STRING
+    )
+    """description is a brief description of the studio."""
+
+    immutable: Optional[bool] = betterproto.message_field(
+        4, wraps=betterproto.TYPE_BOOL
+    )
+    """
+    immutable indicates if read-write studio management access over a given
+    studio is granted or not.  If studio is immutable, its display name,
+    description, schema and template cannot be modified.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class Studio(betterproto.Message):
-    """Studio state"""
+    """Studio holds the active state for a studio."""
 
     key: "StudioKey" = betterproto.message_field(1)
+    """key uniquely identifies the studio."""
+
     created_at: datetime = betterproto.message_field(2)
+    """created_at is the time at which the studio was created."""
+
     created_by: Optional[str] = betterproto.message_field(
         3, wraps=betterproto.TYPE_STRING
     )
+    """created_by is the name of the user that created the studio."""
+
     last_modified_at: datetime = betterproto.message_field(4)
+    """last_modified_at is the time at which the studio was last modified."""
+
     last_modified_by: Optional[str] = betterproto.message_field(
         5, wraps=betterproto.TYPE_STRING
     )
+    """
+    last_modified_by is the name of the user that last modified the studio.
+    """
+
     display_name: Optional[str] = betterproto.message_field(
         6, wraps=betterproto.TYPE_STRING
     )
-    """
-    Below are config fields, with workspace changes applied on top of mainline
-    Note that this resource will be present in a workspace only if the studio
-    is modified (via the StudioConfig resource)
-    """
+    """display_name is the name of this studio as displayed on the UI."""
 
     description: Optional[str] = betterproto.message_field(
         7, wraps=betterproto.TYPE_STRING
     )
+    """description is a brief description of the studio."""
+
     template: "Template" = betterproto.message_field(8)
+    """
+    template is a script that builds the device configuration from the inputs
+    that are described by `input_schema`.
+    """
+
     input_schema: "InputSchema" = betterproto.message_field(9)
-    input_validation_results: "__workspace_v1__.InputValidationResults" = (
-        betterproto.message_field(10)
-    )
+    """
+    input_schema is the schema for the studio inputs that are processed by
+    `template`.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class AssignedTagsConfig(betterproto.Message):
     """
-    AssignedTagsConfig is the configuration to assign a studio to the set of
-    devices matching a tag query
+    AssignedTagsConfig holds a configuration to assign a studio to a set of
+    devices matching a tag query.
     """
 
     key: "StudioKey" = betterproto.message_field(1)
+    """key uniquely identifies the studio to which to assign devices."""
+
     remove: Optional[bool] = betterproto.message_field(2, wraps=betterproto.TYPE_BOOL)
     """
-    remove specifies that the resource identified by the key is to be removed
-    from mainline Other data fields are not allowed when this field is set to
-    true
+    remove indicates whether to remove (`true`) or add (`false`, unset) the tag
+    assignments involving the studio identified by the key if the encompassing
+    workspace merges. Other data fields are not allowed if this field is set to
+    true.
     """
 
     query: Optional[str] = betterproto.message_field(3, wraps=betterproto.TYPE_STRING)
+    """
+    query is a tag query string that conforms to the CloudVision tag query
+    language. E.g., the query, `"datacenter:NYC,SFO AND sflow:enabled"`,
+    matches all devices with sflow enabled in data centers NYC and SFO.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class AssignedTags(betterproto.Message):
-    """AssignedTags is the state of studio assignment"""
+    """
+    AssignedTags can be used to retrieve additional metadata about a studio's
+    `AssignedTagsConfig`.
+    """
 
     key: "StudioKey" = betterproto.message_field(1)
+    """key uniquely identifies the studio to which devices were assigned."""
+
     created_at: datetime = betterproto.message_field(2)
+    """created_at is the time at which the assignment was first created."""
+
     created_by: Optional[str] = betterproto.message_field(
         3, wraps=betterproto.TYPE_STRING
     )
+    """created_by is the name of the user that created the assignment."""
+
     last_modified_at: datetime = betterproto.message_field(4)
+    """
+    last_modified_at is the time at which the assignment was last modified.
+    """
+
     last_modified_by: Optional[str] = betterproto.message_field(
         5, wraps=betterproto.TYPE_STRING
     )
+    """
+    last_modified_by is the name of the user that last modified the assignment.
+    """
+
     query: Optional[str] = betterproto.message_field(6, wraps=betterproto.TYPE_STRING)
+    """
+    query is a tag query string that conforms to the CloudVision tag query
+    language. See `AssignedTagsConfig`.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class InputsKey(betterproto.Message):
-    """Inputskey is the key of the InputsConfig and Inputs resources"""
+    """InputsKey identifies a set of inputs for a particular studio."""
 
     studio_id: Optional[str] = betterproto.message_field(
         1, wraps=betterproto.TYPE_STRING
     )
-    """studio_id is the unique identifier of the studio"""
+    """
+    studio_id uniquely identifies the studio in the workspace indicated by
+    `workspace_id`.
+    """
 
     workspace_id: Optional[str] = betterproto.message_field(
         2, wraps=betterproto.TYPE_STRING
     )
     """
-    workspace_id is the unique identifier of the workspace empty string ("")
-    stands for the "mainline"
+    workspace_id uniquely identifies the workspace in which the studio resides.
     """
 
     path: "___fmp__.RepeatedString" = betterproto.message_field(3)
     """
-    path is the sequence of elements that uniquely identify an input field
-    empty sequence stands for the "root", or the entire set of inputs
+    path is the sequence of elements that uniquely identify an input field. An
+    empty path (`[]`) stands for the root of the inputs, or the entire set of
+    inputs for the studio. The members of a group are referenced by field name.
+    E.g., for a group A with a member B, the path to B would be `["A", "B"]`.
+    The members of a collection or resolver are referenced by an integer
+    string. E.g., for a collection A with three members, the path to the second
+    member would be `["A", "1"]`.
     """
 
 
 @dataclass(eq=False, repr=False)
 class InputsConfig(betterproto.Message):
-    """InputsConfig provides values to the input fields of a studio"""
+    """
+    InputsConfig is used to input values into a studio. NOTE: Setting an input
+    at a higher path overwrite any prior `Set`s at lower paths. E.g., 1. Set
+    `["A", "X"]` to `"foo"` 2. Set `["A", "Y"]` to `"bar"` 3. Set `["A"]` to
+    `{"X": "bar"}` The resulting inputs would be: ``` { "A": { "X": "bar" } }
+    ```
+    """
 
     key: "InputsKey" = betterproto.message_field(1)
+    """
+    key uniquely identifies the set of inputs for the studio (at some path).
+    """
+
     remove: Optional[bool] = betterproto.message_field(2, wraps=betterproto.TYPE_BOOL)
     """
-    remove specifies that the resource identified by the key is to be removed
-    from mainline Other data fields are not allowed when this field is set to
-    true
+    remove indicates whether to remove (`true`) or add (`false`, unset) the
+    inputs identified by the key if the encompassing workspace merges. Other
+    data fields are not allowed if this field is set to true.
     """
 
     inputs: Optional[str] = betterproto.message_field(3, wraps=betterproto.TYPE_STRING)
     """
-    inputs is the value of the input field as a JSON string. It can be the
-    value for a simple or complex input field
+    inputs is the value of the input field at the path as a JSON string. It can
+    be the value for a simple or complex input field.  Simple types (booleans,
+    integers, floats, strings) map to their JSON equivalents. Complex types map
+    to either arrays or objects: * The group field type maps to a JSON object,
+    where keys   are group members. * The collection field type maps to a JSON
+    array. * The resolver field type maps to a JSON array, where each   element
+    is an object of the form:   ```   {        "tags":   { "query": <query> },
+    "inputs": <input>   }   ```   Above, `<input>` is the value of the base
+    field of the resolver.   E.g., if the base field is a group with one string
+    member `"A"`,   the resolver inputs would be specified as:   ```
+    "inputs": { "A": <value> }   ```
     """
 
 
 @dataclass(eq=False, repr=False)
 class Inputs(betterproto.Message):
-    """Inputs is the state of inputs to a studio"""
+    """Inputs is used to retrieve the existing inputs to a studio."""
 
     key: "InputsKey" = betterproto.message_field(1)
+    """
+    key uniquely identifies the set of inputs for the studio (at some path).
+    """
+
     created_at: datetime = betterproto.message_field(2)
+    """created_at is the time at which the inputs were first set."""
+
     created_by: Optional[str] = betterproto.message_field(
         3, wraps=betterproto.TYPE_STRING
     )
+    """created_by is the name of the user that first set the inputs."""
+
     last_modified_at: datetime = betterproto.message_field(4)
+    """last_modified_at is the time at which the inputs were last modified."""
+
     last_modified_by: Optional[str] = betterproto.message_field(
         5, wraps=betterproto.TYPE_STRING
     )
+    """
+    last_modified_by is the name of the user that last modified the inputs.
+    """
+
     inputs: Optional[str] = betterproto.message_field(6, wraps=betterproto.TYPE_STRING)
     """
-    inputs is the entire set of inputs, a single JSON string starting with
-    root. This is the result of applying workspace-specific InputsConfig
-    changes on top of mainline.
+    inputs is the value of the input field at the path as a JSON string. NOTE:
+    For `GetAll` and `Subscribe`, if the JSON is too large, it will be split
+    across multiple messages such that each is less than the Resource API
+    message size limit (1MB).
     """
 
 
 @dataclass(eq=False, repr=False)
 class Template(betterproto.Message):
-    """Template of the studio, with its type"""
+    """Template defines a template for a studio."""
 
     type: "TemplateType" = betterproto.enum_field(1)
+    """type specifies the language that this template uses."""
+
     body: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """body contains the actual source code of the template."""
 
 
 @dataclass(eq=False, repr=False)
 class BooleanInputFieldProps(betterproto.Message):
+    """
+    BooleanInputFieldProps defines the set of properties for a single boolean
+    field in a studio input schema.
+    """
+
     default_value: Optional[bool] = betterproto.message_field(
         1, wraps=betterproto.TYPE_BOOL
     )
-    """
-    default_value represents the default value of the boolean input field
-    (optional)
-    """
+    """default_value is the default value of the boolean."""
 
 
 @dataclass(eq=False, repr=False)
 class IntegerInputFieldProps(betterproto.Message):
+    """
+    IntegerInputFieldProps defines the set of properties for a single integer
+    field in a studio input schema.
+    """
+
     default_value: Optional[int] = betterproto.message_field(
         1, wraps=betterproto.TYPE_INT64
     )
-    """
-    default_value represents the default value of the integer input field
-    (optional)
-    """
+    """default_value is the default value of the integer."""
 
     static_options: "___fmp__.RepeatedInt64" = betterproto.message_field(2)
+    """static_options defines the set of possible values for the integer."""
+
+    range: Optional[str] = betterproto.message_field(3, wraps=betterproto.TYPE_STRING)
     """
-    static_options represents the list of valid integer values (optional)
+    range imposes a range (inclusive) on the value of the integer. This should
+    be of the form `"<min>..<max>"`. E.g., `"-10..10"` means the integer can be
+    anything in between and including `-10` and `10`.
     """
 
     dynamic_options: "___fmp__.RepeatedString" = betterproto.message_field(4)
     """
-    dynamic_options contains a pointer expression that reference an input field
-    with a collection of integer input values which will be used as a list of
-    valid values (optional)
+    dynamic_options defines the set of possible values for the integer based on
+    the possible values for other integers in the schema. Each field should be
+    referenced by a JSON object of the form `{ "fieldId": <field_id> }`. E.g,
+    ``` [   { "fieldId": "vlanFieldID" },   { "fieldId": "vniFieldID" } ] ```
+    Here, the possible values for the integers identified by `"vlanFieldID"`
+    and `"vniFieldID"` are used as the possible values for this integer.
     """
 
-    range: Optional[str] = betterproto.message_field(3, wraps=betterproto.TYPE_STRING)
+    extra_values_allowed: Optional[bool] = betterproto.message_field(
+        5, wraps=betterproto.TYPE_BOOL
+    )
     """
-    range represents the range constraint imposed on the integer value; eg.
-    "-10..10", "min..10", "-10..max" (optional)
+    extra_values_allowed allows adding values to the field in addition to
+    what's allowed by static_options/dynamic_options.
     """
 
 
 @dataclass(eq=False, repr=False)
 class FloatInputFieldProps(betterproto.Message):
+    """
+    FloatInputFieldProps defines the set of properties for a single float field
+    in a studio input schema.
+    """
+
     default_value: Optional[float] = betterproto.message_field(
         2, wraps=betterproto.TYPE_FLOAT
     )
-    """
-    default_value represents the default value of the float input field
-    (optional)
-    """
+    """default_value is the default value of the float."""
 
     static_options: "___fmp__.RepeatedFloat" = betterproto.message_field(3)
-    """static_options represents the list of valid float values (optional)"""
+    """static_options defines the set of possible values for the float."""
 
     dynamic_options: "___fmp__.RepeatedString" = betterproto.message_field(4)
     """
-    dynamic_options contains a pointer expression that reference an input field
-    with a collection of float input values which will be used as a list of
-    valid values (optional)
+    dynamic_options defines the set of possible values for the float based on
+    the possible values for other floats in the schema. Each field should be
+    referenced by a JSON object of the form `{ "fieldId": <field_id> }`. E.g,
+    ``` [   { "fieldId": "floatField1ID" },   { "fieldId": "floatField2ID" } ]
+    ``` Here, the possible values for the floats identified by
+    `"floatField1ID"` and `"floatField2ID"` are used as the possible values for
+    this float.
+    """
+
+    extra_values_allowed: Optional[bool] = betterproto.message_field(
+        5, wraps=betterproto.TYPE_BOOL
+    )
+    """
+    extra_values_allowed allows adding values to the field in addition to
+    what's allowed by static_options/dynamic_options.
     """
 
 
 @dataclass(eq=False, repr=False)
 class StringInputFieldProps(betterproto.Message):
+    """
+    StringInputFieldProps defines the set of properties for a single string
+    field in a studio input schema.
+    """
+
     default_value: Optional[str] = betterproto.message_field(
         2, wraps=betterproto.TYPE_STRING
     )
-    """
-    default_value represents the default value of the string input field
-    (optional)
-    """
+    """default_value is the default value of the string."""
 
     static_options: "___fmp__.RepeatedString" = betterproto.message_field(3)
-    """static_options represents the list of valid string values (optional)"""
+    """static_options defines the set of possible values for the string."""
 
     dynamic_options: "___fmp__.RepeatedString" = betterproto.message_field(4)
     """
-    dynamic_options contains a pointer expression that reference an input field
-    with a collection of string input values which will be used as a list of
-    valid values (optional)
+    dynamic_options defines the set of possible values for the string based on
+    the possible values for other strings in the schema. Each field should be
+    referenced by a JSON object of the form `{ "fieldId": <field_id> }`. E.g,
+    ``` [   { "fieldId": "deviceFieldID" },   { "fieldId": "ipFieldID" } ] ```
+    Here, the possible values for the strings identified by `"deviceFieldID"`
+    and `"ipFieldID"` are used as the possible values for this string.
     """
 
     length: Optional[str] = betterproto.message_field(5, wraps=betterproto.TYPE_STRING)
     """
-    length represents the length constraint imposed on the string value; eg.
-    "5..10", "min..10", "5..max" (optional)
+    length imposes a length range (inclusive) on the value of the string. The
+    should be of the form `"<min>..<max>"`. E.g., `"3..7"` means the value of
+    the string can be three to seven characters long.
     """
 
     pattern: Optional[str] = betterproto.message_field(6, wraps=betterproto.TYPE_STRING)
     """
-    pattern represents the regexp-based pattern constraint imposed on the
-    string value; eg. "^[0-9a-fA-F]*$" (optional)
+    pattern imposes a regular expression matching constraint on the value of
+    the string. This should be a Google RE2-compliant regular expression
+    (https://github.com/google/re2/wiki/Syntax).
     """
 
     format: Optional[str] = betterproto.message_field(7, wraps=betterproto.TYPE_STRING)
     """
-    format represents the format imposed on string value; supported formats:
-    "ip", "ipv6", "mac" (optional)
+    format imposes a well-known format on the value of the string. The
+    supported formats are: * `"ip"`: an IPv4 or IPv6 address * `"ipv4"`: an
+    IPv4 address * `"ipv6"`: an IPv6 address * `"mac"`: a MAC address *
+    `"cidr"`: an IPv4 or IPv6 address in CIDR notation (e.g. 10.1.1.1/24,
+    2001:db8:a0b::1/32) * `"cidrv4"`: an IPv4 address in CIDR notation (e.g.
+    10.1.1.1/24) * `"cidrv6"`: an IPv6 address in CIDR notation (e.g.
+    2001:db8:a0b::1/32) * `"url"`: a URL (e.g., http://www.google.com)
+    """
+
+    is_secret: Optional[bool] = betterproto.message_field(
+        8, wraps=betterproto.TYPE_BOOL
+    )
+    """
+    is_secret specifies whether the string is a secret and its value should be
+    masked. E.g., if this is set to `true` and the value of the string is
+    `"secret-value-1"`, it will be masked as `"**********"`.
+    """
+
+    extra_values_allowed: Optional[bool] = betterproto.message_field(
+        9, wraps=betterproto.TYPE_BOOL
+    )
+    """
+    extra_values_allowed allows adding values to the field in addition to
+    what's allowed by static_options/dynamic_options.
     """
 
 
 @dataclass(eq=False, repr=False)
 class GroupInputFieldProps(betterproto.Message):
+    """
+    GroupInputFieldProps defines the set of properties for a single group field
+    in a studio input schema.
+    """
+
     members: "___fmp__.RepeatedString" = betterproto.message_field(1)
-    """members represents all the fields in the group input field"""
+    """
+    members (required) identifies the member fields of the group as defined in
+    the schema.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class CollectionInputFieldProps(betterproto.Message):
+    """
+    CollectionInputFieldProps defines the set of properties for a single
+    collection field in a studio input schema.
+    """
+
     base_field_id: Optional[str] = betterproto.message_field(
         1, wraps=betterproto.TYPE_STRING
     )
     """
-    base_field_id represent the ID of the collection input field's base field
+    base_field_id (required) identifies the field in the schema that should be
+    used as the type for each element in the collection.
     """
 
     key: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
     """
-    key specifies a key in the collection that identifies each element It only
-    supports the group base field type `INPUT_FIELD_TYPE_GROUP`. The key field
-    specified the ID of the group member and each element of the collection can
-    be uniquely identified by the key. If the type of the base field is: -
-    `INPUT_FIELD_TYPE_GROUP`: the value of specified by the key field will used
-    as the collection element's key. The key field specifies the ID of the
-    group member, the group member type must be one of the following field
-    types:    `INPUT_FIELD_TYPE_INTEGER`, `INPUT_FIELD_TYPE_FLOAT`,
-    `INPUT_FIELD_TYPE_STRING`.
+    key can be used when `base_field_id` references a group field, and it
+    identifies the field in that group that should be used as the key for each
+    element in the collection. This is used for display purposes only.
     """
 
 
 @dataclass(eq=False, repr=False)
 class ResolverInputFieldProps(betterproto.Message):
+    """
+    ResolverInputFieldProps defines the set of properties for a single resolver
+    field in a studio input schema.
+    """
+
     base_field_id: Optional[str] = betterproto.message_field(
         1, wraps=betterproto.TYPE_STRING
     )
     """
-    base_field_id represent the ID of the resolver input field's base field
+    base_field_id (required) identifies the field in the schema to which the
+    resolver query maps.
     """
 
     display_mode: "ResolverFieldDisplayMode" = betterproto.enum_field(2)
-    """display_mode represents the resolver input field's display mode"""
+    """display_mode (required) is the display mode of the resolver."""
 
     input_mode: "ResolverFieldInputMode" = betterproto.enum_field(3)
-    """input_mode represents the resolver input field's input mode"""
+    """input_mode (required) is the input mode of the resolver."""
 
     input_tag_label: Optional[str] = betterproto.message_field(
         4, wraps=betterproto.TYPE_STRING
     )
     """
-    input_tag_label represents the tag label to allow in tag inputs (optional)
+    input_tag_label can be used when `input_mode` is one of
+    `RESOLVER_FIELD_INPUT_MODE_SINGLE_*_TAG` and it specifies the tag label
+    must be used in the resolver query.
     """
 
     tag_filter_query: Optional[str] = betterproto.message_field(
         5, wraps=betterproto.TYPE_STRING
     )
-    """tag_filter_query specifies the tags that can be used in a resolver"""
+    """
+    tag_filter_query limits the set of elements that the resolver query can
+    return. E.g., `"device:D1,D2"` will constrain results to the devices D1 and
+    D2.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TagMatcherInputFieldProps(betterproto.Message):
+    """
+    TagMatcherInputFieldProps defines the set of properties for a single
+    selector field in a studio input schema.
+    """
+
+    tag_matcher_mode: "TagMatcherFieldMode" = betterproto.enum_field(1)
+    """tag_matcher_mode (required) is the tag mode of the matcher."""
+
+    tag_matcher_label: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """
+    tag_matcher_label can be used when `tag_matcher_mode` is one of
+    `TAG_MATCHER_FIELD_MODE_SINGLE_*_TAG` and it specifies the tag label which
+    must be used in the match query.
+    """
+
+    tag_filter_query: Optional[str] = betterproto.message_field(
+        3, wraps=betterproto.TYPE_STRING
+    )
+    """
+    tag_filter_query limits the set of devices that the match query can return.
+    E.g., `"device:D1,D2"` will constrain results to the devices D1 and D2.
+    """
+
+    resolver_filtering_allowed: Optional[bool] = betterproto.message_field(
+        4, wraps=betterproto.TYPE_BOOL
+    )
+    """
+    resolver_filtering_allowed indicates whether results of the match query be
+    filtered based on what any parent resolvers allow. This is `true` by
+    default.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class InputField(betterproto.Message):
-    id: Optional[str] = betterproto.message_field(1, wraps=betterproto.TYPE_STRING)
     """
-    id represents the ID of the input field, which should be unique within the
-    input schema resource
+    InputField defines the set of properties for a single field in a studio
+    input schema.
     """
 
+    id: Optional[str] = betterproto.message_field(1, wraps=betterproto.TYPE_STRING)
+    """id (required) uniquely identifies the field within the schema."""
+
     type: "InputFieldType" = betterproto.enum_field(2)
-    """type represents the type of the input field"""
+    """type (required) specifies the type for the field."""
 
     name: Optional[str] = betterproto.message_field(3, wraps=betterproto.TYPE_STRING)
     """
-    type represents the variable name use to reference the value of the input
-    field
+    name (required) is the variable name by which the field can be referenced
+    in the template for the studio.
     """
 
     label: Optional[str] = betterproto.message_field(4, wraps=betterproto.TYPE_STRING)
-    """label represents the label of the input field"""
+    """label (required) is the label of the field as displayed on the UI."""
 
     description: Optional[str] = betterproto.message_field(
         5, wraps=betterproto.TYPE_STRING
     )
-    """description represents the description of the input field (optional)"""
+    """description is a short description of the field."""
 
     required: Optional[bool] = betterproto.message_field(6, wraps=betterproto.TYPE_BOOL)
     """
-    required indicates whether the input field requires a value, defaults to
-    `false` if unset (optional)
+    required indicates whether the field always requires a value. This is
+    `false` by default.
     """
 
     boolean_props: "BooleanInputFieldProps" = betterproto.message_field(7)
     """
-    boolean_props contains properties for input fields of
-    INPUT_FIELD_TYPE_BOOLEAN type (optional)
+    boolean_props defines properties for the field if it is of type
+    `INPUT_FIELD_TYPE_BOOLEAN`.
     """
 
     integer_props: "IntegerInputFieldProps" = betterproto.message_field(8)
     """
-    integer_props contains properties for input fields of
-    INPUT_FIELD_TYPE_INTEGER type (optional)
+    integer_props defines properties for the field if it is of type
+    `INPUT_FIELD_TYPE_INTEGER`.
     """
 
     float_props: "FloatInputFieldProps" = betterproto.message_field(9)
     """
-    float_props contains properties for input fields of INPUT_FIELD_TYPE_FLOAT
-    type (optional)
+    float_props defines properties for the field if it is of type
+    `INPUT_FIELD_TYPE_FLOAT`.
     """
 
     string_props: "StringInputFieldProps" = betterproto.message_field(10)
     """
-    string_props contains properties for input fields of
-    INPUT_FIELD_TYPE_STRING type (optional)
+    string_props defines properties for the field if it is of type
+    `INPUT_FIELD_TYPE_STRING`.
     """
 
     group_props: "GroupInputFieldProps" = betterproto.message_field(11)
     """
-    group_props contains properties for input fields of INPUT_FIELD_TYPE_GROUP
-    type (optional)
+    group_props defines properties for the field if it is of type
+    `INPUT_FIELD_TYPE_GROUP`.
     """
 
     collection_props: "CollectionInputFieldProps" = betterproto.message_field(12)
     """
-    collection_props contains properties for input fields of
-    INPUT_FIELD_TYPE_COLLECTION type (optional)
+    collection_props defines properties for the field if it is of type
+    `INPUT_FIELD_TYPE_COLLECTION`.
     """
 
     resolver_props: "ResolverInputFieldProps" = betterproto.message_field(13)
     """
-    resolver_props contains properties for input fields of
-    INPUT_FIELD_TYPE_RESOLVER type (optional)
+    resolver_props defines properties for the field if it is of type
+    `INPUT_FIELD_TYPE_RESOLVER`.
     """
 
     auto_fill_action_id: Optional[str] = betterproto.message_field(
         14, wraps=betterproto.TYPE_STRING
     )
     """
-    auto_fill_action_id represents the link between the field and the autofill
-    script that provides a value for it (optional)
+    auto_fill_action_id identifies the autofill action that can be used to
+    automatically populate the value of this field on the UI.
+    """
+
+    tag_matcher_props: "TagMatcherInputFieldProps" = betterproto.message_field(15)
+    """
+    tag_matcher_props defines properties for the field if it is of type
+    `INPUT_FIELD_TYPE_TAG_MATCHER`.
     """
 
 
 @dataclass(eq=False, repr=False)
 class InputFields(betterproto.Message):
+    """InputFields is a collection of `InputField`."""
+
     values: Dict[str, "InputField"] = betterproto.map_field(
         1, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
     )
-    """
-    values contains all input field configuration, mapped by each input field's
-    respective field ID
-    """
+    """values (required) is a map from input field ID to `InputField`."""
 
 
 @dataclass(eq=False, repr=False)
 class Layout(betterproto.Message):
-    """Layout specifies the display properties input fields"""
+    """
+    Layout specifies the display properties for input fields. This is intended
+    for UI usage only.
+    """
 
     value: Optional[str] = betterproto.message_field(1, wraps=betterproto.TYPE_STRING)
+    """value is a JSON object containing the layout config."""
 
 
 @dataclass(eq=False, repr=False)
 class InputSchema(betterproto.Message):
     """
-    InputSchema specifies the input schema definition of a studio, consisting
-    of a set of input fields, and optionally their layout information
+    InputSchema defines an input schema for a studio, which determines the
+    values that can be input into the studio.
     """
 
     fields: "InputFields" = betterproto.message_field(1)
+    """fields (required) are the set of fields that make up the schema."""
+
     layout: "Layout" = betterproto.message_field(2)
+    """layout (UI only) defines the display properties for `fields`."""
+
+
+@dataclass(eq=False, repr=False)
+class SecretInput(betterproto.Message):
+    """
+    SecretInput can be used to retrieve the unmasked value of a secret in a
+    studio.
+    """
+
+    key: "InputsKey" = betterproto.message_field(1)
+    """key identifies the secret in the studio inputs."""
+
+    plain_text: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """plain_text is the unmasked value of the secret."""
+
+
+@dataclass(eq=False, repr=False)
+class DeviceInfo(betterproto.Message):
+    """DeviceInfo contains device properties."""
+
+    device_id: Optional[str] = betterproto.message_field(
+        1, wraps=betterproto.TYPE_STRING
+    )
+    """device_id identifies the device uniquely."""
+
+    model_name: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """model_name indicates the model of the device."""
+
+    mac_address: "___fmp__.MacAddress" = betterproto.message_field(3)
+    """mac_address indicates the MAC address of the device."""
+
+    hostname: Optional[str] = betterproto.message_field(
+        4, wraps=betterproto.TYPE_STRING
+    )
+    """hostname indicates the hostname of the device."""
+
+    interface_infos: "InterfaceInfos" = betterproto.message_field(5)
+    """interfaces_infos contains a list of the device's interfaces."""
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInfo(betterproto.Message):
+    """InterfaceInfo contains interface properties."""
+
+    name: Optional[str] = betterproto.message_field(1, wraps=betterproto.TYPE_STRING)
+    """name is the name of an interface."""
+
+    neighbor_device_id: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """
+    neighbor_device_id indicates the device ID of the neighbor to which this
+    interface is connected.
+    """
+
+    neighbor_interface_name: Optional[str] = betterproto.message_field(
+        3, wraps=betterproto.TYPE_STRING
+    )
+    """
+    neighbor_device_name indicates the interface on the neighbor to which this
+    interface is connected.
+    """
+
+    topology_operation: "TopologyOperation" = betterproto.enum_field(4)
+    """topology_operation indicates the type of operation to the interface."""
+
+
+@dataclass(eq=False, repr=False)
+class InterfaceInfos(betterproto.Message):
+    """InterfaceInfos is a list of InterfaceInfo."""
+
+    values: List["InterfaceInfo"] = betterproto.message_field(1)
+    """values is a list of InterfaceInfo."""
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputKey(betterproto.Message):
+    """
+    TopologyInputKey is the set of inputs that uniquely identify the device for
+    a workspace.
+    """
+
+    workspace_id: Optional[str] = betterproto.message_field(
+        1, wraps=betterproto.TYPE_STRING
+    )
+    """workspace_id identifies the workspace uniquely."""
+
+    device_id: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """device_id identifies the device uniquely."""
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfig(betterproto.Message):
+    """TopologyInputConfig is the desired topology input for a device."""
+
+    key: "TopologyInputKey" = betterproto.message_field(1)
+    """key uniquely identifies the device ID for a given workspace."""
+
+    device_info: "DeviceInfo" = betterproto.message_field(2)
+    """device_info contains device properties."""
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInput(betterproto.Message):
+    """
+    TopologyInput is the state of a mainline and accepted topology inputs.
+    """
+
+    key: "TopologyInputKey" = betterproto.message_field(1)
+    """key uniquely identifies the device in a given workspace."""
+
+    device_info: "DeviceInfo" = betterproto.message_field(2)
+    """device_info contains device properties."""
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateKey(betterproto.Message):
+    """TopologyUpdateKey uniquely identifies a workspace topology update."""
+
+    workspace_id: Optional[str] = betterproto.message_field(
+        1, wraps=betterproto.TYPE_STRING
+    )
+    """workspace_id identifies the workspace uniquely."""
+
+    update_id: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """update_id identifies the update uniquely."""
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfig(betterproto.Message):
+    """
+    TopologyUpdateConfig contains the acceptance status of a TopologyUpdate.
+    """
+
+    key: "TopologyUpdateKey" = betterproto.message_field(1)
+    """key uniquely identifies the update."""
+
+    status: "TopologyUpdateStatus" = betterproto.enum_field(2)
+    """status indicates the status of the topology update."""
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdate(betterproto.Message):
+    """TopologyUpdate represents an update on to the workspace."""
+
+    key: "TopologyUpdateKey" = betterproto.message_field(1)
+    """key uniquely identifies the update."""
+
+    topology_element: "TopologyElement" = betterproto.enum_field(2)
+    """topology_element indicates the type of a network element."""
+
+    topology_operation: "TopologyOperation" = betterproto.enum_field(3)
+    """
+    topology_operation indicates the type of operation on the topology update.
+    """
+
+    status: "TopologyUpdateStatus" = betterproto.enum_field(4)
+    """status indicates the status of the topology update."""
+
+    description: Optional[str] = betterproto.message_field(
+        5, wraps=betterproto.TYPE_STRING
+    )
+    """description describes the topology update in short."""
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceKey(betterproto.Message):
+    """WorkspaceKey uniquely identifies the workspace."""
+
+    workspace_id: Optional[str] = betterproto.message_field(
+        1, wraps=betterproto.TYPE_STRING
+    )
+    """workspace_id identifies the workspace uniquely."""
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfig(betterproto.Message):
+    """
+    TopologyUpdateSyncConfig model represents a point in time all updates are
+    to be accepted.
+    """
+
+    key: "WorkspaceKey" = betterproto.message_field(1)
+    """key uniquely identifies the workspace."""
+
+    sync_time: datetime = betterproto.message_field(2)
+    """
+    sync_time indicates the desired synchronization time with the live
+    topology. If the sync_time indicated in the config takes effect without
+    error, it will appear in the state model, and then all updates that
+    occurred up to and including the timestamp in the state model will be
+    accepted.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSync(betterproto.Message):
+    """
+    TopologyUpdateSync model represents the state of topology updates, which
+    consists of the time up to which updates are accepted.
+    """
+
+    key: "WorkspaceKey" = betterproto.message_field(1)
+    """key uniquely identifies the workspace."""
+
+    sync_time: datetime = betterproto.message_field(2)
+    """
+    sync_time indicates the time up to which the live topology is synchronized.
+    All updates that happened up to this timestamp will be accepted.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionKey(betterproto.Message):
+    """AutofillActionKey identifies an autofill action."""
+
+    studio_id: Optional[str] = betterproto.message_field(
+        1, wraps=betterproto.TYPE_STRING
+    )
+    """
+    studio_id uniquely identifies the studio in the workspace indicated by
+    `workspace_id`.
+    """
+
+    workspace_id: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """
+    workspace_id uniquely identifies the workspace in which the studio resides.
+    """
+
+    input_field_id: Optional[str] = betterproto.message_field(
+        3, wraps=betterproto.TYPE_STRING
+    )
+    """
+    input_field_id uniquely identifies the input field within the schema
+    associated with the action indicated by `action_id`.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfig(betterproto.Message):
+    """
+    AutofillActionConfig contains configuration information for an autofill
+    action.
+    """
+
+    key: "AutofillActionKey" = betterproto.message_field(1)
+    """key uniquely identifies the action-to-studio association."""
+
+    remove: Optional[bool] = betterproto.message_field(2, wraps=betterproto.TYPE_BOOL)
+    """
+    remove indicates whether to remove (`true`) or add (`false`, unset) the
+    autofill action configuration identified by the key if the encompassing
+    workspace merges. Other data fields are not allowed if this field is set to
+    true.
+    """
+
+    action_id: Optional[str] = betterproto.message_field(
+        3, wraps=betterproto.TYPE_STRING
+    )
+    """
+    action_id uniquely identifies the autofill action associated with the input
+    field.
+    """
+
+    description: Optional[str] = betterproto.message_field(
+        4, wraps=betterproto.TYPE_STRING
+    )
+    """
+    description is an optional field to describe the autofill action that will
+    be displayed in a tooltip in the UI when the user hovers over the button to
+    run the autofill action.
+    """
+
+    argument_providers: "AutofillArgumentProviders" = betterproto.message_field(5)
+    """
+    argument_providers is an optional field that specifies how dynamic
+    arguments are to be provided to the autofill action when executed. If an
+    argument is omitted from the provider map, it will not be defined in the
+    arguments passed to the scripts. If the entire field is omitted, no
+    additional argument values will be passed to the script beyond any
+    statically defined arguments and the system-provided arguments which are
+    always set in an autofill action execution context (namely InputPath,
+    StudioId, and WorkspaceId).
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillAction(betterproto.Message):
+    """
+    AutofillAction can be used to retrieve additional metadata about an
+    autofill action.
+    """
+
+    key: "AutofillActionKey" = betterproto.message_field(1)
+    """key uniquely identifies the action-to-studio association."""
+
+    created_at: datetime = betterproto.message_field(2)
+    """created_at is the time at which the inputs were first set."""
+
+    created_by: Optional[str] = betterproto.message_field(
+        3, wraps=betterproto.TYPE_STRING
+    )
+    """created_by is the name of the user that first set the inputs."""
+
+    last_modified_at: datetime = betterproto.message_field(4)
+    """last_modified_at is the time at which the inputs were last modified."""
+
+    last_modified_by: Optional[str] = betterproto.message_field(
+        5, wraps=betterproto.TYPE_STRING
+    )
+    """
+    last_modified_by is the name of the user that last modified the inputs.
+    """
+
+    action_id: Optional[str] = betterproto.message_field(
+        6, wraps=betterproto.TYPE_STRING
+    )
+    """
+    action_id uniquely identifies the autofill action associated with the input
+    field.
+    """
+
+    description: Optional[str] = betterproto.message_field(
+        7, wraps=betterproto.TYPE_STRING
+    )
+    """
+    description is an optional field to describe the autofill action that will
+    be displayed in a tooltip in the UI when the user hovers over the button to
+    run the autofill action.
+    """
+
+    argument_providers: "AutofillArgumentProviders" = betterproto.message_field(8)
+    """
+    argument_providers is an optional field that specifies how dynamic
+    arguments are to be provided to the autofill action when executed. If an
+    argument is omitted from the provider map, it will not be defined in the
+    arguments passed to the scripts. If the entire field is omitted, no
+    additional argument values will be passed to the script beyond any
+    statically defined arguments and the system-provided arguments which are
+    always set in an autofill action execution context (namely InputPath,
+    StudioID, and WorkspaceID).
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillArgumentProviders(betterproto.Message):
+    """
+    AutofillArgumentProviders is a map of dynamic argument name to argument
+    provider information.
+    """
+
+    values: Dict[str, "AutofillArgumentProvider"] = betterproto.map_field(
+        1, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
+    )
+
+
+@dataclass(eq=False, repr=False)
+class AutofillArgumentProvider(betterproto.Message):
+    """
+    AutofillArgumentProvider describes a particular dynamic argument's type and
+    value (if applicable).
+    """
+
+    type: "AutofillProviderType" = betterproto.enum_field(1)
+    """
+    type is the type of argument provider, describing how it is to be handled
+    when the associated action is called.
+    """
+
+    value: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """
+    value is the value of the argument, if provided. When the provider type is
+    PROVIDER_TYPE_USER_SPECIFIED, the field may be nil. If non-nil, the field
+    contains a default value for the user input. When the provider type is
+    PROVIDER_TYPE_PREDEFINED, the field contains the predefined value. When the
+    provider type is PROVIDER_TYPE_LINKED, the field contains the linked input
+    field's ID.
+    """
 
 
 @dataclass(eq=False, repr=False)
@@ -562,7 +1417,15 @@ class AssignedTagsStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each AssignedTags at end.     * Each AssignedTags
+    response is fully-specified (all fields set).   * start: Returns the state
+    of each AssignedTags at start, followed by updates until now.     * Each
+    AssignedTags response at start is fully-specified, but updates may be
+    partial.   * start and end: Returns the state of each AssignedTags at
+    start, followed by updates     until end.     * Each AssignedTags response
+    at start is fully-specified, but updates until end may       be partial.
+    This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -634,7 +1497,16 @@ class AssignedTagsConfigStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each AssignedTagsConfig at end.     * Each
+    AssignedTagsConfig response is fully-specified (all fields set).   * start:
+    Returns the state of each AssignedTagsConfig at start, followed by updates
+    until now.     * Each AssignedTagsConfig response at start is fully-
+    specified, but updates may be partial.   * start and end: Returns the state
+    of each AssignedTagsConfig at start, followed by updates     until end.
+    * Each AssignedTagsConfig response at start is fully-specified, but updates
+    until end may       be partial. This field is not allowed in the Subscribe
+    RPC.
     """
 
 
@@ -691,6 +1563,24 @@ class AssignedTagsConfigSetResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class AssignedTagsConfigSetSomeRequest(betterproto.Message):
+    values: List["AssignedTagsConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of AssignedTagsConfig values to write. It is possible
+    to provide more values than can fit within either:     - the maxiumum send
+    size of the client     - the maximum receive size of the server If this
+    error occurs you must reduce the number of values sent. See gRPC "maximum
+    message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AssignedTagsConfigSetSomeResponse(betterproto.Message):
+    key: "StudioKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
 class AssignedTagsConfigDeleteRequest(betterproto.Message):
     key: "StudioKey" = betterproto.message_field(1)
     """
@@ -711,6 +1601,285 @@ class AssignedTagsConfigDeleteResponse(betterproto.Message):
     after the time the request was received    - a time-ranged query with
     StartTime==DeletedAt will not include this instance.
     """
+
+
+@dataclass(eq=False, repr=False)
+class AssignedTagsConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class AssignedTagsConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "StudioKey" = betterproto.message_field(3)
+    """
+    This is the key of the AssignedTagsConfig instance that failed to be
+    deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionRequest(betterproto.Message):
+    key: "AutofillActionKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a AutofillAction instance to retrieve. This value
+    must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionResponse(betterproto.Message):
+    value: "AutofillAction" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    AutofillAction instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionStreamRequest(betterproto.Message):
+    partial_eq_filter: List["AutofillAction"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each AutofillAction at end.     * Each
+    AutofillAction response is fully-specified (all fields set).   * start:
+    Returns the state of each AutofillAction at start, followed by updates
+    until now.     * Each AutofillAction response at start is fully-specified,
+    but updates may be partial.   * start and end: Returns the state of each
+    AutofillAction at start, followed by updates     until end.     * Each
+    AutofillAction response at start is fully-specified, but updates until end
+    may       be partial. This field is not allowed in the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionStreamResponse(betterproto.Message):
+    value: "AutofillAction" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """Time holds the timestamp of this AutofillAction's last modification."""
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the AutofillAction value in this response should be
+    considered. Under non-subscribe requests, this value should always be
+    INITIAL. In a subscription, once all initial data is streamed and the
+    client begins to receive modification updates, you should not see INITIAL
+    again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigRequest(betterproto.Message):
+    key: "AutofillActionKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a AutofillActionConfig instance to retrieve. This
+    value must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigResponse(betterproto.Message):
+    value: "AutofillActionConfig" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    AutofillActionConfig instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigStreamRequest(betterproto.Message):
+    partial_eq_filter: List["AutofillActionConfig"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each AutofillActionConfig at end.     * Each
+    AutofillActionConfig response is fully-specified (all fields set).   *
+    start: Returns the state of each AutofillActionConfig at start, followed by
+    updates until now.     * Each AutofillActionConfig response at start is
+    fully-specified, but updates may be partial.   * start and end: Returns the
+    state of each AutofillActionConfig at start, followed by updates     until
+    end.     * Each AutofillActionConfig response at start is fully-specified,
+    but updates until end may       be partial. This field is not allowed in
+    the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigStreamResponse(betterproto.Message):
+    value: "AutofillActionConfig" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time holds the timestamp of this AutofillActionConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the AutofillActionConfig value in this response
+    should be considered. Under non-subscribe requests, this value should
+    always be INITIAL. In a subscription, once all initial data is streamed and
+    the client begins to receive modification updates, you should not see
+    INITIAL again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigSetRequest(betterproto.Message):
+    value: "AutofillActionConfig" = betterproto.message_field(1)
+    """
+    AutofillActionConfig carries the value to set into the datastore. See the
+    documentation on the AutofillActionConfig struct for which fields are
+    required.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigSetResponse(betterproto.Message):
+    value: "AutofillActionConfig" = betterproto.message_field(1)
+    """
+    Value carries all the values given in the AutofillActionConfigSetRequest as
+    well as any server-generated values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:    - it is
+    after the time the request was received    - a time-ranged query with
+    StartTime==CreatedAt will include this instance.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigSetSomeRequest(betterproto.Message):
+    values: List["AutofillActionConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of AutofillActionConfig values to write. It is
+    possible to provide more values than can fit within either:     - the
+    maxiumum send size of the client     - the maximum receive size of the
+    server If this error occurs you must reduce the number of values sent. See
+    gRPC "maximum message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigSetSomeResponse(betterproto.Message):
+    key: "AutofillActionKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigDeleteRequest(betterproto.Message):
+    key: "AutofillActionKey" = betterproto.message_field(1)
+    """
+    Key indicates which AutofillActionConfig instance to remove. This field
+    must always be set.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigDeleteResponse(betterproto.Message):
+    key: "AutofillActionKey" = betterproto.message_field(1)
+    """
+    Key echoes back the key of the deleted AutofillActionConfig instance.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:    - it is
+    after the time the request was received    - a time-ranged query with
+    StartTime==DeletedAt will not include this instance.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class AutofillActionConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "AutofillActionKey" = betterproto.message_field(3)
+    """
+    This is the key of the AutofillActionConfig instance that failed to be
+    deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
 
 
 @dataclass(eq=False, repr=False)
@@ -758,7 +1927,15 @@ class InputsStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each Inputs at end.     * Each Inputs response is
+    fully-specified (all fields set).   * start: Returns the state of each
+    Inputs at start, followed by updates until now.     * Each Inputs response
+    at start is fully-specified, but updates may be partial.   * start and end:
+    Returns the state of each Inputs at start, followed by updates     until
+    end.     * Each Inputs response at start is fully-specified, but updates
+    until end may       be partial. This field is not allowed in the Subscribe
+    RPC.
     """
 
 
@@ -830,7 +2007,15 @@ class InputsConfigStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each InputsConfig at end.     * Each InputsConfig
+    response is fully-specified (all fields set).   * start: Returns the state
+    of each InputsConfig at start, followed by updates until now.     * Each
+    InputsConfig response at start is fully-specified, but updates may be
+    partial.   * start and end: Returns the state of each InputsConfig at
+    start, followed by updates     until end.     * Each InputsConfig response
+    at start is fully-specified, but updates until end may       be partial.
+    This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -884,6 +2069,24 @@ class InputsConfigSetResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class InputsConfigSetSomeRequest(betterproto.Message):
+    values: List["InputsConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of InputsConfig values to write. It is possible to
+    provide more values than can fit within either:     - the maxiumum send
+    size of the client     - the maximum receive size of the server If this
+    error occurs you must reduce the number of values sent. See gRPC "maximum
+    message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class InputsConfigSetSomeResponse(betterproto.Message):
+    key: "InputsKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
 class InputsConfigDeleteRequest(betterproto.Message):
     key: "InputsKey" = betterproto.message_field(1)
     """
@@ -903,6 +2106,108 @@ class InputsConfigDeleteResponse(betterproto.Message):
     deletion. The only guarantees made about this timestamp are:    - it is
     after the time the request was received    - a time-ranged query with
     StartTime==DeletedAt will not include this instance.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class InputsConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class InputsConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "InputsKey" = betterproto.message_field(3)
+    """
+    This is the key of the InputsConfig instance that failed to be deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+
+@dataclass(eq=False, repr=False)
+class SecretInputRequest(betterproto.Message):
+    key: "InputsKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a SecretInput instance to retrieve. This value must
+    be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecretInputResponse(betterproto.Message):
+    value: "SecretInput" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    SecretInput instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecretInputStreamRequest(betterproto.Message):
+    partial_eq_filter: List["SecretInput"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each SecretInput at end.     * Each SecretInput
+    response is fully-specified (all fields set).   * start: Returns the state
+    of each SecretInput at start, followed by updates until now.     * Each
+    SecretInput response at start is fully-specified, but updates may be
+    partial.   * start and end: Returns the state of each SecretInput at start,
+    followed by updates     until end.     * Each SecretInput response at start
+    is fully-specified, but updates until end may       be partial. This field
+    is not allowed in the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SecretInputStreamResponse(betterproto.Message):
+    value: "SecretInput" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """Time holds the timestamp of this SecretInput's last modification."""
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the SecretInput value in this response should be
+    considered. Under non-subscribe requests, this value should always be
+    INITIAL. In a subscription, once all initial data is streamed and the
+    client begins to receive modification updates, you should not see INITIAL
+    again.
     """
 
 
@@ -951,7 +2256,15 @@ class StudioStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each Studio at end.     * Each Studio response is
+    fully-specified (all fields set).   * start: Returns the state of each
+    Studio at start, followed by updates until now.     * Each Studio response
+    at start is fully-specified, but updates may be partial.   * start and end:
+    Returns the state of each Studio at start, followed by updates     until
+    end.     * Each Studio response at start is fully-specified, but updates
+    until end may       be partial. This field is not allowed in the Subscribe
+    RPC.
     """
 
 
@@ -1023,7 +2336,15 @@ class StudioConfigStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each StudioConfig at end.     * Each StudioConfig
+    response is fully-specified (all fields set).   * start: Returns the state
+    of each StudioConfig at start, followed by updates until now.     * Each
+    StudioConfig response at start is fully-specified, but updates may be
+    partial.   * start and end: Returns the state of each StudioConfig at
+    start, followed by updates     until end.     * Each StudioConfig response
+    at start is fully-specified, but updates until end may       be partial.
+    This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -1077,6 +2398,24 @@ class StudioConfigSetResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class StudioConfigSetSomeRequest(betterproto.Message):
+    values: List["StudioConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of StudioConfig values to write. It is possible to
+    provide more values than can fit within either:     - the maxiumum send
+    size of the client     - the maximum receive size of the server If this
+    error occurs you must reduce the number of values sent. See gRPC "maximum
+    message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class StudioConfigSetSomeResponse(betterproto.Message):
+    key: "StudioKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
 class StudioConfigDeleteRequest(betterproto.Message):
     key: "StudioKey" = betterproto.message_field(1)
     """
@@ -1097,6 +2436,878 @@ class StudioConfigDeleteResponse(betterproto.Message):
     after the time the request was received    - a time-ranged query with
     StartTime==DeletedAt will not include this instance.
     """
+
+
+@dataclass(eq=False, repr=False)
+class StudioConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class StudioConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "StudioKey" = betterproto.message_field(3)
+    """
+    This is the key of the StudioConfig instance that failed to be deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+
+@dataclass(eq=False, repr=False)
+class StudioSummaryRequest(betterproto.Message):
+    key: "StudioKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a StudioSummary instance to retrieve. This value
+    must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class StudioSummaryResponse(betterproto.Message):
+    value: "StudioSummary" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    StudioSummary instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class StudioSummaryStreamRequest(betterproto.Message):
+    partial_eq_filter: List["StudioSummary"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each StudioSummary at end.     * Each
+    StudioSummary response is fully-specified (all fields set).   * start:
+    Returns the state of each StudioSummary at start, followed by updates until
+    now.     * Each StudioSummary response at start is fully-specified, but
+    updates may be partial.   * start and end: Returns the state of each
+    StudioSummary at start, followed by updates     until end.     * Each
+    StudioSummary response at start is fully-specified, but updates until end
+    may       be partial. This field is not allowed in the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class StudioSummaryStreamResponse(betterproto.Message):
+    value: "StudioSummary" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """Time holds the timestamp of this StudioSummary's last modification."""
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the StudioSummary value in this response should be
+    considered. Under non-subscribe requests, this value should always be
+    INITIAL. In a subscription, once all initial data is streamed and the
+    client begins to receive modification updates, you should not see INITIAL
+    again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputRequest(betterproto.Message):
+    key: "TopologyInputKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a TopologyInput instance to retrieve. This value
+    must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputResponse(betterproto.Message):
+    value: "TopologyInput" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TopologyInput instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputStreamRequest(betterproto.Message):
+    partial_eq_filter: List["TopologyInput"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each TopologyInput at end.     * Each
+    TopologyInput response is fully-specified (all fields set).   * start:
+    Returns the state of each TopologyInput at start, followed by updates until
+    now.     * Each TopologyInput response at start is fully-specified, but
+    updates may be partial.   * start and end: Returns the state of each
+    TopologyInput at start, followed by updates     until end.     * Each
+    TopologyInput response at start is fully-specified, but updates until end
+    may       be partial. This field is not allowed in the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputStreamResponse(betterproto.Message):
+    value: "TopologyInput" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """Time holds the timestamp of this TopologyInput's last modification."""
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the TopologyInput value in this response should be
+    considered. Under non-subscribe requests, this value should always be
+    INITIAL. In a subscription, once all initial data is streamed and the
+    client begins to receive modification updates, you should not see INITIAL
+    again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigRequest(betterproto.Message):
+    key: "TopologyInputKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a TopologyInputConfig instance to retrieve. This
+    value must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigResponse(betterproto.Message):
+    value: "TopologyInputConfig" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TopologyInputConfig instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigStreamRequest(betterproto.Message):
+    partial_eq_filter: List["TopologyInputConfig"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each TopologyInputConfig at end.     * Each
+    TopologyInputConfig response is fully-specified (all fields set).   *
+    start: Returns the state of each TopologyInputConfig at start, followed by
+    updates until now.     * Each TopologyInputConfig response at start is
+    fully-specified, but updates may be partial.   * start and end: Returns the
+    state of each TopologyInputConfig at start, followed by updates     until
+    end.     * Each TopologyInputConfig response at start is fully-specified,
+    but updates until end may       be partial. This field is not allowed in
+    the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigStreamResponse(betterproto.Message):
+    value: "TopologyInputConfig" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time holds the timestamp of this TopologyInputConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the TopologyInputConfig value in this response
+    should be considered. Under non-subscribe requests, this value should
+    always be INITIAL. In a subscription, once all initial data is streamed and
+    the client begins to receive modification updates, you should not see
+    INITIAL again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigSetRequest(betterproto.Message):
+    value: "TopologyInputConfig" = betterproto.message_field(1)
+    """
+    TopologyInputConfig carries the value to set into the datastore. See the
+    documentation on the TopologyInputConfig struct for which fields are
+    required.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigSetResponse(betterproto.Message):
+    value: "TopologyInputConfig" = betterproto.message_field(1)
+    """
+    Value carries all the values given in the TopologyInputConfigSetRequest as
+    well as any server-generated values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:    - it is
+    after the time the request was received    - a time-ranged query with
+    StartTime==CreatedAt will include this instance.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigSetSomeRequest(betterproto.Message):
+    values: List["TopologyInputConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of TopologyInputConfig values to write. It is
+    possible to provide more values than can fit within either:     - the
+    maxiumum send size of the client     - the maximum receive size of the
+    server If this error occurs you must reduce the number of values sent. See
+    gRPC "maximum message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigSetSomeResponse(betterproto.Message):
+    key: "TopologyInputKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigDeleteRequest(betterproto.Message):
+    key: "TopologyInputKey" = betterproto.message_field(1)
+    """
+    Key indicates which TopologyInputConfig instance to remove. This field must
+    always be set.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigDeleteResponse(betterproto.Message):
+    key: "TopologyInputKey" = betterproto.message_field(1)
+    """Key echoes back the key of the deleted TopologyInputConfig instance."""
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:    - it is
+    after the time the request was received    - a time-ranged query with
+    StartTime==DeletedAt will not include this instance.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class TopologyInputConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "TopologyInputKey" = betterproto.message_field(3)
+    """
+    This is the key of the TopologyInputConfig instance that failed to be
+    deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateRequest(betterproto.Message):
+    key: "TopologyUpdateKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a TopologyUpdate instance to retrieve. This value
+    must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateResponse(betterproto.Message):
+    value: "TopologyUpdate" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TopologyUpdate instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateStreamRequest(betterproto.Message):
+    partial_eq_filter: List["TopologyUpdate"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each TopologyUpdate at end.     * Each
+    TopologyUpdate response is fully-specified (all fields set).   * start:
+    Returns the state of each TopologyUpdate at start, followed by updates
+    until now.     * Each TopologyUpdate response at start is fully-specified,
+    but updates may be partial.   * start and end: Returns the state of each
+    TopologyUpdate at start, followed by updates     until end.     * Each
+    TopologyUpdate response at start is fully-specified, but updates until end
+    may       be partial. This field is not allowed in the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateStreamResponse(betterproto.Message):
+    value: "TopologyUpdate" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """Time holds the timestamp of this TopologyUpdate's last modification."""
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the TopologyUpdate value in this response should be
+    considered. Under non-subscribe requests, this value should always be
+    INITIAL. In a subscription, once all initial data is streamed and the
+    client begins to receive modification updates, you should not see INITIAL
+    again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigRequest(betterproto.Message):
+    key: "TopologyUpdateKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a TopologyUpdateConfig instance to retrieve. This
+    value must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigResponse(betterproto.Message):
+    value: "TopologyUpdateConfig" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TopologyUpdateConfig instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigStreamRequest(betterproto.Message):
+    partial_eq_filter: List["TopologyUpdateConfig"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each TopologyUpdateConfig at end.     * Each
+    TopologyUpdateConfig response is fully-specified (all fields set).   *
+    start: Returns the state of each TopologyUpdateConfig at start, followed by
+    updates until now.     * Each TopologyUpdateConfig response at start is
+    fully-specified, but updates may be partial.   * start and end: Returns the
+    state of each TopologyUpdateConfig at start, followed by updates     until
+    end.     * Each TopologyUpdateConfig response at start is fully-specified,
+    but updates until end may       be partial. This field is not allowed in
+    the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigStreamResponse(betterproto.Message):
+    value: "TopologyUpdateConfig" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time holds the timestamp of this TopologyUpdateConfig's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the TopologyUpdateConfig value in this response
+    should be considered. Under non-subscribe requests, this value should
+    always be INITIAL. In a subscription, once all initial data is streamed and
+    the client begins to receive modification updates, you should not see
+    INITIAL again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigSetRequest(betterproto.Message):
+    value: "TopologyUpdateConfig" = betterproto.message_field(1)
+    """
+    TopologyUpdateConfig carries the value to set into the datastore. See the
+    documentation on the TopologyUpdateConfig struct for which fields are
+    required.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigSetResponse(betterproto.Message):
+    value: "TopologyUpdateConfig" = betterproto.message_field(1)
+    """
+    Value carries all the values given in the TopologyUpdateConfigSetRequest as
+    well as any server-generated values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:    - it is
+    after the time the request was received    - a time-ranged query with
+    StartTime==CreatedAt will include this instance.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigSetSomeRequest(betterproto.Message):
+    values: List["TopologyUpdateConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of TopologyUpdateConfig values to write. It is
+    possible to provide more values than can fit within either:     - the
+    maxiumum send size of the client     - the maximum receive size of the
+    server If this error occurs you must reduce the number of values sent. See
+    gRPC "maximum message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigSetSomeResponse(betterproto.Message):
+    key: "TopologyUpdateKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigDeleteRequest(betterproto.Message):
+    key: "TopologyUpdateKey" = betterproto.message_field(1)
+    """
+    Key indicates which TopologyUpdateConfig instance to remove. This field
+    must always be set.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigDeleteResponse(betterproto.Message):
+    key: "TopologyUpdateKey" = betterproto.message_field(1)
+    """
+    Key echoes back the key of the deleted TopologyUpdateConfig instance.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:    - it is
+    after the time the request was received    - a time-ranged query with
+    StartTime==DeletedAt will not include this instance.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "TopologyUpdateKey" = betterproto.message_field(3)
+    """
+    This is the key of the TopologyUpdateConfig instance that failed to be
+    deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncRequest(betterproto.Message):
+    key: "WorkspaceKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a TopologyUpdateSync instance to retrieve. This
+    value must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncResponse(betterproto.Message):
+    value: "TopologyUpdateSync" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TopologyUpdateSync instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncStreamRequest(betterproto.Message):
+    partial_eq_filter: List["TopologyUpdateSync"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each TopologyUpdateSync at end.     * Each
+    TopologyUpdateSync response is fully-specified (all fields set).   * start:
+    Returns the state of each TopologyUpdateSync at start, followed by updates
+    until now.     * Each TopologyUpdateSync response at start is fully-
+    specified, but updates may be partial.   * start and end: Returns the state
+    of each TopologyUpdateSync at start, followed by updates     until end.
+    * Each TopologyUpdateSync response at start is fully-specified, but updates
+    until end may       be partial. This field is not allowed in the Subscribe
+    RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncStreamResponse(betterproto.Message):
+    value: "TopologyUpdateSync" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time holds the timestamp of this TopologyUpdateSync's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the TopologyUpdateSync value in this response
+    should be considered. Under non-subscribe requests, this value should
+    always be INITIAL. In a subscription, once all initial data is streamed and
+    the client begins to receive modification updates, you should not see
+    INITIAL again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigRequest(betterproto.Message):
+    key: "WorkspaceKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a TopologyUpdateSyncConfig instance to retrieve.
+    This value must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigResponse(betterproto.Message):
+    value: "TopologyUpdateSyncConfig" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    TopologyUpdateSyncConfig instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigStreamRequest(betterproto.Message):
+    partial_eq_filter: List["TopologyUpdateSyncConfig"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each TopologyUpdateSyncConfig at end.     * Each
+    TopologyUpdateSyncConfig response is fully-specified (all fields set).   *
+    start: Returns the state of each TopologyUpdateSyncConfig at start,
+    followed by updates until now.     * Each TopologyUpdateSyncConfig response
+    at start is fully-specified, but updates may be partial.   * start and end:
+    Returns the state of each TopologyUpdateSyncConfig at start, followed by
+    updates     until end.     * Each TopologyUpdateSyncConfig response at
+    start is fully-specified, but updates until end may       be partial. This
+    field is not allowed in the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigStreamResponse(betterproto.Message):
+    value: "TopologyUpdateSyncConfig" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time holds the timestamp of this TopologyUpdateSyncConfig's last
+    modification.
+    """
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the TopologyUpdateSyncConfig value in this response
+    should be considered. Under non-subscribe requests, this value should
+    always be INITIAL. In a subscription, once all initial data is streamed and
+    the client begins to receive modification updates, you should not see
+    INITIAL again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigSetRequest(betterproto.Message):
+    value: "TopologyUpdateSyncConfig" = betterproto.message_field(1)
+    """
+    TopologyUpdateSyncConfig carries the value to set into the datastore. See
+    the documentation on the TopologyUpdateSyncConfig struct for which fields
+    are required.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigSetResponse(betterproto.Message):
+    value: "TopologyUpdateSyncConfig" = betterproto.message_field(1)
+    """
+    Value carries all the values given in the
+    TopologyUpdateSyncConfigSetRequest as well as any server-generated values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    creation. The only guarantees made about this timestamp are:    - it is
+    after the time the request was received    - a time-ranged query with
+    StartTime==CreatedAt will include this instance.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigSetSomeRequest(betterproto.Message):
+    values: List["TopologyUpdateSyncConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of TopologyUpdateSyncConfig values to write. It is
+    possible to provide more values than can fit within either:     - the
+    maxiumum send size of the client     - the maximum receive size of the
+    server If this error occurs you must reduce the number of values sent. See
+    gRPC "maximum message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigSetSomeResponse(betterproto.Message):
+    key: "WorkspaceKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigDeleteRequest(betterproto.Message):
+    key: "WorkspaceKey" = betterproto.message_field(1)
+    """
+    Key indicates which TopologyUpdateSyncConfig instance to remove. This field
+    must always be set.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigDeleteResponse(betterproto.Message):
+    key: "WorkspaceKey" = betterproto.message_field(1)
+    """
+    Key echoes back the key of the deleted TopologyUpdateSyncConfig instance.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the (UTC) timestamp at which the system recognizes the
+    deletion. The only guarantees made about this timestamp are:    - it is
+    after the time the request was received    - a time-ranged query with
+    StartTime==DeletedAt will not include this instance.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class TopologyUpdateSyncConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "WorkspaceKey" = betterproto.message_field(3)
+    """
+    This is the key of the TopologyUpdateSyncConfig instance that failed to be
+    deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
 
 
 class AssignedTagsServiceStub(betterproto.ServiceStub):
@@ -1225,6 +3436,24 @@ class AssignedTagsConfigServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def set_some(
+        self,
+        assigned_tags_config_set_some_request: "AssignedTagsConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["AssignedTagsConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.AssignedTagsConfigService/SetSome",
+            assigned_tags_config_set_some_request,
+            AssignedTagsConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
     async def delete(
         self,
         assigned_tags_config_delete_request: "AssignedTagsConfigDeleteRequest",
@@ -1241,6 +3470,204 @@ class AssignedTagsConfigServiceStub(betterproto.ServiceStub):
             deadline=deadline,
             metadata=metadata,
         )
+
+    async def delete_all(
+        self,
+        assigned_tags_config_delete_all_request: "AssignedTagsConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["AssignedTagsConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.AssignedTagsConfigService/DeleteAll",
+            assigned_tags_config_delete_all_request,
+            AssignedTagsConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class AutofillActionServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        autofill_action_request: "AutofillActionRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "AutofillActionResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.AutofillActionService/GetOne",
+            autofill_action_request,
+            AutofillActionResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        autofill_action_stream_request: "AutofillActionStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["AutofillActionStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.AutofillActionService/GetAll",
+            autofill_action_stream_request,
+            AutofillActionStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        autofill_action_stream_request: "AutofillActionStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["AutofillActionStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.AutofillActionService/Subscribe",
+            autofill_action_stream_request,
+            AutofillActionStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class AutofillActionConfigServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        autofill_action_config_request: "AutofillActionConfigRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "AutofillActionConfigResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.AutofillActionConfigService/GetOne",
+            autofill_action_config_request,
+            AutofillActionConfigResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        autofill_action_config_stream_request: "AutofillActionConfigStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["AutofillActionConfigStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.AutofillActionConfigService/GetAll",
+            autofill_action_config_stream_request,
+            AutofillActionConfigStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        autofill_action_config_stream_request: "AutofillActionConfigStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["AutofillActionConfigStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.AutofillActionConfigService/Subscribe",
+            autofill_action_config_stream_request,
+            AutofillActionConfigStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def set(
+        self,
+        autofill_action_config_set_request: "AutofillActionConfigSetRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "AutofillActionConfigSetResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.AutofillActionConfigService/Set",
+            autofill_action_config_set_request,
+            AutofillActionConfigSetResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def set_some(
+        self,
+        autofill_action_config_set_some_request: "AutofillActionConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["AutofillActionConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.AutofillActionConfigService/SetSome",
+            autofill_action_config_set_some_request,
+            AutofillActionConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def delete(
+        self,
+        autofill_action_config_delete_request: "AutofillActionConfigDeleteRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "AutofillActionConfigDeleteResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.AutofillActionConfigService/Delete",
+            autofill_action_config_delete_request,
+            AutofillActionConfigDeleteResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def delete_all(
+        self,
+        autofill_action_config_delete_all_request: "AutofillActionConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["AutofillActionConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.AutofillActionConfigService/DeleteAll",
+            autofill_action_config_delete_all_request,
+            AutofillActionConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
 
 
 class InputsServiceStub(betterproto.ServiceStub):
@@ -1369,6 +3796,24 @@ class InputsConfigServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def set_some(
+        self,
+        inputs_config_set_some_request: "InputsConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["InputsConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.InputsConfigService/SetSome",
+            inputs_config_set_some_request,
+            InputsConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
     async def delete(
         self,
         inputs_config_delete_request: "InputsConfigDeleteRequest",
@@ -1385,6 +3830,79 @@ class InputsConfigServiceStub(betterproto.ServiceStub):
             deadline=deadline,
             metadata=metadata,
         )
+
+    async def delete_all(
+        self,
+        inputs_config_delete_all_request: "InputsConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["InputsConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.InputsConfigService/DeleteAll",
+            inputs_config_delete_all_request,
+            InputsConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class SecretInputServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        secret_input_request: "SecretInputRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "SecretInputResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.SecretInputService/GetOne",
+            secret_input_request,
+            SecretInputResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        secret_input_stream_request: "SecretInputStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["SecretInputStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.SecretInputService/GetAll",
+            secret_input_stream_request,
+            SecretInputStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        secret_input_stream_request: "SecretInputStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["SecretInputStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.SecretInputService/Subscribe",
+            secret_input_stream_request,
+            SecretInputStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
 
 
 class StudioServiceStub(betterproto.ServiceStub):
@@ -1513,6 +4031,24 @@ class StudioConfigServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def set_some(
+        self,
+        studio_config_set_some_request: "StudioConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["StudioConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.StudioConfigService/SetSome",
+            studio_config_set_some_request,
+            StudioConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
     async def delete(
         self,
         studio_config_delete_request: "StudioConfigDeleteRequest",
@@ -1529,6 +4065,619 @@ class StudioConfigServiceStub(betterproto.ServiceStub):
             deadline=deadline,
             metadata=metadata,
         )
+
+    async def delete_all(
+        self,
+        studio_config_delete_all_request: "StudioConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["StudioConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.StudioConfigService/DeleteAll",
+            studio_config_delete_all_request,
+            StudioConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class StudioSummaryServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        studio_summary_request: "StudioSummaryRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "StudioSummaryResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.StudioSummaryService/GetOne",
+            studio_summary_request,
+            StudioSummaryResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        studio_summary_stream_request: "StudioSummaryStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["StudioSummaryStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.StudioSummaryService/GetAll",
+            studio_summary_stream_request,
+            StudioSummaryStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        studio_summary_stream_request: "StudioSummaryStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["StudioSummaryStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.StudioSummaryService/Subscribe",
+            studio_summary_stream_request,
+            StudioSummaryStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class TopologyInputServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        topology_input_request: "TopologyInputRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyInputResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyInputService/GetOne",
+            topology_input_request,
+            TopologyInputResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        topology_input_stream_request: "TopologyInputStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyInputStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyInputService/GetAll",
+            topology_input_stream_request,
+            TopologyInputStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        topology_input_stream_request: "TopologyInputStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyInputStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyInputService/Subscribe",
+            topology_input_stream_request,
+            TopologyInputStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class TopologyInputConfigServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        topology_input_config_request: "TopologyInputConfigRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyInputConfigResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyInputConfigService/GetOne",
+            topology_input_config_request,
+            TopologyInputConfigResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        topology_input_config_stream_request: "TopologyInputConfigStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyInputConfigStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyInputConfigService/GetAll",
+            topology_input_config_stream_request,
+            TopologyInputConfigStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        topology_input_config_stream_request: "TopologyInputConfigStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyInputConfigStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyInputConfigService/Subscribe",
+            topology_input_config_stream_request,
+            TopologyInputConfigStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def set(
+        self,
+        topology_input_config_set_request: "TopologyInputConfigSetRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyInputConfigSetResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyInputConfigService/Set",
+            topology_input_config_set_request,
+            TopologyInputConfigSetResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def set_some(
+        self,
+        topology_input_config_set_some_request: "TopologyInputConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyInputConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyInputConfigService/SetSome",
+            topology_input_config_set_some_request,
+            TopologyInputConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def delete(
+        self,
+        topology_input_config_delete_request: "TopologyInputConfigDeleteRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyInputConfigDeleteResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyInputConfigService/Delete",
+            topology_input_config_delete_request,
+            TopologyInputConfigDeleteResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def delete_all(
+        self,
+        topology_input_config_delete_all_request: "TopologyInputConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyInputConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyInputConfigService/DeleteAll",
+            topology_input_config_delete_all_request,
+            TopologyInputConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class TopologyUpdateServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        topology_update_request: "TopologyUpdateRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyUpdateResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyUpdateService/GetOne",
+            topology_update_request,
+            TopologyUpdateResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        topology_update_stream_request: "TopologyUpdateStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateService/GetAll",
+            topology_update_stream_request,
+            TopologyUpdateStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        topology_update_stream_request: "TopologyUpdateStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateService/Subscribe",
+            topology_update_stream_request,
+            TopologyUpdateStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class TopologyUpdateConfigServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        topology_update_config_request: "TopologyUpdateConfigRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyUpdateConfigResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyUpdateConfigService/GetOne",
+            topology_update_config_request,
+            TopologyUpdateConfigResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        topology_update_config_stream_request: "TopologyUpdateConfigStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateConfigStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateConfigService/GetAll",
+            topology_update_config_stream_request,
+            TopologyUpdateConfigStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        topology_update_config_stream_request: "TopologyUpdateConfigStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateConfigStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateConfigService/Subscribe",
+            topology_update_config_stream_request,
+            TopologyUpdateConfigStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def set(
+        self,
+        topology_update_config_set_request: "TopologyUpdateConfigSetRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyUpdateConfigSetResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyUpdateConfigService/Set",
+            topology_update_config_set_request,
+            TopologyUpdateConfigSetResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def set_some(
+        self,
+        topology_update_config_set_some_request: "TopologyUpdateConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateConfigService/SetSome",
+            topology_update_config_set_some_request,
+            TopologyUpdateConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def delete(
+        self,
+        topology_update_config_delete_request: "TopologyUpdateConfigDeleteRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyUpdateConfigDeleteResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyUpdateConfigService/Delete",
+            topology_update_config_delete_request,
+            TopologyUpdateConfigDeleteResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def delete_all(
+        self,
+        topology_update_config_delete_all_request: "TopologyUpdateConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateConfigService/DeleteAll",
+            topology_update_config_delete_all_request,
+            TopologyUpdateConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class TopologyUpdateSyncServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        topology_update_sync_request: "TopologyUpdateSyncRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyUpdateSyncResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyUpdateSyncService/GetOne",
+            topology_update_sync_request,
+            TopologyUpdateSyncResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        topology_update_sync_stream_request: "TopologyUpdateSyncStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateSyncStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateSyncService/GetAll",
+            topology_update_sync_stream_request,
+            TopologyUpdateSyncStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        topology_update_sync_stream_request: "TopologyUpdateSyncStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateSyncStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateSyncService/Subscribe",
+            topology_update_sync_stream_request,
+            TopologyUpdateSyncStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
+class TopologyUpdateSyncConfigServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        topology_update_sync_config_request: "TopologyUpdateSyncConfigRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyUpdateSyncConfigResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/GetOne",
+            topology_update_sync_config_request,
+            TopologyUpdateSyncConfigResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        topology_update_sync_config_stream_request: "TopologyUpdateSyncConfigStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateSyncConfigStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/GetAll",
+            topology_update_sync_config_stream_request,
+            TopologyUpdateSyncConfigStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        topology_update_sync_config_stream_request: "TopologyUpdateSyncConfigStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateSyncConfigStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/Subscribe",
+            topology_update_sync_config_stream_request,
+            TopologyUpdateSyncConfigStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def set(
+        self,
+        topology_update_sync_config_set_request: "TopologyUpdateSyncConfigSetRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyUpdateSyncConfigSetResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/Set",
+            topology_update_sync_config_set_request,
+            TopologyUpdateSyncConfigSetResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def set_some(
+        self,
+        topology_update_sync_config_set_some_request: "TopologyUpdateSyncConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateSyncConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/SetSome",
+            topology_update_sync_config_set_some_request,
+            TopologyUpdateSyncConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def delete(
+        self,
+        topology_update_sync_config_delete_request: "TopologyUpdateSyncConfigDeleteRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "TopologyUpdateSyncConfigDeleteResponse":
+        return await self._unary_unary(
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/Delete",
+            topology_update_sync_config_delete_request,
+            TopologyUpdateSyncConfigDeleteResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def delete_all(
+        self,
+        topology_update_sync_config_delete_all_request: "TopologyUpdateSyncConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["TopologyUpdateSyncConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/DeleteAll",
+            topology_update_sync_config_delete_all_request,
+            TopologyUpdateSyncConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
 
 
 class AssignedTagsServiceBase(ServiceBase):
@@ -1624,10 +4773,23 @@ class AssignedTagsConfigServiceBase(ServiceBase):
     ) -> "AssignedTagsConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def set_some(
+        self, assigned_tags_config_set_some_request: "AssignedTagsConfigSetSomeRequest"
+    ) -> AsyncIterator["AssignedTagsConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield AssignedTagsConfigSetSomeResponse()
+
     async def delete(
         self, assigned_tags_config_delete_request: "AssignedTagsConfigDeleteRequest"
     ) -> "AssignedTagsConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self,
+        assigned_tags_config_delete_all_request: "AssignedTagsConfigDeleteAllRequest",
+    ) -> AsyncIterator["AssignedTagsConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield AssignedTagsConfigDeleteAllResponse()
 
     async def __rpc_get_one(
         self,
@@ -1667,6 +4829,17 @@ class AssignedTagsConfigServiceBase(ServiceBase):
         response = await self.set(request)
         await stream.send_message(response)
 
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[AssignedTagsConfigSetSomeRequest, AssignedTagsConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
     async def __rpc_delete(
         self,
         stream: "grpclib.server.Stream[AssignedTagsConfigDeleteRequest, AssignedTagsConfigDeleteResponse]",
@@ -1674,6 +4847,17 @@ class AssignedTagsConfigServiceBase(ServiceBase):
         request = await stream.recv_message()
         response = await self.delete(request)
         await stream.send_message(response)
+
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[AssignedTagsConfigDeleteAllRequest, AssignedTagsConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
 
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
@@ -1701,11 +4885,251 @@ class AssignedTagsConfigServiceBase(ServiceBase):
                 AssignedTagsConfigSetRequest,
                 AssignedTagsConfigSetResponse,
             ),
+            "/arista.studio.v1.AssignedTagsConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                AssignedTagsConfigSetSomeRequest,
+                AssignedTagsConfigSetSomeResponse,
+            ),
             "/arista.studio.v1.AssignedTagsConfigService/Delete": grpclib.const.Handler(
                 self.__rpc_delete,
                 grpclib.const.Cardinality.UNARY_UNARY,
                 AssignedTagsConfigDeleteRequest,
                 AssignedTagsConfigDeleteResponse,
+            ),
+            "/arista.studio.v1.AssignedTagsConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                AssignedTagsConfigDeleteAllRequest,
+                AssignedTagsConfigDeleteAllResponse,
+            ),
+        }
+
+
+class AutofillActionServiceBase(ServiceBase):
+    async def get_one(
+        self, autofill_action_request: "AutofillActionRequest"
+    ) -> "AutofillActionResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, autofill_action_stream_request: "AutofillActionStreamRequest"
+    ) -> AsyncIterator["AutofillActionStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield AutofillActionStreamResponse()
+
+    async def subscribe(
+        self, autofill_action_stream_request: "AutofillActionStreamRequest"
+    ) -> AsyncIterator["AutofillActionStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield AutofillActionStreamResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionRequest, AutofillActionResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionStreamRequest, AutofillActionStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionStreamRequest, AutofillActionStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.AutofillActionService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                AutofillActionRequest,
+                AutofillActionResponse,
+            ),
+            "/arista.studio.v1.AutofillActionService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                AutofillActionStreamRequest,
+                AutofillActionStreamResponse,
+            ),
+            "/arista.studio.v1.AutofillActionService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                AutofillActionStreamRequest,
+                AutofillActionStreamResponse,
+            ),
+        }
+
+
+class AutofillActionConfigServiceBase(ServiceBase):
+    async def get_one(
+        self, autofill_action_config_request: "AutofillActionConfigRequest"
+    ) -> "AutofillActionConfigResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, autofill_action_config_stream_request: "AutofillActionConfigStreamRequest"
+    ) -> AsyncIterator["AutofillActionConfigStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield AutofillActionConfigStreamResponse()
+
+    async def subscribe(
+        self, autofill_action_config_stream_request: "AutofillActionConfigStreamRequest"
+    ) -> AsyncIterator["AutofillActionConfigStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield AutofillActionConfigStreamResponse()
+
+    async def set(
+        self, autofill_action_config_set_request: "AutofillActionConfigSetRequest"
+    ) -> "AutofillActionConfigSetResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def set_some(
+        self,
+        autofill_action_config_set_some_request: "AutofillActionConfigSetSomeRequest",
+    ) -> AsyncIterator["AutofillActionConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield AutofillActionConfigSetSomeResponse()
+
+    async def delete(
+        self, autofill_action_config_delete_request: "AutofillActionConfigDeleteRequest"
+    ) -> "AutofillActionConfigDeleteResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self,
+        autofill_action_config_delete_all_request: "AutofillActionConfigDeleteAllRequest",
+    ) -> AsyncIterator["AutofillActionConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield AutofillActionConfigDeleteAllResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionConfigRequest, AutofillActionConfigResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionConfigStreamRequest, AutofillActionConfigStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionConfigStreamRequest, AutofillActionConfigStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    async def __rpc_set(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionConfigSetRequest, AutofillActionConfigSetResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.set(request)
+        await stream.send_message(response)
+
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionConfigSetSomeRequest, AutofillActionConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
+    async def __rpc_delete(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionConfigDeleteRequest, AutofillActionConfigDeleteResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.delete(request)
+        await stream.send_message(response)
+
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[AutofillActionConfigDeleteAllRequest, AutofillActionConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.AutofillActionConfigService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                AutofillActionConfigRequest,
+                AutofillActionConfigResponse,
+            ),
+            "/arista.studio.v1.AutofillActionConfigService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                AutofillActionConfigStreamRequest,
+                AutofillActionConfigStreamResponse,
+            ),
+            "/arista.studio.v1.AutofillActionConfigService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                AutofillActionConfigStreamRequest,
+                AutofillActionConfigStreamResponse,
+            ),
+            "/arista.studio.v1.AutofillActionConfigService/Set": grpclib.const.Handler(
+                self.__rpc_set,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                AutofillActionConfigSetRequest,
+                AutofillActionConfigSetResponse,
+            ),
+            "/arista.studio.v1.AutofillActionConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                AutofillActionConfigSetSomeRequest,
+                AutofillActionConfigSetSomeResponse,
+            ),
+            "/arista.studio.v1.AutofillActionConfigService/Delete": grpclib.const.Handler(
+                self.__rpc_delete,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                AutofillActionConfigDeleteRequest,
+                AutofillActionConfigDeleteResponse,
+            ),
+            "/arista.studio.v1.AutofillActionConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                AutofillActionConfigDeleteAllRequest,
+                AutofillActionConfigDeleteAllResponse,
             ),
         }
 
@@ -1799,10 +5223,22 @@ class InputsConfigServiceBase(ServiceBase):
     ) -> "InputsConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def set_some(
+        self, inputs_config_set_some_request: "InputsConfigSetSomeRequest"
+    ) -> AsyncIterator["InputsConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield InputsConfigSetSomeResponse()
+
     async def delete(
         self, inputs_config_delete_request: "InputsConfigDeleteRequest"
     ) -> "InputsConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self, inputs_config_delete_all_request: "InputsConfigDeleteAllRequest"
+    ) -> AsyncIterator["InputsConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield InputsConfigDeleteAllResponse()
 
     async def __rpc_get_one(
         self, stream: "grpclib.server.Stream[InputsConfigRequest, InputsConfigResponse]"
@@ -1841,6 +5277,17 @@ class InputsConfigServiceBase(ServiceBase):
         response = await self.set(request)
         await stream.send_message(response)
 
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[InputsConfigSetSomeRequest, InputsConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
     async def __rpc_delete(
         self,
         stream: "grpclib.server.Stream[InputsConfigDeleteRequest, InputsConfigDeleteResponse]",
@@ -1848,6 +5295,17 @@ class InputsConfigServiceBase(ServiceBase):
         request = await stream.recv_message()
         response = await self.delete(request)
         await stream.send_message(response)
+
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[InputsConfigDeleteAllRequest, InputsConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
 
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
@@ -1875,11 +5333,93 @@ class InputsConfigServiceBase(ServiceBase):
                 InputsConfigSetRequest,
                 InputsConfigSetResponse,
             ),
+            "/arista.studio.v1.InputsConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                InputsConfigSetSomeRequest,
+                InputsConfigSetSomeResponse,
+            ),
             "/arista.studio.v1.InputsConfigService/Delete": grpclib.const.Handler(
                 self.__rpc_delete,
                 grpclib.const.Cardinality.UNARY_UNARY,
                 InputsConfigDeleteRequest,
                 InputsConfigDeleteResponse,
+            ),
+            "/arista.studio.v1.InputsConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                InputsConfigDeleteAllRequest,
+                InputsConfigDeleteAllResponse,
+            ),
+        }
+
+
+class SecretInputServiceBase(ServiceBase):
+    async def get_one(
+        self, secret_input_request: "SecretInputRequest"
+    ) -> "SecretInputResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, secret_input_stream_request: "SecretInputStreamRequest"
+    ) -> AsyncIterator["SecretInputStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield SecretInputStreamResponse()
+
+    async def subscribe(
+        self, secret_input_stream_request: "SecretInputStreamRequest"
+    ) -> AsyncIterator["SecretInputStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield SecretInputStreamResponse()
+
+    async def __rpc_get_one(
+        self, stream: "grpclib.server.Stream[SecretInputRequest, SecretInputResponse]"
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[SecretInputStreamRequest, SecretInputStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[SecretInputStreamRequest, SecretInputStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.SecretInputService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                SecretInputRequest,
+                SecretInputResponse,
+            ),
+            "/arista.studio.v1.SecretInputService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                SecretInputStreamRequest,
+                SecretInputStreamResponse,
+            ),
+            "/arista.studio.v1.SecretInputService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                SecretInputStreamRequest,
+                SecretInputStreamResponse,
             ),
         }
 
@@ -1973,10 +5513,22 @@ class StudioConfigServiceBase(ServiceBase):
     ) -> "StudioConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def set_some(
+        self, studio_config_set_some_request: "StudioConfigSetSomeRequest"
+    ) -> AsyncIterator["StudioConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield StudioConfigSetSomeResponse()
+
     async def delete(
         self, studio_config_delete_request: "StudioConfigDeleteRequest"
     ) -> "StudioConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self, studio_config_delete_all_request: "StudioConfigDeleteAllRequest"
+    ) -> AsyncIterator["StudioConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield StudioConfigDeleteAllResponse()
 
     async def __rpc_get_one(
         self, stream: "grpclib.server.Stream[StudioConfigRequest, StudioConfigResponse]"
@@ -2015,6 +5567,17 @@ class StudioConfigServiceBase(ServiceBase):
         response = await self.set(request)
         await stream.send_message(response)
 
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[StudioConfigSetSomeRequest, StudioConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
     async def __rpc_delete(
         self,
         stream: "grpclib.server.Stream[StudioConfigDeleteRequest, StudioConfigDeleteResponse]",
@@ -2022,6 +5585,17 @@ class StudioConfigServiceBase(ServiceBase):
         request = await stream.recv_message()
         response = await self.delete(request)
         await stream.send_message(response)
+
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[StudioConfigDeleteAllRequest, StudioConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
 
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
@@ -2049,10 +5623,781 @@ class StudioConfigServiceBase(ServiceBase):
                 StudioConfigSetRequest,
                 StudioConfigSetResponse,
             ),
+            "/arista.studio.v1.StudioConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                StudioConfigSetSomeRequest,
+                StudioConfigSetSomeResponse,
+            ),
             "/arista.studio.v1.StudioConfigService/Delete": grpclib.const.Handler(
                 self.__rpc_delete,
                 grpclib.const.Cardinality.UNARY_UNARY,
                 StudioConfigDeleteRequest,
                 StudioConfigDeleteResponse,
+            ),
+            "/arista.studio.v1.StudioConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                StudioConfigDeleteAllRequest,
+                StudioConfigDeleteAllResponse,
+            ),
+        }
+
+
+class StudioSummaryServiceBase(ServiceBase):
+    async def get_one(
+        self, studio_summary_request: "StudioSummaryRequest"
+    ) -> "StudioSummaryResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, studio_summary_stream_request: "StudioSummaryStreamRequest"
+    ) -> AsyncIterator["StudioSummaryStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield StudioSummaryStreamResponse()
+
+    async def subscribe(
+        self, studio_summary_stream_request: "StudioSummaryStreamRequest"
+    ) -> AsyncIterator["StudioSummaryStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield StudioSummaryStreamResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[StudioSummaryRequest, StudioSummaryResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[StudioSummaryStreamRequest, StudioSummaryStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[StudioSummaryStreamRequest, StudioSummaryStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.StudioSummaryService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                StudioSummaryRequest,
+                StudioSummaryResponse,
+            ),
+            "/arista.studio.v1.StudioSummaryService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                StudioSummaryStreamRequest,
+                StudioSummaryStreamResponse,
+            ),
+            "/arista.studio.v1.StudioSummaryService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                StudioSummaryStreamRequest,
+                StudioSummaryStreamResponse,
+            ),
+        }
+
+
+class TopologyInputServiceBase(ServiceBase):
+    async def get_one(
+        self, topology_input_request: "TopologyInputRequest"
+    ) -> "TopologyInputResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, topology_input_stream_request: "TopologyInputStreamRequest"
+    ) -> AsyncIterator["TopologyInputStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyInputStreamResponse()
+
+    async def subscribe(
+        self, topology_input_stream_request: "TopologyInputStreamRequest"
+    ) -> AsyncIterator["TopologyInputStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyInputStreamResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputRequest, TopologyInputResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputStreamRequest, TopologyInputStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputStreamRequest, TopologyInputStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.TopologyInputService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyInputRequest,
+                TopologyInputResponse,
+            ),
+            "/arista.studio.v1.TopologyInputService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyInputStreamRequest,
+                TopologyInputStreamResponse,
+            ),
+            "/arista.studio.v1.TopologyInputService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyInputStreamRequest,
+                TopologyInputStreamResponse,
+            ),
+        }
+
+
+class TopologyInputConfigServiceBase(ServiceBase):
+    async def get_one(
+        self, topology_input_config_request: "TopologyInputConfigRequest"
+    ) -> "TopologyInputConfigResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, topology_input_config_stream_request: "TopologyInputConfigStreamRequest"
+    ) -> AsyncIterator["TopologyInputConfigStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyInputConfigStreamResponse()
+
+    async def subscribe(
+        self, topology_input_config_stream_request: "TopologyInputConfigStreamRequest"
+    ) -> AsyncIterator["TopologyInputConfigStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyInputConfigStreamResponse()
+
+    async def set(
+        self, topology_input_config_set_request: "TopologyInputConfigSetRequest"
+    ) -> "TopologyInputConfigSetResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def set_some(
+        self,
+        topology_input_config_set_some_request: "TopologyInputConfigSetSomeRequest",
+    ) -> AsyncIterator["TopologyInputConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyInputConfigSetSomeResponse()
+
+    async def delete(
+        self, topology_input_config_delete_request: "TopologyInputConfigDeleteRequest"
+    ) -> "TopologyInputConfigDeleteResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self,
+        topology_input_config_delete_all_request: "TopologyInputConfigDeleteAllRequest",
+    ) -> AsyncIterator["TopologyInputConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyInputConfigDeleteAllResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputConfigRequest, TopologyInputConfigResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputConfigStreamRequest, TopologyInputConfigStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputConfigStreamRequest, TopologyInputConfigStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    async def __rpc_set(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputConfigSetRequest, TopologyInputConfigSetResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.set(request)
+        await stream.send_message(response)
+
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputConfigSetSomeRequest, TopologyInputConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
+    async def __rpc_delete(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputConfigDeleteRequest, TopologyInputConfigDeleteResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.delete(request)
+        await stream.send_message(response)
+
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[TopologyInputConfigDeleteAllRequest, TopologyInputConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.TopologyInputConfigService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyInputConfigRequest,
+                TopologyInputConfigResponse,
+            ),
+            "/arista.studio.v1.TopologyInputConfigService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyInputConfigStreamRequest,
+                TopologyInputConfigStreamResponse,
+            ),
+            "/arista.studio.v1.TopologyInputConfigService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyInputConfigStreamRequest,
+                TopologyInputConfigStreamResponse,
+            ),
+            "/arista.studio.v1.TopologyInputConfigService/Set": grpclib.const.Handler(
+                self.__rpc_set,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyInputConfigSetRequest,
+                TopologyInputConfigSetResponse,
+            ),
+            "/arista.studio.v1.TopologyInputConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyInputConfigSetSomeRequest,
+                TopologyInputConfigSetSomeResponse,
+            ),
+            "/arista.studio.v1.TopologyInputConfigService/Delete": grpclib.const.Handler(
+                self.__rpc_delete,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyInputConfigDeleteRequest,
+                TopologyInputConfigDeleteResponse,
+            ),
+            "/arista.studio.v1.TopologyInputConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyInputConfigDeleteAllRequest,
+                TopologyInputConfigDeleteAllResponse,
+            ),
+        }
+
+
+class TopologyUpdateServiceBase(ServiceBase):
+    async def get_one(
+        self, topology_update_request: "TopologyUpdateRequest"
+    ) -> "TopologyUpdateResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, topology_update_stream_request: "TopologyUpdateStreamRequest"
+    ) -> AsyncIterator["TopologyUpdateStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateStreamResponse()
+
+    async def subscribe(
+        self, topology_update_stream_request: "TopologyUpdateStreamRequest"
+    ) -> AsyncIterator["TopologyUpdateStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateStreamResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateRequest, TopologyUpdateResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateStreamRequest, TopologyUpdateStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateStreamRequest, TopologyUpdateStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.TopologyUpdateService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyUpdateRequest,
+                TopologyUpdateResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateStreamRequest,
+                TopologyUpdateStreamResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateStreamRequest,
+                TopologyUpdateStreamResponse,
+            ),
+        }
+
+
+class TopologyUpdateConfigServiceBase(ServiceBase):
+    async def get_one(
+        self, topology_update_config_request: "TopologyUpdateConfigRequest"
+    ) -> "TopologyUpdateConfigResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, topology_update_config_stream_request: "TopologyUpdateConfigStreamRequest"
+    ) -> AsyncIterator["TopologyUpdateConfigStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateConfigStreamResponse()
+
+    async def subscribe(
+        self, topology_update_config_stream_request: "TopologyUpdateConfigStreamRequest"
+    ) -> AsyncIterator["TopologyUpdateConfigStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateConfigStreamResponse()
+
+    async def set(
+        self, topology_update_config_set_request: "TopologyUpdateConfigSetRequest"
+    ) -> "TopologyUpdateConfigSetResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def set_some(
+        self,
+        topology_update_config_set_some_request: "TopologyUpdateConfigSetSomeRequest",
+    ) -> AsyncIterator["TopologyUpdateConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateConfigSetSomeResponse()
+
+    async def delete(
+        self, topology_update_config_delete_request: "TopologyUpdateConfigDeleteRequest"
+    ) -> "TopologyUpdateConfigDeleteResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self,
+        topology_update_config_delete_all_request: "TopologyUpdateConfigDeleteAllRequest",
+    ) -> AsyncIterator["TopologyUpdateConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateConfigDeleteAllResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateConfigRequest, TopologyUpdateConfigResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateConfigStreamRequest, TopologyUpdateConfigStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateConfigStreamRequest, TopologyUpdateConfigStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    async def __rpc_set(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateConfigSetRequest, TopologyUpdateConfigSetResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.set(request)
+        await stream.send_message(response)
+
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateConfigSetSomeRequest, TopologyUpdateConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
+    async def __rpc_delete(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateConfigDeleteRequest, TopologyUpdateConfigDeleteResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.delete(request)
+        await stream.send_message(response)
+
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateConfigDeleteAllRequest, TopologyUpdateConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.TopologyUpdateConfigService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyUpdateConfigRequest,
+                TopologyUpdateConfigResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateConfigService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateConfigStreamRequest,
+                TopologyUpdateConfigStreamResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateConfigService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateConfigStreamRequest,
+                TopologyUpdateConfigStreamResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateConfigService/Set": grpclib.const.Handler(
+                self.__rpc_set,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyUpdateConfigSetRequest,
+                TopologyUpdateConfigSetResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateConfigSetSomeRequest,
+                TopologyUpdateConfigSetSomeResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateConfigService/Delete": grpclib.const.Handler(
+                self.__rpc_delete,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyUpdateConfigDeleteRequest,
+                TopologyUpdateConfigDeleteResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateConfigDeleteAllRequest,
+                TopologyUpdateConfigDeleteAllResponse,
+            ),
+        }
+
+
+class TopologyUpdateSyncServiceBase(ServiceBase):
+    async def get_one(
+        self, topology_update_sync_request: "TopologyUpdateSyncRequest"
+    ) -> "TopologyUpdateSyncResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self, topology_update_sync_stream_request: "TopologyUpdateSyncStreamRequest"
+    ) -> AsyncIterator["TopologyUpdateSyncStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateSyncStreamResponse()
+
+    async def subscribe(
+        self, topology_update_sync_stream_request: "TopologyUpdateSyncStreamRequest"
+    ) -> AsyncIterator["TopologyUpdateSyncStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateSyncStreamResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncRequest, TopologyUpdateSyncResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncStreamRequest, TopologyUpdateSyncStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncStreamRequest, TopologyUpdateSyncStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.TopologyUpdateSyncService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyUpdateSyncRequest,
+                TopologyUpdateSyncResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateSyncService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateSyncStreamRequest,
+                TopologyUpdateSyncStreamResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateSyncService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateSyncStreamRequest,
+                TopologyUpdateSyncStreamResponse,
+            ),
+        }
+
+
+class TopologyUpdateSyncConfigServiceBase(ServiceBase):
+    async def get_one(
+        self, topology_update_sync_config_request: "TopologyUpdateSyncConfigRequest"
+    ) -> "TopologyUpdateSyncConfigResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self,
+        topology_update_sync_config_stream_request: "TopologyUpdateSyncConfigStreamRequest",
+    ) -> AsyncIterator["TopologyUpdateSyncConfigStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateSyncConfigStreamResponse()
+
+    async def subscribe(
+        self,
+        topology_update_sync_config_stream_request: "TopologyUpdateSyncConfigStreamRequest",
+    ) -> AsyncIterator["TopologyUpdateSyncConfigStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateSyncConfigStreamResponse()
+
+    async def set(
+        self,
+        topology_update_sync_config_set_request: "TopologyUpdateSyncConfigSetRequest",
+    ) -> "TopologyUpdateSyncConfigSetResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def set_some(
+        self,
+        topology_update_sync_config_set_some_request: "TopologyUpdateSyncConfigSetSomeRequest",
+    ) -> AsyncIterator["TopologyUpdateSyncConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateSyncConfigSetSomeResponse()
+
+    async def delete(
+        self,
+        topology_update_sync_config_delete_request: "TopologyUpdateSyncConfigDeleteRequest",
+    ) -> "TopologyUpdateSyncConfigDeleteResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self,
+        topology_update_sync_config_delete_all_request: "TopologyUpdateSyncConfigDeleteAllRequest",
+    ) -> AsyncIterator["TopologyUpdateSyncConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield TopologyUpdateSyncConfigDeleteAllResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncConfigRequest, TopologyUpdateSyncConfigResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncConfigStreamRequest, TopologyUpdateSyncConfigStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncConfigStreamRequest, TopologyUpdateSyncConfigStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    async def __rpc_set(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncConfigSetRequest, TopologyUpdateSyncConfigSetResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.set(request)
+        await stream.send_message(response)
+
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncConfigSetSomeRequest, TopologyUpdateSyncConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
+    async def __rpc_delete(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncConfigDeleteRequest, TopologyUpdateSyncConfigDeleteResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.delete(request)
+        await stream.send_message(response)
+
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[TopologyUpdateSyncConfigDeleteAllRequest, TopologyUpdateSyncConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyUpdateSyncConfigRequest,
+                TopologyUpdateSyncConfigResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateSyncConfigStreamRequest,
+                TopologyUpdateSyncConfigStreamResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateSyncConfigStreamRequest,
+                TopologyUpdateSyncConfigStreamResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/Set": grpclib.const.Handler(
+                self.__rpc_set,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyUpdateSyncConfigSetRequest,
+                TopologyUpdateSyncConfigSetResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateSyncConfigSetSomeRequest,
+                TopologyUpdateSyncConfigSetSomeResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/Delete": grpclib.const.Handler(
+                self.__rpc_delete,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                TopologyUpdateSyncConfigDeleteRequest,
+                TopologyUpdateSyncConfigDeleteResponse,
+            ),
+            "/arista.studio.v1.TopologyUpdateSyncConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                TopologyUpdateSyncConfigDeleteAllRequest,
+                TopologyUpdateSyncConfigDeleteAllResponse,
             ),
         }

@@ -356,6 +356,18 @@ class TimestampFlag(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class Filter(betterproto.Message):
+    """Filter is used to filter changecontrols for requested device ids."""
+
+    device_ids: "___fmp__.RepeatedString" = betterproto.message_field(1)
+    """
+    device_ids includes the list of device ids to be matched with devices in
+    the changecontrol state model. At least one of the provided device ids must
+    be present in CC devices field.
+    """
+
+
+@dataclass(eq=False, repr=False)
 class ChangeControl(betterproto.Message):
     """
     ChangeControl holds the configuration and status of a change control.
@@ -398,6 +410,12 @@ class ChangeControl(betterproto.Message):
     schedule indicates whether the change control was flagged to be scheduled
     (`schedule.value` set to some timestamp) or unscheduled (`schedule.value`
     set to `nil`) for execution.
+    """
+
+    device_ids: "___fmp__.RepeatedString" = betterproto.message_field(8)
+    """
+    device_ids is a list of device IDs on which the change control will
+    operate.
     """
 
 
@@ -544,6 +562,28 @@ class ApproveConfigDeleteResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class ApproveConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ApproveConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "ChangeControlKey" = betterproto.message_field(3)
+    """
+    This is the key of the ApproveConfig instance that failed to be deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+
+@dataclass(eq=False, repr=False)
 class ChangeControlRequest(betterproto.Message):
     key: "ChangeControlKey" = betterproto.message_field(1)
     """
@@ -582,6 +622,14 @@ class ChangeControlStreamRequest(betterproto.Message):
     This requires all provided fields to be equal to the response. While
     transparent to users, this field also allows services to optimize internal
     subscriptions if filter(s) are sufficiently specific.
+    """
+
+    filter: "Filter" = betterproto.message_field(2)
+    """
+    For each ChangeControl in the list, all populated fields are considered
+    ANDed together as a filtering operation. Similarly, the list itself is ORed
+    such that any individual filter that matches a given ChangeControl is
+    streamed to the user.
     """
 
     time: "__time__.TimeBounds" = betterproto.message_field(3)
@@ -739,6 +787,29 @@ class ChangeControlConfigDeleteResponse(betterproto.Message):
     """
 
 
+@dataclass(eq=False, repr=False)
+class ChangeControlConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class ChangeControlConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "ChangeControlKey" = betterproto.message_field(3)
+    """
+    This is the key of the ChangeControlConfig instance that failed to be
+    deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
+
+
 class ApproveConfigServiceStub(betterproto.ServiceStub):
     async def get_one(
         self,
@@ -826,6 +897,24 @@ class ApproveConfigServiceStub(betterproto.ServiceStub):
             deadline=deadline,
             metadata=metadata,
         )
+
+    async def delete_all(
+        self,
+        approve_config_delete_all_request: "ApproveConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["ApproveConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.changecontrol.v1.ApproveConfigService/DeleteAll",
+            approve_config_delete_all_request,
+            ApproveConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
 
 
 class ChangeControlServiceStub(betterproto.ServiceStub):
@@ -971,6 +1060,24 @@ class ChangeControlConfigServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def delete_all(
+        self,
+        change_control_config_delete_all_request: "ChangeControlConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["ChangeControlConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.changecontrol.v1.ChangeControlConfigService/DeleteAll",
+            change_control_config_delete_all_request,
+            ChangeControlConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
 
 class ApproveConfigServiceBase(ServiceBase):
     async def get_one(
@@ -999,6 +1106,12 @@ class ApproveConfigServiceBase(ServiceBase):
         self, approve_config_delete_request: "ApproveConfigDeleteRequest"
     ) -> "ApproveConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self, approve_config_delete_all_request: "ApproveConfigDeleteAllRequest"
+    ) -> AsyncIterator["ApproveConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield ApproveConfigDeleteAllResponse()
 
     async def __rpc_get_one(
         self,
@@ -1046,6 +1159,17 @@ class ApproveConfigServiceBase(ServiceBase):
         response = await self.delete(request)
         await stream.send_message(response)
 
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[ApproveConfigDeleteAllRequest, ApproveConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
+
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/arista.changecontrol.v1.ApproveConfigService/GetOne": grpclib.const.Handler(
@@ -1077,6 +1201,12 @@ class ApproveConfigServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_UNARY,
                 ApproveConfigDeleteRequest,
                 ApproveConfigDeleteResponse,
+            ),
+            "/arista.changecontrol.v1.ApproveConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                ApproveConfigDeleteAllRequest,
+                ApproveConfigDeleteAllResponse,
             ),
         }
 
@@ -1180,6 +1310,13 @@ class ChangeControlConfigServiceBase(ServiceBase):
     ) -> "ChangeControlConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def delete_all(
+        self,
+        change_control_config_delete_all_request: "ChangeControlConfigDeleteAllRequest",
+    ) -> AsyncIterator["ChangeControlConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield ChangeControlConfigDeleteAllResponse()
+
     async def __rpc_get_one(
         self,
         stream: "grpclib.server.Stream[ChangeControlConfigRequest, ChangeControlConfigResponse]",
@@ -1226,6 +1363,17 @@ class ChangeControlConfigServiceBase(ServiceBase):
         response = await self.delete(request)
         await stream.send_message(response)
 
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[ChangeControlConfigDeleteAllRequest, ChangeControlConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
+
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/arista.changecontrol.v1.ChangeControlConfigService/GetOne": grpclib.const.Handler(
@@ -1257,5 +1405,11 @@ class ChangeControlConfigServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_UNARY,
                 ChangeControlConfigDeleteRequest,
                 ChangeControlConfigDeleteResponse,
+            ),
+            "/arista.changecontrol.v1.ChangeControlConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                ChangeControlConfigDeleteAllRequest,
+                ChangeControlConfigDeleteAllResponse,
             ),
         }

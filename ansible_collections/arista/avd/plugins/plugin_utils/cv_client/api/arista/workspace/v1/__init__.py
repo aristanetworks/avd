@@ -26,6 +26,7 @@ from ... import (
     time as __time__,
 )
 from ...configstatus import v1 as __configstatus_v1__
+from ...imagestatus import v1 as __imagestatus_v1__
 
 
 if TYPE_CHECKING:
@@ -35,277 +36,794 @@ if TYPE_CHECKING:
 
 
 class WorkspaceState(betterproto.Enum):
+    """
+    WorkspaceState enumerates the general states of a workspace. Some of these
+    states are derived as a result of executing a specific request on the
+    workspace (see Request).
+    """
+
     WORKSPACE_STATE_UNSPECIFIED = 0
+    """WORKSPACE_STATE_UNSPECIFIED indicates unspecified workspace state."""
+
     WORKSPACE_STATE_PENDING = 1
+    """
+    WORKSPACE_STATE_PENDING indicates that the changes in the workspace are
+    open and have not been submitted.
+    """
+
     WORKSPACE_STATE_SUBMITTED = 2
+    """
+    WORKSPACE_STATE_SUBMITTED indicates that the changes in the workspace have
+    been submitted to the mainline.
+    """
+
     WORKSPACE_STATE_ABANDONED = 3
+    """
+    WORKSPACE_STATE_ABANDONED indicates that the workspace has been
+    intentionally closed, and may no longer be updated.
+    """
+
     WORKSPACE_STATE_CONFLICTS = 4
+    """
+    WORKSPACE_STATE_CONFLICTS indicates that the changes in the workspace are
+    in conflict with the current state of the system.
+    """
+
     WORKSPACE_STATE_ROLLED_BACK = 5
+    """
+    WORKSPACE_STATE_ROLLED_BACK indicates that the workspace was submitted, but
+    has been rolled back (the changes have been undone).
+    """
 
 
 class Request(betterproto.Enum):
     """
-    Operations on a workspace that can be requested by a client. These are
-    workspace-specific operations. The standard operations Add, Delete, etc.
-    are performed via the standard ("core") APIs. This is an asynchronous
-    request that returns immediately if the request is valid. The result of the
-    operation will be available in WorkspaceStatus when it is generated.
+    Request enumerates the set of asynchronous operations that can be performed
+    on a workspace.
     """
 
     REQUEST_UNSPECIFIED = 0
+    """REQUEST_UNSPECIFIED describes unspecified request."""
+
     REQUEST_START_BUILD = 1
+    """
+    REQUEST_START_BUILD describes a request to start building a workspace. This
+    kicks of a multi-stage operation to compile and validate the changes in a
+    workspace (see BuildStage for more details).
+    """
+
     REQUEST_CANCEL_BUILD = 2
+    """
+    REQUEST_CANCEL_BUILD describes a request to stop building a workspace.
+    """
+
     REQUEST_SUBMIT = 3
+    """
+    REQUEST_SUBMIT describes a request to submit a workspace to the mainline.
+    Before submission, some checks are made that can cause the request to fail.
+    E.g., if there is a modified configuration for a non-streaming device in
+    the workspace, then the request will fail. Once submitted, changes are
+    applied and change controls are created (if necessary).
+    """
+
     REQUEST_ABANDON = 4
+    """
+    REQUEST_ABANDON describes a request to abandon a workspace. This operation
+    does not delete the workspace from the system, but closes it to any further
+    updates.
+    """
+
     REQUEST_ROLLBACK = 5
+    """
+    REQUEST_ROLLBACK describes a request to rollback a submitted workspace,
+    undoing corresponding changes in the mainline.
+    """
+
+    REQUEST_SUBMIT_FORCE = 6
+    """
+    REQUEST_SUBMIT_FORCE describes a request to submit a workspace without
+    making any checks that could normally cause the submission to fail. See
+    REQUEST_SUBMIT for more details.
+    """
+
+    REQUEST_REBASE = 7
+    """
+    REQUEST_REBASE describes a request to rebase a workspace. This operation
+    updates workspace state to reflect the latest mainline content, and re-
+    applies workspace changes on top of that.
+    """
 
 
 class ResponseStatus(betterproto.Enum):
+    """
+    ResponseStatus enumerates the set of execution statuses of a Response.
+    """
+
     RESPONSE_STATUS_UNSPECIFIED = 0
+    """RESPONSE_STATUS_UNSPECIFIED indicates unspecified response status."""
+
     RESPONSE_STATUS_SUCCESS = 1
+    """
+    RESPONSE_STATUS_SUCCESS indicates that the original Request was successful
+    in its execution.
+    """
+
     RESPONSE_STATUS_FAIL = 2
+    """
+    RESPONSE_STATUS_FAIL indicates that the original Request was unsuccessful
+    in its execution.
+    """
+
+
+class ResponseCode(betterproto.Enum):
+    """
+    ResponseCode is a code for a Response indicating a particular scenario.
+    """
+
+    RESPONSE_CODE_UNSPECIFIED = 0
+    """RESPONSE_CODE_UNSPECIFIED indicates unspecified response code."""
+
+    RESPONSE_CODE_INACTIVE_DEVICES_EXIST = 1
+    """
+    RESPONSE_CODE_INACTIVE_DEVICES_EXIST indicates that there are devices that
+    have inactive streaming status.
+    """
 
 
 class BuildState(betterproto.Enum):
+    """
+    BuildState enumerates the set of states that a BuildStage can be in during
+    a workspace build cycle.
+    """
+
     BUILD_STATE_UNSPECIFIED = 0
+    """BUILD_STATE_UNSPECIFIED indicates unspecified build state."""
+
     BUILD_STATE_IN_PROGRESS = 1
+    """
+    BUILD_STATE_IN_PROGRESS indicates that the BuildStage was started but has
+    not yet completed.
+    """
+
     BUILD_STATE_CANCELED = 2
+    """
+    BUILD_STATE_CANCELED indicates that the BuildStage was started but then
+    stopped before completion.
+    """
+
     BUILD_STATE_SUCCESS = 3
+    """
+    BUILD_STATE_SUCCESS indicates that the BuildStage was started and ran to
+    completion successfully.
+    """
+
     BUILD_STATE_FAIL = 4
+    """
+    BUILD_STATE_FAIL indicates that the BuildStage was started and ran to
+    completion unsuccessfully.
+    """
+
+    BUILD_STATE_SKIPPED = 5
+    """BUILD_STATE_SKIPPED indicates that the BuildStage was not run."""
 
 
 class BuildStage(betterproto.Enum):
-    """BuildStage is the stage of a workspace build"""
+    """BuildStage enumerates the types of stages of a build of a workspace."""
 
     BUILD_STAGE_UNSPECIFIED = 0
+    """BUILD_STAGE_UNSPECIFIED indicates unspecified build stage."""
+
     BUILD_STAGE_INPUT_VALIDATION = 1
+    """
+    BUILD_STAGE_INPUT_VALIDATION describes the stage that detects input errors
+    in studios based on their schemas.
+    """
+
     BUILD_STAGE_CONFIGLET_BUILD = 2
+    """
+    BUILD_STAGE_CONFIGLET_BUILD describes the stage that generates EOS CLI
+    configs and images for devices by evaluating studio templates against their
+    inputs.
+    """
+
     BUILD_STAGE_CONFIG_VALIDATION = 3
+    """
+    BUILD_STAGE_CONFIG_VALIDATION describes the stage that validates the
+    generated EOS CLI configs (e.g., checks for errors in the config).
+    """
+
+    BUILD_STAGE_IMAGE_VALIDATION = 4
+    """
+    BUILD_STAGE_IMAGE_VALIDATION describes the stage that validates the
+    generated images (e.g., checks device compatibility).
+    """
+
+
+class DeviceAuthzStatus(betterproto.Enum):
+    """
+    DeviceAuthzStatus holds the result of the authorization check on device.
+    """
+
+    DEVICE_AUTHZ_STATUS_UNSPECIFIED = 0
+    """
+    DEVICE_AUTHZ_STATUS_UNSPECIFIED indicates the authorization check is
+    pending.
+    """
+
+    DEVICE_AUTHZ_STATUS_AUTHORIZED = 1
+    """
+    DEVICE_AUTHZ_STATUS_AUTHORIZED indicates the subject is authorized to
+    provision this device.
+    """
+
+    DEVICE_AUTHZ_STATUS_UNAUTHORIZED = 2
+    """
+    DEVICE_AUTHZ_STATUS_UNAUTHORIZED indicates the subject is unauthorized to
+    provision this device.
+    """
+
+
+class ConfigValidationSkipCause(betterproto.Enum):
+    """
+    ConfigValidationSkipCause enumerates the set of reasons a device can skip
+    the config validation stage.
+    """
+
+    CONFIG_VALIDATION_SKIP_CAUSE_UNSPECIFIED = 0
+    """
+    CONFIG_VALIDATION_SKIP_CAUSE_UNSPECIFIED indicates config validation skip
+    cause is unspecified.
+    """
+
+    CONFIG_VALIDATION_SKIP_CAUSE_INACTIVE = 1
+    """
+    CONFIG_VALIDATION_SKIP_CAUSE_INACTIVE indicates that the stage was skipped
+    because the device is not streaming.
+    """
+
+    CONFIG_VALIDATION_SKIP_CAUSE_PRE_PROVISIONED = 2
+    """
+    CONFIG_VALIDATION_SKIP_CAUSE_PRE_PROVISIONED indicates that the stage was
+    skipped because the device is pre-provisioned.
+    """
+
+    CONFIG_VALIDATION_SKIP_CAUSE_CONFIG_UNCHANGED = 3
+    """
+    CONFIG_VALIDATION_SKIP_CAUSE_CONFIG_UNCHANGED indicates that the stage was
+    skipped because the device has no configuration changes in the workspace.
+    """
+
+
+class ImageValidationSkipCause(betterproto.Enum):
+    """
+    ImageValidationSkipCause enumerates the set of reasons a device can skip
+    the image validation stage.
+    """
+
+    IMAGE_VALIDATION_SKIP_CAUSE_UNSPECIFIED = 0
+    """
+    IMAGE_VALIDATION_SKIP_CAUSE_UNSPECIFIED indicates image validation skip
+    cause is unspecified.
+    """
+
+    IMAGE_VALIDATION_SKIP_CAUSE_INACTIVE = 1
+    """
+    IMAGE_VALIDATION_SKIP_CAUSE_INACTIVE indicates that the stage was skipped
+    because the device is not streaming.
+    """
+
+    IMAGE_VALIDATION_SKIP_CAUSE_PRE_PROVISIONED = 2
+    """
+    IMAGE_VALIDATION_SKIP_CAUSE_PRE_PROVISIONED indicates that the stage was
+    skipped because the device is pre-provisioned.
+    """
+
+    IMAGE_VALIDATION_SKIP_CAUSE_IMAGE_UNCHANGED = 3
+    """
+    IMAGE_VALIDATION_SKIP_CAUSE_IMAGE_UNCHANGED indicates that the stage was
+    skipped because the device has no image changes in the workspace.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class RequestParams(betterproto.Message):
-    """RequestParams is the parameters associated with a WorkspaceRequest"""
+    """RequestParams define the parameters for a Request."""
 
     request_id: Optional[str] = betterproto.message_field(
         1, wraps=betterproto.TYPE_STRING
     )
+    """
+    request_id is the unique ID of the request. This is used to identify the
+    Response for the request in Responses.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class Response(betterproto.Message):
-    """
-    Response is the response to the last Request, typically errors in
-    processing
-    """
+    """Response is a response to a Request."""
 
     status: "ResponseStatus" = betterproto.enum_field(1)
+    """status is the execution status of the response."""
+
     message: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """message is a string that provides more details about the response."""
+
+    code: "ResponseCode" = betterproto.enum_field(3)
+    """code is the code of the response."""
 
 
 @dataclass(eq=False, repr=False)
 class Responses(betterproto.Message):
-    """
-    Responses is the map of all request ID to response that are processed so
-    far
-    """
+    """Responses is a collection of responses for completed requests."""
 
     values: Dict[str, "Response"] = betterproto.map_field(
         1, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
     )
+    """values is a map from request ID to Response."""
 
 
 @dataclass(eq=False, repr=False)
 class WorkspaceKey(betterproto.Message):
-    """WorkspaceKey is the key to get a workspace's status"""
+    """WorkspaceKey uniquely identifies a workspace."""
 
     workspace_id: Optional[str] = betterproto.message_field(
         1, wraps=betterproto.TYPE_STRING
     )
+    """workspace_id is the unique ID of the workspace."""
 
 
 @dataclass(eq=False, repr=False)
 class WorkspaceConfig(betterproto.Message):
-    """
-    WorkspaceConfig represents the configurable parameters of a workspace
-    """
+    """WorkspaceConfig holds the configuration of a workspace."""
 
     key: "WorkspaceKey" = betterproto.message_field(1)
+    """key identifies the workspace."""
+
     display_name: Optional[str] = betterproto.message_field(
         2, wraps=betterproto.TYPE_STRING
     )
+    """display_name is the user-defined name of the workspace."""
+
     description: Optional[str] = betterproto.message_field(
         3, wraps=betterproto.TYPE_STRING
     )
+    """description is a brief description of the workspace."""
+
     request: "Request" = betterproto.enum_field(4)
+    """
+    request (if not REQUEST_UNSPECIFIED) kicks off an asynchronous operation on
+    the workspace.
+    """
+
     request_params: "RequestParams" = betterproto.message_field(5)
+    """request_params specify the parameters for `request`."""
 
 
 @dataclass(eq=False, repr=False)
 class Workspace(betterproto.Message):
-    """Workspace is the status of a workspace"""
+    """Workspace holds the status of a workspace."""
 
     key: "WorkspaceKey" = betterproto.message_field(1)
+    """key identifies the workspace."""
+
     created_at: datetime = betterproto.message_field(2)
+    """created_at indicates when the workspace was created."""
+
     created_by: Optional[str] = betterproto.message_field(
         3, wraps=betterproto.TYPE_STRING
     )
+    """created_by indicates who created the workspace."""
+
     last_modified_at: datetime = betterproto.message_field(4)
+    """last_modified_at indicates when the workspace was last updated."""
+
     last_modified_by: Optional[str] = betterproto.message_field(
         5, wraps=betterproto.TYPE_STRING
     )
+    """last_modified_by indicates who last updated the workspace."""
+
     state: "WorkspaceState" = betterproto.enum_field(6)
+    """state describes the status of the workspace."""
+
     last_build_id: Optional[str] = betterproto.message_field(
         7, wraps=betterproto.TYPE_STRING
     )
+    """
+    last_build_id is the last build ID that was set in a WorkspaceBuild for
+    this workspace.
+    """
+
     responses: "Responses" = betterproto.message_field(8)
+    """
+    responses are the responses for all requests that have been executed
+    thusfar for this workspace.
+    """
+
     cc_ids: "___fmp__.RepeatedString" = betterproto.message_field(9)
+    """
+    cc_ids are the IDs of any change controls that were created as a result of
+    submitting this workspace.
+    """
+
+    needs_build: Optional[bool] = betterproto.message_field(
+        10, wraps=betterproto.TYPE_BOOL
+    )
+    """
+    needs_build indicates whether a rebuild of the workspace is necessary in
+    order to submit it.
+    """
+
+    last_rebased_at: datetime = betterproto.message_field(11)
+    """last_rebased_at indicates when the workspace was last rebased."""
+
+    needs_rebase: Optional[bool] = betterproto.message_field(
+        12, wraps=betterproto.TYPE_BOOL
+    )
+    """
+    needs_rebase indicates whether a rebase of the workspace is necessary in
+    order to submit it.
+    """
+
+    display_name: Optional[str] = betterproto.message_field(
+        13, wraps=betterproto.TYPE_STRING
+    )
+    """display_name is the user-defined name of the workspace."""
+
+    description: Optional[str] = betterproto.message_field(
+        14, wraps=betterproto.TYPE_STRING
+    )
+    """description is a brief description of the workspace."""
 
 
 @dataclass(eq=False, repr=False)
 class InputError(betterproto.Message):
     """
-    InputError represents an error in an input field, with either schema or
-    value
+    InputError holds the details for an error on a studio input field or value.
     """
 
     field_id: Optional[str] = betterproto.message_field(
         1, wraps=betterproto.TYPE_STRING
     )
+    """field_id is the ID of the input field."""
+
     path: "___fmp__.RepeatedString" = betterproto.message_field(2)
+    """path is the path leading up to the input field."""
+
     members: "___fmp__.RepeatedString" = betterproto.message_field(3)
+    """members are the members of the input field (if it is a group)."""
+
     message: Optional[str] = betterproto.message_field(4, wraps=betterproto.TYPE_STRING)
+    """message is the error message."""
 
 
 @dataclass(eq=False, repr=False)
 class InputErrors(betterproto.Message):
-    """InputErrors is the nullable list of InputError"""
+    """InputErrors is a list of InputError."""
 
     values: List["InputError"] = betterproto.message_field(1)
+    """values is a list of InputError."""
 
 
 @dataclass(eq=False, repr=False)
 class InputValidationResult(betterproto.Message):
-    """InputValidationResult is the result of input validation of a studio"""
+    """
+    InputValidationResult holds the result of an input validation build stage.
+    """
 
     input_schema_errors: "InputErrors" = betterproto.message_field(1)
+    """input_schema_errors are errors for fields in the input schema."""
+
     input_value_errors: "InputErrors" = betterproto.message_field(2)
+    """
+    input_value_errors are errors for values assigned to fields in the input
+    schema.
+    """
+
     other_errors: "___fmp__.RepeatedString" = betterproto.message_field(3)
+    """other_errors are other miscellaneous errors."""
 
 
 @dataclass(eq=False, repr=False)
 class InputValidationResults(betterproto.Message):
     """
-    InputValidationResults is the result of input validation, one per studio
+    InputValidationResults is a collection of InputValidationResult (one per
+    studio).
     """
 
     values: Dict[str, "InputValidationResult"] = betterproto.map_field(
         1, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
     )
+    """values is map from studio ID to InputValidationResult."""
 
 
 @dataclass(eq=False, repr=False)
 class TemplateError(betterproto.Message):
     """
-    TemplateError represents a single error generated by a template evaluation
+    TemplateError holds details for an error that occured while evaluating a
+    studio template against its inputs.
     """
 
     line_num: Optional[int] = betterproto.message_field(
         1, wraps=betterproto.TYPE_UINT32
     )
+    """line_num is the number of the line on which the error occurred."""
+
     exception: Optional[str] = betterproto.message_field(
         2, wraps=betterproto.TYPE_STRING
     )
+    """
+    exception is the type of the exception thrown during the script execution.
+    E.g., AssertionError, etc.
+    """
+
     detail: Optional[str] = betterproto.message_field(3, wraps=betterproto.TYPE_STRING)
+    """detail holds the details of the exception. E.g., a full backtrace."""
+
+    exception_msg: Optional[str] = betterproto.message_field(
+        4, wraps=betterproto.TYPE_STRING
+    )
+    """
+    exception_msg is the message of the exception thrown during the script
+    execution.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class TemplateErrors(betterproto.Message):
-    """TemplateErrors is the nullable list of TemplateError"""
+    """TemplateErrors is a list of TemplateError."""
 
     values: List["TemplateError"] = betterproto.message_field(1)
+    """values is a list of TemplateError."""
 
 
 @dataclass(eq=False, repr=False)
 class ConfigletBuildResult(betterproto.Message):
-    """ConfigletBuildResult is the output of configlet (template) build"""
+    """ConfigletBuildResult holds the result of a configlet build stage."""
 
     template_errors: "TemplateErrors" = betterproto.message_field(1)
+    """
+    template_errors are errors that occured during studio template evaluation.
+    """
+
     generated_config: Optional[str] = betterproto.message_field(
         2, wraps=betterproto.TYPE_STRING
     )
+    """
+    generated_config is the EOS CLI config that was generated from the stage.
+    """
+
+    other_error: Optional[str] = betterproto.message_field(
+        3, wraps=betterproto.TYPE_STRING
+    )
+    """other_error is any other miscellaneous error."""
+
+    execution_id: Optional[str] = betterproto.message_field(
+        4, wraps=betterproto.TYPE_STRING
+    )
+    """
+    execution_id is the unique ID for the execution of the template. This ID
+    can be used to retrieve logs generated by the template.
+    """
+
+    input_errors: "InputErrors" = betterproto.message_field(5)
+    """
+    input_errors are errors in input fields that are raised by the template.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class ConfigletBuildResults(betterproto.Message):
     """
-    ConfigletBuildResults is the output of configlet build, one per studio
+    ConfigletBuildResults is a collection of ConfigletBuildResult (one per
+    studio).
     """
 
     values: Dict[str, "ConfigletBuildResult"] = betterproto.map_field(
         1, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
     )
+    """values is a map from studio ID to ConfigletBuildResult."""
 
 
 @dataclass(eq=False, repr=False)
 class ConfigValidationResult(betterproto.Message):
     """
-    ConfigValidationResult is the result of validating config with an EOS
-    device
+    ConfigValidationResult holds the result of a config validation stage.
     """
 
     summary: "__configstatus_v1__.ConfigSummary" = betterproto.message_field(1)
+    """summary is a summary of the changes to the previous config."""
+
     errors: "__configstatus_v1__.ConfigErrors" = betterproto.message_field(2)
+    """errors are any errors detected in the generated config."""
+
     warnings: "__configstatus_v1__.ConfigErrors" = betterproto.message_field(3)
+    """warnings are any warnings about the generated config."""
+
+    config_sources: "__configstatus_v1__.ConfigSources" = betterproto.message_field(4)
+    """config_sources identify the entities that generated the config."""
 
 
 @dataclass(eq=False, repr=False)
-class BuildResult(betterproto.Message):
-    """BuildResult is the per-device build output"""
+class ImageValidationResult(betterproto.Message):
+    """ImageValidationResult holds the result of an image validation stage."""
 
-    state: "BuildState" = betterproto.enum_field(1)
-    stage: "BuildStage" = betterproto.enum_field(2)
-    input_validation_results: "InputValidationResults" = betterproto.message_field(3)
-    configlet_build_results: "ConfigletBuildResults" = betterproto.message_field(4)
-    config_validation_result: "ConfigValidationResult" = betterproto.message_field(5)
+    summary: "__imagestatus_v1__.ImageSummary" = betterproto.message_field(1)
+    """summary is a summary of the changes to the previous image."""
 
+    errors: "__imagestatus_v1__.ImageErrors" = betterproto.message_field(2)
+    """errors are any errors detected in the generated image."""
 
-@dataclass(eq=False, repr=False)
-class BuildResults(betterproto.Message):
-    """
-    BuildResults is the build output for all devices, indexed by device ID
-    """
+    warnings: "__imagestatus_v1__.ImageWarnings" = betterproto.message_field(3)
+    """warnings are any warnings about the generated image."""
 
-    values: Dict[str, "BuildResult"] = betterproto.map_field(
-        1, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
+    image_input_error: Optional[str] = betterproto.message_field(
+        4, wraps=betterproto.TYPE_STRING
     )
+    """image_input_error indicates any errors in image inputs."""
+
+
+@dataclass(eq=False, repr=False)
+class BuildStageState(betterproto.Message):
+    """BuildStageState holds the state per build stage."""
+
+    values: Dict[str, "BuildState"] = betterproto.map_field(
+        1, betterproto.TYPE_STRING, betterproto.TYPE_ENUM
+    )
+    """
+    values is a map from build stage to build state. The possible keys to this
+    map are BUILD_STAGE_UNSPECIFIED, BUILD_STAGE_INPUT_VALIDATION,
+    BUILD_STAGE_CONFIGLET_BUILD, BUILD_STAGE_CONFIG_VALIDATION and
+    BUILD_STAGE_IMAGE_VALIDATION.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class AuthzResult(betterproto.Message):
+    """
+    AuthzResult has the result of the authorization check for workspace
+    changes.
+    """
+
+    has_unauthorized_tag_change: Optional[bool] = betterproto.message_field(
+        1, wraps=betterproto.TYPE_BOOL
+    )
+    """
+    has_unauthorized_tag_change is true when there is a tag assignment that
+    results in change in permissions and the subject is not authorized to do
+    it.
+    """
+
+    has_unauthorized_device_change: Optional[bool] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_BOOL
+    )
+    """
+    has_unauthorized_device_change is true when there is atleast 1 device for
+    which the subject doesn't have provision permission.
+    """
+
+    error: Optional[str] = betterproto.message_field(3, wraps=betterproto.TYPE_STRING)
+    """
+    error is an error message that is set when either of the above values are
+    true.
+    """
 
 
 @dataclass(eq=False, repr=False)
 class WorkspaceBuildKey(betterproto.Message):
-    """WorkspaceBuildKey is the key to get the build result for a workspace"""
+    """WorkspaceBuildKey uniquely identifies a build for a workspace."""
 
     workspace_id: Optional[str] = betterproto.message_field(
         1, wraps=betterproto.TYPE_STRING
     )
-    """workspace_id is a required field which represents workspace ID"""
+    """workspace_id is the ID of the workspace."""
 
     build_id: Optional[str] = betterproto.message_field(
         2, wraps=betterproto.TYPE_STRING
     )
-    """build_id is a required field which represents build ID"""
+    """build_id is the ID of the build."""
 
 
 @dataclass(eq=False, repr=False)
 class WorkspaceBuild(betterproto.Message):
-    """
-    WorkspaceBuild is the result, or output of a workspace build This includes
-    results for all devices across all studios in the workspace
-    """
+    """WorkspaceBuild holds the details for a build of a workspace."""
 
     key: "WorkspaceBuildKey" = betterproto.message_field(1)
+    """key identifies the build."""
+
     state: "BuildState" = betterproto.enum_field(2)
-    build_results: "BuildResults" = betterproto.message_field(3)
+    """state is the execution status of the build."""
+
+    error: Optional[str] = betterproto.message_field(4, wraps=betterproto.TYPE_STRING)
+    """
+    error is an error message that is set if the build fails early before the
+    per-device build result is computed.
+    """
+
+    built_by: Optional[str] = betterproto.message_field(
+        5, wraps=betterproto.TYPE_STRING
+    )
+    """built_by is the details of subject who built the workspace."""
+
+    authz_result: "AuthzResult" = betterproto.message_field(6)
+    """authz_result has the result of authorization check."""
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsKey(betterproto.Message):
+    """
+    WorkspaceBuildDetailsKey uniquely identifies a build for a particular
+    device in a workspace.
+    """
+
+    workspace_id: Optional[str] = betterproto.message_field(
+        1, wraps=betterproto.TYPE_STRING
+    )
+    """workspace_id is the ID of the workspace."""
+
+    build_id: Optional[str] = betterproto.message_field(
+        2, wraps=betterproto.TYPE_STRING
+    )
+    """build_id is the ID of the build."""
+
+    device_id: Optional[str] = betterproto.message_field(
+        3, wraps=betterproto.TYPE_STRING
+    )
+    """device_id is the ID of the device."""
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetails(betterproto.Message):
+    """
+    WorkspaceBuildDetails holds the details for a build of a device in a
+    workspace.
+    """
+
+    key: "WorkspaceBuildDetailsKey" = betterproto.message_field(1)
+    """key identifies the build."""
+
+    state: "BuildState" = betterproto.enum_field(2)
+    """state is the execution status of the build."""
+
+    stage: "BuildStage" = betterproto.enum_field(3)
+    """stage is the stage of the build."""
+
+    input_validation_results: "InputValidationResults" = betterproto.message_field(4)
+    """
+    input_validation_results are the results of the input validation stage.
+    """
+
+    configlet_build_results: "ConfigletBuildResults" = betterproto.message_field(5)
+    """
+    configlet_build_results are the results of the configlet build stage.
+    """
+
+    config_validation_result: "ConfigValidationResult" = betterproto.message_field(6)
+    """
+    config_validation_result is the result of the config validation stage.
+    """
+
+    image_validation_result: "ImageValidationResult" = betterproto.message_field(7)
+    """image_validation_result is the result of the image validation stage."""
+
+    config_validation_skip_cause: "ConfigValidationSkipCause" = betterproto.enum_field(
+        8
+    )
+    """
+    config_validation_skip_cause is the reason, if any, that the config
+    validation stage was skipped.
+    """
+
+    image_validation_skip_cause: "ImageValidationSkipCause" = betterproto.enum_field(9)
+    """
+    image_validation_skip_cause is the reason, if any, that the image
+    validation stage was skipped.
+    """
+
+    build_stage_state: "BuildStageState" = betterproto.message_field(10)
+    """build_stage_state is the state for each build stage."""
+
+    authz_status: "DeviceAuthzStatus" = betterproto.enum_field(11)
+    """authz_status is the status of provision permission for the device."""
 
 
 @dataclass(eq=False, repr=False)
@@ -353,7 +871,15 @@ class WorkspaceStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each Workspace at end.     * Each Workspace
+    response is fully-specified (all fields set).   * start: Returns the state
+    of each Workspace at start, followed by updates until now.     * Each
+    Workspace response at start is fully-specified, but updates may be partial.
+    * start and end: Returns the state of each Workspace at start, followed by
+    updates     until end.     * Each Workspace response at start is fully-
+    specified, but updates until end may       be partial. This field is not
+    allowed in the Subscribe RPC.
     """
 
 
@@ -425,7 +951,15 @@ class WorkspaceBuildStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each WorkspaceBuild at end.     * Each
+    WorkspaceBuild response is fully-specified (all fields set).   * start:
+    Returns the state of each WorkspaceBuild at start, followed by updates
+    until now.     * Each WorkspaceBuild response at start is fully-specified,
+    but updates may be partial.   * start and end: Returns the state of each
+    WorkspaceBuild at start, followed by updates     until end.     * Each
+    WorkspaceBuild response at start is fully-specified, but updates until end
+    may       be partial. This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -449,6 +983,89 @@ class WorkspaceBuildStreamResponse(betterproto.Message):
     INITIAL. In a subscription, once all initial data is streamed and the
     client begins to receive modification updates, you should not see INITIAL
     again.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsRequest(betterproto.Message):
+    key: "WorkspaceBuildDetailsKey" = betterproto.message_field(1)
+    """
+    Key uniquely identifies a WorkspaceBuildDetails instance to retrieve. This
+    value must be populated.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time indicates the time for which you are interested in the data. If no
+    time is given, the server will use the time at which it makes the request.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsResponse(betterproto.Message):
+    value: "WorkspaceBuildDetails" = betterproto.message_field(1)
+    """
+    Value is the value requested. This structure will be fully-populated as it
+    exists in the datastore. If optional fields were not given at creation,
+    these fields will be empty or set to default values.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time carries the (UTC) timestamp of the last-modification of the
+    WorkspaceBuildDetails instance in this response.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsStreamRequest(betterproto.Message):
+    partial_eq_filter: List["WorkspaceBuildDetails"] = betterproto.message_field(1)
+    """
+    PartialEqFilter provides a way to server-side filter a GetAll/Subscribe.
+    This requires all provided fields to be equal to the response. While
+    transparent to users, this field also allows services to optimize internal
+    subscriptions if filter(s) are sufficiently specific.
+    """
+
+    time: "__time__.TimeBounds" = betterproto.message_field(3)
+    """
+    TimeRange allows limiting response data to within a specified time window.
+    If this field is populated, at least one of the two time fields are
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each WorkspaceBuildDetails at end.     * Each
+    WorkspaceBuildDetails response is fully-specified (all fields set).   *
+    start: Returns the state of each WorkspaceBuildDetails at start, followed
+    by updates until now.     * Each WorkspaceBuildDetails response at start is
+    fully-specified, but updates may be partial.   * start and end: Returns the
+    state of each WorkspaceBuildDetails at start, followed by updates     until
+    end.     * Each WorkspaceBuildDetails response at start is fully-specified,
+    but updates until end may       be partial. This field is not allowed in
+    the Subscribe RPC.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceBuildDetailsStreamResponse(betterproto.Message):
+    value: "WorkspaceBuildDetails" = betterproto.message_field(1)
+    """
+    Value is a value deemed relevant to the initiating request. This structure
+    will always have its key-field populated. Which other fields are populated,
+    and why, depends on the value of Operation and what triggered this
+    notification.
+    """
+
+    time: datetime = betterproto.message_field(2)
+    """
+    Time holds the timestamp of this WorkspaceBuildDetails's last modification.
+    """
+
+    type: "__subscriptions__.Operation" = betterproto.enum_field(3)
+    """
+    Operation indicates how the WorkspaceBuildDetails value in this response
+    should be considered. Under non-subscribe requests, this value should
+    always be INITIAL. In a subscription, once all initial data is streamed and
+    the client begins to receive modification updates, you should not see
+    INITIAL again.
     """
 
 
@@ -497,7 +1114,15 @@ class WorkspaceConfigStreamRequest(betterproto.Message):
     """
     TimeRange allows limiting response data to within a specified time window.
     If this field is populated, at least one of the two time fields are
-    required. This field is not allowed in the Subscribe RPC.
+    required. For GetAll, the fields start and end can be used as follows:   *
+    end: Returns the state of each WorkspaceConfig at end.     * Each
+    WorkspaceConfig response is fully-specified (all fields set).   * start:
+    Returns the state of each WorkspaceConfig at start, followed by updates
+    until now.     * Each WorkspaceConfig response at start is fully-specified,
+    but updates may be partial.   * start and end: Returns the state of each
+    WorkspaceConfig at start, followed by updates     until end.     * Each
+    WorkspaceConfig response at start is fully-specified, but updates until end
+    may       be partial. This field is not allowed in the Subscribe RPC.
     """
 
 
@@ -553,6 +1178,24 @@ class WorkspaceConfigSetResponse(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class WorkspaceConfigSetSomeRequest(betterproto.Message):
+    values: List["WorkspaceConfig"] = betterproto.message_field(1)
+    """
+    value contains a list of WorkspaceConfig values to write. It is possible to
+    provide more values than can fit within either:     - the maxiumum send
+    size of the client     - the maximum receive size of the server If this
+    error occurs you must reduce the number of values sent. See gRPC "maximum
+    message size" documentation for more information.
+    """
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigSetSomeResponse(betterproto.Message):
+    key: "WorkspaceKey" = betterproto.message_field(1)
+    error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
 class WorkspaceConfigDeleteRequest(betterproto.Message):
     key: "WorkspaceKey" = betterproto.message_field(1)
     """
@@ -573,6 +1216,28 @@ class WorkspaceConfigDeleteResponse(betterproto.Message):
     after the time the request was received    - a time-ranged query with
     StartTime==DeletedAt will not include this instance.
     """
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigDeleteAllRequest(betterproto.Message):
+    pass
+
+
+@dataclass(eq=False, repr=False)
+class WorkspaceConfigDeleteAllResponse(betterproto.Message):
+    type: "___fmp__.DeleteError" = betterproto.enum_field(1)
+    """This describes the class of delete error."""
+
+    error: Optional[str] = betterproto.message_field(2, wraps=betterproto.TYPE_STRING)
+    """This indicates the error message from the delete failure."""
+
+    key: "WorkspaceKey" = betterproto.message_field(3)
+    """
+    This is the key of the WorkspaceConfig instance that failed to be deleted.
+    """
+
+    time: datetime = betterproto.message_field(4)
+    """Time indicates the (UTC) timestamp when the key was being deleted."""
 
 
 class WorkspaceServiceStub(betterproto.ServiceStub):
@@ -685,6 +1350,61 @@ class WorkspaceBuildServiceStub(betterproto.ServiceStub):
             yield response
 
 
+class WorkspaceBuildDetailsServiceStub(betterproto.ServiceStub):
+    async def get_one(
+        self,
+        workspace_build_details_request: "WorkspaceBuildDetailsRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "WorkspaceBuildDetailsResponse":
+        return await self._unary_unary(
+            "/arista.workspace.v1.WorkspaceBuildDetailsService/GetOne",
+            workspace_build_details_request,
+            WorkspaceBuildDetailsResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_all(
+        self,
+        workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["WorkspaceBuildDetailsStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceBuildDetailsService/GetAll",
+            workspace_build_details_stream_request,
+            WorkspaceBuildDetailsStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+    async def subscribe(
+        self,
+        workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["WorkspaceBuildDetailsStreamResponse"]:
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceBuildDetailsService/Subscribe",
+            workspace_build_details_stream_request,
+            WorkspaceBuildDetailsStreamResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
+
 class WorkspaceConfigServiceStub(betterproto.ServiceStub):
     async def get_one(
         self,
@@ -756,6 +1476,24 @@ class WorkspaceConfigServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def set_some(
+        self,
+        workspace_config_set_some_request: "WorkspaceConfigSetSomeRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["WorkspaceConfigSetSomeResponse"]:
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceConfigService/SetSome",
+            workspace_config_set_some_request,
+            WorkspaceConfigSetSomeResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
+
     async def delete(
         self,
         workspace_config_delete_request: "WorkspaceConfigDeleteRequest",
@@ -772,6 +1510,24 @@ class WorkspaceConfigServiceStub(betterproto.ServiceStub):
             deadline=deadline,
             metadata=metadata,
         )
+
+    async def delete_all(
+        self,
+        workspace_config_delete_all_request: "WorkspaceConfigDeleteAllRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> AsyncIterator["WorkspaceConfigDeleteAllResponse"]:
+        async for response in self._unary_stream(
+            "/arista.workspace.v1.WorkspaceConfigService/DeleteAll",
+            workspace_config_delete_all_request,
+            WorkspaceConfigDeleteAllResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        ):
+            yield response
 
 
 class WorkspaceServiceBase(ServiceBase):
@@ -915,6 +1671,79 @@ class WorkspaceBuildServiceBase(ServiceBase):
         }
 
 
+class WorkspaceBuildDetailsServiceBase(ServiceBase):
+    async def get_one(
+        self, workspace_build_details_request: "WorkspaceBuildDetailsRequest"
+    ) -> "WorkspaceBuildDetailsResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_all(
+        self,
+        workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest",
+    ) -> AsyncIterator["WorkspaceBuildDetailsStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield WorkspaceBuildDetailsStreamResponse()
+
+    async def subscribe(
+        self,
+        workspace_build_details_stream_request: "WorkspaceBuildDetailsStreamRequest",
+    ) -> AsyncIterator["WorkspaceBuildDetailsStreamResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield WorkspaceBuildDetailsStreamResponse()
+
+    async def __rpc_get_one(
+        self,
+        stream: "grpclib.server.Stream[WorkspaceBuildDetailsRequest, WorkspaceBuildDetailsResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_one(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_all(
+        self,
+        stream: "grpclib.server.Stream[WorkspaceBuildDetailsStreamRequest, WorkspaceBuildDetailsStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.get_all,
+            stream,
+            request,
+        )
+
+    async def __rpc_subscribe(
+        self,
+        stream: "grpclib.server.Stream[WorkspaceBuildDetailsStreamRequest, WorkspaceBuildDetailsStreamResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.subscribe,
+            stream,
+            request,
+        )
+
+    def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
+        return {
+            "/arista.workspace.v1.WorkspaceBuildDetailsService/GetOne": grpclib.const.Handler(
+                self.__rpc_get_one,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                WorkspaceBuildDetailsRequest,
+                WorkspaceBuildDetailsResponse,
+            ),
+            "/arista.workspace.v1.WorkspaceBuildDetailsService/GetAll": grpclib.const.Handler(
+                self.__rpc_get_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                WorkspaceBuildDetailsStreamRequest,
+                WorkspaceBuildDetailsStreamResponse,
+            ),
+            "/arista.workspace.v1.WorkspaceBuildDetailsService/Subscribe": grpclib.const.Handler(
+                self.__rpc_subscribe,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                WorkspaceBuildDetailsStreamRequest,
+                WorkspaceBuildDetailsStreamResponse,
+            ),
+        }
+
+
 class WorkspaceConfigServiceBase(ServiceBase):
     async def get_one(
         self, workspace_config_request: "WorkspaceConfigRequest"
@@ -938,10 +1767,22 @@ class WorkspaceConfigServiceBase(ServiceBase):
     ) -> "WorkspaceConfigSetResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def set_some(
+        self, workspace_config_set_some_request: "WorkspaceConfigSetSomeRequest"
+    ) -> AsyncIterator["WorkspaceConfigSetSomeResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield WorkspaceConfigSetSomeResponse()
+
     async def delete(
         self, workspace_config_delete_request: "WorkspaceConfigDeleteRequest"
     ) -> "WorkspaceConfigDeleteResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_all(
+        self, workspace_config_delete_all_request: "WorkspaceConfigDeleteAllRequest"
+    ) -> AsyncIterator["WorkspaceConfigDeleteAllResponse"]:
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+        yield WorkspaceConfigDeleteAllResponse()
 
     async def __rpc_get_one(
         self,
@@ -981,6 +1822,17 @@ class WorkspaceConfigServiceBase(ServiceBase):
         response = await self.set(request)
         await stream.send_message(response)
 
+    async def __rpc_set_some(
+        self,
+        stream: "grpclib.server.Stream[WorkspaceConfigSetSomeRequest, WorkspaceConfigSetSomeResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.set_some,
+            stream,
+            request,
+        )
+
     async def __rpc_delete(
         self,
         stream: "grpclib.server.Stream[WorkspaceConfigDeleteRequest, WorkspaceConfigDeleteResponse]",
@@ -988,6 +1840,17 @@ class WorkspaceConfigServiceBase(ServiceBase):
         request = await stream.recv_message()
         response = await self.delete(request)
         await stream.send_message(response)
+
+    async def __rpc_delete_all(
+        self,
+        stream: "grpclib.server.Stream[WorkspaceConfigDeleteAllRequest, WorkspaceConfigDeleteAllResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        await self._call_rpc_handler_server_stream(
+            self.delete_all,
+            stream,
+            request,
+        )
 
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
@@ -1015,10 +1878,22 @@ class WorkspaceConfigServiceBase(ServiceBase):
                 WorkspaceConfigSetRequest,
                 WorkspaceConfigSetResponse,
             ),
+            "/arista.workspace.v1.WorkspaceConfigService/SetSome": grpclib.const.Handler(
+                self.__rpc_set_some,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                WorkspaceConfigSetSomeRequest,
+                WorkspaceConfigSetSomeResponse,
+            ),
             "/arista.workspace.v1.WorkspaceConfigService/Delete": grpclib.const.Handler(
                 self.__rpc_delete,
                 grpclib.const.Cardinality.UNARY_UNARY,
                 WorkspaceConfigDeleteRequest,
                 WorkspaceConfigDeleteResponse,
+            ),
+            "/arista.workspace.v1.WorkspaceConfigService/DeleteAll": grpclib.const.Handler(
+                self.__rpc_delete_all,
+                grpclib.const.Cardinality.UNARY_STREAM,
+                WorkspaceConfigDeleteAllRequest,
+                WorkspaceConfigDeleteAllResponse,
             ),
         }
