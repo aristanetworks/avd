@@ -23,12 +23,32 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 ### Design points
 
-- The intent is to be able to support having the different WAN participating devices in different inventories.
-- Only iBGP is supported as an overlay_routing_protocol.
-- The default VRF is being configured by default on all WAN devices with a
-    `vni_id` of 100.
+1. The intent is to be able to support having the different WAN participating devices in different inventories.
+2. Only iBGP is supported as an overlay_routing_protocol.
+3. On the AutoVPN Route Reflectors and Pathfinders, a listen range statement is used for BGP to allow for point 4umber 1.
+4. The default VRF is being configured by default on all WAN devices with a `vni_id` of 100.
+5. When configuring HA on a site, the ID `65535` is reserved for the path group called `LAN_HA`
 
 ## Known limitations
+
+- Zones not supported for CV Pathfinder in a first place, all sites are being configured in a default zone `DEFAULT-ZONE` with ID `1`, not configurable.
+- Because of the previous point, in `eos_designs`, the `transit` node type is converted to a `transit region` configuration in the structured_config and the EOS configuration.
+- For `cv-pathfinder` mode, the following flow-tracking configuration is applied
+    without any customization possible:
+
+    ```eos
+    flow tracking hardware
+       tracker flowTracker
+        record export on inactive timeout 70000
+        record export on interval 5000
+        exporter exp
+         collector 127.0.0.1
+         local interface Loopback0
+         template interval 5000
+    !
+    ```
+
+## Future work
 
 - As of now, only the fundations of the `eos_designs` functionality for WAN is
     being introduced without any support for LAN and WAN interfaces.

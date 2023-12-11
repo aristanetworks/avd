@@ -51,13 +51,13 @@ class AvdStructuredConfigOverlay(
         - overlay_vpn_ipv4
         - overlay_vpn_ipv6
         """
-        # TODO - check this for WAN
         if any(
             [
                 self.shared_utils.overlay_cvx,
                 self.shared_utils.overlay_evpn,
                 self.shared_utils.overlay_vpn_ipv4,
                 self.shared_utils.overlay_vpn_ipv6,
+                self.shared_utils.wan_role,
             ]
         ):
             return super().render()

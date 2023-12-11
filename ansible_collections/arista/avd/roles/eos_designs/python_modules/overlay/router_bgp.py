@@ -166,7 +166,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return peer_groups
 
-    def _address_family_ipv4(self) -> dict | None:
+    def _address_family_ipv4(self) -> dict:
         """
         deactivate the relevant peer_groups in address_family_ipv4
         """
@@ -195,7 +195,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return {"peer_groups": peer_groups}
 
-    def _address_family_evpn(self) -> dict | None:
+    def _address_family_evpn(self) -> dict:
         """ """
         address_family_evpn = {}
 
@@ -379,7 +379,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return address_family_rtc
 
-    def _address_family_vpn_ipvx(self, version: int) -> list | None:
+    def _address_family_vpn_ipvx(self, version: int) -> dict | None:
         if version not in [4, 6]:
             raise AristaAvdError("_address_family_vpn_ipvx should be called with version 4 or 6 only")
 
@@ -477,7 +477,6 @@ class RouterBgpMixin(UtilsMixin):
                     neighbor = self._create_neighbor(data["ip_address"], route_client, self.shared_utils.bgp_peer_groups["evpn_overlay_peers"]["name"])
                     neighbors.append(neighbor)
 
-            # TODO needs to change the ip_address
             if self.shared_utils.wan_role == "client":
                 for wan_route_reflector, data in self._wan_route_reflectors.items():
                     neighbor = self._create_neighbor(data["router_id"], wan_route_reflector, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])

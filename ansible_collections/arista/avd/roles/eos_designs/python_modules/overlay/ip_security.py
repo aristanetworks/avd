@@ -20,47 +20,60 @@ class IpSecurityMixin(UtilsMixin):
     @cached_property
     def ip_security(self) -> dict | None:
         """
-        ip_security set based on autovpn_ipsec data_model
+        ip_security set based on wan_ipsec_profiles data_model
+
+        If `data_plane` is not configured, `control_plane` data is used for both
+        Data Plane and Control Plane.
         """
         if not self.shared_utils.wan_role:
             return None
 
         wan_ipsec_profiles = get(self._hostvars, "wan_ipsec_profiles", required=True)
 
-        ike_policies = []
-        sa_policies = []
-        profiles = []
-
-        ip_security = {"ike_policies": ike_policies, "sa_policies": sa_policies, "profiles": profiles}
+        # Structure initialization
+        ip_security = {"ike_policies": [], "sa_policies": [], "profiles": []}
 
         if (data_plane := get(wan_ipsec_profiles, "data_plane", None)) is not None:
-            ike_policy_name = get(data_plane, "ike_policy_name", "DP-IKE-POLICY")
-            sa_policy_name = get(data_plane, "sa_policy_name", "DP-SA-POLICY")
-            profile_name = get(data_plane, "profile_name", "DP-PROFILE")
-            key = get(data_plane, "shared_key", required=True)
-
-            ike_policies.append(self._ike_policy(ike_policy_name))
-            sa_policies.append(self._sa_policy(sa_policy_name))
-            profiles.append(self._profile(profile_name, ike_policy_name, sa_policy_name, key))
-
-            # For data plane, adding this
-            ip_security["key_controller"] = self._key_controller(profile_name)
-
+            self._append_data_plane(ip_security, data_plane)
         if (control_plane := get(wan_ipsec_profiles, "control_plane", None)) is not None:
-            ike_policy_name = get(control_plane, "ike_policy_name", "CP-IKE-POLICY")
-            sa_policy_name = get(control_plane, "sa_policy_name", "CP-SA-POLICY")
-            profile_name = get(control_plane, "profile_name", "CP-PROFILE")
-            key = get(control_plane, "shared_key", required=True)
-
-            ike_policies.append(self._ike_policy(ike_policy_name))
-            sa_policies.append(self._sa_policy(sa_policy_name))
-            profiles.append(self._profile(profile_name, ike_policy_name, sa_policy_name, key))
-
-            if not ip_security.get("key_controller"):
-                # If there is not data plane IPSec profile, use the control plane one for key controller
-                ip_security["key_controller"] = self._key_controller(profile_name)
+            self._append_control_plane(ip_security, control_plane)
 
         return strip_null_from_data(ip_security)
+
+    def _append_data_plane(self, ip_security: dict, data_plane_config: dict) -> None:
+        """
+        In place update of ip_security
+        """
+        ike_policy_name = get(data_plane_config, "ike_policy_name", "DP-IKE-POLICY")
+        sa_policy_name = get(data_plane_config, "sa_policy_name", "DP-SA-POLICY")
+        profile_name = get(data_plane_config, "profile_name", "DP-PROFILE")
+        key = get(data_plane_config, "shared_key", required=True)
+
+        ip_security["ike_policies"].append(self._ike_policy(ike_policy_name))
+        ip_security["sa_policies"].append(self._sa_policy(sa_policy_name))
+        ip_security["profiles"].append(self._profile(profile_name, ike_policy_name, sa_policy_name, key))
+
+        # For data plane, adding key_controller by default
+        ip_security["key_controller"] = self._key_controller(profile_name)
+
+    def _append_control_plane(self, ip_security: dict, control_plane_config: dict) -> None:
+        """
+        In place update of ip_security for control plane data
+
+        expected to be called AFTER _append_data_plane
+        """
+        ike_policy_name = get(control_plane_config, "ike_policy_name", "CP-IKE-POLICY")
+        sa_policy_name = get(control_plane_config, "sa_policy_name", "CP-SA-POLICY")
+        profile_name = get(control_plane_config, "profile_name", "CP-PROFILE")
+        key = get(control_plane_config, "shared_key", required=True)
+
+        ip_security["ike_policies"].append(self._ike_policy(ike_policy_name))
+        ip_security["sa_policies"].append(self._sa_policy(sa_policy_name))
+        ip_security["profiles"].append(self._profile(profile_name, ike_policy_name, sa_policy_name, key))
+
+        if not ip_security.get("key_controller"):
+            # If there is not data plane IPSec profile, use the control plane one for key controller
+            ip_security["key_controller"] = self._key_controller(profile_name)
 
     def _ike_policy(self, name: str) -> dict | None:
         """

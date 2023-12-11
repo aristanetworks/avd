@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -45,9 +45,10 @@ class RouterPathSelectionMixin(UtilsMixin):
         Generate the required path-groups locally
         """
         # TODO - get this once WAN interface are available
-        # TODO - this function will need to handle TRANSIT / EDGE
-        # TODO - this function will need to handle Crossconnection of careers
+        # TODO - this function will need to handle Crossconnection of public carriers
+        #
         local_carriers = []
+        # The value will be set based on the WAN interfaces configuration
         # local_carriers = self.shared_utils.carriers
 
         if not local_carriers:
@@ -86,7 +87,7 @@ class RouterPathSelectionMixin(UtilsMixin):
     def _get_policies(self) -> list | None:
         """
         Only configure a default DPS policy for the default VRF if wan_mode is autovpn
-        for cv_pathfinder, the VRFs are confgured under adaptive_virtual_topology.
+        for cv-pathfinder, the VRFs are confgured under adaptive_virtual_topology.
         """
         policies = []
         if self.shared_utils.wan_mode == "autovpn":
@@ -98,7 +99,7 @@ class RouterPathSelectionMixin(UtilsMixin):
     def _get_vrfs(self) -> list | None:
         """
         Only configure a default VRF if wan_mode is autovpn
-        for cv_pathfinder, the VRFs are confgured under adaptive_virtual_topology.
+        for cv-pathfinder, the VRFs are confgured under adaptive_virtual_topology.
         """
         vrfs = []
         if self.shared_utils.wan_mode == "autovpn":
@@ -107,62 +108,27 @@ class RouterPathSelectionMixin(UtilsMixin):
             return vrfs
         return None
 
-    def _get_transport_id(self, transport: dict) -> int:
+    def _get_carrier_id(self, carrier: dict) -> int:
         """
-        TODO - implement stuff from Venkit
+        TODO - implement algorithm to auto assign IDs - cf internal documenation
+        TODO - also implement algorithm for cross connects on public carriers
         """
-        # TODO this should be handled better
-        if transport["name"] == "LAN_HA":
+        if carrier["name"] == "LAN_HA":
             return 65535
+        return 500
 
-        wan_transports = get(self.shared_utils.switch_data_combined, "transports")
-        wan_transport = get_item(wan_transports, "name", transport["name"], required=True)
-        if (wan_transport_id := wan_transport.get("path_group_id")) is not None:
-            return wan_transport_id
-
-        # TODO avoid hard coded transports
-        if transport["name"] == "MPLS-1":
-            return 100
-        if transport["name"] == "MPLS-2":
-            return 200
-        if transport["name"] == "INTERNET":
-            return 300
-        return 666
-
-    def _get_local_interfaces(self, transport: dict) -> list | None:
+    def _get_local_interfaces(self, carrier: dict) -> list | None:
         """
         Generate the router_path_selection.local_interfaces list
 
         For AUTOVPN clients, configure the stun server profiles as appropriate
         """
         local_interfaces = []
-        for interface in transport.get("interfaces", []):
-            local_interface = {"name": interface.get("name")}
-            if self.shared_utils.autovpn_role == "client":
-                stun_server_profiles = [
-                    self._stun_server_profile_name(wrr, transport["name"]) for wrr in self._get_wan_route_reflector_with_transport(transport["name"])
-                ]
-                if stun_server_profiles:
-                    local_interface["stun"] = {"server_profiles": stun_server_profiles}
-
-            local_interfaces.append(local_interface)
-
         return local_interfaces
-
-    def _get_wan_route_reflector_with_transport(self, transport_name: str) -> list:
-        """
-        Helper that retrieves the wan_route_reflector on which the transport is configured
-        TODO: maybe move to utils
-        """
-        res = []
-        for wan_route_reflector, data in self._wan_route_reflectors.items():
-            if get_item(data.get("transports", []), "name", transport_name):
-                res.append(wan_route_reflector)
-        return res
 
     def _get_dynamic_peers(self) -> dict | None:
         """ """
-        if self.shared_utils.autovpn_role != "client":
+        if self.shared_utils.wan_role != "client":
             return None
         return {"enabled": True}
 
@@ -170,24 +136,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         TODO
         """
-        if self.shared_utils.autovpn_role != "client":
+        if self.shared_utils.wan_role != "client":
             return None
         static_peers = []
-        for wan_route_reflector, data in self._wan_route_reflectors.items():
-            # TODO GUARDS GUARDS!!
-            # TODO make next logic nicer.. rendering only if transport is present on the remote RR
-            if not (transport_data := get_item(data["transports"], "name", transport["name"], default={})):
-                continue
-            for interface in transport_data.get("interfaces", []):
-                ipv4_addresses = []
-                if (ip_address := interface.get("ip_address")) is not None:
-                    # TODO - removing mask using split but maybe a helper is clearer
-                    ipv4_addresses.append(ip_address.split("/")[0])
-                static_peers.append(
-                    {
-                        "router_ip": data.get("router_id"),
-                        "name": wan_route_reflector,
-                        "ipv4_addresses": ipv4_addresses,
-                    }
-                )
         return static_peers

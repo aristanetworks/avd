@@ -26,21 +26,19 @@ class DpsInterfacesMixin(UtilsMixin):
         if not self.shared_utils.wan_role:
             return None
 
-        # TODO confirm MSS for autovpn usecase
-
         dps1 = {
             "name": "Dps1",
             "description": "DPS Interface",
             "tcp_mss_ceiling": {
-                "ipv4": get(self.shared_utils.switch_data_combined, "dps_mss_ipv4", 1000),  # TB default, may need to change
+                "ipv4": get(self.shared_utils.switch_data_combined, "dps_mss_ipv4", 1000),
             },
         }
 
-        if (dps_mss_ipv6 := get(self.shared_utils.switch_data_combined, "dps_mss_ipv6", None)) is not None:
+        # TODO maybe need a different setting to enable IPv6, and give a Dps interface MSS ceiling value
+        if (dps_mss_ipv6 := get(self.shared_utils.switch_data_combined, "dps_mss_ipv6")) is not None:
             dps1["tcp_mss_ceiling"]["ipv6"] = dps_mss_ipv6
 
         if self.shared_utils.cv_pathfinder_role:
-            # TODO what IP to use? - do we need to - probably need a range for it if so.
             dps1["flow_tracker"] = {"hardware": "flowTracker"}
 
         return [dps1]

@@ -27,7 +27,6 @@ class FlowTrackingMixin(UtilsMixin):
                 "trackers": [
                     {
                         "name": "flowTracker",
-                        # TODO TB default - need to check if that makes sense
                         "record_export": {"on_inactive_timeout": 70000, "on_interval": 5000},
                         "exporters": [{"name": "exp", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 5000}],
                     }

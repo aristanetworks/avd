@@ -35,10 +35,8 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 "name": self._wan_region["name"],
                 "id": self._wan_region["id"],
             }
-            router_adaptive_virtual_topology["zone"] = {
-                "name": self._wan_zone["name"],
-                "id": self._wan_zone["id"],
-            }
+            router_adaptive_virtual_topology["zone"] = self._wan_zone
+
             router_adaptive_virtual_topology["site"] = {
                 "name": self._wan_site["name"],
                 "id": self._wan_site["id"],
