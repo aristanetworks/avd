@@ -21,7 +21,7 @@ wan_ipsec_profiles:
     shared_key: ABCDEF1234567890
 
 default_node_types:
-  - node_type: wan-controller
+  - node_type: wan-path-control
     match_hostnames:
       - "^autovpn-rr.*$"
   - node_type: edge
@@ -35,7 +35,7 @@ edge:
     - name: autovpn-edge
       id: 1
 
-wan_controller:
+wan_path_control:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:

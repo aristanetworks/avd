@@ -76,8 +76,8 @@ class IpSecurityMixin(UtilsMixin):
         Return an SA policy
         """
         sa_policy = {"name": name}
-        if self.shared_utils.sdwan_role:
-            # TODO, provide options to change this sdwan_wide
+        if self.shared_utils.cv_pathfinder_role:
+            # TODO, provide options to change this cv_pathfinder_wide
             sa_policy["esp"] = {"encryption": "aes128"}
             sa_policy["pfs_dh_group"] = 14
         return sa_policy

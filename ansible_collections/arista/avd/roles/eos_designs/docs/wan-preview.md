@@ -19,7 +19,7 @@ title: Ansible Collection Role eos_design - WAN preview
 
 ## Overview
 
-The intention is to support both a single [AutoVPN design](https://www.arista.com/en/cg-veos-router/veos-router-auto-vpn) and [Pathfinder](https://www.arista.com/en/solutions/enterprise-wan/pathfinder).
+The intention is to support both a single [AutoVPN design](https://www.arista.com/en/cg-veos-router/veos-router-auto-vpn) and [CV Pathfinder](https://www.arista.com/en/solutions/enterprise-wan/pathfinder).
 
 ### Design points
 
@@ -51,9 +51,9 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 ### New node types in L3LS eos_designs
 
-- `edge`: Edge routers for AutoVPN or Pathfinder.
+- `edge`: Edge routers for AutoVPN or Pathfinder depending on the `wan_mode` value.
 - `transit`: Transit routers in Pathfinder context, not supported for AutoVPN.
-- `wan_controller`: AutoVPN RR or Pathfinder
+- `wan_path_control`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
 
 ### WAN Settings
 
@@ -65,8 +65,11 @@ roles/eos_designs/docs/tables/wan-settings.md
 
 #### WAN hierarchy
 
+!!! note
+    This section is only relevant for CV Pathfinder and not for AutoVPN
+
 --8<--
-roles/eos_designs/docs/tables/wan-sdwan-regions.md
+roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
 --8<--
 
 #### New node keys

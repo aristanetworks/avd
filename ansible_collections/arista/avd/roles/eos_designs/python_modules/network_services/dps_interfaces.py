@@ -39,7 +39,7 @@ class DpsInterfacesMixin(UtilsMixin):
         if (dps_mss_ipv6 := get(self.shared_utils.switch_data_combined, "dps_mss_ipv6", None)) is not None:
             dps1["tcp_mss_ceiling"]["ipv6"] = dps_mss_ipv6
 
-        if self.shared_utils.sdwan_role:
+        if self.shared_utils.cv_pathfinder_role:
             # TODO what IP to use? - do we need to - probably need a range for it if so.
             dps1["flow_tracker"] = {"hardware": "flowTracker"}
 

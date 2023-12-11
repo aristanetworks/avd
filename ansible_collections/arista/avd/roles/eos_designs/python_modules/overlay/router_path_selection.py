@@ -70,7 +70,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 }
             )
 
-        if self.shared_utils.sdwan_role:
+        if self.shared_utils.cv_pathfinder_role:
             pass
             # implement LAN_HA here
 
@@ -86,7 +86,7 @@ class RouterPathSelectionMixin(UtilsMixin):
     def _get_policies(self) -> list | None:
         """
         Only configure a default DPS policy for the default VRF if wan_mode is autovpn
-        for sdwan, the VRFs are confgured under adaptive_virtual_topology.
+        for cv_pathfinder, the VRFs are confgured under adaptive_virtual_topology.
         """
         policies = []
         if self.shared_utils.wan_mode == "autovpn":
@@ -98,7 +98,7 @@ class RouterPathSelectionMixin(UtilsMixin):
     def _get_vrfs(self) -> list | None:
         """
         Only configure a default VRF if wan_mode is autovpn
-        for sdwan, the VRFs are confgured under adaptive_virtual_topology.
+        for cv_pathfinder, the VRFs are confgured under adaptive_virtual_topology.
         """
         vrfs = []
         if self.shared_utils.wan_mode == "autovpn":

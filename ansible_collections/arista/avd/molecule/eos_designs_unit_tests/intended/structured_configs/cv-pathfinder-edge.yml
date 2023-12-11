@@ -1,4 +1,4 @@
-hostname: sdwan-transit
+hostname: cv-pathfinder-edge
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -49,8 +49,8 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.42.1
     peer_group: WAN-OVERLAY-PEERS
-    peer: sdwan-pathfinder
-    description: sdwan-pathfinder
+    peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -122,16 +122,16 @@ ip_security:
   key_controller:
     profile: DP-PROFILE
 router_adaptive_virtual_topology:
-  topology_role: transit region
+  topology_role: edge
   region:
-    name: AVD_Land_West
-    id: 42
+    name: AVD_Land_East
+    id: 43
   zone:
-    name: danger
-    id: 42
+    name: Roswell
+    id: 51
   site:
-    name: Site422
-    id: 422
+    name: Site511
+    id: 511
 router_bfd:
   multihop:
     interval: 300
@@ -153,7 +153,7 @@ dps_interfaces:
     hardware: flowTracker
 vxlan_interface:
   Vxlan1:
-    description: sdwan-transit_VTEP
+    description: cv-pathfinder-edge_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback0

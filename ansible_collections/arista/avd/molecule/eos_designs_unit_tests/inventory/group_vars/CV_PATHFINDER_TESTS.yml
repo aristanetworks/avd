@@ -1,10 +1,10 @@
 ---
-# Testing sdwan
-wan_mode: sdwan
+# Testing cv-pathfinder
+wan_mode: cv-pathfinder
 
 bgp_as: 65000
 
-sdwan_regions:
+cv_pathfinder_regions:
   - name: AVD_Land_West
     id: 42
     description: AVD Region
@@ -30,9 +30,9 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
 
-sdwan_pathfinders:
+cv_pathfinder_pathfinders:
   # Not testing the overloading
-  - hostname: sdwan-pathfinder
+  - hostname: cv-pathfinder-pathfinder
 
 wan_ipsec_profiles:
   control_plane:
@@ -41,41 +41,41 @@ wan_ipsec_profiles:
     shared_key: ABCDEF1234567890666
 
 default_node_types:
-  - node_type: wan-controller
+  - node_type: wan-path-control
     match_hostnames:
-      - "^sdwan-pathfinder.*$"
+      - "^cv-pathfinder-pathfinder.*$"
   - node_type: transit
     match_hostnames:
-      - "^sdwan-transit$"
+      - "^cv-pathfinder-transit$"
   - node_type: edge
     match_hostnames:
-      - "^sdwan-edge$"
+      - "^cv-pathfinder-edge$"
 
 edge:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
-    - name: sdwan-edge
-      sdwan_site: Site511
+    - name: cv-pathfinder-edge
+      cv_pathfinder_site: Site511
       id: 1
 
 transit:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
-    - name: sdwan-transit
-      sdwan_site: Site422
+    - name: cv-pathfinder-transit
+      cv_pathfinder_site: Site422
       id: 1
 
-wan_controller:
+wan_path_control:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
-    - name: sdwan-pathfinder
+    - name: cv-pathfinder-pathfinder
       id: 1
-    - name: sdwan-pathfinder1
+    - name: cv-pathfinder-pathfinder1
       id: 2
-    - name: sdwan-pathfinder2
+    - name: cv-pathfinder-pathfinder2
       id: 3
 
 carriers:

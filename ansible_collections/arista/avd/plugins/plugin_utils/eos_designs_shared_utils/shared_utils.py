@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from .bgp_peer_groups import BgpPeerGroupsMixin
 from .connected_endpoints_keys import ConnectedEndpointsKeysMixin
+from .cv_pathfinder import CvPathfinderMixin
 from .cv_topology import CvTopology
 from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
@@ -17,7 +18,6 @@ from .overlay import OverlayMixin
 from .platform import PlatformMixin
 from .ptp import PtpMixin
 from .routing import RoutingMixin
-from .sdwan import SdwanMixin
 from .switch_data import SwitchDataMixin
 from .underlay import UnderlayMixin
 from .utils import UtilsMixin
@@ -39,7 +39,7 @@ class SharedUtils(
     OverlayMixin,
     PlatformMixin,
     PtpMixin,
-    SdwanMixin,
+    CvPathfinderMixin,
     SwitchDataMixin,
     RoutingMixin,
     UnderlayMixin,

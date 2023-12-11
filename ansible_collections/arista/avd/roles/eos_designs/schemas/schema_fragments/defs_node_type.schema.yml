@@ -923,7 +923,7 @@ $defs:
             convert_types:
               - "int"
             description: Set BGP cluster id.
-          sdwan_site:
+          cv_pathfinder_site:
             documentation_options:
               table: node-type-wan-configuration
             type: str
@@ -1126,21 +1126,21 @@ $defs:
               Override the default WAN role.
 
               This is used both for AutoVPN and Pathfinder designs.
-              That means if `wan_mode` root key is set to `autovpn` or `sdwan`.
+              That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
               `server` indicates that the router is a route-reflector.
 
               Only supported if `overlay_routing_protocol` is set to `ibgp`.
-          sdwan_role:
+          cv_pathfinder_role:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_sdwan_role"
+            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role"
             description: |-
               PREVIEW: This key is currently not supported
-              Override the default SDWAN role.
+              Override the default CV Pathfinder role.
 
               This key is used for Pathfinder designs only when the `wan_mode` root
-              key is set to `sdwan`.
+              key is set to `cv_pathfinder`.
 
               `pathfinder` is only a valid if `wan_role` is `server`.
               `edge` and `transit` are only valid if `wan_role` is `client`.

@@ -19,7 +19,7 @@ class FlowTrackingMixin(UtilsMixin):
         """
         Return structured config for flow_tracking
         """
-        if not self.shared_utils.sdwan_role:
+        if not self.shared_utils.cv_pathfinder_role:
             return None
 
         return {

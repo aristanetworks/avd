@@ -1,4 +1,4 @@
-hostname: sdwan-pathfinder1
+hostname: cv-pathfinder-pathfinder1
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -71,12 +71,12 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.42.3
     peer_group: RR-OVERLAY-PEERS
-    peer: sdwan-pathfinder2
-    description: sdwan-pathfinder2
+    peer: cv-pathfinder-pathfinder2
+    description: cv-pathfinder-pathfinder2
   - ip_address: 6.6.6.6
     peer_group: RR-OVERLAY-PEERS
-    peer: sdwan-pathfinder3
-    description: sdwan-pathfinder3
+    peer: cv-pathfinder-pathfinder3
+    description: cv-pathfinder-pathfinder3
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -172,7 +172,7 @@ dps_interfaces:
     hardware: flowTracker
 vxlan_interface:
   Vxlan1:
-    description: sdwan-pathfinder1_VTEP
+    description: cv-pathfinder-pathfinder1_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback0

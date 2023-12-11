@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
 
-class SdwanMixin:
+class CvPathfinderMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
@@ -36,13 +36,13 @@ class SdwanMixin:
         return None
 
     @cached_property
-    def sdwan_role(self: SharedUtils) -> str | None:
-        if self.underlay_router is True and self.wan_mode == "sdwan":
-            default_sdwan_role = get(self.node_type_key_data, "default_sdwan_role", default=None)
-            sdwan_role = get(self.switch_data_combined, "sdwan_role", default=default_sdwan_role)
-            if sdwan_role == "pathfinder" and self.wan_role != "server":
-                raise AristaAvdError("'wan_role' must be 'server' when 'sdwan_role' is set to 'pathfinder'")
-            elif sdwan_role in ["transit", "edge"] and self.wan_role != "client":
-                raise AristaAvdError("'wan_role' must be 'client' when 'sdwan_role' is set to 'transit' or 'edge'")
-            return sdwan_role
+    def cv_pathfinder_role(self: SharedUtils) -> str | None:
+        if self.underlay_router is True and self.wan_mode == "cv-pathfinder":
+            default_cv_pathfinder_role = get(self.node_type_key_data, "default_cv_pathfinder_role", default=None)
+            cv_pathfinder_role = get(self.switch_data_combined, "cv_pathfinder_role", default=default_cv_pathfinder_role)
+            if cv_pathfinder_role == "pathfinder" and self.wan_role != "server":
+                raise AristaAvdError("'wan_role' must be 'server' when 'cv_pathfinder_role' is set to 'pathfinder'")
+            elif cv_pathfinder_role in ["transit", "edge"] and self.wan_role != "client":
+                raise AristaAvdError("'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'")
+            return cv_pathfinder_role
         return None

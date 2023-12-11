@@ -19,12 +19,12 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         """
         Return structured config for router adaptive-virtual-topology (AVT)
         """
-        if not self.shared_utils.sdwan_role:
+        if not self.shared_utils.cv_pathfinder_role:
             return None
 
         router_adaptive_virtual_topology = {}
 
-        role = self.shared_utils.sdwan_role
+        role = self.shared_utils.cv_pathfinder_role
         if role == "transit":
             role = "transit region"
 

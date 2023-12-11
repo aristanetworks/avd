@@ -6,9 +6,9 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  sdwan_regions:
+  cv_pathfinder_regions:
     documentation_options:
-      table: wan-sdwan-regions
+      table: wan-cv-pathfinder-regions
     description: |-
       PREVIEW: This key is currently not supported
       Define the SDWAN hierarchy for the device.

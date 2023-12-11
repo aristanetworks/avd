@@ -1,4 +1,4 @@
-hostname: sdwan-pathfinder
+hostname: cv-pathfinder-transit
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -19,18 +19,13 @@ router_bgp:
     send_community: all
     maximum_routes: 12000
     remote_as: '65000'
-    route_reflector_client: true
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
-    - name: RR-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
-      activate: false
-    - name: RR-OVERLAY-PEERS
       activate: false
   address_family_ipv4_sr_te:
     peer_groups:
@@ -42,12 +37,7 @@ router_bgp:
       activate: true
     path_selection:
       roles:
-        consumer: true
-        propagator: true
-    bgp:
-      missing_policy:
-        direction_in_action: permit
-        direction_out_action: deny
+        producer: true
   address_family_path_selection:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -56,11 +46,11 @@ router_bgp:
         receive: true
         send:
           any: true
-    bgp:
-      additional_paths:
-        receive: true
-        send:
-          any: true
+  neighbors:
+  - ip_address: 192.168.42.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -68,8 +58,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-spanning_tree:
-  mode: none
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -131,22 +119,31 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+  key_controller:
+    profile: DP-PROFILE
 router_adaptive_virtual_topology:
-  topology_role: pathfinder
+  topology_role: transit region
+  region:
+    name: AVD_Land_West
+    id: 42
+  zone:
+    name: danger
+    id: 42
+  site:
+    name: Site422
+    id: 422
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 router_path_selection:
-  peer_dynamic_source: stun
   path_groups: []
   load_balance_policies:
   - name: LBPOLICY
     path_groups: []
-stun:
-  server:
-    local_interfaces: []
+ip_igmp_snooping:
+  globally_enabled: true
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -156,7 +153,7 @@ dps_interfaces:
     hardware: flowTracker
 vxlan_interface:
   Vxlan1:
-    description: sdwan-pathfinder_VTEP
+    description: cv-pathfinder-transit_VTEP
     vxlan:
       udp_port: 4789
       source_interface: Loopback0

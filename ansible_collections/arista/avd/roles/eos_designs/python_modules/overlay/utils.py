@@ -262,13 +262,13 @@ class UtilsMixin:
     @cached_property
     def _wan_site(self) -> dict | None:
         """
-        Here assuming that sdwan_name is unique across zones and regions
+        Here assuming that cv_pathfinder_name is unique across zones and regions
         """
-        if not self.shared_utils.sdwan_role:
+        if not self.shared_utils.cv_pathfinder_role:
             return None
 
-        node_defined_site = get(self.shared_utils.switch_data_combined, "sdwan_site", required=True)
-        regions = get(self._hostvars, "sdwan_regions", required=True)
+        node_defined_site = get(self.shared_utils.switch_data_combined, "cv_pathfinder_site", required=True)
+        regions = get(self._hostvars, "cv_pathfinder_regions", required=True)
         for region in regions:
             zones = get(region, "zones", [])
             for zone in zones:
@@ -282,14 +282,14 @@ class UtilsMixin:
                     site.update({"zone": zone_info, "region": region_info})
                     return site
         # If we reach here we did not find our wan_site in the hierarchy when we should have
-        raise AristaAvdError(f"WAN site {node_defined_site} was not found in the hierarchy defined under 'sdwan_regions'.")
+        raise AristaAvdError(f"WAN site {node_defined_site} was not found in the hierarchy defined under 'cv_pathfinder_regions'.")
 
     @cached_property
     def _wan_region(self) -> dict | None:
         """
         WAN region for Pathfinder
         """
-        if not self.shared_utils.sdwan_role:
+        if not self.shared_utils.cv_pathfinder_role:
             return None
         return self._wan_site["region"]
 
@@ -298,7 +298,7 @@ class UtilsMixin:
         """
         WAN zone for Pathfinder
         """
-        if not self.shared_utils.sdwan_role:
+        if not self.shared_utils.cv_pathfinder_role:
             return None
         return self._wan_site["zone"]
 
@@ -322,8 +322,8 @@ class UtilsMixin:
         # Could maybe handle this in shared_utils?
         if self.shared_utils.wan_mode == "autovpn":
             wan_route_reflectors_list = get(self._hostvars, "autovpn_rrs", default=[])
-        elif self.shared_utils.wan_mode == "sdwan":
-            wan_route_reflectors_list = get(self._hostvars, "sdwan_pathfinders", default=[])
+        elif self.shared_utils.wan_mode == "cv-pathfinder":
+            wan_route_reflectors_list = get(self._hostvars, "cv_pathfinder_pathfinders", default=[])
         else:
             return {}
 

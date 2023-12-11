@@ -272,7 +272,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def _address_family_ipv4_sr_te(self) -> dict | None:
         """Generate structured config for IPv4 SR-TE address family"""
-        if not self.shared_utils.sdwan_role:
+        if not self.shared_utils.cv_pathfinder_role:
             return None
 
         address_family_ipv4_sr_te = {
@@ -288,7 +288,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def _address_family_link_state(self) -> dict | None:
         """Generate structured config for link-state address family"""
-        if not self.shared_utils.sdwan_role:
+        if not self.shared_utils.cv_pathfinder_role:
             return None
 
         address_family_link_state = {
@@ -300,7 +300,7 @@ class RouterBgpMixin(UtilsMixin):
             ],
         }
 
-        if self.shared_utils.sdwan_role == "pathfinder":
+        if self.shared_utils.cv_pathfinder_role == "pathfinder":
             address_family_link_state["path_selection"] = {"roles": {"consumer": True, "propagator": True}}
             address_family_link_state["bgp"] = {
                 "missing_policy": {

@@ -21,12 +21,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;characteristics</samp>](## "carriers.[].characteristics") | List, items: String |  |  |  | A list of characteristics to assign to the carrier.<br>TODO: Explain further how these are used (or removed before removing preview). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "carriers.[].characteristics.[]") | String |  |  | Valid Values:<br>- <code>backup</code><br>- <code>metered</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;circuit_type</samp>](## "carriers.[].circuit_type") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>both</code> | TBC - edge or transit or both.<br>Unclear if this should be at the carrier level or some other place. |
-    | [<samp>sdwan_pathfinders</samp>](## "sdwan_pathfinders") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>The Pathfinder(s) information for the WAN.<br><br>When the pathfinder is part of the same inventory as the WAN routers,<br>only the name is required. |
-    | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "sdwan_pathfinders.[].hostname") | String | Required, Unique |  |  | Pathfinder hostname. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "sdwan_pathfinders.[].router_id") | String |  |  |  | Pathfinder router id. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;carriers</samp>](## "sdwan_pathfinders.[].carriers") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "sdwan_pathfinders.[].carriers.[].name") | String |  |  |  | Carrier name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "sdwan_pathfinders.[].carriers.[].ip_address") | String |  |  |  | The public IP address for this carrier. |
+    | [<samp>cv_pathfinder_pathfinders</samp>](## "cv_pathfinder_pathfinders") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>The Pathfinder(s) information for the WAN.<br><br>When the pathfinder is part of the same inventory as the WAN routers,<br>only the name is required. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "cv_pathfinder_pathfinders.[].hostname") | String | Required, Unique |  |  | Pathfinder hostname. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "cv_pathfinder_pathfinders.[].router_id") | String |  |  |  | Pathfinder router id. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;carriers</samp>](## "cv_pathfinder_pathfinders.[].carriers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_pathfinder_pathfinders.[].carriers.[].name") | String |  |  |  | Carrier name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "cv_pathfinder_pathfinders.[].carriers.[].ip_address") | String |  |  |  | The public IP address for this carrier. |
     | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Define IPsec profiles parameters for WAN configuration.<br><br>If `data_plane` is not defined, `control_plane` information is<br>used for both. |
     | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  | The `control_plane` profile uses the following defaults:<br>  * IKE policy name: CP-IKE-POLICY<br>  * SA policy name: CP-SA-POLICY<br>  * Profile name: CP-PROFILE |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  |  |  | Name of the IKE policy. |
@@ -38,7 +38,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.data_plane.sa_policy_name") | String |  |  |  | Name of the SA policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.data_plane.profile_name") | String |  |  |  | Name of the IPSec profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String | Required |  |  | The IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
-    | [<samp>wan_mode</samp>](## "wan_mode") | String |  |  | Valid Values:<br>- <code>autovpn</code><br>- <code>sdwan</code> | Select if the WAN should be run using Pathfinder (`sdwan`) or Auto VPN only.<br>The default is `sdwan`<br>PREVIEW: This key is currently not supported |
+    | [<samp>wan_mode</samp>](## "wan_mode") | String |  |  | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.<br>The default is `cv-pathfinder`<br>PREVIEW: This key is currently not supported |
 
 === "YAML"
 
@@ -94,7 +94,7 @@
 
     # When the pathfinder is part of the same inventory as the WAN routers,
     # only the name is required.
-    sdwan_pathfinders:
+    cv_pathfinder_pathfinders:
 
         # Pathfinder hostname.
       - hostname: <str; required; unique>
@@ -154,8 +154,8 @@
         # This variable is sensitive and SHOULD be configured using some vault mechanism.
         shared_key: <str; required>
 
-    # Select if the WAN should be run using Pathfinder (`sdwan`) or Auto VPN only.
-    # The default is `sdwan`
+    # Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.
+    # The default is `cv-pathfinder`
     # PREVIEW: This key is currently not supported
-    wan_mode: <str; "autovpn" | "sdwan">
+    wan_mode: <str; "autovpn" | "cv-pathfinder">
     ```

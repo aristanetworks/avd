@@ -559,6 +559,67 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
+  cv_pathfinder_pathfinders:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+      The Pathfinder(s) information for the WAN.
+
+
+      When the pathfinder is part of the same inventory as the WAN routers,
+
+      only the name is required.'
+    type: list
+    $ref: eos_designs#/$defs/wan_rrs
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+          description: Pathfinder hostname.
+        router_id:
+          type: str
+          description: Pathfinder router id.
+  cv_pathfinder_regions:
+    documentation_options:
+      table: wan-cv-pathfinder-regions
+    description: 'PREVIEW: This key is currently not supported
+
+      Define the SDWAN hierarchy for the device.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/region
+      keys:
+        description:
+          type: str
+        zones:
+          type: list
+          primary_key: name
+          items:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/zone
+            keys:
+              description:
+                type: str
+              sites:
+                type: list
+                primary_key: name
+                items:
+                  type: dict
+                  $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site
+                  keys:
+                    description:
+                      type: str
+                    location:
+                      type: str
+                      description: Will be interpreted
+                    site_contact:
+                      type: str
+                    site_after_hours_contact:
+                      type: str
   cv_topology:
     documentation_options:
       table: cv-topology
@@ -1521,7 +1582,7 @@ keys:
 
             This is used both for AutoVPN and Pathfinder designs.
 
-            That means if `wan_mode` root key is set to `autovpn` or `sdwan`.
+            That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
 
             `server` indicates that the router is a route-reflector.
 
@@ -1529,7 +1590,7 @@ keys:
             Only supported if `overlay_routing_protocol` is set to `ibgp`.
 
             '
-        default_sdwan_role:
+        default_cv_pathfinder_role:
           documentation_options:
             table: node-type-key-wan-configuration
           type: str
@@ -1539,12 +1600,12 @@ keys:
           - pathfinder
           description: 'PREVIEW: This key is currently not supported
 
-            Set the default SDWAN role.
+            Set the default CV Pathfinder role.
 
 
             This key is used for Pathfinder designs only when the `wan_mode` root
 
-            key is set to `sdwan`.
+            key is set to `cv-pathfinder`.
 
 
             `pathfinder` is only a valid if `wan_role` is `server`.
@@ -2476,67 +2537,6 @@ keys:
         valid_values:
         - sso
         - rpr
-  sdwan_pathfinders:
-    documentation_options:
-      table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-      The Pathfinder(s) information for the WAN.
-
-
-      When the pathfinder is part of the same inventory as the WAN routers,
-
-      only the name is required.'
-    type: list
-    $ref: eos_designs#/$defs/wan_rrs
-    items:
-      type: dict
-      keys:
-        hostname:
-          type: str
-          description: Pathfinder hostname.
-        router_id:
-          type: str
-          description: Pathfinder router id.
-  sdwan_regions:
-    documentation_options:
-      table: wan-sdwan-regions
-    description: 'PREVIEW: This key is currently not supported
-
-      Define the SDWAN hierarchy for the device.'
-    type: list
-    primary_key: name
-    items:
-      type: dict
-      $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/region
-      keys:
-        description:
-          type: str
-        zones:
-          type: list
-          primary_key: name
-          items:
-            type: dict
-            $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/zone
-            keys:
-              description:
-                type: str
-              sites:
-                type: list
-                primary_key: name
-                items:
-                  type: dict
-                  $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site
-                  keys:
-                    description:
-                      type: str
-                    location:
-                      type: str
-                      description: Will be interpreted
-                    site_contact:
-                      type: str
-                    site_after_hours_contact:
-                      type: str
   serial_number:
     documentation_options:
       table: system-settings
@@ -3279,16 +3279,16 @@ keys:
   wan_mode:
     documentation_options:
       table: wan-settings
-    description: 'Select if the WAN should be run using Pathfinder (`sdwan`) or Auto
-      VPN only.
+    description: 'Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`)
+      or Auto VPN only.
 
-      The default is `sdwan`
+      The default is `cv-pathfinder`
 
       PREVIEW: This key is currently not supported'
     type: str
     valid_values:
     - autovpn
-    - sdwan
+    - cv-pathfinder
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -6763,7 +6763,7 @@ $defs:
             convert_types:
             - int
             description: Set BGP cluster id.
-          sdwan_site:
+          cv_pathfinder_site:
             documentation_options:
               table: node-type-wan-configuration
             type: str
@@ -6988,25 +6988,25 @@ $defs:
 
               This is used both for AutoVPN and Pathfinder designs.
 
-              That means if `wan_mode` root key is set to `autovpn` or `sdwan`.
+              That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
 
               `server` indicates that the router is a route-reflector.
 
 
               Only supported if `overlay_routing_protocol` is set to `ibgp`.'
-          sdwan_role:
+          cv_pathfinder_role:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: eos_designs#/keys/node_type_keys/items/keys/default_sdwan_role
+            $ref: eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role
             description: 'PREVIEW: This key is currently not supported
 
-              Override the default SDWAN role.
+              Override the default CV Pathfinder role.
 
 
               This key is used for Pathfinder designs only when the `wan_mode` root
 
-              key is set to `sdwan`.
+              key is set to `cv_pathfinder`.
 
 
               `pathfinder` is only a valid if `wan_role` is `server`.

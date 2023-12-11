@@ -8657,6 +8657,166 @@
       ],
       "title": "Custom Structured Configuration Prefix"
     },
+    "cv_pathfinder_pathfinders": {
+      "description": "PREVIEW: This key is currently not supported\nThe Pathfinder(s) information for the WAN.\n\nWhen the pathfinder is part of the same inventory as the WAN routers,\nonly the name is required.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "description": "Pathfinder hostname.",
+            "title": "Hostname"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Pathfinder router id.",
+            "title": "Router ID"
+          },
+          "carriers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Carrier name.",
+                  "title": "Name"
+                },
+                "ip_address": {
+                  "type": "string",
+                  "description": "The public IP address for this carrier.",
+                  "title": "IP Address"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Carriers"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "hostname"
+        ]
+      },
+      "title": "Cv Pathfinder Pathfinders"
+    },
+    "cv_pathfinder_regions": {
+      "description": "PREVIEW: This key is currently not supported\nDefine the SDWAN hierarchy for the device.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "zones": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "title": "Description"
+                },
+                "sites": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string",
+                        "title": "Description"
+                      },
+                      "location": {
+                        "type": "string",
+                        "description": "Will be interpreted",
+                        "title": "Location"
+                      },
+                      "site_contact": {
+                        "type": "string",
+                        "title": "Site Contact"
+                      },
+                      "site_after_hours_contact": {
+                        "type": "string",
+                        "title": "Site After Hours Contact"
+                      },
+                      "name": {
+                        "type": "string",
+                        "title": "Name"
+                      },
+                      "id": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 10000,
+                        "title": "ID"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "id"
+                    ],
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "description": "Site name and ID."
+                  },
+                  "title": "Sites"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                },
+                "id": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000,
+                  "title": "ID"
+                }
+              },
+              "required": [
+                "name",
+                "id"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "description": "Zone name and ID."
+            },
+            "title": "Zones"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 255,
+            "title": "ID"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "description": "Region name and ID."
+      },
+      "title": "Cv Pathfinder Regions"
+    },
     "cv_topology": {
       "type": "array",
       "description": "Generate AVD configurations directly from the given CloudVision topology.\nActivate this feature by setting `use_cv_topology` to `true`.\nRequires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.",
@@ -20606,18 +20766,18 @@
               "client",
               "server"
             ],
-            "description": "PREVIEW: This key is currently not supported\nSet the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `sdwan`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
+            "description": "PREVIEW: This key is currently not supported\nSet the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
             "title": "Default Wan Role"
           },
-          "default_sdwan_role": {
+          "default_cv_pathfinder_role": {
             "type": "string",
             "enum": [
               "edge",
               "transit",
               "pathfinder"
             ],
-            "description": "PREVIEW: This key is currently not supported\nSet the default SDWAN role.\n\nThis key is used for Pathfinder designs only when the `wan_mode` root\nkey is set to `sdwan`.\n\n`pathfinder` is only a valid if `wan_role` is `server`.\n`edge` and `transit` are only valid if `wan_role` is `client`.\n",
-            "title": "Default Sdwan Role"
+            "description": "PREVIEW: This key is currently not supported\nSet the default CV Pathfinder role.\n\nThis key is used for Pathfinder designs only when the `wan_mode` root\nkey is set to `cv-pathfinder`.\n\n`pathfinder` is only a valid if `wan_role` is `server`.\n`edge` and `transit` are only valid if `wan_role` is `client`.\n",
+            "title": "Default Cv Pathfinder Role"
           },
           "mlag_support": {
             "type": "boolean",
@@ -26691,166 +26851,6 @@
       },
       "title": "Redundancy"
     },
-    "sdwan_pathfinders": {
-      "description": "PREVIEW: This key is currently not supported\nThe Pathfinder(s) information for the WAN.\n\nWhen the pathfinder is part of the same inventory as the WAN routers,\nonly the name is required.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "hostname": {
-            "type": "string",
-            "description": "Pathfinder hostname.",
-            "title": "Hostname"
-          },
-          "router_id": {
-            "type": "string",
-            "description": "Pathfinder router id.",
-            "title": "Router ID"
-          },
-          "carriers": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Carrier name.",
-                  "title": "Name"
-                },
-                "ip_address": {
-                  "type": "string",
-                  "description": "The public IP address for this carrier.",
-                  "title": "IP Address"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              }
-            },
-            "title": "Carriers"
-          }
-        },
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        },
-        "required": [
-          "hostname"
-        ]
-      },
-      "title": "Sdwan Pathfinders"
-    },
-    "sdwan_regions": {
-      "description": "PREVIEW: This key is currently not supported\nDefine the SDWAN hierarchy for the device.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "description": {
-            "type": "string",
-            "title": "Description"
-          },
-          "zones": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "description": {
-                  "type": "string",
-                  "title": "Description"
-                },
-                "sites": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "description": {
-                        "type": "string",
-                        "title": "Description"
-                      },
-                      "location": {
-                        "type": "string",
-                        "description": "Will be interpreted",
-                        "title": "Location"
-                      },
-                      "site_contact": {
-                        "type": "string",
-                        "title": "Site Contact"
-                      },
-                      "site_after_hours_contact": {
-                        "type": "string",
-                        "title": "Site After Hours Contact"
-                      },
-                      "name": {
-                        "type": "string",
-                        "title": "Name"
-                      },
-                      "id": {
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 10000,
-                        "title": "ID"
-                      }
-                    },
-                    "required": [
-                      "name",
-                      "id"
-                    ],
-                    "additionalProperties": false,
-                    "patternProperties": {
-                      "^_.+$": {}
-                    },
-                    "description": "Site name and ID."
-                  },
-                  "title": "Sites"
-                },
-                "name": {
-                  "type": "string",
-                  "title": "Name"
-                },
-                "id": {
-                  "type": "integer",
-                  "minimum": 1,
-                  "maximum": 10000,
-                  "title": "ID"
-                }
-              },
-              "required": [
-                "name",
-                "id"
-              ],
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              },
-              "description": "Zone name and ID."
-            },
-            "title": "Zones"
-          },
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "id": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 255,
-            "title": "ID"
-          }
-        },
-        "required": [
-          "name",
-          "id"
-        ],
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        },
-        "description": "Region name and ID."
-      },
-      "title": "Sdwan Regions"
-    },
     "serial_number": {
       "description": "Serial Number of the device.\nUsed for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.\n\"serial_number\" can also be set directly under node type settings.\nIf both are set, the value under node type settings takes precedence.\n",
       "type": "string",
@@ -31096,11 +31096,11 @@
       "title": "Wan Ipsec Profiles"
     },
     "wan_mode": {
-      "description": "Select if the WAN should be run using Pathfinder (`sdwan`) or Auto VPN only.\nThe default is `sdwan`\nPREVIEW: This key is currently not supported",
+      "description": "Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.\nThe default is `cv-pathfinder`\nPREVIEW: This key is currently not supported",
       "type": "string",
       "enum": [
         "autovpn",
-        "sdwan"
+        "cv-pathfinder"
       ],
       "title": "Wan Mode"
     }
