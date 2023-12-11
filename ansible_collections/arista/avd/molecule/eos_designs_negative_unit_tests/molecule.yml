@@ -2,7 +2,6 @@
 scenario:
   converge_sequence:
     - syntax
-    - create
     - converge
     - verify
   test_sequence:
