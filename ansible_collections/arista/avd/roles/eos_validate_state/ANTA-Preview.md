@@ -75,7 +75,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 
 ## Test Categories
 
-**Note:** New tests are marked with the (New) string.
+!!! Note: New tests are marked with the (New) string.
 
 - AvdTestHardware (Ansible tags: `hardware`, `platform_information`)
   - VerifyEnvironmentPower: Validate environment power supplies status.
