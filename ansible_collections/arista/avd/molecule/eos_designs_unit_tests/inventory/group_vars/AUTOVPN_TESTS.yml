@@ -8,7 +8,7 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
 
-autovpn_rrs:
+wan_route_servers:
   # Not testing the overloading
   - hostname: autovpn-rr1
   - hostname: autovpn-rr2
@@ -21,21 +21,21 @@ wan_ipsec_profiles:
     shared_key: ABCDEF1234567890
 
 default_node_types:
-  - node_type: wan-path-control
+  - node_type: wan_rr
     match_hostnames:
       - "^autovpn-rr.*$"
-  - node_type: edge
+  - node_type: wan_edge
     match_hostnames:
       - "^autovpn-edge$"
 
-edge:
+wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
     - name: autovpn-edge
       id: 1
 
-wan_path_control:
+wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:

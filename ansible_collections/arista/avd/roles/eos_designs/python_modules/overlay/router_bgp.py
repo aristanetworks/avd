@@ -139,7 +139,7 @@ class RouterBgpMixin(UtilsMixin):
             if self._is_mpls_server is True:
                 peer_groups.append({**self._generate_base_peer_group("mpls", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
-            if self.shared_utils.wan_role == "server" and len(self._wan_route_reflectors) > 0:
+            if self.shared_utils.wan_role == "server" and len(self._wan_route_servers) > 0:
                 peer_groups.append({**self._generate_base_peer_group("wan", "rr_overlay_peers"), "remote_as": self.shared_utils.bgp_as})
 
             if self.shared_utils.wan_role:
@@ -478,12 +478,12 @@ class RouterBgpMixin(UtilsMixin):
                     neighbors.append(neighbor)
 
             if self.shared_utils.wan_role == "client":
-                for wan_route_reflector, data in self._wan_route_reflectors.items():
-                    neighbor = self._create_neighbor(data["router_id"], wan_route_reflector, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])
+                for wan_route_server, data in self._wan_route_servers.items():
+                    neighbor = self._create_neighbor(data["router_id"], wan_route_server, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])
                     neighbors.append(neighbor)
             if self.shared_utils.wan_role == "server":
-                for wan_route_reflector, data in self._wan_route_reflectors.items():
-                    neighbor = self._create_neighbor(data["router_id"], wan_route_reflector, self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"])
+                for wan_route_server, data in self._wan_route_servers.items():
+                    neighbor = self._create_neighbor(data["router_id"], wan_route_server, self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"])
                     neighbors.append(neighbor)
 
         for ipvpn_gw_peer, data in natural_sort(self._ipvpn_gateway_remote_peers.items()):

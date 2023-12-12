@@ -22,7 +22,7 @@ bgp_peer_groups:
   wan_overlay_peers:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
 
-cv_pathfinder_pathfinders:
+wan_route_servers:
   # Not testing the overloading
   - hostname: cv-pathfinder-pathfinder
 
@@ -33,17 +33,17 @@ wan_ipsec_profiles:
     shared_key: ABCDEF1234567890666
 
 default_node_types:
-  - node_type: wan-path-control
+  - node_type: wan_rr
     match_hostnames:
       - "^cv-pathfinder-pathfinder.*$"
-  - node_type: transit
+  - node_type: wan_transit
     match_hostnames:
       - "^cv-pathfinder-transit$"
-  - node_type: edge
+  - node_type: wan_edge
     match_hostnames:
       - "^cv-pathfinder-edge$"
 
-edge:
+wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
@@ -52,7 +52,7 @@ edge:
       cv_pathfinder_site: Site511
       id: 1
 
-transit:
+wan_transit:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:
@@ -61,7 +61,7 @@ transit:
       cv_pathfinder_site: Site422
       id: 1
 
-wan_path_control:
+wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
   nodes:

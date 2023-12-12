@@ -5,19 +5,6 @@ $id: eos_designs
 type: dict
 allow_other_keys: true
 keys:
-  autovpn_rrs:
-    documentation_options:
-      table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-      The AutoVPN RRs information for the WAN.
-
-
-      When the AutoVPN RR is part of the same inventory as the WAN routers,
-
-      only the name is required.'
-    type: list
-    $ref: eos_designs#/$defs/wan_rrs
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
@@ -559,28 +546,6 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
-  cv_pathfinder_pathfinders:
-    documentation_options:
-      table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-      The Pathfinder(s) information for the WAN.
-
-
-      When the pathfinder is part of the same inventory as the WAN routers,
-
-      only the name is required.'
-    type: list
-    $ref: eos_designs#/$defs/wan_rrs
-    items:
-      type: dict
-      keys:
-        hostname:
-          type: str
-          description: Pathfinder hostname.
-        router_id:
-          type: str
-          description: Pathfinder router id.
   cv_pathfinder_regions:
     documentation_options:
       table: wan-cv-pathfinder-regions
@@ -3292,6 +3257,42 @@ keys:
     valid_values:
     - autovpn
     - cv-pathfinder
+  wan_route_servers:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+
+      List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
+
+      when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+
+
+      When the route server is part of the same inventory as the WAN routers,
+
+      only the name is required.'
+    type: list
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+          description: Route-Reflector hostname.
+        router_id:
+          type: str
+          description: Route-Reflector router id.
+        carriers:
+          type: list
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Carrier name.
+              ip_address:
+                type: str
+                description: The public IP address for this carrier.
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -7575,27 +7576,3 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/vlan_interfaces/items/
-  wan_rrs:
-    description: 'PREVIEW: This key is currently not supported'
-    type: list
-    primary_key: hostname
-    items:
-      type: dict
-      keys:
-        hostname:
-          type: str
-          description: Route-Reflector hostname.
-        router_id:
-          type: str
-          description: Route-Reflector router id.
-        carriers:
-          type: list
-          items:
-            type: dict
-            keys:
-              name:
-                type: str
-                description: Carrier name.
-              ip_address:
-                type: str
-                description: The public IP address for this carrier.

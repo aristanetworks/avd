@@ -297,7 +297,7 @@ class UtilsMixin:
         return {"name": "DEFAULT-ZONE", "id": 1}
 
     @cached_property
-    def _wan_route_reflectors(self) -> dict:
+    def _wan_route_servers(self) -> dict:
         """
         Return a list of wan RR based on the the wan_mode type
 
@@ -311,17 +311,11 @@ class UtilsMixin:
         if not self.shared_utils.wan_mode:
             return {}
 
-        wan_route_reflectors = {}
+        wan_route_servers = {}
 
-        # Could maybe handle this in shared_utils?
-        if self.shared_utils.wan_mode == "autovpn":
-            wan_route_reflectors_list = get(self._hostvars, "autovpn_rrs", default=[])
-        elif self.shared_utils.wan_mode == "cv-pathfinder":
-            wan_route_reflectors_list = get(self._hostvars, "cv_pathfinder_pathfinders", default=[])
-        else:
-            return {}
+        wan_route_servers_list = get(self._hostvars, "wan_route_servers", default=[])
 
-        for wan_rr_dict in natural_sort(wan_route_reflectors_list, sort_key="hostname"):
+        for wan_rr_dict in natural_sort(wan_route_servers_list, sort_key="hostname"):
             # These remote gw can be outside of the inventory
             wan_rr = wan_rr_dict["hostname"]
 
@@ -363,6 +357,6 @@ class UtilsMixin:
             # TODO need a deepmerge
             wan_rr_result_dict.update(update_dict)
 
-            wan_route_reflectors[wan_rr] = wan_rr_result_dict
+            wan_route_servers[wan_rr] = wan_rr_result_dict
 
-        return wan_route_reflectors
+        return wan_route_servers

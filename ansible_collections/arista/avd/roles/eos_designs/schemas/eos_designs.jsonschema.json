@@ -1,56 +1,6 @@
 {
   "type": "object",
   "properties": {
-    "autovpn_rrs": {
-      "description": "PREVIEW: This key is currently not supported\nThe AutoVPN RRs information for the WAN.\n\nWhen the AutoVPN RR is part of the same inventory as the WAN routers,\nonly the name is required.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "hostname": {
-            "type": "string",
-            "description": "Route-Reflector hostname.",
-            "title": "Hostname"
-          },
-          "router_id": {
-            "type": "string",
-            "description": "Route-Reflector router id.",
-            "title": "Router ID"
-          },
-          "carriers": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Carrier name.",
-                  "title": "Name"
-                },
-                "ip_address": {
-                  "type": "string",
-                  "description": "The public IP address for this carrier.",
-                  "title": "IP Address"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              }
-            },
-            "title": "Carriers"
-          }
-        },
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        },
-        "required": [
-          "hostname"
-        ]
-      },
-      "title": "Autovpn Rrs"
-    },
     "avd_data_conversion_mode": {
       "type": "string",
       "enum": [
@@ -8656,56 +8606,6 @@
         "custom_structured_configuration_"
       ],
       "title": "Custom Structured Configuration Prefix"
-    },
-    "cv_pathfinder_pathfinders": {
-      "description": "PREVIEW: This key is currently not supported\nThe Pathfinder(s) information for the WAN.\n\nWhen the pathfinder is part of the same inventory as the WAN routers,\nonly the name is required.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "hostname": {
-            "type": "string",
-            "description": "Pathfinder hostname.",
-            "title": "Hostname"
-          },
-          "router_id": {
-            "type": "string",
-            "description": "Pathfinder router id.",
-            "title": "Router ID"
-          },
-          "carriers": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string",
-                  "description": "Carrier name.",
-                  "title": "Name"
-                },
-                "ip_address": {
-                  "type": "string",
-                  "description": "The public IP address for this carrier.",
-                  "title": "IP Address"
-                }
-              },
-              "additionalProperties": false,
-              "patternProperties": {
-                "^_.+$": {}
-              }
-            },
-            "title": "Carriers"
-          }
-        },
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        },
-        "required": [
-          "hostname"
-        ]
-      },
-      "title": "Cv Pathfinder Pathfinders"
     },
     "cv_pathfinder_regions": {
       "description": "PREVIEW: This key is currently not supported\nDefine the SDWAN hierarchy for the device.",
@@ -31074,6 +30974,56 @@
         "cv-pathfinder"
       ],
       "title": "Wan Mode"
+    },
+    "wan_route_servers": {
+      "description": "PREVIEW: This key is currently not supported\n\nList of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders\nwhen using `wan_mode`=`cv-pathfinder`, to which the device should connect to.\n\nWhen the route server is part of the same inventory as the WAN routers,\nonly the name is required.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "description": "Route-Reflector hostname.",
+            "title": "Hostname"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Route-Reflector router id.",
+            "title": "Router ID"
+          },
+          "carriers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Carrier name.",
+                  "title": "Name"
+                },
+                "ip_address": {
+                  "type": "string",
+                  "description": "The public IP address for this carrier.",
+                  "title": "IP Address"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Carriers"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "hostname"
+        ]
+      },
+      "title": "Wan Route Servers"
     }
   },
   "required": [

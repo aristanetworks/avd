@@ -5,10 +5,18 @@
 # Line above is used by RedHat's YAML Schema vscode extension
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
-$defs:
-  wan_rrs:
+keys:
+  wan_route_servers:
+    documentation_options:
+      table: wan-settings
     description: |-
       PREVIEW: This key is currently not supported
+
+      List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
+      when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+
+      When the route server is part of the same inventory as the WAN routers,
+      only the name is required.
     type: list
     primary_key: hostname
     items:

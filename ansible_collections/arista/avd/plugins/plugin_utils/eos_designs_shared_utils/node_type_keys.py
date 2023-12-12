@@ -56,8 +56,8 @@ DEFAULT_NODE_TYPE_KEYS = {
             "default_evpn_role": "server",
         },
         {
-            "key": "edge",
-            "type": "edge",
+            "key": "wan_edge",
+            "type": "wan_edge",
             "default_evpn_role": "client",
             "default_wan_role": "client",
             "default_cv_pathfinder_role": "edge",
@@ -69,8 +69,8 @@ DEFAULT_NODE_TYPE_KEYS = {
             },
         },
         {
-            "key": "transit",
-            "type": "transit",
+            "key": "wan_transit",
+            "type": "wan_transit",
             "default_evpn_role": "client",
             "default_wan_role": "client",
             "default_cv_pathfinder_role": "transit",
@@ -82,8 +82,8 @@ DEFAULT_NODE_TYPE_KEYS = {
             },
         },
         {
-            "key": "wan_path_control",
-            "type": "wan-path-control",
+            "key": "wan_rr",
+            "type": "wan_rr",
             "default_evpn_role": "server",
             "default_wan_role": "server",
             "default_cv_pathfinder_role": "pathfinder",
