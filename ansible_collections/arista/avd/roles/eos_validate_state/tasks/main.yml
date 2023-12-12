@@ -43,9 +43,10 @@
 ##  Run eos_validate_state using ANTA  ##
 #########################################
 
-- name: Include ANTA tests
+- name: Include ANTA tasks
   ansible.builtin.include_tasks: "anta_tests.yml"
-  when: use_anta | bool   # Ensure that `use_anta` is evaluated as a boolean when using `-e` or `--extra-vars`
+  # Ensure that `use_anta` is evaluated as a boolean when using `-e` or `--extra-vars`
+  when: use_anta | bool
   tags:
     - always
 

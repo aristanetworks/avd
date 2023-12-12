@@ -50,15 +50,5 @@ class CSVReport:
         writer = csv.DictWriter(self.csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
-        # writerows seems to perfom better when writing in batches
-        batch_size = 5000
-        batch = []
-
         for row in self.generate_rows():
-            batch.append(row)
-            if len(batch) >= batch_size:
-                writer.writerows(batch)
-                batch.clear()
-
-        if batch:
-            writer.writerows(batch)
+            writer.writerow(row)

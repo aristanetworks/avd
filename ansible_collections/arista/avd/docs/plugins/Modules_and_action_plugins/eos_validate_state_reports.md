@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: arista.avd.eos_validate_state_reports
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
@@ -16,9 +20,9 @@ Generates validation reports for the eos\_validate\_state role
 
 ## Synopsis
 
-The <code>arista.avd.eos\_validate\_state\_reports</code> module, an Ansible Action Plugin, is designed to generate validation reports from the test results produced by the ANTA test framework.
+The <code>arista.avd.eos\_validate\_state\_reports</code> module is an Ansible Action Plugin designed to generate validation reports from the test results produced by the ANTA test framework.
 
-This plugin requires a temporary JSON file for each host in the Ansible play, which contains all test results. The path to this temporary JSON file, used by the plugin, is supplied in the hostvars by the \`eos\_validate\_state\_runner\` plugin.
+This plugin requires a JSON file for each host in the Ansible play, containing all test results. The JSON file is created automatically by the \`eos\_validate\_state\_runner\` plugin and is saved in the test results directory with the following naming convention \`\<inventory\_hostname\>\-results.json\`.
 
 The plugin offers the following functionalities\:
   \- It aggregates all test results from every host in the Ansible play and generates a CSV report.
@@ -34,13 +38,13 @@ The plugin offers the following functionalities\:
 | only_failed_tests | bool | optional | False |  | Determines if the generated reports should include only the failed tests. |
 | csv_report_path | str | optional | None |  | The absolute path where the CSV report will be saved.<br>Required if <code>validation\_report\_csv</code> is set to <code>True</code>. |
 | md_report_path | str | optional | None |  | The absolute path where the Markdown report will be saved.<br>Required if <code>validation\_report\_md</code> is set to <code>True</code>. |
+| test_results_dir | any | optional | None |  | The directory where the test results JSON file for each host will be saved. |
 | cprofile_file | any | optional | None |  | The filename for storing cProfile data, useful for debugging performance issues.<br>Be aware that enabling cProfile can affect performance, so use it only for troubleshooting. |
 
 ## Notes
 
 - Enabling the cProfile feature for performance profiling may impact the plugin\'s performance, especially in production environments.
-- The plugin manages temporary files created for processing test results, ensuring clean\-up post\-execution.
-- Hosts marked as not deployed are automatically skipped, and no test results are processed for these hosts.
+- Hosts with \`is\_deployed\` is False are automatically skipped, and no test results are processed for these hosts.
 
 ## See Also
 

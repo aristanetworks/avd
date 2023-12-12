@@ -107,7 +107,7 @@ class ActionModule(ActionBase):
 def write_results(hostname: str, anta_results: list[dict], test_results_dir: Path) -> None:
     """Save all test results from ANTA to a JSON file.
 
-    The JSON file name is hardcoded here to make sure we can retrieve it in the report plugin.
+    The JSON file name is hard coded here to make sure we can retrieve it in the report plugin.
 
     Args:
     ----

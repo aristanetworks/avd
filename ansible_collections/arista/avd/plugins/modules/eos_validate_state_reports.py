@@ -14,10 +14,11 @@ version_added: "4.5.0"
 author: Arista Ansible Team (@aristanetworks)
 short_description: Generates validation reports for the eos_validate_state role
 description:
-  - The C(arista.avd.eos_validate_state_reports) module, an Ansible Action Plugin, is designed to generate
+  - The C(arista.avd.eos_validate_state_reports) module is an Ansible Action Plugin designed to generate
     validation reports from the test results produced by the ANTA test framework.
-  - This plugin requires a temporary JSON file for each host in the Ansible play, which contains all test results.
-    The path to this temporary JSON file, used by the plugin, is supplied in the hostvars by the `eos_validate_state_runner` plugin.
+  - This plugin requires a JSON file for each host in the Ansible play, containing all test results. The JSON file
+    is created automatically by the `eos_validate_state_runner` plugin and is saved in the test results directory
+    with the following naming convention `<inventory_hostname>-results.json`.
   - |-
     The plugin offers the following functionalities:
       - It aggregates all test results from every host in the Ansible play and generates a CSV report.
@@ -46,6 +47,9 @@ options:
       - The absolute path where the Markdown report will be saved.
       - Required if C(validation_report_md) is set to C(True).
     type: str
+  test_results_dir:
+    description:
+    - The directory where the test results JSON file for each host will be saved.
   cprofile_file:
     description:
       - The filename for storing cProfile data, useful for debugging performance issues.
@@ -56,8 +60,7 @@ seealso:
     link: https://anta.ninja
 notes:
   - Enabling the cProfile feature for performance profiling may impact the plugin's performance, especially in production environments.
-  - The plugin manages temporary files created for processing test results, ensuring clean-up post-execution.
-  - Hosts marked as not deployed are automatically skipped, and no test results are processed for these hosts.
+  - Hosts with `is_deployed` is False are automatically skipped, and no test results are processed for these hosts.
 """
 
 EXAMPLES = r"""

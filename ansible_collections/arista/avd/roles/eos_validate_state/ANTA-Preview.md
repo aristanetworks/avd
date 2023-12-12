@@ -49,7 +49,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 - All tests will be removed from the catalog for a device flagged as undeployed using the host level variable [`is_deployed: false`](https://avd.sh/en/stable/roles/eos_designs/docs/input-variables.html#flagging-a-device-as-not-deployed). Additionally, all tests take into account the `is_deployed` variable value and remove tests accordingly.
 
 !!! warning
-    Tests can also be automatically removed from the catalogs depending on the structured configuration of the devices. ANTA is therefore not aware of these tests and they will not appear in the final report. For example, the `AvdTestMLAG` tests will not be present in a test catalog of a device that do not have an MLAG configuration in his structured configuration.
+    Tests can also be automatically removed from the catalogs depending on the structured configuration of the devices. ANTA is therefore not aware of these tests and they will not appear in the final report. For example, the `AvdTestMLAG` tests will not be present in the test catalog of a device that does not have an MLAG configuration in its structured configuration.
 
 - BGP tests will only run if `service_routing_protocols_model` is set to `multi-agent` in the structured configuration file.
 
@@ -85,7 +85,7 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
   ansible-playbook playbooks/fabric-validate.yaml --check
   ```
 
-- You can increase the Ansible verbosity by adding multiple `-v` when running the playbook. This will give you visibility on which [test categories](#test-categories) are being removed from the catalogs by AVD according to the structured configurations.
+- You can increase the Ansible verbosity by adding multiple `-v` when running the playbook. This will give you visibility on which [test categories](#test-categories) are being removed from a device's catalog by AVD according to the structured configurations.
 
   ```shell
   ansible-playbook playbooks/fabric-validate.yaml -v
