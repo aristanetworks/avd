@@ -71,9 +71,9 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 ### New node types in L3LS eos_designs
 
-- `edge`: Edge routers for AutoVPN or Pathfinder depending on the `wan_mode` value.
-- `transit`: Transit routers in Pathfinder context, not supported for AutoVPN.
-- `wan_path_control`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
+- `wan_edge`: Edge routers for AutoVPN or Pathfinder depending on the `wan_mode` value.
+- `wan_transit`: Transit routers in Pathfinder context, not supported for AutoVPN.
+- `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
 
 ### WAN Settings
 
