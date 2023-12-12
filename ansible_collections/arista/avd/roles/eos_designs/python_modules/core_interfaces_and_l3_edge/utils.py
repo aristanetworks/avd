@@ -54,7 +54,7 @@ class UtilsMixin:
 
         # Apply p2p_profiles if set. Silently ignoring missing profile.
         if self._p2p_links_profiles:
-            p2p_links = [self._apply_profile("p2p_links", p2p_link) for p2p_link in p2p_links]
+            p2p_links = [self.shared_utils._apply_profile("p2p_links", p2p_link) for p2p_link in p2p_links]
 
         # Filter to only include p2p_links with our hostname under "nodes"
         p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.get("nodes", [])]
@@ -68,27 +68,6 @@ class UtilsMixin:
         [p2p_link.update({"data": self._get_p2p_data(p2p_link)}) for p2p_link in p2p_links]
 
         return p2p_links
-
-    def _apply_profile(self, type: str, target_dict: dict) -> dict:
-        """
-        Apply a profile to
-        """
-        if "profile" not in target_dict:
-            # Nothing to do
-            return target_dict
-
-        # Silently ignoring missing profile and wrong types.
-        if type == "l3_interfaces":
-            profile = get_item(self._l3_interfaces_profiles, "name", target_dict["profile"], default={})
-        elif type == "p2p_links":
-            profile = get_item(self._p2p_links_profiles, "name", target_dict["profile"], default={})
-        else:
-            return target_dict
-
-        target_dict = merge(profile, target_dict, list_merge="replace", destructive_merge=False)
-        target_dict.pop("name", None)
-
-        return target_dict
 
     def _resolve_p2p_ips(self, p2p_link: dict) -> dict:
         if "ip" in p2p_link:
@@ -353,19 +332,14 @@ class UtilsMixin:
         if not (l3_interfaces := self._l3_interfaces):
             return []
 
-        # Apply p2p_profiles if set. Silently ignoring missing profile.
+        # Apply l3_interfaces._profile if set. Silently ignoring missing profile.
         if self._l3_interfaces_profiles:
-            l3_interfaces = [self._apply_profile("l3_interface", l3_interface) for l3_interface in l3_interfaces]
+            l3_interfaces = [self.shared_utils._apply_profile("l3_interface", l3_interface) for l3_interface in l3_interfaces]
 
-        # Filter to only include l3_interfaces with our hostname under "nodes"
+        # Filter to only include l3_interfaces with our hostname as node
         l3_interfaces = [l3_interface for l3_interface in l3_interfaces if self.shared_utils.hostname == get(l3_interface, "node", required=True)]
         if not l3_interfaces:
             return []
-
-        # Update data to match current p2p_link
-        # This is a bit shady
-        for l3_interface in l3_interfaces:
-            l3_interface["peer_bgp_as"] = l3_interface.get("peer_bgp_as") or l3_interface.get("bgp_as")
 
         return l3_interfaces
 

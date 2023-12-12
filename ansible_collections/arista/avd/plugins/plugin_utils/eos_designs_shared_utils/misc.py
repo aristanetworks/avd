@@ -68,10 +68,6 @@ class MiscMixin:
         return filter_tags
 
     @cached_property
-    def filter_tenants(self: SharedUtils) -> list:
-        return get(self.switch_data_combined, "filter.tenants", default=["all"])
-
-    @cached_property
     def igmp_snooping_enabled(self: SharedUtils) -> bool:
         default_igmp_snooping_enabled = get(self.hostvars, "default_igmp_snooping_enabled", default=True)
         return get(self.switch_data_combined, "igmp_snooping_enabled", default=default_igmp_snooping_enabled) is True

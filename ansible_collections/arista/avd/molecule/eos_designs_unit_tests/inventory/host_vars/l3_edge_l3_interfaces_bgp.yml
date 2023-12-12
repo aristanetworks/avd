@@ -6,9 +6,6 @@ spine:
       evpn_role: "none"
       loopback_ipv4_pool: 1.2.3.4/24
       bgp_as: 65000
-      filter:
-        always_include_vrfs_in_tenants: [TenantA]
-
 
 tenants:
   - name: TenantA

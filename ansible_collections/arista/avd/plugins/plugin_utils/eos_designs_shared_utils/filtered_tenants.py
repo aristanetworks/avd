@@ -17,6 +17,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_i
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
+DATA_MODELS = ["core_interfaces", "l3_edge"]
+
 
 class FilteredTenantsMixin:
     """
@@ -24,6 +26,18 @@ class FilteredTenantsMixin:
     Class should only be used as Mixin to the SharedUtils class
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
+
+    @cached_property
+    def filter_tenants(self: SharedUtils) -> list:
+        return get(self.switch_data_combined, "filter.tenants", default=["all"])
+
+    @cached_property
+    def _l3_edge_l3_interfaces_vrf(self) -> list:
+        """
+        Given that it is possible to place an l3_edge.l3_interface in a VRF
+        or one of its subinterface, if such (sub)interface exists, the VRF
+        should be
+        """
 
     @cached_property
     def filtered_tenants(self: SharedUtils) -> list[dict]:
@@ -183,7 +197,13 @@ class FilteredTenantsMixin:
                             vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
                             break
 
-            if vrf["svis"] or vrf["l3_interfaces"] or "all" in always_include_vrfs_in_tenants or tenant["name"] in always_include_vrfs_in_tenants:
+            if (
+                vrf["svis"]
+                or vrf["l3_interfaces"]
+                or "all" in always_include_vrfs_in_tenants
+                or tenant["name"] in always_include_vrfs_in_tenants
+                or vrf["name"] in self._filtered_l3_interfaces_vrfs
+            ):
                 filtered_vrfs.append(vrf)
 
             vrf["additional_route_targets"] = [
@@ -301,3 +321,55 @@ class FilteredTenantsMixin:
         if not endpoint_vlans:
             return []
         return [int(id) for id in range_expand(endpoint_vlans)]
+
+    def _apply_profile(self, type: str, target_dict: dict) -> dict:
+        """
+        Apply a profile to l3_interface
+        """
+        if "profile" not in target_dict:
+            # Nothing to do
+            return target_dict
+
+        # Silently ignoring missing profile and wrong types.
+        if type == "l3_interfaces":
+            profile = get_item(self._l3_interfaces_profiles, "name", target_dict["profile"], default={})
+        # elif type == "p2p_links":
+        #    profile = get_item(self._p2p_links_profiles, "name", target_dict["profile"], default={})
+        else:
+            return target_dict
+
+        target_dict = merge(profile, target_dict, list_merge="replace", destructive_merge=False)
+        target_dict.pop("name", None)
+
+        return target_dict
+
+    @cached_property
+    def _filtered_l3_interfaces_vrfs(self) -> set:
+        """
+        Returns a filtered list of l3_interfaces, which only contains interfaces with our hostname.
+        For each interface any referenced profiles are applied and IP addresses are resolved
+        from pools or subnets.
+        """
+        vrfs = set()
+        for data_model in DATA_MODELS:
+            l3_interfaces = get(self.hostvars, f"{data_model}.l3_interfaces")
+            l3_interfaces_profiles = get(self.hostvars, f"{data_model}.l3_interfaces_profiles")
+
+            if not l3_interfaces:
+                continue
+
+            # Apply l3_interfaces._profile if set. Silently ignoring missing profile.
+            if l3_interfaces_profiles:
+                l3_interfaces = [self._apply_profile("l3_interface", l3_interface) for l3_interface in l3_interfaces]
+
+            # Filter to only include l3_interfaces with our hostname as node
+            l3_interfaces = [l3_interface for l3_interface in l3_interfaces if self.hostname == get(l3_interface, "node", required=True)]
+            if not l3_interfaces:
+                continue
+
+            for interface in l3_interfaces:
+                vrfs.add(interface.get("vrf", "default"))
+                if (subinterfaces := interface.get("subinterfaces")) is not None:
+                    vrfs.union(vrf for subif in subinterfaces if (vrf := subif.get("vrf")) is not None)
+
+        return vrfs
