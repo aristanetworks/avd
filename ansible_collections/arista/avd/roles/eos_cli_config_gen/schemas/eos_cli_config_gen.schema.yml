@@ -5443,6 +5443,16 @@ keys:
                   type: str
                 key:
                   type: str
+            certificate_revocation_lists:
+              type: list
+              description: 'List of CRLs (Certificate Revocation List).
+
+                One CRL needs to be specified for every CA in the chain, even if it''s
+                not revoking any certificate.
+
+                '
+              items:
+                type: str
   management_ssh:
     type: dict
     keys:
