@@ -96,17 +96,20 @@ class MDReportBase(ABC):
         class_name = self.__class__.__name__
         return re.sub(r"(?<!^)(?=[A-Z])", " ", class_name).title()
 
-    def write_table(self, table_heading: list[str]) -> None:
+    def write_table(self, table_heading: list[str], *, last_table: bool = False) -> None:
         """Write a markdown table with a table heading and multiple rows to the markdown file.
 
         Args:
         ----
             table_heading (list[str]): List of strings to join for the table heading.
+            last_table (bool): Flag to determine if it's the last table of the markdown file to avoid unnecessary new line.
+                                Defaults to False.
         """
         self.mdfile.write("\n".join(table_heading) + "\n")
         for row in self.generate_rows():
             self.mdfile.write(row)
-        self.mdfile.write("\n")
+        if not last_table:
+            self.mdfile.write("\n")
 
     def write_heading(self, heading_level: int) -> None:
         """Write a markdown heading to the markdown file.
@@ -269,4 +272,4 @@ class AllTestResults(MDReportBase):
         """
         if not self.results.only_failed_tests:
             self.write_heading(heading_level=2)
-            self.write_table(table_heading=self.TABLE_HEADING)
+            self.write_table(table_heading=self.TABLE_HEADING, last_table=True)
