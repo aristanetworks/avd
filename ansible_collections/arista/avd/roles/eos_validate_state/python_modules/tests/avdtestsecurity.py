@@ -18,7 +18,7 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
     @cached_property
     def test_definition(self) -> dict | None:
         """
-        Generates the proper ANTA test definition for all SSL tests.
+        Generates the proper ANTA test definition for all eAPI HTTPS SSL tests.
 
         Returns:
             test_definition (dict): ANTA test definition.
