@@ -1,11 +1,11 @@
 ---
 wan_mode: autovpn
-type: edge
+type: wan_edge
 
 # Not ibgp
 overlay_routing_protocol: none
 
-edge:
+wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.0.0/24
   nodes:

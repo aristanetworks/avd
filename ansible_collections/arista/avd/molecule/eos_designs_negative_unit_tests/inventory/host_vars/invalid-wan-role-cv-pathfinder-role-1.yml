@@ -1,10 +1,10 @@
 ---
 wan_mode: cv-pathfinder
-type: edge
+type: wan_edge
 
 bgp_as: 65000
 
-edge:
+wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.0.0/24
   nodes:

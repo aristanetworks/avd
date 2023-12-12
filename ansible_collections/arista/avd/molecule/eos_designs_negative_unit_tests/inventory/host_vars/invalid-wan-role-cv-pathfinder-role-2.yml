@@ -1,10 +1,10 @@
 ---
 wan_mode: cv-pathfinder
-type: wan-path-control
+type: wan_rr
 
 bgp_as: 65000
 
-wan_path_control:
+wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.0.0/24
   nodes:
