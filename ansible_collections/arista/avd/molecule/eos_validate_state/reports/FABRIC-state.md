@@ -678,3 +678,4 @@
 | 618 | dc2-spine2 | LLDP Topology | LLDP topology - validate peer and interface | local: Ethernet3 - remote: dc2-leaf2a_Ethernet2 | NOT RUN | - |
 | 619 | dc2-spine2 | LLDP Topology | LLDP topology - validate peer and interface | local: Ethernet4 - remote: dc2-leaf2b_Ethernet2 | NOT RUN | - |
 | 620 | dc2-spine2 | NTP | Synchronised with NTP server | NTP | NOT RUN | - |
+

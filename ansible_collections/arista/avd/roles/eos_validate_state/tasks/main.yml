@@ -68,7 +68,7 @@
   check_mode: false
   when:
     - use_anta | bool
-    - not (validation_report_csv | bool == false and validation_report_md | bool == false)
+    - validation_report_csv | bool or validation_report_md | bool
   tags:
     - always
     - reports
