@@ -9671,6 +9671,21 @@
       },
       "title": "MCS Client"
     },
+    "metadata": {
+      "type": "object",
+      "description": "Key only used for documentation or validation purposes",
+      "properties": {
+        "platform": {
+          "type": "string",
+          "title": "Platform"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Metadata"
+    },
     "mlag_configuration": {
       "type": "object",
       "title": "Multi-Chassis Link Aggregation (MLAG) Configuration",

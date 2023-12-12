@@ -1,4 +1,6 @@
 hostname: AUTO_BGP_ASN_LEAF7A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65222.0'

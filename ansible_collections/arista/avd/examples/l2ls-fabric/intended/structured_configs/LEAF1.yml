@@ -1,4 +1,6 @@
 hostname: LEAF1
+metadata:
+  platform: cEOS-LAB
 is_deployed: true
 static_routes:
 - vrf: MGMT

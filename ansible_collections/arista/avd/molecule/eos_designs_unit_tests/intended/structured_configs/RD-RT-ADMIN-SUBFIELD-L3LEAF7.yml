@@ -1,4 +1,6 @@
 hostname: RD-RT-ADMIN-SUBFIELD-L3LEAF7
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65007'
