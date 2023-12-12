@@ -10,7 +10,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_util
 
 class AvdTestAPIHttpsSSL(AvdTestBase):
     """
-    AvdTestAPIHttpsSSL class for verifies if eAPI HTTPS server SSL profile is configured and valid.
+    AvdTestAPIHttpsSSL class for eAPI HTTPS SSL tests.
     """
 
     anta_module = "anta.tests.security"
