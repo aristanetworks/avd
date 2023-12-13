@@ -1,4 +1,6 @@
 hostname: p2
+metadata:
+  platform: vEOS-lab
 is_deployed: true
 static_routes:
 - vrf: MGMT

@@ -1,4 +1,6 @@
 hostname: DC1-L2LEAF4A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 static_routes:
 - vrf: MGMT

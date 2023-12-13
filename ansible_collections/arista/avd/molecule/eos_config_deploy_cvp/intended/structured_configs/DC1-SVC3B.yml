@@ -1,4 +1,6 @@
 hostname: DC1-SVC3B
+metadata:
+  platform: vEOS-LAB
 is_deployed: false
 router_bgp:
   as: '65103'
