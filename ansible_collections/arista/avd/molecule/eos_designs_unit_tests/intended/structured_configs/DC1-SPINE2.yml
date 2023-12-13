@@ -1,4 +1,6 @@
 hostname: DC1-SPINE2
+metadata:
+  platform: 7500R
 is_deployed: true
 router_bgp:
   as: '65001'

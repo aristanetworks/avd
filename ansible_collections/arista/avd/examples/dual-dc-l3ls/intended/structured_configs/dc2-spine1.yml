@@ -1,4 +1,6 @@
 hostname: dc2-spine1
+metadata:
+  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65200'

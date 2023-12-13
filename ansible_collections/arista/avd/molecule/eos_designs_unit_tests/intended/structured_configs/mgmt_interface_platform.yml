@@ -1,4 +1,6 @@
 hostname: mgmt_interface_platform
+metadata:
+  platform: 7500R2
 is_deployed: true
 static_routes:
 - vrf: MGMT
