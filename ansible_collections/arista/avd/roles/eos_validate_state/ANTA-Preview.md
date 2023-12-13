@@ -142,31 +142,31 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 
 ```yaml
 # Root directory
-root_dir: '{{ inventory_dir }}'
+root_dir: "{{ inventory_dir }}"
 
 # AVD configurations output
 # Main output directory
-output_dir_name: 'intended'
-output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+output_dir_name: "intended"
+output_dir: "{{ root_dir }}/{{ output_dir_name }}"
 
 # Output for test catalog YAML files if save_catalog is set to true
-test_catalogs_dir_name: 'test_catalogs'
-test_catalogs_dir: '{{ output_dir }}/{{ test_catalogs_dir_name }}'
+test_catalogs_dir_name: "test_catalogs"
+test_catalogs_dir: "{{ output_dir }}/{{ test_catalogs_dir_name }}"
 
 # Output directory for eos_validate_state reports
-eos_validate_state_name: 'reports'
-eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
+eos_validate_state_name: "reports"
+eos_validate_state_dir: "{{ root_dir }}/{{ eos_validate_state_name }}"
 
 # Output for test results JSON files if save_results is set to true
-test_results_dir_name: 'test_results'
-test_results_dir: '{{ eos_validate_state_dir }}/{{ test_results_dir_name }}'
+test_results_dir_name: "test_results"
+test_results_dir: "{{ eos_validate_state_dir }}/{{ test_results_dir_name }}"
 
 # Fabric name used in the reports name
 fabric_name: "all"
 
 # Reports name
-eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
-eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
+eos_validate_state_md_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md"
+eos_validate_state_csv_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv"
 
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
@@ -193,9 +193,6 @@ use_anta: false
 
 # Save each device test catalog to 'test_catalogs_dir'. Defaults to false.
 save_catalog: false
-
-# Save each device test results to 'test_results_dir'. Defaults to false.
-save_results: false
 
 # Logging level for the ANTA libraries. Defaults to "WARNING".
 logging_level: "WARNING"
@@ -230,6 +227,4 @@ skipped_tests:
         use_anta: true
         # To save catalogs
         save_catalog: true
-        # To save results
-        save_results: true
 ```

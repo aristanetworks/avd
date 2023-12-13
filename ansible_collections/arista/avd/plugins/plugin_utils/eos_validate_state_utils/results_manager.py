@@ -5,11 +5,9 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import ACRONYM_CATEGORIES
 
-RESULTS_MAPPING: dict[str, str] = {"success": "PASS", "failure": "FAIL", "error": "FAIL", "skipped": "SKIPPED", "unset": "NOT RUN"}
-"""Mapping the results from ANTA to what we want in the AVD validate state report."""
+from .contants import RESULTS_MAPPING, STATS_MAPPING
 
 
 class ResultsManager:
@@ -91,34 +89,26 @@ class ResultsManager:
             "messages": result.get("messages", []),
         }
 
-    def _increment_stats(self, test_result: str, dut: str, categories: list[str]) -> None:
+    def _increment_stats(self, test_status: str, dut: str, categories: list[str]) -> None:
         """Increment test statistics based on the test result.
 
         Args:
         ----
-            test_result (str): The test result.
+            test_status (str): The test status.
             dut (str): The name of the device under test.
             categories (list[str]): The categories of the test.
         """
-        stats_mapping = {
-            "PASS": ("total_tests_passed", "tests_passed"),
-            "FAIL": ("total_tests_failed", "tests_failed", "categories_failed"),
-            "SKIPPED": ("total_tests_skipped", "tests_skipped", "categories_skipped"),
-            "NOT RUN": ("total_tests_not_run", "tests_not_run"),
-        }
-        stats_to_increment = stats_mapping.get(test_result, ())
+        stats_to_increment = STATS_MAPPING.get(test_status, ())
 
         for stat in stats_to_increment:
             if stat.startswith("total_"):
                 setattr(self, stat, getattr(self, stat) + 1)
-                continue
-            if stat.startswith("tests_"):
+            elif stat.startswith("tests_"):
                 self.dut_stats[dut][stat] += 1
-            for category in categories:
-                if stat.startswith("tests_"):
+                for category in categories:
                     self.category_stats[category][stat] += 1
-                else:
-                    self.dut_stats[dut][stat].add(category)
+            else:
+                self.dut_stats[dut][stat].update(categories)
 
     def update_results(self, result: dict) -> None:
         """Update the internal statistics and test results based on the given test result.
@@ -130,16 +120,17 @@ class ResultsManager:
         self.test_id += 1
 
         if not isinstance(result, dict):
-            raise AristaAvdError(message=f"Each test result must be a dictionary, got {result}")
+            msg = f"Test result '{result}' must be dictionary, got {type(result).__name__}."
+            raise TypeError(msg)
 
         parsed_result = self._parse_result(result)
-        test_result = parsed_result["result"]
+        test_status = parsed_result["result"]
         categories = parsed_result["test_categories"]
         dut = parsed_result["node"]
 
-        self._increment_stats(test_result, dut, categories)
+        self._increment_stats(test_status, dut, categories)
 
-        if test_result == "FAIL":
+        if test_status == "FAIL":
             self.failed_tests.append(parsed_result)
         if not self.only_failed_tests:
             self.all_tests.append(parsed_result)

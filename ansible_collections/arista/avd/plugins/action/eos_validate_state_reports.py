@@ -74,15 +74,14 @@ class ActionModule(ActionBase):
                 try:
                     # Getting the host results JSON file saved by eos_validate_state_runner action plugin
                     result_path = get_validated_path(path_input=test_results_dir / f"{host}-results.json", parent=False)
-                except (TypeError, FileNotFoundError) as error:
-                    display.warning(f"Failed to get the test results file of host {host}: {error}")
-                    continue
-                try:
                     # Process the host test results
                     for test_result in _test_results_gen(input_path=result_path):
-                        test_results.update_results(test_result)
-                except (JSONDecodeError, OSError) as error:
-                    display.warning(f"Failed to process the test results of host {host}: {error}")
+                        try:
+                            test_results.update_results(test_result)
+                        except TypeError as error:
+                            display.warning(f"Failed to update the test results of host {host}: {error}")
+                except (JSONDecodeError, OSError, TypeError, FileNotFoundError) as error:
+                    display.warning(f"Failed to load the test results of host {host}: {error}")
 
             # Generate the reports
             if validation_report_csv:
