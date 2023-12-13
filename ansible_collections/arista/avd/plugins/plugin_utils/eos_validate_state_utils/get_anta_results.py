@@ -6,7 +6,7 @@ from __future__ import annotations
 import logging
 from asyncio import run
 from json import loads
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Mapping
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper
@@ -63,7 +63,7 @@ def _get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict
 
 def get_anta_results(
     anta_device: AntaDevice,
-    hostvars: dict | object,
+    hostvars: Mapping,
     logging_level: str,
     skipped_tests: dict,
     ansible_tags: dict | None = None,
@@ -75,7 +75,7 @@ def get_anta_results(
     Args:
       anta_device (AntaDevice): An instantiated AntaDevice
                                 When running in ansible, the action plugin will pass an AnsibleEOSDevice
-      hostvars (dict | object): A dictionary that contains a key for each device with a value of the structured_config.
+      hostvars (Mapping): A mapping that contains a key for each device with a value of the structured_config.
                                 When using Ansible, this is the `task_vars['hostvars']` object.
       logging_level (str): The level at which ANTA should be logging
       skipped_tests (list[dict]): A list of dictionary
