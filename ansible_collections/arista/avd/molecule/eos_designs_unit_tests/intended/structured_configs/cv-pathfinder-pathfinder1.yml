@@ -11,6 +11,7 @@ router_bgp:
     ecmp: 4
   updates:
     wait_install: true
+  bgp_cluster_id: 192.168.44.2
   peer_groups:
   - name: RR-OVERLAY-PEERS
     type: wan
@@ -179,4 +180,4 @@ vxlan_interface:
       source_interface: Loopback0
       vrfs:
       - name: default
-        vni: 100
+        vni: 1

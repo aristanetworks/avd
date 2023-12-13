@@ -45,7 +45,6 @@ class UtilsFilteredTenantsMixin(object):
                     tenant["vrfs"] = self._filtered_vrfs(tenant)
                     filtered_tenants.append(tenant)
 
-        # TODO - check if it makes sense here - auto inject VRF default
         if self.shared_utils.wan_role is not None and all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"]):
             filtered_tenants.append(
                 {
@@ -53,7 +52,7 @@ class UtilsFilteredTenantsMixin(object):
                     "vrfs": [
                         {
                             "name": "default",
-                            "vrf_id": 100,
+                            "vrf_id": 1,
                             "svis": [],
                             "l3_interfaces": [],
                             "bgp_peers": [],

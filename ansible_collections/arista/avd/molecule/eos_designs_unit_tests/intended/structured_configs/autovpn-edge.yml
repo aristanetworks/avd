@@ -115,4 +115,4 @@ vxlan_interface:
       source_interface: Loopback0
       vrfs:
       - name: default
-        vni: 100
+        vni: 1

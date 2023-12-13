@@ -30,13 +30,13 @@ class DpsInterfacesMixin(UtilsMixin):
             "name": "Dps1",
             "description": "DPS Interface",
             "tcp_mss_ceiling": {
-                "ipv4": get(self.shared_utils.switch_data_combined, "dps_mss_ipv4", 1000),
+                "ipv4": get(self.shared_utils.switch_data_combined, "dps_mss_ipv4", default=1000),
             },
         }
 
         # TODO maybe need a different setting to enable IPv6, and give a Dps interface MSS ceiling value
-        if (dps_mss_ipv6 := get(self.shared_utils.switch_data_combined, "dps_mss_ipv6")) is not None:
-            dps1["tcp_mss_ceiling"]["ipv6"] = dps_mss_ipv6
+        if (get(self.shared_utils.switch_data_combined, "dps_mss_ipv6")) is not None:
+            dps1["tcp_mss_ceiling"]["ipv6"] = get(self.shared_utils.switch_data_combined, "dps_mss_ipv6", default=1000)
 
         if self.shared_utils.cv_pathfinder_role:
             dps1["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}

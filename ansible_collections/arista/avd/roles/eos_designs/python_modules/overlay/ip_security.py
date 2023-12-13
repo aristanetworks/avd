@@ -25,6 +25,8 @@ class IpSecurityMixin(UtilsMixin):
         If `data_plane` is not configured, `control_plane` data is used for both
         Data Plane and Control Plane.
         """
+        # TODO - in future, the default algo/dh groups value must be clarified
+
         if not self.shared_utils.wan_role:
             return None
 
@@ -44,9 +46,9 @@ class IpSecurityMixin(UtilsMixin):
         """
         In place update of ip_security
         """
-        ike_policy_name = get(data_plane_config, "ike_policy_name", "DP-IKE-POLICY")
-        sa_policy_name = get(data_plane_config, "sa_policy_name", "DP-SA-POLICY")
-        profile_name = get(data_plane_config, "profile_name", "DP-PROFILE")
+        ike_policy_name = get(data_plane_config, "ike_policy_name", default="DP-IKE-POLICY")
+        sa_policy_name = get(data_plane_config, "sa_policy_name", default="DP-SA-POLICY")
+        profile_name = get(data_plane_config, "profile_name", default="DP-PROFILE")
         key = get(data_plane_config, "shared_key", required=True)
 
         ip_security["ike_policies"].append(self._ike_policy(ike_policy_name))
@@ -62,9 +64,9 @@ class IpSecurityMixin(UtilsMixin):
 
         expected to be called AFTER _append_data_plane
         """
-        ike_policy_name = get(control_plane_config, "ike_policy_name", "CP-IKE-POLICY")
-        sa_policy_name = get(control_plane_config, "sa_policy_name", "CP-SA-POLICY")
-        profile_name = get(control_plane_config, "profile_name", "CP-PROFILE")
+        ike_policy_name = get(control_plane_config, "ike_policy_name", default="CP-IKE-POLICY")
+        sa_policy_name = get(control_plane_config, "sa_policy_name", default="CP-SA-POLICY")
+        profile_name = get(control_plane_config, "profile_name", default="CP-PROFILE")
         key = get(control_plane_config, "shared_key", required=True)
 
         ip_security["ike_policies"].append(self._ike_policy(ike_policy_name))

@@ -46,9 +46,6 @@ class RouterBgpMixin(UtilsMixin):
         return strip_empties_from_dict(router_bgp, strip_values_tuple=(None, ""))
 
     def _bgp_cluster_id(self) -> str | None:
-        if self.shared_utils.wan_role:
-            return None
-
         if self.shared_utils.overlay_routing_protocol == "ibgp":
             if self.shared_utils.evpn_role == "server" or self.shared_utils.mpls_overlay_role == "server":
                 return get(self.shared_utils.switch_data_combined, "bgp_cluster_id", default=self.shared_utils.router_id)
