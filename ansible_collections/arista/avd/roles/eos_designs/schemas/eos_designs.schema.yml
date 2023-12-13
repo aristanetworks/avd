@@ -3282,7 +3282,7 @@ keys:
         router_id:
           type: str
           description: Route-Reflector router id.
-        carriers:
+        wan_carriers:
           type: list
           items:
             type: dict
@@ -3293,6 +3293,11 @@ keys:
               ip_address:
                 type: str
                 description: The public IP address for this carrier.
+        bgp_listen_range_prefixes:
+          type: list
+          items:
+            type: str
+            description: The prefixes to use in listen_range.
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -6786,12 +6791,13 @@ $defs:
 
               If not set, and the device is WAN device, a default value of 1000 is
               used.'
-          dps_mss_ipv6:
-            documentation_options:
-              table: node-type-wan-configuration
-            type: int
-            $ref: eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv6
-            description: MSS value for IPv6 the DPS interface.
+          bgp_listen_range_prefixes:
+            type: list
+            description: Only used for nodes where `wan_role` is `server` like AutoVPN
+              RRs and Pathfinders.
+            items:
+              type: str
+              description: The prefixes to use in listen_range.
           ptp:
             documentation_options:
               table: node-type-ptp-configuration

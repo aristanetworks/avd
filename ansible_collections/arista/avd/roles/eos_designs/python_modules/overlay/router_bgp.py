@@ -29,6 +29,7 @@ class RouterBgpMixin(UtilsMixin):
 
         router_bgp = {
             "bgp_cluster_id": self._bgp_cluster_id(),
+            "listen_ranges": self._bgp_listen_ranges(),
             "peer_groups": self._peer_groups(),
             "address_family_evpn": self._address_family_evpn(),
             "address_family_ipv4": self._address_family_ipv4(),
@@ -60,11 +61,12 @@ class RouterBgpMixin(UtilsMixin):
 
         return [
             {
-                "prefix": self.shared_utils.loopback_ipv4_pool,
+                "prefix": prefix,
                 "peer_group": self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"],
                 "remote_as": self.shared_utils.bgp_as,
             }
-        ]
+            for prefix in get(self.shared_utils.switch_data_combined, "bgp_listen_range_prefixes", default=[])
+        ] or None
 
     def _generate_base_peer_group(self, pg_type: str, pg_name: str, maximum_routes: int = 0) -> dict:
         if pg_type not in ["mpls", "evpn", "wan"]:

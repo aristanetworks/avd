@@ -12,6 +12,13 @@ router_bgp:
   updates:
     wait_install: true
   bgp_cluster_id: 192.168.44.2
+  listen_ranges:
+  - prefix: 192.168.42.0/24
+    peer_group: WAN-OVERLAY-PEERS
+    remote_as: '65000'
+  - prefix: 192.168.43.0/24
+    peer_group: WAN-OVERLAY-PEERS
+    remote_as: '65000'
   peer_groups:
   - name: RR-OVERLAY-PEERS
     type: wan

@@ -346,7 +346,7 @@ class UtilsMixin:
             # TODO needs to be improved
             bgp_as = get(wan_rr_dict, "bgp_as", required=(peer_facts is None and bgp_as is None)) or bgp_as
             router_id = get(wan_rr_dict, "router_id", required=(peer_facts is None))
-            carriers = get(wan_rr_dict, "carriers", required=(peer_facts is None))
+            carriers = get(wan_rr_dict, "wan_carriers", required=(peer_facts is None))
             update_dict = {
                 "bgp_as": bgp_as,
                 "router_id": router_id,

@@ -28,7 +28,7 @@ keys:
         router_id:
           type: str
           description: Route-Reflector router id.
-        carriers:
+        wan_carriers:
           type: list
           items:
             type: dict
@@ -40,3 +40,8 @@ keys:
               ip_address:
                 type: str
                 description: The public IP address for this carrier.
+        bgp_listen_range_prefixes:
+          type: list
+          items:
+            type: str
+            description: The prefixes to use in listen_range.

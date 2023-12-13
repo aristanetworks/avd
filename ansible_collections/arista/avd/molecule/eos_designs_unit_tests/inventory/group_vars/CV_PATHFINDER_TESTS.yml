@@ -64,6 +64,9 @@ wan_transit:
 wan_rr:
   defaults:
     loopback_ipv4_pool: 192.168.44.0/24
+    bgp_listen_range_prefixes:
+      - 192.168.42.0/24
+      - 192.168.43.0/24
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1

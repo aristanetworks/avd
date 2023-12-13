@@ -47,6 +47,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
          template interval 5000
     !
     ```
+- No IPv6 support
 
 ## Future work
 

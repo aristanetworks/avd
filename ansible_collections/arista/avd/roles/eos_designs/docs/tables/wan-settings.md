@@ -30,9 +30,11 @@
     | [<samp>wan_route_servers</samp>](## "wan_route_servers") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders<br>when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.<br><br>When the route server is part of the same inventory as the WAN routers,<br>only the name is required. |
     | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "wan_route_servers.[].hostname") | String | Required, Unique |  |  | Route-Reflector hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "wan_route_servers.[].router_id") | String |  |  |  | Route-Reflector router id. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;carriers</samp>](## "wan_route_servers.[].carriers") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].carriers.[].name") | String |  |  |  | Carrier name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].carriers.[].ip_address") | String |  |  |  | The public IP address for this carrier. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_carriers</samp>](## "wan_route_servers.[].wan_carriers") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].wan_carriers.[].name") | String |  |  |  | Carrier name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].wan_carriers.[].ip_address") | String |  |  |  | The public IP address for this carrier. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_listen_range_prefixes</samp>](## "wan_route_servers.[].bgp_listen_range_prefixes") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_route_servers.[].bgp_listen_range_prefixes.[]") | String |  |  |  | The prefixes to use in listen_range. |
 
 === "YAML"
 
@@ -128,11 +130,15 @@
 
         # Route-Reflector router id.
         router_id: <str>
-        carriers:
+        wan_carriers:
 
             # Carrier name.
           - name: <str>
 
             # The public IP address for this carrier.
             ip_address: <str>
+        bgp_listen_range_prefixes:
+
+            # The prefixes to use in listen_range.
+          - <str>
     ```

@@ -30991,7 +30991,7 @@
             "description": "Route-Reflector router id.",
             "title": "Router ID"
           },
-          "carriers": {
+          "wan_carriers": {
             "type": "array",
             "items": {
               "type": "object",
@@ -31012,7 +31012,15 @@
                 "^_.+$": {}
               }
             },
-            "title": "Carriers"
+            "title": "Wan Carriers"
+          },
+          "bgp_listen_range_prefixes": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The prefixes to use in listen_range."
+            },
+            "title": "BGP Listen Range Prefixes"
           }
         },
         "additionalProperties": false,
