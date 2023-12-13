@@ -92,10 +92,8 @@ management security
 {%         if ssl_profile.certificate is arista.avd.defined %}
       certificate {{ ssl_profile.certificate.file }} key {{ ssl_profile.certificate.key }}
 {%         endif %}
-{%         if ssl_profile.certificate_revocation_lists is arista.avd.defined %}
-{%             for crl in ssl_profile.certificate_revocation_lists | arista.avd.natural_sort %}
+{%         for crl in ssl_profile.certificate_revocation_lists | arista.avd.natural_sort %}
       crl {{ crl }}
-{%             endfor %}
-{%         endif %}
+{%         endfor %}
 {%     endfor %}
 {% endif %}

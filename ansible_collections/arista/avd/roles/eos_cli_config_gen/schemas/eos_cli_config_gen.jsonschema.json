@@ -9304,7 +9304,7 @@
               },
               "certificate_revocation_lists": {
                 "type": "array",
-                "description": "List of CRLs (Certificate Revocation List).\nOne CRL needs to be specified for every CA in the chain, even if it's not revoking any certificate.\n",
+                "description": "List of CRLs (Certificate Revocation List).\nIf specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.\n",
                 "items": {
                   "type": "string"
                 },

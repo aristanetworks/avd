@@ -158,6 +158,6 @@ keys:
               type: list
               description: |
                 List of CRLs (Certificate Revocation List).
-                One CRL needs to be specified for every CA in the chain, even if it's not revoking any certificate.
+                If specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.
               items:
                 type: str
