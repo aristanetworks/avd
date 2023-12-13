@@ -9,7 +9,7 @@
   - [Security Association policies](#security-association-policies)
   - [IPSec profiles](#ipsec-profiles)
   - [Key controller](#key-controller)
-  - [IP Security Configuration](#ip-security-configuration)
+  - [IP Security Device Configuration](#ip-security-device-configuration)
 
 ## Management
 
@@ -69,7 +69,7 @@ interface Management1
 | ------------ |
 | Profile-1 |
 
-### IP Security Configuration
+### IP Security Device Configuration
 
 ```eos
 !

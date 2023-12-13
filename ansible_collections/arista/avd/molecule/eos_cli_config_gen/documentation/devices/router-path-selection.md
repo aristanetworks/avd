@@ -50,14 +50,14 @@ interface Management1
 | ------  | ----- |
 | Path Group ID | 666 |
 
-###### Dynamic peers settings
+###### Dynamic Peers Settings
 
 | Setting | Value |
 | ------  | ----- |
 | IP Local | True |
 | IPSec | True |
 
-###### Static peers
+###### Static Peers
 
 | Router IP | Name | IPv4 address(es) |
 | --------- | ---- | ---------------- |
@@ -91,7 +91,7 @@ interface Management1
 | 192.168.1.100 | 192.168.42.42 | STUN-P-1<br>STUN-P-2 |
 | 192.168.100.1 | - | STUN-P-1 |
 
-###### Dynamic peers settings
+###### Dynamic Peers Settings
 
 | Setting | Value |
 | ------  | ----- |
@@ -110,36 +110,36 @@ interface Management1
 | ------  | ----- |
 | Path Group ID | - |
 
-#### Load-balance policies
+#### Load-balance Policies
 
 | Policy Name | Jitter (ms) | Latency (ms) | Loss Rate (%) | Path Groups (priority) | Lowest Hop Count |
 | ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
 | LB-P-1 | - | - | 17 | PG-5 (1)<br>PG-2 (42)<br>PG-4 (42)<br>PG-3 (666) | True |
 | LB-P-2 | 666 | 42 | 42.42 | PG-1 (1)<br>PG-3 (1) | False |
 
-#### DPS policies
+#### DPS Policies
 
-##### DPS policy DPS-P-1
+##### DPS Policy DPS-P-1
 
 | Rule ID | Application profile | Load-balance policy |
 | ------- | ------------------- | ------------------- |
 | Default Match | - | LB-P-1 |
 | 42 | AP-3 | LB-P-1 |
 
-##### DPS policy DPS-P-2
+##### DPS Policy DPS-P-2
 
 | Rule ID | Application profile | Load-balance policy |
 | ------- | ------------------- | ------------------- |
 | Default Match | - | LB-P-2 |
 
-##### DPS policy DPS-P-3
+##### DPS Policy DPS-P-3
 
 | Rule ID | Application profile | Load-balance policy |
 | ------- | ------------------- | ------------------- |
 | 42 | AP-2 | - |
 | 66 | AP-1 | LB-P-1 |
 
-#### VRFs configuration
+#### VRFs Configuration
 
 | VRF name | DPS policy |
 | -------- | ---------- |

@@ -48,7 +48,7 @@ interface Management1
 
 Provider eos-native is configured.
 
-#### Management API gNMI configuration
+#### Management API gNMI Device Configuration
 
 ```eos
 !

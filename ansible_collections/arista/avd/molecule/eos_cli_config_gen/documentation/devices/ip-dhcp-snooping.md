@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [IP DHCP Snooping](#ip-dhcp-snooping)
-  - [IP DHCP Snooping Configuration](#ip-dhcp-snooping-configuration)
+  - [IP DHCP Snooping Device Configuration](#ip-dhcp-snooping-device-configuration)
 
 ## Management
 
@@ -42,12 +42,14 @@ IP DHCP Snooping is enabled
 IP DHCP Snooping Bridging is enabled
 
 IP DHCP Snooping Insertion of Option 82 is enabled
-- IP DHCP Snooping Circuit-ID Suboption: 10
-- IP DHCP Snooping Circuit-ID Format: %h:%p
+
+IP DHCP Snooping Circuit-ID Suboption: 10
+
+IP DHCP Snooping Circuit-ID Format: %h:%p
 
 IP DHCP Snooping enabled VLAN: 10,20,500,1000-2000
 
-### IP DHCP Snooping Configuration
+### IP DHCP Snooping Device Configuration
 
 ```eos
 !

@@ -1,6 +1,6 @@
 ---
 - name: Configure local folders
-  hosts: all
+  hosts: AVD_LAB
   gather_facts: false
   connection: local
   vars:

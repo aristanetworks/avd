@@ -8,10 +8,10 @@
 
 ### Traffic Policies information
 {%     if traffic_policies.field_sets is arista.avd.defined %}
-
-**IPv4 Field sets**
-
 {%         if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
+
+#### IPv4 Field Sets
+
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
@@ -22,13 +22,11 @@
 {%                 endif %}
 | {{ field_set_ipv4.name }} | {{ value }} |
 {%             endfor %}
-{%         else %}
-No IPv4 field-set configured.
 {%         endif %}
-
-**IPv6 Field sets**
-
 {%         if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
+
+#### IPv6 Field Sets
+
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
@@ -39,30 +37,24 @@ No IPv4 field-set configured.
 {%                 endif %}
 | {{ field_set_ipv6.name }} | {{ value }} |
 {%             endfor %}
-{%         else %}
-No IPv6 field-set configured.
 {%         endif %}
-
-**L4 Port Field sets**
-
 {%         if traffic_policies.field_sets.ports is arista.avd.defined %}
+
+#### L4 Port Field Sets
+
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_port in traffic_policies.field_sets.ports %}
 | {{ field_set_port.name }} | {{ field_set_port.port_range }}|
 {%             endfor %}
-{%         else %}
-No L4 Port field-set configured.
 {%         endif %}
-{%     else %}
-No Field-set configured on device.
 {%     endif %}
 {%     if traffic_policies.policies is arista.avd.defined %}
 
 #### Traffic Policies
 {%         for policy in traffic_policies.policies | arista.avd.natural_sort('name') %}
 
-**{{ policy.name }}:**
+##### {{ policy.name }}
 
 {%             if policy.matches is arista.avd.defined %}
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
@@ -150,10 +142,7 @@ No Field-set configured on device.
 {# -- Table rendering #}
 | {{ row.match_set }} | {{ row.type }} | {{ row.src_net }} | {{ row.dst_net }} | {{ row.protocols }} | {{ row.src_port }} | {{ row.dst_port }} | {{ row.actions | join('<br/>') }} |
 {%                 endfor %}
-{%             else %}
-No Match condition configured.
 {%             endif %}
-
 {%         endfor %}
 {%     endif %}
 {# Traffic-Policy Interfaces #}
@@ -179,8 +168,8 @@ No Match condition configured.
 {%             set row_out_policy = interface.traffic_policy.output | arista.avd.default("-") %}
 | {{ interface.name }} | {{ row_in_policy }} | {{ row_out_policy }} |
 {%         endfor %}
-
 {%     endif %}
+
 #### Traffic Policies Device Configuration
 
 ```eos

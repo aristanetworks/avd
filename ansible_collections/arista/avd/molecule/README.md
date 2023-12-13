@@ -1,6 +1,6 @@
 # AVD Unit test
 
-This section provides a list of AVD scenario executed during Continuous Integration to validate AVD integration.
+This section provides a list of AVD scenarios executed during Continuous Integration to validate AVD integration.
 
 - [AVD Unit test](#avd-unit-test)
   - [Ansible molecule](#ansible-molecule)
@@ -10,7 +10,7 @@ This section provides a list of AVD scenario executed during Continuous Integrat
       - [If you are updating `eos_cli_config_gen`](#if-you-are-updating-eos_cli_config_gen)
       - [If you are updating `eos_designs`](#if-you-are-updating-eos_designs)
         - [Update related to underlay or overlay protocol](#update-related-to-underlay-or-overlay-protocol)
-        - [General eos_designs update](#general-eos_designs-update)
+        - [General eos\_designs update](#general-eos_designs-update)
 
 ## Ansible molecule
 
@@ -18,15 +18,35 @@ Molecule provides support for testing with multiple instances, operating systems
 
 ## Scenario
 
-Current molecule implementation provides following scenario:
+Current molecule implementation provides the following scenarios:
 
-- `eos_designs` with standard eBGP as underlay and overlay: [evpn_underlay_ebgp_overlay_ebgp](./evpn_underlay_ebgp_overlay_ebgp/molecule.yml)
-- `eos_designs` with standard OSPF as underlay and eBGP overlay: [evpn_underlay_ospf_overlay_ebgp](./evpn_underlay_ospf_overlay_ebgp/molecule.yml)
-- `eos_cli_config_gen` scenario to run unit test
+- dhcp_configuration
+- dhcp_provisioning
+- eos_cli_config_gen
+- eos_cli_config_gen_deprecated_vars
+- eos_cli_config_gen_negative_unit_tests
+- eos_config_deploy_cvp
+- eos_config_deploy_cvp_to_cvaas
+- eos_designs_deprecated_vars
+- eos_designs-l2ls
+- eos_designs-mpls-isis-sr-ldp
+- eos_designs_negative_unit_tests
+- eos_designs-twodc-5stage-clos
+- eos_designs_unit_tests
+- eos_validate_state
+- evpn_underlay_ebgp_overlay_ebgp
+- evpn_underlay_isis_overlay_ibgp
+- evpn_underlay_ospf_overlay_ebgp
+- evpn_underlay_rfc5549_overlay_ebgp
+- example-campus-fabric
+- example-dual-dc-l3ls
+- example-isis-ldp-ipvpn
+- example-l2ls-fabric
+- example-single-dc-l3ls
 
 ## How to use scenario
 
-Molecule scenario are used to validate role execution and coverage of data-model. When you update a role or data-model, scenario must be updated to reflect your changes and validate it is not breaking other supported scenario.
+Molecule scenarios are used to validate role execution and coverage of data-model. When you update a role or data-model, the scenario must be updated to reflect your changes and validate it is not breaking other supported scenarios.
 
 ```bash
 # Go to test folder
@@ -46,7 +66,7 @@ $ molecule cleanup --scenario-name <scenario-name>
 
 #### If you are updating `eos_cli_config_gen`
 
-Testing for `eos_cli_config_gen` is part of [scenario `eos_cli_config_gen`](./eos_cli_config_gen/molecule.yml). It is based on a in flat inventory with 1 host covering a specific section of templates like:
+Testing for `eos_cli_config_gen` is part of [scenario `eos_cli_config_gen`](./eos_cli_config_gen/molecule.yml). It is based on a flat inventory with 1 host covering a specific section of templates like:
 
 - Ethernet Interfaces defined in [host_vars/ethernet_interfaces](./eos_cli_config_gen/inventory/host_vars/ethernet-interfaces.yml)
 - Loopback Interfaces defined in [host_vars/loopback-interfaces](./eos_cli_config_gen/inventory/host_vars/loopbacks-interfaces.yml)
@@ -55,21 +75,23 @@ Testing for `eos_cli_config_gen` is part of [scenario `eos_cli_config_gen`](./eo
 When you update a template in `eos_cli_config_gen`, you should report a test case in molecule scenario [`ansible_collections/arista/avd/molecule/eos_cli_config_gen`](./eos_cli_config_gen/).
 
 1. Create or update a file related to updated section under `inventory/host_vars`
+
 2. If the section is new, update the inventory file ([hosts.ini](eos_cli_config_gen/inventory/hosts.ini)) to add a new host. The host SHALL be the name of your section and also the `<filename>.yml` in your `host_vars`
+
 3. Run molecule scenario to generate artifacts:
 
+    ```bash
+    # Move to AVD collection
+    $ cd ansible_collections/arista/avd/
+
+    # Run molecule
+    $ molecule test --scenario-name eos_cli_config_gen
+    ```
+
+4. Commit artifacts. They will be used by CI to validate there is no change in the future.
+
 ```bash
-# Move to AVD collection
-$ cd ansible_collections/arista/avd/
-
-# Run molecule
-$ molecule test --scenario-name eos_cli_config_gen
-```
-
-4. Commit artifacts. They will be used by CI to validate their is no change in the future.
-
-```bash
-$ git commit -m 'Upload artefact for issue #...' molecule/eos_cli_config_gen
+git commit -m 'Upload artefact for issue #...' molecule/eos_cli_config_gen
 ```
 
 > If you have `pre-commit` enabled, use `--no-verify` trigger to avoid any content change in your commit
@@ -94,50 +116,50 @@ If your update is not related to underlay or overlay protocol, edit scenario `ev
 
 1. Create your scenario
 
-```bash
-# Move to AVD collection
-$ cd ansible_collections/arista/avd/
+    ```bash
+    # Move to AVD collection
+    $ cd ansible_collections/arista/avd/
 
-# Copy existing molecule scenario
-$ cp -r molecule/evpn_underlay_isis_overlay_ebgp molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
-```
+    # Copy existing molecule scenario
+    $ cp -r molecule/evpn_underlay_isis_overlay_ebgp molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
+    ```
 
 2. Edit files from your scenario's inventory
 
-```bash
-$ cd molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>/inventory
+    ```bash
+    $ cd molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>/inventory
 
-# Edit group_vars
-$ vim group_vars/DC1_FABRIC.yml
-```
+    # Edit group_vars
+    $ vim group_vars/DC1_FABRIC.yml
+    ```
 
 3. Run your molecule scenario for validation
 
-```bash
-# Move to AVD collection
-$ cd ../../../
+    ```bash
+    # Move to AVD collection
+    $ cd ../../../
 
-# Run Molecule scenario
-$ molecule test --scenario-name evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
-```
+    # Run Molecule scenario
+    $ molecule test --scenario-name evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
+    ```
 
 4. Edit CI file to include your scenario
 
-```yaml
-#.github/workflows/molecule-eos-designs.yml
-jobs:
-  molecule:
-    name: Run CI test for eos_designs
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        avd_scenario:
-          - 'evpn_underlay_ebgp_overlay_ebgp'
-          - 'evpn_underlay_ospf_overlay_ebgp'
-          - 'evpn_underlay_isis_overlay_ebgp'
-          - 'evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>'
-          - 'upgrade_v1.0_to_v1.1'
-```
+    ```yaml
+    #.github/workflows/molecule-eos-designs.yml
+    jobs:
+      molecule:
+        name: Run CI test for eos_designs
+        runs-on: ubuntu-latest
+        strategy:
+          fail-fast: true
+          matrix:
+            avd_scenario:
+              - 'evpn_underlay_ebgp_overlay_ebgp'
+              - 'evpn_underlay_ospf_overlay_ebgp'
+              - 'evpn_underlay_isis_overlay_ebgp'
+              - 'evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>'
+              - 'upgrade_v1.0_to_v1.1'
+    ```
 
 Once you are ready, commit your change and push to Github.

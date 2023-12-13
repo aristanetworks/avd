@@ -50,7 +50,7 @@ interface Management1
 | CM_PBR_EXCLUDE | - | - | - | - |
 | CM_PBR_INCLUDE | - | - | 192.168.4.2 | True |
 
-#### PBR Policy Maps Configuration
+#### PBR Policy Maps Device Configuration
 
 ```eos
 !
@@ -67,7 +67,7 @@ policy-map type pbr PM_PBR_BREAKOUT
 
 #### QOS Policy Maps Summary
 
-**PM_REPLICATION_LD**
+##### PM_REPLICATION_LD
 
 | class | Set | Value |
 | ----- | --- | ----- |
@@ -77,14 +77,14 @@ policy-map type pbr PM_PBR_BREAKOUT
 | CM_REPLICATION_LD_2 | dscp | af11 |
 | CM_REPLICATION_LD_2 | traffic_class | 2 |
 
-**PM_REPLICATION_LD2**
+##### PM_REPLICATION_LD2
 
 | class | Set | Value |
 | ----- | --- | ----- |
 | CM_REPLICATION_LD | dscp | af11 |
 | CM_REPLICATION_LD | cos | 4 |
 
-#### QOS Policy Maps configuration
+#### QOS Policy Maps Device Configuration
 
 ```eos
 !

@@ -155,6 +155,19 @@ class AvdSchemaTools:
                 # Deprecation warnings are not subject to "conversion_mode".
                 # Instead we display using Ansible's deprecation notices.
                 message = f"[{self.hostname}]: {exception}"
+                if exception.removed:
+                    # Thank you! ansible-core>=2.16 broke support for removed=True and
+                    # they do not test it, so apparently we were the only ones using it.
+                    raise AristaAvdError(
+                        self.ansible_display.get_deprecation_message(
+                            msg=message,
+                            version=exception.version,
+                            date=exception.date,
+                            collection_name=self.plugin_name,
+                            removed=exception.removed,
+                        )
+                    )
+
                 self.ansible_display.deprecated(
                     msg=message,
                     version=exception.version,
