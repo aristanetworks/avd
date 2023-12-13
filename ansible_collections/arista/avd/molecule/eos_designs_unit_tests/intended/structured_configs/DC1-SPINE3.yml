@@ -1,4 +1,6 @@
 hostname: DC1-SPINE3
+metadata:
+  platform: 7800R3
 is_deployed: true
 router_bgp:
   as: '65001'
