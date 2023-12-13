@@ -32,13 +32,15 @@
 | ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
 {%         set ssl_profiles_certs = [] %}
 {%         for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
-{%             set crls = "-" %}
+{%             set crls = "" %}
 {%             if ssl_profile.certificate_revocation_lists is arista.avd.defined %}
 {%                 for crl in ssl_profile.certificate_revocation_lists | arista.avd.natural_sort %}
-{%                     do crls.append(crl ~ "<br>") %}
+{%                     set crls = crls ~ crl ~ "<br>" %}
 {%                 endfor %}
+{%             else %}
+{%                 set crls = "-" %}
 {%             endif %}
-| {{ ssl_profile.name | arista.avd.default('-') }} | {{ ssl_profile.tls_versions | arista.avd.default('-') }} | {{ ssl_profile.certificate.file | arista.avd.default('-') }} | {{ ssl_profile.certificate.key | arista.avd.default('-') }} | {{ ssl_profile.cipher_list | arista.avd.default('-') }} |
+| {{ ssl_profile.name | arista.avd.default('-') }} | {{ ssl_profile.tls_versions | arista.avd.default('-') }} | {{ ssl_profile.certificate.file | arista.avd.default('-') }} | {{ ssl_profile.certificate.key | arista.avd.default('-') }} | {{ ssl_profile.cipher_list | arista.avd.default('-') }} | {{ crls }} |
 {%             set tmp_cert = {} %}
 {%             if ssl_profile.trust_certificate is arista.avd.defined %}
 {%                 set tmp_cert = {'trust_certificate': ssl_profile.trust_certificate} %}
