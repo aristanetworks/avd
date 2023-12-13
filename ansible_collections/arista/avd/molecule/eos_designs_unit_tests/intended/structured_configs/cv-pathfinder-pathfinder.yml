@@ -2,7 +2,7 @@ hostname: cv-pathfinder-pathfinder
 is_deployed: true
 router_bgp:
   as: '65000'
-  router_id: 192.168.42.1
+  router_id: 192.168.44.1
   bgp:
     default:
       ipv4_unicast: false
@@ -15,6 +15,7 @@ router_bgp:
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Loopback0
+    bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 12000
@@ -81,16 +82,16 @@ loopback_interfaces:
 - name: Loopback0
   description: Router_ID
   shutdown: false
-  ip_address: 192.168.42.1/32
+  ip_address: 192.168.44.1/32
 flow_tracking:
   hardware:
     trackers:
-    - name: flowTracker
+    - name: WAN-FLOW-TRACKER
       record_export:
         on_inactive_timeout: 70000
         on_interval: 5000
       exporters:
-      - name: exp
+      - name: DPI-EXPORTER
         collector:
           host: 127.0.0.1
         local_interface: Loopback0
@@ -98,9 +99,9 @@ flow_tracking:
 ip_security:
   ike_policies:
   - name: DP-IKE-POLICY
-    local_id: 192.168.42.1
+    local_id: 192.168.44.1
   - name: CP-IKE-POLICY
-    local_id: 192.168.42.1
+    local_id: 192.168.44.1
   sa_policies:
   - name: DP-SA-POLICY
     esp:
@@ -153,7 +154,7 @@ dps_interfaces:
   tcp_mss_ceiling:
     ipv4: 1000
   flow_tracker:
-    hardware: flowTracker
+    hardware: WAN-FLOW-TRACKER
 vxlan_interface:
   Vxlan1:
     description: cv-pathfinder-pathfinder_VTEP

@@ -124,7 +124,7 @@ keys:
           type: str
           valid_values:
             - "edge"
-            - "transit"
+            - "transit region"
             - "pathfinder"
           description: |
             PREVIEW: This key is currently not supported

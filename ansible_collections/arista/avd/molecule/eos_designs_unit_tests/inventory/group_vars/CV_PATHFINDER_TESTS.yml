@@ -35,13 +35,13 @@ wan_ipsec_profiles:
 default_node_types:
   - node_type: wan_rr
     match_hostnames:
-      - "^cv-pathfinder-pathfinder.*$"
+      - "cv-pathfinder-pathfinder.*"
   - node_type: wan_transit
     match_hostnames:
-      - "^cv-pathfinder-transit$"
+      - "cv-pathfinder-transit"
   - node_type: wan_edge
     match_hostnames:
-      - "^cv-pathfinder-edge$"
+      - "cv-pathfinder-edge"
 
 wan_edge:
   defaults:
@@ -54,7 +54,7 @@ wan_edge:
 
 wan_transit:
   defaults:
-    loopback_ipv4_pool: 192.168.42.0/24
+    loopback_ipv4_pool: 192.168.43.0/24
   nodes:
     - name: cv-pathfinder-transit
       cv_pathfinder_region: AVD_Land_West
@@ -63,7 +63,7 @@ wan_transit:
 
 wan_rr:
   defaults:
-    loopback_ipv4_pool: 192.168.42.0/24
+    loopback_ipv4_pool: 192.168.44.0/24
   nodes:
     - name: cv-pathfinder-pathfinder
       id: 1
@@ -72,7 +72,7 @@ wan_rr:
     - name: cv-pathfinder-pathfinder2
       id: 3
 
-carriers:
+wan_carriers:
   - name: MPLS
     accessibility: private
     ipsec: False

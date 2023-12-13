@@ -23,21 +23,21 @@ wan_ipsec_profiles:
 default_node_types:
   - node_type: wan_rr
     match_hostnames:
-      - "^autovpn-rr.*$"
+      - "autovpn-rr.*"
   - node_type: wan_edge
     match_hostnames:
-      - "^autovpn-edge$"
+      - "autovpn-edge"
 
 wan_edge:
   defaults:
-    loopback_ipv4_pool: 192.168.42.0/24
+    loopback_ipv4_pool: 192.168.30.0/24
   nodes:
     - name: autovpn-edge
       id: 1
 
 wan_rr:
   defaults:
-    loopback_ipv4_pool: 192.168.42.0/24
+    loopback_ipv4_pool: 192.168.31.0/24
   nodes:
     - name: autovpn-rr1
       id: 1

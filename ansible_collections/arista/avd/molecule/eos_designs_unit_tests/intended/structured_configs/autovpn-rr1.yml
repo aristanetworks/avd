@@ -2,7 +2,7 @@ hostname: autovpn-rr1
 is_deployed: true
 router_bgp:
   as: '65000'
-  router_id: 192.168.42.1
+  router_id: 192.168.31.1
   bgp:
     default:
       ipv4_unicast: false
@@ -22,6 +22,7 @@ router_bgp:
   - name: WAN-OVERLAY-PEERS
     type: wan
     update_source: Loopback0
+    bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
     maximum_routes: 12000
@@ -53,7 +54,7 @@ router_bgp:
         send:
           any: true
   neighbors:
-  - ip_address: 192.168.42.2
+  - ip_address: 192.168.31.2
     peer_group: RR-OVERLAY-PEERS
     peer: autovpn-rr2
     description: autovpn-rr2
@@ -77,11 +78,11 @@ loopback_interfaces:
 - name: Loopback0
   description: Router_ID
   shutdown: false
-  ip_address: 192.168.42.1/32
+  ip_address: 192.168.31.1/32
 ip_security:
   ike_policies:
   - name: AUTOVPN-IKE
-    local_id: 192.168.42.1
+    local_id: 192.168.31.1
   sa_policies:
   - name: AUTOVPN-SA
   profiles:

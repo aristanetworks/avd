@@ -64,7 +64,6 @@ DEFAULT_NODE_TYPE_KEYS = {
             "default_overlay_routing_protocol": "ibgp",
             "default_underlay_routing_protocol": "none",
             "network_services": {
-                "l2": True,
                 "l3": True,
             },
         },
@@ -73,11 +72,10 @@ DEFAULT_NODE_TYPE_KEYS = {
             "type": "wan_transit",
             "default_evpn_role": "client",
             "default_wan_role": "client",
-            "default_cv_pathfinder_role": "transit",
+            "default_cv_pathfinder_role": "transit region",
             "default_overlay_routing_protocol": "ibgp",
             "default_underlay_routing_protocol": "none",
             "network_services": {
-                "l2": True,
                 "l3": True,
             },
         },

@@ -39,6 +39,6 @@ class DpsInterfacesMixin(UtilsMixin):
             dps1["tcp_mss_ceiling"]["ipv6"] = dps_mss_ipv6
 
         if self.shared_utils.cv_pathfinder_role:
-            dps1["flow_tracker"] = {"hardware": "flowTracker"}
+            dps1["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}
 
         return [dps1]

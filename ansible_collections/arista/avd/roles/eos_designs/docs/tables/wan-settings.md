@@ -7,14 +7,14 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>carriers</samp>](## "carriers") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>List of carriers used for the WAN configuration. |
-    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "carriers.[].name") | String | Required, Unique |  |  | Carrier name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "carriers.[].description") | String |  |  |  | Additional information about the carrier for documentation purposes. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "carriers.[].ipsec") | Boolean |  |  |  | Flag to configure IPsec on the carrier (default is True). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accessibility</samp>](## "carriers.[].accessibility") | String |  |  | Valid Values:<br>- <code>public</code><br>- <code>private</code> | Indicates if the carrier has access to the Internet (`public`)<br>or not (`private). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;characteristics</samp>](## "carriers.[].characteristics") | List, items: String |  |  |  | A list of characteristics to assign to the carrier.<br>TODO: Explain further how these are used (or removed before removing preview). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "carriers.[].characteristics.[]") | String |  |  | Valid Values:<br>- <code>backup</code><br>- <code>metered</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;circuit_type</samp>](## "carriers.[].circuit_type") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>both</code> | TBC - edge or transit or both.<br>Unclear if this should be at the carrier level or some other place. |
+    | [<samp>wan_carriers</samp>](## "wan_carriers") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>List of carriers used for the WAN configuration. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_carriers.[].name") | String | Required, Unique |  |  | Carrier name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "wan_carriers.[].description") | String |  |  |  | Additional information about the carrier for documentation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "wan_carriers.[].ipsec") | Boolean |  |  |  | Flag to configure IPsec on the carrier (default is True). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accessibility</samp>](## "wan_carriers.[].accessibility") | String |  |  | Valid Values:<br>- <code>public</code><br>- <code>private</code> | Indicates if the carrier has access to the Internet (`public`)<br>or not (`private). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;characteristics</samp>](## "wan_carriers.[].characteristics") | List, items: String |  |  |  | A list of characteristics to assign to the carrier.<br>TODO: Explain further how these are used (or removed before removing preview). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_carriers.[].characteristics.[]") | String |  |  | Valid Values:<br>- <code>backup</code><br>- <code>metered</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;circuit_type</samp>](## "wan_carriers.[].circuit_type") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>both</code> | TBC - edge or transit or both.<br>Unclear if this should be at the carrier level or some other place. |
     | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Define IPsec profiles parameters for WAN configuration.<br><br>If `data_plane` is not defined, `control_plane` information is<br>used for both. |
     | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  | The `control_plane` profile uses the following defaults:<br>  * IKE policy name: CP-IKE-POLICY<br>  * SA policy name: CP-SA-POLICY<br>  * Profile name: CP-PROFILE |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  |  |  | Name of the IKE policy. |
@@ -39,7 +39,7 @@
     ```yaml
     # PREVIEW: This key is currently not supported
     # List of carriers used for the WAN configuration.
-    carriers:
+    wan_carriers:
 
         # Carrier name.
       - name: <str; required; unique>

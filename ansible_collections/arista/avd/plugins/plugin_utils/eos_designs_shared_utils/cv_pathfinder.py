@@ -26,23 +26,24 @@ class CvPathfinderMixin:
 
     @cached_property
     def wan_role(self: SharedUtils) -> str | None:
-        if self.underlay_router is True and self.wan_mode is not None:
-            default_wan_role = get(self.node_type_key_data, "default_wan_role", default=None)
-            wan_role = get(self.switch_data_combined, "wan_role", default=default_wan_role)
-            if wan_role is not None and self.overlay_routing_protocol != "ibgp":
-                raise AristaAvdError("Only 'ibgp' is supported as 'overlay_routing_protocol' for WAN nodes.")
-            return wan_role
+        if self.underlay_router is False or self.wan_mode is None:
+            return None
 
-        return None
+        default_wan_role = get(self.node_type_key_data, "default_wan_role", default=None)
+        wan_role = get(self.switch_data_combined, "wan_role", default=default_wan_role)
+        if wan_role is not None and self.overlay_routing_protocol != "ibgp":
+            raise AristaAvdError("Only 'ibgp' is supported as 'overlay_routing_protocol' for WAN nodes.")
+        return wan_role
 
     @cached_property
     def cv_pathfinder_role(self: SharedUtils) -> str | None:
-        if self.underlay_router is True and self.wan_mode == "cv-pathfinder":
-            default_cv_pathfinder_role = get(self.node_type_key_data, "default_cv_pathfinder_role", default=None)
-            cv_pathfinder_role = get(self.switch_data_combined, "cv_pathfinder_role", default=default_cv_pathfinder_role)
-            if cv_pathfinder_role == "pathfinder" and self.wan_role != "server":
-                raise AristaAvdError("'wan_role' must be 'server' when 'cv_pathfinder_role' is set to 'pathfinder'")
-            elif cv_pathfinder_role in ["transit", "edge"] and self.wan_role != "client":
-                raise AristaAvdError("'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'")
-            return cv_pathfinder_role
-        return None
+        if self.underlay_router is False or self.wan_mode != "cv-pathfinder":
+            return None
+
+        default_cv_pathfinder_role = get(self.node_type_key_data, "default_cv_pathfinder_role", default=None)
+        cv_pathfinder_role = get(self.switch_data_combined, "cv_pathfinder_role", default=default_cv_pathfinder_role)
+        if cv_pathfinder_role == "pathfinder" and self.wan_role != "server":
+            raise AristaAvdError("'wan_role' must be 'server' when 'cv_pathfinder_role' is set to 'pathfinder'")
+        elif cv_pathfinder_role in ["transit", "edge"] and self.wan_role != "client":
+            raise AristaAvdError("'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'")
+        return cv_pathfinder_role

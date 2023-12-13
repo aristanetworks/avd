@@ -2596,69 +2596,6 @@
       "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\n",
       "title": "BGP Update Wait For Convergence"
     },
-    "carriers": {
-      "description": "PREVIEW: This key is currently not supported\nList of carriers used for the WAN configuration.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Carrier name.",
-            "title": "Name"
-          },
-          "description": {
-            "type": "string",
-            "description": "Additional information about the carrier for documentation purposes.",
-            "title": "Description"
-          },
-          "ipsec": {
-            "type": "boolean",
-            "description": "Flag to configure IPsec on the carrier (default is True).",
-            "title": "Ipsec"
-          },
-          "accessibility": {
-            "type": "string",
-            "description": "Indicates if the carrier has access to the Internet (`public`)\nor not (`private).",
-            "enum": [
-              "public",
-              "private"
-            ],
-            "title": "Accessibility"
-          },
-          "characteristics": {
-            "type": "array",
-            "description": "A list of characteristics to assign to the carrier.\nTODO: Explain further how these are used (or removed before removing preview).",
-            "items": {
-              "type": "string",
-              "enum": [
-                "backup",
-                "metered"
-              ]
-            },
-            "title": "Characteristics"
-          },
-          "circuit_type": {
-            "type": "string",
-            "description": "TBC - edge or transit or both.\nUnclear if this should be at the carrier level or some other place.",
-            "enum": [
-              "edge",
-              "transit",
-              "both"
-            ],
-            "title": "Circuit Type"
-          }
-        },
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        },
-        "required": [
-          "name"
-        ]
-      },
-      "title": "Carriers"
-    },
     "connected_endpoints_keys": {
       "description": "Endpoints connecting to the fabric can be grouped by using separate keys.\nThe keys can be customized to provide a better better organization or grouping of your data.\n`connected_endpoints_keys` should be defined in the top level group_vars for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.\n",
       "type": "array",
@@ -20644,7 +20581,7 @@
             "type": "string",
             "enum": [
               "edge",
-              "transit",
+              "transit region",
               "pathfinder"
             ],
             "description": "PREVIEW: This key is currently not supported\nSet the default CV Pathfinder role.\n\nThis key is used for Pathfinder designs only when the `wan_mode` root\nkey is set to `cv-pathfinder`.\n\n`pathfinder` is only a valid if `wan_role` is `server`.\n`edge` and `transit` are only valid if `wan_role` is `client`.\n",
@@ -30883,6 +30820,69 @@
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",
       "type": "string",
       "title": "Vtep Vvtep IP"
+    },
+    "wan_carriers": {
+      "description": "PREVIEW: This key is currently not supported\nList of carriers used for the WAN configuration.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Carrier name.",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Additional information about the carrier for documentation purposes.",
+            "title": "Description"
+          },
+          "ipsec": {
+            "type": "boolean",
+            "description": "Flag to configure IPsec on the carrier (default is True).",
+            "title": "Ipsec"
+          },
+          "accessibility": {
+            "type": "string",
+            "description": "Indicates if the carrier has access to the Internet (`public`)\nor not (`private).",
+            "enum": [
+              "public",
+              "private"
+            ],
+            "title": "Accessibility"
+          },
+          "characteristics": {
+            "type": "array",
+            "description": "A list of characteristics to assign to the carrier.\nTODO: Explain further how these are used (or removed before removing preview).",
+            "items": {
+              "type": "string",
+              "enum": [
+                "backup",
+                "metered"
+              ]
+            },
+            "title": "Characteristics"
+          },
+          "circuit_type": {
+            "type": "string",
+            "description": "TBC - edge or transit or both.\nUnclear if this should be at the carrier level or some other place.",
+            "enum": [
+              "edge",
+              "transit",
+              "both"
+            ],
+            "title": "Circuit Type"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Wan Carriers"
     },
     "wan_ipsec_profiles": {
       "description": "PREVIEW: This key is currently not supported\nDefine IPsec profiles parameters for WAN configuration.\n\nIf `data_plane` is not defined, `control_plane` information is\nused for both.",

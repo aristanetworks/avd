@@ -377,54 +377,6 @@ keys:
       table: bgp-settings
     type: bool
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_for_convergence
-  carriers:
-    documentation_options:
-      table: wan-settings
-    description: 'PREVIEW: This key is currently not supported
-
-      List of carriers used for the WAN configuration.'
-    type: list
-    primary_key: name
-    items:
-      type: dict
-      keys:
-        name:
-          type: str
-          description: Carrier name.
-        description:
-          type: str
-          description: Additional information about the carrier for documentation
-            purposes.
-        ipsec:
-          type: bool
-          description: Flag to configure IPsec on the carrier (default is True).
-        accessibility:
-          type: str
-          description: 'Indicates if the carrier has access to the Internet (`public`)
-
-            or not (`private).'
-          valid_values:
-          - public
-          - private
-        characteristics:
-          type: list
-          description: 'A list of characteristics to assign to the carrier.
-
-            TODO: Explain further how these are used (or removed before removing preview).'
-          items:
-            type: str
-            valid_values:
-            - backup
-            - metered
-        circuit_type:
-          type: str
-          description: 'TBC - edge or transit or both.
-
-            Unclear if this should be at the carrier level or some other place.'
-          valid_values:
-          - edge
-          - transit
-          - both
   connected_endpoints_keys:
     documentation_options:
       table: connected-endpoints-keys
@@ -1563,7 +1515,7 @@ keys:
           type: str
           valid_values:
           - edge
-          - transit
+          - transit region
           - pathfinder
           description: 'PREVIEW: This key is currently not supported
 
@@ -3217,6 +3169,54 @@ keys:
       remove_in_version: 4.0.0
     type: bool
     default: false
+  wan_carriers:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+      List of carriers used for the WAN configuration.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Carrier name.
+        description:
+          type: str
+          description: Additional information about the carrier for documentation
+            purposes.
+        ipsec:
+          type: bool
+          description: Flag to configure IPsec on the carrier (default is True).
+        accessibility:
+          type: str
+          description: 'Indicates if the carrier has access to the Internet (`public`)
+
+            or not (`private).'
+          valid_values:
+          - public
+          - private
+        characteristics:
+          type: list
+          description: 'A list of characteristics to assign to the carrier.
+
+            TODO: Explain further how these are used (or removed before removing preview).'
+          items:
+            type: str
+            valid_values:
+            - backup
+            - metered
+        circuit_type:
+          type: str
+          description: 'TBC - edge or transit or both.
+
+            Unclear if this should be at the carrier level or some other place.'
+          valid_values:
+          - edge
+          - transit
+          - both
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings

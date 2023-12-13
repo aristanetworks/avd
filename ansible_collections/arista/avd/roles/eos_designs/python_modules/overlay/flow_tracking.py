@@ -26,9 +26,9 @@ class FlowTrackingMixin(UtilsMixin):
             "hardware": {
                 "trackers": [
                     {
-                        "name": "flowTracker",
+                        "name": "WAN-FLOW-TRACKER",
                         "record_export": {"on_inactive_timeout": 70000, "on_interval": 5000},
-                        "exporters": [{"name": "exp", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 5000}],
+                        "exporters": [{"name": "DPI-EXPORTER", "collector": {"host": "127.0.0.1"}, "local_interface": "Loopback0", "template_interval": 5000}],
                     }
                 ]
             }
