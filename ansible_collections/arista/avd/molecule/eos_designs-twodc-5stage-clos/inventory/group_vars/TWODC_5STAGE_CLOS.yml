@@ -199,3 +199,7 @@ default_interfaces:
     types: [ l3leaf ]
     uplink_interfaces: [ Ethernet1-2, Ethernet11-12 ]
     mlag_interfaces: [ Ethernet5-6 ]
+
+# Documentation
+eos_designs_documentation:
+  connected_endpoints: true

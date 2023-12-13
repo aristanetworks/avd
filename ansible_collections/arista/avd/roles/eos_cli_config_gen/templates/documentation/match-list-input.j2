@@ -19,10 +19,9 @@
 {%             for sequence in match_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
 | {{ sequence.sequence }} | {{ sequence.match_regex }} |
 {%             endfor %}
-
 {%         endfor %}
-
 {%     endif %}
+
 #### Match-lists Device Configuration
 
 ```eos

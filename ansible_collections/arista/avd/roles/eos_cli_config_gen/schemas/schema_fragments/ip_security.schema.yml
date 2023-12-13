@@ -24,6 +24,26 @@ keys:
               description: |
                 Local IKE Identification.
                 Can be an IPv4 or an IPv6 address.
+            ike_lifetime:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 24
+              description: IKE lifetime in hours.
+            encryption:
+              type: str
+              valid_values:
+                - 3des
+                - aes128
+                - aes256
+              description: IKE encryption algorithm.
+            dh_group:
+              type: int
+              convert_types:
+                - str
+              valid_values: [1, 2, 5, 14, 15, 16, 17, 20, 21, 24]
+              description: Diffie-Hellman group for the key exchange.
       sa_policies:
         type: list
         description: Security Association policies.
@@ -33,25 +53,27 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy.
+              description: Name of the SA policy. The "null" value is deprecated and will be removed in AVD 5.0.0
             esp:
               type: dict
               keys:
                 integrity:
                   type: str
                   valid_values:
-                    - "null"
+                    - disabled
                     - sha1
                     - sha256
+                    - "null"  # TODO: AVD 5.0.0
                 encryption:
                   type: str
                   valid_values:
-                    - "null"
+                    - disabled
                     - aes128
                     - aes128gcm128
                     - aes128gcm64
                     - aes256
                     - aes256gcm256
+                    - "null"  # TODO: AVD 5.0.0
             pfs_dh_group:
               type: int
               convert_types:

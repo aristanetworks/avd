@@ -189,15 +189,19 @@ keys:
         access_group_in:
           type: str
           description: IPv4 access-list name
+          convert_types: [ int ]
         access_group_out:
           type: str
           description: IPv4 access-list name
+          convert_types: [ int ]
         ipv6_access_group_in:
           type: str
           description: IPv6 access-list name
+          convert_types: [ int ]
         ipv6_access_group_out:
           type: str
           description: IPv6 access-list name
+          convert_types: [ int ]
         multicast:
           type: dict
           keys:
@@ -214,6 +218,7 @@ keys:
                       boundary:
                         type: str
                         description: IPv4 access-list name or IPv4 multicast group prefix with mask
+                        convert_types: [ int ]
                       out:
                         type: bool
                 source_route_export:
@@ -243,6 +248,7 @@ keys:
                       boundary:
                         type: str
                         description: IPv6 access-list name or IPv6 multicast group prefix with mask
+                        convert_types: [ int ]
                 source_route_export:
                   type: dict
                   keys:

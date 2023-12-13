@@ -19,7 +19,7 @@ Global ARP timeout: {{ arp.aging.timeout_default }}
 {%             endif %}
 {%         endfor %}
 
-#### ARP static entries
+#### ARP Static Entries
 
 | VRF | IPv4 address | MAC address |
 | --- | ------------ | ----------- |
@@ -30,7 +30,7 @@ Global ARP timeout: {{ arp.aging.timeout_default }}
 {%         endfor %}
 {%     endif %}
 
-#### ARP Configuration
+#### ARP Device Configuration
 
 ```eos
 {%     include 'eos/arp.j2' %}

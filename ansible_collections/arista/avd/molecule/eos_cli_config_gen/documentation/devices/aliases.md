@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Aliases](#aliases)
+- [Aliases Device Configuration](#aliases-device-configuration)
 
 ## Management
 
@@ -34,7 +34,7 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## Aliases
+## Aliases Device Configuration
 
 ```eos
 alias wr copy running-config startup-config

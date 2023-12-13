@@ -1,4 +1,6 @@
 hostname: dc1-leaf1c
+metadata:
+  platform: vEOS-lab
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -55,7 +57,7 @@ ethernet_interfaces:
   peer_interface: Ethernet8
   peer_type: l3leaf
   description: DC1-LEAF1B_Ethernet8
-  shutdown: true
+  shutdown: false
   type: port-channel-member
   channel_group:
     id: 1

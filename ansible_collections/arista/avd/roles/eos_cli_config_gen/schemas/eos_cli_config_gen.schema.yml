@@ -328,6 +328,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -622,6 +624,8 @@ keys:
                 access_group:
                   type: str
                   description: Standard Access-List Name
+                  convert_types:
+                  - int
       qos:
         type: list
         primary_key: name
@@ -649,12 +653,16 @@ keys:
                 access_group:
                   type: str
                   description: IPv4 Access-List Name
+                  convert_types:
+                  - int
             ipv6:
               type: dict
               keys:
                 access_group:
                   type: str
                   description: IPv6 Access-List Name
+                  convert_types:
+                  - int
   clock:
     type: dict
     keys:
@@ -1308,14 +1316,28 @@ keys:
             <interface_speed>` or `auto <interface_speed>`.
         mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
         l2_mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
           description: '"l2_mtu" should only be defined for platforms supporting the
             "l2 mtu" CLI
+
+            '
+        l2_mru:
+          type: int
+          min: 68
+          max: 65535
+          convert_types:
+          - str
+          description: '"l2_mru" should only be defined for platforms supporting the
+            "l2 mru" CLI
 
             '
         vlans:
@@ -2719,6 +2741,22 @@ keys:
             - str
             min: 1
             max: 4294967295
+          hardware_offload:
+            type: dict
+            keys:
+              ipv4:
+                type: bool
+                description: Configure hardware offload for IPv4 traffic.
+              ipv6:
+                type: bool
+                description: Configure hardware offload for IPv6 traffic.
+              threshold_minimum:
+                type: int
+                convert_types:
+                - str
+                min: 1
+                max: 4294967295
+                description: Minimum number of samples.
           trackers:
             type: list
             primary_key: name
@@ -2744,6 +2782,8 @@ keys:
         type: dict
         $ref: eos_cli_config_gen#/$defs/flow_tracking
   flow_trackings:
+    documentation_options:
+      table: flow-tracking
     deprecation:
       warning: true
       new_key: flow_tracking
@@ -3082,6 +3122,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         entries:
@@ -3296,6 +3338,43 @@ keys:
       information_option:
         type: bool
         description: Insert Option-82 information
+  ip_dhcp_snooping:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      bridging:
+        type: bool
+      information_option:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable insertion of option-82 in DHCP request packets
+          circuit_id_type:
+            type: str
+            convert_types:
+            - int
+            description: '"none" or <0 - 255>'
+          circuit_id_format:
+            type: str
+            description: 'Required if `circuit_id_type` is set.
+
+              - "%h:%p" Hostname and interface name
+
+              - "%p:%v" Interface name and VLAN ID'
+            valid_values:
+            - '%h:%p'
+            - '%p:%v'
+      vlan:
+        type: str
+        convert_types:
+        - int
+        description: 'VLAN range as string.
+
+          "< vlan_id >, < vlan_id >-< vlan_id >"
+
+          Example: 15,16,17,18'
   ip_domain_lookup:
     type: dict
     keys:
@@ -3773,6 +3852,36 @@ keys:
                 Can be an IPv4 or an IPv6 address.
 
                 '
+            ike_lifetime:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 24
+              description: IKE lifetime in hours.
+            encryption:
+              type: str
+              valid_values:
+              - 3des
+              - aes128
+              - aes256
+              description: IKE encryption algorithm.
+            dh_group:
+              type: int
+              convert_types:
+              - str
+              valid_values:
+              - 1
+              - 2
+              - 5
+              - 14
+              - 15
+              - 16
+              - 17
+              - 20
+              - 21
+              - 24
+              description: Diffie-Hellman group for the key exchange.
       sa_policies:
         type: list
         description: Security Association policies.
@@ -3782,25 +3891,28 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy.
+              description: Name of the SA policy. The "null" value is deprecated and
+                will be removed in AVD 5.0.0
             esp:
               type: dict
               keys:
                 integrity:
                   type: str
                   valid_values:
-                  - 'null'
+                  - disabled
                   - sha1
                   - sha256
+                  - 'null'
                 encryption:
                   type: str
                   valid_values:
-                  - 'null'
+                  - disabled
                   - aes128
                   - aes128gcm128
                   - aes128gcm64
                   - aes256
                   - aes256gcm256
+                  - 'null'
             pfs_dh_group:
               type: int
               convert_types:
@@ -3933,6 +4045,8 @@ keys:
         name:
           type: str
           description: IPv6 Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4015,6 +4129,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4387,10 +4503,16 @@ keys:
             valid_values:
             - fqdn
             - ipv4
-            description: Hostname format
+            description: Hostname format in syslogs. For hostname _only_, remove the
+              line. (default EOS CLI behaviour).
           sequence_numbers:
             type: bool
             description: 'Add sequence numbers to log messages
+
+              '
+          rfc5424:
+            type: bool
+            description: 'Forward logs in RFC5424 format
 
               '
       facility:
@@ -4585,6 +4707,8 @@ keys:
         name:
           type: str
           description: MAC Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         entries:
@@ -5514,6 +5638,12 @@ keys:
             items:
               type: str
               description: IP or hostname
+  metadata:
+    type: dict
+    description: Key only used for documentation or validation purposes
+    keys:
+      platform:
+        type: str
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -6311,10 +6441,22 @@ keys:
           type: bool
         l2_mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
           description: '"l2_mtu" should only be defined for platforms supporting the
             "l2 mtu" CLI
+
+            '
+        l2_mru:
+          type: int
+          min: 68
+          max: 65535
+          convert_types:
+          - str
+          description: '"l2_mru" should only be defined for platforms supporting the
+            "l2 mru" CLI
 
             '
         vlans:
@@ -6470,6 +6612,8 @@ keys:
               description: L2 protocol forwarding profile
         mtu:
           type: int
+          min: 68
+          max: 65535
           convert_types:
           - str
         mlag:
@@ -8143,6 +8287,86 @@ keys:
             required: true
             min: 1
             max: 10000
+      profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: AVT Name.
+            load_balance_policy:
+              type: str
+              description: Name of the load-balance policy.
+            internet_exit_policy:
+              type: str
+              description: Name of the internet exit policy.
+      policies:
+        type: list
+        primary_key: name
+        description: A sequence of application profiles mapped to some virtual topologies.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            matches:
+              type: list
+              items:
+                type: dict
+                keys:
+                  application_profile:
+                    type: str
+                    description: Application profile name.
+                  avt_profile:
+                    type: str
+                    description: AVT Profile name.
+                  dscp:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 63
+                    description: Set DSCP for matched traffic.
+                  traffic_class:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 7
+                    description: Set traffic-class for matched traffic.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            policy:
+              type: str
+              description: AVT Policy name.
+            profiles:
+              type: list
+              primary_key: id
+              description: AVT profiles in this VRF.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: AVT profile name.
+                  id:
+                    type: int
+                    description: Unique ID for this AVT (per VRF).
+                    required: true
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 254
   router_bfd:
     type: dict
     keys:
@@ -8192,6 +8416,9 @@ keys:
             type: int
             min: 3
             max: 50
+          initiator_measurement_round_trip:
+            type: bool
+            description: Enable round-trip delay measurement
           reflector:
             type: dict
             keys:
@@ -8599,10 +8826,15 @@ keys:
                 prepend_own_disabled:
                   type: bool
                   description: Disable prepending own AS number to AS path
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes
             description:
               type: str
             route_reflector_client:
               type: bool
+            password:
+              type: str
             passive:
               type: bool
             shutdown:
@@ -8731,6 +8963,9 @@ keys:
               type: str
               convert_types:
               - int
+            peer:
+              type: str
+              description: Key only used for documentation or validation purposes
             peer_group:
               type: str
               default: Peer-group name
@@ -10216,9 +10451,19 @@ keys:
                   prefix_list_in:
                     type: str
                     description: Inbound prefix-list name
+                    deprecation:
+                      warning: true
+                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in
+                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in
+                      remove_in_version: 5.0.0
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name
+                    deprecation:
+                      warning: true
+                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out
+                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out
+                      remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -10351,6 +10596,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name
                       next_hop:
                         type: dict
                         keys:
@@ -10446,6 +10697,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name
                 networks:
                   type: list
                   primary_key: prefix
@@ -10647,7 +10904,7 @@ keys:
               deprecation:
                 warning: true
                 new_key: address_family_*
-                remove_in_version: v5.0.0
+                remove_in_version: 5.0.0
               items:
                 type: dict
                 keys:
@@ -11679,7 +11936,7 @@ keys:
                         type: list
                         required: true
                         min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str
@@ -11701,7 +11958,7 @@ keys:
                         type: list
                         required: true
                         min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str
@@ -11745,11 +12002,53 @@ keys:
             name:
               type: str
               description: Load-balance policy name.
+            lowest_hop_count:
+              type: bool
+              description: Prefer paths with lowest hop-count.
+            jitter:
+              type: int
+              description: Jitter requirement for this load balance policy in milliseconds.
+              convert_types:
+              - str
+              min: 0
+              max: 10000
+            latency:
+              type: int
+              description: One way delay requirement for this load balance policy
+                in milliseconds.
+              convert_types:
+              - str
+              min: 0
+              max: 10000
+            loss_rate:
+              type: str
+              description: 'Loss Rate requirement in percentage for this load balance
+                policy.
+
+                Value between 0.00 and 100.00 %'
+              convert_types:
+              - int
+              - float
+              pattern: ^\d+(\.\d{1,2})?$
             path_groups:
               type: list
+              primary_key: name
               description: List of path-groups to use for this load balance policy.
               items:
-                type: str
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Path-group name
+                  priority:
+                    type: int
+                    description: 'Priority for this path-group.
+
+                      The EOS default value is 1.'
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 65535
       policies:
         type: list
         primary_key: name
@@ -12580,6 +12879,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -12646,15 +12947,15 @@ keys:
           max: 4294967295
   stun:
     type: dict
-    description: STUN configuration
+    description: STUN configuration.
     keys:
       client:
         type: dict
-        description: STUN client settings
+        description: STUN client settings.
         keys:
           server_profiles:
             type: list
-            description: List of server profiles for the client
+            description: List of server profiles for the client.
             primary_key: name
             items:
               type: dict
@@ -12663,9 +12964,20 @@ keys:
                   type: str
                 ip_address:
                   type: str
+                ssl_profile:
+                  type: str
+                  description: SSL profile name.
+                port:
+                  type: int
+                  description: Destination port for the request STUN server (default
+                    - 3478).
+                  min: 1
+                  max: 65535
+                  convert_types:
+                  - str
       server:
         type: dict
-        description: STUN server settings
+        description: STUN server settings.
         keys:
           local_interface:
             type: str
@@ -12678,6 +12990,43 @@ keys:
             min_length: 1
             items:
               type: str
+          bindings_timeout:
+            type: int
+            description: Timeout for bindings stored on STUN server in seconds.
+            convert_types:
+            - str
+            min: 10
+            max: 7200
+          ssl_profile:
+            type: str
+            description: SSL profile name.
+          ssl_connection_lifetime:
+            type: dict
+            description: 'SSL connection lifetime in minutes or hours.
+
+              If both are specified, minutes is given higher precedence.'
+            keys:
+              minutes:
+                type: int
+                description: SSL connection lifetime in minutes (default - 120).
+                convert_types:
+                - str
+                min: 1
+                max: 1440
+              hours:
+                type: int
+                description: SSL connection lifetime in hours (default - 2).
+                convert_types:
+                - str
+                min: 1
+                max: 24
+          port:
+            type: int
+            description: Listening port for STUN server (default - 3478).
+            min: 1
+            max: 65535
+            convert_types:
+            - str
   switchport_default:
     type: dict
     keys:
@@ -13459,15 +13808,23 @@ keys:
         access_group_in:
           type: str
           description: IPv4 access-list name
+          convert_types:
+          - int
         access_group_out:
           type: str
           description: IPv4 access-list name
+          convert_types:
+          - int
         ipv6_access_group_in:
           type: str
           description: IPv6 access-list name
+          convert_types:
+          - int
         ipv6_access_group_out:
           type: str
           description: IPv6 access-list name
+          convert_types:
+          - int
         multicast:
           type: dict
           keys:
@@ -13486,6 +13843,8 @@ keys:
                         type: str
                         description: IPv4 access-list name or IPv4 multicast group
                           prefix with mask
+                        convert_types:
+                        - int
                       out:
                         type: bool
                 source_route_export:
@@ -13517,6 +13876,8 @@ keys:
                         type: str
                         description: IPv6 access-list name or IPv6 multicast group
                           prefix with mask
+                        convert_types:
+                        - int
                 source_route_export:
                   type: dict
                   keys:

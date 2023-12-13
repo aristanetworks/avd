@@ -4,6 +4,9 @@
 flow_tracking:
   sampled:
     sample: 666
+    hardware_offload:
+      ipv4: true
+      threshold_minimum: 2
     trackers:
       - name: T1
         record_export:

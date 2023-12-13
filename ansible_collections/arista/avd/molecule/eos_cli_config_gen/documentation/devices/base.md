@@ -9,8 +9,8 @@
   - [Management API HTTP](#management-api-http)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
-  - [Management Security Configuration](#management-security-configuration)
-- [EOS CLI](#eos-cli)
+  - [Management Security Device Configuration](#management-security-device-configuration)
+- [EOS CLI Device Configuration](#eos-cli-device-configuration)
 
 ## Management
 
@@ -56,7 +56,7 @@ interface Management1
 | ACL-SSH6 | - |
 | ACL-SSH-VRF6 | mgt |
 
-#### SSH timeout and management
+#### SSH Timeout and Management
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
@@ -68,7 +68,7 @@ interface Management1
 | ---------------- | ---------------------- |
 | - | 12 |
 
-#### Ciphers and algorithms
+#### Ciphers and Algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 |---------|----------------------|----------------|---------------------------|
@@ -80,7 +80,7 @@ interface Management1
 | --- | ------ |
 | mgt | Enabled |
 
-#### Management SSH Configuration
+#### Management SSH Device Configuration
 
 ```eos
 !
@@ -103,7 +103,7 @@ management ssh
 
 Management Console Timeout is set to **300** minutes.
 
-#### Management Console Configuration
+#### Management Console Device Configuration
 
 ```eos
 !
@@ -125,7 +125,7 @@ management console
 | -------- | -------- | -------- |
 | mgt | ACL-API | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -147,7 +147,7 @@ management api http-commands
 | -------- | ----- |
 | Common password encryption key | True |
 
-### Management Security Configuration
+### Management Security Device Configuration
 
 ```eos
 !
@@ -155,7 +155,7 @@ management security
    password encryption-key common
 ```
 
-## EOS CLI
+## EOS CLI Device Configuration
 
 ```eos
 !

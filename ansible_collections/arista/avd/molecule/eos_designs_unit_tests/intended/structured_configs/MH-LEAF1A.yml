@@ -1,4 +1,6 @@
 hostname: MH-LEAF1A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65151'
@@ -38,9 +40,11 @@ router_bgp:
   - ip_address: 10.10.101.0
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet19
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
     remote_as: '65001'
   address_family_evpn:

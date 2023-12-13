@@ -16,6 +16,7 @@
 - [Multicast](#multicast)
   - [PIM Sparse Mode](#pim-sparse-mode)
 - [Quality Of Service](#quality-of-service)
+  - [QOS Interfaces](#qos-interfaces)
 
 ## Management
 
@@ -227,7 +228,7 @@ interface Ethernet50
 | Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
 | Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
 
-##### Encapsulation Dot1q Interfaces
+##### Encapsulation Dot1q
 
 | Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
 | --------- | ----------- | -----| ------- | -------------- |
@@ -354,6 +355,7 @@ interface Port-Channel5
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    l2 mtu 8000
+   l2 mru 8000
    mlag 5
    storm-control broadcast level 1
    storm-control multicast level 1
@@ -694,7 +696,7 @@ interface Port-Channel130
 
 ### PIM Sparse Mode
 
-#### PIM Sparse Mode enabled interfaces
+#### PIM Sparse Mode Enabled Interfaces
 
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |
@@ -702,7 +704,7 @@ interface Port-Channel130
 
 ## Quality Of Service
 
-#### QOS Interfaces
+### QOS Interfaces
 
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |

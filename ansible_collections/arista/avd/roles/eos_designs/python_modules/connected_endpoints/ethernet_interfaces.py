@@ -154,6 +154,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "type": "switched",
                     "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
                     "l2_mtu": adapter.get("l2_mtu"),
+                    "l2_mru": adapter.get("l2_mru"),
                     "mode": adapter.get("mode"),
                     "vlans": adapter.get("vlans"),
                     "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),

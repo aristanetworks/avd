@@ -498,6 +498,8 @@ class AvdSchemaDict(AvdSchemaBaseModel):
         Descendant tables returns all table names from fields below this field. Not the field itself.
         """
         descendant_tables = set()
+        if self.documentation_options and self.documentation_options.hide_keys:
+            return descendant_tables
         if self.keys:
             for childschema in self.keys.values():
                 descendant_tables.add(childschema._table)

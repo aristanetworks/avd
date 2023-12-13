@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: Ansible Collection Role eos_config_deploy_eapi
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0

@@ -1,6 +1,6 @@
 ---
 - name: Converge
-  hosts: all
+  hosts: L2LS
   gather_facts: false
   connection: local
   tasks:

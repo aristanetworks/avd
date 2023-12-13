@@ -17,8 +17,9 @@
   arista.cvp.cv_task_v3:
     tasks: "{{ cvp_configlets_status.taskIds }}"
   when:
+    - cvp_configlets_status.taskIds is arista.avd.defined
     - cvp_configlets_status.taskIds | length > 0
-    - execute_tasks|bool
+    - execute_tasks | bool
 
 - name: "Building Containers topology on {{ inventory_hostname }}"
   tags: [provision, containers]
@@ -33,8 +34,9 @@
   arista.cvp.cv_task_v3:
     tasks: "{{ cvp_container_results.taskIds }}"
   when:
+    - cvp_container_results.taskIds is arista.avd.defined
     - cvp_container_results.taskIds | length > 0
-    - execute_tasks|bool
+    - execute_tasks | bool
 
 - name: "Configure devices on {{ inventory_hostname }}"
   tags: [provision, apply]
@@ -51,5 +53,6 @@
   arista.cvp.cv_task_v3:
     tasks: "{{ cvp_devices_results.taskIds }}"
   when:
+    - cvp_devices_results.taskIds is arista.avd.defined
     - cvp_devices_results.taskIds | length > 0
-    - execute_tasks|bool
+    - execute_tasks | bool

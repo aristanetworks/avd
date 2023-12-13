@@ -6,8 +6,8 @@
   - [Management Interfaces](#management-interfaces)
   - [System Control-Plane](#system-control-plane)
 - [System L1](#system-l1)
-  - [Unsupported interface configurations](#unsupported-interface-configurations)
-  - [System L1 Configuration](#system-l1-configuration)
+  - [Unsupported Interface Configurations](#unsupported-interface-configurations)
+  - [System L1 Device Configuration](#system-l1-device-configuration)
 
 ## Management
 
@@ -39,14 +39,14 @@ interface Management1
 
 ### System Control-Plane
 
-##### TCP MSS Ceiling
+#### TCP MSS Ceiling
 
 | Protocol | Segment Size |
 | -------- | -------------|
 | IPv4 | 1344 |
 | IPv6 | 1366 |
 
-##### Control-Plane Access-Groups
+#### Control-Plane Access-Groups
 
 | Protocol | VRF | Access-list |
 | -------- | --- | ------------|
@@ -57,7 +57,7 @@ interface Management1
 | IPv6 | blue | acl6_2 |
 | IPv6 | default | acl6_3 |
 
-#### System Control-Plane Configuration
+#### System Control-Plane Device Configuration
 
 ```eos
 !
@@ -73,14 +73,14 @@ system control-plane
 
 ## System L1
 
-### Unsupported interface configurations
+### Unsupported Interface Configurations
 
 | Unsupported Configuration | action |
 | ---------------- | -------|
 | Speed | warn |
 | Error correction | error |
 
-### System L1 Configuration
+### System L1 Device Configuration
 
 ```eos
 !

@@ -46,7 +46,7 @@ interface Management1
 - Default Switchport Phone Trunk: tagged
 - Default Switchport Phone VLAN: 69
 
-#### Switchport Default Configuration
+#### Switchport Default Device Configuration
 
 ```eos
 !

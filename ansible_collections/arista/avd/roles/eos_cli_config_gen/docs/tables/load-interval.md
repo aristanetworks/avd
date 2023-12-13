@@ -14,5 +14,7 @@
 
     ```yaml
     load_interval:
+
+      # Default load interval in seconds
       default: <int>
     ```

@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: Input variables for eos_cli_config_gen
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
@@ -607,12 +611,6 @@ roles/eos_cli_config_gen/docs/tables/event-monitor.md
 roles/eos_cli_config_gen/docs/tables/flow-tracking.md
 --8<--
 
-### Flow trackings
-
---8<--
-roles/eos_cli_config_gen/docs/tables/flow-trackings.md
---8<--
-
 ### Load interval
 
 --8<--
@@ -751,6 +749,12 @@ roles/eos_cli_config_gen/docs/tables/dhcp-relay.md
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
 --8<--
 
+### IP DHCP Snooping
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
+--8<--
+
 ### IP ICMP redirect
 
 --8<--
@@ -808,7 +812,7 @@ roles/eos_cli_config_gen/docs/tables/mpls.md
 ### Router adaptive virtual topology
 
 --8<--
-router-adaptive-virtual-topology.md
+roles/eos_cli_config_gen/docs/tables/router-adaptive-virtual-topology.md
 --8<--
 
 ### Router BFD
@@ -1007,4 +1011,12 @@ roles/eos_cli_config_gen/docs/tables/system.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/tcam-profile.md
+--8<--
+
+## Metadata
+
+These fields are not generating any configuration. They are meant to be used by tools that parse structured configuration.
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/metadata.md
 --8<--

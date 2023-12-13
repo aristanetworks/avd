@@ -1,14 +1,18 @@
+---
+# This title is used for search results
+title: Role configuration for eos_designs
+---
 <!--
   ~ Copyright (c) 2023 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
 
-# Role configuration
+# Role configuration for eos_designs
 
 Role configuration settings can be set either as regular inventory variables or directly as task_vars on the `import_role` task.
 
-# Role default output directories
+## Role default output directories
 
 Default output directories can be updated by modifying the default role variables:
 

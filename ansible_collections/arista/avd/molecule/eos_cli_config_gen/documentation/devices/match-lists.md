@@ -48,7 +48,6 @@ interface Management1
 | 10 | ^.*MOLECULE.*$ |
 | 20 | ^.*TESTING.*$ |
 
-
 #### Match-lists Device Configuration
 
 ```eos

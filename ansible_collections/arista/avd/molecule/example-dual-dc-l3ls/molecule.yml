@@ -9,13 +9,13 @@ scenario:
     - destroy
 dependency:
   name: galaxy
+  enabled: false
 driver:
-  name: delegated
+  name: default
+  options:
+    managed: false
 platforms:
   - name: dummy
-    # image: avdteam/base:3.8-v2.0
-    # pre_build_image: true
-    managed: false
 provisioner:
   name: ansible
   config_options:

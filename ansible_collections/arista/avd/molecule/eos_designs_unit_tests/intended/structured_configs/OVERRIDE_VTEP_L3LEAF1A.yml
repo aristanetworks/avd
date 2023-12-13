@@ -1,4 +1,6 @@
 hostname: OVERRIDE_VTEP_L3LEAF1A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '923'
@@ -42,6 +44,7 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.224.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: OVERRIDE_VTEP_L3LEAF1B
     description: OVERRIDE_VTEP_L3LEAF1B
   redistribute_routes:
   - source_protocol: connected

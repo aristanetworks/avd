@@ -1,4 +1,6 @@
 hostname: LEAF3D
+metadata:
+  platform: cEOSLab
 is_deployed: true
 static_routes:
 - vrf: MGMT

@@ -60,7 +60,8 @@ username ansible secret sha512 <removed>
 ### Enable Password
 
 sha512 encrypted enable password is configured
-#### Enable password configuration
+
+#### Enable Password Device Configuration
 
 ```eos
 !

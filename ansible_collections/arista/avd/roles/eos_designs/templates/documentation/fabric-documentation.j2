@@ -20,6 +20,7 @@
 {% set vtep_loopback_ipv4_pools = [] %}
 {% set assigned_ip_addresses = [] %}
 {% set interfaces_done = [] %}
+{% set isis_nets = [] %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     set node_hostvars = hostvars[node] %}
 {%     set node_facts = avd_switch_facts[node] %}
@@ -58,6 +59,7 @@
 {%         endif %}
 {%         if node_hostvars.router_isis is arista.avd.defined and node_hostvars.router_isis.net is arista.avd.defined %}
 {%             set fabric_switch.router_isis_net = node_hostvars.router_isis.net %}
+{%             do isis_nets.append(node_hostvars.router_isis.net) %}
 {%         endif %}
 {%         do fabric_switches.append(fabric_switch) %}
 {# Populate topology_links #}
@@ -173,7 +175,7 @@
 {%     endif %}
 {% endfor %}
 
-{% if avd_switch_facts[inventory_hostname].switch.underlay_routing_protocol | arista.avd.default in ["isis", "isis-sr", "isis-ldp", "isis-sr-ldp"] %}
+{% if isis_nets %}
 ### ISIS CLNS interfaces
 
 | POD | Node | CLNS Address |

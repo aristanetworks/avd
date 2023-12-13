@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [DHCP Relay](#dhcp-relay)
   - [DHCP Relay Summary](#dhcp-relay-summary)
-  - [DHCP Relay Configuration](#dhcp-relay-configuration)
+  - [DHCP Relay Device Configuration](#dhcp-relay-device-configuration)
 
 ## Management
 
@@ -48,7 +48,7 @@ interface Management1
 | dhcp-relay-server1 |
 | dhcp-relay-server2 |
 
-### DHCP Relay Configuration
+### DHCP Relay Device Configuration
 
 ```eos
 !

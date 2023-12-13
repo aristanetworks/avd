@@ -6,7 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
-  - [Platform Configuration](#platform-configuration)
+  - [Platform Device Configuration](#platform-device-configuration)
 
 ## Management
 
@@ -49,7 +49,7 @@ interface Management1
 
 #### Trident MMU QUEUE PROFILES
 
-**mc_example_profile**
+##### mc_example_profile
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -59,7 +59,7 @@ interface Management1
 | Multicast | 1 | 1/64 | 0 cells | - |
 | Multicast | 7 | 1/64 | 0 cells | - |
 
-**unused_profile**
+##### unused_profile
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -92,7 +92,7 @@ interface Management1
 | -------- | ----- |
 | Maximum CPU Allocation | 42 |
 
-### Platform Configuration
+### Platform Device Configuration
 
 ```eos
 !

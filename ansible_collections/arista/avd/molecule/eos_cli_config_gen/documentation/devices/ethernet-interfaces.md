@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [DHCP Server](#dhcp-server)
-  - [DHCP Server interfaces](#dhcp-server-interfaces)
+  - [DHCP Server Interfaces](#dhcp-server-interfaces)
 - [Monitoring](#monitoring)
   - [SFlow](#sflow)
 - [Interfaces](#interfaces)
@@ -21,6 +21,7 @@
 - [Power Over Ethernet (PoE)](#power-over-ethernet-poe)
   - [PoE Summary](#poe-summary)
 - [Quality Of Service](#quality-of-service)
+  - [QOS Interfaces](#qos-interfaces)
 
 ## Management
 
@@ -52,7 +53,7 @@ interface Management1
 
 ## DHCP Server
 
-### DHCP Server interfaces
+### DHCP Server Interfaces
 
 | Interface name | DHCP IPv4 | DHCP IPv6 |
 | -------------- | --------- | --------- |
@@ -174,6 +175,14 @@ sFlow is disabled.
 | --------- | ---------- | --------- |
 | Ethernet1 | EVPN_MH_ES1 | upstream |
 | Ethernet3 | EVPN_MH_ES2 | downstream |
+
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet13 | trunk phone | 100 | 70 | untagged |
+| Ethernet61 | trunk phone | 100 | 70 | untagged phone |
+| Ethernet62 | trunk phone | 100 | 70 | tagged phone |
 
 ##### Multicast Routing
 
@@ -330,6 +339,8 @@ interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
    speed forced 100gfull
+   l2 mtu 8000
+   l2 mru 8000
    bgp session tracker ST1
    no switchport
    ip address 172.31.255.1/31
@@ -965,7 +976,7 @@ interface Ethernet69
 
 ### PIM Sparse Mode
 
-#### PIM Sparse Mode enabled interfaces
+#### PIM Sparse Mode Enabled Interfaces
 
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |
@@ -1011,7 +1022,7 @@ interface Ethernet69
 
 ## Quality Of Service
 
-#### QOS Interfaces
+### QOS Interfaces
 
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |
