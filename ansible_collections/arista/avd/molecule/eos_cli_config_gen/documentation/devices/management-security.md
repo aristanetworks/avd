@@ -116,6 +116,8 @@ management security
       maximum sequential 7
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
+      crl ca.crl
+      crl intermediate.crl
    ssl profile cipher-list-profile
       cipher-list ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
    ssl profile test1-chain-cert
