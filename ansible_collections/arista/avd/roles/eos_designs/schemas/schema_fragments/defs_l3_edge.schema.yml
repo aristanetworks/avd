@@ -43,7 +43,7 @@ $defs:
           keys:
             name:
               type: str
-              description: P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
+              description: P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile.
       p2p_links:
         type: list
         $ref: "eos_designs#/$defs/p2p_links"
@@ -56,3 +56,27 @@ $defs:
             profile:
               type: str
               description: P2P profile name. Profile defined under p2p_profiles.
+      l3_interfaces_profiles:
+        type: list
+        convert_types:
+          - dict
+        primary_key: name
+        $ref: "eos_designs#/$defs/l3_interfaces"
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
+      l3_interfaces:
+        type: list
+        $ref: "eos_designs#/$defs/l3_interfaces"
+        items:
+          type: dict
+          keys:
+            node:
+              type: str
+              description: Device on which the interface should be configured.
+            profile:
+              type: str
+              description: L3 interface profile name. Profile defined under l3_interfaces_profiles.

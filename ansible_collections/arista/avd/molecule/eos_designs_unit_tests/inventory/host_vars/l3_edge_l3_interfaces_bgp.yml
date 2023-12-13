@@ -1,0 +1,43 @@
+type: spine
+spine:
+  nodes:
+    - name: l3_edge_l3_interfaces_bgp
+      id: 1
+      evpn_role: "none"
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+
+l3_edge:
+  l3_interfaces_profiles:
+    - name: profile1
+      speed: "forced 10000full"
+      bfd: true
+      qos_profile: TEST-QOS-PROFILE
+      structured_config:
+        service_policy:
+          qos:
+            input: TEST_POLICY
+      raw_eos_cli: |
+        ! TEST RAW_EOS_CLI
+  l3_interfaces:
+      # Settings set via profile
+    - node: l3_edge_l3_interfaces_bgp
+      peer: peer1
+      interface: Ethernet1
+      ip: 192.168.1.2/31
+      peer_ip: 192.168.1.3/31
+      profile: profile1
+      bgp_as: 456
+      peer_bgp_as: 123
+
+      # IPv6 enabled
+      # Descriptions set manually
+    - node: l3_edge_l3_interfaces_bgp
+      description: Custom description on l3_edge_l3_interfaces_bgp eth2
+      peer: peer2
+      interface: Ethernet2
+      ip: 192.168.2.2/31
+      peer_ip: 192.168.2.3/31
+      qos_profile: TEST-QOS-PROFILE
+      bgp_as: 65000
+      ipv6_enable: true

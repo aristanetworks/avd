@@ -1,0 +1,79 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  l3_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        speed:
+          type: str
+          description: |-
+            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+        ip:
+          type: str
+          description: Node IPv4 address/Mask or 'dhcp'.
+        dhcp_client_accept_default_route:
+          type: bool
+          description: |-
+            Supported if `ip` is `dhcp`.
+            Accepts default route from DHCP, default False.
+        ipv6_enable:
+          type: bool
+          default: false
+          description: Allows turning on ipv6 for the interface or profile.
+        interface:
+          type: str
+          description: Must be an Ethernet interface like 'Ethernet2'.
+          pattern: "^Ethernet.*$"
+        peer:
+          type: str
+          description: |-
+            The peer device name. Used for description and documentation
+        peer_interface:
+          type: str
+          description: |-
+            The peer device interface. Used for description and documentation
+        peer_ip:
+          type: str
+          description: |-
+            The peer device IP. Used for description and documentation
+        bgp_as:
+          type: str
+          convert_types:
+            - int
+          description: |
+            AS numbers for BGP.
+            Required with bgp peering.
+        peer_bgp_as:
+          type: str
+          convert_types:
+            - int
+          description: |
+            AS numbers for BGP for the remote peer.
+            If not provided, `bgp_as` is used.
+        description:
+          type: str
+          description: Interface description.
+        bfd:
+          type: bool
+          default: false
+          description: Enable BFD (only considered for BGP).
+        qos_profile:
+          type: str
+          description: QOS service profile.
+        raw_eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the interface in the final EOS configuration.
+        structured_config:
+          type: dict
+          documentation_options:
+            hide_keys: true
+          description: |-
+            Custom structured config for interfaces
+          $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"
