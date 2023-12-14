@@ -24,12 +24,12 @@ class AvdTestHardware(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-        xcvr_manufacturers = get(self.hostvars[self.device_name], "validation_role.xcvr_own_manufacturers", ["Arista Networks", "Arastra, Inc."])
+        xcvr_manufacturers = get(self.structured_config, "validation_role.xcvr_own_manufacturers", ["Arista Networks", "Arastra, Inc."])
         xcvr_manufacturers.append("Not Present")
 
         anta_tests = [
-            {"VerifyEnvironmentPower": {"states": get(self.hostvars[self.device_name], "validation_role.pwr_supply_states", ["ok"])}},
-            {"VerifyEnvironmentCooling": {"states": get(self.hostvars[self.device_name], "validation_role.fan_states", ["ok"])}},
+            {"VerifyEnvironmentPower": {"states": get(self.structured_config, "validation_role.pwr_supply_states", ["ok"])}},
+            {"VerifyEnvironmentCooling": {"states": get(self.structured_config, "validation_role.fan_states", ["ok"])}},
             {"VerifyTemperature": {}},
             {"VerifyTransceiversManufacturers": {"manufacturers": xcvr_manufacturers}},
         ]

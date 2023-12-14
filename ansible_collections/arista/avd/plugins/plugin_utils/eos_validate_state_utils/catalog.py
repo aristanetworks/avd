@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Mapping
 
 from yaml import Dumper, dump, safe_load
 
@@ -33,8 +33,7 @@ class Catalog:
     """
     Catalog class that handles management of ANTA catalogs from AVD.
     """
-
-    def __init__(self, device_name: str, hostvars: dict, skipped_tests: list[dict], custom_catalog: dict | None = None, custom_catalog_path: str | None = None):
+    def __init__(self, device_name: str, hostvars: Mapping, skipped_tests: list[dict], custom_catalog: dict | None = None, custom_catalog_path: str | None = None):
         """
         Initialize the Catalog class.
 
@@ -42,8 +41,8 @@ class Catalog:
 
         Args:
             device_name (str): The device for which this catalog is built
-            hostvars (dict): A dictionnary that contains a key for each device with a value of the structured_config
-                         when using Ansible, this is the equivalent of `task_vars['hostvars']`
+            hostvars (Mapping): A mapping that contains a key for each device with a value of the structured_config.
+                                      When using Ansible, this is the `task_vars['hostvars']` object.
             skipped_tests (list[dict]): Dictionary of AVD test classes to be skipped.
             custom_catalog (dict): An optional dictionary representing an ANTA Catalog
             custom_catalog_path (str): An optional string representing a path to an Anta Catalog

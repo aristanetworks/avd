@@ -192,6 +192,28 @@ anta.tests.connectivity:
       - Loopback0 Reachability
       custom_field: 'Source: dc2-leaf2b - 10.255.128.16/32 Destination: 10.255.128.16'
       description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.17
+      repeat: 1
+      source: 10.255.128.16
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc2-leaf2b - 10.255.128.16/32 Destination: 10.255.128.17'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.128.18
+      repeat: 1
+      source: 10.255.128.16
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc2-leaf2b - 10.255.128.16/32 Destination: 10.255.128.18'
+      description: Loopback0 Reachability
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     states:
@@ -592,6 +614,22 @@ anta.tests.routing.generic:
     result_overwrite:
       categories:
       - Routing Table
+      custom_field: 10.255.128.17
+      description: Remote Lo0 address
+    routes:
+    - 10.255.128.17
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.128.18
+      description: Remote Lo0 address
+    routes:
+    - 10.255.128.18
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
       custom_field: 10.255.1.3
       description: Remote VTEP address
     routes:
@@ -620,6 +658,17 @@ anta.tests.routing.generic:
       description: Remote VTEP address
     routes:
     - 10.255.129.15
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.129.17
+      description: Remote VTEP address
+    routes:
+    - 10.255.129.17
+anta.tests.security:
+- VerifyAPIHttpsSSL:
+    profile: eAPI_SSL_Profile
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:

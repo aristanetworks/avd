@@ -613,6 +613,30 @@
   },
   {
     "name": "dc2-leaf2b",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc2-leaf2b - 10.255.128.16/32 Destination: 10.255.128.17"
+  },
+  {
+    "name": "dc2-leaf2b",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc2-leaf2b - 10.255.128.16/32 Destination: 10.255.128.18"
+  },
+  {
+    "name": "dc2-leaf2b",
     "test": "VerifyMlagStatus",
     "categories": [
       "mlag"
@@ -773,6 +797,30 @@
     "categories": [
       "Routing Table"
     ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.17"
+  },
+  {
+    "name": "dc2-leaf2b",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.18"
+  },
+  {
+    "name": "dc2-leaf2b",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
     "description": "Remote VTEP address",
     "result": "unset",
     "messages": [],
@@ -814,5 +862,29 @@
     "messages": [],
     "error": "None",
     "custom_field": "10.255.129.15"
+  },
+  {
+    "name": "dc2-leaf2b",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote VTEP address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.129.17"
+  },
+  {
+    "name": "dc2-leaf2b",
+    "test": "VerifyAPIHttpsSSL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
   }
 ]

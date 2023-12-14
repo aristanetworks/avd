@@ -39,6 +39,26 @@ anta.tests.connectivity:
       - LLDP Topology
       custom_field: 'local: Ethernet4 - remote: dc2-leaf2b_Ethernet2'
       description: LLDP topology - validate peer and interface
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc2-leaf3a.arista.com
+      neighbor_port: Ethernet2
+      port: Ethernet5
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet5 - remote: dc2-leaf3a.arista.com_Ethernet2'
+      description: LLDP topology - validate peer and interface
+- VerifyLLDPNeighbors:
+    neighbors:
+    - neighbor_device: dc2-leaf3b.arista.com
+      neighbor_port: Ethernet2
+      port: Ethernet6
+    result_overwrite:
+      categories:
+      - LLDP Topology
+      custom_field: 'local: Ethernet6 - remote: dc2-leaf3b.arista.com_Ethernet2'
+      description: LLDP topology - validate peer and interface
 - VerifyReachability:
     hosts:
     - destination: 10.255.255.107
@@ -82,6 +102,28 @@ anta.tests.connectivity:
       categories:
       - IP Reachability
       custom_field: 'Source: dc2-spine2_Ethernet4 - Destination: dc2-leaf2b_Ethernet2'
+      description: ip reachability test p2p links
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.123
+      repeat: 1
+      source: 10.255.255.122
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc2-spine2_Ethernet5 - Destination: dc2-leaf3a.arista.com_Ethernet2'
+      description: ip reachability test p2p links
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.255.127
+      repeat: 1
+      source: 10.255.255.126
+      vrf: default
+    result_overwrite:
+      categories:
+      - IP Reachability
+      custom_field: 'Source: dc2-spine2_Ethernet6 - Destination: dc2-leaf3b.arista.com_Ethernet2'
       description: ip reachability test p2p links
 anta.tests.hardware:
 - VerifyEnvironmentPower:
@@ -136,6 +178,26 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet4 - P2P_LINK_TO_DC2-LEAF2B_Ethernet2
+      description: Ethernet Interface & Line Protocol == 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet5
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet5 - P2P_LINK_TO_DC2-LEAF3A.ARISTA.COM_Ethernet2
+      description: Ethernet Interface & Line Protocol == 'up'
+- VerifyInterfacesStatus:
+    interfaces:
+    - interface: Ethernet6
+      protocol_status: up
+      state: up
+    result_overwrite:
+      categories:
+      - Interface State
+      custom_field: Ethernet6 - P2P_LINK_TO_DC2-LEAF3B.ARISTA.COM_Ethernet2
       description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
@@ -194,6 +256,28 @@ anta.tests.routing.bgp:
       description: ip bgp peer state established (ipv4)
 - VerifyBGPSpecificPeers:
     address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.255.123
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.255.123'
+      description: ip bgp peer state established (ipv4)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.255.127
+      safi: unicast
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.255.127'
+      description: ip bgp peer state established (ipv4)
+- VerifyBGPSpecificPeers:
+    address_families:
     - afi: evpn
       peers:
       - 10.255.128.13
@@ -232,6 +316,26 @@ anta.tests.routing.bgp:
       - BGP
       custom_field: 'bgp_neighbor: 10.255.128.16'
       description: bgp evpn peer state established (evpn)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.128.17
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.128.17'
+      description: bgp evpn peer state established (evpn)
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: evpn
+      peers:
+      - 10.255.128.18
+    result_overwrite:
+      categories:
+      - BGP
+      custom_field: 'bgp_neighbor: 10.255.128.18'
+      description: bgp evpn peer state established (evpn)
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
@@ -240,6 +344,9 @@ anta.tests.routing.generic:
       - BGP
       custom_field: ArBGP
       description: ArBGP is configured and operating
+anta.tests.security:
+- VerifyAPIHttpsSSL:
+    profile: eAPI_SSL_Profile
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:

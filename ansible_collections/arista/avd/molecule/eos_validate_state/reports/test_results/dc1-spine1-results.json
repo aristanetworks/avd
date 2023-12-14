@@ -274,5 +274,17 @@
     "messages": [],
     "error": "None",
     "custom_field": "NTP"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyAPIHttpsSSL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
   }
 ]
