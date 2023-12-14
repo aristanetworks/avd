@@ -309,7 +309,7 @@ $defs:
                   The rt_override allows us to override this value and statically define it.
 
                   rt_override supports two formats:
-                    - A single number which will be used in the RT fields instead of vrf_id (see 'overlay_rt_type' for details).
+                    - A single number will be used in the RT assigned number subfield (second part of the RT).
                     - A full RT string with colon seperator which will override the full RT.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
