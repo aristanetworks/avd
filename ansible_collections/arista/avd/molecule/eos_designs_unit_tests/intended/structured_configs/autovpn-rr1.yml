@@ -12,8 +12,16 @@ router_bgp:
   updates:
     wait_install: true
   bgp_cluster_id: 192.168.31.1
-  listen_ranges: []
   peer_groups:
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    update_source: Loopback0
+    bfd: true
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+    route_reflector_client: true
   - name: RR-OVERLAY-PEERS
     type: wan
     update_source: Loopback0
@@ -21,15 +29,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
-  - name: WAN-OVERLAY-PEERS
-    type: wan
-    update_source: Loopback0
-    bfd: true
-    password: htm4AZe9mIQOO1uiMuGgYQ==
-    send_community: all
-    maximum_routes: 12000
-    remote_as: '65000'
-    route_reflector_client: true
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -46,10 +45,8 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
-      additional_paths:
-        receive: true
-        send:
-          any: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
     bgp:
       additional_paths:
         receive: true
@@ -104,11 +101,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
-  peer_dynamic_source: stun
-  path_groups: []
   load_balance_policies:
   - name: LBPOLICY
-    path_groups: []
   policies:
   - name: dps-policy-default
     default_match:
@@ -116,6 +110,7 @@ router_path_selection:
   vrfs:
   - name: default
     path_selection_policy: dps-policy-default
+  peer_dynamic_source: stun
 stun:
   server:
     local_interfaces: []

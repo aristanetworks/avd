@@ -30,7 +30,7 @@ keys:
           type: str
           description: |-
             Indicates if the carrier has access to the Internet (`public`)
-            or not (`private).
+            or not (`private`).
           valid_values:
             - public
             - private

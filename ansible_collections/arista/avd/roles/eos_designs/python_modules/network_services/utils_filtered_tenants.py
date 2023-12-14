@@ -45,7 +45,8 @@ class UtilsFilteredTenantsMixin(object):
                     tenant["vrfs"] = self._filtered_vrfs(tenant)
                     filtered_tenants.append(tenant)
 
-        if self.shared_utils.wan_role is not None and all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"]):
+        no_vrf_default = all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"])
+        if self.shared_utils.wan_role is not None and no_vrf_default:
             filtered_tenants.append(
                 {
                     "name": "WAN_DEFAULT",
@@ -63,6 +64,16 @@ class UtilsFilteredTenantsMixin(object):
                     "l2vlans": [],
                 }
             )
+        elif self.shared_utils.wan_role:
+            # It is enough to check only the first occurence of default VRF as some other piece of code
+            # checks that if the VRF is in multiple tenants, the configuration is consistent.
+            for tenant in filtered_tenants:
+                if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
+                    continue
+                if "evpn" in vrf_default.get("address_families", ["evpn"]):
+                    if self.shared_utils.underlay_filter_peer_as:
+                        raise AristaAvdError("'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF.")
+                break
 
         return natural_sort(filtered_tenants, "name")
 

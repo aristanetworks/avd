@@ -30844,7 +30844,7 @@
           },
           "accessibility": {
             "type": "string",
-            "description": "Indicates if the carrier has access to the Internet (`public`)\nor not (`private).",
+            "description": "Indicates if the carrier has access to the Internet (`public`)\nor not (`private`).",
             "enum": [
               "public",
               "private"
@@ -31013,14 +31013,6 @@
               }
             },
             "title": "Wan Carriers"
-          },
-          "bgp_listen_range_prefixes": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "description": "The prefixes to use in listen_range."
-            },
-            "title": "BGP Listen Range Prefixes"
           }
         },
         "additionalProperties": false,

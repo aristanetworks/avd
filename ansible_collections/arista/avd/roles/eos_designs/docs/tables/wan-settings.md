@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_carriers.[].name") | String | Required, Unique |  |  | Carrier name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "wan_carriers.[].description") | String |  |  |  | Additional information about the carrier for documentation purposes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipsec</samp>](## "wan_carriers.[].ipsec") | Boolean |  |  |  | Flag to configure IPsec on the carrier (default is True). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accessibility</samp>](## "wan_carriers.[].accessibility") | String |  |  | Valid Values:<br>- <code>public</code><br>- <code>private</code> | Indicates if the carrier has access to the Internet (`public`)<br>or not (`private). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;accessibility</samp>](## "wan_carriers.[].accessibility") | String |  |  | Valid Values:<br>- <code>public</code><br>- <code>private</code> | Indicates if the carrier has access to the Internet (`public`)<br>or not (`private`). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;characteristics</samp>](## "wan_carriers.[].characteristics") | List, items: String |  |  |  | A list of characteristics to assign to the carrier.<br>TODO: Explain further how these are used (or removed before removing preview). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_carriers.[].characteristics.[]") | String |  |  | Valid Values:<br>- <code>backup</code><br>- <code>metered</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;circuit_type</samp>](## "wan_carriers.[].circuit_type") | String |  |  | Valid Values:<br>- <code>edge</code><br>- <code>transit</code><br>- <code>both</code> | TBC - edge or transit or both.<br>Unclear if this should be at the carrier level or some other place. |
@@ -33,8 +33,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_carriers</samp>](## "wan_route_servers.[].wan_carriers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].wan_carriers.[].name") | String |  |  |  | Carrier name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].wan_carriers.[].ip_address") | String |  |  |  | The public IP address for this carrier. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_listen_range_prefixes</samp>](## "wan_route_servers.[].bgp_listen_range_prefixes") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_route_servers.[].bgp_listen_range_prefixes.[]") | String |  |  |  | The prefixes to use in listen_range. |
 
 === "YAML"
 
@@ -53,7 +51,7 @@
         ipsec: <bool>
 
         # Indicates if the carrier has access to the Internet (`public`)
-        # or not (`private).
+        # or not (`private`).
         accessibility: <str; "public" | "private">
 
         # A list of characteristics to assign to the carrier.
@@ -137,8 +135,4 @@
 
             # The public IP address for this carrier.
             ip_address: <str>
-        bgp_listen_range_prefixes:
-
-            # The prefixes to use in listen_range.
-          - <str>
     ```

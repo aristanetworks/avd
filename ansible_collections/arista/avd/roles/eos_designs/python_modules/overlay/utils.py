@@ -259,6 +259,10 @@ class UtilsMixin:
         }
 
     @cached_property
+    def _is_wan_server_with_peers(self) -> bool:
+        return self.shared_utils.wan_role == "server" and len(self._wan_route_servers) > 0
+
+    @cached_property
     def _wan_site(self) -> dict | None:
         """
         Here assuming that cv_pathfinder_name is unique across zones and regions
@@ -266,9 +270,23 @@ class UtilsMixin:
         if not self.shared_utils.cv_pathfinder_role:
             return None
 
-        node_defined_site = get(self.shared_utils.switch_data_combined, "cv_pathfinder_site", required=True)
-        sites = get(self._wan_region, "sites", [])
-        return get_item(sites, "name", node_defined_site, required=True)
+        node_defined_site = get(
+            self.shared_utils.switch_data_combined,
+            "cv_pathfinder_site",
+            required=True,
+            org_key="A node variable 'cv_pathdiner_site' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+        )
+        sites = get(self._wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self._wan_region['name']}' is missing a list of sites")
+        return get_item(
+            sites,
+            "name",
+            node_defined_site,
+            required=True,
+            custom_error=(
+                f"The 'cv_pathdiner_site '{node_defined_site}' defined at the node level could not be found under the 'sites' list for the region"
+                f" '{self._wan_region['name']}'."
+            ),
+        )
 
     @cached_property
     def _wan_region(self) -> dict | None:
@@ -278,10 +296,23 @@ class UtilsMixin:
         if not self.shared_utils.cv_pathfinder_role:
             return None
 
-        node_defined_region = get(self.shared_utils.switch_data_combined, "cv_pathfinder_region", required=True)
-        regions = get(self._hostvars, "cv_pathfinder_regions", required=True)
+        node_defined_region = get(
+            self.shared_utils.switch_data_combined,
+            "cv_pathfinder_region",
+            required=True,
+            org_key="A node variable 'cv_pathdiner_region' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+        )
+        regions = get(
+            self._hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
+        )
 
-        return get_item(regions, "name", node_defined_region, required=True)
+        return get_item(
+            regions,
+            "name",
+            node_defined_region,
+            required=True,
+            custom_error="The 'cv_pathdiner_region' defined at the node level could not be found under the 'cv_pathfinder_regions' key.",
+        )
 
     @cached_property
     def _wan_zone(self) -> dict | None:
@@ -327,7 +358,6 @@ class UtilsMixin:
 
             wan_rr_result_dict = {}
 
-            # TODO need to test this
             if peer_facts is not None:
                 # Found a matching server in inventory
                 bgp_as = peer_facts.get("bgp_as")
@@ -343,8 +373,6 @@ class UtilsMixin:
                 bgp_as = self.shared_utils.bgp_as
 
             # Retrieve the values from the dictionary, making them required if the peer_facts were not found
-            # TODO needs to be improved
-            bgp_as = get(wan_rr_dict, "bgp_as", required=(peer_facts is None and bgp_as is None)) or bgp_as
             router_id = get(wan_rr_dict, "router_id", required=(peer_facts is None))
             carriers = get(wan_rr_dict, "wan_carriers", required=(peer_facts is None))
             update_dict = {

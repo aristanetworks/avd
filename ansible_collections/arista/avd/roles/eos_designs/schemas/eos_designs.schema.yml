@@ -3194,7 +3194,7 @@ keys:
           type: str
           description: 'Indicates if the carrier has access to the Internet (`public`)
 
-            or not (`private).'
+            or not (`private`).'
           valid_values:
           - public
           - private
@@ -3293,11 +3293,6 @@ keys:
               ip_address:
                 type: str
                 description: The public IP address for this carrier.
-        bgp_listen_range_prefixes:
-          type: list
-          items:
-            type: str
-            description: The prefixes to use in listen_range.
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints

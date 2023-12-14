@@ -5,6 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
@@ -25,20 +26,19 @@ class RouterPathSelectionMixin(UtilsMixin):
         if not self.shared_utils.wan_role:
             return None
 
-        router_path_selection = {}
+        path_groups = self._get_path_groups()
+
+        router_path_selection = {
+            "path_groups": path_groups,
+            "load_balance_policies": self._get_load_balance_policies(path_groups),
+            "policies": self._get_policies(),
+            "vrfs": self._get_vrfs(),
+        }
 
         if self.shared_utils.wan_role == "server":
             router_path_selection["peer_dynamic_source"] = "stun"
 
-        path_groups = self._get_path_groups()
-        router_path_selection["path_groups"] = path_groups
-        router_path_selection["load_balance_policies"] = self._get_load_balance_policies(path_groups)
-        router_path_selection["policies"] = self._get_policies()
-        router_path_selection["vrfs"] = self._get_vrfs()
-
-        router_path_selection = {key: value for key, value in router_path_selection.items() if value is not None}
-
-        return router_path_selection
+        return strip_empties_from_dict(router_path_selection)
 
     def _get_path_groups(self) -> list:
         """

@@ -18,7 +18,7 @@ router_bgp:
     bfd: true
     password: htm4AZe9mIQOO1uiMuGgYQ==
     send_community: all
-    maximum_routes: 12000
+    maximum_routes: 0
     remote_as: '65000'
   address_family_evpn:
     peer_groups:
@@ -32,6 +32,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+    bgp:
       additional_paths:
         receive: true
         send:
@@ -91,10 +92,8 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
-  path_groups: []
   load_balance_policies:
   - name: LBPOLICY
-    path_groups: []
   policies:
   - name: dps-policy-default
     default_match:
