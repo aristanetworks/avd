@@ -2919,12 +2919,6 @@
                 "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP, default False.",
                 "title": "DHCP Client Accept Default Route"
               },
-              "ipv6_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Allows turning on ipv6 for the interface or profile.",
-                "title": "IPv6 Enable"
-              },
               "interface": {
                 "type": "string",
                 "description": "Must be an Ethernet interface like 'Ethernet2'.",
@@ -2946,26 +2940,10 @@
                 "description": "The peer device IP. Used for description and documentation",
                 "title": "Peer IP"
               },
-              "bgp_as": {
-                "type": "string",
-                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
-                "title": "BGP As"
-              },
-              "peer_bgp_as": {
-                "type": "string",
-                "description": "AS numbers for BGP for the remote peer.\nIf not provided, `bgp_as` is used.\n",
-                "title": "Peer BGP As"
-              },
               "description": {
                 "type": "string",
                 "description": "Interface description.",
                 "title": "Description"
-              },
-              "bfd": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable BFD (only considered for BGP).",
-                "title": "BFD"
               },
               "qos_profile": {
                 "type": "string",
@@ -5596,12 +5574,6 @@
                 "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP, default False.",
                 "title": "DHCP Client Accept Default Route"
               },
-              "ipv6_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Allows turning on ipv6 for the interface or profile.",
-                "title": "IPv6 Enable"
-              },
               "interface": {
                 "type": "string",
                 "description": "Must be an Ethernet interface like 'Ethernet2'.",
@@ -5623,26 +5595,10 @@
                 "description": "The peer device IP. Used for description and documentation",
                 "title": "Peer IP"
               },
-              "bgp_as": {
-                "type": "string",
-                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
-                "title": "BGP As"
-              },
-              "peer_bgp_as": {
-                "type": "string",
-                "description": "AS numbers for BGP for the remote peer.\nIf not provided, `bgp_as` is used.\n",
-                "title": "Peer BGP As"
-              },
               "description": {
                 "type": "string",
                 "description": "Interface description.",
                 "title": "Description"
-              },
-              "bfd": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable BFD (only considered for BGP).",
-                "title": "BFD"
               },
               "qos_profile": {
                 "type": "string",
@@ -9585,12 +9541,6 @@
                 "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP, default False.",
                 "title": "DHCP Client Accept Default Route"
               },
-              "ipv6_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Allows turning on ipv6 for the interface or profile.",
-                "title": "IPv6 Enable"
-              },
               "interface": {
                 "type": "string",
                 "description": "Must be an Ethernet interface like 'Ethernet2'.",
@@ -9612,26 +9562,10 @@
                 "description": "The peer device IP. Used for description and documentation",
                 "title": "Peer IP"
               },
-              "bgp_as": {
-                "type": "string",
-                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
-                "title": "BGP As"
-              },
-              "peer_bgp_as": {
-                "type": "string",
-                "description": "AS numbers for BGP for the remote peer.\nIf not provided, `bgp_as` is used.\n",
-                "title": "Peer BGP As"
-              },
               "description": {
                 "type": "string",
                 "description": "Interface description.",
                 "title": "Description"
-              },
-              "bfd": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable BFD (only considered for BGP).",
-                "title": "BFD"
               },
               "qos_profile": {
                 "type": "string",
@@ -12262,12 +12196,6 @@
                 "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP, default False.",
                 "title": "DHCP Client Accept Default Route"
               },
-              "ipv6_enable": {
-                "type": "boolean",
-                "default": false,
-                "description": "Allows turning on ipv6 for the interface or profile.",
-                "title": "IPv6 Enable"
-              },
               "interface": {
                 "type": "string",
                 "description": "Must be an Ethernet interface like 'Ethernet2'.",
@@ -12289,26 +12217,10 @@
                 "description": "The peer device IP. Used for description and documentation",
                 "title": "Peer IP"
               },
-              "bgp_as": {
-                "type": "string",
-                "description": "AS numbers for BGP.\nRequired with bgp peering.\n",
-                "title": "BGP As"
-              },
-              "peer_bgp_as": {
-                "type": "string",
-                "description": "AS numbers for BGP for the remote peer.\nIf not provided, `bgp_as` is used.\n",
-                "title": "Peer BGP As"
-              },
               "description": {
                 "type": "string",
                 "description": "Interface description.",
                 "title": "Description"
-              },
-              "bfd": {
-                "type": "boolean",
-                "default": false,
-                "description": "Enable BFD (only considered for BGP).",
-                "title": "BFD"
               },
               "qos_profile": {
                 "type": "string",

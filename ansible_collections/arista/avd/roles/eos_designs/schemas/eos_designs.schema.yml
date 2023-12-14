@@ -3769,7 +3769,7 @@ $defs:
         convert_types:
         - dict
         primary_key: name
-        $ref: eos_designs#/$defs/l3_interfaces
+        $ref: eos_designs#/$defs/l3_edge_l3_interfaces
         items:
           type: dict
           keys:
@@ -3779,7 +3779,7 @@ $defs:
                 `l3_interfaces` can be inherited from a profile.
       l3_interfaces:
         type: list
-        $ref: eos_designs#/$defs/l3_interfaces
+        $ref: eos_designs#/$defs/l3_edge_l3_interfaces
         items:
           type: dict
           keys:
@@ -3789,7 +3789,7 @@ $defs:
             profile:
               type: str
               description: L3 interface profile name. Profile defined under l3_interfaces_profiles.
-  l3_interfaces:
+  l3_edge_l3_interfaces:
     type: list
     items:
       type: dict
@@ -3806,10 +3806,6 @@ $defs:
           description: 'Supported if `ip` is `dhcp`.
 
             Accepts default route from DHCP, default False.'
-        ipv6_enable:
-          type: bool
-          default: false
-          description: Allows turning on ipv6 for the interface or profile.
         interface:
           type: str
           description: Must be an Ethernet interface like 'Ethernet2'.
@@ -3823,31 +3819,9 @@ $defs:
         peer_ip:
           type: str
           description: The peer device IP. Used for description and documentation
-        bgp_as:
-          type: str
-          convert_types:
-          - int
-          description: 'AS numbers for BGP.
-
-            Required with bgp peering.
-
-            '
-        peer_bgp_as:
-          type: str
-          convert_types:
-          - int
-          description: 'AS numbers for BGP for the remote peer.
-
-            If not provided, `bgp_as` is used.
-
-            '
         description:
           type: str
           description: Interface description.
-        bfd:
-          type: bool
-          default: false
-          description: Enable BFD (only considered for BGP).
         qos_profile:
           type: str
           description: QOS service profile.

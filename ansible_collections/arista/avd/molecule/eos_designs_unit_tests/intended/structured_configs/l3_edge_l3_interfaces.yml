@@ -1,4 +1,4 @@
-hostname: l3_edge_l3_interfaces_no_bgp
+hostname: l3_edge_l3_interfaces
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -70,9 +70,3 @@ ethernet_interfaces:
   service_policy:
     qos:
       input: TEST_POLICY
-- name: Ethernet2
-  peer_type: l3_interface
-  ip_address: 192.168.0.2/31
-  shutdown: false
-  type: routed
-  description: TODO

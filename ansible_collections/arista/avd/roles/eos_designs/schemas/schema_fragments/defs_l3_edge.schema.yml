@@ -61,7 +61,7 @@ $defs:
         convert_types:
           - dict
         primary_key: name
-        $ref: "eos_designs#/$defs/l3_interfaces"
+        $ref: "eos_designs#/$defs/l3_edge_l3_interfaces"
         items:
           type: dict
           keys:
@@ -70,7 +70,7 @@ $defs:
               description: L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
       l3_interfaces:
         type: list
-        $ref: "eos_designs#/$defs/l3_interfaces"
+        $ref: "eos_designs#/$defs/l3_edge_l3_interfaces"
         items:
           type: dict
           keys:

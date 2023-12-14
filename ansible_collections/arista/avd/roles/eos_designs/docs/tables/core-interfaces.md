@@ -97,15 +97,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.l3_interfaces_profiles.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "core_interfaces.l3_interfaces_profiles.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_client_accept_default_route</samp>](## "core_interfaces.l3_interfaces_profiles.[].dhcp_client_accept_default_route") | Boolean |  |  |  | Supported if `ip` is `dhcp`.<br>Accepts default route from DHCP, default False. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "core_interfaces.l3_interfaces_profiles.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the interface or profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "core_interfaces.l3_interfaces_profiles.[].interface") | String |  |  | Pattern: ^Ethernet.*$ | Must be an Ethernet interface like 'Ethernet2'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer_ip") | String |  |  |  | The peer device IP. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "core_interfaces.l3_interfaces_profiles.[].bgp_as") | String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_bgp_as</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer_bgp_as") | String |  |  |  | AS numbers for BGP for the remote peer.<br>If not provided, `bgp_as` is used.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "core_interfaces.l3_interfaces_profiles.[].description") | String |  |  |  | Interface description. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "core_interfaces.l3_interfaces_profiles.[].bfd") | Boolean |  | `False` |  | Enable BFD (only considered for BGP). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.l3_interfaces_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.l3_interfaces_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "core_interfaces.l3_interfaces_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for interfaces |
@@ -115,15 +111,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.l3_interfaces.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "core_interfaces.l3_interfaces.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_client_accept_default_route</samp>](## "core_interfaces.l3_interfaces.[].dhcp_client_accept_default_route") | Boolean |  |  |  | Supported if `ip` is `dhcp`.<br>Accepts default route from DHCP, default False. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "core_interfaces.l3_interfaces.[].ipv6_enable") | Boolean |  | `False` |  | Allows turning on ipv6 for the interface or profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "core_interfaces.l3_interfaces.[].interface") | String |  |  | Pattern: ^Ethernet.*$ | Must be an Ethernet interface like 'Ethernet2'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "core_interfaces.l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "core_interfaces.l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "core_interfaces.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IP. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_as</samp>](## "core_interfaces.l3_interfaces.[].bgp_as") | String |  |  |  | AS numbers for BGP.<br>Required with bgp peering.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_bgp_as</samp>](## "core_interfaces.l3_interfaces.[].peer_bgp_as") | String |  |  |  | AS numbers for BGP for the remote peer.<br>If not provided, `bgp_as` is used.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "core_interfaces.l3_interfaces.[].description") | String |  |  |  | Interface description. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "core_interfaces.l3_interfaces.[].bfd") | Boolean |  | `False` |  | Enable BFD (only considered for BGP). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "core_interfaces.l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for interfaces |
@@ -367,9 +359,6 @@
           # Accepts default route from DHCP, default False.
           dhcp_client_accept_default_route: <bool>
 
-          # Allows turning on ipv6 for the interface or profile.
-          ipv6_enable: <bool; default=False>
-
           # Must be an Ethernet interface like 'Ethernet2'.
           interface: <str>
 
@@ -382,19 +371,8 @@
           # The peer device IP. Used for description and documentation
           peer_ip: <str>
 
-          # AS numbers for BGP.
-          # Required with bgp peering.
-          bgp_as: <str>
-
-          # AS numbers for BGP for the remote peer.
-          # If not provided, `bgp_as` is used.
-          peer_bgp_as: <str>
-
           # Interface description.
           description: <str>
-
-          # Enable BFD (only considered for BGP).
-          bfd: <bool; default=False>
 
           # QOS service profile.
           qos_profile: <str>
@@ -422,9 +400,6 @@
           # Accepts default route from DHCP, default False.
           dhcp_client_accept_default_route: <bool>
 
-          # Allows turning on ipv6 for the interface or profile.
-          ipv6_enable: <bool; default=False>
-
           # Must be an Ethernet interface like 'Ethernet2'.
           interface: <str>
 
@@ -437,19 +412,8 @@
           # The peer device IP. Used for description and documentation
           peer_ip: <str>
 
-          # AS numbers for BGP.
-          # Required with bgp peering.
-          bgp_as: <str>
-
-          # AS numbers for BGP for the remote peer.
-          # If not provided, `bgp_as` is used.
-          peer_bgp_as: <str>
-
           # Interface description.
           description: <str>
-
-          # Enable BFD (only considered for BGP).
-          bfd: <bool; default=False>
 
           # QOS service profile.
           qos_profile: <str>
