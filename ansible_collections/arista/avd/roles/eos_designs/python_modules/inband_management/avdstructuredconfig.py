@@ -214,7 +214,9 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
 
             subnet = peer_facts.get("inband_mgmt_subnet")
             ipv6_subnet = peer_facts.get("inband_mgmt_ipv6_subnet")
-            svis[vlan] = {"ipv4": None, "ipv6": None}
+            if vlan not in svis:
+                svis[vlan] = {"ipv4": None, "ipv6": None}
+
             if subnet not in subnets:
                 subnets.append(subnet)
                 svis[vlan]["ipv4"] = subnet
