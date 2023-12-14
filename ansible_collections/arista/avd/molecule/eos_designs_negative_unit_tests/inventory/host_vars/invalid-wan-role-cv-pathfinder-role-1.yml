@@ -11,6 +11,7 @@ wan_edge:
     - name: invalid-wan-role-cv-pathfinder-role-1
       # Trying to set edge as RR
       wan_role: server
+      evpn_role: server
       id: 1
 
 expected_error_message: >-

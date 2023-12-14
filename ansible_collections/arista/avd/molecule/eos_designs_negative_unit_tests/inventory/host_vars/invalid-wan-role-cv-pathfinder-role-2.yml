@@ -11,6 +11,7 @@ wan_rr:
     - name: invalid-wan-role-cv-pathfinder-role-2
       # Trying to set pathfinder as RR client
       wan_role: client
+      evpn_role: client
       id: 1
 
 expected_error_message: >-
