@@ -1,4 +1,6 @@
 hostname: DC1-POD1-SPINE2
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 serial_number: DEADBEEFC0FFEE
 router_bgp:

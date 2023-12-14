@@ -1,4 +1,6 @@
 hostname: SPINE2
+metadata:
+  platform: cEOSLab
 is_deployed: true
 static_routes:
 - vrf: MGMT

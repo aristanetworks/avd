@@ -1,4 +1,6 @@
 hostname: dc2-leaf1a
+metadata:
+  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65201'
