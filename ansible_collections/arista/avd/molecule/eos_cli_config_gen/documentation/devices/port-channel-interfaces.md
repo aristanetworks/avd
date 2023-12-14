@@ -233,6 +233,7 @@ interface Ethernet50
 | Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
 | Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
+| Port-Channel131 | dot1q-tunnel mode | switched | dot1q-tunnel | - | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q
 
@@ -404,6 +405,7 @@ interface Port-Channel12
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
+   switchport mode trunk phone
 !
 interface Port-Channel13
    description EVPN-Vxlan single-active redundancy
@@ -453,6 +455,7 @@ interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames
    switchport
    switchport access vlan 200
+   switchport mode access
    l2-protocol encapsulation dot1q vlan 200
 !
 interface Port-Channel50
@@ -502,6 +505,7 @@ interface Port-Channel101
    description PVLAN Promiscuous Access - only one secondary
    switchport
    switchport access vlan 110
+   switchport mode access
    switchport pvlan mapping 111
    no qos trust
 !
@@ -553,6 +557,7 @@ interface Port-Channel109
    description Molecule ACLs
    switchport
    switchport access vlan 110
+   switchport mode access
    ip access-group IPV4_ACL_IN in
    ip access-group IPV4_ACL_OUT out
    ipv6 access-group IPV6_ACL_IN in
@@ -666,6 +671,7 @@ interface Port-Channel120
 interface Port-Channel121
    description access_port_with_no_vlans
    switchport
+   switchport mode access
 !
 interface Port-Channel122
    description trunk_port_with_no_vlans
@@ -679,6 +685,11 @@ interface Port-Channel130
    ip nat source dynamic access-list ACL2 pool POOL2
    ip nat destination static 1.0.0.1 2.0.0.1
    ip nat destination dynamic access-list ACL1 pool POOL1
+!
+interface Port-Channel131
+   description dot1q-tunnel mode
+   switchport
+   switchport mode dot1q-tunnel
 ```
 
 ## BFD
