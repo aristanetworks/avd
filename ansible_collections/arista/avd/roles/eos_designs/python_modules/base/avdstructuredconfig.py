@@ -34,6 +34,13 @@ class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
         return self.shared_utils.hostname
 
     @cached_property
+    def metadata(self) -> dict | None:
+        if self.shared_utils.platform is None:
+            return None
+
+        return {"platform": self.shared_utils.platform}
+
+    @cached_property
     def is_deployed(self) -> bool:
         return self.shared_utils.is_deployed
 
