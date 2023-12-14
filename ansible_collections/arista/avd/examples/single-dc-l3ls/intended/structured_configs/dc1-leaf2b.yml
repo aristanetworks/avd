@@ -218,6 +218,14 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 0.pool.ntp.org
+    vrf: MGMT
+    preferred: true
 vlans:
 - id: 4093
   tenant: system
@@ -478,10 +486,3 @@ virtual_source_nat_vrfs:
   ip_address: 10.255.10.6
 - name: VRF11
   ip_address: 10.255.11.6
-ntp:
-  local_interface:
-    name: Management1
-    vrf: MGMT
-  servers:
-  - name: 0.pool.ntp.org
-    vrf: MGMT

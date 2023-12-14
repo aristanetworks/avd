@@ -1,0 +1,16 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: ntp-settings-server-vrf-missing-inband-mgmt-interface
+      id: 1
+      # inband_mgmt_ip: 10.20.30.40/24
+      # inband_mgmt_gateway: 10.20.30.1
+      # inband_mgmt_vrf: INBANDMGMT
+
+ntp_settings:
+  server_vrf: use_inband_mgmt_vrf
+  servers:
+    - name: pool.ntp.com
+
+expected_error_message: >-
+  'ntp_settings.server_vrf' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management

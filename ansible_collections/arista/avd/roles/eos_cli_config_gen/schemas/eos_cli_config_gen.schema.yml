@@ -6277,6 +6277,8 @@ keys:
       trusted_keys:
         type: str
         description: List of trusted-keys as string ex. 10-12,15
+        convert_types:
+        - int
   patch_panel:
     type: dict
     keys:
