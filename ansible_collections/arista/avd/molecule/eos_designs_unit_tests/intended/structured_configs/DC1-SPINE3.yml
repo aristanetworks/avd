@@ -205,11 +205,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
 spanning_tree:
   mode: none
 local_users:
@@ -240,6 +235,11 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-SPINE3

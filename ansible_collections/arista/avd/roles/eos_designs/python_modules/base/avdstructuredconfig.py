@@ -12,10 +12,11 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from .ip_name_server import IpNameServersMixin
 from .snmp_server import SnmpServerMixin
 
 
-class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
+class AvdStructuredConfigBase(AvdFacts, IpNameServersMixin, SnmpServerMixin):
     """
     The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
 
@@ -354,23 +355,6 @@ class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
             queue_monitor_length.pop("notifying", None)
 
         return queue_monitor_length
-
-    @cached_property
-    def ip_name_servers(self) -> list | None:
-        """
-        ip_name_servers set based on name_servers data-model and mgmt_interface_vrf
-        """
-        ip_name_servers = [
-            {
-                "ip_address": name_server,
-                "vrf": self.shared_utils.mgmt_interface_vrf,
-            }
-            for name_server in get(self._hostvars, "name_servers", default=[])
-        ]
-        if ip_name_servers:
-            return ip_name_servers
-
-        return None
 
     @cached_property
     def redundancy(self) -> dict | None:
@@ -772,3 +756,10 @@ class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
             return source_interfaces
 
         return None
+
+    @cached_property
+    def dns_domain(self) -> str | None:
+        """
+        dns_domain set based on dns_settings.domain data-model
+        """
+        return get(self._hostvars, "dns_settings.domain")

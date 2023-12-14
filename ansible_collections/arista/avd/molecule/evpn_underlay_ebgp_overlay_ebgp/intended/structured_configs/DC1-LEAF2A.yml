@@ -283,11 +283,6 @@ queue_monitor_length:
   enabled: true
   notifying: true
   log: 5
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
 spanning_tree:
   root_super: true
   mode: mstp
@@ -342,6 +337,11 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ip_name_servers:
+- ip_address: 192.168.200.5
+  vrf: MGMT
+- ip_address: 8.8.8.8
+  vrf: MGMT
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackC DC1-LEAF2A
