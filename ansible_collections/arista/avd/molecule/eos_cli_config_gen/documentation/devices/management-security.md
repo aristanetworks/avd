@@ -58,14 +58,14 @@ interface Management1
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List | CRLs |
 | ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
 | certificate-profile | - | eAPI.crt | eAPI.key | - | ca.crl<br>intermediate.crl |
-| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 |  |
-| test1-chain-cert | - | - | - | - |  |
-| test1-trust-cert | - | - | - | - |  |
-| test2-chain-cert | - | - | - | - |  |
-| test2-trust-cert | - | - | - | - |  |
-| tls-single-version-profile-as-float | 1.0 | - | - | - |  |
-| tls-single-version-profile-as-string | 1.1 | - | - | - |  |
-| tls-versions-profile | 1.0 1.1 | - | - | - |  |
+| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - |
+| test1-chain-cert | - | - | - | - | - |
+| test1-trust-cert | - | - | - | - | - |
+| test2-chain-cert | - | - | - | - | - |
+| test2-trust-cert | - | - | - | - | - |
+| tls-single-version-profile-as-float | 1.0 | - | - | - | - |
+| tls-single-version-profile-as-string | 1.1 | - | - | - | - |
+| tls-versions-profile | 1.0 1.1 | - | - | - | - |
 
 ### SSL profile test1-chain-cert Certificates Summary
 
