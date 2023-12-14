@@ -51,6 +51,7 @@ router_bgp:
       link_bandwidth:
         enabled: true
         default: 100G
+      ttl_maximum_hops: 1
     - name: test-link-bandwidth2
       link_bandwidth:
         enabled: true
@@ -167,6 +168,7 @@ router_bgp:
         enabled: false
       rib_in_pre_policy_retain:
         enabled: false
+      ttl_maximum_hops: 1
     - ip_address: 192.0.3.5
       remote_as: 65436
       description: test_ebgp_multihop

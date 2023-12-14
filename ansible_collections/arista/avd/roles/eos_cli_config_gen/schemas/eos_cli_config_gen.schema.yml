@@ -9226,6 +9226,13 @@ keys:
                 new_key: listen_ranges
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbors:
         type: list
         primary_key: ip_address
@@ -9409,6 +9416,13 @@ keys:
                   type: bool
             session_tracker:
               type: str
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbor_interfaces:
         type: list
         primary_key: name
