@@ -40,7 +40,7 @@ interface Management1
 
 Management Console Timeout is set to **15** minutes.
 
-#### Management Console Configuration
+#### Management Console Device Configuration
 
 ```eos
 !

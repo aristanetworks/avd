@@ -1,4 +1,6 @@
 hostname: DC1-SPINE4
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -24,14 +26,14 @@ router_bgp:
     maximum_routes: 0
     remote_as: '65000'
     route_reflector_client: true
-  address_family_ipv4:
-    peer_groups:
-    - name: OVERLAY-PEERS
-      activate: false
   address_family_evpn:
     peer_groups:
     - name: OVERLAY-PEERS
       activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: OVERLAY-PEERS
+      activate: false
   neighbors:
   - ip_address: 192.168.255.10
     peer_group: OVERLAY-PEERS

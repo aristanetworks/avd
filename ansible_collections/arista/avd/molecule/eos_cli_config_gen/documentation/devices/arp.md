@@ -41,7 +41,7 @@ interface Management1
 
 Global ARP timeout: 300
 
-#### ARP static entries
+#### ARP Static Entries
 
 | VRF | IPv4 address | MAC address |
 | --- | ------------ | ----------- |
@@ -52,7 +52,7 @@ Global ARP timeout: 300
 | default | 43.42.42.42 | DEAD.BEEF.CAFE |
 | defaulu | 42.42.42.42 | DEAD.BEEF.CAFE |
 
-#### ARP Configuration
+#### ARP Device Configuration
 
 ```eos
 !

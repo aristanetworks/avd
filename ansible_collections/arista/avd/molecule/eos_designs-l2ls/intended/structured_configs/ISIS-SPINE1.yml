@@ -1,4 +1,6 @@
 hostname: ISIS-SPINE1
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 static_routes:
 - vrf: MGMT

@@ -1,4 +1,6 @@
 hostname: DC1-L2LEAF4A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -70,7 +72,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 1
+    id: 1001
     mode: active
 - name: Ethernet2
   peer: DC1-LEAF2B
@@ -80,11 +82,11 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 1
+    id: 1001
     mode: active
 port_channel_interfaces:
-- name: Port-Channel1
-  description: DC1_LEAF2_Po13
+- name: Port-Channel1001
+  description: DC1_LEAF2_Po1013
   type: switched
   shutdown: false
   mode: trunk

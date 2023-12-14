@@ -74,14 +74,16 @@ def get_structured_config(
         if not isinstance(results, list):
             results = [results]
 
-        for result in results:
-            output_schema_tools.convert_data(result)
-
         # All lists will be merged with "append" except for custom structured configuration where
         # the default list merge is "append_rp" and can be overridden.
         # TODO: Each dict entry can contain a list_merge key, which will be picked up by the merge function for all underlying lists.
         if issubclass(cls, AvdStructuredConfigCustomStructuredConfiguration):
             list_merge = get(module_vars, "custom_structured_configuration_list_merge", default="append_rp")
+
+            # Only for structured config run conversion on the data in since we still have some structured config inputs without full schema validation.
+            for result in results:
+                output_schema_tools.convert_data(result)
+
         else:
             list_merge = "append"
 

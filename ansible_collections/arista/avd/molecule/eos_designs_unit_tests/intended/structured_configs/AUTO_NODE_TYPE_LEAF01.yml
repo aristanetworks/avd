@@ -1,4 +1,6 @@
 hostname: AUTO_NODE_TYPE_LEAF01
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65101'

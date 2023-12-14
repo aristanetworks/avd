@@ -328,6 +328,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -419,6 +421,262 @@ keys:
     description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
       |\n  alias wr copy running-config startup-config\n  alias siib show ip interface
       brief\n```"
+  application_traffic_recognition:
+    type: dict
+    description: Application traffic recognition configuration.
+    keys:
+      categories:
+        type: list
+        description: List of categories.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Category name.
+            applications:
+              type: list
+              description: List of applications.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Application name.
+                  service:
+                    type: str
+                    description: 'Service Name.
+
+                      Specific service to target for this application.
+
+                      If no service is specified, all supported services of the application
+                      are matched.
+
+                      Not all valid values are valid for all applications, check on
+                      EOS CLI.'
+                    valid_values:
+                    - audio-video
+                    - chat
+                    - default
+                    - file-transfer
+                    - networking-protocols
+                    - peer-to-peer
+                    - software-update
+      field_sets:
+        type: dict
+        keys:
+          l4_ports:
+            type: list
+            primary_key: name
+            description: L4 port field-set.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: L4 port field-set name.
+                port_values:
+                  type: list
+                  items:
+                    type: str
+                    convert_types:
+                    - int
+                    description: 'Port values or range of port values.
+
+                      Port values are between 0 and 65535.'
+          ipv4_prefixes:
+            type: list
+            primary_key: name
+            description: IPv4 prefix field set.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv4 prefix field-set name.
+                prefix_values:
+                  type: list
+                  items:
+                    type: str
+                    description: IP prefix (ex 1.2.3.0/24).
+      applications:
+        type: dict
+        keys:
+          ipv4_applications:
+            type: list
+            description: List of user defined IPv4 applications.
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Application name.
+                src_prefix_set_name:
+                  type: str
+                  description: Source prefix set name.
+                dest_prefix_set_name:
+                  type: str
+                  description: Destination prefix set name.
+                protocols:
+                  type: list
+                  description: 'List of protocols to consider for this application.
+
+
+                    To use port field-sets (source, destination or both), the list
+
+                    must contain only one or two protocols, either `tcp` or `udp`.
+
+                    When using both protocols, one line is rendered for each in the
+                    configuration,
+
+                    hence the field-sets must have the same value for `tcp_src_port_set_name`
+                    and
+
+                    `udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`
+
+                    if set in order to generate valid configuration in EOS.'
+                  items:
+                    type: str
+                    valid_values:
+                    - ahp
+                    - esp
+                    - icmp
+                    - igmp
+                    - ospf
+                    - pim
+                    - rsvp
+                    - tcp
+                    - udp
+                    - vrrp
+                protocol_ranges:
+                  type: list
+                  description: 'Acccept protocol value(s) or range(s).
+
+                    Protocol values can be between 1 and 255.'
+                  items:
+                    type: str
+                    convert_types:
+                    - int
+                udp_src_port_set_name:
+                  type: str
+                  description: 'Name of field set for UDP source ports.
+
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key
+                    value
+
+                    must be the same as `tcp_src_port_set_name`.'
+                tcp_src_port_set_name:
+                  type: str
+                  description: 'Name of field set for TCP source ports.
+
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key
+                    value
+
+                    must be the same as `udp_src_port_set_name`.'
+                udp_dest_port_set_name:
+                  type: str
+                  description: 'Name of field set for UDP destination ports.
+
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key
+                    value
+
+                    must be the same as `tcp_dest_port_set_name`.'
+                tcp_dest_port_set_name:
+                  type: str
+                  description: 'Name of field set for TCP destination ports.
+
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key
+                    value
+
+                    must be the same as `udp_dest_port_set_name`.'
+      application_profiles:
+        type: list
+        description: Group of applications.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Application Profile name.
+            applications:
+              type: list
+              description: List of applications part of the application profile.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Application Name.
+                  service:
+                    type: str
+                    description: 'Service Name.
+
+                      Specific service to target for this application.
+
+                      If no service is specified, all supported services of the application
+                      are matched.
+
+                      Not all valid values are valid for all applications, check on
+                      EOS CLI.'
+                    valid_values:
+                    - audio-video
+                    - chat
+                    - default
+                    - file-transfer
+                    - networking-protocols
+                    - peer-to-peer
+                    - software-update
+            application_transports:
+              type: list
+              description: List of transport protocols.
+              items:
+                type: str
+                description: Transport name.
+                valid_values:
+                - http
+                - https
+                - udp
+                - tcp
+                - ip
+                - ip6
+                - ssl
+                - rtp
+                - sctp
+                - quic
+            categories:
+              type: list
+              description: Categories under this application profile.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Name of a category.
+                  service:
+                    type: str
+                    description: 'Service Name.
+
+                      Specific service to target for this application.
+
+                      If no service is specified, all supported services of the application
+                      are matched.
+
+                      Not all valid values are valid for all applications, check on
+                      EOS CLI.'
+                    valid_values:
+                    - audio-video
+                    - chat
+                    - default
+                    - file-transfer
+                    - networking-protocols
+                    - peer-to-peer
+                    - software-update
   arp:
     type: dict
     keys:
@@ -622,6 +880,8 @@ keys:
                 access_group:
                   type: str
                   description: Standard Access-List Name
+                  convert_types:
+                  - int
       qos:
         type: list
         primary_key: name
@@ -649,12 +909,16 @@ keys:
                 access_group:
                   type: str
                   description: IPv4 Access-List Name
+                  convert_types:
+                  - int
             ipv6:
               type: dict
               keys:
                 access_group:
                   type: str
                   description: IPv6 Access-List Name
+                  convert_types:
+                  - int
   clock:
     type: dict
     keys:
@@ -2774,6 +3038,8 @@ keys:
         type: dict
         $ref: eos_cli_config_gen#/$defs/flow_tracking
   flow_trackings:
+    documentation_options:
+      table: flow-tracking
     deprecation:
       warning: true
       new_key: flow_tracking
@@ -3112,6 +3378,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         entries:
@@ -3326,6 +3594,43 @@ keys:
       information_option:
         type: bool
         description: Insert Option-82 information
+  ip_dhcp_snooping:
+    type: dict
+    keys:
+      enabled:
+        type: bool
+      bridging:
+        type: bool
+      information_option:
+        type: dict
+        keys:
+          enabled:
+            type: bool
+            description: Enable insertion of option-82 in DHCP request packets
+          circuit_id_type:
+            type: str
+            convert_types:
+            - int
+            description: '"none" or <0 - 255>'
+          circuit_id_format:
+            type: str
+            description: 'Required if `circuit_id_type` is set.
+
+              - "%h:%p" Hostname and interface name
+
+              - "%p:%v" Interface name and VLAN ID'
+            valid_values:
+            - '%h:%p'
+            - '%p:%v'
+      vlan:
+        type: str
+        convert_types:
+        - int
+        description: 'VLAN range as string.
+
+          "< vlan_id >, < vlan_id >-< vlan_id >"
+
+          Example: 15,16,17,18'
   ip_domain_lookup:
     type: dict
     keys:
@@ -3996,6 +4301,8 @@ keys:
         name:
           type: str
           description: IPv6 Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4078,6 +4385,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -4457,6 +4766,11 @@ keys:
             description: 'Add sequence numbers to log messages
 
               '
+          rfc5424:
+            type: bool
+            description: 'Forward logs in RFC5424 format
+
+              '
       facility:
         type: str
         valid_values:
@@ -4649,6 +4963,8 @@ keys:
         name:
           type: str
           description: MAC Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         entries:
@@ -5578,6 +5894,12 @@ keys:
             items:
               type: str
               description: IP or hostname
+  metadata:
+    type: dict
+    description: Key only used for documentation or validation purposes
+    keys:
+      platform:
+        type: str
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration
@@ -8221,6 +8543,86 @@ keys:
             required: true
             min: 1
             max: 10000
+      profiles:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: AVT Name.
+            load_balance_policy:
+              type: str
+              description: Name of the load-balance policy.
+            internet_exit_policy:
+              type: str
+              description: Name of the internet exit policy.
+      policies:
+        type: list
+        primary_key: name
+        description: A sequence of application profiles mapped to some virtual topologies.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Policy name.
+            matches:
+              type: list
+              items:
+                type: dict
+                keys:
+                  application_profile:
+                    type: str
+                    description: Application profile name.
+                  avt_profile:
+                    type: str
+                    description: AVT Profile name.
+                  dscp:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 63
+                    description: Set DSCP for matched traffic.
+                  traffic_class:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 7
+                    description: Set traffic-class for matched traffic.
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            policy:
+              type: str
+              description: AVT Policy name.
+            profiles:
+              type: list
+              primary_key: id
+              description: AVT profiles in this VRF.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: AVT profile name.
+                  id:
+                    type: int
+                    description: Unique ID for this AVT (per VRF).
+                    required: true
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 254
   router_bfd:
     type: dict
     keys:
@@ -10305,9 +10707,19 @@ keys:
                   prefix_list_in:
                     type: str
                     description: Inbound prefix-list name
+                    deprecation:
+                      warning: true
+                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in
+                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in
+                      remove_in_version: 5.0.0
                   prefix_list_out:
                     type: str
                     description: Outbound prefix-list name
+                    deprecation:
+                      warning: true
+                      new_key: router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out
+                        or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out
+                      remove_in_version: 5.0.0
             neighbor_interfaces:
               type: list
               primary_key: name
@@ -10440,6 +10852,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name
                       next_hop:
                         type: dict
                         keys:
@@ -10535,6 +10953,12 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name
+                      prefix_list_in:
+                        type: str
+                        description: Inbound prefix-list name
+                      prefix_list_out:
+                        type: str
+                        description: Outbound prefix-list name
                 networks:
                   type: list
                   primary_key: prefix
@@ -10736,7 +11160,7 @@ keys:
               deprecation:
                 warning: true
                 new_key: address_family_*
-                remove_in_version: v5.0.0
+                remove_in_version: 5.0.0
               items:
                 type: dict
                 keys:
@@ -11768,7 +12192,7 @@ keys:
                         type: list
                         required: true
                         min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str
@@ -11790,7 +12214,7 @@ keys:
                         type: list
                         required: true
                         min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str
@@ -12711,6 +13135,8 @@ keys:
         name:
           type: str
           description: Access-list Name
+          convert_types:
+          - int
         counters_per_entry:
           type: bool
         sequence_numbers:
@@ -12777,15 +13203,15 @@ keys:
           max: 4294967295
   stun:
     type: dict
-    description: STUN configuration
+    description: STUN configuration.
     keys:
       client:
         type: dict
-        description: STUN client settings
+        description: STUN client settings.
         keys:
           server_profiles:
             type: list
-            description: List of server profiles for the client
+            description: List of server profiles for the client.
             primary_key: name
             items:
               type: dict
@@ -12794,9 +13220,20 @@ keys:
                   type: str
                 ip_address:
                   type: str
+                ssl_profile:
+                  type: str
+                  description: SSL profile name.
+                port:
+                  type: int
+                  description: Destination port for the request STUN server (default
+                    - 3478).
+                  min: 1
+                  max: 65535
+                  convert_types:
+                  - str
       server:
         type: dict
-        description: STUN server settings
+        description: STUN server settings.
         keys:
           local_interface:
             type: str
@@ -12809,6 +13246,43 @@ keys:
             min_length: 1
             items:
               type: str
+          bindings_timeout:
+            type: int
+            description: Timeout for bindings stored on STUN server in seconds.
+            convert_types:
+            - str
+            min: 10
+            max: 7200
+          ssl_profile:
+            type: str
+            description: SSL profile name.
+          ssl_connection_lifetime:
+            type: dict
+            description: 'SSL connection lifetime in minutes or hours.
+
+              If both are specified, minutes is given higher precedence.'
+            keys:
+              minutes:
+                type: int
+                description: SSL connection lifetime in minutes (default - 120).
+                convert_types:
+                - str
+                min: 1
+                max: 1440
+              hours:
+                type: int
+                description: SSL connection lifetime in hours (default - 2).
+                convert_types:
+                - str
+                min: 1
+                max: 24
+          port:
+            type: int
+            description: Listening port for STUN server (default - 3478).
+            min: 1
+            max: 65535
+            convert_types:
+            - str
   switchport_default:
     type: dict
     keys:
@@ -13590,15 +14064,23 @@ keys:
         access_group_in:
           type: str
           description: IPv4 access-list name
+          convert_types:
+          - int
         access_group_out:
           type: str
           description: IPv4 access-list name
+          convert_types:
+          - int
         ipv6_access_group_in:
           type: str
           description: IPv6 access-list name
+          convert_types:
+          - int
         ipv6_access_group_out:
           type: str
           description: IPv6 access-list name
+          convert_types:
+          - int
         multicast:
           type: dict
           keys:
@@ -13617,6 +14099,8 @@ keys:
                         type: str
                         description: IPv4 access-list name or IPv4 multicast group
                           prefix with mask
+                        convert_types:
+                        - int
                       out:
                         type: bool
                 source_route_export:
@@ -13648,6 +14132,8 @@ keys:
                         type: str
                         description: IPv6 access-list name or IPv6 multicast group
                           prefix with mask
+                        convert_types:
+                        - int
                 source_route_export:
                   type: dict
                   keys:

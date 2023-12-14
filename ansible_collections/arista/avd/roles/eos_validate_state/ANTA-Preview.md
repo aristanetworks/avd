@@ -75,6 +75,9 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 
 ## Test Categories
 
+!!! note
+    New tests are marked with the (New) string.
+
 - AvdTestHardware (Ansible tags: `hardware`, `platform_information`)
   - VerifyEnvironmentPower: Validate environment power supplies status.
   - VerifyEnvironmentCooling: Validate environment fan status.
@@ -116,6 +119,9 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 
 - AvdTestReloadCause (Ansible tags: `reload_cause`, `optional`, `never`)
   - VerifyReloadCause: Validate last reload cause. (Optional)
+
+- (New) AvdTestAPIHttpsSSL (No Ansible tags, use the new `skipped_tests` variable instead)
+  - VerifyAPIHttpsSSL: Validate eAPI HTTPS SSL profile status.
 
 ## Input variables
 

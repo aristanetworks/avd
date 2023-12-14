@@ -1,6 +1,6 @@
 ---
 - name: Remove output folders
-  hosts: all
+  hosts: TWODC_5STAGE_CLOS
   gather_facts: false
   connection: local
   tasks:

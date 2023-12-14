@@ -43,7 +43,7 @@ interface Management1
 
 - The maximum number of ACL entries allowed to be provisioned per switch: 10000
 
-#### IP Access-lists Configuration
+#### IP Access-lists Device Configuration
 
 ```eos
 ip access-list ACL_SEQUENCE_AND_COUNTERS

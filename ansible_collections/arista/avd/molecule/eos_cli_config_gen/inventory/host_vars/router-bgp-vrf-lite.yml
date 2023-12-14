@@ -149,8 +149,16 @@ router_bgp:
       neighbors:
         - ip_address: 10.1.1.0
           peer_group: OBS_WAN
-          prefix_list_in: PL-BGP-DEFAULT-RED-IN-C1
-          prefix_list_out: PL-BGP-DEFAULT-RED-OUT-C1
+      address_family_ipv4:
+        neighbors:
+          - ip_address: 10.1.1.0
+            prefix_list_in: PL-BGP-DEFAULT-RED-IN-C1
+            prefix_list_out: PL-BGP-DEFAULT-RED-OUT-C1
+      address_family_ipv6:
+        neighbors:
+          - ip_address: 2001:cafe:192:168::4
+            prefix_list_in: PL-BGP-V6-RED-IN-C1
+            prefix_list_out: PL-BGP-V6-RED-OUT-C1
     - name: YELLOW-C1
       rd: 1.0.1.1:103
       listen_ranges:

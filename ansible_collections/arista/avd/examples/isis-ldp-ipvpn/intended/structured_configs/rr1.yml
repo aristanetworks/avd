@@ -1,3 +1,7 @@
+hostname: rr1
+metadata:
+  platform: vEOS-lab
+is_deployed: true
 router_bgp:
   as: '65001'
   router_id: 10.255.2.1
@@ -11,9 +15,6 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  graceful_restart:
-    enabled: true
-    restart_time: 300
   bgp_cluster_id: 10.255.2.1
   peer_groups:
   - name: MPLS-OVERLAY-PEERS
@@ -33,16 +34,16 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65001'
+  address_family_evpn:
+    peer_groups:
+    - name: RR-OVERLAY-PEERS
+      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: false
     - name: RR-OVERLAY-PEERS
       activate: false
-  address_family_evpn:
-    peer_groups:
-    - name: RR-OVERLAY-PEERS
-      activate: true
   address_family_vpn_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
@@ -52,15 +53,19 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.1.1
     peer_group: MPLS-OVERLAY-PEERS
+    peer: pe1
     description: pe1
   - ip_address: 10.255.1.2
     peer_group: MPLS-OVERLAY-PEERS
+    peer: pe2
     description: pe2
   - ip_address: 10.255.1.3
     peer_group: MPLS-OVERLAY-PEERS
+    peer: pe3
     description: pe3
   - ip_address: 10.255.2.2
     peer_group: RR-OVERLAY-PEERS
+    peer: rr2
     description: rr2
 static_routes:
 - vrf: MGMT

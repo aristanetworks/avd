@@ -1,4 +1,6 @@
 hostname: EVPN-MULTICAST-L2LEAF1A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 static_routes:
 - vrf: MGMT

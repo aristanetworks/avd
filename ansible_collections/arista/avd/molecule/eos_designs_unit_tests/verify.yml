@@ -1,6 +1,6 @@
 ---
 - name: Converge
-  hosts: all
+  hosts: EOS_DESIGNS_UNIT_TESTS
   gather_facts: false
   connection: local
   tasks:

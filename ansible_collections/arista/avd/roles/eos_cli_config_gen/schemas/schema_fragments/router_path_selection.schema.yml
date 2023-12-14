@@ -59,7 +59,7 @@ keys:
                         type: list
                         required: true
                         min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str
@@ -81,7 +81,7 @@ keys:
                         type: list
                         required: true
                         min_length: 1
-                        max_length: 2
+                        max_length: 12
                         description: STUN server-profile names.
                         items:
                           type: str

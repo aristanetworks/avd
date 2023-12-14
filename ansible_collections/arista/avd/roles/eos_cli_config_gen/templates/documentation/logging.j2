@@ -44,6 +44,7 @@
 {%         else %}
 | Sequence-numbers | false |
 {%         endif %}
+| RFC5424 | {{ logging.format.rfc5424 | arista.avd.default(false) }} |
 {%     endif %}
 {%     if logging.vrfs is arista.avd.defined %}
 

@@ -1,0 +1,17 @@
+---
+# By default the uplink type should be `p2p`
+type: spine
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+  nodes:
+    - name: override_uplink_type-u
+      bgp_as: 65002
+      id: 1
+    - name: override_uplink_type-d
+      uplink_switches: [override_uplink_type-u]
+      uplink_switch_interfaces: [Ethernet1]
+      uplink_interfaces: [Ethernet1]
+      uplink_type: port-channel
+      id: 2
