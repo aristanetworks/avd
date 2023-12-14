@@ -9633,6 +9633,14 @@
                   "^_.+$": {}
                 },
                 "title": "Certificate"
+              },
+              "certificate_revocation_lists": {
+                "type": "array",
+                "description": "List of CRLs (Certificate Revocation List).\nIf specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.\n",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Certificate Revocation Lists"
               }
             },
             "additionalProperties": false,
