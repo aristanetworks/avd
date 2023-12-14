@@ -1,4 +1,6 @@
 hostname: DC1-BL2A
+metadata:
+  platform: 7280R2
 is_deployed: true
 router_bgp:
   as: '65106'

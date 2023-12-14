@@ -5894,6 +5894,12 @@ keys:
             items:
               type: str
               description: IP or hostname
+  metadata:
+    type: dict
+    description: Key only used for documentation or validation purposes
+    keys:
+      platform:
+        type: str
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration

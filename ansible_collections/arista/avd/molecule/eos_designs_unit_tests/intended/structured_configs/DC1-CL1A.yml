@@ -1,4 +1,6 @@
 hostname: DC1-CL1A
+metadata:
+  platform: 7368X4
 is_deployed: true
 router_bgp:
   as: '65108'
