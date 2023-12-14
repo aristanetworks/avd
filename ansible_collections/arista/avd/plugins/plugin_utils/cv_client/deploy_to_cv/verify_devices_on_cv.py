@@ -8,10 +8,10 @@ from ..client.exceptions import CVResourceNotFound
 from ..models import CVDevice
 
 
-async def verify_devices_on_cv(devices: list[CVDevice], skip_missing_devices: bool, warnings: list, cv_client: CVClient) -> None:
+async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_missing_devices: bool, warnings: list, cv_client: CVClient) -> None:
     """
     Verify that the given Devices are already present on CloudVision
-    and in-place update the objects with missing information like
+    and in-place update the given objects with missing information like
     system MAC address and serial number.
 
     Hostname is always set for a device, but to support initial rollout, the hostname will not
@@ -66,6 +66,37 @@ async def verify_devices_on_cv(devices: list[CVDevice], skip_missing_devices: bo
         device._exists_on_cv = True
         device.serial_number = found_device_dict_by_hostname[device.hostname].key.device_id
         device.system_mac_address = found_device_dict_by_hostname[device.hostname].system_mac_address
+
+    """
+    commented out since CV is not responding well to these API calls :)
+
+    # Now we know which devices are on CV, so we can dig deeper and check for them in I&T Studio
+    # If a device is found, we will ensure hostname is correct and if not, update the hostname.
+    # If a device is not found, we will set _exist_on_cv back to False.
+    existing_devices = [device for device in devices if device._exists_on_cv]
+
+    cv_topology_inputs = await cv_client.get_topology_studio_inputs(
+        workspace_id=workspace_id,
+        device_ids=[device.serial_number for device in existing_devices],
+    )
+    topology_inputs_dict_by_serial = {topology_input.key.device_id: topology_input for topology_input in cv_topology_inputs}
+
+    # List of tuples holding the info we need to update in I&T Studio
+    # [(<device_id>, <hostname>)]
+    update_topology_inputs = []
+
+    for device in existing_devices:
+        if device.serial_number not in topology_inputs_dict_by_serial:
+            device._exists_on_cv = False
+            continue
+            # TODO: Onboard the device to I&T since we know we have it on CV.
+
+        if device.hostname != topology_inputs_dict_by_serial[device.serial_number].device_info.hostname:
+            update_topology_inputs.append((device.serial_number, device.hostname))
+
+    if update_topology_inputs:
+        await cv_client.set_topology_studio_inputs(workspace_id=workspace_id, device_inputs=update_topology_inputs)
+    """
 
     if missing_devices := [device for device in devices if not device._exists_on_cv]:
         error = CVResourceNotFound("Missing devices on CloudVision", *missing_devices)

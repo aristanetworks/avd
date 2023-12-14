@@ -107,6 +107,7 @@ async def deploy_to_cv(
                         + [tag.device for tag in interface_tags if tag.device is not None]
                         + [config.device for config in configs if config.device is not None]
                     ),
+                    workspace_id=result.workspace.id,
                     skip_missing_devices=skip_missing_devices,
                     warnings=result.warnings,
                     cv_client=cv_client,
@@ -127,12 +128,10 @@ async def deploy_to_cv(
                 await deploy_tags_to_cv(
                     tags=interface_tags,
                     workspace=result.workspace,
-                    skip_missing_devices=skip_missing_devices,
                     strict=strict_tags,
                     skipped_tags=result.skipped_interface_tags,
                     deployed_tags=result.deployed_interface_tags,
                     removed_tags=result.removed_interface_tags,
-                    warnings=result.warnings,
                     cv_client=cv_client,
                 )
 
@@ -140,7 +139,6 @@ async def deploy_to_cv(
                 await deploy_configs_to_cv(
                     configs=configs,
                     result=result,
-                    skip_missing_devices=skip_missing_devices,
                     cv_client=cv_client,
                 )
 
