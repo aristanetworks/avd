@@ -4,9 +4,9 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Mapping
 from functools import cached_property
 from ipaddress import ip_interface
-from typing import Mapping
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
@@ -20,18 +20,18 @@ class AvdTestBase:
     Base class for all AVD eos_validate_state tests.
     """
 
-    def __init__(self, device_name: str, hostvars: Mapping):
+    def __init__(self, device_name: str, hostvars: dict | object):
         """
         Initialize the AvdTestBase class.
 
         Args:
             device_name (str): The current device name for which the plugin is being run.
-            hostvars (Mapping): A mapping that contains a key for each device with a value of the structured_config.
+            hostvars (dict | object): A dictionary that contains a key for each device with a value of the structured_config.
                                       When using Ansible, this is the `task_vars['hostvars']` object.
         """
         self.hostvars = hostvars
         self.device_name = device_name
-        self.structured_config = self.get_host_structured_config(host=device_name)
+        self.structured_config = self.get_host_struct_cfg(host=device_name)
 
     def render(self) -> dict:
         """
@@ -46,11 +46,11 @@ class AvdTestBase:
         """
         return getattr(self, "test_definition", None) or {}
 
-    def get_host_structured_config(self, host: str) -> dict:
+    def get_host_struct_cfg(self, host: str) -> dict:
         """
         Retrieves and returns the structured configuration for a specified host.
 
-        The function fetches the structured_config from hostvars. It ensures the returned object is a
+        The function fetches the structured_config from hostvars. It ensures the returned object is a non-empty
         dictionary, converting Ansible dictionary-like objects to a standard dictionary if necessary.
 
         Args:
@@ -58,13 +58,16 @@ class AvdTestBase:
 
         Returns:
             dict: Structured configuration for the host.
+
+        Raises:
+            AristaAvdError: If host is not in hostvars or if its structured_config is not a dictionary or is empty.
         """
         if host not in self.hostvars:
             raise AristaAvdError(f"Host '{host}' is missing from the hostvars.")
         struct_cfg = get(self.hostvars, host, separator="..")
 
-        # Check if struct_cfg is a mapping object (e.g. Ansible 'hostvars' object or regular dict)
-        if not isinstance(struct_cfg, Mapping):
+        # Check if struct_cfg is a dict or behaves like a dict (e.g. Ansible 'hostvars' object)
+        if not isinstance(struct_cfg, (dict, Mapping)):
             raise AristaAvdError(f"Host '{host}' structured_config is not a dictionary or dictionary-like object.")
 
         if not isinstance(struct_cfg, dict):
@@ -76,7 +79,7 @@ class AvdTestBase:
         self, message=None, key: str | None = None, value=None, key_path: str | None = None, is_missing: bool = True, logging_level: str = "INFO"
     ) -> None:
         """
-        Logging function that logs the test being skipped, appended to a formatted message based on the provided parameters.
+        Logging function that logs the test being skipped appended to a formatted message based on the provided parameters.
 
         Args:
             message (Any | None): The message to be logged. If provided, it will be logged as is, ignoring other parameters.
@@ -111,17 +114,17 @@ class AvdTestBase:
 
     def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
         """
-        Inline update of the shutdown value of an interface dictionary.
-
-        The value of `interface['shutdown']` is considered first if it exists, if not False.
-
-        For Ethernet interfaces, `interface_defaults` is also considered.
+        Check if an interface is shutdown or not, considering EOS defaults.
 
         Args:
-            interface (dict): The interface to update.
+            interface (dict): The interface to verify.
             host (str): Host to verify. Defaults to the host running the test.
+
+        Returns:
+            bool: Returns the interface shutdown key's value, or `interface_defaults.ethernet` if not available.
+                  Returns False if both are absent, which is the default EOS behavior.
         """
-        host_struct_cfg = self.get_host_structured_config(host=host) if host else self.structured_config
+        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.structured_config
         if "Ethernet" in get(interface, "name", ""):
             interface["shutdown"] = default(get(interface, "shutdown"), get(host_struct_cfg, "interface_defaults.ethernet.shutdown"), False)
         else:
@@ -157,7 +160,7 @@ class AvdTestBase:
         Returns:
             str | None: IP address of the host interface or None if unavailable.
         """
-        host_struct_cfg = self.get_host_structured_config(host=host) if host else self.structured_config
+        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.structured_config
         try:
             peer_interfaces = get(host_struct_cfg, interface_model, required=True)
             peer_interface = get_item(peer_interfaces, "name", interface_name, required=True)
@@ -175,7 +178,7 @@ class AvdTestBase:
             host (str | None): The host from which to retrieve the key. Defaults to the device running the test.
             logging_level (str): The logging level to use for the log message.
         """
-        host_struct_cfg = self.get_host_structured_config(host=host) if host else self.structured_config
+        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.structured_config
         try:
             return get(host_struct_cfg, key, required=True, separator="..")
         except AristaAvdMissingVariableError:
@@ -212,7 +215,7 @@ class AvdTestBase:
             In this case, the function will log a warning message because the key 'c' with value '3' is not found,
             and it will return False as the data doesn't meet all validation requirements.
         """
-        data = data or (self.get_host_structured_config(host=host) if host else self.structured_config)
+        data = data or (self.get_host_struct_cfg(host=host) if host else self.structured_config)
         valid = True
 
         # Check the expected key/value pairs first
