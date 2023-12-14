@@ -1,4 +1,6 @@
 hostname: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
+metadata:
+  platform: vEOS-lab
 is_deployed: true
 static_routes:
 - vrf: MGMT

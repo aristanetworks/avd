@@ -709,6 +709,338 @@
       "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
       "title": "Aliases"
     },
+    "application_traffic_recognition": {
+      "type": "object",
+      "description": "Application traffic recognition configuration.",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "description": "List of categories.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Category name.",
+                "title": "Name"
+              },
+              "applications": {
+                "type": "array",
+                "description": "List of applications.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Application name.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Categories"
+        },
+        "field_sets": {
+          "type": "object",
+          "properties": {
+            "l4_ports": {
+              "type": "array",
+              "description": "L4 port field-set.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "L4 port field-set name.",
+                    "title": "Name"
+                  },
+                  "port_values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Port values or range of port values.\nPort values are between 0 and 65535."
+                    },
+                    "title": "Port Values"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "L4 Ports"
+            },
+            "ipv4_prefixes": {
+              "type": "array",
+              "description": "IPv4 prefix field set.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv4 prefix field-set name.",
+                    "title": "Name"
+                  },
+                  "prefix_values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "IP prefix (ex 1.2.3.0/24)."
+                    },
+                    "title": "Prefix Values"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "IPv4 Prefixes"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Field Sets"
+        },
+        "applications": {
+          "type": "object",
+          "properties": {
+            "ipv4_applications": {
+              "type": "array",
+              "description": "List of user defined IPv4 applications.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Application name.",
+                    "title": "Name"
+                  },
+                  "src_prefix_set_name": {
+                    "type": "string",
+                    "description": "Source prefix set name.",
+                    "title": "Src Prefix Set Name"
+                  },
+                  "dest_prefix_set_name": {
+                    "type": "string",
+                    "description": "Destination prefix set name.",
+                    "title": "Dest Prefix Set Name"
+                  },
+                  "protocols": {
+                    "type": "array",
+                    "description": "List of protocols to consider for this application.\n\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ahp",
+                        "esp",
+                        "icmp",
+                        "igmp",
+                        "ospf",
+                        "pim",
+                        "rsvp",
+                        "tcp",
+                        "udp",
+                        "vrrp"
+                      ]
+                    },
+                    "title": "Protocols"
+                  },
+                  "protocol_ranges": {
+                    "type": "array",
+                    "description": "Acccept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Protocol Ranges"
+                  },
+                  "udp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
+                    "title": "UDP Src Port Set Name"
+                  },
+                  "tcp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
+                    "title": "TCP Src Port Set Name"
+                  },
+                  "udp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
+                    "title": "UDP Dest Port Set Name"
+                  },
+                  "tcp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
+                    "title": "TCP Dest Port Set Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "IPv4 Applications"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Applications"
+        },
+        "application_profiles": {
+          "type": "array",
+          "description": "Group of applications.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Application Profile name.",
+                "title": "Name"
+              },
+              "applications": {
+                "type": "array",
+                "description": "List of applications part of the application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Application Name.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications"
+              },
+              "application_transports": {
+                "type": "array",
+                "description": "List of transport protocols.",
+                "items": {
+                  "type": "string",
+                  "description": "Transport name.",
+                  "enum": [
+                    "http",
+                    "https",
+                    "udp",
+                    "tcp",
+                    "ip",
+                    "ip6",
+                    "ssl",
+                    "rtp",
+                    "sctp",
+                    "quic"
+                  ]
+                },
+                "title": "Application Transports"
+              },
+              "categories": {
+                "type": "array",
+                "description": "Categories under this application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of a category.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Categories"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Application Profiles"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Application Traffic Recognition"
+    },
     "arp": {
       "type": "object",
       "properties": {
@@ -9670,6 +10002,21 @@
         "^_.+$": {}
       },
       "title": "MCS Client"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Key only used for documentation or validation purposes",
+      "properties": {
+        "platform": {
+          "type": "string",
+          "title": "Platform"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Metadata"
     },
     "mlag_configuration": {
       "type": "object",

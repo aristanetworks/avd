@@ -1,4 +1,6 @@
 hostname: dc2-spine1
+metadata:
+  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65200'
@@ -115,6 +117,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+  https_ssl_profile: eAPI_SSL_Profile
 ethernet_interfaces:
 - name: Ethernet1
   peer: dc2-leaf1a

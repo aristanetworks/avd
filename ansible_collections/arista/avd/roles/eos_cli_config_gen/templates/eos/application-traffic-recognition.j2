@@ -1,0 +1,96 @@
+{#
+ Copyright (c) 2023 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - application traffic recognition #}
+{% if application_traffic_recognition is arista.avd.defined %}
+!
+application traffic recognition
+{%     if application_traffic_recognition.applications is arista.avd.defined %}
+{%         for application in application_traffic_recognition.applications.ipv4_applications | arista.avd.natural_sort('name') %}
+   !
+   application ipv4 {{ application.name }}
+{%             if application.src_prefix_set_name is arista.avd.defined %}
+      source prefix field-set {{ application.src_prefix_set_name }}
+{%             endif %}
+{%             if application.dest_prefix_set_name is arista.avd.defined %}
+      destination prefix field-set {{ application.dest_prefix_set_name }}
+{%             endif %}
+{%             for protocol in application.protocols | arista.avd.natural_sort() %}
+{%                 set config = [protocol] %}
+{%                 if protocol == "tcp" %}
+{%                     if application.tcp_src_port_set_name is arista.avd.defined %}
+{%                         do config.append("source port field-set " + application.tcp_src_port_set_name) %}
+{%                     endif %}
+{%                     if application.tcp_dest_port_set_name is arista.avd.defined %}
+{%                         do config.append("destination port field-set " + application.tcp_dest_port_set_name) %}
+{%                     endif %}
+{%                 endif %}
+{%                 if protocol == "udp" %}
+{%                     if application.udp_src_port_set_name is arista.avd.defined %}
+{%                         do config.append("source port field-set " + application.udp_src_port_set_name) %}
+{%                     endif %}
+{%                     if application.udp_dest_port_set_name is arista.avd.defined %}
+{%                         do config.append("destination port field-set " + application.udp_dest_port_set_name) %}
+{%                     endif %}
+{%                 endif %}
+      protocol {{ config | join(" ") }}
+{%             endfor %}
+{%             if application.protocol_ranges is arista.avd.defined %}
+      protocol {{ application.protocol_ranges | arista.avd.natural_sort('name') | join(", ") }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# categories #}
+{%     for category in application_traffic_recognition.categories | arista.avd.natural_sort('name') %}
+   !
+   category {{ category.name }}
+{%         for app_details in category.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service') %}
+{%             if app_details.service is  arista.avd.defined %}
+      application {{ app_details.name }} service {{ app_details.service }}
+{%             else %}
+      application {{ app_details.name }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{%     for application_profile in application_traffic_recognition.application_profiles | arista.avd.natural_sort('name') %}
+   !
+   application-profile {{ application_profile.name }}
+{%         for application in application_profile.applications | arista.avd.natural_sort('name') | arista.avd.natural_sort('service') %}
+{%             if application.service is arista.avd.defined %}
+      application {{ application.name }} service {{ application.service }}
+{%             else %}
+      application {{ application.name }}
+{%             endif %}
+{%         endfor %}
+{%         for transport in application_profile.application_transports | arista.avd.natural_sort %}
+      application {{ transport }} transport
+{%         endfor %}
+{%         for category in application_profile.categories | arista.avd.natural_sort %}
+{%             if category.service is arista.avd.defined %}
+      category {{ category.name }} service {{ category.service }}
+{%             else %}
+      category {{ category.name }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{%     if application_traffic_recognition.field_sets is arista.avd.defined %}
+{%         for prefix_set in application_traffic_recognition.field_sets.ipv4_prefixes | arista.avd.natural_sort('name') %}
+{%             if prefix_set.name is arista.avd.defined %}
+{%                 do prefix_set.prefix_values.sort() %}
+   !
+   field-set ipv4 prefix {{ prefix_set.name }}
+      {{ prefix_set.prefix_values | join(" ") }}
+{%             endif %}
+{%         endfor %}
+{%         for port_set in application_traffic_recognition.field_sets.l4_ports | arista.avd.natural_sort('name') %}
+{%             if port_set.name is arista.avd.defined %}
+{%                 do port_set.port_values.sort() %}
+   !
+   field-set l4-port {{ port_set.name }}
+      {{ port_set.port_values | join(", ") }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endif %}

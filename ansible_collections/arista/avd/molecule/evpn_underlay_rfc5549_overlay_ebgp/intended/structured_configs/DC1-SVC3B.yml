@@ -1,4 +1,6 @@
 hostname: DC1-SVC3B
+metadata:
+  platform: 7280R
 is_deployed: true
 router_bgp:
   as: '65103'

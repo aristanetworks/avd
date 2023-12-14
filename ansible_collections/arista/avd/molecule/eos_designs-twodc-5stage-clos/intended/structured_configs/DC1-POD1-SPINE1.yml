@@ -1,4 +1,6 @@
 hostname: DC1-POD1-SPINE1
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65110.100'
