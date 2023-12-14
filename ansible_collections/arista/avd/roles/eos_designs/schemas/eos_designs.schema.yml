@@ -4162,6 +4162,26 @@ $defs:
                   see "mlag_ibgp_peering_vrfs.base_vlan" for details.
 
                   '
+              rd_override:
+                type: str
+                convert_types:
+                - int
+                description: "By default, the VRF RD will be derived from the pattern
+                  defined in `overlay_rd_type`.\nThe rd_override allows us to override
+                  this value and statically define it.\n\nrd_override supports two
+                  formats:\n  - A single number will be used in the RD assigned number
+                  subfield (second part of the RD).\n  - A full RD string with colon
+                  seperator which will override the full RD.\n"
+              rt_override:
+                type: str
+                convert_types:
+                - int
+                description: "By default, the VRF RD will be derived from the pattern
+                  defined in `overlay_rt_type`.\nThe rt_override allows us to override
+                  this value and statically define it.\n\nrt_override supports two
+                  formats:\n  - A single number will be used in the RT assigned number
+                  subfield (second part of the RT).\n  - A full RT string with colon
+                  seperator which will override the full RT.\n"
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'IPv4_address/Mask
