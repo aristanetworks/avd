@@ -32,7 +32,7 @@ keys:
               vendor_id:
                 type: str
                 convert_types:
-                  - int
+                - int
               sub_options:
                 type: list
                 primary_key: code
@@ -45,7 +45,7 @@ keys:
                       min: 1
                       max: 254
                       convert_types:
-                        - str
+                      - str
                     string:
                       type: str
                       description: String value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.
@@ -69,7 +69,7 @@ keys:
               name:
                 type: str
                 convert_types:
-                  - int
+                - int
               default_gateway:
                 type: str
               dns_servers:
@@ -96,18 +96,18 @@ keys:
                     min: 0
                     max: 2000
                     convert_types:
-                      - str
+                    - str
                   hours:
                     type: int
                     required: true
                     min: 0
                     max: 23
                     convert_types:
-                      - str
+                    - str
                   minutes:
                     type: int
                     required: true
                     min: 0
                     max: 59
                     convert_types:
-                      - str
+                    - str
