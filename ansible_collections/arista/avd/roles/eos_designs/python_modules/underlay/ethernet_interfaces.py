@@ -8,6 +8,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
+from ..interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 
@@ -31,7 +32,15 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "peer": link["peer"],
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
-                "description": self.shared_utils.interface_descriptions.underlay_ethernet_interfaces(link["type"], link["peer"], link["peer_interface"]),
+                "description": self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                    InterfaceDescriptionData(
+                        shared_utils=self.shared_utils,
+                        interface=link["interface"],
+                        link_type=link["type"],
+                        peer=link["peer"],
+                        peer_interface=link["peer_interface"],
+                    )
+                ),
                 "speed": link.get("speed"),
                 "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
