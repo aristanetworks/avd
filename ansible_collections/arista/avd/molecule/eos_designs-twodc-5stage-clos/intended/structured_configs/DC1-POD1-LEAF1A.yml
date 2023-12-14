@@ -1,4 +1,6 @@
 hostname: DC1-POD1-LEAF1A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65111.100'

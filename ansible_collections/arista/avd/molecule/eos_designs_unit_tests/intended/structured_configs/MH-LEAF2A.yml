@@ -1,4 +1,6 @@
 hostname: MH-LEAF2A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65153'

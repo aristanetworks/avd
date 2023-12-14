@@ -1,4 +1,6 @@
 hostname: SITE2-LER1
+metadata:
+  platform: 7280SR3
 is_deployed: true
 router_bgp:
   as: '65000'

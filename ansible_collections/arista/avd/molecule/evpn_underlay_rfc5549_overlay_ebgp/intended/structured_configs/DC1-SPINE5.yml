@@ -1,4 +1,6 @@
 hostname: DC1-SPINE5
+metadata:
+  platform: 7050X3
 is_deployed: true
 router_bgp:
   as: '65001'

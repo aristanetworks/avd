@@ -1,0 +1,134 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+from functools import cached_property
+
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.roles.eos_designs.python_modules.interface_descriptions import AvdInterfaceDescriptions, InterfaceDescriptionData
+
+
+class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
+    @cached_property
+    def _custom_description_prefix(self):
+        return get(self._hostvars, "description_prefix", "")
+
+    def underlay_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
+        """
+        Implementation using new data.
+
+        Available data:
+            - link_type
+            - peer
+            - peer_interface
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type
+        """
+        link_peer = str(data.peer).upper()
+        if data.link_type == "underlay_p2p":
+            return f"{self._custom_description_prefix}_P2P_LINK_TO_{link_peer}_{data.peer_interface}"
+
+        if data.link_type == "underlay_l2":
+            return f"{self._custom_description_prefix}_{link_peer}_{data.peer_interface}"
+
+        return ""
+
+    def underlay_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
+        """
+        Implementation using new data.
+
+        Available data:
+            - peer
+            - peer_channel_group_id
+            - port_channel_description
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type
+        """
+        if data.port_channel_description is not None:
+            link_channel_description = str(data.port_channel_description).upper()
+            return f"{self._custom_description_prefix}_{link_channel_description}_Po{data.peer_channel_group_id}"
+
+        link_peer = str(data.peer).upper()
+        return f"{self._custom_description_prefix}_{link_peer}_Po{data.peer_channel_group_id}"
+
+    def mlag_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
+        """
+        Implementation using new data.
+
+        Available data:
+            - peer_interface
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type
+        """
+        return f"{self._custom_description_prefix}_MLAG_PEER_{data.mlag_peer}_{data.interface}"
+
+    def mlag_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
+        """
+        Implementation using new data.
+
+        Available data:
+            - mlag_peer
+            - peer_channel_group_id
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type
+        """
+        return f"{self._custom_description_prefix}_MLAG_PEER_{data.mlag_peer}_Po{data.mlag_port_channel_id}"
+
+    def connected_endpoints_ethernet_interface(self, data: InterfaceDescriptionData) -> str:
+        """
+        Implementation using new data.
+
+        Available data:
+            - peer
+            - peer_interface
+            - description
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type
+        """
+        elements = [data.peer, data.peer_interface]
+        return "_".join([str(element) for element in elements if element is not None])
+
+    def connected_endpoints_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
+        """
+        Implementation using new data.
+
+        Available data:
+            - peer
+            - description
+            - port_channel_description
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type
+        """
+        elements = [self._custom_description_prefix, data.peer, data.port_channel_description]
+        return "_".join([str(element) for element in elements if element is not None])
+
+    def router_id_loopback_interface(self, data: InterfaceDescriptionData) -> str:
+        """
+        Available data:
+            - description
+            - mpls_overlay_role
+            - mpls_lsr
+            - overlay_routing_protocol
+            - type
+        """
+        switch_type = str(data.type).upper()
+        return f"{self._custom_description_prefix}_EVPN_Overlay_Peering_{switch_type}"
+
+    def vtep_loopback_interface(self) -> str:
+        """
+        Implementation of custom code similar to jinja.
+        TODO: AVD5.0.0 Update to use InterfaceDescriptionData
+        """
+        switch_type = str(self.shared_utils.type).upper()
+        return f"{self._custom_description_prefix}_VTEP_VXLAN_Tunnel_Source_{switch_type}"
