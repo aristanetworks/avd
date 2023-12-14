@@ -17,8 +17,8 @@ description:
   - The C(arista.avd.eos_validate_state_reports) module is an Ansible Action Plugin designed to generate
     validation reports from the test results produced by the ANTA test framework.
   - This plugin requires a JSON file for each host in the Ansible play, containing all test results. The JSON file
-    is created automatically by the `eos_validate_state_runner` plugin and is saved in the test results directory
-    with the following naming convention `<inventory_hostname>-results.json`.
+    is created automatically by the C(eos_validate_state_runner) plugin and is saved in the test results directory
+    with the following naming convention C(<inventory_hostname>-results.json).
   - |-
     The plugin offers the following functionalities:
       - It aggregates all test results from every host in the Ansible play and generates a CSV report.
@@ -60,14 +60,14 @@ seealso:
     link: https://anta.ninja
 notes:
   - Enabling the cProfile feature for performance profiling may impact the plugin's performance, especially in production environments.
-  - Hosts with `is_deployed` is False are automatically skipped, and no test results are processed for these hosts.
+  - Hosts with C(is_deployed) is False are automatically skipped, and no test results are processed for these hosts.
 """
 
 EXAMPLES = r"""
 - name: Generate validation reports from ANTA test results
   arista.avd.eos_validate_state_reports:
-    csv_report_path: "/git_projects/my_avd_project/reports/my-fabric-state.csv"
-    md_report_path: "/git_projects/my_avd_project/reports/my-fabric-state.md"
+    csv_report_path: "/my_avd_project/reports/my-fabric-state.csv"
+    md_report_path: "/my_avd_project/reports/my-fabric-state.md"
     validation_report_csv: true
     validation_report_md: true
     only_failed_tests: false

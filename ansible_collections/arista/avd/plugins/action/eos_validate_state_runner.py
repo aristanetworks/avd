@@ -36,7 +36,8 @@ class AnsibleNoAliasDumper(AnsibleDumper):
 
 
 class ActionModule(ActionBase):
-    # @cprofile()
+
+    # @cprofile
     def run(self, tmp=None, task_vars=None):
         self._supports_check_mode = True
 

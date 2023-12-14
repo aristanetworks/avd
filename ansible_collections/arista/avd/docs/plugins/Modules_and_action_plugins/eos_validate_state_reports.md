@@ -22,7 +22,7 @@ Generates validation reports for the eos\_validate\_state role
 
 The <code>arista.avd.eos\_validate\_state\_reports</code> module is an Ansible Action Plugin designed to generate validation reports from the test results produced by the ANTA test framework.
 
-This plugin requires a JSON file for each host in the Ansible play, containing all test results. The JSON file is created automatically by the \`eos\_validate\_state\_runner\` plugin and is saved in the test results directory with the following naming convention \`\<inventory\_hostname\>\-results.json\`.
+This plugin requires a JSON file for each host in the Ansible play, containing all test results. The JSON file is created automatically by the <code>eos\_validate\_state\_runner</code> plugin and is saved in the test results directory with the following naming convention <code>\<inventory\_hostname\>\-results.json</code>.
 
 The plugin offers the following functionalities\:
   \- It aggregates all test results from every host in the Ansible play and generates a CSV report.
@@ -44,7 +44,7 @@ The plugin offers the following functionalities\:
 ## Notes
 
 - Enabling the cProfile feature for performance profiling may impact the plugin\'s performance, especially in production environments.
-- Hosts with \`is\_deployed\` is False are automatically skipped, and no test results are processed for these hosts.
+- Hosts with <code>is\_deployed</code> is False are automatically skipped, and no test results are processed for these hosts.
 
 ## See Also
 
@@ -55,8 +55,8 @@ The plugin offers the following functionalities\:
 ```yaml
 - name: Generate validation reports from ANTA test results
   arista.avd.eos_validate_state_reports:
-    csv_report_path: "/git_projects/my_avd_project/reports/my-fabric-state.csv"
-    md_report_path: "/git_projects/my_avd_project/reports/my-fabric-state.md"
+    csv_report_path: "/my_avd_project/reports/my-fabric-state.csv"
+    md_report_path: "/my_avd_project/reports/my-fabric-state.md"
     validation_report_csv: true
     validation_report_md: true
     only_failed_tests: false
