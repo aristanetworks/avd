@@ -264,6 +264,10 @@ class UtilsMixin:
         return self.shared_utils.wan_role == "server" and len(self._wan_route_servers) > 0
 
     @cached_property
+    def _wan_listen_ranges(self):
+        return get(self.shared_utils.bgp_peer_groups["wan_overlay_peers"], "listen_range_prefixes", required=True)
+
+    @cached_property
     def _wan_site(self) -> dict | None:
         """
         Here assuming that cv_pathfinder_name is unique across zones and regions
@@ -275,7 +279,7 @@ class UtilsMixin:
             self.shared_utils.switch_data_combined,
             "cv_pathfinder_site",
             required=True,
-            org_key="A node variable 'cv_pathdiner_site' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+            org_key="A node variable 'cv_pathfinder_site' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
         )
         sites = get(self._wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self._wan_region['name']}' is missing a list of sites")
         return get_item(
@@ -283,8 +287,8 @@ class UtilsMixin:
             "name",
             node_defined_site,
             required=True,
-            custom_error=(
-                f"The 'cv_pathdiner_site '{node_defined_site}' defined at the node level could not be found under the 'sites' list for the region"
+            custom_error_msg=(
+                f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'sites' list for the region"
                 f" '{self._wan_region['name']}'."
             ),
         )
@@ -301,7 +305,7 @@ class UtilsMixin:
             self.shared_utils.switch_data_combined,
             "cv_pathfinder_region",
             required=True,
-            org_key="A node variable 'cv_pathdiner_region' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
+            org_key="A node variable 'cv_pathfinder_region' must be defined when 'cv_pathfinder_role' is 'edge' or 'transit'.",
         )
         regions = get(
             self._hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
@@ -312,7 +316,7 @@ class UtilsMixin:
             "name",
             node_defined_region,
             required=True,
-            custom_error="The 'cv_pathdiner_region' defined at the node level could not be found under the 'cv_pathfinder_regions' key.",
+            custom_error_msg="The 'cv_pathfinder_region' defined at the node level could not be found under the 'cv_pathfinder_regions' key.",
         )
 
     @cached_property

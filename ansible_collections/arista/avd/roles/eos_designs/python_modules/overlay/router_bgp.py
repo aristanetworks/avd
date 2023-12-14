@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import ipaddress
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
@@ -65,7 +66,7 @@ class RouterBgpMixin(UtilsMixin):
                 "peer_group": self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"],
                 "remote_as": self.shared_utils.bgp_as,
             }
-            for prefix in get(self.shared_utils.switch_data_combined, "bgp_listen_range_prefixes", default=[])
+            for prefix in self._wan_listen_ranges
         ] or None
 
     def _generate_base_peer_group(self, pg_type: str, pg_name: str, maximum_routes: int = 0) -> dict:
@@ -259,7 +260,7 @@ class RouterBgpMixin(UtilsMixin):
         if self.shared_utils.overlay_dpath is True:
             address_family_evpn["domain_identifier"] = get(self.shared_utils.switch_data_combined, "ipvpn_gateway.evpn_domain_id", default="65535:1")
 
-        if self.shared_utils.cv_pathfinder_role == "pathfinder":
+        if self.shared_utils.wan_role == "server":
             address_family_evpn["next_hop"] = {"resolution_disabled": True}
         return address_family_evpn
 
@@ -478,6 +479,8 @@ class RouterBgpMixin(UtilsMixin):
                     neighbors.append(neighbor)
 
             if self.shared_utils.wan_role == "client":
+                if not self._router_id_listen_ranges(self._wan_listen_ranges):
+                    raise AristaAvdError(f"Loopback0 IP {self.shared_utils.router_id} is not in the Route Reflector listen range prefixes.")
                 for wan_route_server, data in self._wan_route_servers.items():
                     neighbor = self._create_neighbor(data["router_id"], wan_route_server, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])
                     neighbors.append(neighbor)
@@ -501,6 +504,13 @@ class RouterBgpMixin(UtilsMixin):
             return neighbors
 
         return None
+
+    def _router_id_listen_ranges(self, listen_range_prefixes: list) -> bool:
+        """
+        Check if our source IP is in any of the listen range prefixes
+        """
+        source_ip = ipaddress.ip_address(self.shared_utils.router_id)
+        return any(source_ip in ipaddress.ip_network(prefix) for prefix in listen_range_prefixes)
 
     def _bgp_overlay_dpath(self) -> dict | None:
         if self.shared_utils.overlay_dpath is True:

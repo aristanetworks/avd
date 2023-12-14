@@ -12,6 +12,10 @@ router_bgp:
   updates:
     wait_install: true
   bgp_cluster_id: 192.168.31.1
+  listen_ranges:
+  - prefix: 192.168.30.0/24
+    peer_group: WAN-OVERLAY-PEERS
+    remote_as: '65000'
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
@@ -35,6 +39,8 @@ router_bgp:
       activate: true
     - name: RR-OVERLAY-PEERS
       activate: true
+    next_hop:
+      resolution_disabled: true
   address_family_ipv4:
     peer_groups:
     - name: WAN-OVERLAY-PEERS

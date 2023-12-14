@@ -941,13 +941,6 @@ $defs:
             description: |-
               MSS value for IPv4 the DPS interface.
               If not set, and the device is WAN device, a default value of 1000 is used.
-          bgp_listen_range_prefixes:
-            type: list
-            description: |-
-              Only used for nodes where `wan_role` is `server` like AutoVPN RRs and Pathfinders.
-            items:
-              type: str
-              description: The prefixes to use in listen_range.
           ptp:
             documentation_options:
               table: node-type-ptp-configuration

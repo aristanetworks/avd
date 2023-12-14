@@ -2296,6 +2296,15 @@
               "default": false,
               "title": "BFD"
             },
+            "listen_range_prefixes": {
+              "type": "array",
+              "description": "Only used for nodes where `wan_role` is `server` like AutoVPN RRs and Pathfinders.\nFor clients, AVD will raise an error if the Loopback0 IP is not in any listen range.",
+              "items": {
+                "type": "string",
+                "description": "The prefixes to use in listen_range."
+              },
+              "title": "Listen Range Prefixes"
+            },
             "structured_config": {
               "type": "object",
               "description": "Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.",
