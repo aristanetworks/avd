@@ -11029,6 +11029,19 @@
                 "^_.+$": {}
               },
               "title": "Multicast Replication"
+            },
+            "mdb_profile": {
+              "type": "string",
+              "description": "Sand platforms MDB Profile configuration. Note: l3-xxxl does not support MLAG.",
+              "enum": [
+                "balanced",
+                "balanced-xl",
+                "l3",
+                "l3-xl",
+                "l3-xxl",
+                "l3-xxxl"
+              ],
+              "title": "MDB Profile"
             }
           },
           "additionalProperties": false,
