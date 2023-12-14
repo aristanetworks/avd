@@ -9751,6 +9751,133 @@
       },
       "title": "Node Type Keys"
     },
+    "ntp_settings": {
+      "type": "object",
+      "description": "NTP settings",
+      "properties": {
+        "server_vrf": {
+          "type": "string",
+          "description": "EOS only supports NTP servers in one VRF, so this VRF is used for all NTP servers and one local-interface.\n- `use_mgmt_interface_vrf` will configure the NTP server(s) under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as NTP local-interface.\n  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf` will configure the NTP server(s) under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as NTP local-interface.\n  An error will be raised if inband management is not configured for the device.\n- Any other string will be used directly as the VRF name but local interface must be set with `custom_structured_configuration_ntp` if needed.\nIf not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.",
+          "title": "Server VRF"
+        },
+        "servers": {
+          "type": "array",
+          "description": "The first server is always set as \"preferred\".",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org",
+                "title": "Name"
+              },
+              "burst": {
+                "type": "boolean",
+                "title": "Burst"
+              },
+              "iburst": {
+                "type": "boolean",
+                "title": "Iburst"
+              },
+              "key": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65535,
+                "title": "Key"
+              },
+              "maxpoll": {
+                "type": "integer",
+                "minimum": 3,
+                "maximum": 17,
+                "description": "Value of maxpoll between 3 - 17 (Logarithmic)",
+                "title": "Maxpoll"
+              },
+              "minpoll": {
+                "type": "integer",
+                "minimum": 3,
+                "maximum": 17,
+                "description": "Value of minpoll between 3 - 17 (Logarithmic)",
+                "title": "Minpoll"
+              },
+              "version": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 4,
+                "title": "Version"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Servers"
+        },
+        "authenticate": {
+          "type": "boolean",
+          "title": "Authenticate"
+        },
+        "authenticate_servers_only": {
+          "type": "boolean",
+          "title": "Authenticate Servers Only"
+        },
+        "authentication_keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 65534,
+                "description": "Key identifier",
+                "title": "ID"
+              },
+              "hash_algorithm": {
+                "type": "string",
+                "enum": [
+                  "md5",
+                  "sha1"
+                ],
+                "title": "Hash Algorithm"
+              },
+              "key": {
+                "type": "string",
+                "description": "Obfuscated key",
+                "title": "Key"
+              },
+              "key_type": {
+                "type": "string",
+                "enum": [
+                  "0",
+                  "7",
+                  "8a"
+                ],
+                "title": "Key Type"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "id"
+            ]
+          },
+          "title": "Authentication Keys"
+        },
+        "trusted_keys": {
+          "type": "string",
+          "description": "List of trusted-keys as string ex. 10-12,15",
+          "title": "Trusted Keys"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "NTP Settings"
+    },
     "only_local_vlan_trunk_groups": {
       "type": "boolean",
       "description": "A vlan can have many trunk_groups assigned.\nTo avoid unneeded configuration changes on all leaf switches when a new trunk group is added,\nthis feature will only configure the vlan trunk groups matched with local connected_endpoints.\nSee \"Details on only_local_vlan_trunk_groups\" below.\nRequires \"enable_trunk_groups: true\".\n",
