@@ -34,7 +34,7 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
 
         return ""
 
-    def underlay_port_channel_interfaces(self, data: InterfaceDescriptionData) -> str:
+    def underlay_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
         """
         Implementation using new data.
 
