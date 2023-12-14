@@ -12,6 +12,10 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, g
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
+# Campus platforms are separated out by their ability to support "trident_forwarding_table_partition".
+# This is required for EVPN multicast, currently only supported on all 720XP platforms.
+# This command is not supported on 710P or 722XP platforms.  720D range has some devices that support this
+# and others that don't, but I've grouped them all together as none of them support EVPN multicast.
 DEFAULT_PLATFORM_SETTINGS = [
     {
         "platforms": ["default"],
@@ -32,7 +36,7 @@ DEFAULT_PLATFORM_SETTINGS = [
         },
     },
     {
-        "platforms": ["720XP", "722XP"],
+        "platforms": ["720XP"],
         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
         "reload_delay": {
             "mlag": 300,
@@ -41,7 +45,7 @@ DEFAULT_PLATFORM_SETTINGS = [
         "feature_support": {"queue_monitor_length_notify": False, "poe": True},
     },
     {
-        "platforms": ["750", "755", "758"],
+        "platforms": ["750", "755", "758", "720D", "722XP", "710P"],
         "reload_delay": {
             "mlag": 300,
             "non_mlag": 330,

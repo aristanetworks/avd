@@ -102,13 +102,34 @@
             queue_monitor_length_notify: false
           platforms:
           - 7050X3
-          - 720XP
-          - 722XP
           reload_delay:
             mlag: 300
             non_mlag: 330
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
+        - feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+          platforms:
+          - 720XP
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
+          trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
+            131072
+        - feature_support:
+            poe: true
+            queue_monitor_length_notify: false
+          platforms:
+          - '750'
+          - '755'
+          - '758'
+          - 720D
+          - 722XP
+          - 710P
+          reload_delay:
+            mlag: 300
+            non_mlag: 330
         - lag_hardware_only: true
           platforms:
           - 7280R
