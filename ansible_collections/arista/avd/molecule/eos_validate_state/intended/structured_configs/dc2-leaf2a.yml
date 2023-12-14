@@ -1,4 +1,6 @@
 hostname: dc2-leaf2a
+metadata:
+  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65202'
@@ -265,6 +267,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+  https_ssl_profile: eAPI_SSL_Profile
 vlans:
 - id: 4093
   tenant: system

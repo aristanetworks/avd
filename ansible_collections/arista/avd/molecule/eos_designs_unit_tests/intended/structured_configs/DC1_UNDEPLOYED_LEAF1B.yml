@@ -1,4 +1,6 @@
 hostname: DC1_UNDEPLOYED_LEAF1B
+metadata:
+  platform: 7280R
 is_deployed: false
 router_bgp:
   as: '65111'

@@ -636,6 +636,9 @@ anta.tests.routing.generic:
       description: Remote VTEP address
     routes:
     - 10.255.129.15
+anta.tests.security:
+- VerifyAPIHttpsSSL:
+    profile: eAPI_SSL_Profile
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:
