@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from .tests import (
+    AvdTestAPIHttpsSSL,
     AvdTestBGP,
     AvdTestHardware,
     AvdTestInbandReachability,
@@ -34,6 +35,7 @@ AVD_TEST_CLASSES = {
     AvdTestRoutingTable: {"legacy_ansible_tags": ["routing_table"]},
     AvdTestInbandReachability: {"legacy_ansible_tags": ["loopback_reachability", "loopback0_reachability", "optional"]},
     AvdTestLoopback0Reachability: {"legacy_ansible_tags": ["loopback_reachability", "loopback0_reachability"]},
+    AvdTestAPIHttpsSSL: {},
 }
 """
 A dict of all AVD eos_validate_state test classes with their equivalent legacy Ansible tags.
