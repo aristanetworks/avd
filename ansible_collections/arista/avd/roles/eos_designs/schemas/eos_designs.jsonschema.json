@@ -9451,9 +9451,327 @@
       ],
       "title": "Network Services Keys"
     },
+    "custom_node_type_keys": {
+      "type": "array",
+      "description": "Define Custom Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout and functionality.\n`custom_node_type_keys` should be defined in top level group_var for the fabric.\nThese values will be merged with the defaults; keys named the same as a default node_type_key will override the default.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type value matching this node_type_key.",
+            "title": "Type"
+          },
+          "connected_endpoints": {
+            "type": "boolean",
+            "default": false,
+            "description": "Are endpoints connected to this node type.",
+            "title": "Connected Endpoints"
+          },
+          "default_evpn_role": {
+            "type": "string",
+            "enum": [
+              "none",
+              "client",
+              "server"
+            ],
+            "default": "none",
+            "description": "Default evpn_role. Can be overridden in topology vars.",
+            "title": "Default EVPN Role"
+          },
+          "default_ptp_priority1": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255,
+            "default": 127,
+            "description": "Default PTP priority 1",
+            "title": "Default PTP Priority1"
+          },
+          "default_underlay_routing_protocol": {
+            "type": "string",
+            "default": "ebgp",
+            "enum": [
+              "ebgp",
+              "ibgp",
+              "ospf",
+              "ospf-ldp",
+              "isis",
+              "isis-sr",
+              "isis-ldp",
+              "isis-sr-ldp",
+              "none"
+            ],
+            "description": "Set the default underlay routing_protocol.\nCan be overridden by setting \"underlay_routing_protocol\" host/group_vars.\n",
+            "title": "Default Underlay Routing Protocol"
+          },
+          "default_overlay_routing_protocol": {
+            "type": "string",
+            "default": "ebgp",
+            "enum": [
+              "ebgp",
+              "ibgp",
+              "her",
+              "cvx",
+              "none"
+            ],
+            "description": "Set the default overlay routing_protocol.\nCan be overridden by setting \"overlay_routing_protocol\" host/group_vars.\n",
+            "title": "Default Overlay Routing Protocol"
+          },
+          "default_mpls_overlay_role": {
+            "type": "string",
+            "enum": [
+              "client",
+              "server",
+              "none"
+            ],
+            "description": "Set the default mpls overlay role.\nActing role in overlay control plane.\n",
+            "title": "Default MPLS Overlay Role"
+          },
+          "default_overlay_address_families": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "evpn",
+                "vpn-ipv4",
+                "vpn-ipv6"
+              ]
+            },
+            "description": "Set the default overlay address families.\n",
+            "title": "Default Overlay Address Families"
+          },
+          "default_evpn_encapsulation": {
+            "type": "string",
+            "enum": [
+              "mpls",
+              "vxlan"
+            ],
+            "description": "Set the default evpn encapsulation.\n",
+            "title": "Default EVPN Encapsulation"
+          },
+          "mlag_support": {
+            "type": "boolean",
+            "default": false,
+            "description": "Can this node type support mlag.",
+            "title": "MLAG Support"
+          },
+          "network_services": {
+            "description": "Will network services be deployed on this node type.",
+            "type": "object",
+            "properties": {
+              "l1": {
+                "type": "boolean",
+                "default": false,
+                "description": "??",
+                "title": "L1"
+              },
+              "l2": {
+                "type": "boolean",
+                "default": false,
+                "description": "Vlans",
+                "title": "L2"
+              },
+              "l3": {
+                "type": "boolean",
+                "default": false,
+                "description": "VRFs, SVIs (if l2 is true).\nOnly supported with underlay_router.\n",
+                "title": "L3"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Network Services"
+          },
+          "underlay_router": {
+            "type": "boolean",
+            "default": true,
+            "description": "Is this node type a L3 device.",
+            "title": "Underlay Router"
+          },
+          "uplink_type": {
+            "type": "string",
+            "enum": [
+              "p2p",
+              "port-channel"
+            ],
+            "default": "p2p",
+            "description": "Uplinks must be p2p if \"vtep\" or \"underlay_router\" is true.",
+            "title": "Uplink Type"
+          },
+          "vtep": {
+            "type": "boolean",
+            "default": false,
+            "description": "Is this switch an EVPN VTEP.",
+            "title": "Vtep"
+          },
+          "mpls_lsr": {
+            "type": "boolean",
+            "default": false,
+            "description": "Is this switch an MPLS LSR.",
+            "title": "MPLS Lsr"
+          },
+          "ip_addressing": {
+            "type": "object",
+            "description": "Override ip_addressing templates.",
+            "properties": {
+              "python_module": {
+                "type": "string",
+                "description": "Custom Python Module to import for IP addressing.",
+                "title": "Python Module"
+              },
+              "python_class_name": {
+                "type": "string",
+                "description": "Name of Custom Python Class to import for IP addressing.",
+                "title": "Python Class Name"
+              },
+              "router_id": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Router ID"
+              },
+              "router_id_ipv6": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Router ID IPv6"
+              },
+              "mlag_ip_primary": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "MLAG IP Primary"
+              },
+              "mlag_ip_secondary": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "MLAG IP Secondary"
+              },
+              "mlag_l3_ip_primary": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "MLAG L3 IP Primary"
+              },
+              "mlag_l3_ip_secondary": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "MLAG L3 IP Secondary"
+              },
+              "mlag_ibgp_peering_ip_primary": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "MLAG Ibgp Peering IP Primary"
+              },
+              "mlag_ibgp_peering_ip_secondary": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "MLAG Ibgp Peering IP Secondary"
+              },
+              "p2p_uplinks_ip": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "P2P Uplinks IP"
+              },
+              "p2p_uplinks_peer_ip": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "P2P Uplinks Peer IP"
+              },
+              "vtep_ip_mlag": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Vtep IP MLAG"
+              },
+              "vtep_ip": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Vtep IP"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Addressing"
+          },
+          "interface_descriptions": {
+            "type": "object",
+            "description": "Override interface_descriptions templates\nIf description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.\n",
+            "properties": {
+              "python_module": {
+                "type": "string",
+                "description": "Custom Python Module to import for interface descriptions.",
+                "title": "Python Module"
+              },
+              "python_class_name": {
+                "type": "string",
+                "description": "Name of Custom Python Class to import for interface descriptions.",
+                "title": "Python Class Name"
+              },
+              "underlay_ethernet_interfaces": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Underlay Ethernet Interfaces"
+              },
+              "underlay_port_channel_interfaces": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Underlay Port Channel Interfaces"
+              },
+              "mlag_ethernet_interfaces": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "MLAG Ethernet Interfaces"
+              },
+              "mlag_port_channel_interfaces": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "MLAG Port Channel Interfaces"
+              },
+              "connected_endpoints_ethernet_interfaces": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Connected Endpoints Ethernet Interfaces"
+              },
+              "connected_endpoints_port_channel_interfaces": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Connected Endpoints Port Channel Interfaces"
+              },
+              "overlay_loopback_interface": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Overlay Loopback Interface"
+              },
+              "vtep_loopback_interface": {
+                "type": "string",
+                "description": "Path to Custom J2 template.",
+                "title": "Vtep Loopback Interface"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Interface Descriptions"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "key"
+        ]
+      },
+      "title": "Custom Node Type Keys"
+    },
     "node_type_keys": {
       "type": "array",
-      "description": "Define Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout and functionality.\n`node_type_keys` should be defined in top level group_var for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.\n",
+      "description": "Define Node Type Keys, to specify the properties of each node type in the fabric.\nThis allows for complete customization of the fabric layout and functionality.\n`node_type_keys` should be defined in top level group_var for the fabric.\nThe default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.",
       "items": {
         "type": "object",
         "properties": {
@@ -9923,6 +10241,256 @@
       "description": "QOS Profile assigned on all infrastructure links.",
       "type": "string",
       "title": "P2P Uplinks QOS Profile"
+    },
+    "custom_platform_settings": {
+      "title": "Custom Platform Settings",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "platforms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "title": "Platforms"
+          },
+          "trident_forwarding_table_partition": {
+            "type": "string",
+            "description": "Only applied when evpn_multicast is true.",
+            "title": "Trident Forwarding Table Partition"
+          },
+          "reload_delay": {
+            "type": "object",
+            "properties": {
+              "mlag": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 86400,
+                "description": "In seconds.",
+                "title": "MLAG"
+              },
+              "non_mlag": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 86400,
+                "description": "In seconds.",
+                "title": "Non MLAG"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Reload Delay"
+          },
+          "tcam_profile": {
+            "type": "string",
+            "title": "TCAM Profile"
+          },
+          "lag_hardware_only": {
+            "type": "boolean",
+            "title": "LAG Hardware Only"
+          },
+          "default_interface_mtu": {
+            "type": "integer",
+            "description": "Default interface MTU configured on EOS under \"interface defaults\".\nTakes precedence over the root key \"default_interface_mtu\".\n",
+            "minimum": 68,
+            "maximum": 65535,
+            "title": "Default Interface MTU"
+          },
+          "feature_support": {
+            "type": "object",
+            "properties": {
+              "queue_monitor_length_notify": {
+                "type": "boolean",
+                "default": true,
+                "title": "Queue Monitor Length Notify"
+              },
+              "interface_storm_control": {
+                "type": "boolean",
+                "default": true,
+                "title": "Interface Storm Control"
+              },
+              "poe": {
+                "type": "boolean",
+                "default": false,
+                "title": "PoE"
+              },
+              "per_interface_mtu": {
+                "type": "boolean",
+                "default": true,
+                "description": "Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.\nEffectively this means that all settings regarding interface MTU will be ignored if this is false.\nPlatforms without support for per interface MTU can use a single default interface MTU setting. Set this via \"default_interface_mtu\"\n",
+                "title": "Per Interface MTU"
+              },
+              "bgp_update_wait_install": {
+                "type": "boolean",
+                "default": true,
+                "description": "Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.\nCan be overridden by setting \"bgp_update_wait_install\" host/group_vars.\n",
+                "title": "BGP Update Wait Install"
+              },
+              "bgp_update_wait_for_convergence": {
+                "type": "boolean",
+                "default": true,
+                "description": "Do not advertise reachability to a prefix until that prefix has been installed in hardware.\nThis will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.\nCan be overridden by setting \"bgp_update_wait_for_convergence\" host/group_vars.\n",
+                "title": "BGP Update Wait For Convergence"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "Feature Support"
+          },
+          "management_interface": {
+            "type": "string",
+            "default": "Management1",
+            "title": "Management Interface"
+          },
+          "raw_eos_cli": {
+            "type": "string",
+            "description": "EOS CLI rendered directly on the root level of the final EOS configuration.",
+            "title": "Raw EOS CLI"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "default": [
+        {
+          "platforms": [
+            "default"
+          ],
+          "feature_support": {
+            "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
+        },
+        {
+          "platforms": [
+            "7050X3",
+            "720XP",
+            "722XP"
+          ],
+          "feature_support": {
+            "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          },
+          "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+        },
+        {
+          "platforms": [
+            "7280R",
+            "7280R2",
+            "7020R"
+          ],
+          "lag_hardware_only": true,
+          "reload_delay": {
+            "mlag": 900,
+            "non_mlag": 1020
+          },
+          "tcam_profile": "vxlan-routing"
+        },
+        {
+          "platforms": [
+            "7280R3"
+          ],
+          "reload_delay": {
+            "mlag": 900,
+            "non_mlag": 1020
+          }
+        },
+        {
+          "platforms": [
+            "7500R",
+            "7500R2"
+          ],
+          "lag_hardware_only": true,
+          "management_interface": "Management0",
+          "reload_delay": {
+            "mlag": 900,
+            "non_mlag": 1020
+          },
+          "tcam_profile": "vxlan-routing"
+        },
+        {
+          "platforms": [
+            "7500R3",
+            "7800R3"
+          ],
+          "management_interface": "Management0",
+          "reload_delay": {
+            "mlag": 900,
+            "non_mlag": 1020
+          }
+        },
+        {
+          "platforms": [
+            "7368X4"
+          ],
+          "management_interface": "Management0",
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
+        },
+        {
+          "platforms": [
+            "7300X3"
+          ],
+          "management_interface": "Management0",
+          "reload_delay": {
+            "mlag": 1200,
+            "non_mlag": 1320
+          },
+          "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+        },
+        {
+          "platforms": [
+            "VEOS",
+            "VEOS-LAB",
+            "vEOS",
+            "vEOS-lab"
+          ],
+          "feature_support": {
+            "bgp_update_wait_for_convergence": false,
+            "bgp_update_wait_install": false,
+            "interface_storm_control": false,
+            "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
+        },
+        {
+          "platforms": [
+            "CEOS",
+            "cEOS",
+            "ceos",
+            "cEOSLab"
+          ],
+          "feature_support": {
+            "bgp_update_wait_for_convergence": false,
+            "bgp_update_wait_install": false,
+            "interface_storm_control": false,
+            "queue_monitor_length_notify": false
+          },
+          "management_interface": "Management0",
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
+        }
+      ]
     },
     "platform_settings": {
       "type": "array",

@@ -2,9 +2,9 @@
 
 mgmt_gateway: 192.168.200.1
 
-node_type_keys:
-  - key: spine
-    type: spine
+custom_node_type_keys:
+  - key: custom_spine
+    type: custom_spine
     default_evpn_role: server
     interface_descriptions:
       # Override default interface description with a custom python module

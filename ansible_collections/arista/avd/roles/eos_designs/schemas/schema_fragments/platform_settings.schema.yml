@@ -6,6 +6,12 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
+  custom_platform_settings:
+    $ref: eos_designs#/keys/platform_settings
+    display_name: Custom Platform Settings
+    documentation_options:
+      table: platform-settings
+    type: list
   platform_settings:
     documentation_options:
       table: platform-settings
