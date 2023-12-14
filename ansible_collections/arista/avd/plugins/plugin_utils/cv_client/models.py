@@ -129,8 +129,8 @@ class CVDevice:
 class CVEosConfig:
     config: str
     device: CVDevice
-    config_name: str | None = None
-    """ By default the hostname of the device is used as config_name """
+    configlet_name: str | None = None
+    """By default "AVD_<hostname>"""
 
 
 @dataclass

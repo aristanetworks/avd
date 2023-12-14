@@ -71,7 +71,7 @@ class TagMixin:
         TODO: Consider if we should add sub_type.
 
         Returns:
-            Workspace object matching the workspace_id
+            List of Tag objects.
         """
         tags = []
 
@@ -127,7 +127,7 @@ class TagMixin:
         tags: list[tuple[str, str]],
         element_type: Literal["device", "interface"] | None = None,
         timeout: float = 10.0,
-    ) -> list[Tag]:
+    ) -> list[TagKey]:
         """
         Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
 
@@ -139,7 +139,7 @@ class TagMixin:
         TODO: Consider if we should add sub_type.
 
         Returns:
-            Workspace object matching the workspace_id
+            List of Tag objects after being set including any server-generated values.
         """
         request = TagConfigSetSomeRequest(values=[])
         for label, value in tags:
@@ -154,14 +154,14 @@ class TagMixin:
                 )
             )
 
-        return_tags = []
+        tag_keys = []
         client = TagConfigServiceStub(self._channel)
         try:
             responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
                 # Recreating a full tag object. Since we just created it, it *must* be a user created tag.
-                return_tags.append(Tag(key=response.key, creator_type=CreatorType.CREATOR_TYPE_USER))
-            return return_tags
+                tag_keys.append(response.key)
+            return tag_keys
 
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}'") or e
@@ -256,7 +256,7 @@ class TagMixin:
         TODO: Consider if we should add sub_type.
 
         Returns:
-            Workspace object matching the workspace_id
+            List of TagAssignment objects after being set including any server-generated values.
         """
         request = TagAssignmentConfigSetSomeRequest(values=[])
         for label, value, device_id, interface_id in tag_assignments:
@@ -273,14 +273,60 @@ class TagMixin:
                 )
             )
 
-        return_tag_assignments = []
+        tag_assignment_keys = []
         client = TagAssignmentConfigServiceStub(self._channel)
         try:
             responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
-                # Recreating a full tag object. Since we just created it, it *must* be a user created tag assignment.
-                return_tag_assignments.append(TagAssignment(key=response.key, creator_type=CreatorType.CREATOR_TYPE_USER))
-            return return_tag_assignments
+                tag_assignment_keys.append(response.key)
+            return tag_assignment_keys
+
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}'") or e
+
+    async def delete_tag_assignments(
+        self: CVClient,
+        workspace_id: str,
+        tag_assignments: list[tuple[str, str, str, str | None]],
+        element_type: Literal["device", "interface"] | None = None,
+        timeout: float = 10.0,
+    ) -> list[TagAssignmentKey]:
+        """
+        Set Tags using arista.tag.v2.TagConfigServiceStub.SetSome API.
+
+        Parameters:
+            workspace_id: Unique identifier of the Workspace for which the information is set.
+            tag_assignments: List of tuples where each tuple is in the format (<tag_label>, <tag_value>, <device_id/serial_number>, <interface_name | None>).
+            timeout: Timeout in seconds.
+
+        TODO: Consider if we should add sub_type.
+
+        Returns:
+            List of TagAssignmentKey objects after being set including any server-generated values.
+        """
+        request = TagAssignmentConfigSetSomeRequest(values=[])
+        for label, value, device_id, interface_id in tag_assignments:
+            request.values.append(
+                TagAssignmentConfig(
+                    key=TagAssignmentKey(
+                        workspace_id=workspace_id,
+                        element_type=ELEMENT_TYPE_MAP[element_type],
+                        label=label,
+                        value=value,
+                        device_id=device_id,
+                        interface_id=interface_id,
+                    ),
+                    remove=True,
+                )
+            )
+
+        tag_assignment_keys = []
+        client = TagAssignmentConfigServiceStub(self._channel)
+        try:
+            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+            async for response in responses:
+                tag_assignment_keys.append(response.key)
+            return tag_assignment_keys
 
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}'") or e

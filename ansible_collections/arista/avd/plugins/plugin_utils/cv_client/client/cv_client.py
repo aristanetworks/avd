@@ -8,13 +8,21 @@ import ssl
 from grpclib.client import Channel
 
 from .change_control import ChangeControlMixin
+from .configlet import ConfigletMixin
 from .inventory import InventoryMixin
 from .studio import StudioMixin
 from .tag import TagMixin
 from .workspace import WorkspaceMixin
 
 
-class CVClient(ChangeControlMixin, InventoryMixin, StudioMixin, TagMixin, WorkspaceMixin):
+class CVClient(
+    ChangeControlMixin,
+    ConfigletMixin,
+    InventoryMixin,
+    StudioMixin,
+    TagMixin,
+    WorkspaceMixin,
+):
     _channel: Channel | None = None
     _metadata: dict
     _servers: list[str]
@@ -24,7 +32,10 @@ class CVClient(ChangeControlMixin, InventoryMixin, StudioMixin, TagMixin, Worksp
 
     def __init__(self, servers: str | list[str], token: str, port: int = 443, verify_certs: bool = True) -> None:
         """
-        CVClient is a high-level API library for using CloudVision Resource APIs
+        CVClient is a high-level API library for using CloudVision Resource APIs.
+
+        Use CVClient as an async context manager like:
+            `async with CVClient(servers="myserver", token="mytoken") as cv_client:`
 
         Parameters:
             servers: A single FQDN for CVaaS or a list of FQDNs for one CVP cluster.
