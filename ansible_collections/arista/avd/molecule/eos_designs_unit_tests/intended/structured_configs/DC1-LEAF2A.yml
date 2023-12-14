@@ -1,4 +1,6 @@
 hostname: DC1-LEAF2A
+metadata:
+  platform: 7280R
 is_deployed: true
 router_bgp:
   as: '65102'
@@ -483,7 +485,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 13
+    id: 1013
     mode: active
 - name: Ethernet14/1
   peer: DC1.L2LEAF5A
@@ -702,6 +704,17 @@ ethernet_interfaces:
   type: switched
   mode: access
   vlans: '110'
+- name: Ethernet26
+  peer: PHONE03_port_channel
+  peer_interface: Eth0
+  peer_type: phone
+  port_profile: PHONE_WITH_PC
+  description: PHONE03_port_channel_Eth0
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 26
+    mode: active
 port_channel_interfaces:
 - name: Port-Channel7
   description: DC1_L2LEAF1_Po1
@@ -723,8 +736,8 @@ port_channel_interfaces:
     identifier: 0000:0000:0606:0707:0808
     route_target: 06:06:07:07:08:08
   lacp_id: 0606.0707.0808
-- name: Port-Channel13
-  description: DC1-L2LEAF4A_Po1
+- name: Port-Channel1013
+  description: DC1-L2LEAF4A_Po1001
   type: switched
   shutdown: false
   mode: trunk
@@ -773,6 +786,15 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: 110-111,210-211
+- name: Port-Channel26
+  description: PHONE03_port_channel_Port-Channel to Phone
+  type: switched
+  shutdown: false
+  mode: trunk phone
+  native_vlan: 210
+  phone:
+    vlan: 211
+    trunk: untagged
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

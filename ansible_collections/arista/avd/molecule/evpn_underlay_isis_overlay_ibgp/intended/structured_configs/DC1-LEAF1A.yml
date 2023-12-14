@@ -1,4 +1,6 @@
 hostname: DC1-LEAF1A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -22,16 +24,16 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
-  address_family_ipv4:
-    peer_groups:
-    - name: OVERLAY-PEERS
-      activate: false
   address_family_evpn:
     peer_groups:
     - name: OVERLAY-PEERS
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+  address_family_ipv4:
+    peer_groups:
+    - name: OVERLAY-PEERS
+      activate: false
   neighbors:
   - ip_address: 192.168.255.1
     peer_group: OVERLAY-PEERS

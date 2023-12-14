@@ -88,7 +88,7 @@ interface Management1
 
 #### Router BGP EVPN Address Family
 
-- VPN import pruning is __enabled__
+- VPN import pruning is **enabled**
 
 ##### EVPN Peer Groups
 

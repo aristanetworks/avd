@@ -44,7 +44,7 @@ interface Management1
 
 - Default Switchport Mode: routed
 
-#### Switchport Default Configuration
+#### Switchport Default Device Configuration
 
 ```eos
 !
@@ -59,7 +59,7 @@ switchport default mode routed
 
 - Default Routed Interface MTU: 9000
 
-#### Interface Defaults Configuration
+#### Interface Defaults Device Configuration
 
 ```eos
 !

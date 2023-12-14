@@ -4406,7 +4406,7 @@
           },
           "switch_ports": {
             "type": "array",
-            "description": "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n  - Ethernet1\n  - Ethernet2-48\n\nAll switch_ports ranges are expanded into individual port configurations.\n\nFor more details and examples of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter%20plugins/range_expand.md).\n",
+            "description": "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n  - Ethernet1\n  - Ethernet2-48\n\nAll switch_ports ranges are expanded into individual port configurations.\n\nFor more details and examples of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter_plugins/range_expand.md).\n",
             "items": {
               "type": "string"
             },
@@ -4476,6 +4476,24 @@
             "default": false,
             "description": "If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.",
             "title": "Native VLAN Tag"
+          },
+          "phone_vlan": {
+            "type": "integer",
+            "description": "Phone VLAN for a mode `trunk phone` port.\nRequires `mode: trunk phone` to be set.",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Phone VLAN"
+          },
+          "phone_trunk_mode": {
+            "type": "string",
+            "enum": [
+              "tagged",
+              "untagged",
+              "tagged phone",
+              "untagged phone"
+            ],
+            "description": "Specify if the phone traffic is tagged or untagged.\nIf both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.",
+            "title": "Phone Trunk Mode"
           },
           "trunk_groups": {
             "type": "array",
@@ -5191,7 +5209,7 @@
                 "type": "array",
                 "description": "Manual preference as described above, required only for preference algorithm.",
                 "items": {
-                  "type": "string"
+                  "type": "integer"
                 },
                 "title": "Designated Forwarder Preferences"
               },
@@ -9583,7 +9601,7 @@
               "port-channel"
             ],
             "default": "p2p",
-            "description": "Uplinks must be p2p if \"vtep\" or \"underlay_router\" is true.",
+            "description": "`uplink_type` must be \"p2p\" if `vtep` or `underlay_router` is true.",
             "title": "Uplink Type"
           },
           "vtep": {
@@ -10284,6 +10302,24 @@
             "default": false,
             "description": "If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.",
             "title": "Native VLAN Tag"
+          },
+          "phone_vlan": {
+            "type": "integer",
+            "description": "Phone VLAN for a mode `trunk phone` port.\nRequires `mode: trunk phone` to be set.",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Phone VLAN"
+          },
+          "phone_trunk_mode": {
+            "type": "string",
+            "enum": [
+              "tagged",
+              "untagged",
+              "tagged phone",
+              "untagged phone"
+            ],
+            "description": "Specify if the phone traffic is tagged or untagged.\nIf both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.",
+            "title": "Phone Trunk Mode"
           },
           "trunk_groups": {
             "type": "array",
@@ -10999,7 +11035,7 @@
                 "type": "array",
                 "description": "Manual preference as described above, required only for preference algorithm.",
                 "items": {
-                  "type": "string"
+                  "type": "integer"
                 },
                 "title": "Designated Forwarder Preferences"
               },

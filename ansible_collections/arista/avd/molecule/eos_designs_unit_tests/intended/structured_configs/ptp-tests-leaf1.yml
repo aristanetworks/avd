@@ -1,4 +1,6 @@
 hostname: ptp-tests-leaf1
+metadata:
+  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65101'

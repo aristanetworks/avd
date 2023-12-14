@@ -73,17 +73,6 @@ anta.tests.connectivity:
       description: ip reachability test p2p links
 - VerifyReachability:
     hosts:
-    - destination: 10.255.0.3
-      repeat: 1
-      source: 10.255.128.14
-      vrf: default
-    result_overwrite:
-      categories:
-      - Loopback0 Reachability
-      custom_field: 'Source: dc2-leaf1b - 10.255.128.14/32 Destination: 10.255.0.3'
-      description: Loopback0 Reachability
-- VerifyReachability:
-    hosts:
     - destination: 10.255.0.1
       repeat: 1
       source: 10.255.128.14
@@ -103,6 +92,17 @@ anta.tests.connectivity:
       categories:
       - Loopback0 Reachability
       custom_field: 'Source: dc2-leaf1b - 10.255.128.14/32 Destination: 10.255.0.2'
+      description: Loopback0 Reachability
+- VerifyReachability:
+    hosts:
+    - destination: 10.255.0.3
+      repeat: 1
+      source: 10.255.128.14
+      vrf: default
+    result_overwrite:
+      categories:
+      - Loopback0 Reachability
+      custom_field: 'Source: dc2-leaf1b - 10.255.128.14/32 Destination: 10.255.0.3'
       description: Loopback0 Reachability
 - VerifyReachability:
     hosts:
@@ -499,14 +499,6 @@ anta.tests.routing.generic:
     result_overwrite:
       categories:
       - Routing Table
-      custom_field: 10.255.0.3
-      description: Remote Lo0 address
-    routes:
-    - 10.255.0.3
-- VerifyRoutingTableEntry:
-    result_overwrite:
-      categories:
-      - Routing Table
       custom_field: 10.255.0.1
       description: Remote Lo0 address
     routes:
@@ -519,6 +511,14 @@ anta.tests.routing.generic:
       description: Remote Lo0 address
     routes:
     - 10.255.0.2
+- VerifyRoutingTableEntry:
+    result_overwrite:
+      categories:
+      - Routing Table
+      custom_field: 10.255.0.3
+      description: Remote Lo0 address
+    routes:
+    - 10.255.0.3
 - VerifyRoutingTableEntry:
     result_overwrite:
       categories:
@@ -615,6 +615,9 @@ anta.tests.routing.generic:
       description: Remote VTEP address
     routes:
     - 10.255.129.15
+anta.tests.security:
+- VerifyAPIHttpsSSL:
+    profile: eAPI_SSL_Profile
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:

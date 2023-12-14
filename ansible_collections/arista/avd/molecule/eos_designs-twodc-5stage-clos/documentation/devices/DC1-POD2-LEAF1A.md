@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Domain-list](#domain-list)
+  - [IP Domain-list](#ip-domain-list)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -15,7 +15,7 @@
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
@@ -44,7 +44,7 @@
 - [Virtual Source NAT](#virtual-source-nat)
   - [Virtual Source NAT Summary](#virtual-source-nat-summary)
   - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
-- [EOS CLI](#eos-cli)
+- [EOS CLI Device Configuration](#eos-cli-device-configuration)
 
 ## Management
 
@@ -75,12 +75,13 @@ interface Management1
    ip address 192.168.1.15/24
 ```
 
-### Domain-list
+### IP Domain-list
 
-#### Domain-list:
- - structured-config.set.under.vrf.common-vrf
+#### Domains List
 
-#### Domain-list Device Configuration
+- structured-config.set.under.vrf.common-vrf
+
+#### IP Domain-list Device Configuration
 
 ```eos
 ip domain-list structured-config.set.under.vrf.common-vrf
@@ -101,7 +102,7 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -168,7 +169,7 @@ spanning-tree mode none
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -299,7 +300,6 @@ interface Ethernet3
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
 | Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
-
 
 #### Loopback Interfaces Device Configuration
 
@@ -467,9 +467,9 @@ service routing protocols model multi-agent
 
 #### Virtual Router MAC Address Summary
 
-##### Virtual Router MAC Address: 00:1c:73:00:dc:01
+Virtual Router MAC Address: 00:1c:73:00:dc:01
 
-#### Virtual Router MAC Address Configuration
+#### Virtual Router MAC Address Device Configuration
 
 ```eos
 !
@@ -518,8 +518,8 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.1.254 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
@@ -577,7 +577,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 #### Router BGP EVPN Address Family
 
-- VPN import pruning is __enabled__
+- VPN import pruning is **enabled**
 
 ##### EVPN Peer Groups
 
@@ -868,7 +868,7 @@ ip address virtual source-nat vrf vrf_with_loopbacks_from_overlapping_pool addre
 ip address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 10.101.102.3
 ```
 
-## EOS CLI
+## EOS CLI Device Configuration
 
 ```eos
 !

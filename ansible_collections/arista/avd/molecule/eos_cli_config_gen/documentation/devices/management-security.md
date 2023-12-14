@@ -12,7 +12,7 @@
   - [SSL profile test2-chain-cert Certificates Summary](#ssl-profile-test2-chain-cert-certificates-summary)
   - [SSL profile test2-trust-cert Certificates Summary](#ssl-profile-test2-trust-cert-certificates-summary)
   - [Password Policies](#password-policies)
-  - [Management Security Configuration](#management-security-configuration)
+  - [Management Security Device Configuration](#management-security-device-configuration)
 
 ## Management
 
@@ -55,17 +55,17 @@ interface Management1
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
-| ---------------- | --------------------- | -------------------- | ------------ | ----------- |
-| certificate-profile | - | eAPI.crt | eAPI.key | - |
-| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 |
-| test1-chain-cert | - | - | - | - |
-| test1-trust-cert | - | - | - | - |
-| test2-chain-cert | - | - | - | - |
-| test2-trust-cert | - | - | - | - |
-| tls-single-version-profile-as-float | 1.0 | - | - | - |
-| tls-single-version-profile-as-string | 1.1 | - | - | - |
-| tls-versions-profile | 1.0 1.1 | - | - | - |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List | CRLs |
+| ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
+| certificate-profile | - | eAPI.crt | eAPI.key | - | ca.crl<br>intermediate.crl |
+| cipher-list-profile | - | - | - | ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384 | - |
+| test1-chain-cert | - | - | - | - | - |
+| test1-trust-cert | - | - | - | - | - |
+| test2-chain-cert | - | - | - | - | - |
+| test2-trust-cert | - | - | - | - | - |
+| tls-single-version-profile-as-float | 1.0 | - | - | - | - |
+| tls-single-version-profile-as-string | 1.1 | - | - | - | - |
+| tls-versions-profile | 1.0 1.1 | - | - | - | - |
 
 ### SSL profile test1-chain-cert Certificates Summary
 
@@ -92,11 +92,12 @@ interface Management1
 | - | Hostname must be FQDN | - | Enabled |
 
 ### Password Policies
+
 | Policy Name | Digits | Length | Lowercase letters | Special characters | Uppercase letters | Repetitive characters | Sequential characters |
 |-------------|--------|--------|-------------------|--------------------|-------------------|-----------------------|----------------------|
 | AVD_POLICY | > 1 | > 2 | > 3 | > 4 | > 5 | < 6 | < 7 |
 
-### Management Security Configuration
+### Management Security Device Configuration
 
 ```eos
 !
@@ -115,6 +116,8 @@ management security
       maximum sequential 7
    ssl profile certificate-profile
       certificate eAPI.crt key eAPI.key
+      crl ca.crl
+      crl intermediate.crl
    ssl profile cipher-list-profile
       cipher-list ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384
    ssl profile test1-chain-cert

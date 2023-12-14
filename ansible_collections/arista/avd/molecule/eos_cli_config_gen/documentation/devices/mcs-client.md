@@ -5,7 +5,7 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Monitoring](#monitoring)
-  - [MCS client Summary](#mcs-client-summary)
+  - [MCS Client Summary](#mcs-client-summary)
 
 ## Management
 
@@ -37,7 +37,7 @@ interface Management1
 
 ## Monitoring
 
-### MCS client Summary
+### MCS Client Summary
 
 MCS client is enabled
 
@@ -45,7 +45,7 @@ MCS client is enabled
 | --------------------- | ------------ | ------- |
 | default | 10.90.224.188, 10.90.224.189, leaf2.atd.lab | True |
 
-#### MCS client configuration
+#### MCS Client Device Configuration
 
 ```eos
 !

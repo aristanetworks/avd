@@ -1,0 +1,41 @@
+hostname: override_uplink_type-d
+is_deployed: true
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer: override_uplink_type-u
+  peer_interface: Ethernet1
+  peer_type: spine
+  description: OVERRIDE_UPLINK_TYPE-U_Ethernet1
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 1
+    mode: active
+port_channel_interfaces:
+- name: Port-Channel1
+  description: OVERRIDE_UPLINK_TYPE-U_Po1
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: none
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 192.168.42.2/32

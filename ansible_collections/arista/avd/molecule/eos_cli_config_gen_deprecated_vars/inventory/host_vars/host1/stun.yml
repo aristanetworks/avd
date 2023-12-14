@@ -3,4 +3,4 @@
 stun:
   server:
     # deprecated in favor of local_interfaces
-    local_interface: ethernet1
+    local_interface: Ethernet1

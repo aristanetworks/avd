@@ -27,6 +27,10 @@ fabric_name: FABRIC
 underlay_routing_protocol: ebgp
 overlay_routing_protocol: ebgp
 
+#eAPI HTTPS SSL profile
+custom_structured_configuration_management_api_http:
+  https_ssl_profile: eAPI_SSL_Profile
+
 # Local users
 local_users:
   # Define a new user, which is called "ansible"

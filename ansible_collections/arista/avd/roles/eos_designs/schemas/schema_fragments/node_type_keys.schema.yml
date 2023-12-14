@@ -134,7 +134,8 @@ keys:
             - "p2p"
             - "port-channel"
           default: "p2p"
-          description: Uplinks must be p2p if "vtep" or "underlay_router" is true.
+          description: |-
+            `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true.
         vtep:
           type: bool
           default: false

@@ -30,8 +30,8 @@ class RouterBgpMixin(UtilsMixin):
         router_bgp = {
             "bgp_cluster_id": self._bgp_cluster_id(),
             "peer_groups": self._peer_groups(),
-            "address_family_ipv4": self._address_family_ipv4(),
             "address_family_evpn": self._address_family_evpn(),
+            "address_family_ipv4": self._address_family_ipv4(),
             "address_family_rtc": self._address_family_rtc(),
             "bgp": self._bgp_overlay_dpath(),
             "address_family_vpn_ipv4": self._address_family_vpn_ipvx(4),

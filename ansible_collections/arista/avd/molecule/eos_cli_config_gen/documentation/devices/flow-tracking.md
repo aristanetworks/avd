@@ -86,7 +86,7 @@ interface Management1
 | T3 | T3-E3 | - | - | Management1 |
 | T3 | T3-E4 | - | - | No local interface |
 
-#### Flow Tracking Configuration
+#### Flow Tracking Device Configuration
 
 ```eos
 !

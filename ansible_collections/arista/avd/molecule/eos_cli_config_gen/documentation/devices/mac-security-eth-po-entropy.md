@@ -7,7 +7,7 @@
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
   - [Management Security SSL Profiles](#management-security-ssl-profiles)
-  - [Management Security Configuration](#management-security-configuration)
+  - [Management Security Device Configuration](#management-security-device-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -54,11 +54,11 @@ interface Management1
 
 ### Management Security SSL Profiles
 
-| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List |
-| ---------------- | --------------------- | -------------------- | ------------ | ----------- |
-| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - |
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List | CRLs |
+| ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - |
 
-### Management Security Configuration
+### Management Security Device Configuration
 
 ```eos
 !
@@ -136,36 +136,36 @@ FIPS restrictions enabled.
 
 #### MACsec Profiles Summary
 
-**Profile A1:**
+##### Profile A1
 
-Settings:
+###### Settings
 
 | Cipher | Key-Server Priority | Rekey-Period | SCI |
 | ------ | ------------------- | ------------ | --- |
 | aes128-gcm | 100 | 30 | True |
 
-Keys:
+###### Keys
 
 | Key ID | Fallback |
 | ------ |  -------- |
 | 1234a | - |
 | 1234c | True |
 
-L2 Protocols:
+###### L2 Protocols
 
 | L2 Protocol | Mode |
 | ----------- | ---- |
 | lldp | bypass unauthorized |
 
-**Profile A2:**
+##### Profile A2
 
-Settings:
+###### Settings
 
 | Cipher | Key-Server Priority | Rekey-Period | SCI |
 | ------ | ------------------- | ------------ | --- |
 | - | - | - | - |
 
-Keys:
+###### Keys
 
 | Key ID | Fallback |
 | ------ |  -------- |

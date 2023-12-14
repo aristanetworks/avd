@@ -10,6 +10,8 @@ from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFact
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get
 
+from ..interface_descriptions import InterfaceDescriptionData
+
 
 class AvdStructuredConfigMlag(AvdFacts):
     def render(self):
@@ -29,12 +31,12 @@ class AvdStructuredConfigMlag(AvdFacts):
         return get(self.shared_utils.trunk_groups, "mlag_l3.name", required=True)
 
     @cached_property
-    def spanning_tree(self):
+    def spanning_tree(self) -> dict:
+        vlans = [self.shared_utils.mlag_peer_vlan]
         if self.shared_utils.mlag_peer_l3_vlan is not None:
-            vlans = [self.shared_utils.mlag_peer_vlan, self.shared_utils.mlag_peer_l3_vlan]
-            return {"no_spanning_tree_vlan": list_compress(vlans)}
+            vlans.append(self.shared_utils.mlag_peer_l3_vlan)
 
-        return {"no_spanning_tree_vlan": self.shared_utils.mlag_peer_vlan}
+        return {"no_spanning_tree_vlan": list_compress(vlans)}
 
     @cached_property
     def vlans(self) -> list:
@@ -145,7 +147,9 @@ class AvdStructuredConfigMlag(AvdFacts):
         port_channel_interface_name = f"Port-Channel{self.shared_utils.mlag_port_channel_id}"
         port_channel_interface = {
             "name": port_channel_interface_name,
-            "description": self.shared_utils.interface_descriptions.mlag_port_channel_interfaces(),
+            "description": self.shared_utils.interface_descriptions.mlag_port_channel_interface(
+                InterfaceDescriptionData(shared_utils=self.shared_utils, interface=port_channel_interface_name)
+            ),
             "type": "switched",
             "shutdown": False,
             "vlans": get(self.shared_utils.switch_data_combined, "mlag_peer_link_allowed_vlans"),
@@ -192,7 +196,9 @@ class AvdStructuredConfigMlag(AvdFacts):
                 "peer": self.shared_utils.mlag_peer,
                 "peer_interface": mlag_interface,
                 "peer_type": "mlag_peer",
-                "description": self.shared_utils.interface_descriptions.mlag_ethernet_interfaces(mlag_interface),
+                "description": self.shared_utils.interface_descriptions.mlag_ethernet_interface(
+                    InterfaceDescriptionData(shared_utils=self.shared_utils, interface=mlag_interface, peer_interface=mlag_interface)
+                ),
                 "type": "port-channel-member",
                 "shutdown": False,
                 "channel_group": {
@@ -216,8 +222,8 @@ class AvdStructuredConfigMlag(AvdFacts):
             "local_interface": f"Vlan{self.shared_utils.mlag_peer_vlan}",
             "peer_address": self.shared_utils.mlag_peer_ip,
             "peer_link": f"Port-Channel{self.shared_utils.mlag_port_channel_id}",
-            "reload_delay_mlag": get(self.shared_utils.platform_settings, "reload_delay.mlag"),
-            "reload_delay_non_mlag": get(self.shared_utils.platform_settings, "reload_delay.non_mlag"),
+            "reload_delay_mlag": str(get(self.shared_utils.platform_settings, "reload_delay.mlag")),
+            "reload_delay_non_mlag": str(get(self.shared_utils.platform_settings, "reload_delay.non_mlag")),
         }
         if (
             get(self.shared_utils.switch_data_combined, "mlag_dual_primary_detection", default=False) is True
