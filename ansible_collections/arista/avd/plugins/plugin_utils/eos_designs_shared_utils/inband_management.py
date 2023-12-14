@@ -43,7 +43,7 @@ class InbandManagementMixin:
 
     @cached_property
     def inband_mgmt_ipv6_subnet(self: SharedUtils) -> str | None:
-        return default(get(self.switch_data_combined, "inband_mgmt_ipv6_subnet"), get(self.switch_data_combined, "inband_mgmt_ipv6_subnet"))
+        return get(self.switch_data_combined, "inband_mgmt_ipv6_subnet")
 
     @cached_property
     def inband_mgmt_vlan(self: SharedUtils) -> int:

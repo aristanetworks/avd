@@ -153,6 +153,10 @@ vlan_interfaces:
   ip_address: 192.168.104.3/24
   ip_virtual_router_addresses:
   - 192.168.104.1
+  ipv6_enable: true
+  ipv6_address: 2a00:104::3/64
+  ipv6_virtual_router_addresses:
+  - 2a00:104::1
   ip_attached_host_route_export:
     enabled: true
     distance: 19

@@ -205,18 +205,23 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
 
         svis = {}
         subnets = []
+        ipv6_subnets = []
         peers = natural_sort(get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[]))
         for peer in peers:
             peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
             if (vlan := peer_facts.get("inband_mgmt_vlan")) is None:
                 continue
 
-            subnet = {"ipv4": peer_facts.get("inband_mgmt_subnet"), "ipv6": peer_facts.get("inband_mgmt_ipv6_subnet")}
-            if subnet in subnets:
-                continue
+            subnet = peer_facts.get("inband_mgmt_subnet")
+            ipv6_subnet = peer_facts.get("inband_mgmt_ipv6_subnet")
+            svis[vlan] = {"ipv4": None, "ipv6": None}
+            if subnet not in subnets:
+                subnets.append(subnet)
+                svis[vlan]["ipv4"] = subnet
 
-            subnets.append(subnet)
-            svis[vlan] = subnet
+            if ipv6_subnet not in ipv6_subnets:
+                ipv6_subnets.append(ipv6_subnet)
+                svis[vlan]["ipv6"] = ipv6_subnet
 
         return svis
 
@@ -242,11 +247,13 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         gateway = None
         ipv6_address = None
         v6_gateway = None
+        ipv6_enable = None
 
         if subnet is not None:
             network = ip_network(subnet, strict=False)
 
         if ipv6_subnet is not None:
+            ipv6_enable = True
             v6_network = ip_network(ipv6_subnet, strict=False)
 
         if self.shared_utils.mlag_role == "secondary":
@@ -277,7 +284,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
                 "vrf": self.shared_utils.inband_mgmt_vrf,
                 "ip_address": ip_address,
                 "ip_virtual_router_addresses": [gateway],
-                "ipv6_enable": None if not self.shared_utils.configure_inband_mgmt_ipv6 else True,
+                "ipv6_enable": ipv6_enable,
                 "ipv6_address": ipv6_address,
                 "ipv6_virtual_router_addresses": [v6_gateway],
                 "ip_attached_host_route_export": {
