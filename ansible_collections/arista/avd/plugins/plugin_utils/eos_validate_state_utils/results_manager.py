@@ -7,7 +7,7 @@ from collections import defaultdict
 
 from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import ACRONYM_CATEGORIES
 
-from .contants import RESULTS_MAPPING, STATS_MAPPING
+from .constants import RESULTS_MAPPING, STATS_MAPPING
 
 
 class ResultsManager:
