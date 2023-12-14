@@ -3146,6 +3146,26 @@ $defs:
         default: false
         description: If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag`
           takes precedence.
+      phone_vlan:
+        type: int
+        convert_types:
+        - str
+        description: 'Phone VLAN for a mode `trunk phone` port.
+
+          Requires `mode: trunk phone` to be set.'
+        min: 1
+        max: 4094
+      phone_trunk_mode:
+        type: str
+        valid_values:
+        - tagged
+        - untagged
+        - tagged phone
+        - untagged phone
+        description: 'Specify if the phone traffic is tagged or untagged.
+
+          If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA)
+          is used, if supported by the model of switch.'
       trunk_groups:
         type: list
         items:
@@ -4196,6 +4216,26 @@ $defs:
                   see "mlag_ibgp_peering_vrfs.base_vlan" for details.
 
                   '
+              rd_override:
+                type: str
+                convert_types:
+                - int
+                description: "By default, the VRF RD will be derived from the pattern
+                  defined in `overlay_rd_type`.\nThe rd_override allows us to override
+                  this value and statically define it.\n\nrd_override supports two
+                  formats:\n  - A single number will be used in the RD assigned number
+                  subfield (second part of the RD).\n  - A full RD string with colon
+                  seperator which will override the full RD.\n"
+              rt_override:
+                type: str
+                convert_types:
+                - int
+                description: "By default, the VRF RD will be derived from the pattern
+                  defined in `overlay_rt_type`.\nThe rt_override allows us to override
+                  this value and statically define it.\n\nrt_override supports two
+                  formats:\n  - A single number will be used in the RT assigned number
+                  subfield (second part of the RT).\n  - A full RT string with colon
+                  seperator which will override the full RT.\n"
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'IPv4_address/Mask

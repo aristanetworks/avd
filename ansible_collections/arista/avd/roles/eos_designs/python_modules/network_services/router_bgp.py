@@ -662,13 +662,28 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return a string with the route-destinguisher for one VRF
         """
-        return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{self.get_vrf_id(vrf)}"
+        rd_override = default(vrf.get("rd_override"))
+
+        if ":" in str(rd_override):
+            return rd_override
+
+        if rd_override is not None:
+            return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{rd_override}"
+        else:
+            return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{self.get_vrf_id(vrf)}"
 
     def get_vrf_rt(self, vrf: dict) -> str:
         """
         Return a string with the route-target for one VRF
         """
-        if self._vrf_rt_admin_subfield is not None:
+        rt_override = default(vrf.get("rt_override"))
+
+        if ":" in str(rt_override):
+            return rt_override
+
+        if rt_override is not None:
+            return f"{rt_override}:{rt_override}"
+        elif self._vrf_rt_admin_subfield is not None:
             admin_subfield = self._vrf_rt_admin_subfield
         elif self.shared_utils.overlay_rt_type["vrf_admin_subfield"] == "vrf_vni":
             admin_subfield = self.get_vrf_vni(vrf)

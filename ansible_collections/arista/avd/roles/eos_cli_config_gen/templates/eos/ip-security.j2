@@ -57,7 +57,7 @@ ip security
       connection {{ profile.connection }}
 {%         endif %}
 {%         if profile.shared_key is arista.avd.defined %}
-      shared-key 7 {{ profile.shared_key }}
+      shared-key 7 {{ profile.shared_key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%         if profile.dpd.interval is arista.avd.defined and profile.dpd.time is arista.avd.defined and profile.dpd.action is arista.avd.defined %}
       dpd {{ profile.dpd.interval }} {{ profile.dpd.time }} {{ profile.dpd.action }}

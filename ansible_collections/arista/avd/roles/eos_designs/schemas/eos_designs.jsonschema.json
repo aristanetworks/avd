@@ -4477,6 +4477,24 @@
             "description": "If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.",
             "title": "Native VLAN Tag"
           },
+          "phone_vlan": {
+            "type": "integer",
+            "description": "Phone VLAN for a mode `trunk phone` port.\nRequires `mode: trunk phone` to be set.",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Phone VLAN"
+          },
+          "phone_trunk_mode": {
+            "type": "string",
+            "enum": [
+              "tagged",
+              "untagged",
+              "tagged phone",
+              "untagged phone"
+            ],
+            "description": "Specify if the phone traffic is tagged or untagged.\nIf both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.",
+            "title": "Phone Trunk Mode"
+          },
           "trunk_groups": {
             "type": "array",
             "items": {
@@ -10411,6 +10429,24 @@
             "default": false,
             "description": "If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.",
             "title": "Native VLAN Tag"
+          },
+          "phone_vlan": {
+            "type": "integer",
+            "description": "Phone VLAN for a mode `trunk phone` port.\nRequires `mode: trunk phone` to be set.",
+            "minimum": 1,
+            "maximum": 4094,
+            "title": "Phone VLAN"
+          },
+          "phone_trunk_mode": {
+            "type": "string",
+            "enum": [
+              "tagged",
+              "untagged",
+              "tagged phone",
+              "untagged phone"
+            ],
+            "description": "Specify if the phone traffic is tagged or untagged.\nIf both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.",
+            "title": "Phone Trunk Mode"
           },
           "trunk_groups": {
             "type": "array",

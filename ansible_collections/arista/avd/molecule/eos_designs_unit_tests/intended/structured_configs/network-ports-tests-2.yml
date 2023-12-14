@@ -28,6 +28,9 @@ vlans:
 - id: 100
   name: VLAN100_ON_L2LEAF_1_AND_2
   tenant: TEST
+- id: 300
+  name: VLAN300_PHONE_ON_L2LEAF1_AND_2
+  tenant: TEST
 vlan_interfaces:
 - name: Vlan4094
   description: MLAG_PEER
@@ -647,6 +650,30 @@ ethernet_interfaces:
   vlans: '100'
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
+- name: Ethernet11
+  peer: Phones with attached PCs
+  peer_type: network_port
+  port_profile: phone_with_pc
+  description: Phones with attached PCs
+  shutdown: false
+  type: switched
+  mode: trunk phone
+  native_vlan: 100
+  phone:
+    vlan: 300
+    trunk: untagged
+- name: Ethernet12
+  peer: Phones with attached PCs
+  peer_type: network_port
+  port_profile: phone_with_pc
+  description: Phones with attached PCs
+  shutdown: false
+  type: switched
+  mode: trunk phone
+  native_vlan: 100
+  phone:
+    vlan: 300
+    trunk: untagged
 - name: Ethernet7
   peer: Checking port-channels
   peer_type: network_port

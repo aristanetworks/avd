@@ -339,6 +339,30 @@ ethernet_interfaces:
   type: switched
   mode: access
   vlans: '110'
+- name: Ethernet8
+  peer: PHONE01_untagged
+  peer_interface: Eth0
+  peer_type: phone
+  description: PHONE01_untagged_Eth0
+  shutdown: false
+  type: switched
+  mode: trunk phone
+  native_vlan: 120
+  phone:
+    vlan: 113
+    trunk: untagged
+- name: Ethernet9
+  peer: PHONE02_tagged
+  peer_interface: Eth0
+  peer_type: phone
+  description: PHONE02_tagged_Eth0
+  shutdown: false
+  type: switched
+  mode: trunk phone
+  native_vlan: 120
+  phone:
+    vlan: 113
+    trunk: tagged
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering
