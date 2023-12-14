@@ -450,6 +450,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "title": "Ttl Maximum Hops",
+                  "description" : "Maximum number of hops."
                 }
               },
               "additionalProperties": false,
@@ -1054,6 +1061,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "title": "Ttl Maximum Hops",
+                  "Description": "Maximum number of hops."
                 }
               },
               "additionalProperties": false,
