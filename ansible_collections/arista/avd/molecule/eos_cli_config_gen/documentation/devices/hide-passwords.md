@@ -9,6 +9,9 @@
   - [Enable Password](#enable-password)
   - [TACACS Servers](#tacacs-servers)
   - [RADIUS Server](#radius-server)
+- [IP Security](#ip-security)
+  - [IPSec profiles](#ipsec-profiles)
+  - [IP Security Device Configuration](#ip-security-device-configuration)
 - [Routing](#routing)
   - [Router BGP](#router-bgp)
 
@@ -97,6 +100,24 @@ tacacs-server host 10.10.10.157 key 7 <removed>
 ```eos
 !
 radius-server host 10.10.10.158 key 7 <removed>
+```
+
+## IP Security
+
+### IPSec profiles
+
+| Profile name | IKE policy | SA policy | Connection | DPD Interval | DPD Time | DPD action | Mode |
+| ------------ | ---------- | ----------| ---------- | ------------ | -------- | ---------- | ---- |
+| Profile-1 | - | - | - | - | - | - | - |
+
+### IP Security Device Configuration
+
+```eos
+!
+ip security
+   !
+   profile Profile-1
+      shared-key 7 <removed>
 ```
 
 ## Routing
