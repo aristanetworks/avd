@@ -294,7 +294,7 @@ $defs:
                 convert_types:
                   - int
                 description: |
-                  By default the VRF RD will be derived from overlay loopback and vrf_id.
+                  By default, the VRF RD will be derived from the pattern defined in `overlay_rd_type`.
                   The rd_override allows us to override this value and statically define it.
 
                   rd_override supports two formats:
