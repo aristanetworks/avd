@@ -8,6 +8,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from ..interface_descriptions.models import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 
@@ -29,7 +30,9 @@ class LoopbackInterfacesMixin(UtilsMixin):
         # Loopback 0
         loopback0 = {
             "name": "Loopback0",
-            "description": self.shared_utils.interface_descriptions.overlay_loopback_interface(get(self._hostvars, "overlay_loopback_description")),
+            "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
+                InterfaceDescriptionData(shared_utils=self.shared_utils, interface="Loopback0", description=get(self._hostvars, "overlay_loopback_description"))
+            ),
             "shutdown": False,
             "ip_address": f"{self.shared_utils.router_id}/32",
         }

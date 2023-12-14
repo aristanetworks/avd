@@ -100,14 +100,14 @@ ip security
       ike-policy IKE-1
       sa-policy SA-1
       connection start
-      shared-key 7 12312312313213AA
+      shared-key 7 <removed>
       dpd 42 666 clear
       mode transport
    !
    profile Profile-2
       sa-policy SA-2
       connection start
-      shared-key 7 1231231231321AA
+      shared-key 7 <removed>
       mode tunnel
    !
    key controller

@@ -12,6 +12,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, default, get, replace_or_append_item
 
+from ..interface_descriptions import InterfaceDescriptionData
 from .utils import UtilsMixin
 
 
@@ -112,7 +113,15 @@ class EthernetInterfacesMixin(UtilsMixin):
             "peer_interface": peer_interface,
             "peer_type": connected_endpoint["type"],
             "port_profile": adapter.get("profile"),
-            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interfaces(peer, peer_interface, interface_description),
+            "description": self.shared_utils.interface_descriptions.connected_endpoints_ethernet_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=adapter["switch_ports"][node_index],
+                    peer=peer,
+                    peer_interface=peer_interface,
+                    description=interface_description,
+                )
+            ),
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
             "eos_cli": adapter.get("raw_eos_cli"),
@@ -151,6 +160,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
                     "native_vlan_tag": adapter.get("native_vlan_tag"),
                     "native_vlan": adapter.get("native_vlan"),
+                    "phone": self._get_adapter_phone(adapter, connected_endpoint),
                     "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
                     "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                     "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),

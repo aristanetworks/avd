@@ -46,16 +46,22 @@ class VlansMixin:
         trunk_groups = set(adapter_settings.get("trunk_groups", []))
         if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
             vlans.update(map(int, range_expand(str(adapter_settings["vlans"]))))
-        elif "trunk" in adapter_settings.get("mode", "") and not trunk_groups:
+        elif adapter_settings.get("mode", "") == "trunk" and not trunk_groups:
             # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
             # No need to check further, since the list is now containing all vlans.
             return set(range(1, 4094)), trunk_groups
+        elif adapter_settings.get("mode", "") == "trunk phone":
+            # # EOS default native VLAN is VLAN 1
+            if "native_vlan" not in adapter_settings:
+                vlans.add(1)
         else:
             # No vlans or mode defined so this is an access port with only vlan 1 allowed
             vlans.add(1)
 
         if "native_vlan" in adapter_settings:
             vlans.add(int(adapter_settings["native_vlan"]))
+        if "phone_vlan" in adapter_settings:
+            vlans.add(int(adapter_settings["phone_vlan"]))
 
         for subinterface in get(adapter_settings, "port_channel.subinterfaces", default=[]):
             if "vlan_id" in subinterface:
