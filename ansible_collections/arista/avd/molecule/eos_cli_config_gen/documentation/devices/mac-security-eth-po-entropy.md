@@ -56,7 +56,7 @@ interface Management1
 
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename | Cipher List | CRLs |
 | ---------------- | --------------------- | -------------------- | ------------ | ----------- | ---- |
-| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - |  |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY | - | - |
 
 ### Management Security Device Configuration
 
