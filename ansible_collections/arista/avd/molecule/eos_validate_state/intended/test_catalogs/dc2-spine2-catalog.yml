@@ -344,9 +344,6 @@ anta.tests.routing.generic:
       - BGP
       custom_field: ArBGP
       description: ArBGP is configured and operating
-anta.tests.security:
-- VerifyAPIHttpsSSL:
-    profile: eAPI_SSL_Profile
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:

@@ -73,9 +73,6 @@ anta.tests.interfaces:
       - Interface State
       custom_field: Port-Channel1 - DC1_L3_LEAF1_Po8
       description: Port-Channel Interface & Line Protocol == \"up\"
-anta.tests.security:
-- VerifyAPIHttpsSSL:
-    profile: eAPI_SSL_Profile
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:
