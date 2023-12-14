@@ -135,7 +135,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                 vrf.get("vrf_vni"),
                 vrf.get("vrf_id"),
             )
-            vrf_id = default(
+            id = default(
                 vrf.get("vrf_id"),
                 vrf.get("vrf_vni"),
             )
@@ -157,7 +157,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                     )
                     underlay_l3_mcast_group_ipv4_pool_offset = get(tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0)
                     vrf_data["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
-                        underlay_l3_multicast_group_ipv4_pool, vni, vrf_id, underlay_l3_mcast_group_ipv4_pool_offset
+                        underlay_l3_multicast_group_ipv4_pool, vni, id, underlay_l3_mcast_group_ipv4_pool_offset
                     )
 
                 # Duplicate check is not done on the actual list of vlans, but instead on our local "vnis" list.
@@ -167,7 +167,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                     primary_key="vni",
                     new_dict=vrf_data,
                     context="VXLAN VNIs for VRFs",
-                    context_keys=["vrf_id", "name", "vni"],
+                    context_keys=["id", "name", "vni"],
                 )
                 # Here we append to the actual list of VRFs, so duplication check is on the VRF here.
                 append_if_not_duplicate(

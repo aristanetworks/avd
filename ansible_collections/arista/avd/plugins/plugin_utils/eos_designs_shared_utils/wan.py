@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
 
-class CvPathfinderMixin:
+class WanMixin:
     """
     Mixin Class providing a subset of SharedUtils
     Class should only be used as Mixin to the SharedUtils class
@@ -33,6 +33,10 @@ class CvPathfinderMixin:
         wan_role = get(self.switch_data_combined, "wan_role", default=default_wan_role)
         if wan_role is not None and self.overlay_routing_protocol != "ibgp":
             raise AristaAvdError("Only 'ibgp' is supported as 'overlay_routing_protocol' for WAN nodes.")
+        if wan_role == "server" and self.evpn_role != "server":
+            raise AristaAvdError("'wan_role' server requires 'evpn_role' server.")
+        if wan_role == "client" and self.evpn_role != "client":
+            raise AristaAvdError("'wan_role' client requires 'evpn_role' client.")
         return wan_role
 
     @cached_property

@@ -7,6 +7,7 @@ from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 
@@ -354,36 +355,43 @@ class UtilsMixin:
                 # Don't add yourself
                 continue
 
-            peer_facts = self.shared_utils.get_peer_facts(wan_rr, required=False)
-
-            wan_rr_result_dict = {}
-
-            if peer_facts is not None:
+            if (peer_facts := self.shared_utils.get_peer_facts(wan_rr, required=False)) is not None:
                 # Found a matching server in inventory
                 bgp_as = peer_facts.get("bgp_as")
+                # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
+                if bgp_as != self.shared_utils.bgp_as:
+                    raise AristaAvdError(
+                        f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rr} is different from our own: {self.shared_utils.bgp_as}."
+                    )
 
-                wan_rr_result_dict = {
-                    "bgp_as": str(bgp_as) if bgp_as is not None else None,
-                    "router_id": peer_facts.get("router_id"),
-                    "carriers": peer_facts.get("carriers"),
-                }
+                # Prefer values coming from the input variables over peer facts
+                router_id = get(wan_rr_dict, "router_id", default=peer_facts.get("router_id"))
+                wan_carriers = get(wan_rr_dict, "wan_carriers", default=peer_facts.get("wan_carriers"))
 
-            # If overlay_routing_protocol is iBGP then we can use our own AS
-            if self.shared_utils.overlay_routing_protocol == "ibgp":
-                bgp_as = self.shared_utils.bgp_as
+                if router_id is None:
+                    raise AristaAvdMissingVariableError(
+                        f"'router_id' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers' or something is wrong with the peer"
+                        " facts."
+                    )
+                # TODO - enable this once the wan_carriers peer fact is implemented as this requires WAN interfaces not
+                # covered in this PR.
+                # if wan_carriers is None:
+                #    raise AristaAvdMissingVariableError(
+                #        f"'wan_carriers' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers' or something is wrong with the peer"
+                #        " facts."
+                #    )
 
-            # Retrieve the values from the dictionary, making them required if the peer_facts were not found
-            router_id = get(wan_rr_dict, "router_id", required=(peer_facts is None))
-            carriers = get(wan_rr_dict, "wan_carriers", required=(peer_facts is None))
-            update_dict = {
-                "bgp_as": bgp_as,
+            else:
+                # Retrieve the values from the dictionary, making them required if the peer_facts were not found
+                router_id = get(wan_rr_dict, "router_id", required=True)
+                wan_carriers = get(wan_rr_dict, "wan_carriers", required=True)
+
+            wan_rr_result_dict = {
                 "router_id": router_id,
-                "carriers": carriers,
+                "wan_carriers": wan_carriers,
             }
-            update_dict = {key: value for key, value in update_dict.items() if value is not None}
 
-            # TODO need a deepmerge
-            wan_rr_result_dict.update(update_dict)
+            wan_rr_result_dict = {key: value for key, value in wan_rr_result_dict.items() if value is not None}
 
             wan_route_servers[wan_rr] = wan_rr_result_dict
 
