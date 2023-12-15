@@ -60,16 +60,16 @@
 
 ### Point-To-Point Links Node Allocation
 
-| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
-| ---- | -------------- | --------------- | --------- | -------------- | --------------- |
-| SITE1-LER1 | Ethernet1 | 100.64.48.0/31 | SITE1-LSR1 | Ethernet1 | 100.64.48.1/31 |
-| SITE1-LER1 | Ethernet2 | 100.64.48.4/31 | SITE1-LER2 | Ethernet2 | 100.64.48.5/31 |
-| SITE1-LER2 | Ethernet1 | 100.64.48.2/31 | SITE1-LSR2 | Ethernet1 | 100.64.48.3/31 |
-| SITE1-LSR1 | Ethernet3 | 100.64.48.8/31 | SITE2-LSR1 | Ethernet3 | 100.64.48.9/31 |
-| SITE1-LSR1 | Ethernet4 | 100.64.48.6/31 | SITE1-RR1 | Ethernet4 | 100.64.48.7/31 |
-| SITE1-LSR2 | Ethernet3 | 100.64.48.10/31 | SITE2-LSR2 | Ethernet3 | 100.64.48.11/31 |
-| SITE2-LER1 | Ethernet1 | 100.64.48.15/31 | SITE2-LSR1 | Ethernet1 | 100.64.48.14/31 |
-| SITE2-LSR1 | Ethernet4 | 100.64.48.12/31 | SITE2-RR1 | Ethernet4 | 100.64.48.13/31 |
+| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address | VRF |
+| ---- | -------------- | --------------- | --------- | -------------- | --------------- | --- |
+| SITE1-LER1 | Ethernet1 | 100.64.48.0/31 | SITE1-LSR1 | Ethernet1 | 100.64.48.1/31 | default
+| SITE1-LER1 | Ethernet2 | 100.64.48.4/31 | SITE1-LER2 | Ethernet2 | 100.64.48.5/31 | default
+| SITE1-LER2 | Ethernet1 | 100.64.48.2/31 | SITE1-LSR2 | Ethernet1 | 100.64.48.3/31 | default
+| SITE1-LSR1 | Ethernet3 | 100.64.48.8/31 | SITE2-LSR1 | Ethernet3 | 100.64.48.9/31 | default
+| SITE1-LSR1 | Ethernet4 | 100.64.48.6/31 | SITE1-RR1 | Ethernet4 | 100.64.48.7/31 | default
+| SITE1-LSR2 | Ethernet3 | 100.64.48.10/31 | SITE2-LSR2 | Ethernet3 | 100.64.48.11/31 | default
+| SITE2-LER1 | Ethernet1 | 100.64.48.15/31 | SITE2-LSR1 | Ethernet1 | 100.64.48.14/31 | default
+| SITE2-LSR1 | Ethernet4 | 100.64.48.12/31 | SITE2-RR1 | Ethernet4 | 100.64.48.13/31 | default
 
 ### Loopback Interfaces (BGP EVPN Peering)
 
