@@ -98,7 +98,7 @@ interface Management1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | BFD Intervals | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | ------------- | --------------------- | ---------------------- | ------- |
-| 192.0.3.1 | 65432 | default | - | all | - | - | True | interval : 2000, min_rx : 2000, multiplier : 3 | True | - | True |
+| 192.0.3.1 | 65432 | default | - | all | - | - | True | interval: 2000, min_rx: 2000, multiplier: 3 | True | - | True |
 | 192.0.3.2 | 65433 | default | - | extended | 10000 | - | False | - | True (All) | - | - |
 | 192.0.3.3 | 65434 | default | - | standard | - | - | - | - | True | - | - |
 | 192.0.3.4 | 65435 | default | - | large | - | - | - | - | False | - | - |
