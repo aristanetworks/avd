@@ -15,6 +15,7 @@
 {#             break cycle if mandatory keys are not defined #}
 {%             continue %}
 {%         endif %}
+!
 ip access-list {{ acl.name }}
 {%         if acl.counters_per_entry is arista.avd.defined(true) %}
    counters per-entry

@@ -289,6 +289,28 @@ $defs:
                   "vrf_id" is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.
                   "vrf_id" may also be used for VRF RD/RT ID. See "overlay_rd_type" and "overlay_rt_type" for details.
                   "vrf_id" is preferred over "vrf_vni" for MLAG iBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details.
+              rd_override:
+                type: str
+                convert_types:
+                  - int
+                description: |
+                  By default, the VRF RD will be derived from the pattern defined in `overlay_rd_type`.
+                  The rd_override allows us to override this value and statically define it.
+
+                  rd_override supports two formats:
+                    - A single number will be used in the RD assigned number subfield (second part of the RD).
+                    - A full RD string with colon seperator which will override the full RD.
+              rt_override:
+                type: str
+                convert_types:
+                  - int
+                description: |
+                  By default, the VRF RD will be derived from the pattern defined in `overlay_rt_type`.
+                  The rt_override allows us to override this value and statically define it.
+
+                  rt_override supports two formats:
+                    - A single number will be used in the RT assigned number subfield (second part of the RT).
+                    - A full RT string with colon seperator which will override the full RT.
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: |

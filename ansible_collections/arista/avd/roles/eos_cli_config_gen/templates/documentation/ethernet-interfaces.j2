@@ -188,9 +188,9 @@
 {%     endif %}
 {# Phone Interfaces #}
 {%     set phone_interfaces = [] %}
-{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort('name') %}
-{%         if ethernet_interface.phone is arista.avd.defined %}
-{%             do phone_interfaces.append(ethernet_interface) %}
+{%     for interface in ethernet_interfaces | arista.avd.natural_sort('name') + port_channel_interfaces | arista.avd.natural_sort('name') %}
+{%         if interface.phone is arista.avd.defined %}
+{%             do phone_interfaces.append(interface) %}
 {%         endif %}
 {%     endfor %}
 {%     if phone_interfaces | length > 0 %}
@@ -200,7 +200,7 @@
 | Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
 | --------- | ---- | ----------- | ---------- | --------------- |
 {%         for phone_interface in phone_interfaces %}
-| {{ phone_interface.name }} | {{ phone_interface.mode }} | {{ phone_interface.native_vlan }} | {{ phone_interface.phone.vlan }} | {{ phone_interface.phone.trunk }} |
+| {{ phone_interface.name }} | {{ phone_interface.mode }} | {{ phone_interface.native_vlan | arista.avd.default(1) }} | {{ phone_interface.phone.vlan | arista.avd.default('-') }} | {{ phone_interface.phone.trunk | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {# Multicast Routing #}

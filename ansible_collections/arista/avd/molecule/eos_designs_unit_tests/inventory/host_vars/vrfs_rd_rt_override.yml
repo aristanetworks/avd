@@ -1,0 +1,39 @@
+# Testing the rd and rt override for VRFs
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: vrfs_rd_rt_override
+      id: 20
+      bgp_as: 65101
+      filter:
+        tenants:
+          - TENANT1
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: VRF1
+        vrf_id: 1
+        rd_override: 111:222
+        rt_override: 333:444
+        svis:
+          - id: 100
+            enabled: true
+            name: VLAN100
+            ip_address_virtual: 10.0.100.1/24
+      - name: VRF2
+        vrf_id: 2
+        rd_override: 999
+        rt_override: 999
+        svis:
+          - id: 200
+            enabled: true
+            name: VLAN200
+            ip_address_virtual: 10.0.200.1/24

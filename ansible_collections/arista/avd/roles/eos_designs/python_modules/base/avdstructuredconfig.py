@@ -12,10 +12,11 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from .ntp import NtpMixin
 from .snmp_server import SnmpServerMixin
 
 
-class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
+class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
     """
     The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
 
@@ -32,6 +33,13 @@ class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
     @cached_property
     def hostname(self) -> str:
         return self.shared_utils.hostname
+
+    @cached_property
+    def metadata(self) -> dict | None:
+        if self.shared_utils.platform is None:
+            return None
+
+        return {"platform": self.shared_utils.platform}
 
     @cached_property
     def is_deployed(self) -> bool:

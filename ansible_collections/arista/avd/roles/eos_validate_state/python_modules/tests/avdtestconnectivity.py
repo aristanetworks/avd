@@ -35,6 +35,7 @@ class AvdTestP2PIPReachability(AvdTestBase):
         required_keys = ["name", "peer", "peer_interface", "ip_address"]
 
         for idx, interface in enumerate(ethernet_interfaces):
+            self.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, type="routed", shutdown=False):
                 continue
 
@@ -84,6 +85,7 @@ class AvdTestInbandReachability(AvdTestBase):
             return None
 
         for idx, interface in enumerate(management_interfaces):
+            self.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"management_interface.[{idx}]", required_keys="name", type="inband", shutdown=False):
                 continue
 
@@ -173,6 +175,7 @@ class AvdTestLLDPTopology(AvdTestBase):
         required_keys = ["name", "peer", "peer_interface"]
 
         for idx, interface in enumerate(ethernet_interfaces):
+            self.update_interface_shutdown(interface=interface)
             if not self.validate_data(data=interface, data_path=f"ethernet_interfaces.[{idx}]", required_keys=required_keys, shutdown=False):
                 continue
 

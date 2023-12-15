@@ -9,10 +9,8 @@
   arista.avd.yaml_templates_to_facts:
     templates:
       - template: generate_state_report_results.j2
-      - template: generate_anta_report_results.j2
   delegate_to: localhost
   run_once: true
-  check_mode: "{{ ansible_check_mode and not use_anta }}"
   changed_when: false # yaml_template_to_facts always return changes in that case which break idempotency falsely
   tags:
     - always
@@ -25,9 +23,7 @@
     mode: 0664
   delegate_to: localhost
   run_once: true
-  # When running with 'use_anta' we want to generate a report with all tests NOT RUN as preview
-  check_mode: "{{ ansible_check_mode and not use_anta }}"
-  when: "validation_role.validation_report_csv | arista.avd.default(true)"
+  when: validation_report_csv | bool
   tags:
     - always
     - report
@@ -39,9 +35,7 @@
     mode: 0664
   delegate_to: localhost
   run_once: true
-  # When running with 'use_anta' we want to generate a report with all tests NOT RUN as preview
-  check_mode: "{{ ansible_check_mode and not use_anta }}"
-  when: "validation_role.validation_report_md | arista.avd.default(true)"
+  when: validation_report_md | bool
   tags:
     - always
     - report

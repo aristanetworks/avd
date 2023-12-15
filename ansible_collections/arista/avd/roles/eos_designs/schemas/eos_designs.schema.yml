@@ -1555,6 +1555,60 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to Custom J2 template.
+  ntp_settings:
+    documentation_options:
+      table: management-settings
+    type: dict
+    description: NTP settings
+    keys:
+      server_vrf:
+        type: str
+        description: "EOS only supports NTP servers in one VRF, so this VRF is used
+          for all NTP servers and one local-interface.\n- `use_mgmt_interface_vrf`
+          will configure the NTP server(s) under the VRF set with `mgmt_interface_vrf`
+          and set the `mgmt_interface` as NTP local-interface.\n  An error will be
+          raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
+          `use_inband_mgmt_vrf` will configure the NTP server(s) under the VRF set
+          with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as NTP local-interface.\n
+          \ An error will be raised if inband management is not configured for the
+          device.\n- Any other string will be used directly as the VRF name but local
+          interface must be set with `custom_structured_configuration_ntp` if needed.\nIf
+          not set, the VRF is automatically picked up from the global setting `default_mgmt_method`."
+      servers:
+        type: list
+        description: The first server is always set as "preferred".
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/name
+            burst:
+              type: bool
+            iburst:
+              type: bool
+            key:
+              type: int
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/key
+            maxpoll:
+              type: int
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/maxpoll
+            minpoll:
+              type: int
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/minpoll
+            version:
+              type: int
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/version
+      authenticate:
+        type: bool
+      authenticate_servers_only:
+        type: bool
+      authentication_keys:
+        type: list
+        $ref: eos_cli_config_gen#/keys/ntp/keys/authentication_keys
+      trusted_keys:
+        type: str
+        $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
   only_local_vlan_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -3092,6 +3146,26 @@ $defs:
         default: false
         description: If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag`
           takes precedence.
+      phone_vlan:
+        type: int
+        convert_types:
+        - str
+        description: 'Phone VLAN for a mode `trunk phone` port.
+
+          Requires `mode: trunk phone` to be set.'
+        min: 1
+        max: 4094
+      phone_trunk_mode:
+        type: str
+        valid_values:
+        - tagged
+        - untagged
+        - tagged phone
+        - untagged phone
+        description: 'Specify if the phone traffic is tagged or untagged.
+
+          If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA)
+          is used, if supported by the model of switch.'
       trunk_groups:
         type: list
         items:
@@ -4142,6 +4216,26 @@ $defs:
                   see "mlag_ibgp_peering_vrfs.base_vlan" for details.
 
                   '
+              rd_override:
+                type: str
+                convert_types:
+                - int
+                description: "By default, the VRF RD will be derived from the pattern
+                  defined in `overlay_rd_type`.\nThe rd_override allows us to override
+                  this value and statically define it.\n\nrd_override supports two
+                  formats:\n  - A single number will be used in the RD assigned number
+                  subfield (second part of the RD).\n  - A full RD string with colon
+                  seperator which will override the full RD.\n"
+              rt_override:
+                type: str
+                convert_types:
+                - int
+                description: "By default, the VRF RD will be derived from the pattern
+                  defined in `overlay_rt_type`.\nThe rt_override allows us to override
+                  this value and statically define it.\n\nrt_override supports two
+                  formats:\n  - A single number will be used in the RT assigned number
+                  subfield (second part of the RT).\n  - A full RT string with colon
+                  seperator which will override the full RT.\n"
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'IPv4_address/Mask

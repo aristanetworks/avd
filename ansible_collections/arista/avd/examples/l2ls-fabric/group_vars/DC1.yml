@@ -30,13 +30,11 @@ name_servers:
   - 8.8.8.8
 
 # NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
-ntp:
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
   servers:
     - name: time.google.com
-      preferred: true
-      vrf: MGMT
     - name: pool.ntp.org
-      vrf: MGMT
 
 # Establish exec/enable role when logging in to switch
 aaa_authorization:

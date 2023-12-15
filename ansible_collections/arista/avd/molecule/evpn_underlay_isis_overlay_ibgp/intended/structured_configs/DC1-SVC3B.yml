@@ -1,4 +1,6 @@
 hostname: DC1-SVC3B
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -97,6 +99,14 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 vlans:
 - id: 4094
   tenant: system

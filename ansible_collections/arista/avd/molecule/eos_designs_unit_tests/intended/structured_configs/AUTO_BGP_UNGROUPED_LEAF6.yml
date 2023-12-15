@@ -1,4 +1,6 @@
 hostname: AUTO_BGP_UNGROUPED_LEAF6
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65110'
