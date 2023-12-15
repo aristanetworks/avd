@@ -46,6 +46,10 @@ router_bgp:
         remote_as_replace_out: true
         prepend_own_disabled: true
       bfd: true
+      bfd_intervals:
+        interval: 2000
+        min_rx: 2000
+        multiplier: 3
     - name: WELCOME_ROUTERS
       type: ipv4
       description: 'BGP Connection to WELCOME ROUTER 02'
@@ -119,6 +123,10 @@ router_bgp:
         - ip_address: 101.0.3.6
           peer_group: WELCOME_ROUTERS
           bfd: true
+          bfd_intervals:
+            interval: 2500
+            min_rx: 2000
+            multiplier: 3
         # Testing bfd true OUTSIDE a peer group that should render
         - ip_address: 101.0.3.7
           bfd: true

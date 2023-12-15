@@ -241,6 +241,33 @@ keys:
               type: bool
             bfd:
               type: bool
+              description: Create the bfd session request with default bfd intervalss.
+            bfd_intervals:
+              type: dict
+              description: |-
+                This does not create the bfd session. Set the bfd value to true to create bfd session.
+                This is used to override the default bfd intervalss.
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  convert_types:
+                    - str
             ebgp_multihop:
               type: int
               min: 1
@@ -387,6 +414,33 @@ keys:
               description: Source Interface
             bfd:
               type: bool
+              description: Create a bfd session request with default bfd intervals.
+            bfd_intervals:
+              type: dict
+              description: |-
+                Override the default bfd intervals.
+                This does not start the bfd session. Set the bfd value to true to create bfd session.
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 50
+                  max: 60000
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  convert_types:
+                    - str
             weight:
               type: int
               min: 0
@@ -1903,6 +1957,33 @@ keys:
                     type: bool
                   bfd:
                     type: bool
+                    description: Create a bfd session request with default bfd intervals.
+                  bfd_intervals:
+                    type: dict
+                    description: |-
+                      This does not start the bfd session. Set the bfd value to true to create bfd session.
+                      This is used to override the default bfd intervals.
+                    keys:
+                      interval:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 50
+                        max: 60000
+                        description: Interval in milliseconds.
+                      min_rx:
+                        type: int
+                        convert_types:
+                          - str
+                        min: 50
+                        max: 60000
+                        description: Rate in milliseconds.
+                      multiplier:
+                        type: int
+                        min: 3
+                        max: 50
+                        convert_types:
+                          - str
                   timers:
                     type: str
                     description: BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"

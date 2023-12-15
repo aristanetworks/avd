@@ -14645,7 +14645,39 @@
               },
               "bfd": {
                 "type": "boolean",
+                "description": "Create the bfd session request with default bfd intervalss.",
                 "title": "BFD"
+              },
+              "bfd_intervals": {
+                "type": "object",
+                "description": "This does not create the bfd session. Set the bfd value to true to create bfd session.\nThis is used to override the default bfd intervalss.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Interval in milliseconds.",
+                    "title": "Interval"
+                  },
+                  "min_rx": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Rate in milliseconds.",
+                    "title": "Min RX"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "minimum": 3,
+                    "maximum": 50,
+                    "title": "Multiplier"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BFD Intervals"
               },
               "ebgp_multihop": {
                 "type": "integer",
@@ -14886,7 +14918,39 @@
               },
               "bfd": {
                 "type": "boolean",
+                "description": "Create a bfd session request with default bfd intervals.",
                 "title": "BFD"
+              },
+              "bfd_intervals": {
+                "type": "object",
+                "description": "Override the default bfd intervals.\nThis does not start the bfd session. Set the bfd value to true to create bfd session.",
+                "properties": {
+                  "interval": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Interval in milliseconds.",
+                    "title": "Interval"
+                  },
+                  "min_rx": {
+                    "type": "integer",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "description": "Rate in milliseconds.",
+                    "title": "Min RX"
+                  },
+                  "multiplier": {
+                    "type": "integer",
+                    "minimum": 3,
+                    "maximum": 50,
+                    "title": "Multiplier"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "BFD Intervals"
               },
               "weight": {
                 "type": "integer",
@@ -17853,7 +17917,39 @@
                     },
                     "bfd": {
                       "type": "boolean",
+                      "description": "Create a bfd session request with default bfd intervals.",
                       "title": "BFD"
+                    },
+                    "bfd_intervals": {
+                      "type": "object",
+                      "description": "This does not start the bfd session. Set the bfd value to true to create bfd session.\nThis is used to override the default bfd intervals.",
+                      "properties": {
+                        "interval": {
+                          "type": "integer",
+                          "minimum": 50,
+                          "maximum": 60000,
+                          "description": "Interval in milliseconds.",
+                          "title": "Interval"
+                        },
+                        "min_rx": {
+                          "type": "integer",
+                          "minimum": 50,
+                          "maximum": 60000,
+                          "description": "Rate in milliseconds.",
+                          "title": "Min RX"
+                        },
+                        "multiplier": {
+                          "type": "integer",
+                          "minimum": 3,
+                          "maximum": 50,
+                          "title": "Multiplier"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      },
+                      "title": "BFD Intervals"
                     },
                     "timers": {
                       "type": "string",
