@@ -381,7 +381,8 @@ class UtilsMixin:
                 # covered in this PR.
                 # if wan_path_groups is None:
                 #    raise AristaAvdMissingVariableError(
-                #        f"'wan_path_groups' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers' or something is wrong with the peer"
+                #        f"'wan_path_groups' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers'"
+                #        " or something is wrong with the peer"
                 #        " facts."
                 #    )
 
