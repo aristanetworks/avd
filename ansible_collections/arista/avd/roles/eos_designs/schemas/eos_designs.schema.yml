@@ -4230,7 +4230,7 @@ $defs:
                 type: str
                 convert_types:
                 - int
-                description: "By default, the VRF RD will be derived from the pattern
+                description: "By default, the VRF RT will be derived from the pattern
                   defined in `overlay_rt_type`.\nThe rt_override allows us to override
                   this value and statically define it.\n\nrt_override supports two
                   formats:\n  - A single number will be used in the RT assigned number

@@ -58,11 +58,11 @@ router_bgp:
       import:
       - address_family: evpn
         route_targets:
-        - 999:999
+        - 2:999
       export:
       - address_family: evpn
         route_targets:
-        - 999:999
+        - 2:999
     redistribute_routes:
     - source_protocol: connected
   vlans:
