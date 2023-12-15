@@ -132,6 +132,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.6/31
+  vrf: TEST
 - name: Ethernet5
   type: port-channel-member
   peer: peer5
@@ -191,3 +192,4 @@ port_channel_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.10/31
+  vrf: TEST

@@ -50,7 +50,7 @@ l3_edge:
       subnet: 192.168.0.4/31
       as: [65000, 65003]
 
-      # P2P link with underlay routing and IP set via ip_pool and id.
+      # P2P link with underlay routing and IP set via ip_pool and id and in a non default VRF.
       # Descriptions set manually
     - nodes: [l3_edge_bgp, peer4]
       interfaces: [ethernet4, ethernet4]
@@ -58,6 +58,7 @@ l3_edge:
       id: 4
       as: [65000, 65004]
       descriptions: ["Custom description on l3_edge_bgp eth4", "Custom description on peer4 eth4"]
+      vrf: TEST
 
     # P2P link with Port-Channel with underlay routing and and IP set manually.
     - nodes: [ l3_edge_bgp, peer5 ]
@@ -72,7 +73,7 @@ l3_edge:
             interfaces: [ Ethernet5, Ethernet6 ]
       include_in_underlay_protocol: true
 
-    # P2P link with Port-Channel with underlay routing and IP set via ip_pool and id.
+    # P2P link with Port-Channel with underlay routing and IP set via ip_pool and id and in a non default VRF.
     - nodes: [ l3_edge_bgp, peer6 ]
       ip_pool: pool1
       id: 6
@@ -85,3 +86,4 @@ l3_edge:
           - node: peer6
             interfaces: [ Ethernet7, Ethernet8 ]
       include_in_underlay_protocol: true
+      vrf: TEST

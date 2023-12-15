@@ -2638,6 +2638,11 @@
                 },
                 "title": "Port Channel"
               },
+              "vrf": {
+                "type": "string",
+                "description": "VRF in which both members of the p2p link will be configured",
+                "title": "VRF"
+              },
               "raw_eos_cli": {
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
@@ -2872,6 +2877,11 @@
                   "^_.+$": {}
                 },
                 "title": "Port Channel"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF in which both members of the p2p link will be configured",
+                "title": "VRF"
               },
               "raw_eos_cli": {
                 "type": "string",
@@ -3958,6 +3968,11 @@
                 },
                 "title": "Port Channel"
               },
+              "vrf": {
+                "type": "string",
+                "description": "VRF in which both members of the p2p link will be configured",
+                "title": "VRF"
+              },
               "raw_eos_cli": {
                 "type": "string",
                 "description": "EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.",
@@ -4192,6 +4207,11 @@
                   "^_.+$": {}
                 },
                 "title": "Port Channel"
+              },
+              "vrf": {
+                "type": "string",
+                "description": "VRF in which both members of the p2p link will be configured",
+                "title": "VRF"
               },
               "raw_eos_cli": {
                 "type": "string",

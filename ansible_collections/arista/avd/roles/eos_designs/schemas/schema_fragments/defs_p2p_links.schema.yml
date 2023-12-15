@@ -149,6 +149,9 @@ $defs:
                     description: List of node interfaces. Ex.- [ 'node1 interface1', 'node1 interface2' ].
                     items:
                       type: str
+        vrf:
+          type: str
+          description: VRF in which both members of the p2p link will be configured
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.

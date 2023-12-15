@@ -265,6 +265,8 @@ class UtilsMixin:
                         }
                     }
                 )
+        if p2p_link.get("vrf") is not None:
+            interface_cfg["vrf"] = p2p_link.get("vrf")
 
         return interface_cfg
 
