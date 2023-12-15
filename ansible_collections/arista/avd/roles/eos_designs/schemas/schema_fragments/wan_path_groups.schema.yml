@@ -41,4 +41,3 @@ keys:
               local:
                 type: str
                 description: Optional, if not set, the path-group `name` is used as local.
-
