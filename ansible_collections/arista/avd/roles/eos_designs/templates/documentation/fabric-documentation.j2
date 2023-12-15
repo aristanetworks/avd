@@ -89,6 +89,7 @@
 {%                             do assigned_ip_addresses.append(topology_link.peer_ip_address) %}
 {%                         endif %}
 {%                     endif %}
+{%                     set topology_link.vrf = ethernet_interface.vrf %}
 {%                     do topology_links.append(topology_link) %}
 {%                 endif %}
 {%             endif %}
@@ -147,11 +148,11 @@
 
 ### Point-To-Point Links Node Allocation
 
-| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
-| ---- | -------------- | --------------- | --------- | -------------- | --------------- |
+| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address | VRF |
+| ---- | -------------- | --------------- | --------- | -------------- | --------------- | --- |
 {% for topology_link in topology_links %}
 {%     if topology_link.node_ip_address is arista.avd.defined and topology_link.peer_ip_address is arista.avd.defined %}
-| {{ topology_link.node }} | {{ topology_link.node_interface }} | {{ topology_link.node_ip_address }} | {{ topology_link.peer }} | {{ topology_link.peer_interface }} | {{ topology_link.peer_ip_address }} |
+| {{ topology_link.node }} | {{ topology_link.node_interface }} | {{ topology_link.node_ip_address }} | {{ topology_link.peer }} | {{ topology_link.peer_interface }} | {{ topology_link.peer_ip_address }} | {{ topology_link.vrf }}
 {%     endif %}
 {% endfor %}
 

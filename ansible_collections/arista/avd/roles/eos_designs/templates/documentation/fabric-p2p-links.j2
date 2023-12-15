@@ -3,7 +3,7 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
+Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address,VRF
 {% set interfaces_done = [] %}
 {% if node_type_keys is arista.avd.defined %}
 {%     set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
@@ -41,6 +41,7 @@ Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer
 {%                             set peer_ip_address = peer_ethernet_interface.ip_address | arista.avd.default("") %}
 {%                         endif %}
 {%                         do csv_line.append(peer_ip_address) %}
+{%                         do csv_line.append(ethernet_interface.vrf) %}
 {{ csv_line | join(",") }}
 {%                     endif %}
 {%                 endif %}
