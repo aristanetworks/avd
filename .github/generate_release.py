@@ -27,6 +27,7 @@ SCOPES = [
     # Handle multiple scopes ',' are not supported in Github labels and so replaced with '|' by our action
     "eos_designs|eos_cli_config_gen",
     "eos_cli_config_gen|eos_designs",
+    "pyavd",
 ]
 
 # CI and Test are excluded from Release Notes
@@ -67,6 +68,7 @@ if __name__ == "__main__":
             "eos_designs",
             "eos_cli_config_gen|eos_designs",
             "eos_designs|eos_cli_config_gen",
+            "pyavd",
         ]
     ]
 
@@ -77,9 +79,9 @@ if __name__ == "__main__":
     exclude_list.extend(["rn: Test", "rn: CI"])
 
     # Then add the categories
-    # First add Breaking Changes
+    # First add Breaking Changes EXCEPT `pyavd` ones
     breaking_label_categories = ["Feat", "Fix", "Cut", "Revert", "Refactor", "Bump"]
-    breaking_labels = [f"rn: {cc_type}({scope})!" for cc_type in breaking_label_categories for scope in SCOPES]
+    breaking_labels = [f"rn: {cc_type}({scope})!" for cc_type in breaking_label_categories for scope in SCOPES if scope != "pyavd"]
     breaking_labels.extend([f"rn: {cc_type}!" for cc_type in breaking_label_categories])
 
     categories_list.append(
@@ -125,8 +127,8 @@ if __name__ == "__main__":
         }
     )
 
-    # Add Documentation
-    doc_labels = [f"rn: Doc({scope})" for scope in SCOPES]
+    # Add Documentation - except for PyAVD
+    doc_labels = [f"rn: Doc({scope})" for scope in SCOPES if scope != "pyavd"]
     doc_labels.append("rn: Doc")
 
     categories_list.append(
@@ -171,6 +173,15 @@ if __name__ == "__main__":
         {
             "title": "Other new features and enhancements",
             "labels": other_feat_labels,
+        }
+    )
+
+    # Add all PyAVD changes
+    pyavd_labels = [f"rn: {category}(pyavd)" for category in CATEGORIES]
+    categories_list.append(
+        {
+            "title": "PyAVD Changes",
+            "labels": pyavd_labels,
         }
     )
 
