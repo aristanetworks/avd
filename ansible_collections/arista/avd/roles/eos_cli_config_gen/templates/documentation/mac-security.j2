@@ -40,7 +40,7 @@ FIPS restrictions enabled.
 ###### Keys
 
 | Key ID | Fallback |
-| ------ |  -------- |
+| ------ | -------- |
 {%                 for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
 {%                     if connection_key.encrypted_key is arista.avd.defined %}
 {%                         set fallback = connection_key.fallback | arista.avd.default('-') %}
