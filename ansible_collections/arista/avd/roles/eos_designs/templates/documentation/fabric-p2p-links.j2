@@ -41,7 +41,7 @@ Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer
 {%                             set peer_ip_address = peer_ethernet_interface.ip_address | arista.avd.default("") %}
 {%                         endif %}
 {%                         do csv_line.append(peer_ip_address) %}
-{%                         do csv_line.append(ethernet_interface.vrf) %}
+{%                         do csv_line.append(ethernet_interface.vrf | arista.avd.default("default")) %}
 {{ csv_line | join(",") }}
 {%                     endif %}
 {%                 endif %}
