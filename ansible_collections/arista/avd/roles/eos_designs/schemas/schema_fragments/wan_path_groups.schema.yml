@@ -28,7 +28,7 @@ keys:
           description: Additional information about the path-group for documentation purposes.
         ipsec:
           type: bool
-          description: Flag to configure IPsec on the carrier (default is True).
+          description: Flag to configure IPsec on the path_group (default is True).
         import_path_groups:
           type: list
           description: List of [ath-groups to import in this path-group.

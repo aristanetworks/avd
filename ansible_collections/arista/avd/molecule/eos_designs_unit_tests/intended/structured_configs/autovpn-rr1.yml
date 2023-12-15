@@ -120,6 +120,12 @@ router_path_selection:
 stun:
   server:
     local_interfaces: []
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

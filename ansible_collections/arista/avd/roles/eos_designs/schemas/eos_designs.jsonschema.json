@@ -3269,6 +3269,26 @@
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
               },
+              "wan_path_group": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN path-group this interface is connected to.",
+                "title": "Wan Path Group"
+              },
+              "wan_carrier": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Carrier"
+              },
+              "wan_circuit_id": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Circuit ID"
+              },
+              "cv_pathfinder_connected_to_pathfinder": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "title": "Cv Pathfinder Connected To Pathfinder"
+              },
               "raw_eos_cli": {
                 "type": "string",
                 "description": "EOS CLI rendered directly on the interface in the final EOS configuration.",
@@ -5930,6 +5950,26 @@
                 "type": "string",
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
+              },
+              "wan_path_group": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN path-group this interface is connected to.",
+                "title": "Wan Path Group"
+              },
+              "wan_carrier": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Carrier"
+              },
+              "wan_circuit_id": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Circuit ID"
+              },
+              "cv_pathfinder_connected_to_pathfinder": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "title": "Cv Pathfinder Connected To Pathfinder"
               },
               "raw_eos_cli": {
                 "type": "string",
@@ -9986,6 +10026,26 @@
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
               },
+              "wan_path_group": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN path-group this interface is connected to.",
+                "title": "Wan Path Group"
+              },
+              "wan_carrier": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Carrier"
+              },
+              "wan_circuit_id": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Circuit ID"
+              },
+              "cv_pathfinder_connected_to_pathfinder": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "title": "Cv Pathfinder Connected To Pathfinder"
+              },
               "raw_eos_cli": {
                 "type": "string",
                 "description": "EOS CLI rendered directly on the interface in the final EOS configuration.",
@@ -12647,6 +12707,26 @@
                 "type": "string",
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
+              },
+              "wan_path_group": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN path-group this interface is connected to.",
+                "title": "Wan Path Group"
+              },
+              "wan_carrier": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Carrier"
+              },
+              "wan_circuit_id": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Circuit ID"
+              },
+              "cv_pathfinder_connected_to_pathfinder": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "title": "Cv Pathfinder Connected To Pathfinder"
               },
               "raw_eos_cli": {
                 "type": "string",
@@ -30952,7 +31032,7 @@
           },
           "ipsec": {
             "type": "boolean",
-            "description": "Flag to configure IPsec on the carrier (default is True).",
+            "description": "Flag to configure IPsec on the path_group (default is True).",
             "title": "Ipsec"
           },
           "import_path_groups": {

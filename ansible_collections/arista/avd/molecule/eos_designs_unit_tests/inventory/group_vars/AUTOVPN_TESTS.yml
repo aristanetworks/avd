@@ -45,3 +45,27 @@ wan_rr:
       id: 1
     - name: autovpn-rr2
       id: 2
+
+wan_path_groups:
+  - name: MPLS
+    ipsec: False
+  - name: INET
+  - name: LTE
+
+l3_edge:
+  l3_interfaces:
+    - node: autovpn-edge
+      interface: Ethernet1
+      wan_path_group: INET
+      wan_circuit_id: 666
+      ip: dhcp
+    - node: autovpn-rr1
+      interface: Ethernet1
+      wan_path_group: INET
+      wan_circuit_id: 777
+      ip: dhcp
+    - node: autovpn-rr2
+      interface: Ethernet1
+      wan_path_group: INET
+      wan_circuit_id: 888
+      ip: dhcp

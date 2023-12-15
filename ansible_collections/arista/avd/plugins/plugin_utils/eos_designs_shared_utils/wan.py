@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 if TYPE_CHECKING:
     from .shared_utils import SharedUtils
@@ -51,3 +51,41 @@ class WanMixin:
         if cv_pathfinder_role in ["transit", "edge"] and self.wan_role != "client":
             raise AristaAvdError("'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'")
         return cv_pathfinder_role
+
+    @cached_property
+    def wan_interfaces(self: SharedUtils) -> list:
+        """
+        As a first approach, only interfaces under l3edge.l3_interfaces can be considered
+        as WAN interfaces.
+        This may need to be made wider.
+        This also may require a different format for the dictionaries inside the list.
+        """
+        if self.wan_mode is None:
+            return []
+        wan_interfaces = []
+        for interface in get(self.hostvars, "l3_edge.l3_interfaces", default=[]):
+            # Potentially needs to resolve profile
+            if get(interface, "wan_path_group") is not None:
+                # TODO - may need to validate the path_group here
+                wan_interfaces.append(interface)
+
+        return wan_interfaces
+
+    @cached_property
+    def wan_local_path_groups(self: SharedUtils) -> list:
+        """
+        List of path_groups present on this router based on the wan_interfaces
+
+        TODO maybe a list of name is enough
+        """
+        if self.wan_mode is None:
+            return []
+        local_path_groups = []
+        global_path_groups = get(self.hostvars, "wan_path_groups", required=True)
+        for interface in self.wan_interfaces:
+            iface_path_group = interface.get("wan_path_group")
+            path_group = get_item(global_path_groups, "name", iface_path_group, required=True, custom_error_msg=f"WAN path_group {iface_path_group} is not in the available path_groups defined in `wan_path_groupes`")
+            local_path_groups.append(path_group)
+
+        return local_path_groups
+
