@@ -12,6 +12,7 @@ from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 from ansible_collections.arista.avd.plugins.plugin_utils.merge import merge
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 
@@ -398,7 +399,4 @@ class UtilsMixin:
         if ip_address == "dhcp" and l3_interface.get("dhcp_client_accept_default_route", False):
             interface["dhcp_client_accept_default_route"] = True
 
-        # Strip None values from interface before returning
-        interface = {key: value for key, value in interface.items() if value is not None}
-
-        return interface
+        return strip_empties_from_dict(interface)
