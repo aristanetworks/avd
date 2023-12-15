@@ -62,21 +62,21 @@
 
 ### Point-To-Point Links Node Allocation
 
-| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
-| ---- | -------------- | --------------- | --------- | -------------- | --------------- |
-| p1 | Ethernet1 | 100.64.48.1/31 | pe1 | Ethernet1 | 100.64.48.0/31 |
-| p1 | Ethernet2 | 100.64.48.7/31 | pe2 | Ethernet2 | 100.64.48.6/31 |
-| p1 | Ethernet3 | 100.64.48.11/31 | rr1 | Ethernet3 | 100.64.48.10/31 |
-| p1 | Ethernet4 | 100.64.48.8/31 | p2 | Ethernet4 | 100.64.48.9/31 |
-| p2 | Ethernet1 | 100.64.48.5/31 | pe2 | Ethernet1 | 100.64.48.4/31 |
-| p2 | Ethernet2 | 100.64.48.3/31 | pe1 | Ethernet2 | 100.64.48.2/31 |
-| p2 | Ethernet3 | 100.64.48.17/31 | rr2 | Ethernet3 | 100.64.48.16/31 |
-| p3 | Ethernet1 | 100.64.48.23/31 | pe3 | Ethernet1 | 100.64.48.22/31 |
-| p3 | Ethernet2 | 100.64.48.13/31 | rr1 | Ethernet2 | 100.64.48.12/31 |
-| p3 | Ethernet4 | 100.64.48.20/31 | p4 | Ethernet4 | 100.64.48.21/31 |
-| p4 | Ethernet2 | 100.64.48.19/31 | rr2 | Ethernet2 | 100.64.48.18/31 |
-| p4 | Ethernet3 | 100.64.48.25/31 | pe3 | Ethernet3 | 100.64.48.24/31 |
-| rr1 | Ethernet4 | 100.64.48.14/31 | rr2 | Ethernet4 | 100.64.48.15/31 |
+| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address | VRF |
+| ---- | -------------- | --------------- | --------- | -------------- | --------------- | --- |
+| p1 | Ethernet1 | 100.64.48.1/31 | pe1 | Ethernet1 | 100.64.48.0/31 | default
+| p1 | Ethernet2 | 100.64.48.7/31 | pe2 | Ethernet2 | 100.64.48.6/31 | default
+| p1 | Ethernet3 | 100.64.48.11/31 | rr1 | Ethernet3 | 100.64.48.10/31 | default
+| p1 | Ethernet4 | 100.64.48.8/31 | p2 | Ethernet4 | 100.64.48.9/31 | default
+| p2 | Ethernet1 | 100.64.48.5/31 | pe2 | Ethernet1 | 100.64.48.4/31 | default
+| p2 | Ethernet2 | 100.64.48.3/31 | pe1 | Ethernet2 | 100.64.48.2/31 | default
+| p2 | Ethernet3 | 100.64.48.17/31 | rr2 | Ethernet3 | 100.64.48.16/31 | default
+| p3 | Ethernet1 | 100.64.48.23/31 | pe3 | Ethernet1 | 100.64.48.22/31 | default
+| p3 | Ethernet2 | 100.64.48.13/31 | rr1 | Ethernet2 | 100.64.48.12/31 | default
+| p3 | Ethernet4 | 100.64.48.20/31 | p4 | Ethernet4 | 100.64.48.21/31 | default
+| p4 | Ethernet2 | 100.64.48.19/31 | rr2 | Ethernet2 | 100.64.48.18/31 | default
+| p4 | Ethernet3 | 100.64.48.25/31 | pe3 | Ethernet3 | 100.64.48.24/31 | default
+| rr1 | Ethernet4 | 100.64.48.14/31 | rr2 | Ethernet4 | 100.64.48.15/31 | default
 
 ### Loopback Interfaces (BGP EVPN Peering)
 

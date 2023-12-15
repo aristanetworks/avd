@@ -73,8 +73,8 @@
 
 ### Point-To-Point Links Node Allocation
 
-| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
-| ---- | -------------- | --------------- | --------- | -------------- | --------------- |
+| Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address | VRF |
+| ---- | -------------- | --------------- | --------- | -------------- | --------------- | --- |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 
