@@ -67,11 +67,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_unchanged</samp>](## "router_bgp.peer_groups.[].next_hop_unchanged") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_source</samp>](## "router_bgp.peer_groups.[].update_source") | String |  |  |  | IP address or interface name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_reflector_client</samp>](## "router_bgp.peer_groups.[].route_reflector_client") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "router_bgp.peer_groups.[].bfd") | Boolean |  |  |  | Create the bfd session request with default bfd intervalss. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_intervals</samp>](## "router_bgp.peer_groups.[].bfd_intervals") | Dictionary |  |  |  | This does not create the bfd session. Set the bfd value to true to create bfd session.<br>This is used to override the default bfd intervalss. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_bgp.peer_groups.[].bfd_intervals.interval") | Integer |  |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bgp.peer_groups.[].bfd_intervals.min_rx") | Integer |  |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "router_bgp.peer_groups.[].bfd_intervals.multiplier") | Integer |  |  | Min: 3<br>Max: 50 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "router_bgp.peer_groups.[].bfd") | Boolean |  |  |  | Enable BFD. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_intervals</samp>](## "router_bgp.peer_groups.[].bfd_intervals") | Dictionary |  |  |  | Overrides default BFD intervals. BFD must be enabled with `bfd: True`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_bgp.peer_groups.[].bfd_intervals.interval") | Integer | Required |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bgp.peer_groups.[].bfd_intervals.min_rx") | Integer | Required |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "router_bgp.peer_groups.[].bfd_intervals.multiplier") | Integer | Required |  | Min: 3<br>Max: 50 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ebgp_multihop</samp>](## "router_bgp.peer_groups.[].ebgp_multihop") | Integer |  |  | Min: 1<br>Max: 255 | Time-to-live in range of hops |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self</samp>](## "router_bgp.peer_groups.[].next_hop_self") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "router_bgp.peer_groups.[].password") | String |  |  |  |  |
@@ -114,11 +114,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;passive</samp>](## "router_bgp.neighbors.[].passive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "router_bgp.neighbors.[].shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_source</samp>](## "router_bgp.neighbors.[].update_source") | String |  |  |  | Source Interface |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "router_bgp.neighbors.[].bfd") | Boolean |  |  |  | Create a bfd session request with default bfd intervals. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_intervals</samp>](## "router_bgp.neighbors.[].bfd_intervals") | Dictionary |  |  |  | Override the default bfd intervals.<br>This does not start the bfd session. Set the bfd value to true to create bfd session. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_bgp.neighbors.[].bfd_intervals.interval") | Integer |  |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bgp.neighbors.[].bfd_intervals.min_rx") | Integer |  |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "router_bgp.neighbors.[].bfd_intervals.multiplier") | Integer |  |  | Min: 3<br>Max: 50 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "router_bgp.neighbors.[].bfd") | Boolean |  |  |  | Enable BFD. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_intervals</samp>](## "router_bgp.neighbors.[].bfd_intervals") | Dictionary |  |  |  | Overrides default BFD intervals. BFD must be enabled with `bfd: True`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_bgp.neighbors.[].bfd_intervals.interval") | Integer | Required |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bgp.neighbors.[].bfd_intervals.min_rx") | Integer | Required |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "router_bgp.neighbors.[].bfd_intervals.multiplier") | Integer | Required |  | Min: 3<br>Max: 50 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "router_bgp.neighbors.[].weight") | Integer |  |  | Min: 0<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_bgp.neighbors.[].timers") | String |  |  |  | BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>" |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name |
@@ -550,11 +550,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ebgp_multihop</samp>](## "router_bgp.vrfs.[].neighbors.[].ebgp_multihop") | Integer |  |  | Min: 1<br>Max: 255 | Time-to-live in range of hops |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self</samp>](## "router_bgp.vrfs.[].neighbors.[].next_hop_self") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "router_bgp.vrfs.[].neighbors.[].shutdown") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd") | Boolean |  |  |  | Create a bfd session request with default bfd intervals. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_intervals</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd_intervals") | Dictionary |  |  |  | This does not start the bfd session. Set the bfd value to true to create bfd session.<br>This is used to override the default bfd intervals. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd_intervals.interval") | Integer |  |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd_intervals.min_rx") | Integer |  |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd_intervals.multiplier") | Integer |  |  | Min: 3<br>Max: 50 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd") | Boolean |  |  |  | Enable BFD. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_intervals</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd_intervals") | Dictionary |  |  |  | Overrides default BFD intervals. BFD must be enabled with `bfd: True`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd_intervals.interval") | Integer | Required |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd_intervals.min_rx") | Integer | Required |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "router_bgp.vrfs.[].neighbors.[].bfd_intervals.multiplier") | Integer | Required |  | Min: 3<br>Max: 50 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timers</samp>](## "router_bgp.vrfs.[].neighbors.[].timers") | String |  |  |  | BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>" |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rib_in_pre_policy_retain</samp>](## "router_bgp.vrfs.[].neighbors.[].rib_in_pre_policy_retain") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].neighbors.[].rib_in_pre_policy_retain.enabled") | Boolean |  |  |  |  |
@@ -849,19 +849,18 @@
           update_source: <str>
           route_reflector_client: <bool>
 
-          # Create the bfd session request with default bfd intervalss.
+          # Enable BFD.
           bfd: <bool>
 
-          # This does not create the bfd session. Set the bfd value to true to create bfd session.
-          # This is used to override the default bfd intervalss.
+          # Overrides default BFD intervals. BFD must be enabled with `bfd: True`.
           bfd_intervals:
 
             # Interval in milliseconds.
-            interval: <int; 50-60000>
+            interval: <int; 50-60000; required>
 
             # Rate in milliseconds.
-            min_rx: <int; 50-60000>
-            multiplier: <int; 3-50>
+            min_rx: <int; 50-60000; required>
+            multiplier: <int; 3-50; required>
 
           # Time-to-live in range of hops
           ebgp_multihop: <int; 1-255>
@@ -947,19 +946,18 @@
           # Source Interface
           update_source: <str>
 
-          # Create a bfd session request with default bfd intervals.
+          # Enable BFD.
           bfd: <bool>
 
-          # Override the default bfd intervals.
-          # This does not start the bfd session. Set the bfd value to true to create bfd session.
+          # Overrides default BFD intervals. BFD must be enabled with `bfd: True`.
           bfd_intervals:
 
             # Interval in milliseconds.
-            interval: <int; 50-60000>
+            interval: <int; 50-60000; required>
 
             # Rate in milliseconds.
-            min_rx: <int; 50-60000>
-            multiplier: <int; 3-50>
+            min_rx: <int; 50-60000; required>
+            multiplier: <int; 3-50; required>
           weight: <int; 0-65535>
 
           # BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
@@ -1655,19 +1653,18 @@
               next_hop_self: <bool>
               shutdown: <bool>
 
-              # Create a bfd session request with default bfd intervals.
+              # Enable BFD.
               bfd: <bool>
 
-              # This does not start the bfd session. Set the bfd value to true to create bfd session.
-              # This is used to override the default bfd intervals.
+              # Overrides default BFD intervals. BFD must be enabled with `bfd: True`.
               bfd_intervals:
 
                 # Interval in milliseconds.
-                interval: <int; 50-60000>
+                interval: <int; 50-60000; required>
 
                 # Rate in milliseconds.
-                min_rx: <int; 50-60000>
-                multiplier: <int; 3-50>
+                min_rx: <int; 50-60000; required>
+                multiplier: <int; 3-50; required>
 
               # BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
               timers: <str>

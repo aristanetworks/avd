@@ -297,12 +297,12 @@
                 },
                 "bfd": {
                   "type": "boolean",
-                  "description": "Create the bfd session request with default bfd intervalss.",
+                  "description": "Enable BFD.",
                   "title": "BFD"
                 },
                 "bfd_intervals": {
                   "type": "object",
-                  "description": "This does not create the bfd session. Set the bfd value to true to create bfd session.\nThis is used to override the default bfd intervalss.",
+                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -325,6 +325,11 @@
                       "title": "Multiplier"
                     }
                   },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -631,12 +636,12 @@
                 },
                 "bfd": {
                   "type": "boolean",
-                  "description": "Create the bfd session request with default bfd intervalss.",
+                  "description": "Enable BFD.",
                   "title": "BFD"
                 },
                 "bfd_intervals": {
                   "type": "object",
-                  "description": "This does not create the bfd session. Set the bfd value to true to create bfd session.\nThis is used to override the default bfd intervalss.",
+                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -659,6 +664,11 @@
                       "title": "Multiplier"
                     }
                   },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -965,12 +975,12 @@
                 },
                 "bfd": {
                   "type": "boolean",
-                  "description": "Create the bfd session request with default bfd intervalss.",
+                  "description": "Enable BFD.",
                   "title": "BFD"
                 },
                 "bfd_intervals": {
                   "type": "object",
-                  "description": "This does not create the bfd session. Set the bfd value to true to create bfd session.\nThis is used to override the default bfd intervalss.",
+                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -993,6 +1003,11 @@
                       "title": "Multiplier"
                     }
                   },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -1299,12 +1314,12 @@
                 },
                 "bfd": {
                   "type": "boolean",
-                  "description": "Create the bfd session request with default bfd intervalss.",
+                  "description": "Enable BFD.",
                   "title": "BFD"
                 },
                 "bfd_intervals": {
                   "type": "object",
-                  "description": "This does not create the bfd session. Set the bfd value to true to create bfd session.\nThis is used to override the default bfd intervalss.",
+                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -1327,6 +1342,11 @@
                       "title": "Multiplier"
                     }
                   },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -1633,12 +1653,12 @@
                 },
                 "bfd": {
                   "type": "boolean",
-                  "description": "Create the bfd session request with default bfd intervalss.",
+                  "description": "Enable BFD.",
                   "title": "BFD"
                 },
                 "bfd_intervals": {
                   "type": "object",
-                  "description": "This does not create the bfd session. Set the bfd value to true to create bfd session.\nThis is used to override the default bfd intervalss.",
+                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -1661,6 +1681,11 @@
                       "title": "Multiplier"
                     }
                   },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -1967,12 +1992,12 @@
                 },
                 "bfd": {
                   "type": "boolean",
-                  "description": "Create the bfd session request with default bfd intervalss.",
+                  "description": "Enable BFD.",
                   "title": "BFD"
                 },
                 "bfd_intervals": {
                   "type": "object",
-                  "description": "This does not create the bfd session. Set the bfd value to true to create bfd session.\nThis is used to override the default bfd intervalss.",
+                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -1995,6 +2020,11 @@
                       "title": "Multiplier"
                     }
                   },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
@@ -2301,12 +2331,12 @@
                 },
                 "bfd": {
                   "type": "boolean",
-                  "description": "Create the bfd session request with default bfd intervalss.",
+                  "description": "Enable BFD.",
                   "title": "BFD"
                 },
                 "bfd_intervals": {
                   "type": "object",
-                  "description": "This does not create the bfd session. Set the bfd value to true to create bfd session.\nThis is used to override the default bfd intervalss.",
+                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -2329,6 +2359,11 @@
                       "title": "Multiplier"
                     }
                   },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
                   "additionalProperties": false,
                   "patternProperties": {
                     "^_.+$": {}
