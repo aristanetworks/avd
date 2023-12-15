@@ -4,19 +4,16 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# pyavd
+# PyAVD
 
-!!! warning
-    pyavd is in beta phase. Please do not use for production. Everything is subject to change.
+PyAVD is a python package providing some of the features from the `arista.avd` Ansible collection without requiring Ansible. PyAVD leverages the same logic as the Ansible collection, so the generated outputs should be exactly the same based on the same inputs.
 
-Pyavd is a python package providing some of the features from the `arista.avd` Ansible collection without requiring Ansible. Pyavd leverages the same logic as the Ansible collection, so the generated outputs should be exactly the same based on the same inputs.
-
-Pyavd does not provide any inventory or variable management, so pyavd cannot replace a full Ansible based solution by itself. Pyavd could serve as an element in larger framework.
+PyAVD does not provide any inventory or variable management, so PyAVD cannot replace a full Ansible based solution by itself. PyAVD could serve as an element in larger framework.
 
 Supported features:
 
 - Validation of inputs based on the [`eos_designs` input schema](../roles/eos_designs/docs/input-variables.md).
-- Generation of "avd_facts" and "structured config" to be used in other pyavd functions.
+- Generation of "avd_facts" and "structured config" to be used in other PyAVD functions.
 - Validation of "structured config" based on the [`eos_cli_config_gen` input schema](../roles/eos_cli_config_gen/docs/input-variables.md).
 - Generation of device configuration.
 - Generation of device documentation.
@@ -31,7 +28,7 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 ## Known limitations
 
 - No support for inline Jinja2 or custom Jinja2 templates.
-- Input data and "structured_configs" will be in-place updated by various pyavd functions.
+- Input data and "structured_configs" will be in-place updated by various PyAVD functions.
   Make sure to deep copy the data first if modifications are not allowed.
 - The logic uses the hostname as the unique identifier for each device, so overlapping hostnames will not work.
 - For `get_avd_facts()`, `fabric_name` is not used or verified and may differ between devices.
@@ -47,13 +44,13 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 - Add examples
 - Add more tests (current coverage is 85%)
 - Add network state validation similar to `eos_validate_state`.
-- Add cloudvision tag integrations
-- Make pyavd the source of AVD logic and use as a dependency for the `arista.avd` Ansible collection.
+- Add CloudVision tag integrations
+- Make PyAVD the source of AVD logic and use as a dependency for the `arista.avd` Ansible collection.
 - Explore support for custom Jinja2 templates.
 
 ## Installation
 
-Install `pyavd`:
+Install the `pyavd` Python package:
 
 ```sh
 pip3 install pyavd
