@@ -27,14 +27,22 @@ Feedback is very welcome. Please use [GitHub discussions](https://github.com/ari
 
 ## Known limitations
 
-- No support for inline Jinja2 or custom Jinja2 templates.
-- Input data and "structured_configs" will be in-place updated by various PyAVD functions.
-  Make sure to deep copy the data first if modifications are not allowed.
-- The logic uses the hostname as the unique identifier for each device, so overlapping hostnames will not work.
-- For `get_avd_facts()`, `fabric_name` is not used or verified and may differ between devices.
-  All devices in the given inputs will be treated as one fabric.
-- `hostname` must be set in "structured_config" for each device. `hostname` *will* be set correctly when using `get_structured_config()`.
-- `get_device_structured_config()`, `get_device_config()` and `get_device_doc()` are not thread-safe, so avoid running them for the same device across multiple threads.
+!!! warning
+
+    Input data and "structured_configs" will be in-place updated by various PyAVD functions.
+    Make sure to deep copy the data first if modifications are not allowed.
+
+!!! warning
+
+    `get_device_structured_config()`, `get_device_config()` and `get_device_doc()` are not thread-safe, so avoid running them for the same device across multiple threads.
+
+!!! note
+
+    - No support for inline Jinja2 or custom Jinja2 templates.
+    - The logic uses the hostname as the unique identifier for each device, so overlapping hostnames will not work.
+    - For `get_avd_facts()`, `fabric_name` is not used or verified and may differ between devices.
+      All devices in the given inputs will be treated as one fabric.
+    - `hostname` *must* be set in "structured_config" for each device. `hostname` *will* be set correctly when using `get_structured_config()`.
 
 ## Roadmap
 
