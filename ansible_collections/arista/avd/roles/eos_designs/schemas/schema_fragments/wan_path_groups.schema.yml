@@ -6,37 +6,39 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  wan_route_servers:
+  wan_path_groups:
     documentation_options:
       table: wan-settings
     description: |-
       PREVIEW: This key is currently not supported
-
-      List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
-      when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
-
-      When the route server is part of the same inventory as the WAN routers,
-      only the name is required.
+      List of path-groups used for the WAN configuration.
     type: list
-    primary_key: hostname
+    primary_key: name
     items:
       type: dict
       keys:
-        hostname:
+        name:
           type: str
-          description: Route-Reflector hostname.
-        router_id:
+          description: Path-group name.
+        id:
           type: str
-          description: Route-Reflector router id.
-        wan_path_groups:
+          description: Path-group id.
+        description:
+          type: str
+          description: Additional information about the path-group for documentation purposes.
+        ipsec:
+          type: bool
+          description: Flag to configure IPsec on the carrier (default is True).
+        import_path_groups:
           type: list
+          description: List of [ath-groups to import in this path-group.
           items:
             type: dict
             keys:
-              name:
+              remote:
                 type: str
-                description: Carrier name.
-              # TODO - should it be multiple IP address
-              ip_address:
+                description: Remote path-group to import.
+              local:
                 type: str
-                description: The public IP address for this carrier.
+                description: Optional, if not set, the path-group `name` is used as local.
+

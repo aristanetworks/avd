@@ -30830,69 +30830,6 @@
       "type": "string",
       "title": "Vtep Vvtep IP"
     },
-    "wan_carriers": {
-      "description": "PREVIEW: This key is currently not supported\nList of carriers used for the WAN configuration.",
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Carrier name.",
-            "title": "Name"
-          },
-          "description": {
-            "type": "string",
-            "description": "Additional information about the carrier for documentation purposes.",
-            "title": "Description"
-          },
-          "ipsec": {
-            "type": "boolean",
-            "description": "Flag to configure IPsec on the carrier (default is True).",
-            "title": "Ipsec"
-          },
-          "accessibility": {
-            "type": "string",
-            "description": "Indicates if the carrier has access to the Internet (`public`)\nor not (`private`).",
-            "enum": [
-              "public",
-              "private"
-            ],
-            "title": "Accessibility"
-          },
-          "characteristics": {
-            "type": "array",
-            "description": "A list of characteristics to assign to the carrier.\nTODO: Explain further how these are used (or removed before removing preview).",
-            "items": {
-              "type": "string",
-              "enum": [
-                "backup",
-                "metered"
-              ]
-            },
-            "title": "Characteristics"
-          },
-          "circuit_type": {
-            "type": "string",
-            "description": "TBC - edge or transit or both.\nUnclear if this should be at the carrier level or some other place.",
-            "enum": [
-              "edge",
-              "transit",
-              "both"
-            ],
-            "title": "Circuit Type"
-          }
-        },
-        "additionalProperties": false,
-        "patternProperties": {
-          "^_.+$": {}
-        },
-        "required": [
-          "name"
-        ]
-      },
-      "title": "Wan Carriers"
-    },
     "wan_ipsec_profiles": {
       "description": "PREVIEW: This key is currently not supported\nDefine IPsec profiles parameters for WAN configuration.\n\nIf `data_plane` is not defined, `control_plane` information is\nused for both.",
       "type": "object",
@@ -30984,6 +30921,67 @@
       ],
       "title": "Wan Mode"
     },
+    "wan_path_groups": {
+      "description": "PREVIEW: This key is currently not supported\nList of path-groups used for the WAN configuration.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Path-group name.",
+            "title": "Name"
+          },
+          "id": {
+            "type": "string",
+            "description": "Path-group id.",
+            "title": "ID"
+          },
+          "description": {
+            "type": "string",
+            "description": "Additional information about the path-group for documentation purposes.",
+            "title": "Description"
+          },
+          "ipsec": {
+            "type": "boolean",
+            "description": "Flag to configure IPsec on the carrier (default is True).",
+            "title": "Ipsec"
+          },
+          "import_path_groups": {
+            "type": "array",
+            "description": "List of [ath-groups to import in this path-group.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "remote": {
+                  "type": "string",
+                  "description": "Remote path-group to import.",
+                  "title": "Remote"
+                },
+                "local": {
+                  "type": "string",
+                  "description": "Optional, if not set, the path-group `name` is used as local.",
+                  "title": "Local"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Import Path Groups"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Wan Path Groups"
+    },
     "wan_route_servers": {
       "description": "PREVIEW: This key is currently not supported\n\nList of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders\nwhen using `wan_mode`=`cv-pathfinder`, to which the device should connect to.\n\nWhen the route server is part of the same inventory as the WAN routers,\nonly the name is required.",
       "type": "array",
@@ -31000,7 +30998,7 @@
             "description": "Route-Reflector router id.",
             "title": "Router ID"
           },
-          "wan_carriers": {
+          "wan_path_groups": {
             "type": "array",
             "items": {
               "type": "object",
@@ -31021,7 +31019,7 @@
                 "^_.+$": {}
               }
             },
-            "title": "Wan Carriers"
+            "title": "Wan Path Groups"
           }
         },
         "additionalProperties": false,

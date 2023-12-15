@@ -75,12 +75,8 @@ wan_rr:
     - name: cv-pathfinder-pathfinder2
       id: 3
 
-wan_carriers:
+wan_path_groups:
   - name: MPLS
-    accessibility: private
     ipsec: False
   - name: INET
-    accessibility: public
   - name: LTE
-    accessibility: public
-    characteristics: [metered]

@@ -370,29 +370,29 @@ class UtilsMixin:
 
                 # Prefer values coming from the input variables over peer facts
                 router_id = get(wan_rr_dict, "router_id", default=peer_facts.get("router_id"))
-                wan_carriers = get(wan_rr_dict, "wan_carriers", default=peer_facts.get("wan_carriers"))
+                wan_path_groups = get(wan_rr_dict, "wan_path_groups", default=peer_facts.get("wan_path_groups"))
 
                 if router_id is None:
                     raise AristaAvdMissingVariableError(
                         f"'router_id' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers' or something is wrong with the peer"
                         " facts."
                     )
-                # TODO - enable this once the wan_carriers peer fact is implemented as this requires WAN interfaces not
+                # TODO - enable this once the wan_path_groups peer fact is implemented as this requires WAN interfaces not
                 # covered in this PR.
-                # if wan_carriers is None:
+                # if wan_path_groups is None:
                 #    raise AristaAvdMissingVariableError(
-                #        f"'wan_carriers' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers' or something is wrong with the peer"
+                #        f"'wan_path_groups' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers' or something is wrong with the peer"
                 #        " facts."
                 #    )
 
             else:
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
                 router_id = get(wan_rr_dict, "router_id", required=True)
-                wan_carriers = get(wan_rr_dict, "wan_carriers", required=True)
+                wan_path_groups = get(wan_rr_dict, "wan_path_groups", required=True)
 
             wan_rr_result_dict = {
                 "router_id": router_id,
-                "wan_carriers": wan_carriers,
+                "wan_path_groups": wan_path_groups,
             }
 
             wan_rr_result_dict = {key: value for key, value in wan_rr_result_dict.items() if value is not None}

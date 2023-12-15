@@ -8,6 +8,6 @@ wan_route_servers:
   # This one is not in the inventory pathfinder1 & 2
   - hostname: cv-pathfinder-pathfinder3
     router_id: 6.6.6.6
-    wan_carriers:
+    wan_path_groups:
       - name: MPLS
       - name: INET

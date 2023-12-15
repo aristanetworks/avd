@@ -45,13 +45,13 @@ class RouterPathSelectionMixin(UtilsMixin):
         Generate the required path-groups locally
         """
         # TODO - get this once WAN interface are available
-        # TODO - this function will need to handle Crossconnection of public carriers
+        # TODO - this function will need to handle Crossconnection of public path_groups
         #
-        local_carriers = []
+        local_path_groups = []
         # The value will be set based on the WAN interfaces configuration
-        # local_carriers = self.shared_utils.carriers
+        # local_path_groups = self.shared_utils.path_groups
 
-        if not local_carriers:
+        if not local_path_groups:
             return []
 
         path_groups = []
@@ -59,7 +59,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         # TODO - need to have default value in one place only -> maybe facts / shared_utils ?
         ipsec_profile_name = get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", required=True)
 
-        for carrier in local_carriers:
+        for carrier in local_path_groups:
             path_groups.append(
                 {
                     "name": carrier.get("name"),
@@ -111,7 +111,7 @@ class RouterPathSelectionMixin(UtilsMixin):
     def _get_carrier_id(self, carrier: dict) -> int:
         """
         TODO - implement algorithm to auto assign IDs - cf internal documenation
-        TODO - also implement algorithm for cross connects on public carriers
+        TODO - also implement algorithm for cross connects on public path_groups
         """
         if carrier["name"] == "LAN_HA":
             return 65535
