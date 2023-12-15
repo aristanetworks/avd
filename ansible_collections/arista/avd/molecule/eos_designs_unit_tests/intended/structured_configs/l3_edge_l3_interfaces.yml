@@ -59,10 +59,12 @@ route_maps:
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface
+  peer: peer1
+  peer_interface: eth1
   ip_address: 192.168.1.2/31
   shutdown: false
   type: routed
-  description: TODO
+  description: peer1 eth1
   service_profile: TEST-QOS-PROFILE
   eos_cli: '! TEST RAW_EOS_CLI
 
@@ -70,3 +72,18 @@ ethernet_interfaces:
   service_policy:
     qos:
       input: TEST_POLICY
+- name: Ethernet2/2
+  peer_type: l3_interface
+  peer: peer2
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  description: peer2
+  dhcp_client_accept_default_route: true
+- name: Ethernet42
+  peer_type: l3_interface
+  peer: peer3
+  ip_address: dhcp
+  shutdown: true
+  type: routed
+  description: This is a custom description

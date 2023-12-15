@@ -79,14 +79,15 @@ class UtilsMixin:
 
         # Silently ignoring missing profile and wrong types.
         if type == "l3_interfaces":
-            profile = get_item(self._l3_interfaces_profiles, "name", target_dict["profile"], default={})
+            profile = get_item(self._l3_interfaces_profiles, "profile", target_dict["profile"], default={})
+            target_dict.pop("profile", None)
         elif type == "p2p_links":
             profile = get_item(self._p2p_links_profiles, "name", target_dict["profile"], default={})
+            target_dict.pop("name", None)
         else:
             return target_dict
 
         target_dict = merge(profile, target_dict, list_merge="replace", destructive_merge=False)
-        target_dict.pop("name", None)
 
         return target_dict
 
@@ -371,12 +372,21 @@ class UtilsMixin:
             return None
 
         interface_name = l3_interface["interface"]
-        interface_description = l3_interface.get("description") or "TODO"
+
+        # TODO move this to description module?
+        interface_description = l3_interface.get("description") or " ".join(
+            [elem for elem in [l3_interface.get("peer"), l3_interface.get("peer_interface")] if elem is not None]
+        )
+
+        # TODO catch if ip_address is not valid or not dhcp
+        ip_address = get(l3_interface, "ip", required=True)
 
         interface = {
             "name": interface_name,
             "peer_type": "l3_interface",
-            "ip_address": l3_interface.get("ip"),
+            "peer": l3_interface.get("peer"),
+            "peer_interface": l3_interface.get("peer_interface"),
+            "ip_address": ip_address,
             "shutdown": not l3_interface.get("enabled", True),
             "type": "routed",
             "description": interface_description,
@@ -385,12 +395,10 @@ class UtilsMixin:
             "struct_cfg": l3_interface.get("structured_config"),
         }
 
-        if l3_interface.get("dhcp_client_accept_default_route", False):
+        if ip_address == "dhcp" and l3_interface.get("dhcp_client_accept_default_route", False):
             interface["dhcp_client_accept_default_route"] = True
 
-        # TODO handle OSPF
-
-        # Strip None values from vlan before adding to list
+        # Strip None values from interface before returning
         interface = {key: value for key, value in interface.items() if value is not None}
 
         return interface

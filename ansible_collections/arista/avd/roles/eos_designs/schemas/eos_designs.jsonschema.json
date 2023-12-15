@@ -2899,15 +2899,21 @@
           "items": {
             "type": "object",
             "properties": {
-              "name": {
+              "profile": {
                 "type": "string",
                 "description": "L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.",
-                "title": "Name"
+                "title": "Profile"
               },
-              "speed": {
+              "interface": {
                 "type": "string",
-                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
-                "title": "Speed"
+                "description": "Ethernet interface name like 'Ethernet2'.",
+                "pattern": "Ethernet[\\d/]+",
+                "title": "Interface"
+              },
+              "description": {
+                "type": "string",
+                "description": "Interface description.\nIf not set a default description will be configured with '[<peer>[ <peer_interface>]]'",
+                "title": "Description"
               },
               "ip": {
                 "type": "string",
@@ -2916,14 +2922,20 @@
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP, default False.",
+                "default": false,
+                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
                 "title": "DHCP Client Accept Default Route"
               },
-              "interface": {
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable or Shutdown the interface.",
+                "title": "Enabled"
+              },
+              "speed": {
                 "type": "string",
-                "description": "Must be an Ethernet interface like 'Ethernet2'.",
-                "pattern": "^Ethernet.*$",
-                "title": "Interface"
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
+                "title": "Speed"
               },
               "peer": {
                 "type": "string",
@@ -2940,11 +2952,6 @@
                 "description": "The peer device IP. Used for description and documentation",
                 "title": "Peer IP"
               },
-              "description": {
-                "type": "string",
-                "description": "Interface description.",
-                "title": "Description"
-              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -2957,7 +2964,7 @@
               },
               "structured_config": {
                 "type": "object",
-                "description": "Custom structured config for interfaces",
+                "description": "Custom structured config for the Ethernet interface.",
                 "properties": {
                   "name": {
                     "type": "string",
@@ -5539,7 +5546,7 @@
               "^_.+$": {}
             },
             "required": [
-              "name"
+              "profile"
             ]
           },
           "title": "L3 Interfaces Profiles"
@@ -5559,10 +5566,16 @@
                 "description": "L3 interface profile name. Profile defined under l3_interfaces_profiles.",
                 "title": "Profile"
               },
-              "speed": {
+              "interface": {
                 "type": "string",
-                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
-                "title": "Speed"
+                "description": "Ethernet interface name like 'Ethernet2'.",
+                "pattern": "Ethernet[\\d/]+",
+                "title": "Interface"
+              },
+              "description": {
+                "type": "string",
+                "description": "Interface description.\nIf not set a default description will be configured with '[<peer>[ <peer_interface>]]'",
+                "title": "Description"
               },
               "ip": {
                 "type": "string",
@@ -5571,14 +5584,20 @@
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP, default False.",
+                "default": false,
+                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
                 "title": "DHCP Client Accept Default Route"
               },
-              "interface": {
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable or Shutdown the interface.",
+                "title": "Enabled"
+              },
+              "speed": {
                 "type": "string",
-                "description": "Must be an Ethernet interface like 'Ethernet2'.",
-                "pattern": "^Ethernet.*$",
-                "title": "Interface"
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
+                "title": "Speed"
               },
               "peer": {
                 "type": "string",
@@ -5595,11 +5614,6 @@
                 "description": "The peer device IP. Used for description and documentation",
                 "title": "Peer IP"
               },
-              "description": {
-                "type": "string",
-                "description": "Interface description.",
-                "title": "Description"
-              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -5612,7 +5626,7 @@
               },
               "structured_config": {
                 "type": "object",
-                "description": "Custom structured config for interfaces",
+                "description": "Custom structured config for the Ethernet interface.",
                 "properties": {
                   "name": {
                     "type": "string",
@@ -9521,15 +9535,21 @@
           "items": {
             "type": "object",
             "properties": {
-              "name": {
+              "profile": {
                 "type": "string",
                 "description": "L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.",
-                "title": "Name"
+                "title": "Profile"
               },
-              "speed": {
+              "interface": {
                 "type": "string",
-                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
-                "title": "Speed"
+                "description": "Ethernet interface name like 'Ethernet2'.",
+                "pattern": "Ethernet[\\d/]+",
+                "title": "Interface"
+              },
+              "description": {
+                "type": "string",
+                "description": "Interface description.\nIf not set a default description will be configured with '[<peer>[ <peer_interface>]]'",
+                "title": "Description"
               },
               "ip": {
                 "type": "string",
@@ -9538,14 +9558,20 @@
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP, default False.",
+                "default": false,
+                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
                 "title": "DHCP Client Accept Default Route"
               },
-              "interface": {
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable or Shutdown the interface.",
+                "title": "Enabled"
+              },
+              "speed": {
                 "type": "string",
-                "description": "Must be an Ethernet interface like 'Ethernet2'.",
-                "pattern": "^Ethernet.*$",
-                "title": "Interface"
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
+                "title": "Speed"
               },
               "peer": {
                 "type": "string",
@@ -9562,11 +9588,6 @@
                 "description": "The peer device IP. Used for description and documentation",
                 "title": "Peer IP"
               },
-              "description": {
-                "type": "string",
-                "description": "Interface description.",
-                "title": "Description"
-              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -9579,7 +9600,7 @@
               },
               "structured_config": {
                 "type": "object",
-                "description": "Custom structured config for interfaces",
+                "description": "Custom structured config for the Ethernet interface.",
                 "properties": {
                   "name": {
                     "type": "string",
@@ -12161,7 +12182,7 @@
               "^_.+$": {}
             },
             "required": [
-              "name"
+              "profile"
             ]
           },
           "title": "L3 Interfaces Profiles"
@@ -12181,10 +12202,16 @@
                 "description": "L3 interface profile name. Profile defined under l3_interfaces_profiles.",
                 "title": "Profile"
               },
-              "speed": {
+              "interface": {
                 "type": "string",
-                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
-                "title": "Speed"
+                "description": "Ethernet interface name like 'Ethernet2'.",
+                "pattern": "Ethernet[\\d/]+",
+                "title": "Interface"
+              },
+              "description": {
+                "type": "string",
+                "description": "Interface description.\nIf not set a default description will be configured with '[<peer>[ <peer_interface>]]'",
+                "title": "Description"
               },
               "ip": {
                 "type": "string",
@@ -12193,14 +12220,20 @@
               },
               "dhcp_client_accept_default_route": {
                 "type": "boolean",
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP, default False.",
+                "default": false,
+                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
                 "title": "DHCP Client Accept Default Route"
               },
-              "interface": {
+              "enabled": {
+                "type": "boolean",
+                "default": true,
+                "description": "Enable or Shutdown the interface.",
+                "title": "Enabled"
+              },
+              "speed": {
                 "type": "string",
-                "description": "Must be an Ethernet interface like 'Ethernet2'.",
-                "pattern": "^Ethernet.*$",
-                "title": "Interface"
+                "description": "Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.",
+                "title": "Speed"
               },
               "peer": {
                 "type": "string",
@@ -12217,11 +12250,6 @@
                 "description": "The peer device IP. Used for description and documentation",
                 "title": "Peer IP"
               },
-              "description": {
-                "type": "string",
-                "description": "Interface description.",
-                "title": "Description"
-              },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
@@ -12234,7 +12262,7 @@
               },
               "structured_config": {
                 "type": "object",
-                "description": "Custom structured config for interfaces",
+                "description": "Custom structured config for the Ethernet interface.",
                 "properties": {
                   "name": {
                     "type": "string",

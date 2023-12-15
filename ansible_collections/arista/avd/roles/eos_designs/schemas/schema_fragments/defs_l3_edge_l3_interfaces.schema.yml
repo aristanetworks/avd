@@ -11,22 +11,32 @@ $defs:
     items:
       type: dict
       keys:
-        speed:
+        interface:
+          type: str
+          description: Ethernet interface name like 'Ethernet2'.
+          pattern: "Ethernet[\\d/]+"
+        description:
           type: str
           description: |-
-            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+            Interface description.
+            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
         ip:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
         dhcp_client_accept_default_route:
           type: bool
+          default: False
           description: |-
             Supported if `ip` is `dhcp`.
-            Accepts default route from DHCP, default False.
-        interface:
+            Accepts default route from DHCP.
+        enabled:
+          type: bool
+          default: True
+          description: Enable or Shutdown the interface.
+        speed:
           type: str
-          description: Must be an Ethernet interface like 'Ethernet2'.
-          pattern: "^Ethernet.*$"
+          description: |-
+            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         peer:
           type: str
           description: |-
@@ -39,9 +49,6 @@ $defs:
           type: str
           description: |-
             The peer device IP. Used for description and documentation
-        description:
-          type: str
-          description: Interface description.
         qos_profile:
           type: str
           description: QOS service profile.
@@ -53,5 +60,5 @@ $defs:
           documentation_options:
             hide_keys: true
           description: |-
-            Custom structured config for interfaces
+            Custom structured config for the Ethernet interface.
           $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items/"

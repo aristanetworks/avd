@@ -9,7 +9,7 @@ spine:
 
 l3_edge:
   l3_interfaces_profiles:
-    - name: profile1
+    - profile: profile1
       speed: "forced 10000full"
       qos_profile: TEST-QOS-PROFILE
       structured_config:
@@ -22,6 +22,20 @@ l3_edge:
       # Settings set via profile
     - node: l3_edge_l3_interfaces
       peer: peer1
+      peer_interface: eth1
       interface: Ethernet1
       ip: 192.168.1.2/31
       profile: profile1
+      # DHCP default route
+    - node: l3_edge_l3_interfaces
+      peer: peer2
+      interface: Ethernet2/2
+      ip: dhcp
+      dhcp_client_accept_default_route: True
+      # custom descriptipon
+    - node: l3_edge_l3_interfaces
+      peer: peer3
+      interface: Ethernet42
+      enabled: False
+      description: This is a custom description
+      ip: dhcp

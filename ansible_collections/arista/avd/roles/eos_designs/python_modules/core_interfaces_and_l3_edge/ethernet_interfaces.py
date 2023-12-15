@@ -60,9 +60,6 @@ class EthernetInterfacesMixin(UtilsMixin):
             # Ethernet interface
             ethernet_interface = self._get_l3_interface_cfg(l3_interface)
 
-            # Remove None values
-            ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
-
             append_if_not_duplicate(
                 list_of_dicts=ethernet_interfaces,
                 primary_key="name",
