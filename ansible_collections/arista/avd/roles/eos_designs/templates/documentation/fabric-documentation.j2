@@ -89,7 +89,7 @@
 {%                             do assigned_ip_addresses.append(topology_link.peer_ip_address) %}
 {%                         endif %}
 {%                     endif %}
-{%                     set topology_link.vrf = ethernet_interface.vrf %}
+{%                     set topology_link.vrf = ethernet_interface.vrf | arista.avd.default('default') %}
 {%                     do topology_links.append(topology_link) %}
 {%                 endif %}
 {%             endif %}
