@@ -34,7 +34,9 @@ class Catalog:
     Catalog class that handles management of ANTA catalogs from AVD.
     """
 
-    def __init__(self, device_name: str, hostvars: Mapping, skipped_tests: dict, custom_catalog: dict | None = None, custom_catalog_path: str | None = None):
+    def __init__(
+        self, device_name: str, hostvars: Mapping, skipped_tests: list[dict], custom_catalog: dict | None = None, custom_catalog_path: str | None = None
+    ):
         """
         Initialize the Catalog class.
 

@@ -16,48 +16,55 @@ title: arista.avd.eos_validate_state_runner
 !!! warning "This module is in **preview** mode"
     This module is not guaranteed to have a backwards compatible interface.
 
-Leverage ANTA for eos\_validate\_state role
+Uses ANTA for eos\_validate\_state role
 
 ## Synopsis
 
 The <code>arista.avd.eos\_validate\_state\_runner</code> module is an Ansible Action Plugin leveraging the ANTA test framework to validate that the generated structured configurations by AVD are applied to the devices and that the deployed network is working correctly.
 
-This plugin expects that the structued\_configs of each device is present in hostvars, otherwise no test will be generated.
+This plugin requires a valid structured configuration for each device in the hostvars\; otherwise, some tests will not be generated.
 
-The plugin provides the following capabilities\:
-    \- Generate a per\-device test catalog based on the structured\_configs
-    \- Run the generated tests against each device and generate a report in Markdown and CSV format.
-    \- When using check\_mode, only generate the test catalog and generate a report to preview what would tests be run against each device
-    \- Dumping the per\-device catalog to a file.
-    \- Backward compatibility with existing ansible tags behavior for eos\_validate\_state to filter categories of tests.
+The plugin offers the following capabilities\:
+    \- Generating a per\-device test catalog based on the AVD structured\_config.
+    \- Running generated tests against each device, saving the results in a single JSON file per\-device.
+    \- In check\_mode, only the test catalog is generated, and a report is created to preview the tests that would be run against each device.
+    \- Saving per\-device test catalogs and results in specified directories for use by the <code>eos\_validate\_state\_reports</code> plugin.
+    \- Maintaining backward compatibility with existing ansible tags for eos\_validate\_state to filter test categories.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| logging_level | str | False | WARNING | Valid values:<br>- <code>CRITICAL</code><br>- <code>ERROR</code><br>- <code>WARNING</code><br>- <code>INFO</code><br>- <code>DEBUG</code> | Controls the log level for the ANTA library. If unset, the Action plugin will set it to \"WARNING\" |
-| save_catalog | bool | optional | False |  | A boolean to indicate whether or not the catalog should be saved for each device. |
-| device_catalog_output_dir | str | optional | None |  | When <code>save\_catalog</code> is True, this is the directory where the device catalogs will be saved.<br>Required if <em>save\_catalog\=True</em> |
-| skipped_tests | list | optional | None |  | A list of dictionaries containing the categories and tests to skip<br>The keys for the dictionnary are <code>categories</code> and <code>tests</code>. |
-|     category | str | True | None |  | The name of one of the AvdTest categories. e.g., <code>AvdTestHardware</code> |
-|     tests | list | optional | None |  | A list of tests in the category. e.g, <code>VerifyRoutingProtocolModel</code> for <code>AvdTestBGP</code> |
+| logging_level | str | optional | WARNING | Valid values:<br>- <code>CRITICAL</code><br>- <code>ERROR</code><br>- <code>WARNING</code><br>- <code>INFO</code><br>- <code>DEBUG</code> | Sets the log level for the ANTA library. Defaults to \"WARNING\" if not specified. |
+| save_catalog | bool | optional | False |  | Indicates whether to save the test catalog for each device. |
+| device_catalog_path | str | optional | None |  | The absolute path where the device test catalog will be saved.<br>Required if <code>save\_catalog</code> is set to <code>True</code>. |
+| test_results_dir | str | optional | None |  | The directory where the test results JSON file for each host will be saved. |
+| skipped_tests | list | optional | None |  | A list of dictionaries specifying categories and, optionally, tests to skip.<br>Each dictionary must have a key <code>category</code> and can optionally include a <code>tests</code> key. |
+|     category | str | optional | None |  | The name of an AvdTest category \(e.g., <code>AvdTestHardware</code>\). |
+|     tests | list | optional | None |  | An optional list of specific tests in the category to skip \(e.g., <code>VerifyRoutingProtocolModel</code> in <code>AvdTestBGP</code>\).<br>If not specified, all tests in the category are considered.<br>For a complete list of available tests, see \[link to the test list\]\(https\://avd.sh/en/stable/roles/eos\_validate\_state/ANTA\-Preview.html\#test\-categories\). |
+| cprofile_file | any | optional | None |  | The filename for storing cProfile data, useful for debugging performance issues.<br>Be aware that enabling cProfile can affect performance, so use it only for troubleshooting. |
 
 ## Notes
 
-- <code>check\_mode</code> is supported for this module and allows to generate a Test Report without running the tests.
+- Enabling the cProfile feature for performance profiling may impact the plugin\'s performance, especially in production environments.
+- The plugin manages the creation of JSON files, which are used for storing test results. For each device, one JSON file containing all results is saved in the test results directory.
+- The file naming convention is hard coded as \"\<inventory\_hostname\>\-results.json\" and cannot be changed. This ensures that the report plugin can properly retrieve the files.
+- This module supports <code>check\_mode</code>, allowing the generation of test reports without executing the tests.
+- Regardless of whether they are running in <code>check\_mode</code> or not, the reports are generated by the <code>eos\_validate\_state\_reports</code> plugin.
 
 ## See Also
 
-- ANTA website: [https://anta.ninja](https://anta.ninja)<br>ANTA documentation
+- ANTA website: [https://anta.ninja](https://anta.ninja)<br>Documentation for the ANTA test framework
 
 ## Examples
 
 ```yaml
-- name: Run eos_validate_state_runner leveraging ANTA
+- name: Execute eos_validate_state_runner leveraging ANTA
   arista.avd.eos_validate_state_runner:
     logging_level: ERROR
-    save_catalog: True
-    eos_validate_state_dir: "/tmp"
+    save_catalog: true
+    device_catalog_path: "/my_avd_project/intended/test_catalogs/{{ inventory_hostname }}-catalog.yml"
+    test_results_dir: "/my_avd_project/reports/test_results"
     skipped_tests:
       - category: AvdTestHardware
       - category: AvdTestBGP

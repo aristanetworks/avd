@@ -10,7 +10,7 @@ from typing import TYPE_CHECKING, Mapping
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import NoAliasDumper
-from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import ACRONYM_CATEGORIES, AVD_TEST_CLASSES
+from ansible_collections.arista.avd.roles.eos_validate_state.python_modules.constants import AVD_TEST_CLASSES
 
 from .catalog import Catalog
 
@@ -21,7 +21,8 @@ if TYPE_CHECKING:
 try:
     from anta.inventory import AntaInventory
     from anta.loader import setup_logging
-    from anta.result_manager import ResultManager, TestResult
+    from anta.result_manager import ResultManager
+    from anta.result_manager.models import TestResult
     from anta.runner import main as anta_runner
 
     HAS_ANTA = True
@@ -35,7 +36,7 @@ LOGGER = logging.getLogger(__name__)
 def _get_skipped_tests_from_tags(run_tags: tuple, skip_tags: tuple) -> list[dict]:
     """
     Arguments:
-      run_tags (tupe): Tuple of run_tags used to run the playbook.
+      run_tags (tuple): Tuple of run_tags used to run the playbook.
       skip_tags (tuple): Tuple of skip_tags used to run the playbook.
 
     Returns:
@@ -65,12 +66,12 @@ def get_anta_results(
     anta_device: AntaDevice,
     hostvars: Mapping,
     logging_level: str,
-    skipped_tests: dict,
+    skipped_tests: list[dict],
     ansible_tags: dict | None = None,
     save_catalog_name: str | None = None,
     dry_run: bool = False,
     yaml_dumper: Dumper | None = NoAliasDumper,
-) -> dict:
+) -> list[dict]:
     """
     Args:
       anta_device (AntaDevice): An instantiated AntaDevice
@@ -81,7 +82,7 @@ def get_anta_results(
       skipped_tests (list[dict]): A list of dictionary
       ansible_tags (dict): An optional dictionary containing the tags to maintain legacy filtering behavior for
                            `eos_validate_state`. This is ignored is `skipped_tests` is set.
-      save_catalog_name (bool): When set, the generated catalog is saved to a file using this name.
+      save_catalog_name (str): When set, the generated catalog is saved to a file using this name.
       dry_run (boolean): if True, no test is actually run, useful in conjunction with save_catalog_name.
       yaml_dumper (Dumper): Dumper to use to dump Anta Catalog, default is NoAliasDumper to avoid anchors.
 
@@ -131,20 +132,17 @@ def get_anta_results(
             run(anta_runner(manager, inventory, catalog.tests))
 
     # Save the results
-    results = loads(manager.get_results(output_format="json"))
+    results: list[dict] = loads(manager.get_results(output_format="json"))
 
-    # Format the data properly for the eos_validate_state report
-    for item in results:
-        categories_list = []
-        for category in item["categories"]:
-            category_list = [word.upper() if word.lower() in ACRONYM_CATEGORIES else word.title() for word in category.split()]
-            categories_list.append(" ".join(category_list))
-        item["categories"] = ", ".join(categories_list)
-
-        # Need to remove `,` for the CSV dump
-        item["messages"] = "\n".join(item["messages"]).replace(",", "-")
-
-    return results
+    # Return sorted results
+    return sorted(
+        results,
+        key=lambda result: (
+            result.get("categories", [""])[0].lower(),
+            result.get("description", "").lower(),
+            result.get("custom_field", "").lower(),
+        ),
+    )
 
 
 def _create_dry_run_report(device_name: str, tests: list[tuple], manager: ResultManager) -> None:

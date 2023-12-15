@@ -240,7 +240,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet3 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet3
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet4
@@ -250,7 +250,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet4 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet4
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet1
@@ -260,7 +260,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet5
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet2
@@ -270,7 +270,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet5
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet11
@@ -280,7 +280,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet11 - dc2-leaf3-fw1_e1
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Port-Channel3
@@ -290,7 +290,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Port-Channel3 - MLAG_PEER_dc2-leaf3b.arista.com_Po3
-      description: Port-Channel Interface & Line Protocol == \"up\"
+      description: Port-Channel Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Port-Channel11
@@ -300,7 +300,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Port-Channel11 - dc2-leaf3-fw1_PortChannel
-      description: Port-Channel Interface & Line Protocol == \"up\"
+      description: Port-Channel Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Vlan4093
@@ -310,7 +310,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Vlan4093 - MLAG_PEER_L3_PEERING
-      description: Vlan Interface & Line Protocol == \"up\"
+      description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Vlan4094
@@ -320,7 +320,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Vlan4094 - MLAG_PEER
-      description: Vlan Interface & Line Protocol == \"up\"
+      description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Vlan11
@@ -330,7 +330,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Vlan11 - VRF10_VLAN11
-      description: Vlan Interface & Line Protocol == \"up\"
+      description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Vlan12
@@ -340,7 +340,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Vlan12 - VRF10_VLAN12
-      description: Vlan Interface & Line Protocol == \"up\"
+      description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Vlan3009
@@ -350,7 +350,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: 'Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10'
-      description: Vlan Interface & Line Protocol == \"up\"
+      description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Vlan21
@@ -360,7 +360,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Vlan21 - VRF11_VLAN21
-      description: Vlan Interface & Line Protocol == \"up\"
+      description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Vlan22
@@ -370,7 +370,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Vlan22 - VRF11_VLAN22
-      description: Vlan Interface & Line Protocol == \"up\"
+      description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Vlan3010
@@ -380,7 +380,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: 'Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11'
-      description: Vlan Interface & Line Protocol == \"up\"
+      description: Vlan Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Loopback0
@@ -390,7 +390,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Loopback0 - EVPN_Overlay_Peering
-      description: Loopback Interface Status & Line Protocol == \"up\"
+      description: Loopback Interface Status & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Loopback1
@@ -400,7 +400,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Loopback1 - VTEP_VXLAN_Tunnel_Source
-      description: Loopback Interface Status & Line Protocol == \"up\"
+      description: Loopback Interface Status & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Loopback10
@@ -410,7 +410,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Loopback10 - VRF10_VTEP_DIAGNOSTICS
-      description: Loopback Interface Status & Line Protocol == \"up\"
+      description: Loopback Interface Status & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Loopback11
@@ -420,7 +420,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Loopback11 - VRF11_VTEP_DIAGNOSTICS
-      description: Loopback Interface Status & Line Protocol == \"up\"
+      description: Loopback Interface Status & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Vxlan1
@@ -430,14 +430,9 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Vxlan1
-      description: Vxlan Interface Status & Line Protocol == \"up\"
+      description: Vxlan Interface Status & Line Protocol == 'up'
 anta.tests.mlag:
-- VerifyMlagStatus:
-    result_overwrite:
-      categories:
-      - MLAG
-      custom_field: MLAG
-      description: MLAG State active & Status connected
+- VerifyMlagStatus: {}
 anta.tests.routing.bgp:
 - VerifyBGPSpecificPeers:
     address_families:

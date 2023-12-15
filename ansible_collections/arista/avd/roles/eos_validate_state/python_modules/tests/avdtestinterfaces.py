@@ -17,10 +17,10 @@ class AvdTestInterfacesState(AvdTestBase):
     anta_module = "anta.tests.interfaces"
     categories = ["Interface State"]
     interface_types = [
-        ("ethernet_interfaces", r"Ethernet Interface & Line Protocol == \"{state}\""),
-        ("port_channel_interfaces", r"Port-Channel Interface & Line Protocol == \"{state}\""),
-        ("vlan_interfaces", r"Vlan Interface & Line Protocol == \"{state}\""),
-        ("loopback_interfaces", r"Loopback Interface Status & Line Protocol == \"{state}\""),
+        ("ethernet_interfaces", "Ethernet Interface & Line Protocol == '{state}'"),
+        ("port_channel_interfaces", "Port-Channel Interface & Line Protocol == '{state}'"),
+        ("vlan_interfaces", "Vlan Interface & Line Protocol == '{state}'"),
+        ("loopback_interfaces", "Loopback Interface Status & Line Protocol == 'up'"),
     ]
 
     @cached_property
@@ -82,7 +82,7 @@ class AvdTestInterfacesState(AvdTestBase):
 
                 add_test(str(interface["name"]), state, proto, description, custom_field)
 
-        if get(self.structured_config, "vxlan_interface.Vxlan1") is not None:
-            add_test("Vxlan1", "up", "up", r"Vxlan Interface Status & Line Protocol == \"up\"", "Vxlan1")
+        if get(self.hostvars[self.device_name], "vxlan_interface.Vxlan1") is not None:
+            add_test("Vxlan1", "up", "up", "Vxlan Interface Status & Line Protocol == 'up'", "Vxlan1")
 
         return {self.anta_module: anta_tests} if anta_tests else None

@@ -15,7 +15,6 @@ class AvdTestHardware(AvdTestBase):
     """
 
     anta_module = "anta.tests.hardware"
-    categories = ["Hardware"]
 
     @cached_property
     def test_definition(self) -> dict:
