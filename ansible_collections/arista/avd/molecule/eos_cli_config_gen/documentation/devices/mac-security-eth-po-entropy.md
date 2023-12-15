@@ -171,6 +171,20 @@ FIPS restrictions enabled.
 | ------ |  -------- |
 | 1234b | - |
 
+##### Profile A3
+
+###### Settings
+
+| Cipher | Key-Server Priority | Rekey-Period | SCI |
+| ------ | ------------------- | ------------ | --- |
+| aes256-gcm-xpn | - | - | - |
+
+###### Keys
+
+| Key ID | Fallback |
+| ------ |  -------- |
+| ab | False |
+
 ### MACsec Device Configuration
 
 ```eos
@@ -189,4 +203,7 @@ mac security
       l2-protocol lldp bypass unauthorized
    profile A2
       key 1234b 7 <removed>
+   profile A3
+      cipher aes256-gcm-xpn
+      key ab 7 <removed>
 ```
