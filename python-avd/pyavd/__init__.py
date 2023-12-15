@@ -12,12 +12,12 @@ from .validation_result import ValidationResult
 """ Library for running Arista Validated Designs (AVD) in Python
 """
 
-PYAVD_PRERELEASE = "b2"  # Set this to aN or bN for alpha and beta releases of pyavd itself. Empty string when pyavd is released.
+PYAVD_PRERELEASE = ""  # Set this to aN or bN for alpha and beta releases of pyavd itself. Empty string when pyavd is released.
 
 __author__ = "Arista Networks"
 __copyright__ = "Copyright 2023 Arista Networks"
 __license__ = "Apache 2.0"
-__version__ = "4.5.0b2"
+__version__ = "4.5.0"
 
 __all__ = [
     "get_avd_facts",
