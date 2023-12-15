@@ -87,3 +87,8 @@ ethernet_interfaces:
   shutdown: true
   type: routed
   description: This is a custom description
+- name: Ethernet43
+  peer_type: l3_interface
+  ip_address: 192.168.42.42/24
+  shutdown: true
+  type: routed

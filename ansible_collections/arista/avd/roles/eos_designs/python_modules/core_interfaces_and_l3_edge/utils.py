@@ -375,8 +375,10 @@ class UtilsMixin:
         interface_name = l3_interface["interface"]
 
         # TODO move this to description module?
-        interface_description = l3_interface.get("description") or " ".join(
-            [elem for elem in [l3_interface.get("peer"), l3_interface.get("peer_interface")] if elem is not None]
+        interface_description = (
+            l3_interface.get("description")
+            or " ".join([elem for elem in [l3_interface.get("peer"), l3_interface.get("peer_interface")] if elem is not None])
+            or None
         )
 
         # TODO catch if ip_address is not valid or not dhcp

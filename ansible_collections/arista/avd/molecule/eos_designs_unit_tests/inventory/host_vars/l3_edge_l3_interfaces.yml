@@ -39,3 +39,8 @@ l3_edge:
       enabled: False
       description: This is a custom description
       ip: dhcp
+      # empty description
+    - node: l3_edge_l3_interfaces
+      interface: Ethernet43
+      enabled: False
+      ip: 192.168.42.42/24
