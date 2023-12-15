@@ -147,7 +147,7 @@ FIPS restrictions enabled.
 ###### Keys
 
 | Key ID | Fallback |
-| ------ |  -------- |
+| ------ | -------- |
 | 1234a | - |
 | 1234c | True |
 
@@ -168,7 +168,7 @@ FIPS restrictions enabled.
 ###### Keys
 
 | Key ID | Fallback |
-| ------ |  -------- |
+| ------ | -------- |
 | 1234b | - |
 
 ##### Profile A3
@@ -182,7 +182,7 @@ FIPS restrictions enabled.
 ###### Keys
 
 | Key ID | Fallback |
-| ------ |  -------- |
+| ------ | -------- |
 | ab | False |
 
 ### MACsec Device Configuration
