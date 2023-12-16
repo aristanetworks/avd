@@ -63,9 +63,9 @@ l3_edge:
       interface: Ethernet1
       wan_path_group: INET
       wan_circuit_id: 777
-      ip: dhcp
+      ip: 10.7.7.7/31
     - node: autovpn-rr2
       interface: Ethernet1
       wan_path_group: INET
       wan_circuit_id: 888
-      ip: dhcp
+      ip: 10.8.8.8/31

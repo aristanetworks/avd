@@ -171,7 +171,14 @@ router_path_selection:
   peer_dynamic_source: stun
 stun:
   server:
-    local_interfaces: []
+    local_interfaces:
+    - Ethernet1
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.8.8.8/31
+  shutdown: false
+  type: routed
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

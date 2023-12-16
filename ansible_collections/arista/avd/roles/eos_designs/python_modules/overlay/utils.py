@@ -380,12 +380,12 @@ class UtilsMixin:
                     )
                 # TODO - enable this once the wan_path_groups peer fact is implemented as this requires WAN interfaces not
                 # covered in this PR.
-                # if wan_path_groups is None:
-                #    raise AristaAvdMissingVariableError(
-                #        f"'wan_path_groups' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers'"
-                #        " or something is wrong with the peer"
-                #        " facts."
-                #    )
+                if wan_path_groups is None:
+                    raise AristaAvdMissingVariableError(
+                        f"'wan_path_groups' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers'"
+                        " or something is wrong with the peer"
+                        " facts."
+                    )
 
             else:
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
@@ -408,3 +408,10 @@ class UtilsMixin:
             wan_route_servers[wan_rr] = strip_empties_from_dict(wan_rr_result_dict)
 
         return wan_route_servers
+
+    def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, id: int | None = None) -> str:
+        """
+        Return a string to use as the name of the stun server_profile
+        """
+        name = f"{wan_route_server_name}-{path_group_name}"
+        return f"{name}-{id}" if id is not None else name

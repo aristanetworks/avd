@@ -6,14 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
-
-    from .shared_utils import EosDesignsFacts
+    from .eos_designs_facts import EosDesignsFacts
 
 
 class WanMixin:
@@ -26,9 +22,23 @@ class WanMixin:
     @cached_property
     def wan_path_groups(self: EosDesignsFacts) -> list | None:
         """
-        Return the list of WAN path_groups directly connected to this router
+        Return the list of WAN path_groups directly connected to this router, with a list of dictionaries
+        containing the (interface, ip_address) in the path_group.
         """
-        # TODO check if needed
         if not self.shared_utils.wan_mode:
             return None
-        return [path_group.get("name") for path_group in self.shared_utils.wan_local_path_groups]
+
+        res = []
+        for interface in self.shared_utils.wan_interfaces:
+            pg_name = get(interface, "wan_path_group", required=True)
+            if (pg_dict := get_item(res, "name", pg_name)) is None:
+                res.append(
+                    {
+                        "name": pg_name,
+                        "interfaces": [{"name": get(interface, "interface", required=True), "ip_address": get(interface, "ip", required=True)}],
+                    }
+                )
+            else:
+                pg_dict.append({"name": get(interface, "interface", required=True), "ip_address": get(interface, "ip", required=True)})
+
+        return res

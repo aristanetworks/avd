@@ -5,6 +5,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
 from .utils import UtilsMixin
 
 
@@ -26,14 +28,30 @@ class StunMixin(UtilsMixin):
         stun = {}
         if self.shared_utils.wan_role == "server":
             local_interfaces = []
-            # TODO - once the WAN interfaces are implemented, add them here
+            for wan_interface in self.shared_utils.wan_interfaces:
+                local_interfaces.append(wan_interface.get("interface"))
 
             stun["server"] = {"local_interfaces": local_interfaces}
 
         if self.shared_utils.wan_role == "client":
             server_profiles = []
 
-            # TODO - once the WAN interfaces are implemented, add them here
+            local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
+
+            for wan_route_server, data in self._wan_route_servers.items():
+                for path_group in data.get("wan_path_groups", []):
+                    if path_group["name"] not in local_path_group_names:
+                        continue
+
+                    for index, interface_dict in enumerate(get(path_group, "interfaces", required=True)):
+                        # Today one wan_path_group can only have one IP. May need to relax this in the futur
+                        server_profiles.append(
+                            {
+                                "name": self._stun_server_profile_name(wan_route_server, path_group["name"], index),
+                                "ip_address": get(interface_dict, "ip_address", required=True),
+                            }
+                        )
+
             if server_profiles:
                 stun["client"] = {"server_profiles": server_profiles}
 

@@ -101,6 +101,13 @@ router_path_selection:
   vrfs:
   - name: default
     path_selection_policy: dps-policy-default
+stun:
+  client:
+    server_profiles:
+    - name: autovpn-rr1-INET-0
+      ip_address: 10.7.7.7/31
+    - name: autovpn-rr2-INET-0
+      ip_address: 10.8.8.8/31
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface

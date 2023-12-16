@@ -77,7 +77,7 @@ wan_rr:
 
 wan_path_groups:
   - name: MPLS
-    ipsec: False
+    ipsec: false
   - name: INET
   - name: LTE
 
@@ -85,26 +85,31 @@ l3_edge:
   l3_interfaces:
     - node: cv-pathfinder-edge
       interface: Ethernet1
-      wan_carrier: INET
+      wan_path_group: INET
+      wan_carrier: ATT
       wan_circuit_id: 666
       ip: dhcp
     - node: cv-pathfinder-transit
       interface: Ethernet1
-      wan_carrier: INET
+      wan_path_group: INET
+      wan_carrier: Comcast
       wan_circuit_id: 667
       ip: dhcp
-    - node: cv-pathinder-pathfinder
+    - node: cv-pathfinder-pathfinder
       interface: Ethernet1
-      wan_carrier: INET
+      wan_path_group: INET
+      wan_carrier: Bouygues Telecom
       wan_circuit_id: 777
-      ip: dhcp
-    - node: cv-pathinder-pathfinder1
+      ip: 10.7.7.7/31
+    - node: cv-pathfinder-pathfinder1
       interface: Ethernet1
-      wan_carrier: INET
+      wan_path_group: INET
+      wan_carrier: Orange
       wan_circuit_id: 888
-      ip: dhcp
-    - node: cv-pathinder-pathfinder2
+      ip: 10.8.8.8/31
+    - node: cv-pathfinder-pathfinder2
       interface: Ethernet1
-      wan_carrier: INET
+      wan_path_group: INET
+      wan_carrier: SFR
       wan_circuit_id: 999
-      ip: dhcp
+      ip: 10.9.9.9/31

@@ -62,8 +62,9 @@ class WanMixin:
         """
         if self.wan_mode is None:
             return []
+
         wan_interfaces = []
-        for interface in get(self.hostvars, "l3_edge.l3_interfaces", default=[]):
+        for interface in self.filtered_l3_interfaces:
             # Potentially needs to resolve profile
             if get(interface, "wan_path_group") is not None:
                 # TODO - may need to validate the path_group here
@@ -84,8 +85,13 @@ class WanMixin:
         global_path_groups = get(self.hostvars, "wan_path_groups", required=True)
         for interface in self.wan_interfaces:
             iface_path_group = interface.get("wan_path_group")
-            path_group = get_item(global_path_groups, "name", iface_path_group, required=True, custom_error_msg=f"WAN path_group {iface_path_group} is not in the available path_groups defined in `wan_path_groupes`")
+            path_group = get_item(
+                global_path_groups,
+                "name",
+                iface_path_group,
+                required=True,
+                custom_error_msg=f"WAN path_group {iface_path_group} is not in the available path_groups defined in `wan_path_groupes`",
+            )
             local_path_groups.append(path_group)
 
         return local_path_groups
-
