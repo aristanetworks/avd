@@ -13,8 +13,8 @@ from .mlag import MlagMixin
 from .overlay import OverlayMixin
 from .short_esi import ShortEsiMixin
 from .uplinks import UplinksMixin
-from .wan import WanMixin
 from .vlans import VlansMixin
+from .wan import WanMixin
 
 
 class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin, UplinksMixin, VlansMixin):

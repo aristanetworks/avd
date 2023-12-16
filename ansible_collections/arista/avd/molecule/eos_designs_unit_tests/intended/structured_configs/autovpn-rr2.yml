@@ -107,8 +107,16 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
+  path_groups:
+  - name: INET
+    id: 500
+    local_interfaces:
+    - name: Ethernet1
+    ipsec_profile: AUTOVPN
   load_balance_policies:
   - name: LBPOLICY
+    path_groups:
+    - name: INET
   policies:
   - name: dps-policy-default
     default_match:

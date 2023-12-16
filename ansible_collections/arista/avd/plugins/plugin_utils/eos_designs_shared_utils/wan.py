@@ -90,7 +90,7 @@ class WanMixin:
                 "name",
                 iface_path_group,
                 required=True,
-                custom_error_msg=f"WAN path_group {iface_path_group} is not in the available path_groups defined in `wan_path_groupes`",
+                custom_error_msg=f"WAN path_group {iface_path_group} is not in the available path_groups defined in `wan_path_groups`",
             )
             local_path_groups.append(path_group)
 
