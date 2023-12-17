@@ -14,6 +14,12 @@ cv_settings:
     - name: cvaas_inband
       vrf: use_inband_mgmt_vrf
       server: www.cv-prod-euwest-2.arista.io
+    - name: cvaas_mgmt_intf
+      source_interface: use_mgmt_interface
+      server: www.arista.io
+    - name: cvaas_inband_intf
+      source_interface: use_inband_mgmt_interface
+      server: www.cv-prod-euwest-2.arista.io
   onprem_clusters:
     - name: onprem_oob
       vrf: use_mgmt_interface_vrf
@@ -28,6 +34,10 @@ cv_settings:
       servers:
         - name: onprem_inband_1
       token_file: /tmp/anothertoken
+    - name: custom_source_intf
+      source_interface: CustomInterface1
+      servers:
+        - name: onprem_custom_1
   terminattr_disable_aaa: True
   terminattr_ingestexclude: excludethis
   terminattr_smashexcludes: excludethat

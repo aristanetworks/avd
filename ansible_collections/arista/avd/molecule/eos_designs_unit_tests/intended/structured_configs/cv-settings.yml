@@ -38,6 +38,20 @@ daemon_terminattr:
       method: token-secure
       token_file: /tmp/cv-onboarding-token
     cvvrf: INBAND_MGMT_VRF
+  - name: cvaas_mgmt_intf
+    cvaddrs:
+    - www.arista.io:443
+    cvauth:
+      method: token-secure
+      token_file: /tmp/cv-onboarding-token
+    cvsourceintf: Management1
+  - name: cvaas_inband_intf
+    cvaddrs:
+    - www.cv-prod-euwest-2.arista.io:443
+    cvauth:
+      method: token-secure
+      token_file: /tmp/cv-onboarding-token
+    cvsourceintf: Vlan4092
   - name: onprem_oob
     cvaddrs:
     - onprem_oob1:9911
@@ -54,6 +68,13 @@ daemon_terminattr:
       method: token
       token_file: /tmp/anothertoken
     cvvrf: INBAND_MGMT_VRF
+  - name: custom_source_intf
+    cvaddrs:
+    - onprem_custom_1:9910
+    cvauth:
+      method: token
+      token_file: /tmp/token
+    cvsourceintf: CustomInterface1
   disable_aaa: true
   ingestexclude: excludethis
   smashexcludes: excludethat

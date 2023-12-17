@@ -1,0 +1,15 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: cv-settings
+      mgmt_ip: 192.168.0.2/24
+      inband_mgmt_vrf: INBAND_MGMT_VRF
+      inband_mgmt_ip: 172.17.0.2/24
+
+cv_settings:
+  cvaas_clusters:
+    - name: cvaas_oob
+      server: www.arista.io
+
+expected_error_message: >-
+  'vrf' or 'source_interface' must be set for cv_settings.cvaas_clusters.cvaas_oob

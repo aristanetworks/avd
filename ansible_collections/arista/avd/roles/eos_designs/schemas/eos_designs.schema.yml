@@ -523,15 +523,26 @@ keys:
               description: CVaaS Server name like 'www.arista.io' or 'www.cv-prod-euwest-2.arista.io'.
             vrf:
               type: str
-              required: true
+              required: false
               convert_types:
               - int
-              description: "The VRF used to connect to CloudVision.\n- `use_mgmt_interface_vrf`
-                will use VRF set with `mgmt_interface_vrf`.\n  An error will be raised
+              description: "The VRF used to connect to CloudVision. Must be set in
+                the absence of source_interface.\n- `use_mgmt_interface_vrf` will
+                use VRF set with `mgmt_interface_vrf`.\n  An error will be raised
                 if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
                 `use_inband_mgmt_vrf` will use the VRF set with `inband_mgmt_vrf`.\n
                 \ An error will be raised if inband management is not configured for
                 the device.\n- Any other string will be used directly as the VRF name."
+            source_interface:
+              type: str
+              required: false
+              description: "The source interface used to connect to CloudVision.  Must
+                be set in the absence of vrf.\n- `use_mgmt_interface` will use interface
+                set with `mgmt_interface`.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_interface`
+                will use the interface set with `inband_mgmt_interface`.\n  An error
+                will be raised if inband management is not configured for the device.\n-
+                Any other string will be used directly as the VRF name."
             token_file:
               type: str
               description: 'Path to the onboarding token used for certificate based
@@ -577,15 +588,26 @@ keys:
                     default: 9910
             vrf:
               type: str
-              required: true
+              required: false
               convert_types:
               - int
-              description: "The VRF used to connect to CloudVision.\n- `use_mgmt_interface_vrf`
-                will use VRF set with `mgmt_interface_vrf`.\n  An error will be raised
+              description: "The VRF used to connect to CloudVision. Must be set in
+                the absence of source_interface.\n- `use_mgmt_interface_vrf` will
+                use VRF set with `mgmt_interface_vrf`.\n  An error will be raised
                 if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
                 `use_inband_mgmt_vrf` will use the VRF set with `inband_mgmt_vrf`.\n
                 \ An error will be raised if inband management is not configured for
                 the device.\n- Any other string will be used directly as the VRF name."
+            source_interface:
+              type: str
+              required: false
+              description: "The source interface used to connect to CloudVision.  Must
+                be set in the absence of vrf.\n- `use_mgmt_interface` will use interface
+                set with `mgmt_interface`.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_interface`
+                will use the interface set with `inband_mgmt_interface`.\n  An error
+                will be raised if inband management is not configured for the device.\n-
+                Any other string will be used directly as the VRF name."
             key:
               type: str
               convert_types:

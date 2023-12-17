@@ -47,7 +47,12 @@ class DaemonTerminattrMixin(UtilsMixin):
     def _get_terminattr_clusters(self, cv_settings: dict) -> list:
         clusters = []
         for cluster in get(cv_settings, "cvaas_clusters", default=[]):
-            vrf = self._get_terminattr_vrf(cluster["vrf"], f"cv_settings.cvaas_clusters[name={cluster['name']}].vrf")
+            vrf = self._get_terminattr_vrf(get(cluster, "vrf"), f"cv_settings.cvaas_clusters[name={cluster['name']}].vrf")
+            source_interface = self._get_terminattr_source_interface(
+                get(cluster, "source_interface"), f"cv_settings.cvaas_clusters[name={cluster['name']}].source_interface"
+            )
+            if not (vrf or source_interface):
+                raise AristaAvdError(f"'vrf' or 'source_interface' must be set for cv_settings.cvaas_clusters.{cluster['name']}")
             clusters.append(
                 {
                     "name": cluster["name"],
@@ -57,11 +62,17 @@ class DaemonTerminattrMixin(UtilsMixin):
                         "token_file": get(cluster, "token_file", default="/tmp/cv-onboarding-token"),
                     },
                     "cvvrf": vrf if vrf != "default" else None,
+                    "cvsourceintf": source_interface,
                 }
             )
 
         for cluster in get(cv_settings, "onprem_clusters", default=[]):
-            vrf = self._get_terminattr_vrf(cluster["vrf"], f"cv_settings.onprem_clusters[name={cluster['name']}].vrf")
+            vrf = self._get_terminattr_vrf(get(cluster, "vrf"), f"cv_settings.onprem_clusters[name={cluster['name']}].vrf")
+            source_interface = self._get_terminattr_source_interface(
+                get(cluster, "source_interface"), f"cv_settings.onprem_clusters[name={cluster['name']}].source_interface"
+            )
+            if not (vrf or source_interface):
+                raise AristaAvdError(f"'vrf' or 'source_interface' must be set for cv_settings.onprem_clusters.{cluster['name']}")
             use_key = get(cluster, "key") is not None
             clusters.append(
                 {
@@ -73,6 +84,7 @@ class DaemonTerminattrMixin(UtilsMixin):
                         "token_file": get(cluster, "token_file", "/tmp/token") if not use_key else None,
                     },
                     "cvvrf": vrf if vrf != "default" else None,
+                    "cvsourceintf": source_interface,
                 }
             )
 
@@ -94,13 +106,36 @@ class DaemonTerminattrMixin(UtilsMixin):
 
         if vrf == "use_inband_mgmt_vrf":
             if self.shared_utils.inband_mgmt_interface is None:
-                raise AristaAvdError("'ntp_settings.server_vrf' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management")
+                raise AristaAvdError("'{org_var}' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management")
 
             # self.shared_utils.inband_mgmt_vrf returns None for the default VRF.
             return self.shared_utils.inband_mgmt_vrf or "default"
 
         # Returning the given VRF name.
         return vrf
+
+    def _get_terminattr_source_interface(self, source_interface: str, org_var: str) -> str:
+        """
+        Returns either the source_interface given or the relevant mgmt source intf depending on special values
+        `use_mgmt_interface` or `use_inband_mgmt_interface`.
+
+        Errors will be raised if the VRF does not match relevant management settings.
+        """
+        if source_interface == "use_mgmt_interface":
+            has_mgmt_ip = (self.shared_utils.mgmt_ip is not None) or (self.shared_utils.ipv6_mgmt_ip is not None)
+            if not has_mgmt_ip:
+                raise AristaAvdError(f"'{org_var}' is set to 'use_mgmt_interface_vrf' but this node is missing an 'mgmt_ip'")
+
+            return self.shared_utils.mgmt_interface
+
+        if source_interface == "use_inband_mgmt_interface":
+            if self.shared_utils.inband_mgmt_interface is None:
+                raise AristaAvdError("'{org_var}' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management")
+
+            return self.shared_utils.inband_mgmt_interface
+
+        # Returning the given source interface name.
+        return source_interface
 
     def _get_deprecated_daemon_terminattr(self) -> dict | None:
         """
