@@ -158,19 +158,41 @@ router_path_selection:
       ipv4_addresses:
       - 10.7.7.7
     ipsec_profile: CP-PROFILE
+  - name: MPLS
+    id: 500
+    local_interfaces:
+    - name: Ethernet2
+      stun:
+        server_profiles:
+        - cv-pathfinder-pathfinder-MPLS-1
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 192.168.44.1
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 172.16.0.1
   load_balance_policies:
   - name: LBPOLICY
     path_groups:
     - name: INET
+    - name: MPLS
 stun:
   client:
     server_profiles:
     - name: cv-pathfinder-pathfinder-INET-0
       ip_address: 10.7.7.7/31
+    - name: cv-pathfinder-pathfinder-MPLS-0
+      ip_address: 172.16.0.1/31
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface
   ip_address: dhcp
+  shutdown: false
+  type: routed
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 172.16.6.6/31
   shutdown: false
   type: routed
 dps_interfaces:

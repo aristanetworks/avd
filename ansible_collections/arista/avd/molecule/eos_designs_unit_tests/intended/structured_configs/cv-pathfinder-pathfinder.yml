@@ -146,19 +146,30 @@ router_path_selection:
     local_interfaces:
     - name: Ethernet1
     ipsec_profile: CP-PROFILE
+  - name: MPLS
+    id: 500
+    local_interfaces:
+    - name: Ethernet2
   load_balance_policies:
   - name: LBPOLICY
     path_groups:
     - name: INET
+    - name: MPLS
   peer_dynamic_source: stun
 stun:
   server:
     local_interfaces:
     - Ethernet1
+    - Ethernet2
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface
   ip_address: 10.7.7.7/31
+  shutdown: false
+  type: routed
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 172.16.0.1/31
   shutdown: false
   type: routed
 dps_interfaces:

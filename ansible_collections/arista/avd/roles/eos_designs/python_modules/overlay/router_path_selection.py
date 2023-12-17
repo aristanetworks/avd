@@ -130,6 +130,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                     self._stun_server_profile_name(wrr, path_group_name, index)
                     for wrr, data in self._wan_route_servers.items()
                     for index, path_group in enumerate(get(data, "wan_path_groups", required=True))
+                    if path_group.get("name") == path_group_name
                 ]
                 if stun_server_profiles:
                     local_interface["stun"] = {"server_profiles": stun_server_profiles}
