@@ -50,6 +50,8 @@ default_node_types:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
   nodes:
     - name: cv-pathfinder-edge
       cv_pathfinder_region: AVD_Land_East
@@ -70,6 +72,8 @@ wan_edge:
 wan_transit:
   defaults:
     loopback_ipv4_pool: 192.168.43.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
   nodes:
     - name: cv-pathfinder-transit
       cv_pathfinder_region: AVD_Land_West
@@ -135,6 +139,8 @@ wan_path_groups:
     id: 101
   - name: LTE
     id: 102
+  - name: Equinix
+    id: 103
 
 wan_carriers:
   - name: Comcast
@@ -153,3 +159,58 @@ wan_carriers:
     path_group: MPLS
   - name: ATT-MPLS
     path_group: MPLS
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: PROD
+        vrf_id: 42
+      - name: IT
+        vrf_id: 100
+
+virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AVT-POLICY
+    - name: PROD
+      policy: PROD-AVT-POLICY
+  policies:
+    - name: PROD-AVT-POLICY
+      default_policy:
+        path_groups:
+          - names: [INET]
+            priority: preferred
+          - names: [MPLS]
+            priority: alternate
+        id: 1
+      application_policies:
+        - application_profile: voice
+          path_groups:
+            - names: [MPLS]
+              priority: preferred
+            - names: [INET]
+              priority: alternate
+          id: 2
+        - application_profile: video
+          path_groups:
+            - names: [MPLS, LTE]
+              priority: preferred
+            - names: [INET]
+              priority: alternate
+          id: 4
+    - name: DEFAULT-AVT-POLICY
+      default_policy:
+        path_groups:
+          - names: [INET, Equinix]
+            priority: preferred
+          - names: [MPLS]
+            priority: 42
+        id: 1
+      application_policies:
+        - application_profile: it
+          path_groups:
+            - names: [MPLS, INET]
+              priority: preferred
+          id: 3

@@ -159,6 +159,54 @@ ip_security:
     mode: transport
 router_adaptive_virtual_topology:
   topology_role: pathfinder
+  profiles:
+  - name: PROD-AVT-POLICY_voice
+    load_balance_policy: PROD-AVT-POLICY_voice_lb
+  - name: PROD-AVT-POLICY_video
+    load_balance_policy: PROD-AVT-POLICY_video_lb
+  - name: PROD-AVT-POLICY_default
+    load_balance_policy: PROD-AVT-POLICY_default_lb
+  - name: DEFAULT-AVT-POLICY_it
+    load_balance_policy: DEFAULT-AVT-POLICY_it_lb
+  - name: DEFAULT-AVT-POLICY_default
+    load_balance_policy: DEFAULT-AVT-POLICY_default_lb
+  policies:
+  - name: PROD-AVT-POLICY
+    matches:
+    - application_profile: voice
+      avt_profile: PROD-AVT-POLICY_voice
+      _id: 2
+    - application_profile: video
+      avt_profile: PROD-AVT-POLICY_video
+      _id: 4
+    - application_profile: default
+      avt_profile: PROD-AVT-POLICY_default
+      _id: 1
+  - name: DEFAULT-AVT-POLICY
+    matches:
+    - application_profile: it
+      avt_profile: DEFAULT-AVT-POLICY_it
+      _id: 3
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY_default
+      _id: 1
+  vrfs:
+  - name: default
+    policy: DEFAULT-AVT-POLICY
+    profiles:
+    - name: DEFAULT-AVT-POLICY_it
+      id: 3
+    - name: DEFAULT-AVT-POLICY_default
+      id: 1
+  - name: PROD
+    policy: PROD-AVT-POLICY
+    profiles:
+    - name: PROD-AVT-POLICY_voice
+      id: 2
+    - name: PROD-AVT-POLICY_video
+      id: 4
+    - name: PROD-AVT-POLICY_default
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -176,12 +224,42 @@ router_path_selection:
     id: 100
     local_interfaces:
     - name: Ethernet2
-  load_balance_policies:
-  - name: LBPOLICY
-    path_groups:
-    - name: INET
-    - name: MPLS
   peer_dynamic_source: stun
+  load_balance_policies:
+  - name: PROD-AVT-POLICY_voice_lb
+    path_groups:
+    - name: MPLS
+      priority: 1
+    - name: INET
+      priority: 2
+  - name: PROD-AVT-POLICY_video_lb
+    path_groups:
+    - name: MPLS
+      priority: 1
+    - name: LTE
+      priority: 1
+    - name: INET
+      priority: 2
+  - name: PROD-AVT-POLICY_default_lb
+    path_groups:
+    - name: MPLS
+      priority: 1
+    - name: LTE
+      priority: 1
+    - name: INET
+      priority: 2
+  - name: DEFAULT-AVT-POLICY_it_lb
+    path_groups:
+    - name: MPLS
+      priority: 1
+    - name: INET
+      priority: 1
+  - name: DEFAULT-AVT-POLICY_default_lb
+    path_groups:
+    - name: MPLS
+      priority: 1
+    - name: INET
+      priority: 1
 stun:
   server:
     local_interfaces:

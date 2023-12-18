@@ -126,6 +126,12 @@ roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
 roles/eos_designs/docs/tables/wan-interfaces-settings.md
 --8<--
 
+#### WAN Virtual topologies
+
+--8<--
+roles/eos_designs/docs/tables/wan-virtual-topologies.md
+--8<--
+
 #### New BGP peer-group
 
 --8<--

@@ -1,0 +1,166 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  virtual_topologies:
+    documentation_options:
+      table: wan-virtual-topologies
+    type: dict
+    description: |-
+      PREVIEW: WAN Preview
+
+      Configure AVTs for CV Pathfinder and AutoVPN.
+    keys:
+      vrfs:
+        type: list
+        description: |-
+          Map a VRF that exists in network_services to an AVT policy.
+          Auto create a control plane profile/policy/application and enforce it being first.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+                - int
+              description: VRF name.
+            policy:
+              type: str
+              description: Name of the AVT policy to apply to this VRF.
+      control_plane_virtual_topology:
+        type: dict
+        description: |-
+          Always injected into the default VRF policy as the first entry.
+          Defaults will prefer all path groups where pathfinders can be reached.
+        keys:
+          name:
+            type: str
+            description: Default is `<avt_policy_name>_control_plane_default`
+          id:
+            type: int
+            convert_types:
+              - str
+            description: |-
+              TODO min/max
+
+              ID of the control plane AVT in the default VRFs.
+          # TODO make a defs maybe with other keys, id, traffic_class, dscp
+          path_groups:
+            type: list
+            primary_key: priority
+            items:
+              type: dict
+              keys:
+                names:
+                  type: list
+                  description: List of path-group names.
+                  required: true
+                  min_length: 1
+                  items:
+                    type: str
+                priority:
+                  type: str
+                  convert_types:
+                    - int
+                  description: |-
+                    Valid values are 1-255 | preferred | alternate.
+
+                    preferred is converted to priority 1.
+                    alternate is converted to priority 2.
+      policies:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Name of the AVT policy.
+            application_policies:
+              type: list
+              description: List of application specific policies.
+              primary_key: application_profile
+              items:
+                type: dict
+                keys:
+                  application_profile:
+                    type: str
+                    description: The application profile to use for this policy. It must be a defined `application_profile`.
+                  name:
+                    type: str
+                    description: Optional name, if not set `<policy_name>_<application_profile>` is used.
+                  id:
+                    type: int
+                    description: |-
+                      TODO min/max
+
+                      ID of the default AVT in each VRFs. ID must be unique across all policies.
+                  traffic_class:
+                    type: int
+                    $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/traffic_class"
+                  dscp:
+                    type: int
+                    $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp"
+                  path_groups:
+                    type: list
+                    primary_key: priority
+                    items:
+                      type: dict
+                      keys:
+                        names:
+                          type: list
+                          description: List of path-group names.
+                          required: true
+                          min_length: 1
+                          items:
+                            type: str
+                        priority:
+                          type: str
+                          convert_types:
+                            - int
+                          description: |-
+                            Valid values are 1-255 | preferred | alternate.
+
+                            preferred is converted to priority 1.
+                            alternate is converted to priority 2.
+            default_policy:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Optional name, if not set `<policy_name>_default` is used.
+                id:
+                  type: int
+                  convert_types:
+                    - str
+                  description: |-
+                    TODO min/max
+
+                    ID of the default AVT in each VRFs.
+                path_groups:
+                  type: list
+                  primary_key: priority
+                  items:
+                    type: dict
+                    keys:
+                      names:
+                        type: list
+                        description: List of path-group names.
+                        required: true
+                        min_length: 1
+                        items:
+                          type: str
+                      priority:
+                        type: str
+                        convert_types:
+                          - int
+                        description: |-
+                          Valid values are 1-255 | preferred | alternate.
+
+                          preferred is converted to priority 1.
+                          alternate is converted to priority 2.

@@ -58,6 +58,12 @@ spanning_tree:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: IT
+  tenant: TenantA
+  ip_routing: true
+- name: PROD
+  tenant: TenantA
+  ip_routing: true
 management_api_http:
   enable_vrfs:
   - name: MGMT
@@ -121,16 +127,43 @@ router_path_selection:
       - 10.8.8.8
     ipsec_profile: AUTOVPN
   load_balance_policies:
-  - name: LBPOLICY
+  - name: PROD-AVT-POLICY_voice_lb
     path_groups:
     - name: INET
+      priority: 1
+  - name: PROD-AVT-POLICY_video_lb
+    path_groups:
+    - name: INET
+      priority: 1
+  - name: PROD-AVT-POLICY_default_lb
+    path_groups:
+    - name: INET
+      priority: 1
+  - name: DEFAULT-AVT-POLICY_it_lb
+    path_groups:
+    - name: INET
+      priority: 2
   policies:
-  - name: dps-policy-default
+  - name: PROD-AVT-POLICY
+    rules:
+    - id: 42
+      application_profile: voice
+      load_balance: PROD-AVT-POLICY_voice_lb
+    - id: 43
+      application_profile: video
+      load_balance: PROD-AVT-POLICY_video_lb
     default_match:
-      load_balance: LBPOLICY
+      load_balance: PROD-AVT-POLICY_default_lb
+  - name: DEFAULT-AVT-POLICY
+    rules:
+    - id: 42
+      application_profile: it
+      load_balance: DEFAULT-AVT-POLICY_it_lb
   vrfs:
   - name: default
-    path_selection_policy: dps-policy-default
+    path_selection_policy: DEFAULT-AVT-POLICY
+  - name: PROD
+    path_selection_policy: PROD-AVT-POLICY
 stun:
   client:
     server_profiles:
@@ -152,3 +185,7 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+      - name: IT
+        vni: 100
+      - name: PROD
+        vni: 42
