@@ -28,15 +28,16 @@ keys:
         router_id:
           type: str
           description: Route-Reflector router id.
-        wan_path_groups:
+        path_groups:
           type: list
+          description: Path-groups through which the Route Reflector/Pathfinder is reached.
           items:
             type: dict
             keys:
               name:
                 type: str
-                description: Carrier name.
+                description: Path-group name.
               # TODO - should it be multiple IP address
               ip_address:
                 type: str
-                description: The public IP address for this carrier.
+                description: The public IP address of the Route Reflector for this path-group.

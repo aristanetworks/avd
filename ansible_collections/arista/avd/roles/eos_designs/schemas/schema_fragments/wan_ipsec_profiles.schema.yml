@@ -11,26 +11,42 @@ keys:
       table: wan-settings
     description: |-
       PREVIEW: This key is currently not supported
-      Define IPsec profiles parameters for WAN configuration.
 
-      If `data_plane` is not defined, `control_plane` information is
-      used for both.
+      Define IPsec profiles parameters for WAN configuration.
     type: dict
     keys:
       control_plane:
         type: dict
         required: True
         $ref: "eos_designs#/$defs/ipsec_profile"
-        description: |-
-          The `control_plane` profile uses the following defaults:
-            * IKE policy name: CP-IKE-POLICY
-            * SA policy name: CP-SA-POLICY
-            * Profile name: CP-PROFILE
+        keys:
+          ike_policy_name:
+            type: str
+            default: CP-IKE-POLICY
+          sa_policy_name:
+            type: str
+            default: CP-SA-POLICY
+          profile_name:
+            type: str
+            default: CP-PROFILE
+          shared_key:
+            type: str
+            required: True
+            description: |-
+              The IPSec shared key.
+              This variable is sensitive and SHOULD be configured using some vault mechanism.
       data_plane:
         type: dict
         $ref: "eos_designs#/$defs/ipsec_profile"
         description: |-
-          The `data_plane` profile uses the following defaults:
-            * IKE policy name: DP-IKE-POLICY
-            * SA policy name: DP-SA-POLICY
-            * Profile name: DP-PROFILE
+          If `data_plane` is not defined, `control_plane` information is used for both.
+        keys:
+          ike_policy_name:
+            type: str
+            default: DP-IKE-POLICY
+          sa_policy_name:
+            type: str
+            default: DP-SA-POLICY
+          profile_name:
+            type: str
+            default: DP-PROFILE

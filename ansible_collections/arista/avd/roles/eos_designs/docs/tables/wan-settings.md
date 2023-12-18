@@ -7,18 +7,18 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>Define IPsec profiles parameters for WAN configuration.<br><br>If `data_plane` is not defined, `control_plane` information is<br>used for both. |
-    | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  | The `control_plane` profile uses the following defaults:<br>  * IKE policy name: CP-IKE-POLICY<br>  * SA policy name: CP-SA-POLICY<br>  * Profile name: CP-PROFILE |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  |  |  | Name of the IKE policy. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.control_plane.sa_policy_name") | String |  |  |  | Name of the SA policy. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.control_plane.profile_name") | String |  |  |  | Name of the IPSec profile. |
+    | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>Define IPsec profiles parameters for WAN configuration. |
+    | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  | PREVIEW: This key is currently not supported |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  | `CP-IKE-POLICY` |  | Name of the IKE policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.control_plane.sa_policy_name") | String |  | `CP-SA-POLICY` |  | Name of the SA policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.control_plane.profile_name") | String |  | `CP-PROFILE` |  | Name of the IPSec profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.control_plane.shared_key") | String | Required |  |  | The IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
-    | [<samp>&nbsp;&nbsp;data_plane</samp>](## "wan_ipsec_profiles.data_plane") | Dictionary |  |  |  | The `data_plane` profile uses the following defaults:<br>  * IKE policy name: DP-IKE-POLICY<br>  * SA policy name: DP-SA-POLICY<br>  * Profile name: DP-PROFILE |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.data_plane.ike_policy_name") | String |  |  |  | Name of the IKE policy. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.data_plane.sa_policy_name") | String |  |  |  | Name of the SA policy. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.data_plane.profile_name") | String |  |  |  | Name of the IPSec profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String | Required |  |  | The IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
-    | [<samp>wan_mode</samp>](## "wan_mode") | String |  |  | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | PREVIEW: This key is currently not supported<br><br>Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.<br>The default is `cv-pathfinder` |
+    | [<samp>&nbsp;&nbsp;data_plane</samp>](## "wan_ipsec_profiles.data_plane") | Dictionary |  |  |  | If `data_plane` is not defined, `control_plane` information is used for both. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.data_plane.ike_policy_name") | String |  | `DP-IKE-POLICY` |  | Name of the IKE policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.data_plane.sa_policy_name") | String |  | `DP-SA-POLICY` |  | Name of the SA policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.data_plane.profile_name") | String |  | `DP-PROFILE` |  | Name of the IPSec profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String | Required |  |  | The type 7 encrypted IPSec shared key.<br>This variable is sensitive and should be configured using some vault mechanism. |
+    | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | PREVIEW: This key is currently not supported<br><br>Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only. |
     | [<samp>wan_path_groups</samp>](## "wan_path_groups") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>List of path-groups used for the WAN configuration. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_path_groups.[].name") | String | Required, Unique |  |  | Path-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_path_groups.[].id") | String |  |  |  | Path-group id. |
@@ -30,63 +30,54 @@
     | [<samp>wan_route_servers</samp>](## "wan_route_servers") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders<br>when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.<br><br>When the route server is part of the same inventory as the WAN routers,<br>only the name is required. |
     | [<samp>&nbsp;&nbsp;-&nbsp;hostname</samp>](## "wan_route_servers.[].hostname") | String | Required, Unique |  |  | Route-Reflector hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "wan_route_servers.[].router_id") | String |  |  |  | Route-Reflector router id. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;wan_path_groups</samp>](## "wan_route_servers.[].wan_path_groups") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].wan_path_groups.[].name") | String |  |  |  | Carrier name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].wan_path_groups.[].ip_address") | String |  |  |  | The public IP address for this carrier. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_route_servers.[].path_groups") | List, items: Dictionary |  |  |  | Path-groups through which the Route Reflector/Pathfinder is reached. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].path_groups.[].name") | String |  |  |  | Path-group name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].path_groups.[].ip_address") | String |  |  |  | The public IP address of the Route Reflector for this path-group. |
 
 === "YAML"
 
     ```yaml
     # PREVIEW: This key is currently not supported
-    # Define IPsec profiles parameters for WAN configuration.
 
-    # If `data_plane` is not defined, `control_plane` information is
-    # used for both.
+    # Define IPsec profiles parameters for WAN configuration.
     wan_ipsec_profiles:
 
-      # The `control_plane` profile uses the following defaults:
-      #   * IKE policy name: CP-IKE-POLICY
-      #   * SA policy name: CP-SA-POLICY
-      #   * Profile name: CP-PROFILE
+      # PREVIEW: This key is currently not supported
       control_plane: # required
 
         # Name of the IKE policy.
-        ike_policy_name: <str>
+        ike_policy_name: <str; default="CP-IKE-POLICY">
 
         # Name of the SA policy.
-        sa_policy_name: <str>
+        sa_policy_name: <str; default="CP-SA-POLICY">
 
         # Name of the IPSec profile.
-        profile_name: <str>
+        profile_name: <str; default="CP-PROFILE">
 
         # The IPSec shared key.
         # This variable is sensitive and SHOULD be configured using some vault mechanism.
         shared_key: <str; required>
 
-      # The `data_plane` profile uses the following defaults:
-      #   * IKE policy name: DP-IKE-POLICY
-      #   * SA policy name: DP-SA-POLICY
-      #   * Profile name: DP-PROFILE
+      # If `data_plane` is not defined, `control_plane` information is used for both.
       data_plane:
 
         # Name of the IKE policy.
-        ike_policy_name: <str>
+        ike_policy_name: <str; default="DP-IKE-POLICY">
 
         # Name of the SA policy.
-        sa_policy_name: <str>
+        sa_policy_name: <str; default="DP-SA-POLICY">
 
         # Name of the IPSec profile.
-        profile_name: <str>
+        profile_name: <str; default="DP-PROFILE">
 
-        # The IPSec shared key.
-        # This variable is sensitive and SHOULD be configured using some vault mechanism.
+        # The type 7 encrypted IPSec shared key.
+        # This variable is sensitive and should be configured using some vault mechanism.
         shared_key: <str; required>
 
     # PREVIEW: This key is currently not supported
 
     # Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.
-    # The default is `cv-pathfinder`
-    wan_mode: <str; "autovpn" | "cv-pathfinder">
+    wan_mode: <str; "autovpn" | "cv-pathfinder"; default="cv-pathfinder">
 
     # PREVIEW: This key is currently not supported
     # List of path-groups used for the WAN configuration.
@@ -127,11 +118,13 @@
 
         # Route-Reflector router id.
         router_id: <str>
-        wan_path_groups:
 
-            # Carrier name.
+        # Path-groups through which the Route Reflector/Pathfinder is reached.
+        path_groups:
+
+            # Path-group name.
           - name: <str>
 
-            # The public IP address for this carrier.
+            # The public IP address of the Route Reflector for this path-group.
             ip_address: <str>
     ```

@@ -51,6 +51,6 @@ class BgpPeerGroupsMixin:
                 "structured_config": get(self.hostvars, f"bgp_peer_groups.{key}.structured_config"),
             }
             if key == "wan_overlay_peers":
-                bgp_peer_groups[key]["listen_range_prefixes"] = get(self.hostvars, f"bgp_peer_groups.{key}.listen_range_prefixes")
+                bgp_peer_groups[key]["listen_range_prefixes"] = get(self.hostvars, f"bgp_peer_groups.{key}.listen_range_prefixes", required=True)
 
         return bgp_peer_groups

@@ -22,7 +22,7 @@ class WanMixin:
 
     @cached_property
     def wan_mode(self: SharedUtils) -> str | None:
-        return get(self.hostvars, "wan_mode", default=None)
+        return get(self.hostvars, "wan_mode", default="cv-pathfinder")
 
     @cached_property
     def wan_role(self: SharedUtils) -> str | None:
@@ -48,6 +48,6 @@ class WanMixin:
         cv_pathfinder_role = get(self.switch_data_combined, "cv_pathfinder_role", default=default_cv_pathfinder_role)
         if cv_pathfinder_role == "pathfinder" and self.wan_role != "server":
             raise AristaAvdError("'wan_role' must be 'server' when 'cv_pathfinder_role' is set to 'pathfinder'")
-        elif cv_pathfinder_role in ["transit", "edge"] and self.wan_role != "client":
+        if cv_pathfinder_role in ["transit", "edge"] and self.wan_role != "client":
             raise AristaAvdError("'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'")
         return cv_pathfinder_role

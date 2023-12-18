@@ -18,6 +18,8 @@ class FlowTrackingMixin(UtilsMixin):
     def flow_tracking(self) -> dict | None:
         """
         Return structured config for flow_tracking
+
+        TODO: Make this configurable.
         """
         if not self.shared_utils.cv_pathfinder_role:
             return None

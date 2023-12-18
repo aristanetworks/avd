@@ -3184,27 +3184,46 @@ keys:
       table: wan-settings
     description: 'PREVIEW: This key is currently not supported
 
-      Define IPsec profiles parameters for WAN configuration.
 
-
-      If `data_plane` is not defined, `control_plane` information is
-
-      used for both.'
+      Define IPsec profiles parameters for WAN configuration.'
     type: dict
     keys:
       control_plane:
         type: dict
         required: true
         $ref: eos_designs#/$defs/ipsec_profile
-        description: "The `control_plane` profile uses the following defaults:\n  *
-          IKE policy name: CP-IKE-POLICY\n  * SA policy name: CP-SA-POLICY\n  * Profile
-          name: CP-PROFILE"
+        keys:
+          ike_policy_name:
+            type: str
+            default: CP-IKE-POLICY
+          sa_policy_name:
+            type: str
+            default: CP-SA-POLICY
+          profile_name:
+            type: str
+            default: CP-PROFILE
+          shared_key:
+            type: str
+            required: true
+            description: 'The IPSec shared key.
+
+              This variable is sensitive and SHOULD be configured using some vault
+              mechanism.'
       data_plane:
         type: dict
         $ref: eos_designs#/$defs/ipsec_profile
-        description: "The `data_plane` profile uses the following defaults:\n  * IKE
-          policy name: DP-IKE-POLICY\n  * SA policy name: DP-SA-POLICY\n  * Profile
-          name: DP-PROFILE"
+        description: If `data_plane` is not defined, `control_plane` information is
+          used for both.
+        keys:
+          ike_policy_name:
+            type: str
+            default: DP-IKE-POLICY
+          sa_policy_name:
+            type: str
+            default: DP-SA-POLICY
+          profile_name:
+            type: str
+            default: DP-PROFILE
   wan_mode:
     documentation_options:
       table: wan-settings
@@ -3212,10 +3231,9 @@ keys:
 
 
       Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto
-      VPN only.
-
-      The default is `cv-pathfinder`'
+      VPN only.'
     type: str
+    default: cv-pathfinder
     valid_values:
     - autovpn
     - cv-pathfinder
@@ -3281,17 +3299,20 @@ keys:
         router_id:
           type: str
           description: Route-Reflector router id.
-        wan_path_groups:
+        path_groups:
           type: list
+          description: Path-groups through which the Route Reflector/Pathfinder is
+            reached.
           items:
             type: dict
             keys:
               name:
                 type: str
-                description: Carrier name.
+                description: Path-group name.
               ip_address:
                 type: str
-                description: The public IP address for this carrier.
+                description: The public IP address of the Route Reflector for this
+                  path-group.
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -4032,9 +4053,9 @@ $defs:
       shared_key:
         type: str
         required: true
-        description: 'The IPSec shared key.
+        description: 'The type 7 encrypted IPSec shared key.
 
-          This variable is sensitive and SHOULD be configured using some vault mechanism.'
+          This variable is sensitive and should be configured using some vault mechanism.'
   l3_edge:
     type: dict
     keys:
@@ -6766,25 +6787,6 @@ $defs:
             convert_types:
             - int
             description: Set BGP cluster id.
-          cv_pathfinder_region:
-            documentation_options:
-              table: node-type-wan-configuration
-            type: str
-            description: The CV Pathfinder region name.
-          cv_pathfinder_site:
-            documentation_options:
-              table: node-type-wan-configuration
-            type: str
-            description: The CV Pathfinder site name.
-          dps_mss_ipv4:
-            documentation_options:
-              table: node-type-wan-configuration
-            type: int
-            $ref: eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4
-            description: 'MSS value for IPv4 the DPS interface.
-
-              If not set, and the device is WAN device, a default value of 1000 is
-              used.'
           ptp:
             documentation_options:
               table: node-type-ptp-configuration
@@ -7019,7 +7021,35 @@ $defs:
 
               `pathfinder` is only a valid if `wan_role` is `server`.
 
-              `edge` and `transit` are only valid if `wan_role` is `client`.'
+              `edge` and `transit region` are only valid if `wan_role` is `client`.'
+          cv_pathfinder_region:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            description: 'PREVIEW: This key is currently not supported
+
+
+              The CV Pathfinder region name.'
+          cv_pathfinder_site:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            description: 'PREVIEW: This key is currently not supported
+
+
+              The CV Pathfinder site name.'
+          dps_mss_ipv4:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: int
+            $ref: eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4
+            description: 'PREVIEW: This key is currently not supported
+
+
+              MSS value for IPv4 the DPS interface.
+
+              If not set, and the device is WAN device, a default value of 1000 is
+              used.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

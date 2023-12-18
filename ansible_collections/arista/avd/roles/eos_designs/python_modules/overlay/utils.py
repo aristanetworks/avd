@@ -8,6 +8,7 @@ from functools import cached_property
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 
@@ -335,9 +336,9 @@ class UtilsMixin:
     @cached_property
     def _wan_route_servers(self) -> dict:
         """
-        Return a list of wan RR based on the the wan_mode type
+        Return a dict keyed by Wan RR based on the the wan_mode type.
 
-        It the RR is part of the inventory, the peer_facts are read.
+        It the RR is part of the inventory, the peer_facts are read..
         If any key is specified in the variables, it overwrites whatever is in the peer_facts.
 
         If no peer_fact is found the variables are required in the inventory.
@@ -370,7 +371,7 @@ class UtilsMixin:
 
                 # Prefer values coming from the input variables over peer facts
                 router_id = get(wan_rr_dict, "router_id", default=peer_facts.get("router_id"))
-                wan_path_groups = get(wan_rr_dict, "wan_path_groups", default=peer_facts.get("wan_path_groups"))
+                wan_path_groups = get(wan_rr_dict, "path_groups", default=peer_facts.get("wan_path_groups"))
 
                 if router_id is None:
                     raise AristaAvdMissingVariableError(
@@ -389,15 +390,21 @@ class UtilsMixin:
             else:
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
                 router_id = get(wan_rr_dict, "router_id", required=True)
-                wan_path_groups = get(wan_rr_dict, "wan_path_groups", required=True)
+                wan_path_groups = get(
+                    wan_rr_dict,
+                    "path_groups",
+                    required=True,
+                    org_key=(
+                        f"'path_groups' is missing for peering with {wan_rr} which was not found in the inventory, either set it in under 'wan_route_servers'"
+                        " or check your inventory."
+                    ),
+                )
 
             wan_rr_result_dict = {
                 "router_id": router_id,
                 "wan_path_groups": wan_path_groups,
             }
 
-            wan_rr_result_dict = {key: value for key, value in wan_rr_result_dict.items() if value is not None}
-
-            wan_route_servers[wan_rr] = wan_rr_result_dict
+            wan_route_servers[wan_rr] = strip_empties_from_dict(wan_rr_result_dict)
 
         return wan_route_servers

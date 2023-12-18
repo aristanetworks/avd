@@ -35,10 +35,10 @@ class IpSecurityMixin(UtilsMixin):
         # Structure initialization
         ip_security = {"ike_policies": [], "sa_policies": [], "profiles": []}
 
-        if (data_plane := get(wan_ipsec_profiles, "data_plane", None)) is not None:
+        if (data_plane := get(wan_ipsec_profiles, "data_plane")) is not None:
             self._append_data_plane(ip_security, data_plane)
-        if (control_plane := get(wan_ipsec_profiles, "control_plane", None)) is not None:
-            self._append_control_plane(ip_security, control_plane)
+        control_plane = get(wan_ipsec_profiles, "control_plane", required=True)
+        self._append_control_plane(ip_security, control_plane)
 
         return strip_null_from_data(ip_security)
 

@@ -100,7 +100,7 @@ class VxlanInterfaceMixin(UtilsMixin):
             }
         }
 
-    def _get_vxlan_interface_config_for_vrf(self, vrf: dict, tenant: dict, vrfs: list, vlans: list, vnis: list) -> dict:
+    def _get_vxlan_interface_config_for_vrf(self, vrf: dict, tenant: dict, vrfs: list, vlans: list, vnis: list) -> None:
         """
         In place updates of the vlans, vnis and vrfs list
         """

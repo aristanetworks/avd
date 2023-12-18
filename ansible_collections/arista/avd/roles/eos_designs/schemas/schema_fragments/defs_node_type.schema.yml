@@ -923,24 +923,6 @@ $defs:
             convert_types:
               - "int"
             description: Set BGP cluster id.
-          cv_pathfinder_region:
-            documentation_options:
-              table: node-type-wan-configuration
-            type: str
-            description: The CV Pathfinder region name.
-          cv_pathfinder_site:
-            documentation_options:
-              table: node-type-wan-configuration
-            type: str
-            description: The CV Pathfinder site name.
-          dps_mss_ipv4:
-            documentation_options:
-              table: node-type-wan-configuration
-            type: int
-            $ref: "eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4"
-            description: |-
-              MSS value for IPv4 the DPS interface.
-              If not set, and the device is WAN device, a default value of 1000 is used.
           ptp:
             documentation_options:
               table: node-type-ptp-configuration
@@ -1147,7 +1129,33 @@ $defs:
               key is set to `cv_pathfinder`.
 
               `pathfinder` is only a valid if `wan_role` is `server`.
-              `edge` and `transit` are only valid if `wan_role` is `client`.
+              `edge` and `transit region` are only valid if `wan_role` is `client`.
+          cv_pathfinder_region:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              The CV Pathfinder region name.
+          cv_pathfinder_site:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              The CV Pathfinder site name.
+          dps_mss_ipv4:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: int
+            $ref: "eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4"
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              MSS value for IPv4 the DPS interface.
+              If not set, and the device is WAN device, a default value of 1000 is used.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

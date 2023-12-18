@@ -30831,25 +30831,27 @@
       "title": "Vtep Vvtep IP"
     },
     "wan_ipsec_profiles": {
-      "description": "PREVIEW: This key is currently not supported\nDefine IPsec profiles parameters for WAN configuration.\n\nIf `data_plane` is not defined, `control_plane` information is\nused for both.",
+      "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",
       "type": "object",
       "properties": {
         "control_plane": {
           "type": "object",
-          "description": "The `control_plane` profile uses the following defaults:\n  * IKE policy name: CP-IKE-POLICY\n  * SA policy name: CP-SA-POLICY\n  * Profile name: CP-PROFILE",
           "properties": {
             "ike_policy_name": {
               "type": "string",
+              "default": "CP-IKE-POLICY",
               "description": "Name of the IKE policy.",
               "title": "Ike Policy Name"
             },
             "sa_policy_name": {
               "type": "string",
+              "default": "CP-SA-POLICY",
               "description": "Name of the SA policy.",
               "title": "Sa Policy Name"
             },
             "profile_name": {
               "type": "string",
+              "default": "CP-PROFILE",
               "description": "Name of the IPSec profile.",
               "title": "Profile Name"
             },
@@ -30866,30 +30868,34 @@
           "patternProperties": {
             "^_.+$": {}
           },
+          "description": "PREVIEW: This key is currently not supported",
           "title": "Control Plane"
         },
         "data_plane": {
           "type": "object",
-          "description": "The `data_plane` profile uses the following defaults:\n  * IKE policy name: DP-IKE-POLICY\n  * SA policy name: DP-SA-POLICY\n  * Profile name: DP-PROFILE",
+          "description": "If `data_plane` is not defined, `control_plane` information is used for both.",
           "properties": {
             "ike_policy_name": {
               "type": "string",
+              "default": "DP-IKE-POLICY",
               "description": "Name of the IKE policy.",
               "title": "Ike Policy Name"
             },
             "sa_policy_name": {
               "type": "string",
+              "default": "DP-SA-POLICY",
               "description": "Name of the SA policy.",
               "title": "Sa Policy Name"
             },
             "profile_name": {
               "type": "string",
+              "default": "DP-PROFILE",
               "description": "Name of the IPSec profile.",
               "title": "Profile Name"
             },
             "shared_key": {
               "type": "string",
-              "description": "The IPSec shared key.\nThis variable is sensitive and SHOULD be configured using some vault mechanism.",
+              "description": "The type 7 encrypted IPSec shared key.\nThis variable is sensitive and should be configured using some vault mechanism.",
               "title": "Shared Key"
             }
           },
@@ -30913,8 +30919,9 @@
       "title": "Wan Ipsec Profiles"
     },
     "wan_mode": {
-      "description": "PREVIEW: This key is currently not supported\n\nSelect if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.\nThe default is `cv-pathfinder`",
+      "description": "PREVIEW: This key is currently not supported\n\nSelect if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.",
       "type": "string",
+      "default": "cv-pathfinder",
       "enum": [
         "autovpn",
         "cv-pathfinder"
@@ -30998,19 +31005,20 @@
             "description": "Route-Reflector router id.",
             "title": "Router ID"
           },
-          "wan_path_groups": {
+          "path_groups": {
             "type": "array",
+            "description": "Path-groups through which the Route Reflector/Pathfinder is reached.",
             "items": {
               "type": "object",
               "properties": {
                 "name": {
                   "type": "string",
-                  "description": "Carrier name.",
+                  "description": "Path-group name.",
                   "title": "Name"
                 },
                 "ip_address": {
                   "type": "string",
-                  "description": "The public IP address for this carrier.",
+                  "description": "The public IP address of the Route Reflector for this path-group.",
                   "title": "IP Address"
                 }
               },
@@ -31019,7 +31027,7 @@
                 "^_.+$": {}
               }
             },
-            "title": "Wan Path Groups"
+            "title": "Path Groups"
           }
         },
         "additionalProperties": false,

@@ -72,7 +72,9 @@ class UtilsFilteredTenantsMixin(object):
                     continue
                 if "evpn" in vrf_default.get("address_families", ["evpn"]):
                     if self.shared_utils.underlay_filter_peer_as:
-                        raise AristaAvdError("'underlay_filter_peer_as' cannot be used while there are EVPN services in the default VRF.")
+                        raise AristaAvdError(
+                            "WAN configuration requires EVPN to be enabled for VRF 'default'. Got 'address_families: {vrf_default['address_families']}."
+                        )
                 break
 
         return natural_sort(filtered_tenants, "name")

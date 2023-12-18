@@ -55,7 +55,7 @@ class RouterBgpMixin(UtilsMixin):
 
     def _bgp_listen_ranges(self) -> list | None:
         """
-        Generate listen ranges
+        Generate listen-ranges. Currently only supported for WAN RR.
         """
         if self.shared_utils.wan_role != "server":
             return None
@@ -479,7 +479,7 @@ class RouterBgpMixin(UtilsMixin):
                     neighbors.append(neighbor)
 
             if self.shared_utils.wan_role == "client":
-                if not self._router_id_listen_ranges(self._wan_listen_ranges):
+                if not self._router_id_in_listen_ranges(self._wan_listen_ranges):
                     raise AristaAvdError(f"Loopback0 IP {self.shared_utils.router_id} is not in the Route Reflector listen range prefixes.")
                 for wan_route_server, data in self._wan_route_servers.items():
                     neighbor = self._create_neighbor(data["router_id"], wan_route_server, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])
@@ -505,7 +505,7 @@ class RouterBgpMixin(UtilsMixin):
 
         return None
 
-    def _router_id_listen_ranges(self, listen_range_prefixes: list) -> bool:
+    def _router_id_in_listen_ranges(self, listen_range_prefixes: list) -> bool:
         """
         Check if our source IP is in any of the listen range prefixes
         """
