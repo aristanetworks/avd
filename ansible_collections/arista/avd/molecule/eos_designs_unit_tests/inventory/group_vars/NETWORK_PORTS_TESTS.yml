@@ -85,6 +85,13 @@ network_ports:
       - Ethernet12
     description: Config overwriting base config
 
+  # Test no description
+  - switches:
+    - network-ports-tests.1
+    switch_ports:
+      - Ethernet51-54
+    enabled: false
+
 servers:
   - name: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
     adapters:
