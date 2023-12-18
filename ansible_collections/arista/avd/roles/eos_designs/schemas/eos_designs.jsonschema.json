@@ -30919,7 +30919,7 @@
       "title": "Wan Ipsec Profiles"
     },
     "wan_mode": {
-      "description": "PREVIEW: This key is currently not supported\n\nSelect if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.",
+      "description": "PREVIEW: This key is currently not supported\n\nSelect if the WAN should be run using CV Pathfinder or Auto VPN only.",
       "type": "string",
       "default": "cv-pathfinder",
       "enum": [

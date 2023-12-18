@@ -18,7 +18,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.data_plane.sa_policy_name") | String |  | `DP-SA-POLICY` |  | Name of the SA policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.data_plane.profile_name") | String |  | `DP-PROFILE` |  | Name of the IPSec profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String | Required |  |  | The type 7 encrypted IPSec shared key.<br>This variable is sensitive and should be configured using some vault mechanism. |
-    | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | PREVIEW: This key is currently not supported<br><br>Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only. |
+    | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | PREVIEW: This key is currently not supported<br><br>Select if the WAN should be run using CV Pathfinder or Auto VPN only. |
     | [<samp>wan_path_groups</samp>](## "wan_path_groups") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br>List of path-groups used for the WAN configuration. |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_path_groups.[].name") | String | Required, Unique |  |  | Path-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_path_groups.[].id") | String |  |  |  | Path-group id. |
@@ -76,7 +76,7 @@
 
     # PREVIEW: This key is currently not supported
 
-    # Select if the WAN should be run using CV Pathfinder (`cv-pathfinder`) or Auto VPN only.
+    # Select if the WAN should be run using CV Pathfinder or Auto VPN only.
     wan_mode: <str; "autovpn" | "cv-pathfinder"; default="cv-pathfinder">
 
     # PREVIEW: This key is currently not supported

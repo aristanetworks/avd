@@ -76,6 +76,18 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 - `wan_transit`: Transit routers in Pathfinder context, not supported for AutoVPN.
 - `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
 
+The following table indicates the settingds
+
+#### L3LS EVPN
+
+| Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default CV Pathfinder Role |
+| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- |
+| wan_rr             | ✅              | p2p          | server            | ✘                   | ✅                  | ✘    | ✘            | ✘                   | server          | pathfinder                 |
+| wan_edge           | ✅              | p2p          | client            | ✘                   | ✅                  | ✘    | ✘            | ✘                   | client          | edge                       |
+| wan_transit        | ✅              | p2p          | client            | ✘                   | ✅                  | ✘    | ✘            | ✘                   | client          | transit region             |
+
+All these node types are defined with `default_underlay_routing_protocol: none` and `default_overlay_routing_protocol: ibgp`.
+
 ### WAN Settings
 
 #### Top level keys
