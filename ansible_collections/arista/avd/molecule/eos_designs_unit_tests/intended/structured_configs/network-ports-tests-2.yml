@@ -69,6 +69,10 @@ port_channel_interfaces:
   type: switched
   shutdown: false
   mlag: 42
+- name: Port-Channel43
+  type: switched
+  shutdown: false
+  mlag: 43
 ethernet_interfaces:
 - name: Ethernet10/1
   peer: network-ports-tests.1
@@ -709,6 +713,20 @@ ethernet_interfaces:
   type: port-channel-member
   channel_group:
     id: 42
+    mode: active
+- name: Ethernet51
+  peer_type: network_port
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 43
+    mode: active
+- name: Ethernet52
+  peer_type: network_port
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 43
     mode: active
 mlag_configuration:
   domain_id: mlag

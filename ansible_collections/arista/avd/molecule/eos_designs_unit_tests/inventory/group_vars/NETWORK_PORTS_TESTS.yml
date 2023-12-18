@@ -91,6 +91,13 @@ network_ports:
     switch_ports:
       - Ethernet51-54
     enabled: false
+  - switches:
+      - network-ports-tests.2
+    switch_ports:
+      - Ethernet51-52
+    port_channel:
+      channel_id: 43
+      mode: "active"
 
 servers:
   - name: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT
