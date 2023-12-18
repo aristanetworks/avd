@@ -181,4 +181,4 @@ class EthernetInterfacesMixin(UtilsMixin):
         if (flowcontrol_received := get(adapter, "flowcontrol.received")) is not None:
             ethernet_interface["flowcontrol"] = {"received": flowcontrol_received}
 
-        return strip_null_from_data(ethernet_interface)
+        return strip_null_from_data(ethernet_interface, strip_values_tuple=(None, ""))
