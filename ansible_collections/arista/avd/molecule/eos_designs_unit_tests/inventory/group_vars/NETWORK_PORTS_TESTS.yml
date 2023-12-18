@@ -87,7 +87,7 @@ network_ports:
 
   # Test no description
   - switches:
-    - network-ports-tests.1
+      - network-ports-tests.1
     switch_ports:
       - Ethernet51-54
     enabled: false
