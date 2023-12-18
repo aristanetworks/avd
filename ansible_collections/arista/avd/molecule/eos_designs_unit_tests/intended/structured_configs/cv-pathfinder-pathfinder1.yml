@@ -187,6 +187,8 @@ ethernet_interfaces:
   ip_address: 10.8.8.8/31
   shutdown: false
   type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

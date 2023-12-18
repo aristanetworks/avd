@@ -401,4 +401,7 @@ class UtilsMixin:
         if ip_address == "dhcp" and l3_interface.get("dhcp_client_accept_default_route", False):
             interface["dhcp_client_accept_default_route"] = True
 
+        if self.shared_utils.cv_pathfinder_role:
+            interface["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}
+
         return strip_empties_from_dict(interface)

@@ -167,11 +167,15 @@ ethernet_interfaces:
   ip_address: 10.7.7.7/31
   shutdown: false
   type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.16.0.1/31
   shutdown: false
   type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

@@ -173,6 +173,8 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
