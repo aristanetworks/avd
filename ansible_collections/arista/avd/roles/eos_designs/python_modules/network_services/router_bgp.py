@@ -68,9 +68,9 @@ class RouterBgpMixin(UtilsMixin):
 
         peer_groups = []
         peer_peergroups = set()
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
-                # bgp_peers is already filtered in _filtered_tenants to only contain entries with our hostname
+                # bgp_peers is already filtered in filtered_tenants to only contain entries with our hostname
                 if not (vrf["bgp_peers"] or vrf.get("bgp_peer_groups")):
                     continue
 
@@ -134,7 +134,7 @@ class RouterBgpMixin(UtilsMixin):
 
         vrfs = []
 
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 vrf_address_families = [af for af in vrf.get("address_families", ["evpn"]) if af in self.shared_utils.overlay_address_families]
                 if not vrf_address_families:
@@ -322,7 +322,7 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         vlans = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 for svi in vrf["svis"]:
                     if (vlan := self._router_bgp_vlans_vlan(svi, tenant, vrf)) is not None:
@@ -419,7 +419,7 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         bundles = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 if (bundle := self._router_bgp_vlan_aware_bundles_vrf(vrf, tenant)) is not None:
                     append_if_not_duplicate(
@@ -759,7 +759,7 @@ class RouterBgpMixin(UtilsMixin):
             return None
 
         vpws = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             if "point_to_point_services" not in tenant:
                 continue
 

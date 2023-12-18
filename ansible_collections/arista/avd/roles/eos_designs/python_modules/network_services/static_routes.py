@@ -29,9 +29,9 @@ class StaticRoutesMixin(UtilsMixin):
             return None
 
         static_routes = []
-        for tenant in self._filtered_tenants:
+        for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
-                # Static routes are already filtered inside _filtered_tenants
+                # Static routes are already filtered inside filtered_tenants
                 for static_route in vrf["static_routes"]:
                     static_route["vrf"] = vrf["name"]
                     static_route.pop("nodes", None)
