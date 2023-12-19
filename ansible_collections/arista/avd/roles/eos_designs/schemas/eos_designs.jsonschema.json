@@ -455,8 +455,8 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 254,
-                  "title": "Ttl Maximum Hops",
-                  "description" : "Maximum number of hops."
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
@@ -1066,8 +1066,8 @@
                   "type": "integer",
                   "minimum": 0,
                   "maximum": 254,
-                  "title": "Ttl Maximum Hops",
-                  "Description": "Maximum number of hops."
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
