@@ -150,10 +150,10 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if peer_group.bfd is arista.avd.defined(true) %}
    neighbor {{ peer_group.name }} bfd
-{%             if peer_group.bfd_intervals.interval is arista.avd.defined and
-                  peer_group.bfd_intervals.min_rx is arista.avd.defined and
-                  peer_group.bfd_intervals.multiplier is arista.avd.defined %}
-   neighbor {{ peer_group.name }} bfd interval {{ peer_group.bfd_intervals.interval }} min-rx {{ peer_group.bfd_intervals.min_rx }} multiplier {{ peer_group.bfd_intervals.multiplier }}
+{%             if peer_group.bfd_timers.interval is arista.avd.defined and
+                  peer_group.bfd_timers.min_rx is arista.avd.defined and
+                  peer_group.bfd_timers.multiplier is arista.avd.defined %}
+   neighbor {{ peer_group.name }} bfd interval {{ peer_group.bfd_timers.interval }} min-rx {{ peer_group.bfd_timers.min_rx }} multiplier {{ peer_group.bfd_timers.multiplier }}
 {%             endif %}
 {%         endif %}
 {%         if peer_group.allowas_in.enabled is arista.avd.defined(true) %}
@@ -296,10 +296,10 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if neighbor.bfd is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} bfd
-{%             if neighbor.bfd_intervals.interval is arista.avd.defined and
-                  neighbor.bfd_intervals.min_rx is arista.avd.defined and
-                  neighbor.bfd_intervals.multiplier is arista.avd.defined %}
-   neighbor {{ neighbor.ip_address }} bfd interval {{ neighbor.bfd_intervals.interval }} min-rx {{ neighbor.bfd_intervals.min_rx }} multiplier {{ neighbor.bfd_intervals.multiplier }}
+{%             if neighbor.bfd_timers.interval is arista.avd.defined and
+                  neighbor.bfd_timers.min_rx is arista.avd.defined and
+                  neighbor.bfd_timers.multiplier is arista.avd.defined %}
+   neighbor {{ neighbor.ip_address }} bfd interval {{ neighbor.bfd_timers.interval }} min-rx {{ neighbor.bfd_timers.min_rx }} multiplier {{ neighbor.bfd_timers.multiplier }}
 {%             endif %}
 {%         elif neighbor.bfd is arista.avd.defined(false) and neighbor.peer_group is arista.avd.defined %}
    no neighbor {{ neighbor.ip_address }} bfd
@@ -1291,10 +1291,10 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.bfd is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} bfd
-{%                 if neighbor.bfd_intervals.interval is arista.avd.defined and
-                      neighbor.bfd_intervals.min_rx is arista.avd.defined and
-                      neighbor.bfd_intervals.multiplier is arista.avd.defined %}
-      neighbor {{ neighbor.ip_address }} bfd interval {{ neighbor.bfd_intervals.interval }} min-rx {{ neighbor.bfd_intervals.min_rx }} multiplier {{ neighbor.bfd_intervals.multiplier }}
+{%                 if neighbor.bfd_timers.interval is arista.avd.defined and
+                      neighbor.bfd_timers.min_rx is arista.avd.defined and
+                      neighbor.bfd_timers.multiplier is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} bfd interval {{ neighbor.bfd_timers.interval }} min-rx {{ neighbor.bfd_timers.min_rx }} multiplier {{ neighbor.bfd_timers.multiplier }}
 {%                 endif %}
 {%             elif neighbor.bfd is arista.avd.defined(false) and neighbor.peer_group is arista.avd.defined %}
       no neighbor {{ neighbor.ip_address }} bfd

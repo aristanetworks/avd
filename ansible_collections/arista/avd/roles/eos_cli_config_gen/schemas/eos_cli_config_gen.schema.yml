@@ -8968,10 +8968,10 @@ keys:
             bfd:
               type: bool
               description: Enable BFD.
-            bfd_intervals:
+            bfd_timers:
               type: dict
-              description: 'Overrides default BFD intervals. BFD must be enabled with
-                `bfd: True`.'
+              description: 'Override default BFD intervals. BFD must be enabled with
+                `bfd: true`.'
               keys:
                 interval:
                   type: int
@@ -9153,10 +9153,10 @@ keys:
             bfd:
               type: bool
               description: Enable BFD.
-            bfd_intervals:
+            bfd_timers:
               type: dict
-              description: 'Overrides default BFD intervals. BFD must be enabled with
-                `bfd: True`.'
+              description: 'Override default BFD intervals. BFD must be enabled with
+                `bfd: true`.'
               keys:
                 interval:
                   type: int
@@ -10725,10 +10725,10 @@ keys:
                   bfd:
                     type: bool
                     description: Enable BFD.
-                  bfd_intervals:
+                  bfd_timers:
                     type: dict
-                    description: 'Overrides default BFD intervals. BFD must be enabled
-                      with `bfd: True`.'
+                    description: 'Override default BFD intervals. BFD must be enabled
+                      with `bfd: true`.'
                     keys:
                       interval:
                         type: int

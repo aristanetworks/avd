@@ -300,9 +300,9 @@
                   "description": "Enable BFD.",
                   "title": "BFD"
                 },
-                "bfd_intervals": {
+                "bfd_timers": {
                   "type": "object",
-                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
+                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -334,7 +334,7 @@
                   "patternProperties": {
                     "^_.+$": {}
                   },
-                  "title": "BFD Intervals"
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -639,9 +639,9 @@
                   "description": "Enable BFD.",
                   "title": "BFD"
                 },
-                "bfd_intervals": {
+                "bfd_timers": {
                   "type": "object",
-                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
+                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -673,7 +673,7 @@
                   "patternProperties": {
                     "^_.+$": {}
                   },
-                  "title": "BFD Intervals"
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -978,9 +978,9 @@
                   "description": "Enable BFD.",
                   "title": "BFD"
                 },
-                "bfd_intervals": {
+                "bfd_timers": {
                   "type": "object",
-                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
+                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -1012,7 +1012,7 @@
                   "patternProperties": {
                     "^_.+$": {}
                   },
-                  "title": "BFD Intervals"
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -1317,9 +1317,9 @@
                   "description": "Enable BFD.",
                   "title": "BFD"
                 },
-                "bfd_intervals": {
+                "bfd_timers": {
                   "type": "object",
-                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
+                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -1351,7 +1351,7 @@
                   "patternProperties": {
                     "^_.+$": {}
                   },
-                  "title": "BFD Intervals"
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -1656,9 +1656,9 @@
                   "description": "Enable BFD.",
                   "title": "BFD"
                 },
-                "bfd_intervals": {
+                "bfd_timers": {
                   "type": "object",
-                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
+                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -1690,7 +1690,7 @@
                   "patternProperties": {
                     "^_.+$": {}
                   },
-                  "title": "BFD Intervals"
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -1995,9 +1995,9 @@
                   "description": "Enable BFD.",
                   "title": "BFD"
                 },
-                "bfd_intervals": {
+                "bfd_timers": {
                   "type": "object",
-                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
+                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -2029,7 +2029,7 @@
                   "patternProperties": {
                     "^_.+$": {}
                   },
-                  "title": "BFD Intervals"
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -2334,9 +2334,9 @@
                   "description": "Enable BFD.",
                   "title": "BFD"
                 },
-                "bfd_intervals": {
+                "bfd_timers": {
                   "type": "object",
-                  "description": "Overrides default BFD intervals. BFD must be enabled with `bfd: True`.",
+                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -2368,7 +2368,7 @@
                   "patternProperties": {
                     "^_.+$": {}
                   },
-                  "title": "BFD Intervals"
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
