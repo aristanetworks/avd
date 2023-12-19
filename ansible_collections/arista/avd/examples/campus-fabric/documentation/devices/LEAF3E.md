@@ -85,6 +85,12 @@ ip name-server vrf MGMT 8.8.8.8
 
 #### NTP Summary
 
+##### NTP Local Interface
+
+| Interface | VRF |
+| --------- | --- |
+| Management0 | MGMT |
+
 ##### NTP Servers
 
 | Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
@@ -96,6 +102,7 @@ ip name-server vrf MGMT 8.8.8.8
 
 ```eos
 !
+ntp local-interface vrf MGMT Management0
 ntp server vrf MGMT pool.ntp.org
 ntp server vrf MGMT time.google.com prefer
 ```

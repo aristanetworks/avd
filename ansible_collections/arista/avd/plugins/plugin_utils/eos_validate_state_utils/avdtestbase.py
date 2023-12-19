@@ -4,13 +4,15 @@
 from __future__ import annotations
 
 import logging
+from collections.abc import Mapping
 from functools import cached_property
 from ipaddress import ip_interface
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 LOGGER = logging.getLogger(__name__)
+LOGGING_LEVELS = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
 
 
 class AvdTestBase:
@@ -18,17 +20,18 @@ class AvdTestBase:
     Base class for all AVD eos_validate_state tests.
     """
 
-    def __init__(self, device_name: str, hostvars: dict):
+    def __init__(self, device_name: str, hostvars: dict | object):
         """
         Initialize the AvdTestBase class.
 
         Args:
             device_name (str): The current device name for which the plugin is being run.
-            hostvars (dict): A dictionary that contains a key for each device with a value of the structured_config.
-                           When using Ansible, this is the equivalent of `task_vars['hostvars']`.
+            hostvars (dict | object): A dictionary that contains a key for each device with a value of the structured_config.
+                                      When using Ansible, this is the `task_vars['hostvars']` object.
         """
         self.hostvars = hostvars
         self.device_name = device_name
+        self.structured_config = self.get_host_struct_cfg(host=device_name)
 
     def render(self) -> dict:
         """
@@ -42,6 +45,35 @@ class AvdTestBase:
             dict: The test definition if available and valid; otherwise, an empty dictionary.
         """
         return getattr(self, "test_definition", None) or {}
+
+    def get_host_struct_cfg(self, host: str) -> dict:
+        """
+        Retrieves and returns the structured configuration for a specified host.
+
+        The function fetches the structured_config from hostvars. It ensures the returned object is a non-empty
+        dictionary, converting Ansible dictionary-like objects to a standard dictionary if necessary.
+
+        Args:
+            host (str): Hostname to retrieve the structured_config.
+
+        Returns:
+            dict: Structured configuration for the host.
+
+        Raises:
+            AristaAvdError: If host is not in hostvars or if its structured_config is not a dictionary or is empty.
+        """
+        if host not in self.hostvars:
+            raise AristaAvdError(f"Host '{host}' is missing from the hostvars.")
+        struct_cfg = get(self.hostvars, host, separator="..")
+
+        # Check if struct_cfg is a dict or behaves like a dict (e.g. Ansible 'hostvars' object)
+        if not isinstance(struct_cfg, (dict, Mapping)):
+            raise AristaAvdError(f"Host '{host}' structured_config is not a dictionary or dictionary-like object.")
+
+        if not isinstance(struct_cfg, dict):
+            struct_cfg = dict(struct_cfg)
+
+        return struct_cfg
 
     def log_skip_message(
         self, message=None, key: str | None = None, value=None, key_path: str | None = None, is_missing: bool = True, logging_level: str = "INFO"
@@ -57,10 +89,8 @@ class AvdTestBase:
             is_missing (bool): Indicates whether the key is missing.
             logging_level (str): The logging level to use for the log message.
         """
-        logging_levels = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
-
         # Validate logging level
-        if logging_level.upper() not in logging_levels:
+        if logging_level.upper() not in LOGGING_LEVELS:
             raise AristaAvdError("Invalid logging level. Please choose from DEBUG, INFO, WARNING, ERROR, CRITICAL.")
 
         # If message is provided, it will be logged as is, ignoring other parameters
@@ -82,6 +112,24 @@ class AvdTestBase:
         log_level = logging.getLevelName(logging_level.upper())
         LOGGER.log(log_level, log_msg)
 
+    def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
+        """
+        Check if an interface is shutdown or not, considering EOS defaults.
+
+        Args:
+            interface (dict): The interface to verify.
+            host (str): Host to verify. Defaults to the host running the test.
+
+        Returns:
+            bool: Returns the interface shutdown key's value, or `interface_defaults.ethernet` if not available.
+                  Returns False if both are absent, which is the default EOS behavior.
+        """
+        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.structured_config
+        if "Ethernet" in get(interface, "name", ""):
+            interface["shutdown"] = default(get(interface, "shutdown"), get(host_struct_cfg, "interface_defaults.ethernet.shutdown"), False)
+        else:
+            interface["shutdown"] = get(interface, "shutdown", default=False)
+
     def is_peer_available(self, peer: str) -> bool:
         """
         Check if a peer is deployed by looking at his `is_deployed` key.
@@ -95,7 +143,7 @@ class AvdTestBase:
         if peer not in self.hostvars:
             self.log_skip_message(message=f"Peer '{peer}' is not configured by AVD.")
             return False
-        elif not get(self.hostvars[peer], "is_deployed", default=True):
+        if not get(self.hostvars[peer], "is_deployed", default=True):
             self.log_skip_message(message=f"Peer '{peer}' is marked as not deployed.")
             return False
         return True
@@ -112,16 +160,13 @@ class AvdTestBase:
         Returns:
             str | None: IP address of the host interface or None if unavailable.
         """
-        host = host or self.device_name
-
+        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.structured_config
         try:
-            if host not in self.hostvars:
-                raise AristaAvdError(f"Host '{host}' is missing from the hostvars.")
-            peer_interfaces = get(self.hostvars[host], interface_model, required=True)
+            peer_interfaces = get(host_struct_cfg, interface_model, required=True)
             peer_interface = get_item(peer_interfaces, "name", interface_name, required=True)
             return get(peer_interface, "ip_address", required=True)
         except AristaAvdMissingVariableError:
-            self.log_skip_message(message=f"Host '{host}' interface '{interface_name}' IP address is unavailable.", logging_level="WARNING")
+            self.log_skip_message(message=f"Host '{host or self.device_name}' interface '{interface_name}' IP address is unavailable.", logging_level="WARNING")
             return None
 
     def logged_get(self, key: str, host: str | None = None, logging_level: str = "WARNING"):
@@ -133,10 +178,9 @@ class AvdTestBase:
             host (str | None): The host from which to retrieve the key. Defaults to the device running the test.
             logging_level (str): The logging level to use for the log message.
         """
-        host = host or self.device_name
-
+        host_struct_cfg = self.get_host_struct_cfg(host=host) if host else self.structured_config
         try:
-            return get(self.hostvars[host], key, required=True)
+            return get(host_struct_cfg, key, required=True, separator="..")
         except AristaAvdMissingVariableError:
             self.log_skip_message(key=key, logging_level=logging_level)
             return None
@@ -154,7 +198,7 @@ class AvdTestBase:
         Validates data based on given requirements such as expected key-value pairs and required keys.
 
         Args:
-            data (dict | None): A data dictionary to be validated. Defaults to the hostvars of the device running the test.
+            data (dict | None): A data dictionary to be validated. Defaults to the structured_config of the device running the test.
             data_path (str | None): The data path in dot notation. Used for logging purposes. Index or primary key can be used for lists.
             host (str | None): The host from which data should be retrieved. Defaults to the device running the test.
             required_keys (str | list[str] | None): The keys that are expected to be in the data.
@@ -171,9 +215,7 @@ class AvdTestBase:
             In this case, the function will log a warning message because the key 'c' with value '3' is not found,
             and it will return False as the data doesn't meet all validation requirements.
         """
-        host = host or self.device_name
-        data = data or get(self.hostvars, host, {})
-
+        data = data or (self.get_host_struct_cfg(host=host) if host else self.structured_config)
         valid = True
 
         # Check the expected key/value pairs first
@@ -217,6 +259,8 @@ class AvdTestBase:
             dict: A dictionary containing:
                 - "loopback0_mapping": a list of tuples where each tuple contains a hostname and its Loopback0 IP address.
                 - "vtep_mapping": a list of tuples where each tuple contains a hostname and its VTEP IP address if `Vxlan1` is the source_interface.
+
+        # FIXME @cbaillar: Need to refactor this: https://github.com/aristanetworks/ansible-avd/issues/3304
         """
         results = {"loopback0_mapping": [], "vtep_mapping": []}
 
