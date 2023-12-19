@@ -9,16 +9,16 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>dhcp_servers</samp>](## "dhcp_servers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;disabled</samp>](## "dhcp_servers.[].disabled") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "dhcp_servers.[].vrf") | String | Required, Unique |  |  | VRF in which to configure the dhcp server, use "default" to indicate default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "dhcp_servers.[].vrf") | String | Required, Unique |  |  | VRF in which to configure the DHCP server, use `default` to indicate default VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv4</samp>](## "dhcp_servers.[].dns_domain_name_ipv4") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain_name_ipv6</samp>](## "dhcp_servers.[].dns_domain_name_ipv6") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_vendor_options</samp>](## "dhcp_servers.[].ipv4_vendor_options") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vendor_id</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].vendor_id") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sub_options</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;code</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].code") | Integer | Required, Unique |  | Min: 1<br>Max: 254 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].string") | String |  |  |  | String value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_address</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].ipv4_address") | String |  |  |  | IPv4 address value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array_ipv4_address</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].array_ipv4_address") | List, items: String |  |  |  | Array of IPv4 addresses for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;string</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].string") | String |  |  |  | String value for suboption data.<br>Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.<br>The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_address</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].ipv4_address") | String |  |  |  | IPv4 address value for suboption data.<br>Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.<br>The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;array_ipv4_address</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].array_ipv4_address") | List, items: String |  |  |  | Array of IPv4 addresses for suboption data.<br>Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.<br>The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "dhcp_servers.[].ipv4_vendor_options.[].sub_options.[].array_ipv4_address.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;subnets</samp>](## "dhcp_servers.[].subnets") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;subnet</samp>](## "dhcp_servers.[].subnets.[].subnet") | String | Required, Unique |  |  |  |
@@ -40,7 +40,7 @@
     dhcp_servers:
       - disabled: <bool>
 
-        # VRF in which to configure the dhcp server, use "default" to indicate default VRF.
+        # VRF in which to configure the DHCP server, use `default` to indicate default VRF.
         vrf: <str; required; unique>
         dns_domain_name_ipv4: <str>
         dns_domain_name_ipv6: <str>
@@ -49,13 +49,19 @@
             sub_options:
               - code: <int; 1-254; required; unique>
 
-                # String value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.
+                # String value for suboption data.
+                # Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.
+                # The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
                 string: <str>
 
-                # IPv4 address value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.
+                # IPv4 address value for suboption data.
+                # Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.
+                # The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
                 ipv4_address: <str>
 
-                # Array of IPv4 addresses for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.
+                # Array of IPv4 addresses for suboption data.
+                # Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.
+                # The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
                 array_ipv4_address:
                   - <str>
         subnets:

@@ -49,26 +49,32 @@ interface Management1
 | True | TEST | testv4.com | testv6.com |
 | False | VRF01 | - | - |
 
-#### VRF AVRF DHCP Server Subnets
+#### VRF AVRF DHCP Server
+
+##### Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
 | 172.16.254.0/24 | - | - | 172.16.254.1 | - | - |
 
-#### VRF default DHCP Server Subnets
+#### VRF default DHCP Server
+
+##### Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
 | 2a00:2::/64 | - | - | - | - | - |
 | 10.2.3.0/24 | - | - | - | - | - |
 
-#### VRF TEST DHCP Server Subnets
+#### VRF TEST DHCP Server
+
+##### Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |
 | 10.0.0.0/24 | TEST1 | 10.1.1.12, 10.1.1.13 | 10.0.0.1 | 0 days, 0 hours, 10 minutes | 10.0.0.10-10.0.0.100, 10.0.0.110-10.0.0.120 |
 
-#### VRF TEST DHCP Server IPv4 Vendor Options
+##### IPv4 Vendor Options
 
 | Vendor ID | Sub-option Code | Sub-option Type | Sub-option Data |
 | --------- | ----------------| --------------- | --------------- |
@@ -76,7 +82,9 @@ interface Management1
 | NTP | 42 | ipv4-address | 10.1.1.1 |
 | NTP | 66 | array ipv4-address | 1.1.1.1 2.2.2.2 |
 
-#### VRF VRF01 DHCP Server Subnets
+#### VRF VRF01 DHCP Server
+
+##### Subnets
 
 | Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
 | ------ | ---- | ----------- | --------------- | ---------- | ------ |

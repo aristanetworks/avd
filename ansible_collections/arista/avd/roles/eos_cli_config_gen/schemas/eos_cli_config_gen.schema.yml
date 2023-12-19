@@ -1337,7 +1337,7 @@ keys:
           type: bool
         vrf:
           type: str
-          description: VRF in which to configure the dhcp server, use "default" to
+          description: VRF in which to configure the DHCP server, use `default` to
             indicate default VRF.
           convert_types:
           - int
@@ -1370,25 +1370,31 @@ keys:
                       - str
                     string:
                       type: str
-                      description: String value for suboption data. Only one of 'string',
-                        'ipv4_address' and 'array_ipv4_address' variables should be
-                        used for any one suboption. The order of precedence if muliple
-                        of these variables are defined is 'string' -> 'ipv4_address'
-                        -> 'array_ipv4_address'.
+                      description: 'String value for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
                     ipv4_address:
                       type: str
-                      description: IPv4 address value for suboption data. Only one
-                        of 'string', 'ipv4_address' and 'array_ipv4_address' variables
-                        should be used for any one suboption. The order of precedence
-                        if muliple of these variables are defined is 'string' -> 'ipv4_address'
-                        -> 'array_ipv4_address'.
+                      description: 'IPv4 address value for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
                     array_ipv4_address:
                       type: list
-                      description: Array of IPv4 addresses for suboption data. Only
-                        one of 'string', 'ipv4_address' and 'array_ipv4_address' variables
-                        should be used for any one suboption. The order of precedence
-                        if muliple of these variables are defined is 'string' -> 'ipv4_address'
-                        -> 'array_ipv4_address'.
+                      description: 'Array of IPv4 addresses for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
                       items:
                         type: str
         subnets:

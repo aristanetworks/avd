@@ -50,19 +50,19 @@ keys:
                       type: str
                       description: |-
                         String value for suboption data.
-                        Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption. 
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.
                         The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
                     ipv4_address:
                       type: str
                       description: |-
                         IPv4 address value for suboption data.
-                        Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption. 
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.
                         The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
                     array_ipv4_address:
                       type: list
                       description: |-
                         Array of IPv4 addresses for suboption data.
-                        Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption. 
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.
                         The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.
                       items:
                         type: str

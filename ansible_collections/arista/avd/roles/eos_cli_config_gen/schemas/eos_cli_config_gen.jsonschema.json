@@ -1881,7 +1881,7 @@
           },
           "vrf": {
             "type": "string",
-            "description": "VRF in which to configure the dhcp server, use \"default\" to indicate default VRF.",
+            "description": "VRF in which to configure the DHCP server, use `default` to indicate default VRF.",
             "title": "VRF"
           },
           "dns_domain_name_ipv4": {
@@ -1914,17 +1914,17 @@
                       },
                       "string": {
                         "type": "string",
-                        "description": "String value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.",
+                        "description": "String value for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
                         "title": "String"
                       },
                       "ipv4_address": {
                         "type": "string",
-                        "description": "IPv4 address value for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.",
+                        "description": "IPv4 address value for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
                         "title": "IPv4 Address"
                       },
                       "array_ipv4_address": {
                         "type": "array",
-                        "description": "Array of IPv4 addresses for suboption data. Only one of 'string', 'ipv4_address' and 'array_ipv4_address' variables should be used for any one suboption. The order of precedence if muliple of these variables are defined is 'string' -> 'ipv4_address' -> 'array_ipv4_address'.",
+                        "description": "Array of IPv4 addresses for suboption data.\nOnly one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used for any one suboption.\nThe order of precedence if multiple of these variables are defined is `string` -> `ipv4_address` -> `array_ipv4_address`.",
                         "items": {
                           "type": "string"
                         },
