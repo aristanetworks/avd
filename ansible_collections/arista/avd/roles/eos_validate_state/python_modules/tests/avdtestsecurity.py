@@ -24,7 +24,7 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
             test_definition (dict): ANTA test definition.
         """
         anta_tests = []
-        if (profile := self.logged_get(key="management_api_http..https_ssl_profile", logging_level="INFO")) is None:
+        if (profile := self.logged_get(key="management_api_http.https_ssl_profile", logging_level="INFO")) is None:
             return None
         anta_tests.append({"VerifyAPIHttpsSSL": {"profile": profile}})
 
