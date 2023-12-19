@@ -1640,7 +1640,7 @@ FIPS restrictions enabled.
 ###### Keys
 
 | Key ID | Fallback |
-| ------ |  -------- |
+| ------ | -------- |
 | 1234b | - |
 
 ### MACsec Device Configuration

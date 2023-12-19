@@ -1,80 +1,10 @@
-objects:
-  role: {}
+objects: {}
 plugins:
   become: {}
   cache: {}
   callback: {}
   cliconf: {}
   connection: {}
-  filter:
-    add_md_toc:
-      description: Parse the input Markdown and add a Table of Contents between the
-        toc_markers.
-      name: add_md_toc
-      version_added: '3.2'
-    convert_dicts:
-      description: Convert a dictionary containing nested dictionaries to a list of
-        dictionaries.
-      name: convert_dicts
-      version_added: '2.0'
-    convert_schema:
-      description: Convert AVD Schema to a chosen output format.
-      name: convert_schema
-      version_added: '3.8'
-    decrypt:
-      description: Decrypt supported EOS passwords.
-      name: decrypt
-      version_added: 3.8.0
-    default:
-      description: Returns input value if defined and is not none. Otherwise, return
-        default value.
-      name: default
-      version_added: '2.0'
-    encrypt:
-      description: Encrypt supported EOS passwords
-      name: encrypt
-      version_added: 3.8.0
-    generate_esi:
-      description: Transforms short_esi C(0303:0202:0101) to EVPN ESI format C(0000:0000:0303:0202:0101)
-      name: generate_esi
-      version_added: '1.1'
-    generate_lacp_id:
-      description: Transforms short_esi C(0303:0202:0101) to LACP ID format C(0303.0202.0101)
-      name: generate_lacp_id
-      version_added: '1.1'
-    generate_route_target:
-      description: Transforms short_esi C(0303:0202:0101) to route-target format C(03:03:02:02:01:01)
-      name: generate_route_target
-      version_added: '1.1'
-    hash_passphrase:
-      description: Compute localized SNMP passphrases
-      name: hash_passphrase
-      version_added: 3.6.0
-    hide_passwords:
-      description: Replace a value by "<removed>"
-      name: hide_passwords
-      version_added: 4.0.0
-    is_in_filter:
-      description: Returns V(True) if the input hostname matches the I(hostname_filter).
-      name: is_in_filter
-      version_added: '1.1'
-    list_compress:
-      description: Compress a list of integers to a range string.
-      name: list_compress
-      version_added: '1.0'
-    natural_sort:
-      description: Sort an input list with natural sorting.
-      name: natural_sort
-      version_added: 1.0.0
-    range_expand:
-      description: Expand a range of interfaces or list of ranges and return as a
-        list of strings.
-      name: range_expand
-      version_added: 3.4.0
-    status_render:
-      description: Convert Text to EMOJI code.
-      name: status_render
-      version_added: 1.1.1
   httpapi: {}
   inventory: {}
   lookup: {}
@@ -100,8 +30,13 @@ plugins:
       name: eos_designs_structured_config
       namespace: ''
       version_added: 4.0.0
+    eos_validate_state_reports:
+      description: Generates validation reports for the eos_validate_state role
+      name: eos_validate_state_reports
+      namespace: ''
+      version_added: 4.5.0
     eos_validate_state_runner:
-      description: Leverage ANTA for eos_validate_state role
+      description: Uses ANTA for eos_validate_state role
       name: eos_validate_state_runner
       namespace: ''
       version_added: 4.4.0
@@ -134,19 +69,10 @@ plugins:
   netconf: {}
   shell: {}
   strategy: {}
-  test:
-    contains:
-      description: Test if a list contains one or more of the supplied values.
-      name: contains
-      version_added: '2.0'
-    defined:
-      description: Test if the value is not C(Undefined) or C(None).
-      name: defined
-      version_added: '2.0'
   vars:
     global_vars:
       description: Variable plugins to allow loading global_vars with less precedence
         than group_vars or host_vars
       name: global_vars
       version_added: 4.0.0
-version: 4.4.0
+version: 4.5.0

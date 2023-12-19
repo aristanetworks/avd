@@ -30,13 +30,27 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 - Loose mode to ignore playbook errors is no longer supported in ANTA mode.
 - ANTA mode exclusively supports the newer "list-of-dicts" data models in the structured configuration file input. For further details, consult the AVD 4.x.x [porting guides](https://avd.sh/en/stable/docs/porting-guides/4.x.x.html#data-model-changes-from-dict-of-dicts-to-list-of-dicts).
 
+## Roadmap
+
+!!! note
+    Subject to change. No commitments implied.
+
+- Provide a custom ANTA test catalog as a YAML file or by input variables.
+- Ability to exclude some interfaces from the report.
+- More tests!
+
 ## Expected changes
 
 - You should expect faster execution, and if not please report on the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
 - Hardware tests are now collapsed.
 - Some description of tests have been updated to be more precise.
 - Sorting of the test results is now done per device as opposed to per category.
-- All tests will be skipped for a device flagged as undeployed using the host level variable [`is_deployed: false`](https://avd.sh/en/stable/roles/eos_designs/docs/input-variables.html#flagging-a-device-as-not-deployed). Additionally, all tests take into account the `is_deployed` variable value and skip tests accordingly.
+- Tests skipped by ANTA will be marked as `SKIPPED` in the final reports.
+- All tests will be removed from the catalog for a device flagged as undeployed using the host level variable [`is_deployed: false`](https://avd.sh/en/stable/roles/eos_designs/docs/input-variables.html#flagging-a-device-as-not-deployed). Additionally, all tests take into account the `is_deployed` variable value and remove tests accordingly.
+
+!!! warning
+    Tests can also be automatically removed from the catalogs depending on the structured configuration of the devices. ANTA is therefore not aware of these tests and they will not appear in the final report. For example, the `AvdTestMLAG` tests will not be present in the test catalog of a device that does not have an MLAG configuration in its structured configuration.
+
 - BGP tests will only run if `service_routing_protocols_model` is set to `multi-agent` in the structured configuration file.
 
 !!! note
@@ -65,13 +79,20 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
   ansible-playbook playbooks/fabric-validate.yaml --tags routing_table
   ```
 
-- You can now run the eos_validate_state role in check_mode. This will produce a report of tests that will be performed without running the tests on your network.
+- You can now run the eos_validate_state role in check_mode. This will produce a report of tests that will be performed without running the tests on your network. Tests will be marked as `NOT RUN` in the final reports.
 
   ```shell
   ansible-playbook playbooks/fabric-validate.yaml --check
   ```
 
-- You have the option to save the test catalog generate by the role for each device in the `intended/test_catalogs` folder by setting the variable `save_catalog` to `true`.
+- You can increase the Ansible verbosity by adding multiple `-v` when running the playbook. This will give you visibility on which [test categories](#test-categories) are being removed from a device's catalog by AVD according to the structured configurations.
+
+  ```shell
+  ansible-playbook playbooks/fabric-validate.yaml -v
+  ```
+
+!!! info
+    ANTA mode also supports other functionnalities. For more details, please refer to the [input variables](#input-variables) below.
 
 ## Test Categories
 
@@ -126,45 +147,32 @@ title: Ansible Collection Role eos_valudate_state - Preview Integration with ANT
 ## Input variables
 
 ```yaml
-# Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
-root_dir: '{{ inventory_dir }}'
+# Root directory
+root_dir: "{{ inventory_dir }}"
 
 # AVD configurations output
 # Main output directory
-output_dir_name: 'intended'
-output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+output_dir_name: "intended"
+output_dir: "{{ root_dir }}/{{ output_dir_name }}"
 
 # Output for test catalog YAML files if save_catalog is set to true
-test_catalogs_dir_name: 'test_catalogs'
-test_catalogs_dir: '{{ output_dir }}/{{ test_catalogs_dir_name }}'
+test_catalogs_dir_name: "test_catalogs"
+test_catalogs_dir: "{{ output_dir }}/{{ test_catalogs_dir_name }}"
 
 # Output directory for eos_validate_state reports
-eos_validate_state_name: 'reports'
-eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
+eos_validate_state_name: "reports"
+eos_validate_state_dir: "{{ root_dir }}/{{ eos_validate_state_name }}"
+
+# Output for test results JSON files if save_results is set to true
+test_results_dir_name: "test_results"
+test_results_dir: "{{ eos_validate_state_dir }}/{{ test_results_dir_name }}"
+
+# Fabric name used in the reports name
+fabric_name: "all"
 
 # Reports name
-eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
-eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
-
-# Markdown flavor to support non-text rendering
-# Only support default and github
-validate_state_markdown_flavor: "default"
-
-# The variable `skipped_tests` can be used for running/skipping tests categories
-skipped_tests:
-  - category: AvdTestHardware
-
-# You can also decide to skip specific subtests (ANTA test name) for more granularity
-skipped_tests:
-  - category: AvdTestBGP
-    tests:
-      - VerifyRoutingProtocolModel
-  - category: AvdTestHardware
-    tests:
-      - VerifyEnvironmentCooling
-
-# Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
-fabric_name: "all"
+eos_validate_state_md_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md"
+eos_validate_state_csv_report_path: "{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv"
 
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
@@ -184,18 +192,29 @@ validation_report_md: "{{ validation_role.validation_report_md | arista.avd.defa
 # Print only FAILED tests
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 
+
 # Variable to enable ANTA eos_validate_state
-# Defaults to false as ANTA is currently preview
+# Defaults to false as ANTA is currently in preview
 use_anta: false
-# Whether or not to save each device test catalog to 'test_catalogs_dir'
-# Used only when 'use_anta' is set to true
+
+# Save each device test catalog to 'test_catalogs_dir'. Defaults to false.
 save_catalog: false
-# Which tests to skip when using ANTA.
-# If set, Ansible tags are ignored
-skipped_tests: []
-# Logging level for the ANTA libraries
-# Default is warning
+
+# Logging level for the ANTA libraries. Defaults to "WARNING".
 logging_level: "WARNING"
+
+# The variable `skipped_tests` can be used for running/skipping test categories
+skipped_tests:
+  - category: AvdTestHardware
+
+# You can also decide to skip specific subtests (ANTA test name) for more granularity
+skipped_tests:
+  - category: AvdTestBGP
+    tests:
+      - VerifyRoutingProtocolModel
+  - category: AvdTestHardware
+    tests:
+      - VerifyEnvironmentCooling
 ```
 
 ## Example Playbook

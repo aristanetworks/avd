@@ -9819,6 +9819,14 @@
                   "^_.+$": {}
                 },
                 "title": "Certificate"
+              },
+              "certificate_revocation_lists": {
+                "type": "array",
+                "description": "List of CRLs (Certificate Revocation List).\nIf specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.\n",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Certificate Revocation Lists"
               }
             },
             "additionalProperties": false,
@@ -11207,6 +11215,19 @@
                 "^_.+$": {}
               },
               "title": "Multicast Replication"
+            },
+            "mdb_profile": {
+              "type": "string",
+              "description": "Sand platforms MDB Profile configuration. Note: l3-xxxl does not support MLAG.",
+              "enum": [
+                "balanced",
+                "balanced-xl",
+                "l3",
+                "l3-xl",
+                "l3-xxl",
+                "l3-xxxl"
+              ],
+              "title": "MDB Profile"
             }
           },
           "additionalProperties": false,

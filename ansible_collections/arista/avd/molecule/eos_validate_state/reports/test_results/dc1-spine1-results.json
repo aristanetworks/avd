@@ -1,0 +1,290 @@
+[
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyRoutingProtocolModel",
+    "categories": [
+      "BGP"
+    ],
+    "description": "ArBGP is configured and operating",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "ArBGP"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "bgp evpn peer state established (evpn)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.0.3"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "bgp evpn peer state established (evpn)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.0.4"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "bgp evpn peer state established (evpn)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.0.5"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "ip bgp peer state established (ipv4)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.255.1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "ip bgp peer state established (ipv4)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.255.5"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "ip bgp peer state established (ipv4)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.255.9"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the device temperature is within the acceptable range.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the fans status are within the accepted states list.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the power supplies status are within the accepted states list.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'adminDown'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet4 - P2P_LINK_TO_DC1-LEAF2B_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet3 - P2P_LINK_TO_DC1-LEAF2A_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Loopback Interface Status & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Loopback0 - EVPN_Overlay_Peering"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-spine1_Ethernet1 - Destination: dc1-leaf1a_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-spine1_Ethernet2 - Destination: dc1-leaf1b_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-spine1_Ethernet3 - Destination: dc1-leaf2a_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet1 - remote: dc1-leaf1a_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet2 - remote: dc1-leaf1b_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet3 - remote: dc1-leaf2a_Ethernet1"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyNTP",
+    "categories": [
+      "NTP"
+    ],
+    "description": "Synchronised with NTP server",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "NTP"
+  },
+  {
+    "name": "dc1-spine1",
+    "test": "VerifyAPIHttpsSSL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  }
+]

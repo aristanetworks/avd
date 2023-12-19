@@ -5,6 +5,8 @@ leaf:
   defaults:
     uplink_switches: [ BGP-SPINE1, BGP-SPINE2 ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    filter:
+      only_vlans_in_use: true
   nodes:
     - name: BGP-LEAF1
       id: 1
