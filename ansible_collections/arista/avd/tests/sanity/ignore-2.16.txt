@@ -9,3 +9,4 @@ plugins/modules/verify_requirements.py validate-modules:missing-gplv3-license
 plugins/modules/yaml_templates_to_facts.py validate-modules:missing-gplv3-license
 plugins/vars/global_vars.py validate-modules:missing-gplv3-license
 plugins/modules/eos_validate_state_runner.py validate-modules:missing-gplv3-license
+plugins/modules/eos_validate_state_reports.py validate-modules:missing-gplv3-license

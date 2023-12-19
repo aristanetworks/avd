@@ -12,7 +12,7 @@
 {%         if radius_server.attribute_32_include_in_access_req.hostname is arista.avd.defined(true) %}
 {%             set doc_line = doc_line ~ " using hostname" %}
 {%         elif radius_server.attribute_32_include_in_access_req.format is arista.avd.defined %}
-{%             set doc_line = doc_line ~ " using format '" ~ attribute_32_include_in_access_req.format ~ "'" %}
+{%             set doc_line = doc_line ~ " using format '" ~ radius_server.attribute_32_include_in_access_req.format ~ "'" %}
 {%         endif %}
 
 {{ doc_line }}
