@@ -72,3 +72,42 @@ profile = "black"
 skip_gitignore = true
 line_length = 160
 known_third_party = ["pyavd"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+
+    # Don't complain about TYPE_CHECKING blocks
+    "if TYPE_CHECKING:",
+
+    # Dont' complain about Jinja2 internalcode
+    # Note that except KeyError is a bid sad..
+    "except KeyError:",
+    "@internalcode",
+    "raise TemplateRuntimeError",
+    "^blocks = {}",
+    "^debug_info =.*",
+]
+
+ignore_errors = true
