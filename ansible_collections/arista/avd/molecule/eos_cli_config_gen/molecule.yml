@@ -2,7 +2,6 @@
 scenario:
   converge_sequence:
     - syntax
-    - create
     - converge
   test_sequence:
     - syntax
@@ -13,11 +12,13 @@ scenario:
     - destroy
 dependency:
   name: galaxy
+  enabled: false
 driver:
-  name: delegated
+  name: default
+  options:
+    managed: false
 platforms:
   - name: dummy
-    managed: false
 provisioner:
   name: ansible
   config_options:

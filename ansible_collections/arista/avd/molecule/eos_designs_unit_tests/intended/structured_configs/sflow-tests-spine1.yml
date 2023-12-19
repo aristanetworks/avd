@@ -1,4 +1,6 @@
 hostname: sflow-tests-spine1
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65200'

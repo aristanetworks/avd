@@ -36,6 +36,6 @@ def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: i
     try:
         ip = subnet[ip_offset]
     except IndexError as e:
-        raise AristaAvdError(f"Unable to get {ip_offset+1} hosts in subnet {subnet} taken from pool {pool}") from e
+        raise AristaAvdError(f"Unable to get {ip_offset + 1} hosts in subnet {subnet} taken from pool {pool}") from e
 
     return str(ip)

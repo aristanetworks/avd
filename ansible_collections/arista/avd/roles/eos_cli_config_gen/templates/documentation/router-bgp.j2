@@ -484,11 +484,11 @@
 #### Router BGP EVPN Address Family
 {%         if router_bgp.address_family_evpn.route.import_match_failure_action is arista.avd.defined('discard') %}
 
-- VPN import pruning is __enabled__
+- VPN import pruning is **enabled**
 {%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop.resolution_disabled is arista.avd.defined(true) %}
 
-- Next-hop resolution is __disabled__
+- Next-hop resolution is **disabled**
 {%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop_unchanged is arista.avd.defined(true) %}
 - Next-hop-unchanged is explicitly configured (default behaviour)
@@ -655,7 +655,7 @@
 {%         endif %}
 {%         if router_bgp.address_family_link_state.path_selection is arista.avd.defined %}
 
-##### Link-State Path Selection configuration
+##### Link-State Path Selection Configuration
 
 | Settings | Value |
 | -------- | ----- |
@@ -679,7 +679,7 @@
 #### Router BGP VPN-IPv4 Address Family
 {%         if router_bgp.address_family_vpn_ipv4.route.import_match_failure_action is arista.avd.defined('discard') %}
 
-- VPN import pruning is __enabled__
+- VPN import pruning is **enabled**
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv4.neighbors is arista.avd.defined %}
 
@@ -711,7 +711,7 @@
 #### Router BGP VPN-IPv6 Address Family
 {%         if router_bgp.address_family_vpn_ipv6.route.import_match_failure_action is arista.avd.defined('discard') %}
 
-- VPN import pruning is __enabled__
+- VPN import pruning is **enabled**
 {%         endif %}
 {%         if router_bgp.address_family_vpn_ipv6.neighbors is arista.avd.defined %}
 

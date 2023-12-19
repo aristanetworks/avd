@@ -55,7 +55,7 @@ Management HTTPS is using the SSL profile SSL_PROFILE
 
 HTTPS certificate and private key are configured.
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !

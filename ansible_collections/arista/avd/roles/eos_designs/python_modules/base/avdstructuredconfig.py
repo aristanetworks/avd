@@ -12,10 +12,11 @@ from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvd
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
+from .ntp import NtpMixin
 from .snmp_server import SnmpServerMixin
 
 
-class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
+class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
     """
     The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.
 
@@ -32,6 +33,13 @@ class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
     @cached_property
     def hostname(self) -> str:
         return self.shared_utils.hostname
+
+    @cached_property
+    def metadata(self) -> dict | None:
+        if self.shared_utils.platform is None:
+            return None
+
+        return {"platform": self.shared_utils.platform}
 
     @cached_property
     def is_deployed(self) -> bool:
@@ -405,11 +413,12 @@ class AvdStructuredConfigBase(AvdFacts, SnmpServerMixin):
 
         if spanning_tree_mode is not None:
             spanning_tree["mode"] = spanning_tree_mode
-            priority = get(self.shared_utils.switch_data_combined, "spanning_tree_priority", default="32768")
+            priority = get(self.shared_utils.switch_data_combined, "spanning_tree_priority", default=32768)
             if spanning_tree_mode == "mstp":
                 spanning_tree["mst_instances"] = [{"id": "0", "priority": priority}]
             elif spanning_tree_mode == "rapid-pvst":
-                spanning_tree["rapid_pvst_instances"] = [{"id": "1-4094", "priority": priority}]
+                pass
+                # Per vlan spanning-tree priorities are set under network-services.
             elif spanning_tree_mode == "rstp":
                 spanning_tree["rstp_priority"] = priority
 

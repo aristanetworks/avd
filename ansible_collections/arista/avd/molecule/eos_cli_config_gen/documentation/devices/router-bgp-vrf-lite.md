@@ -45,8 +45,8 @@ interface Management1
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | BLUE-C1 | 193.1.0.0/24 | - | Null0 | 1 | - | - | - |
 | BLUE-C1 | 193.1.1.0/24 | - | Null0 | 1 | - | - | - |
 | BLUE-C1 | 193.1.2.0/24 | - | Null0 | 1 | - | - | - |

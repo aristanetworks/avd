@@ -4,21 +4,31 @@
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
 from .cvx import CvxMixin
+from .flow_tracking import FlowTrackingMixin
 from .ip_extcommunity_lists import IpExtCommunityListsMixin
+from .ip_security import IpSecurityMixin
 from .management_cvx import ManagementCvxMixin
 from .route_maps import RouteMapsMixin
+from .router_adaptive_virtual_topology import RouterAdaptiveVirtualTopologyMixin
 from .router_bfd import RouterBfdMixin
 from .router_bgp import RouterBgpMixin
+from .router_path_selection import RouterPathSelectionMixin
+from .stun import StunMixin
 
 
 class AvdStructuredConfigOverlay(
     AvdFacts,
     CvxMixin,
+    FlowTrackingMixin,
     IpExtCommunityListsMixin,
+    IpSecurityMixin,
     ManagementCvxMixin,
+    RouterAdaptiveVirtualTopologyMixin,
     RouterBfdMixin,
     RouterBgpMixin,
     RouteMapsMixin,
+    RouterPathSelectionMixin,
+    StunMixin,
 ):
     """
     The AvdStructuredConfig Class is imported used "get_structured_config" to render parts of the structured config.
@@ -47,6 +57,7 @@ class AvdStructuredConfigOverlay(
                 self.shared_utils.overlay_evpn,
                 self.shared_utils.overlay_vpn_ipv4,
                 self.shared_utils.overlay_vpn_ipv6,
+                self.shared_utils.wan_role,
             ]
         ):
             return super().render()

@@ -110,6 +110,22 @@ l3leaf:
             remote_peers:
               - hostname: dc1-leaf2b
 
+    - group: DC2_L3_LEAF3
+      bgp_as: 65203
+      nodes:
+        - name: dc2-leaf3a.arista.com
+          id: 15
+          mgmt_ip: 172.16.1.115/24
+          uplink_switch_interfaces:
+            - Ethernet5
+            - Ethernet5
+        - name: dc2-leaf3b.arista.com
+          id: 16
+          mgmt_ip: 172.16.1.116/24
+          uplink_switch_interfaces:
+            - Ethernet6
+            - Ethernet6
+
 # L2 Leaf switch group
 l2leaf:
   defaults:

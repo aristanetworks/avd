@@ -326,6 +326,39 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
+      wan_overlay_peers:
+        type: dict
+        documentation_options:
+          table: wan-bgp-peer-groups
+        description: 'PREVIEW: This key is currently not supported'
+        keys:
+          name:
+            type: str
+            default: WAN-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: false
+          listen_range_prefixes:
+            type: list
+            description: 'Only used for nodes where `wan_role` is `server` like AutoVPN
+              RRs and Pathfinders.
+
+              For clients, AVD will raise an error if the Loopback0 IP is not in any
+              listen range.'
+            items:
+              type: str
+              description: The prefixes to use in listen_range.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:
@@ -478,6 +511,47 @@ keys:
       existing keys will be replaced.\n"
     default:
     - custom_structured_configuration_
+  cv_pathfinder_regions:
+    documentation_options:
+      table: wan-cv-pathfinder-regions
+    description: 'PREVIEW: This key is currently not supported
+
+      Define the SDWAN hierarchy for the device.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/region
+      keys:
+        description:
+          type: str
+        id:
+          type: int
+          description: The region ID must be unique for the whole WAN deployment.
+        sites:
+          type: list
+          description: All sites are placed in a default zone called DEFAULT-ZONE
+            with ID 1.
+          primary_key: name
+          items:
+            type: dict
+            $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/site
+            keys:
+              description:
+                type: str
+              id:
+                type: int
+                description: 'The site ID must be unique within a zone.
+
+                  Given that all the sites are placed in the DEFAULT-ZONE, the site
+                  ID must be unique within a region.'
+              location:
+                type: str
+                description: Will be interpreted
+              site_contact:
+                type: str
+              site_after_hours_contact:
+                type: str
   cv_topology:
     documentation_options:
       table: cv-topology
@@ -1286,7 +1360,7 @@ keys:
           description: "List of ranges using AVD range_expand syntax.\nFor example:\n\nswitch_ports:\n
             \ - Ethernet1\n  - Ethernet2-48\n\nAll switch_ports ranges are expanded
             into individual port configurations.\n\nFor more details and examples
-            of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter%20plugins/range_expand.md).\n"
+            of the `range_expand` syntax, see the [`arista.avd.range_expand` documentation](../../../docs/plugins/Filter_plugins/range_expand.md).\n"
           items:
             type: str
         description:
@@ -1426,6 +1500,51 @@ keys:
           description: 'Set the default evpn encapsulation.
 
             '
+        default_wan_role:
+          documentation_options:
+            table: node-type-key-wan-configuration
+          type: str
+          valid_values:
+          - client
+          - server
+          description: 'PREVIEW: This key is currently not supported
+
+            Set the default WAN role.
+
+
+            This is used both for AutoVPN and Pathfinder designs.
+
+            That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+
+            `server` indicates that the router is a route-reflector.
+
+
+            Only supported if `overlay_routing_protocol` is set to `ibgp`.
+
+            '
+        default_cv_pathfinder_role:
+          documentation_options:
+            table: node-type-key-wan-configuration
+          type: str
+          valid_values:
+          - edge
+          - transit region
+          - pathfinder
+          description: 'PREVIEW: This key is currently not supported
+
+            Set the default CV Pathfinder role.
+
+
+            This key is used for Pathfinder designs only when the `wan_mode` root
+
+            key is set to `cv-pathfinder`.
+
+
+            `pathfinder` is only a valid if `wan_role` is `server`.
+
+            `edge` and `transit` are only valid if `wan_role` is `client`.
+
+            '
         mlag_support:
           type: bool
           default: false
@@ -1460,7 +1579,8 @@ keys:
           - p2p
           - port-channel
           default: p2p
-          description: Uplinks must be p2p if "vtep" or "underlay_router" is true.
+          description: '`uplink_type` must be "p2p" if `vtep` or `underlay_router`
+            is true.'
         vtep:
           type: bool
           default: false
@@ -1554,6 +1674,60 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to Custom J2 template.
+  ntp_settings:
+    documentation_options:
+      table: management-settings
+    type: dict
+    description: NTP settings
+    keys:
+      server_vrf:
+        type: str
+        description: "EOS only supports NTP servers in one VRF, so this VRF is used
+          for all NTP servers and one local-interface.\n- `use_mgmt_interface_vrf`
+          will configure the NTP server(s) under the VRF set with `mgmt_interface_vrf`
+          and set the `mgmt_interface` as NTP local-interface.\n  An error will be
+          raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
+          `use_inband_mgmt_vrf` will configure the NTP server(s) under the VRF set
+          with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as NTP local-interface.\n
+          \ An error will be raised if inband management is not configured for the
+          device.\n- Any other string will be used directly as the VRF name but local
+          interface must be set with `custom_structured_configuration_ntp` if needed.\nIf
+          not set, the VRF is automatically picked up from the global setting `default_mgmt_method`."
+      servers:
+        type: list
+        description: The first server is always set as "preferred".
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/name
+            burst:
+              type: bool
+            iburst:
+              type: bool
+            key:
+              type: int
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/key
+            maxpoll:
+              type: int
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/maxpoll
+            minpoll:
+              type: int
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/minpoll
+            version:
+              type: int
+              $ref: eos_cli_config_gen#/keys/ntp/keys/servers/items/keys/version
+      authenticate:
+        type: bool
+      authenticate_servers_only:
+        type: bool
+      authentication_keys:
+        type: list
+        $ref: eos_cli_config_gen#/keys/ntp/keys/authentication_keys
+      trusted_keys:
+        type: str
+        $ref: eos_cli_config_gen#/keys/ntp/keys/trusted_keys
   only_local_vlan_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -3008,6 +3182,139 @@ keys:
       remove_in_version: 4.0.0
     type: bool
     default: false
+  wan_ipsec_profiles:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+
+      Define IPsec profiles parameters for WAN configuration.'
+    type: dict
+    keys:
+      control_plane:
+        type: dict
+        required: true
+        $ref: eos_designs#/$defs/ipsec_profile
+        keys:
+          ike_policy_name:
+            type: str
+            default: CP-IKE-POLICY
+          sa_policy_name:
+            type: str
+            default: CP-SA-POLICY
+          profile_name:
+            type: str
+            default: CP-PROFILE
+          shared_key:
+            type: str
+            required: true
+            description: 'The IPSec shared key.
+
+              This variable is sensitive and SHOULD be configured using some vault
+              mechanism.'
+      data_plane:
+        type: dict
+        $ref: eos_designs#/$defs/ipsec_profile
+        description: If `data_plane` is not defined, `control_plane` information is
+          used for both.
+        keys:
+          ike_policy_name:
+            type: str
+            default: DP-IKE-POLICY
+          sa_policy_name:
+            type: str
+            default: DP-SA-POLICY
+          profile_name:
+            type: str
+            default: DP-PROFILE
+  wan_mode:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+
+      Select if the WAN should be run using CV Pathfinder or Auto VPN only.'
+    type: str
+    default: cv-pathfinder
+    valid_values:
+    - autovpn
+    - cv-pathfinder
+  wan_path_groups:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+      List of path-groups used for the WAN configuration.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Path-group name.
+        id:
+          type: str
+          description: Path-group id.
+        description:
+          type: str
+          description: Additional information about the path-group for documentation
+            purposes.
+        ipsec:
+          type: bool
+          description: Flag to configure IPsec on the carrier (default is True).
+        import_path_groups:
+          type: list
+          description: List of [ath-groups to import in this path-group.
+          items:
+            type: dict
+            keys:
+              remote:
+                type: str
+                description: Remote path-group to import.
+              local:
+                type: str
+                description: Optional, if not set, the path-group `name` is used as
+                  local.
+  wan_route_servers:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+
+      List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
+
+      when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+
+
+      When the route server is part of the same inventory as the WAN routers,
+
+      only the name is required.'
+    type: list
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+          description: Route-Reflector hostname.
+        router_id:
+          type: str
+          description: Route-Reflector router id.
+        path_groups:
+          type: list
+          description: Path-groups through which the Route Reflector/Pathfinder is
+            reached.
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Path-group name.
+              ip_address:
+                type: str
+                description: The public IP address of the Route Reflector for this
+                  path-group.
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -3091,6 +3398,26 @@ $defs:
         default: false
         description: If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag`
           takes precedence.
+      phone_vlan:
+        type: int
+        convert_types:
+        - str
+        description: 'Phone VLAN for a mode `trunk phone` port.
+
+          Requires `mode: trunk phone` to be set.'
+        min: 1
+        max: 4094
+      phone_trunk_mode:
+        type: str
+        valid_values:
+        - tagged
+        - untagged
+        - tagged phone
+        - untagged phone
+        description: 'Specify if the phone traffic is tagged or untagged.
+
+          If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA)
+          is used, if supported by the model of switch.'
       trunk_groups:
         type: list
         items:
@@ -3461,9 +3788,9 @@ $defs:
             description: Manual preference as described above, required only for preference
               algorithm.
             items:
-              type: str
+              type: int
               convert_types:
-              - int
+              - str
           dont_preempt:
             type: bool
             description: Disable preemption for single-active forwarding when auto/manual
@@ -3712,6 +4039,25 @@ $defs:
                 items:
                   type: str
                   description: Used for documentation purposes.
+  ipsec_profile:
+    type: dict
+    description: 'PREVIEW: This key is currently not supported'
+    keys:
+      ike_policy_name:
+        type: str
+        description: Name of the IKE policy.
+      sa_policy_name:
+        type: str
+        description: Name of the SA policy.
+      profile_name:
+        type: str
+        description: Name of the IPSec profile.
+      shared_key:
+        type: str
+        required: true
+        description: 'The type 7 encrypted IPSec shared key.
+
+          This variable is sensitive and should be configured using some vault mechanism.'
   l3_edge:
     type: dict
     keys:
@@ -3749,7 +4095,7 @@ $defs:
           keys:
             name:
               type: str
-              description: P2P profile name. Any variable supported under p2p_links
+              description: P2P profile name. Any variable supported under `p2p_links`
                 can be inherited from a profile.
       p2p_links:
         type: list
@@ -3763,6 +4109,84 @@ $defs:
             profile:
               type: str
               description: P2P profile name. Profile defined under p2p_profiles.
+      l3_interfaces_profiles:
+        type: list
+        convert_types:
+        - dict
+        primary_key: profile
+        $ref: eos_designs#/$defs/l3_edge_l3_interfaces
+        items:
+          type: dict
+          keys:
+            profile:
+              type: str
+              description: L3 interface profile name. Any variable supported under
+                `l3_interfaces` can be inherited from a profile.
+      l3_interfaces:
+        type: list
+        $ref: eos_designs#/$defs/l3_edge_l3_interfaces
+        items:
+          type: dict
+          keys:
+            node:
+              type: str
+              description: Device on which the interface should be configured.
+            profile:
+              type: str
+              description: L3 interface profile name. Profile defined under l3_interfaces_profiles.
+  l3_edge_l3_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        interface:
+          type: str
+          description: Ethernet interface name like 'Ethernet2'.
+          pattern: Ethernet[\d/]+
+        description:
+          type: str
+          description: 'Interface description.
+
+            If not set a default description will be configured with ''[<peer>[ <peer_interface>]]'''
+        ip:
+          type: str
+          description: Node IPv4 address/Mask or 'dhcp'.
+        dhcp_client_accept_default_route:
+          type: bool
+          default: false
+          description: 'Supported if `ip` is `dhcp`.
+
+            Accepts default route from DHCP.'
+        enabled:
+          type: bool
+          default: true
+          description: Enable or Shutdown the interface.
+        speed:
+          type: str
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
+        peer:
+          type: str
+          description: The peer device name. Used for description and documentation
+        peer_interface:
+          type: str
+          description: The peer device interface. Used for description and documentation
+        peer_ip:
+          type: str
+          description: The peer device IP. Used for description and documentation
+        qos_profile:
+          type: str
+          description: QOS service profile.
+        raw_eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the interface in the final EOS
+            configuration.
+        structured_config:
+          type: dict
+          documentation_options:
+            hide_keys: true
+          description: Custom structured config for the Ethernet interface.
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
   network_services:
     documentation_options:
       table: network-services-common-settings
@@ -4141,6 +4565,26 @@ $defs:
                   see "mlag_ibgp_peering_vrfs.base_vlan" for details.
 
                   '
+              rd_override:
+                type: str
+                convert_types:
+                - int
+                description: "By default, the VRF RD will be derived from the pattern
+                  defined in `overlay_rd_type`.\nThe rd_override allows us to override
+                  this value and statically define it.\n\nrd_override supports two
+                  formats:\n  - A single number will be used in the RD assigned number
+                  subfield (second part of the RD).\n  - A full RD string with colon
+                  seperator which will override the full RD.\n"
+              rt_override:
+                type: str
+                convert_types:
+                - int
+                description: "By default, the VRF RT will be derived from the pattern
+                  defined in `overlay_rt_type`.\nThe rt_override allows us to override
+                  this value and statically define it.\n\nrt_override supports two
+                  formats:\n  - A single number will be used in the RT assigned number
+                  subfield (second part of the RT).\n  - A full RT string with colon
+                  seperator which will override the full RT.\n"
               mlag_ibgp_peering_ipv4_pool:
                 type: str
                 description: 'IPv4_address/Mask
@@ -5028,6 +5472,15 @@ $defs:
                 type: bool
                 default: true
                 description: Extend this L2VLAN over VXLAN.
+              spanning_tree_priority:
+                type: int
+                convert_types:
+                - str
+                description: 'Setting spanning-tree priority per VLAN is only supported
+                  with `spanning_tree_mode: rapid-pvst` under node type settings.
+
+                  The default priority for rapid-PVST is set under the node type settings
+                  with `spanning_tree_priority` (default=32768).'
               evpn_vlan_bundle:
                 type: str
                 description: 'Name of a bundle defined under ''evpn_vlan_bundles''
@@ -5386,6 +5839,16 @@ $defs:
             description: Custom structured config for eos_cli_config_gen.
             type: dict
             $ref: eos_cli_config_gen#/
+          uplink_type:
+            documentation_options:
+              table: node-type-uplink-configuration
+            type: str
+            $ref: eos_designs#/keys/node_type_keys/items/keys/uplink_type
+            description: 'Override the default `uplink_type` set at the `node_type_key`
+              level.
+
+              `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true for
+              the `node_type_key` definition.'
           uplink_ipv4_pool:
             documentation_options:
               table: node-type-uplink-configuration
@@ -5526,6 +5989,43 @@ $defs:
             keys:
               profile:
                 type: str
+          uplink_port_channel_id:
+            documentation_options:
+              table: node-type-uplink-configuration
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 999999
+            description: "Only applicable for L2 switches with `uplink_type: port-channel`.\nBy
+              default the uplink Port-channel ID will be set to the number of the
+              lowest member interface defined under `uplink_interfaces`.\nFor example:\n
+              \ member ports [ Eth22, Eth23 ] -> ID 22\n  member ports [ Eth11/1,
+              Eth22/1 ] -> ID 111\nFor MLAG port-channels ID will be based on the
+              lowest member interface on the first MLAG switch.\nThis option overrides
+              the default behavior and statically sets the local Port-channel ID.\nNote!
+              Make sure the ID is unique and does not overlap with autogenerated Port-channel
+              IDs in the Network Services.\nNote! For MLAG pairs the ID must be between
+              1 and 2000 and both MLAG switches must have the same value.\n"
+          uplink_switch_port_channel_id:
+            documentation_options:
+              table: node-type-uplink-configuration
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 999999
+            description: "Only applicable for L2 switches with `uplink_type: port-channel`.\nBy
+              default the uplink switch Port-channel ID will be set to the number
+              of the first interface defined under `uplink_switch_interfaces`.\nFor
+              example:\n  member ports [ Eth22, Eth23 ] -> ID 22\n  member ports [
+              Eth11/1, Eth22/1 ] -> ID 111\nFor MLAG port-channels ID will be based
+              on the lowest member interface on the first MLAG switch.\nThis option
+              overrides the default behavior and statically sets the Port-channel
+              ID on the uplink switch.\nNote! Make sure the ID is unique and does
+              not overlap with autogenerated Port-channel IDs in the Network Services.\nNote!
+              For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches
+              must have the same value.\n"
           uplink_structured_config:
             documentation_options:
               table: node-type-uplink-configuration
@@ -6073,6 +6573,10 @@ $defs:
             convert_types:
             - str
             default: 32768
+            description: 'Spanning-tree priority configured for the selected mode.
+
+              For `rapid-pvst` the priority can also be set per VLAN under network
+              services.'
           spanning_tree_root_super:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -6497,6 +7001,70 @@ $defs:
                             min: 2
                             max: 255
                             default: 3
+          wan_role:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            $ref: eos_designs#/keys/node_type_keys/items/keys/default_wan_role
+            description: 'PREVIEW: This key is currently not supported
+
+              Override the default WAN role.
+
+
+              This is used both for AutoVPN and Pathfinder designs.
+
+              That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+
+              `server` indicates that the router is a route-reflector.
+
+
+              Only supported if `overlay_routing_protocol` is set to `ibgp`.'
+          cv_pathfinder_role:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            $ref: eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role
+            description: 'PREVIEW: This key is currently not supported
+
+              Override the default CV Pathfinder role.
+
+
+              This key is used for Pathfinder designs only when the `wan_mode` root
+
+              key is set to `cv_pathfinder`.
+
+
+              `pathfinder` is only a valid if `wan_role` is `server`.
+
+              `edge` and `transit region` are only valid if `wan_role` is `client`.'
+          cv_pathfinder_region:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            description: 'PREVIEW: This key is currently not supported
+
+
+              The CV Pathfinder region name.'
+          cv_pathfinder_site:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            description: 'PREVIEW: This key is currently not supported
+
+
+              The CV Pathfinder site name.'
+          dps_mss_ipv4:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: int
+            $ref: eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4
+            description: 'PREVIEW: This key is currently not supported
+
+
+              MSS value for IPv4 the DPS interface.
+
+              If not set, and the device is WAN device, a default value of 1000 is
+              used.'
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -6955,6 +7523,15 @@ $defs:
         type: bool
         default: true
         description: Extend this SVI over VXLAN.
+      spanning_tree_priority:
+        type: int
+        convert_types:
+        - str
+        description: 'Setting spanning-tree priority per VLAN is only supported with
+          `spanning_tree_mode: rapid-pvst` under node type settings.
+
+          The default priority for rapid-PVST is set under the node type settings
+          with `spanning_tree_priority` (default=32768).'
       mtu:
         type: int
         convert_types:

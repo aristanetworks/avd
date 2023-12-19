@@ -21,7 +21,7 @@
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action is defined
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].action == 'dest'
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].dest is defined
-      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].dest == "{{ actual_output_dir }}/yaml_templates_to_facts_test_with_dest.yml"
+      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].dest == actual_output_dir ~ "/yaml_templates_to_facts_test_with_dest.yml"
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps is defined
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.write_file is defined
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.done is defined

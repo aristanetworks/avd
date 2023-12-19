@@ -54,7 +54,7 @@ interface Management1
 | Mac Timestamp | Header eth-type 5 |
 | Mac FCS Error | pass-through |
 
-#### Tap Aggregation Configuration
+#### Tap Aggregation Device Configuration
 
 ```eos
 !

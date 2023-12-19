@@ -45,4 +45,3 @@ BGP no equals default enabled
 !
 service routing configuration bgp no-equals-default
 ```
-

@@ -709,6 +709,338 @@
       "description": "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases: |\n  alias wr copy running-config startup-config\n  alias siib show ip interface brief\n```",
       "title": "Aliases"
     },
+    "application_traffic_recognition": {
+      "type": "object",
+      "description": "Application traffic recognition configuration.",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "description": "List of categories.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Category name.",
+                "title": "Name"
+              },
+              "applications": {
+                "type": "array",
+                "description": "List of applications.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Application name.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Categories"
+        },
+        "field_sets": {
+          "type": "object",
+          "properties": {
+            "l4_ports": {
+              "type": "array",
+              "description": "L4 port field-set.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "L4 port field-set name.",
+                    "title": "Name"
+                  },
+                  "port_values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Port values or range of port values.\nPort values are between 0 and 65535."
+                    },
+                    "title": "Port Values"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "L4 Ports"
+            },
+            "ipv4_prefixes": {
+              "type": "array",
+              "description": "IPv4 prefix field set.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv4 prefix field-set name.",
+                    "title": "Name"
+                  },
+                  "prefix_values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "IP prefix (ex 1.2.3.0/24)."
+                    },
+                    "title": "Prefix Values"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "IPv4 Prefixes"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Field Sets"
+        },
+        "applications": {
+          "type": "object",
+          "properties": {
+            "ipv4_applications": {
+              "type": "array",
+              "description": "List of user defined IPv4 applications.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Application name.",
+                    "title": "Name"
+                  },
+                  "src_prefix_set_name": {
+                    "type": "string",
+                    "description": "Source prefix set name.",
+                    "title": "Src Prefix Set Name"
+                  },
+                  "dest_prefix_set_name": {
+                    "type": "string",
+                    "description": "Destination prefix set name.",
+                    "title": "Dest Prefix Set Name"
+                  },
+                  "protocols": {
+                    "type": "array",
+                    "description": "List of protocols to consider for this application.\n\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ahp",
+                        "esp",
+                        "icmp",
+                        "igmp",
+                        "ospf",
+                        "pim",
+                        "rsvp",
+                        "tcp",
+                        "udp",
+                        "vrrp"
+                      ]
+                    },
+                    "title": "Protocols"
+                  },
+                  "protocol_ranges": {
+                    "type": "array",
+                    "description": "Acccept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Protocol Ranges"
+                  },
+                  "udp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
+                    "title": "UDP Src Port Set Name"
+                  },
+                  "tcp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
+                    "title": "TCP Src Port Set Name"
+                  },
+                  "udp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
+                    "title": "UDP Dest Port Set Name"
+                  },
+                  "tcp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
+                    "title": "TCP Dest Port Set Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "IPv4 Applications"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Applications"
+        },
+        "application_profiles": {
+          "type": "array",
+          "description": "Group of applications.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Application Profile name.",
+                "title": "Name"
+              },
+              "applications": {
+                "type": "array",
+                "description": "List of applications part of the application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Application Name.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications"
+              },
+              "application_transports": {
+                "type": "array",
+                "description": "List of transport protocols.",
+                "items": {
+                  "type": "string",
+                  "description": "Transport name.",
+                  "enum": [
+                    "http",
+                    "https",
+                    "udp",
+                    "tcp",
+                    "ip",
+                    "ip6",
+                    "ssl",
+                    "rtp",
+                    "sctp",
+                    "quic"
+                  ]
+                },
+                "title": "Application Transports"
+              },
+              "categories": {
+                "type": "array",
+                "description": "Categories under this application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of a category.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Categories"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Application Profiles"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Application Traffic Recognition"
+    },
     "arp": {
       "type": "object",
       "properties": {
@@ -7680,6 +8012,11 @@
               "type": "boolean",
               "description": "Add sequence numbers to log messages\n",
               "title": "Sequence Numbers"
+            },
+            "rfc5424": {
+              "type": "boolean",
+              "description": "Forward logs in RFC5424 format\n",
+              "title": "Rfc5424"
             }
           },
           "additionalProperties": false,
@@ -9296,6 +9633,14 @@
                   "^_.+$": {}
                 },
                 "title": "Certificate"
+              },
+              "certificate_revocation_lists": {
+                "type": "array",
+                "description": "List of CRLs (Certificate Revocation List).\nIf specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.\n",
+                "items": {
+                  "type": "string"
+                },
+                "title": "Certificate Revocation Lists"
               }
             },
             "additionalProperties": false,
@@ -9665,6 +10010,21 @@
         "^_.+$": {}
       },
       "title": "MCS Client"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Key only used for documentation or validation purposes",
+      "properties": {
+        "platform": {
+          "type": "string",
+          "title": "Platform"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Metadata"
     },
     "mlag_configuration": {
       "type": "object",
@@ -10669,6 +11029,19 @@
                 "^_.+$": {}
               },
               "title": "Multicast Replication"
+            },
+            "mdb_profile": {
+              "type": "string",
+              "description": "Sand platforms MDB Profile configuration. Note: l3-xxxl does not support MLAG.",
+              "enum": [
+                "balanced",
+                "balanced-xl",
+                "l3",
+                "l3-xl",
+                "l3-xxl",
+                "l3-xxxl"
+              ],
+              "title": "MDB Profile"
             }
           },
           "additionalProperties": false,
@@ -13981,6 +14354,151 @@
             "^_.+$": {}
           },
           "title": "Site"
+        },
+        "profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "AVT Name.",
+                "title": "Name"
+              },
+              "load_balance_policy": {
+                "type": "string",
+                "description": "Name of the load-balance policy.",
+                "title": "Load Balance Policy"
+              },
+              "internet_exit_policy": {
+                "type": "string",
+                "description": "Name of the internet exit policy.",
+                "title": "Internet Exit Policy"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Profiles"
+        },
+        "policies": {
+          "type": "array",
+          "description": "A sequence of application profiles mapped to some virtual topologies.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Policy name.",
+                "title": "Name"
+              },
+              "matches": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "application_profile": {
+                      "type": "string",
+                      "description": "Application profile name.",
+                      "title": "Application Profile"
+                    },
+                    "avt_profile": {
+                      "type": "string",
+                      "description": "AVT Profile name.",
+                      "title": "Avt Profile"
+                    },
+                    "dscp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 63,
+                      "description": "Set DSCP for matched traffic.",
+                      "title": "DSCP"
+                    },
+                    "traffic_class": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 7,
+                      "description": "Set traffic-class for matched traffic.",
+                      "title": "Traffic Class"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Matches"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Policies"
+        },
+        "vrfs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name.",
+                "title": "Name"
+              },
+              "policy": {
+                "type": "string",
+                "description": "AVT Policy name.",
+                "title": "Policy"
+              },
+              "profiles": {
+                "type": "array",
+                "description": "AVT profiles in this VRF.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "AVT profile name.",
+                      "title": "Name"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "description": "Unique ID for this AVT (per VRF).",
+                      "minimum": 1,
+                      "maximum": 254,
+                      "title": "ID"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Profiles"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
         }
       },
       "additionalProperties": false,
@@ -20573,7 +21091,7 @@
                         "server_profiles": {
                           "type": "array",
                           "minItems": 1,
-                          "maxItems": 2,
+                          "maxItems": 12,
                           "description": "STUN server-profile names.",
                           "items": {
                             "type": "string"
@@ -20621,7 +21139,7 @@
                         "server_profiles": {
                           "type": "array",
                           "minItems": 1,
-                          "maxItems": 2,
+                          "maxItems": 12,
                           "description": "STUN server-profile names.",
                           "items": {
                             "type": "string"
@@ -22316,15 +22834,15 @@
     },
     "stun": {
       "type": "object",
-      "description": "STUN configuration",
+      "description": "STUN configuration.",
       "properties": {
         "client": {
           "type": "object",
-          "description": "STUN client settings",
+          "description": "STUN client settings.",
           "properties": {
             "server_profiles": {
               "type": "array",
-              "description": "List of server profiles for the client",
+              "description": "List of server profiles for the client.",
               "items": {
                 "type": "object",
                 "properties": {
@@ -22335,6 +22853,18 @@
                   "ip_address": {
                     "type": "string",
                     "title": "IP Address"
+                  },
+                  "ssl_profile": {
+                    "type": "string",
+                    "description": "SSL profile name.",
+                    "title": "SSL Profile"
+                  },
+                  "port": {
+                    "type": "integer",
+                    "description": "Destination port for the request STUN server (default - 3478).",
+                    "minimum": 1,
+                    "maximum": 65535,
+                    "title": "Port"
                   }
                 },
                 "additionalProperties": false,
@@ -22356,7 +22886,7 @@
         },
         "server": {
           "type": "object",
-          "description": "STUN server settings",
+          "description": "STUN server settings.",
           "properties": {
             "local_interface": {
               "type": "string",
@@ -22369,6 +22899,50 @@
                 "type": "string"
               },
               "title": "Local Interfaces"
+            },
+            "bindings_timeout": {
+              "type": "integer",
+              "description": "Timeout for bindings stored on STUN server in seconds.",
+              "minimum": 10,
+              "maximum": 7200,
+              "title": "Bindings Timeout"
+            },
+            "ssl_profile": {
+              "type": "string",
+              "description": "SSL profile name.",
+              "title": "SSL Profile"
+            },
+            "ssl_connection_lifetime": {
+              "type": "object",
+              "description": "SSL connection lifetime in minutes or hours.\nIf both are specified, minutes is given higher precedence.",
+              "properties": {
+                "minutes": {
+                  "type": "integer",
+                  "description": "SSL connection lifetime in minutes (default - 120).",
+                  "minimum": 1,
+                  "maximum": 1440,
+                  "title": "Minutes"
+                },
+                "hours": {
+                  "type": "integer",
+                  "description": "SSL connection lifetime in hours (default - 2).",
+                  "minimum": 1,
+                  "maximum": 24,
+                  "title": "Hours"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "SSL Connection Lifetime"
+            },
+            "port": {
+              "type": "integer",
+              "description": "Listening port for STUN server (default - 3478).",
+              "minimum": 1,
+              "maximum": 65535,
+              "title": "Port"
             }
           },
           "additionalProperties": false,
