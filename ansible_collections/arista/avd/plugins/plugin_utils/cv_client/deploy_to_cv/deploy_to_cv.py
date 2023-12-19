@@ -68,12 +68,12 @@ async def deploy_to_cv(
             + Add workspace object to result if given otherwise create a new workspace object we can return.
             - Add objects to result.deployed_x/skipped_x as we go through each of the following steps.
         + Initialize CVClient
-        - Gather all devices from the given lists.
+        + Gather all devices from the given lists.
         + On CV Identify all devices based on hostname, serial number or System MAC address.
             + In-place update device objects.
         + On CV Create or update existing Workspace with name and description.
             + In-place update workspace object.
-        - On CV in "Inventory & Topology Studio" set/verify hostnames.
+        + On CV in "Inventory & Topology Studio" set/verify hostnames.
         + On CV in "Static Configlet Studio" upload configlets and assign to devices.
             - TODO: Consider if we should create a hierarchy of configuration containers. For now a single folder "AVD".
         + On CV add and assign device tags.
