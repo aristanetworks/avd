@@ -76,9 +76,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 - `wan_transit`: Transit routers in Pathfinder context, not supported for AutoVPN.
 - `wan_rr`: AutoVPN RR or Pathfinder depending on the `wan_mode` value.
 
-The following table indicates the settingds
-
-#### L3LS EVPN
+The following table indicates the settings:
 
 | Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints | Defaut WAN Role | Default CV Pathfinder Role |
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- | --------------- | -------------------------- |
@@ -103,6 +101,12 @@ roles/eos_designs/docs/tables/wan-settings.md
 
 --8<--
 roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
+--8<--
+
+#### New BGP peer-group
+
+--8<--
+roles/eos_designs/docs/tables/wan-bgp-peer-groups.md
 --8<--
 
 #### New node keys
