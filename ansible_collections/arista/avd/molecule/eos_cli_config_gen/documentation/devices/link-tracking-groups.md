@@ -43,7 +43,7 @@ interface Management1
 | EVPN_MH_ES1 | 30 | 500 |
 | EVPN_MH_ES2 | - | - |
 
-#### Link Tracking Groups Configuration
+#### Link Tracking Groups Device Configuration
 
 ```eos
 !

@@ -25,6 +25,9 @@ management_security:
       certificate:
         file: eAPI.crt
         key: eAPI.key
+      certificate_revocation_lists:
+        - intermediate.crl
+        - ca.crl
     - name: tls-single-version-profile-as-string
       tls_versions: "1.1"
     - name: tls-single-version-profile-as-float

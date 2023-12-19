@@ -1,4 +1,6 @@
 hostname: DC1-BL1B
+metadata:
+  platform: 7280R
 is_deployed: true
 router_bgp:
   as: '65105'
@@ -163,6 +165,8 @@ router_bgp:
         activate: true
       - ip_address: 123.1.1.11
         activate: true
+        prefix_list_in: PL-TEST-IN-AF4
+        prefix_list_out: PL-TEST-OUT-AF4
     neighbors:
     - ip_address: 123.1.1.10
       remote_as: '1234'
@@ -203,6 +207,8 @@ router_bgp:
       neighbors:
       - ip_address: fd5a:fe45:8831:06c5::a
         activate: true
+        prefix_list_in: PL-TEST-IN-AF6
+        prefix_list_out: PL-TEST-OUT-AF6
       - ip_address: fd5a:fe45:8831:06c5::b
         activate: true
     updates:
@@ -376,6 +382,7 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ntp: null
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-BL1B
@@ -596,4 +603,3 @@ sflow:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
     source_interface: Management1
-ntp: null

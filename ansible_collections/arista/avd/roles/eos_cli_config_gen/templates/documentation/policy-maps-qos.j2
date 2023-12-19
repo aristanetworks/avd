@@ -11,7 +11,7 @@
 #### QOS Policy Maps Summary
 {%     for policy_map in policy_maps.qos | arista.avd.natural_sort('name') %}
 
-**{{ policy_map.name }}**
+##### {{ policy_map.name }}
 
 | class | Set | Value |
 | ----- | --- | ----- |
@@ -22,7 +22,7 @@
 {%         endfor %}
 {%     endfor %}
 
-#### QOS Policy Maps configuration
+#### QOS Policy Maps Device Configuration
 
 ```eos
 {%     include 'eos/policy-maps-qos.j2' %}

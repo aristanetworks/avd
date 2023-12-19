@@ -6,14 +6,15 @@
 {# doc - domain list #}
 {% if domain_list is arista.avd.defined %}
 
-### Domain-list
+### IP Domain-list
 
-#### Domain-list:
+#### Domains List
+
 {%     for domain in domain_list | sort %}
- - {{ domain }}
+- {{ domain }}
 {%     endfor %}
 
-#### Domain-list Device Configuration
+#### IP Domain-list Device Configuration
 
 ```eos
 {%     include 'eos/domain-list.j2' %}

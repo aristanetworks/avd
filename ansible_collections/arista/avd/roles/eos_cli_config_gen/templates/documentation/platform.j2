@@ -27,7 +27,7 @@
 #### Trident MMU QUEUE PROFILES
 {%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 
-**{{ profile.name }}**
+##### {{ profile.name }}
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -83,7 +83,7 @@
 {%         endif %}
 {%     endif %}
 
-### Platform Configuration
+### Platform Device Configuration
 
 ```eos
 {%     include 'eos/platform.j2' %}

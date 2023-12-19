@@ -52,7 +52,7 @@ class PatchPanelMixin(UtilsMixin):
                                 "enabled": True,
                                 "connectors": [
                                     {
-                                        "id": 1,
+                                        "id": "1",
                                         "type": "interface",
                                         "endpoint": f"{interface}.{subif['number']}",
                                     },
@@ -61,7 +61,7 @@ class PatchPanelMixin(UtilsMixin):
                             if point_to_point_service.get("type") == "vpws-pseudowire":
                                 patch["connectors"].append(
                                     {
-                                        "id": 2,
+                                        "id": "2",
                                         "type": "pseudowire",
                                         "endpoint": f"bgp vpws {tenant['name']} pseudowire {point_to_point_service['name']}_{subif['number']}",
                                     }
@@ -79,7 +79,7 @@ class PatchPanelMixin(UtilsMixin):
                             "enabled": True,
                             "connectors": [
                                 {
-                                    "id": 1,
+                                    "id": "1",
                                     "type": "interface",
                                     "endpoint": f"{interface}",
                                 }
@@ -88,7 +88,7 @@ class PatchPanelMixin(UtilsMixin):
                         if point_to_point_service.get("type") == "vpws-pseudowire":
                             patch["connectors"].append(
                                 {
-                                    "id": 2,
+                                    "id": "2",
                                     "type": "pseudowire",
                                     "endpoint": f"bgp vpws {tenant['name']} pseudowire {point_to_point_service['name']}",
                                 }

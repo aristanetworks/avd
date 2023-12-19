@@ -1,4 +1,6 @@
 hostname: DC1-SUPER-SPINE2
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65100'

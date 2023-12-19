@@ -42,6 +42,15 @@ interface Management1
 
 #### Standard Access-lists Summary
 
+##### 99
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | remark ACL to restrict access RFC1918 addresses |
+| 20 | permit 10.0.0.0/8 |
+| 30 | permit 172.16.0.0/12 |
+| 40 | permit 192.168.0.0/16 |
+
 ##### ACL-API
 
 | Sequence | Action |
@@ -75,6 +84,12 @@ ACL has counting mode `counters per-entry` enabled!
 
 ```eos
 !
+ip access-list standard 99
+   10 remark ACL to restrict access RFC1918 addresses
+   20 permit 10.0.0.0/8
+   30 permit 172.16.0.0/12
+   40 permit 192.168.0.0/16
+!
 ip access-list standard ACL-API
    10 remark ACL to restrict access to switch API to CVP and Ansible
    20 permit host 10.10.10.10
@@ -98,6 +113,14 @@ ip access-list standard ACL-SSH-VRF
 ### Extended Access-lists
 
 #### Extended Access-lists Summary
+
+##### 4
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | remark ACL to restrict access RFC1918 addresses |
+| 20 | deny ip 10.0.0.0/8 any |
+| 30 | permit ip 192.0.2.0/24 any |
 
 ##### ACL-01
 
@@ -128,6 +151,11 @@ ACL has counting mode `counters per-entry` enabled!
 #### Extended Access-lists Device Configuration
 
 ```eos
+!
+ip access-list 4
+   10 remark ACL to restrict access RFC1918 addresses
+   20 deny ip 10.0.0.0/8 any
+   30 permit ip 192.0.2.0/24 any
 !
 ip access-list ACL-01
    10 remark ACL to restrict access to switch API to CVP and Ansible

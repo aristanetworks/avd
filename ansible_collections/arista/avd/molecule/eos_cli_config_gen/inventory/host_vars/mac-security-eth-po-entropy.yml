@@ -24,6 +24,12 @@ mac_security:
       connection_keys:
         - id: 1234b
           encrypted_key: 12485744465E5A53
+    - name: A3
+      cipher: aes256-gcm-xpn
+      connection_keys:
+        - id: ab
+          encrypted_key: 10195F4C5144405A
+          fallback: false
 
 ### Mgmt sec
 management_security:

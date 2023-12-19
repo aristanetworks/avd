@@ -1,0 +1,878 @@
+[
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingProtocolModel",
+    "categories": [
+      "BGP"
+    ],
+    "description": "ArBGP is configured and operating",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "ArBGP"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "bgp evpn peer state established (evpn)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.0.1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "bgp evpn peer state established (evpn)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.0.2"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "ip bgp peer state established (ipv4)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.1.97"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "ip bgp peer state established (ipv4)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.255.0"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "BGP"
+    ],
+    "description": "ip bgp peer state established (ipv4)",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "bgp_neighbor: 10.255.255.2"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the device temperature is within the acceptable range.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the fans status are within the accepted states list.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the power supplies status are within the accepted states list.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet3 - MLAG_PEER_dc1-leaf1b_Ethernet3"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet4 - MLAG_PEER_dc1-leaf1b_Ethernet4"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet5 - dc1-leaf1-server1_PCI1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet8 - DC1-LEAF1C_Ethernet1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Loopback Interface Status & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Loopback0 - EVPN_Overlay_Peering"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Loopback Interface Status & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Loopback1 - VTEP_VXLAN_Tunnel_Source"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Loopback Interface Status & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Loopback10 - VRF10_VTEP_DIAGNOSTICS"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Loopback Interface Status & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Loopback11 - VRF11_VTEP_DIAGNOSTICS"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Port-Channel Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Port-Channel3 - MLAG_PEER_dc1-leaf1b_Po3"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Port-Channel Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Port-Channel5 - dc1-leaf1-server1_PortChannel dc1-leaf1-server1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Port-Channel Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Port-Channel8 - DC1-LEAF1C_Po1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vlan11 - VRF10_VLAN11"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vlan12 - VRF10_VLAN12"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vlan21 - VRF11_VLAN21"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vlan22 - VRF11_VLAN22"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vlan4093 - MLAG_PEER_L3_PEERING"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vlan Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vlan4094 - MLAG_PEER"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Vxlan Interface Status & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Vxlan1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a_Ethernet1 - Destination: dc1-spine1_Ethernet1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "IP Reachability"
+    ],
+    "description": "ip reachability test p2p links",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a_Ethernet2 - Destination: dc1-spine2_Ethernet1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet1 - remote: dc1-spine1_Ethernet1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet2 - remote: dc1-spine2_Ethernet1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet3 - remote: dc1-leaf1b_Ethernet3"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet4 - remote: dc1-leaf1b_Ethernet4"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet8 - remote: dc1-leaf1c_Ethernet1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.2"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.3"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.4"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.0.5"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.11"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.12"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.13"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.14"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.15"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.16"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.17"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyReachability",
+    "categories": [
+      "Loopback0 Reachability"
+    ],
+    "description": "Loopback0 Reachability",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Source: dc1-leaf1a - 10.255.0.3/32 Destination: 10.255.128.18"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyMlagStatus",
+    "categories": [
+      "mlag"
+    ],
+    "description": "This test verifies the health status of the MLAG configuration.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyNTP",
+    "categories": [
+      "NTP"
+    ],
+    "description": "Synchronised with NTP server",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "NTP"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.0.1"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.0.2"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.0.3"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.0.4"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.0.5"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.11"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.12"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.13"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.14"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.15"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.16"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.17"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote Lo0 address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.128.18"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote VTEP address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.1.3"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote VTEP address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.1.5"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote VTEP address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.129.13"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote VTEP address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.129.15"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyRoutingTableEntry",
+    "categories": [
+      "Routing Table"
+    ],
+    "description": "Remote VTEP address",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "10.255.129.17"
+  },
+  {
+    "name": "dc1-leaf1a",
+    "test": "VerifyAPIHttpsSSL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  }
+]

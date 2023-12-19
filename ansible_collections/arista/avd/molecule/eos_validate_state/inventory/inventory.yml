@@ -47,6 +47,8 @@ all:
                   ansible_host: 172.16.1.113
                 dc2-leaf2b:
                   ansible_host: 172.16.1.114
+                dc2-leaf3a.arista.com:
+                dc2-leaf3b.arista.com:
             DC2_L2_LEAVES:
               hosts:
                 dc2-leaf1c:

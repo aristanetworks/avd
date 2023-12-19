@@ -14,7 +14,6 @@ class AvdTestMLAG(AvdTestBase):
     """
 
     anta_module = "anta.tests.mlag"
-    categories = ["MLAG"]
 
     @cached_property
     def test_definition(self) -> dict:
@@ -28,11 +27,7 @@ class AvdTestMLAG(AvdTestBase):
             return None
 
         anta_tests = [
-            {
-                "VerifyMlagStatus": {
-                    "result_overwrite": {"categories": self.categories, "description": "MLAG State active & Status connected", "custom_field": "MLAG"}
-                }
-            },
+            {"VerifyMlagStatus": {}},
         ]
 
         return {self.anta_module: anta_tests}

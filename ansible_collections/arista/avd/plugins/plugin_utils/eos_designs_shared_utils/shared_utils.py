@@ -20,6 +20,7 @@ from .routing import RoutingMixin
 from .switch_data import SwitchDataMixin
 from .underlay import UnderlayMixin
 from .utils import UtilsMixin
+from .wan import WanMixin
 
 
 class SharedUtils(
@@ -38,6 +39,7 @@ class SharedUtils(
     OverlayMixin,
     PlatformMixin,
     PtpMixin,
+    WanMixin,
     SwitchDataMixin,
     RoutingMixin,
     UnderlayMixin,

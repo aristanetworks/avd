@@ -12,7 +12,7 @@
 
 #### Agent Dummy
 
-##### Environment variables
+##### Environment Variables
 
 | Name | Value |
 | ---- | ----- |
@@ -21,7 +21,7 @@
 
 #### Agent KernelFib
 
-##### Environment variables
+##### Environment Variables
 
 | Name | Value |
 | ---- | ----- |

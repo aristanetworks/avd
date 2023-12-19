@@ -9,12 +9,11 @@
 ### QOS Profiles
 
 #### QOS Profiles Summary
-
 {%     for profile in qos_profiles | arista.avd.natural_sort('name') %}
 
-QOS Profile: **{{ profile.name }}**
+##### QOS Profile: **{{ profile.name }}**
 
-**Settings**
+###### Settings
 
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
@@ -28,7 +27,7 @@ QOS Profile: **{{ profile.name }}**
               profile.uc_tx_queues is arista.avd.defined or
               profile.mc_tx_queues is arista.avd.defined %}
 
-**TX Queues**
+###### TX Queues
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
 | -------- | ---- | --------- | -------- | ---------- | ------- |
@@ -82,7 +81,7 @@ QOS Profile: **{{ profile.name }}**
 {%         endfor %}
 {%         if ns.ecn_table %}
 
-**ECN Configuration**
+###### ECN Configuration
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ------------- | ------------- | -------------------- |
@@ -126,7 +125,7 @@ QOS Profile: **{{ profile.name }}**
 {%         endfor %}
 {%         if ns.wred_table %}
 
-**WRED Configuration**
+###### WRED Configuration
 
 | TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability | Weight |
 | -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
@@ -163,7 +162,7 @@ QOS Profile: **{{ profile.name }}**
 {%         endif %}
 {%         if profile.priority_flow_control.enabled is arista.avd.defined(true) %}
 
-**Priority Flow Control**
+###### Priority Flow Control
 
 Priority Flow Control is **enabled**.
 
@@ -186,7 +185,7 @@ Priority Flow Control is **enabled**.
 {%                 set recovery = profile.priority_flow_control.watchdog.timer.recovery_time | arista.avd.default('-') %}
 {%                 set polling = profile.priority_flow_control.watchdog.timer.polling_interval | arista.avd.default('-') %}
 
-**Priority Flow Control watchdog settings**
+###### Priority Flow Control Watchdog Settings
 
 | Enabled | Action | Timeout | Recovery | Polling |
 | ------- | ------ | ------- | -------- | ------- |

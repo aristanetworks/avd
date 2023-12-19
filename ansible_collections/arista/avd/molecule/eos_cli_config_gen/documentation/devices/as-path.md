@@ -49,7 +49,7 @@ AS Path Regex Mode is **asn**.
 | mylist1 | deny | (64513\|64515)$ | any |
 | mylist2 | deny | _64517$ | igp |
 
-#### AS Path Lists configuration
+#### AS Path Lists Device Configuration
 
 ```eos
 !

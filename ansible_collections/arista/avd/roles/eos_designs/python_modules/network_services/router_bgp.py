@@ -244,9 +244,20 @@ class RouterBgpMixin(UtilsMixin):
                             )
 
                 for bgp_peer in vrf["bgp_peers"]:
+                    # Below we pop various keys that are not supported by the eos_cli_config_gen schema.
+                    # The rest of the keys are relayed directly to eos_cli_config_gen.
+                    # 'ip_address' is popped even though it is supported. It will be added again later
+                    # to ensure it comes first in the generated dict.
                     peer_ip = bgp_peer.pop("ip_address")
                     address_family = f"address_family_ipv{ipaddress.ip_address(peer_ip).version}"
-                    neighbor = {"ip_address": peer_ip, "activate": True}
+                    neighbor = strip_empties_from_dict(
+                        {
+                            "ip_address": peer_ip,
+                            "activate": True,
+                            "prefix_list_in": bgp_peer.pop("prefix_list_in", None),
+                            "prefix_list_out": bgp_peer.pop("prefix_list_out", None),
+                        }
+                    )
                     bgp_vrf.setdefault(address_family, {}).setdefault("neighbors", []).append(neighbor)
 
                     if bgp_peer.get("set_ipv4_next_hop") is not None or bgp_peer.get("set_ipv6_next_hop") is not None:
@@ -651,12 +662,25 @@ class RouterBgpMixin(UtilsMixin):
         """
         Return a string with the route-destinguisher for one VRF
         """
+        rd_override = default(vrf.get("rd_override"))
+
+        if ":" in str(rd_override):
+            return rd_override
+
+        if rd_override is not None:
+            return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{rd_override}"
+
         return f"{self.shared_utils.overlay_rd_type_vrf_admin_subfield}:{self.get_vrf_id(vrf)}"
 
     def get_vrf_rt(self, vrf: dict) -> str:
         """
         Return a string with the route-target for one VRF
         """
+        rt_override = default(vrf.get("rt_override"))
+
+        if ":" in str(rt_override):
+            return rt_override
+
         if self._vrf_rt_admin_subfield is not None:
             admin_subfield = self._vrf_rt_admin_subfield
         elif self.shared_utils.overlay_rt_type["vrf_admin_subfield"] == "vrf_vni":
@@ -664,6 +688,9 @@ class RouterBgpMixin(UtilsMixin):
         else:
             # Both for 'id' and 'vrf_id' options.
             admin_subfield = self.get_vrf_id(vrf)
+
+        if rt_override is not None:
+            return f"{admin_subfield}:{rt_override}"
 
         return f"{admin_subfield}:{self.get_vrf_id(vrf)}"
 

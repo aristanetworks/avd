@@ -85,7 +85,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet2
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet2
@@ -95,7 +95,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet2
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet3
@@ -105,7 +105,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet3 - P2P_LINK_TO_DC1-LEAF2A_Ethernet2
-      description: Ethernet Interface & Line Protocol == \"up\"
+      description: Ethernet Interface & Line Protocol == 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Ethernet4
@@ -115,7 +115,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Ethernet4 - P2P_LINK_TO_DC1-LEAF2B_Ethernet2
-      description: Ethernet Interface & Line Protocol == \"adminDown\"
+      description: Ethernet Interface & Line Protocol == 'adminDown'
 - VerifyInterfacesStatus:
     interfaces:
     - interface: Loopback0
@@ -125,7 +125,7 @@ anta.tests.interfaces:
       categories:
       - Interface State
       custom_field: Loopback0 - EVPN_Overlay_Peering
-      description: Loopback Interface Status & Line Protocol == \"up\"
+      description: Loopback Interface Status & Line Protocol == 'up'
 anta.tests.routing.bgp:
 - VerifyBGPSpecificPeers:
     address_families:
@@ -198,6 +198,9 @@ anta.tests.routing.generic:
       - BGP
       custom_field: ArBGP
       description: ArBGP is configured and operating
+anta.tests.security:
+- VerifyAPIHttpsSSL:
+    profile: eAPI_SSL_Profile
 anta.tests.system:
 - VerifyNTP:
     result_overwrite:

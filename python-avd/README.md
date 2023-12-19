@@ -4,11 +4,9 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# pyavd
+# PyAVD
 
 Generate Arista Validated Designs (AVD) with Python.
-
-pyavd is in beta phase. Please do not use for production. Everything is subject to change.
 
 See [avd.arista.com](https://avd.arista.com/stable/docs/pyavd.html) for details.
 

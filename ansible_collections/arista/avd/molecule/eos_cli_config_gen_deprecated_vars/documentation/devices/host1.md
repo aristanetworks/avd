@@ -22,8 +22,8 @@
   - [Event Handler](#event-handler)
   - [Flow Tracking](#flow-tracking)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
-  - [Custom TCAM profiles](#custom-tcam-profiles)
-  - [Hardware TCAM configuration](#hardware-tcam-configuration)
+  - [Custom TCAM Profiles](#custom-tcam-profiles)
+  - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -149,8 +149,7 @@ ip domain lookup vrf mgt source-interface Management0
 
 ### Management SSH
 
-
-#### SSH timeout and management
+#### SSH Timeout and Management
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
@@ -162,7 +161,7 @@ ip domain lookup vrf mgt source-interface Management0
 | ---------------- | ---------------------- |
 | - | - |
 
-#### Ciphers and algorithms
+#### Ciphers and Algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 |---------|----------------------|----------------|---------------------------|
@@ -174,7 +173,7 @@ ip domain lookup vrf mgt source-interface Management0
 | --- | ------ |
 | mgt | Enabled |
 
-#### Management SSH Configuration
+#### Management SSH Device Configuration
 
 ```eos
 !
@@ -193,7 +192,7 @@ management ssh
 | MGMT | enabled |
 | MONITORING | enabled |
 
-#### Management API gNMI configuration
+#### Management API gNMI Device Configuration
 
 ```eos
 !
@@ -220,7 +219,7 @@ management api gnmi
 | -------- | -------- | -------- |
 | mgt | ACL-API | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -477,7 +476,7 @@ event-handler evpn-blacklist-recovery
 | T3 | T3-E3 | - | - | Management1 |
 | T3 | T3-E4 | - | - | No local interface |
 
-#### Flow Tracking Configuration
+#### Flow Tracking Device Configuration
 
 ```eos
 !
@@ -508,15 +507,15 @@ flow tracking sampled
 
 ## Hardware TCAM Profile
 
-TCAM profile __`traffic_policy`__ is active
+TCAM profile **`traffic_policy`** is active
 
-### Custom TCAM profiles
+### Custom TCAM Profiles
 
 Following TCAM profiles are configured on device:
 
 - Profile Name: `traffic_policy`
 
-### Hardware TCAM configuration
+### Hardware TCAM Device Configuration
 
 ```eos
 !
@@ -602,7 +601,7 @@ vlan 111
 
 - TEST-PROFILE-1
 
-#### Interface Profiles Configuration
+#### Interface Profiles Device Configuration
 
 ```eos
 !
@@ -765,7 +764,6 @@ interface Port-Channel100
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
-
 
 #### Loopback Interfaces Device Configuration
 
@@ -966,7 +964,7 @@ ip routing vrf TENANT_A_PROJECT02
 |-----|------------|------------------|
 | BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
 
-#### Router General configuration
+#### Router General Device Configuration
 
 ```eos
 !
@@ -1066,6 +1064,8 @@ router isis EVPN_UNDERLAY
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | - | - | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group EVPN-OVERLAY-PEERS | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
+| 10.2.3.4 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
+| 10.2.3.5 | - | TENANT_A_PROJECT01 | - | - | - | - | - | - | - | - |
 
 #### BGP Neighbor Interfaces
 
@@ -1211,6 +1211,16 @@ router bgp 65101
       redistribute static route-map RM-CONN-2-BGP
       !
       address-family ipv4
+         neighbor 10.2.3.4 activate
+         neighbor 10.2.3.4 prefix-list PL-TEST-IN-AF4 in
+         neighbor 10.2.3.4 prefix-list PL-TEST-OUT-AF4 out
+         neighbor 10.2.3.5 activate
+         neighbor 10.2.3.5 prefix-list PL-TEST-IN in
+         neighbor 10.2.3.5 prefix-list PL-TEST-OUT out
+         neighbor 10.255.251.1 prefix-list PL-TEST-IN in
+         neighbor 10.255.251.1 prefix-list PL-TEST-OUT out
+      !
+      address-family ipv4
          neighbor TEST_PEER_GRP activate
          neighbor 10.2.3.4 activate
          neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
@@ -1231,7 +1241,7 @@ router bgp 65101
 | CM_PBR_EXCLUDE | - | - | - | - |
 | CM_PBR_INCLUDE | - | - | 192.168.4.2 | True |
 
-#### PBR Policy Maps Configuration
+#### PBR Policy Maps Device Configuration
 
 ```eos
 !
@@ -1277,13 +1287,13 @@ no ip igmp snooping vlan 30
 
 BFD enabled: True
 
-####### IP Rendezvous Information
+##### IP Rendezvous Information
 
 | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
 | 10.238.1.161 | 239.12.12.12/32, 239.12.12.13/32 | - | - | - | - |
 
-####### IP Anycast Information
+##### IP Anycast Information
 
 | IP Anycast Address | Other Rendezvous Point Address | Register Count |
 | ------------------ | ------------------------------ | -------------- |
@@ -1415,7 +1425,7 @@ route-map RM-CONN-BL-BGP deny 10
 | TEST1 | deny | 65002:65002 |
 | TEST2 | deny | 65001:65001 |
 
-#### IP Extended Community Lists configuration
+#### IP Extended Community Lists Device Configuration
 
 ```eos
 !
@@ -1435,7 +1445,7 @@ ip extcommunity-list TEST2 deny 65001:65001
 | TEST1 | deny | .* |
 | TEST2 | deny | 6500[0-1]:650[0-9][0-9] |
 
-#### IP Extended Community RegExp Lists configuration
+#### IP Extended Community RegExp Lists Device Configuration
 
 ```eos
 !
@@ -1455,7 +1465,6 @@ ip extcommunity-list regexp TEST2 deny 6500[0-1]:650[0-9][0-9]
 | -------- | ------ |
 | 10 | ^.*MOLECULE.*$ |
 | 20 | ^.*TESTING.*$ |
-
 
 #### Match-lists Device Configuration
 
@@ -1612,29 +1621,26 @@ FIPS restrictions enabled.
 
 #### MACsec Profiles Summary
 
-**Profile A1:**
+##### Profile A1
 
-Settings:
+###### Settings
 
 | Cipher | Key-Server Priority | Rekey-Period | SCI |
 | ------ | ------------------- | ------------ | --- |
 | - | - | - | True |
 
-Keys:
+##### Profile A2
 
-
-**Profile A2:**
-
-Settings:
+###### Settings
 
 | Cipher | Key-Server Priority | Rekey-Period | SCI |
 | ------ | ------------------- | ------------ | --- |
 | - | - | - | - |
 
-Keys:
+###### Keys
 
 | Key ID | Fallback |
-| ------ |  -------- |
+| ------ | -------- |
 | 1234b | - |
 
 ### MACsec Device Configuration
@@ -1653,20 +1659,20 @@ mac security
 
 ### Traffic Policies information
 
-**IPv4 Field sets**
+#### IPv4 Field Sets
 
 | Field Set Name | Values |
 | -------------- | ------ |
 | DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16 |
 | DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8 |
 
-**IPv6 Field sets**
+#### IPv6 Field Sets
 
 | Field Set Name | Values |
 | -------------- | ------ |
 | DEMO-03 | aaaa::/64<br/>bbbb::/64 |
 
-**L4 Port Field sets**
+#### L4 Port Field Sets
 
 | Field Set Name | Values |
 | -------------- | ------ |
@@ -1674,7 +1680,7 @@ mac security
 
 #### Traffic Policies
 
-**BLUE-C1-POLICY:**
+##### BLUE-C1-POLICY
 
 | Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
 | --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
@@ -1747,7 +1753,7 @@ class-map type pbr match-any CM_PBR_INCLUDE
 
 #### QOS Policy Maps Summary
 
-**PM_REPLICATION_LD**
+##### PM_REPLICATION_LD
 
 | class | Set | Value |
 | ----- | --- | ----- |
@@ -1755,7 +1761,7 @@ class-map type pbr match-any CM_PBR_INCLUDE
 | CM_REPLICATION_LD | traffic_class | 2 |
 | CM_REPLICATION_LD | drop_precedence | 1 |
 
-#### QOS Policy Maps configuration
+#### QOS Policy Maps Device Configuration
 
 ```eos
 !
@@ -1770,16 +1776,15 @@ policy-map type quality-of-service PM_REPLICATION_LD
 
 #### QOS Profiles Summary
 
+##### QOS Profile: **test**
 
-QOS Profile: **test**
-
-**Settings**
+###### Settings
 
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | 46 | dscp | 80 percent | - |
 
-**TX Queues**
+###### TX Queues
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
 | -------- | ---- | --------- | -------- | ---------- | ------- |
@@ -1813,9 +1818,9 @@ qos profile test
 
 ### STUN Server
 
-| Server local interfaces |
-| ----------------------- |
-| ethernet1 |
+| Server Local Interfaces | Bindings Timeout (s) | SSL Profile | SSL Connection Lifetime | Port |
+| ----------------------- | -------------------- | ----------- | ----------------------- | ---- |
+| Ethernet1 | - | - | - | 3478 |
 
 ### STUN Device Configuration
 
@@ -1823,7 +1828,7 @@ qos profile test
 !
 stun
    server
-      local-interface ethernet1
+      local-interface Ethernet1
 ```
 
 ## Maintenance Mode
@@ -1837,7 +1842,7 @@ stun
 | bar | red | peer-group-baz | downlink-neighbors |
 | foo | - | 169.254.1.1<br>fe80::1 | BP1 |
 
-#### BGP Groups Configuration
+#### BGP Groups Device Configuration
 
 ```eos
 !
@@ -1860,7 +1865,7 @@ group bgp foo
 | QSFP_Interface_Group | Ethernet1,5 | uplink-interfaces | BP1 |
 | SFP_Interface_Group | Ethernet10-20<br>Ethernet30-48 | IP1 | BP1 |
 
-#### Interface Groups Configuration
+#### Interface Groups Device Configuration
 
 ```eos
 !
@@ -1907,7 +1912,7 @@ Default maintenance unit profile: **UP1**
 | System | - | - | UP1 | No |
 | UNIT1 | INTERFACE_GROUP_1 | BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
 
-#### Maintenance configuration
+#### Maintenance Device Configuration
 
 ```eos
 !

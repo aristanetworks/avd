@@ -43,9 +43,10 @@ interface Management1
 
 - The maximum number of ACL entries allowed to be provisioned per switch: 10000
 
-#### IP Access-lists Configuration
+#### IP Access-lists Device Configuration
 
 ```eos
+!
 ip access-list ACL_SEQUENCE_AND_COUNTERS
    counters per-entry
    10 remark test acl with sequence numbers
@@ -54,6 +55,7 @@ ip access-list ACL_SEQUENCE_AND_COUNTERS
    40 permit tcp any gt 1023 host 172.16.16.16 eq 22
    50 permit tcp any range 1000 1100 any range 10 20
    4294967295 deny ip any any
+!
 ip access-list ACL_NO_SEQUENCE
    remark test acl without sequence numbers
    deny udp any any log

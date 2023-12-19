@@ -1,4 +1,6 @@
 hostname: MLAG-OSPF-L3LEAF1A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65161'
@@ -20,10 +22,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
-  address_family_ipv4:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -33,6 +31,10 @@ router_bgp:
       threshold: 5
       enabled: true
       expiry_timeout: 10
+  address_family_ipv4:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
   neighbors:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
@@ -93,6 +95,14 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MLAG-OSPF-L3LEAF1A

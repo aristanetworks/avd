@@ -4,7 +4,7 @@
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdMissingVariableError
 
 
-def get_item(list_of_dicts: list, key, value, default=None, required=False, case_sensitive=False, var_name=None):
+def get_item(list_of_dicts: list, key, value, default=None, required=False, case_sensitive=False, var_name=None, custom_error_msg=None):
     """
     Get one dictionary from a list of dictionaries by matching the given key and value
 
@@ -28,6 +28,8 @@ def get_item(list_of_dicts: list, key, value, default=None, required=False, case
         If the search value is a string, the comparison will ignore case by default
     var_name : str
         String used for raising exception with the full variable name
+    custom_error_msg : str
+        Custom error message to raise when required is True and the value is not found
 
     Returns
     -------
@@ -45,7 +47,7 @@ def get_item(list_of_dicts: list, key, value, default=None, required=False, case
 
     if (not isinstance(list_of_dicts, list)) or list_of_dicts == [] or value is None or key is None:
         if required is True:
-            raise AristaAvdMissingVariableError(var_name)
+            raise AristaAvdMissingVariableError(custom_error_msg or var_name)
         return default
 
     for list_item in list_of_dicts:
@@ -58,5 +60,5 @@ def get_item(list_of_dicts: list, key, value, default=None, required=False, case
 
     # No Match
     if required is True:
-        raise AristaAvdMissingVariableError(var_name)
+        raise AristaAvdMissingVariableError(custom_error_msg or var_name)
     return default
