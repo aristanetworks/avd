@@ -8970,7 +8970,7 @@ keys:
               description: Enable BFD.
             bfd_timers:
               type: dict
-              description: 'Override default BFD intervals. BFD must be enabled with
+              description: 'Override default BFD timers. BFD must be enabled with
                 `bfd: true`.'
               keys:
                 interval:
@@ -9155,7 +9155,7 @@ keys:
               description: Enable BFD.
             bfd_timers:
               type: dict
-              description: 'Override default BFD intervals. BFD must be enabled with
+              description: 'Override default BFD timers. BFD must be enabled with
                 `bfd: true`.'
               keys:
                 interval:
@@ -10727,7 +10727,7 @@ keys:
                     description: Enable BFD.
                   bfd_timers:
                     type: dict
-                    description: 'Override default BFD intervals. BFD must be enabled
+                    description: 'Override default BFD timers. BFD must be enabled
                       with `bfd: true`.'
                     keys:
                       interval:

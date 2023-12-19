@@ -302,7 +302,7 @@
                 },
                 "bfd_timers": {
                   "type": "object",
-                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -641,7 +641,7 @@
                 },
                 "bfd_timers": {
                   "type": "object",
-                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -980,7 +980,7 @@
                 },
                 "bfd_timers": {
                   "type": "object",
-                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -1319,7 +1319,7 @@
                 },
                 "bfd_timers": {
                   "type": "object",
-                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -1658,7 +1658,7 @@
                 },
                 "bfd_timers": {
                   "type": "object",
-                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -1997,7 +1997,7 @@
                 },
                 "bfd_timers": {
                   "type": "object",
-                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
@@ -2336,7 +2336,7 @@
                 },
                 "bfd_timers": {
                   "type": "object",
-                  "description": "Override default BFD intervals. BFD must be enabled with `bfd: true`.",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
                   "properties": {
                     "interval": {
                       "type": "integer",
