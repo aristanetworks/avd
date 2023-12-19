@@ -172,7 +172,7 @@ router bgp {{ router_bgp.as }}
    neighbor {{ peer_group.name }} ebgp-multihop {{ peer_group.ebgp_multihop }}
 {%         endif %}
 {%         if peer_group.ttl_maximum_hops is arista.avd.defined %}
-   neighbor {{ peer_group.ip_address }} ttl maximum-hops {{ peer_group.ttl_maximum_hops }}
+   neighbor {{ peer_group.name }} ttl maximum-hops {{ peer_group.ttl_maximum_hops }}
 {%         endif %}
 {%         if peer_group.password is arista.avd.defined %}
    neighbor {{ peer_group.name }} password 7 {{ peer_group.password | arista.avd.hide_passwords(hide_passwords) }}
