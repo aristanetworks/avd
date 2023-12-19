@@ -179,7 +179,7 @@ nav:
       - Ansible User Guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
   - Release Notes: docs/release-notes/4.x.x.md
   - Porting Guide: docs/porting-guides/4.x.x.md
-  - pyavd: docs/pyavd.md
+  - PyAVD: docs/pyavd.md
   - AVD Dev Containers:
       - Overview: docs/containers/overview.md
   - About:

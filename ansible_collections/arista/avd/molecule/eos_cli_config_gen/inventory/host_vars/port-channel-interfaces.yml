@@ -415,6 +415,12 @@ port_channel_interfaces:
           - original_ip: 3.0.0.1
             translated_ip: 4.0.0.1
 
+  - name: Port-Channel131
+    description: dot1q-tunnel mode
+    type: switched
+    mode: dot1q-tunnel
+
+
 # Children interfaces
 ethernet_interfaces:
   - name: Ethernet5

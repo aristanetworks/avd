@@ -2,16 +2,17 @@
 name="pyavd"
 dynamic = ["version", "dependencies", "optional-dependencies"]
 authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
-description="Arista validated designs"
+description="Arista Validated Designs"
 readme = "README.md"
 license = { file = "pyavd/LICENSE" }
 classifiers = [
     "Operating System :: OS Independent",
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Software Development :: Testing",
 ]
