@@ -126,12 +126,15 @@ class RouterPathSelectionMixin(UtilsMixin):
             local_interface = {"name": get(wan_interface, "interface", required=True)}
 
             if self.shared_utils.wan_role == "client":
-                stun_server_profiles = [
-                    self._stun_server_profile_name(wrr, path_group_name, index)
-                    for wrr, data in self._wan_route_servers.items()
-                    for index, path_group in enumerate(get(data, "wan_path_groups", required=True))
-                    if path_group.get("name") == path_group_name
-                ]
+                stun_server_profiles = []
+                for wrr, data in self._wan_route_servers.items():
+                    for index, path_group in enumerate(get(data, "wan_path_groups", required=True)):
+                        if path_group.get("name") != path_group_name:
+                            continue
+                        if not self._should_connect_to_wan_rr([path_group["name"]]):
+                            continue
+                        stun_server_profiles.append(self._stun_server_profile_name(wrr, path_group_name, index))
+
                 if stun_server_profiles:
                     local_interface["stun"] = {"server_profiles": stun_server_profiles}
 
@@ -155,6 +158,8 @@ class RouterPathSelectionMixin(UtilsMixin):
         for wan_route_server, data in self._wan_route_servers.items():
             for path_group in get(data, "wan_path_groups", required=True):
                 if path_group["name"] != path_group_name:
+                    continue
+                if not self._should_connect_to_wan_rr([path_group["name"]]):
                     continue
 
                 for interface_dict in path_group.get("interfaces", []):

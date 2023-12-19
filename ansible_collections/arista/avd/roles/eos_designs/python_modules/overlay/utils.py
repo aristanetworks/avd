@@ -415,3 +415,21 @@ class UtilsMixin:
         """
         name = f"{wan_route_server_name}-{path_group_name}"
         return f"{name}-{id}" if id is not None else name
+
+    def _should_connect_to_wan_rr(self, path_groups: list) -> bool:
+        """
+        This helper implements wherther or not a connection to the wan_rr should be made or not based on a list of path-groups.
+
+        To do this the logic is the following:
+        * Look at the wan_interfaces on the router and check if there is any path-group in common with the RR where
+          `cv_pathfinder_connected_to_pathfinder` is not False.
+        """
+        return any(
+            wan_interface["wan_path_group"] in path_groups
+            and get(
+                wan_interface,
+                "cv_pathfinder_connected_to_pathfinder",
+                default=True,
+            )
+            for wan_interface in self.shared_utils.wan_interfaces
+        )

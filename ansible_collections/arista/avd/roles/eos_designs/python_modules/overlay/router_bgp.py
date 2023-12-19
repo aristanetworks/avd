@@ -485,6 +485,8 @@ class RouterBgpMixin(UtilsMixin):
                         " 'bgp_peer_groups.wan_overlay_peers.listen_range_prefixes'."
                     )
                 for wan_route_server, data in self._wan_route_servers.items():
+                    if not self._should_connect_to_wan_rr([pg["name"] for pg in get(data, "wan_path_groups", required=True)]):
+                        continue
                     neighbor = self._create_neighbor(data["router_id"], wan_route_server, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])
                     neighbors.append(neighbor)
             if self.shared_utils.wan_role == "server":

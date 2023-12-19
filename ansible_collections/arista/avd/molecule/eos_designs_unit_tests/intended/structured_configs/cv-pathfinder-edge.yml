@@ -158,10 +158,17 @@ router_path_selection:
       ipv4_addresses:
       - 10.7.7.7
     ipsec_profile: CP-PROFILE
+  - name: MPLS
+    id: 500
+    local_interfaces:
+    - name: Ethernet2
+    dynamic_peers:
+      enabled: true
   load_balance_policies:
   - name: LBPOLICY
     path_groups:
     - name: INET
+    - name: MPLS
 stun:
   client:
     server_profiles:
@@ -171,6 +178,13 @@ ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface
   ip_address: dhcp
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 172.15.5.5/31
   shutdown: false
   type: routed
   flow_tracker:

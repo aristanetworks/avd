@@ -36,11 +36,9 @@ class StunMixin(UtilsMixin):
         if self.shared_utils.wan_role == "client":
             server_profiles = []
 
-            local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
-
             for wan_route_server, data in self._wan_route_servers.items():
                 for path_group in data.get("wan_path_groups", []):
-                    if path_group["name"] not in local_path_group_names:
+                    if not self._should_connect_to_wan_rr([path_group["name"]]):
                         continue
 
                     for index, interface_dict in enumerate(get(path_group, "interfaces", required=True)):
