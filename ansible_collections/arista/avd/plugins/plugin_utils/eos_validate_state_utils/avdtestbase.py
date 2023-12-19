@@ -168,13 +168,13 @@ class AvdTestBase:
         Attempts to retrieve a value associated with a given key from structured_config and logs if it's missing.
 
         Args:
-            key (str): The key to retrieve. Supports dot-notation like "foo.bar" to do deeper lookups.
+            key (str): The key to retrieve.
             host (str | None): The host from which to retrieve the key. Defaults to the device running the test.
             logging_level (str): The logging level to use for the log message.
         """
         host_struct_cfg = self.get_host_structured_config(host=host) if host else self.structured_config
         try:
-            return get(host_struct_cfg, key, required=True)
+            return get(host_struct_cfg, key, required=True, separator="..")
         except AristaAvdMissingVariableError:
             self.log_skip_message(key=key, logging_level=logging_level)
             return None
