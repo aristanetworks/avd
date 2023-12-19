@@ -64,7 +64,7 @@ ethernet_interfaces:
   ip_address: 192.168.1.2/31
   shutdown: false
   type: routed
-  description: peer1 eth1
+  description: peer1_eth1
   service_profile: TEST-QOS-PROFILE
   eos_cli: '! TEST RAW_EOS_CLI
 

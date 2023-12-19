@@ -377,7 +377,7 @@ class UtilsMixin:
         # TODO move this to description module?
         interface_description = (
             l3_interface.get("description")
-            or " ".join([elem for elem in [l3_interface.get("peer"), l3_interface.get("peer_interface")] if elem is not None])
+            or "_".join([elem for elem in [l3_interface.get("peer"), l3_interface.get("peer_interface")] if elem is not None])
             or None
         )
 
