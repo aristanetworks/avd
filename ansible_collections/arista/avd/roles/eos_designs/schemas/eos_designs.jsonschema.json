@@ -2276,6 +2276,318 @@
             "^_.+$": {}
           },
           "title": "Ipvpn Gateway Peers"
+        },
+        "wan_overlay_peers": {
+          "type": "object",
+          "description": "PREVIEW: This key is currently not supported",
+          "properties": {
+            "name": {
+              "type": "string",
+              "default": "WAN-OVERLAY-PEERS",
+              "description": "Name of peer group.",
+              "title": "Name"
+            },
+            "password": {
+              "type": "string",
+              "description": "Type 7 encrypted password.",
+              "title": "Password"
+            },
+            "bfd": {
+              "type": "boolean",
+              "default": false,
+              "title": "BFD"
+            },
+            "listen_range_prefixes": {
+              "type": "array",
+              "description": "Only used for nodes where `wan_role` is `server` like AutoVPN RRs and Pathfinders.\nFor clients, AVD will raise an error if the Loopback0 IP is not in any listen range.",
+              "items": {
+                "type": "string",
+                "description": "The prefixes to use in listen_range."
+              },
+              "title": "Listen Range Prefixes"
+            },
+            "structured_config": {
+              "type": "object",
+              "description": "Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Peer-group name",
+                  "title": "Name"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Key only used for documentation or validation purposes",
+                  "title": "Type"
+                },
+                "remote_as": {
+                  "type": "string",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "title": "Remote As"
+                },
+                "local_as": {
+                  "type": "string",
+                  "description": "BGP AS <1-4294967295> or AS number in asdot notation \"<1-65535>.<0-65535>\"",
+                  "title": "Local As"
+                },
+                "description": {
+                  "type": "string",
+                  "title": "Description"
+                },
+                "shutdown": {
+                  "type": "boolean",
+                  "title": "Shutdown"
+                },
+                "as_path": {
+                  "type": "object",
+                  "description": "BGP AS-PATH options",
+                  "properties": {
+                    "remote_as_replace_out": {
+                      "type": "boolean",
+                      "description": "Replace AS number with local AS number",
+                      "title": "Remote As Replace Out"
+                    },
+                    "prepend_own_disabled": {
+                      "type": "boolean",
+                      "description": "Disable prepending own AS number to AS path",
+                      "title": "Prepend Own Disabled"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "As Path"
+                },
+                "remove_private_as": {
+                  "type": "object",
+                  "description": "Remove private AS numbers in outbound AS path",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "all": {
+                      "type": "boolean",
+                      "title": "All"
+                    },
+                    "replace_as": {
+                      "type": "boolean",
+                      "title": "Replace As"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Remove Private As"
+                },
+                "remove_private_as_ingress": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "replace_as": {
+                      "type": "boolean",
+                      "title": "Replace As"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Remove Private As Ingress"
+                },
+                "peer_filter": {
+                  "type": "string",
+                  "description": "Peer-filter name\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                  "deprecated": true,
+                  "title": "Peer Filter"
+                },
+                "next_hop_unchanged": {
+                  "type": "boolean",
+                  "title": "Next Hop Unchanged"
+                },
+                "update_source": {
+                  "type": "string",
+                  "description": "IP address or interface name",
+                  "title": "Update Source"
+                },
+                "route_reflector_client": {
+                  "type": "boolean",
+                  "title": "Route Reflector Client"
+                },
+                "bfd": {
+                  "type": "boolean",
+                  "title": "BFD"
+                },
+                "ebgp_multihop": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 255,
+                  "description": "Time-to-live in range of hops",
+                  "title": "Ebgp Multihop"
+                },
+                "next_hop_self": {
+                  "type": "boolean",
+                  "title": "Next Hop Self"
+                },
+                "password": {
+                  "type": "string",
+                  "title": "Password"
+                },
+                "passive": {
+                  "type": "boolean",
+                  "title": "Passive"
+                },
+                "default_originate": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "always": {
+                      "type": "boolean",
+                      "title": "Always"
+                    },
+                    "route_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Route Map"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Default Originate"
+                },
+                "send_community": {
+                  "type": "string",
+                  "description": "'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'",
+                  "title": "Send Community"
+                },
+                "maximum_routes": {
+                  "type": "integer",
+                  "description": "Maximum number of routes (0 means unlimited)",
+                  "minimum": 0,
+                  "maximum": 4294967294,
+                  "title": "Maximum Routes"
+                },
+                "maximum_routes_warning_limit": {
+                  "type": "string",
+                  "description": "Maximum number of routes after which a warning is issued (0 means never warn) or\nPercentage of maximum number of routes at which to warn (\"<1-100> percent\")\n",
+                  "title": "Maximum Routes Warning Limit"
+                },
+                "maximum_routes_warning_only": {
+                  "type": "boolean",
+                  "title": "Maximum Routes Warning Only"
+                },
+                "link_bandwidth": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "default": {
+                      "type": "string",
+                      "description": "nn.nn(K|M|G) link speed in bits/second",
+                      "title": "Default"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Link Bandwidth"
+                },
+                "allowas_in": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "times": {
+                      "type": "integer",
+                      "description": "Number of local ASNs allowed in a BGP update",
+                      "minimum": 1,
+                      "maximum": 10,
+                      "title": "Times"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Allowas In"
+                },
+                "weight": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 65535,
+                  "title": "Weight"
+                },
+                "timers": {
+                  "type": "string",
+                  "description": "BGP Keepalive and Hold Timer values in seconds as string \"<0-3600> <0-3600>\"",
+                  "title": "Timers"
+                },
+                "rib_in_pre_policy_retain": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "title": "Enabled"
+                    },
+                    "all": {
+                      "type": "boolean",
+                      "title": "All"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "Rib In Pre Policy Retain"
+                },
+                "route_map_in": {
+                  "type": "string",
+                  "description": "Inbound route-map name",
+                  "title": "Route Map In"
+                },
+                "route_map_out": {
+                  "type": "string",
+                  "description": "Outbound route-map name",
+                  "title": "Route Map Out"
+                },
+                "bgp_listen_range_prefix": {
+                  "type": "string",
+                  "description": "IP prefix range\nnote: `bgp_listen_range_prefix` and `peer_filter` should not be mixed with\nthe new `listen_ranges` key above to avoid conflicts.\n\nThis key is deprecated. Support will be removed in AVD version 5.0.0. Use <samp>listen_ranges</samp> instead.",
+                  "deprecated": true,
+                  "title": "BGP Listen Range Prefix"
+                },
+                "session_tracker": {
+                  "type": "string",
+                  "title": "Session Tracker"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "title": "Structured Config"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Wan Overlay Peers"
         }
       },
       "additionalProperties": false,
@@ -8241,6 +8553,87 @@
         "custom_structured_configuration_"
       ],
       "title": "Custom Structured Configuration Prefix"
+    },
+    "cv_pathfinder_regions": {
+      "description": "PREVIEW: This key is currently not supported\nDefine the SDWAN hierarchy for the device.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "id": {
+            "type": "integer",
+            "description": "The region ID must be unique for the whole WAN deployment.",
+            "minimum": 1,
+            "maximum": 255,
+            "title": "ID"
+          },
+          "sites": {
+            "type": "array",
+            "description": "All sites are placed in a default zone called DEFAULT-ZONE with ID 1.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "description": {
+                  "type": "string",
+                  "title": "Description"
+                },
+                "id": {
+                  "type": "integer",
+                  "description": "The site ID must be unique within a zone.\nGiven that all the sites are placed in the DEFAULT-ZONE, the site ID must be unique within a region.",
+                  "minimum": 1,
+                  "maximum": 10000,
+                  "title": "ID"
+                },
+                "location": {
+                  "type": "string",
+                  "description": "Will be interpreted",
+                  "title": "Location"
+                },
+                "site_contact": {
+                  "type": "string",
+                  "title": "Site Contact"
+                },
+                "site_after_hours_contact": {
+                  "type": "string",
+                  "title": "Site After Hours Contact"
+                },
+                "name": {
+                  "type": "string",
+                  "title": "Name"
+                }
+              },
+              "required": [
+                "id",
+                "name"
+              ],
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              },
+              "description": "Site name and ID."
+            },
+            "title": "Sites"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "description": "Region name and ID."
+      },
+      "title": "Cv Pathfinder Regions"
     },
     "cv_topology": {
       "type": "array",
@@ -20185,6 +20578,25 @@
             "description": "Set the default evpn encapsulation.\n",
             "title": "Default EVPN Encapsulation"
           },
+          "default_wan_role": {
+            "type": "string",
+            "enum": [
+              "client",
+              "server"
+            ],
+            "description": "PREVIEW: This key is currently not supported\nSet the default WAN role.\n\nThis is used both for AutoVPN and Pathfinder designs.\nThat means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.\n`server` indicates that the router is a route-reflector.\n\nOnly supported if `overlay_routing_protocol` is set to `ibgp`.\n",
+            "title": "Default Wan Role"
+          },
+          "default_cv_pathfinder_role": {
+            "type": "string",
+            "enum": [
+              "edge",
+              "transit region",
+              "pathfinder"
+            ],
+            "description": "PREVIEW: This key is currently not supported\nSet the default CV Pathfinder role.\n\nThis key is used for Pathfinder designs only when the `wan_mode` root\nkey is set to `cv-pathfinder`.\n\n`pathfinder` is only a valid if `wan_role` is `server`.\n`edge` and `transit` are only valid if `wan_role` is `client`.\n",
+            "title": "Default Cv Pathfinder Role"
+          },
           "mlag_support": {
             "type": "boolean",
             "default": false,
@@ -30418,6 +30830,216 @@
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",
       "type": "string",
       "title": "Vtep Vvtep IP"
+    },
+    "wan_ipsec_profiles": {
+      "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",
+      "type": "object",
+      "properties": {
+        "control_plane": {
+          "type": "object",
+          "properties": {
+            "ike_policy_name": {
+              "type": "string",
+              "default": "CP-IKE-POLICY",
+              "description": "Name of the IKE policy.",
+              "title": "Ike Policy Name"
+            },
+            "sa_policy_name": {
+              "type": "string",
+              "default": "CP-SA-POLICY",
+              "description": "Name of the SA policy.",
+              "title": "Sa Policy Name"
+            },
+            "profile_name": {
+              "type": "string",
+              "default": "CP-PROFILE",
+              "description": "Name of the IPSec profile.",
+              "title": "Profile Name"
+            },
+            "shared_key": {
+              "type": "string",
+              "description": "The IPSec shared key.\nThis variable is sensitive and SHOULD be configured using some vault mechanism.",
+              "title": "Shared Key"
+            }
+          },
+          "required": [
+            "shared_key"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "description": "PREVIEW: This key is currently not supported",
+          "title": "Control Plane"
+        },
+        "data_plane": {
+          "type": "object",
+          "description": "If `data_plane` is not defined, `control_plane` information is used for both.",
+          "properties": {
+            "ike_policy_name": {
+              "type": "string",
+              "default": "DP-IKE-POLICY",
+              "description": "Name of the IKE policy.",
+              "title": "Ike Policy Name"
+            },
+            "sa_policy_name": {
+              "type": "string",
+              "default": "DP-SA-POLICY",
+              "description": "Name of the SA policy.",
+              "title": "Sa Policy Name"
+            },
+            "profile_name": {
+              "type": "string",
+              "default": "DP-PROFILE",
+              "description": "Name of the IPSec profile.",
+              "title": "Profile Name"
+            },
+            "shared_key": {
+              "type": "string",
+              "description": "The type 7 encrypted IPSec shared key.\nThis variable is sensitive and should be configured using some vault mechanism.",
+              "title": "Shared Key"
+            }
+          },
+          "required": [
+            "shared_key"
+          ],
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Data Plane"
+        }
+      },
+      "required": [
+        "control_plane"
+      ],
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Wan Ipsec Profiles"
+    },
+    "wan_mode": {
+      "description": "PREVIEW: This key is currently not supported\n\nSelect if the WAN should be run using CV Pathfinder or Auto VPN only.",
+      "type": "string",
+      "default": "cv-pathfinder",
+      "enum": [
+        "autovpn",
+        "cv-pathfinder"
+      ],
+      "title": "Wan Mode"
+    },
+    "wan_path_groups": {
+      "description": "PREVIEW: This key is currently not supported\nList of path-groups used for the WAN configuration.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Path-group name.",
+            "title": "Name"
+          },
+          "id": {
+            "type": "string",
+            "description": "Path-group id.",
+            "title": "ID"
+          },
+          "description": {
+            "type": "string",
+            "description": "Additional information about the path-group for documentation purposes.",
+            "title": "Description"
+          },
+          "ipsec": {
+            "type": "boolean",
+            "description": "Flag to configure IPsec on the carrier (default is True).",
+            "title": "Ipsec"
+          },
+          "import_path_groups": {
+            "type": "array",
+            "description": "List of [ath-groups to import in this path-group.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "remote": {
+                  "type": "string",
+                  "description": "Remote path-group to import.",
+                  "title": "Remote"
+                },
+                "local": {
+                  "type": "string",
+                  "description": "Optional, if not set, the path-group `name` is used as local.",
+                  "title": "Local"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Import Path Groups"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Wan Path Groups"
+    },
+    "wan_route_servers": {
+      "description": "PREVIEW: This key is currently not supported\n\nList of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders\nwhen using `wan_mode`=`cv-pathfinder`, to which the device should connect to.\n\nWhen the route server is part of the same inventory as the WAN routers,\nonly the name is required.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "hostname": {
+            "type": "string",
+            "description": "Route-Reflector hostname.",
+            "title": "Hostname"
+          },
+          "router_id": {
+            "type": "string",
+            "description": "Route-Reflector router id.",
+            "title": "Router ID"
+          },
+          "path_groups": {
+            "type": "array",
+            "description": "Path-groups through which the Route Reflector/Pathfinder is reached.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Path-group name.",
+                  "title": "Name"
+                },
+                "ip_address": {
+                  "type": "string",
+                  "description": "The public IP address of the Route Reflector for this path-group.",
+                  "title": "IP Address"
+                }
+              },
+              "additionalProperties": false,
+              "patternProperties": {
+                "^_.+$": {}
+              }
+            },
+            "title": "Path Groups"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "hostname"
+        ]
+      },
+      "title": "Wan Route Servers"
     }
   },
   "required": [
