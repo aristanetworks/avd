@@ -48,10 +48,9 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
             query="device:*",
         )
         # Add the root level container to the list of root level containers using the studio inputs API (!?!)
-        cv_studio_inputs = await cv_client.get_studio_inputs(
-            studio_id=STATIC_CONFIGLET_STUDIO_ID, workspace_id=result.workspace.id, input_path=["configletAssignmentRoots"]
+        root_containers: list = await cv_client.get_studio_inputs_with_path(
+            studio_id=STATIC_CONFIGLET_STUDIO_ID, workspace_id=result.workspace.id, input_path=["configletAssignmentRoots"], default_value=[]
         )
-        root_containers: list = json.loads(cv_studio_inputs.inputs)
         if CONFIGLET_CONTAINER_ID not in root_containers:
             root_containers.append(CONFIGLET_CONTAINER_ID)
             await cv_client.set_studio_inputs(
@@ -69,6 +68,8 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
     update_device_container_ids = existing_device_container_ids.copy()
 
     # Bluntly setting everything like nothing was there.
+    # Alternative would be to pull down all configlets and containers
+    # to compare them with the target.
     for config in todo_configs:
         configlet_id = f"{CONFIGLET_ID_PREFIX}{config.device.serial_number}"
         await cv_client.set_configlet(

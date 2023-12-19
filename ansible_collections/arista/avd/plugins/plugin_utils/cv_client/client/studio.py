@@ -3,8 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import json
 from datetime import datetime
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 from ..api.arista.studio.v1 import (
     DeviceInfo,
@@ -16,6 +17,9 @@ from ..api.arista.studio.v1 import (
     InputsKey,
     InputsRequest,
     InputsServiceStub,
+    InputsStreamRequest,
+    InterfaceInfo,
+    InterfaceInfos,
     TopologyInput,
     TopologyInputConfig,
     TopologyInputConfigServiceStub,
@@ -44,12 +48,12 @@ class StudioMixin:
         self: CVClient,
         studio_id: str,
         workspace_id: str,
-        input_path: list[str] | None = None,
+        default_value: Any = None,
         time: datetime = None,
         timeout: float = 10.0,
-    ) -> Inputs:
+    ) -> Any:
         """
-        Get Studio Inputs using arista.studio.v1.InputsService.GetOne and arista.studio.v1.InputsConfigServer.GetAll APIs.
+        Get Studio Inputs using arista.studio.v1.InputsService.GetAll and arista.studio.v1.InputsConfigServer.GetAll APIs.
 
         The Studio Inputs GetAll API for the workspace does not return anything from mainline and does not return deletions in the workspace.
         So to produce the Workspace Studio Inputs we need to fetch from the workspace, and if we find nothing, we need to check if inputs
@@ -62,10 +66,115 @@ class StudioMixin:
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
-        TODO: Refactor to fetch inputs with GetAll so we can stream larger input sets. Issue is to reassemble all this data.
+        Returns:
+            Dict containing inputs. The dict will be empty if no inputs are found.
+        """
+        request = InputsStreamRequest(
+            # First attempt to fetch inputs from workspace.
+            partial_eq_filter=[
+                Inputs(
+                    key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
+                )
+            ],
+            time=time,
+        )
+        client = InputsServiceStub(self._channel)
+        studio_inputs = {}
+        try:
+            # We use get_all since inputs can be larger than the maximum message size.
+            # The inputs are split up by the server to send the value of each key in the underlying data instead of one big JSON blob.
+            # Each response will contain a path on which a value must be set.
+            # After all responses have been handled the data built from the paths/values contain the full inputs.
+            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+            async for response in responses:
+                if response.value.inputs is None:
+                    continue
+
+                self._set_value_from_path(
+                    path=response.value.key.path,
+                    data=studio_inputs,
+                    value=json.loads(response.value.inputs),
+                )
+
+            # We only get a response if the inputs are set/changed in the workspace.
+            if studio_inputs:
+                print("Got studio inputs from the workspace")
+                return studio_inputs or default_value
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+
+        # If we get here, it means no inputs were returned by the workspace call.
+        # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
+        request = InputsConfigStreamRequest(
+            partial_eq_filter=InputsConfig(
+                key=InputsKey(studio_id=studio_id, workspace_id=workspace_id),
+                remove=True,
+            ),
+            time=time,
+        )
+        client = InputsConfigServiceStub(self._channel)
+        try:
+            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+            async for response in responses:
+                print("Studio inputs removed in the workspace")
+                # If we get here it means we got an entry with "removed: True" so no need to look further.
+                return default_value
+
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+
+        # If we get here, it means there are no inputs in the workspace and they are not deleted, so we can fetch from mainline.
+        request = InputsStreamRequest(
+            # Notice using workspace="" for mainline.
+            partial_eq_filter=[
+                Inputs(
+                    key=InputsKey(studio_id=studio_id, workspace_id=""),
+                )
+            ],
+            time=time,
+        )
+        client = InputsServiceStub(self._channel)
+        try:
+            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+            async for response in responses:
+                if response.value.inputs is None:
+                    continue
+
+                self._set_value_from_path(
+                    path=response.value.key.path,
+                    data=studio_inputs,
+                    value=json.loads(response.value.inputs),
+                )
+            print("Studio inputs from mainline", studio_inputs)
+            return studio_inputs or default_value
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}'") or e
+
+    async def get_studio_inputs_with_path(
+        self: CVClient,
+        studio_id: str,
+        workspace_id: str,
+        input_path: list[str],
+        default_value: Any = None,
+        time: datetime = None,
+        timeout: float = 10.0,
+    ) -> Any:
+        """
+        Get Studio Inputs for a specific path using arista.studio.v1.InputsService.GetOne and arista.studio.v1.InputsConfigServer.GetAll APIs.
+
+        The Studio Inputs GetOne API for the workspace does not return anything from mainline and does not return deletions in the workspace.
+        So to produce the Workspace Studio Inputs we need to fetch from the workspace, and if we find nothing, we need to check if inputs
+        got deleted in the workspace by retrieving config. Finally we can fetch from mainline.
+
+        Parameters:
+            studio_id: Unique identifier for the studio.
+            workspace_id: Unique identifier of the Workspace for which the information is fetched. Use "" for mainline.
+            input_path: Data elements leading to specific inputs.
+            time: Timestamp from which the information is fetched. `now()` if not set.
+            timeout: Timeout in seconds.
 
         Returns:
-            Inputs object.
+            Value of the requested path or the default_value if no inputs are found.
         """
         request = InputsRequest(
             # First attempt to fetch inputs from workspace.
@@ -77,32 +186,45 @@ class StudioMixin:
             time=time,
         )
         client = InputsServiceStub(self._channel)
+        studio_inputs = {}
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
+
             # We only get a response if the inputs are set/changed in the workspace.
-            return response.value
+            print("Got studio inputs from the workspace")
+            if response.value.inputs is not None:
+                return json.loads(response.value.inputs)
+            else:
+                return default_value
+
         except Exception as e:
             e = get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
             if isinstance(e, CVResourceNotFound) and workspace_id != "":
                 # Ignore this error, since it simply means we have to check if inputs got deleted in this workspace or fetch from mainline as last resort.
-                # Saving the error for raising in case the inputs was deleted.
-                not_found_error = e
                 pass
             else:
                 raise e
 
-        # Next up fetch the inputs config from the workspace to see if the inputs was deleted in this workspace.
+        # If we get here, it means no inputs were returned by the workspace call.
+        # So now we fetch the inputs config from the workspace to see if the inputs were deleted in this workspace.
         request = InputsConfigStreamRequest(
-            partial_eq_filter=InputsConfig(key=InputsKey(studio_id=studio_id, workspace_id=workspace_id, path=input_path), remove=True),
+            partial_eq_filter=InputsConfig(
+                key=InputsKey(
+                    studio_id=studio_id,
+                    workspace_id=workspace_id,
+                    path=RepeatedString(values=input_path),
+                ),
+                remove=True,
+            ),
             time=time,
         )
         client = InputsConfigServiceStub(self._channel)
         try:
             responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
+                print("Studio inputs removed in the workspace")
                 # If we get here it means we got an entry with "removed: True" so no need to look further.
-                # So we will raise since we have no inputs for the studio. Reusing the error with correct grpc error context.
-                raise not_found_error
+                return default_value
 
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
@@ -120,8 +242,11 @@ class StudioMixin:
         client = InputsServiceStub(self._channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-            # We only get a response if the inputs are set in mainline.
-            return response.value
+            print("Studio inputs from mainline", studio_inputs)
+            if response.value.inputs is not None:
+                return json.loads(response.value.inputs)
+            else:
+                return default_value
         except Exception as e:
             raise get_cv_client_exception(e, f"Studio ID '{studio_id}, Workspace ID '{workspace_id}', Path '{input_path}'") or e
 
@@ -175,6 +300,203 @@ class StudioMixin:
         timeout: float = 10.0,
     ) -> list[TopologyInput]:
         """
+        TODO: Once the topology studio inputs API is public, this function can be replaced by the _future variant.
+              It will probably need some version detection to see if the API is supported.
+
+        Get Topology Studio Inputs using arista.studio.v1.InputsService.GetAll and arista.studio.v1.InputsConfigService.GetAll APIs.
+
+        Parameters:
+            workspace_id: Unique identifier of the Workspace for which the information is fetched. Use "" for mainline.
+            device_ids: List of Device IDs / Serial numbers to get inputs for. If not given, all devices are returned.
+            time: Timestamp from which the information is fetched. `now()` if not set.
+            timeout: Timeout in seconds.
+
+        Returns:
+            TopologyInput objects for the requested devices.
+        """
+        topology_inputs = []
+        studio_inputs: dict = await self.get_studio_inputs(studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={})
+        for device_entry in studio_inputs.get("devices", []):
+            if not isinstance(device_entry, dict):
+                continue
+            device_id = str(device_entry.get("tags", {}).get("query", "")).removeprefix("device:")
+
+            # Ignore the device if it is not one of the requested devices.
+            if device_ids and device_id not in device_ids:
+                continue
+
+            device_info: dict = device_entry.get("inputs", {}).get("device", {})
+            interfaces: list[dict] = device_info.get("interfaces", [])
+            topology_inputs.append(
+                TopologyInput(
+                    key=TopologyInputKey(
+                        workspace_id=workspace_id,
+                        device_id=device_id,
+                    ),
+                    device_info=DeviceInfo(
+                        device_id=device_id,
+                        model_name=device_info.get("modelName"),
+                        hostname=device_info.get("hostname"),
+                        mac_address=device_info.get("macAddress"),
+                        interface_infos=InterfaceInfos(
+                            [
+                                InterfaceInfo(
+                                    name=str(interface.get("tags", {}).get("query", "")).removeprefix("interface:").split("@", maxsplit=1)[0],
+                                    neighbor_device_id=interface.get("inputs", {}).get("interface", {}).get("neighborDeviceId"),
+                                    neighbor_interface_name=interface.get("inputs", {}).get("interface", {}).get("neighborInterfaceName"),
+                                )
+                                for interface in interfaces
+                            ]
+                        ),
+                    ),
+                )
+            )
+        return topology_inputs
+
+    async def set_topology_studio_inputs(
+        self: CVClient,
+        workspace_id: str,
+        device_inputs: list[tuple[str, str]],
+        timeout: float = 10.0,
+    ) -> list[InputsConfig]:
+        """
+        TODO: Once the topology studio inputs API is public, this function can be replaced by the _future variant.
+              It will probably need some version detection to see if the API is supported.
+
+        Set Topology Studio Inputs using arista.studio.v1.InputsConfigService.Set API.
+
+        Parameters:
+            workspace_id: Unique identifier of the Workspace for which the information is set.
+            device_inputs: List of Tuples with the format (<device_id>, <hostname>).
+            timeout: Timeout in seconds.
+        """
+        device_inputs_by_id = {device_id: {"hostname": hostname} for device_id, hostname in device_inputs}
+
+        # We need to get all the devices to make sure we get the correct index of devices.
+        studio_inputs: dict = await self.get_studio_inputs(studio_id=TOPOLOGY_STUDIO_ID, workspace_id=workspace_id, default_value={})
+
+        inputs_config = []
+        for device_index, device_entry in enumerate(studio_inputs.get("devices", [])):
+            if not isinstance(device_entry, dict):
+                continue
+            device_id = str(device_entry.get("tags", {}).get("query", "")).removeprefix("device:")
+
+            # Ignore the device if it is not one of the requested devices.
+            if device_id not in device_inputs_by_id:
+                continue
+
+            # Update the given fields for the device and submit a separate set request for this device.
+            device_info: dict = device_entry.get("inputs", {}).get("device", {})
+            device_info.update(device_inputs_by_id[device_id])
+            inputs_config.append(
+                await self.set_studio_inputs(
+                    studio_id=TOPOLOGY_STUDIO_ID,
+                    workspace_id=workspace_id,
+                    input_path=["devices", str(device_index), "inputs", "device"],
+                    inputs=json.dumps(device_info),
+                )
+            )
+        return inputs_config
+
+    def _set_value_from_path(self, path: list[str], data: list | dict, value) -> None:
+        """
+        Recursive function to walk through data to set value on path, creating any level needed.
+
+        Parameters:
+            path: Variable path to walk to set the value.
+            data: Dict or list of which the path is walked and the value is set.
+            Value: Value to set on the given path.
+
+        Returns:
+            No return value since all updates are done in-place in the given data.
+        """
+        if not path:
+            if isinstance(value, dict) and isinstance(data, dict):
+                data.update(value)
+                return
+            else:
+                raise RuntimeError(f"Path '{path}', value type '{type(value)}' cannot be set on data type '{type(data)}'")
+        # Convert '0' to 0.
+        path = [int(element) if str(element).isnumeric() else element for element in path]
+        if len(path) == 1:
+            if isinstance(data, dict):
+                data[path[0]] = value
+            elif isinstance(data, list) and isinstance(path[0], int):
+                # We ignore the actual integer value and just append the item to the list.
+                data.append(value)
+            else:
+                raise RuntimeError(f"Path '{path}' cannot be set on data of type '{type(data)}'")
+            return
+
+        # Two or more elements in path.
+        if isinstance(data, dict):
+            # For dict, create the child key with correct type and call recursively.
+            if isinstance(path[1], int):
+                data.setdefault(path[0], [])
+                self._set_value_from_path(path[1:], data[path[0]], value)
+            else:
+                data.setdefault(path[0], {})
+                self._set_value_from_path(path[1:], data[path[0]], value)
+        elif isinstance(data, list) and isinstance(path[0], int):
+            index = path[0]
+            # For list, pad the list with None values if it is smaller than the path index.
+            if missing_indexes := max(0, (index + 1) - len(data)):
+                data.extend([None] * missing_indexes)
+
+            # Then assign the index with the correct type and call recursively.
+            if isinstance(path[1], int):
+                if not isinstance(data[index], list):
+                    data[index] = []
+                self._set_value_from_path(path[1:], data[index], value)
+            else:
+                if not isinstance(data[index], dict):
+                    data[index] = {}
+                self._set_value_from_path(path[1:], data[index], value)
+
+        else:
+            raise RuntimeError(f"Path '{path}', value type '{type(value)}' cannot be set on data of type '{type(data)}'")
+
+        return None
+
+    def _get_value_from_path(self, path: list[str], data: list | dict, default_value: Any = None) -> Any:
+        """
+        Recursive function to walk through data to get a value from the given path.
+
+        Parameters:
+            path: Variable path to walk to get the value.
+            data: Dict or list of which the path is walked and the value is found.
+            default_value: Value to return if a value is not found at the given path.
+
+        Returns:
+            The value at the given path.
+
+        Raises:
+            TypeError: If the path does not match the data types of the given data (ex. 0 for a dict)
+        """
+        if not path:
+            return data
+
+        # Convert '0' to 0.
+        path = [int(element) if str(element).isnumeric() else element for element in path]
+        if isinstance(path[0], int) and not isinstance(data, list):
+            raise TypeError(f"Path element is '{path[0]}' but data is not a list (got '{type(data)}').")
+
+        try:
+            return self._get_value_from_path(path[1:], data[path[0]])
+        except (IndexError, KeyError):
+            return default_value
+
+    async def _future__get_topology_studio_inputs(
+        self: CVClient,
+        workspace_id: str,
+        device_ids: list[str] | None = None,
+        time: datetime = None,
+        timeout: float = 10.0,
+    ) -> list[TopologyInput]:
+        """
+        TODO: Once the topology studio inputs API is public, this function can be put in place.
+              It will probably need some version detection to see if the API is supported.
+
         Get Topology Studio Inputs using arista.studio.v1.TopologyInputsService.GetAll and arista.studio.v1.TopologyInputsConfigService.GetAll APIs.
 
         Parameters:
@@ -210,13 +532,16 @@ class StudioMixin:
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Device IDs '{device_ids}'") or e
 
-    async def set_topology_studio_inputs(
+    async def _future_set_topology_studio_inputs(
         self: CVClient,
         workspace_id: str,
         device_inputs: list[tuple[str, str]],
         timeout: float = 10.0,
     ) -> list[TopologyInputKey]:
         """
+        TODO: Once the topology studio inputs API is public, this function can be put in place.
+              It will probably need some version detection to see if the API is supported.
+
         Set Topology Studio Inputs using arista.studio.v1.TopologyInputsConfigService.Set API.
 
         Parameters:

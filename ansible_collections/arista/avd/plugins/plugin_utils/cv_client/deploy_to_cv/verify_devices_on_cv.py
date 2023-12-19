@@ -67,9 +67,6 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
         device.serial_number = found_device_dict_by_hostname[device.hostname].key.device_id
         device.system_mac_address = found_device_dict_by_hostname[device.hostname].system_mac_address
 
-    """
-    commented out since CV is not responding well to these API calls :)
-
     # Now we know which devices are on CV, so we can dig deeper and check for them in I&T Studio
     # If a device is found, we will ensure hostname is correct and if not, update the hostname.
     # If a device is not found, we will set _exist_on_cv back to False.
@@ -96,7 +93,6 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
 
     if update_topology_inputs:
         await cv_client.set_topology_studio_inputs(workspace_id=workspace_id, device_inputs=update_topology_inputs)
-    """
 
     if missing_devices := [device for device in devices if not device._exists_on_cv]:
         error = CVResourceNotFound("Missing devices on CloudVision", *missing_devices)

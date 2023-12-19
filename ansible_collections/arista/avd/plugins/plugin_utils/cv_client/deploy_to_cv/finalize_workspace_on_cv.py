@@ -37,6 +37,8 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
 
     if build_result.state == BuildState.BUILD_STATE_SUCCESS:
         workspace.final_state = "built"
+        if workspace.requested_state == "built":
+            return
 
         # We can only submit if the build was successful
         if workspace.requested_state == "submitted":
