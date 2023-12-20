@@ -103,6 +103,12 @@ roles/eos_designs/docs/tables/wan-settings.md
 roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
 --8<--
 
+#### WAN interfaces
+
+--8<--
+roles/eos_designs/docs/tables/wan-interfaces-settings.md
+--8<--
+
 #### New BGP peer-group
 
 --8<--
