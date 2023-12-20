@@ -94,7 +94,7 @@ router_bfd:
 router_path_selection:
   path_groups:
   - name: INET
-    id: 500
+    id: 101
     local_interfaces:
     - name: Ethernet1
       stun:

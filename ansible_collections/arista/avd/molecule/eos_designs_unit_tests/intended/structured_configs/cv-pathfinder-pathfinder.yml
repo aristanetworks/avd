@@ -142,12 +142,12 @@ router_bfd:
 router_path_selection:
   path_groups:
   - name: INET
-    id: 500
+    id: 101
     local_interfaces:
     - name: Ethernet1
     ipsec_profile: CP-PROFILE
   - name: MPLS
-    id: 500
+    id: 100
     local_interfaces:
     - name: Ethernet2
   load_balance_policies:
