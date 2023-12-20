@@ -3204,6 +3204,7 @@ keys:
         path_group:
           type: str
           description: The path-group to which this carrier belongs.
+          required: true
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
