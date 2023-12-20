@@ -3286,7 +3286,7 @@
               },
               "cv_pathfinder_connected_to_pathfinder": {
                 "type": "boolean",
-                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
                 "title": "Cv Pathfinder Connected To Pathfinder"
               },
               "raw_eos_cli": {
@@ -5968,7 +5968,7 @@
               },
               "cv_pathfinder_connected_to_pathfinder": {
                 "type": "boolean",
-                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
                 "title": "Cv Pathfinder Connected To Pathfinder"
               },
               "raw_eos_cli": {
@@ -10043,7 +10043,7 @@
               },
               "cv_pathfinder_connected_to_pathfinder": {
                 "type": "boolean",
-                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
                 "title": "Cv Pathfinder Connected To Pathfinder"
               },
               "raw_eos_cli": {
@@ -12725,7 +12725,7 @@
               },
               "cv_pathfinder_connected_to_pathfinder": {
                 "type": "boolean",
-                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
                 "title": "Cv Pathfinder Connected To Pathfinder"
               },
               "raw_eos_cli": {

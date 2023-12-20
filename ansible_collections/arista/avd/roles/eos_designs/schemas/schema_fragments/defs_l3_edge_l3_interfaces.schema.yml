@@ -87,7 +87,7 @@ $defs:
           description: |-
             PREVIEW: This key is currently not supported
 
-            For a WAN interface (`wan_carrier` is set), allow to disable the static tunnel towards Pathfinders.
+            For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
             Default True.
         raw_eos_cli:
           type: str
