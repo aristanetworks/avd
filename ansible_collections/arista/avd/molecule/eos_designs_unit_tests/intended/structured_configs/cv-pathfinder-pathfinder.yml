@@ -145,6 +145,7 @@ router_path_selection:
     id: 101
     local_interfaces:
     - name: Ethernet1
+    - name: Ethernet3
     ipsec_profile: CP-PROFILE
   - name: MPLS
     id: 100
@@ -161,6 +162,7 @@ stun:
     local_interfaces:
     - Ethernet1
     - Ethernet2
+    - Ethernet3
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface
@@ -172,6 +174,13 @@ ethernet_interfaces:
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.16.0.1/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet3
+  peer_type: l3_interface
+  ip_address: 10.9.9.9/31
   shutdown: false
   type: routed
   flow_tracker:

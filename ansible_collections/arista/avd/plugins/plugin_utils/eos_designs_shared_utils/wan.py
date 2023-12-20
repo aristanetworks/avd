@@ -97,7 +97,9 @@ class WanMixin:
         return local_carriers
 
     def get_carrier_path_group(self: SharedUtils, carrier: str) -> str:
-        """ """
+        """
+        Returns the path_group associated to a carrier name as defined in `wan_carriers`.
+        """
         global_carriers = get(self.hostvars, "wan_carriers", required=True)
 
         return get_item(
@@ -120,14 +122,15 @@ class WanMixin:
 
         local_path_groups = []
         global_path_groups = get(self.hostvars, "wan_path_groups", required=True)
+        local_path_groups_names = set(carrier.get("path_group") for carrier in self.wan_local_carriers)
 
-        for carrier in self.wan_local_carriers:
+        for path_group_name in local_path_groups_names:
             path_group = get_item(
                 global_path_groups,
                 "name",
-                carrier.get("path_group"),
+                path_group_name,
                 required=True,
-                custom_error_msg=f"WAN path_group {carrier.get('path_group')} is not in the available path_groups defined in `wan_path_groups`",
+                custom_error_msg=f"WAN path_group {path_group_name} defined for a WAN carrier is not in the available path_groups defined in `wan_path_groups`",
             )
             local_path_groups.append(path_group)
 

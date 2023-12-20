@@ -96,6 +96,8 @@ wan_carriers:
     path_group: INET
   - name: Orange
     path_group: INET
+  - name: Another-ISP
+    path_group: INET
   - name: Colt
     path_group: MPLS
 
@@ -132,6 +134,11 @@ l3_edge:
       wan_carrier: Colt
       wan_circuit_id: 10000
       ip: 172.16.0.1/31
+    - node: cv-pathfinder-pathfinder
+      interface: Ethernet3
+      wan_carrier: Another-ISP
+      wan_circuit_id: 999
+      ip: 10.9.9.9/31
     - node: cv-pathfinder-pathfinder1
       interface: Ethernet1
       wan_carrier: Orange

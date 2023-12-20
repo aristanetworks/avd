@@ -150,6 +150,7 @@ router_path_selection:
       stun:
         server_profiles:
         - cv-pathfinder-pathfinder-INET-0
+        - cv-pathfinder-pathfinder-INET-1
     dynamic_peers:
       enabled: true
     static_peers:
@@ -157,6 +158,7 @@ router_path_selection:
       name: cv-pathfinder-pathfinder
       ipv4_addresses:
       - 10.7.7.7
+      - 10.9.9.9
     ipsec_profile: CP-PROFILE
   - name: MPLS
     id: 100
@@ -174,6 +176,8 @@ stun:
     server_profiles:
     - name: cv-pathfinder-pathfinder-INET-0
       ip_address: 10.7.7.7/31
+    - name: cv-pathfinder-pathfinder-INET-1
+      ip_address: 10.9.9.9/31
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface

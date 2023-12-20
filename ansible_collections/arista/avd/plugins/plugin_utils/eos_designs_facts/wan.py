@@ -40,6 +40,6 @@ class WanMixin:
                     }
                 )
             else:
-                pg_dict.append({"name": get(interface, "interface", required=True), "ip_address": get(interface, "ip", required=True)})
+                pg_dict["interfaces"].append({"name": get(interface, "interface", required=True), "ip_address": get(interface, "ip", required=True)})
 
         return res

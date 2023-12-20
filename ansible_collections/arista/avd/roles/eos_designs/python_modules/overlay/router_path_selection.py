@@ -75,7 +75,8 @@ class RouterPathSelectionMixin(UtilsMixin):
         """ """
         # TODO for now a default load balance policy with all path-groups.
         load_balance_policies = []
-        load_balance_policies.append({"name": "LBPOLICY", "path_groups": [{"name": pg.get("name")} for pg in path_groups]})
+        unique_pg = set(pg.get("name") for pg in path_groups)
+        load_balance_policies.append({"name": "LBPOLICY", "path_groups": [{"name": pg_name} for pg_name in unique_pg]})
         return load_balance_policies
 
     def _get_policies(self) -> list | None:
@@ -130,12 +131,13 @@ class RouterPathSelectionMixin(UtilsMixin):
             if self.shared_utils.wan_role == "client":
                 stun_server_profiles = []
                 for wrr, data in self._wan_route_servers.items():
-                    for index, path_group in enumerate(get(data, "wan_path_groups", required=True)):
+                    for path_group in get(data, "wan_path_groups", required=True):
                         if path_group.get("name") != path_group_name:
                             continue
                         if not self._should_connect_to_wan_rr([path_group["name"]]):
                             continue
-                        stun_server_profiles.append(self._stun_server_profile_name(wrr, path_group_name, index))
+                        for index in range(len(get(path_group, "interfaces", required=True))):
+                            stun_server_profiles.append(self._stun_server_profile_name(wrr, path_group_name, index))
 
                 if stun_server_profiles:
                     local_interface["stun"] = {"server_profiles": stun_server_profiles}
@@ -145,7 +147,9 @@ class RouterPathSelectionMixin(UtilsMixin):
         return local_interfaces
 
     def _get_dynamic_peers(self) -> dict | None:
-        """ """
+        """
+        TODO support ip_local and ipsec ?
+        """
         if self.shared_utils.wan_role != "client":
             return None
         return {"enabled": True}
@@ -164,17 +168,18 @@ class RouterPathSelectionMixin(UtilsMixin):
                 if not self._should_connect_to_wan_rr([path_group["name"]]):
                     continue
 
+                ipv4_addresses = []
+
                 for interface_dict in path_group.get("interfaces", []):
-                    ipv4_addresses = []
                     if (ip_address := interface_dict.get("ip_address")) is not None:
                         # TODO - removing mask using split but maybe a helper is clearer
                         ipv4_addresses.append(ip_address.split("/")[0])
-                    static_peers.append(
-                        {
-                            "router_ip": get(data, "router_id", required=True),
-                            "name": wan_route_server,
-                            "ipv4_addresses": ipv4_addresses,
-                        }
-                    )
+                static_peers.append(
+                    {
+                        "router_ip": get(data, "router_id", required=True),
+                        "name": wan_route_server,
+                        "ipv4_addresses": ipv4_addresses,
+                    }
+                )
 
         return static_peers
