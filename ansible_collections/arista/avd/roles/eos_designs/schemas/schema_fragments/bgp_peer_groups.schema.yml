@@ -147,6 +147,37 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
+      wan_overlay_peers:
+        type: dict
+        documentation_options:
+          table: wan-bgp-peer-groups
+        description: |-
+          PREVIEW: This key is currently not supported
+        keys:
+          name:
+            type: str
+            default: WAN-OVERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: False
+          listen_range_prefixes:
+            type: list
+            description: |-
+              Only used for nodes where `wan_role` is `server` like AutoVPN RRs and Pathfinders.
+              For clients, AVD will raise an error if the Loopback0 IP is not in any listen range.
+            items:
+              type: str
+              description: The prefixes to use in listen_range.
+          structured_config:
+            type: dict
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: "eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items/"
       IPv4_UNDERLAY_PEERS:
         type: dict
         deprecation:

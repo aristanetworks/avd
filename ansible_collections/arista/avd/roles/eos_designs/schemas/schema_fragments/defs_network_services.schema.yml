@@ -1040,6 +1040,13 @@ $defs:
                 type: bool
                 default: true
                 description: Extend this L2VLAN over VXLAN.
+              spanning_tree_priority:
+                type: int
+                convert_types:
+                  - str
+                description: |-
+                  Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type settings.
+                  The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority` (default=32768).
               evpn_vlan_bundle:
                 type: str
                 description: |
