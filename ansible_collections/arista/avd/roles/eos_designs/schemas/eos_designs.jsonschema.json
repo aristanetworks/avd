@@ -3269,14 +3269,9 @@
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
               },
-              "wan_path_group": {
-                "type": "string",
-                "description": "PREVIEW: This key is currently not supported\n\nThe WAN path-group this interface is connected to.",
-                "title": "Wan Path Group"
-              },
               "wan_carrier": {
                 "type": "string",
-                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is not rendered in the configuration but used for WAN designs.",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
                 "title": "Wan Carrier"
               },
               "wan_circuit_id": {
@@ -5951,14 +5946,9 @@
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
               },
-              "wan_path_group": {
-                "type": "string",
-                "description": "PREVIEW: This key is currently not supported\n\nThe WAN path-group this interface is connected to.",
-                "title": "Wan Path Group"
-              },
               "wan_carrier": {
                 "type": "string",
-                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is not rendered in the configuration but used for WAN designs.",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
                 "title": "Wan Carrier"
               },
               "wan_circuit_id": {
@@ -10026,14 +10016,9 @@
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
               },
-              "wan_path_group": {
-                "type": "string",
-                "description": "PREVIEW: This key is currently not supported\n\nThe WAN path-group this interface is connected to.",
-                "title": "Wan Path Group"
-              },
               "wan_carrier": {
                 "type": "string",
-                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is not rendered in the configuration but used for WAN designs.",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
                 "title": "Wan Carrier"
               },
               "wan_circuit_id": {
@@ -12708,14 +12693,9 @@
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
               },
-              "wan_path_group": {
-                "type": "string",
-                "description": "PREVIEW: This key is currently not supported\n\nThe WAN path-group this interface is connected to.",
-                "title": "Wan Path Group"
-              },
               "wan_carrier": {
                 "type": "string",
-                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is not rendered in the configuration but used for WAN designs.",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
                 "title": "Wan Carrier"
               },
               "wan_circuit_id": {
@@ -30920,6 +30900,38 @@
       "description": "IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.\nThis is only needed for centralized routing designs.\n",
       "type": "string",
       "title": "Vtep Vvtep IP"
+    },
+    "wan_carriers": {
+      "description": "PREVIEW: This key is currently not supported\n\nList of carriers used for the WAN configuration and their mapping to path-groups.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Carrier name.",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Additional information about the carrier for documentation purposes.",
+            "title": "Description"
+          },
+          "path_group": {
+            "type": "string",
+            "description": "The path-group to which this carrier belongs.",
+            "title": "Path Group"
+          }
+        },
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "title": "Wan Carriers"
     },
     "wan_ipsec_profiles": {
       "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",

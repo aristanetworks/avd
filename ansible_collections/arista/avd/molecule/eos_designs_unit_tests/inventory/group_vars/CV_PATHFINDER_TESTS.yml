@@ -85,54 +85,60 @@ wan_path_groups:
   - name: LTE
     id: 102
 
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+  - name: ATT
+    path_group: INET
+  - name: Bouygues Telecom
+    path_group: INET
+  - name: SFR
+    path_group: INET
+  - name: Orange
+    path_group: INET
+  - name: Colt
+    path_group: MPLS
+
 l3_edge:
   l3_interfaces:
     - node: cv-pathfinder-edge
       interface: Ethernet1
-      wan_path_group: INET
       wan_carrier: ATT
       wan_circuit_id: 666
       ip: dhcp
     - node: cv-pathfinder-edge
       interface: Ethernet2
-      wan_path_group: MPLS
       wan_carrier: Colt
       wan_circuit_id: 10555
       ip: 172.15.5.5/31
       cv_pathfinder_connected_to_pathfinder: False
     - node: cv-pathfinder-transit
       interface: Ethernet1
-      wan_path_group: INET
       wan_carrier: Comcast
       wan_circuit_id: 667
       ip: dhcp
     - node: cv-pathfinder-transit
       interface: Ethernet2
-      wan_path_group: MPLS
       wan_carrier: Colt
       wan_circuit_id: 10666
       ip: 172.16.6.6/31
     - node: cv-pathfinder-pathfinder
       interface: Ethernet1
-      wan_path_group: INET
       wan_carrier: Bouygues Telecom
       wan_circuit_id: 777
       ip: 10.7.7.7/31
     - node: cv-pathfinder-pathfinder
       interface: Ethernet2
-      wan_path_group: MPLS
       wan_carrier: Colt
       wan_circuit_id: 10000
       ip: 172.16.0.1/31
     - node: cv-pathfinder-pathfinder1
       interface: Ethernet1
-      wan_path_group: INET
       wan_carrier: Orange
       wan_circuit_id: 888
       ip: 10.8.8.8/31
     - node: cv-pathfinder-pathfinder2
       interface: Ethernet1
-      wan_path_group: INET
       wan_carrier: SFR
       wan_circuit_id: 999
       ip: 10.9.9.9/31

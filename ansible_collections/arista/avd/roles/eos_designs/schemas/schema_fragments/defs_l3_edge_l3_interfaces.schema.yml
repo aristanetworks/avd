@@ -52,14 +52,6 @@ $defs:
         qos_profile:
           type: str
           description: QOS service profile.
-        wan_path_group:
-          type: str
-          documentation_options:
-            table: wan-interfaces-settings
-          description: |-
-            PREVIEW: This key is currently not supported
-
-            The WAN path-group this interface is connected to.
         wan_carrier:
           type: str
           documentation_options:
@@ -68,7 +60,7 @@ $defs:
             PREVIEW: This key is currently not supported
 
             The WAN Carrier this interface is connected to.
-            This is not rendered in the configuration but used for WAN designs.
+            This is used to infer the path-groups in which this interface should be configured.
         wan_circuit_id:
           type: str
           documentation_options:

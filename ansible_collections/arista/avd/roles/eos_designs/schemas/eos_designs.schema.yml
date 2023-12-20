@@ -3182,6 +3182,28 @@ keys:
       remove_in_version: 4.0.0
     type: bool
     default: false
+  wan_carriers:
+    documentation_options:
+      table: wan-settings
+    description: 'PREVIEW: This key is currently not supported
+
+
+      List of carriers used for the WAN configuration and their mapping to path-groups.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Carrier name.
+        description:
+          type: str
+          description: Additional information about the carrier for documentation
+            purposes.
+        path_group:
+          type: str
+          description: The path-group to which this carrier belongs.
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
@@ -4192,14 +4214,6 @@ $defs:
         qos_profile:
           type: str
           description: QOS service profile.
-        wan_path_group:
-          type: str
-          documentation_options:
-            table: wan-interfaces-settings
-          description: 'PREVIEW: This key is currently not supported
-
-
-            The WAN path-group this interface is connected to.'
         wan_carrier:
           type: str
           documentation_options:
@@ -4209,7 +4223,8 @@ $defs:
 
             The WAN Carrier this interface is connected to.
 
-            This is not rendered in the configuration but used for WAN designs.'
+            This is used to infer the path-groups in which this interface should be
+            configured.'
         wan_circuit_id:
           type: str
           documentation_options:

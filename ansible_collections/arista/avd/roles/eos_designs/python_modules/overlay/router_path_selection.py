@@ -122,7 +122,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         local_interfaces = []
         for wan_interface in self.shared_utils.wan_interfaces:
             # Skipping interface not in the target path_group
-            if wan_interface.get("wan_path_group") != path_group_name:
+            if self.shared_utils.get_carrier_path_group(wan_interface.get("wan_carrier")) != path_group_name:
                 continue
 
             local_interface = {"name": get(wan_interface, "interface", required=True)}

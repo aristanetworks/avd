@@ -431,7 +431,7 @@ class UtilsMixin:
           `cv_pathfinder_connected_to_pathfinder` is not False.
         """
         return any(
-            wan_interface["wan_path_group"] in path_groups
+            self.shared_utils.get_carrier_path_group(wan_interface["wan_carrier"]) in path_groups
             and get(
                 wan_interface,
                 "cv_pathfinder_connected_to_pathfinder",

@@ -7,6 +7,10 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>wan_carriers</samp>](## "wan_carriers") | List, items: Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>List of carriers used for the WAN configuration and their mapping to path-groups. |
+    | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_carriers.[].name") | String | Required, Unique |  |  | Carrier name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "wan_carriers.[].description") | String |  |  |  | Additional information about the carrier for documentation purposes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_group</samp>](## "wan_carriers.[].path_group") | String |  |  |  | The path-group to which this carrier belongs. |
     | [<samp>wan_ipsec_profiles</samp>](## "wan_ipsec_profiles") | Dictionary |  |  |  | PREVIEW: This key is currently not supported<br><br>Define IPsec profiles parameters for WAN configuration. |
     | [<samp>&nbsp;&nbsp;control_plane</samp>](## "wan_ipsec_profiles.control_plane") | Dictionary | Required |  |  | PREVIEW: This key is currently not supported |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  | `CP-IKE-POLICY` |  | Name of the IKE policy. |
@@ -39,6 +43,20 @@
 === "YAML"
 
     ```yaml
+    # PREVIEW: This key is currently not supported
+
+    # List of carriers used for the WAN configuration and their mapping to path-groups.
+    wan_carriers:
+
+        # Carrier name.
+      - name: <str; required; unique>
+
+        # Additional information about the carrier for documentation purposes.
+        description: <str>
+
+        # The path-group to which this carrier belongs.
+        path_group: <str>
+
     # PREVIEW: This key is currently not supported
 
     # Define IPsec profiles parameters for WAN configuration.

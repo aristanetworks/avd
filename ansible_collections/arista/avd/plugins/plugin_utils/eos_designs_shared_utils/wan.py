@@ -66,31 +66,68 @@ class WanMixin:
         wan_interfaces = []
         for interface in self.filtered_l3_interfaces:
             # Potentially needs to resolve profile
-            if get(interface, "wan_path_group") is not None:
+            if get(interface, "wan_carrier") is not None:
                 # TODO - may need to validate the path_group here
                 wan_interfaces.append(interface)
 
         return wan_interfaces
 
     @cached_property
-    def wan_local_path_groups(self: SharedUtils) -> list:
+    def wan_local_carriers(self: SharedUtils) -> list:
         """
-        List of path_groups present on this router based on the wan_interfaces
+        List of carriers present on this router based on the wan_interfaces
 
         TODO maybe a list of name is enough
         """
         if self.wan_mode is None:
             return []
+        local_carriers = []
+        global_carriers = get(self.hostvars, "wan_carriers", required=True)
+        for interface in self.wan_interfaces:
+            iface_carrier = interface.get("wan_carrier")
+            carrier = get_item(
+                global_carriers,
+                "name",
+                iface_carrier,
+                required=True,
+                custom_error_msg=f"WAN carrier {iface_carrier} is not in the available carriers defined in `wan_carriers`",
+            )
+            local_carriers.append(carrier)
+
+        return local_carriers
+
+    def get_carrier_path_group(self: SharedUtils, carrier: str) -> str:
+        """ """
+        global_carriers = get(self.hostvars, "wan_carriers", required=True)
+
+        return get_item(
+            global_carriers,
+            "name",
+            carrier,
+            required=True,
+            custom_error_msg=f"WAN carrier {carrier} is not in the available carriers defined in `wan_carriers`",
+        )["path_group"]
+
+    @cached_property
+    def wan_local_path_groups(self: SharedUtils) -> list:
+        """
+        List of path_groups present on this router based on the local carriers
+
+        TODO maybe a list of name is enough
+        """
+        if self.wan_mode is None:
+            return []
+
         local_path_groups = []
         global_path_groups = get(self.hostvars, "wan_path_groups", required=True)
-        for interface in self.wan_interfaces:
-            iface_path_group = interface.get("wan_path_group")
+
+        for carrier in self.wan_local_carriers:
             path_group = get_item(
                 global_path_groups,
                 "name",
-                iface_path_group,
+                carrier.get("path_group"),
                 required=True,
-                custom_error_msg=f"WAN path_group {iface_path_group} is not in the available path_groups defined in `wan_path_groups`",
+                custom_error_msg=f"WAN path_group {carrier.get('path_group')} is not in the available path_groups defined in `wan_path_groups`",
             )
             local_path_groups.append(path_group)
 

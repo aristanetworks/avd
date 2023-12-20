@@ -30,7 +30,8 @@ class WanMixin:
 
         res = []
         for interface in self.shared_utils.wan_interfaces:
-            pg_name = get(interface, "wan_path_group", required=True)
+            carrier = get(interface, "wan_carrier", required=True)
+            pg_name = self.shared_utils.get_carrier_path_group(carrier)
             if (pg_dict := get_item(res, "name", pg_name)) is None:
                 res.append(
                     {
