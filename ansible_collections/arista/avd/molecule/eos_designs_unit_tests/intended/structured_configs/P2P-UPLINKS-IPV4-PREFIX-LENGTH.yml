@@ -37,10 +37,12 @@ router_bgp:
   - ip_address: 10.254.255.249
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '923'
+    peer: MLAG_ODD_ID_L3LEAF1A
     description: MLAG_ODD_ID_L3LEAF1A_Ethernet10
   - ip_address: 10.254.255.253
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '923'
+    peer: MLAG_ODD_ID_L3LEAF1B
     description: MLAG_ODD_ID_L3LEAF1B_Ethernet10
   address_family_evpn:
     peer_groups:
