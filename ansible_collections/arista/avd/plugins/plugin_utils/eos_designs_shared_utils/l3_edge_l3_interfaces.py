@@ -13,7 +13,7 @@ if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
 
-# TODO only handle l3_edge for now
+# TODO only handle l3_edge for now need to look at core_interfaces too
 class L3EdgeMixin:
     """
     Mixin Class providing a subset of SharedUtils
@@ -21,7 +21,7 @@ class L3EdgeMixin:
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    def _apply_profile(self: SharedUtils, type: str, target_dict: dict) -> dict:
+    def _apply_profile(self: SharedUtils, target_dict: dict) -> dict:
         """
         Apply a profile to a p2p_link or a l3_interface
         """
@@ -29,18 +29,12 @@ class L3EdgeMixin:
             # Nothing to do
             return target_dict
 
-        # Silently ignoring missing profile and wrong types.
-        if type == "l3_interfaces":
-            profiles = get(self.hostvars, "l3_edge.l3_interfaces_profiles", default=[])
-            profile = get_item(profiles, "profile", target_dict["profile"], default={})
-            target_dict.pop("profile", None)
-        elif type == "p2p_links":
-            profile = get_item(self._p2p_links_profiles, "name", target_dict["profile"], default={})
-            target_dict.pop("name", None)
-        else:
-            return target_dict
+        profiles = get(self.hostvars, "l3_edge.l3_interfaces_profiles", default=[])
+        profile = get_item(profiles, "profile", target_dict["profile"], default={})
 
         target_dict = merge(profile, target_dict, list_merge="replace", destructive_merge=False)
+
+        target_dict.pop("profile", None)
 
         return target_dict
 
@@ -53,7 +47,7 @@ class L3EdgeMixin:
         if not (l3_interfaces := get(self.hostvars, "l3_edge.l3_interfaces", default=[])):
             return []
 
-        l3_interfaces = [self._apply_profile("l3_interfaces", l3_interface) for l3_interface in l3_interfaces]
+        l3_interfaces = [self._apply_profile(l3_interface) for l3_interface in l3_interfaces]
 
         # Filter to only include l3_interfaces with our hostname as node
         return [l3_interface for l3_interface in l3_interfaces if self.hostname == get(l3_interface, "node", required=True)]
