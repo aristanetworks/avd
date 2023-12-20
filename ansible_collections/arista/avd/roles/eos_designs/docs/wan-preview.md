@@ -49,6 +49,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 - No IPv6 support
 - For WAN interfaces only `l3_edge.l3_interfaces` is supported  and not `core_interfaces.l3_interfaces`.
+- For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
 
 ## Future work
 

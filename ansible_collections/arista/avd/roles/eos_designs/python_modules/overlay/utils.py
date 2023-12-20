@@ -405,6 +405,12 @@ class UtilsMixin:
                 "wan_path_groups": wan_path_groups,
             }
 
+            if any(interface["ip_address"] == "dhcp" for path_group in wan_rr_result_dict["wan_path_groups"] for interface in path_group.get("interfaces", [])):
+                raise AristaAvdError(
+                    f"The IP address for a WAN interface on a Route Reflector cannot be 'dhcp', this is the case for '{wan_rr}'. Set an ip address to use under"
+                    " the 'wan_route_servers.path_groups.interfaces' key."
+                )
+
             wan_route_servers[wan_rr] = strip_empties_from_dict(wan_rr_result_dict)
 
         return wan_route_servers

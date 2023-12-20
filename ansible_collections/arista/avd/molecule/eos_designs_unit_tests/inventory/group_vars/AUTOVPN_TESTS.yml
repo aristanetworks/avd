@@ -11,8 +11,13 @@ bgp_peer_groups:
       - 192.168.30.0/24
 
 wan_route_servers:
-  # Not testing the overloading
+  # Testing having the interface configured with DHPC
   - hostname: autovpn-rr1
+    path_groups:
+      - name: INET
+        interfaces:
+          - name: Ethernet1
+            ip_address: 10.7.7.7/31
   - hostname: autovpn-rr2
 
 wan_ipsec_profiles:
@@ -63,7 +68,8 @@ l3_edge:
       interface: Ethernet1
       wan_path_group: INET
       wan_circuit_id: 777
-      ip: 10.7.7.7/31
+      ip: dhcp
+      # ip: 10.7.7.7/31
     - node: autovpn-rr2
       interface: Ethernet1
       wan_path_group: INET

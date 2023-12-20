@@ -32,7 +32,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "wan_route_servers.[].router_id") | String |  |  |  | Route-Reflector router id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_route_servers.[].path_groups") | List, items: Dictionary |  |  |  | Path-groups through which the Route Reflector/Pathfinder is reached. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].path_groups.[].name") | String |  |  |  | Path-group name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].path_groups.[].ip_address") | String |  |  |  | The public IP address of the Route Reflector for this path-group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interfaces</samp>](## "wan_route_servers.[].path_groups.[].interfaces") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].name") | String | Required, Unique |  |  | Interface name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "wan_route_servers.[].path_groups.[].interfaces.[].ip_address") | String |  |  |  | The public IP address of the Route Reflector for this path-group. |
 
 === "YAML"
 
@@ -124,7 +126,11 @@
 
             # Path-group name.
           - name: <str>
+            interfaces:
 
-            # The public IP address of the Route Reflector for this path-group.
-            ip_address: <str>
+                # Interface name.
+              - name: <str; required; unique>
+
+                # The public IP address of the Route Reflector for this path-group.
+                ip_address: <str>
     ```

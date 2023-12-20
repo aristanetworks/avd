@@ -3311,10 +3311,19 @@ keys:
               name:
                 type: str
                 description: Path-group name.
-              ip_address:
-                type: str
-                description: The public IP address of the Route Reflector for this
-                  path-group.
+              interfaces:
+                type: list
+                primary_key: name
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Interface name.
+                    ip_address:
+                      type: str
+                      description: The public IP address of the Route Reflector for
+                        this path-group.
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints

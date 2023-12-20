@@ -31107,10 +31107,31 @@
                   "description": "Path-group name.",
                   "title": "Name"
                 },
-                "ip_address": {
-                  "type": "string",
-                  "description": "The public IP address of the Route Reflector for this path-group.",
-                  "title": "IP Address"
+                "interfaces": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Interface name.",
+                        "title": "Name"
+                      },
+                      "ip_address": {
+                        "type": "string",
+                        "description": "The public IP address of the Route Reflector for this path-group.",
+                        "title": "IP Address"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "title": "Interfaces"
                 }
               },
               "additionalProperties": false,

@@ -132,7 +132,7 @@ stun:
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface
-  ip_address: 10.7.7.7/31
+  ip_address: dhcp
   shutdown: false
   type: routed
 dps_interfaces:
