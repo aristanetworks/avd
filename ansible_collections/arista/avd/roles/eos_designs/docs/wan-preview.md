@@ -48,6 +48,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
     ```
 
 - No IPv6 support
+- For WAN interfaces only `l3_edge.l3_interfaces` is supported  and not `core_interfaces.l3_interfaces`.
 
 ## Future work
 
@@ -104,6 +105,9 @@ roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
 --8<--
 
 #### WAN interfaces
+
+!!! note
+    The current code implements only `l3_edge.l3_interfaces` and not `core_interfaces.l3_interfaces`
 
 --8<--
 roles/eos_designs/docs/tables/wan-interfaces-settings.md
