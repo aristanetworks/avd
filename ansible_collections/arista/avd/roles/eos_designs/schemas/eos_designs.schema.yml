@@ -3254,8 +3254,14 @@ keys:
           type: str
           description: Path-group name.
         id:
-          type: str
-          description: Path-group id.
+          type: int
+          convert_types:
+          - str
+          description: 'Path-group id.
+
+
+            TODO: Required until an auto ID algorithm is implemented.'
+          required: true
         description:
           type: str
           description: Additional information about the path-group for documentation

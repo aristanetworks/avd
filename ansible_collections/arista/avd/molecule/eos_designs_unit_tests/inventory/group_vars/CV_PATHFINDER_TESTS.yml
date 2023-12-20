@@ -78,8 +78,12 @@ wan_rr:
 wan_path_groups:
   - name: MPLS
     ipsec: false
+    # TODO remove one once auto-id is implemented - for now required in schema
+    id: 100
   - name: INET
+    id: 101
   - name: LTE
+    id: 102
 
 l3_edge:
   l3_interfaces:

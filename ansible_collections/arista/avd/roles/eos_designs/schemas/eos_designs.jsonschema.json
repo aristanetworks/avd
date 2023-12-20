@@ -31031,8 +31031,8 @@
             "title": "Name"
           },
           "id": {
-            "type": "string",
-            "description": "Path-group id.",
+            "type": "integer",
+            "description": "Path-group id.\n\nTODO: Required until an auto ID algorithm is implemented.",
             "title": "ID"
           },
           "description": {
@@ -31070,13 +31070,14 @@
             "title": "Import Path Groups"
           }
         },
+        "required": [
+          "id",
+          "name"
+        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        },
-        "required": [
-          "name"
-        ]
+        }
       },
       "title": "Wan Path Groups"
     },

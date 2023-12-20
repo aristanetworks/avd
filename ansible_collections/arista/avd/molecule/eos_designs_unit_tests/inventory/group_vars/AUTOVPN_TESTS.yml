@@ -54,8 +54,11 @@ wan_rr:
 wan_path_groups:
   - name: MPLS
     ipsec: False
+    id: 100
   - name: INET
+    id: 101
   - name: LTE
+    id: 102
 
 l3_edge:
   l3_interfaces:

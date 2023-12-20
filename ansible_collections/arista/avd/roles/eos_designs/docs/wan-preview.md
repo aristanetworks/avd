@@ -50,12 +50,13 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 - No IPv6 support
 - For WAN interfaces only `l3_edge.l3_interfaces` is supported  and not `core_interfaces.l3_interfaces`.
 - For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
+- Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
 
 ## Future work
 
 - As of now, only the fundations of the `eos_designs` functionality for WAN is
-    being introduced without any support for LAN and WAN interfaces.
-    This implies that path-groups are not configured.
+    being introduced without any support for LAN interfaces.
+- Auto generation of Path-group IDs.
 - The configuration of AVT policies is not supported yet and will be introduced
     later.
 - HA for sites will be covered in a future PR

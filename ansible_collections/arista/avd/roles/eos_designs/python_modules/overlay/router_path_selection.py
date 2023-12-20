@@ -54,7 +54,7 @@ class RouterPathSelectionMixin(UtilsMixin):
 
             path_group_data = {
                 "name": pg_name,
-                "id": self._get_path_group_id(pg_name),
+                "id": self._get_path_group_id(pg_name, path_group.get("id")),
                 "local_interfaces": self._get_local_interfaces(pg_name),
                 "dynamic_peers": self._get_dynamic_peers(),
                 "static_peers": self._get_static_peers(pg_name),
@@ -102,13 +102,15 @@ class RouterPathSelectionMixin(UtilsMixin):
             return vrfs
         return None
 
-    def _get_path_group_id(self, path_group_name: str) -> int:
+    def _get_path_group_id(self, path_group_name: str, config_id: int | None = None) -> int:
         """
         TODO - implement algorithm to auto assign IDs - cf internal documenation
         TODO - also implement algorithm for cross connects on public path_groups
         """
         if path_group_name == "LAN_HA":
             return 65535
+        if config_id is not None:
+            return config_id
         return 500
 
     def _get_local_interfaces(self, path_group_name: str) -> list | None:
