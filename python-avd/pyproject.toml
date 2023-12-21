@@ -75,7 +75,6 @@ known_third_party = ["pyavd"]
 
 [tool.coverage.run]
 branch = true
-parallel = true
 
 [tool.coverage.report]
 show_missing = true
