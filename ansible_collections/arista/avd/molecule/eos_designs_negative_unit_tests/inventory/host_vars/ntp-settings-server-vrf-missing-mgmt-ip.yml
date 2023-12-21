@@ -1,0 +1,16 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: ntp-settings-server-vrf-missing-mgmt-ip
+      id: 1
+      # mgmt_ip: 192.168.0.2/24
+
+
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
+  servers:
+    - name: pool.ntp.com
+
+
+expected_error_message: >-
+  'ntp_settings.server_vrf' is set to 'use_mgmt_interface_vrf' but this node is missing an 'mgmt_ip'

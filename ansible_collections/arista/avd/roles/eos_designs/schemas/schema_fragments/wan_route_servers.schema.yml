@@ -1,0 +1,43 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  wan_route_servers:
+    documentation_options:
+      table: wan-settings
+    description: |-
+      PREVIEW: This key is currently not supported
+
+      List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the Pathfinders
+      when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+
+      When the route server is part of the same inventory as the WAN routers,
+      only the name is required.
+    type: list
+    primary_key: hostname
+    items:
+      type: dict
+      keys:
+        hostname:
+          type: str
+          description: Route-Reflector hostname.
+        router_id:
+          type: str
+          description: Route-Reflector router id.
+        path_groups:
+          type: list
+          description: Path-groups through which the Route Reflector/Pathfinder is reached.
+          items:
+            type: dict
+            keys:
+              name:
+                type: str
+                description: Path-group name.
+              # TODO - should it be multiple IP address
+              ip_address:
+                type: str
+                description: The public IP address of the Route Reflector for this path-group.

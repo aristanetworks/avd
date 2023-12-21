@@ -1,0 +1,207 @@
+# Copyright (c) 2023 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  application_traffic_recognition:
+    type: dict
+    description: Application traffic recognition configuration.
+    keys:
+      categories:
+        type: list
+        description: List of categories.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Category name.
+            applications:
+              type: list
+              description: List of applications.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Application name.
+                  service:
+                    type: str
+                    description: |-
+                      Service Name.
+                      Specific service to target for this application.
+                      If no service is specified, all supported services of the application are matched.
+                      Not all valid values are valid for all applications, check on EOS CLI.
+                    valid_values: ["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
+
+      field_sets:
+        type: dict
+        keys:
+          l4_ports:
+            type: list
+            primary_key: name
+            description: L4 port field-set.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: L4 port field-set name.
+                port_values:
+                  type: list
+                  items:
+                    type: str
+                    convert_types:
+                      - int
+                    description: |-
+                      Port values or range of port values.
+                      Port values are between 0 and 65535.
+          ipv4_prefixes:
+            type: list
+            primary_key: name
+            description: IPv4 prefix field set.
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: IPv4 prefix field-set name.
+                prefix_values:
+                  type: list
+                  items:
+                    type: str
+                    description: IP prefix (ex 1.2.3.0/24).
+      applications:
+        type: dict
+        keys:
+          ipv4_applications:
+            type: list
+            description: List of user defined IPv4 applications.
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Application name.
+                src_prefix_set_name:
+                  type: str
+                  description: Source prefix set name.
+                dest_prefix_set_name:
+                  type: str
+                  description: Destination prefix set name.
+                protocols:
+                  type: list
+                  description: |-
+                    List of protocols to consider for this application.
+
+                    To use port field-sets (source, destination or both), the list
+                    must contain only one or two protocols, either `tcp` or `udp`.
+                    When using both protocols, one line is rendered for each in the configuration,
+                    hence the field-sets must have the same value for `tcp_src_port_set_name` and
+                    `udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`
+                    if set in order to generate valid configuration in EOS.
+                  items:
+                    type: str
+                    valid_values:
+                      - ahp
+                      - esp
+                      - icmp
+                      - igmp
+                      - ospf
+                      - pim
+                      - rsvp
+                      - tcp
+                      - udp
+                      - vrrp
+                protocol_ranges:
+                  type: list
+                  description: |-
+                    Acccept protocol value(s) or range(s).
+                    Protocol values can be between 1 and 255.
+                  items:
+                    type: str
+                    convert_types:
+                      - int
+                udp_src_port_set_name:
+                  type: str
+                  description: |-
+                    Name of field set for UDP source ports.
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key value
+                    must be the same as `tcp_src_port_set_name`.
+                tcp_src_port_set_name:
+                  type: str
+                  description: |-
+                    Name of field set for TCP source ports.
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key value
+                    must be the same as `udp_src_port_set_name`.
+                udp_dest_port_set_name:
+                  type: str
+                  description: |-
+                    Name of field set for UDP destination ports.
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key value
+                    must be the same as `tcp_dest_port_set_name`.
+                tcp_dest_port_set_name:
+                  type: str
+                  description: |-
+                    Name of field set for TCP destination ports.
+
+                    When the `protocols` list contain both `tcp` and `udp`, this key value
+                    must be the same as `udp_dest_port_set_name`.
+      application_profiles:
+        type: list
+        description: Group of applications.
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: Application Profile name.
+            applications:
+              type: list
+              description: List of applications part of the application profile.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Application Name.
+                  service:
+                    type: str
+                    description: |-
+                      Service Name.
+                      Specific service to target for this application.
+                      If no service is specified, all supported services of the application are matched.
+                      Not all valid values are valid for all applications, check on EOS CLI.
+                    valid_values: ["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]
+            application_transports:
+              type: list
+              description: List of transport protocols.
+              items:
+                type: str
+                description: Transport name.
+                valid_values: ["http", "https", "udp", "tcp", "ip", "ip6", "ssl", "rtp", "sctp", "quic"]
+            categories:
+              type: list
+              description: Categories under this application profile.
+              items:
+                type: dict
+                keys:
+                  name:
+                    type: str
+                    description: Name of a category.
+                  service:
+                    type: str
+                    description: |-
+                      Service Name.
+                      Specific service to target for this application.
+                      If no service is specified, all supported services of the application are matched.
+                      Not all valid values are valid for all applications, check on EOS CLI.
+                    valid_values: ["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"]

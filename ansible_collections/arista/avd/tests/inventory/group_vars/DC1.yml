@@ -33,13 +33,8 @@ name_servers:
   - 8.8.8.8
 
 # NTP Servers IP or DNS name, first NTP server will be preferred and sourced from Management VRF
-custom_structured_configuration_ntp:
-  local_interface:
-    name: Management1
-    vrf: MGMT
+ntp_settings:
+  server_vrf: use_mgmt_interface_vrf
   servers:
     - name: 0.fr.pool.ntp.org
-      preferred: true
-      vrf: MGMT
     - name: 1.fr.pool.ntp.org
-      vrf: MGMT

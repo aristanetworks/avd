@@ -91,14 +91,14 @@ ip name-server vrf MGMT 192.168.1.1
 
 | Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
 | ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 0.pool.ntp.org | MGMT | - | - | - | - | - | - | - | - |
+| 0.pool.ntp.org | MGMT | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
 ```eos
 !
 ntp local-interface vrf MGMT Management1
-ntp server vrf MGMT 0.pool.ntp.org
+ntp server vrf MGMT 0.pool.ntp.org prefer
 ```
 
 ### Management API HTTP

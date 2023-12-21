@@ -1,0 +1,146 @@
+[
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyTemperature",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the device temperature is within the acceptable range.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyEnvironmentCooling",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the fans status are within the accepted states list.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyEnvironmentPower",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies if the power supplies status are within the accepted states list.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyTransceiversManufacturers",
+    "categories": [
+      "hardware"
+    ],
+    "description": "Verifies the transceiver's manufacturer against a list of approved manufacturers.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet1 - DC2-LEAF2A_Ethernet8"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet2 - DC2-LEAF2B_Ethernet8"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Ethernet Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Ethernet5 - dc2-leaf2-server1_iLO"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyInterfacesStatus",
+    "categories": [
+      "Interface State"
+    ],
+    "description": "Port-Channel Interface & Line Protocol == 'up'",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "Port-Channel1 - DC2_L3_LEAF2_Po8"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet1 - remote: dc2-leaf2a_Ethernet8"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyLLDPNeighbors",
+    "categories": [
+      "LLDP Topology"
+    ],
+    "description": "LLDP topology - validate peer and interface",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "local: Ethernet2 - remote: dc2-leaf2b_Ethernet8"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyNTP",
+    "categories": [
+      "NTP"
+    ],
+    "description": "Synchronised with NTP server",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "NTP"
+  },
+  {
+    "name": "dc2-leaf2c",
+    "test": "VerifyAPIHttpsSSL",
+    "categories": [
+      "security"
+    ],
+    "description": "Verifies if eAPI HTTPS server SSL profile is configured and valid.",
+    "result": "unset",
+    "messages": [],
+    "error": "None",
+    "custom_field": "None"
+  }
+]

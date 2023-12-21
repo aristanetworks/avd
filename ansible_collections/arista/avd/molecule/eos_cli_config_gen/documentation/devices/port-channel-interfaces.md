@@ -88,6 +88,12 @@ sFlow is disabled.
 
 *Inherited from Port-Channel Interface
 
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Port-Channel12 | trunk phone | 100 | 70 | untagged |
+
 ##### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -227,6 +233,7 @@ interface Ethernet50
 | Port-Channel121 | access_port_with_no_vlans | switched | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | switched | trunk | - | - | - | - | - | - | - |
 | Port-Channel130 | IP NAT Testing | switched | access | - | - | - | - | - | - | - |
+| Port-Channel131 | dot1q-tunnel mode | switched | dot1q-tunnel | - | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q
 
@@ -398,6 +405,7 @@ interface Port-Channel12
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
+   switchport mode trunk phone
 !
 interface Port-Channel13
    description EVPN-Vxlan single-active redundancy
@@ -673,6 +681,11 @@ interface Port-Channel130
    ip nat source dynamic access-list ACL2 pool POOL2
    ip nat destination static 1.0.0.1 2.0.0.1
    ip nat destination dynamic access-list ACL1 pool POOL1
+!
+interface Port-Channel131
+   description dot1q-tunnel mode
+   switchport
+   switchport mode dot1q-tunnel
 ```
 
 ## BFD

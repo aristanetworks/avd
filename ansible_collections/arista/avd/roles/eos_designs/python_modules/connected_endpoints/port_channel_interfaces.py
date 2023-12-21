@@ -156,6 +156,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     "trunk_groups": self._get_adapter_trunk_groups(adapter, connected_endpoint),
                     "native_vlan_tag": adapter.get("native_vlan_tag"),
                     "native_vlan": adapter.get("native_vlan"),
+                    "phone": self._get_adapter_phone(adapter, connected_endpoint),
                     "spanning_tree_portfast": adapter.get("spanning_tree_portfast"),
                     "spanning_tree_bpdufilter": adapter.get("spanning_tree_bpdufilter"),
                     "spanning_tree_bpduguard": adapter.get("spanning_tree_bpduguard"),
@@ -182,7 +183,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 }
             )
 
-        return strip_null_from_data(port_channel_interface)
+        return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))
 
     def _get_port_channel_subinterface_cfg(self, subinterface: dict, adapter: dict, port_channel_subinterface_name: str, channel_group_id: int) -> dict:
         """
@@ -214,4 +215,4 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "route_target": generate_route_target(short_esi),
             }
 
-        return strip_null_from_data(port_channel_interface)
+        return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))

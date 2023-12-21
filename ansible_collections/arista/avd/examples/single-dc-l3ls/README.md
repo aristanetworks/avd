@@ -364,13 +364,10 @@ terminattr_disable_aaa: true
 name_servers: # (7)!
   - 192.168.1.1
 
-custom_structured_configuration_ntp: # (8)!
-  local_interface:
-    name: Management1
-    vrf: MGMT
+ntp_settings: # (8)!
+  server_vrf: use_mgmt_interface_vrf
   servers:
-    - name: 0.pool.ntp.org
-      vrf: MGMT
+    - name: 192.168.200.5
 ```
 
 1. The name of the fabric for internal AVD use. This name *must* match the name of an Ansible Group (and therefore a corresponding group_vars file) covering all network devices.
