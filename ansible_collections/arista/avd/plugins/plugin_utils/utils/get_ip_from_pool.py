@@ -34,7 +34,16 @@ def get_ip_from_pool(pool: str, prefixlen: int, subnet_offset: int, ip_offset: i
     subnet = ipaddress.ip_network((int(pool_network.network_address) + subnet_offset * subnet_size, prefixlen))
 
     try:
-        ip = subnet[ip_offset]
+        if subnet_size > 2:
+            # This is a regular subnet. Skip the network address and raise if we hit the broadcast address.
+            # >= because ip_offset is 0-based.
+            if ip_offset >= (subnet_size - 2):
+                raise IndexError
+            ip = subnet[ip_offset + 1]
+        else:
+            # This is a linknet (/31 or /127) or a single IP (/32 or /128)
+            ip = subnet[ip_offset]
+
     except IndexError as e:
         raise AristaAvdError(f"Unable to get {ip_offset + 1} hosts in subnet {subnet} taken from pool {pool}") from e
 
