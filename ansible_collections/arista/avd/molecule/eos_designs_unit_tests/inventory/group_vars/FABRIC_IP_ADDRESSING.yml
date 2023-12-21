@@ -1,4 +1,3 @@
 ---
 fabric_name: FABRIC_IP_ADDRESSING
-mlag_support: true
 type: l3leaf

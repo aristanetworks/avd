@@ -229,6 +229,7 @@ class UplinksMixin:
                 if self.shared_utils.underlay_rfc5549:
                     uplink["ipv6_enable"] = True
                 else:
+                    uplink["prefix_length"] = self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
                     uplink["ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_ip(uplink_index)
                     uplink["peer_ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_peer_ip(uplink_index)
 

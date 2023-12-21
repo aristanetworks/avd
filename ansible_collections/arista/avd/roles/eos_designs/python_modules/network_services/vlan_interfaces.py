@@ -194,10 +194,16 @@ class VlanInterfacesMixin(UtilsMixin):
             vlan_interface_config["ipv6_enable"] = True
         elif (mlag_ibgp_peering_ipv4_pool := vrf.get("mlag_ibgp_peering_ipv4_pool")) is not None:
             if self.shared_utils.mlag_role == "primary":
-                vlan_interface_config["ip_address"] = f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)}/31"
+                vlan_interface_config["ip_address"] = (
+                    f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(mlag_ibgp_peering_ipv4_pool)}/"
+                    f"{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
+                )
             else:
-                vlan_interface_config["ip_address"] = f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)}/31"
+                vlan_interface_config["ip_address"] = (
+                    f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_secondary(mlag_ibgp_peering_ipv4_pool)}/"
+                    f"{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
+                )
         else:
-            vlan_interface_config["ip_address"] = f"{self.shared_utils.mlag_ibgp_ip}/31"
+            vlan_interface_config["ip_address"] = f"{self.shared_utils.mlag_ibgp_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
 
         return vlan_interface_config
