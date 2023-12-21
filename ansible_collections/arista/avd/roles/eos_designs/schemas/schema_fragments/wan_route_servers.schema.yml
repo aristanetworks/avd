@@ -31,6 +31,7 @@ keys:
         path_groups:
           type: list
           description: Path-groups through which the Route Reflector/Pathfinder is reached.
+          primary_key: name
           items:
             type: dict
             keys:
@@ -40,6 +41,8 @@ keys:
               interfaces:
                 type: list
                 primary_key: name
+                required: true
+                min_length: 1
                 items:
                   type: dict
                   keys:

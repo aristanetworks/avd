@@ -112,6 +112,11 @@ router_path_selection:
     id: 101
     local_interfaces:
     - name: Ethernet1
+    static_peers:
+    - router_ip: 192.168.31.1
+      name: autovpn-rr1
+      ipv4_addresses:
+      - 10.7.7.7
     ipsec_profile: AUTOVPN
   load_balance_policies:
   - name: LBPOLICY

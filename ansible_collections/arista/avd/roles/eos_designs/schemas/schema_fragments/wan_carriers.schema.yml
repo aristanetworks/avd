@@ -7,8 +7,6 @@
 type: dict
 keys:
   wan_carriers:
-    documentation_options:
-      table: wan-settings
     description: |-
       PREVIEW: This key is currently not supported
 

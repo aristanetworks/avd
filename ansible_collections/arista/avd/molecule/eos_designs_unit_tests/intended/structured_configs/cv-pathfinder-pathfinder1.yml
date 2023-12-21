@@ -171,6 +171,15 @@ router_path_selection:
     id: 101
     local_interfaces:
     - name: Ethernet1
+    static_peers:
+    - router_ip: 192.168.44.3
+      name: cv-pathfinder-pathfinder2
+      ipv4_addresses:
+      - 10.9.9.9
+    - router_ip: 6.6.6.6
+      name: cv-pathfinder-pathfinder3
+      ipv4_addresses:
+      - 10.50.50.50
     ipsec_profile: CP-PROFILE
   load_balance_policies:
   - name: LBPOLICY

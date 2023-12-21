@@ -31129,6 +31129,7 @@
                 },
                 "interfaces": {
                   "type": "array",
+                  "minItems": 1,
                   "items": {
                     "type": "object",
                     "properties": {
@@ -31154,6 +31155,10 @@
                   "title": "Interfaces"
                 }
               },
+              "required": [
+                "interfaces",
+                "name"
+              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}

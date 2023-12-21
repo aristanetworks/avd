@@ -7,8 +7,6 @@
 type: dict
 keys:
   wan_path_groups:
-    documentation_options:
-      table: wan-settings
     description: |-
       PREVIEW: This key is currently not supported
       List of path-groups used for the WAN configuration.

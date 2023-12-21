@@ -169,8 +169,8 @@ router_path_selection:
   load_balance_policies:
   - name: LBPOLICY
     path_groups:
-    - name: INET
     - name: MPLS
+    - name: INET
 stun:
   client:
     server_profiles:

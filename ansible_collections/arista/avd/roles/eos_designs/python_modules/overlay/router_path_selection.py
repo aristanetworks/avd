@@ -55,7 +55,7 @@ class RouterPathSelectionMixin(UtilsMixin):
             path_group_data = {
                 "name": pg_name,
                 "id": self._get_path_group_id(pg_name, path_group.get("id")),
-                "local_interfaces": self._get_local_interfaces(pg_name),
+                "local_interfaces": self._get_local_interfaces_for_path_group(pg_name),
                 "dynamic_peers": self._get_dynamic_peers(),
                 "static_peers": self._get_static_peers(pg_name),
             }
@@ -114,7 +114,7 @@ class RouterPathSelectionMixin(UtilsMixin):
             return config_id
         return 500
 
-    def _get_local_interfaces(self, path_group_name: str) -> list | None:
+    def _get_local_interfaces_for_path_group(self, path_group_name: str) -> list | None:
         """
         Generate the router_path_selection.local_interfaces list
 
@@ -127,10 +127,10 @@ class RouterPathSelectionMixin(UtilsMixin):
 
             if self.shared_utils.wan_role == "client" and self._should_connect_to_wan_rr([path_group_name]):
                 stun_server_profiles = []
-                for wrr, data in self._wan_route_servers.items():
+                for wan_route_server, data in self._wan_route_servers.items():
                     if (path_group := get_item(data["wan_path_groups"], "name", path_group_name)) is not None:
                         for index in range(len(get(path_group, "interfaces", required=True))):
-                            stun_server_profiles.append(self._stun_server_profile_name(wrr, path_group_name, index))
+                            stun_server_profiles.append(self._stun_server_profile_name(wan_route_server, path_group_name, index))
 
                 if stun_server_profiles:
                     local_interface["stun"] = {"server_profiles": stun_server_profiles}
@@ -151,10 +151,15 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         TODO
         """
-        if self.shared_utils.wan_role != "client":
+        if not self.shared_utils.wan_role:
             return None
+
         static_peers = []
         for wan_route_server, data in self._wan_route_servers.items():
+            if wan_route_server == self.shared_utils.hostname:
+                # Do not static-peer yourself
+                continue
+
             for path_group in get(data, "wan_path_groups", required=True):
                 if path_group["name"] != path_group_name:
                     continue
@@ -163,7 +168,7 @@ class RouterPathSelectionMixin(UtilsMixin):
 
                 ipv4_addresses = []
 
-                for interface_dict in path_group.get("interfaces", []):
+                for interface_dict in get(path_group, "interfaces", required=True):
                     if (ip_address := interface_dict.get("ip_address")) is not None:
                         # TODO - removing mask using split but maybe a helper is clearer
                         ipv4_addresses.append(ip_address.split("/")[0])

@@ -3183,8 +3183,6 @@ keys:
     type: bool
     default: false
   wan_carriers:
-    documentation_options:
-      table: wan-settings
     description: 'PREVIEW: This key is currently not supported
 
 
@@ -3263,8 +3261,6 @@ keys:
     - autovpn
     - cv-pathfinder
   wan_path_groups:
-    documentation_options:
-      table: wan-settings
     description: 'PREVIEW: This key is currently not supported
 
       List of path-groups used for the WAN configuration.'
@@ -3334,6 +3330,7 @@ keys:
           type: list
           description: Path-groups through which the Route Reflector/Pathfinder is
             reached.
+          primary_key: name
           items:
             type: dict
             keys:
@@ -3343,6 +3340,8 @@ keys:
               interfaces:
                 type: list
                 primary_key: name
+                required: true
+                min_length: 1
                 items:
                   type: dict
                   keys:

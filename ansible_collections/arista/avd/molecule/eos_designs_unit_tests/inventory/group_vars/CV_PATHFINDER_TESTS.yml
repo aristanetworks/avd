@@ -100,6 +100,8 @@ wan_carriers:
     path_group: INET
   - name: Colt
     path_group: MPLS
+  - name: ATT-MPLS
+    path_group: MPLS
 
 l3_edge:
   l3_interfaces:
@@ -153,3 +155,8 @@ l3_edge:
       wan_carrier: SFR
       wan_circuit_id: 999
       ip: 10.9.9.9/31
+    - node: cv-pathfinder-pathfinder2
+      interface: Ethernet2
+      wan_carrier: ATT-MPLS
+      wan_circuit_id: 10999
+      ip: 172.19.9.9/31

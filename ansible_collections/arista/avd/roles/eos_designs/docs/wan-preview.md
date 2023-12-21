@@ -56,7 +56,7 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
 
 - As of now, only the fundations of the `eos_designs` functionality for WAN is
     being introduced without any support for LAN interfaces.
-- Auto generation of Path-group IDs.
+- Auto generation of Path-group IDs and other IDs.
 - The configuration of AVT policies is not supported yet and will be introduced
     later.
 - HA for sites will be covered in a future PR
@@ -97,7 +97,19 @@ All these node types are defined with `default_underlay_routing_protocol: none` 
 roles/eos_designs/docs/tables/wan-settings.md
 --8<--
 
-#### WAN hierarchy
+##### WAN path-groups
+
+--8<--
+roles/eos_designs/docs/tables/wan-path-groups.md
+--8<--
+
+##### WAN carriers
+
+--8<--
+roles/eos_designs/docs/tables/wan-carriers.md
+--8<--
+
+##### WAN hierarchy
 
 !!! note
     This section is only relevant for CV Pathfinder and not for AutoVPN
