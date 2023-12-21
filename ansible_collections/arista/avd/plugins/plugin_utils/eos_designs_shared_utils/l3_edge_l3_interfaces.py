@@ -50,4 +50,4 @@ class L3EdgeMixin:
         l3_interfaces = [self._apply_profile(l3_interface) for l3_interface in l3_interfaces]
 
         # Filter to only include l3_interfaces with our hostname as node
-        return [l3_interface for l3_interface in l3_interfaces if self.hostname == get(l3_interface, "node", required=True)]
+        return [l3_interface for l3_interface in l3_interfaces if self.hostname == get(l3_interface, "node")]

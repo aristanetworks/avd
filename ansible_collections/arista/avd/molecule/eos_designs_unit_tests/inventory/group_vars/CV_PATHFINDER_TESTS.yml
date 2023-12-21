@@ -107,6 +107,7 @@ l3_edge:
       interface: Ethernet1
       wan_carrier: ATT
       wan_circuit_id: 666
+      set_default_route: true
       ip: dhcp
     - node: cv-pathfinder-edge
       interface: Ethernet2
@@ -118,6 +119,7 @@ l3_edge:
       interface: Ethernet1
       wan_carrier: Comcast
       wan_circuit_id: 667
+      set_default_route: true
       ip: dhcp
     - node: cv-pathfinder-transit
       interface: Ethernet2
@@ -128,7 +130,9 @@ l3_edge:
       interface: Ethernet1
       wan_carrier: Bouygues Telecom
       wan_circuit_id: 777
+      set_default_route: true
       ip: 10.7.7.7/31
+      peer_ip: 10.7.7.6/31
     - node: cv-pathfinder-pathfinder
       interface: Ethernet2
       wan_carrier: Colt

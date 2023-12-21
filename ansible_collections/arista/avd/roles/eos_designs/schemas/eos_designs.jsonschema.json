@@ -3232,11 +3232,11 @@
                 "description": "Node IPv4 address/Mask or 'dhcp'.",
                 "title": "IP"
               },
-              "dhcp_client_accept_default_route": {
+              "set_default_route": {
                 "type": "boolean",
                 "default": false,
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
-                "title": "DHCP Client Accept Default Route"
+                "description": "Insert a default route to the `peer_ip` if `ip` is an ip address\nor configure to accept a default route from DHCP if `ip` is `dhcp`.\n\nAVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.",
+                "title": "Set Default Route"
               },
               "enabled": {
                 "type": "boolean",
@@ -3261,7 +3261,7 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP. Used for description and documentation",
+                "description": "The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
@@ -5909,11 +5909,11 @@
                 "description": "Node IPv4 address/Mask or 'dhcp'.",
                 "title": "IP"
               },
-              "dhcp_client_accept_default_route": {
+              "set_default_route": {
                 "type": "boolean",
                 "default": false,
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
-                "title": "DHCP Client Accept Default Route"
+                "description": "Insert a default route to the `peer_ip` if `ip` is an ip address\nor configure to accept a default route from DHCP if `ip` is `dhcp`.\n\nAVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.",
+                "title": "Set Default Route"
               },
               "enabled": {
                 "type": "boolean",
@@ -5938,7 +5938,7 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP. Used for description and documentation",
+                "description": "The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
@@ -8545,6 +8545,9 @@
                 "title": "Structured Config"
               }
             },
+            "required": [
+              "node"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -9979,11 +9982,11 @@
                 "description": "Node IPv4 address/Mask or 'dhcp'.",
                 "title": "IP"
               },
-              "dhcp_client_accept_default_route": {
+              "set_default_route": {
                 "type": "boolean",
                 "default": false,
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
-                "title": "DHCP Client Accept Default Route"
+                "description": "Insert a default route to the `peer_ip` if `ip` is an ip address\nor configure to accept a default route from DHCP if `ip` is `dhcp`.\n\nAVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.",
+                "title": "Set Default Route"
               },
               "enabled": {
                 "type": "boolean",
@@ -10008,7 +10011,7 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP. Used for description and documentation",
+                "description": "The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
@@ -12656,11 +12659,11 @@
                 "description": "Node IPv4 address/Mask or 'dhcp'.",
                 "title": "IP"
               },
-              "dhcp_client_accept_default_route": {
+              "set_default_route": {
                 "type": "boolean",
                 "default": false,
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
-                "title": "DHCP Client Accept Default Route"
+                "description": "Insert a default route to the `peer_ip` if `ip` is an ip address\nor configure to accept a default route from DHCP if `ip` is `dhcp`.\n\nAVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.",
+                "title": "Set Default Route"
               },
               "enabled": {
                 "type": "boolean",
@@ -12685,7 +12688,7 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP. Used for description and documentation",
+                "description": "The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
@@ -15292,6 +15295,9 @@
                 "title": "Structured Config"
               }
             },
+            "required": [
+              "node"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}

@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 from .utils import UtilsMixin
 
@@ -121,21 +121,14 @@ class RouterPathSelectionMixin(UtilsMixin):
         For AUTOVPN clients, configure the stun server profiles as appropriate
         """
         local_interfaces = []
-        for wan_interface in self.shared_utils.wan_interfaces:
-            # Skipping interface not in the target path_group
-            if self.shared_utils.get_carrier_path_group(wan_interface.get("wan_carrier")) != path_group_name:
-                continue
+        path_group = get_item(self.shared_utils.wan_local_path_groups, "name", path_group_name, default={})
+        for interface in path_group.get("interfaces", []):
+            local_interface = {"name": get(interface, "name", required=True)}
 
-            local_interface = {"name": get(wan_interface, "interface", required=True)}
-
-            if self.shared_utils.wan_role == "client":
+            if self.shared_utils.wan_role == "client" and self._should_connect_to_wan_rr([path_group_name]):
                 stun_server_profiles = []
                 for wrr, data in self._wan_route_servers.items():
-                    for path_group in get(data, "wan_path_groups", required=True):
-                        if path_group.get("name") != path_group_name:
-                            continue
-                        if not self._should_connect_to_wan_rr([path_group["name"]]):
-                            continue
+                    if (path_group := get_item(data["wan_path_groups"], "name", path_group_name)) is not None:
                         for index in range(len(get(path_group, "interfaces", required=True))):
                             stun_server_profiles.append(self._stun_server_profile_name(wrr, path_group_name, index))
 

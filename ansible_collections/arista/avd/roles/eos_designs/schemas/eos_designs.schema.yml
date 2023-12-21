@@ -4169,6 +4169,7 @@ $defs:
             node:
               type: str
               description: Device on which the interface should be configured.
+              required: true
             profile:
               type: str
               description: L3 interface profile name. Profile defined under l3_interfaces_profiles.
@@ -4189,12 +4190,16 @@ $defs:
         ip:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        dhcp_client_accept_default_route:
+        set_default_route:
           type: bool
           default: false
-          description: 'Supported if `ip` is `dhcp`.
+          description: 'Insert a default route to the `peer_ip` if `ip` is an ip address
 
-            Accepts default route from DHCP.'
+            or configure to accept a default route from DHCP if `ip` is `dhcp`.
+
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip`
+            is missing.'
         enabled:
           type: bool
           default: true
@@ -4211,7 +4216,8 @@ $defs:
           description: The peer device interface. Used for description and documentation
         peer_ip:
           type: str
-          description: The peer device IP. Used for description and documentation
+          description: The peer device IP/Mask. Used as default route gateway is `set_default_route`
+            is true and `ip` is an IP address.
         qos_profile:
           type: str
           description: QOS service profile.

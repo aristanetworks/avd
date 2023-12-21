@@ -194,6 +194,7 @@ ethernet_interfaces:
   ip_address: dhcp
   shutdown: false
   type: routed
+  dhcp_client_accept_default_route: true
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
 - name: Ethernet2

@@ -97,27 +97,27 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "l3_edge.l3_interfaces_profiles.[].interface") | String |  |  | Pattern: Ethernet[\d/]+ | Ethernet interface name like 'Ethernet2'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.l3_interfaces_profiles.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.l3_interfaces_profiles.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_client_accept_default_route</samp>](## "l3_edge.l3_interfaces_profiles.[].dhcp_client_accept_default_route") | Boolean |  | `False` |  | Supported if `ip` is `dhcp`.<br>Accepts default route from DHCP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set_default_route</samp>](## "l3_edge.l3_interfaces_profiles.[].set_default_route") | Boolean |  | `False` |  | Insert a default route to the `peer_ip` if `ip` is an ip address<br>or configure to accept a default route from DHCP if `ip` is `dhcp`.<br><br>AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_edge.l3_interfaces_profiles.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.l3_interfaces_profiles.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "l3_edge.l3_interfaces_profiles.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "l3_edge.l3_interfaces_profiles.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "l3_edge.l3_interfaces_profiles.[].peer_ip") | String |  |  |  | The peer device IP. Used for description and documentation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "l3_edge.l3_interfaces_profiles.[].peer_ip") | String |  |  |  | The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.l3_interfaces_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.l3_interfaces_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.l3_interfaces_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
     | [<samp>&nbsp;&nbsp;l3_interfaces</samp>](## "l3_edge.l3_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "l3_edge.l3_interfaces.[].node") | String |  |  |  | Device on which the interface should be configured. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "l3_edge.l3_interfaces.[].node") | String | Required |  |  | Device on which the interface should be configured. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "l3_edge.l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under l3_interfaces_profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "l3_edge.l3_interfaces.[].interface") | String |  |  | Pattern: Ethernet[\d/]+ | Ethernet interface name like 'Ethernet2'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "l3_edge.l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "l3_edge.l3_interfaces.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_client_accept_default_route</samp>](## "l3_edge.l3_interfaces.[].dhcp_client_accept_default_route") | Boolean |  | `False` |  | Supported if `ip` is `dhcp`.<br>Accepts default route from DHCP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;set_default_route</samp>](## "l3_edge.l3_interfaces.[].set_default_route") | Boolean |  | `False` |  | Insert a default route to the `peer_ip` if `ip` is an ip address<br>or configure to accept a default route from DHCP if `ip` is `dhcp`.<br><br>AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "l3_edge.l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "l3_edge.l3_interfaces.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "l3_edge.l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "l3_edge.l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "l3_edge.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IP. Used for description and documentation |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "l3_edge.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "l3_edge.l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "l3_edge.l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "l3_edge.l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
@@ -361,9 +361,11 @@
           # Node IPv4 address/Mask or 'dhcp'.
           ip: <str>
 
-          # Supported if `ip` is `dhcp`.
-          # Accepts default route from DHCP.
-          dhcp_client_accept_default_route: <bool; default=False>
+          # Insert a default route to the `peer_ip` if `ip` is an ip address
+          # or configure to accept a default route from DHCP if `ip` is `dhcp`.
+
+          # AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+          set_default_route: <bool; default=False>
 
           # Enable or Shutdown the interface.
           enabled: <bool; default=True>
@@ -377,7 +379,7 @@
           # The peer device interface. Used for description and documentation
           peer_interface: <str>
 
-          # The peer device IP. Used for description and documentation
+          # The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.
           peer_ip: <str>
 
           # QOS service profile.
@@ -391,7 +393,7 @@
       l3_interfaces:
 
           # Device on which the interface should be configured.
-        - node: <str>
+        - node: <str; required>
 
           # L3 interface profile name. Profile defined under l3_interfaces_profiles.
           profile: <str>
@@ -406,9 +408,11 @@
           # Node IPv4 address/Mask or 'dhcp'.
           ip: <str>
 
-          # Supported if `ip` is `dhcp`.
-          # Accepts default route from DHCP.
-          dhcp_client_accept_default_route: <bool; default=False>
+          # Insert a default route to the `peer_ip` if `ip` is an ip address
+          # or configure to accept a default route from DHCP if `ip` is `dhcp`.
+
+          # AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+          set_default_route: <bool; default=False>
 
           # Enable or Shutdown the interface.
           enabled: <bool; default=True>
@@ -422,7 +426,7 @@
           # The peer device interface. Used for description and documentation
           peer_interface: <str>
 
-          # The peer device IP. Used for description and documentation
+          # The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.
           peer_ip: <str>
 
           # QOS service profile.

@@ -92,3 +92,6 @@ ethernet_interfaces:
   ip_address: 192.168.42.42/24
   shutdown: true
   type: routed
+static_routes:
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.3

@@ -23,15 +23,17 @@ $defs:
         ip:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        dhcp_client_accept_default_route:
+        set_default_route:
           type: bool
-          default: False
+          default: false
           description: |-
-            Supported if `ip` is `dhcp`.
-            Accepts default route from DHCP.
+            Insert a default route to the `peer_ip` if `ip` is an ip address
+            or configure to accept a default route from DHCP if `ip` is `dhcp`.
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
         enabled:
           type: bool
-          default: True
+          default: true
           description: Enable or Shutdown the interface.
         speed:
           type: str
@@ -48,7 +50,7 @@ $defs:
         peer_ip:
           type: str
           description: |-
-            The peer device IP. Used for description and documentation
+            The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.
         qos_profile:
           type: str
           description: QOS service profile.
