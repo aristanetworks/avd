@@ -57,7 +57,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 "id": self._get_path_group_id(pg_name, path_group.get("id")),
                 "local_interfaces": self._get_local_interfaces_for_path_group(pg_name),
                 "dynamic_peers": self._get_dynamic_peers(),
-                "static_peers": self._get_static_peers(pg_name),
+                "static_peers": self._get_static_peers_for_path_group(pg_name),
             }
 
             if path_group.get("ipsec", True):
@@ -147,7 +147,7 @@ class RouterPathSelectionMixin(UtilsMixin):
             return None
         return {"enabled": True}
 
-    def _get_static_peers(self, path_group_name: str) -> list | None:
+    def _get_static_peers_for_path_group(self, path_group_name: str) -> list | None:
         """
         TODO
         """
@@ -160,9 +160,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 # Do not static-peer yourself
                 continue
 
-            for path_group in get(data, "wan_path_groups", required=True):
-                if path_group["name"] != path_group_name:
-                    continue
+            if (path_group := get_item(data["wan_path_groups"], "name", path_group_name)) is not None:
                 if not self._should_connect_to_wan_rr([path_group["name"]]):
                     continue
 
