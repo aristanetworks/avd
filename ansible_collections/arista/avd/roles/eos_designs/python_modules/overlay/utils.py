@@ -262,7 +262,7 @@ class UtilsMixin:
 
     @cached_property
     def _is_wan_server_with_peers(self) -> bool:
-        return self.shared_utils.wan_role == "server" and len(self._wan_route_servers) > 0
+        return self.shared_utils.wan_role == "server" and len(self._filtered_wan_route_servers) > 0
 
     @cached_property
     def _wan_listen_ranges(self):
@@ -436,3 +436,38 @@ class UtilsMixin:
             )
             for wan_interface in self.shared_utils.wan_interfaces
         )
+
+    @cached_property
+    def _filtered_wan_route_servers(self) -> dict:
+        """
+        Return a dictionary of wan_route_servers with only the path_groups the router should connect to
+        """
+        filtered_wan_route_servers = {}
+        for wan_route_server, data in self._wan_route_servers.items():
+            if wan_route_server == self.shared_utils.hostname:
+                # Do not include yourself
+                continue
+            for path_group in data.get("wan_path_groups", []):
+                if self._should_connect_to_wan_rs([path_group["name"]]):
+                    filtered_wan_route_servers.setdefault(wan_route_server, {"router_id": data["router_id"], "wan_path_groups": []})["wan_path_groups"].append(
+                        path_group
+                    )
+
+        return filtered_wan_route_servers
+
+    @cached_property
+    def _stun_server_profiles(self) -> list:
+        """
+        Return a dictionary of _stun_server_profiles with ip_address per local path_group
+        """
+        stun_server_profiles = {}
+        for wan_route_server, data in self._filtered_wan_route_servers.items():
+            for path_group in data.get("wan_path_groups", []):
+                stun_server_profiles.setdefault(path_group["name"], []).extend(
+                    {
+                        "name": self._stun_server_profile_name(wan_route_server, path_group["name"], index),
+                        "ip_address": get(interface_dict, "ip_address", required=True),
+                    }
+                    for index, interface_dict in enumerate(get(path_group, "interfaces", required=True))
+                )
+        return stun_server_profiles

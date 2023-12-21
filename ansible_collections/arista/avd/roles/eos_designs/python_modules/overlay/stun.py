@@ -3,9 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import itertools
 from functools import cached_property
-
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 from .utils import UtilsMixin
 
@@ -31,21 +30,7 @@ class StunMixin(UtilsMixin):
             stun["server"] = {"local_interfaces": local_interfaces}
 
         if self.shared_utils.wan_role == "client":
-            server_profiles = []
-
-            for wan_route_server, data in self._wan_route_servers.items():
-                for path_group in data.get("wan_path_groups", []):
-                    if not self._should_connect_to_wan_rr([path_group["name"]]):
-                        continue
-
-                    server_profiles.extend(
-                        {
-                            "name": self._stun_server_profile_name(wan_route_server, path_group["name"], index),
-                            "ip_address": get(interface_dict, "ip_address", required=True),
-                        }
-                        for index, interface_dict in enumerate(get(path_group, "interfaces", required=True))
-                    )
-            if server_profiles:
+            if server_profiles := list(itertools.chain.from_iterable(self._stun_server_profiles.values())):
                 stun["client"] = {"server_profiles": server_profiles}
 
         return stun or None
