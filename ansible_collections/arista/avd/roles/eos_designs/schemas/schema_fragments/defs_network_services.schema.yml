@@ -357,7 +357,7 @@ $defs:
                   - str
                 description: |
                   Manually define the VLAN used on the MLAG pair for the iBGP session.
-                  By default this parameter is calculated using the following formula: <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1.
+                  By default this parameter is calculated using the following formula: `<mlag_ibgp_peering_vrfs.base_vlan>` + `<vrf_id>` - 1.
                 min: 1
                 max: 4096
               vtep_diagnostic:

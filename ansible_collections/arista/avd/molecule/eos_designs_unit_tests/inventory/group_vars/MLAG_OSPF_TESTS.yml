@@ -1,6 +1,5 @@
 ---
 underlay_routing_protocol: ospf
-mlag_support: true
 
 type: l3leaf
 
