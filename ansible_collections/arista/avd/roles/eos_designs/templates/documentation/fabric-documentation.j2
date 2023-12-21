@@ -7,7 +7,7 @@
 {%     set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
 {% else %}
 {%     set default_node_types = {
-           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller"],
+           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller", "wan_edge", "wan_transit", "wan_rr"],
            "mpls": ["p", "pe", "rr"],
            "l2ls": ["l3spine", "spine", "leaf"]
        } %}

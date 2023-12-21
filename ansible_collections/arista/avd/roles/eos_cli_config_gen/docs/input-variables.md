@@ -729,6 +729,12 @@ roles/eos_cli_config_gen/docs/tables/queue-monitor-length.md
 roles/eos_cli_config_gen/docs/tables/queue-monitor-streaming.md
 --8<--
 
+### Application traffic recognition
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/application-traffic-recognition.md
+--8<--
+
 ## Routing
 
 ### ARP

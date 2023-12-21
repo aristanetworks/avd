@@ -1,0 +1,47 @@
+---
+# Testing autovpn
+wan_mode: autovpn
+
+bgp_as: 65000
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.30.0/24
+
+wan_route_servers:
+  # Not testing the overloading
+  - hostname: autovpn-rr1
+  - hostname: autovpn-rr2
+
+wan_ipsec_profiles:
+  control_plane:
+    ike_policy_name: AUTOVPN-IKE
+    sa_policy_name: AUTOVPN-SA
+    profile_name: AUTOVPN
+    shared_key: ABCDEF1234567890
+
+default_node_types:
+  - node_type: wan_rr
+    match_hostnames:
+      - "autovpn-rr.*"
+  - node_type: wan_edge
+    match_hostnames:
+      - "autovpn-edge"
+
+wan_edge:
+  defaults:
+    loopback_ipv4_pool: 192.168.30.0/24
+  nodes:
+    - name: autovpn-edge
+      id: 1
+
+wan_rr:
+  defaults:
+    loopback_ipv4_pool: 192.168.31.0/24
+  nodes:
+    - name: autovpn-rr1
+      id: 1
+    - name: autovpn-rr2
+      id: 2

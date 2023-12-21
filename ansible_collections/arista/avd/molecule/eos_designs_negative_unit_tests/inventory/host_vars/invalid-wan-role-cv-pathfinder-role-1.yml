@@ -1,0 +1,18 @@
+---
+wan_mode: cv-pathfinder
+type: wan_edge
+
+bgp_as: 65000
+
+wan_edge:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+  nodes:
+    - name: invalid-wan-role-cv-pathfinder-role-1
+      # Trying to set edge as RR
+      wan_role: server
+      evpn_role: server
+      id: 1
+
+expected_error_message: >-
+  'wan_role' must be 'client' when 'cv_pathfinder_role' is set to 'transit' or 'edge'
