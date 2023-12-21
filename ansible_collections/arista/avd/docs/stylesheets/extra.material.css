@@ -79,6 +79,9 @@
    }
 }
 @media only screen {
+    .md-header__inner, .md-footer-meta__inner{
+        max-width: 100%;
+   }
     .md-typeset a:hover {
         background-color: var(--md-typeset-a-color-bg);
         color: var(--md-typeset-a-color-fg);
