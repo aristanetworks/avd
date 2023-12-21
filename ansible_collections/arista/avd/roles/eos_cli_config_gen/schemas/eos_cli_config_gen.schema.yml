@@ -12605,6 +12605,8 @@ keys:
         type: int
         convert_types:
         - str
+      sample_input_subinterface:
+        type: bool
       dangerous:
         type: bool
       polling_interval:
