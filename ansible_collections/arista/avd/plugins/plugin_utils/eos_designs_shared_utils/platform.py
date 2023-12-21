@@ -45,7 +45,7 @@ DEFAULT_PLATFORM_SETTINGS = [
         "feature_support": {"queue_monitor_length_notify": False, "poe": True},
     },
     {
-        "platforms": ["750", "755", "758", "720D", "722XP", "710P"],
+        "platforms": ["750", "755", "758", "720DP", "722XP", "710P"],
         "reload_delay": {
             "mlag": 300,
             "non_mlag": 330,
