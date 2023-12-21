@@ -27,10 +27,7 @@ class StunMixin(UtilsMixin):
 
         stun = {}
         if self.shared_utils.wan_role == "server":
-            local_interfaces = []
-            for wan_interface in self.shared_utils.wan_interfaces:
-                local_interfaces.append(wan_interface.get("interface"))
-
+            local_interfaces = [wan_interface.get("interface") for wan_interface in self.shared_utils.wan_interfaces]
             stun["server"] = {"local_interfaces": local_interfaces}
 
         if self.shared_utils.wan_role == "client":
@@ -41,15 +38,13 @@ class StunMixin(UtilsMixin):
                     if not self._should_connect_to_wan_rr([path_group["name"]]):
                         continue
 
-                    for index, interface_dict in enumerate(get(path_group, "interfaces", required=True)):
-                        # Today one wan_path_group can only have one IP. May need to relax this in the futur
-                        server_profiles.append(
-                            {
-                                "name": self._stun_server_profile_name(wan_route_server, path_group["name"], index),
-                                "ip_address": get(interface_dict, "ip_address", required=True),
-                            }
-                        )
-
+                    server_profiles.extend(
+                        {
+                            "name": self._stun_server_profile_name(wan_route_server, path_group["name"], index),
+                            "ip_address": get(interface_dict, "ip_address", required=True),
+                        }
+                        for index, interface_dict in enumerate(get(path_group, "interfaces", required=True))
+                    )
             if server_profiles:
                 stun["client"] = {"server_profiles": server_profiles}
 

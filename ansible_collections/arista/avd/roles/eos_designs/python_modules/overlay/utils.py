@@ -352,66 +352,63 @@ class UtilsMixin:
 
         wan_route_servers_list = get(self._hostvars, "wan_route_servers", default=[])
 
-        for wan_rr_dict in natural_sort(wan_route_servers_list, sort_key="hostname"):
+        for wan_rs_dict in natural_sort(wan_route_servers_list, sort_key="hostname"):
             # These remote gw can be outside of the inventory
-            wan_rr = wan_rr_dict["hostname"]
+            wan_rs = wan_rs_dict["hostname"]
 
-            if wan_rr == self.shared_utils.hostname:
+            if wan_rs == self.shared_utils.hostname:
                 # Don't add yourself
                 continue
 
-            if (peer_facts := self.shared_utils.get_peer_facts(wan_rr, required=False)) is not None:
+            if (peer_facts := self.shared_utils.get_peer_facts(wan_rs, required=False)) is not None:
                 # Found a matching server in inventory
                 bgp_as = peer_facts.get("bgp_as")
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.shared_utils.bgp_as:
                     raise AristaAvdError(
-                        f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rr} is different from our own: {self.shared_utils.bgp_as}."
+                        f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.shared_utils.bgp_as}."
                     )
 
                 # Prefer values coming from the input variables over peer facts
-                router_id = get(wan_rr_dict, "router_id", default=peer_facts.get("router_id"))
-                wan_path_groups = get(wan_rr_dict, "path_groups", default=peer_facts.get("wan_path_groups"))
+                router_id = get(wan_rs_dict, "router_id", default=peer_facts.get("router_id"))
+                wan_path_groups = get(wan_rs_dict, "path_groups", default=peer_facts.get("wan_path_groups"))
 
                 if router_id is None:
                     raise AristaAvdMissingVariableError(
-                        f"'router_id' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers' or something is wrong with the peer"
+                        f"'router_id' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
                         " facts."
                     )
-                # TODO - enable this once the wan_path_groups peer fact is implemented as this requires WAN interfaces not
-                # covered in this PR.
                 if wan_path_groups is None:
                     raise AristaAvdMissingVariableError(
-                        f"'wan_path_groups' is missing for peering with {wan_rr}, either set it in under 'wan_route_servers'"
-                        " or something is wrong with the peer"
-                        " facts."
+                        f"'wan_path_groups' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers'"
+                        " or something is wrong with the peer facts."
                     )
 
             else:
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
-                router_id = get(wan_rr_dict, "router_id", required=True)
+                router_id = get(wan_rs_dict, "router_id", required=True)
                 wan_path_groups = get(
-                    wan_rr_dict,
+                    wan_rs_dict,
                     "path_groups",
                     required=True,
                     org_key=(
-                        f"'path_groups' is missing for peering with {wan_rr} which was not found in the inventory, either set it in under 'wan_route_servers'"
+                        f"'path_groups' is missing for peering with {wan_rs} which was not found in the inventory, either set it in under 'wan_route_servers'"
                         " or check your inventory."
                     ),
                 )
 
-            wan_rr_result_dict = {
+            wan_rs_result_dict = {
                 "router_id": router_id,
                 "wan_path_groups": wan_path_groups,
             }
 
-            if any(interface["ip_address"] == "dhcp" for path_group in wan_rr_result_dict["wan_path_groups"] for interface in path_group.get("interfaces", [])):
+            if any(interface["ip_address"] == "dhcp" for path_group in wan_rs_result_dict["wan_path_groups"] for interface in path_group.get("interfaces", [])):
                 raise AristaAvdError(
-                    f"The IP address for a WAN interface on a Route Reflector cannot be 'dhcp', this is the case for '{wan_rr}'. Set an ip address to use under"
-                    " the 'wan_route_servers.path_groups.interfaces' key."
+                    f"The IP address for a WAN interface on a Route Server '{wan_rs}' is set 'dhcp'. Clients need to peer with a static IP which can be set"
+                    " under the 'wan_route_servers.path_groups.interfaces' key."
                 )
 
-            wan_route_servers[wan_rr] = strip_empties_from_dict(wan_rr_result_dict)
+            wan_route_servers[wan_rs] = strip_empties_from_dict(wan_rs_result_dict)
 
         return wan_route_servers
 
@@ -422,9 +419,9 @@ class UtilsMixin:
         name = f"{wan_route_server_name}-{path_group_name}"
         return f"{name}-{id}" if id is not None else name
 
-    def _should_connect_to_wan_rr(self, path_groups: list) -> bool:
+    def _should_connect_to_wan_rs(self, path_groups: list) -> bool:
         """
-        This helper implements wherther or not a connection to the wan_rr should be made or not based on a list of path-groups.
+        This helper implements wherther or not a connection to the wan_rs should be made or not based on a list of path-groups.
 
         To do this the logic is the following:
         * Look at the wan_interfaces on the router and check if there is any path-group in common with the RR where
