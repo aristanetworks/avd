@@ -37,21 +37,23 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
         Different addressing algorithms:
             - first_id: offset from pool is `(mlag_primary_id - 1) * 2`
             - odd_id: offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID
-            - same_subnet: offset from pool is always 0. All MLAG pairs will be the same /31. Requires pool to be a /31
+            - same_subnet: offset from pool is always 0. All MLAG pairs will be using the same subnet (default /31).
+              Requires the pool to have the same prefix length.
         """
+        prefixlen = self._fabric_ip_addressing_mlag_ipv4_prefix_length
         if self._fabric_ipaddress_mlag_algorithm == "odd_id":
             offset = self._mlag_odd_id_based_offset
-            return get_ip_from_pool(pool, 31, offset, ip_offset)
+            return get_ip_from_pool(pool, prefixlen, offset, ip_offset)
 
         if self._fabric_ipaddress_mlag_algorithm == "same_subnet":
             pool_network = ipaddress.ip_network(pool, strict=False)
-            if pool_network.prefixlen != 31:
-                raise AristaAvdError("MLAG same_subnet addressing requires the pool to be a /31")
-            return get_ip_from_pool(pool, 31, 0, ip_offset)
+            if pool_network.prefixlen != prefixlen:
+                raise AristaAvdError(f"MLAG same_subnet addressing requires the pool to be a /{prefixlen}")
+            return get_ip_from_pool(pool, prefixlen, 0, ip_offset)
 
         # Use default first_id
         offset = self._mlag_primary_id - 1
-        return get_ip_from_pool(pool, 31, offset, ip_offset)
+        return get_ip_from_pool(pool, prefixlen, offset, ip_offset)
 
     def mlag_ibgp_peering_ip_primary(self, mlag_ibgp_peering_ipv4_pool: str) -> str:
         """
@@ -155,8 +157,9 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 uplink_switch_index=uplink_switch_index,
             )
 
+        prefixlen = self._fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
         offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
-        return get_ip_from_pool(self._uplink_ipv4_pool, 31, offset, 1)
+        return get_ip_from_pool(self._uplink_ipv4_pool, prefixlen, offset, 1)
 
     def p2p_uplinks_peer_ip(self, uplink_switch_index: int) -> str:
         """
@@ -172,8 +175,9 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
                 uplink_switch_index=uplink_switch_index,
             )
 
+        prefixlen = self._fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
         offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
-        return get_ip_from_pool(self._uplink_ipv4_pool, 31, offset, 0)
+        return get_ip_from_pool(self._uplink_ipv4_pool, prefixlen, offset, 0)
 
     def router_id(self) -> str:
         """
