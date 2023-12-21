@@ -127,14 +127,15 @@ class CVDevice:
 
 @dataclass
 class CVEosConfig:
-    config: str
+    file: str
+    """Path to file containing EOS Config"""
     device: CVDevice
     configlet_name: str | None = None
     """By default "AVD_<hostname>"""
 
 
 @dataclass
-class TimeOuts:
+class CVTimeOuts:
     """Timeouts in seconds"""
 
     workspace_build_timeout: float = 300.0

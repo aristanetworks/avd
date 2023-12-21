@@ -13,10 +13,10 @@ def get_cv_client_exception(exception: Exception, cv_client_details: str | None 
     if isinstance(exception, GRPCError):
         status, message, details = exception.args
         if status == Status.NOT_FOUND:
-            return CVResourceNotFound(cv_client_details, message, details)
+            return CVResourceNotFound(cv_client_details, *exception.args)
 
     if isinstance(exception, TimeoutError):
-        return CVTimeoutError(cv_client_details, exception.args[0])
+        return CVTimeoutError(cv_client_details, *exception.args)
 
     # Last resort return None so calling exception handling can just raise the single error instead of a chain.
     return None

@@ -28,6 +28,10 @@ if TYPE_CHECKING:
 
 
 class ChangeControlMixin:
+    """
+    Only to be used as mixin on CVClient class.
+    """
+
     workspace_api_version: Literal["v1"] = "v1"
 
     async def get_change_control(

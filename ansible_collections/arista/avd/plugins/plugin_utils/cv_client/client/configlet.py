@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from pathlib import Path
 from typing import TYPE_CHECKING, Literal
 
 from ..api.arista.configlet.v1 import (
@@ -39,6 +40,10 @@ ASSIGNMENT_MATCH_POLICY_MAP = {
 
 
 class ConfigletMixin:
+    """
+    Only to be used as mixin on CVClient class.
+    """
+
     configlet_api_version: Literal["v1"] = "v1"
 
     async def get_configlet_containers(
@@ -231,6 +236,45 @@ class ConfigletMixin:
 
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet ID '{configlet_id}'") or e
+
+    async def set_configlet_from_file(
+        self: CVClient,
+        workspace_id: str,
+        configlet_id: str,
+        file: str,
+        display_name: str | None = None,
+        description: str | None = None,
+        timeout: float = 10.0,
+    ) -> ConfigletConfig:
+        """
+        Create/update a Configlet using arista.configlet.v1.ConfigletServiceStub.Set API.
+
+        Parameters:
+            workspace_id: Unique identifier of the Workspace for which the information is fetched.
+            configlet_id: Unique identifier for Configlet.
+            file: Path to file containing EOS Configuration.
+            display_name: Configlet Name.
+            description: Configlet description.
+            timeout: Timeout in seconds.
+
+        Returns:
+            ConfigletAssignment object after being set including any server-generated values.
+        """
+        request = ConfigletConfigSetRequest(
+            value=ConfigletConfig(
+                key=ConfigletKey(workspace_id=workspace_id, configlet_id=configlet_id),
+                display_name=display_name,
+                description=description,
+                body=Path(file).read_text(encoding="UTF-8"),
+            )
+        )
+        client = ConfigletConfigServiceStub(self._channel)
+        try:
+            response = await client.set(request, metadata=self._metadata, timeout=timeout)
+            return response.value
+
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet ID '{configlet_id}', File '{file}'") or e
 
     async def delete_configlets(
         self: CVClient,

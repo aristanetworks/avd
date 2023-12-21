@@ -3,10 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from logging import getLogger
+
 from ..api.arista.workspace.v1 import BuildState, WorkspaceState
 from ..client import CVClient
 from ..client.exceptions import CVWorkspaceBuildFailed
-from ..models import CVWorkspace
+from .models import CVWorkspace
+
+LOGGER = getLogger(__name__)
 
 WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
     WorkspaceState.WORKSPACE_STATE_ABANDONED: "abandoned",
@@ -24,6 +28,9 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
     Depending on the requested final_state the Workspace will be left in pending, built, submitted, abandoned or deleted.
     In-place update the workspace state and creates/updates a ChangeControl object on the result object if applicable.
     """
+
+    LOGGER.info("finalize_workspace_on_cv: %s", workspace)
+
     if workspace.requested_state == workspace.final_state or workspace.requested_state == "pending":
         return
 

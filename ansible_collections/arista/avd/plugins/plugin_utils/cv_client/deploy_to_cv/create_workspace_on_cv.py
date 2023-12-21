@@ -3,10 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from logging import getLogger
+
 from ..api.arista.workspace.v1 import WorkspaceState
 from ..client import CVClient
 from ..client.exceptions import CVResourceInvalidState, CVResourceNotFound
-from ..models import CVWorkspace
+from .models import CVWorkspace
+
+LOGGER = getLogger(__name__)
 
 
 async def create_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) -> None:
@@ -14,6 +18,7 @@ async def create_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) ->
     Create or update a Workspace from the given workspace object.
     In-place update the workspace state.
     """
+    LOGGER.info("create_workspace_on_cv: %s", workspace)
     try:
         existing_workspace = await cv_client.get_workspace(workspace_id=workspace.id)
         if existing_workspace.state == WorkspaceState.WORKSPACE_STATE_PENDING:

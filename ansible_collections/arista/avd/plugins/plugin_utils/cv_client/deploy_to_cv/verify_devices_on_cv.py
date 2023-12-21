@@ -3,9 +3,13 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from logging import getLogger
+
 from ..client import CVClient
 from ..client.exceptions import CVResourceNotFound
-from ..models import CVDevice
+from .models import CVDevice
+
+LOGGER = getLogger(__name__)
 
 
 async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_missing_devices: bool, warnings: list, cv_client: CVClient) -> None:
@@ -21,9 +25,10 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
 
     Raises if skip_missing_devices is False. In-place appends to warnings if skip_missing_devices is True.
 
-    TODO: Implement caching instead of checking a device multiple times.
-          (if the user gives seperate objects for the same device across different areas like tags and configs, we will check it for each object.)
+    TODO: Check for duplicate serial_numbers or system_mac_addresses in the input devices list.
     """
+    LOGGER.info("verify_devices_on_cv: %s", len(devices))
+
     # Using set to only include a device once.
     device_tuples = set(
         (device.serial_number, device.system_mac_address, device.hostname if not any([device.serial_number, device.system_mac_address]) else None)
@@ -31,6 +36,7 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
         if device._exists_on_cv is None
     )
     found_devices = await cv_client.get_inventory_devices(devices=device_tuples)
+    LOGGER.info("verify_devices_on_cv: got %s maching devices on CV.", len(found_devices))
     found_device_dict_by_serial = {found_device.key.device_id: found_device for found_device in found_devices}
     found_device_dict_by_system_mac = {found_device.system_mac_address: found_device for found_device in found_devices}
     found_device_dict_by_hostname = {found_device.hostname: found_device for found_device in found_devices}
@@ -71,11 +77,13 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
     # If a device is found, we will ensure hostname is correct and if not, update the hostname.
     # If a device is not found, we will set _exist_on_cv back to False.
     existing_devices = [device for device in devices if device._exists_on_cv]
+    LOGGER.info("verify_devices_on_cv: %s existing devices in inventory", len(existing_devices))
 
     cv_topology_inputs = await cv_client.get_topology_studio_inputs(
         workspace_id=workspace_id,
         device_ids=[device.serial_number for device in existing_devices],
     )
+    LOGGER.info("verify_devices_on_cv: got %s devices from I&T Studio.", len(cv_topology_inputs))
     topology_inputs_dict_by_serial = {topology_input.key.device_id: topology_input for topology_input in cv_topology_inputs}
 
     # List of tuples holding the info we need to update in I&T Studio
@@ -91,10 +99,12 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
         if device.hostname != topology_inputs_dict_by_serial[device.serial_number].device_info.hostname:
             update_topology_inputs.append((device.serial_number, device.hostname))
 
+    LOGGER.info("verify_devices_on_cv: need hostname updates for %s devices in I&T Studio.", len(update_topology_inputs))
     if update_topology_inputs:
         await cv_client.set_topology_studio_inputs(workspace_id=workspace_id, device_inputs=update_topology_inputs)
 
     if missing_devices := [device for device in devices if not device._exists_on_cv]:
+        LOGGER.warning("verify_devices_on_cv: %s missing devices: %s", len(missing_devices), missing_devices)
         error = CVResourceNotFound("Missing devices on CloudVision", *missing_devices)
         if not skip_missing_devices:
             raise error

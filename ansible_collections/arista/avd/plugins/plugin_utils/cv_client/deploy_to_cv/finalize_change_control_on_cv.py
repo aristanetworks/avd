@@ -3,10 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from logging import getLogger
+
 from ..api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
 from ..api.arista.workspace.v1 import WorkspaceState
 from ..client import CVClient
-from ..models import CVChangeControl
+from .models import CVChangeControl
+
+LOGGER = getLogger(__name__)
 
 WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
     WorkspaceState.WORKSPACE_STATE_ABANDONED: "abandoned",
@@ -43,6 +47,8 @@ async def finalize_change_control_on_cv(change_control: CVChangeControl, cv_clie
     Depending on the requested final_state the Change Control will be left in pending approval, approved, started, completed or canceled.
     In-place update the CVChangeControl object.
     """
+
+    LOGGER.info("finalize_change_control_on_cv: %s", change_control)
 
     cv_change_control = await cv_client.get_change_control(change_control_id=change_control.id)
 

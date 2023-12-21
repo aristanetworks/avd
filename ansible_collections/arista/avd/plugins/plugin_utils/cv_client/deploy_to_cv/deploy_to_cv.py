@@ -3,15 +3,19 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from logging import getLogger
+
 from ..client import CVClient
 from ..client.exceptions import CVClientException
-from ..models import CloudVision, CVChangeControl, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVWorkspace, DeployToCvResult, TimeOuts
 from .create_workspace_on_cv import create_workspace_on_cv
 from .deploy_configs_to_cv import deploy_configs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
 from .finalize_workspace_on_cv import finalize_workspace_on_cv
+from .models import CloudVision, CVChangeControl, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVTimeOuts, CVWorkspace, DeployToCvResult
 from .verify_devices_on_cv import verify_devices_on_cv
+
+LOGGER = getLogger(__name__)
 
 
 async def deploy_to_cv(
@@ -23,7 +27,7 @@ async def deploy_to_cv(
     interface_tags: list[CVInterfaceTag] | None = None,
     skip_missing_devices: bool = False,
     strict_tags: bool = True,
-    timeouts: TimeOuts | None = None,
+    timeouts: CVTimeOuts | None = None,
 ) -> DeployToCvResult:
     """
     Deploy various objects to CloudVision.
@@ -36,6 +40,7 @@ async def deploy_to_cv(
     - The `serial_number` and `system_mac_address` properties will be inplace updated in the given CVDevice objects.
 
     TODO: Add something for generic studio inputs.
+    TODO: Respect timeouts and add more.
 
     Parameters:
         cloudvision: CloudVision instance to deploy to.
@@ -89,6 +94,7 @@ async def deploy_to_cv(
             - Support Deleting the CC
         + Return result object.
     """
+    LOGGER.info("deploy_to_cv:")
     result = DeployToCvResult(workspace=workspace or CVWorkspace(), change_control=change_control)
 
     try:

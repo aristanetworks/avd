@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Callable, Literal
+from typing import TYPE_CHECKING, Literal
 
 from ..api.arista.tag.v2 import (
     CreatorType,
@@ -46,6 +46,10 @@ CREATOR_TYPE_MAP = {
 
 
 class TagMixin:
+    """
+    Only to be used as mixin on CVClient class.
+    """
+
     tags_api_version: Literal["v2"] = "v2"
     # TODO: Ensure the to document that we only support v2 of this api - hence only the CV versions supporting that.
 
@@ -352,32 +356,3 @@ class TagMixin:
                 a.key.interface_id == b.key.interface_id,
             ]
         )
-
-    @staticmethod
-    def _remove_item_from_list(itm, lst: list, matcher: Callable) -> None:
-        """
-        Remove one item from the given list.
-
-        Used for Tags and TagAssignments.
-
-        Ignore if we are told to remove an item that is not present.
-        This happens if you add a tag in a workspace and then remove it again.
-        """
-        for index in range(len(lst)):
-            if matcher(lst[index], itm):
-                lst.pop(index)
-                return
-
-    @staticmethod
-    def _upsert_item_in_list(itm, lst: list, matcher: Callable) -> None:
-        """
-        Update or append one item from the given list.
-
-        Used for Tags and TagAssignments.
-        """
-        for index in range(len(lst)):
-            if matcher(lst[index], itm):
-                lst[index] = itm
-                return
-
-        lst.append(itm)

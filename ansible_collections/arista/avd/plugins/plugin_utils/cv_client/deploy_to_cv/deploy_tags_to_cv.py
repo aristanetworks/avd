@@ -3,8 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from logging import getLogger
+
 from ..client import CVClient
-from ..models import CVDeviceTag, CVInterfaceTag, CVWorkspace
+from .models import CVDeviceTag, CVInterfaceTag, CVWorkspace
+
+LOGGER = getLogger(__name__)
 
 
 async def deploy_tags_to_cv(
@@ -30,6 +34,8 @@ async def deploy_tags_to_cv(
 
     In-place updates skipped_tags, deployed_tags, removed_tags, warnings so they can be given directly from the results object.
     """
+    LOGGER.info("deploy_tags_to_cv: %s", len(tags))
+
     # No need to continue if we have nothing to do.
     if not tags:
         return

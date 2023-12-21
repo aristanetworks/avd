@@ -14,6 +14,10 @@ if TYPE_CHECKING:
 
 
 class InventoryMixin:
+    """
+    Only to be used as mixin on CVClient class.
+    """
+
     inventory_api_version: Literal["v1"] = "v1"
 
     async def get_inventory_devices(

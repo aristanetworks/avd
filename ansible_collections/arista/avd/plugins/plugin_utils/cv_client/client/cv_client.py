@@ -12,6 +12,7 @@ from .configlet import ConfigletMixin
 from .inventory import InventoryMixin
 from .studio import StudioMixin
 from .tag import TagMixin
+from .utils import UtilsMixin
 from .workspace import WorkspaceMixin
 
 
@@ -21,6 +22,7 @@ class CVClient(
     InventoryMixin,
     StudioMixin,
     TagMixin,
+    UtilsMixin,
     WorkspaceMixin,
 ):
     _channel: Channel | None = None

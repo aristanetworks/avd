@@ -45,6 +45,10 @@ REQUEST_MAP = {
 
 
 class WorkspaceMixin:
+    """
+    Only to be used as mixin on CVClient class.
+    """
+
     workspace_api_version: Literal["v1"] = "v1"
 
     async def get_workspace(
