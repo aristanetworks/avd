@@ -42,4 +42,4 @@ tenants:
               enabled: true
 
 expected_error_message: >-
-  'pim: enabled' set on l3_interface Ethernet1 on failure-missing-evpn-multicast-peg-rps requires at least one RP defined in pim_rp_addresses under VRF 'Tenant_A_OP_Zone_MC' or Tenant 'FABRIC'
+  'pim: enabled' set on l3_interface 'Ethernet1' on 'failure-missing-evpn-multicast-peg-rps' requires at least one RP defined in pim_rp_addresses under VRF 'Tenant_A_OP_Zone_MC' or Tenant 'FABRIC'
