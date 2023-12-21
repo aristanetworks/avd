@@ -4651,7 +4651,7 @@ $defs:
                   iBGP session.
 
                   By default this parameter is calculated using the following formula:
-                  <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1.
+                  `<mlag_ibgp_peering_vrfs.base_vlan>` + `<vrf_id>` - 1.
 
                   '
                 min: 1
