@@ -31,6 +31,7 @@ sflow:
     - destination: 10.6.75.61
   source_interface: Management0
   sample: 1000
+  sample_output_subinterface: true
   dangerous: true
   polling_interval: 10
   extensions:

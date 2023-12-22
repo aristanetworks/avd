@@ -43,6 +43,9 @@ sflow source-interface {{ sflow.source_interface }}
 {%     elif sflow.source is arista.avd.defined %}
 sflow source {{ sflow.source }}
 {%     endif %}
+{%     if sflow.sample_output_subinterface is arista.avd.defined(true) %}
+sflow sample output subinterface
+{%     endif %}
 {%     if sflow.extensions is arista.avd.defined %}
 {%         for extension in sflow.extensions | arista.avd.natural_sort('name') if extension.name is arista.avd.defined and extension.enabled is arista.avd.defined %}
 {%             if extension.enabled is arista.avd.defined(true) %}

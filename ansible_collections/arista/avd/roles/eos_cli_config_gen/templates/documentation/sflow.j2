@@ -44,6 +44,10 @@
 
 sFlow Sample Rate: {{ sflow.sample }}
 {%     endif %}
+{%     if sflow.sample_output_subinterface is arista.avd.defined(true) %}
+
+sFlow Sample Output Subinterface is enabled.
+{%     endif %}
 {%     if sflow.polling_interval is arista.avd.defined %}
 
 sFlow Polling Interval: {{ sflow.polling_interval }}

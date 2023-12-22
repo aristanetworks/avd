@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>sflow</samp>](## "sflow") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;sample</samp>](## "sflow.sample") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;sample_output_subinterface</samp>](## "sflow.sample_output_subinterface") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dangerous</samp>](## "sflow.dangerous") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;polling_interval</samp>](## "sflow.polling_interval") | Integer |  |  |  | Polling interval in seconds |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "sflow.vrfs") | List, items: Dictionary |  |  |  |  |
@@ -45,6 +46,7 @@
     ```yaml
     sflow:
       sample: <int>
+      sample_output_subinterface: <bool>
       dangerous: <bool>
 
       # Polling interval in seconds
