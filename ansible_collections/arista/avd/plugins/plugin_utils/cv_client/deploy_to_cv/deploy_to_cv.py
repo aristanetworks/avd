@@ -57,7 +57,7 @@ async def deploy_to_cv(
             Otherwise the Workspace will be abandoned on any issue.
         strict_tags: If `True` other tags associated with the devices will get removed. \
             Otherwise other tags will be left as-is. \
-            Other Tags with the same label are always removed.
+            TODO: Other Tags with the same label are always removed.
 
     TODO: Consider implementing "strict configs".
           Very hard to implement since configs can now come from various studios and tag queries we have little control over.
@@ -96,7 +96,12 @@ async def deploy_to_cv(
     """
     LOGGER.info("deploy_to_cv:")
     result = DeployToCvResult(workspace=workspace or CVWorkspace(), change_control=change_control)
-
+    if device_tags is None:
+        device_tags = []
+    if interface_tags is None:
+        interface_tags = []
+    if configs is None:
+        configs = []
     try:
         async with CVClient(servers=cloudvision.servers, token=cloudvision.token, verify_certs=cloudvision.verify_certs) as cv_client:
             # Create workspace

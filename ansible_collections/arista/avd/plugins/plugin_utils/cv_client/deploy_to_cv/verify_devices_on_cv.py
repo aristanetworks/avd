@@ -29,6 +29,10 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
     """
     LOGGER.info("verify_devices_on_cv: %s", len(devices))
 
+    # Return if we have nothing to do.
+    if not devices:
+        return
+
     # Using set to only include a device once.
     device_tuples = set(
         (device.serial_number, device.system_mac_address, device.hostname if not any([device.serial_number, device.system_mac_address]) else None)

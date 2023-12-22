@@ -32,16 +32,16 @@ if TYPE_CHECKING:
     from .cv_client import CVClient
 
 ELEMENT_TYPE_MAP = {
-    "device": ElementType.ELEMENT_TYPE_DEVICE,
-    "interface": ElementType.ELEMENT_TYPE_INTERFACE,
-    None: ElementType.ELEMENT_TYPE_UNSPECIFIED,
+    "device": ElementType.DEVICE,
+    "interface": ElementType.INTERFACE,
+    None: ElementType.UNSPECIFIED,
 }
 
 CREATOR_TYPE_MAP = {
-    "user": CreatorType.CREATOR_TYPE_USER,
-    "system": CreatorType.CREATOR_TYPE_SYSTEM,
-    "external": CreatorType.CREATOR_TYPE_EXTERNAL,
-    None: CreatorType.CREATOR_TYPE_UNSPECIFIED,
+    "user": CreatorType.USER,
+    "system": CreatorType.SYSTEM,
+    "external": CreatorType.EXTERNAL,
+    None: CreatorType.UNSPECIFIED,
 }
 
 
@@ -115,7 +115,7 @@ class TagMixin:
                 tag_config = response.value
 
                 # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag.
-                tag = Tag(key=tag_config.key, creator_type=CreatorType.CREATOR_TYPE_USER)
+                tag = Tag(key=tag_config.key, creator_type=CreatorType.USER)
                 if tag_config.remove:
                     self._remove_item_from_list(tag, tags, self._match_tags)
                 else:
@@ -232,7 +232,7 @@ class TagMixin:
                 tag_assignment_config = response.value
 
                 # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag assignment.
-                tag_assignment = TagAssignment(key=tag_assignment_config.key, tag_creator_type=CreatorType.CREATOR_TYPE_USER)
+                tag_assignment = TagAssignment(key=tag_assignment_config.key, tag_creator_type=CreatorType.USER)
                 if tag_assignment_config.remove:
                     self._remove_item_from_list(tag_assignment, tag_assignments, self._match_tag_assignments)
                 else:

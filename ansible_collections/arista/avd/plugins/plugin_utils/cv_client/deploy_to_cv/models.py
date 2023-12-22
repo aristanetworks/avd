@@ -75,7 +75,9 @@ class CVWorkspace:
     - `"deleted"`: Build, abort and then delete the Workspace. \
         Used for dry-run where no changes will be committed to CloudVision and the temporary Workspace will be removed to avoid "clutter".
     """
-    final_state: Literal["pending", "built", "submitted", "build failed", "abandoned", "deleted"] | None = None
+    force: bool = False
+    """ Force submit the workspace even if some devices are not actively streaming to CloudVision."""
+    final_state: Literal["pending", "built", "submitted", "build failed", "submit failed", "abandoned", "deleted"] | None = None
     """The final state of the Workspace. Do not set this manually."""
     change_control_id: str | None = None
     """Do not set this manually."""

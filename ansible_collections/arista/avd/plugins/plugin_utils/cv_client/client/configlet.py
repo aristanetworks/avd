@@ -33,9 +33,9 @@ if TYPE_CHECKING:
 
 
 ASSIGNMENT_MATCH_POLICY_MAP = {
-    "match_first": MatchPolicy.MATCH_POLICY_MATCH_FIRST,
-    "match_all": MatchPolicy.MATCH_POLICY_MATCH_ALL,
-    None: MatchPolicy.MATCH_POLICY_UNSPECIFIED,
+    "match_first": MatchPolicy.MATCH_FIRST,
+    "match_all": MatchPolicy.MATCH_ALL,
+    None: MatchPolicy.UNSPECIFIED,
 }
 
 

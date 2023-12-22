@@ -5,20 +5,20 @@ from __future__ import annotations
 
 from logging import getLogger
 
-from ..api.arista.workspace.v1 import BuildState, WorkspaceState
+from ..api.arista.workspace.v1 import ResponseStatus, WorkspaceState
 from ..client import CVClient
-from ..client.exceptions import CVWorkspaceBuildFailed
+from ..client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed
 from .models import CVWorkspace
 
 LOGGER = getLogger(__name__)
 
 WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
-    WorkspaceState.WORKSPACE_STATE_ABANDONED: "abandoned",
-    WorkspaceState.WORKSPACE_STATE_CONFLICTS: "build failed",
-    WorkspaceState.WORKSPACE_STATE_PENDING: "pending",
-    WorkspaceState.WORKSPACE_STATE_ROLLED_BACK: "pending",
-    WorkspaceState.WORKSPACE_STATE_SUBMITTED: "submitted",
-    WorkspaceState.WORKSPACE_STATE_UNSPECIFIED: None,
+    WorkspaceState.ABANDONED: "abandoned",
+    WorkspaceState.CONFLICTS: "build failed",
+    WorkspaceState.PENDING: "pending",
+    WorkspaceState.ROLLED_BACK: "pending",
+    WorkspaceState.SUBMITTED: "submitted",
+    WorkspaceState.UNSPECIFIED: None,
 }
 
 
@@ -35,39 +35,45 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
         return
 
     workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
-    try:
-        build_result = await cv_client.wait_for_workspace_build(workspace_id=workspace.id, build_id=workspace_config.request_params.request_id)
-
-    except CVWorkspaceBuildFailed as e:
+    build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
+    if build_result.status != ResponseStatus.SUCCESS:
         workspace.final_state = "build failed"
-        raise e
+        LOGGER.info("finalize_workspace_on_cv: %s", workspace)
+        raise CVWorkspaceBuildFailed(f"Failed to build workspace {workspace.id}: {build_result}")
 
-    if build_result.state == BuildState.BUILD_STATE_SUCCESS:
-        workspace.final_state = "built"
-        if workspace.requested_state == "built":
-            return
+    workspace.final_state = "built"
+    LOGGER.info("finalize_workspace_on_cv: %s", workspace)
+    if workspace.requested_state == "built":
+        return
 
-        # We can only submit if the build was successful
-        if workspace.requested_state == "submitted":
-            await cv_client.submit_workspace(workspace_id=workspace.id)
+    # We can only submit if the build was successful
+    if workspace.requested_state == "submitted" and workspace.final_state == "built":
+        workspace_config = await cv_client.submit_workspace(workspace_id=workspace.id, force=workspace.force)
+        submit_result, cv_workspace = await cv_client.wait_for_workspace_response(
+            workspace_id=workspace.id, request_id=workspace_config.request_params.request_id
+        )
+        if submit_result.status != ResponseStatus.SUCCESS:
+            workspace.final_state = "submit failed"
+            LOGGER.info("finalize_workspace_on_cv: %s", workspace)
+            raise CVWorkspaceSubmitFailed(f"Failed to submit workspace {workspace.id}: {submit_result}")
+
+        workspace.final_state = "submitted"
+        if cv_workspace.cc_ids.values:
+            workspace.change_control_id = cv_workspace.cc_ids.values[0]
+        LOGGER.info("finalize_workspace_on_cv: %s", workspace)
+        return
 
     # We can abort or delete even if we got some unexpected build state.
     if workspace.requested_state == "abandoned":
         await cv_client.abandon_workspace(workspace_id=workspace.id)
+        workspace.final_state = "abandoned"
+        LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         return
 
-    elif workspace.requested_state == "deleted":
+    if workspace.requested_state == "deleted":
         await cv_client.delete_workspace(workspace_id=workspace.id)
         workspace.final_state = "deleted"
+        LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         return
-
-    cv_workspace = await cv_client.wait_for_workspace_states(
-        workspace_id=workspace.id, states=[WorkspaceState.WORKSPACE_STATE_CONFLICTS, WorkspaceState.WORKSPACE_STATE_SUBMITTED]
-    )
-
-    workspace.final_state = WORKSPACE_STATE_TO_FINAL_STATE_MAP.get(cv_workspace.state)
-    if cv_workspace.cc_ids is not None and cv_workspace.cc_ids.values:
-        # Workspaces only create a single CC so we just only the first value.
-        workspace.change_control_id = cv_workspace.cc_ids.values[0]
 
     return

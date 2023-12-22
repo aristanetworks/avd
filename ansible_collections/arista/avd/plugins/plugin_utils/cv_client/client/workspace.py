@@ -4,20 +4,15 @@
 from __future__ import annotations
 
 from datetime import datetime
+from logging import getLogger
 from typing import TYPE_CHECKING, Literal
 from uuid import uuid4
 
-from async_timeout import timeout as atimeout
-
 from ..api.arista.workspace.v1 import (
-    BuildState,
     Request,
     RequestParams,
+    Response,
     Workspace,
-    WorkspaceBuild,
-    WorkspaceBuildKey,
-    WorkspaceBuildServiceStub,
-    WorkspaceBuildStreamRequest,
     WorkspaceConfig,
     WorkspaceConfigDeleteRequest,
     WorkspaceConfigServiceStub,
@@ -25,21 +20,21 @@ from ..api.arista.workspace.v1 import (
     WorkspaceKey,
     WorkspaceRequest,
     WorkspaceServiceStub,
-    WorkspaceState,
     WorkspaceStreamRequest,
 )
-from .exceptions import CVWorkspaceBuildFailed, CVWorkspaceBuildTimeout, CVWorkspaceStateTimeout, get_cv_client_exception
+from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
     from .cv_client import CVClient
 
+LOGGER = getLogger(__name__)
 
 REQUEST_MAP = {
-    "abandon": Request.REQUEST_ABANDON,
-    "cancel_build": Request.REQUEST_CANCEL_BUILD,
-    "rollback": Request.REQUEST_ROLLBACK,
-    "start_build": Request.REQUEST_START_BUILD,
-    "submit": Request.REQUEST_SUBMIT,
+    "abandon": Request.ABANDON,
+    "cancel_build": Request.CANCEL_BUILD,
+    "rollback": Request.ROLLBACK,
+    "start_build": Request.START_BUILD,
+    "submit": Request.SUBMIT,
     None: None,
 }
 
@@ -131,7 +126,7 @@ class WorkspaceMixin:
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
-                request=Request.REQUEST_ABANDON,
+                request=Request.ABANDON,
                 request_params=RequestParams(
                     request_id=f"req-{uuid4()}",
                 ),
@@ -159,7 +154,7 @@ class WorkspaceMixin:
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
-                request=Request.REQUEST_START_BUILD,
+                request=Request.START_BUILD,
                 request_params=RequestParams(
                     request_id=f"req-{uuid4()}",
                 ),
@@ -192,123 +187,70 @@ class WorkspaceMixin:
     async def submit_workspace(
         self: CVClient,
         workspace_id: str,
+        force: bool = False,
         timeout: float = 10.0,
     ) -> WorkspaceConfig:
         """
         Request submission of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API
 
         Parameters:
-            workspace_id: Unique identifier the workspace.
-
+            workspace_id: Unique identifier the Workspace.
+            force: Force submit the Workspace.
             timeout: Timeout in seconds.
 
         Returns:
             WorkspaceConfig object after being set including any server-generated values.
         """
+
         request = WorkspaceConfigSetRequest(
             WorkspaceConfig(
                 key=WorkspaceKey(workspace_id=workspace_id),
-                request=Request.REQUEST_SUBMIT,
-                request_params=RequestParams(
-                    request_id=f"req-{uuid4()}",
-                ),
+                request=Request.SUBMIT_FORCE if force else Request.SUBMIT,
+                request_params=RequestParams(request_id=f"req-{uuid4()}"),
             )
         )
         client = WorkspaceConfigServiceStub(self._channel)
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
+        LOGGER.debug("submit_workspace: Got reponse to submission: %s", response.value)
         return response.value
 
-    async def wait_for_workspace_build(
+    async def wait_for_workspace_response(
         self: CVClient,
         workspace_id: str,
-        build_id: str,
+        request_id: str,
         time: datetime | None = None,
-        build_timeout: float = 3600.0,
-        timeout: float = 10.0,
-    ) -> WorkspaceBuild:
+        timeout: float = 3600.0,
+    ) -> tuple[Response, Workspace]:
         """
-        Monitor a build of the Workspace using arista.workspace.v1.WorkspaceBuildService.Subscribe API
-        Blocks until the build has succeeded, failed or timed out.
+        Monitor a Workspace using arista.workspace.v1.WorkspaceService.Subscribe API for a response to the given request_id.
+        Blocks until a reponse is returned or timed out.
 
         Parameters:
             workspace_id: Unique identifier the Workspace.
-            build_id: Unique identifier for the Build
-            build_timeout: Timeout in seconds for the build operation.
+            request_id: Unique identifier for the Request.
             time: Timestamp from which the information is fetched. `now()` if not set.
-            timeout: Timeout in seconds for the subscribe operation.
+            timeout: Timeout in seconds for the Workspace to build.
 
         Returns:
-            WorkspaceBuild object after being set including any server-generated values.
-
-        Raises:
-            CVWorkspaceBuildFailed: If the build fails.
-            CVWorkspaceBuildTimeout: If the build timeout expired.
+            Tuple of (<Response object for the request_id>, <Full Workspace object>)
         """
-        request = WorkspaceBuildStreamRequest(
+        request = WorkspaceStreamRequest(
             partial_eq_filter=[
-                WorkspaceBuild(
-                    key=WorkspaceBuildKey(
-                        workspace_id=workspace_id,
-                        build_id=build_id,
-                    )
+                Workspace(
+                    key=WorkspaceKey(workspace_id=workspace_id),
                 )
             ],
             time=time,
         )
-        client = WorkspaceBuildServiceStub(self._channel)
-        try:
-            async with atimeout(build_timeout):
-                responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
-                async for response in responses:
-                    if response.value.state in [BuildState.BUILD_STATE_IN_PROGRESS, BuildState.BUILD_STATE_UNSPECIFIED]:
-                        continue
-
-                    if response.value.state == BuildState.BUILD_STATE_FAIL:
-                        raise CVWorkspaceBuildFailed(f"Build of Workspace ID '{workspace_id}' failed", response.value.build_results.to_json())
-
-                    return response.value
-        except TimeoutError as e:
-            raise CVWorkspaceBuildTimeout(f"Build of Workspace ID '{workspace_id}' not completed within timeout of {build_timeout} seconds") from e
-
-    async def wait_for_workspace_states(
-        self: CVClient,
-        workspace_id: str,
-        states: list[WorkspaceState],
-        time: datetime | None = None,
-        state_timeout: float = 30.0,
-        timeout: float = 10.0,
-    ) -> Workspace:
-        """
-        Monitor a Workspace state using arista.workspace.v1.WorkspaceService.Subscribe API
-        Blocks until any of the given states are met or timed out.
-
-        Parameters:
-            workspace_id: Unique identifier the Workspace.
-            states: List of states which we wait for.
-            time: Timestamp from which the information is fetched. `now()` if not set.
-            state_timeout: Timeout in seconds to wait for the states.
-            timeout: Timeout in seconds for the subscribe operation.
-
-        Returns:
-            Workspace object after any of the states are reached.
-
-        Raises:
-            CVWorkspaceStateTimeout: If the timeout expired.
-        """
-        request = WorkspaceStreamRequest(
-            partial_eq_filter=[Workspace(key=WorkspaceKey(workspace_id=workspace_id))],
-            time=time,
-        )
         client = WorkspaceServiceStub(self._channel)
         try:
-            async with atimeout(state_timeout):
-                responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
-                async for response in responses:
-                    if response.value.state not in states:
-                        continue
-
-                    return response.value
-        except TimeoutError as e:
-            raise CVWorkspaceStateTimeout(
-                f"State of Workspace ID '{workspace_id}' not gotten to any of the expected state {states} within timeout of {state_timeout} seconds"
-            ) from e
+            responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+            async for response in responses:
+                if request_id in response.value.responses.values:
+                    LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
+                    return response.value.responses.values[request_id], response.value
+                LOGGER.debug(
+                    "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s", request_id, response.value.state
+                )
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Request ID '{request_id}") or e

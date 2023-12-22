@@ -14,7 +14,8 @@ def get_cv_client_exception(exception: Exception, cv_client_details: str | None 
         status, message, details = exception.args
         if status == Status.NOT_FOUND:
             return CVResourceNotFound(cv_client_details, *exception.args)
-
+        if status == Status.CANCELLED:
+            return CVTimeoutError(cv_client_details, *exception.args)
     if isinstance(exception, TimeoutError):
         return CVTimeoutError(cv_client_details, *exception.args)
 
@@ -43,6 +44,10 @@ class CVWorkspaceBuildTimeout(CVClientException):
 
 
 class CVWorkspaceBuildFailed(CVClientException):
+    """Build of CloudVision Workspace failed"""
+
+
+class CVWorkspaceSubmitFailed(CVClientException):
     """Build of CloudVision Workspace failed"""
 
 

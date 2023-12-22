@@ -6,26 +6,16 @@ from __future__ import annotations
 from logging import getLogger
 
 from ..api.arista.changecontrol.v1 import ChangeControl, ChangeControlStatus
-from ..api.arista.workspace.v1 import WorkspaceState
 from ..client import CVClient
 from .models import CVChangeControl
 
 LOGGER = getLogger(__name__)
 
-WORKSPACE_STATE_TO_FINAL_STATE_MAP = {
-    WorkspaceState.WORKSPACE_STATE_ABANDONED: "abandoned",
-    WorkspaceState.WORKSPACE_STATE_CONFLICTS: "build failed",
-    WorkspaceState.WORKSPACE_STATE_PENDING: "pending",
-    WorkspaceState.WORKSPACE_STATE_ROLLED_BACK: "pending",
-    WorkspaceState.WORKSPACE_STATE_SUBMITTED: "submitted",
-    WorkspaceState.WORKSPACE_STATE_UNSPECIFIED: None,
-}
-
 CHANGE_CONTROL_STATUS_TO_FINAL_STATE_MAP = {
-    ChangeControlStatus.CHANGE_CONTROL_STATUS_COMPLETED: "completed",
-    ChangeControlStatus.CHANGE_CONTROL_STATUS_RUNNING: "running",
-    ChangeControlStatus.CHANGE_CONTROL_STATUS_SCHEDULED: "scheduled",
-    ChangeControlStatus.CHANGE_CONTROL_STATUS_UNSPECIFIED: None,
+    ChangeControlStatus.COMPLETED: "completed",
+    ChangeControlStatus.RUNNING: "running",
+    ChangeControlStatus.SCHEDULED: "scheduled",
+    ChangeControlStatus.UNSPECIFIED: None,
 }
 
 CHANGE_CONTROL_APPROVAL_TO_FINAL_STATE_MAP = {True: "approved", False: None}
