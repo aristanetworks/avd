@@ -21317,9 +21317,7 @@
         },
         {
           "platforms": [
-            "7050X3",
-            "720XP",
-            "722XP"
+            "7050X3"
           ],
           "feature_support": {
             "queue_monitor_length_notify": false
@@ -21329,6 +21327,38 @@
             "non_mlag": 330
           },
           "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+        },
+        {
+          "platforms": [
+            "720XP"
+          ],
+          "feature_support": {
+            "poe": true,
+            "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          },
+          "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+        },
+        {
+          "platforms": [
+            "750",
+            "755",
+            "758",
+            "720DP",
+            "722XP",
+            "710P"
+          ],
+          "feature_support": {
+            "poe": true,
+            "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
         },
         {
           "platforms": [
