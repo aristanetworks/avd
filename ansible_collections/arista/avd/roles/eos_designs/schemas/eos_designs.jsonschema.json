@@ -9401,13 +9401,21 @@
             "algorithm": {
               "type": "string",
               "default": "first_id",
-              "description": "This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.\nEach MLAG link will have a /31 subnet with each subnet allocated from the relevant MLAG pool via a calculated offset.\nThe offset is calculated using one of the following algorithms:\n  - first_id: `(mlag_primary_id - 1) * 2` where `mlag_primary_id` is the ID of the first node defined under the node_group.\n    This allocation method will skip every other /31 subnet making it less space efficient than `odd_id`.\n  - odd_id: `(odd_id - 1) / 2`. Requires the node_group to have a node with an odd ID and a node with an even ID.\n  - same_subnet: the offset will always be zero.\n    This allocation method will cause every MLAG link to be addressed with the same /31 subnet.\n",
+              "description": "This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.\nEach MLAG link will have a /31* subnet with each subnet allocated from the relevant MLAG pool via a calculated offset.\nThe offset is calculated using one of the following algorithms:\n  - first_id: `(mlag_primary_id - 1) * 2` where `mlag_primary_id` is the ID of the first node defined under the node_group.\n    This allocation method will skip every other /31* subnet making it less space efficient than `odd_id`.\n  - odd_id: `(odd_id - 1) / 2`. Requires the node_group to have a node with an odd ID and a node with an even ID.\n  - same_subnet: the offset will always be zero.\n    This allocation method will cause every MLAG link to be addressed with the same /31* subnet.\n\\* - The prefix length is configurable with a default of /31.",
               "enum": [
                 "first_id",
                 "odd_id",
                 "same_subnet"
               ],
               "title": "Algorithm"
+            },
+            "ipv4_prefix_length": {
+              "type": "integer",
+              "default": 31,
+              "minimum": 1,
+              "maximum": 31,
+              "description": "IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.",
+              "title": "IPv4 Prefix Length"
             }
           },
           "additionalProperties": false,
@@ -9415,6 +9423,24 @@
             "^_.+$": {}
           },
           "title": "MLAG"
+        },
+        "p2p_uplinks": {
+          "type": "object",
+          "properties": {
+            "ipv4_prefix_length": {
+              "type": "integer",
+              "default": 31,
+              "minimum": 1,
+              "maximum": 31,
+              "description": "IPv4 prefix length used for L3 point-to-point uplinks.",
+              "title": "IPv4 Prefix Length"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "P2P Uplinks"
         }
       },
       "additionalProperties": false,
@@ -21484,9 +21510,7 @@
         },
         {
           "platforms": [
-            "7050X3",
-            "720XP",
-            "722XP"
+            "7050X3"
           ],
           "feature_support": {
             "queue_monitor_length_notify": false
@@ -21496,6 +21520,38 @@
             "non_mlag": 330
           },
           "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+        },
+        {
+          "platforms": [
+            "720XP"
+          ],
+          "feature_support": {
+            "poe": true,
+            "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          },
+          "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+        },
+        {
+          "platforms": [
+            "750",
+            "755",
+            "758",
+            "720DP",
+            "722XP",
+            "710P"
+          ],
+          "feature_support": {
+            "poe": true,
+            "queue_monitor_length_notify": false
+          },
+          "reload_delay": {
+            "mlag": 300,
+            "non_mlag": 330
+          }
         },
         {
           "platforms": [
