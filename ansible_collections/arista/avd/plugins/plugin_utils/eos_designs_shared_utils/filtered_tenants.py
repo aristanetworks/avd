@@ -42,6 +42,38 @@ class FilteredTenantsMixin:
                     tenant["vrfs"] = self.filtered_vrfs(tenant)
                     filtered_tenants.append(tenant)
 
+        no_vrf_default = all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"])
+        if self.wan_role is not None and no_vrf_default:
+            filtered_tenants.append(
+                {
+                    "name": "WAN_DEFAULT",
+                    "vrfs": [
+                        {
+                            "name": "default",
+                            "vrf_id": 1,
+                            "svis": [],
+                            "l3_interfaces": [],
+                            "bgp_peers": [],
+                            "ipv6_static_routes": [],
+                            "static_routes": [],
+                        }
+                    ],
+                    "l2vlans": [],
+                }
+            )
+        elif self.wan_role:
+            # It is enough to check only the first occurence of default VRF as some other piece of code
+            # checks that if the VRF is in multiple tenants, the configuration is consistent.
+            for tenant in filtered_tenants:
+                if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
+                    continue
+                if "evpn" in vrf_default.get("address_families", ["evpn"]):
+                    if self.underlay_filter_peer_as:
+                        raise AristaAvdError(
+                            "WAN configuration requires EVPN to be enabled for VRF 'default'. Got 'address_families: {vrf_default['address_families']}."
+                        )
+                break
+
         return natural_sort(filtered_tenants, "name")
 
     def filtered_l2vlans(self: SharedUtils, tenant: dict) -> list[dict]:
@@ -65,7 +97,6 @@ class FilteredTenantsMixin:
         return l2vlans
 
     def is_accepted_vlan(self: SharedUtils, vlan: dict) -> bool:
-        # sourcery skip: assign-if-exp, boolean-if-exp-identity, reintroduce-else
         """
         Check if vlan is in accepted_vlans list
         If filter.only_vlans_in_use is True also check if vlan id or trunk group is assigned to connected endpoint
