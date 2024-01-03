@@ -70,15 +70,17 @@ class RouterPathSelectionMixin(UtilsMixin):
             pass
             # implement LAN_HA here
 
-        return natural_sort(path_groups, "name")
+        return path_groups
 
     def _get_load_balance_policies(self, path_groups: dict) -> dict | None:
         """ """
-        # TODO for now a default load balance policy with all path-groups.
-        load_balance_policies = []
-        unique_pg = set(pg.get("name") for pg in path_groups)
-        load_balance_policies.append({"name": "LBPOLICY", "path_groups": [{"name": pg_name} for pg_name in unique_pg]})
-        return load_balance_policies
+        unique_path_groups = natural_sort({path_group.get("name") for path_group in path_groups}, "name")
+        return [
+            {
+                "name": "LBPOLICY",
+                "path_groups": [{"name": pg_name} for pg_name in unique_path_groups],
+            }
+        ]
 
     def _get_policies(self) -> list | None:
         """
