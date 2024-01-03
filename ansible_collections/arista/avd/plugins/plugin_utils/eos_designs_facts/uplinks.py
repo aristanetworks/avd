@@ -197,10 +197,9 @@ class UplinksMixin:
         List of uplinks with all parameters for uplink_type p2p
         """
         uplinks = []
-        uplink_interfaces = self._uplink_interfaces
         uplink_switches = self.shared_utils.uplink_switches
         uplink_switch_interfaces = self._uplink_switch_interfaces
-        for uplink_index, uplink_interface in enumerate(uplink_interfaces):
+        for uplink_index, uplink_interface in enumerate(self._uplink_interfaces):
             if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
                 # Invalid length of input variables. Skipping
                 continue
@@ -211,14 +210,15 @@ class UplinksMixin:
                 continue
 
             uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-            uplink = {}
-            uplink["interface"] = uplink_interface
-            uplink["peer"] = uplink_switch
-            uplink["peer_interface"] = uplink_switch_interfaces[uplink_index]
-            uplink["peer_type"] = uplink_switch_facts.type
-            uplink["peer_is_deployed"] = uplink_switch_facts.is_deployed
-            uplink["peer_bgp_as"] = uplink_switch_facts.bgp_as
-            uplink["type"] = "underlay_p2p"
+            uplink = {
+                "interface": uplink_interface,
+                "peer": uplink_switch,
+                "peer_interface": uplink_switch_interfaces[uplink_index],
+                "peer_type": uplink_switch_facts.type,
+                "peer_is_deployed": uplink_switch_facts.is_deployed,
+                "peer_bgp_as": uplink_switch_facts.bgp_as,
+                "type": "underlay_p2p",
+            }
             if self.shared_utils.uplink_interface_speed is not None:
                 uplink["speed"] = self.shared_utils.uplink_interface_speed
 
@@ -247,10 +247,7 @@ class UplinksMixin:
                 uplink["peer_ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_peer_ip(uplink_index)
 
             if self.shared_utils.link_tracking_groups is not None:
-                uplink["link_tracking_groups"] = []
-                for lt_group in self.shared_utils.link_tracking_groups:
-                    uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
-
+                uplink["link_tracking_groups"] = [{"name": lt_group["name"], "direction": "upstream"} for lt_group in self.shared_utils.link_tracking_groups]
             if self.shared_utils.uplink_structured_config is not None:
                 uplink["structured_config"] = self.shared_utils.uplink_structured_config
 
@@ -275,14 +272,14 @@ class UplinksMixin:
                 continue
 
             uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-            uplink = {}
-            uplink["interface"] = uplink_interface
-            uplink["peer"] = uplink_switch
-            uplink["peer_interface"] = uplink_switch_interfaces[uplink_index]
-            uplink["peer_type"] = uplink_switch_facts.type
-            uplink["peer_is_deployed"] = uplink_switch_facts.is_deployed
-            uplink["type"] = "underlay_l2"
-
+            uplink = {
+                "interface": uplink_interface,
+                "peer": uplink_switch,
+                "peer_interface": uplink_switch_interfaces[uplink_index],
+                "peer_type": uplink_switch_facts.type,
+                "peer_is_deployed": uplink_switch_facts.is_deployed,
+                "type": "underlay_l2",
+            }
             if self.shared_utils.uplink_interface_speed is not None:
                 uplink["speed"] = self.shared_utils.uplink_interface_speed
 
@@ -320,10 +317,7 @@ class UplinksMixin:
                 # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
                 uplink_vlans.add(self.shared_utils.inband_mgmt_vlan)
 
-            if uplink_vlans:
-                uplink["vlans"] = list_compress(list(uplink_vlans))
-            else:
-                uplink["vlans"] = "none"
+            uplink["vlans"] = list_compress(list(uplink_vlans)) if uplink_vlans else "none"
 
             if uplink_native_vlan := get(self.shared_utils.switch_data_combined, "uplink_native_vlan"):
                 uplink["native_vlan"] = uplink_native_vlan
@@ -332,10 +326,7 @@ class UplinksMixin:
                 uplink["peer_short_esi"] = self._short_esi
 
             if self.shared_utils.link_tracking_groups is not None:
-                uplink["link_tracking_groups"] = []
-                for lt_group in self.shared_utils.link_tracking_groups:
-                    uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
-
+                uplink["link_tracking_groups"] = [{"name": lt_group["name"], "direction": "upstream"} for lt_group in self.shared_utils.link_tracking_groups]
             if self.shared_utils.uplink_structured_config is not None:
                 uplink["structured_config"] = self.shared_utils.uplink_structured_config
 
@@ -361,14 +352,15 @@ class UplinksMixin:
 
             uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
             uplink_peer_interface = uplink_switch_interfaces[uplink_index]
-            uplink = {}
-            uplink["interface"] = uplink_interface
-            uplink["peer"] = uplink_switch
-            uplink["peer_interface"] = uplink_peer_interface
-            uplink["peer_type"] = uplink_switch_facts.type
-            uplink["peer_is_deployed"] = uplink_switch_facts.is_deployed
-            uplink["peer_bgp_as"] = uplink_switch_facts.bgp_as
-            uplink["type"] = "underlay_p2p_vrfs"
+            uplink = {
+                "interface": uplink_interface,
+                "peer": uplink_switch,
+                "peer_interface": uplink_peer_interface,
+                "peer_type": uplink_switch_facts.type,
+                "peer_is_deployed": uplink_switch_facts.is_deployed,
+                "peer_bgp_as": uplink_switch_facts.bgp_as,
+                "type": "underlay_p2p_vrfs",
+            }
             if self.shared_utils.uplink_interface_speed is not None:
                 uplink["speed"] = self.shared_utils.uplink_interface_speed
 
