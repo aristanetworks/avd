@@ -41,15 +41,9 @@ ARGUMENT_SPEC = {
     "strict_tags": {"type": "bool", "required": False, "default": False},
     "skip_missing_devices": {"type": "bool", "required": False, "default": False},
     "configlet_name_template": {"type": "str", "default": "AVD-${hostname}"},
-    "cloudvision": {
-        "type": "dict",
-        "required": True,
-        "options": {
-            "servers": {"type": "list", "elements": "str", "required": True},
-            "token": {"type": "str", "secret": True, "required": True},
-            "verify_certs": {"type": "bool", "default": True},
-        },
-    },
+    "cv_servers": {"type": "list", "elements": "str", "required": True},
+    "cv_token": {"type": "str", "secret": True, "required": True},
+    "cv_verify_certs": {"type": "bool", "default": True},
     "workspace": {
         "type": "dict",
         "options": {
@@ -100,7 +94,11 @@ class ActionModule(ActionBase):
     async def deploy(self, validated_args: dict, result: dict):
         LOGGER.info("deploy: %s", validated_args)
         try:
-            cloudvision = CloudVision(**get(validated_args, "cloudvision", default={}))
+            cloudvision = CloudVision(
+                servers=validated_args["cv_servers"],
+                token=validated_args["cv_token"],
+                verify_certs=validated_args["cv_verify_certs"],
+            )
             eos_config_objects, device_tag_objects, interface_tag_objects = await self.build_objects(
                 device_list=get(validated_args, "device_list"),
                 structured_config_dir=get(validated_args, "structured_config_dir"),
