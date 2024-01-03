@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -181,4 +181,4 @@ class EthernetInterfacesMixin(UtilsMixin):
         if (flowcontrol_received := get(adapter, "flowcontrol.received")) is not None:
             ethernet_interface["flowcontrol"] = {"received": flowcontrol_received}
 
-        return strip_null_from_data(ethernet_interface)
+        return strip_null_from_data(ethernet_interface, strip_values_tuple=(None, ""))

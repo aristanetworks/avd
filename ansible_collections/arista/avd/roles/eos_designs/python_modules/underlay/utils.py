@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -68,6 +68,7 @@ class UtilsMixin:
                         "speed": get(uplink, "peer_speed", default=get(uplink, "speed")),
                         "ip_address": get(uplink, "peer_ip_address"),
                         "peer_ip_address": get(uplink, "ip_address"),
+                        "prefix_length": get(uplink, "prefix_length"),
                         "channel_group_id": get(uplink, "peer_channel_group_id"),
                         "peer_channel_group_id": get(uplink, "channel_group_id"),
                         "channel_description": get(uplink, "peer_channel_description"),

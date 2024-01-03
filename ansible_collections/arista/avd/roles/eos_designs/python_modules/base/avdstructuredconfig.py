@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -417,7 +417,8 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             if spanning_tree_mode == "mstp":
                 spanning_tree["mst_instances"] = [{"id": "0", "priority": priority}]
             elif spanning_tree_mode == "rapid-pvst":
-                spanning_tree["rapid_pvst_instances"] = [{"id": "1-4094", "priority": priority}]
+                pass
+                # Per vlan spanning-tree priorities are set under network-services.
             elif spanning_tree_mode == "rstp":
                 spanning_tree["rstp_priority"] = priority
 

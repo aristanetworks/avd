@@ -22031,6 +22031,10 @@
           "type": "integer",
           "title": "Sample"
         },
+        "sample_input_subinterface": {
+          "type": "boolean",
+          "title": "Sample Input Subinterface"
+        },
         "dangerous": {
           "type": "boolean",
           "title": "Dangerous"

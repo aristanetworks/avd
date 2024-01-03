@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from collections import ChainMap
@@ -225,6 +225,9 @@ class AvdInterfaceDescriptions(AvdFacts, UtilsMixin):
 
         if self._mpls_lsr is True:
             return "LSR_Router_ID"
+
+        if self.shared_utils.wan_role is not None:
+            return "Router_ID"
 
         # Covers L2LS
         if self._overlay_routing_protocol == "none":

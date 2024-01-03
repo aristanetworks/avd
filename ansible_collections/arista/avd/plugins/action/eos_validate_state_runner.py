@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import absolute_import, annotations, division, print_function
@@ -36,7 +36,7 @@ class AnsibleNoAliasDumper(AnsibleDumper):
 
 
 class ActionModule(ActionBase):
-    # @cprofile
+    # @cprofile()
     def run(self, tmp=None, task_vars=None):
         self._supports_check_mode = True
 

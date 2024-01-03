@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -753,6 +753,9 @@ $defs:
             convert_types:
               - str
             default: 32768
+            description: |-
+              Spanning-tree priority configured for the selected mode.
+              For `rapid-pvst` the priority can also be set per VLAN under network services.
           spanning_tree_root_super:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1102,6 +1105,60 @@ $defs:
                             min: 2
                             max: 255
                             default: 3
+          wan_role:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_wan_role"
+            description: |-
+              PREVIEW: This key is currently not supported
+              Override the default WAN role.
+
+              This is used both for AutoVPN and Pathfinder designs.
+              That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+              `server` indicates that the router is a route-reflector.
+
+              Only supported if `overlay_routing_protocol` is set to `ibgp`.
+          cv_pathfinder_role:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            $ref: "eos_designs#/keys/node_type_keys/items/keys/default_cv_pathfinder_role"
+            description: |-
+              PREVIEW: This key is currently not supported
+              Override the default CV Pathfinder role.
+
+              This key is used for Pathfinder designs only when the `wan_mode` root
+              key is set to `cv_pathfinder`.
+
+              `pathfinder` is only a valid if `wan_role` is `server`.
+              `edge` and `transit region` are only valid if `wan_role` is `client`.
+          cv_pathfinder_region:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              The CV Pathfinder region name.
+          cv_pathfinder_site:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: str
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              The CV Pathfinder site name.
+          dps_mss_ipv4:
+            documentation_options:
+              table: node-type-wan-configuration
+            type: int
+            $ref: "eos_cli_config_gen#/keys/dps_interfaces/items/keys/tcp_mss_ceiling/keys/ipv4"
+            description: |-
+              PREVIEW: This key is currently not supported
+
+              MSS value for IPv4 the DPS interface.
+              If not set, and the device is WAN device, a default value of 1000 is used.
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

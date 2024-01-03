@@ -669,6 +669,22 @@ ethernet_interfaces:
   description: CONNECTED_ENDPOINT_OVERWRITING_NETWORK_PORT_Eth42
   shutdown: false
   type: switched
+- name: Ethernet51
+  peer_type: network_port
+  shutdown: true
+  type: switched
+- name: Ethernet52
+  peer_type: network_port
+  shutdown: true
+  type: switched
+- name: Ethernet53
+  peer_type: network_port
+  shutdown: true
+  type: switched
+- name: Ethernet54
+  peer_type: network_port
+  shutdown: true
+  type: switched
 mlag_configuration:
   domain_id: mlag
   local_interface: Vlan4094

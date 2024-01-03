@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -183,7 +183,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 }
             )
 
-        return strip_null_from_data(port_channel_interface)
+        return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))
 
     def _get_port_channel_subinterface_cfg(self, subinterface: dict, adapter: dict, port_channel_subinterface_name: str, channel_group_id: int) -> dict:
         """
@@ -215,4 +215,4 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 "route_target": generate_route_target(short_esi),
             }
 
-        return strip_null_from_data(port_channel_interface)
+        return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))

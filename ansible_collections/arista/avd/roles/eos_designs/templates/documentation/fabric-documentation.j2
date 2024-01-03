@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -7,7 +7,7 @@
 {%     set node_types = node_type_keys | arista.avd.convert_dicts('key') | map(attribute="type") %}
 {% else %}
 {%     set default_node_types = {
-           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller"],
+           "l3ls-evpn": ["spine", "l3leaf", "l2leaf", "super-spine", "overlay-controller", "wan_edge", "wan_transit", "wan_rr"],
            "mpls": ["p", "pe", "rr"],
            "l2ls": ["l3spine", "spine", "leaf"]
        } %}
