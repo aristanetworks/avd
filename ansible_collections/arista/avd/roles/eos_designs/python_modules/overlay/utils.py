@@ -412,12 +412,12 @@ class UtilsMixin:
 
         return wan_route_servers
 
-    def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, id: int | None = None) -> str:
+    def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, interface_name: str | None = None) -> str:
         """
         Return a string to use as the name of the stun server_profile
         """
         name = f"{wan_route_server_name}-{path_group_name}"
-        return f"{name}-{id}" if id is not None else name
+        return f"{name}-{interface_name}" if interface_name is not None else name
 
     def _should_connect_to_wan_rs(self, path_groups: list) -> bool:
         """
@@ -465,9 +465,9 @@ class UtilsMixin:
             for path_group in data.get("wan_path_groups", []):
                 stun_server_profiles.setdefault(path_group["name"], []).extend(
                     {
-                        "name": self._stun_server_profile_name(wan_route_server, path_group["name"], index),
+                        "name": self._stun_server_profile_name(wan_route_server, path_group["name"], get(interface_dict, "name", required=True)),
                         "ip_address": get(interface_dict, "ip_address", required=True),
                     }
-                    for index, interface_dict in enumerate(get(path_group, "interfaces", required=True))
+                    for interface_dict in get(path_group, "interfaces", required=True)
                 )
         return stun_server_profiles
