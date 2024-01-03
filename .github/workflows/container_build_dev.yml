@@ -6,7 +6,7 @@ on:
     branches:
       - devel
     paths:
-      - avd-containers/dev/**
+      - containers/dev/**
       - .github/workflows/container_build_template.yml
       - .github/workflows/container_build_dev.yml
   workflow_dispatch:
