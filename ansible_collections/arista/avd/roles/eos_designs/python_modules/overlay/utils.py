@@ -412,12 +412,11 @@ class UtilsMixin:
 
         return wan_route_servers
 
-    def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, interface_name: str | None = None) -> str:
+    def _stun_server_profile_name(self, wan_route_server_name: str, path_group_name: str, interface_name: str) -> str:
         """
         Return a string to use as the name of the stun server_profile
         """
-        name = f"{path_group_name}-{wan_route_server_name}"
-        return f"{name}-{interface_name}" if interface_name is not None else name
+        return f"{path_group_name}-{wan_route_server_name}-{interface_name}"
 
     def _should_connect_to_wan_rs(self, path_groups: list) -> bool:
         """
