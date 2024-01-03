@@ -11,6 +11,7 @@ title: Ansible Collection Role eos_design - WAN preview
 # WAN preview
 
 !!! warning
+
     The integration of WAN designs to `eos_designs` role is in preview mode.
 
     Everything is subject to change, is not supported and may not be complete.
@@ -112,6 +113,7 @@ roles/eos_designs/docs/tables/wan-carriers.md
 ##### WAN hierarchy
 
 !!! note
+
     This section is only relevant for CV Pathfinder and not for AutoVPN
 
 --8<--
@@ -121,6 +123,7 @@ roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
 #### WAN interfaces
 
 !!! note
+
     The current code implements only `l3_edge.l3_interfaces` and not `core_interfaces.l3_interfaces`
 
 --8<--
