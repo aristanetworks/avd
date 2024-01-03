@@ -99,8 +99,8 @@ router_path_selection:
     - name: Ethernet1
       stun:
         server_profiles:
-        - autovpn-rr1-INET-Ethernet1
-        - autovpn-rr2-INET-Ethernet1
+        - INET-autovpn-rr1-Ethernet1
+        - INET-autovpn-rr2-Ethernet1
     dynamic_peers:
       enabled: true
     static_peers:
@@ -127,9 +127,9 @@ router_path_selection:
 stun:
   client:
     server_profiles:
-    - name: autovpn-rr1-INET-Ethernet1
+    - name: INET-autovpn-rr1-Ethernet1
       ip_address: 10.7.7.7/31
-    - name: autovpn-rr2-INET-Ethernet1
+    - name: INET-autovpn-rr2-Ethernet1
       ip_address: 10.8.8.8/31
 ethernet_interfaces:
 - name: Ethernet1

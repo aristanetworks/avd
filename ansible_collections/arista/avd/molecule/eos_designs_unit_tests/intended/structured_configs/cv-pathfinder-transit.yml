@@ -149,8 +149,8 @@ router_path_selection:
     - name: Ethernet1
       stun:
         server_profiles:
-        - cv-pathfinder-pathfinder-INET-Ethernet1
-        - cv-pathfinder-pathfinder-INET-Ethernet3
+        - INET-cv-pathfinder-pathfinder-Ethernet1
+        - INET-cv-pathfinder-pathfinder-Ethernet3
     dynamic_peers:
       enabled: true
     static_peers:
@@ -166,7 +166,7 @@ router_path_selection:
     - name: Ethernet2
       stun:
         server_profiles:
-        - cv-pathfinder-pathfinder-MPLS-Ethernet2
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
     static_peers:
@@ -182,11 +182,11 @@ router_path_selection:
 stun:
   client:
     server_profiles:
-    - name: cv-pathfinder-pathfinder-INET-Ethernet1
+    - name: INET-cv-pathfinder-pathfinder-Ethernet1
       ip_address: 10.7.7.7/31
-    - name: cv-pathfinder-pathfinder-INET-Ethernet3
+    - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9/31
-    - name: cv-pathfinder-pathfinder-MPLS-Ethernet2
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1/31
 ethernet_interfaces:
 - name: Ethernet1

@@ -416,7 +416,7 @@ class UtilsMixin:
         """
         Return a string to use as the name of the stun server_profile
         """
-        name = f"{wan_route_server_name}-{path_group_name}"
+        name = f"{path_group_name}-{wan_route_server_name}"
         return f"{name}-{interface_name}" if interface_name is not None else name
 
     def _should_connect_to_wan_rs(self, path_groups: list) -> bool:
