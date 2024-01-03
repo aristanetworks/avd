@@ -425,13 +425,13 @@ class UtilsMixin:
 
         To do this the logic is the following:
         * Look at the wan_interfaces on the router and check if there is any path-group in common with the RR where
-          `cv_pathfinder_connected_to_pathfinder` is not False.
+          `connected_to_pathfinder` is not False.
         """
         return any(
             self.shared_utils.get_carrier_path_group(wan_interface["wan_carrier"])["name"] in path_groups
             and get(
                 wan_interface,
-                "cv_pathfinder_connected_to_pathfinder",
+                "connected_to_pathfinder",
                 default=True,
             )
             for wan_interface in self.shared_utils.wan_interfaces

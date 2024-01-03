@@ -116,7 +116,7 @@ l3_edge:
       wan_carrier: Colt
       wan_circuit_id: 10555
       ip: 172.15.5.5/31
-      cv_pathfinder_connected_to_pathfinder: False
+      connected_to_pathfinder: False
     - node: cv-pathfinder-transit
       interface: Ethernet1
       wan_carrier: Comcast

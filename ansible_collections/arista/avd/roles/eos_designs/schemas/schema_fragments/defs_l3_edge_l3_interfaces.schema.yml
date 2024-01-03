@@ -74,7 +74,7 @@ $defs:
 
             The WAN Circuit ID for this interface.
             This is not rendered in the configuration but used for WAN designs.
-        cv_pathfinder_connected_to_pathfinder:
+        connected_to_pathfinder:
           type: bool
           documentation_options:
             table: wan-interfaces-settings
