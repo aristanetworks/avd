@@ -13,8 +13,8 @@ try:
     import aristaproto
 except ImportError:
     HAS_ARISTAPROTO = False
-    from ....mocked_classes import mocked_aristaproto as aristaproto
-    from ....mocked_classes import mocked_grpclib as grpclib
+    from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.mocked_classes import mocked_aristaproto as aristaproto
+    from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.mocked_classes import mocked_grpclib as grpclib
     ServiceBase = object
 else:
     HAS_ARISTAPROTO = True
