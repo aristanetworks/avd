@@ -17,7 +17,7 @@ ALL_PROTOS=$(shell find $(VENDORPATH) -name "*.proto")
 IMPORTS_TO_TRY_EXCEPT_1 = import aristaproto\nimport grpclib\nfrom aristaproto\.grpc\.grpclib_server import ServiceBase
 TRY_EXCEPTED_IMPORTS_1 = try:\n    import aristaproto\n    import grpclib\n    from aristaproto.grpc.grpclib_server import ServiceBase\nexcept ImportError:\n    HAS_ARISTAPROTO = False\n    from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.mocked_classes import mocked_aristaproto as aristaproto\n    from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.mocked_classes import mocked_grpclib as grpclib\n    ServiceBase = object\nelse:\n    HAS_ARISTAPROTO = True
 IMPORTS_TO_TRY_EXCEPT_2 = ^import aristaproto
-TRY_EXCEPTED_IMPORTS_2 = try:\n    import aristaproto\nexcept ImportError:\n    HAS_ARISTAPROTO = False\n    from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.mocked_classes import mocked_aristaproto as aristaproto\n    from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.mocked_classes import mocked_grpclib as grpclib\n    ServiceBase = object\nelse:\n    HAS_ARISTAPROTO = True
+TRY_EXCEPTED_IMPORTS_2 = try:\n    import aristaproto\nexcept ImportError:\n    HAS_ARISTAPROTO = False\n    from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.mocked_classes import mocked_aristaproto as aristaproto\nelse:\n    HAS_ARISTAPROTO = True
 
 default: api
 
