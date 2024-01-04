@@ -19,6 +19,19 @@ description: |-
   - Create and associate Device and Interface Tags.
   - Approve, run, cancel Change Controls as needed.
 options:
+  cv_servers:
+    description: List of hostnames or IP addresses for CloudVision instance to deploy to.
+    type: list
+    elements: str
+    required: true
+  cv_token:
+    description: Service account token. It is strongly recommended to use Vault for this.
+    type: str
+    required: true
+  cv_verify_certs:
+    description: Verifies CloudVison server certificates.
+    type: bool
+    default: true
   configuration_dir:
     description: Path to directory containing .cfg files with EOS configurations.
     required: true
@@ -51,20 +64,6 @@ options:
     description: Python String Template to use for creating the configlet name for each device configuration.
     type: str
     default: "AVD-${hostname}"
-  cv_servers:
-    description: List of hostnames or IP addresses for CloudVision instance to deploy to.
-    type: list
-    elements: str
-    required: true
-  cv_token:
-    description: Service account token. It is strongly recommended to use Vault for this.
-    type: str
-    no_log: true
-    required: true
-  cv_verify_certs:
-    description: Verifies CloudVison server certificates.
-    type: bool
-    default: true
   workspace:
     description: CloudVision Workspace to create or use for the deployment.
     type: dict
@@ -174,4 +173,4 @@ EXAMPLES = r"""
         # return_details: false
 """
 
-# TODO: RETURNS
+# TODO: RETURN

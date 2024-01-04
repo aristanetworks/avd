@@ -31,6 +31,9 @@ The \`arista.avd.deploy\_to\_cv\` module is an Ansible Action Plugin providing t
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+| cv_servers | list | True | None |  | List of hostnames or IP addresses for CloudVision instance to deploy to. |
+| cv_token | str | True | None |  | Service account token. It is strongly recommended to use Vault for this. |
+| cv_verify_certs | bool | optional | True |  | Verifies CloudVison server certificates. |
 | configuration_dir | str | True | None |  | Path to directory containing .cfg files with EOS configurations. |
 | structured_config_dir | str | True | None |  | Path to directory containing files with AVD structured configurations.
 If found, the \`serial\_number\` or \`system\_mac\_address\` will be used to identify the Device on CloudVision.
@@ -40,9 +43,6 @@ Any tags found in the structured configuration metadata will be applied to the D
 | strict_tags | bool | optional | False |  | If \`True\` other tags associated with the devices will get removed. Otherwise other tags will be left as\-is. |
 | skip_missing_devices | bool | optional | False |  | If \`True\` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue. |
 | configlet_name_template | str | optional | AVD-${hostname} |  | Python String Template to use for creating the configlet name for each device configuration. |
-| cv_servers | list | True | None |  | List of hostnames or IP addresses for CloudVision instance to deploy to. |
-| cv_token | str | True | None |  | Service account token. It is strongly recommended to use Vault for this. |
-| cv_verify_certs | bool | optional | True |  | Verifies CloudVison server certificates. |
 | workspace | dict | optional | None |  | CloudVision Workspace to create or use for the deployment. |
 |     name | str | optional | None |  | Optional name to use for the created Workspace. By default the name will be \`AVD \<timestamp\>\`. |
 |     description | str | optional | None |  | Optional description to use for the created Workspace. |
