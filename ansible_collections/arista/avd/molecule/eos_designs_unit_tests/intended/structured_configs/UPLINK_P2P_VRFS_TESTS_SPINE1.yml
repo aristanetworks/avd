@@ -62,12 +62,40 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
+- name: Ethernet1.1
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+  peer_interface: Ethernet1.1
+  peer_type: l3leaf
+  description: default
+  shutdown: false
+  type: routed
+  ip_address: 10.42.42.8/31
+- name: Ethernet1.100
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+  peer_interface: Ethernet1.100
+  peer_type: l3leaf
+  vrf: IT
+  description: IT
+  shutdown: false
+  type: routed
+  ip_address: 10.42.42.8/31
+- name: Ethernet1.42
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+  peer_interface: Ethernet1.42
+  peer_type: l3leaf
+  vrf: PROD
+  description: PROD
+  shutdown: false
+  type: routed
+  ip_address: 10.42.42.8/31
 - name: Ethernet1
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: ''
+  description: P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1
   shutdown: false
+  mtu: 9214
+  type: routed
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

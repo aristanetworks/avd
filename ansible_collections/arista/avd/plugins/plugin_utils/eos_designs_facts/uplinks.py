@@ -398,13 +398,16 @@ class UplinksMixin:
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
                 # TODO should ptp / multicast be here ?
+                vrf_id = get(vrf, "vrf_id", required=True)
                 subinterface = {
-                    "interface": f"{uplink_interface}.{vrf.vrf_id}",
-                    "peer_interface": f"{uplink_peer_interface}.{vrf.vrf_id}",
+                    "interface": f"{uplink_interface}.{vrf_id}",
+                    "peer_interface": f"{uplink_peer_interface}.{vrf_id}",
+                    "vrf": get(vrf, "name", required=True),
                 }
                 if self.shared_utils.underlay_rfc5549:
                     subinterface["ipv6_enable"] = True
                 else:
+                    subinterface["prefix_length"] = self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
                     subinterface["ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_ip(uplink_index)
                     subinterface["peer_ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_peer_ip(uplink_index)
 

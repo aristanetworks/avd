@@ -15,6 +15,7 @@ l3leaf:
     platform: vEOS-LAB
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 172.16.0.0/24
+    uplink_ipv4_pool: 10.42.42.0/24
     uplink_switches: [ UPLINK_P2P_VRFS_TESTS_SPINE1, UPLINK_P2P_VRFS_TESTS_SPINE2 ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     uplink_structured_config:
@@ -24,6 +25,8 @@ l3leaf:
         unknown_unicast:
           level: 25
     uplink_type: p2p-vrfs
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
   nodes:
     - name: UPLINK_P2P_VRFS_TESTS_LEAF1
       id: 3
@@ -38,3 +41,13 @@ spine:
       id: 1
     - name: UPLINK_P2P_VRFS_TESTS_SPINE2
       id: 2
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: PROD
+        vrf_id: 42
+      - name: IT
+        vrf_id: 100

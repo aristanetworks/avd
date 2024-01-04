@@ -133,6 +133,34 @@ class EthernetInterfacesMixin(UtilsMixin):
                             "link_tracking_groups": link.get("link_tracking_groups"),
                         }
                     )
+            elif link["type"] == "underlay_p2p_vrfs":
+                ethernet_interface.update(
+                    {
+                        "mtu": self.shared_utils.p2p_uplinks_mtu,
+                        "type": "routed",
+                    }
+                )
+                for subinterface in get(link, "subinterfaces", default=[]):
+                    ethernet_subinterface = {
+                        "name": subinterface["interface"],
+                        "peer": link["peer"],
+                        "peer_interface": subinterface["peer_interface"],
+                        "peer_type": link["peer_type"],
+                        "vrf": vrf if (vrf := subinterface["vrf"]) != "default" else None,
+                        # TODO - make this bettter and part of the module
+                        "description": subinterface["vrf"],
+                        "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
+                        "type": "routed",
+                        "ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}",
+                    }
+                    ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}
+                    append_if_not_duplicate(
+                        list_of_dicts=ethernet_interfaces,
+                        primary_key="name",
+                        new_dict=ethernet_subinterface,
+                        context="Ethernet sub interfaces defined for underlay",
+                        context_keys=["name", "peer", "peer_interface"],
+                    )
 
             # Remove None values
             ethernet_interface = {key: value for key, value in ethernet_interface.items() if value is not None}
