@@ -150,7 +150,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                         # TODO - make this bettter and part of the module
                         "description": subinterface["vrf"],
                         "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
-                        "type": "routed",
+                        "type": "l3dot1q",
+                        "encapsulation_dot1q_vlan": subinterface.get("encapsulation_dot1q_vlan", []),
                         "ip_address": f"{subinterface['ip_address']}/{subinterface['prefix_length']}",
                     }
                     ethernet_subinterface = {key: value for key, value in ethernet_subinterface.items() if value is not None}

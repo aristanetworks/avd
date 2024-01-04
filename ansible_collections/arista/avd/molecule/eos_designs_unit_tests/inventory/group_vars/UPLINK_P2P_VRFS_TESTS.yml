@@ -18,12 +18,6 @@ l3leaf:
     uplink_ipv4_pool: 10.42.42.0/24
     uplink_switches: [ UPLINK_P2P_VRFS_TESTS_SPINE1, UPLINK_P2P_VRFS_TESTS_SPINE2 ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
-    uplink_structured_config:
-      storm_control:
-        broadcast:
-          level: 25
-        unknown_unicast:
-          level: 25
     uplink_type: p2p-vrfs
     filter:
       always_include_vrfs_in_tenants: [TenantA]

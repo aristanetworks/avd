@@ -403,6 +403,7 @@ class UplinksMixin:
                     "interface": f"{uplink_interface}.{vrf_id}",
                     "peer_interface": f"{uplink_peer_interface}.{vrf_id}",
                     "vrf": get(vrf, "name", required=True),
+                    "encapsulation_dot1q_vlan": vrf_id,
                 }
                 if self.shared_utils.underlay_rfc5549:
                     subinterface["ipv6_enable"] = True

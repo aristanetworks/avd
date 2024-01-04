@@ -67,7 +67,8 @@ ethernet_interfaces:
   peer_type: spine
   description: default
   shutdown: false
-  type: routed
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 1
   ip_address: 10.42.42.9/31
 - name: Ethernet1.100
   peer: UPLINK_P2P_VRFS_TESTS_SPINE1
@@ -76,7 +77,8 @@ ethernet_interfaces:
   vrf: IT
   description: IT
   shutdown: false
-  type: routed
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 100
   ip_address: 10.42.42.9/31
 - name: Ethernet1.42
   peer: UPLINK_P2P_VRFS_TESTS_SPINE1
@@ -85,7 +87,8 @@ ethernet_interfaces:
   vrf: PROD
   description: PROD
   shutdown: false
-  type: routed
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
   ip_address: 10.42.42.9/31
 - name: Ethernet1
   peer: UPLINK_P2P_VRFS_TESTS_SPINE1
@@ -101,7 +104,8 @@ ethernet_interfaces:
   peer_type: spine
   description: default
   shutdown: false
-  type: routed
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 1
   ip_address: 10.42.42.11/31
 - name: Ethernet2.100
   peer: UPLINK_P2P_VRFS_TESTS_SPINE2
@@ -110,7 +114,8 @@ ethernet_interfaces:
   vrf: IT
   description: IT
   shutdown: false
-  type: routed
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 100
   ip_address: 10.42.42.11/31
 - name: Ethernet2.42
   peer: UPLINK_P2P_VRFS_TESTS_SPINE2
@@ -119,7 +124,8 @@ ethernet_interfaces:
   vrf: PROD
   description: PROD
   shutdown: false
-  type: routed
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 42
   ip_address: 10.42.42.11/31
 - name: Ethernet2
   peer: UPLINK_P2P_VRFS_TESTS_SPINE2
