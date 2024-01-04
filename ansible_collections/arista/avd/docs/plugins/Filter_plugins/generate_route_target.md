@@ -23,7 +23,7 @@ Removes <code>\:</code> and inserts new <code>\:</code> for each two characters.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | Short ESI value as per AVD definition in eos\_designs. |
+| <samp>_input</samp> | string | True | None |  | Short ESI value as per AVD definition in eos\_designs. |
 
 ## Examples
 

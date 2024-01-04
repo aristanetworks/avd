@@ -23,7 +23,7 @@ Replaces <code>\:</code> with <code>.</code>
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | Short ESI value as per AVD definition in eos\_designs. |
+| <samp>_input</samp> | string | True | None |  | Short ESI value as per AVD definition in eos\_designs. |
 
 ## Examples
 

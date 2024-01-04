@@ -35,14 +35,14 @@ The plugin offers the following capabilities\:
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| logging_level | str | optional | WARNING | Valid values:<br>- <code>CRITICAL</code><br>- <code>ERROR</code><br>- <code>WARNING</code><br>- <code>INFO</code><br>- <code>DEBUG</code> | Sets the log level for the ANTA library. Defaults to \"WARNING\" if not specified. |
-| save_catalog | bool | optional | False |  | Indicates whether to save the test catalog for each device. |
-| device_catalog_path | str | optional | None |  | The absolute path where the device test catalog will be saved.<br>Required if <code>save\_catalog</code> is set to <code>True</code>. |
-| test_results_dir | str | optional | None |  | The directory where the test results JSON file for each host will be saved. |
-| skipped_tests | list | optional | None |  | A list of dictionaries specifying categories and, optionally, tests to skip.<br>Each dictionary must have a key <code>category</code> and can optionally include a <code>tests</code> key. |
-|     category | str | optional | None |  | The name of an AvdTest category \(e.g., <code>AvdTestHardware</code>\). |
-|     tests | list | optional | None |  | An optional list of specific tests in the category to skip \(e.g., <code>VerifyRoutingProtocolModel</code> in <code>AvdTestBGP</code>\).<br>If not specified, all tests in the category are considered.<br>For a complete list of available tests, see \[link to the test list\]\(https\://avd.sh/en/stable/roles/eos\_validate\_state/ANTA\-Preview.html\#test\-categories\). |
-| cprofile_file | any | optional | None |  | The filename for storing cProfile data, useful for debugging performance issues.<br>Be aware that enabling cProfile can affect performance, so use it only for troubleshooting. |
+| <samp>logging_level</samp> | str | optional | WARNING | Valid values:<br>- <code>CRITICAL</code><br>- <code>ERROR</code><br>- <code>WARNING</code><br>- <code>INFO</code><br>- <code>DEBUG</code> | Sets the log level for the ANTA library. Defaults to \"WARNING\" if not specified. |
+| <samp>save_catalog</samp> | bool | optional | False |  | Indicates whether to save the test catalog for each device. |
+| <samp>device_catalog_path</samp> | str | optional | None |  | The absolute path where the device test catalog will be saved.<br>Required if <code>save\_catalog</code> is set to <code>True</code>. |
+| <samp>test_results_dir</samp> | str | optional | None |  | The directory where the test results JSON file for each host will be saved. |
+| <samp>skipped_tests</samp> | list | optional | None |  | A list of dictionaries specifying categories and, optionally, tests to skip.<br>Each dictionary must have a key <code>category</code> and can optionally include a <code>tests</code> key. |
+| <samp>    category</samp> | str | optional | None |  | The name of an AvdTest category \(e.g., <code>AvdTestHardware</code>\). |
+| <samp>    tests</samp> | list | optional | None |  | An optional list of specific tests in the category to skip \(e.g., <code>VerifyRoutingProtocolModel</code> in <code>AvdTestBGP</code>\).<br>If not specified, all tests in the category are considered.<br>For a complete list of available tests, see \[link to the test list\]\(https\://avd.sh/en/stable/roles/eos\_validate\_state/ANTA\-Preview.html\#test\-categories\). |
+| <samp>cprofile_file</samp> | any | optional | None |  | The filename for storing cProfile data, useful for debugging performance issues.<br>Be aware that enabling cProfile can affect performance, so use it only for troubleshooting. |
 
 ## Notes
 

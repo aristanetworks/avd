@@ -31,11 +31,11 @@ Compared to the built\-in <code>is defined</code> test, this test will also test
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | Value to test |
-| test_value | any | optional | None |  | Value to match for in addition to defined and not none |
-| var_type | string | optional | None | Valid values:<br>- <code>float</code><br>- <code>int</code><br>- <code>str</code><br>- <code>list</code><br>- <code>dict</code><br>- <code>tuple</code><br>- <code>bool</code> | Type or Class to test for |
-| fail_action | string | optional | None | Valid values:<br>- <code>warning</code><br>- <code>error</code> | Optional action if a test fails to emit a Warning or Error |
-| var_name | string | optional | None |  | Optional string to use as a variable name in warning or error messages |
+| <samp>_input</samp> | any | True | None |  | Value to test |
+| <samp>test_value</samp> | any | optional | None |  | Value to match for in addition to defined and not none |
+| <samp>var_type</samp> | string | optional | None | Valid values:<br>- <code>float</code><br>- <code>int</code><br>- <code>str</code><br>- <code>list</code><br>- <code>dict</code><br>- <code>tuple</code><br>- <code>bool</code> | Type or Class to test for |
+| <samp>fail_action</samp> | string | optional | None | Valid values:<br>- <code>warning</code><br>- <code>error</code> | Optional action if a test fails to emit a Warning or Error |
+| <samp>var_name</samp> | string | optional | None |  | Optional string to use as a variable name in warning or error messages |
 
 ## Examples
 
