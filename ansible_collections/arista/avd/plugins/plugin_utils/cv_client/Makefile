@@ -14,6 +14,13 @@ PYTHON ?= python3
 
 ALL_PROTOS=$(shell find $(VENDORPATH) -name "*.proto")
 
+IMPORTS_TO_TRY_EXCEPT_1 = import aristaproto\nimport grpclib\nfrom aristaproto\.grpc\.grpclib_server import ServiceBase
+TRY_EXCEPTED_IMPORTS_1 = try:\n    import aristaproto\n    import grpclib\n    from aristaproto.grpc.grpclib_server import ServiceBase\nexcept ImportError:\n    HAS_ARISTAPROTO = False\n    from .....mocked_classes import mocked_aristaproto as aristaproto\n    from .....mocked_classes import mocked_grpclib as grpclib\n    ServiceBase = object\nelse:\n    HAS_ARISTAPROTO = True
+IMPORTS_TO_TRY_EXCEPT_2 = ^import aristaproto
+TRY_EXCEPTED_IMPORTS_2 = try:\n    import aristaproto\nexcept ImportError:\n    HAS_ARISTAPROTO = False\n    from ...mocked_classes import mocked_aristaproto as aristaproto\n    from ...mocked_classes import mocked_grpclib as grpclib\n    ServiceBase = object\nelse:\n    HAS_ARISTAPROTO = True
+IMPORTS_TO_TRY_EXCEPT_3 = ^import aristaproto
+TRY_EXCEPTED_IMPORTS_3 = try:\n    import aristaproto\nexcept ImportError:\n    HAS_ARISTAPROTO = False\n    from ....mocked_classes import mocked_aristaproto as aristaproto\n    from ....mocked_classes import mocked_grpclib as grpclib\n    ServiceBase = object\nelse:\n    HAS_ARISTAPROTO = True
+
 default: api
 
 .PHONY: help
@@ -27,7 +34,17 @@ api-dir:
 api-models: api-dir
 	$(PYTHON) -m grpc_tools.protoc -I $(VENDORPATH) $(EXTRA_DIRS) --python_aristaproto_out=$(APIPATH) $(ALL_PROTOS) $(EXTRA_PROTOS)
 
-api: api-dir api-models  ## Build/refresh gRPC bindings in ./api
+api-ansible-sanity-import: api-models
+# For most arista protos
+	find $(APIPATH) -name '*.py' -exec sed -z -i -e 's/$(IMPORTS_TO_TRY_EXCEPT_1)/$(TRY_EXCEPTED_IMPORTS_1)/g' {} +
+# For fmp proto
+	find $(APIPATH)/fmp -name '*.py' -exec sed -i -e 's/$(IMPORTS_TO_TRY_EXCEPT_2)/$(TRY_EXCEPTED_IMPORTS_2)/g' {} +
+# For subscriptions proto
+	find $(APIPATH)/arista/subscriptions -name '*.py' -exec sed -i -e 's/$(IMPORTS_TO_TRY_EXCEPT_3)/$(TRY_EXCEPTED_IMPORTS_3)/g' {} +
+# For time proto
+	find $(APIPATH)/arista/time -name '*.py' -exec sed -i -e 's/$(IMPORTS_TO_TRY_EXCEPT_3)/$(TRY_EXCEPTED_IMPORTS_3)/g' {} +
+
+api: api-dir api-models api-ansible-sanity-import  ## Build/refresh gRPC bindings in ./api
 	@rm -rf $(VENDORPATH)
 	@pre-commit run insert-license --files $(shell find $(APIPATH)/ -name "*.py") || true
 	@echo "--- done"

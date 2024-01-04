@@ -8,7 +8,15 @@
 
 from dataclasses import dataclass
 
-import aristaproto
+try:
+    import aristaproto
+except ImportError:
+    HAS_ARISTAPROTO = False
+    from ....mocked_classes import mocked_aristaproto as aristaproto
+    from ....mocked_classes import mocked_grpclib as grpclib
+    ServiceBase = object
+else:
+    HAS_ARISTAPROTO = True
 
 
 class Operation(aristaproto.Enum):

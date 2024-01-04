@@ -32,7 +32,6 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAn
 LOGGER = logging.getLogger("ansible_collections.arista.avd")
 LOGGING_LEVELS = ["DEBUG", "INFO", "ERROR", "WARNING", "CRITICAL"]
 
-
 ARGUMENT_SPEC = {
     "configuration_dir": {"type": "str", "required": True},
     "structured_config_dir": {"type": "str", "required": True},
@@ -75,7 +74,7 @@ ARGUMENT_SPEC = {
 
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
-        self._supports_check_mode = True
+        self._supports_check_mode = False
 
         if task_vars is None:
             task_vars = {}
@@ -198,6 +197,8 @@ class ActionModule(ActionBase):
               - If is_deployed is false, skip the device.
               - Read serial_number & system_mac from structured config.
               - Create CVDevice object and add to list of device_objects.
+
+        TODO: Custom loader for JSON
         """
         LOGGER.info("build_object_for_device: %s", hostname)
         with Path(structured_config_dir, f"{hostname}.{structured_config_suffix}").open(mode="r", encoding="UTF-8") as structured_config_stream:

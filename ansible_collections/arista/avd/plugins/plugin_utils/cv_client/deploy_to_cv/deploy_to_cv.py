@@ -89,9 +89,9 @@ async def deploy_to_cv(
         + Wait for Workspace submission to return a change control id.
             + Update or create a CVChangeControl object and add to result.
         + On CV set description on the created change control
-            - apply the CC template if given.
+            - TODO: apply the CC template if given.
         + On CV approve, submit the Change Control as applicable based on requested state.
-            - Support Deleting the CC
+            - TODO: Support Deleting the CC
         + Return result object.
     """
     LOGGER.info("deploy_to_cv:")

@@ -5,11 +5,19 @@ from __future__ import annotations
 
 from asyncio.exceptions import TimeoutError
 
-from grpclib.const import Status
-from grpclib.exceptions import GRPCError
+try:
+    from grpclib.const import Status
+    from grpclib.exceptions import GRPCError
+except ImportError:
+    HAS_GRPCLIB = False
+else:
+    HAS_GRPCLIB = True
 
 
 def get_cv_client_exception(exception: Exception, cv_client_details: str | None = None) -> Exception or None:
+    if not HAS_GRPCLIB:
+        raise RuntimeError("Missing Python library 'grpclib'")
+
     if isinstance(exception, GRPCError):
         status, message, details = exception.args
         if status == Status.NOT_FOUND:

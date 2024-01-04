@@ -16,9 +16,17 @@ from typing import (
     Optional,
 )
 
-import aristaproto
-import grpclib
-from aristaproto.grpc.grpclib_server import ServiceBase
+try:
+    import aristaproto
+    import grpclib
+    from aristaproto.grpc.grpclib_server import ServiceBase
+except ImportError:
+    HAS_ARISTAPROTO = False
+    from .....mocked_classes import mocked_aristaproto as aristaproto
+    from .....mocked_classes import mocked_grpclib as grpclib
+    ServiceBase = object
+else:
+    HAS_ARISTAPROTO = True
 
 from .... import fmp as ___fmp__
 from ... import (

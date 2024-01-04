@@ -5,7 +5,12 @@ from __future__ import annotations
 
 import ssl
 
-from grpclib.client import Channel
+try:
+    from grpclib.client import Channel
+except ImportError:
+    HAS_GRPCLIB = False
+else:
+    HAS_GRPCLIB = True
 
 from .change_control import ChangeControlMixin
 from .configlet import ConfigletMixin

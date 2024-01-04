@@ -98,7 +98,7 @@ class DeployToCvResult:
     failed: bool = False
     errors: list = field(default_factory=list)
     warnings: list = field(default_factory=list)
-    workspace: CVWorkspace | None = CVWorkspace()
+    workspace: CVWorkspace | None = field(default_factory=CVWorkspace)
     change_control: CVChangeControl | None = None
     # deployed_devices: list[CVDevice] = field(default_factory=list)
     deployed_configs: list[CVEosConfig] = field(default_factory=list)
