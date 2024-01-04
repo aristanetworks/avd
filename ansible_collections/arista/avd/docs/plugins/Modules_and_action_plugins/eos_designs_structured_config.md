@@ -31,11 +31,11 @@ The \`arista.avd.eos\_designs\_facts\` module is an Ansible Action Plugin provid
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>eos_designs_custom_templates</samp> | list | False | None |  | List of dicts for Jinja2 templates to be run after generating the structured configuration |
-| <samp>    template</samp> | str | True | None |  | Template file.
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;template</samp> | str | True | None |  | Template file.
  |
-| <samp>    options</samp> | dict | False | None |  | Template options |
-| <samp>        list_merge</samp> | str | False | append |  | Merge strategy for lists |
-| <samp>        strip_empty_keys</samp> | bool | False | True |  | Filter out keys from the generated output if value is null/none/undefined<br>Only applies to templates. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;options</samp> | dict | False | None |  | Template options |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list_merge</samp> | str | False | append |  | Merge strategy for lists |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strip_empty_keys</samp> | bool | False | True |  | Filter out keys from the generated output if value is null/none/undefined<br>Only applies to templates. |
 | <samp>dest</samp> | str | False | None |  | Destination path. If set, the output facts will also be written to this path.<br>Autodetects data format based on file suffix. \'.yml\', \'.yaml\' \-\> YAML, default \-\> JSON |
 | <samp>mode</samp> | str | False | None |  | File mode \(ex. 0664\) for dest file. See \'ansible.builtin.copy\' module for details. |
 | <samp>template_output</samp> | bool | False | None |  | If true, the output data will be run through another jinja2 rendering before returning.<br>This is to resolve any input values with inline jinja using variables/facts set by the input templates. |

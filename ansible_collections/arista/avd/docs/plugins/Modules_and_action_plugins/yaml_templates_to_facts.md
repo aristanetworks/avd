@@ -27,12 +27,12 @@ Set facts from YAML produced by Jinja2 templates
 | <samp>schema</samp> | dict | False | None |  | Schema conforming to \"AVD Meta Schema\". Either schema or schema\_id must be set. |
 | <samp>schema_id</samp> | str | False | None | Valid values:<br>- <code>eos_cli_config_gen</code><br>- <code>eos_designs</code> | ID of Schema conforming to \"AVD Meta Schema\".  Either schema or schema\_id must be set. |
 | <samp>templates</samp> | list | True | None |  | List of dicts for Jinja templates to be run. |
-| <samp>    template</samp> | str | False | None |  | Template file. Either template or python\_module must be set. |
-| <samp>    python_module</samp> | str | False | None |  | Python module to import. Either template or python\_module must be set. |
-| <samp>    python_class_name</samp> | str | False | AvdStructuredConfig |  | Name of Python Class to import. |
-| <samp>    options</samp> | dict | False | None |  | Template options. |
-| <samp>        list_merge</samp> | str | False | append |  | Merge strategy for lists |
-| <samp>        strip_empty_keys</samp> | bool | False | True |  | Filter out keys from the generated output if value is null/none/undefined. Only applies to templates. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;template</samp> | str | False | None |  | Template file. Either template or python\_module must be set. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp> | str | False | None |  | Python module to import. Either template or python\_module must be set. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp> | str | False | AvdStructuredConfig |  | Name of Python Class to import. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;options</samp> | dict | False | None |  | Template options. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;list_merge</samp> | str | False | append |  | Merge strategy for lists |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;strip_empty_keys</samp> | bool | False | True |  | Filter out keys from the generated output if value is null/none/undefined. Only applies to templates. |
 | <samp>debug</samp> | bool | False | None |  | Output list \'avd\_yaml\_templates\_to\_facts\_debug\' with timestamps of each performed action. |
 | <samp>dest</samp> | str | False | None |  | Destination path. If set, the output facts will also be written to this path.<br>Autodetects data format based on file suffix. \'.yml\', \'.yaml\' \-\> YAML, default \-\> JSON |
 | <samp>mode</samp> | str | False | None |  | File mode \(ex. 0664\) for dest file. See \'ansible.builtin.copy\' module for details. |

@@ -24,10 +24,10 @@ Key localization as described in [RFC 2574 section 2.6](https://www.rfc-editor.o
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>_input</samp> | dictionary | True | None |  | Dictionary with SNMP passphrase details. |
-| <samp>    passphrase</samp> | string | True | None |  | The passphrase to localize.<br>This is the \"auth\" passphrase when the <em>priv</em> argument is not set.<br>If <em>priv</em> is set, it is the \"priv\" passphrase. |
-| <samp>    auth</samp> | string | True | None | Valid values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha224</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Auth type |
-| <samp>    engine_id</samp> | string | True | None |  | A hexadecimal string containing the engine\_id to be used to localize the passphrase |
-| <samp>    priv</samp> | string | optional | None | Valid values:<br>- <code>des</code><br>- <code>aes</code><br>- <code>aes192</code><br>- <code>aes256</code> | Priv type |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;passphrase</samp> | string | True | None |  | The passphrase to localize.<br>This is the \"auth\" passphrase when the <em>priv</em> argument is not set.<br>If <em>priv</em> is set, it is the \"priv\" passphrase. |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;auth</samp> | string | True | None | Valid values:<br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha224</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Auth type |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;engine_id</samp> | string | True | None |  | A hexadecimal string containing the engine\_id to be used to localize the passphrase |
+| <samp>&nbsp;&nbsp;&nbsp;&nbsp;priv</samp> | string | optional | None | Valid values:<br>- <code>des</code><br>- <code>aes</code><br>- <code>aes192</code><br>- <code>aes256</code> | Priv type |
 
 ## Return Values
 
