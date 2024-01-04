@@ -102,7 +102,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.l3_interfaces_profiles.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer_ip") | String |  |  |  | The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer_ip") | String |  |  |  | The peer device IPv4 address/Mask. Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.l3_interfaces_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.l3_interfaces_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "core_interfaces.l3_interfaces_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
@@ -117,7 +117,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.l3_interfaces.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "core_interfaces.l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "core_interfaces.l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "core_interfaces.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "core_interfaces.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IPv4 address/Mask. Used as default route gateway if `set_default_route` is true and `ip` is an IP address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "core_interfaces.l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
@@ -379,7 +379,7 @@
           # The peer device interface. Used for description and documentation
           peer_interface: <str>
 
-          # The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.
+          # The peer device IPv4 address/Mask. Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
           peer_ip: <str>
 
           # QOS service profile.
@@ -426,7 +426,7 @@
           # The peer device interface. Used for description and documentation
           peer_interface: <str>
 
-          # The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.
+          # The peer device IPv4 address/Mask. Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
           peer_ip: <str>
 
           # QOS service profile.

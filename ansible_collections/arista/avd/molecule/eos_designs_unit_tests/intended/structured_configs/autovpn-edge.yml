@@ -128,9 +128,9 @@ stun:
   client:
     server_profiles:
     - name: INET-autovpn-rr1-Ethernet1
-      ip_address: 10.7.7.7/31
+      ip_address: 10.7.7.7
     - name: INET-autovpn-rr2-Ethernet1
-      ip_address: 10.8.8.8/31
+      ip_address: 10.8.8.8
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface

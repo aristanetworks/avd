@@ -50,7 +50,7 @@ $defs:
         peer_ip:
           type: str
           description: |-
-            The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.
+            The peer device IPv4 address/Mask. Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
         qos_profile:
           type: str
           description: QOS service profile.

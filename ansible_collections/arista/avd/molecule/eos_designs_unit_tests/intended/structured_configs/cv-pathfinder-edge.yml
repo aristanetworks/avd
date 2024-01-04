@@ -175,9 +175,9 @@ stun:
   client:
     server_profiles:
     - name: INET-cv-pathfinder-pathfinder-Ethernet1
-      ip_address: 10.7.7.7/31
+      ip_address: 10.7.7.7
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
-      ip_address: 10.9.9.9/31
+      ip_address: 10.9.9.9
 ethernet_interfaces:
 - name: Ethernet1
   peer_type: l3_interface

@@ -3261,7 +3261,7 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.",
+                "description": "The peer device IPv4 address/Mask. Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
@@ -5938,7 +5938,7 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.",
+                "description": "The peer device IPv4 address/Mask. Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
@@ -10037,7 +10037,7 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.",
+                "description": "The peer device IPv4 address/Mask. Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
@@ -12714,7 +12714,7 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP/Mask. Used as default route gateway is `set_default_route` is true and `ip` is an IP address.",
+                "description": "The peer device IPv4 address/Mask. Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
@@ -31117,7 +31117,8 @@
           },
           "ipsec": {
             "type": "boolean",
-            "description": "Flag to configure IPsec on the path_group (default is True).",
+            "description": "Flag to configure IPsec on the path-group.",
+            "default": true,
             "title": "Ipsec"
           },
           "import_path_groups": {
