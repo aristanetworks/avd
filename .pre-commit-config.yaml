@@ -73,13 +73,13 @@ repos:
   #   -   id: autopep8
 
   - repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+    rev: 5.13.2
     hooks:
       - id: isort
         name: Check for changes when running isort on all python files
 
   - repo: https://github.com/psf/black
-    rev: 22.8.0
+    rev: 23.12.1
     hooks:
       - id: black
         name: Check for changes when running Black on all python files
