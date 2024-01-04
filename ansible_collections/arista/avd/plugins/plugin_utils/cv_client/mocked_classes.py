@@ -80,8 +80,6 @@ ARISTAPROTO_ATTRIBUTES = [
     "which_one_of",
 ]
 
-GRPCLIB_ATTRIBUTES = []
-
 
 class mocked_aristaproto:
     pass
@@ -104,11 +102,3 @@ for attribute in ARISTAPROTO_ATTRIBUTES:
         setattr(mocked_aristaproto, attribute, object)
     else:
         setattr(mocked_aristaproto, attribute, dummy_callable)
-
-for attribute in GRPCLIB_ATTRIBUTES:
-    if attribute.isupper():
-        setattr(mocked_grpclib, attribute, "dummyvalue")
-    elif attribute[:1].isupper():
-        setattr(mocked_grpclib, attribute, object)
-    else:
-        setattr(mocked_grpclib, attribute, dummy_callable)
