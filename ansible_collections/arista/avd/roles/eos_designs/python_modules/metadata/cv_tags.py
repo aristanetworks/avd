@@ -1,13 +1,15 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
+from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+
+if TYPE_CHECKING:
+    from .avdstructuredconfig import AvdStructuredConfigMetadata
 
 INVALID_CUSTOM_DEVICE_TAGS = [
     "topology_hint_type",
@@ -32,49 +34,24 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "hostname",
     "terminattr",
 ]
+"""These tag names overlap with CV system tags"""
 
 
-class AvdStructuredConfigTags(AvdFacts):
+class CvTagsMixin:
     """
-    This returns the cv_tags data strucutre as per the below example
-    {
-        "cv_tags": {
-            "device_tags": [
-                {"name": "topology_hint_type", "value": <topology_hint_type taken from node_type_keys.[].cvp_tags.topology_hint_type> },
-                {"name: "topology_hint_dc", "value": <taken from the dc_name> },
-                {"name": "topology_hint_fabric", "value": <value copied from fabric_name>},
-                {"name": "topology_hint_pod", "value": <value copied from pod_name>},
-                {"name": "topolgoy_hint_rack", "value": <value copied from rack field if it is defined for the node>},
-                {"name": "<custom_tag_name>", "value": "custom tag value"},
-                {"name": "<gerenrated_tag_name>", "value": "<value extracted from structured_config>"}
-            },
-            "interface_tags": [
-                {
-                    "interface": "Ethernet1",
-                    "tags":[
-                        {
-                            "name": "peer"
-                            "value": "leaf1a"
-                        }
-                    ]
-                }
-            ]
-        },
-    }
-
+    Mixin Class used to generate structured config for one key.
+    Class should only be used as Mixin to a AvdStructuredConfig class
     """
 
-    @cached_property
-    def cv_tags(self) -> str | None:
+    def _cv_tags(self: AvdStructuredConfigMetadata) -> dict | None:
         """
-        Generate the data structure `cv_tags`.
+        Generate the data structure `metadata.cv_tags`.
         """
         if not get(self._hostvars, "cv_tags_enabled", False):
-            # We do not want to define this datastructure if the feature is not
-            # enabled
-            return
+            # We do not want to define this datastructure if the feature is not enabled
+            return None
 
-        hints = [self._topology_hint_dc, self._topology_hint_fabric, self._topology_hint_pod, self._topology_hint_type, self._topology_hint_rack]
+        hints = [self._topology_hint_dc(), self._topology_hint_fabric(), self._topology_hint_pod(), self._topology_hint_type(), self._topology_hint_rack()]
         device_tags = [hint for hint in hints if hint]
 
         for custom_tag in get(self._hostvars, "cv_tags_device_custom", []):
@@ -99,8 +76,8 @@ class AvdStructuredConfigTags(AvdFacts):
                 device_tags.append(self._tag_dict(generate_tag["name"], value))
 
         interface_tags = []
-        for link in get(self._hostvars, "ethernet_interfaces", []):
-            interface_tags.extend(self._interface_tags(link))
+        for ethernet_interface in get(self._hostvars, "ethernet_interfaces", []):
+            interface_tags.extend(self._interface_tags(ethernet_interface))
 
         result = {"device_tags": device_tags}
         if interface_tags:
@@ -108,11 +85,11 @@ class AvdStructuredConfigTags(AvdFacts):
 
         return result
 
-    def _tag_dict(self, name, value) -> dict:
+    @staticmethod
+    def _tag_dict(name: str, value) -> dict:
         return {"name": name, "value": str(value)}
 
-    @cached_property
-    def _topology_hint_type(self) -> dict | None:
+    def _topology_hint_type(self: AvdStructuredConfigMetadata) -> dict | None:
         """
         Return the topology hint type for the device.
         """
@@ -125,8 +102,7 @@ class AvdStructuredConfigTags(AvdFacts):
 
         return self._tag_dict("topology_hint_type", hint_type)
 
-    @cached_property
-    def _topology_hint_fabric(self) -> dict:
+    def _topology_hint_fabric(self: AvdStructuredConfigMetadata) -> dict:
         """
         Return the topology fabric hint tag.
         """
@@ -134,8 +110,7 @@ class AvdStructuredConfigTags(AvdFacts):
         # the case this is not available
         return self._tag_dict("topology_hint_fabric", self.shared_utils.fabric_name)
 
-    @cached_property
-    def _topology_hint_pod(self) -> dict | None:
+    def _topology_hint_pod(self: AvdStructuredConfigMetadata) -> dict | None:
         """
         Return the topology fabric hint tag.
         """
@@ -144,8 +119,7 @@ class AvdStructuredConfigTags(AvdFacts):
 
         return self._tag_dict("topology_hint_pod", self.shared_utils.pod_name)
 
-    @cached_property
-    def _topology_hint_dc(self) -> dict | None:
+    def _topology_hint_dc(self: AvdStructuredConfigMetadata) -> dict | None:
         """
         Return the topology fabric hint tag.
         """
@@ -153,8 +127,7 @@ class AvdStructuredConfigTags(AvdFacts):
             return None
         return self._tag_dict("topology_hint_datacenter", self.shared_utils.dc_name)
 
-    @cached_property
-    def _topology_hint_rack(self) -> dict | None:
+    def _topology_hint_rack(self: AvdStructuredConfigMetadata) -> dict | None:
         """
         Return the topology hint for the rack tag.
         """
@@ -162,11 +135,11 @@ class AvdStructuredConfigTags(AvdFacts):
             return None
         return self._tag_dict("topology_hint_rack", self.shared_utils.rack)
 
-    def _interface_tags(self, link) -> list:
+    def _interface_tags(self: AvdStructuredConfigMetadata, interface: dict) -> list:
         tags = []
 
         for generate_tag in get(self._hostvars, "cv_tags_generate_interface", []):
-            value = get(link, generate_tag["data_path"])
+            value = get(interface, generate_tag["data_path"])
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(
                     f"The CloudVision tag name {generate_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
@@ -178,5 +151,5 @@ class AvdStructuredConfigTags(AvdFacts):
             if value:
                 tags.append(self._tag_dict(generate_tag["name"], value))
         if tags:
-            return [{"interface": link["name"], "tags": tags}]
+            return [{"interface": interface["name"], "tags": tags}]
         return []

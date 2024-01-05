@@ -8,7 +8,42 @@ type: dict
 keys:
   metadata:
     type: dict
-    description: Key only used for documentation or validation purposes
+    description: |-
+      The data under `metadata` is used for documentation, validation or integration purposes.
+      It will not affect the generated EOS configuration.
     keys:
       platform:
         type: str
+      cv_tags:
+        type: dict
+        keys:
+          device_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  required: true
+                value:
+                  type: str
+                  required: true
+          interface_tags:
+            type: list
+            items:
+              type: dict
+              keys:
+                interface:
+                  type: str
+                  required: true
+                tags:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        required: true
+                      value:
+                        type: str
+                        required: true
