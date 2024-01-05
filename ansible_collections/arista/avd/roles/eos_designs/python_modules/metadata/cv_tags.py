@@ -93,9 +93,8 @@ class CvTagsMixin:
         """
         Return the topology hint type for the device.
         """
-        hint_type = get(self.shared_utils.node_type_key_data, "cv_tags_topology_type")
-
-        hint_type = get(self._hostvars, "cv_tags_topology_type", hint_type)
+        default_hint_type = get(self.shared_utils.node_type_key_data, "cv_tags_topology_type")
+        hint_type = get(self._hostvars, "cv_tags_topology_type", default=default_hint_type)
 
         if not hint_type:
             return None

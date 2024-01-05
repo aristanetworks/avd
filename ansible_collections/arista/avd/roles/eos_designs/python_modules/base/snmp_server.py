@@ -89,7 +89,7 @@ class SnmpServerMixin(UtilsMixin):
         Return location if "snmp_settings.location" is True.
         Otherwise return None
         """
-        if not snmp_settings.get("location") is True:
+        if snmp_settings.get("location") is not True:
             return None
 
         location_elements = [
