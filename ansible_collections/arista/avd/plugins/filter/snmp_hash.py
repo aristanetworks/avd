@@ -168,5 +168,5 @@ def hash_passphrase(input_dict):
 class FilterModule(object):
     def filters(self):
         return {
-            "hash_passphrase": hash_passphrase,
+            "snmp_hash": hash_passphrase,
         }
