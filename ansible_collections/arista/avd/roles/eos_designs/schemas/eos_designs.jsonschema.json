@@ -13006,10 +13006,11 @@
             "type": "string",
             "enum": [
               "p2p",
-              "port-channel"
+              "port-channel",
+              "p2p-vrfs"
             ],
             "default": "p2p",
-            "description": "`uplink_type` must be \"p2p\" if `vtep` or `underlay_router` is true.",
+            "description": "`uplink_type` must be `p2p` if `vtep` or `underlay_router` is true.\n\nFor `p2p-vrfs`, the uplink are configured as l3 interface with a subinterface created for each VRF\nin `network_services` present in both the uplink and the downlink switch.\nThe subinterface ID is the `vrf_id`.",
             "title": "Uplink Type"
           },
           "vtep": {

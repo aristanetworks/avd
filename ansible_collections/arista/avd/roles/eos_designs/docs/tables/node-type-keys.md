@@ -25,7 +25,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2</samp>](## "node_type_keys.[].network_services.l2") | Boolean |  | `False` |  | Vlans |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l3</samp>](## "node_type_keys.[].network_services.l3") | Boolean |  | `False` |  | VRFs, SVIs (if l2 is true).<br>Only supported with underlay_router.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_router</samp>](## "node_type_keys.[].underlay_router") | Boolean |  | `True` |  | Is this node type a L3 device. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "node_type_keys.[].uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code> | `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;uplink_type</samp>](## "node_type_keys.[].uplink_type") | String |  | `p2p` | Valid Values:<br>- <code>p2p</code><br>- <code>port-channel</code><br>- <code>p2p-vrfs</code> | `uplink_type` must be `p2p` if `vtep` or `underlay_router` is true.<br><br>For `p2p-vrfs`, the uplink are configured as l3 interface with a subinterface created for each VRF<br>in `network_services` present in both the uplink and the downlink switch.<br>The subinterface ID is the `vrf_id`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vtep</samp>](## "node_type_keys.[].vtep") | Boolean |  | `False` |  | Is this switch an EVPN VTEP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mpls_lsr</samp>](## "node_type_keys.[].mpls_lsr") | Boolean |  | `False` |  | Is this switch an MPLS LSR. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addressing</samp>](## "node_type_keys.[].ip_addressing") | Dictionary |  |  |  | Override ip_addressing templates. |
@@ -115,7 +115,11 @@
         # Is this node type a L3 device.
         underlay_router: <bool; default=True>
 
-        # `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true.
+        # `uplink_type` must be `p2p` if `vtep` or `underlay_router` is true.
+
+        # For `p2p-vrfs`, the uplink are configured as l3 interface with a subinterface created for each VRF
+        # in `network_services` present in both the uplink and the downlink switch.
+        # The subinterface ID is the `vrf_id`.
         uplink_type: <str; "p2p" | "port-channel" | "p2p-vrfs"; default="p2p">
 
         # Is this switch an EVPN VTEP.

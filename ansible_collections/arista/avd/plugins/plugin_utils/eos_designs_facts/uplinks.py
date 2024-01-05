@@ -181,21 +181,15 @@ class UplinksMixin:
         These facts are leveraged by templates for this device when rendering uplinks
         and by templates for peer devices when rendering downlinks
         """
-        uplinks = []
-
         if self.shared_utils.uplink_type == "p2p":
-            uplinks = self._get_p2p_uplinks()
+            get_uplink = self._get_p2p_uplink
         elif self.shared_utils.uplink_type == "port-channel":
-            uplinks = self._get_port_channel_uplinks()
+            get_uplink = self._get_port_channel_uplink
         elif self.shared_utils.uplink_type == "p2p-vrfs":
-            uplinks = self._get_p2p_vrfs_uplinks()
+            get_uplink = self._get_p2p_vrfs_uplink
+        else:
+            raise AristaAvdError(f"Wrong uplink_type '{self.shared_utils.uplink_type}'.")
 
-        return uplinks
-
-    def _get_p2p_uplinks(self: EosDesignsFacts) -> list:
-        """
-        List of uplinks with all parameters for uplink_type p2p
-        """
         uplinks = []
         uplink_switches = self.shared_utils.uplink_switches
         uplink_switch_interfaces = self._uplink_switch_interfaces
@@ -205,195 +199,176 @@ class UplinksMixin:
                 continue
 
             uplink_switch = uplink_switches[uplink_index]
+            uplink_switch_interface = uplink_switch_interfaces[uplink_index]
+
             if uplink_switch is None or uplink_switch not in self.shared_utils.all_fabric_devices:
                 # Invalid uplink_switch. Skipping.
                 continue
 
-            uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-            uplink = {
-                "interface": uplink_interface,
-                "peer": uplink_switch,
-                "peer_interface": uplink_switch_interfaces[uplink_index],
-                "peer_type": uplink_switch_facts.type,
-                "peer_is_deployed": uplink_switch_facts.is_deployed,
-                "peer_bgp_as": uplink_switch_facts.bgp_as,
-                "type": "underlay_p2p",
-            }
-            if self.shared_utils.uplink_interface_speed is not None:
-                uplink["speed"] = self.shared_utils.uplink_interface_speed
+            if (uplink := get_uplink(uplink_index, uplink_interface, uplink_switch, uplink_switch_interface)) is not None:
+                uplinks.append(uplink)
 
-            if self.shared_utils.uplink_bfd:
-                uplink["bfd"] = True
-
-            if self.shared_utils.uplink_switch_interface_speed is not None:
-                uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
-
-            if self.shared_utils.uplink_ptp is not None:
-                uplink["ptp"] = self.shared_utils.uplink_ptp
-            elif self.shared_utils.ptp_enabled:
-                uplink["ptp"] = {"enable": True}
-
-            if self.shared_utils.uplink_macsec is not None:
-                uplink["mac_security"] = self.shared_utils.uplink_macsec
-
-            if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
-                uplink["underlay_multicast"] = True
-
-            if self.shared_utils.underlay_rfc5549:
-                uplink["ipv6_enable"] = True
-            else:
-                uplink["prefix_length"] = self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
-                uplink["ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_ip(uplink_index)
-                uplink["peer_ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_peer_ip(uplink_index)
-
-            if self.shared_utils.link_tracking_groups is not None:
-                uplink["link_tracking_groups"] = [{"name": lt_group["name"], "direction": "upstream"} for lt_group in self.shared_utils.link_tracking_groups]
-            if self.shared_utils.uplink_structured_config is not None:
-                uplink["structured_config"] = self.shared_utils.uplink_structured_config
-
-            uplinks.append(uplink)
         return uplinks
 
-    def _get_port_channel_uplinks(self: EosDesignsFacts) -> list:
+    def _get_p2p_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
         """
-        List of uplinks with all parameters for uplink_type port-channel
+        Return a single uplink dictionnary for uplink_type p2p
         """
-        uplinks = []
-        uplink_switches = self.shared_utils.uplink_switches
-        uplink_switch_interfaces = self._uplink_switch_interfaces
-        for uplink_index, uplink_interface in enumerate(self._uplink_interfaces):
-            if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
-                # Invalid length of input variables. Skipping
-                continue
+        uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
+        uplink = {
+            "interface": uplink_interface,
+            "peer": uplink_switch,
+            "peer_interface": uplink_switch_interface,
+            "peer_type": uplink_switch_facts.type,
+            "peer_is_deployed": uplink_switch_facts.is_deployed,
+            "peer_bgp_as": uplink_switch_facts.bgp_as,
+            "type": "underlay_p2p",
+        }
+        if self.shared_utils.uplink_interface_speed is not None:
+            uplink["speed"] = self.shared_utils.uplink_interface_speed
 
-            uplink_switch = uplink_switches[uplink_index]
-            if uplink_switch is None or uplink_switch not in self.shared_utils.all_fabric_devices:
-                # Invalid uplink_switch. Skipping.
-                continue
+        if self.shared_utils.uplink_bfd:
+            uplink["bfd"] = True
 
-            uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-            uplink = {
-                "interface": uplink_interface,
-                "peer": uplink_switch,
-                "peer_interface": uplink_switch_interfaces[uplink_index],
-                "peer_type": uplink_switch_facts.type,
-                "peer_is_deployed": uplink_switch_facts.is_deployed,
-                "type": "underlay_l2",
-            }
-            if self.shared_utils.uplink_interface_speed is not None:
-                uplink["speed"] = self.shared_utils.uplink_interface_speed
+        if self.shared_utils.uplink_switch_interface_speed is not None:
+            uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
 
-            if self.shared_utils.uplink_switch_interface_speed is not None:
-                uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
+        if self.shared_utils.uplink_ptp is not None:
+            uplink["ptp"] = self.shared_utils.uplink_ptp
+        elif self.shared_utils.ptp_enabled:
+            uplink["ptp"] = {"enable": True}
 
-            if self.shared_utils.uplink_ptp is not None:
-                uplink["ptp"] = self.shared_utils.uplink_ptp
-            elif self.shared_utils.ptp_enabled:
-                uplink["ptp"] = {"enable": True}
+        if self.shared_utils.uplink_macsec is not None:
+            uplink["mac_security"] = self.shared_utils.uplink_macsec
 
-            if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
-                # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
-                uplink["channel_description"] = uplink_switch_facts.shared_utils.group
+        if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
+            uplink["underlay_multicast"] = True
 
+        if self.shared_utils.underlay_rfc5549:
+            uplink["ipv6_enable"] = True
+        else:
+            uplink["prefix_length"] = self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
+            uplink["ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_ip(uplink_index)
+            uplink["peer_ip_address"] = self.shared_utils.ip_addressing.p2p_uplinks_peer_ip(uplink_index)
+
+        if self.shared_utils.link_tracking_groups is not None:
+            uplink["link_tracking_groups"] = [{"name": lt_group["name"], "direction": "upstream"} for lt_group in self.shared_utils.link_tracking_groups]
+        if self.shared_utils.uplink_structured_config is not None:
+            uplink["structured_config"] = self.shared_utils.uplink_structured_config
+
+        return uplink
+
+    def _get_port_channel_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
+        """
+        Return a single uplink dictionnary for uplink_type port-channel
+        """
+        uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
+        uplink = {
+            "interface": uplink_interface,
+            "peer": uplink_switch,
+            "peer_interface": uplink_switch_interface,
+            "peer_type": uplink_switch_facts.type,
+            "peer_is_deployed": uplink_switch_facts.is_deployed,
+            "type": "underlay_l2",
+        }
+        if self.shared_utils.uplink_interface_speed is not None:
+            uplink["speed"] = self.shared_utils.uplink_interface_speed
+
+        if self.shared_utils.uplink_switch_interface_speed is not None:
+            uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
+
+        if self.shared_utils.uplink_ptp is not None:
+            uplink["ptp"] = self.shared_utils.uplink_ptp
+        elif self.shared_utils.ptp_enabled:
+            uplink["ptp"] = {"enable": True}
+
+        if uplink_switch_facts.shared_utils.mlag is True or self._short_esi is not None:
+            # Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
+            uplink["channel_description"] = uplink_switch_facts.shared_utils.group
+
+        if self.shared_utils.mlag is True:
+            # Override the peer's description on port-channel to be our group name if we are mlag pair #}
+            uplink["peer_channel_description"] = self.shared_utils.group
+
+        uplink["channel_group_id"] = str(self._uplink_port_channel_id)
+        uplink["peer_channel_group_id"] = str(self._uplink_switch_port_channel_id)
+
+        # Remove vlans if upstream switch does not have them #}
+        if self.shared_utils.enable_trunk_groups:
+            uplink["trunk_groups"] = ["UPLINK"]
             if self.shared_utils.mlag is True:
-                # Override the peer's description on port-channel to be our group name if we are mlag pair #}
-                uplink["peer_channel_description"] = self.shared_utils.group
+                uplink["peer_trunk_groups"] = [self.shared_utils.group]
+            else:
+                uplink["peer_trunk_groups"] = [self.shared_utils.hostname]
 
-            uplink["channel_group_id"] = str(self._uplink_port_channel_id)
-            uplink["peer_channel_group_id"] = str(self._uplink_switch_port_channel_id)
+        uplink_vlans = set(self._vlans)
+        uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
 
-            # Remove vlans if upstream switch does not have them #}
-            if self.shared_utils.enable_trunk_groups:
-                uplink["trunk_groups"] = ["UPLINK"]
-                if self.shared_utils.mlag is True:
-                    uplink["peer_trunk_groups"] = [self.shared_utils.group]
-                else:
-                    uplink["peer_trunk_groups"] = [self.shared_utils.hostname]
+        if self.shared_utils.configure_inband_mgmt:
+            # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
+            uplink_vlans.add(self.shared_utils.inband_mgmt_vlan)
 
-            uplink_vlans = set(self._vlans)
-            uplink_vlans = uplink_vlans.intersection(uplink_switch_facts._vlans)
+        uplink["vlans"] = list_compress(list(uplink_vlans)) if uplink_vlans else "none"
 
-            if self.shared_utils.configure_inband_mgmt:
-                # Always add inband_mgmt_vlan even if the uplink switch does not have this vlan defined
-                uplink_vlans.add(self.shared_utils.inband_mgmt_vlan)
+        if uplink_native_vlan := get(self.shared_utils.switch_data_combined, "uplink_native_vlan"):
+            uplink["native_vlan"] = uplink_native_vlan
 
-            uplink["vlans"] = list_compress(list(uplink_vlans)) if uplink_vlans else "none"
+        if self._short_esi is not None:
+            uplink["peer_short_esi"] = self._short_esi
 
-            if uplink_native_vlan := get(self.shared_utils.switch_data_combined, "uplink_native_vlan"):
-                uplink["native_vlan"] = uplink_native_vlan
+        if self.shared_utils.link_tracking_groups is not None:
+            uplink["link_tracking_groups"] = [{"name": lt_group["name"], "direction": "upstream"} for lt_group in self.shared_utils.link_tracking_groups]
+        if self.shared_utils.uplink_structured_config is not None:
+            uplink["structured_config"] = self.shared_utils.uplink_structured_config
 
-            if self._short_esi is not None:
-                uplink["peer_short_esi"] = self._short_esi
+        return uplink
 
-            if self.shared_utils.link_tracking_groups is not None:
-                uplink["link_tracking_groups"] = [{"name": lt_group["name"], "direction": "upstream"} for lt_group in self.shared_utils.link_tracking_groups]
-            if self.shared_utils.uplink_structured_config is not None:
-                uplink["structured_config"] = self.shared_utils.uplink_structured_config
-
-            uplinks.append(uplink)
-        return uplinks
-
-    def _get_p2p_vrfs_uplinks(self: EosDesignsFacts) -> list:
+    def _get_p2p_vrfs_uplink(self: EosDesignsFacts, uplink_index: int, uplink_interface: str, uplink_switch: str, uplink_switch_interface: str) -> dict:
         """
-        List of uplinks with all parameters for uplink_type p2p-vrfs
+        Return a single uplink dictionnary for uplink_type p2p-vrfs
         """
-        uplinks = []
-        uplink_switches = self.shared_utils.uplink_switches
-        uplink_switch_interfaces = self._uplink_switch_interfaces
-        for uplink_index, uplink_interface in enumerate(self._uplink_interfaces):
-            if len(uplink_switches) <= uplink_index or len(uplink_switch_interfaces) <= uplink_index:
-                # Invalid length of input variables. Skipping
-                continue
+        uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
+        uplink = {
+            "interface": uplink_interface,
+            "peer": uplink_switch,
+            "peer_interface": uplink_switch_interface,
+            "peer_type": uplink_switch_facts.type,
+            "peer_is_deployed": uplink_switch_facts.is_deployed,
+            "peer_bgp_as": uplink_switch_facts.bgp_as,
+            "type": "p2p_vrfs",
+        }
+        if self.shared_utils.uplink_interface_speed is not None:
+            uplink["speed"] = self.shared_utils.uplink_interface_speed
 
-            uplink_switch = uplink_switches[uplink_index]
-            if uplink_switch is None or uplink_switch not in self.shared_utils.all_fabric_devices:
-                # Invalid uplink_switch. Skipping.
-                continue
+        if self.shared_utils.uplink_bfd:
+            uplink["bfd"] = True
 
-            uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-            uplink_peer_interface = uplink_switch_interfaces[uplink_index]
-            uplink = {
-                "interface": uplink_interface,
-                "peer": uplink_switch,
-                "peer_interface": uplink_peer_interface,
-                "peer_type": uplink_switch_facts.type,
-                "peer_is_deployed": uplink_switch_facts.is_deployed,
-                "peer_bgp_as": uplink_switch_facts.bgp_as,
-                "type": "p2p_vrfs",
-            }
-            if self.shared_utils.uplink_interface_speed is not None:
-                uplink["speed"] = self.shared_utils.uplink_interface_speed
+        if self.shared_utils.uplink_switch_interface_speed is not None:
+            uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
 
-            if self.shared_utils.uplink_bfd:
-                uplink["bfd"] = True
+        # if self.shared_utils.uplink_ptp is not None:
+        #    uplink["ptp"] = self.shared_utils.uplink_ptp
+        # elif self.shared_utils.ptp_enabled:
+        #    uplink["ptp"] = {"enable": True}
 
-            if self.shared_utils.uplink_switch_interface_speed is not None:
-                uplink["peer_speed"] = self.shared_utils.uplink_switch_interface_speed
+        # if self.shared_utils.uplink_macsec is not None:
+        #    uplink["mac_security"] = self.shared_utils.uplink_macsec
 
-            # if self.shared_utils.uplink_ptp is not None:
-            #    uplink["ptp"] = self.shared_utils.uplink_ptp
-            # elif self.shared_utils.ptp_enabled:
-            #    uplink["ptp"] = {"enable": True}
+        # if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
+        #    uplink["underlay_multicast"] = True
 
-            # if self.shared_utils.uplink_macsec is not None:
-            #    uplink["mac_security"] = self.shared_utils.uplink_macsec
+        # if self.shared_utils.link_tracking_groups is not None:
+        #    uplink["link_tracking_groups"] = []
+        #    for lt_group in self.shared_utils.link_tracking_groups:
+        #        uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
 
-            # if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
-            #    uplink["underlay_multicast"] = True
+        uplink["subinterfaces"] = self._uplink_sub_interfaces(
+            uplink_interface, uplink_switch_interface, uplink_index, self.shared_utils.uplink_structured_config
+        )
 
-            # if self.shared_utils.link_tracking_groups is not None:
-            #    uplink["link_tracking_groups"] = []
-            #    for lt_group in self.shared_utils.link_tracking_groups:
-            #        uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
+        return uplink
 
-            uplink["subinterfaces"] = self._uplink_sub_interfaces(
-                uplink_interface, uplink_peer_interface, uplink_index, self.shared_utils.uplink_structured_config
-            )
-
-            uplinks.append(uplink)
-        return uplinks
-
-    def _uplink_sub_interfaces(self: EosDesignsFacts, uplink_interface: str, uplink_peer_interface: str, uplink_index: int, struct_cfg: dict | None) -> list:
+    def _uplink_sub_interfaces(self: EosDesignsFacts, uplink_interface: str, uplink_switch_interface: str, uplink_index: int, struct_cfg: dict | None) -> list:
         subinterfaces = []
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant["vrfs"]:
@@ -401,7 +376,7 @@ class UplinksMixin:
                 vrf_id = get(vrf, "vrf_id", required=True)
                 subinterface = {
                     "interface": f"{uplink_interface}.{vrf_id}",
-                    "peer_interface": f"{uplink_peer_interface}.{vrf_id}",
+                    "peer_interface": f"{uplink_switch_interface}.{vrf_id}",
                     "vrf": get(vrf, "name", required=True),
                     "encapsulation_dot1q_vlan": vrf_id,
                 }
