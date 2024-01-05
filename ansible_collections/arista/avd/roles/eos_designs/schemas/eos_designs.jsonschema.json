@@ -31117,7 +31117,7 @@
           },
           "ipsec": {
             "type": "boolean",
-            "description": "Flag to configure IPsec on the path-group.",
+            "description": "Flag to configure IPsec at the path-group level.\n\nWhen set to `true`, IPsec is enabled for both the static and dynamic peers.",
             "default": true,
             "title": "Ipsec"
           },

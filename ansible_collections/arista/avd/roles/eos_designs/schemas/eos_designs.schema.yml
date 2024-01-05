@@ -3329,7 +3329,10 @@ keys:
             purposes.
         ipsec:
           type: bool
-          description: Flag to configure IPsec on the path-group.
+          description: 'Flag to configure IPsec at the path-group level.
+
+
+            When set to `true`, IPsec is enabled for both the static and dynamic peers.'
           default: true
         import_path_groups:
           type: list
