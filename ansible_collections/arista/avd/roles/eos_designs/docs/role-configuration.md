@@ -52,7 +52,7 @@ By default, `eos_designs` will not generate the CloudVision Tags. To enable this
 This can be set in the host/group vars to influence all or some of the devices. Alternatively it can be set in the playbook.
 
 !!! note
-    **Refer to the [how-to](./how-to/cloudvision-tags.md) documentation for more details on how to use this feature.**
+    Refer to the [how-to](./how-to/cloudvision-tags.md) documentation for more details on how to use this feature.
 
 --8<--
 roles/eos_designs/docs/tables/cloudvision-tags.md
