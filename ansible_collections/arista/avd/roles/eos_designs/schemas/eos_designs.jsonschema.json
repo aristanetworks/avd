@@ -297,7 +297,44 @@
                 },
                 "bfd": {
                   "type": "boolean",
+                  "description": "Enable BFD.",
                   "title": "BFD"
+                },
+                "bfd_timers": {
+                  "type": "object",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Interval in milliseconds.",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Rate in milliseconds.",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    }
+                  },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -599,7 +636,44 @@
                 },
                 "bfd": {
                   "type": "boolean",
+                  "description": "Enable BFD.",
                   "title": "BFD"
+                },
+                "bfd_timers": {
+                  "type": "object",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Interval in milliseconds.",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Rate in milliseconds.",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    }
+                  },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -901,7 +975,44 @@
                 },
                 "bfd": {
                   "type": "boolean",
+                  "description": "Enable BFD.",
                   "title": "BFD"
+                },
+                "bfd_timers": {
+                  "type": "object",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Interval in milliseconds.",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Rate in milliseconds.",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    }
+                  },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -1203,7 +1314,44 @@
                 },
                 "bfd": {
                   "type": "boolean",
+                  "description": "Enable BFD.",
                   "title": "BFD"
+                },
+                "bfd_timers": {
+                  "type": "object",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Interval in milliseconds.",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Rate in milliseconds.",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    }
+                  },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -1505,7 +1653,44 @@
                 },
                 "bfd": {
                   "type": "boolean",
+                  "description": "Enable BFD.",
                   "title": "BFD"
+                },
+                "bfd_timers": {
+                  "type": "object",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Interval in milliseconds.",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Rate in milliseconds.",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    }
+                  },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -1807,7 +1992,44 @@
                 },
                 "bfd": {
                   "type": "boolean",
+                  "description": "Enable BFD.",
                   "title": "BFD"
+                },
+                "bfd_timers": {
+                  "type": "object",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Interval in milliseconds.",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Rate in milliseconds.",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    }
+                  },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -2109,7 +2331,44 @@
                 },
                 "bfd": {
                   "type": "boolean",
+                  "description": "Enable BFD.",
                   "title": "BFD"
+                },
+                "bfd_timers": {
+                  "type": "object",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Interval in milliseconds.",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Rate in milliseconds.",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    }
+                  },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
@@ -2421,7 +2680,44 @@
                 },
                 "bfd": {
                   "type": "boolean",
+                  "description": "Enable BFD.",
                   "title": "BFD"
+                },
+                "bfd_timers": {
+                  "type": "object",
+                  "description": "Override default BFD timers. BFD must be enabled with `bfd: true`.",
+                  "properties": {
+                    "interval": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Interval in milliseconds.",
+                      "title": "Interval"
+                    },
+                    "min_rx": {
+                      "type": "integer",
+                      "minimum": 50,
+                      "maximum": 60000,
+                      "description": "Rate in milliseconds.",
+                      "title": "Min RX"
+                    },
+                    "multiplier": {
+                      "type": "integer",
+                      "minimum": 3,
+                      "maximum": 50,
+                      "title": "Multiplier"
+                    }
+                  },
+                  "required": [
+                    "interval",
+                    "min_rx",
+                    "multiplier"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  },
+                  "title": "BFD Timers"
                 },
                 "ebgp_multihop": {
                   "type": "integer",
