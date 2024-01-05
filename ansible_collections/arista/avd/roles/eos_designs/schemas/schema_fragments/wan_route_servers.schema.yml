@@ -31,13 +31,24 @@ keys:
         path_groups:
           type: list
           description: Path-groups through which the Route Reflector/Pathfinder is reached.
+          primary_key: name
           items:
             type: dict
             keys:
               name:
                 type: str
                 description: Path-group name.
-              # TODO - should it be multiple IP address
-              ip_address:
-                type: str
-                description: The public IP address of the Route Reflector for this path-group.
+              interfaces:
+                type: list
+                primary_key: name
+                required: true
+                min_length: 1
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Interface name.
+                    ip_address:
+                      type: str
+                      description: The public IP address of the Route Reflector for this path-group.

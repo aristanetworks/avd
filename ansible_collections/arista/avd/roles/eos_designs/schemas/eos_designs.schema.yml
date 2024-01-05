@@ -3224,6 +3224,27 @@ keys:
       remove_in_version: 4.0.0
     type: bool
     default: false
+  wan_carriers:
+    description: 'PREVIEW: This key is currently not supported
+
+
+      List of carriers used for the WAN configuration and their mapping to path-groups.'
+    type: list
+    primary_key: name
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Carrier name.
+        description:
+          type: str
+          description: Additional information about the carrier for documentation
+            purposes.
+        path_group:
+          type: str
+          description: The path-group to which this carrier belongs.
+          required: true
   wan_ipsec_profiles:
     documentation_options:
       table: wan-settings
@@ -3282,8 +3303,6 @@ keys:
     - autovpn
     - cv-pathfinder
   wan_path_groups:
-    documentation_options:
-      table: wan-settings
     description: 'PREVIEW: This key is currently not supported
 
       List of path-groups used for the WAN configuration.'
@@ -3296,15 +3315,25 @@ keys:
           type: str
           description: Path-group name.
         id:
-          type: str
-          description: Path-group id.
+          type: int
+          convert_types:
+          - str
+          description: 'Path-group id.
+
+
+            TODO: Required until an auto ID algorithm is implemented.'
+          required: true
         description:
           type: str
           description: Additional information about the path-group for documentation
             purposes.
         ipsec:
           type: bool
-          description: Flag to configure IPsec on the carrier (default is True).
+          description: 'Flag to configure IPsec at the path-group level.
+
+
+            When set to `true`, IPsec is enabled for both the static and dynamic peers.'
+          default: true
         import_path_groups:
           type: list
           description: List of [ath-groups to import in this path-group.
@@ -3347,16 +3376,28 @@ keys:
           type: list
           description: Path-groups through which the Route Reflector/Pathfinder is
             reached.
+          primary_key: name
           items:
             type: dict
             keys:
               name:
                 type: str
                 description: Path-group name.
-              ip_address:
-                type: str
-                description: The public IP address of the Route Reflector for this
-                  path-group.
+              interfaces:
+                type: list
+                primary_key: name
+                required: true
+                min_length: 1
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      description: Interface name.
+                    ip_address:
+                      type: str
+                      description: The public IP address of the Route Reflector for
+                        this path-group.
 dynamic_keys:
   connected_endpoints_keys.key:
     $ref: eos_designs#/$defs/connected_endpoints
@@ -4173,6 +4214,7 @@ $defs:
             node:
               type: str
               description: Device on which the interface should be configured.
+              required: true
             profile:
               type: str
               description: L3 interface profile name. Profile defined under l3_interfaces_profiles.
@@ -4193,12 +4235,16 @@ $defs:
         ip:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        dhcp_client_accept_default_route:
+        set_default_route:
           type: bool
           default: false
-          description: 'Supported if `ip` is `dhcp`.
+          description: 'Insert a default route to the `peer_ip` if `ip` is an ip address
 
-            Accepts default route from DHCP.'
+            or configure to accept a default route from DHCP if `ip` is `dhcp`.
+
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip`
+            is missing.'
         enabled:
           type: bool
           default: true
@@ -4215,10 +4261,45 @@ $defs:
           description: The peer device interface. Used for description and documentation
         peer_ip:
           type: str
-          description: The peer device IP. Used for description and documentation
+          description: The peer device IPv4 address (no mask). Used as default route
+            gateway if `set_default_route` is true and `ip` is an IP address.
         qos_profile:
           type: str
           description: QOS service profile.
+        wan_carrier:
+          type: str
+          documentation_options:
+            table: wan-interfaces-settings
+          description: 'PREVIEW: This key is currently not supported
+
+
+            The WAN Carrier this interface is connected to.
+
+            This is used to infer the path-groups in which this interface should be
+            configured.'
+        wan_circuit_id:
+          type: str
+          documentation_options:
+            table: wan-interfaces-settings
+          convert_types:
+          - int
+          description: 'PREVIEW: This key is currently not supported
+
+
+            The WAN Circuit ID for this interface.
+
+            This is not rendered in the configuration but used for WAN designs.'
+        connected_to_pathfinder:
+          type: bool
+          documentation_options:
+            table: wan-interfaces-settings
+          description: 'PREVIEW: This key is currently not supported
+
+
+            For a WAN interface (`wan_path_group` is set), allow to disable the static
+            tunnel towards Pathfinders.
+
+            Default True.'
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS

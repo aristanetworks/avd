@@ -3528,11 +3528,11 @@
                 "description": "Node IPv4 address/Mask or 'dhcp'.",
                 "title": "IP"
               },
-              "dhcp_client_accept_default_route": {
+              "set_default_route": {
                 "type": "boolean",
                 "default": false,
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
-                "title": "DHCP Client Accept Default Route"
+                "description": "Insert a default route to the `peer_ip` if `ip` is an ip address\nor configure to accept a default route from DHCP if `ip` is `dhcp`.\n\nAVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.",
+                "title": "Set Default Route"
               },
               "enabled": {
                 "type": "boolean",
@@ -3557,13 +3557,28 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP. Used for description and documentation",
+                "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
+              },
+              "wan_carrier": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
+                "title": "Wan Carrier"
+              },
+              "wan_circuit_id": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Circuit ID"
+              },
+              "connected_to_pathfinder": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "title": "Connected To Pathfinder"
               },
               "raw_eos_cli": {
                 "type": "string",
@@ -6190,11 +6205,11 @@
                 "description": "Node IPv4 address/Mask or 'dhcp'.",
                 "title": "IP"
               },
-              "dhcp_client_accept_default_route": {
+              "set_default_route": {
                 "type": "boolean",
                 "default": false,
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
-                "title": "DHCP Client Accept Default Route"
+                "description": "Insert a default route to the `peer_ip` if `ip` is an ip address\nor configure to accept a default route from DHCP if `ip` is `dhcp`.\n\nAVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.",
+                "title": "Set Default Route"
               },
               "enabled": {
                 "type": "boolean",
@@ -6219,13 +6234,28 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP. Used for description and documentation",
+                "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
+              },
+              "wan_carrier": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
+                "title": "Wan Carrier"
+              },
+              "wan_circuit_id": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Circuit ID"
+              },
+              "connected_to_pathfinder": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "title": "Connected To Pathfinder"
               },
               "raw_eos_cli": {
                 "type": "string",
@@ -8811,6 +8841,9 @@
                 "title": "Structured Config"
               }
             },
+            "required": [
+              "node"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -10271,11 +10304,11 @@
                 "description": "Node IPv4 address/Mask or 'dhcp'.",
                 "title": "IP"
               },
-              "dhcp_client_accept_default_route": {
+              "set_default_route": {
                 "type": "boolean",
                 "default": false,
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
-                "title": "DHCP Client Accept Default Route"
+                "description": "Insert a default route to the `peer_ip` if `ip` is an ip address\nor configure to accept a default route from DHCP if `ip` is `dhcp`.\n\nAVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.",
+                "title": "Set Default Route"
               },
               "enabled": {
                 "type": "boolean",
@@ -10300,13 +10333,28 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP. Used for description and documentation",
+                "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
+              },
+              "wan_carrier": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
+                "title": "Wan Carrier"
+              },
+              "wan_circuit_id": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Circuit ID"
+              },
+              "connected_to_pathfinder": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "title": "Connected To Pathfinder"
               },
               "raw_eos_cli": {
                 "type": "string",
@@ -12933,11 +12981,11 @@
                 "description": "Node IPv4 address/Mask or 'dhcp'.",
                 "title": "IP"
               },
-              "dhcp_client_accept_default_route": {
+              "set_default_route": {
                 "type": "boolean",
                 "default": false,
-                "description": "Supported if `ip` is `dhcp`.\nAccepts default route from DHCP.",
-                "title": "DHCP Client Accept Default Route"
+                "description": "Insert a default route to the `peer_ip` if `ip` is an ip address\nor configure to accept a default route from DHCP if `ip` is `dhcp`.\n\nAVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.",
+                "title": "Set Default Route"
               },
               "enabled": {
                 "type": "boolean",
@@ -12962,13 +13010,28 @@
               },
               "peer_ip": {
                 "type": "string",
-                "description": "The peer device IP. Used for description and documentation",
+                "description": "The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.",
                 "title": "Peer IP"
               },
               "qos_profile": {
                 "type": "string",
                 "description": "QOS service profile.",
                 "title": "QOS Profile"
+              },
+              "wan_carrier": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Carrier this interface is connected to.\nThis is used to infer the path-groups in which this interface should be configured.",
+                "title": "Wan Carrier"
+              },
+              "wan_circuit_id": {
+                "type": "string",
+                "description": "PREVIEW: This key is currently not supported\n\nThe WAN Circuit ID for this interface.\nThis is not rendered in the configuration but used for WAN designs.",
+                "title": "Wan Circuit ID"
+              },
+              "connected_to_pathfinder": {
+                "type": "boolean",
+                "description": "PREVIEW: This key is currently not supported\n\nFor a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.\nDefault True.",
+                "title": "Connected To Pathfinder"
               },
               "raw_eos_cli": {
                 "type": "string",
@@ -15554,6 +15617,9 @@
                 "title": "Structured Config"
               }
             },
+            "required": [
+              "node"
+            ],
             "additionalProperties": false,
             "patternProperties": {
               "^_.+$": {}
@@ -31193,6 +31259,39 @@
       "type": "string",
       "title": "Vtep Vvtep IP"
     },
+    "wan_carriers": {
+      "description": "PREVIEW: This key is currently not supported\n\nList of carriers used for the WAN configuration and their mapping to path-groups.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Carrier name.",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "description": "Additional information about the carrier for documentation purposes.",
+            "title": "Description"
+          },
+          "path_group": {
+            "type": "string",
+            "description": "The path-group to which this carrier belongs.",
+            "title": "Path Group"
+          }
+        },
+        "required": [
+          "path_group",
+          "name"
+        ],
+        "additionalProperties": false,
+        "patternProperties": {
+          "^_.+$": {}
+        }
+      },
+      "title": "Wan Carriers"
+    },
     "wan_ipsec_profiles": {
       "description": "PREVIEW: This key is currently not supported\n\nDefine IPsec profiles parameters for WAN configuration.",
       "type": "object",
@@ -31303,8 +31402,8 @@
             "title": "Name"
           },
           "id": {
-            "type": "string",
-            "description": "Path-group id.",
+            "type": "integer",
+            "description": "Path-group id.\n\nTODO: Required until an auto ID algorithm is implemented.",
             "title": "ID"
           },
           "description": {
@@ -31314,7 +31413,8 @@
           },
           "ipsec": {
             "type": "boolean",
-            "description": "Flag to configure IPsec on the carrier (default is True).",
+            "description": "Flag to configure IPsec at the path-group level.\n\nWhen set to `true`, IPsec is enabled for both the static and dynamic peers.",
+            "default": true,
             "title": "Ipsec"
           },
           "import_path_groups": {
@@ -31342,13 +31442,14 @@
             "title": "Import Path Groups"
           }
         },
+        "required": [
+          "id",
+          "name"
+        ],
         "additionalProperties": false,
         "patternProperties": {
           "^_.+$": {}
-        },
-        "required": [
-          "name"
-        ]
+        }
       },
       "title": "Wan Path Groups"
     },
@@ -31379,12 +31480,38 @@
                   "description": "Path-group name.",
                   "title": "Name"
                 },
-                "ip_address": {
-                  "type": "string",
-                  "description": "The public IP address of the Route Reflector for this path-group.",
-                  "title": "IP Address"
+                "interfaces": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "description": "Interface name.",
+                        "title": "Name"
+                      },
+                      "ip_address": {
+                        "type": "string",
+                        "description": "The public IP address of the Route Reflector for this path-group.",
+                        "title": "IP Address"
+                      }
+                    },
+                    "additionalProperties": false,
+                    "patternProperties": {
+                      "^_.+$": {}
+                    },
+                    "required": [
+                      "name"
+                    ]
+                  },
+                  "title": "Interfaces"
                 }
               },
+              "required": [
+                "interfaces",
+                "name"
+              ],
               "additionalProperties": false,
               "patternProperties": {
                 "^_.+$": {}

@@ -107,8 +107,21 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
+  path_groups:
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet1
+    static_peers:
+    - router_ip: 192.168.31.1
+      name: autovpn-rr1
+      ipv4_addresses:
+      - 10.7.7.7
+    ipsec_profile: AUTOVPN
   load_balance_policies:
   - name: LBPOLICY
+    path_groups:
+    - name: INET
   policies:
   - name: dps-policy-default
     default_match:
@@ -119,7 +132,17 @@ router_path_selection:
   peer_dynamic_source: stun
 stun:
   server:
-    local_interfaces: []
+    local_interfaces:
+    - Ethernet1
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.8.8.8/31
+  shutdown: false
+  type: routed
+static_routes:
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 10.8.8.9
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

@@ -77,6 +77,7 @@ $defs:
             node:
               type: str
               description: Device on which the interface should be configured.
+              required: true
             profile:
               type: str
               description: L3 interface profile name. Profile defined under l3_interfaces_profiles.

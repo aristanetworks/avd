@@ -142,8 +142,68 @@ router_bfd:
     min_rx: 300
     multiplier: 3
 router_path_selection:
+  path_groups:
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet1
+      stun:
+        server_profiles:
+        - INET-cv-pathfinder-pathfinder-Ethernet1
+        - INET-cv-pathfinder-pathfinder-Ethernet3
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 192.168.44.1
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 10.7.7.7
+      - 10.9.9.9
+    ipsec_profile: CP-PROFILE
+  - name: MPLS
+    id: 100
+    local_interfaces:
+    - name: Ethernet2
+      stun:
+        server_profiles:
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 192.168.44.1
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 172.16.0.1
   load_balance_policies:
   - name: LBPOLICY
+    path_groups:
+    - name: INET
+    - name: MPLS
+stun:
+  client:
+    server_profiles:
+    - name: INET-cv-pathfinder-pathfinder-Ethernet1
+      ip_address: 10.7.7.7
+    - name: INET-cv-pathfinder-pathfinder-Ethernet3
+      ip_address: 10.9.9.9
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+      ip_address: 172.16.0.1
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  dhcp_client_accept_default_route: true
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 172.16.6.6/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
