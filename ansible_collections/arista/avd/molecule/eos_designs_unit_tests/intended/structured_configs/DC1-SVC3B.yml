@@ -1,6 +1,4 @@
 hostname: DC1-SVC3B
-metadata:
-  platform: 7050SX3
 is_deployed: true
 router_bgp:
   as: '65103'
@@ -1599,3 +1597,5 @@ monitor_sessions:
   sources:
   - name: Ethernet25
     direction: tx
+metadata:
+  platform: 7050SX3

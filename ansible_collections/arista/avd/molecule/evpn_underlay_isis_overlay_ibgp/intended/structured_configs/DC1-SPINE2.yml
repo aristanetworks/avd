@@ -1,6 +1,4 @@
 hostname: DC1-SPINE2
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -170,3 +168,5 @@ router_isis:
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
+metadata:
+  platform: vEOS-LAB

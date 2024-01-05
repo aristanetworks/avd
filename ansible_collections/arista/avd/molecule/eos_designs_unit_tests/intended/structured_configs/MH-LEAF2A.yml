@@ -1,6 +1,4 @@
 hostname: MH-LEAF2A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65153'
@@ -336,3 +334,5 @@ vxlan_interface:
 virtual_source_nat_vrfs:
 - name: Tenant_X_OP_Zone
   ip_address: 10.255.1.35
+metadata:
+  platform: vEOS-LAB
