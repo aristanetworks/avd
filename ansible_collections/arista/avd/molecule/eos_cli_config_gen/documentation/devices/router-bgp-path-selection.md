@@ -84,8 +84,8 @@ interface Management1
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD(BFD Timers) | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | ---------------- | --------------------- | ---------------------- | ------- |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
 | 172.31.255.0 | - | default | - | - | - | - | - | - | - | - |
 | 172.31.255.2 | - | default | - | - | - | - | - | - | - | - |
 | 172.31.255.3 | - | default | - | - | - | - | - | - | - | - |
