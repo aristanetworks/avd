@@ -3,15 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from ansible_collections.arista.avd.plugins.filter.convert_dicts import convert_dicts
-from ansible_collections.arista.avd.plugins.filter.list_compress import list_compress
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
-from ansible_collections.arista.avd.plugins.filter.range_expand import range_expand
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
     from .eos_designs_facts import EosDesignsFacts
@@ -25,18 +20,12 @@ class VrfsMixin:
     """
 
     @cached_property
-    def vrfs(self: EosDesignsFacts) -> str:
+    def vrfs(self: EosDesignsFacts) -> list:
         """
         Exposed in avd_switch_facts
 
         Return the list of vrfs to be defined on this switch
 
-        Ex. "[default, prod]"
+        Ex. ["default", "prod"]
         """
-        return natural_sort(
-            {
-                vrf["name"]
-                for tenant in self.shared_utils.filtered_tenants
-                for vrf in tenant["vrfs"]
-            }
-        )
+        return natural_sort({vrf["name"] for tenant in self.shared_utils.filtered_tenants for vrf in tenant["vrfs"]})
