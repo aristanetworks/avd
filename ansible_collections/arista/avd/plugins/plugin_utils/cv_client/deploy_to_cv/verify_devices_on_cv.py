@@ -99,6 +99,7 @@ async def verify_devices_on_cv(devices: list[CVDevice], workspace_id: str, skip_
             device._exists_on_cv = False
             continue
             # TODO: Onboard the device to I&T since we know we have it on CV.
+            # TODO: Add an error message if we don't find the device in I&T studios
 
         if device.hostname != topology_inputs_dict_by_serial[device.serial_number].device_info.hostname:
             update_topology_inputs.append((device.serial_number, device.hostname))
