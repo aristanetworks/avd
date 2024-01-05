@@ -3,9 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from functools import cached_property
 from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict, strip_empties_from_list
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
 
 if TYPE_CHECKING:
@@ -43,112 +45,113 @@ class CvTagsMixin:
     Class should only be used as Mixin to a AvdStructuredConfig class
     """
 
+    @cached_property
+    def _generate_cv_tags(self: AvdStructuredConfigMetadata) -> dict:
+        return get(self._hostvars, "generate_cv_tags", default={})
+
     def _cv_tags(self: AvdStructuredConfigMetadata) -> dict | None:
         """
         Generate the data structure `metadata.cv_tags`.
         """
-        if not get(self._hostvars, "cv_tags_enabled", False):
-            # We do not want to define this datastructure if the feature is not enabled
+        if not self._generate_cv_tags:
             return None
 
-        hints = [self._topology_hint_dc(), self._topology_hint_fabric(), self._topology_hint_pod(), self._topology_hint_type(), self._topology_hint_rack()]
-        device_tags = [hint for hint in hints if hint]
+        device_tags = self._get_topology_hints()
+        device_tags.extend(self._get_device_tags())
 
-        for custom_tag in get(self._hostvars, "cv_tags_device_custom", []):
-            if custom_tag["name"].lower() not in INVALID_CUSTOM_DEVICE_TAGS:
-                device_tags.append(custom_tag)
-            else:
-                raise AristaAvdError(
-                    f"The CloudVision tag name {custom_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
-                )
+        cv_tags = {"device_tags": device_tags, "interface_tags": self._get_interface_tags()}
 
-        for generate_tag in get(self._hostvars, "cv_tags_generate_device", []):
-            value = get(self._hostvars, generate_tag["data_path"], None)
-            if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
-                raise AristaAvdError(
-                    f"The CloudVision tag name {generate_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
-                )
-            if type(value) in [list, dict]:
-                raise AristaAvdError(
-                    f"The data_path {generate_tag['data_path']} appears to be a {type(value).__name__}. This is not supported for cloudvision data_paths."
-                )
-            if value is not None:
-                device_tags.append(self._tag_dict(generate_tag["name"], value))
-
-        interface_tags = []
-        for ethernet_interface in get(self._hostvars, "ethernet_interfaces", []):
-            interface_tags.extend(self._interface_tags(ethernet_interface))
-
-        result = {"device_tags": device_tags}
-        if interface_tags:
-            result["interface_tags"] = interface_tags
-
-        return result
+        return strip_empties_from_dict(cv_tags) or None
 
     @staticmethod
-    def _tag_dict(name: str, value) -> dict:
+    def _tag_dict(name: str, value) -> dict | None:
+        if value is None:
+            return None
         return {"name": name, "value": str(value)}
 
-    def _topology_hint_type(self: AvdStructuredConfigMetadata) -> dict | None:
+    def _get_topology_hints(self: AvdStructuredConfigMetadata) -> list:
         """
-        Return the topology hint type for the device.
+        Return list of topology_hint tags.
         """
-        default_hint_type = get(self.shared_utils.node_type_key_data, "cv_tags_topology_type")
-        hint_type = get(self._hostvars, "cv_tags_topology_type", default=default_hint_type)
+        if get(self._generate_cv_tags, "topology_hints") is not True:
+            return []
 
-        if not hint_type:
-            return None
+        default_type_hint = get(self.shared_utils.node_type_key_data, "cv_tags_topology_type")
+        return strip_empties_from_list(
+            [
+                self._tag_dict("topology_hint_datacenter", self.shared_utils.dc_name),
+                self._tag_dict("topology_hint_fabric", self.shared_utils.fabric_name),
+                self._tag_dict("topology_hint_pod", self.shared_utils.pod_name),
+                self._tag_dict("topology_hint_type", get(self._hostvars, "cv_tags_topology_type", default=default_type_hint)),
+                self._tag_dict("topology_hint_rack", self.shared_utils.rack),
+            ]
+        )
 
-        return self._tag_dict("topology_hint_type", hint_type)
+    def _get_device_tags(self: AvdStructuredConfigMetadata) -> list:
+        """
+        Return list of device_tags
+        """
+        if not (tags_to_generate := get(self._generate_cv_tags, "device_tags")):
+            return []
 
-    def _topology_hint_fabric(self: AvdStructuredConfigMetadata) -> dict:
-        """
-        Return the topology fabric hint tag.
-        """
-        # `fabric_name` is required for any fabric, so we don't need to handle
-        # the case this is not available
-        return self._tag_dict("topology_hint_fabric", self.shared_utils.fabric_name)
-
-    def _topology_hint_pod(self: AvdStructuredConfigMetadata) -> dict | None:
-        """
-        Return the topology fabric hint tag.
-        """
-        if not self.shared_utils.pod_name:
-            return None
-
-        return self._tag_dict("topology_hint_pod", self.shared_utils.pod_name)
-
-    def _topology_hint_dc(self: AvdStructuredConfigMetadata) -> dict | None:
-        """
-        Return the topology fabric hint tag.
-        """
-        if not self.shared_utils.dc_name:
-            return None
-        return self._tag_dict("topology_hint_datacenter", self.shared_utils.dc_name)
-
-    def _topology_hint_rack(self: AvdStructuredConfigMetadata) -> dict | None:
-        """
-        Return the topology hint for the rack tag.
-        """
-        if not self.shared_utils.rack:
-            return None
-        return self._tag_dict("topology_hint_rack", self.shared_utils.rack)
-
-    def _interface_tags(self: AvdStructuredConfigMetadata, interface: dict) -> list:
-        tags = []
-
-        for generate_tag in get(self._hostvars, "cv_tags_generate_interface", []):
-            value = get(interface, generate_tag["data_path"])
+        device_tags = []
+        for generate_tag in tags_to_generate:
             if generate_tag["name"] in INVALID_CUSTOM_DEVICE_TAGS:
                 raise AristaAvdError(
-                    f"The CloudVision tag name {generate_tag['name']} is Invalid. System Tags cannot be overriden. Try using a different name for this tag."
+                    f"The CloudVision tag name 'generate_cv_tags.device_tags[name={generate_tag['name']}] is invalid. "
+                    "System Tags cannot be overriden. Try using a different name for this tag."
                 )
-            if type(value) in [list, dict]:
-                raise AristaAvdError(
-                    f"The data_path {generate_tag['data_path']} appears to be a {type(value).__name__}. This is not supported for cloudvision data_paths."
-                )
+
+            # Get value from either 'value' key, structured config based on the 'data_path' key or raise.
+            if get(generate_tag, "value") is not None:
+                value = generate_tag["value"]
+            elif get(generate_tag, "data_path") is not None:
+                value = get(self._hostvars, generate_tag["data_path"])
+                if type(value) in [list, dict]:
+                    raise AristaAvdError(
+                        f"'generate_cv_tags.device_tags[name={generate_tag['name']}].data_path' ({generate_tag['data_path']}) "
+                        f"points to a variable of type {type(value).__name__}. This is not supported for cloudvision tag data_paths."
+                    )
+            else:
+                raise AristaAvdError(f"'generate_cv_tags.device_tags[name={generate_tag['name']}]' is missing either a static 'value' or a dynamic 'data_path'")
+
+            # Silently ignoring empty values since structured config may vary between devices.
             if value:
-                tags.append(self._tag_dict(generate_tag["name"], value))
-        if tags:
-            return [{"interface": interface["name"], "tags": tags}]
-        return []
+                device_tags.append(self._tag_dict(generate_tag["name"], value))
+
+        return device_tags
+
+    def _get_interface_tags(self: AvdStructuredConfigMetadata) -> list:
+        """
+        Return list of interface_tags
+        """
+        if not (tags_to_generate := get(self._generate_cv_tags, "interface_tags")):
+            return []
+
+        interface_tags = []
+        for ethernet_interface in get(self._hostvars, "ethernet_interfaces", default=[]):
+            tags = []
+            for generate_tag in tags_to_generate:
+                # Get value from either 'value' key, structured config based on the 'data_path' key or raise.
+                if get(generate_tag, "value") is not None:
+                    value = generate_tag["value"]
+                elif get(generate_tag, "data_path") is not None:
+                    value = get(ethernet_interface, generate_tag["data_path"])
+                    if type(value) in [list, dict]:
+                        raise AristaAvdError(
+                            f"'generate_cv_tags.interface_tags[name={generate_tag['name']}].data_path' ({generate_tag['data_path']}) "
+                            f"points to a variable of type {type(value).__name__}. This is not supported for cloudvision tag data_paths."
+                        )
+                else:
+                    raise AristaAvdError(
+                        f"'generate_cv_tags.interface_tags[name={generate_tag['name']}]' is missing either a static 'value' or a dynamic 'data_path'"
+                    )
+
+                # Silently ignoring empty values since structured config may vary between devices.
+                if value:
+                    tags.append(self._tag_dict(generate_tag["name"], value))
+
+            if tags:
+                interface_tags.append({"interface": ethernet_interface["name"], "tags": tags})
+
+        return interface_tags

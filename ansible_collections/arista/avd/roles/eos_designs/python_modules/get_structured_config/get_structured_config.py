@@ -31,7 +31,7 @@ AVD_STRUCTURED_CONFIG_CLASSES = [
     AvdStructuredConfigNetworkServices,
     AvdStructuredConfigConnectedEndpoints,
     AvdStructuredConfigInbandManagement,
-    # Metadata must be after anything else that can generate an interface, since CV interface tags are generated from all features
+    # Metadata must be after anything else that can generate structured config, since CV tags can consume from structured config.
     AvdStructuredConfigMetadata,
     AvdStructuredConfigCustomStructuredConfiguration,
 ]

@@ -48,8 +48,7 @@ roles/eos_designs/docs/tables/role-custom-templates.md
 
 ## CloudVision Tags
 
-By default, `eos_designs` will not generate the CloudVision Tags. To enable this feature, the `cv_tags_enabled` needs to be set to `True`.
-This can be set in the host/group vars to influence all or some of the devices. Alternatively it can be set in the playbook.
+The `generate_cv_tags` settings can be used to generate CloudVision Tags.
 
 !!! note
     Refer to the [how-to](./how-to/cloudvision-tags.md) documentation for more details on how to use this feature.
