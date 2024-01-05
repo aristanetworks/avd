@@ -1,8 +1,0 @@
----
-type: l2leaf
-
-# Test overriding default topology hint
-# associated with l2leafs for leafs in this
-# group. These leafs should be set to edge
-# in the topology on CloudVision.
-cv_tags_topology_type: edge

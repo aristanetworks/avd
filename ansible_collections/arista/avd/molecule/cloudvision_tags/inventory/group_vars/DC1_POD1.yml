@@ -1,4 +1,0 @@
----
-# Specify the name of the pod. For this 3 clos network
-# we will just have 1 pod
-pod_name: pod1
