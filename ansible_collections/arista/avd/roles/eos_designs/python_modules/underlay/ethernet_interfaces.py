@@ -133,7 +133,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                             "link_tracking_groups": link.get("link_tracking_groups"),
                         }
                     )
-            elif link["type"] == "underlay_p2p_vrfs":
+            elif link["type"] == "p2p_vrfs":
                 ethernet_interface.update(
                     {
                         "mtu": self.shared_utils.p2p_uplinks_mtu,

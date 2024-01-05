@@ -359,7 +359,7 @@ class UplinksMixin:
                 "peer_type": uplink_switch_facts.type,
                 "peer_is_deployed": uplink_switch_facts.is_deployed,
                 "peer_bgp_as": uplink_switch_facts.bgp_as,
-                "type": "underlay_p2p_vrfs",
+                "type": "p2p_vrfs",
             }
             if self.shared_utils.uplink_interface_speed is not None:
                 uplink["speed"] = self.shared_utils.uplink_interface_speed
