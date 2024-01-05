@@ -200,7 +200,6 @@ class UplinksMixin:
 
             uplink_switch = uplink_switches[uplink_index]
             uplink_switch_interface = uplink_switch_interfaces[uplink_index]
-
             if uplink_switch is None or uplink_switch not in self.shared_utils.all_fabric_devices:
                 # Invalid uplink_switch. Skipping.
                 continue
@@ -363,21 +362,33 @@ class UplinksMixin:
         #        uplink["link_tracking_groups"].append({"name": lt_group["name"], "direction": "upstream"})
 
         uplink["subinterfaces"] = self._uplink_sub_interfaces(
-            uplink_interface, uplink_switch_interface, uplink_index, self.shared_utils.uplink_structured_config
+            uplink_interface, uplink_switch, uplink_switch_interface, uplink_switch_facts, uplink_index, self.shared_utils.uplink_structured_config
         )
 
         return uplink
 
-    def _uplink_sub_interfaces(self: EosDesignsFacts, uplink_interface: str, uplink_switch_interface: str, uplink_index: int, struct_cfg: dict | None) -> list:
+    def _uplink_sub_interfaces(
+        self: EosDesignsFacts,
+        uplink_interface: str,
+        uplink_switch: str,
+        uplink_switch_interface: str,
+        uplink_switch_facts: EosDesignsFacts,
+        uplink_index: int,
+        struct_cfg: dict | None,
+    ) -> list:
         subinterfaces = []
         for tenant in self.shared_utils.filtered_tenants:
+            # Hmm this could lead to duplicates maybe
             for vrf in tenant["vrfs"]:
+                # Only keep VRFs present in the uplink as well
+                if (vrf_name := get(vrf, "name", required=True)) not in get(uplink_switch_facts, "vrfs", []):
+                    continue
                 # TODO should ptp / multicast be here ?
                 vrf_id = get(vrf, "vrf_id", required=True)
                 subinterface = {
                     "interface": f"{uplink_interface}.{vrf_id}",
                     "peer_interface": f"{uplink_switch_interface}.{vrf_id}",
-                    "vrf": get(vrf, "name", required=True),
+                    "vrf": vrf_name,
                     "encapsulation_dot1q_vlan": vrf_id,
                 }
                 if self.shared_utils.underlay_rfc5549:
@@ -389,7 +400,6 @@ class UplinksMixin:
 
                 if struct_cfg is not None:
                     subinterface["structured_config"] = struct_cfg
-
                 subinterfaces.append(subinterface)
         return subinterfaces
 

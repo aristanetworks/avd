@@ -20,7 +20,7 @@ l3leaf:
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     uplink_type: p2p-vrfs
     filter:
-      always_include_vrfs_in_tenants: [TenantA]
+      always_include_vrfs_in_tenants: [TenantA, TenantB]
   nodes:
     - name: UPLINK_P2P_VRFS_TESTS_LEAF1
       id: 3
@@ -33,8 +33,12 @@ spine:
   nodes:
     - name: UPLINK_P2P_VRFS_TESTS_SPINE1
       id: 1
+      filter:
+        always_include_vrfs_in_tenants: [TenantB]
     - name: UPLINK_P2P_VRFS_TESTS_SPINE2
       id: 2
+      filter:
+        always_include_vrfs_in_tenants: [TenantA]
 
 tenants:
   - name: TenantA
@@ -45,3 +49,7 @@ tenants:
         vrf_id: 42
       - name: IT
         vrf_id: 100
+  - name: TenantB
+    vrfs:
+      - name: PROD
+        vrf_id: 43

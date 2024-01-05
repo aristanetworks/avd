@@ -27,20 +27,21 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         for link in self._underlay_links:
             # common values
+            description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface=link["interface"],
+                    link_type=link["type"],
+                    peer=link["peer"],
+                    peer_interface=link["peer_interface"],
+                )
+            )
             ethernet_interface = {
                 "name": link["interface"],
                 "peer": link["peer"],
                 "peer_interface": link["peer_interface"],
                 "peer_type": link["peer_type"],
-                "description": self.shared_utils.interface_descriptions.underlay_ethernet_interface(
-                    InterfaceDescriptionData(
-                        shared_utils=self.shared_utils,
-                        interface=link["interface"],
-                        link_type=link["type"],
-                        peer=link["peer"],
-                        peer_interface=link["peer_interface"],
-                    )
-                ),
+                "description": description,
                 "speed": link.get("speed"),
                 "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
             }
@@ -147,8 +148,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "peer_interface": subinterface["peer_interface"],
                         "peer_type": link["peer_type"],
                         "vrf": vrf if (vrf := subinterface["vrf"]) != "default" else None,
-                        # TODO - make this bettter and part of the module
-                        "description": subinterface["vrf"],
+                        "description": f"{description} vrf: {subinterface['vrf']}",
                         "shutdown": self.shared_utils.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
                         "type": "l3dot1q",
                         "encapsulation_dot1q_vlan": subinterface.get("encapsulation_dot1q_vlan", []),

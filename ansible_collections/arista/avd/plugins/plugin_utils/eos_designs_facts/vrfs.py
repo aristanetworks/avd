@@ -31,6 +31,12 @@ class VrfsMixin:
 
         Return the list of vrfs to be defined on this switch
 
-        Ex. "[default, prod,]"
+        Ex. "[default, prod]"
         """
-        return natural_sort(set(vrf["name"] for tenant in self.shared_utils.filtered_tenants for vrf in tenant["vrfs"]))
+        return natural_sort(
+            {
+                vrf["name"]
+                for tenant in self.shared_utils.filtered_tenants
+                for vrf in tenant["vrfs"]
+            }
+        )

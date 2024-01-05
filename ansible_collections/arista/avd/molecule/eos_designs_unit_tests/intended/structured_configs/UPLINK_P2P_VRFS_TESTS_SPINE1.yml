@@ -62,34 +62,25 @@ management_api_http:
   - name: MGMT
   enable_https: true
 ethernet_interfaces:
-- name: Ethernet1.1
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet1.1
-  peer_type: l3leaf
-  description: default
-  shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 1
-  ip_address: 10.42.42.8/31
-- name: Ethernet1.100
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet1.100
-  peer_type: l3leaf
-  vrf: IT
-  description: IT
-  shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
-  ip_address: 10.42.42.8/31
 - name: Ethernet1.42
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1
   peer_interface: Ethernet1.42
   peer_type: l3leaf
   vrf: PROD
-  description: PROD
+  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1 vrf: PROD'
   shutdown: false
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
+  ip_address: 10.42.42.8/31
+- name: Ethernet1.43
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
+  peer_interface: Ethernet1.43
+  peer_type: l3leaf
+  vrf: PROD
+  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1 vrf: PROD'
+  shutdown: false
+  type: l3dot1q
+  encapsulation_dot1q_vlan: 43
   ip_address: 10.42.42.8/31
 - name: Ethernet1
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1
