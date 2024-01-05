@@ -44,7 +44,7 @@ class StaticRoutesMixin(UtilsMixin):
                 "peer_ip",
                 required=True,
                 org_key=f"Cannot set a default route for interface {l3_interface['interface']} because 'peer_ip' is missing",
-            ).split("/")[0]
+            )
 
             static_route = {
                 "destination_address_prefix": "0.0.0.0/0",

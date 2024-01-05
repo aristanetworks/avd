@@ -86,4 +86,4 @@ l3_edge:
       wan_circuit_id: 888
       ip: 10.8.8.8/31
       set_default_route: true
-      peer_ip: 10.8.8.9/31
+      peer_ip: 10.8.8.9

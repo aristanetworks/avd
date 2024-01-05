@@ -90,7 +90,7 @@ wan_carriers:
     path_group: INET
   - name: ATT
     path_group: INET
-  - name: Bouygues Telecom
+  - name: Bouygues_Telecom
     path_group: INET
   - name: SFR
     path_group: INET
@@ -130,11 +130,11 @@ l3_edge:
       ip: 172.16.6.6/31
     - node: cv-pathfinder-pathfinder
       interface: Ethernet1
-      wan_carrier: Bouygues Telecom
+      wan_carrier: Bouygues_Telecom
       wan_circuit_id: 777
       set_default_route: true
       ip: 10.7.7.7/31
-      peer_ip: 10.7.7.6/31
+      peer_ip: 10.7.7.6
     - node: cv-pathfinder-pathfinder
       interface: Ethernet2
       wan_carrier: Colt
