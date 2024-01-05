@@ -89,31 +89,3 @@ l3_edge:
       nodes: [dc1-leaf2b, dc2-leaf2b]
       interfaces: [Ethernet6, Ethernet6]
       profile: DCI_profile
-      subinterfaces:
-        - ip_pool:
-          id:
-          vrf:
-
-
-# PREVIEW: This key is currently not supported
-# Define the SDWAN hierarchy for the device.
-cv_pathfinder_regions:
-  - description: <str>
-
-    # The region ID must be unique for the whole WAN deployment.
-    id: <int; 1-255; required>
-
-    # All sites are placed in a default zone called DEFAULT-ZONE with ID 1.
-    sites:
-      - description: <str>
-        zscaler_endpoints: "{{ lookup(cv_zscaler, switch_location) }}"
-        # The site ID must be unique within a zone.
-        # Given that all the sites are placed in the DEFAULT-ZONE, the site ID must be unique within a region.
-        id: <int; 1-10000; required>
-
-        # Will be interpreted
-        location: <str>
-        site_contact: <str>
-        site_after_hours_contact: <str>
-        name: <str; required; unique>
-    name: <str; required; unique>
