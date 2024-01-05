@@ -49,10 +49,6 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
               - '.github/workflows/pull-request-management.yml'
-              - 'ansible_collections/arista/avd/roles/cloudvision/*'
-              - 'ansible_collections/arista/avd/roles/cloudvision/**/*'
-              - 'ansible_collections/arista/avd/molecule/cloudvision/*'
-              - 'ansible_collections/arista/avd/molecule/cloudvision/**/*'
             dhcp:
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
@@ -357,7 +353,6 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
-
 
   # ----------------------------------- #
   # Ansible tests

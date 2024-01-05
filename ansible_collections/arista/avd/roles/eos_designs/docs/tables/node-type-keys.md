@@ -54,6 +54,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected_endpoints_port_channel_interfaces</samp>](## "node_type_keys.[].interface_descriptions.connected_endpoints_port_channel_interfaces") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overlay_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.overlay_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_loopback_interface</samp>](## "node_type_keys.[].interface_descriptions.vtep_loopback_interface") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "node_type_keys.[].cv_tags_topology_type") | String |  |  | Valid Values:<br>- <code>leaf</code><br>- <code>spine</code><br>- <code>core</code><br>- <code>edge</code> | Type that CloudVision should use when generating the Topology.<br> |
 
 === "YAML"
 
@@ -202,4 +203,7 @@
 
           # Path to Custom J2 template.
           vtep_loopback_interface: <str>
+
+        # Type that CloudVision should use when generating the Topology.
+        cv_tags_topology_type: <str; "leaf" | "spine" | "core" | "edge">
     ```

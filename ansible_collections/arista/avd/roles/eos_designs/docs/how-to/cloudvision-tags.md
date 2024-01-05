@@ -1,12 +1,12 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
 
 # CloudVision Tags
 
-If  `cv_tags_enabled` is set to `True`, `arista.avd.eos_designs` can generate CloudVision Tags that can be applied to interfaces and/or devices. These tags can be used during Topology generateion, or used in searches/filters to select devices based on tags values.
+If `cv_tags_enabled` is set to `True`, `arista.avd.eos_designs` can generate CloudVision Tags that can be applied to interfaces and/or devices. These tags can be used during Topology generation, or used in searches/filters to select devices based on tags values.
 
 !!! note
     - **By default this new feature is turned off. Set `cv_tags_enabled: True` in the Fabric to enable this feature.**
@@ -103,74 +103,9 @@ can be defined as the value for a tag. This allows for tags to be generated with
 
 ## Applying the Tags on CloudVision
 
-For the tags to be available and applied to devices in CloudVision, the role [`arista.avd.cloudvision`](./../../../cloudvision/README.md) needs to be called against the fabric.
+TODO
 
-The **cloudvision** role:
-
-- Is designed to have the device inventory as targets.
-- Follows the `hosts` definition as would `eos_designs` and `eos_cli_config_gen`
-- Works well with intentory groups, and cli `--limit` arguments
-- Uses the `delegate_to` functionality to point to the CloudVision instance.
-
-### Role requirements
-
-This role requires `arista.cvp` collection to support CloudVision interactions.
-
-```shell
-ansible-galaxy collection install arista.cvp
-```
-
-!!! note
-    When using ansible-cvp modules, the user executing the Ansible playbook must have write access to both CVP and the EOS CLI.
-
-### Inputs
-
-**Sturctured Config:**
-
-The role expects that the `structured_config` for the devices to be target has already been generated using `eos_designs` role.
-
-**Inventory configuration:**
-
-The inventory must include an entry for the CloudVision server.
-`arista.cvp` modules use the httpapi connection, and the tasks that imports the cloudvision role must delegate to the CloudVision node as named in the inventory. Refer to the example below that shows such an entry in the inventory.
-
-!!! info
-    **As opposed to `eos_config_deploy_cvp`, the target/host that the role expectes to be run against in the playbook is the EOS device. The `delegate_to` functionality should be used to delegate to the cloudvision node listed in the inventory.**
-
-```yaml
-# Example of cloudvision being defined in the inventory
-all:
-  children:
-    cloudvision:
-      hosts:
-        cv_server01:
-          ansible_host: 10.83.28.164
-          ansible_user: ansible
-          ansible_password: ansible
-          ansible_connection: httpapi
-          ansible_httpapi_use_ssl: True
-          ansible_httpapi_validate_certs: False
-          ansible_network_os: eos
-          ansible_httpapi_port: 443
-```
-
-Below is an example of how to use the role:
-
-```yaml
-- name: Apply CloudVision Tags
-  hosts: DC1_FABRIC
-  gather_facts: false
-  tasks:
-    - name: Apply Generated CloudVision Tags
-      ansible.builtin.import_role:
-          name: arista.avd.cloudvision
-      delegate_to: cv_server01
-```
-
-!!! info
-    For a complete list of authentication options available with CloudVision Ansible collection, you can read the dedicated page on [arista.cvp collection](https://cvp.avd.sh/en/latest/docs/how-to/cvp-authentication/).
-
-#### Ignore devices not provisioned in CloudVision
+### Ignore devices not provisioned in CloudVision
 
 When you want to apply CloudVision tags to a complete topology and devices aren't already in CloudVision, you can configure inventory to ignore these devices by setting the host variable `is_deployed`.
 
