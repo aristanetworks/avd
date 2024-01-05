@@ -9233,6 +9233,13 @@ keys:
               min: 0
               max: 254
               description: Maximum number of hops.
+            ttl_maximum_hops:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 254
+              description: Maximum number of hops.
       neighbors:
         type: list
         primary_key: ip_address

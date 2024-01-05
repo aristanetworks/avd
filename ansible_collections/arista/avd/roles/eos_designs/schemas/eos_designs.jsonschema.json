@@ -298,7 +298,6 @@
                 "bfd": {
                   "type": "boolean",
                   "description": "Enable BFD.",
-                  "description": "Enable BFD.",
                   "title": "BFD"
                 },
                 "bfd_timers": {
