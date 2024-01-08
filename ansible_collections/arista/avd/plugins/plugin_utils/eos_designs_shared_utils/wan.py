@@ -125,7 +125,7 @@ class WanMixin:
                 local_path_groups_dict[path_group_name] = get_item(
                     global_path_groups,
                     "name",
-                    carrier["path_group"],
+                    path_group_name,
                     required=True,
                     custom_error_msg=(
                         f"WAN path_group {path_group_name} defined for a WAN carrier is not in the available path_groups defined in `wan_path_groups`"

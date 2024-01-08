@@ -1248,9 +1248,7 @@ keys:
       Profiles to inherit common settings for l3_interfaces defined under the node
       type key.
 
-      These profiles will *not* work for `l3_interfaces` defined under `vrfs`.
-
-      '
+      These profiles will *not* work for `l3_interfaces` defined under `vrfs`.'
     primary_key: profile
     $ref: eos_designs#/$defs/node_type_l3_interfaces
     items:
@@ -7147,6 +7145,7 @@ $defs:
               description: The Node Name is used as "hostname".
   node_type_l3_interfaces:
     type: list
+    primary_key: name
     items:
       type: dict
       keys:

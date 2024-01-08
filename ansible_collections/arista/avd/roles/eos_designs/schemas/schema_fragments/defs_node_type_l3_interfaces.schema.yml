@@ -8,6 +8,7 @@ type: dict
 $defs:
   node_type_l3_interfaces:
     type: list
+    primary_key: name
     items:
       type: dict
       keys:

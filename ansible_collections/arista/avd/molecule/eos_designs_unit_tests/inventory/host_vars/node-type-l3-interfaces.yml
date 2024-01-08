@@ -20,7 +20,7 @@ spine:
           name: Ethernet2/2
           ip: dhcp
           set_default_route: true
-        - # custom descriptipon
+        - # custom description
           peer: peer3
           name: Ethernet42
           enabled: false

@@ -4938,7 +4938,7 @@
     },
     "l3_interface_profiles": {
       "type": "array",
-      "description": "PREVIEW: This key is currently not supported\n\nProfiles to inherit common settings for l3_interfaces defined under the node type key.\nThese profiles will *not* work for `l3_interfaces` defined under `vrfs`.\n",
+      "description": "PREVIEW: This key is currently not supported\n\nProfiles to inherit common settings for l3_interfaces defined under the node type key.\nThese profiles will *not* work for `l3_interfaces` defined under `vrfs`.",
       "items": {
         "type": "object",
         "properties": {

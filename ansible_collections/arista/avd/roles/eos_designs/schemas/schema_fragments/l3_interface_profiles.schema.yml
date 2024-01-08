@@ -10,7 +10,7 @@ keys:
     type: list
     documentation_options:
       table: wan-interfaces-settings
-    description: |
+    description: |-
       PREVIEW: This key is currently not supported
 
       Profiles to inherit common settings for l3_interfaces defined under the node type key.
