@@ -56,28 +56,3 @@ $defs:
             profile:
               type: str
               description: P2P profile name. Profile defined under p2p_profiles.
-      l3_interfaces_profiles:
-        type: list
-        convert_types:
-          - dict
-        primary_key: profile
-        $ref: "eos_designs#/$defs/l3_edge_l3_interfaces"
-        items:
-          type: dict
-          keys:
-            profile:
-              type: str
-              description: L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
-      l3_interfaces:
-        type: list
-        $ref: "eos_designs#/$defs/l3_edge_l3_interfaces"
-        items:
-          type: dict
-          keys:
-            node:
-              type: str
-              description: Device on which the interface should be configured.
-              required: true
-            profile:
-              type: str
-              description: L3 interface profile name. Profile defined under l3_interfaces_profiles.

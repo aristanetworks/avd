@@ -104,6 +104,14 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.8.8.8/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -190,14 +198,6 @@ stun:
   server:
     local_interfaces:
     - Ethernet1
-ethernet_interfaces:
-- name: Ethernet1
-  peer_type: l3_interface
-  ip_address: 10.8.8.8/31
-  shutdown: false
-  type: routed
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

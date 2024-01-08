@@ -122,10 +122,6 @@ roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
 
 #### WAN interfaces
 
-!!! note
-
-    The current code implements only `l3_edge.l3_interfaces` and not `core_interfaces.l3_interfaces`
-
 --8<--
 roles/eos_designs/docs/tables/wan-interfaces-settings.md
 --8<--

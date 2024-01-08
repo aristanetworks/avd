@@ -69,6 +69,22 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: dhcp
+  shutdown: false
+  type: routed
+  dhcp_client_accept_default_route: true
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 172.16.6.6/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -188,22 +204,6 @@ stun:
       ip_address: 10.9.9.9
     - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
       ip_address: 172.16.0.1
-ethernet_interfaces:
-- name: Ethernet1
-  peer_type: l3_interface
-  ip_address: dhcp
-  shutdown: false
-  type: routed
-  dhcp_client_accept_default_route: true
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
-- name: Ethernet2
-  peer_type: l3_interface
-  ip_address: 172.16.6.6/31
-  shutdown: false
-  type: routed
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

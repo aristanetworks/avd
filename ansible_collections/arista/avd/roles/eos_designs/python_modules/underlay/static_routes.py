@@ -22,14 +22,20 @@ class StaticRoutesMixin(UtilsMixin):
         Returns structured config for static_routes
 
         Consist of
-        - default route injected for l3_edge.l3interfaces when `set_default_route` is True
+        - default route injected for l3interfaces when `set_default_route` is True
           note that only VRF default is supported today.
         """
 
         static_routes = []
 
-        for l3_interface in self._filtered_l3_interfaces:
-            ip_address = get(l3_interface, "ip", required=True)
+        for l3_interface in self.shared_utils.l3_interfaces:
+            interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
+            ip_address = get(
+                l3_interface,
+                "ip",
+                required=True,
+                org_key=f"{self.shared_utils.node_type_key_data['key']}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}.ip]",
+            )
 
             # 'dhcp' is handled at the interface level
             if ip_address == "dhcp":
@@ -43,7 +49,7 @@ class StaticRoutesMixin(UtilsMixin):
                 l3_interface,
                 "peer_ip",
                 required=True,
-                org_key=f"Cannot set a default route for interface {l3_interface['interface']} because 'peer_ip' is missing",
+                org_key=f"Cannot set a default route for interface {interface_name} because 'peer_ip' is missing",
             )
 
             static_route = {

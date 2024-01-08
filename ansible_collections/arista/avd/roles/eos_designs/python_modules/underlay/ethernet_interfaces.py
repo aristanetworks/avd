@@ -144,6 +144,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                 context_keys=["name", "peer", "peer_interface"],
             )
 
+        for l3_interface in self.shared_utils.l3_interfaces:
+            # Ethernet interface
+            ethernet_interface = self._get_l3_interface_cfg(l3_interface)
+
+            append_if_not_duplicate(
+                list_of_dicts=ethernet_interfaces,
+                primary_key="name",
+                new_dict=ethernet_interface,
+                context=f"L3 Interfaces defined under {self.shared_utils.node_type_key_data['key']} l3_interfaces",
+                context_keys=["name", "peer", "peer_interface"],
+            )
+
         if ethernet_interfaces:
             return ethernet_interfaces
 

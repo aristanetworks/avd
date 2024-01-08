@@ -427,13 +427,8 @@ class UtilsMixin:
           `connected_to_pathfinder` is not False.
         """
         return any(
-            self.shared_utils.get_carrier_path_group(wan_interface["wan_carrier"])["name"] in path_groups
-            and get(
-                wan_interface,
-                "connected_to_pathfinder",
-                default=True,
-            )
-            for wan_interface in self.shared_utils.wan_interfaces
+            local_path_group["name"] in path_groups and any(wan_interface["connected_to_pathfinder"] for wan_interface in local_path_group["interfaces"])
+            for local_path_group in self.shared_utils.wan_local_path_groups
         )
 
     @cached_property

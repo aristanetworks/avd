@@ -78,11 +78,36 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.7.7.7/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet2
+  peer_type: l3_interface
+  ip_address: 172.16.0.1/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+- name: Ethernet3
+  peer_type: l3_interface
+  ip_address: 10.9.9.9/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
   shutdown: false
   ip_address: 192.168.44.1/32
+static_routes:
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 10.7.7.6
 flow_tracking:
   hardware:
     trackers:
@@ -163,31 +188,6 @@ stun:
     - Ethernet1
     - Ethernet2
     - Ethernet3
-ethernet_interfaces:
-- name: Ethernet1
-  peer_type: l3_interface
-  ip_address: 10.7.7.7/31
-  shutdown: false
-  type: routed
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
-- name: Ethernet2
-  peer_type: l3_interface
-  ip_address: 172.16.0.1/31
-  shutdown: false
-  type: routed
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
-- name: Ethernet3
-  peer_type: l3_interface
-  ip_address: 10.9.9.9/31
-  shutdown: false
-  type: routed
-  flow_tracker:
-    hardware: WAN-FLOW-TRACKER
-static_routes:
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 10.7.7.6
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

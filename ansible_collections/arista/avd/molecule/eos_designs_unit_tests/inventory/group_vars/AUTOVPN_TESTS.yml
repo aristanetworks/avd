@@ -41,6 +41,12 @@ wan_edge:
   nodes:
     - name: autovpn-edge
       id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Comcast
+          wan_circuit_id: 666
+          ip: dhcp
+          set_default_route: true
 
 wan_rr:
   defaults:
@@ -48,8 +54,21 @@ wan_rr:
   nodes:
     - name: autovpn-rr1
       id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          wan_circuit_id: 777
+          ip: dhcp
+          set_default_route: true
     - name: autovpn-rr2
       id: 2
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          wan_circuit_id: 888
+          ip: 10.8.8.8/31
+          set_default_route: true
+          peer_ip: 10.8.8.9
 
 wan_path_groups:
   - name: MPLS
@@ -65,25 +84,3 @@ wan_carriers:
     path_group: INET
   - name: ATT
     path_group: INET
-
-l3_edge:
-  l3_interfaces:
-    - node: autovpn-edge
-      interface: Ethernet1
-      wan_carrier: Comcast
-      wan_circuit_id: 666
-      ip: dhcp
-      set_default_route: true
-    - node: autovpn-rr1
-      interface: Ethernet1
-      wan_carrier: ATT
-      wan_circuit_id: 777
-      ip: dhcp
-      set_default_route: true
-    - node: autovpn-rr2
-      interface: Ethernet1
-      wan_carrier: ATT
-      wan_circuit_id: 888
-      ip: 10.8.8.8/31
-      set_default_route: true
-      peer_ip: 10.8.8.9

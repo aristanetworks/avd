@@ -26,7 +26,7 @@ class StunMixin(UtilsMixin):
 
         stun = {}
         if self.shared_utils.wan_role == "server":
-            local_interfaces = [wan_interface.get("interface") for wan_interface in self.shared_utils.wan_interfaces]
+            local_interfaces = [wan_interface["name"] for wan_interface in self.shared_utils.wan_interfaces]
             stun["server"] = {"local_interfaces": local_interfaces}
 
         if self.shared_utils.wan_role == "client":
