@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -56,9 +56,7 @@ Ansible galaxy hosts all stable versions of the `arista.avd` collection. Install
 
 ### Custom plugins & modules
 
-This repository provides custom plugins for Arista's AVD collection:
-
-- [Arista AVD Plugins](plugins/README.md)
+See the section "Ansible Collection Plugins" on the menu to the left.
 
 ## Additional resources
 

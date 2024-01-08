@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -12,5 +12,6 @@
 === "YAML"
 
     ```yaml
+    # Multiline string with EOS CLI rendered directly on the root level of the final EOS configuration
     eos_cli: <str>
     ```

@@ -142,7 +142,7 @@ interface Management1
 ##### IPv6
 
 | Interface | VRF | IPv6 Address | IPv6 Virtual Addresses | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
+| --------- | --- | ------------ | ---------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
 | Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | True | - | - |
 | Vlan25 | default | 1b11:3a00:22b0:16::16/64 | - | 1b11:3a00:22b0:16::15, 1b11:3a00:22b0:16::14 | - | - | - | - | - |
 | Vlan43 | default | a0::1/64 | - | - | - | - | - | - | - |
@@ -162,7 +162,7 @@ interface Management1
 | --------- | ------- | -------- | ---------------------- | --------| ---------------------- | ------------------------ | --------------- | ----------------- | --------------- |
 | Vlan333 | 1 | 105 | 2 | Enabled | ID1-TrackedObjectDecrement, ID1-TrackedObjectShutdown | Decrement 5, Shutdown | 192.0.2.1 | 2 | - |
 | Vlan333 | 2 | - | - | Enabled | ID2-TrackedObjectDecrement, ID2-TrackedObjectShutdown | Decrement 10, Shutdown | - | 2 | 2001:db8::1 |
-| Vlan333 | 3 | - | - | Enabled | - | - | 100.64.0.1 | 3 | - |
+| Vlan333 | 3 | - | - | Disabled | - | - | 100.64.0.1 | 3 | - |
 | Vlan667 | 1 | 105 | 2 | Enabled | - | - | 192.0.2.1 | 2 | - |
 | Vlan667 | 2 | - | - | Enabled | - | - | - | 2 | 2001:db8::1 |
 
@@ -365,6 +365,7 @@ interface Vlan333
    vrrp 2 ipv6 2001:db8::1
    vrrp 2 tracked-object ID2-TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2-TrackedObjectShutdown shutdown
+   no vrrp 3 preempt
    vrrp 3 timers delay reload 900
    vrrp 3 ipv4 100.64.0.1
    vrrp 3 ipv4 version 3
@@ -446,7 +447,7 @@ interface Vlan4094
 
 ### PIM Sparse Mode
 
-#### PIM Sparse Mode enabled interfaces
+#### PIM Sparse Mode Enabled Interfaces
 
 | Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
 | -------------- | -------- | ---------- | ----------- | --------------- |

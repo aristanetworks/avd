@@ -1,5 +1,9 @@
+---
+# This title is used for search results
+title: AVD example for a dual data center using L3LS
+---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -43,11 +43,10 @@ $defs:
         max: 65535
       l2_mtu:
         type: int
-        convert_types:
-          - str
-        min: 68
-        max: 9416
-        description: This should only be defined for platforms supporting the "l2 mtu" CLI command.
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/l2_mtu
+      l2_mru:
+        type: int
+        $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/keys/l2_mru
       native_vlan:
         type: int
         convert_types:
@@ -61,6 +60,25 @@ $defs:
         type: bool
         default: false
         description: If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+      phone_vlan:
+        type: int
+        convert_types:
+          - str
+        description: |-
+          Phone VLAN for a mode `trunk phone` port.
+          Requires `mode: trunk phone` to be set.
+        min: 1
+        max: 4094
+      phone_trunk_mode:
+        type: str
+        valid_values:
+          - "tagged"
+          - "untagged"
+          - "tagged phone"
+          - "untagged phone"
+        description: |-
+          Specify if the phone traffic is tagged or untagged.
+          If both data and phone traffic are untagged, MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
       trunk_groups:
         type: list
         items:
@@ -395,9 +413,9 @@ $defs:
             type: list
             description: Manual preference as described above, required only for preference algorithm.
             items:
-              type: str
+              type: int
               convert_types:
-                - int
+                - str
           dont_preempt:
             type: bool
             description: Disable preemption for single-active forwarding when auto/manual DF preference is configured.

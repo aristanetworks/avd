@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -15,7 +15,7 @@
     | [<samp>&nbsp;&nbsp;vrf</samp>](## "lldp.vrf") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;receive_packet_tagged_drop</samp>](## "lldp.receive_packet_tagged_drop") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;tlvs</samp>](## "lldp.tlvs") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "lldp.tlvs.[].name") | String | Required, Unique |  | Valid Values:<br>- link-aggregation<br>- management-address<br>- max-frame-size<br>- med<br>- port-description<br>- port-vlan<br>- power-via-mdi<br>- system-capabilities<br>- system-description<br>- system-name<br>- vlan-name |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "lldp.tlvs.[].name") | String | Required, Unique |  | Valid Values:<br>- <code>link-aggregation</code><br>- <code>management-address</code><br>- <code>max-frame-size</code><br>- <code>med</code><br>- <code>port-description</code><br>- <code>port-vlan</code><br>- <code>power-via-mdi</code><br>- <code>system-capabilities</code><br>- <code>system-description</code><br>- <code>system-name</code><br>- <code>vlan-name</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmit</samp>](## "lldp.tlvs.[].transmit") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;run</samp>](## "lldp.run") | Boolean |  |  |  |  |
 
@@ -30,7 +30,7 @@
       vrf: <str>
       receive_packet_tagged_drop: <str>
       tlvs:
-        - name: <str>
+        - name: <str; "link-aggregation" | "management-address" | "max-frame-size" | "med" | "port-description" | "port-vlan" | "power-via-mdi" | "system-capabilities" | "system-description" | "system-name" | "vlan-name"; required; unique>
           transmit: <bool>
       run: <bool>
     ```

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -39,6 +39,7 @@ class BgpPeerGroupsMixin:
             ("mpls_overlay_peers", "MPLS-OVERLAY-PEERS", True),
             ("rr_overlay_peers", "RR-OVERLAY-PEERS", True),
             ("ipvpn_gateway_peers", "IPVPN-GATEWAY-PEERS", True),
+            ("wan_overlay_peers", "WAN-OVERLAY-PEERS", True),
         ]
 
         bgp_peer_groups = {}
@@ -49,5 +50,7 @@ class BgpPeerGroupsMixin:
                 "bfd": get(self.hostvars, f"bgp_peer_groups.{key}.bfd", default=default_bfd),
                 "structured_config": get(self.hostvars, f"bgp_peer_groups.{key}.structured_config"),
             }
+            if key == "wan_overlay_peers" and get(self.hostvars, f"bgp_peer_groups.{key}") is not None:
+                bgp_peer_groups[key]["listen_range_prefixes"] = get(self.hostvars, f"bgp_peer_groups.{key}.listen_range_prefixes", required=True)
 
         return bgp_peer_groups

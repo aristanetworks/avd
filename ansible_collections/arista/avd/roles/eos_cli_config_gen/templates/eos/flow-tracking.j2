@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -10,6 +10,21 @@
 flow tracking sampled
 {%     if flow_tracking.sampled.sample is arista.avd.defined %}
    sample {{ flow_tracking.sampled.sample }}
+{%     endif %}
+{%     if flow_tracking.sampled.hardware_offload is arista.avd.defined %}
+{%         set hardware_offload_protocols = [] %}
+{%         if flow_tracking.sampled.hardware_offload.ipv4 is arista.avd.defined(true) %}
+{%             do hardware_offload_protocols.append('ipv4') %}
+{%         endif %}
+{%         if flow_tracking.sampled.hardware_offload.ipv6 is arista.avd.defined(true) %}
+{%             do hardware_offload_protocols.append('ipv6') %}
+{%         endif %}
+{%         if hardware_offload_protocols | length > 0 %}
+   hardware offload {{ hardware_offload_protocols | join(' ') }}
+{%         endif %}
+{%         if flow_tracking.sampled.hardware_offload.threshold_minimum is arista.avd.defined %}
+   hardware offload threshold minimum {{ flow_tracking.sampled.hardware_offload.threshold_minimum }} samples
+{%         endif %}
 {%     endif %}
 {%     for tracker in flow_tracking.sampled.trackers %}
    tracker {{ tracker.name }}

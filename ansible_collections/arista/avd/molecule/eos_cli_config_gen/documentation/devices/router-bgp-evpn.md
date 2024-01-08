@@ -65,6 +65,7 @@ interface Management1
 | Remote AS | 65001 |
 | Source | Loopback0 |
 | BFD | True |
+| BFD Timers | interval: 2000, min_rx: 2000, multiplier: 3 |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -83,8 +84,8 @@ interface Management1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Allowed, allowed 5 times | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Allowed, allowed 5 times | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - |
 | 192.168.255.3 | - | default | - | - | 52000 (warning-limit 2000, warning-only) | Allowed, allowed 5 times | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 15000 (warning-limit 50 percent) | - | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - |
@@ -98,7 +99,7 @@ interface Management1
 
 #### Router BGP EVPN Address Family
 
-- Next-hop resolution is __disabled__
+- Next-hop resolution is **disabled**
 - Next-hop-unchanged is explicitly configured (default behaviour)
 
 ##### EVPN Peer Groups
@@ -150,7 +151,7 @@ interface Management1
 
 | VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
 | --- | ------------------- | ------------ | -------------- |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | IPv4: True<br>Transit: False |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>bgp | IPv4: True<br>Transit: False |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT03 | 192.168.255.3:13 | - | IPv4: True<br>Transit: True |
 | TENANT_A_PROJECT04 | 192.168.255.3:14 | - | IPv4: True<br>Transit: False |
@@ -171,6 +172,7 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
+   neighbor EVPN-OVERLAY-PEERS bfd interval 2000 min-rx 2000 multiplier 3
    neighbor EVPN-OVERLAY-PEERS allowas-in
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
    neighbor EVPN-OVERLAY-PEERS password 7 <removed>
@@ -275,6 +277,7 @@ router bgp 65101
       router-id 192.168.255.3
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.1 maximum-routes 15000 warning-limit 50 percent
+      redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected
    !
    vrf TENANT_A_PROJECT02

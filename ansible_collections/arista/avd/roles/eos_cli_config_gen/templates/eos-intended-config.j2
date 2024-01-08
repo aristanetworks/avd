@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -25,10 +25,14 @@
 {% include 'eos/daemon-terminattr.j2' %}
 {# daemons #}
 {% include 'eos/daemons.j2' %}
-{# DHCP relay #}
+{# DHCP Relay #}
 {% include 'eos/dhcp-relay.j2' %}
-{# ip dhcp relay #}
+{# IP DHCP Relay #}
 {% include 'eos/ip-dhcp-relay.j2' %}
+{# IP DHCP Snooping #}
+{% include 'eos/ip-dhcp-snooping.j2' %}
+{# dhcp servers #}
+{% include 'eos/dhcp-servers.j2' %}
 {# switchport default #}
 {% include 'eos/switchport-default.j2' %}
 {# internal vlan allocation policy #}
@@ -98,6 +102,8 @@
 {% include 'eos/radius-servers.j2' %}
 {# radius server #}
 {% include 'eos/radius-server.j2' %}
+{# router adaptive-virtual-topology #}
+{% include 'eos/router-adaptive-virtual-topology.j2' %}
 {# router l2-vpn #}
 {% include 'eos/router-l2-vpn.j2' %}
 {# sflow #}
@@ -166,6 +172,8 @@
 {% include 'eos/vxlan-interface.j2' %}
 {# Hardware TCAM Profiles #}
 {% include 'eos/tcam-profile.j2' %}
+{# application traffic recognition #}
+{% include 'eos/application-traffic-recognition.j2' %}
 {# Connectivity monitor configuration #}
 {% include 'eos/monitor-connectivity.j2' %}
 {# MAC address-table aging #}

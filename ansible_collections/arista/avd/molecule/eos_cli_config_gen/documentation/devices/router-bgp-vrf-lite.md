@@ -45,8 +45,8 @@ interface Management1
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | BLUE-C1 | 193.1.0.0/24 | - | Null0 | 1 | - | - | - |
 | BLUE-C1 | 193.1.1.0/24 | - | Null0 | 1 | - | - | - |
 | BLUE-C1 | 193.1.2.0/24 | - | Null0 | 1 | - | - | - |
@@ -92,6 +92,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | Address Family | ipv4 |
 | Remote AS | 65000 |
 | BFD | True |
+| BFD Timers | interval: 2000, min_rx: 2000, multiplier: 3 |
 
 ##### SEDI
 
@@ -128,18 +129,18 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | Inherited from peer group OBS_WAN | - | - | - |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - |
 | 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | - | - | True | - |
 | 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - | - | - | - | - | - | - |
 | 101.0.3.2 | Inherited from peer group SEDI | BLUE-C1 | True | - | - | Allowed, allowed 3 (default) times | - | - | - | - |
 | 101.0.3.3 | - | BLUE-C1 | Inherited from peer group SEDI-shut | - | - | Allowed, allowed 5 times | - | - | - | - |
 | 101.0.3.4 | Inherited from peer group TEST-PASSIVE | BLUE-C1 | - | - | - | - | - | - | - | Inherited from peer group TEST-PASSIVE |
 | 101.0.3.5 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | False | - | - | True |
-| 101.0.3.6 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | True | - | - | - |
+| 101.0.3.6 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | True(interval: 2500, min_rx: 2000, multiplier: 3) | - | - | - |
 | 101.0.3.7 | - | BLUE-C1 | - | - | - | - | True | - | - | - |
 | 101.0.3.8 | - | BLUE-C1 | - | - | - | - | False | - | - | - |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | Inherited from peer group OBS_WAN | - | - | - |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | Inherited from peer group OBS_WAN | - | - | - |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | YELLOW-C1 | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - |
 
 #### Router BGP VRFs
 
@@ -165,6 +166,7 @@ router bgp 65001
    neighbor OBS_WAN as-path prepend-own disabled
    neighbor OBS_WAN description BGP Connection to OBS WAN CPE
    neighbor OBS_WAN bfd
+   neighbor OBS_WAN bfd interval 2000 min-rx 2000 multiplier 3
    neighbor SEDI peer group
    neighbor SEDI remote-as 65003
    neighbor SEDI update-source Loopback101
@@ -211,6 +213,7 @@ router bgp 65001
       no neighbor 101.0.3.5 bfd
       neighbor 101.0.3.6 peer group WELCOME_ROUTERS
       neighbor 101.0.3.6 bfd
+      neighbor 101.0.3.6 bfd interval 2500 min-rx 2000 multiplier 3
       neighbor 101.0.3.7 bfd
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
@@ -225,8 +228,14 @@ router bgp 65001
    vrf RED-C1
       rd 1.0.1.1:102
       neighbor 10.1.1.0 peer group OBS_WAN
-      neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-IN-C1 in
-      neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-OUT-C1 out
+      !
+      address-family ipv4
+         neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-IN-C1 in
+         neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-OUT-C1 out
+      !
+      address-family ipv6
+         neighbor 2001:cafe:192:168::4 prefix-list PL-BGP-V6-RED-IN-C1 in
+         neighbor 2001:cafe:192:168::4 prefix-list PL-BGP-V6-RED-OUT-C1 out
    !
    vrf YELLOW-C1
       rd 1.0.1.1:103

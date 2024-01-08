@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -24,10 +24,14 @@
     router_l2_vpn:
       arp_learning_bridged: <bool>
       arp_proxy:
+
+        # Prefix-list name. ARP Proxying is disabled for IPv4 addresses defined in the prefix-list.
         prefix_list: <str>
       arp_selective_install: <bool>
       nd_learning_bridged: <bool>
       nd_proxy:
+
+        # Prefix-list name. ND Proxying is disabled for IPv6 addresses defined in the prefix-list.
         prefix_list: <str>
       nd_rs_flooding_disabled: <bool>
       virtual_router_nd_ra_flooding_disabled: <bool>

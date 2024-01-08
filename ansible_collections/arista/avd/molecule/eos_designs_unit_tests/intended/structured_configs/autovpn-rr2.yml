@@ -1,0 +1,159 @@
+hostname: autovpn-rr2
+is_deployed: true
+router_bgp:
+  as: '65000'
+  router_id: 192.168.31.2
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp_cluster_id: 192.168.31.2
+  listen_ranges:
+  - prefix: 192.168.30.0/24
+    peer_group: WAN-OVERLAY-PEERS
+    remote_as: '65000'
+  peer_groups:
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    update_source: Loopback0
+    bfd: true
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+    route_reflector_client: true
+  - name: RR-OVERLAY-PEERS
+    type: wan
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
+    next_hop:
+      resolution_disabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+    - name: RR-OVERLAY-PEERS
+      activate: false
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
+  neighbors:
+  - ip_address: 192.168.31.1
+    peer_group: RR-OVERLAY-PEERS
+    peer: autovpn-rr1
+    description: autovpn-rr1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.8.8.8/31
+  shutdown: false
+  type: routed
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 192.168.31.2/32
+static_routes:
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 10.8.8.9
+ip_security:
+  ike_policies:
+  - name: AUTOVPN-IKE
+    local_id: 192.168.31.2
+  sa_policies:
+  - name: AUTOVPN-SA
+  profiles:
+  - name: AUTOVPN
+    ike_policy: AUTOVPN-IKE
+    sa_policy: AUTOVPN-SA
+    connection: start
+    shared_key: ABCDEF1234567890
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_path_selection:
+  path_groups:
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet1
+    static_peers:
+    - router_ip: 192.168.31.1
+      name: autovpn-rr1
+      ipv4_addresses:
+      - 10.7.7.7
+    ipsec_profile: AUTOVPN
+  load_balance_policies:
+  - name: LBPOLICY
+    path_groups:
+    - name: INET
+  policies:
+  - name: dps-policy-default
+    default_match:
+      load_balance: LBPOLICY
+  vrfs:
+  - name: default
+    path_selection_policy: dps-policy-default
+  peer_dynamic_source: stun
+stun:
+  server:
+    local_interfaces:
+    - Ethernet1
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  tcp_mss_ceiling:
+    ipv4: 1000
+vxlan_interface:
+  Vxlan1:
+    description: autovpn-rr2_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback0
+      vrfs:
+      - name: default
+        vni: 1

@@ -49,7 +49,7 @@ interface Management1
 | sysdb | /Sysdb/sys/logging/config/vrfLoggingHost/mgmt | True |
 | sysdb | cell/1/agent | True |
 
-#### Management API Models Configuration
+#### Management API Models Device Configuration
 
 ```eos
 !

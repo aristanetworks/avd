@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -36,6 +36,7 @@ class RouterBgpMixin(UtilsMixin):
 
             neighbor = {
                 "remote_as": p2p_link["data"]["peer_bgp_as"],
+                "peer": p2p_link["data"]["peer"],
                 "description": p2p_link["data"]["peer"],
                 "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
             }

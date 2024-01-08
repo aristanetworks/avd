@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -15,8 +15,8 @@
 === "YAML"
 
     ```yaml
-    underlay_ospf_area: <str>
-    underlay_ospf_bfd_enable: <bool>
-    underlay_ospf_max_lsa: <int>
-    underlay_ospf_process_id: <int>
+    underlay_ospf_area: <str; default="0.0.0.0">
+    underlay_ospf_bfd_enable: <bool; default=False>
+    underlay_ospf_max_lsa: <int; default=12000>
+    underlay_ospf_process_id: <int; default=100>
     ```

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -62,6 +62,9 @@ logging synchronous level {{ logging.synchronous.level | arista.avd.default("cri
 {%     endfor %}
 {%     if logging.format.timestamp is arista.avd.defined %}
 logging format timestamp {{ logging.format.timestamp }}
+{%     endif %}
+{%     if logging.format.rfc5424 is arista.avd.defined(true) %}
+logging format rfc5424
 {%     endif %}
 {%     if logging.format.hostname is arista.avd.defined('fqdn') %}
 logging format hostname fqdn

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError, AristaAvdMissingVariableError
@@ -51,26 +51,26 @@ options:
 
 EXAMPLES = r"""
 ---
-# Encrypt the vaulted BGP password for peer group "IPv4-UNDERLAY-PEERS"
-bgp_peer_groups:
-  ipv4_underlay_peers:
-    name: IPv4-UNDERLAY-PEERS
-    password: "{{ bgp_vault_password | arista.avd.encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
+- # Encrypt the vaulted BGP password for peer group "IPv4-UNDERLAY-PEERS"
+  bgp_peer_groups:
+    ipv4_underlay_peers:
+      name: IPv4-UNDERLAY-PEERS
+      password: "{{ bgp_vault_password | arista.avd.encrypt(passwd_type='bgp', key='IPv4-UNDERLAY-PEERS') }}"
 
-# Encrypt the vaulted OSPF simple password for interface "Ethernet1"
-ethernet_interfaces:
-  - name: Ethernet1
-    ospf_authentication: simple
-    ospf_authentication_key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_simple', key='Ethernet1') }}"
+- # Encrypt the vaulted OSPF simple password for interface "Ethernet1"
+  ethernet_interfaces:
+    - name: Ethernet1
+      ospf_authentication: simple
+      ospf_authentication_key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_simple', key='Ethernet1') }}"
 
-# Encrypt the vaulted OSPF message digest password for Ethernet1, MD5 and key id 1
-ethernet_interfaces:
-  - name: Ethernet1
-    ospf_authentication: message-digest
-    ospf_message_digest_keys:
-      - id: 1
-        hash_algorithm: md5
-        key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
+- # Encrypt the vaulted OSPF message digest password for Ethernet1, MD5 and key id 1
+  ethernet_interfaces:
+    - name: Ethernet1
+      ospf_authentication: message-digest
+      ospf_message_digest_keys:
+        - id: 1
+          hash_algorithm: md5
+          key: "{{ ospf_vault_password | arista.avd.encrypt(passwd_type='ospf_message_digest', key='Ethernet1', hash_algorithm='md5', key_id='1') }}"
 """
 
 RETURN = r"""

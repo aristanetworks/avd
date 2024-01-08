@@ -22,6 +22,7 @@ port_channel_interfaces:
     bgp:
       session_tracker: ST2
     l2_mtu: 8000
+    l2_mru: 8000
     eos_cli: |
       comment
       Comment created from eos_cli under port_channel_interfaces.Port-Channel5
@@ -413,6 +414,12 @@ port_channel_interfaces:
         static:
           - original_ip: 3.0.0.1
             translated_ip: 4.0.0.1
+
+  - name: Port-Channel131
+    description: dot1q-tunnel mode
+    type: switched
+    mode: dot1q-tunnel
+
 
 # Children interfaces
 ethernet_interfaces:

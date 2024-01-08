@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -13,10 +13,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;license_key</samp>](## "mac_security.license.license_key") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;fips_restrictions</samp>](## "mac_security.fips_restrictions") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;profiles</samp>](## "mac_security.profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "mac_security.profiles.[].name") | String | Required, Unique |  |  | Profile-Name |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cipher</samp>](## "mac_security.profiles.[].cipher") | String |  |  | Valid Values:<br>- aes128-gcm<br>- aes128-gcm-xpn<br>- aes256-gcm<br>- aes256-gcm-xpn |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "mac_security.profiles.[].name") | String | Required, Unique |  |  | Profile-Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cipher</samp>](## "mac_security.profiles.[].cipher") | String |  |  | Valid Values:<br>- <code>aes128-gcm</code><br>- <code>aes128-gcm-xpn</code><br>- <code>aes256-gcm</code><br>- <code>aes256-gcm-xpn</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connection_keys</samp>](## "mac_security.profiles.[].connection_keys") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "mac_security.profiles.[].connection_keys.[].id") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "mac_security.profiles.[].connection_keys.[].id") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encrypted_key</samp>](## "mac_security.profiles.[].connection_keys.[].encrypted_key") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fallback</samp>](## "mac_security.profiles.[].connection_keys.[].fallback") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mka</samp>](## "mac_security.profiles.[].mka") | Dictionary |  |  |  |  |
@@ -26,33 +26,37 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sci</samp>](## "mac_security.profiles.[].sci") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l2_protocols</samp>](## "mac_security.profiles.[].l2_protocols") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet_flow_control</samp>](## "mac_security.profiles.[].l2_protocols.ethernet_flow_control") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "mac_security.profiles.[].l2_protocols.ethernet_flow_control.mode") | String | Required |  | Valid Values:<br>- encrypt<br>- bypass |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "mac_security.profiles.[].l2_protocols.ethernet_flow_control.mode") | String | Required |  | Valid Values:<br>- <code>encrypt</code><br>- <code>bypass</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lldp</samp>](## "mac_security.profiles.[].l2_protocols.lldp") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "mac_security.profiles.[].l2_protocols.lldp.mode") | String | Required |  | Valid Values:<br>- bypass<br>- bypass unauthorized |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "mac_security.profiles.[].l2_protocols.lldp.mode") | String | Required |  | Valid Values:<br>- <code>bypass</code><br>- <code>bypass unauthorized</code> |  |
 
 === "YAML"
 
     ```yaml
     mac_security:
       license:
-        license_name: <str>
-        license_key: <str>
+        license_name: <str; required>
+        license_key: <str; required>
       fips_restrictions: <bool>
       profiles:
-        - name: <str>
-          cipher: <str>
+
+          # Profile-Name
+        - name: <str; required; unique>
+          cipher: <str; "aes128-gcm" | "aes128-gcm-xpn" | "aes256-gcm" | "aes256-gcm-xpn">
           connection_keys:
-            - id: <str>
+            - id: <str; required; unique>
               encrypted_key: <str>
               fallback: <bool>
           mka:
-            key_server_priority: <int>
+            key_server_priority: <int; 0-255>
             session:
-              rekey_period: <int>
+
+              # Rekey period in seconds
+              rekey_period: <int; 30-100000>
           sci: <bool>
           l2_protocols:
             ethernet_flow_control:
-              mode: <str>
+              mode: <str; "encrypt" | "bypass"; required>
             lldp:
-              mode: <str>
+              mode: <str; "bypass" | "bypass unauthorized"; required>
     ```

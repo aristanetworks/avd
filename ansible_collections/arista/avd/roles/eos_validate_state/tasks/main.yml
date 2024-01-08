@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -23,6 +23,7 @@
     - "{{ eos_validate_state_dir }}"
     - "{{ output_dir }}"
     - "{{ test_catalogs_dir }}"
+    - "{{ test_results_dir }}"
   delegate_to: localhost
   run_once: true
   check_mode: false
@@ -42,28 +43,53 @@
 ##  Run eos_validate_state using ANTA  ##
 #########################################
 
-- name: Run eos_validate_state_runner leveraging ANTA
+- name: Include ANTA tasks
   ansible.builtin.include_tasks: "anta_tests.yml"
-  when: use_anta
+  # Ensure that `use_anta` is evaluated as a boolean when using `-e` or `--extra-vars`
+  when: use_anta | bool
   tags:
     - always
 
-#####################################
-##  Run ansible assert eos_validate_state  ##
-#####################################
+#######################################
+##  Generate reports from ANTA tests ##
+#######################################
 
-- name: Run ansible assert tests
+- name: Create validation reports from ANTA tests
+  arista.avd.eos_validate_state_reports:
+    csv_report_path: "{{ eos_validate_state_csv_report_path }}"
+    md_report_path: "{{ eos_validate_state_md_report_path }}"
+    validation_report_csv: "{{ validation_report_csv }}"
+    validation_report_md: "{{ validation_report_md }}"
+    only_failed_tests: "{{ only_failed_tests }}"
+    test_results_dir: "{{ test_results_dir }}"
+    # cprofile_file: "eos_validate_state_reports.prof"
+  delegate_to: localhost
+  run_once: true
+  check_mode: false
+  when:
+    - use_anta | bool
+    - validation_report_csv | bool or validation_report_md | bool
+  tags:
+    - always
+    - reports
+
+########################################################
+##  Run eos_validate_state using Ansible assert tests ##
+########################################################
+
+- name: Include Ansible assert tests
   ansible.builtin.include_tasks: "ansible_tests.yml"
-  when: not use_anta
+  when: not use_anta | bool
   tags:
     - always
 
-####################################
-##       Validation Reports       ##
-####################################
+#################################################
+##  Generate reports from Ansible assert tests ##
+#################################################
 
-- name: Create reports
+- name: Include Ansible assert tests report tasks
   ansible.builtin.include_tasks: "reports.yml"
+  when: not use_anta | bool
   tags:
     - always
     - reports

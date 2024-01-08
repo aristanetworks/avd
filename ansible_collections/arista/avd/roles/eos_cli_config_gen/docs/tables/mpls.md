@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -24,5 +24,7 @@
         interface_disabled_default: <bool>
         router_id: <str>
         shutdown: <bool>
+
+        # Interface Name
         transport_address_interface: <str>
     ```

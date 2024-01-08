@@ -1,4 +1,6 @@
 hostname: DC1-L2LEAF4A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -58,6 +60,14 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS rackE DC1-L2LEAF4A
@@ -70,7 +80,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 1
+    id: 1001
     mode: active
 - name: Ethernet2
   peer: DC1-LEAF2B
@@ -80,11 +90,11 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 1
+    id: 1001
     mode: active
 port_channel_interfaces:
-- name: Port-Channel1
-  description: DC1_LEAF2_Po13
+- name: Port-Channel1001
+  description: DC1_LEAF2_Po1013
   type: switched
   shutdown: false
   mode: trunk

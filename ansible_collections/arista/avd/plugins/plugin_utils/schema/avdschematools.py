@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -155,6 +155,19 @@ class AvdSchemaTools:
                 # Deprecation warnings are not subject to "conversion_mode".
                 # Instead we display using Ansible's deprecation notices.
                 message = f"[{self.hostname}]: {exception}"
+                if exception.removed:
+                    # Thank you! ansible-core>=2.16 broke support for removed=True and
+                    # they do not test it, so apparently we were the only ones using it.
+                    raise AristaAvdError(
+                        self.ansible_display.get_deprecation_message(
+                            msg=message,
+                            version=exception.version,
+                            date=exception.date,
+                            collection_name=self.plugin_name,
+                            removed=exception.removed,
+                        )
+                    )
+
                 self.ansible_display.deprecated(
                     msg=message,
                     version=exception.version,

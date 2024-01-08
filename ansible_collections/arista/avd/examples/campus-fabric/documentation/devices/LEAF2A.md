@@ -15,7 +15,7 @@
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
@@ -87,6 +87,12 @@ ip name-server vrf MGMT 8.8.8.8
 
 #### NTP Summary
 
+##### NTP Local Interface
+
+| Interface | VRF |
+| --------- | --- |
+| Management0 | MGMT |
+
 ##### NTP Servers
 
 | Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
@@ -98,6 +104,7 @@ ip name-server vrf MGMT 8.8.8.8
 
 ```eos
 !
+ntp local-interface vrf MGMT Management0
 ntp server vrf MGMT pool.ntp.org
 ntp server vrf MGMT time.google.com prefer
 ```
@@ -116,7 +123,7 @@ ntp server vrf MGMT time.google.com prefer
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -190,7 +197,7 @@ spanning-tree mst 0 priority 16384
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -479,6 +486,251 @@ vlan 230
 | Ethernet7/48 |  IDF2 Standard Port | trunk phone | - | 210 | - | - |
 
 *Inherited from Port-Channel Interface
+
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet3/1 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/2 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/3 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/4 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/5 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/6 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/7 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/8 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/9 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/10 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/11 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/12 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/13 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/14 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/15 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/16 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/17 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/18 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/19 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/20 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/21 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/22 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/23 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/24 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/25 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/26 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/27 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/28 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/29 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/30 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/31 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/32 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/33 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/34 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/35 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/36 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/37 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/38 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/39 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/40 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/41 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/42 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/43 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/44 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/45 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/46 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/47 | trunk phone | 210 | 220 | untagged |
+| Ethernet3/48 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/1 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/2 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/3 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/4 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/5 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/6 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/7 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/8 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/9 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/10 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/11 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/12 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/13 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/14 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/15 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/16 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/17 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/18 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/19 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/20 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/21 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/22 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/23 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/24 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/25 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/26 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/27 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/28 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/29 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/30 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/31 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/32 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/33 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/34 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/35 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/36 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/37 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/38 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/39 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/40 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/41 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/42 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/43 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/44 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/45 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/46 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/47 | trunk phone | 210 | 220 | untagged |
+| Ethernet4/48 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/1 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/2 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/3 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/4 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/5 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/6 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/7 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/8 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/9 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/10 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/11 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/12 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/13 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/14 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/15 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/16 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/17 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/18 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/19 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/20 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/21 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/22 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/23 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/24 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/25 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/26 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/27 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/28 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/29 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/30 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/31 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/32 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/33 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/34 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/35 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/36 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/37 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/38 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/39 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/40 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/41 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/42 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/43 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/44 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/45 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/46 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/47 | trunk phone | 210 | 220 | untagged |
+| Ethernet5/48 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/1 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/2 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/3 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/4 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/5 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/6 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/7 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/8 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/9 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/10 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/11 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/12 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/13 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/14 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/15 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/16 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/17 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/18 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/19 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/20 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/21 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/22 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/23 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/24 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/25 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/26 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/27 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/28 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/29 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/30 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/31 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/32 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/33 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/34 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/35 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/36 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/37 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/38 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/39 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/40 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/41 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/42 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/43 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/44 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/45 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/46 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/47 | trunk phone | 210 | 220 | untagged |
+| Ethernet6/48 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/1 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/2 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/3 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/4 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/5 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/6 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/7 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/8 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/9 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/10 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/11 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/12 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/13 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/14 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/15 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/16 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/17 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/18 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/19 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/20 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/21 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/22 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/23 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/24 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/25 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/26 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/27 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/28 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/29 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/30 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/31 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/32 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/33 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/34 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/35 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/36 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/37 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/38 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/39 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/40 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/41 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/42 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/43 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/44 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/45 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/46 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/47 | trunk phone | 210 | 220 | untagged |
+| Ethernet7/48 | trunk phone | 210 | 220 | untagged |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -6581,8 +6833,8 @@ no ip routing vrf MGMT
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 172.100.100.1 | - | 1 | - | - | - |
 | default | 0.0.0.0/0 | 10.10.10.1 | - | 1 | - | - | - |
 

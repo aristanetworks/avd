@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -74,14 +74,16 @@ def get_structured_config(
         if not isinstance(results, list):
             results = [results]
 
-        for result in results:
-            output_schema_tools.convert_data(result)
-
         # All lists will be merged with "append" except for custom structured configuration where
         # the default list merge is "append_rp" and can be overridden.
         # TODO: Each dict entry can contain a list_merge key, which will be picked up by the merge function for all underlying lists.
         if issubclass(cls, AvdStructuredConfigCustomStructuredConfiguration):
             list_merge = get(module_vars, "custom_structured_configuration_list_merge", default="append_rp")
+
+            # Only for structured config run conversion on the data in since we still have some structured config inputs without full schema validation.
+            for result in results:
+                output_schema_tools.convert_data(result)
+
         else:
             list_merge = "append"
 

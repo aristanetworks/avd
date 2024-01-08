@@ -1,14 +1,17 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 - name: "Create configlets on CVP {{ inventory_hostname }}"
   tags: [provision, apply]
   arista.cvp.cv_configlet_v3:
     configlets: "{{ cvp_vars.cvp_configlets }}"
+  register: cvp_configlets_status
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
   tags: [apply]
   arista.cvp.cv_task_v3:
-    tasks: "{{ cvp_devices_results.tasks }}"
+    tasks: "{{ cvp_configlets_status.taskIds }}"
   when:
+    - cvp_configlets_status.taskIds is arista.avd.defined
+    - cvp_configlets_status.taskIds | length > 0
     - execute_tasks | bool

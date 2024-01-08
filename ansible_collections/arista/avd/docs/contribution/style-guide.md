@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -15,8 +15,8 @@ As AVD is an Ansible collection, we're required to follow guidelines from the of
 Furthermore, the CI Pipeline (& pre-commit) for AVD enforces the following:
 
 - Maximum line length of 160
-- [Black](https://black.readthedocs.io/en/stable/index.html) version 22.8.0
-- [isort](https://pycqa.github.io/isort/) version 5.12.0
+- [Black](https://black.readthedocs.io/en/stable/index.html) version 23.12.1
+- [isort](https://pycqa.github.io/isort/) version 5.13.2
 - [Flake-8](https://flake8.pycqa.org/en/4.0.1/index.html) version 4.0.1
 - [pylint](https://pylint.pycqa.org/en/2.6/) version 2.6.0
 
@@ -237,7 +237,7 @@ Configurations for the above tools can be found in:
 
 ## AVD Plugins usage
 
-Plugins documentation is available [here](../../plugins/README.md)
+See the menu on the left for Ansible Collection Plugins.
 
 ### PLUGIN-1 - Test if a variable exists
 

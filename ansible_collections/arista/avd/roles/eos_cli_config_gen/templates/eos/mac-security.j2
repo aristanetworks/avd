@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -22,7 +22,7 @@ mac security
 {%         for connection_key in profile.connection_keys | arista.avd.natural_sort('id') %}
 {%             if connection_key.encrypted_key is arista.avd.defined %}
 {%                 set key_cli = "key " ~ connection_key.id ~ " 7 " ~ connection_key.encrypted_key | arista.avd.hide_passwords(hide_passwords) %}
-{%                 if connection_key.fallback is arista.avd.defined %}
+{%                 if connection_key.fallback is arista.avd.defined(true) %}
 {%                     set key_cli = key_cli ~ " fallback" %}
 {%                 endif %}
       {{ key_cli }}

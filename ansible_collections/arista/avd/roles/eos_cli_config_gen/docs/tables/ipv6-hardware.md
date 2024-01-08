@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -20,5 +20,7 @@
       fib:
         optimize:
           prefixes:
+
+            # Pre-defined profile 'internet' or user-defined profile name
             profile: <str>
     ```

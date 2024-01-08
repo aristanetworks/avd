@@ -1,4 +1,6 @@
 hostname: DC1-LEAF1A
+metadata:
+  platform: VEOS
 is_deployed: true
 router_bgp:
   as: '65101'
@@ -41,33 +43,41 @@ router_bgp:
   - ip_address: 172.31.254.0
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet1/1
   - ip_address: 172.31.254.2
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/1/1
   - ip_address: 172.31.254.4
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/1/1
   - ip_address: 172.31.254.6
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet1/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE2
     description: DC1-SPINE2
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE3
     description: DC1-SPINE3
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE4
     description: DC1-SPINE4
     remote_as: '65001'
   address_family_evpn:
@@ -252,6 +262,14 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS rackA DC1-LEAF1A
@@ -305,6 +323,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -320,6 +339,30 @@ ethernet_interfaces:
   type: switched
   mode: access
   vlans: '110'
+- name: Ethernet8
+  peer: PHONE01_untagged
+  peer_interface: Eth0
+  peer_type: phone
+  description: PHONE01_untagged_Eth0
+  shutdown: false
+  type: switched
+  mode: trunk phone
+  native_vlan: 120
+  phone:
+    vlan: 113
+    trunk: untagged
+- name: Ethernet9
+  peer: PHONE02_tagged
+  peer_interface: Eth0
+  peer_type: phone
+  description: PHONE02_tagged_Eth0
+  shutdown: false
+  type: switched
+  mode: trunk phone
+  native_vlan: 120
+  phone:
+    vlan: 113
+    trunk: tagged
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

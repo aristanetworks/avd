@@ -16,6 +16,10 @@ router_bgp:
       remote_as: 65001
       update_source: Loopback0
       bfd: true
+      bfd_timers:
+        interval: 2000
+        min_rx: 2000
+        multiplier: 3
       ebgp_multihop: 3
       password: "q+VNViP5i4rVjW1cxFv2wA=="
       send_community: all
@@ -209,6 +213,10 @@ router_bgp:
           maximum_routes_warning_limit: 50 percent
       redistribute_routes:
         - source_protocol: connected
+        - source_protocol: bgp
+          route_map: RM-REDISTRIBUTE-BGP
+          # this should not do anything as leaked is generated when source protocol is bgp
+          include_leaked: true
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       rd: "192.168.255.3:12"

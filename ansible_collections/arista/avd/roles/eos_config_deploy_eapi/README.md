@@ -1,5 +1,9 @@
+---
+# This title is used for search results
+title: Ansible Collection Role eos_config_deploy_eapi
+---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -41,21 +45,10 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
 
 ## Default Variables
 
-```yaml
-# Perform config backup before config replace
-eos_config_deploy_eapi_pre_running_config_backup: false
-
-# Root directory where to build output structure
-root_dir: '{{ inventory_dir }}'
-
-# Backup directories path and filenames
-post_running_config_backup_filename: "{{ inventory_hostname }}_post_running-config.conf"
-post_running_config_backup_dir_name: 'config_backup'
-post_running_config_backup_dir: '{{ root_dir }}/{{ post_running_config_backup_dir_name }}'
-
-pre_running_config_backup_filename: "{{ inventory_hostname }}_pre_running-config.conf"
-pre_running_config_backup_dir_name: 'config_backup'
-pre_running_config_backup_dir: '{{ root_dir }}/{{ pre_running_config_backup_dir_name }}'
+``` yaml
+--8<--
+roles/eos_config_deploy_eapi/defaults/main.yml
+--8<--
 ```
 
 ## Requirements

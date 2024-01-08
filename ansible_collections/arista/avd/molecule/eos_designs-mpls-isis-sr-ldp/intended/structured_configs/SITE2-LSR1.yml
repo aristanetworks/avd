@@ -1,4 +1,6 @@
 hostname: SITE2-LSR1
+metadata:
+  platform: 7280SR
 is_deployed: true
 static_routes:
 - vrf: MGMT

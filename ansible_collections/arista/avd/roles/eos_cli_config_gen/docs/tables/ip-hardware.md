@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;fib</samp>](## "ip_hardware.fib") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;optimize</samp>](## "ip_hardware.fib.optimize") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefixes</samp>](## "ip_hardware.fib.optimize.prefixes") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "ip_hardware.fib.optimize.prefixes.profile") | String |  |  | Valid Values:<br>- internet<br>- urpf-internet |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "ip_hardware.fib.optimize.prefixes.profile") | String |  |  | Valid Values:<br>- <code>internet</code><br>- <code>urpf-internet</code> |  |
 
 === "YAML"
 
@@ -20,5 +20,5 @@
       fib:
         optimize:
           prefixes:
-            profile: <str>
+            profile: <str; "internet" | "urpf-internet">
     ```

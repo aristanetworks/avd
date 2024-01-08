@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -27,7 +27,7 @@
 #### Trident MMU QUEUE PROFILES
 {%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 
-**{{ profile.name }}**
+##### {{ profile.name }}
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -83,7 +83,7 @@
 {%         endif %}
 {%     endif %}
 
-### Platform Configuration
+### Platform Device Configuration
 
 ```eos
 {%     include 'eos/platform.j2' %}

@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -22,7 +22,7 @@ CVX is disabled
 CVX is enabled
 {%         if cvx.services is arista.avd.defined %}
 
-### CVX services
+### CVX Services
 
 | Service | Enabled | Settings |
 | ------- | ------- | -------- |
@@ -53,7 +53,7 @@ CVX is enabled
 {%         endif %}
 {%     endif %}
 
-### CVX configuration
+### CVX Device Configuration
 
 ```eos
 {%     include 'eos/cvx.j2' %}

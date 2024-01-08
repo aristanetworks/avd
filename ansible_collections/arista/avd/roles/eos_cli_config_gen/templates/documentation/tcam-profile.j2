@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -8,10 +8,10 @@
 
 ## Hardware TCAM Profile
 
-TCAM profile __`{{ tcam_profile.system | arista.avd.default('default') }}`__ is active
+TCAM profile **`{{ tcam_profile.system | arista.avd.default('default') }}`** is active
 {%     if tcam_profile.profiles is arista.avd.defined %}
 
-### Custom TCAM profiles
+### Custom TCAM Profiles
 
 Following TCAM profiles are configured on device:
 
@@ -20,7 +20,7 @@ Following TCAM profiles are configured on device:
 {%         endfor %}
 {%     endif %}
 
-### Hardware TCAM configuration
+### Hardware TCAM Device Configuration
 
 ```eos
 {%     include 'eos/tcam-profile.j2' %}

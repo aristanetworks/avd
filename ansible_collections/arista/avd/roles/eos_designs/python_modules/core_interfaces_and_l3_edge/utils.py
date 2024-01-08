@@ -1,9 +1,10 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 import re
+from copy import deepcopy
 from functools import cached_property
 from ipaddress import ip_network
 from itertools import islice
@@ -38,6 +39,10 @@ class UtilsMixin:
         return get(self._hostvars, f"{self.data_model}.p2p_links", default=[])
 
     @cached_property
+    def _p2p_links_sflow(self) -> bool | None:
+        return get(self._hostvars, f"fabric_sflow.{self.data_model}")
+
+    @cached_property
     def _filtered_p2p_links(self) -> list:
         """
         Returns a filtered list of p2p_links, which only contains links with our hostname.
@@ -50,7 +55,7 @@ class UtilsMixin:
 
         # Apply p2p_profiles if set. Silently ignoring missing profile.
         if self._p2p_links_profiles:
-            p2p_links = [self._apply_p2p_profile(p2p_link) for p2p_link in p2p_links]
+            p2p_links = [self._apply_p2p_links_profile(p2p_link) for p2p_link in p2p_links]
 
         # Filter to only include p2p_links with our hostname under "nodes"
         p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.get("nodes", [])]
@@ -65,16 +70,18 @@ class UtilsMixin:
 
         return p2p_links
 
-    def _apply_p2p_profile(self, p2p_link: dict) -> dict:
-        if "profile" not in p2p_link:
+    def _apply_p2p_links_profile(self, target_dict: dict) -> dict:
+        """
+        Apply a profile to a p2p_link
+        """
+        if "profile" not in target_dict:
             # Nothing to do
-            return p2p_link
+            return target_dict
 
-        # Silently ignoring missing profile.
-        profile = get_item(self._p2p_links_profiles, "name", p2p_link["profile"], default={})
-        p2p_link = merge(profile, p2p_link, list_merge="replace", destructive_merge=False)
-        p2p_link.pop("name", None)
-        return p2p_link
+        profile = deepcopy(get_item(self._p2p_links_profiles, "name", target_dict["profile"], default={}))
+        merged_dict: dict = merge(profile, target_dict, list_merge="replace", destructive_merge=False)
+        merged_dict.pop("name", None)
+        return merged_dict
 
     def _resolve_p2p_ips(self, p2p_link: dict) -> dict:
         if "ip" in p2p_link:
@@ -161,13 +168,13 @@ class UtilsMixin:
                 required=True,
                 var_name=f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces",
             )["interfaces"]
-            id = int("".join(re.findall(r"\d", member_interfaces[0])))
+            pc_id = int("".join(re.findall(r"\d", member_interfaces[0])))
             peer_id = int("".join(re.findall(r"\d", peer_member_interfaces[0])))
             data.update(
                 {
-                    "interface": f"Port-Channel{id}",
+                    "interface": f"Port-Channel{pc_id}",
                     "peer_interface": f"Port-Channel{peer_id}",
-                    "port_channel_id": id,
+                    "port_channel_id": pc_id,
                     "port_channel_members": [
                         {
                             "interface": interface,
@@ -315,7 +322,3 @@ class UtilsMixin:
                 "mode": get(p2p_link, "port_channel.mode", default="active"),
             },
         }
-
-    @cached_property
-    def _p2p_links_sflow(self) -> bool | None:
-        return get(self._hostvars, f"fabric_sflow.{self.data_model}")

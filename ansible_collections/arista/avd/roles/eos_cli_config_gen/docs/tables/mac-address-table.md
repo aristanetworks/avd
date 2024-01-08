@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -19,10 +19,12 @@
 
     ```yaml
     mac_address_table:
+
+      # Aging time in seconds
       aging_time: <int>
       notification_host_flap:
         logging: <bool>
         detection:
-          window: <int>
-          moves: <int>
+          window: <int; 2-300>
+          moves: <int; 2-10>
     ```

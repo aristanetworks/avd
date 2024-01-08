@@ -1,4 +1,6 @@
 hostname: AUTO_BGP_ASN_LEAF4B
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65222'
@@ -44,6 +46,7 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.12
     peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: AUTO_BGP_ASN_LEAF4A
     description: AUTO_BGP_ASN_LEAF4A
   redistribute_routes:
   - source_protocol: connected

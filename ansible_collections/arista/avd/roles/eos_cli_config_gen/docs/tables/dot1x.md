@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -26,9 +26,9 @@
       protocol_lldp_bypass: <bool>
       dynamic_authorization: <bool>
       mac_based_authentication:
-        delay: <int>
-        hold_period: <int>
+        delay: <int; 0-300>
+        hold_period: <int; 1-300>
       radius_av_pair:
         service_type: <bool>
-        framed_mtu: <int>
+        framed_mtu: <int; 68-9236>
     ```

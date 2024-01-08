@@ -1,0 +1,154 @@
+---
+# Testing cv-pathfinder
+wan_mode: cv-pathfinder
+
+bgp_as: 65000
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+  - name: AVD_Land_East
+    id: 43
+    description: AVD Region
+    sites:
+      - name: Site511
+        id: 511
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.42.0/24
+      - 192.168.43.0/24
+
+wan_route_servers:
+  # Not testing the overloading
+  - hostname: cv-pathfinder-pathfinder
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+default_node_types:
+  - node_type: wan_rr
+    match_hostnames:
+      - "cv-pathfinder-pathfinder.*"
+  - node_type: wan_transit
+    match_hostnames:
+      - "cv-pathfinder-transit"
+  - node_type: wan_edge
+    match_hostnames:
+      - "cv-pathfinder-edge"
+
+wan_edge:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+  nodes:
+    - name: cv-pathfinder-edge
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site511
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          wan_circuit_id: 666
+          set_default_route: true
+          ip: dhcp
+        - name: Ethernet2
+          wan_carrier: Colt
+          wan_circuit_id: 10555
+          ip: 172.15.5.5/31
+          connected_to_pathfinder: False
+
+wan_transit:
+  defaults:
+    loopback_ipv4_pool: 192.168.43.0/24
+  nodes:
+    - name: cv-pathfinder-transit
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site422
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Comcast
+          wan_circuit_id: 667
+          set_default_route: true
+          ip: dhcp
+        - name: Ethernet2
+          wan_carrier: Colt
+          wan_circuit_id: 10666
+          ip: 172.16.6.6/31
+
+wan_rr:
+  defaults:
+    loopback_ipv4_pool: 192.168.44.0/24
+  nodes:
+    - name: cv-pathfinder-pathfinder
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Bouygues_Telecom
+          wan_circuit_id: 777
+          set_default_route: true
+          ip: 10.7.7.7/31
+          peer_ip: 10.7.7.6
+        - name: Ethernet2
+          wan_carrier: Colt
+          wan_circuit_id: 10000
+          ip: 172.16.0.1/31
+        - name: Ethernet3
+          wan_carrier: Another-ISP
+          wan_circuit_id: 999
+          ip: 10.9.9.9/31
+    - name: cv-pathfinder-pathfinder1
+      id: 2
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Orange
+          wan_circuit_id: 888
+          ip: 10.8.8.8/31
+    - name: cv-pathfinder-pathfinder2
+      id: 3
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: SFR
+          wan_circuit_id: 999
+          ip: 10.9.9.9/31
+        - name: Ethernet2
+          wan_carrier: ATT-MPLS
+          wan_circuit_id: 10999
+          ip: 172.19.9.9/31
+
+wan_path_groups:
+  - name: MPLS
+    ipsec: false
+    # TODO remove one once auto-id is implemented - for now required in schema
+    id: 100
+  - name: INET
+    id: 101
+  - name: LTE
+    id: 102
+
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+  - name: ATT
+    path_group: INET
+  - name: Bouygues_Telecom
+    path_group: INET
+  - name: SFR
+    path_group: INET
+  - name: Orange
+    path_group: INET
+  - name: Another-ISP
+    path_group: INET
+  - name: Colt
+    path_group: MPLS
+  - name: ATT-MPLS
+    path_group: MPLS

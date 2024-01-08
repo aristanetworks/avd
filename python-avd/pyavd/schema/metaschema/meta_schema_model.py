@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -498,6 +498,8 @@ class AvdSchemaDict(AvdSchemaBaseModel):
         Descendant tables returns all table names from fields below this field. Not the field itself.
         """
         descendant_tables = set()
+        if self.documentation_options and self.documentation_options.hide_keys:
+            return descendant_tables
         if self.keys:
             for childschema in self.keys.values():
                 descendant_tables.add(childschema._table)

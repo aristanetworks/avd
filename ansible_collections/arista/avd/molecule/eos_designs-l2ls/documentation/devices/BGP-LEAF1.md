@@ -6,7 +6,7 @@
   - [Management API HTTP](#management-api-http)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
@@ -40,7 +40,7 @@
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -60,7 +60,7 @@ management api http-commands
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -73,14 +73,22 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 1 | SVI_1 | - |
 | 100 | SVI_100 | - |
+| 200 | SVI_200 | - |
 
 ### VLANs Device Configuration
 
 ```eos
 !
+vlan 1
+   name SVI_1
+!
 vlan 100
    name SVI_100
+!
+vlan 200
+   name SVI_200
 ```
 
 ## Interfaces
@@ -93,12 +101,23 @@ vlan 100
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | BGP-SPINE1_Ethernet1 | *trunk | *100 | *- | *- | 1 |
-| Ethernet2 | BGP-SPINE2_Ethernet1 | *trunk | *100 | *- | *- | 1 |
+| Ethernet1 | BGP-SPINE1_Ethernet1 | *trunk | *1,100,200 | *- | *- | 1 |
+| Ethernet2 | BGP-SPINE2_Ethernet1 | *trunk | *1,100,200 | *- | *- | 1 |
 | Ethernet10 |  Endpoint | access | 100 | - | - | - |
 | Ethernet11 |  Endpoint | access | 100 | - | - | - |
+| Ethernet12 |  IP Phone | trunk phone | - | 100 | - | - |
+| Ethernet13 |  IP Phone | trunk phone | - | 100 | - | - |
+| Ethernet14 |  IP Phone with no native VLAN | trunk phone | - | - | - | - |
 
 *Inherited from Port-Channel Interface
+
+##### Phone Interfaces
+
+| Interface | Mode | Native VLAN | Phone VLAN | Phone VLAN Mode |
+| --------- | ---- | ----------- | ---------- | --------------- |
+| Ethernet12 | trunk phone | 100 | 200 | untagged |
+| Ethernet13 | trunk phone | 100 | 200 | untagged |
+| Ethernet14 | trunk phone | 1 | 200 | untagged |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -127,6 +146,32 @@ interface Ethernet11
    switchport access vlan 100
    switchport mode access
    switchport
+!
+interface Ethernet12
+   description IP Phone
+   no shutdown
+   switchport trunk native vlan 100
+   switchport phone vlan 200
+   switchport phone trunk untagged
+   switchport mode trunk phone
+   switchport
+!
+interface Ethernet13
+   description IP Phone
+   no shutdown
+   switchport trunk native vlan 100
+   switchport phone vlan 200
+   switchport phone trunk untagged
+   switchport mode trunk phone
+   switchport
+!
+interface Ethernet14
+   description IP Phone with no native VLAN
+   no shutdown
+   switchport phone vlan 200
+   switchport phone trunk untagged
+   switchport mode trunk phone
+   switchport
 ```
 
 ### Port-Channel Interfaces
@@ -137,7 +182,7 @@ interface Ethernet11
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | BGP_SPINES_Po1 | switched | trunk | 100 | - | - | - | - | - | - |
+| Port-Channel1 | BGP_SPINES_Po1 | switched | trunk | 1,100,200 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -147,7 +192,7 @@ interface Port-Channel1
    description BGP_SPINES_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 100
+   switchport trunk allowed vlan 1,100,200
    switchport mode trunk
 ```
 
@@ -190,8 +235,8 @@ no ip routing vrf MGMT
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 172.31.0.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration

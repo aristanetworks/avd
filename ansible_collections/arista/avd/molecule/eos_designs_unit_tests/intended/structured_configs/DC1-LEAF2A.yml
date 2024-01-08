@@ -1,4 +1,6 @@
 hostname: DC1-LEAF2A
+metadata:
+  platform: 7280R
 is_deployed: true
 router_bgp:
   as: '65102'
@@ -41,49 +43,61 @@ router_bgp:
   - ip_address: 172.31.254.32
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet3/1
   - ip_address: 172.31.254.34
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/3/1
   - ip_address: 172.31.254.36
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/4/1
   - ip_address: 172.31.254.38
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet4/1
   - ip_address: 172.31.254.40
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/3/1
   - ip_address: 172.31.254.42
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet3/1
   - ip_address: 172.31.254.44
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet4/1
   - ip_address: 172.31.254.46
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/4/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE2
     description: DC1-SPINE2
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE3
     description: DC1-SPINE3
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE4
     description: DC1-SPINE4
     remote_as: '65001'
   address_family_evpn:
@@ -427,6 +441,14 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS rackC DC1-LEAF2A
@@ -471,7 +493,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 13
+    id: 1013
     mode: active
 - name: Ethernet14/1
   peer: DC1.L2LEAF5A
@@ -690,6 +712,17 @@ ethernet_interfaces:
   type: switched
   mode: access
   vlans: '110'
+- name: Ethernet26
+  peer: PHONE03_port_channel
+  peer_interface: Eth0
+  peer_type: phone
+  port_profile: PHONE_WITH_PC
+  description: PHONE03_port_channel_Eth0
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 26
+    mode: active
 port_channel_interfaces:
 - name: Port-Channel7
   description: DC1_L2LEAF1_Po1
@@ -711,8 +744,8 @@ port_channel_interfaces:
     identifier: 0000:0000:0606:0707:0808
     route_target: 06:06:07:07:08:08
   lacp_id: 0606.0707.0808
-- name: Port-Channel13
-  description: DC1-L2LEAF4A_Po1
+- name: Port-Channel1013
+  description: DC1-L2LEAF4A_Po1001
   type: switched
   shutdown: false
   mode: trunk
@@ -761,6 +794,15 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: 110-111,210-211
+- name: Port-Channel26
+  description: PHONE03_port_channel_Port-Channel to Phone
+  type: switched
+  shutdown: false
+  mode: trunk phone
+  native_vlan: 210
+  phone:
+    vlan: 211
+    trunk: untagged
 loopback_interfaces:
 - name: Loopback0
   description: EVPN_Overlay_Peering

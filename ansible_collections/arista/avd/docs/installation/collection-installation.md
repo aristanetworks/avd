@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -8,10 +8,8 @@
 
 ## Installation workflow
 
-- Install [Python](https://www.python.org/downloads/) **3.8** or later
-- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.12.6** to **2.15.x** excluding **2.13.0**
-!!! note
-    Excluded version **2.13.0** has an issue in `ansible-core`, which is [fixed](https://github.com/ansible/ansible/blob/v2.13.1/changelogs/CHANGELOG-v2.13.rst#bugfixes) in **2.13.1**. Plugin loader will now load config data for plugin by name instead of by file to avoid issues with the same file being loaded under different names (Fully-Qualified-Collection-Name + short-name).
+- Install [Python](https://www.python.org/downloads/) **3.9** or later
+- Install [ansible-core](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) from **2.14.0** to **2.16.x**
 - Install [arista.avd](#install-collection-from-ansible-galaxy) collection
 - Install additional Python [requirements](#python-requirements-installation)
 - Modify `ansible.cfg` file to support additional [jinja2 extensions](#ansible-configuration-file)
@@ -32,7 +30,7 @@ ansible-galaxy collection install arista.avd
 ### Install a specific version
 
 ```shell
-ansible-galaxy collection install arista.avd:==3.6.0
+ansible-galaxy collection install arista.avd:==4.4.0
 ```
 
 You can specify multiple range identifiers which are split by `,`. For example, you can use the following range identifiers:
@@ -46,7 +44,7 @@ You can specify multiple range identifiers which are split by `,`. For example, 
 - `<`: Version is less than the one specified.
 
 !!! note
-    If you are installing with a range command, you must surround the command in quotes. For example, `ansible-galaxy collection install 'arista.avd:>=3.0.0,<3.6.0'`
+    If you are installing with a range command, you must surround the command in quotes. For example, `ansible-galaxy collection install 'arista.avd:>=4.0.0,<5.0.0'`
 
 ### Install latest `devel` version from AVD GitHub
 
@@ -79,7 +77,7 @@ collections_paths = ${PWD}/collections:~/.ansible/collections:/usr/share/ansible
 $ ansible-galaxy collection install -U arista.avd
 Process install dependency map
 Starting collection install process
-Installing 'arista.avd:3.6.0' to '/root/.ansible/collections/ansible_collections/arista/avd'
+Installing 'arista.avd:4.4.0' to '/root/.ansible/collections/ansible_collections/arista/avd'
 ```
 
 !!! warning

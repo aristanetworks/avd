@@ -1,0 +1,216 @@
+hostname: cv-pathfinder-pathfinder1
+is_deployed: true
+router_bgp:
+  as: '65000'
+  router_id: 192.168.44.2
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp_cluster_id: 192.168.44.2
+  listen_ranges:
+  - prefix: 192.168.42.0/24
+    peer_group: WAN-OVERLAY-PEERS
+    remote_as: '65000'
+  - prefix: 192.168.43.0/24
+    peer_group: WAN-OVERLAY-PEERS
+    remote_as: '65000'
+  peer_groups:
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    update_source: Loopback0
+    bfd: true
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+    route_reflector_client: true
+  - name: RR-OVERLAY-PEERS
+    type: wan
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    remote_as: '65000'
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
+    next_hop:
+      resolution_disabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+    - name: RR-OVERLAY-PEERS
+      activate: false
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      missing_policy:
+        direction_out_action: deny
+    - name: RR-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        consumer: true
+        propagator: true
+  address_family_path_selection:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    - name: RR-OVERLAY-PEERS
+      activate: true
+    bgp:
+      additional_paths:
+        receive: true
+        send:
+          any: true
+  neighbors:
+  - ip_address: 192.168.44.3
+    peer_group: RR-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder2
+    description: cv-pathfinder-pathfinder2
+  - ip_address: 6.6.6.6
+    peer_group: RR-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder3
+    description: cv-pathfinder-pathfinder3
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: none
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+ethernet_interfaces:
+- name: Ethernet1
+  peer_type: l3_interface
+  ip_address: 10.8.8.8/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 192.168.44.2/32
+flow_tracking:
+  hardware:
+    trackers:
+    - name: WAN-FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 5000
+      exporters:
+      - name: DPI-EXPORTER
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 5000
+ip_security:
+  ike_policies:
+  - name: DP-IKE-POLICY
+    local_id: 192.168.44.2
+  - name: CP-IKE-POLICY
+    local_id: 192.168.44.2
+  sa_policies:
+  - name: DP-SA-POLICY
+    esp:
+      encryption: aes128
+    pfs_dh_group: 14
+  - name: CP-SA-POLICY
+    esp:
+      encryption: aes128
+    pfs_dh_group: 14
+  profiles:
+  - name: DP-PROFILE
+    ike_policy: DP-IKE-POLICY
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: ABCDEF1234567890666
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: ABCDEF1234567890
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+router_adaptive_virtual_topology:
+  topology_role: pathfinder
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_path_selection:
+  path_groups:
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet1
+    static_peers:
+    - router_ip: 192.168.44.3
+      name: cv-pathfinder-pathfinder2
+      ipv4_addresses:
+      - 10.9.9.9
+    - router_ip: 6.6.6.6
+      name: cv-pathfinder-pathfinder3
+      ipv4_addresses:
+      - 10.50.50.50
+    ipsec_profile: CP-PROFILE
+  load_balance_policies:
+  - name: LBPOLICY
+    path_groups:
+    - name: INET
+  peer_dynamic_source: stun
+stun:
+  server:
+    local_interfaces:
+    - Ethernet1
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  tcp_mss_ceiling:
+    ipv4: 1000
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
+vxlan_interface:
+  Vxlan1:
+    description: cv-pathfinder-pathfinder1_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback0
+      vrfs:
+      - name: default
+        vni: 1

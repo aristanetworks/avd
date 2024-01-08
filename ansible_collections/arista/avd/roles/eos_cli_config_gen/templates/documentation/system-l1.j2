@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,7 +9,7 @@
 ## System L1
 {%     if system.l1.unsupported_speed_action is arista.avd.defined or system.l1.unsupported_error_correction_action is arista.avd.defined %}
 
-### Unsupported interface configurations
+### Unsupported Interface Configurations
 
 | Unsupported Configuration | action |
 | ---------------- | -------|
@@ -21,7 +21,7 @@
 {%         endif %}
 {%     endif %}
 
-### System L1 Configuration
+### System L1 Device Configuration
 
 ```eos
 {%     include 'eos/system-l1.j2' %}

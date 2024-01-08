@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -154,3 +154,10 @@ keys:
                   type: str
                 key:
                   type: str
+            certificate_revocation_lists:
+              type: list
+              description: |
+                List of CRLs (Certificate Revocation List).
+                If specified, one CRL needs to be provided for every certificate in the chain, even if the revocation list in the CRL is empty.
+              items:
+                type: str

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -63,7 +63,7 @@ class RouteMapsMixin(UtilsMixin):
 
         # RM-BGP-AS{{ asn }}-OUT
         for asn in self._underlay_filter_peer_as_route_maps_asns:
-            route_map_name = f"RM-BGP-AS{ asn }-OUT"
+            route_map_name = f"RM-BGP-AS{asn}-OUT"
             route_maps.append(
                 {
                     "name": route_map_name,
@@ -71,7 +71,7 @@ class RouteMapsMixin(UtilsMixin):
                         {
                             "sequence": 10,
                             "type": "deny",
-                            "match": [f"as { asn }"],
+                            "match": [f"as {asn}"],
                         },
                         {
                             "sequence": 20,

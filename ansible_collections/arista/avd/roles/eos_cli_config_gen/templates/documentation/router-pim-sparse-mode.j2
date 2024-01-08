@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -14,7 +14,7 @@
 BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 {%         if router_pim_sparse_mode.ipv4.rp_addresses is arista.avd.defined %}
 
-####### IP Rendezvous Information
+##### IP Rendezvous Information
 
 | Rendezvous Point Address | Group Address | Access Lists | Priority | Hashmask | Override |
 | ------------------------ | ------------- | ------------ | -------- | -------- | -------- |
@@ -29,7 +29,7 @@ BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 {%         endif %}
 {%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
 
-####### IP Anycast Information
+##### IP Anycast Information
 
 | IP Anycast Address | Other Rendezvous Point Address | Register Count |
 | ------------------ | ------------------------------ | -------------- |
@@ -43,7 +43,7 @@ BFD enabled: {{ router_pim_sparse_mode.ipv4.bfd | arista.avd.default(false) }}
 {%     endif %}
 {%     if router_pim_sparse_mode.vrfs is arista.avd.defined %}
 
-####### IP Sparse Mode VRFs
+##### IP Sparse Mode VRFs
 
 | VRF Name | BFD Enabled |
 | -------- | ----------- |

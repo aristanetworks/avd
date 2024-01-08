@@ -69,12 +69,16 @@ extra_javascript:
 plugins:
   - exclude:
       glob:
+        - .*
+        - changelogs/*
         - molecule/*
         - tests/*
+        - plugins/README.md
         - docs/release-notes/1.0.x.md
         - docs/release-notes/1.1.x.md
         - docs/release-notes/2.x.x.md
         - docs/release-notes/3.x.x.md
+        - roles/*/docs/tables/*
   - include_dir_to_nav
   - git-revision-date-localized:
       type: date
@@ -95,9 +99,6 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.critic
   - pymdownx.details
-  - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
@@ -146,6 +147,7 @@ nav:
               - Configuring PTP: roles/eos_designs/docs/how-to/ptp.md
               - Custom Structured Configuration: roles/eos_designs/docs/how-to/custom-structured-configuration.md
               - Custom Templates: roles/eos_designs/docs/how-to/custom-templates.md
+          - WAN Preview: roles/eos_designs/docs/wan-preview.md
       - eos_cli_config_gen:
           - Overview: roles/eos_cli_config_gen/README.md
           - Role Configuration: roles/eos_cli_config_gen/docs/role-configuration.md
@@ -178,7 +180,9 @@ nav:
       - Ansible User Guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
   - Release Notes: docs/release-notes/4.x.x.md
   - Porting Guide: docs/porting-guides/4.x.x.md
-  - pyavd: docs/pyavd.md
+  - PyAVD: docs/pyavd.md
+  - AVD Dev Containers:
+      - Overview: docs/containers/overview.md
   - About:
       - AVD on Ansible Galaxy: https://galaxy.ansible.com/arista/avd
       - Arista CVP Collection: https://cvp.avd.sh/en/latest/

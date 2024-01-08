@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -12,7 +12,19 @@
 
 #### Flow Tracking Sampled
 
-Sample: {{ flow_tracking.sampled.sample | arista.avd.default(flow_trackings[0].sample, "default") }}
+| Sample Size | Minimum Sample Size | Hardware Offload for IPv4 | Hardware Offload for IPv6 |
+| ----------- | ------------------- | ------------------------- | ------------------------- |
+{%         set sample_size = flow_tracking.sampled.sample | arista.avd.default(flow_trackings[0].sample, "default") %}
+{%         set min_sample_size = flow_tracking.sampled.hardware_offload.threshold_minimum | arista.avd.default("default") %}
+{%         set hardware_offload_ipv4 = 'disabled' %}
+{%         set hardware_offload_ipv6 = 'disabled' %}
+{%         if flow_tracking.sampled.hardware_offload.ipv4 is arista.avd.defined(true) %}
+{%             set hardware_offload_ipv4 = 'enabled' %}
+{%         endif %}
+{%         if flow_tracking.sampled.hardware_offload.ipv6 is arista.avd.defined(true) %}
+{%             set hardware_offload_ipv6 = 'enabled' %}
+{%         endif %}
+| {{ sample_size }} | {{ min_sample_size }} | {{ hardware_offload_ipv4 }} | {{ hardware_offload_ipv6 }} |
 {%         if flow_tracking.sampled.trackers is arista.avd.defined or flow_trackings[0].trackers is arista.avd.defined %}
 
 ##### Trackers Summary
@@ -128,7 +140,7 @@ Sample: {{ flow_tracking.sampled.sample | arista.avd.default(flow_trackings[0].s
 {%         endif %}
 {%     endif %}
 
-#### Flow Tracking Configuration
+#### Flow Tracking Device Configuration
 
 ```eos
 {%     include 'eos/flow-tracking.j2' %}

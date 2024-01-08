@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -26,6 +26,9 @@ platform sand forwarding mode {{ platform.sand.forwarding_mode }}
 {%         endif %}
 {%         if platform.sand.multicast_replication.default is arista.avd.defined %}
 platform sand multicast replication default {{ platform.sand.multicast_replication.default }}
+{%         endif %}
+{%         if platform.sand.mdb_profile is arista.avd.defined %}
+platform sand mdb profile {{ platform.sand.mdb_profile }}
 {%         endif %}
 {%     endif %}
 {%     if platform.sfe is arista.avd.defined %}

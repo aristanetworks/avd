@@ -1,4 +1,6 @@
 hostname: DC1-LEAF2A
+metadata:
+  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65000'
@@ -22,22 +24,24 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     remote_as: '65000'
-  address_family_ipv4:
-    peer_groups:
-    - name: OVERLAY-PEERS
-      activate: false
   address_family_evpn:
     peer_groups:
     - name: OVERLAY-PEERS
       activate: true
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
+  address_family_ipv4:
+    peer_groups:
+    - name: OVERLAY-PEERS
+      activate: false
   neighbors:
   - ip_address: 192.168.255.1
     peer_group: OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
   - ip_address: 192.168.255.4
     peer_group: OVERLAY-PEERS
+    peer: DC1-SPINE4
     description: DC1-SPINE4
 static_routes:
 - vrf: MGMT
@@ -95,6 +99,14 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 vlans:
 - id: 4093
   tenant: system

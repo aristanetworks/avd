@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -71,7 +71,6 @@ EXAMPLES = r"""
 
 - "{{ 'Et1-2/3-4/5-6' | range_expand }}"
 # -> ["Et1/3/5", "Et1/3/6", "Et1/4/5", "Et1/4/6", "Et2/3/5", "Et2/3/6", "Et2/4/5", "Et2/4/6"]
-
 """
 
 RETURN = r"""

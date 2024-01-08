@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 __metaclass__ = type
@@ -27,8 +27,8 @@ try:
 except ImportError:
     HAS_PACKAGING = False
 
-# Python >= 3.8
-MIN_PYTHON_SUPPORTED_VERSION = (3, 8)
+# Python >= 3.9
+MIN_PYTHON_SUPPORTED_VERSION = (3, 9)
 
 
 def _validate_python_version(info: dict, result: dict) -> bool:
@@ -176,7 +176,7 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
     """
     collection_meta = _get_collection_metadata(collection_name)
     specifiers_set = SpecifierSet(collection_meta.get("requires_ansible", ""))
-    deprecation_specifiers_set = SpecifierSet(">=2.14")
+    deprecation_specifiers_set = SpecifierSet()
     info["ansible_version"] = running_version
 
     if len(specifiers_set) > 0:

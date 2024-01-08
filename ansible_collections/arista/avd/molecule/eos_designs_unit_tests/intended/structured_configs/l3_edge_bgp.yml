@@ -26,22 +26,27 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.0.3
     remote_as: '65002'
+    peer: peer2
     description: peer2
     peer_group: IPv4-UNDERLAY-PEERS
   - ip_address: 192.168.0.5
     remote_as: '65003'
+    peer: peer3
     description: peer3
     peer_group: IPv4-UNDERLAY-PEERS
   - ip_address: 192.168.0.7
     remote_as: '65004'
+    peer: peer4
     description: peer4
     peer_group: IPv4-UNDERLAY-PEERS
   - ip_address: 192.168.0.9
     remote_as: '65005'
+    peer: peer5
     description: peer5
     peer_group: IPv4-UNDERLAY-PEERS
   - ip_address: 192.168.0.11
     remote_as: '65006'
+    peer: peer6
     description: peer6
     peer_group: IPv4-UNDERLAY-PEERS
 service_routing_protocols_model: multi-agent

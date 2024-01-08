@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -49,13 +49,12 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
                 # If we ended up here, it means we have a loopback_ipv4_pool set
                 interface_name = f"Loopback{loopback}"
-                offset = self.shared_utils.id + self.shared_utils.loopback_ipv4_offset
                 loopback_interface = {
                     "name": interface_name,
                     "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
                     "shutdown": False,
                     "vrf": vrf["name"],
-                    "ip_address": f"{self.shared_utils.ip_addressing._ip(loopback_ipv4_pool, 32, offset, 0)}/32",
+                    "ip_address": f"{self.shared_utils.ip_addressing.vrf_loopback_ip(loopback_ipv4_pool)}/32",
                 }
                 append_if_not_duplicate(
                     list_of_dicts=loopback_interfaces,

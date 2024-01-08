@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -189,15 +189,19 @@ keys:
         access_group_in:
           type: str
           description: IPv4 access-list name
+          convert_types: [ int ]
         access_group_out:
           type: str
           description: IPv4 access-list name
+          convert_types: [ int ]
         ipv6_access_group_in:
           type: str
           description: IPv6 access-list name
+          convert_types: [ int ]
         ipv6_access_group_out:
           type: str
           description: IPv6 access-list name
+          convert_types: [ int ]
         multicast:
           type: dict
           keys:
@@ -214,6 +218,7 @@ keys:
                       boundary:
                         type: str
                         description: IPv4 access-list name or IPv4 multicast group prefix with mask
+                        convert_types: [ int ]
                       out:
                         type: bool
                 source_route_export:
@@ -243,6 +248,7 @@ keys:
                       boundary:
                         type: str
                         description: IPv6 access-list name or IPv6 multicast group prefix with mask
+                        convert_types: [ int ]
                 source_route_export:
                   type: dict
                   keys:
@@ -350,6 +356,8 @@ keys:
                 convert_types:
                   - str
                 description: Instance priority
+                min: 1
+                max: 254
               advertisement:
                 type: dict
                 keys:
@@ -358,6 +366,8 @@ keys:
                     convert_types:
                       - str
                     description: Interval in seconds
+                    min: 1
+                    max: 255
               preempt:
                 type: dict
                 keys:
@@ -372,11 +382,15 @@ keys:
                         convert_types:
                           - str
                         description: Minimum preempt delay in seconds
+                        min: 0
+                        max: 3600
                       reload:
                         type: int
                         convert_types:
                           - str
                         description: Reload preempt delay in seconds
+                        min: 0
+                        max: 3600
               timers:
                 type: dict
                 keys:
@@ -388,6 +402,8 @@ keys:
                         description: Delay after reload in seconds.
                         convert_types:
                           - str
+                        min: 0
+                        max: 3600
               tracked_object:
                 type: list
                 primary_key: name

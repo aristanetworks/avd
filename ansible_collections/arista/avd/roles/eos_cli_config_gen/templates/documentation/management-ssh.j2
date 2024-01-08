@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -7,8 +7,8 @@
 {% if management_ssh is arista.avd.defined %}
 
 ### Management SSH
-
 {%     if management_ssh.access_groups is arista.avd.defined %}
+
 #### IPv4 ACL
 
 | IPv4 ACL | VRF |
@@ -27,12 +27,12 @@
 | {{ acl.name }} | {{ acl.vrf | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
-
 {%     set ssh = namespace(enable=true) %}
 {%     if management_ssh.enable is arista.avd.defined %}
 {%         set ssh.enable=management_ssh.enable %}{#enable takes de value of the variable if defined. By default is set to true#}
 {%     endif %}
-#### SSH timeout and management
+
+#### SSH Timeout and Management
 
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
@@ -49,7 +49,7 @@
 | ---------------- | ---------------------- |
 | {{ management_ssh.connection.limit | arista.avd.default('-') }} | {{ management_ssh.connection.per_host | arista.avd.default('-') }} |
 
-#### Ciphers and algorithms
+#### Ciphers and Algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 |---------|----------------------|----------------|---------------------------|
@@ -70,7 +70,7 @@
 {%         endfor %}
 {%     endif %}
 
-#### Management SSH Configuration
+#### Management SSH Device Configuration
 
 ```eos
 {%     include 'eos/management-ssh.j2' %}

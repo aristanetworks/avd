@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -67,6 +67,7 @@ class RouterBgpMixin(UtilsMixin):
                         "name": link["interface"],
                         "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
                         "remote_as": link["peer_bgp_as"],
+                        "peer": link["peer"],
                         "description": "_".join([link["peer"], link["peer_interface"]]),
                     }
                 )
@@ -85,6 +86,7 @@ class RouterBgpMixin(UtilsMixin):
                     "ip_address": link["peer_ip_address"],
                     "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
                     "remote_as": get(link, "peer_bgp_as"),
+                    "peer": link["peer"],
                     "description": "_".join([link["peer"], link["peer_interface"]]),
                     "bfd": get(link, "bfd"),
                 }

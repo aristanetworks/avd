@@ -15,7 +15,8 @@
   - [QOS Class Maps](#qos-class-maps)
   - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)
-  - [Priority Flow Control](#priority-flow-control)
+  - [QOS Interfaces](#qos-interfaces)
+  - [Priority Flow Control](#priority-flow-control-1)
 
 ## Management
 
@@ -279,7 +280,7 @@ class-map type qos match-any cmap_tc5_v6
 
 #### QOS Policy Maps Summary
 
-**pmap_test1**
+##### pmap_test1
 
 | class | Set | Value |
 | ----- | --- | ----- |
@@ -289,7 +290,7 @@ class-map type qos match-any cmap_tc5_v6
 | cmap_tc0_v6 | traffic_class | 0 |
 | class-default | traffic_class | 1 |
 
-#### QOS Policy Maps configuration
+#### QOS Policy Maps Device Configuration
 
 ```eos
 !
@@ -314,16 +315,15 @@ policy-map type quality-of-service pmap_test1
 
 #### QOS Profiles Summary
 
+##### QOS Profile: **experiment**
 
-QOS Profile: **experiment**
-
-**Settings**
+###### Settings
 
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 2 | - | cos | - | test_qos_policy_v1 |
 
-**TX Queues**
+###### TX Queues
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
 | -------- | ---- | --------- | -------- | ---------- | ------- |
@@ -332,23 +332,23 @@ QOS Profile: **experiment**
 | 5 | All | 40 | - | - | - |
 | 7 | All | 30 | - | 40 percent | - |
 
-QOS Profile: **no_qos_trust**
+##### QOS Profile: **no_qos_trust**
 
-**Settings**
+###### Settings
 
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 3 | 4 | disabled | - | - |
 
-QOS Profile: **qprof_testwithpolicy**
+##### QOS Profile: **qprof_testwithpolicy**
 
-**Settings**
+###### Settings
 
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | - | - | - | pmap_test1 |
 
-**TX Queues**
+###### TX Queues
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
 | -------- | ---- | --------- | -------- | ---------- | ------- |
@@ -356,15 +356,15 @@ QOS Profile: **qprof_testwithpolicy**
 | 1 | All | 80 | - | - | - |
 | 5 | All | 19 | no priority | - | Multi-line comment<br>here. |
 
-QOS Profile: **test**
+##### QOS Profile: **test**
 
-**Settings**
+###### Settings
 
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | 46 | dscp | 80 percent | - |
 
-**TX Queues**
+###### TX Queues
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
 | -------- | ---- | --------- | -------- | ---------- | ------- |
@@ -372,7 +372,7 @@ QOS Profile: **test**
 | 2 | All | 10 | priority strict | - | - |
 | 4 | All | 10 | - | - | - |
 
-**ECN Configuration**
+###### ECN Configuration
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ------------- | ------------- | -------------------- |
@@ -380,15 +380,15 @@ QOS Profile: **test**
 | 2 | All | 320 kbytes | 320 kbytes | 90 |
 | 4 | All | 320 segments | 320 segments | - |
 
-QOS Profile: **test_with_pfc**
+##### QOS Profile: **test_with_pfc**
 
-**Settings**
+###### Settings
 
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | - | - | - | pmap_test1 |
 
-**TX Queues**
+###### TX Queues
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
 | -------- | ---- | --------- | -------- | ---------- | ------- |
@@ -396,7 +396,7 @@ QOS Profile: **test_with_pfc**
 | 1 | All | 80 | - | - | - |
 | 5 | All | 19 | no priority | - | - |
 
-**Priority Flow Control**
+###### Priority Flow Control
 
 Priority Flow Control is **enabled**.
 
@@ -405,21 +405,21 @@ Priority Flow Control is **enabled**.
 | 0 | no-drop |
 | 1 | drop |
 
-**Priority Flow Control watchdog settings**
+###### Priority Flow Control Watchdog Settings
 
 | Enabled | Action | Timeout | Recovery | Polling |
 | ------- | ------ | ------- | -------- | ------- |
 | True | drop | 0.05 | 1.11 | auto |
 
-QOS Profile: **uc_mc_queues_test**
+##### QOS Profile: **uc_mc_queues_test**
 
-**Settings**
+###### Settings
 
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | - | - | - | - |
 
-**TX Queues**
+###### TX Queues
 
 | TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
 | -------- | ---- | --------- | -------- | ---------- | ------- |
@@ -430,7 +430,7 @@ QOS Profile: **uc_mc_queues_test**
 | 2 | Multicast | 10 | priority strict | - | Test strict priority |
 | 4 | Multicast | 10 | - | - | Test guaranteed percent |
 
-**ECN Configuration**
+###### ECN Configuration
 
 | TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
 | -------- | ---- | ------------- | ------------- | -------------------- |
@@ -440,6 +440,74 @@ QOS Profile: **uc_mc_queues_test**
 | 1 | Multicast | - | - | - |
 | 2 | Multicast | - | - | - |
 | 4 | Multicast | - | - | - |
+
+##### QOS Profile: **wred_queues_test**
+
+###### Settings
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | - |
+
+###### TX Queues
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | All | 50 | no priority | - | Test no priority |
+| 2 | All | 10 | priority strict | - | - |
+| 3 | All | 10 | priority strict | - | - |
+| 4 | All | 10 | - | - | Test guaranteed percent |
+| 1 | Multicast | 50 | no priority | - | - |
+| 2 | Multicast | 10 | priority strict | - | Test strict priority |
+| 4 | Multicast | 10 | - | - | Test guaranteed percent |
+
+###### ECN Configuration
+
+| TX queue | Type | Min Threshold | Max Threshold | Max Mark Probability |
+| -------- | ---- | ------------- | ------------- | -------------------- |
+| 1 | All | -  | -  | - |
+| 2 | All | -  | -  | - |
+| 3 | All | 320 kbytes | 320 kbytes | - |
+| 4 | All | -  | -  | - |
+| 1 | Multicast | - | - | - |
+| 2 | Multicast | - | - | - |
+| 4 | Multicast | - | - | - |
+
+###### WRED Configuration
+
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability | Weight |
+| -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
+| 1 | All | - | 1 kbytes | 10 kbytes | 100 | - |
+| 2 | All | 2 | 2 kbytes | 200 kbytes | 50 | 10 |
+| 3 | All | - | -  | -  | - | - |
+| 4 | All | - | 1 kbytes | 10 kbytes | 90 | - |
+| 1 | Multicast | - | - | - | - |
+| 2 | Multicast | - | - | - | - |
+| 4 | Multicast | - | - | - | - |
+
+##### QOS Profile: **wred_uc_queues_test**
+
+###### Settings
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | - |
+
+###### TX Queues
+
+| TX queue | Type | Bandwidth | Priority | Shape Rate | Comment |
+| -------- | ---- | --------- | -------- | ---------- | ------- |
+| 1 | Unicast | 50 | no priority | - | Test no priority |
+| 2 | Unicast | 10 | priority strict | - | - |
+| 4 | Unicast | 10 | - | - | Test guaranteed percent |
+
+###### WRED Configuration
+
+| TX queue | Type | Drop Precedence | Min Threshold | Max Threshold | Drop Probability | Weight |
+| -------- | ---- | --------------- | ------------- | ------------- | ---------------- | ------ |
+| 1 | Unicast | - |1 microseconds | 10 microseconds | 90 | 15 |
+| 2 | Unicast | 1 |2 milliseconds | 20 milliseconds | 80 | - |
+| 4 | Unicast | - |1 microseconds | 10 microseconds | 90 | - |
 
 #### QOS Profile Device Configuration
 
@@ -552,9 +620,63 @@ qos profile uc_mc_queues_test
    mc-tx-queue 4
       !! Test guaranteed percent
       bandwidth guaranteed percent 10
+!
+qos profile wred_queues_test
+   !
+   tx-queue 1
+      !! Test no priority
+      bandwidth percent 50
+      no priority
+      random-detect drop minimum-threshold 1 kbytes maximum-threshold 10 kbytes drop-probability 100
+   !
+   tx-queue 2
+      bandwidth percent 10
+      priority strict
+      random-detect drop drop-precedence 2 minimum-threshold 2 kbytes maximum-threshold 200 kbytes drop-probability 50 weight 10
+   !
+   tx-queue 3
+      bandwidth percent 10
+      priority strict
+      random-detect ecn minimum-threshold 320 kbytes maximum-threshold 320 kbytes weight 10
+   !
+   tx-queue 4
+      !! Test guaranteed percent
+      bandwidth guaranteed percent 10
+      random-detect drop minimum-threshold 1 kbytes maximum-threshold 10 kbytes drop-probability 90
+   !
+   mc-tx-queue 1
+      bandwidth percent 50
+      no priority
+   !
+   mc-tx-queue 2
+      !! Test strict priority
+      bandwidth percent 10
+      priority strict
+   !
+   mc-tx-queue 4
+      !! Test guaranteed percent
+      bandwidth guaranteed percent 10
+!
+qos profile wred_uc_queues_test
+   !
+   uc-tx-queue 1
+      !! Test no priority
+      bandwidth percent 50
+      no priority
+      random-detect drop minimum-threshold 1 microseconds maximum-threshold 10 microseconds drop-probability 90 weight 15
+   !
+   uc-tx-queue 2
+      bandwidth percent 10
+      priority strict
+      random-detect drop drop-precedence 1 minimum-threshold 2 milliseconds maximum-threshold 20 milliseconds drop-probability 80
+   !
+   uc-tx-queue 4
+      !! Test guaranteed percent
+      bandwidth guaranteed percent 10
+      random-detect drop minimum-threshold 1 microseconds maximum-threshold 10 microseconds drop-probability 90
 ```
 
-#### QOS Interfaces
+### QOS Interfaces
 
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |
@@ -568,7 +690,7 @@ qos profile uc_mc_queues_test
 
 Priority Flow Control is **Off** on all interfaces.
 
-**Priority Flow Control watchdog settings**
+##### Priority Flow Control Watchdog Settings
 
 | Action | Timeout | Recovery | Polling | Override Action Drop |
 | ------ | ------- | -------- | ------- |

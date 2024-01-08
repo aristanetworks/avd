@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -38,5 +38,19 @@
 {%             set ecn_command = ecn_command ~ " weight " ~ uc_tx_queue.random_detect.ecn.threshold.weight %}
 {%         endif %}
       {{ ecn_command }}
+{%     endif %}
+{%     if uc_tx_queue.random_detect.drop.threshold.min is arista.avd.defined and uc_tx_queue.random_detect.drop.threshold.max is arista.avd.defined and uc_tx_queue.random_detect.drop.threshold.units is arista.avd.defined  %}
+{%         set units = uc_tx_queue.random_detect.drop.threshold.units %}
+{%         set drop_command = "random-detect drop" %}
+{%         if uc_tx_queue.random_detect.drop.threshold.drop_precedence is arista.avd.defined %}
+{%             set drop_command = drop_command ~ " drop-precedence " ~ uc_tx_queue.random_detect.drop.threshold.drop_precedence %}
+{%         endif %}
+{%         set drop_command = drop_command ~ " minimum-threshold " ~ uc_tx_queue.random_detect.drop.threshold.min ~ " " ~ units %}
+{%         set drop_command = drop_command ~ " maximum-threshold " ~ uc_tx_queue.random_detect.drop.threshold.max ~ " " ~ units %}
+{%         set drop_command = drop_command ~ " drop-probability " ~ uc_tx_queue.random_detect.drop.threshold.drop_probability %}
+{%         if uc_tx_queue.random_detect.drop.threshold.weight is arista.avd.defined %}
+{%             set drop_command = drop_command ~ " weight " ~ uc_tx_queue.random_detect.drop.threshold.weight %}
+{%         endif %}
+      {{ drop_command }}
 {%     endif %}
 {% endif %}

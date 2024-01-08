@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -27,17 +27,17 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn_propagation</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation") | Boolean |  |  |  | Enable copying the ECN marking to/from encapsulated packets.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map_dscp_to_traffic_class_decapsulation</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- id</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].id") | Integer | Required, Unique |  |  | VLAN ID |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].id") | Integer | Required, Unique |  |  | VLAN ID |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].vni") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].multicast_group") | String |  |  |  | IP Multicast Group Address |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].flood_vteps") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].flood_vteps.[].&lt;str&gt;") | String |  |  |  | Remote VTEP IP Address |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- name</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].name") | String | Required, Unique |  |  | VRF Name |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].name") | String | Required, Unique |  |  | VRF Name |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].vni") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].multicast_group") | String |  |  |  | IP Multicast Group Address |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.Vxlan1.vxlan.flood_vteps") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- &lt;str&gt;</samp>](## "vxlan_interface.Vxlan1.vxlan.flood_vteps.[].&lt;str&gt;") | String |  |  |  | Remote VTEP IP Address |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.Vxlan1.vxlan.flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vtep_learned_data_plane</samp>](## "vxlan_interface.Vxlan1.vxlan.flood_vtep_learned_data_plane") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "vxlan_interface.Vxlan1.eos_cli") | String |  |  |  | Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration. |
 
@@ -48,33 +48,58 @@
       Vxlan1:
         description: <str>
         vxlan:
+
+          # Source Interface Name
           source_interface: <str>
+
+          # Client to CVX Controllers
           controller_client:
             enabled: <bool>
           mlag_source_interface: <str>
           udp_port: <int>
+
+          # "mlag-system-id" or ethernet_address (H.H.H)
           virtual_router_encapsulation_mac_address: <str>
           bfd_vtep_evpn:
             interval: <int>
             min_rx: <int>
-            multiplier: <int>
+            multiplier: <int; 3-50>
             prefix_list: <str>
+
+          # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in "DSCP Trust" mode.
+          # !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
           qos:
             dscp_propagation_encapsulation: <bool>
+
+            # Enable copying the ECN marking to/from encapsulated packets.
             ecn_propagation: <bool>
             map_dscp_to_traffic_class_decapsulation: <bool>
           vlans:
-            - id: <int>
+
+              # VLAN ID
+            - id: <int; required; unique>
               vni: <int>
+
+              # IP Multicast Group Address
               multicast_group: <str>
               flood_vteps:
+
+                  # Remote VTEP IP Address
                 - <str>
           vrfs:
-            - name: <str>
+
+              # VRF Name
+            - name: <str; required; unique>
               vni: <int>
+
+              # IP Multicast Group Address
               multicast_group: <str>
           flood_vteps:
+
+              # Remote VTEP IP Address
             - <str>
           flood_vtep_learned_data_plane: <bool>
+
+        # Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS configuration.
         eos_cli: <str>
     ```

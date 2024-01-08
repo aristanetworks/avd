@@ -1,5 +1,9 @@
+---
+# This title is used for search results
+title: Input variables for eos_cli_config_gen
+---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -281,6 +285,12 @@ roles/eos_cli_config_gen/docs/tables/traffic-policies.md
 
 ## Interfaces
 
+### DPS interfaces
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/dps-interfaces.md
+--8<--
+
 ### Errdisable
 
 --8<--
@@ -429,6 +439,12 @@ roles/eos_cli_config_gen/docs/tables/dns-domain.md
 roles/eos_cli_config_gen/docs/tables/domain-list.md
 --8<--
 
+### Hostname
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/hostname.md
+--8<--
+
 ### IP domain lookup
 
 --8<--
@@ -545,6 +561,12 @@ roles/eos_cli_config_gen/docs/tables/cvx.md
 roles/eos_cli_config_gen/docs/tables/eos-cli.md
 --8<--
 
+### Is deployed
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/is-deployed.md
+--8<--
+
 ### Management CVX
 
 --8<--
@@ -587,12 +609,6 @@ roles/eos_cli_config_gen/docs/tables/event-monitor.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/flow-tracking.md
---8<--
-
-### Flow trackings
-
---8<--
-roles/eos_cli_config_gen/docs/tables/flow-trackings.md
 --8<--
 
 ### Load interval
@@ -683,6 +699,12 @@ roles/eos_cli_config_gen/docs/tables/router-pim-sparse-mode.md
 
 ## Quality of Service
 
+### Priority flow control
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/priority-flow-control.md
+--8<--
+
 ### QoS
 
 --8<--
@@ -707,6 +729,12 @@ roles/eos_cli_config_gen/docs/tables/queue-monitor-length.md
 roles/eos_cli_config_gen/docs/tables/queue-monitor-streaming.md
 --8<--
 
+### Application traffic recognition
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/application-traffic-recognition.md
+--8<--
+
 ## Routing
 
 ### ARP
@@ -725,6 +753,17 @@ roles/eos_cli_config_gen/docs/tables/dhcp-relay.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/ip-dhcp-relay.md
+--8<--
+
+### IP DHCP Snooping
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/ip-dhcp-snooping.md
+
+### DHCP Servers
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/dhcp-servers.md
 --8<--
 
 ### IP ICMP redirect
@@ -781,6 +820,12 @@ roles/eos_cli_config_gen/docs/tables/ipv6-unicast-routing.md
 roles/eos_cli_config_gen/docs/tables/mpls.md
 --8<--
 
+### Router adaptive virtual topology
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/router-adaptive-virtual-topology.md
+--8<--
+
 ### Router BFD
 
 --8<--
@@ -827,6 +872,7 @@ roles/eos_cli_config_gen/docs/tables/router-path-selection.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/router-service-insertion.md
+--8<--
 
 ### Router traffic engineering
 
@@ -976,4 +1022,12 @@ roles/eos_cli_config_gen/docs/tables/system.md
 
 --8<--
 roles/eos_cli_config_gen/docs/tables/tcam-profile.md
+--8<--
+
+## Metadata
+
+These fields are not generating any configuration. They are meant to be used by tools that parse structured configuration.
+
+--8<--
+roles/eos_cli_config_gen/docs/tables/metadata.md
 --8<--

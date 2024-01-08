@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -11,20 +11,20 @@
 
 ### IKE policies
 
-| Policy name | Local ID |
-| ----------- | -------- |
+| Policy name | IKE lifetime | Encryption | DH group | Local ID |
+| ----------- | ------------ | ---------- | -------- | -------- |
 {%         for ike_policy in ip_security.ike_policies | arista.avd.default([]) %}
-| {{ ike_policy.name }} | {{ ike_policy.local_id | arista.avd.default("-") }} |
+| {{ ike_policy.name }} | {{ ike_policy.ike_lifetime | arista.avd.default("-") }} | {{ ike_policy.encryption | arista.avd.default("-") }} | {{ ike_policy.dh_group | arista.avd.default("-") }} | {{ ike_policy.local_id | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
-{%     if ip_security.ike_policie is arista.avd.defined %}
+{%     if ip_security.sa_policies is arista.avd.defined %}
 
 ### Security Association policies
 
 | Policy name | ESP Integrity | ESP Encryption | PFS DH Group |
 | ----------- | ------------- | -------------- | ------------ |
 {%         for sa_policy in ip_security.sa_policies | arista.avd.default([]) %}
-| {{ sa_policy.name }} | {{ sa_policy.esp.integrity | arista.avd.default("-") }} |  {{ sa_policy.esp.encryption | arista.avd.default("-") }} | {{ sa_policy.pfs_dh_group | arista.avd.default("-") }} |
+| {{ sa_policy.name }} | {{ sa_policy.esp.integrity | arista.avd.default("-") }} | {{ sa_policy.esp.encryption | arista.avd.default("-") }} | {{ sa_policy.pfs_dh_group | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
 {%     if ip_security.profiles is arista.avd.defined %}
@@ -53,7 +53,7 @@
 | {{ ip_security.key_controller.profile | arista.avd.default("-") }} |
 {%     endif %}
 
-### IP Security Configuration
+### IP Security Device Configuration
 
 ```eos
 {%     include 'eos/ip-security.j2' %}

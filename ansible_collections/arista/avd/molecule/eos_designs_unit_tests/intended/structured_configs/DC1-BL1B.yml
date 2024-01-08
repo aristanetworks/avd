@@ -1,4 +1,6 @@
 hostname: DC1-BL1B
+metadata:
+  platform: 7280R
 is_deployed: true
 router_bgp:
   as: '65105'
@@ -49,41 +51,51 @@ router_bgp:
   - ip_address: 172.31.254.192
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet23
   - ip_address: 172.31.254.194
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet23
   - ip_address: 172.31.254.196
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet23
   - ip_address: 172.31.254.198
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet23
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE2
     description: DC1-SPINE2
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE3
     description: DC1-SPINE3
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE4
     description: DC1-SPINE4
     remote_as: '65001'
   - ip_address: 1.1.1.1
     peer_group: EVPN-OVERLAY-CORE
+    peer: MY_EVPN_GW1_USER_DEFINED
     description: MY_EVPN_GW1_USER_DEFINED
     remote_as: '65555'
   - ip_address: 2.2.2.2
     peer_group: EVPN-OVERLAY-CORE
+    peer: MY_EVPN_GW2_USER_DEFINED
     description: MY_EVPN_GW2_USER_DEFINED
     remote_as: '65555'
   address_family_evpn:
@@ -153,6 +165,8 @@ router_bgp:
         activate: true
       - ip_address: 123.1.1.11
         activate: true
+        prefix_list_in: PL-TEST-IN-AF4
+        prefix_list_out: PL-TEST-OUT-AF4
     neighbors:
     - ip_address: 123.1.1.10
       remote_as: '1234'
@@ -170,7 +184,7 @@ router_bgp:
       route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
       local_as: '123'
     - ip_address: 123.1.1.11
-      remote_as: '1234'
+      remote_as: '65000.100'
       password: oBztv71m2uhR7hh58/OCNA==
       description: External IPv4 BGP peer
       send_community: standard extended
@@ -193,6 +207,8 @@ router_bgp:
       neighbors:
       - ip_address: fd5a:fe45:8831:06c5::a
         activate: true
+        prefix_list_in: PL-TEST-IN-AF6
+        prefix_list_out: PL-TEST-OUT-AF6
       - ip_address: fd5a:fe45:8831:06c5::b
         activate: true
     updates:
@@ -366,6 +382,7 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ntp: null
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-BL1B
@@ -586,4 +603,3 @@ sflow:
     - destination: 192.168.200.10
     - destination: 10.0.200.90
     source_interface: Management1
-ntp: null

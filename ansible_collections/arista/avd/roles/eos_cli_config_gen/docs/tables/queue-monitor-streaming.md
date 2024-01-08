@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -19,8 +19,12 @@
     ```yaml
     queue_monitor_streaming:
       enable: <bool>
+
+      # Name of IP ACL
       ip_access_group: <str>
+
+      # Name of IPv6 ACL
       ipv6_access_group: <str>
-      max_connections: <int>
+      max_connections: <int; 1-100>
       vrf: <str>
     ```

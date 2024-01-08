@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -44,6 +44,38 @@ class UtilsFilteredTenantsMixin(object):
                     tenant["l2vlans"] = self._filtered_l2vlans(tenant)
                     tenant["vrfs"] = self._filtered_vrfs(tenant)
                     filtered_tenants.append(tenant)
+
+        no_vrf_default = all(vrf["name"] != "default" for tenant in filtered_tenants for vrf in tenant["vrfs"])
+        if self.shared_utils.wan_role is not None and no_vrf_default:
+            filtered_tenants.append(
+                {
+                    "name": "WAN_DEFAULT",
+                    "vrfs": [
+                        {
+                            "name": "default",
+                            "vrf_id": 1,
+                            "svis": [],
+                            "l3_interfaces": [],
+                            "bgp_peers": [],
+                            "ipv6_static_routes": [],
+                            "static_routes": [],
+                        }
+                    ],
+                    "l2vlans": [],
+                }
+            )
+        elif self.shared_utils.wan_role:
+            # It is enough to check only the first occurence of default VRF as some other piece of code
+            # checks that if the VRF is in multiple tenants, the configuration is consistent.
+            for tenant in filtered_tenants:
+                if (vrf_default := get_item(tenant["vrfs"], "name", "default")) is None:
+                    continue
+                if "evpn" in vrf_default.get("address_families", ["evpn"]):
+                    if self.shared_utils.underlay_filter_peer_as:
+                        raise AristaAvdError(
+                            "WAN configuration requires EVPN to be enabled for VRF 'default'. Got 'address_families: {vrf_default['address_families']}."
+                        )
+                break
 
         return natural_sort(filtered_tenants, "name")
 
@@ -133,17 +165,21 @@ class UtilsFilteredTenantsMixin(object):
             bgp_peers = natural_sort(convert_dicts(vrf.get("bgp_peers"), "ip_address"), "ip_address")
             vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.shared_utils.hostname in bgp_peer.get("nodes", [])]
             vrf["static_routes"] = [
-                route for route in vrf.get("static_routes", []) if self.shared_utils.hostname in route.get("nodes", [self.shared_utils.hostname])
+                route
+                for route in get(vrf, "static_routes", default=[])
+                if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
             ]
             vrf["ipv6_static_routes"] = [
-                route for route in vrf.get("ipv6_static_routes", []) if self.shared_utils.hostname in route.get("nodes", [self.shared_utils.hostname])
+                route
+                for route in get(vrf, "ipv6_static_routes", default=[])
+                if self.shared_utils.hostname in get(route, "nodes", default=[self.shared_utils.hostname])
             ]
             vrf["svis"] = self._filtered_svis(vrf)
             vrf["l3_interfaces"] = [
                 l3_interface
-                for l3_interface in vrf.get("l3_interfaces", [])
+                for l3_interface in get(vrf, "l3_interfaces", default=[])
                 if (
-                    self.shared_utils.hostname in l3_interface.get("nodes", [])
+                    self.shared_utils.hostname in get(l3_interface, "nodes", default=[])
                     and l3_interface.get("ip_addresses") is not None
                     and l3_interface.get("interfaces") is not None
                 )
@@ -190,9 +226,9 @@ class UtilsFilteredTenantsMixin(object):
 
             vrf["additional_route_targets"] = [
                 rt
-                for rt in vrf.get("additional_route_targets", [])
+                for rt in get(vrf, "additional_route_targets", default=[])
                 if (
-                    self.shared_utils.hostname in rt.get("nodes", [self.shared_utils.hostname])
+                    self.shared_utils.hostname in get(rt, "nodes", default=[self.shared_utils.hostname])
                     and rt.get("address_family") is not None
                     and rt.get("route_target") is not None
                     and rt.get("type") in ["import", "export"]

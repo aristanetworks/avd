@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -19,12 +19,25 @@
 === "YAML"
 
     ```yaml
+    # Set Link Aggregation Control Protocol (LACP) parameters.
     lacp:
+
+      # LACP port-ID range configuration.
       port_id:
         range:
+
+          # Minimum LACP port-ID range.
           begin: <int>
+
+          # Maximum LACP port-ID range.
           end: <int>
+
+      # Set LACPDU rate limit options.
       rate_limit:
+
+        # Enable LACPDU rate limiting by default on all ports.
         default: <bool>
-      system_priority: <int>
+
+      # Set local system LACP priority.
+      system_priority: <int; 0-65535>
     ```

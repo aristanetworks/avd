@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 ---
@@ -11,8 +11,10 @@
     logging_level: "{{ logging_level | arista.avd.default('WARNING') }}"
     skipped_tests: "{{ skipped_tests | arista.avd.default([]) }}"
     save_catalog: "{{ save_catalog | arista.avd.default(false) }}"
-    device_catalog_output_dir: "{{ test_catalogs_dir }}"
+    device_catalog_path: "{{ test_catalogs_dir }}/{{ inventory_hostname }}-catalog.yml"
+    test_results_dir: "{{ test_results_dir }}"
+    # cprofile_file: "anta-{{inventory_hostname}}.prof"
   register: anta_results
   check_mode: false
-  when: use_anta
+  when: use_anta | bool
   tags: always

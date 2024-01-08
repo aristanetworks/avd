@@ -1,4 +1,6 @@
 hostname: sflow-tests-l2-leaf2
+metadata:
+  platform: vEOS-lab
 is_deployed: true
 static_routes:
 - vrf: MGMT

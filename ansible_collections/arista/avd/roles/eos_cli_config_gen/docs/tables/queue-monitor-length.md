@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -23,14 +23,23 @@
 
     ```yaml
     queue_monitor_length:
-      enabled: <bool>
+      enabled: <bool; required>
       default_thresholds:
-        high: <int>
+
+        # Default high threshold for Ethernet Interfaces.
+        high: <int; required>
+
+        # Default low threshold for Ethernet Interfaces.
+        # Low threshold support is platform dependent.
         low: <int>
+
+      # Logging interval in seconds
       log: <int>
+
+      # Should only be used for platforms supporting the "queue-monitor length notifying" CLI
       notifying: <bool>
       cpu:
         thresholds:
-          high: <int>
+          high: <int; required>
           low: <int>
     ```

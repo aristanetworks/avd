@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -15,10 +15,11 @@
 === "YAML"
 
     ```yaml
+    # BFD Multihop tuning.
     bfd_multihop: # (1)!
-      interval: <int>
-      min_rx: <int>
-      multiplier: <int>
+      interval: <int; 50-60000; required>
+      min_rx: <int; 50-60000; required>
+      multiplier: <int; 3-50; required>
     ```
 
     1. Default Value

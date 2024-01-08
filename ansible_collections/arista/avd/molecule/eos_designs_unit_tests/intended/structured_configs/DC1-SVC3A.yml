@@ -1,4 +1,6 @@
 hostname: DC1-SVC3A
+metadata:
+  platform: 7050SX3
 is_deployed: true
 router_bgp:
   as: '65103'
@@ -47,37 +49,46 @@ router_bgp:
   neighbors:
   - ip_address: 10.255.251.7
     peer_group: MLAG-PEERS
+    peer: DC1-SVC3B
     description: DC1-SVC3B
   - ip_address: 172.31.254.96
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE1
     description: DC1-SPINE1_Ethernet7/1
   - ip_address: 172.31.254.98
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE2
     description: DC1-SPINE2_Ethernet1/7/1
   - ip_address: 172.31.254.100
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE3
     description: DC1-SPINE3_Ethernet1/7/1
   - ip_address: 172.31.254.102
     peer_group: UNDERLAY-PEERS
     remote_as: '65001'
+    peer: DC1-SPINE4
     description: DC1-SPINE4_Ethernet7/1
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE1
     description: DC1-SPINE1
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE2
     description: DC1-SPINE2
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE3
     description: DC1-SPINE3
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
+    peer: DC1-SPINE4
     description: DC1-SPINE4
     remote_as: '65001'
   redistribute_routes:
@@ -450,6 +461,14 @@ management_api_http:
   - name: MGMT
   enable_https: true
   default_services: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    vrf: MGMT
+    preferred: true
 snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS DC1-SVC3A
@@ -809,13 +828,13 @@ port_channel_interfaces:
   trunk_groups:
   - LEAF_PEER_L3
   - MLAG
-- name: Port-Channel7
-  description: DC1_L2LEAF2_Po1
+- name: Port-Channel1007
+  description: DC1_L2LEAF2_Po1001
   type: switched
   shutdown: false
   mode: trunk
   vlans: 110-112,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
-  mlag: 7
+  mlag: 1007
 - name: Port-Channel10
   description: server03_ESI_PortChanne1
   type: switched
@@ -832,6 +851,7 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   l2_mtu: 8000
+  l2_mru: 9000
   vlans: 1-4094
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
@@ -1048,7 +1068,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 7
+    id: 1007
     mode: active
 - name: Ethernet8
   peer: DC1-L2LEAF2B
@@ -1059,7 +1079,7 @@ ethernet_interfaces:
   shutdown: false
   type: port-channel-member
   channel_group:
-    id: 7
+    id: 1007
     mode: active
 - name: Ethernet49/1
   peer: DC1-SPINE1
@@ -1121,6 +1141,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: trunk
   vlans: 1-4094
   spanning_tree_portfast: edge
@@ -1173,6 +1194,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: access
   vlans: '210'
   spanning_tree_portfast: network
@@ -1221,6 +1243,7 @@ ethernet_interfaces:
   shutdown: false
   type: switched
   l2_mtu: 8000
+  l2_mru: 9000
   mode: access
   vlans: '210'
   spanning_tree_portfast: network
