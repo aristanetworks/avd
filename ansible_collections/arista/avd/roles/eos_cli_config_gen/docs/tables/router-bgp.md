@@ -1033,7 +1033,11 @@
         - prefix: <str; required; unique>
           advertise_only: <bool>
           as_set: <bool>
+
+          # Route-map name
           advertise_map: <str>
+
+          # Route-map name
           supress_map: <str>
           summary_only: <bool>
 
@@ -1738,7 +1742,11 @@
             - prefix: <str; required; unique>
               advertise_only: <bool>
               as_set: <bool>
+
+              # Route-map name
               advertise_map: <str>
+
+              # Route-map name
               supress_map: <str>
               summary_only: <bool>
               attribute_map: <str>
