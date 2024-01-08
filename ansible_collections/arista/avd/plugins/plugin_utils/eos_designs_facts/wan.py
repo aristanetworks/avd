@@ -26,7 +26,7 @@ class WanMixin:
         Return the list of WAN path_groups directly connected to this router, with a list of dictionaries
         containing the (interface, ip_address) in the path_group.
         """
-        if not self.shared_utils.wan_mode:
+        if self.shared_utils.wan_role != "server":
             return None
 
         return self.shared_utils.wan_local_path_groups

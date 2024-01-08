@@ -21,7 +21,7 @@ class WanMixin:
     """
 
     @cached_property
-    def wan_mode(self: SharedUtils) -> str | None:
+    def wan_mode(self: SharedUtils) -> str:
         return get(self.hostvars, "wan_mode", default="cv-pathfinder")
 
     @cached_property

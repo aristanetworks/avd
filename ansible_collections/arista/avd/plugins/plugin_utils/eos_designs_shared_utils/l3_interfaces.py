@@ -13,7 +13,6 @@ if TYPE_CHECKING:
     from .shared_utils import SharedUtils
 
 
-# TODO only handle l3_edge for now need to look at core_interfaces too
 class L3InterfacesMixin:
     """
     Mixin Class providing a subset of SharedUtils
