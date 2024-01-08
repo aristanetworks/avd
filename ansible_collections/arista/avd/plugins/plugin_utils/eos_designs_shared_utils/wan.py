@@ -60,11 +60,11 @@ class WanMixin:
         This may need to be made wider.
         This also may require a different format for the dictionaries inside the list.
         """
-        if self.wan_mode is None:
+        if self.wan_role is None:
             return []
 
         wan_interfaces = []
-        for interface in self.filtered_l3_interfaces:
+        for interface in self.l3_interfaces:
             if get(interface, "wan_carrier") is not None:
                 wan_interfaces.append(interface)
 
@@ -84,43 +84,26 @@ class WanMixin:
         local_carriers_dict = {}
         global_carriers = get(self.hostvars, "wan_carriers", required=True)
         for interface in self.wan_interfaces:
-            iface_carrier = interface.get("wan_carrier")
-            carrier = get_item(
-                global_carriers,
-                "name",
-                iface_carrier,
-                required=True,
-                custom_error_msg=f"WAN carrier {iface_carrier} is not in the available carriers defined in `wan_carriers`",
-            )
+            interface_carrier = interface["wan_carrier"]
+            if interface_carrier not in local_carriers_dict:
+                local_carriers_dict[interface_carrier] = get_item(
+                    global_carriers,
+                    "name",
+                    interface["wan_carrier"],
+                    required=True,
+                    custom_error_msg=f"WAN carrier {interface['wan_carrier']} is not in the available carriers defined in `wan_carriers`",
+                ).copy()
+                local_carriers_dict[interface_carrier]["interfaces"] = []
 
-            local_carriers_dict.setdefault(carrier["name"], carrier | {"interfaces": []})["interfaces"].append(
-                {"name": get(interface, "interface", required=True), "ip_address": get(interface, "ip", required=True)}
+            local_carriers_dict[interface_carrier]["interfaces"].append(
+                {
+                    "name": get(interface, "name", required=True),
+                    "ip_address": get(interface, "ip", required=True),
+                    "connected_to_pathfinder": get(interface, "connected_to_pathfinder", default=True),
+                }
             )
 
         return list(local_carriers_dict.values())
-
-    def get_carrier_path_group(self: SharedUtils, carrier: str) -> dict:
-        """
-        Returns the path_group dict from `wan_path_groups`  associated to a carrier name as defined in `wan_carriers`.
-        """
-        global_carriers = get(self.hostvars, "wan_carriers", required=True)
-        global_path_groups = get(self.hostvars, "wan_path_groups", required=True)
-
-        path_group_name = get_item(
-            global_carriers,
-            "name",
-            carrier,
-            required=True,
-            custom_error_msg=f"WAN carrier {carrier} is not in the available carriers defined in `wan_carriers`",
-        )["path_group"]
-
-        return get_item(
-            global_path_groups,
-            "name",
-            path_group_name,
-            required=True,
-            custom_error_msg=f"WAN path_group {path_group_name} defined for a WAN carrier is not in the available path_groups defined in `wan_path_groups`",
-        )
 
     @cached_property
     def wan_local_path_groups(self: SharedUtils) -> list:
@@ -131,12 +114,25 @@ class WanMixin:
               - name: ...
                 ip: ...
         """
-        if self.wan_mode is None:
+        if self.wan_role is None:
             return []
 
         local_path_groups_dict = {}
+        global_path_groups = get(self.hostvars, "wan_path_groups", required=True)
         for carrier in self.wan_local_carriers:
-            path_group = self.get_carrier_path_group(carrier["name"])
-            local_path_groups_dict.setdefault(path_group["name"], path_group | {"interfaces": []})["interfaces"].extend(carrier.get("interfaces", []))
+            path_group_name = get(carrier, "path_group", required=True)
+            if path_group_name not in local_path_groups_dict:
+                local_path_groups_dict[path_group_name] = get_item(
+                    global_path_groups,
+                    "name",
+                    carrier["path_group"],
+                    required=True,
+                    custom_error_msg=(
+                        f"WAN path_group {path_group_name} defined for a WAN carrier is not in the available path_groups defined in `wan_path_groups`"
+                    ),
+                ).copy()
+                local_path_groups_dict[path_group_name]["interfaces"] = []
+
+            local_path_groups_dict[path_group_name]["interfaces"].extend(carrier["interfaces"])
 
         return list(local_path_groups_dict.values())

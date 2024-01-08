@@ -7,7 +7,6 @@ from .ethernet_interfaces import EthernetInterfacesMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
 from .router_bgp import RouterBgpMixin
 from .router_ospf import RouterOspfMixin
-from .static_routes import StaticRoutesMixin
 
 DATA_MODELS = ["core_interfaces", "l3_edge"]
 
@@ -18,7 +17,6 @@ class AvdStructuredConfigCoreInterfacesAndL3Edge(
     PortChannelInterfacesMixin,
     RouterBgpMixin,
     RouterOspfMixin,
-    StaticRoutesMixin,
 ):
     """
     The AvdStructuredConfig Class is imported by "get_structured_config" to render parts of the structured config.

@@ -15,6 +15,7 @@ from .router_msdp import RouterMsdpMixin
 from .router_ospf import RouterOspfMixin
 from .router_pim_sparse_mode import RouterPimSparseModeMixin
 from .standard_access_lists import StandardAccessListsMixin
+from .static_routes import StaticRoutesMixin
 from .vlans import VlansMixin
 
 
@@ -32,6 +33,7 @@ class AvdStructuredConfigUnderlay(
     RouterMsdpMixin,
     RouterPimSparseModeMixin,
     StandardAccessListsMixin,
+    StaticRoutesMixin,
     MplsMixin,
 ):
     """

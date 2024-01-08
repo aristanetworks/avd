@@ -1238,6 +1238,28 @@ keys:
   l3_edge:
     type: dict
     $ref: eos_designs#/$defs/l3_edge
+  l3_interface_profiles:
+    type: list
+    documentation_options:
+      table: wan-interfaces-settings
+    description: 'PREVIEW: This key is currently not supported
+
+
+      Profiles to inherit common settings for l3_interfaces defined under the node
+      type key.
+
+      These profiles will *not* work for `l3_interfaces` defined under `vrfs`.
+
+      '
+    primary_key: profile
+    $ref: eos_designs#/$defs/node_type_l3_interfaces
+    items:
+      type: dict
+      keys:
+        profile:
+          type: str
+          description: L3 interface profile name. Any variable supported under `l3_interfaces`
+            can be inherited from a profile.
   local_users:
     documentation_options:
       table: management-settings
@@ -4192,124 +4214,6 @@ $defs:
             profile:
               type: str
               description: P2P profile name. Profile defined under p2p_profiles.
-      l3_interfaces_profiles:
-        type: list
-        convert_types:
-        - dict
-        primary_key: profile
-        $ref: eos_designs#/$defs/l3_edge_l3_interfaces
-        items:
-          type: dict
-          keys:
-            profile:
-              type: str
-              description: L3 interface profile name. Any variable supported under
-                `l3_interfaces` can be inherited from a profile.
-      l3_interfaces:
-        type: list
-        $ref: eos_designs#/$defs/l3_edge_l3_interfaces
-        items:
-          type: dict
-          keys:
-            node:
-              type: str
-              description: Device on which the interface should be configured.
-              required: true
-            profile:
-              type: str
-              description: L3 interface profile name. Profile defined under l3_interfaces_profiles.
-  l3_edge_l3_interfaces:
-    type: list
-    items:
-      type: dict
-      keys:
-        interface:
-          type: str
-          description: Ethernet interface name like 'Ethernet2'.
-          pattern: Ethernet[\d/]+
-        description:
-          type: str
-          description: 'Interface description.
-
-            If not set a default description will be configured with ''[<peer>[ <peer_interface>]]'''
-        ip:
-          type: str
-          description: Node IPv4 address/Mask or 'dhcp'.
-        set_default_route:
-          type: bool
-          default: false
-          description: 'Insert a default route to the `peer_ip` if `ip` is an ip address
-
-            or configure to accept a default route from DHCP if `ip` is `dhcp`.
-
-
-            AVD will error out if set to true, `ip` is an ip address and `peer_ip`
-            is missing.'
-        enabled:
-          type: bool
-          default: true
-          description: Enable or Shutdown the interface.
-        speed:
-          type: str
-          description: Speed should be set in the format `<interface_speed>` or `forced
-            <interface_speed>` or `auto <interface_speed>`.
-        peer:
-          type: str
-          description: The peer device name. Used for description and documentation
-        peer_interface:
-          type: str
-          description: The peer device interface. Used for description and documentation
-        peer_ip:
-          type: str
-          description: The peer device IPv4 address (no mask). Used as default route
-            gateway if `set_default_route` is true and `ip` is an IP address.
-        qos_profile:
-          type: str
-          description: QOS service profile.
-        wan_carrier:
-          type: str
-          documentation_options:
-            table: wan-interfaces-settings
-          description: 'PREVIEW: This key is currently not supported
-
-
-            The WAN Carrier this interface is connected to.
-
-            This is used to infer the path-groups in which this interface should be
-            configured.'
-        wan_circuit_id:
-          type: str
-          documentation_options:
-            table: wan-interfaces-settings
-          convert_types:
-          - int
-          description: 'PREVIEW: This key is currently not supported
-
-
-            The WAN Circuit ID for this interface.
-
-            This is not rendered in the configuration but used for WAN designs.'
-        connected_to_pathfinder:
-          type: bool
-          documentation_options:
-            table: wan-interfaces-settings
-          description: 'PREVIEW: This key is currently not supported
-
-
-            For a WAN interface (`wan_path_group` is set), allow to disable the static
-            tunnel towards Pathfinders.
-
-            Default True.'
-        raw_eos_cli:
-          type: str
-          description: EOS CLI rendered directly on the interface in the final EOS
-            configuration.
-        structured_config:
-          type: dict
-          documentation_options:
-            hide_keys: true
-          description: Custom structured config for the Ethernet interface.
-          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
   network_services:
     documentation_options:
       table: network-services-common-settings
@@ -7188,6 +7092,23 @@ $defs:
 
               If not set, and the device is WAN device, a default value of 1000 is
               used.'
+          l3_interfaces:
+            type: list
+            $ref: eos_designs#/$defs/node_type_l3_interfaces
+            documentation_options:
+              table: wan-interfaces-settings
+            description: 'PREVIEW: This key is currently not supported
+
+
+              L3 Interfaces currently only use for WAN interfaces.'
+            items:
+              type: dict
+              keys:
+                profile:
+                  type: str
+                  description: 'L3 interface profile name. Profile defined under `l3_interface_profiles`.
+
+                    '
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
@@ -7224,6 +7145,82 @@ $defs:
             name:
               type: str
               description: The Node Name is used as "hostname".
+  node_type_l3_interfaces:
+    type: list
+    items:
+      type: dict
+      keys:
+        name:
+          type: str
+          description: Ethernet interface name like 'Ethernet2'.
+          pattern: Ethernet[\d/]+
+        description:
+          type: str
+          description: 'Interface description.
+
+            If not set a default description will be configured with ''[<peer>[ <peer_interface>]]'''
+        ip:
+          type: str
+          description: Node IPv4 address/Mask or 'dhcp'.
+        set_default_route:
+          type: bool
+          default: false
+          description: 'Insert a default route to the `peer_ip` if `ip` is an ip address
+
+            or configure to accept a default route from DHCP if `ip` is `dhcp`.
+
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip`
+            is missing.'
+        enabled:
+          type: bool
+          default: true
+          description: Enable or Shutdown the interface.
+        speed:
+          type: str
+          description: Speed should be set in the format `<interface_speed>` or `forced
+            <interface_speed>` or `auto <interface_speed>`.
+        peer:
+          type: str
+          description: The peer device name. Used for description and documentation
+        peer_interface:
+          type: str
+          description: The peer device interface. Used for description and documentation
+        peer_ip:
+          type: str
+          description: The peer device IPv4 address (no mask). Used as default route
+            gateway if `set_default_route` is true and `ip` is an IP address.
+        qos_profile:
+          type: str
+          description: QOS service profile.
+        wan_carrier:
+          type: str
+          description: 'The WAN Carrier this interface is connected to.
+
+            This is used to infer the path-groups in which this interface should be
+            configured.'
+        wan_circuit_id:
+          type: str
+          convert_types:
+          - int
+          description: 'The WAN Circuit ID for this interface.
+
+            This is not rendered in the configuration but used for WAN designs.'
+        connected_to_pathfinder:
+          type: bool
+          default: true
+          description: For a WAN interface (`wan_path_group` is set), allow to disable
+            the static tunnel towards Pathfinders.
+        raw_eos_cli:
+          type: str
+          description: EOS CLI rendered directly on the interface in the final EOS
+            configuration.
+        structured_config:
+          type: dict
+          documentation_options:
+            hide_keys: true
+          description: Custom structured config for the Ethernet interface.
+          $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items/
   p2p_links:
     type: list
     items:

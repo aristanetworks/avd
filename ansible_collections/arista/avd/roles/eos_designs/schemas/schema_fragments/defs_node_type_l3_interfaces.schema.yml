@@ -6,12 +6,12 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 $defs:
-  l3_edge_l3_interfaces:
+  node_type_l3_interfaces:
     type: list
     items:
       type: dict
       keys:
-        interface:
+        name:
           type: str
           description: Ethernet interface name like 'Ethernet2'.
           pattern: "Ethernet[\\d/]+"
@@ -56,33 +56,21 @@ $defs:
           description: QOS service profile.
         wan_carrier:
           type: str
-          documentation_options:
-            table: wan-interfaces-settings
           description: |-
-            PREVIEW: This key is currently not supported
-
             The WAN Carrier this interface is connected to.
             This is used to infer the path-groups in which this interface should be configured.
         wan_circuit_id:
           type: str
-          documentation_options:
-            table: wan-interfaces-settings
           convert_types:
             - int
           description: |-
-            PREVIEW: This key is currently not supported
-
             The WAN Circuit ID for this interface.
             This is not rendered in the configuration but used for WAN designs.
         connected_to_pathfinder:
           type: bool
-          documentation_options:
-            table: wan-interfaces-settings
+          default: True
           description: |-
-            PREVIEW: This key is currently not supported
-
             For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
-            Default True.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS configuration.
