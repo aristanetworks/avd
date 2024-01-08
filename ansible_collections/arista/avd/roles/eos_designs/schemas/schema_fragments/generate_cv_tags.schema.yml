@@ -10,7 +10,9 @@ keys:
     documentation_options:
       table: cloudvision-tags
     type: dict
-    description: Generate CloudVision Tags based on AVD data.
+    description: |-
+      PREVIEW: This key is currently not supported
+      Generate CloudVision Tags based on AVD data.
     keys:
       topology_hints:
         type: bool

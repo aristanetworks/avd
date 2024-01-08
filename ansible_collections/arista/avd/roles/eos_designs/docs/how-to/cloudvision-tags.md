@@ -1,3 +1,7 @@
+---
+# This title is used for search results
+title: Generate Cloudvision tags with eos_designs
+---
 <!--
   ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
@@ -5,6 +9,14 @@
   -->
 
 # CloudVision Tags
+
+!!! warning
+
+    The generation of CloudVision Tags in the `eos_designs` role is in preview mode.
+
+    Everything is subject to change, is not supported and may not be complete.
+
+    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/ansible-avd/discussions)
 
 `arista.avd.eos_designs` can generate CloudVision Tags that can be applied to interfaces and/or devices. These tags can be used on CloudVision for during Topology view generation,
 or used in searches/filters to select devices based on tags values.
@@ -80,7 +92,3 @@ generate_cv_tags:
     - name: myinterfacetag
       data_path: peer_type
 ```
-
-## Applying the Tags on CloudVision
-
-TODO

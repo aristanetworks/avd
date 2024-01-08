@@ -9,7 +9,9 @@ keys:
   cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
-    description: Device type that CloudVision should use when generating the Topology. Defaults to the setting under node_type_keys.
+    description: |-
+      PREVIEW: This key is currently not supported
+      Device type that CloudVision should use when generating the Topology. Defaults to the setting under node_type_keys.
     type: str
     valid_values:
       - "leaf"
