@@ -6,17 +6,13 @@
 
 # CloudVision Tags
 
-If `cv_tags_enabled` is set to `True`, `arista.avd.eos_designs` can generate CloudVision Tags that can be applied to interfaces and/or devices. These tags can be used during Topology generation, or used in searches/filters to select devices based on tags values.
-
-!!! note
-
-    - By default this new feature is turned off. Set `cv_tags_enabled: True` in the Fabric to enable this feature.
-    - These tags would need to be applied to CloudVision using the [`arista.avd.cloudvision`](../../../cloudvision/README.md) role.
+`arista.avd.eos_designs` can generate CloudVision Tags that can be applied to interfaces and/or devices. These tags can be used on CloudVision for during Topology view generation,
+or used in searches/filters to select devices based on tags values.
 
 ## Available Input Variables
 
 --8<--
-roles/eos_designs/docs/tables/cloudvision-tags.md
+/docs/tables/cloudvision-tags.md
 --8<--
 
 ## CloudVision Topology Tags
