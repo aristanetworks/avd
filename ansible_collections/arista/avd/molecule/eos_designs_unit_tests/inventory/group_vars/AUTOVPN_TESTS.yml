@@ -98,7 +98,7 @@ tenants:
       - name: IT
         vrf_id: 100
 
-virtual_topologies:
+wan_virtual_topologies:
   vrfs:
     - name: default
       policy: DEFAULT-AVT-POLICY

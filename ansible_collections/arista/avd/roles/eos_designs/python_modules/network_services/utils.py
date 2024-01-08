@@ -214,7 +214,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
         network_services_vrfs = set(vrf["name"] for tenant in self._filtered_tenants for vrf in tenant["vrfs"])
 
-        for avt_vrf in get(self._hostvars, "virtual_topologies.vrfs", []):
+        for avt_vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
             if avt_vrf["name"] in network_services_vrfs or self.shared_utils.wan_role == "server":
                 # Needed becuase we can be rendering either for AutoVPN or CV Pathfinder
                 policy_key = "policy" if self.shared_utils.cv_pathfinder_role else "path_selection_policy"
@@ -251,7 +251,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
         cv_pathfinder_policies = []
 
-        for avt_policy in get(self._hostvars, "virtual_topologies.policies", []):
+        for avt_policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
             cv_pathfinder_policy = {
                 "name": avt_policy["name"],
             }
@@ -293,7 +293,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
         cv_pathfinder_profiles = []
 
-        for avt_policy in get(self._hostvars, "virtual_topologies.policies", []):
+        for avt_policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
             for application_policy in get(avt_policy, "application_policies", []):
                 # TODO add internet exit once supported
                 name = get(application_policy, "name", default=f"{avt_policy['name']}_{application_policy['application_profile']}")
@@ -324,23 +324,20 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
         autovpn_policies = []
 
-        for avt_policy in get(self._hostvars, "virtual_topologies.policies", []):
+        for avt_policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
             autovpn_policy = {
                 "name": avt_policy["name"],
             }
 
-            # TODO change ids...
-            dummy_id = 42
-            for application_policy in get(avt_policy, "application_policies", []):
+            for rule_id, application_policy in enumerate(get(avt_policy, "application_policies", []), start=1):
                 name = get(application_policy, "name", default=f"{avt_policy['name']}_{application_policy['application_profile']}")
                 autovpn_policy.setdefault("rules", []).append(
                     {
-                        "id": dummy_id,
+                        "id": 10 * rule_id,
                         "application_profile": get(application_policy, "application_profile", required=True),
                         "load_balance": f"{name}_lb",
                     }
                 )
-                dummy_id += 1
             if default_policy := get(avt_policy, "default_policy"):
                 name = get(default_policy, "name", default=f"{avt_policy['name']}_default")
                 autovpn_policy["default_match"] = {"load_balance": f"{name}_lb"}
@@ -348,6 +345,18 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             autovpn_policies.append(autovpn_policy)
 
         return autovpn_policies
+
+    def _path_group_priority_to_eos_priority(self, path_group_priority: int | str) -> int:
+        """
+        Convert "preferred" to 1 and "alternate" to 2. Everything else is returned as is
+        """
+        if path_group_priority == "preferred":
+            return 1
+        elif path_group_priority == "alternate":
+            return 2
+        elif isinstance(path_group_priority, str):
+            raise AristaAvdError(f"Invalid value {path_group_priority} for Path-Group priority - should be either 'preferred', 'alternate' or an integer.")
+        return path_group_priority
 
     @cached_property
     def _wan_load_balance_policies(self) -> list:
@@ -360,7 +369,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         wan_load_balance_policies = []
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
 
-        for avt_policy in get(self._hostvars, "virtual_topologies.policies", []):
+        for avt_policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
             for application_policy in get(avt_policy, "application_policies", []):
                 # TODO add internet exit once supported
                 name = get(application_policy, "name", default=f"{avt_policy['name']}_{application_policy['application_profile']}")
@@ -371,18 +380,13 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                 for path_groups in get(application_policy, "path_groups", []):
                     for path_group_name in path_groups.get("names"):
                         # Skip path-group if not present on the router except for pathfinders
-                        if path_group_name not in wan_local_path_group_names and not self.shared_utils.wan_role == "server":
+                        if path_group_name not in wan_local_path_group_names and self.shared_utils.wan_role != "server":
                             continue
-                        pg_prio = get(path_groups, "priority", required=True)
-                        prio = pg_prio
-                        if pg_prio == "preferred":
-                            prio = 1
-                        elif pg_prio == "alternate":
-                            prio = 2
+
                         wan_load_balance_policy.setdefault("path_groups", []).append(
                             {
                                 "name": path_group_name,
-                                "priority": prio,
+                                "priority": self._path_group_priority_to_eos_priority(get(path_groups, "priority", required=True)),
                             }
                         )
 
@@ -397,18 +401,13 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                 # TODO for now hardcoding priorities as requested by team
                 for path_groups in get(application_policy, "path_groups", []):
                     for path_group_name in path_groups.get("names"):
-                        if path_group_name not in wan_local_path_group_names and not self.shared_utils.wan_role == "server":
+                        if path_group_name not in wan_local_path_group_names and self.shared_utils.wan_role != "server":
                             continue
-                        pg_prio = get(path_groups, "priority", required=True)
-                        prio = pg_prio
-                        if pg_prio == "preferred":
-                            prio = 1
-                        elif pg_prio == "alternate":
-                            prio = 2
+
                         wan_load_balance_policy.setdefault("path_groups", []).append(
                             {
                                 "name": path_group_name,
-                                "priority": prio,
+                                "priority": self._path_group_priority_to_eos_priority(get(path_groups, "priority", required=True)),
                             }
                         )
 

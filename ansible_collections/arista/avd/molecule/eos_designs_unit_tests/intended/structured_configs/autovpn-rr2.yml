@@ -148,17 +148,17 @@ router_path_selection:
   policies:
   - name: PROD-AVT-POLICY
     rules:
-    - id: 42
+    - id: 10
       application_profile: voice
       load_balance: PROD-AVT-POLICY_voice_lb
-    - id: 43
+    - id: 20
       application_profile: video
       load_balance: PROD-AVT-POLICY_video_lb
     default_match:
       load_balance: PROD-AVT-POLICY_default_lb
   - name: DEFAULT-AVT-POLICY
     rules:
-    - id: 42
+    - id: 10
       application_profile: it
       load_balance: DEFAULT-AVT-POLICY_it_lb
   vrfs:
