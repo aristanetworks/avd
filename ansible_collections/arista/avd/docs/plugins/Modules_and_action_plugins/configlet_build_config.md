@@ -23,10 +23,10 @@ Build configuration to publish configlets to Cloudvision.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| configlet_dir | str | True | None |  | Directory where configlets are located. |
-| configlet_prefix | str | True | None |  | Prefix to append on configlet. |
-| destination | str | False | None |  | File where to save information. |
-| configlet_extension | str | False | conf |  | File extension to look for. |
+| <samp>configlet_dir</samp> | str | True | None |  | Directory where configlets are located. |
+| <samp>configlet_prefix</samp> | str | True | None |  | Prefix to append on configlet. |
+| <samp>destination</samp> | str | False | None |  | File where to save information. |
+| <samp>configlet_extension</samp> | str | False | conf |  | File extension to look for. |
 
 ## Examples
 

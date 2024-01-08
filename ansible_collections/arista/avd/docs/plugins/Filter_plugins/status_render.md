@@ -27,8 +27,8 @@ Returns <code>\:white\_check\_mark\:</code> if input status string is <code>PASS
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | Text to convert to EMOJI. |
-| rendering | string | True | None |  | Markdown Flavor to use for Emoji rendering. Only \"github\" is supported. |
+| <samp>_input</samp> | string | True | None |  | Text to convert to EMOJI. |
+| <samp>rendering</samp> | string | True | None |  | Markdown Flavor to use for Emoji rendering. Only \"github\" is supported. |
 
 ## Return Values
 

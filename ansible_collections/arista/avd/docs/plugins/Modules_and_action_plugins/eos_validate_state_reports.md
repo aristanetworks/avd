@@ -33,13 +33,13 @@ The plugin offers the following functionalities\:
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| validation_report_csv | bool | optional | True |  | Indicates whether a CSV report should be generated. |
-| validation_report_md | bool | optional | True |  | Indicates whether a Markdown report should be generated. |
-| only_failed_tests | bool | optional | False |  | Determines if the generated reports should include only the failed tests. |
-| csv_report_path | str | optional | None |  | The absolute path where the CSV report will be saved.<br>Required if <code>validation\_report\_csv</code> is set to <code>True</code>. |
-| md_report_path | str | optional | None |  | The absolute path where the Markdown report will be saved.<br>Required if <code>validation\_report\_md</code> is set to <code>True</code>. |
-| test_results_dir | any | optional | None |  | The directory where the test results JSON file for each host will be saved. |
-| cprofile_file | any | optional | None |  | The filename for storing cProfile data, useful for debugging performance issues.<br>Be aware that enabling cProfile can affect performance, so use it only for troubleshooting. |
+| <samp>validation_report_csv</samp> | bool | optional | True |  | Indicates whether a CSV report should be generated. |
+| <samp>validation_report_md</samp> | bool | optional | True |  | Indicates whether a Markdown report should be generated. |
+| <samp>only_failed_tests</samp> | bool | optional | False |  | Determines if the generated reports should include only the failed tests. |
+| <samp>csv_report_path</samp> | str | optional | None |  | The absolute path where the CSV report will be saved.<br>Required if <code>validation\_report\_csv</code> is set to <code>True</code>. |
+| <samp>md_report_path</samp> | str | optional | None |  | The absolute path where the Markdown report will be saved.<br>Required if <code>validation\_report\_md</code> is set to <code>True</code>. |
+| <samp>test_results_dir</samp> | any | optional | None |  | The directory where the test results JSON file for each host will be saved. |
+| <samp>cprofile_file</samp> | any | optional | None |  | The filename for storing cProfile data, useful for debugging performance issues.<br>Be aware that enabling cProfile can affect performance, so use it only for troubleshooting. |
 
 ## Notes
 

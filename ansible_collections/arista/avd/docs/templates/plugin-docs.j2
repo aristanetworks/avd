@@ -37,7 +37,7 @@ title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 {%             set _ = restrictions.append("Max value: <code>" ~ spec.max ~ "</code>") %}
 {%         endif %}
 {%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
-| {{ "    " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
+| <samp>{{ "&nbsp;" * 4 * level }}{{ name }}</samp> | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
 {%         if spec.suboptions %}
 {{ option_desc(spec.suboptions, level + 1) -}}
 {%         endif %}

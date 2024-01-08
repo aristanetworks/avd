@@ -23,7 +23,7 @@ Provides the capability to generate a string representing ranges of VLANs or VNI
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | list | True | None |  | List of integers to compress into a range. |
+| <samp>_input</samp> | list | True | None |  | List of integers to compress into a range. |
 
 ## Examples
 

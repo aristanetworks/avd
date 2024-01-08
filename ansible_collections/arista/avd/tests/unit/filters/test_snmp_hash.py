@@ -193,4 +193,4 @@ class TestSNMPHashFilter:
     def test_snmp_hash_filter(self):
         resp = f.filters()
         assert isinstance(resp, dict)
-        assert "hash_passphrase" in resp.keys()
+        assert "snmp_hash" in resp.keys()
