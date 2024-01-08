@@ -1076,10 +1076,10 @@ router isis EVPN_UNDERLAY
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 2.2.1.0/24 | False | False | - | - | False |
+| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | - | - | False | - | - | True |
+| 2.2.1.0/24 | False | - | - | False | - | - | False |
 
 #### Router BGP EVPN Address Family
 
