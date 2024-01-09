@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from collections import UserString
+from json import JSONEncoder
 from typing import TYPE_CHECKING, Any, Callable
 
 if TYPE_CHECKING:
@@ -130,3 +132,15 @@ class UtilsMixin:
             return self._get_value_from_path(path[1:], data[path[0]])
         except (IndexError, KeyError):
             return default_value
+
+    class JsonEncodeWithUserString(JSONEncoder):
+        """
+        Subclass of JSONEncoder with support for encoding instances of UserStrings (or subclasses hereof).
+        """
+
+        def default(self, o):
+            if isinstance(o, UserString):
+                return str(o)
+
+            # Let the base class default method raise the TypeError
+            return super().default(o)

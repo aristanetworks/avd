@@ -23,6 +23,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.cv_client.deploy_to_cv.
     CVDeviceTag,
     CVEosConfig,
     CVInterfaceTag,
+    CVPathfinderMetadata,
     CVTimeOuts,
     CVWorkspace,
 )
@@ -88,46 +89,60 @@ class ActionModule(ActionBase):
         # Get task arguments and validate them
         validation_result, validated_args = self.validate_argument_spec(ARGUMENT_SPEC)
         validated_args = strip_null_from_data(validated_args)
+
+        # Running asyncio coroutine to deploy everything.
         return run(self.deploy(validated_args, result))
 
     async def deploy(self, validated_args: dict, result: dict):
+        """
+        Prepare data, perform deployment and convert result data.
+        """
         LOGGER.info("deploy: %s", validated_args)
         try:
+            # Create CloudVision object
             cloudvision = CloudVision(
                 servers=validated_args["cv_servers"],
                 token=validated_args["cv_token"],
                 verify_certs=validated_args["cv_verify_certs"],
             )
-            eos_config_objects, device_tag_objects, interface_tag_objects = await self.build_objects(
+            # Build lists of CVEosConfig, CVDeviceTag, CVInterfaceTag and CVPathfinderMetadata objects.
+            eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects = await self.build_objects(
                 device_list=get(validated_args, "device_list"),
                 structured_config_dir=get(validated_args, "structured_config_dir"),
                 structured_config_suffix=get(validated_args, "structured_config_suffix"),
                 configuration_dir=get(validated_args, "configuration_dir"),
                 configlet_name_template=get(validated_args, "configlet_name_template"),
             )
+            # Add return data if relevant.
             if validated_args["return_details"]:
+                # Objects are converted to JSON compatible dicts.
                 result.update(
                     cloudvision=dict(asdict(cloudvision), token="<removed>"),
                     configs=[asdict(config) for config in eos_config_objects],
                     device_tags=[asdict(device_tag) for device_tag in device_tag_objects],
                     interface_tags=[asdict(interface_tag) for interface_tag in interface_tag_objects],
+                    cv_pathfinder_metadata=[asdict(metadata) for metadata in cv_pathfinder_metadata_objects],
                 )
+            # Perform deployment of all objects, getting a DeployToCVResult object back.
             result_object = await deploy_to_cv(
                 change_control=CVChangeControl(**get(validated_args, "change_control", default={})),
                 cloudvision=cloudvision,
                 configs=eos_config_objects,
                 device_tags=device_tag_objects,
                 interface_tags=interface_tag_objects,
+                cv_pathfinder_metadata=cv_pathfinder_metadata_objects,
                 skip_missing_devices=get(validated_args, "skip_missing_devices"),
                 strict_tags=get(validated_args, "strict_tags"),
                 timeouts=CVTimeOuts(**get(validated_args, "timeouts", default={})),
                 workspace=CVWorkspace(**get(validated_args, "workspace", default={})),
             )
-
+            # Errors and warnings are converted to JSON compatible strings.
             result_object.errors = [str(error) for error in result_object.errors]
             result_object.warnings = [str(warning) for warning in result_object.warnings]
 
+            # Add either all return data or only warnings, errors, failed.
             if validated_args["return_details"]:
+                # Result object is converted to JSON compatible dict.
                 result.update(asdict(result_object))
             else:
                 result.update(
@@ -138,10 +153,12 @@ class ActionModule(ActionBase):
                     }
                 )
 
+            # Set changed if we did anything. TODO: Improve this logic to only set changed if something actually changed.
             if any([result_object.deployed_configs, result_object.deployed_device_tags, result_object.deployed_interface_tags]):
                 result["changed"] = True
 
         except Exception as error:
+            # Recast errors as AnsibleActionFail
             msg = f"Error during plugin execution: {error}"
             raise AnsibleActionFail(msg) from error
 
@@ -149,14 +166,14 @@ class ActionModule(ActionBase):
 
     async def build_objects(
         self, device_list: list[str], structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
-    ) -> (list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag]):
+    ) -> (list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]):
         """
         Parameters:
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
             structured_config_suffix: Suffix for structured config files.
         Return:
-            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>)
+            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
 
         Workflow:
             Per device:
@@ -174,22 +191,24 @@ class ActionModule(ActionBase):
         eos_config_objects = []
         device_tag_objects = []
         interface_tag_objects = []
-        for device_eos_config_objects, device_device_tag_objects, device_interface_tag_objects in tuples:
+        cv_pathfinder_metadata_objects = []
+        for device_eos_config_objects, device_device_tag_objects, device_interface_tag_objects, device_cv_pathfinder_metadata_objects in tuples:
             eos_config_objects.extend(device_eos_config_objects)
             device_tag_objects.extend(device_device_tag_objects)
             interface_tag_objects.extend(device_interface_tag_objects)
-        return eos_config_objects, device_tag_objects, interface_tag_objects
+            cv_pathfinder_metadata_objects.extend(device_cv_pathfinder_metadata_objects)
+        return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects
 
     async def build_object_for_device(
         self, hostname: str, structured_config_dir: str, structured_config_suffix: str, configuration_dir: str, configlet_name_template: str
-    ) -> (list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag]):
+    ) -> (list[CVEosConfig], list[CVDeviceTag], list[CVInterfaceTag], list[CVPathfinderMetadata]):
         """
         Parameters:
             device_list: List of device hostnames.
             structured_config_dir: Path to structured config files.
             structured_config_suffix: Suffix for structured config files.
         Return:
-            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>)
+            Tuple containing (<EOS Configs to deploy>, <Device Tags to deploy>, <Interface Tags to deploy>, <CV Pathfinder Metadata to deploy>)
 
         Workflow:
             Per device:
@@ -230,10 +249,11 @@ class ActionModule(ActionBase):
 
         # Build device tag objects for this device.
         # metadata:
-        #   cv_device_tags:
-        #   - name: topology_hint_datacenter
-        #     value: DC1
-        device_tags = get(structured_config, "metadata.cv_device_tags", default=[])
+        #   cv_tags:
+        #     device_tags:
+        #     - name: topology_hint_datacenter
+        #       value: DC1
+        device_tags = get(structured_config, "metadata.cv_tags.device_tags", default=[])
         device_tag_objects = [
             CVDeviceTag(label=device_tag["name"], value=device_tag["value"], device=device_object)
             for device_tag in device_tags
@@ -242,12 +262,13 @@ class ActionModule(ActionBase):
 
         # Build interface tag objects for this device.
         # metadata:
-        #   cv_interface_tags:
-        #   - interface: Ethernet3
-        #     tags:
-        #     - name: peer_device_interface
-        #       value: Ethernet3
-        all_interface_tags = get(structured_config, "metadata.cv_interface_tags", default=[])
+        #   cv_tags:
+        #     interface_tags:
+        #     - interface: Ethernet3
+        #       tags:
+        #       - name: peer_device_interface
+        #         value: Ethernet3
+        all_interface_tags = get(structured_config, "metadata.cv_tags.interface_tags", default=[])
         interface_tag_objects = [
             CVInterfaceTag(
                 label=interface_tag["name"],
@@ -261,8 +282,13 @@ class ActionModule(ActionBase):
             if "name" in interface_tag and "value" in interface_tag
         ]
 
+        # Build WAN metadata object for this device.
+        cv_pathfinder_metadata_objects = []
+        if (cv_pathfinder_metadata := get(structured_config, "metadata.cv_pathfinder")) is not None:
+            cv_pathfinder_metadata_objects.append(CVPathfinderMetadata(metadata=cv_pathfinder_metadata, device=device_object))
+
         del structured_config
-        return eos_config_objects, device_tag_objects, interface_tag_objects
+        return eos_config_objects, device_tag_objects, interface_tag_objects, cv_pathfinder_metadata_objects
 
 
 def setup_module_logging(result: dict) -> None:

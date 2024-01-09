@@ -9,10 +9,23 @@ from ..client import CVClient
 from ..client.exceptions import CVClientException
 from .create_workspace_on_cv import create_workspace_on_cv
 from .deploy_configs_to_cv import deploy_configs_to_cv
+from .deploy_cv_pathfinder_metadata_to_cv import deploy_cv_pathfinder_metadata_to_cv
+from .deploy_studio_inputs_to_cv import deploy_studio_inputs_to_cv
 from .deploy_tags_to_cv import deploy_tags_to_cv
 from .finalize_change_control_on_cv import finalize_change_control_on_cv
 from .finalize_workspace_on_cv import finalize_workspace_on_cv
-from .models import CloudVision, CVChangeControl, CVDeviceTag, CVEosConfig, CVInterfaceTag, CVTimeOuts, CVWorkspace, DeployToCvResult
+from .models import (
+    CloudVision,
+    CVChangeControl,
+    CVDeviceTag,
+    CVEosConfig,
+    CVInterfaceTag,
+    CVPathfinderMetadata,
+    CVStudioInputs,
+    CVTimeOuts,
+    CVWorkspace,
+    DeployToCvResult,
+)
 from .verify_devices_on_cv import verify_devices_on_cv
 
 LOGGER = getLogger(__name__)
@@ -25,6 +38,8 @@ async def deploy_to_cv(
     configs: list[CVEosConfig] | None = None,
     device_tags: list[CVDeviceTag] | None = None,
     interface_tags: list[CVInterfaceTag] | None = None,
+    studio_inputs: list[CVStudioInputs] | None = None,
+    cv_pathfinder_metadata: list[CVPathfinderMetadata] | None = None,
     skip_missing_devices: bool = False,
     strict_tags: bool = True,
     timeouts: CVTimeOuts | None = None,
@@ -39,7 +54,6 @@ async def deploy_to_cv(
     - The hostname will we updated in the I&T Studio.
     - The `serial_number` and `system_mac_address` properties will be inplace updated in the given CVDevice objects.
 
-    TODO: Add something for generic studio inputs.
     TODO: Respect timeouts and add more.
 
     Parameters:
@@ -53,6 +67,9 @@ async def deploy_to_cv(
         configs: Configs to be deployed using the "Static Configlet Studio".
         device_tags: Device Tags to be deployed and assigned.
         interface_tags: Interface Tags to be deployed and assigned.
+        studio_inputs: Studio Inputs to be deployed. \
+            It is not supported to update overlapping input paths for the same studio in the same deployment.
+        cv_pathfinder_metadata: Special metadata for CV Pathfinder solution. Metadata will be combined and deployed to the hidden metadata studio.
         skip_missing_devices: If `True` anything that can be deployed will get deployed. \
             Otherwise the Workspace will be abandoned on any issue.
         strict_tags: If `True` other tags associated with the devices will get removed. \
@@ -83,6 +100,8 @@ async def deploy_to_cv(
             - TODO: Consider if we should create a hierarchy of configuration containers. For now a single folder "AVD".
         + On CV add and assign device tags.
         + On CV add and assign interface tags.
+        + On CV deploy studio inputs
+        + On CV deploy cv_pathfinder_metadata
         + On CV build, submit, abandon, delete the Workspace as applicable based on requested state.
             + In-place update workspace and result object.
         + If not submitting the Workspace return the result object. Otherwise continue.
@@ -149,6 +168,20 @@ async def deploy_to_cv(
                 # Deploy configs
                 await deploy_configs_to_cv(
                     configs=configs,
+                    result=result,
+                    cv_client=cv_client,
+                )
+
+                # Deploy Studio Inputs
+                await deploy_studio_inputs_to_cv(
+                    studio_inputs=studio_inputs,
+                    result=result,
+                    cv_client=cv_client,
+                )
+
+                # Deploy CV Pathfinder metadata
+                await deploy_cv_pathfinder_metadata_to_cv(
+                    cv_pathfinder_metadata=cv_pathfinder_metadata,
                     result=result,
                     cv_client=cv_client,
                 )

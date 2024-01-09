@@ -85,6 +85,9 @@ For large inventories this can affect performance, so it is disabled by default.
       run_once: true
       delegate_to: localhost
       arista.avd.deploy_to_cv:
+        cv_servers: [ "www.arista.io" ]
+        cv_token: "<insert vaulted service account token here>"
+        # cv_verify_certs: True
         configuration_dir: "{{ inventory_dir }}/intended/configs"
         structured_config_dir: "{{ inventory_dir }}/intended/structured_configs"
         # structured_config_suffix: "yml"
@@ -92,9 +95,6 @@ For large inventories this can affect performance, so it is disabled by default.
         # strict_tags: false
         # skip_missing_devices: false
         # configlet_name_template: "AVD-${hostname}"
-        cv_servers: [ "www.arista.io" ]
-        cv_token: "<insert vaulted service account token here>"
-        # cv_verify_certs: True
         workspace:
         #   name:
         #   description:

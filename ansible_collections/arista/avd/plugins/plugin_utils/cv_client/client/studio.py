@@ -254,7 +254,7 @@ class StudioMixin:
         self: CVClient,
         studio_id: str,
         workspace_id: str,
-        inputs: str | None = None,
+        inputs: Any,
         input_path: list[str] | None = None,
         timeout: float = 10.0,
     ) -> InputsConfig:
@@ -264,8 +264,8 @@ class StudioMixin:
         Parameters:
             studio_id: Unique identifier for the studio.
             workspace_id: Unique identifier of the Workspace for which the information is set.
-            inputs: JSON encoded string with data to set at the given path.
-            input_path: Data path elements for setting specific inputs. Set at the root, replacing all inputs if not given.
+            inputs: Data to set at the given path.
+            input_path: Data path elements for setting specific inputs. If not given, inputs are set at the root, replacing all existing inputs.
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
@@ -281,7 +281,9 @@ class StudioMixin:
                     workspace_id=workspace_id,
                     path=RepeatedString(values=input_path),
                 ),
-                inputs=inputs,
+                # Dumping inputs to JSON using our special JSON Encoder which will also render UserString instances.
+                # UserString is needed to support the special DeferredFormatString object as a value.
+                inputs=json.dumps(inputs, cls=self.JsonEncodeWithUserString),
             )
         )
         client = InputsConfigServiceStub(self._channel)
@@ -395,7 +397,7 @@ class StudioMixin:
                     studio_id=TOPOLOGY_STUDIO_ID,
                     workspace_id=workspace_id,
                     input_path=["devices", str(device_index), "inputs", "device"],
-                    inputs=json.dumps(device_info),
+                    inputs=device_info,
                     timeout=timeout,
                 )
             )
