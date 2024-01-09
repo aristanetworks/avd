@@ -28,12 +28,12 @@ The current implementation supports the automatic conversions listed below.
 | `bool`, `str` | `int` |
 | `int`, `str` | `bool` |
 | `bool`, `int` | `str` |
-| `dict`*, `list`** | `list` |
+| `dict`¹, `list`² | `list` |
 
-\* If `primary_key` is set on the `list` schema, conversion from `dict`-of-`dicts` to `list`-of-`dicts` will insert the `primary_key`
+¹ If `primary_key` is set on the `list` schema, conversion from `dict`-of-`dicts` to `list`-of-`dicts` will insert the `primary_key`
 with the value of the outer dictionary key in each `dict`. If `primary_key` is *not* set on the `list` schema, only the input `dict`
-keys are returned as `list` items (any input `dict` values are lost).
-\*\* If `primary_key` is set on the `list` schema, conversion from `list` to `list`-of-`dicts` will insert the `primary_key` with the
+keys are returned as `list` items (any input `dict` values are lost).<br>
+² If `primary_key` is set on the `list` schema, conversion from `list` to `list`-of-`dicts` will insert the `primary_key` with the
 value of the input `list` items in each `dict`.
 
 An example of input variable conversion is `bgp_as`. `bgp_as` is expected as a string (`str`) since 32-bit AS numbers can be

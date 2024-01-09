@@ -298,7 +298,7 @@ class EosCliConfigGen(BaseModel):
             Example: "deny ip any any"
             """
 
-        name: str = None
+        name: Annotated[str, StrConvert(convert_types=(int))] = None
         """
         Access-list Name
         """
@@ -365,6 +365,203 @@ class EosCliConfigGen(BaseModel):
         Agent name.
         """
         environment_variables: list[EnvironmentVariablesItem] | None = Field(None, min_length=1)
+
+    class ApplicationTrafficRecognition(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class CategoriesItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class ApplicationsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str | None = None
+                """
+                Application name.
+                """
+                service: Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"] | None = None
+                """
+                Service Name.
+                Specific service to target for this application.
+                If no service is specified, all supported services of the
+                application are matched.
+                Not all valid values are valid for all applications, check on EOS CLI.
+                """
+
+            name: str = None
+            """
+            Category name.
+            """
+            applications: list[ApplicationsItem] | None = None
+            """
+            List of applications.
+            """
+
+        class FieldSets(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class L4PortsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+                """
+                L4 port field-set name.
+                """
+                port_values: list[Annotated[str, StrConvert(convert_types=(int))]] | None = None
+
+            class Ipv4PrefixesItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+                """
+                IPv4 prefix field-set name.
+                """
+                prefix_values: list[str] | None = None
+
+            l4_ports: list[L4PortsItem] | None = None
+            """
+            L4 port field-set.
+            """
+            ipv4_prefixes: list[Ipv4PrefixesItem] | None = None
+            """
+            IPv4 prefix field set.
+            """
+
+        class Applications(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class Ipv4ApplicationsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+                """
+                Application name.
+                """
+                src_prefix_set_name: str | None = None
+                """
+                Source prefix set name.
+                """
+                dest_prefix_set_name: str | None = None
+                """
+                Destination prefix set name.
+                """
+                protocols: list[str] | None = None
+                """
+                List of protocols to consider for this application.
+
+                To use port field-sets (source, destination or both), the list
+                must
+                contain only one or two protocols, either `tcp` or `udp`.
+                When using both protocols, one line is rendered for each in
+                the configuration,
+                hence the field-sets must have the same value for `tcp_src_port_set_name` and
+                `udp_src_port_set_name`
+                and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`
+                if set in order to generate valid configuration in EOS.
+                """
+                protocol_ranges: list[Annotated[str, StrConvert(convert_types=(int))]] | None = None
+                """
+                Acccept protocol value(s) or range(s).
+                Protocol values can be between 1 and 255.
+                """
+                udp_src_port_set_name: str | None = None
+                """
+                Name of field set for UDP source ports.
+
+                When the `protocols` list contain both `tcp` and `udp`, this key value
+                must be
+                the same as `tcp_src_port_set_name`.
+                """
+                tcp_src_port_set_name: str | None = None
+                """
+                Name of field set for TCP source ports.
+
+                When the `protocols` list contain both `tcp` and `udp`, this key value
+                must be
+                the same as `udp_src_port_set_name`.
+                """
+                udp_dest_port_set_name: str | None = None
+                """
+                Name of field set for UDP destination ports.
+
+                When the `protocols` list contain both `tcp` and `udp`, this key value
+                must be the same as `tcp_dest_port_set_name`.
+                """
+                tcp_dest_port_set_name: str | None = None
+                """
+                Name of field set for TCP destination ports.
+
+                When the `protocols` list contain both `tcp` and `udp`, this key value
+                must be the same as `udp_dest_port_set_name`.
+                """
+
+            ipv4_applications: list[Ipv4ApplicationsItem] | None = None
+            """
+            List of user defined IPv4 applications.
+            """
+
+        class ApplicationProfilesItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class ApplicationsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str | None = None
+                """
+                Application Name.
+                """
+                service: Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"] | None = None
+                """
+                Service Name.
+                Specific service to target for this application.
+                If no service is specified, all supported services of the
+                application are matched.
+                Not all valid values are valid for all applications, check on EOS CLI.
+                """
+
+            class CategoriesItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str | None = None
+                """
+                Name of a category.
+                """
+                service: Literal["audio-video", "chat", "default", "file-transfer", "networking-protocols", "peer-to-peer", "software-update"] | None = None
+                """
+                Service Name.
+                Specific service to target for this application.
+                If no service is specified, all supported services of the
+                application are matched.
+                Not all valid values are valid for all applications, check on EOS CLI.
+                """
+
+            name: str | None = None
+            """
+            Application Profile name.
+            """
+            applications: list[ApplicationsItem] | None = None
+            """
+            List of applications part of the application profile.
+            """
+            application_transports: list[str] | None = None
+            """
+            List of transport protocols.
+            """
+            categories: list[CategoriesItem] | None = None
+            """
+            Categories under this application profile.
+            """
+
+        categories: list[CategoriesItem] | None = None
+        """
+        List of categories.
+        """
+        field_sets: FieldSets | None = None
+        applications: Applications | None = None
+        application_profiles: list[ApplicationProfilesItem] | None = None
+        """
+        Group of applications.
+        """
 
     class Arp(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -470,7 +667,7 @@ class EosCliConfigGen(BaseModel):
             class Ip(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                access_group: str | None = None
+                access_group: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
                 Standard Access-List Name
                 """
@@ -487,7 +684,7 @@ class EosCliConfigGen(BaseModel):
             class Ip(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                access_group: str | None = None
+                access_group: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
                 IPv4 Access-List Name
                 """
@@ -495,7 +692,7 @@ class EosCliConfigGen(BaseModel):
             class Ipv6(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                access_group: str | None = None
+                access_group: Annotated[str, StrConvert(convert_types=(int))] | None = None
                 """
                 IPv6 Access-List Name
                 """
@@ -793,6 +990,77 @@ class EosCliConfigGen(BaseModel):
         servers: list[str] | None = None
         tunnel_requests_disabled: bool | None = None
         mlag_peerlink_requests_disabled: bool | None = None
+
+    class DhcpServersItem(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class Ipv4VendorOptionsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class SubOptionsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                code: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=254)
+                string: str | None = None
+                """
+                String value for suboption data.
+                Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be used
+                for any one suboption.
+                The order of precedence if multiple of these variables are defined is `string` -> `ipv4_address`
+                -> `array_ipv4_address`.
+                """
+                ipv4_address: str | None = None
+                """
+                IPv4 address value for suboption data.
+                Only one of `string`, `ipv4_address` and `array_ipv4_address` variables should be
+                used for any one suboption.
+                The order of precedence if multiple of these variables are defined is `string` ->
+                `ipv4_address` -> `array_ipv4_address`.
+                """
+                array_ipv4_address: list[str] | None = None
+                """
+                Array of IPv4 addresses for suboption data.
+                Only one of `string`, `ipv4_address` and `array_ipv4_address` variables
+                should be used for any one suboption.
+                The order of precedence if multiple of these variables are defined is `string` ->
+                `ipv4_address` -> `array_ipv4_address`.
+                """
+
+            vendor_id: Annotated[str, StrConvert(convert_types=(int))] = None
+            sub_options: list[SubOptionsItem] | None = None
+
+        class SubnetsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class RangesItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                start: str = None
+                end: str = None
+
+            class LeaseTime(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                days: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=2000)
+                hours: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=23)
+                minutes: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=0, le=59)
+
+            subnet: str = None
+            name: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            default_gateway: str | None = None
+            dns_servers: list[str] | None = None
+            ranges: list[RangesItem] | None = None
+            lease_time: LeaseTime | None = None
+
+        disabled: bool | None = None
+        vrf: Annotated[str, StrConvert(convert_types=(int))] = None
+        """
+        VRF in which to configure the DHCP server, use `default` to indicate default VRF.
+        """
+        dns_domain_name_ipv4: str | None = None
+        dns_domain_name_ipv6: str | None = None
+        ipv4_vendor_options: list[Ipv4VendorOptionsItem] | None = None
+        subnets: list[SubnetsItem] | None = None
 
     class Dot1x(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1922,10 +2190,14 @@ class EosCliConfigGen(BaseModel):
         """
         Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         """
-        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
-        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
+        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
         """
         "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
+        """
+        l2_mru: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
+        """
+        "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
         """
         vlans: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
@@ -2634,7 +2906,7 @@ class EosCliConfigGen(BaseModel):
             0x000-0xFFF VLAN mask.
             """
 
-        name: str = None
+        name: Annotated[str, StrConvert(convert_types=(int))] = None
         """
         Access-list Name
         """
@@ -2682,6 +2954,37 @@ class EosCliConfigGen(BaseModel):
         information_option: bool | None = None
         """
         Insert Option-82 information
+        """
+
+    class IpDhcpSnooping(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class InformationOption(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            enabled: bool | None = None
+            """
+            Enable insertion of option-82 in DHCP request packets
+            """
+            circuit_id_type: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            "none" or <0 - 255>
+            """
+            circuit_id_format: Literal["%h:%p", "%p:%v"] | None = None
+            """
+            Required if `circuit_id_type` is set.
+            - "%h:%p" Hostname and interface name
+            - "%p:%v" Interface name and VLAN ID
+            """
+
+        enabled: bool | None = None
+        bridging: bool | None = None
+        information_option: InformationOption | None = None
+        vlan: Annotated[str, StrConvert(convert_types=(int))] | None = None
+        """
+        VLAN range as string.
+        "< vlan_id >, < vlan_id >-< vlan_id >"
+        Example: 15,16,17,18
         """
 
     class IpDomainLookup(AvdDictBaseModel):
@@ -3236,7 +3539,7 @@ class EosCliConfigGen(BaseModel):
             Example: "deny ipv6 any any"
             """
 
-        name: str = None
+        name: Annotated[str, StrConvert(convert_types=(int))] = None
         """
         IPv6 Access-list Name
         """
@@ -3304,7 +3607,7 @@ class EosCliConfigGen(BaseModel):
             Example: "deny ipv6 any any"
             """
 
-        name: str = None
+        name: Annotated[str, StrConvert(convert_types=(int))] = None
         """
         Access-list Name
         """
@@ -3510,11 +3813,15 @@ class EosCliConfigGen(BaseModel):
             """
             hostname: Literal["fqdn", "ipv4"] | None = None
             """
-            Hostname format
+            Hostname format in syslogs. For hostname _only_, remove the line. (default EOS CLI behaviour).
             """
             sequence_numbers: bool | None = None
             """
             Add sequence numbers to log messages
+            """
+            rfc5424: bool | None = None
+            """
+            Forward logs in RFC5424 format
             """
 
         class VrfsItem(AvdDictBaseModel):
@@ -3693,7 +4000,7 @@ class EosCliConfigGen(BaseModel):
             sequence: Annotated[int, IntConvert(convert_types=(str))] | None = None
             action: str | None = None
 
-        name: str = None
+        name: Annotated[str, StrConvert(convert_types=(int))] = None
         """
         MAC Access-list Name
         """
@@ -4279,6 +4586,12 @@ class EosCliConfigGen(BaseModel):
             trust_certificate: TrustCertificate | None = None
             chain_certificate: ChainCertificate | None = None
             certificate: Certificate | None = None
+            certificate_revocation_lists: list[str] | None = None
+            """
+            List of CRLs (Certificate Revocation List).
+            If specified, one CRL needs to be provided for every certificate in the
+            chain, even if the revocation list in the CRL is empty.
+            """
 
         entropy_source: str | None = None
         password: Password | None = None
@@ -4455,6 +4768,11 @@ class EosCliConfigGen(BaseModel):
 
         shutdown: bool | None = None
         cvx_secondary: CvxSecondary | None = None
+
+    class Metadata(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        platform: str | None = None
 
     class MlagConfiguration(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -4739,7 +5057,7 @@ class EosCliConfigGen(BaseModel):
         authenticate: bool | None = None
         authenticate_servers_only: bool | None = None
         authentication_keys: list[AuthenticationKeysItem] | None = None
-        trusted_keys: str | None = None
+        trusted_keys: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
         List of trusted-keys as string ex. 10-12,15
         """
@@ -4907,6 +5225,10 @@ class EosCliConfigGen(BaseModel):
             lag: Lag | None = None
             forwarding_mode: str | None = None
             multicast_replication: MulticastReplication | None = None
+            mdb_profile: Literal["balanced", "balanced-xl", "l3", "l3-xl", "l3-xxl", "l3-xxxl"] | None = None
+            """
+            Sand platforms MDB Profile configuration. Note: l3-xxxl does not support MLAG.
+            """
 
         class Sfe(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -5523,9 +5845,13 @@ class EosCliConfigGen(BaseModel):
         description: str | None = None
         logging: Logging | None = None
         shutdown: bool | None = None
-        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
         """
         "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
+        """
+        l2_mru: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
+        """
+        "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
         """
         vlans: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
@@ -5563,7 +5889,7 @@ class EosCliConfigGen(BaseModel):
         link_tracking_groups: list[LinkTrackingGroupsItem] | None = None
         phone: Phone | None = None
         l2_protocol: L2Protocol | None = None
-        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
         mlag: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=2000)
         """
         MLAG ID
@@ -6454,6 +6780,79 @@ class EosCliConfigGen(BaseModel):
             name: str = None
             id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=10000)
 
+        class ProfilesItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            name: str = None
+            """
+            AVT Name.
+            """
+            load_balance_policy: str | None = None
+            """
+            Name of the load-balance policy.
+            """
+            internet_exit_policy: str | None = None
+            """
+            Name of the internet exit policy.
+            """
+
+        class PoliciesItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class MatchesItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                application_profile: str | None = None
+                """
+                Application profile name.
+                """
+                avt_profile: str | None = None
+                """
+                AVT Profile name.
+                """
+                dscp: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=63)
+                """
+                Set DSCP for matched traffic.
+                """
+                traffic_class: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=7)
+                """
+                Set traffic-class for matched traffic.
+                """
+
+            name: str = None
+            """
+            Policy name.
+            """
+            matches: list[MatchesItem] | None = None
+
+        class VrfsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class ProfilesItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str | None = None
+                """
+                AVT profile name.
+                """
+                id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=254)
+                """
+                Unique ID for this AVT (per VRF).
+                """
+
+            name: str = None
+            """
+            VRF name.
+            """
+            policy: str | None = None
+            """
+            AVT Policy name.
+            """
+            profiles: list[ProfilesItem] | None = None
+            """
+            AVT profiles in this VRF.
+            """
+
         topology_role: Literal["edge", "pathfinder", "transit region", "transit zone"] | None = None
         """
         Role name.
@@ -6470,6 +6869,12 @@ class EosCliConfigGen(BaseModel):
         """
         Site name and ID.
         """
+        profiles: list[ProfilesItem] | None = None
+        policies: list[PoliciesItem] | None = None
+        """
+        A sequence of application profiles mapped to some virtual topologies.
+        """
+        vrfs: list[VrfsItem] | None = None
 
     class RouterBfd(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -6523,6 +6928,10 @@ class EosCliConfigGen(BaseModel):
             Rate in milliseconds
             """
             initiator_multiplier: int | None = Field(None, ge=3, le=50)
+            initiator_measurement_round_trip: bool | None = None
+            """
+            Enable round-trip delay measurement
+            """
             reflector: Reflector | None = None
 
         interval: int | None = None
@@ -6685,6 +7094,19 @@ class EosCliConfigGen(BaseModel):
                 enabled: bool | None = None
                 replace_as: bool | None = None
 
+            class BfdTimers(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                interval: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                """
+                Interval in milliseconds.
+                """
+                min_rx: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                """
+                Rate in milliseconds.
+                """
+                multiplier: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=3, le=50)
+
             class DefaultOriginate(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -6760,6 +7182,13 @@ class EosCliConfigGen(BaseModel):
             """
             route_reflector_client: bool | None = None
             bfd: bool | None = None
+            """
+            Enable BFD.
+            """
+            bfd_timers: BfdTimers | None = None
+            """
+            Override default BFD timers. BFD must be enabled with `bfd: true`.
+            """
             ebgp_multihop: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=255)
             """
             Time-to-live in range of hops
@@ -6823,6 +7252,19 @@ class EosCliConfigGen(BaseModel):
                 Disable prepending own AS number to AS path
                 """
 
+            class BfdTimers(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                interval: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                """
+                Interval in milliseconds.
+                """
+                min_rx: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                """
+                Rate in milliseconds.
+                """
+                multiplier: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=3, le=50)
+
             class DefaultOriginate(AvdDictBaseModel):
                 model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -6881,6 +7323,10 @@ class EosCliConfigGen(BaseModel):
             """
             BGP AS-PATH options
             """
+            peer: str | None = None
+            """
+            Key only used for documentation or validation purposes
+            """
             description: str | None = None
             route_reflector_client: bool | None = None
             password: str | None = None
@@ -6891,6 +7337,13 @@ class EosCliConfigGen(BaseModel):
             Source Interface
             """
             bfd: bool | None = None
+            """
+            Enable BFD.
+            """
+            bfd_timers: BfdTimers | None = None
+            """
+            Override default BFD timers. BFD must be enabled with `bfd: true`.
+            """
             weight: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=65535)
             timers: str | None = None
             """
@@ -6943,6 +7396,10 @@ class EosCliConfigGen(BaseModel):
             Interface name
             """
             remote_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            peer: str | None = None
+            """
+            Key only used for documentation or validation purposes
+            """
             peer_group: str | None = "Peer-group name"
             description: str | None = None
             peer_filter: str | None = None
@@ -8043,6 +8500,19 @@ class EosCliConfigGen(BaseModel):
                     Disable prepending own AS number to AS path
                     """
 
+                class BfdTimers(AvdDictBaseModel):
+                    model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                    interval: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                    """
+                    Interval in milliseconds.
+                    """
+                    min_rx: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=50, le=60000)
+                    """
+                    Rate in milliseconds.
+                    """
+                    multiplier: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=3, le=50)
+
                 class RibInPrePolicyRetain(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
@@ -8099,6 +8569,13 @@ class EosCliConfigGen(BaseModel):
                 next_hop_self: bool | None = None
                 shutdown: bool | None = None
                 bfd: bool | None = None
+                """
+                Enable BFD.
+                """
+                bfd_timers: BfdTimers | None = None
+                """
+                Override default BFD timers. BFD must be enabled with `bfd: true`.
+                """
                 timers: str | None = None
                 """
                 BGP Keepalive and Hold Timer values in seconds as string "<0-3600> <0-3600>"
@@ -8239,6 +8716,14 @@ class EosCliConfigGen(BaseModel):
                     """
                     Outbound route-map name
                     """
+                    prefix_list_in: str | None = None
+                    """
+                    Inbound prefix-list name
+                    """
+                    prefix_list_out: str | None = None
+                    """
+                    Outbound prefix-list name
+                    """
                     next_hop: NextHop | None = None
 
                 class NetworksItem(AvdDictBaseModel):
@@ -8304,6 +8789,14 @@ class EosCliConfigGen(BaseModel):
                     route_map_out: str | None = None
                     """
                     Outbound route-map name
+                    """
+                    prefix_list_in: str | None = None
+                    """
+                    Inbound prefix-list name
+                    """
+                    prefix_list_out: str | None = None
+                    """
+                    Outbound prefix-list name
                     """
 
                 class NetworksItem(AvdDictBaseModel):
@@ -9320,7 +9813,7 @@ class EosCliConfigGen(BaseModel):
                 class Stun(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    server_profiles: list[str] = Field(None, min_length=1, max_length=2)
+                    server_profiles: list[str] = Field(None, min_length=1, max_length=12)
                     """
                     STUN server-profile names.
                     """
@@ -9341,7 +9834,7 @@ class EosCliConfigGen(BaseModel):
                 class Stun(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    server_profiles: list[str] = Field(None, min_length=1, max_length=2)
+                    server_profiles: list[str] = Field(None, min_length=1, max_length=12)
                     """
                     STUN server-profile names.
                     """
@@ -9412,11 +9905,41 @@ class EosCliConfigGen(BaseModel):
         class LoadBalancePoliciesItem(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
+            class PathGroupsItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+                """
+                Path-group name
+                """
+                priority: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                """
+                Priority for this path-group.
+                The EOS default value is 1.
+                """
+
             name: str = None
             """
             Load-balance policy name.
             """
-            path_groups: list[str] | None = None
+            lowest_hop_count: bool | None = None
+            """
+            Prefer paths with lowest hop-count.
+            """
+            jitter: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=10000)
+            """
+            Jitter requirement for this load balance policy in milliseconds.
+            """
+            latency: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=0, le=10000)
+            """
+            One way delay requirement for this load balance policy in milliseconds.
+            """
+            loss_rate: Annotated[str, StrConvert(convert_types=(int, float))] | None = Field(None, pattern=r"^\d+(\.\d{1,2})?$")
+            """
+            Loss Rate requirement in percentage for this load balance policy.
+            Value between 0.00 and 100.00 %
+            """
+            path_groups: list[PathGroupsItem] | None = None
             """
             List of path-groups to use for this load balance policy.
             """
@@ -9723,6 +10246,7 @@ class EosCliConfigGen(BaseModel):
             modules: list[ModulesItem] | None = None
 
         sample: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        sample_input_subinterface: bool | None = None
         dangerous: bool | None = None
         polling_interval: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
@@ -10067,7 +10591,7 @@ class EosCliConfigGen(BaseModel):
             Example: "deny ip any any"
             """
 
-        name: str = None
+        name: Annotated[str, StrConvert(convert_types=(int))] = None
         """
         Access-list Name
         """
@@ -10113,25 +10637,62 @@ class EosCliConfigGen(BaseModel):
 
                 name: str = None
                 ip_address: str | None = None
+                ssl_profile: str | None = None
+                """
+                SSL profile name.
+                """
+                port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+                """
+                Destination port for the request STUN server (default - 3478).
+                """
 
             server_profiles: list[ServerProfilesItem] | None = None
             """
-            List of server profiles for the client
+            List of server profiles for the client.
             """
 
         class Server(AvdDictBaseModel):
             model_config = ConfigDict(defer_build=True, extra="forbid")
 
+            class SslConnectionLifetime(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                minutes: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=1440)
+                """
+                SSL connection lifetime in minutes (default - 120).
+                """
+                hours: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=24)
+                """
+                SSL connection lifetime in hours (default - 2).
+                """
+
             local_interface: str | None = None
             local_interfaces: list[str] | None = Field(None, min_length=1)
+            bindings_timeout: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=10, le=7200)
+            """
+            Timeout for bindings stored on STUN server in seconds.
+            """
+            ssl_profile: str | None = None
+            """
+            SSL profile name.
+            """
+            ssl_connection_lifetime: SslConnectionLifetime | None = None
+            """
+            SSL connection lifetime in minutes or hours.
+            If both are specified, minutes is given higher precedence.
+            """
+            port: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+            """
+            Listening port for STUN server (default - 3478).
+            """
 
         client: Client | None = None
         """
-        STUN client settings
+        STUN client settings.
         """
         server: Server | None = None
         """
-        STUN server settings
+        STUN server settings.
         """
 
     class SwitchportDefault(AvdDictBaseModel):
@@ -10776,7 +11337,7 @@ class EosCliConfigGen(BaseModel):
                 class BoundariesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    boundary: str = None
+                    boundary: Annotated[str, StrConvert(convert_types=(int))] = None
                     """
                     IPv4 access-list name or IPv4 multicast group prefix with mask
                     """
@@ -10801,7 +11362,7 @@ class EosCliConfigGen(BaseModel):
                 class BoundariesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
 
-                    boundary: str = None
+                    boundary: Annotated[str, StrConvert(convert_types=(int))] = None
                     """
                     IPv6 access-list name or IPv6 multicast group prefix with mask
                     """
@@ -11055,19 +11616,19 @@ class EosCliConfigGen(BaseModel):
         ipv6_nd_managed_config_flag: bool | None = None
         ipv6_nd_prefixes: list[Ipv6NdPrefixesItem] | None = None
         ipv6_dhcp_relay_destinations: list[Ipv6DhcpRelayDestinationsItem] | None = None
-        access_group_in: str | None = None
+        access_group_in: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
         IPv4 access-list name
         """
-        access_group_out: str | None = None
+        access_group_out: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
         IPv4 access-list name
         """
-        ipv6_access_group_in: str | None = None
+        ipv6_access_group_in: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
         IPv6 access-list name
         """
-        ipv6_access_group_out: str | None = None
+        ipv6_access_group_out: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
         IPv6 access-list name
         """
@@ -11320,6 +11881,10 @@ class EosCliConfigGen(BaseModel):
       alias siib show ip interface brief
     ```
     """
+    application_traffic_recognition: ApplicationTrafficRecognition | None = None
+    """
+    Application traffic recognition configuration.
+    """
     arp: Arp | None = None
     as_path: AsPath | None = None
     avd_data_conversion_mode: Literal["disabled", "error", "warning", "info", "debug", "quiet"] | None = "debug"
@@ -11403,6 +11968,7 @@ class EosCliConfigGen(BaseModel):
     ocprometheus.
     """
     dhcp_relay: DhcpRelay | None = None
+    dhcp_servers: list[DhcpServersItem] | None = None
     dns_domain: str | None = None
     """
     Domain Name
@@ -11468,6 +12034,7 @@ class EosCliConfigGen(BaseModel):
     Communities and regexp entries MUST not be configured in the same community-list
     """
     ip_dhcp_relay: IpDhcpRelay | None = None
+    ip_dhcp_snooping: IpDhcpSnooping | None = None
     ip_domain_lookup: IpDomainLookup | None = None
     ip_extcommunity_lists: list[IpExtcommunityListsItem] | None = Field(None, title="IP Extended Community Lists")
     ip_extcommunity_lists_regexp: list[IpExtcommunityListsRegexpItem] | None = Field(None, title="IP Extended Community Lists RegExp")
@@ -11526,6 +12093,10 @@ class EosCliConfigGen(BaseModel):
     management_tech_support: ManagementTechSupport | None = None
     match_list_input: MatchListInput | None = Field(None, title="Match Lists")
     mcs_client: McsClient | None = None
+    metadata: Metadata | None = None
+    """
+    Key only used for documentation or validation purposes
+    """
     mlag_configuration: MlagConfiguration | None = Field(None, title="Multi-Chassis Link Aggregation (MLAG) Configuration")
     monitor_connectivity: MonitorConnectivity | None = None
     monitor_sessions: list[MonitorSessionsItem] | None = None
@@ -11590,7 +12161,7 @@ class EosCliConfigGen(BaseModel):
     static_routes: list[StaticRoutesItem] | None = None
     stun: Stun | None = None
     """
-    STUN configuration
+    STUN configuration.
     """
     switchport_default: SwitchportDefault | None = None
     system: System | None = None
