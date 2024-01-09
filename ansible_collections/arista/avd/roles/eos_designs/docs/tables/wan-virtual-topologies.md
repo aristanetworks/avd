@@ -45,11 +45,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;categories</samp>](## "application_traffic_recognition.application_profiles.[].categories") | List, items: Dictionary |  |  |  | Categories under this application profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "application_traffic_recognition.application_profiles.[].categories.[].name") | String |  |  |  | Name of a category. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;service</samp>](## "application_traffic_recognition.application_profiles.[].categories.[].service") | String |  |  | Valid Values:<br>- <code>audio-video</code><br>- <code>chat</code><br>- <code>default</code><br>- <code>file-transfer</code><br>- <code>networking-protocols</code><br>- <code>peer-to-peer</code><br>- <code>software-update</code> | Service Name.<br>Specific service to target for this application.<br>If no service is specified, all supported services of the application are matched.<br>Not all valid values are valid for all applications, check on EOS CLI. |
-    | [<samp>wan_virtual_topologies</samp>](## "wan_virtual_topologies") | Dictionary |  |  |  | PREVIEW: WAN Preview<br><br>Configure AVTs for CV Pathfinder and AutoVPN. |
-    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "wan_virtual_topologies.vrfs") | List, items: Dictionary |  |  |  | Map a VRF that exists in network_services to an AVT policy.<br>Auto create a control plane profile/policy/application and enforce it being first. |
+    | [<samp>wan_virtual_topologies</samp>](## "wan_virtual_topologies") | Dictionary |  |  |  | PREVIEW: WAN Preview<br><br>Configure Virtual Topologies for CV Pathfinder and AutoVPN.<br><br>Auto create a control plane profile/policy/application and enforce it being first in the default VRF. |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "wan_virtual_topologies.vrfs") | List, items: Dictionary |  |  |  | Map a VRF that exists in network_services to an AVT policy.<br>TODO: missing default VRF behavior |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "wan_virtual_topologies.vrfs.[].policy") | String |  |  |  | Name of the AVT policy to apply to this VRF. |
-    | [<samp>&nbsp;&nbsp;control_plane_virtual_topology</samp>](## "wan_virtual_topologies.control_plane_virtual_topology") | Dictionary |  |  |  | Always injected into the default VRF policy as the first entry.<br>By default, if no path-groups are specified, all available path-groups are used in the<br>generate load-balance policy. |
+    | [<samp>&nbsp;&nbsp;control_plane_virtual_topology</samp>](## "wan_virtual_topologies.control_plane_virtual_topology") | Dictionary |  |  |  | Always injected into the default VRF policy as the first entry.<br><br>By default, if no path-groups are specified, all locally available path-groups<br>are used in the generated load-balance policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.name") | String |  |  |  | Optional name, if not set `CONTROL-PLANE-PROFILE` is used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.id") | Integer | Required | `254` | Min: 1<br>Max: 254 | ID of the control plane AVT in the default VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
@@ -58,7 +58,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].priority") | String | Required, Unique |  |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
-    | [<samp>&nbsp;&nbsp;policies</samp>](## "wan_virtual_topologies.policies") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;policies</samp>](## "wan_virtual_topologies.policies") | List, items: Dictionary |  |  |  | List of virtual toplogies policies.<br><br>For AutoVPN, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item<br>        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.<br>      * one `default-match`<br>  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane rule is injected<br>    in the policy with index `1` referring to a control-plane load-balance policy as defined under<br>    `control_plane_virtual_topology`.<br><br><br>For CV Pathfinder, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item ordered as in the model.<br>      * one last match entry for the `default` application-profile using `default_virtual_topology` information.<br>  * one profile per `application_virtual_topologies` item.<br>  * one profile for the `default_virtual_topology`..<br>  * one load-balance policy per `application_virtual_topologies`.<br>  * one load_balance policy for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane profile is configured<br>    and injected first in the policy assigned to the `default` VRF. This profile points to a<br>    control-plane load-balance policy as defined under `control_plane_virtual_topology`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].name") | String | Required, Unique |  |  | Name of the AVT policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_virtual_topologies</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies") | List, items: Dictionary |  |  |  | List of application specific virtual topologies. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_profile</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].application_profile") | String | Required, Unique |  |  | The application profile to use for this virtual topology. It must be a defined `application_profile`. |
@@ -219,11 +219,13 @@
 
     # PREVIEW: WAN Preview
 
-    # Configure AVTs for CV Pathfinder and AutoVPN.
+    # Configure Virtual Topologies for CV Pathfinder and AutoVPN.
+
+    # Auto create a control plane profile/policy/application and enforce it being first in the default VRF.
     wan_virtual_topologies:
 
       # Map a VRF that exists in network_services to an AVT policy.
-      # Auto create a control plane profile/policy/application and enforce it being first.
+      # TODO: missing default VRF behavior
       vrfs:
 
           # VRF name.
@@ -233,8 +235,9 @@
           policy: <str>
 
       # Always injected into the default VRF policy as the first entry.
-      # By default, if no path-groups are specified, all available path-groups are used in the
-      # generate load-balance policy.
+
+      # By default, if no path-groups are specified, all locally available path-groups
+      # are used in the generated load-balance policy.
       control_plane_virtual_topology:
 
         # Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
@@ -259,6 +262,31 @@
             # preferred is converted to priority 1.
             # alternate is converted to priority 2.
             priority: <str; required; unique>
+
+      # List of virtual toplogies policies.
+
+      # For AutoVPN, each item in the list creates:
+      #   * one policy with:
+      #       * one `match` entry per `application_virtual_topologies` item
+      #         they are indexed using `10 * <list_index>` where `list_index` starts at `1`.
+      #       * one `default-match`
+      #   * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.
+      #   * if the policy is associated with the default VRF, a special control-plane rule is injected
+      #     in the policy with index `1` referring to a control-plane load-balance policy as defined under
+      #     `control_plane_virtual_topology`.
+
+
+      # For CV Pathfinder, each item in the list creates:
+      #   * one policy with:
+      #       * one `match` entry per `application_virtual_topologies` item ordered as in the model.
+      #       * one last match entry for the `default` application-profile using `default_virtual_topology` information.
+      #   * one profile per `application_virtual_topologies` item.
+      #   * one profile for the `default_virtual_topology`..
+      #   * one load-balance policy per `application_virtual_topologies`.
+      #   * one load_balance policy for the `default_virtual_topology`.
+      #   * if the policy is associated with the default VRF, a special control-plane profile is configured
+      #     and injected first in the policy assigned to the `default` VRF. This profile points to a
+      #     control-plane load-balance policy as defined under `control_plane_virtual_topology`.
       policies:
 
           # Name of the AVT policy.
