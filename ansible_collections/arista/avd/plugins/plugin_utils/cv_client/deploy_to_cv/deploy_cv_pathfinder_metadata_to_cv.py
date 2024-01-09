@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from functools import lru_cache
 from logging import getLogger
 
 from ...utils import get
@@ -17,27 +16,24 @@ CV_PATHFINDER_METADATA_STUDIO_ID = "cv-pathfinder-metadata"
 CV_PATHFINDER_DEFAULT_STUDIO_INPUTS = {"pathfinders": [], "pathgroups": [], "regions": [], "routers": [], "vrfs": [], "version": 3}
 
 
-@lru_cache
-def get_pathfinder_serial_number_from_public_ip(public_ip: str, studio_inputs: dict) -> str:
-    """
-    Look for the public IP across all pathfinders and their WAN interfaces.
-    Return the serial number if a match is found. Otherwise raise LookupError.
-    """
-    LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: get_pathfinder_serial_number_from_public_ip %s", public_ip)
-
-    for pathfinder in studio_inputs["pathfinders"]:
-        for interface in get(pathfinder, "inputs.router.wanInterfaces", required=True):
-            if get(interface, "inputs.details.publicIP", required=True) == public_ip:
-                return str(get(pathfinder, "tags.query", required=True)).removeprefix("device:")
-
-    raise LookupError(f"Unable to find serial number for pathfinder with public IP {public_ip}.")
-
-
 def update_general_metadata(metadata: dict, studio_inputs: dict) -> None:
     """
     In-place update general metadata in studio_inputs.
     """
-    studio_inputs.update()
+    studio_inputs.update(
+        {
+            "pathgroups": [
+                {
+                    "carriers": get(pathgroup, "carriers", required=True),
+                    "importedCarriers": get(pathgroup, "imported_carriers", required=True),
+                    "name": get(pathgroup, "name", required=True),
+                }
+                for pathgroup in get(metadata, "pathgroups", required=True)
+            ],
+            "regions": get(metadata, "regions", required=True),
+            "vrfs": get(metadata, "vrfs", required=True),
+        }
+    )
 
 
 def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
@@ -93,16 +89,7 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict) -> None:
     edge_metadata = {
         "inputs": {
             "router": {
-                "pathfinders": [
-                    {
-                        "pathfinder": {
-                            "tags": {
-                                "query": f"device:{get_pathfinder_serial_number_from_public_ip(public_ip, studio_inputs)}",
-                            }
-                        },
-                    }
-                    for public_ip in metadata.get("pathfinder_public_ips", [])
-                ],
+                "pathfinders": metadata.get("pathfinders", []),
                 "region": metadata.get("region", ""),
                 "role": metadata.get("role", ""),
                 "site": metadata.get("site", ""),
@@ -147,6 +134,69 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
     The given metadata is parsed and updated onto the existing metadata studio inputs.
 
     TODO: Remove stale metadata - not sure how to deduct this.
+
+    Example of metadata for an edge (below metadata.cv_pathfinder in structured config):
+    ```yaml
+    ---
+    pathfinders:
+      - public_ip: 10.2.3.4
+    region: EMEA
+    role: "transit region"
+    site: Paris
+    vtep_ip: 10.10.10.10
+    interfaces:
+      - name: Ethernet1
+        carrier: BT
+        circuit_id: ABC123
+        pathgroup: INET
+    zone: EU
+    ```
+
+    Example of metadata for a pathfinder (below metadata.cv_pathfinder in structured config):
+    ```yaml
+    ---
+    role: pathfinder
+    ssl_profile: VERYSAFE
+    vtep_ip: 10.0.1.1
+    interfaces:
+      - carrier: BT
+        circuit_id: XYZ987
+        name: Ethernet2
+        pathgroup: INET
+        public_ip: 10.2.3.4
+    pathgroups:
+      - carriers:
+          - name: BT
+        imported_carriers:
+          - name: 5GLTE
+        name: INET
+    regions:
+      - id: 1
+        name: EMEA
+        zones:
+          - id: 1
+            name: DefaultZone
+            sites:
+              - id: 1
+                name: Paris
+                location: 99, rue de Rivoli, 75001 Paris
+    vrfs:
+      - avts:
+          - constraints:
+              jitter: 50
+              latency: 200
+              lossrate: 0.1
+            description: Voice AVT
+            id: 1
+            name: Voice
+            pathgroups:
+              - name: INET
+                preference: preferred
+              - name: BACKUP
+                preference: alternate
+        name: HR
+        vni: 100
+    ```
     """
 
     LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: %s", len(cv_pathfinder_metadata))
