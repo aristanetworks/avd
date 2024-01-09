@@ -24,6 +24,20 @@ ansible --version &> /dev/null ||  if ! [ -z "${AVD_GITHUB_REPO}" ] && ! [ -z "$
   pip3 install -r ${HOME}/.ansible/collections/ansible_collections/arista/avd/requirements-dev.txt
 fi
 
+# In some cases AVD can not be correctly mounted, for ex. when running dev container as Codespace
+# In that case if collection is available in the container workspace, it will be installed from there
+CONTAINER_WORKSPACE=$(git rev-parse --show-toplevel)
+AVD_DEV_REQ_FILE_ALT="${CONTAINER_WORKSPACE}/ansible_collections/arista/avd/requirements-dev.txt"
+ansible --version &> /dev/null ||  if [ -f $AVD_DEV_REQ_FILE_ALT ]; then
+  sudo chown -R ${USERNAME} ${HOME}/.ansible
+  ANSIBLE_CORE_VERSION=$(cat ${AVD_DEV_REQ_FILE_ALT}| grep ansible-core)
+  pip3 install "${ANSIBLE_CORE_VERSION}"
+  ansible-galaxy collection install ${CONTAINER_WORKSPACE}/ansible_collections/arista/avd/
+  ansible-galaxy collection install -r ${CONTAINER_WORKSPACE}/ansible_collections/arista/avd/collections.yml
+  pip3 install -r ${CONTAINER_WORKSPACE}/ansible_collections/arista/avd/requirements.txt
+  pip3 install -r ${CONTAINER_WORKSPACE}/ansible_collections/arista/avd/requirements-dev.txt
+fi
+
 ansible --version &> /dev/null ||  (echo "ERROR: Failed to install Ansible and collections." >&2; exit 1)
 
 # Execute command from docker cli if any.
