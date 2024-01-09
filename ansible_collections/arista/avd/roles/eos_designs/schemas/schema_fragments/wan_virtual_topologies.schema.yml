@@ -34,42 +34,17 @@ keys:
         type: dict
         description: |-
           Always injected into the default VRF policy as the first entry.
-          Defaults will prefer all path groups where pathfinders can be reached.
+          By default, if no path-groups are specified, all available path-groups are used in the
+          generate load-balance policy.
+        $ref: "eos_designs#/$defs/application_virtual_topologies"
         keys:
           name:
             type: str
-            description: Default is `<avt_policy_name>_control_plane_default`
+            description: Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
           id:
             type: int
-            convert_types:
-              - str
-            description: |-
-              TODO min/max
-
-              ID of the control plane AVT in the default VRFs.
-          # TODO make a defs maybe with other keys, id, traffic_class, dscp
-          path_groups:
-            type: list
-            primary_key: priority
-            items:
-              type: dict
-              keys:
-                names:
-                  type: list
-                  description: List of path-group names.
-                  required: true
-                  min_length: 1
-                  items:
-                    type: str
-                priority:
-                  type: str
-                  convert_types:
-                    - int
-                  description: |-
-                    Valid values are 1-255 | preferred | alternate.
-
-                    preferred is converted to priority 1.
-                    alternate is converted to priority 2.
+            description: ID of the control plane AVT in the default VRF.
+            default: 254
       policies:
         type: list
         primary_key: name
@@ -79,86 +54,30 @@ keys:
             name:
               type: str
               description: Name of the AVT policy.
-            application_policies:
+            application_virtual_topologies:
               type: list
-              description: List of application specific policies.
+              description: List of application specific virtual topologies.
               primary_key: application_profile
               items:
                 type: dict
+                $ref: "eos_designs#/$defs/application_virtual_topologies"
                 keys:
                   application_profile:
                     type: str
-                    description: The application profile to use for this policy. It must be a defined `application_profile`.
+                    description: The application profile to use for this virtual topology. It must be a defined `application_profile`.
                   name:
                     type: str
                     description: Optional name, if not set `<policy_name>_<application_profile>` is used.
                   id:
                     type: int
-                    description: |-
-                      TODO min/max
-
-                      ID of the default AVT in each VRFs. ID must be unique across all policies.
-                  traffic_class:
-                    type: int
-                    $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/traffic_class"
-                  dscp:
-                    type: int
-                    $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp"
-                  path_groups:
-                    type: list
-                    primary_key: priority
-                    items:
-                      type: dict
-                      keys:
-                        names:
-                          type: list
-                          description: List of path-group names.
-                          required: true
-                          min_length: 1
-                          items:
-                            type: str
-                        priority:
-                          type: str
-                          convert_types:
-                            - int
-                          description: |-
-                            Valid values are 1-255 | preferred | alternate.
-
-                            preferred is converted to priority 1.
-                            alternate is converted to priority 2.
-            default_policy:
+                    description: ID of the AVT in each VRFs. ID must be unique across all virtual topologies.
+            default_virtual_topology:
               type: dict
+              $ref: "eos_designs#/$defs/application_virtual_topologies"
               keys:
                 name:
                   type: str
                   description: Optional name, if not set `<policy_name>_default` is used.
                 id:
                   type: int
-                  convert_types:
-                    - str
-                  description: |-
-                    TODO min/max
-
-                    ID of the default AVT in each VRFs.
-                path_groups:
-                  type: list
-                  primary_key: priority
-                  items:
-                    type: dict
-                    keys:
-                      names:
-                        type: list
-                        description: List of path-group names.
-                        required: true
-                        min_length: 1
-                        items:
-                          type: str
-                      priority:
-                        type: str
-                        convert_types:
-                          - int
-                        description: |-
-                          Valid values are 1-255 | preferred | alternate.
-
-                          preferred is converted to priority 1.
-                          alternate is converted to priority 2.
+                  description: ID of the default AVT in each VRFs.

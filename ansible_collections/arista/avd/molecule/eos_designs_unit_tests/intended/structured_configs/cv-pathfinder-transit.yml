@@ -159,6 +159,8 @@ router_adaptive_virtual_topology:
     name: Site422
     id: 422
   profiles:
+  - name: CONTROL-PLANE-PROFILE
+    load_balance_policy: CONTROL-PLANE-PROFILE_lb
   - name: PROD-AVT-POLICY_voice
     load_balance_policy: PROD-AVT-POLICY_voice_lb
   - name: PROD-AVT-POLICY_video
@@ -183,6 +185,9 @@ router_adaptive_virtual_topology:
       _id: 1
   - name: DEFAULT-AVT-POLICY
     matches:
+    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      avt_profile: CONTROL-PLANE-PROFILE
+      _id: 254
     - application_profile: it
       avt_profile: DEFAULT-AVT-POLICY_it
       _id: 3
@@ -193,6 +198,8 @@ router_adaptive_virtual_topology:
   - name: default
     policy: DEFAULT-AVT-POLICY
     profiles:
+    - name: CONTROL-PLANE-PROFILE
+      id: 254
     - name: DEFAULT-AVT-POLICY_it
       id: 3
     - name: DEFAULT-AVT-POLICY_default
@@ -245,6 +252,12 @@ router_path_selection:
       ipv4_addresses:
       - 172.16.0.1
   load_balance_policies:
+  - name: CONTROL-PLANE-PROFILE_lb
+    path_groups:
+    - name: INET
+      priority: 1
+    - name: MPLS
+      priority: 1
   - name: PROD-AVT-POLICY_voice_lb
     path_groups:
     - name: MPLS
@@ -259,9 +272,9 @@ router_path_selection:
       priority: 2
   - name: PROD-AVT-POLICY_default_lb
     path_groups:
-    - name: MPLS
-      priority: 1
     - name: INET
+      priority: 1
+    - name: MPLS
       priority: 2
   - name: DEFAULT-AVT-POLICY_it_lb
     path_groups:
@@ -271,10 +284,10 @@ router_path_selection:
       priority: 1
   - name: DEFAULT-AVT-POLICY_default_lb
     path_groups:
-    - name: MPLS
-      priority: 1
     - name: INET
       priority: 1
+    - name: MPLS
+      priority: 42
 stun:
   client:
     server_profiles:

@@ -49,32 +49,36 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "wan_virtual_topologies.vrfs") | List, items: Dictionary |  |  |  | Map a VRF that exists in network_services to an AVT policy.<br>Auto create a control plane profile/policy/application and enforce it being first. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "wan_virtual_topologies.vrfs.[].policy") | String |  |  |  | Name of the AVT policy to apply to this VRF. |
-    | [<samp>&nbsp;&nbsp;control_plane_virtual_topology</samp>](## "wan_virtual_topologies.control_plane_virtual_topology") | Dictionary |  |  |  | Always injected into the default VRF policy as the first entry.<br>Defaults will prefer all path groups where pathfinders can be reached. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.name") | String |  |  |  | Default is `<avt_policy_name>_control_plane_default` |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.id") | Integer |  |  |  | TODO min/max<br><br>ID of the control plane AVT in the default VRFs. |
+    | [<samp>&nbsp;&nbsp;control_plane_virtual_topology</samp>](## "wan_virtual_topologies.control_plane_virtual_topology") | Dictionary |  |  |  | Always injected into the default VRF policy as the first entry.<br>By default, if no path-groups are specified, all available path-groups are used in the<br>generate load-balance policy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.name") | String |  |  |  | Optional name, if not set `CONTROL-PLANE-PROFILE` is used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.id") | Integer | Required | `254` | Min: 1<br>Max: 254 | ID of the control plane AVT in the default VRF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].priority") | String | Required, Unique |  |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
     | [<samp>&nbsp;&nbsp;policies</samp>](## "wan_virtual_topologies.policies") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].name") | String | Required, Unique |  |  | Name of the AVT policy. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_policies</samp>](## "wan_virtual_topologies.policies.[].application_policies") | List, items: Dictionary |  |  |  | List of application specific policies. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_profile</samp>](## "wan_virtual_topologies.policies.[].application_policies.[].application_profile") | String | Required, Unique |  |  | The application profile to use for this policy. It must be a defined `application_profile`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].application_policies.[].name") | String |  |  |  | Optional name, if not set `<policy_name>_<application_profile>` is used. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.policies.[].application_policies.[].id") | Integer |  |  |  | TODO min/max<br><br>ID of the default AVT in each VRFs. ID must be unique across all policies. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.policies.[].application_policies.[].traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.policies.[].application_policies.[].dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.policies.[].application_policies.[].path_groups") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].application_policies.[].path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].application_policies.[].path_groups.[].names.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "wan_virtual_topologies.policies.[].application_policies.[].path_groups.[].priority") | String | Required, Unique |  |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_policy</samp>](## "wan_virtual_topologies.policies.[].default_policy") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].default_policy.name") | String |  |  |  | Optional name, if not set `<policy_name>_default` is used. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.policies.[].default_policy.id") | Integer |  |  |  | TODO min/max<br><br>ID of the default AVT in each VRFs. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.policies.[].default_policy.path_groups") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].default_policy.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].default_policy.path_groups.[].names.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "wan_virtual_topologies.policies.[].default_policy.path_groups.[].priority") | String | Required, Unique |  |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_virtual_topologies</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies") | List, items: Dictionary |  |  |  | List of application specific virtual topologies. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;application_profile</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].application_profile") | String | Required, Unique |  |  | The application profile to use for this virtual topology. It must be a defined `application_profile`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].name") | String |  |  |  | Optional name, if not set `<policy_name>_<application_profile>` is used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].id") | Integer | Required |  | Min: 1<br>Max: 254 | ID of the AVT in each VRFs. ID must be unique across all virtual topologies. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].names.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].priority") | String | Required, Unique |  |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_virtual_topology</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.name") | String |  |  |  | Optional name, if not set `<policy_name>_default` is used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.id") | Integer | Required |  | Min: 1<br>Max: 254 | ID of the default AVT in each VRFs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].priority") | String | Required, Unique |  |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
 
 === "YAML"
 
@@ -229,16 +233,21 @@
           policy: <str>
 
       # Always injected into the default VRF policy as the first entry.
-      # Defaults will prefer all path groups where pathfinders can be reached.
+      # By default, if no path-groups are specified, all available path-groups are used in the
+      # generate load-balance policy.
       control_plane_virtual_topology:
 
-        # Default is `<avt_policy_name>_control_plane_default`
+        # Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
         name: <str>
 
-        # TODO min/max
+        # ID of the control plane AVT in the default VRF.
+        id: <int; 1-254; default=254; required>
 
-        # ID of the control plane AVT in the default VRFs.
-        id: <int>
+        # Set traffic-class for matched traffic.
+        traffic_class: <int; 0-7>
+
+        # Set DSCP for matched traffic.
+        dscp: <int; 0-63>
         path_groups:
 
             # List of path-group names.
@@ -255,19 +264,17 @@
           # Name of the AVT policy.
         - name: <str; required; unique>
 
-          # List of application specific policies.
-          application_policies:
+          # List of application specific virtual topologies.
+          application_virtual_topologies:
 
-              # The application profile to use for this policy. It must be a defined `application_profile`.
+              # The application profile to use for this virtual topology. It must be a defined `application_profile`.
             - application_profile: <str; required; unique>
 
               # Optional name, if not set `<policy_name>_<application_profile>` is used.
               name: <str>
 
-              # TODO min/max
-
-              # ID of the default AVT in each VRFs. ID must be unique across all policies.
-              id: <int>
+              # ID of the AVT in each VRFs. ID must be unique across all virtual topologies.
+              id: <int; 1-254; required>
 
               # Set traffic-class for matched traffic.
               traffic_class: <int; 0-7>
@@ -285,15 +292,19 @@
                   # preferred is converted to priority 1.
                   # alternate is converted to priority 2.
                   priority: <str; required; unique>
-          default_policy:
+          default_virtual_topology:
 
             # Optional name, if not set `<policy_name>_default` is used.
             name: <str>
 
-            # TODO min/max
-
             # ID of the default AVT in each VRFs.
-            id: <int>
+            id: <int; 1-254; required>
+
+            # Set traffic-class for matched traffic.
+            traffic_class: <int; 0-7>
+
+            # Set DSCP for matched traffic.
+            dscp: <int; 0-63>
             path_groups:
 
                 # List of path-group names.

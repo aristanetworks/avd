@@ -1,0 +1,46 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  application_virtual_topologies:
+    type: dict
+    keys:
+      name:
+        type: str
+        description: Optional name.
+      id:
+        type: int
+        $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id"
+        description: ID of the AVT in each VRFs. ID must be unique across all virtual topologies.
+      traffic_class:
+        type: int
+        $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/traffic_class"
+      dscp:
+        type: int
+        $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp"
+      path_groups:
+        type: list
+        primary_key: priority
+        items:
+          type: dict
+          keys:
+            names:
+              type: list
+              description: List of path-group names.
+              required: true
+              min_length: 1
+              items:
+                type: str
+            priority:
+              type: str
+              convert_types:
+                - int
+              description: |-
+                Valid values are 1-255 | preferred | alternate.
+
+                preferred is converted to priority 1.
+                alternate is converted to priority 2.

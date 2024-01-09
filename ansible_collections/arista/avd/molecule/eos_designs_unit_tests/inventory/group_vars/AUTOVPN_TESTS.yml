@@ -106,11 +106,11 @@ wan_virtual_topologies:
       policy: PROD-AVT-POLICY
   policies:
     - name: PROD-AVT-POLICY
-      default_policy:
+      default_virtual_topology:
         path_groups:
           - names: [INET]
             priority: preferred
-      application_policies:
+      application_virtual_topologies:
         - application_profile: voice
           path_groups:
             - names: [INET]
@@ -120,7 +120,7 @@ wan_virtual_topologies:
             - names: [INET]
               priority: preferred
     - name: DEFAULT-AVT-POLICY
-      application_policies:
+      application_virtual_topologies:
         - application_profile: it
           path_groups:
             - names: [INET]
