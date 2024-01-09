@@ -198,6 +198,34 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
             """
 
+        class WanOverlayPeers(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem, BaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                pass
+
+            name: str | None = "WAN-OVERLAY-PEERS"
+            """
+            Name of peer group.
+            """
+            password: str | None = None
+            """
+            Type 7 encrypted password.
+            """
+            bfd: bool | None = False
+            listen_range_prefixes: list[str] | None = None
+            """
+            Only used for nodes where `wan_role` is `server` like AutoVPN RRs and Pathfinders.
+            For clients, AVD will raise an error
+            if the Loopback0 IP is not in any listen range.
+            """
+            structured_config: StructuredConfig | None = None
+            """
+            Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
+            """
+
         ipv4_underlay_peers: Ipv4UnderlayPeers | None = None
         mlag_ipv4_underlay_peer: MlagIpv4UnderlayPeer | None = None
         evpn_overlay_peers: EvpnOverlayPeers | None = None
@@ -205,6 +233,10 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         mpls_overlay_peers: MplsOverlayPeers | None = None
         rr_overlay_peers: RrOverlayPeers | None = None
         ipvpn_gateway_peers: IpvpnGatewayPeers | None = None
+        wan_overlay_peers: WanOverlayPeers | None = None
+        """
+        PREVIEW: This key is currently not supported
+        """
 
     class ConnectedEndpointsKeysItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -266,7 +298,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
 
             name: str = None
             """
-            P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
+            P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile.
             """
             id: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
@@ -502,9 +534,227 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             can be either ethernet_interfaces or port_channel_interfaces.
             """
 
+        class L3InterfacesProfilesItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                pass
+
+            profile: str = None
+            """
+            L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
+            """
+            interface: str | None = Field(None, pattern=r"Ethernet[\d/]+")
+            """
+            Ethernet interface name like 'Ethernet2'.
+            """
+            description: str | None = None
+            """
+            Interface description.
+            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+            """
+            ip: str | None = None
+            """
+            Node IPv4 address/Mask or 'dhcp'.
+            """
+            set_default_route: bool | None = False
+            """
+            Insert a default route to the `peer_ip` if `ip` is an ip address
+            or configure to accept a default route from DHCP if
+            `ip` is `dhcp`.
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+            """
+            enabled: bool | None = True
+            """
+            Enable or Shutdown the interface.
+            """
+            speed: str | None = None
+            """
+            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+            """
+            peer: str | None = None
+            """
+            The peer device name. Used for description and documentation
+            """
+            peer_interface: str | None = None
+            """
+            The peer device interface. Used for description and documentation
+            """
+            peer_ip: str | None = None
+            """
+            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
+            address.
+            """
+            qos_profile: str | None = None
+            """
+            QOS service profile.
+            """
+            wan_carrier: str | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            The WAN Carrier this interface is connected to.
+            This is used to infer the
+            path-groups in which this interface should be configured.
+            """
+            wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            The WAN Circuit ID for this interface.
+            This is not rendered in the
+            configuration but used for WAN designs.
+            """
+            connected_to_pathfinder: bool | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            For a WAN interface (`wan_path_group` is set), allow to disable the static
+            tunnel towards Pathfinders.
+            Default True.
+            """
+            raw_eos_cli: str | None = None
+            """
+            EOS CLI rendered directly on the interface in the final EOS configuration.
+            """
+            structured_config: StructuredConfig | None = None
+            """
+            Custom structured config for the Ethernet interface.
+            """
+
+        class L3InterfacesItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                pass
+
+            node: str = None
+            """
+            Device on which the interface should be configured.
+            """
+            profile: str | None = None
+            """
+            L3 interface profile name. Profile defined under l3_interfaces_profiles.
+            """
+            interface: str | None = Field(None, pattern=r"Ethernet[\d/]+")
+            """
+            Ethernet interface name like 'Ethernet2'.
+            """
+            description: str | None = None
+            """
+            Interface description.
+            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+            """
+            ip: str | None = None
+            """
+            Node IPv4 address/Mask or 'dhcp'.
+            """
+            set_default_route: bool | None = False
+            """
+            Insert a default route to the `peer_ip` if `ip` is an ip address
+            or configure to accept a default route from DHCP if
+            `ip` is `dhcp`.
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+            """
+            enabled: bool | None = True
+            """
+            Enable or Shutdown the interface.
+            """
+            speed: str | None = None
+            """
+            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+            """
+            peer: str | None = None
+            """
+            The peer device name. Used for description and documentation
+            """
+            peer_interface: str | None = None
+            """
+            The peer device interface. Used for description and documentation
+            """
+            peer_ip: str | None = None
+            """
+            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
+            address.
+            """
+            qos_profile: str | None = None
+            """
+            QOS service profile.
+            """
+            wan_carrier: str | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            The WAN Carrier this interface is connected to.
+            This is used to infer the
+            path-groups in which this interface should be configured.
+            """
+            wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            The WAN Circuit ID for this interface.
+            This is not rendered in the
+            configuration but used for WAN designs.
+            """
+            connected_to_pathfinder: bool | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            For a WAN interface (`wan_path_group` is set), allow to disable the static
+            tunnel towards Pathfinders.
+            Default True.
+            """
+            raw_eos_cli: str | None = None
+            """
+            EOS CLI rendered directly on the interface in the final EOS configuration.
+            """
+            structured_config: StructuredConfig | None = None
+            """
+            Custom structured config for the Ethernet interface.
+            """
+
         p2p_links_ip_pools: list[P2pLinksIpPoolsItem] | None = None
         p2p_links_profiles: list[P2pLinksProfilesItem] | None = None
         p2p_links: list[P2pLinksItem] | None = None
+        l3_interfaces_profiles: list[L3InterfacesProfilesItem] | None = None
+        l3_interfaces: list[L3InterfacesItem] | None = None
+
+    class CvPathfinderRegionsItem(EosCliConfigGen.RouterAdaptiveVirtualTopology.Region, BaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class SitesItem(EosCliConfigGen.RouterAdaptiveVirtualTopology.Site, BaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            description: str | None = None
+            id: int | None = None
+            """
+            The site ID must be unique within a zone.
+            Given that all the sites are placed in the DEFAULT-ZONE, the site ID must be
+            unique within a region.
+            """
+            location: str | None = None
+            """
+            Will be interpreted
+            """
+            site_contact: str | None = None
+            site_after_hours_contact: str | None = None
+
+        description: str | None = None
+        id: int | None = None
+        """
+        The region ID must be unique for the whole WAN deployment.
+        """
+        sites: list[SitesItem] | None = None
+        """
+        All sites are placed in a default zone called DEFAULT-ZONE with ID 1.
+        """
 
     class CvTopologyItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -710,22 +960,36 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             algorithm: Literal["first_id", "odd_id", "same_subnet"] | None = "first_id"
             """
             This variable defines the Multi-chassis Link Aggregation (MLAG) algorithm used.
-            Each MLAG link will have a /31 subnet
+            Each MLAG link will have a /31¹ subnet
             with each subnet allocated from the relevant MLAG pool via a calculated offset.
             The offset is calculated using one of
             the following algorithms:
               - first_id: `(mlag_primary_id - 1) * 2` where `mlag_primary_id` is the ID of the first node
             defined under the node_group.
-                This allocation method will skip every other /31 subnet making it less space efficient
-            than `odd_id`.
-              - odd_id: `(odd_id - 1) / 2`. Requires the node_group to have a node with an odd ID and a node with an
-            even ID.
+                This allocation method will skip every other /31¹ subnet making it less space
+            efficient than `odd_id`.
+              - odd_id: `(odd_id - 1) / 2`. Requires the node_group to have a node with an odd ID and a
+            node with an even ID.
               - same_subnet: the offset will always be zero.
-                This allocation method will cause every MLAG link to be
-            addressed with the same /31 subnet.
+                This allocation method will cause every MLAG
+            link to be addressed with the same /31¹ subnet.
+            ¹ The prefix length is configurable with a default of /31.
+            """
+            ipv4_prefix_length: Annotated[int, IntConvert(convert_types=(str))] | None = Field(31, ge=1, le=31)
+            """
+            IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.
+            """
+
+        class P2pUplinks(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            ipv4_prefix_length: Annotated[int, IntConvert(convert_types=(str))] | None = Field(31, ge=1, le=31)
+            """
+            IPv4 prefix length used for L3 point-to-point uplinks.
             """
 
         mlag: Mlag | None = None
+        p2p_uplinks: P2pUplinks | None = None
 
     class HardwareCounters(EosCliConfigGen.HardwareCounters, BaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -807,7 +1071,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
 
             name: str = None
             """
-            P2P profile name. Any variable supported under p2p_links can be inherited from a profile.
+            P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile.
             """
             id: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
@@ -1043,9 +1307,197 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             can be either ethernet_interfaces or port_channel_interfaces.
             """
 
+        class L3InterfacesProfilesItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                pass
+
+            profile: str = None
+            """
+            L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
+            """
+            interface: str | None = Field(None, pattern=r"Ethernet[\d/]+")
+            """
+            Ethernet interface name like 'Ethernet2'.
+            """
+            description: str | None = None
+            """
+            Interface description.
+            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+            """
+            ip: str | None = None
+            """
+            Node IPv4 address/Mask or 'dhcp'.
+            """
+            set_default_route: bool | None = False
+            """
+            Insert a default route to the `peer_ip` if `ip` is an ip address
+            or configure to accept a default route from DHCP if
+            `ip` is `dhcp`.
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+            """
+            enabled: bool | None = True
+            """
+            Enable or Shutdown the interface.
+            """
+            speed: str | None = None
+            """
+            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+            """
+            peer: str | None = None
+            """
+            The peer device name. Used for description and documentation
+            """
+            peer_interface: str | None = None
+            """
+            The peer device interface. Used for description and documentation
+            """
+            peer_ip: str | None = None
+            """
+            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
+            address.
+            """
+            qos_profile: str | None = None
+            """
+            QOS service profile.
+            """
+            wan_carrier: str | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            The WAN Carrier this interface is connected to.
+            This is used to infer the
+            path-groups in which this interface should be configured.
+            """
+            wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            The WAN Circuit ID for this interface.
+            This is not rendered in the
+            configuration but used for WAN designs.
+            """
+            connected_to_pathfinder: bool | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            For a WAN interface (`wan_path_group` is set), allow to disable the static
+            tunnel towards Pathfinders.
+            Default True.
+            """
+            raw_eos_cli: str | None = None
+            """
+            EOS CLI rendered directly on the interface in the final EOS configuration.
+            """
+            structured_config: StructuredConfig | None = None
+            """
+            Custom structured config for the Ethernet interface.
+            """
+
+        class L3InterfacesItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class StructuredConfig(EosCliConfigGen.EthernetInterfacesItem, BaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                pass
+
+            node: str = None
+            """
+            Device on which the interface should be configured.
+            """
+            profile: str | None = None
+            """
+            L3 interface profile name. Profile defined under l3_interfaces_profiles.
+            """
+            interface: str | None = Field(None, pattern=r"Ethernet[\d/]+")
+            """
+            Ethernet interface name like 'Ethernet2'.
+            """
+            description: str | None = None
+            """
+            Interface description.
+            If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
+            """
+            ip: str | None = None
+            """
+            Node IPv4 address/Mask or 'dhcp'.
+            """
+            set_default_route: bool | None = False
+            """
+            Insert a default route to the `peer_ip` if `ip` is an ip address
+            or configure to accept a default route from DHCP if
+            `ip` is `dhcp`.
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
+            """
+            enabled: bool | None = True
+            """
+            Enable or Shutdown the interface.
+            """
+            speed: str | None = None
+            """
+            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+            """
+            peer: str | None = None
+            """
+            The peer device name. Used for description and documentation
+            """
+            peer_interface: str | None = None
+            """
+            The peer device interface. Used for description and documentation
+            """
+            peer_ip: str | None = None
+            """
+            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP
+            address.
+            """
+            qos_profile: str | None = None
+            """
+            QOS service profile.
+            """
+            wan_carrier: str | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            The WAN Carrier this interface is connected to.
+            This is used to infer the
+            path-groups in which this interface should be configured.
+            """
+            wan_circuit_id: Annotated[str, StrConvert(convert_types=(int))] | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            The WAN Circuit ID for this interface.
+            This is not rendered in the
+            configuration but used for WAN designs.
+            """
+            connected_to_pathfinder: bool | None = None
+            """
+            PREVIEW: This key is currently not supported
+
+            For a WAN interface (`wan_path_group` is set), allow to disable the static
+            tunnel towards Pathfinders.
+            Default True.
+            """
+            raw_eos_cli: str | None = None
+            """
+            EOS CLI rendered directly on the interface in the final EOS configuration.
+            """
+            structured_config: StructuredConfig | None = None
+            """
+            Custom structured config for the Ethernet interface.
+            """
+
         p2p_links_ip_pools: list[P2pLinksIpPoolsItem] | None = None
         p2p_links_profiles: list[P2pLinksProfilesItem] | None = None
         p2p_links: list[P2pLinksItem] | None = None
+        l3_interfaces_profiles: list[L3InterfacesProfilesItem] | None = None
+        l3_interfaces: list[L3InterfacesItem] | None = None
 
     class LocalUsersItem(AvdDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -1350,7 +1802,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             the EOS default of modulus.
             If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
             """
-            designated_forwarder_preferences: list[Annotated[str, StrConvert(convert_types=(int))]] | None = None
+            designated_forwarder_preferences: list[Annotated[int, IntConvert(convert_types=(str))]] | None = None
             """
             Manual preference as described above, required only for preference algorithm.
             """
@@ -1493,7 +1945,8 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         switch_ports ranges are expanded into individual port configurations.
 
         For more details and examples of the
-        `range_expand` syntax, see the [arista.avd.range_expand documentation](../../../plugins/README.md#range_expand-filter)
+        `range_expand` syntax, see the [`arista.avd.range_expand`
+        documentation](../../../docs/plugins/Filter_plugins/range_expand.md).
         """
         description: str | None = None
         """
@@ -1518,9 +1971,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Interface mode.
         """
         mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
-        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=9416)
+        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
         """
-        This should only be defined for platforms supporting the "l2 mtu" CLI command.
+        "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
+        """
+        l2_mru: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
+        """
+        "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
         """
         native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
         """
@@ -1530,6 +1987,17 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         native_vlan_tag: bool | None = False
         """
         If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+        """
+        phone_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
+        """
+        Phone VLAN for a mode `trunk phone` port.
+        Requires `mode: trunk phone` to be set.
+        """
+        phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None = None
+        """
+        Specify if the phone traffic is tagged or untagged.
+        If both data and phone traffic are untagged, MAC-Based VLAN
+        Assignment (MBVA) is used, if supported by the model of switch.
         """
         trunk_groups: list[str] | None = None
         """
@@ -1772,6 +2240,32 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Set the default evpn encapsulation.
         """
+        default_wan_role: Literal["client", "server"] | None = None
+        """
+        PREVIEW: This key is currently not supported
+        Set the default WAN role.
+
+        This is used both for AutoVPN and Pathfinder
+        designs.
+        That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+        `server` indicates that the router is
+        a route-reflector.
+
+        Only supported if `overlay_routing_protocol` is set to `ibgp`.
+        """
+        default_cv_pathfinder_role: Literal["edge", "transit region", "pathfinder"] | None = None
+        """
+        PREVIEW: This key is currently not supported
+        Set the default CV Pathfinder role.
+
+        This key is used for Pathfinder
+        designs only when the `wan_mode` root
+        key is set to `cv-pathfinder`.
+
+        `pathfinder` is only a valid if `wan_role` is
+        `server`.
+        `edge` and `transit` are only valid if `wan_role` is `client`.
+        """
         mlag_support: bool | None = False
         """
         Can this node type support mlag.
@@ -1786,7 +2280,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
         """
-        Uplinks must be p2p if "vtep" or "underlay_router" is true.
+        `uplink_type` must be "p2p" if `vtep` or `underlay_router` is true.
         """
         vtep: bool | None = False
         """
@@ -1805,6 +2299,72 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Override interface_descriptions templates
         If description templates use Jinja2, they have to strip whitespaces using {%-
         -%} on any code blocks.
+        """
+
+    class NtpSettings(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class ServersItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            name: str | None = None
+            """
+            IP or hostname e.g., 2.2.2.55, ie.pool.ntp.org
+            """
+            burst: bool | None = None
+            iburst: bool | None = None
+            key: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=65535)
+            maxpoll: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=17)
+            """
+            Value of maxpoll between 3 - 17 (Logarithmic)
+            """
+            minpoll: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=3, le=17)
+            """
+            Value of minpoll between 3 - 17 (Logarithmic)
+            """
+            version: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4)
+
+        class AuthenticationKeysItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            id: Annotated[int, IntConvert(convert_types=(str))] = Field(None, ge=1, le=65534)
+            """
+            Key identifier
+            """
+            hash_algorithm: Literal["md5", "sha1"] | None = None
+            key: str | None = None
+            """
+            Obfuscated key
+            """
+            key_type: Annotated[Literal["0", "7", "8a"], StrConvert(convert_types=(int))] | None = None
+
+        server_vrf: str | None = None
+        """
+        EOS only supports NTP servers in one VRF, so this VRF is used for all NTP servers and one local-interface.
+        -
+        `use_mgmt_interface_vrf` will configure the NTP server(s) under the VRF set with `mgmt_interface_vrf` and set the
+        `mgmt_interface` as NTP local-interface.
+          An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for
+        the device.
+        - `use_inband_mgmt_vrf` will configure the NTP server(s) under the VRF set with `inband_mgmt_vrf` and set
+        the `inband_mgmt_interface` as NTP local-interface.
+          An error will be raised if inband management is not configured for
+        the device.
+        - Any other string will be used directly as the VRF name but local interface must be set with
+        `custom_structured_configuration_ntp` if needed.
+        If not set, the VRF is automatically picked up from the global setting
+        `default_mgmt_method`.
+        """
+        servers: list[ServersItem] | None = None
+        """
+        The first server is always set as "preferred".
+        """
+        authenticate: bool | None = None
+        authenticate_servers_only: bool | None = None
+        authentication_keys: list[AuthenticationKeysItem] | None = None
+        trusted_keys: Annotated[str, StrConvert(convert_types=(int))] | None = None
+        """
+        List of trusted-keys as string ex. 10-12,15
         """
 
     class OverlayRdType(AvdDictBaseModel):
@@ -2239,7 +2799,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             the EOS default of modulus.
             If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
             """
-            designated_forwarder_preferences: list[Annotated[str, StrConvert(convert_types=(int))]] | None = None
+            designated_forwarder_preferences: list[Annotated[int, IntConvert(convert_types=(str))]] | None = None
             """
             Manual preference as described above, required only for preference algorithm.
             """
@@ -2395,9 +2955,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         Interface mode.
         """
         mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
-        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=9416)
+        l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
         """
-        This should only be defined for platforms supporting the "l2 mtu" CLI command.
+        "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
+        """
+        l2_mru: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
+        """
+        "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
         """
         native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
         """
@@ -2407,6 +2971,17 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         native_vlan_tag: bool | None = False
         """
         If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+        """
+        phone_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
+        """
+        Phone VLAN for a mode `trunk phone` port.
+        Requires `mode: trunk phone` to be set.
+        """
+        phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None = None
+        """
+        Specify if the phone traffic is tagged or untagged.
+        If both data and phone traffic are untagged, MAC-Based VLAN
+        Assignment (MBVA) is used, if supported by the model of switch.
         """
         trunk_groups: list[str] | None = None
         """
@@ -3117,6 +3692,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
             """
             Extend this SVI over VXLAN.
             """
+            spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
+            """
+            Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type
+            settings.
+            The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority`
+            (default=32768).
+            """
             mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
             """
             Interface MTU.
@@ -3372,6 +3954,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         """
         Extend this SVI over VXLAN.
         """
+        spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
+        """
+        Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type
+        settings.
+        The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority`
+        (default=32768).
+        """
         mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
         """
         Interface MTU.
@@ -3457,7 +4046,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         configured matching these groups.
         Otherwise the groups are configured directly on the RP command.
         """
-        access_list_name: str | None = None
+        access_list_name: Annotated[str, StrConvert(convert_types=(int))] | None = None
         """
         Name of standard Access-List.
         """
@@ -3466,6 +4055,154 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
 
         enable: bool | None = False
+
+    class WanCarriersItem(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        name: str = None
+        """
+        Carrier name.
+        """
+        description: str | None = None
+        """
+        Additional information about the carrier for documentation purposes.
+        """
+        path_group: str = None
+        """
+        The path-group to which this carrier belongs.
+        """
+
+    class WanIpsecProfiles(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class ControlPlane(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            ike_policy_name: str | None = "CP-IKE-POLICY"
+            """
+            Name of the IKE policy.
+            """
+            sa_policy_name: str | None = "CP-SA-POLICY"
+            """
+            Name of the SA policy.
+            """
+            profile_name: str | None = "CP-PROFILE"
+            """
+            Name of the IPSec profile.
+            """
+            shared_key: str = None
+            """
+            The IPSec shared key.
+            This variable is sensitive and SHOULD be configured using some vault mechanism.
+            """
+
+        class DataPlane(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            ike_policy_name: str | None = "DP-IKE-POLICY"
+            """
+            Name of the IKE policy.
+            """
+            sa_policy_name: str | None = "DP-SA-POLICY"
+            """
+            Name of the SA policy.
+            """
+            profile_name: str | None = "DP-PROFILE"
+            """
+            Name of the IPSec profile.
+            """
+            shared_key: str = None
+            """
+            The type 7 encrypted IPSec shared key.
+            This variable is sensitive and should be configured using some vault mechanism.
+            """
+
+        control_plane: ControlPlane = None
+        """
+        PREVIEW: This key is currently not supported
+        """
+        data_plane: DataPlane | None = None
+        """
+        If `data_plane` is not defined, `control_plane` information is used for both.
+        """
+
+    class WanPathGroupsItem(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class ImportPathGroupsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            remote: str | None = None
+            """
+            Remote path-group to import.
+            """
+            local: str | None = None
+            """
+            Optional, if not set, the path-group `name` is used as local.
+            """
+
+        name: str = None
+        """
+        Path-group name.
+        """
+        id: Annotated[int, IntConvert(convert_types=(str))] = None
+        """
+        Path-group id.
+
+        TODO: Required until an auto ID algorithm is implemented.
+        """
+        description: str | None = None
+        """
+        Additional information about the path-group for documentation purposes.
+        """
+        ipsec: bool | None = True
+        """
+        Flag to configure IPsec at the path-group level.
+
+        When set to `true`, IPsec is enabled for both the static and dynamic
+        peers.
+        """
+        import_path_groups: list[ImportPathGroupsItem] | None = None
+        """
+        List of [ath-groups to import in this path-group.
+        """
+
+    class WanRouteServersItem(AvdDictBaseModel):
+        model_config = ConfigDict(defer_build=True, extra="forbid")
+
+        class PathGroupsItem(AvdDictBaseModel):
+            model_config = ConfigDict(defer_build=True, extra="forbid")
+
+            class InterfacesItem(AvdDictBaseModel):
+                model_config = ConfigDict(defer_build=True, extra="forbid")
+
+                name: str = None
+                """
+                Interface name.
+                """
+                ip_address: str | None = None
+                """
+                The public IP address of the Route Reflector for this path-group.
+                """
+
+            name: str = None
+            """
+            Path-group name.
+            """
+            interfaces: list[InterfacesItem] = Field(None, min_length=1)
+
+        hostname: str = None
+        """
+        Route-Reflector hostname.
+        """
+        router_id: str | None = None
+        """
+        Route-Reflector router id.
+        """
+        path_groups: list[PathGroupsItem] | None = None
+        """
+        Path-groups through which the Route Reflector/Pathfinder is reached.
+        """
 
     class CustomStructuredConfiguration(BaseModel):
         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -3738,7 +4475,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         the EOS default of modulus.
                         If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
                         """
-                        designated_forwarder_preferences: list[Annotated[str, StrConvert(convert_types=(int))]] | None = None
+                        designated_forwarder_preferences: list[Annotated[int, IntConvert(convert_types=(str))]] | None = None
                         """
                         Manual preference as described above, required only for preference algorithm.
                         """
@@ -3910,9 +4647,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Interface mode.
                     """
                     mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
-                    l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=9416)
+                    l2_mtu: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
                     """
-                    This should only be defined for platforms supporting the "l2 mtu" CLI command.
+                    "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI
+                    """
+                    l2_mru: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=68, le=65535)
+                    """
+                    "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI
                     """
                     native_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
                     """
@@ -3922,6 +4663,17 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     native_vlan_tag: bool | None = False
                     """
                     If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
+                    """
+                    phone_vlan: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=4094)
+                    """
+                    Phone VLAN for a mode `trunk phone` port.
+                    Requires `mode: trunk phone` to be set.
+                    """
+                    phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None = None
+                    """
+                    Specify if the phone traffic is tagged or untagged.
+                    If both data and phone traffic are untagged, MAC-Based VLAN
+                    Assignment (MBVA) is used, if supported by the model of switch.
                     """
                     trunk_groups: list[str] | None = None
                     """
@@ -4090,7 +4842,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Configuration Will be applied to all nodes if not set.
                     """
                     groups: list[str] | None = None
-                    access_list_name: str | None = None
+                    access_list_name: Annotated[str, StrConvert(convert_types=(int))] | None = None
                     """
                     List of groups to associate with the RP address set in 'rp'.
                     If access_list_name is set, a standard access-list will be
@@ -4239,7 +4991,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Configuration Will be applied to all nodes if not set.
                         """
                         groups: list[str] | None = None
-                        access_list_name: str | None = None
+                        access_list_name: Annotated[str, StrConvert(convert_types=(int))] | None = None
                         """
                         List of groups to associate with the RP addresses set in 'rps'.
                         If access_list_name is set, a standard access-list will
@@ -4483,6 +5235,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                             vxlan: bool | None = True
                             """
                             Extend this SVI over VXLAN.
+                            """
+                            spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                            """
+                            Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type
+                            settings.
+                            The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority`
+                            (default=32768).
                             """
                             mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
                             """
@@ -4745,6 +5504,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Extend this SVI over VXLAN.
                         """
+                        spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                        """
+                        Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type
+                        settings.
+                        The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority`
+                        (default=32768).
+                        """
                         mtu: Annotated[int, IntConvert(convert_types=(str))] | None = None
                         """
                         Interface MTU.
@@ -4960,11 +5726,15 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         prefix_list_in: str | None = None
                         """
-                        Prefix list name.
+                        Inbound prefix list name.
+                        The prefix-list will be associated under the IPv4 or IPv6 address family based on the IP
+                        address.
                         """
                         prefix_list_out: str | None = None
                         """
-                        Prefix list name.
+                        Outbound prefix list name.
+                        The prefix-list will be associated under the IPv4 or IPv6 address family based on the IP
+                        address.
                         """
                         local_as: Annotated[str, StrConvert(convert_types=(int))] | None = None
                         """
@@ -5048,6 +5818,30 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     "vrf_id" is
                     preferred over "vrf_vni" for MLAG iBGP peering vlan, see "mlag_ibgp_peering_vrfs.base_vlan" for details.
                     """
+                    rd_override: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                    """
+                    By default, the VRF RD will be derived from the pattern defined in `overlay_rd_type`.
+                    The rd_override allows us to
+                    override this value and statically define it.
+
+                    rd_override supports two formats:
+                      - A single number will be used in the
+                    RD assigned number subfield (second part of the RD).
+                      - A full RD string with colon seperator which will override the
+                    full RD.
+                    """
+                    rt_override: Annotated[str, StrConvert(convert_types=(int))] | None = None
+                    """
+                    By default, the VRF RT will be derived from the pattern defined in `overlay_rt_type`.
+                    The rt_override allows us to
+                    override this value and statically define it.
+
+                    rt_override supports two formats:
+                      - A single number will be used in the
+                    RT assigned number subfield (second part of the RT).
+                      - A full RT string with colon seperator which will override the
+                    full RT.
+                    """
                     mlag_ibgp_peering_ipv4_pool: str | None = None
                     """
                     IPv4_address/Mask
@@ -5079,7 +5873,7 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Manually define the VLAN used on the MLAG pair for the iBGP session.
                     By default this parameter is calculated using the
-                    following formula: <mlag_ibgp_peering_vrfs.base_vlan> + <vrf_id> - 1.
+                    following formula: `<mlag_ibgp_peering_vrfs.base_vlan>` + `<vrf_id>` - 1.
                     """
                     vtep_diagnostic: VtepDiagnostic | None = None
                     """
@@ -5269,6 +6063,13 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     vxlan: bool | None = True
                     """
                     Extend this L2VLAN over VXLAN.
+                    """
+                    spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = None
+                    """
+                    Setting spanning-tree priority per VLAN is only supported with `spanning_tree_mode: rapid-pvst` under node type
+                    settings.
+                    The default priority for rapid-PVST is set under the node type settings with `spanning_tree_priority`
+                    (default=32768).
                     """
                     evpn_vlan_bundle: str | None = None
                     """
@@ -5866,6 +6667,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Custom structured config for eos_cli_config_gen.
                     """
+                    uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
+                    """
+                    Override the default `uplink_type` set at the `node_type_key` level.
+                    `uplink_type` must be "p2p" if `vtep` or
+                    `underlay_router` is true for the `node_type_key` definition.
+                    """
                     uplink_ipv4_pool: str | None = None
                     """
                     IPv4 subnet to use to connect to uplink switches.
@@ -5930,6 +6737,41 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     uplink_macsec: UplinkMacsec | None = None
                     """
                     Enable MacSec on all uplinks.
+                    """
+                    uplink_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=999999)
+                    """
+                    Only applicable for L2 switches with `uplink_type: port-channel`.
+                    By default the uplink Port-channel ID will be set to
+                    the number of the lowest member interface defined under `uplink_interfaces`.
+                    For example:
+                      member ports [ Eth22, Eth23
+                    ] -> ID 22
+                      member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                    For MLAG port-channels ID will be based on the lowest member
+                    interface on the first MLAG switch.
+                    This option overrides the default behavior and statically sets the local Port-
+                    channel ID.
+                    Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network
+                    Services.
+                    Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
+                    """
+                    uplink_switch_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=999999)
+                    """
+                    Only applicable for L2 switches with `uplink_type: port-channel`.
+                    By default the uplink switch Port-channel ID will be
+                    set to the number of the first interface defined under `uplink_switch_interfaces`.
+                    For example:
+                      member ports [ Eth22,
+                    Eth23 ] -> ID 22
+                      member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                    For MLAG port-channels ID will be based on the lowest
+                    member interface on the first MLAG switch.
+                    This option overrides the default behavior and statically sets the Port-
+                    channel ID on the uplink switch.
+                    Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel
+                    IDs in the Network Services.
+                    Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the
+                    same value.
                     """
                     uplink_structured_config: dict | None = None
                     """
@@ -6144,6 +6986,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None = None
                     spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
+                    """
+                    Spanning-tree priority configured for the selected mode.
+                    For `rapid-pvst` the priority can also be set per VLAN under
+                    network services.
+                    """
                     spanning_tree_root_super: bool | None = False
                     virtual_router_mac_address: str | None = None
                     """
@@ -6290,6 +7137,52 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Set BGP cluster id.
                     """
                     ptp: Ptp | None = None
+                    wan_role: Literal["client", "server"] | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Override the default WAN role.
+
+                    This is used both for AutoVPN and
+                    Pathfinder designs.
+                    That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+                    `server` indicates that
+                    the router is a route-reflector.
+
+                    Only supported if `overlay_routing_protocol` is set to `ibgp`.
+                    """
+                    cv_pathfinder_role: Literal["edge", "transit region", "pathfinder"] | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Override the default CV Pathfinder role.
+
+                    This key is used for Pathfinder
+                    designs only when the `wan_mode` root
+                    key is set to `cv_pathfinder`.
+
+                    `pathfinder` is only a valid if `wan_role` is
+                    `server`.
+                    `edge` and `transit region` are only valid if `wan_role` is `client`.
+                    """
+                    cv_pathfinder_region: str | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    The CV Pathfinder region name.
+                    """
+                    cv_pathfinder_site: str | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    The CV Pathfinder site name.
+                    """
+                    dps_mss_ipv4: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=64, le=65495)
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    MSS value for IPv4 the DPS interface.
+                    If not set, and the device is WAN
+                    device, a default value of 1000 is used.
+                    """
 
                 class NodeGroupsItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -6654,6 +7547,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         Custom structured config for eos_cli_config_gen.
                         """
+                        uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
+                        """
+                        Override the default `uplink_type` set at the `node_type_key` level.
+                        `uplink_type` must be "p2p" if `vtep` or
+                        `underlay_router` is true for the `node_type_key` definition.
+                        """
                         uplink_ipv4_pool: str | None = None
                         """
                         IPv4 subnet to use to connect to uplink switches.
@@ -6718,6 +7617,41 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         uplink_macsec: UplinkMacsec | None = None
                         """
                         Enable MacSec on all uplinks.
+                        """
+                        uplink_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=999999)
+                        """
+                        Only applicable for L2 switches with `uplink_type: port-channel`.
+                        By default the uplink Port-channel ID will be set to
+                        the number of the lowest member interface defined under `uplink_interfaces`.
+                        For example:
+                          member ports [ Eth22, Eth23
+                        ] -> ID 22
+                          member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                        For MLAG port-channels ID will be based on the lowest member
+                        interface on the first MLAG switch.
+                        This option overrides the default behavior and statically sets the local Port-
+                        channel ID.
+                        Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network
+                        Services.
+                        Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
+                        """
+                        uplink_switch_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=999999)
+                        """
+                        Only applicable for L2 switches with `uplink_type: port-channel`.
+                        By default the uplink switch Port-channel ID will be
+                        set to the number of the first interface defined under `uplink_switch_interfaces`.
+                        For example:
+                          member ports [ Eth22,
+                        Eth23 ] -> ID 22
+                          member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                        For MLAG port-channels ID will be based on the lowest
+                        member interface on the first MLAG switch.
+                        This option overrides the default behavior and statically sets the Port-
+                        channel ID on the uplink switch.
+                        Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel
+                        IDs in the Network Services.
+                        Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the
+                        same value.
                         """
                         uplink_structured_config: dict | None = None
                         """
@@ -6932,6 +7866,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         """
                         spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None = None
                         spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
+                        """
+                        Spanning-tree priority configured for the selected mode.
+                        For `rapid-pvst` the priority can also be set per VLAN under
+                        network services.
+                        """
                         spanning_tree_root_super: bool | None = False
                         virtual_router_mac_address: str | None = None
                         """
@@ -7078,6 +8017,52 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                         Set BGP cluster id.
                         """
                         ptp: Ptp | None = None
+                        wan_role: Literal["client", "server"] | None = None
+                        """
+                        PREVIEW: This key is currently not supported
+                        Override the default WAN role.
+
+                        This is used both for AutoVPN and
+                        Pathfinder designs.
+                        That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+                        `server` indicates that
+                        the router is a route-reflector.
+
+                        Only supported if `overlay_routing_protocol` is set to `ibgp`.
+                        """
+                        cv_pathfinder_role: Literal["edge", "transit region", "pathfinder"] | None = None
+                        """
+                        PREVIEW: This key is currently not supported
+                        Override the default CV Pathfinder role.
+
+                        This key is used for Pathfinder
+                        designs only when the `wan_mode` root
+                        key is set to `cv_pathfinder`.
+
+                        `pathfinder` is only a valid if `wan_role` is
+                        `server`.
+                        `edge` and `transit region` are only valid if `wan_role` is `client`.
+                        """
+                        cv_pathfinder_region: str | None = None
+                        """
+                        PREVIEW: This key is currently not supported
+
+                        The CV Pathfinder region name.
+                        """
+                        cv_pathfinder_site: str | None = None
+                        """
+                        PREVIEW: This key is currently not supported
+
+                        The CV Pathfinder site name.
+                        """
+                        dps_mss_ipv4: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=64, le=65495)
+                        """
+                        PREVIEW: This key is currently not supported
+
+                        MSS value for IPv4 the DPS interface.
+                        If not set, and the device is WAN
+                        device, a default value of 1000 is used.
+                        """
 
                     class LinkTracking(AvdDictBaseModel):
                         model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -7442,6 +8427,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Custom structured config for eos_cli_config_gen.
                     """
+                    uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
+                    """
+                    Override the default `uplink_type` set at the `node_type_key` level.
+                    `uplink_type` must be "p2p" if `vtep` or
+                    `underlay_router` is true for the `node_type_key` definition.
+                    """
                     uplink_ipv4_pool: str | None = None
                     """
                     IPv4 subnet to use to connect to uplink switches.
@@ -7506,6 +8497,41 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     uplink_macsec: UplinkMacsec | None = None
                     """
                     Enable MacSec on all uplinks.
+                    """
+                    uplink_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=999999)
+                    """
+                    Only applicable for L2 switches with `uplink_type: port-channel`.
+                    By default the uplink Port-channel ID will be set to
+                    the number of the lowest member interface defined under `uplink_interfaces`.
+                    For example:
+                      member ports [ Eth22, Eth23
+                    ] -> ID 22
+                      member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                    For MLAG port-channels ID will be based on the lowest member
+                    interface on the first MLAG switch.
+                    This option overrides the default behavior and statically sets the local Port-
+                    channel ID.
+                    Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network
+                    Services.
+                    Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
+                    """
+                    uplink_switch_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=999999)
+                    """
+                    Only applicable for L2 switches with `uplink_type: port-channel`.
+                    By default the uplink switch Port-channel ID will be
+                    set to the number of the first interface defined under `uplink_switch_interfaces`.
+                    For example:
+                      member ports [ Eth22,
+                    Eth23 ] -> ID 22
+                      member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                    For MLAG port-channels ID will be based on the lowest
+                    member interface on the first MLAG switch.
+                    This option overrides the default behavior and statically sets the Port-
+                    channel ID on the uplink switch.
+                    Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel
+                    IDs in the Network Services.
+                    Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the
+                    same value.
                     """
                     uplink_structured_config: dict | None = None
                     """
@@ -7720,6 +8746,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None = None
                     spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
+                    """
+                    Spanning-tree priority configured for the selected mode.
+                    For `rapid-pvst` the priority can also be set per VLAN under
+                    network services.
+                    """
                     spanning_tree_root_super: bool | None = False
                     virtual_router_mac_address: str | None = None
                     """
@@ -7866,6 +8897,52 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Set BGP cluster id.
                     """
                     ptp: Ptp | None = None
+                    wan_role: Literal["client", "server"] | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Override the default WAN role.
+
+                    This is used both for AutoVPN and
+                    Pathfinder designs.
+                    That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+                    `server` indicates that
+                    the router is a route-reflector.
+
+                    Only supported if `overlay_routing_protocol` is set to `ibgp`.
+                    """
+                    cv_pathfinder_role: Literal["edge", "transit region", "pathfinder"] | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Override the default CV Pathfinder role.
+
+                    This key is used for Pathfinder
+                    designs only when the `wan_mode` root
+                    key is set to `cv_pathfinder`.
+
+                    `pathfinder` is only a valid if `wan_role` is
+                    `server`.
+                    `edge` and `transit region` are only valid if `wan_role` is `client`.
+                    """
+                    cv_pathfinder_region: str | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    The CV Pathfinder region name.
+                    """
+                    cv_pathfinder_site: str | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    The CV Pathfinder site name.
+                    """
+                    dps_mss_ipv4: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=64, le=65495)
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    MSS value for IPv4 the DPS interface.
+                    If not set, and the device is WAN
+                    device, a default value of 1000 is used.
+                    """
 
                 class NodesItem(AvdDictBaseModel):
                     model_config = ConfigDict(defer_build=True, extra="forbid")
@@ -8227,6 +9304,12 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     Custom structured config for eos_cli_config_gen.
                     """
+                    uplink_type: Literal["p2p", "port-channel"] | None = "p2p"
+                    """
+                    Override the default `uplink_type` set at the `node_type_key` level.
+                    `uplink_type` must be "p2p" if `vtep` or
+                    `underlay_router` is true for the `node_type_key` definition.
+                    """
                     uplink_ipv4_pool: str | None = None
                     """
                     IPv4 subnet to use to connect to uplink switches.
@@ -8291,6 +9374,41 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     uplink_macsec: UplinkMacsec | None = None
                     """
                     Enable MacSec on all uplinks.
+                    """
+                    uplink_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=999999)
+                    """
+                    Only applicable for L2 switches with `uplink_type: port-channel`.
+                    By default the uplink Port-channel ID will be set to
+                    the number of the lowest member interface defined under `uplink_interfaces`.
+                    For example:
+                      member ports [ Eth22, Eth23
+                    ] -> ID 22
+                      member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                    For MLAG port-channels ID will be based on the lowest member
+                    interface on the first MLAG switch.
+                    This option overrides the default behavior and statically sets the local Port-
+                    channel ID.
+                    Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel IDs in the Network
+                    Services.
+                    Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the same value.
+                    """
+                    uplink_switch_port_channel_id: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=1, le=999999)
+                    """
+                    Only applicable for L2 switches with `uplink_type: port-channel`.
+                    By default the uplink switch Port-channel ID will be
+                    set to the number of the first interface defined under `uplink_switch_interfaces`.
+                    For example:
+                      member ports [ Eth22,
+                    Eth23 ] -> ID 22
+                      member ports [ Eth11/1, Eth22/1 ] -> ID 111
+                    For MLAG port-channels ID will be based on the lowest
+                    member interface on the first MLAG switch.
+                    This option overrides the default behavior and statically sets the Port-
+                    channel ID on the uplink switch.
+                    Note! Make sure the ID is unique and does not overlap with autogenerated Port-channel
+                    IDs in the Network Services.
+                    Note! For MLAG pairs the ID must be between 1 and 2000 and both MLAG switches must have the
+                    same value.
                     """
                     uplink_structured_config: dict | None = None
                     """
@@ -8505,6 +9623,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     """
                     spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None = None
                     spanning_tree_priority: Annotated[int, IntConvert(convert_types=(str))] | None = 32768
+                    """
+                    Spanning-tree priority configured for the selected mode.
+                    For `rapid-pvst` the priority can also be set per VLAN under
+                    network services.
+                    """
                     spanning_tree_root_super: bool | None = False
                     virtual_router_mac_address: str | None = None
                     """
@@ -8651,6 +9774,52 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
                     Set BGP cluster id.
                     """
                     ptp: Ptp | None = None
+                    wan_role: Literal["client", "server"] | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Override the default WAN role.
+
+                    This is used both for AutoVPN and
+                    Pathfinder designs.
+                    That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
+                    `server` indicates that
+                    the router is a route-reflector.
+
+                    Only supported if `overlay_routing_protocol` is set to `ibgp`.
+                    """
+                    cv_pathfinder_role: Literal["edge", "transit region", "pathfinder"] | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Override the default CV Pathfinder role.
+
+                    This key is used for Pathfinder
+                    designs only when the `wan_mode` root
+                    key is set to `cv_pathfinder`.
+
+                    `pathfinder` is only a valid if `wan_role` is
+                    `server`.
+                    `edge` and `transit region` are only valid if `wan_role` is `client`.
+                    """
+                    cv_pathfinder_region: str | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    The CV Pathfinder region name.
+                    """
+                    cv_pathfinder_site: str | None = None
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    The CV Pathfinder site name.
+                    """
+                    dps_mss_ipv4: Annotated[int, IntConvert(convert_types=(str))] | None = Field(None, ge=64, le=65495)
+                    """
+                    PREVIEW: This key is currently not supported
+
+                    MSS value for IPv4 the DPS interface.
+                    If not set, and the device is WAN
+                    device, a default value of 1000 is used.
+                    """
 
                 defaults: Defaults | None = None
                 """
@@ -8866,6 +10035,11 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     list.
     - Existing keys of type "Dictionary" will recursively merge
     - Other existing keys will be replaced.
+    """
+    cv_pathfinder_regions: list[CvPathfinderRegionsItem] | None = None
+    """
+    PREVIEW: This key is currently not supported
+    Define the SDWAN hierarchy for the device.
     """
     cv_topology: list[CvTopologyItem] | None = None
     """
@@ -9157,6 +10331,10 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     The
     default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
     """
+    ntp_settings: NtpSettings | None = None
+    """
+    NTP settings
+    """
     only_local_vlan_trunk_groups: bool | None = False
     """
     A vlan can have many trunk_groups assigned.
@@ -9276,10 +10454,21 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
         [
             {"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}},
             {
-                "platforms": ["7050X3", "720XP", "722XP"],
+                "platforms": ["7050X3"],
                 "feature_support": {"queue_monitor_length_notify": False},
                 "reload_delay": {"mlag": 300, "non_mlag": 330},
                 "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
+            },
+            {
+                "platforms": ["720XP"],
+                "feature_support": {"poe": True, "queue_monitor_length_notify": False},
+                "reload_delay": {"mlag": 300, "non_mlag": 330},
+                "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
+            },
+            {
+                "platforms": ["750", "755", "758", "720DP", "722XP", "710P"],
+                "feature_support": {"poe": True, "queue_monitor_length_notify": False},
+                "reload_delay": {"mlag": 300, "non_mlag": 330},
             },
             {
                 "platforms": ["7280R", "7280R2", "7020R"],
@@ -9553,6 +10742,42 @@ class EosDesigns(AvdEosDesignsRootDictBaseModel):
     IP Address used as Virtual VTEP. Will be configured as secondary IP on Loopback1.
     This is only needed for centralized
     routing designs.
+    """
+    wan_carriers: list[WanCarriersItem] | None = None
+    """
+    PREVIEW: This key is currently not supported
+
+    List of carriers used for the WAN configuration and their mapping to path-
+    groups.
+    """
+    wan_ipsec_profiles: WanIpsecProfiles | None = None
+    """
+    PREVIEW: This key is currently not supported
+
+    Define IPsec profiles parameters for WAN configuration.
+    """
+    wan_mode: Literal["autovpn", "cv-pathfinder"] | None = "cv-pathfinder"
+    """
+    PREVIEW: This key is currently not supported
+
+    Select if the WAN should be run using CV Pathfinder or Auto VPN only.
+    """
+    wan_path_groups: list[WanPathGroupsItem] | None = None
+    """
+    PREVIEW: This key is currently not supported
+    List of path-groups used for the WAN configuration.
+    """
+    wan_route_servers: list[WanRouteServersItem] | None = None
+    """
+    PREVIEW: This key is currently not supported
+
+    List of the AutoVPN RRs when using `wan_mode`=`autovpn`, or the
+    Pathfinders
+    when using `wan_mode`=`cv-pathfinder`, to which the device should connect to.
+
+    When the route server is part
+    of the same inventory as the WAN routers,
+    only the name is required.
     """
     custom_structured_configurations: list[CustomStructuredConfiguration] | None = None
     dynamic_keys: DynamicKeys | None = None

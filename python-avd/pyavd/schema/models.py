@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -31,6 +31,7 @@ class AvdDictBaseModel(BaseModel):
 
         custom_keys = [key for key in data.keys() if str(key).startswith("_")]
         if custom_keys:
+            data: dict = data.copy()
             data["custom_data"] = {key: data.pop(key) for key in custom_keys}
 
         return data
@@ -72,12 +73,13 @@ class AvdEosDesignsRootDictBaseModel(BaseModel):
                     {
                         "key": key,
                         "value": {
-                            key[prefix_length:]: data.pop(key),
+                            key[prefix_length:]: data[key],
                         },
                     }
                 )
 
         if custom_structured_configurations:
+            data: dict = data.copy()
             data["custom_structured_configurations"] = custom_structured_configurations
 
         return data
@@ -111,6 +113,7 @@ class AvdEosDesignsRootDictBaseModel(BaseModel):
         if getattr(cls, "dynamic_keys", None) is None:
             return data
 
+        data: dict = data.copy()
         for dynamic_key_map in cls.dynamic_keys._dynamic_key_maps:
             dynamic_keys_path: str = dynamic_key_map["dynamic_keys_path"]
             model_key: str = dynamic_key_map["model_key"]
@@ -120,11 +123,11 @@ class AvdEosDesignsRootDictBaseModel(BaseModel):
             # TODO: Catch the issue with the same dynamic keys
             for dynamic_key in dynamic_keys:
                 # dynamic_key is one key like "l3leaf".
-                if (value := data.pop(dynamic_key, None)) is None:
+                if data.get(dynamic_key) is None:
                     # Do not add missing key or None.
                     continue
 
-                model_key_list.append({"key": dynamic_key, "value": value})
+                model_key_list.append({"key": dynamic_key, "value": data[dynamic_key]})
 
             data.setdefault("dynamic_keys", {})[model_key] = model_key_list
 
