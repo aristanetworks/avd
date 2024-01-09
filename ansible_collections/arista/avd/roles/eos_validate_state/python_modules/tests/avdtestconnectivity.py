@@ -29,7 +29,7 @@ class AvdTestP2PIPReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces")) is None:
+        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
             return None
 
         required_keys = ["name", "peer", "peer_interface", "ip_address"]
@@ -81,7 +81,7 @@ class AvdTestInbandReachability(AvdTestBase):
         """
         anta_tests = []
 
-        if (management_interfaces := self.logged_get(key="management_interfaces")) is None:
+        if (management_interfaces := self.logged_get(key="management_interfaces", logging_level="WARNING")) is None:
             return None
 
         for idx, interface in enumerate(management_interfaces):
@@ -169,7 +169,7 @@ class AvdTestLLDPTopology(AvdTestBase):
         """
         anta_tests = []
 
-        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces")) is None:
+        if (ethernet_interfaces := self.logged_get(key="ethernet_interfaces", logging_level="WARNING")) is None:
             return None
 
         required_keys = ["name", "peer", "peer_interface"]
