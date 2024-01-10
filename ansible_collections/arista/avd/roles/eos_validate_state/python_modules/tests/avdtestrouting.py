@@ -99,9 +99,7 @@ class AvdTestBGP(AvdTestBase):
                 }
             )
 
-        if self.logged_get(key="router_bgp", logging_level="INFO") is None or not self.validate_data(
-            service_routing_protocols_model="multi-agent", logging_level="WARNING"
-        ):
+        if self.logged_get(key="router_bgp") is None or not self.validate_data(service_routing_protocols_model="multi-agent", logging_level="WARNING"):
             return None
 
         anta_tests.setdefault("generic", []).append(

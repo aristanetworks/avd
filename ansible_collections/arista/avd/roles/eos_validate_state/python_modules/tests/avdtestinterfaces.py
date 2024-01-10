@@ -68,7 +68,7 @@ class AvdTestInterfacesState(AvdTestBase):
                 return "adminDown", "down", description_template.format(state="adminDown")
             return "up", "up", description_template.format(state="up")
 
-        required_keys = ["name", "shutdown", "description"]
+        required_keys = ["name", "shutdown"]
 
         for interface_key, description_template in self.interface_types:
             interfaces = get(self.structured_config, interface_key, [])
@@ -78,7 +78,8 @@ class AvdTestInterfacesState(AvdTestBase):
                 if not self.validate_data(data=interface, data_path=f"{interface_key}.[{idx}]", required_keys=required_keys):
                     continue
                 state, proto, description = generate_test_details(interface, description_template)
-                custom_field = f"{interface['name']} - {interface['description']}"
+                intf_description = interface.get("description")
+                custom_field = interface["name"] if not intf_description else f"{interface['name']} - {intf_description}"
 
                 add_test(str(interface["name"]), state, proto, description, custom_field)
 
