@@ -415,7 +415,7 @@ This will:
 
 ### Using Ansible AVD in conjunction with CloudVision
 
-If you want to push to switches in the entire fabric using CloudVision and your playbook looks as follows:
+If you want to push to switches in the entire fabric using CloudVision, your playbook looks as follows:
 
 ```yaml
 ---
