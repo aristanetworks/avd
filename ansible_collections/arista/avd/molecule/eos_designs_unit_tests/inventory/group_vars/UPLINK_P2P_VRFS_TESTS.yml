@@ -4,6 +4,10 @@ default_node_types:
   - node_type: spine
     match_hostnames:
       - ".*SPINE.*"
+  # Order matters
+  - node_type: l2leaf
+    match_hostnames:
+      - ".*L2LEAF.*"
   - node_type: l3leaf
     match_hostnames:
       - ".*LEAF.*"
@@ -26,6 +30,17 @@ l3leaf:
       id: 3
       uplink_switch_interfaces: [ Ethernet1, Ethernet2 ]
 
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.42.0/24
+    uplink_switches: [ UPLINK_P2P_VRFS_TESTS_LEAF1, UPLINK_P2P_VRFS_TESTS_LEAF1]
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+  nodes:
+    - name: UPLINK_P2P_VRFS_TESTS_L2LEAF1
+      id: 4
+      uplink_switch_interfaces: [ Ethernet51, Ethernet52 ]
+
 spine:
   defaults:
     platform: vEOS-LAB
@@ -34,7 +49,9 @@ spine:
     - name: UPLINK_P2P_VRFS_TESTS_SPINE1
       id: 1
       filter:
-        always_include_vrfs_in_tenants: [TenantB]
+        # TenantC to check that the VRF attracted from L2LEAF1 on LEAF1 makes it
+        # to the uplink
+        always_include_vrfs_in_tenants: [TenantB, TenantC]
     - name: UPLINK_P2P_VRFS_TESTS_SPINE2
       id: 2
       filter:
@@ -53,3 +70,12 @@ tenants:
     vrfs:
       - name: PROD
         vrf_id: 43
+  - name: TenantC
+    vrfs:
+      - name: ONLY-ON-L2LEAF
+        vrf_id: 66
+        svis:
+          - id: 66
+            name: TEST-L2VLAN-ATTRACTION
+            nodes:
+              - node: UPLINK_P2P_VRFS_TESTS_L2LEAF1
