@@ -91,16 +91,6 @@ ethernet_interfaces:
   type: l3dot1q
   encapsulation_dot1q_vlan: 42
   ip_address: 10.42.42.10/31
-- name: Ethernet2.43
-  peer: UPLINK_P2P_VRFS_TESTS_LEAF1
-  peer_interface: Ethernet2.43
-  peer_type: l3leaf
-  vrf: PROD
-  description: 'P2P_LINK_TO_UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet2 vrf: PROD'
-  shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 43
-  ip_address: 10.42.42.10/31
 - name: Ethernet2
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1
   peer_interface: Ethernet2

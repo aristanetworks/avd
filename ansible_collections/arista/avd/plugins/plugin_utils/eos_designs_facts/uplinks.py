@@ -378,13 +378,18 @@ class UplinksMixin:
     ) -> list:
         subinterfaces = []
         for tenant in self.shared_utils.filtered_tenants:
-            # Hmm this could lead to duplicates maybe
+            # TODO this could lead to duplicates maybe - maybe use VRF names
             for vrf in tenant["vrfs"]:
                 # Only keep VRFs present in the uplink as well
                 if (vrf_name := get(vrf, "name", required=True)) not in get(uplink_switch_facts, "vrfs", []):
                     continue
                 # TODO should ptp / multicast be here ?
-                vrf_id = get(vrf, "vrf_id", required=True)
+                vrf_id = get(
+                    vrf,
+                    "vrf_id",
+                    required=True,
+                    org_key=f"'vrf_id' is required when using uplink type 'p2p-vrfs'. It is missing for VRF {vrf_name} in tenant {tenant['name']}.",
+                )
                 subinterface = {
                     "interface": f"{uplink_interface}.{vrf_id}",
                     "peer_interface": f"{uplink_switch_interface}.{vrf_id}",

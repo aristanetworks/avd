@@ -69,7 +69,7 @@ tenants:
   - name: TenantB
     vrfs:
       - name: PROD
-        vrf_id: 43
+        vrf_id: 42
   - name: TenantC
     vrfs:
       - name: ONLY-ON-L2LEAF
