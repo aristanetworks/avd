@@ -67,6 +67,10 @@ wan_edge:
           wan_carrier: Colt
           wan_circuit_id: 10555
           ip: 172.15.5.5/31
+        - name: Ethernet3
+          wan_carrier: Comcast-5G
+          wan_circuit_id: AF830
+          ip: 172.20.20.20/31
           connected_to_pathfinder: False
 
 wan_transit:
@@ -159,6 +163,8 @@ wan_carriers:
     path_group: MPLS
   - name: ATT-MPLS
     path_group: MPLS
+  - name: Comcast-5G
+    path_group: LTE
 
 tenants:
   - name: TenantA

@@ -91,6 +91,13 @@ ethernet_interfaces:
   type: routed
   flow_tracker:
     hardware: WAN-FLOW-TRACKER
+- name: Ethernet3
+  peer_type: l3_interface
+  ip_address: 172.20.20.20/31
+  shutdown: false
+  type: routed
+  flow_tracker:
+    hardware: WAN-FLOW-TRACKER
 loopback_interfaces:
 - name: Loopback0
   description: Router_ID
@@ -241,8 +248,23 @@ router_path_selection:
     id: 100
     local_interfaces:
     - name: Ethernet2
+      stun:
+        server_profiles:
+        - MPLS-cv-pathfinder-pathfinder-Ethernet2
     dynamic_peers:
       enabled: true
+    static_peers:
+    - router_ip: 192.168.44.1
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 172.16.0.1
+  - name: LTE
+    id: 102
+    local_interfaces:
+    - name: Ethernet3
+    dynamic_peers:
+      enabled: true
+    ipsec_profile: CP-PROFILE
   load_balance_policies:
   - name: CONTROL-PLANE-PROFILE_lb
     path_groups:
@@ -259,6 +281,8 @@ router_path_selection:
   - name: PROD-AVT-POLICY_video_lb
     path_groups:
     - name: MPLS
+      priority: 1
+    - name: LTE
       priority: 1
     - name: INET
       priority: 2
@@ -287,6 +311,8 @@ stun:
       ip_address: 10.7.7.7
     - name: INET-cv-pathfinder-pathfinder-Ethernet3
       ip_address: 10.9.9.9
+    - name: MPLS-cv-pathfinder-pathfinder-Ethernet2
+      ip_address: 172.16.0.1
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

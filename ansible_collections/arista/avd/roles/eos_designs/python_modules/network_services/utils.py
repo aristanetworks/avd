@@ -259,7 +259,8 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         ------
         name (str): The name of the load balance policy
         input_dict (dict): The dictionary containing
-        default_all (bool): When set, if no path-group is found in the input_dict, all local path groups are added to the policy with priority 1.
+        default_all (bool): When set, if no path-group is found in the input_dict, all local path groups connected to pathfinder
+                            are added to the policy with priority 1.
 
         TODO:
         * add LAN_HA with prio 1 when HA is implemented
@@ -272,7 +273,12 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         # An entry is composed of a list of path-groups in `names` and a `priority`
         policy_entries = get(input_dict, "path_groups", [])
         if not policy_entries and default_all:
-            policy_entries = [{"names": wan_local_path_group_names, "priority": 1}]
+            local_path_groups_connected_to_pathfinder = [
+                path_group["name"]
+                for path_group in self.shared_utils.wan_local_path_groups
+                if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
+            ]
+            policy_entries = [{"names": local_path_groups_connected_to_pathfinder, "priority": 1}]
 
         for policy_entry in policy_entries:
             for path_group_name in policy_entry.get("names"):
