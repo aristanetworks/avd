@@ -2,6 +2,8 @@ type: l3leaf
 underlay_multicast: true
 evpn_multicast: false
 
+fabric_name: failure_missing_evpn_multicast_l3
+
 l3leaf:
   defaults:
     # LOOPBACK AND VTEP MANAGEMENT
@@ -40,4 +42,4 @@ tenants:
             tags: ['evpn-multicast-l3']
 
 expected_error_message: >-
-  'evpn_l3_multicast: true' under VRF Tenant_A_OP_Zone_MC or Tenant FABRIC; this requires 'evpn_multicast' to also be set to true.
+  Unexpected failure during module execution: 'evpn_l3_multicast: true' under VRF Tenant_A_OP_Zone_MC or Tenant FABRIC; this requires 'evpn_multicast' to also be set to true.
