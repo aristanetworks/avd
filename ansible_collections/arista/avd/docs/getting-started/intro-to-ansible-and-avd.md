@@ -13,15 +13,15 @@ Imagine being asked to configure a **layer 3 leaf spine (L3LS)** network from sc
 ![Figure: Arista Leaf Spine topology](../_media/getting-started/single-dc-topology-physical.png)
 
 Traditionally one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software
-image and configuration. Of course, the configuration would be manually generated, using snippets from the relevant Arista design guides, or copying/pasting from existing devices. Configurations would have to be manually adapted to each and every device, which is time-consuming and prone to errors. Consider what would happen if a new pair of leaf switches or new VRFs/VLANs are added to the network - changes would need to be made to most of the devices.
+image and configuration. Of course, the configuration would be manually generated, using snippets from the relevant Arista design guides, or copying/pasting from existing devices. Configurations would have to be manually adapted to each and every device, which is time-consuming and prone to errors. Consider what would happen if a new pair of leaf switches or new VRFs/VLANs were added to the network - changes would need to be made to most of the devices.
 
 Using Arista Validated Designs (AVD), this task is automated, greatly simplified, and made considerably faster. All the basic network configuration is guaranteed to be identical across the entire fabric from day one. No longer do you have to manually inspect each device for errors or differences. AVD will ensure the consistency and accuracy of your configuration not only for initial deployment but for all subsequent network changes.
 
-AVD is also based on best practice from [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides), meaning you get the full benefit of Arista's experience in deploying large scale leaf spine fabrics. AVD fully integrates with Arista CloudVision, which adds a change control workflow, continuous compliance check, and network topology overview as well as real-time streaming telemetry including flow-based data and more.
+AVD is also based on best practices from [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides), meaning you get the full benefit of Arista's experience in deploying large-scale leaf spine fabrics. AVD fully integrates with Arista CloudVision, which adds a change control workflow, continuous compliance check, and network topology overview as well as real-time streaming telemetry including flow-based data and more.
 
 ## What is Ansible?
 
-The Red Hat® Ansible® Automation Platform is an open source tool, released in 2012 and acquired by Red Hat in 2015. Ansible
+The Red Hat® Ansible® Automation Platform is an open-source tool, released in 2012 and acquired by Red Hat in 2015. Ansible
 is an automation engine that can be used for many purposes including:
 
 - Server software provisioning
@@ -55,7 +55,7 @@ Ansible can run on almost anything, but in production scenarios, Ansible is typi
 Arista and accepts third-party contributions on GitHub at [aristanetworks/avd](https://github.com/aristanetworks/avd).
 
 While Ansible is the core automation engine, AVD is an Ansible Collection described above. It provides roles, modules, and plugins
-that allows the user to generate and deploy best-practice configurations to a layer three leaf-spine network.
+that allow the user to generate and deploy best-practice configurations to a layer three leaf-spine network.
 
 ![Figure: Arista Leaf Spine topology](../_media/getting-started/ansible-avd.png)
 
@@ -85,8 +85,8 @@ It's important to note when and perhaps more importantly, when not to use AVD.
 
 AVD is designed to generate and deploy complete configuration files where the network device's running configuration is entirely replaced. As such, caution should be exercised when running AVD against an existing manually configured network. We can take various approaches under such circumstances:
 
-- Compare AVD-generated configurations against device running configurations; make changes to the AVD input data and iterate until the configurations are functionally equivalent.
-- Use AVD to generate partial configurations that we can be apply to devices in such a way that won't destroy existing manual configuration.
+- Compare AVD-generated configurations against the device running configurations; make changes to the AVD input data and iterate until the configurations are functionally equivalent.
+- Use AVD to generate partial configurations that we can apply to devices in such a way that won't destroy existing manual configurations.
 - Use AVD to generate configurations part-based on automation, part-based on manual configuration included into AVD using AVD's `structured_configuration`, `raw_eos_cli` or `custom_template` facilities.
 
 Automating the provisioning of network infrastructure makes the most sense when the network is built from repeatable building blocks. These allow for code reuse and the abstraction of data. For example, point-to-point links are allocated IP subnets from a much larger pool in most leaf-spine networks. This is a tedious job for a human to design and configure but is an ideal candidate to be automated. However, automation may take longer to achieve in a network that has evolved rather than been designed from the ground up.
@@ -109,7 +109,7 @@ This is defined in the Ansible ***inventory***. Per the official Ansible documen
 
 Please note that the example above is taken from the Ansible AVD Examples repository, specifically the `Single-DC-L3LS`.
 
-The exact name of the inventory file isn't important, but is provided to Ansible in the `ansible.cfg` file for the project or as `ansible-playbook -i ./inventory.yml` when later running Ansible.
+The exact name of the inventory file isn't important but is provided to Ansible in the `ansible.cfg` file for the project or as `ansible-playbook -i ./inventory.yml` when later running Ansible.
 
 ### Inventories
 
@@ -301,7 +301,7 @@ Playbooks with multiple plays can orchestrate multi-machine deployments, running
 
 At a minimum, each play defines two things:
 
-1. The managed devices (***hosts***) to target, referenced from the ***inventory*** we defined earlier.
+1. The managed devices (***hosts***) to target, are referenced from the ***inventory*** we defined earlier.
 2. One or more ***tasks*** to execute on defined targets.
 
 The hosts specified in a playbook typically reference groups defined in the inventory. You can select large or small groups of the inventory from a playbook, right down to individual hosts, to be as specific as possible with any configuration changes.
@@ -358,15 +358,15 @@ Running the play described above would result in several files containing the co
 
 While this play shows both the `eos_designs` and `eos_cli_config_gen` roles used together, it's entirely possible to make use of just `eos_cli_config_gen` by itself - this would allow (for example) generation of management configuration that could potentially be merged into an existing network as discussed earlier.
 
-## Source of Truth
+## System or Record
 
 In a legacy network where configuration isn't administered centrally, you have very little control of the relationship between the configuration you *intend* to be applied to the network and the configuration *running* on the network. You might have centralized low-level design documents describing how the network should function in great detail, but you don't have much but the best intentions to ensure that your **entire** network is working as you intended. As a result, it takes only a single configuration mistake on a single device to create havoc.
 
 Since operating many networking devices also typically results in having many networking engineers, there is even more room for error. Different people do things differently, and repetitive tasks aren't always executed in the same manner.
 
-With AVD, you define not only the topology of your network centrally but also which services are used where in a central repository of text files. Furthermore, because this data is stored in text files, it's possible to apply version control (for example, using tools like git, subversion, or mercurial) to this source of truth, giving you visibility of when the intended configuration was changed and by who.
+With AVD, you define not only the topology of your network centrally but also which services are used where in a central repository of text files. Furthermore, because this data is stored in text files, it's possible to apply version control (for example, using tools like git, subversion, or mercurial) to this system of record, giving you visibility of when the intended configuration was changed and by whom.
 
-This source of truth means you have a complete overview of your entire designed network configuration without having to look at individual network devices. An additional benefit of AVD is that by design, you always have a backup of your network configuration. Including automated documentation in markdown format, you no longer have to remember to update documentation about which interface is connected to which device, etc., whenever you change something on a device. Instead, it's all done automatically based on the configuration built and applied to the network devices by Ansible every time you execute the playbooks.
+This system of record means you have a complete overview of your entire designed network configuration without having to look at individual network devices. An additional benefit of AVD is that by design, you always have a backup of your network configuration. Including automated documentation in markdown format, you no longer have to remember to update documentation about which interface is connected to which device, etc., whenever you change something on a device. Instead, it's all done automatically based on the configuration built and applied to the network devices by Ansible every time you execute the playbooks.
 
 Below you will find two examples of documentation automatically created by Ansible AVD:
 
@@ -474,7 +474,7 @@ This quickly identifies any issues that we could otherwise overlook. For example
 
 ## Day 2 Operations
 
-Day 2 operations describe most, if not all, network configuration changes that occur after the initial configuration.
+Day 2 operations describe most if not all, network configuration changes that occur after the initial configuration.
 
 These tasks, while relatively simple, can be time-consuming simply because they involve changes to multiple devices:
 
