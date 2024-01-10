@@ -15396,13 +15396,6 @@
                 "maximum": 254,
                 "description": "Maximum number of hops.",
                 "title": "TTL Maximum Hops"
-              },
-              "ttl_maximum_hops": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 254,
-                "description": "Maximum number of hops.",
-                "title": "TTL Maximum Hops"
               }
             },
             "additionalProperties": false,
