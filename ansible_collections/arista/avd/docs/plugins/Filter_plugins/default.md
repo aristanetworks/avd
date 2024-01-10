@@ -27,8 +27,8 @@ As a last resort, the filter will return <code>None</code>.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | Default value to check. Will be returned untouched if <code>not undefined</code> and <code>not None</code>. |
-| default_values | any | optional | None |  | One or more default values will be tested individually, and the first valid value will be used. |
+| <samp>_input</samp> | any | True | None |  | Default value to check. Will be returned untouched if <code>not undefined</code> and <code>not None</code>. |
+| <samp>default_values</samp> | any | optional | None |  | One or more default values will be tested individually, and the first valid value will be used. |
 
 ## Examples
 

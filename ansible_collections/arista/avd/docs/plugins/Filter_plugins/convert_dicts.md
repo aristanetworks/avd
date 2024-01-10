@@ -29,9 +29,9 @@ Note \- if there is a non\-dictionary value with no secondary key provided, it w
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | Dictionary to convert \- returned untouched if not a nested dictionary/list. |
-| primary_key | string | optional | name |  | Name of the primary key used when inserting outer dictionary keys into items. |
-| secondary_key | string | optional | None |  | Name of the secondary key used when inserting dictionary values which are list into items. |
+| <samp>_input</samp> | any | True | None |  | Dictionary to convert \- returned untouched if not a nested dictionary/list. |
+| <samp>primary_key</samp> | string | optional | name |  | Name of the primary key used when inserting outer dictionary keys into items. |
+| <samp>secondary_key</samp> | string | optional | None |  | Name of the secondary key used when inserting dictionary values which are list into items. |
 
 ## Examples
 

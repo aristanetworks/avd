@@ -7,6 +7,7 @@ from .cv_topology import CvTopology
 from .inband_management import InbandManagementMixin
 from .interface_descriptions import InterfaceDescriptionsMixin
 from .ip_addressing import IpAddressingMixin
+from .l3_interfaces import L3InterfacesMixin
 from .link_tracking_groups import LinkTrackingGroupsMixin
 from .mgmt import MgmtMixin
 from .misc import MiscMixin
@@ -30,6 +31,7 @@ class SharedUtils(
     InterfaceDescriptionsMixin,
     IpAddressingMixin,
     LinkTrackingGroupsMixin,
+    L3InterfacesMixin,
     CvTopology,
     MgmtMixin,
     MlagMixin,

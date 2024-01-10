@@ -23,12 +23,12 @@ Transform information from ansible inventory to be able to provision CloudVision
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| inventory | str | False | None |  | Optional YAML inventory file to parse. If not set the loaded inventory will be parsed. |
-| container_root | str | True | None |  | Ansible group name to consider to be Root of our topology. |
-| configlet_dir | str | False | None |  | Directory where intended configurations are located. |
-| configlet_prefix | str | False | AVD |  | Prefix to put on configlet. |
-| destination | str | False | None |  | Optional path to save variable. |
-| device_filter | list | False | ['all'] |  | Filter to apply intended mode on a set of configlet. If not used, then module only uses ADD mode. device\_filter list devices that can be modified or deleted based on configlets entries. |
+| <samp>inventory</samp> | str | False | None |  | Optional YAML inventory file to parse. If not set the loaded inventory will be parsed. |
+| <samp>container_root</samp> | str | True | None |  | Ansible group name to consider to be Root of our topology. |
+| <samp>configlet_dir</samp> | str | False | None |  | Directory where intended configurations are located. |
+| <samp>configlet_prefix</samp> | str | False | AVD |  | Prefix to put on configlet. |
+| <samp>destination</samp> | str | False | None |  | Optional path to save variable. |
+| <samp>device_filter</samp> | list | False | ['all'] |  | Filter to apply intended mode on a set of configlet. If not used, then module only uses ADD mode. device\_filter list devices that can be modified or deleted based on configlets entries. |
 
 ## Examples
 

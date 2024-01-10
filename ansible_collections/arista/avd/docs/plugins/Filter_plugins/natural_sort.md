@@ -27,8 +27,8 @@ The filter will return an empty list if the value parsed to arista.avd.natural\_
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | List or dictionary |
-| sort_key | string | optional | None |  | Key to sort on when sorting a list of dictionaries |
+| <samp>_input</samp> | any | True | None |  | List or dictionary |
+| <samp>sort_key</samp> | string | optional | None |  | Key to sort on when sorting a list of dictionaries |
 
 ## Examples
 

@@ -120,3 +120,47 @@ class UtilsMixin:
     @cached_property
     def _uplinks(self) -> list:
         return get(self._hostvars, "switch.uplinks")
+
+    def _get_l3_interface_cfg(self, l3_interface: dict) -> dict | None:
+        """
+        Returns structured_configuration for one L3 interface
+        """
+        interface_name = get(l3_interface, "name", required=True, org_key=f"<node_type_key>...[node={self.shared_utils.hostname}].l3_interfaces[].name]")
+
+        # TODO move this to description module?
+        interface_description = (
+            l3_interface.get("description")
+            or "_".join([elem for elem in [l3_interface.get("peer"), l3_interface.get("peer_interface")] if elem is not None])
+            or None
+        )
+
+        # TODO catch if ip_address is not valid or not dhcp
+        ip_address = get(
+            l3_interface,
+            "ip",
+            required=True,
+            org_key=f"{self.shared_utils.node_type_key_data['key']}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}.ip]",
+        )
+
+        interface = {
+            "name": interface_name,
+            "peer_type": "l3_interface",
+            "peer": l3_interface.get("peer"),
+            "peer_interface": l3_interface.get("peer_interface"),
+            "ip_address": ip_address,
+            "shutdown": not l3_interface.get("enabled", True),
+            "type": "routed",
+            "description": interface_description,
+            "speed": l3_interface.get("speed"),
+            "service_profile": l3_interface.get("qos_profile"),
+            "eos_cli": l3_interface.get("raw_eos_cli"),
+            "struct_cfg": l3_interface.get("structured_config"),
+        }
+
+        if ip_address == "dhcp" and l3_interface.get("set_default_route", False):
+            interface["dhcp_client_accept_default_route"] = True
+
+        if self.shared_utils.cv_pathfinder_role:
+            interface["flow_tracker"] = {"hardware": "WAN-FLOW-TRACKER"}
+
+        return strip_empties_from_dict(interface)

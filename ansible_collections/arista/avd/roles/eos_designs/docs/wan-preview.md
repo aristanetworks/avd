@@ -11,6 +11,7 @@ title: Ansible Collection Role eos_design - WAN preview
 # WAN preview
 
 !!! warning
+
     The integration of WAN designs to `eos_designs` role is in preview mode.
 
     Everything is subject to change, is not supported and may not be complete.
@@ -48,12 +49,15 @@ The intention is to support both a single [AutoVPN design](https://www.arista.co
     ```
 
 - No IPv6 support
+- For WAN interfaces only `l3_edge.l3_interfaces` is supported  and not `core_interfaces.l3_interfaces`.
+- For WAN interfaces, NAT IP on the Pathfinder side can be supported using the `wan_route_servers.path_groups.interfaces` key.
+- Path-group ID is currently required under `wan_path_groups` until an algorithm is implemented to auto generate IDs.
 
 ## Future work
 
 - As of now, only the fundations of the `eos_designs` functionality for WAN is
-    being introduced without any support for LAN and WAN interfaces.
-    This implies that path-groups are not configured.
+    being introduced without any support for LAN interfaces.
+- Auto generation of Path-group IDs and other IDs.
 - The configuration of AVT policies is not supported yet and will be introduced
     later.
 - HA for sites will be covered in a future PR
@@ -94,13 +98,32 @@ All these node types are defined with `default_underlay_routing_protocol: none` 
 roles/eos_designs/docs/tables/wan-settings.md
 --8<--
 
-#### WAN hierarchy
+##### WAN path-groups
+
+--8<--
+roles/eos_designs/docs/tables/wan-path-groups.md
+--8<--
+
+##### WAN carriers
+
+--8<--
+roles/eos_designs/docs/tables/wan-carriers.md
+--8<--
+
+##### WAN hierarchy
 
 !!! note
+
     This section is only relevant for CV Pathfinder and not for AutoVPN
 
 --8<--
 roles/eos_designs/docs/tables/wan-cv-pathfinder-regions.md
+--8<--
+
+#### WAN interfaces
+
+--8<--
+roles/eos_designs/docs/tables/wan-interfaces-settings.md
 --8<--
 
 #### New BGP peer-group

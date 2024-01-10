@@ -31,10 +31,10 @@ The below requirements are needed on the host that executes this module.
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | string | True | None |  | Markdown to process. |
-| skip_lines | integer | optional | 0 |  | Skip the first x lines when parsing the input Markdown. |
-| toc_levels | integer | optional | 3 |  | How many levels of headings will be included in the TOC. |
-| toc_marker | string | optional | <!-- toc --> |  | TOC will be inserted or updated between two of markers in the input Markdown. |
+| <samp>_input</samp> | string | True | None |  | Markdown to process. |
+| <samp>skip_lines</samp> | integer | optional | 0 |  | Skip the first x lines when parsing the input Markdown. |
+| <samp>toc_levels</samp> | integer | optional | 3 |  | How many levels of headings will be included in the TOC. |
+| <samp>toc_marker</samp> | string | optional | <!-- toc --> |  | TOC will be inserted or updated between two of markers in the input Markdown. |
 
 ## Examples
 

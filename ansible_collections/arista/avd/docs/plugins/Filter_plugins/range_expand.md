@@ -27,7 +27,7 @@ Within a single range, prefixes \(ex. Ethernet, Eth, Po\) are carried over to it
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | Range as string or list of ranges. |
+| <samp>_input</samp> | any | True | None |  | Range as string or list of ranges. |
 
 ## Examples
 
