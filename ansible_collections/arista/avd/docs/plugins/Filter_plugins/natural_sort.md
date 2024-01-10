@@ -3,7 +3,7 @@
 title: arista.avd.natural_sort
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -27,8 +27,8 @@ The filter will return an empty list if the value parsed to arista.avd.natural\_
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-| _input | any | True | None |  | List or dictionary |
-| sort_key | string | optional | None |  | Key to sort on when sorting a list of dictionaries |
+| <samp>_input</samp> | any | True | None |  | List or dictionary |
+| <samp>sort_key</samp> | string | optional | None |  | Key to sort on when sorting a list of dictionaries |
 
 ## Examples
 

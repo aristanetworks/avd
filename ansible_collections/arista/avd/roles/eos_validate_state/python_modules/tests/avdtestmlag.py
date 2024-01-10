@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -23,7 +23,7 @@ class AvdTestMLAG(AvdTestBase):
         Returns:
             test_definition (dict): ANTA test definition.
         """
-        if self.logged_get(key="mlag_configuration", logging_level="INFO") is None:
+        if self.logged_get(key="mlag_configuration") is None:
             return None
 
         anta_tests = [

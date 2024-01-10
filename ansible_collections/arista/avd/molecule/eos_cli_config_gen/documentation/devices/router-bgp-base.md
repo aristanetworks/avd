@@ -98,7 +98,7 @@ interface Management1
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 192.0.3.1 | 65432 | default | - | all | - | - | True | True | - | True |
+| 192.0.3.1 | 65432 | default | - | all | - | - | True(interval: 2000, min_rx: 2000, multiplier: 3) | True | - | True |
 | 192.0.3.2 | 65433 | default | - | extended | 10000 | - | False | True (All) | - | - |
 | 192.0.3.3 | 65434 | default | - | standard | - | - | - | True | - | - |
 | 192.0.3.4 | 65435 | default | - | large | - | - | - | False | - | - |
@@ -165,6 +165,7 @@ router bgp 65101
    neighbor 192.0.3.1 as-path remote-as replace out
    neighbor 192.0.3.1 as-path prepend-own disabled
    neighbor 192.0.3.1 bfd
+   neighbor 192.0.3.1 bfd interval 2000 min-rx 2000 multiplier 3
    neighbor 192.0.3.1 rib-in pre-policy retain
    neighbor 192.0.3.1 passive
    neighbor 192.0.3.1 session tracker ST1

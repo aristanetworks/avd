@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -9,7 +9,7 @@
 title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 ---
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -37,7 +37,7 @@ title: {{ collection | default("arista.avd", true) ~ "." ~ module }}
 {%             set _ = restrictions.append("Max value: <code>" ~ spec.max ~ "</code>") %}
 {%         endif %}
 {%         set description = spec.description | map("md_ify") | map("replace", "\.", ".") | map("replace", "\,", ",") | join("<br>") %}
-| {{ "    " * level }}{{ name }} | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
+| <samp>{{ "&nbsp;" * 4 * level }}{{ name }}</samp> | {{ typ }} | {{ req }} | {{ def_val }} | {{ restrictions | join("<br>") }} | {{ description }} |
 {%         if spec.suboptions %}
 {{ option_desc(spec.suboptions, level + 1) -}}
 {%         endif %}

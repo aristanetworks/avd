@@ -1,12 +1,13 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
 from functools import cached_property
 
+from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import get, get_item
 
 from .utils import UtilsMixin
 
@@ -44,32 +45,26 @@ class RouterPathSelectionMixin(UtilsMixin):
         """
         Generate the required path-groups locally
         """
-        # TODO - get this once WAN interface are available
-        # TODO - this function will need to handle Crossconnection of public path_groups
-        #
-        local_path_groups = []
-        # The value will be set based on the WAN interfaces configuration
-        # local_path_groups = self.shared_utils.path_groups
-
-        if not local_path_groups:
-            return []
-
         path_groups = []
 
         # TODO - need to have default value in one place only -> maybe facts / shared_utils ?
-        ipsec_profile_name = get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", required=True)
+        ipsec_profile_name = get(self._hostvars, "wan_ipsec_profiles.control_plane.profile_name", default="CP-PROFILE")
 
-        for carrier in local_path_groups:
-            path_groups.append(
-                {
-                    "name": carrier.get("name"),
-                    "id": self._get_carrier_id(carrier),
-                    "ipsec_profile": ipsec_profile_name,  # TODO - disable on a per carrier basis
-                    "local_interfaces": self._get_local_interfaces(carrier),
-                    "dynamic_peers": self._get_dynamic_peers(),
-                    "static_peers": self._get_static_peers(carrier),
-                }
-            )
+        for path_group in self.shared_utils.wan_local_path_groups:
+            pg_name = path_group.get("name")
+
+            path_group_data = {
+                "name": pg_name,
+                "id": self._get_path_group_id(pg_name, path_group.get("id")),
+                "local_interfaces": self._get_local_interfaces_for_path_group(pg_name),
+                "dynamic_peers": self._get_dynamic_peers(),
+                "static_peers": self._get_static_peers_for_path_group(pg_name),
+            }
+
+            if path_group.get("ipsec", True):
+                path_group_data["ipsec_profile"] = ipsec_profile_name
+
+            path_groups.append(path_group_data)
 
         if self.shared_utils.cv_pathfinder_role:
             pass
@@ -79,10 +74,13 @@ class RouterPathSelectionMixin(UtilsMixin):
 
     def _get_load_balance_policies(self, path_groups: dict) -> dict | None:
         """ """
-        # TODO for now a default load balance policy with all path-groups.
-        load_balance_policies = []
-        load_balance_policies.append({"name": "LBPOLICY", "path_groups": [pg.get("name") for pg in path_groups]})
-        return load_balance_policies
+        unique_path_groups = natural_sort({path_group.get("name") for path_group in path_groups}, "name")
+        return [
+            {
+                "name": "LBPOLICY",
+                "path_groups": [{"name": pg_name} for pg_name in unique_path_groups],
+            }
+        ]
 
     def _get_policies(self) -> list | None:
         """
@@ -108,35 +106,67 @@ class RouterPathSelectionMixin(UtilsMixin):
             return vrfs
         return None
 
-    def _get_carrier_id(self, carrier: dict) -> int:
+    def _get_path_group_id(self, path_group_name: str, config_id: int | None = None) -> int:
         """
         TODO - implement algorithm to auto assign IDs - cf internal documenation
         TODO - also implement algorithm for cross connects on public path_groups
         """
-        if carrier["name"] == "LAN_HA":
+        if path_group_name == "LAN_HA":
             return 65535
+        if config_id is not None:
+            return config_id
         return 500
 
-    def _get_local_interfaces(self, carrier: dict) -> list | None:
+    def _get_local_interfaces_for_path_group(self, path_group_name: str) -> list | None:
         """
         Generate the router_path_selection.local_interfaces list
 
         For AUTOVPN clients, configure the stun server profiles as appropriate
         """
         local_interfaces = []
+        path_group = get_item(self.shared_utils.wan_local_path_groups, "name", path_group_name, default={})
+        for interface in path_group.get("interfaces", []):
+            local_interface = {"name": get(interface, "name", required=True)}
+
+            if self.shared_utils.wan_role == "client" and self._should_connect_to_wan_rs([path_group_name]):
+                stun_server_profiles = self._stun_server_profiles.get(path_group_name, [])
+                if stun_server_profiles:
+                    local_interface["stun"] = {"server_profiles": [profile["name"] for profile in stun_server_profiles]}
+
+            local_interfaces.append(local_interface)
+
         return local_interfaces
 
     def _get_dynamic_peers(self) -> dict | None:
-        """ """
+        """
+        TODO support ip_local and ipsec ?
+        """
         if self.shared_utils.wan_role != "client":
             return None
         return {"enabled": True}
 
-    def _get_static_peers(self, transport: dict) -> list | None:
+    def _get_static_peers_for_path_group(self, path_group_name: str) -> list | None:
         """
         TODO
         """
-        if self.shared_utils.wan_role != "client":
+        if not self.shared_utils.wan_role:
             return None
+
         static_peers = []
+        for wan_route_server, data in self._filtered_wan_route_servers.items():
+            if (path_group := get_item(data["wan_path_groups"], "name", path_group_name)) is not None:
+                ipv4_addresses = []
+
+                for interface_dict in get(path_group, "interfaces", required=True):
+                    if (ip_address := interface_dict.get("ip_address")) is not None:
+                        # TODO - removing mask using split but maybe a helper is clearer
+                        ipv4_addresses.append(ip_address.split("/")[0])
+                static_peers.append(
+                    {
+                        "router_ip": get(data, "router_id", required=True),
+                        "name": wan_route_server,
+                        "ipv4_addresses": ipv4_addresses,
+                    }
+                )
+
         return static_peers

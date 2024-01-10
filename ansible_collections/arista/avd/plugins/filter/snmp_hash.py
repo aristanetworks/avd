@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 #
@@ -168,5 +168,5 @@ def hash_passphrase(input_dict):
 class FilterModule(object):
     def filters(self):
         return {
-            "hash_passphrase": hash_passphrase,
+            "snmp_hash": hash_passphrase,
         }

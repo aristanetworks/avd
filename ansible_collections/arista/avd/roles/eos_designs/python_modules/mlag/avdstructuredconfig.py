@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -76,7 +76,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             "name": main_vlan_interface_name,
             "description": "MLAG_PEER",
             "shutdown": False,
-            "ip_address": f"{self.shared_utils.mlag_ip}/31",
+            "ip_address": f"{self.shared_utils.mlag_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}",
             "no_autostate": True,
             "struct_cfg": self.shared_utils.mlag_peer_vlan_structured_config,
             "mtu": self.shared_utils.p2p_uplinks_mtu,
@@ -129,7 +129,7 @@ class AvdStructuredConfigMlag(AvdFacts):
             "mtu": self.shared_utils.p2p_uplinks_mtu,
         }
         if not self.shared_utils.underlay_rfc5549:
-            l3_vlan_interface["ip_address"] = f"{self.shared_utils.mlag_l3_ip}/31"
+            l3_vlan_interface["ip_address"] = f"{self.shared_utils.mlag_l3_ip}/{self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length}"
 
         l3_vlan_interface.update(l3_cfg)
 

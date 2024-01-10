@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -24,7 +24,7 @@ class AvdTestAPIHttpsSSL(AvdTestBase):
             test_definition (dict): ANTA test definition.
         """
         anta_tests = []
-        if (profile := self.logged_get(key="management_api_http..https_ssl_profile", logging_level="INFO")) is None:
+        if (profile := self.logged_get(key="management_api_http..https_ssl_profile")) is None:
             return None
         anta_tests.append({"VerifyAPIHttpsSSL": {"profile": profile}})
 

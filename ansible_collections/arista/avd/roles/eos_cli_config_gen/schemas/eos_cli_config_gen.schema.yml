@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 $id: eos_cli_config_gen
@@ -1327,6 +1327,130 @@ keys:
         type: bool
       mlag_peerlink_requests_disabled:
         type: bool
+  dhcp_servers:
+    type: list
+    primary_key: vrf
+    items:
+      type: dict
+      keys:
+        disabled:
+          type: bool
+        vrf:
+          type: str
+          description: VRF in which to configure the DHCP server, use `default` to
+            indicate default VRF.
+          convert_types:
+          - int
+        dns_domain_name_ipv4:
+          type: str
+        dns_domain_name_ipv6:
+          type: str
+        ipv4_vendor_options:
+          type: list
+          primary_key: vendor_id
+          items:
+            type: dict
+            keys:
+              vendor_id:
+                type: str
+                convert_types:
+                - int
+              sub_options:
+                type: list
+                primary_key: code
+                items:
+                  type: dict
+                  keys:
+                    code:
+                      type: int
+                      required: true
+                      min: 1
+                      max: 254
+                      convert_types:
+                      - str
+                    string:
+                      type: str
+                      description: 'String value for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
+                    ipv4_address:
+                      type: str
+                      description: 'IPv4 address value for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
+                    array_ipv4_address:
+                      type: list
+                      description: 'Array of IPv4 addresses for suboption data.
+
+                        Only one of `string`, `ipv4_address` and `array_ipv4_address`
+                        variables should be used for any one suboption.
+
+                        The order of precedence if multiple of these variables are
+                        defined is `string` -> `ipv4_address` -> `array_ipv4_address`.'
+                      items:
+                        type: str
+        subnets:
+          type: list
+          primary_key: subnet
+          items:
+            type: dict
+            keys:
+              subnet:
+                type: str
+                required: true
+              name:
+                type: str
+                convert_types:
+                - int
+              default_gateway:
+                type: str
+              dns_servers:
+                type: list
+                items:
+                  type: str
+              ranges:
+                type: list
+                items:
+                  type: dict
+                  keys:
+                    start:
+                      type: str
+                      required: true
+                    end:
+                      type: str
+                      required: true
+              lease_time:
+                type: dict
+                keys:
+                  days:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 2000
+                    convert_types:
+                    - str
+                  hours:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 23
+                    convert_types:
+                    - str
+                  minutes:
+                    type: int
+                    required: true
+                    min: 0
+                    max: 59
+                    convert_types:
+                    - str
   dns_domain:
     type: str
     description: Domain Name
@@ -8967,6 +9091,35 @@ keys:
               type: bool
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: 'Override default BFD timers. BFD must be enabled with
+                `bfd: true`.'
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                  - str
             ebgp_multihop:
               type: int
               min: 1
@@ -9123,6 +9276,35 @@ keys:
               description: Source Interface
             bfd:
               type: bool
+              description: Enable BFD.
+            bfd_timers:
+              type: dict
+              description: 'Override default BFD timers. BFD must be enabled with
+                `bfd: true`.'
+              keys:
+                interval:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Interval in milliseconds.
+                min_rx:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 50
+                  max: 60000
+                  required: true
+                  description: Rate in milliseconds.
+                multiplier:
+                  type: int
+                  min: 3
+                  max: 50
+                  required: true
+                  convert_types:
+                  - str
             weight:
               type: int
               min: 0
@@ -10666,6 +10848,35 @@ keys:
                     type: bool
                   bfd:
                     type: bool
+                    description: Enable BFD.
+                  bfd_timers:
+                    type: dict
+                    description: 'Override default BFD timers. BFD must be enabled
+                      with `bfd: true`.'
+                    keys:
+                      interval:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Interval in milliseconds.
+                      min_rx:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 50
+                        max: 60000
+                        required: true
+                        description: Rate in milliseconds.
+                      multiplier:
+                        type: int
+                        min: 3
+                        max: 50
+                        convert_types:
+                        - str
+                        required: true
                   timers:
                     type: str
                     description: BGP Keepalive and Hold Timer values in seconds as
@@ -12605,6 +12816,8 @@ keys:
         type: int
         convert_types:
         - str
+      sample_input_subinterface:
+        type: bool
       dangerous:
         type: bool
       polling_interval:

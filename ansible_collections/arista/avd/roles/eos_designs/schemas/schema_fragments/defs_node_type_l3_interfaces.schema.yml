@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -6,12 +6,13 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 $defs:
-  l3_edge_l3_interfaces:
+  node_type_l3_interfaces:
     type: list
+    primary_key: name
     items:
       type: dict
       keys:
-        interface:
+        name:
           type: str
           description: Ethernet interface name like 'Ethernet2'.
           pattern: "Ethernet[\\d/]+"
@@ -23,15 +24,17 @@ $defs:
         ip:
           type: str
           description: Node IPv4 address/Mask or 'dhcp'.
-        dhcp_client_accept_default_route:
+        set_default_route:
           type: bool
-          default: False
+          default: false
           description: |-
-            Supported if `ip` is `dhcp`.
-            Accepts default route from DHCP.
+            Insert a default route to the `peer_ip` if `ip` is an ip address
+            or configure to accept a default route from DHCP if `ip` is `dhcp`.
+
+            AVD will error out if set to true, `ip` is an ip address and `peer_ip` is missing.
         enabled:
           type: bool
-          default: True
+          default: true
           description: Enable or Shutdown the interface.
         speed:
           type: str
@@ -48,10 +51,27 @@ $defs:
         peer_ip:
           type: str
           description: |-
-            The peer device IP. Used for description and documentation
+            The peer device IPv4 address (no mask). Used as default route gateway if `set_default_route` is true and `ip` is an IP address.
         qos_profile:
           type: str
           description: QOS service profile.
+        wan_carrier:
+          type: str
+          description: |-
+            The WAN Carrier this interface is connected to.
+            This is used to infer the path-groups in which this interface should be configured.
+        wan_circuit_id:
+          type: str
+          convert_types:
+            - int
+          description: |-
+            The WAN Circuit ID for this interface.
+            This is not rendered in the configuration but used for WAN designs.
+        connected_to_pathfinder:
+          type: bool
+          default: True
+          description: |-
+            For a WAN interface (`wan_path_group` is set), allow to disable the static tunnel towards Pathfinders.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS configuration.

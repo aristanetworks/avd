@@ -7,6 +7,8 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     make \
     git \
+    # xz-utils required for docker import to work
+    xz-utils \
     && rm -rf /var/lib/apt/lists/* \
     && rm -Rf /usr/share/doc && rm -Rf /usr/share/man \
     && apt-get clean

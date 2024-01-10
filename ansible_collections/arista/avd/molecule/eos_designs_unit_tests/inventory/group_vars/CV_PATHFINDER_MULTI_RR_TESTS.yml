@@ -10,4 +10,10 @@ wan_route_servers:
     router_id: 6.6.6.6
     path_groups:
       - name: MPLS
+        interfaces:
+          - name: Ethernet1
+            ip_address: 172.17.17.17/31
       - name: INET
+        interfaces:
+          - name: Ethernet2
+            ip_address: 10.50.50.50/31

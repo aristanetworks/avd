@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 # yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
@@ -7,8 +7,6 @@
 type: dict
 keys:
   wan_path_groups:
-    documentation_options:
-      table: wan-settings
     description: |-
       PREVIEW: This key is currently not supported
       List of path-groups used for the WAN configuration.
@@ -21,14 +19,24 @@ keys:
           type: str
           description: Path-group name.
         id:
-          type: str
-          description: Path-group id.
+          type: int
+          convert_types:
+            - str
+          description: |-
+            Path-group id.
+
+            TODO: Required until an auto ID algorithm is implemented.
+          required: true
         description:
           type: str
           description: Additional information about the path-group for documentation purposes.
         ipsec:
           type: bool
-          description: Flag to configure IPsec on the carrier (default is True).
+          description: |-
+            Flag to configure IPsec at the path-group level.
+
+            When set to `true`, IPsec is enabled for both the static and dynamic peers.
+          default: true
         import_path_groups:
           type: list
           description: List of [ath-groups to import in this path-group.

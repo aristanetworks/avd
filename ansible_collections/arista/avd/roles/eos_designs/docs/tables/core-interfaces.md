@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2023 Arista Networks, Inc.
+  ~ Copyright (c) 2023-2024 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
   -->
@@ -92,35 +92,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces.[].interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.p2p_links.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the point-to-point interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "core_interfaces.p2p_links.[].structured_config") | Dictionary |  |  |  | Custom structured config for interfaces<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces. |
-    | [<samp>&nbsp;&nbsp;l3_interfaces_profiles</samp>](## "core_interfaces.l3_interfaces_profiles") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;profile</samp>](## "core_interfaces.l3_interfaces_profiles.[].profile") | String | Required, Unique |  |  | L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "core_interfaces.l3_interfaces_profiles.[].interface") | String |  |  | Pattern: Ethernet[\d/]+ | Ethernet interface name like 'Ethernet2'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "core_interfaces.l3_interfaces_profiles.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "core_interfaces.l3_interfaces_profiles.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_client_accept_default_route</samp>](## "core_interfaces.l3_interfaces_profiles.[].dhcp_client_accept_default_route") | Boolean |  | `False` |  | Supported if `ip` is `dhcp`.<br>Accepts default route from DHCP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "core_interfaces.l3_interfaces_profiles.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.l3_interfaces_profiles.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "core_interfaces.l3_interfaces_profiles.[].peer_ip") | String |  |  |  | The peer device IP. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.l3_interfaces_profiles.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.l3_interfaces_profiles.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "core_interfaces.l3_interfaces_profiles.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
-    | [<samp>&nbsp;&nbsp;l3_interfaces</samp>](## "core_interfaces.l3_interfaces") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "core_interfaces.l3_interfaces.[].node") | String |  |  |  | Device on which the interface should be configured. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "core_interfaces.l3_interfaces.[].profile") | String |  |  |  | L3 interface profile name. Profile defined under l3_interfaces_profiles. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "core_interfaces.l3_interfaces.[].interface") | String |  |  | Pattern: Ethernet[\d/]+ | Ethernet interface name like 'Ethernet2'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "core_interfaces.l3_interfaces.[].description") | String |  |  |  | Interface description.<br>If not set a default description will be configured with '[<peer>[ <peer_interface>]]' |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "core_interfaces.l3_interfaces.[].ip") | String |  |  |  | Node IPv4 address/Mask or 'dhcp'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp_client_accept_default_route</samp>](## "core_interfaces.l3_interfaces.[].dhcp_client_accept_default_route") | Boolean |  | `False` |  | Supported if `ip` is `dhcp`.<br>Accepts default route from DHCP. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "core_interfaces.l3_interfaces.[].enabled") | Boolean |  | `True` |  | Enable or Shutdown the interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "core_interfaces.l3_interfaces.[].speed") | String |  |  |  | Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "core_interfaces.l3_interfaces.[].peer") | String |  |  |  | The peer device name. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "core_interfaces.l3_interfaces.[].peer_interface") | String |  |  |  | The peer device interface. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip</samp>](## "core_interfaces.l3_interfaces.[].peer_ip") | String |  |  |  | The peer device IP. Used for description and documentation |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_profile</samp>](## "core_interfaces.l3_interfaces.[].qos_profile") | String |  |  |  | QOS service profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "core_interfaces.l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the interface in the final EOS configuration. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "core_interfaces.l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config for the Ethernet interface. |
 
 === "YAML"
 
@@ -345,92 +316,5 @@
 
           # Custom structured config for interfaces
           # Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.
-          structured_config: <dict>
-      l3_interfaces_profiles:
-
-          # L3 interface profile name. Any variable supported under `l3_interfaces` can be inherited from a profile.
-        - profile: <str; required; unique>
-
-          # Ethernet interface name like 'Ethernet2'.
-          interface: <str>
-
-          # Interface description.
-          # If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
-          description: <str>
-
-          # Node IPv4 address/Mask or 'dhcp'.
-          ip: <str>
-
-          # Supported if `ip` is `dhcp`.
-          # Accepts default route from DHCP.
-          dhcp_client_accept_default_route: <bool; default=False>
-
-          # Enable or Shutdown the interface.
-          enabled: <bool; default=True>
-
-          # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-          speed: <str>
-
-          # The peer device name. Used for description and documentation
-          peer: <str>
-
-          # The peer device interface. Used for description and documentation
-          peer_interface: <str>
-
-          # The peer device IP. Used for description and documentation
-          peer_ip: <str>
-
-          # QOS service profile.
-          qos_profile: <str>
-
-          # EOS CLI rendered directly on the interface in the final EOS configuration.
-          raw_eos_cli: <str>
-
-          # Custom structured config for the Ethernet interface.
-          structured_config: <dict>
-      l3_interfaces:
-
-          # Device on which the interface should be configured.
-        - node: <str>
-
-          # L3 interface profile name. Profile defined under l3_interfaces_profiles.
-          profile: <str>
-
-          # Ethernet interface name like 'Ethernet2'.
-          interface: <str>
-
-          # Interface description.
-          # If not set a default description will be configured with '[<peer>[ <peer_interface>]]'
-          description: <str>
-
-          # Node IPv4 address/Mask or 'dhcp'.
-          ip: <str>
-
-          # Supported if `ip` is `dhcp`.
-          # Accepts default route from DHCP.
-          dhcp_client_accept_default_route: <bool; default=False>
-
-          # Enable or Shutdown the interface.
-          enabled: <bool; default=True>
-
-          # Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
-          speed: <str>
-
-          # The peer device name. Used for description and documentation
-          peer: <str>
-
-          # The peer device interface. Used for description and documentation
-          peer_interface: <str>
-
-          # The peer device IP. Used for description and documentation
-          peer_ip: <str>
-
-          # QOS service profile.
-          qos_profile: <str>
-
-          # EOS CLI rendered directly on the interface in the final EOS configuration.
-          raw_eos_cli: <str>
-
-          # Custom structured config for the Ethernet interface.
           structured_config: <dict>
     ```

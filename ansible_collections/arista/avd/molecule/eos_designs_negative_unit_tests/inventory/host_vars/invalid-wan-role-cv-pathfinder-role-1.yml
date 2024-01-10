@@ -4,6 +4,14 @@ type: wan_edge
 
 bgp_as: 65000
 
+wan_carriers:
+  - name: MPLS
+    path_group: MPLS
+
+wan_path_groups:
+  - name: MPLS
+    id: 42
+
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.0.0/24

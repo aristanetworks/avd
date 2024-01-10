@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -33,6 +33,14 @@ class UtilsMixin:
     @cached_property
     def _fabric_ipaddress_mlag_algorithm(self: "AvdIpAddressing") -> str:
         return self.shared_utils.fabric_ip_addressing_mlag_algorithm
+
+    @cached_property
+    def _fabric_ip_addressing_mlag_ipv4_prefix_length(self: "AvdIpAddressing") -> int:
+        return self.shared_utils.fabric_ip_addressing_mlag_ipv4_prefix_length
+
+    @cached_property
+    def _fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length(self: "AvdIpAddressing") -> int:
+        return self.shared_utils.fabric_ip_addressing_p2p_uplinks_ipv4_prefix_length
 
     @cached_property
     def _mlag_peer_ipv4_pool(self: "AvdIpAddressing") -> str:

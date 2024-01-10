@@ -1,5 +1,5 @@
 {#
- Copyright (c) 2023 Arista Networks, Inc.
+ Copyright (c) 2023-2024 Arista Networks, Inc.
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
@@ -195,6 +195,10 @@
 {%             if peer_group.bfd is arista.avd.defined(true) %}
 | BFD | True |
 {%             endif %}
+{%             if peer_group.bfd_timers.interval is arista.avd.defined and peer_group.bfd_timers.min_rx is arista.avd.defined and peer_group.bfd_timers.multiplier is arista.avd.defined %}
+{%                 set timers = "interval: " ~ peer_group.bfd_timers.interval ~ ", min_rx: " ~ peer_group.bfd_timers.min_rx ~ ", multiplier: " ~ peer_group.bfd_timers.multiplier %}
+| BFD Timers | {{ timers }} |
+{%             endif %}
 {%             if peer_group.ebgp_multihop is arista.avd.defined %}
 | Ebgp multihop | {{ peer_group.ebgp_multihop }} |
 {%             endif %}
@@ -281,6 +285,9 @@
 {%                 endif %}
 {%                 if peer_group.bfd is arista.avd.defined(true) %}
 {%                     set inherited.bfd = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                     if peer_group.bfd_timers.interval is arista.avd.defined and peer_group.bfd_timers.min_rx is arista.avd.defined and peer_group.bfd_timers.multiplier is arista.avd.defined %}
+{%                         set inherited.bfd_timers = "interval: " ~ peer_group.bfd_timers.interval ~ ", min_rx: " ~ peer_group.bfd_timers.min_rx ~ ", multiplier: " ~ peer_group.bfd_timers.multiplier %}
+{%                     endif %}
 {%                 endif %}
 {%                 if peer_group.shutdown is arista.avd.defined(true) %}
 {%                     set inherited.shutdown = "Inherited from peer group " ~ neighbor.peer_group %}
@@ -300,6 +307,13 @@
 {%             set active_parameter.vrf = neighbor.vrf | arista.avd.default(inherited.vrf, 'default') %}
 {%             set active_parameter.send_community = neighbor.send_community | arista.avd.default(inherited.send_community, '-') %}
 {%             set active_parameter.bfd = neighbor.bfd | arista.avd.default(inherited.bfd, '-') %}
+{%             set active_parameter.bfd_timers = inherited.bfd_timers | arista.avd.default("-") %}
+{%             if neighbor.bfd_timers.interval is arista.avd.defined and neighbor.bfd_timers.min_rx is arista.avd.defined and neighbor.bfd_timers.multiplier is arista.avd.defined %}
+{%                 set active_parameter.bfd_timers = "interval: " ~ neighbor.bfd_timers.interval ~ ", min_rx: " ~ neighbor.bfd_timers.min_rx ~ ", multiplier: " ~ neighbor.bfd_timers.multiplier %}
+{%             endif %}
+{%             if active_parameter.bfd != "-" and active_parameter.bfd_timers != "-" %}
+{%                 set active_parameter.bfd = active_parameter.bfd ~ "(" ~ active_parameter.bfd_timers ~ ")" %}
+{%             endif %}
 {%             set active_parameter.shutdown = neighbor.shutdown | arista.avd.default(inherited.shutdown, '-') %}
 {%             set active_parameter.route_reflector_client = neighbor.route_reflector_client | arista.avd.default(inherited.route_reflector_client, '-') %}
 {%             if neighbor.rib_in_pre_policy_retain.enabled is arista.avd.defined() %}
@@ -365,6 +379,9 @@
 {%                         endif %}
 {%                         if peer_group.bfd is arista.avd.defined(true) %}
 {%                             set inherited_vrf.bfd = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                             if peer_group.bfd_timers.interval is arista.avd.defined and peer_group.bfd_timers.min_rx is arista.avd.defined and peer_group.bfd_timers.multiplier is arista.avd.defined %}
+{%                                 set inherited_vrf.bfd_timers = "interval: " ~ peer_group.bfd_timers.interval ~ ", min_rx: " ~ peer_group.bfd_timers.min_rx ~ ", multiplier: " ~ peer_group.bfd_timers.multiplier %}
+{%                             endif %}
 {%                         endif %}
 {%                         if peer_group.shutdown is arista.avd.defined(true) %}
 {%                             set inherited_vrf.shutdown = "Inherited from peer group " ~ neighbor.peer_group %}
@@ -383,6 +400,13 @@
 {%                     set active_parameter_vrf.remote_as = neighbor.remote_as | arista.avd.default(inherited_vrf.remote_as, '-') %}
 {%                     set active_parameter_vrf.send_community = neighbor.send_community | arista.avd.default(inherited_vrf.send_community, '-') %}
 {%                     set active_parameter_vrf.bfd = neighbor.bfd | arista.avd.default(inherited_vrf.bfd, '-') %}
+{%                     set active_parameter_vrf.bfd_timers = inherited_vrf.bfd_timers | arista.avd.default("-") %}
+{%                     if neighbor.bfd_timers.interval is arista.avd.defined and neighbor.bfd_timers.min_rx is arista.avd.defined and neighbor.bfd_timers.multiplier is arista.avd.defined %}
+{%                         set active_parameter_vrf.bfd_timers = "interval: " ~ neighbor.bfd_timers.interval ~ ", min_rx: " ~ neighbor.bfd_timers.min_rx ~ ", multiplier: " ~ neighbor.bfd_timers.multiplier %}
+{%                     endif %}
+{%                     if active_parameter_vrf.bfd != "-" and active_parameter_vrf.bfd_timers != "-" %}
+{%                         set active_parameter_vrf.bfd = active_parameter_vrf.bfd ~ "(" ~ active_parameter_vrf.bfd_timers ~ ")" %}
+{%                     endif %}
 {%                     set active_parameter_vrf.shutdown = neighbor.shutdown | arista.avd.default(inherited_vrf.shutdown, '-') %}
 {%                     set active_parameter_vrf.route_reflector_client = neighbor.route_reflector_client | arista.avd.default(inherited_vrf.route_reflector_client, '-') %}
 {%                     set active_parameter_vrf.passive = neighbor.passive | arista.avd.default(inherited_vrf.passive, '-') %}

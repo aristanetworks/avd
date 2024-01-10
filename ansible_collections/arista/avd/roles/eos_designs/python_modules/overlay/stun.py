@@ -1,8 +1,9 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import itertools
 from functools import cached_property
 
 from .utils import UtilsMixin
@@ -25,16 +26,11 @@ class StunMixin(UtilsMixin):
 
         stun = {}
         if self.shared_utils.wan_role == "server":
-            local_interfaces = []
-            # TODO - once the WAN interfaces are implemented, add them here
-
+            local_interfaces = [wan_interface["name"] for wan_interface in self.shared_utils.wan_interfaces]
             stun["server"] = {"local_interfaces": local_interfaces}
 
         if self.shared_utils.wan_role == "client":
-            server_profiles = []
-
-            # TODO - once the WAN interfaces are implemented, add them here
-            if server_profiles:
+            if server_profiles := list(itertools.chain.from_iterable(self._stun_server_profiles.values())):
                 stun["client"] = {"server_profiles": server_profiles}
 
         return stun or None

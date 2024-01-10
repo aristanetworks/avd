@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Arista Networks, Inc.
+# Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -163,14 +163,14 @@ class AvdTestBase:
             self.log_skip_message(message=f"Host '{host or self.device_name}' interface '{interface_name}' IP address is unavailable.", logging_level="WARNING")
             return None
 
-    def logged_get(self, key: str, host: str | None = None, logging_level: str = "WARNING"):
+    def logged_get(self, key: str, host: str | None = None, logging_level: str = "INFO"):
         """
         Attempts to retrieve a value associated with a given key from structured_config and logs if it's missing.
 
         Args:
             key (str): The key to retrieve.
             host (str | None): The host from which to retrieve the key. Defaults to the device running the test.
-            logging_level (str): The logging level to use for the log message.
+            logging_level (str): The logging level to use for the log message. Defaults to "INFO".
         """
         host_struct_cfg = self.get_host_structured_config(host=host) if host else self.structured_config
         try:
@@ -185,7 +185,7 @@ class AvdTestBase:
         data_path: str | None = None,
         host: str | None = None,
         required_keys: str | list[str] | None = None,
-        logging_level: str | None = None,
+        logging_level: str = "INFO",
         **kwargs,
     ) -> bool:
         """
@@ -196,8 +196,7 @@ class AvdTestBase:
             data_path (str | None): The data path in dot notation. Used for logging purposes. Index or primary key can be used for lists.
             host (str | None): The host from which data should be retrieved. Defaults to the device running the test.
             required_keys (str | list[str] | None): The keys that are expected to be in the data.
-            logging_level (str): Overwrites all default logging levels within this function.
-                                If not provided, the default logging level is 'WARNING' when a key is missing and 'INFO' when his value is not matching.
+            logging_level (str): The logging level to use for the log message. Defaults to "INFO".
             **kwargs: Expected key-value pairs in the data.
 
         Returns:
@@ -216,10 +215,10 @@ class AvdTestBase:
         for key, value in kwargs.items():
             actual_value = get(data, key)
             if actual_value is None:
-                self.log_skip_message(key=key, value=value, key_path=data_path, is_missing=True, logging_level=logging_level or "WARNING")
+                self.log_skip_message(key=key, value=value, key_path=data_path, is_missing=True, logging_level=logging_level)
                 valid = False
             elif actual_value != value:
-                self.log_skip_message(key=key, value=value, key_path=data_path, is_missing=False, logging_level=logging_level or "INFO")
+                self.log_skip_message(key=key, value=value, key_path=data_path, is_missing=False, logging_level=logging_level)
                 valid = False
 
         # Return False if any of the expected values are missing or not matching
@@ -231,7 +230,7 @@ class AvdTestBase:
             required_keys = [required_keys] if isinstance(required_keys, str) else required_keys
             for key in required_keys:
                 if get(data, key) is None:
-                    self.log_skip_message(key=key, key_path=data_path, is_missing=True, logging_level=logging_level or "WARNING")
+                    self.log_skip_message(key=key, key_path=data_path, is_missing=True, logging_level=logging_level)
                     valid = False
         return valid
 
