@@ -143,3 +143,25 @@ roles/eos_designs/docs/tables/node-type-wan-configuration.md
 --8<--
 roles/eos_designs/docs/tables/node-type-key-wan-configuration.md
 --8<--
+
+### CloudVision Tags
+
+`arista.avd.eos_designs` will generate CloudVision Tags that assist CloudVision with visualizing the WAN.
+
+#### Device Tags
+
+| Tag Name | Source of information |
+| -------- | --------------------- |
+| `Region` | `cv_pathfinder_region` if `cv_pathfinder_role` is set but not `pathfinder` |
+| `Zone` | `DEFAULT-ZONE` if `cv_pathfinder_role` is set but not `pathfinder` |
+| `Site` | `cv_pathfinder_site` if `cv_pathfinder_role` is set but not `pathfinder` |
+| `PathfinderSet` | name of `node_group` or default `PATHFINDERS` if `cv_pathfinder_role` is `pathfinder` |
+| `Role` | `cv_pathfinder_role` if set |
+
+#### Interface Tags
+
+| Hint Tag Name | Source of information |
+| ------------- | --------------------- |
+| `Type` | `lan` or `wan` if `cv_pathfinder_role` is set |
+| `Carrier` | `wan_carrier` if `cv_pathfinder_role` is set and this is a WAN interface |
+| `Circuit` | `wan_circiot_id` if `cv_pathfinder_role` is set and this is a LAN interface |

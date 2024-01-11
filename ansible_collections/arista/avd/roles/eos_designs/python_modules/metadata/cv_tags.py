@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict, strip_empties_from_list
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import default, get, get_item
 
 if TYPE_CHECKING:
     from .avdstructuredconfig import AvdStructuredConfigMetadata
@@ -36,7 +36,7 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "hostname",
     "terminattr",
 ]
-"""These tag names overlap with CV system tags"""
+"""These tag names overlap with CV system tags or topology_hints"""
 
 
 class CvTagsMixin:
@@ -57,6 +57,7 @@ class CvTagsMixin:
             return None
 
         device_tags = self._get_topology_hints()
+        device_tags.extend(self._get_cv_pathfinder_device_tags())
         device_tags.extend(self._get_device_tags())
 
         cv_tags = {"device_tags": device_tags, "interface_tags": self._get_interface_tags()}
@@ -83,9 +84,39 @@ class CvTagsMixin:
                 self._tag_dict("topology_hint_fabric", self.shared_utils.fabric_name),
                 self._tag_dict("topology_hint_pod", self.shared_utils.pod_name),
                 self._tag_dict("topology_hint_type", get(self._hostvars, "cv_tags_topology_type", default=default_type_hint)),
-                self._tag_dict("topology_hint_rack", self.shared_utils.rack),
+                self._tag_dict("topology_hint_rack", default(self.shared_utils.rack, self.shared_utils.group)),
             ]
         )
+
+    def _get_cv_pathfinder_device_tags(self: AvdStructuredConfigMetadata) -> list:
+        """
+        Return list of device_tags for cv_pathfinder solution
+        Example: [
+            {"name": "Region", "value": <value copied from cv_pathfinder_region if cv_pathfinder_role is set but not 'pathfinder'>},
+            {"name": "Zone", "value": <always "DEFAULT-ZONE" if cv_pathfinder_role is set but not 'pathfinder'>},
+            {"name": "Site", "value": <value copied from cv_pathfinder_site if cv_pathfinder_role is set but not 'pathfinder'>},
+            {"name": "PathfinderSet", "value": <value copied from node group or default "PATHFINDERS" if cv_pathfinder_role is 'pathfinder'>},
+            {"name": "Role", "value": <value copied from cv_pathfinder_role if set>}
+        ]
+        """
+        if self.shared_utils.cv_pathfinder_role is None:
+            return []
+
+        device_tags = [
+            self._tag_dict("Role", self.shared_utils.cv_pathfinder_role),
+        ]
+        if self.shared_utils.cv_pathfinder_role == "pathfinder":
+            device_tags.append(self._tag_dict("PathfinderSet", self.shared_utils.group))
+        else:
+            device_tags.extend(
+                [
+                    self._tag_dict("Region", get(self.shared_utils.switch_data_combined, "wan_region")),
+                    self._tag_dict("Zone", "DEFAULT-ZONE"),
+                    self._tag_dict("Site", get(self.shared_utils.switch_data_combined, "wan_site")),
+                ]
+            )
+
+        return strip_empties_from_list(device_tags)
 
     def _get_device_tags(self: AvdStructuredConfigMetadata) -> list:
         """
@@ -151,7 +182,38 @@ class CvTagsMixin:
                 if value:
                     tags.append(self._tag_dict(generate_tag["name"], value))
 
+            tags.extend(self._get_cv_pathfinder_interface_tags(ethernet_interface))
+
             if tags:
                 interface_tags.append({"interface": ethernet_interface["name"], "tags": tags})
 
         return interface_tags
+
+    def _get_cv_pathfinder_interface_tags(self: AvdStructuredConfigMetadata, ethernet_interface: dict) -> list:
+        """
+        Return list of device_tags for cv_pathfinder solution
+        Example: [
+            {"name": "Type", <"lan" or "wan" if cv_pathfinder_role is set>},
+            {"name": "Carrier", <value copied from wan_carrier if cv_pathfinder_role is set and this is a wan interface>},
+            {"name": "Circuit", <value copied from wan_circuit_id if cv_pathfinder_role is set and this is a wan interface>}
+        ]
+        """
+        # Skip if not cv_pathfinder_role or if this is a subinterface.
+        if self.shared_utils.cv_pathfinder_role is None or "." in ethernet_interface["name"]:
+            return []
+
+        if ethernet_interface["name"] in self._wan_interface_names:
+            wan_interface = get_item(self.shared_utils.wan_interfaces, "name", ethernet_interface["name"], required=True)
+            return strip_empties_from_list(
+                [
+                    self._tag_dict("Type", "wan"),
+                    self._tag_dict("Carrier", get(wan_interface, "wan_carrier")),
+                    self._tag_dict("Circuit", get(wan_interface, "wan_circuit_id")),
+                ]
+            )
+
+        return [self._tag_dict("Type", "lan")]
+
+    @cached_property
+    def _wan_interface_names(self: AvdStructuredConfigMetadata):
+        return [wan_interface["name"] for wan_interface in self.shared_utils.wan_interfaces]
