@@ -750,20 +750,6 @@ $defs:
                             - int
                           description: OSPF area ID.
                           default: "0"
-                        cost:
-                          type: int
-                          convert_types:
-                            - str
-                          description: OSPF link cost.
-                    pim:
-                      type: dict
-                      description: |
-                        Enable PIM sparse-mode on the interface; requires "evpn_l3_multicast" to be enabled on the VRF/Tenant
-                        Enabling this implicitly makes the device a PIM External Gateway (PEG) in EVPN designs only.
-                        At least one RP address must be configured for EVPN PEG to be configured.
-                      keys:
-                        enabled:
-                          type: bool
                     structured_config:
                       type: dict
                       description: Custom structured config added under loopback_interfaces.[name=<interface>] for eos_cli_config_gen.

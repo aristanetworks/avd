@@ -33,12 +33,17 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
 
         virtual_source_nat_vrfs = []
         for loopback_interface in loopback_interfaces:
-            virtual_source_nat_vrfs.append(
-                {
-                    "name": loopback_interface["vrf"],
-                    "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0],
-                }
-            )
+            vrf_exists = False
+            for vrf in virtual_source_nat_vrfs:
+                if loopback_interface["vrf"] == vrf["name"]:
+                    vrf_exists = True
+            if not vrf_exists:
+                virtual_source_nat_vrfs.append(
+                    {
+                        "name": loopback_interface["vrf"],
+                        "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0],
+                    }
+                )
 
         if virtual_source_nat_vrfs:
             return virtual_source_nat_vrfs
