@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import json
 from asyncio import gather
 from logging import getLogger
 
@@ -70,7 +69,7 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
                 studio_id=STATIC_CONFIGLET_STUDIO_ID,
                 workspace_id=result.workspace.id,
                 input_path=["configletAssignmentRoots"],
-                inputs=json.dumps(root_containers),
+                inputs=root_containers,
             )
         cv_containers = await cv_client.get_configlet_containers(
             workspace_id=result.workspace.id,

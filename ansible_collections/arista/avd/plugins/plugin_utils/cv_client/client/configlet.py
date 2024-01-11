@@ -13,6 +13,7 @@ from ..api.arista.configlet.v1 import (
     ConfigletAssignmentConfig,
     ConfigletAssignmentConfigServiceStub,
     ConfigletAssignmentConfigSetRequest,
+    ConfigletAssignmentConfigSetSomeRequest,
     ConfigletAssignmentKey,
     ConfigletAssignmentServiceStub,
     ConfigletAssignmentStreamRequest,
@@ -128,6 +129,51 @@ class ConfigletMixin:
 
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', ConfigletAssignment ID '{container_id}'") or e
+
+    async def set_configlet_containers(
+        self: CVClient,
+        workspace_id: str,
+        containers: list[tuple[str, str | None, str | None, list[str] | None, str | None, list[str] | None, str | None]],
+        timeout: float = 10.0,
+    ) -> list[ConfigletAssignmentKey]:
+        """
+        Create/update a Configlet Container (a.k.a. Assignment) using arista.configlet.v1.ConfigletAssignmentServiceStub.Set API.
+
+        Parameters:
+            workspace_id: Unique identifier of the Workspace for which the information is fetched.
+            containers: List of Tuples with the format\
+                (container_id, display_name, description, configlet_ids, query, list_of_configlet_ids, match_policy).
+            timeout: Timeout in seconds.
+
+        Returns:
+            ConfigletAssignmentConfig object after being set including any server-generated values.
+        """
+
+        request = ConfigletAssignmentConfigSetSomeRequest(
+            values=[
+                ConfigletAssignmentConfig(
+                    key=ConfigletAssignmentKey(workspace_id=workspace_id, configlet_assignment_id=container_id),
+                    display_name=display_name,
+                    description=description,
+                    configlet_ids=RepeatedString(values=configlet_ids),
+                    query=query,
+                    child_assignment_ids=RepeatedString(values=child_assignment_ids),
+                    match_policy=ASSIGNMENT_MATCH_POLICY_MAP.get(match_policy),
+                )
+                for container_id, display_name, description, configlet_ids, query, child_assignment_ids, match_policy in containers
+            ]
+        )
+        client = ConfigletAssignmentConfigServiceStub(self._channel)
+        assignment_keys = []
+        try:
+            responses = client.set_some(request, metadata=self._metadata, timeout=timeout)
+            async for response in responses:
+                assignment_keys.append(response.key)
+
+            return assignment_keys
+
+        except Exception as e:
+            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Containers '{containers}'") or e
 
     async def delete_configlet_container(
         self: CVClient,

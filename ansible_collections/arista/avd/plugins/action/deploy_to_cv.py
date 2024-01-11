@@ -235,7 +235,7 @@ class ActionModule(ActionBase):
 
         if not get(structured_config, "is_deployed", default=True):
             del structured_config
-            return ([], [], [])
+            return ([], [], [], [])
 
         # Build device object to be used in other objects.
         serial_number = get(structured_config, "serial_number")

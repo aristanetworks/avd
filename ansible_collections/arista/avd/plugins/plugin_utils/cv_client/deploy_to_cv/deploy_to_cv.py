@@ -121,6 +121,10 @@ async def deploy_to_cv(
         interface_tags = []
     if configs is None:
         configs = []
+    if studio_inputs is None:
+        studio_inputs = []
+    if cv_pathfinder_metadata is None:
+        cv_pathfinder_metadata = []
     try:
         async with CVClient(servers=cloudvision.servers, token=cloudvision.token, verify_certs=cloudvision.verify_certs) as cv_client:
             # Create workspace
