@@ -815,16 +815,16 @@ loopback_interfaces:
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.1.10/32
-- name: Loopback123
-  ip_address: 10.1.53.0/32
-  shutdown: false
-  vrf: Tenant_A_OSPF
-  ospf_area: '0'
 - name: Loopback101
   description: Tenant_A_OSPF_VTEP_DIAGNOSTICS
   shutdown: false
   vrf: Tenant_A_OSPF
   ip_address: 10.255.11.10/32
+- name: Loopback123
+  ip_address: 10.1.53.0/32
+  shutdown: false
+  vrf: Tenant_A_OSPF
+  ospf_area: '0'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -1225,7 +1225,4 @@ virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
   ip_address: 10.255.1.10
 - name: Tenant_A_OSPF
-  ip_address: 10.1.53.0
-metadata:
-  platform: 7280R
-
+  ip_address: 10.255.11.10
