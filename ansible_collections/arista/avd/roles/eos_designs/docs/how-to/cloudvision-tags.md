@@ -36,11 +36,11 @@ To enable generation of Topology Tags:
 
 ```yaml
 generate_cv_tags:
-  topology_tags: true
+  topology_hints: true
 ```
 
 | Hint Tag Name | Description | Source of information |
-| ---------- | ----------- |--------------------- |
+| ------------- | ----------- |---------------------- |
 | `topology_hint_type` | Indicates whether the node is a leaf, spine, core device etc. | `cv_tags_topology_type` if set, else `node_type_keys.[].cv_tags_topology_type`. |
 | `topology_hint_fabric` | The overall fabric that the devices pertains to. Useful for multi-fabric deployments. | `fabric_name` |
 | `topology_hint_datacenter` | The datacenter to which the devices belongs. Helpful for multi-dc deployments. | `dc_name` |
