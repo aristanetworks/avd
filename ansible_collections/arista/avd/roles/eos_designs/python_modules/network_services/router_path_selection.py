@@ -59,7 +59,9 @@ class RouterPathSelectionMixin(UtilsMixin):
                 "name": policy["name"],
             }
 
-            if policy["name"] == self._get_default_vrf_policy():
+            policy_name = policy["name"]
+            # TODO check if this is not possible to move this check in the self._default_vrf_policy generation
+            if policy_name == self._default_vrf_policy["name"]:
                 control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
                 name = get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
                 # This is the policy for the default VRF, inject control_plane_policy Profile first
@@ -73,9 +75,11 @@ class RouterPathSelectionMixin(UtilsMixin):
                     }
                 )
                 rule_id_offset = 1
+                # Use the real name for shared LB policies
+                policy_name = policy["realname"]
 
             for rule_id, application_virtual_topology in enumerate(get(policy, "application_virtual_topologies", []), start=1):
-                name = get(application_virtual_topology, "name", default=f"{policy['name']}_{application_virtual_topology['application_profile']}")
+                name = get(application_virtual_topology, "name", default=f"{policy_name}_{application_virtual_topology['application_profile']}")
                 autovpn_policy.setdefault("rules", []).append(
                     {
                         "id": 10 * (rule_id + rule_id_offset),

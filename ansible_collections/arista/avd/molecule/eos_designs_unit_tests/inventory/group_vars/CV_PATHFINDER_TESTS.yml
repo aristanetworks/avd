@@ -188,6 +188,9 @@ wan_virtual_topologies:
       policy: DEFAULT-AVT-POLICY
     - name: PROD
       policy: PROD-AVT-POLICY
+    # Testing reusing the same policy as default VRF
+    - name: IT
+      policy: DEFAULT-AVT-POLICY
     # Testing a VRF only on transit and not edge
     - name: TRANSIT
       policy: TRANSIT-AVT-POLICY
@@ -222,7 +225,7 @@ wan_virtual_topologies:
           - names: [MPLS]
             preference: 42
       application_virtual_topologies:
-        - application_profile: it
+        - application_profile: video
           path_groups:
             - names: [MPLS, INET]
               preference: preferred

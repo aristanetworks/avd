@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from .utils import UtilsMixin
 
@@ -52,7 +52,9 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 "matches": [],
             }
 
-            if avt_policy["name"] == self._get_default_vrf_policy():
+            policy_name = avt_policy["name"]
+            # TODO check if this is not possible to move this check in the self._default_vrf_policy generation
+            if policy_name == self._default_vrf_policy["name"]:
                 # This is the policy for the default VRF, inject control_plane_policy Profile first
                 # TODO - this is a problem is the VRF default policy is reused in other place ..
                 # TODO centralize the default value of the CONTROL-PLANE-PROFILE to avoid having the constant in two places..
@@ -65,13 +67,15 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                         "_id": 254,
                     }
                 )
+                # Use the real name for shared LB policies
+                policy_name = avt_policy["realname"]
 
             for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
                 cv_pathfinder_policy["matches"].append(
                     {
                         "application_profile": get(application_virtual_topology, "application_profile", required=True),
                         "avt_profile": get(
-                            application_virtual_topology, "name", default=f"{avt_policy['name']}_{application_virtual_topology['application_profile']}"
+                            application_virtual_topology, "name", default=f"{policy_name}_{application_virtual_topology['application_profile']}"
                         ),
                         "traffic_class": get(application_virtual_topology, "traffic_class"),
                         "dscp": get(application_virtual_topology, "dscp"),
@@ -83,7 +87,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 cv_pathfinder_policy["matches"].append(
                     {
                         "application_profile": get(default_virtual_topology, "application_profile", default="default"),
-                        "avt_profile": get(default_virtual_topology, "name", default=f"{avt_policy['name']}_default"),
+                        "avt_profile": get(default_virtual_topology, "name", default=f"{policy_name}_default"),
                         "traffic_class": get(default_virtual_topology, "traffic_class"),
                         "dscp": get(default_virtual_topology, "dscp"),
                         # Storing id as _id to avoid schema validation and be able to pick up in VRFs
@@ -118,21 +122,30 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         )
 
         for avt_policy in self._filtered_wan_policies:
+            policy_name = avt_policy["name"] if avt_policy["name"] != self._default_vrf_policy["name"] else avt_policy["realname"]
             for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
-                name = get(application_virtual_topology, "name", default=f"{avt_policy['name']}_{application_virtual_topology['application_profile']}")
-                cv_pathfinder_profiles.append(
-                    {
+                name = get(application_virtual_topology, "name", default=f"{policy_name}_{application_virtual_topology['application_profile']}")
+                append_if_not_duplicate(
+                    list_of_dicts=cv_pathfinder_profiles,
+                    primary_key="name",
+                    new_dict={
                         "name": name,
                         "load_balance_policy": f"{name}_LB",
-                    }
+                    },
+                    context="Router Adaptive Virtual Topology profiles.",
+                    context_keys=["name"],
                 )
             if default_virtual_topology := get(avt_policy, "default_virtual_topology"):
-                name = get(default_virtual_topology, "name", default=f"{avt_policy['name']}_default")
-                cv_pathfinder_profiles.append(
-                    {
+                name = get(default_virtual_topology, "name", default=f"{policy_name}_default")
+                append_if_not_duplicate(
+                    list_of_dicts=cv_pathfinder_profiles,
+                    primary_key="name",
+                    new_dict={
                         "name": name,
                         "load_balance_policy": f"{name}_LB",
-                    }
+                    },
+                    context="Router Adaptive Virtual Topology profiles.",
+                    context_keys=["name"],
                 )
 
         return cv_pathfinder_profiles

@@ -145,7 +145,7 @@ router_path_selection:
     path_groups:
     - name: INET
   policies:
-  - name: DEFAULT-AVT-POLICY
+  - name: DEFAULT-AVT-POLICY-WITH-CP
     rules:
     - id: 10
       application_profile: CONTROL-PLANE-APPLICATION-PROFILE
@@ -165,7 +165,7 @@ router_path_selection:
       load_balance: PROD-AVT-POLICY_default_LB
   vrfs:
   - name: default
-    path_selection_policy: DEFAULT-AVT-POLICY
+    path_selection_policy: DEFAULT-AVT-POLICY-WITH-CP
   - name: PROD
     path_selection_policy: PROD-AVT-POLICY
 stun:

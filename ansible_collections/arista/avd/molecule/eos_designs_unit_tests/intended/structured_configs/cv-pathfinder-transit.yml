@@ -164,8 +164,8 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: CONTROL-PLANE-PROFILE_LB
-  - name: DEFAULT-AVT-POLICY_it
-    load_balance_policy: DEFAULT-AVT-POLICY_it_LB
+  - name: DEFAULT-AVT-POLICY_video
+    load_balance_policy: DEFAULT-AVT-POLICY_video_LB
   - name: DEFAULT-AVT-POLICY_default
     load_balance_policy: DEFAULT-AVT-POLICY_default_LB
   - name: PROD-AVT-POLICY_voice
@@ -179,13 +179,13 @@ router_adaptive_virtual_topology:
   - name: TRANSIT-AVT-POLICY_default
     load_balance_policy: TRANSIT-AVT-POLICY_default_LB
   policies:
-  - name: DEFAULT-AVT-POLICY
+  - name: DEFAULT-AVT-POLICY-WITH-CP
     matches:
     - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
       avt_profile: CONTROL-PLANE-PROFILE
       _id: 254
-    - application_profile: it
-      avt_profile: DEFAULT-AVT-POLICY_it
+    - application_profile: video
+      avt_profile: DEFAULT-AVT-POLICY_video
       _id: 3
     - application_profile: default
       avt_profile: DEFAULT-AVT-POLICY_default
@@ -201,6 +201,14 @@ router_adaptive_virtual_topology:
     - application_profile: default
       avt_profile: PROD-AVT-POLICY_default
       _id: 1
+  - name: DEFAULT-AVT-POLICY
+    matches:
+    - application_profile: video
+      avt_profile: DEFAULT-AVT-POLICY_video
+      _id: 3
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY_default
+      _id: 1
   - name: TRANSIT-AVT-POLICY
     matches:
     - application_profile: voice
@@ -211,11 +219,11 @@ router_adaptive_virtual_topology:
       _id: 1
   vrfs:
   - name: default
-    policy: DEFAULT-AVT-POLICY
+    policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
     - name: CONTROL-PLANE-PROFILE
       id: 254
-    - name: DEFAULT-AVT-POLICY_it
+    - name: DEFAULT-AVT-POLICY_video
       id: 3
     - name: DEFAULT-AVT-POLICY_default
       id: 1
@@ -227,6 +235,13 @@ router_adaptive_virtual_topology:
     - name: PROD-AVT-POLICY_video
       id: 4
     - name: PROD-AVT-POLICY_default
+      id: 1
+  - name: IT
+    policy: DEFAULT-AVT-POLICY
+    profiles:
+    - name: DEFAULT-AVT-POLICY_video
+      id: 3
+    - name: DEFAULT-AVT-POLICY_default
       id: 1
   - name: TRANSIT
     policy: TRANSIT-AVT-POLICY
@@ -278,7 +293,7 @@ router_path_selection:
     path_groups:
     - name: INET
     - name: MPLS
-  - name: DEFAULT-AVT-POLICY_it_LB
+  - name: DEFAULT-AVT-POLICY_video_LB
     path_groups:
     - name: MPLS
     - name: INET
