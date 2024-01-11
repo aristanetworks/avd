@@ -231,7 +231,13 @@ class UtilsFilteredTenantsMixin(object):
                             vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
                             break
 
-            if vrf["svis"] or vrf["l3_interfaces"] or vrf["loopback_interfaces"] or "all" in always_include_vrfs_in_tenants or tenant["name"] in always_include_vrfs_in_tenants:
+            if (
+                vrf["svis"]
+                or vrf["l3_interfaces"]
+                or vrf["loopback_interfaces"]
+                or "all" in always_include_vrfs_in_tenants
+                or tenant["name"] in always_include_vrfs_in_tenants
+            ):
                 filtered_vrfs.append(vrf)
 
             vrf["additional_route_targets"] = [

@@ -5,8 +5,8 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_item
 from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_item
 
 from .utils import UtilsMixin
 
@@ -75,7 +75,11 @@ class LoopbackInterfacesMixin(UtilsMixin):
                     if (
                         len(loopback_interface["interfaces"]) != nodes_length
                         or len(loopback_interface["ip_addresses"]) != nodes_length
-                        or ("descriptions" in loopback_interface and "description" not in loopback_interface and len(loopback_interface["descriptions"]) != nodes_length)
+                        or (
+                            "descriptions" in loopback_interface
+                            and "description" not in loopback_interface
+                            and len(loopback_interface["descriptions"]) != nodes_length
+                        )
                     ):
                         raise AristaAvdError(
                             "Length of lists 'interfaces', 'nodes', 'ip_addresses' and 'descriptions' (if used) must match for loopback_interfaces for"
@@ -98,7 +102,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                             "shutdown": not loopback_interface.get("enabled", True),
                             "description": interface_description,
                             "eos_cli": loopback_interface.get("raw_eos_cli"),
-                            "struct_cfg": loopback_interface.get("structured_config")
+                            "struct_cfg": loopback_interface.get("structured_config"),
                         }
 
                         if vrf["name"] != "default":
@@ -116,7 +120,6 @@ class LoopbackInterfacesMixin(UtilsMixin):
                             context="Loopback Interfaces defined under loopback_interfaces",
                             context_keys=["name", "vrf"],
                         )
-
 
         if loopback_interfaces:
             return loopback_interfaces
