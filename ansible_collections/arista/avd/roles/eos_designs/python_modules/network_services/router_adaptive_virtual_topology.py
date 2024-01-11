@@ -46,7 +46,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
 
         control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={"id": 254})
 
-        for avt_policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
+        for avt_policy in self._filtered_wan_policies:
             cv_pathfinder_policy = {
                 "name": avt_policy["name"],
                 "matches": [],
@@ -117,7 +117,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
             }
         )
 
-        for avt_policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
+        for avt_policy in self._filtered_wan_policies:
             for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
                 name = get(application_virtual_topology, "name", default=f"{avt_policy['name']}_{application_virtual_topology['application_profile']}")
                 cv_pathfinder_profiles.append(

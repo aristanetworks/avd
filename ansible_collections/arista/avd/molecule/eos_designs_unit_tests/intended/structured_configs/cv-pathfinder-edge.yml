@@ -168,28 +168,17 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: CONTROL-PLANE-PROFILE_LB
+  - name: DEFAULT-AVT-POLICY_it
+    load_balance_policy: DEFAULT-AVT-POLICY_it_LB
+  - name: DEFAULT-AVT-POLICY_default
+    load_balance_policy: DEFAULT-AVT-POLICY_default_LB
   - name: PROD-AVT-POLICY_voice
     load_balance_policy: PROD-AVT-POLICY_voice_LB
   - name: PROD-AVT-POLICY_video
     load_balance_policy: PROD-AVT-POLICY_video_LB
   - name: PROD-AVT-POLICY_default
     load_balance_policy: PROD-AVT-POLICY_default_LB
-  - name: DEFAULT-AVT-POLICY_it
-    load_balance_policy: DEFAULT-AVT-POLICY_it_LB
-  - name: DEFAULT-AVT-POLICY_default
-    load_balance_policy: DEFAULT-AVT-POLICY_default_LB
   policies:
-  - name: PROD-AVT-POLICY
-    matches:
-    - application_profile: voice
-      avt_profile: PROD-AVT-POLICY_voice
-      _id: 2
-    - application_profile: video
-      avt_profile: PROD-AVT-POLICY_video
-      _id: 4
-    - application_profile: default
-      avt_profile: PROD-AVT-POLICY_default
-      _id: 1
   - name: DEFAULT-AVT-POLICY
     matches:
     - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
@@ -200,6 +189,17 @@ router_adaptive_virtual_topology:
       _id: 3
     - application_profile: default
       avt_profile: DEFAULT-AVT-POLICY_default
+      _id: 1
+  - name: PROD-AVT-POLICY
+    matches:
+    - application_profile: voice
+      avt_profile: PROD-AVT-POLICY_voice
+      _id: 2
+    - application_profile: video
+      avt_profile: PROD-AVT-POLICY_video
+      _id: 4
+    - application_profile: default
+      avt_profile: PROD-AVT-POLICY_default
       _id: 1
   vrfs:
   - name: default
@@ -270,6 +270,15 @@ router_path_selection:
     path_groups:
     - name: INET
     - name: MPLS
+  - name: DEFAULT-AVT-POLICY_it_LB
+    path_groups:
+    - name: MPLS
+    - name: INET
+  - name: DEFAULT-AVT-POLICY_default_LB
+    path_groups:
+    - name: INET
+    - name: MPLS
+      priority: 42
   - name: PROD-AVT-POLICY_voice_LB
     path_groups:
     - name: MPLS
@@ -286,15 +295,6 @@ router_path_selection:
     - name: INET
     - name: MPLS
       priority: 2
-  - name: DEFAULT-AVT-POLICY_it_LB
-    path_groups:
-    - name: MPLS
-    - name: INET
-  - name: DEFAULT-AVT-POLICY_default_LB
-    path_groups:
-    - name: INET
-    - name: MPLS
-      priority: 42
 stun:
   client:
     server_profiles:

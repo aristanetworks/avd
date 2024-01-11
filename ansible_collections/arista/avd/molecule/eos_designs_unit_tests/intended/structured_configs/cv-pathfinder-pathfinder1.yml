@@ -171,17 +171,32 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: CONTROL-PLANE-PROFILE_LB
+  - name: DEFAULT-AVT-POLICY_it
+    load_balance_policy: DEFAULT-AVT-POLICY_it_LB
+  - name: DEFAULT-AVT-POLICY_default
+    load_balance_policy: DEFAULT-AVT-POLICY_default_LB
   - name: PROD-AVT-POLICY_voice
     load_balance_policy: PROD-AVT-POLICY_voice_LB
   - name: PROD-AVT-POLICY_video
     load_balance_policy: PROD-AVT-POLICY_video_LB
   - name: PROD-AVT-POLICY_default
     load_balance_policy: PROD-AVT-POLICY_default_LB
-  - name: DEFAULT-AVT-POLICY_it
-    load_balance_policy: DEFAULT-AVT-POLICY_it_LB
-  - name: DEFAULT-AVT-POLICY_default
-    load_balance_policy: DEFAULT-AVT-POLICY_default_LB
+  - name: TRANSIT-AVT-POLICY_voice
+    load_balance_policy: TRANSIT-AVT-POLICY_voice_LB
+  - name: TRANSIT-AVT-POLICY_default
+    load_balance_policy: TRANSIT-AVT-POLICY_default_LB
   policies:
+  - name: DEFAULT-AVT-POLICY
+    matches:
+    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      avt_profile: CONTROL-PLANE-PROFILE
+      _id: 254
+    - application_profile: it
+      avt_profile: DEFAULT-AVT-POLICY_it
+      _id: 3
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY_default
+      _id: 1
   - name: PROD-AVT-POLICY
     matches:
     - application_profile: voice
@@ -193,16 +208,13 @@ router_adaptive_virtual_topology:
     - application_profile: default
       avt_profile: PROD-AVT-POLICY_default
       _id: 1
-  - name: DEFAULT-AVT-POLICY
+  - name: TRANSIT-AVT-POLICY
     matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
-      _id: 254
-    - application_profile: it
-      avt_profile: DEFAULT-AVT-POLICY_it
-      _id: 3
+    - application_profile: voice
+      avt_profile: TRANSIT-AVT-POLICY_voice
+      _id: 42
     - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY_default
+      avt_profile: TRANSIT-AVT-POLICY_default
       _id: 1
   vrfs:
   - name: default
@@ -222,6 +234,13 @@ router_adaptive_virtual_topology:
     - name: PROD-AVT-POLICY_video
       id: 4
     - name: PROD-AVT-POLICY_default
+      id: 1
+  - name: TRANSIT
+    policy: TRANSIT-AVT-POLICY
+    profiles:
+    - name: TRANSIT-AVT-POLICY_voice
+      id: 42
+    - name: TRANSIT-AVT-POLICY_default
       id: 1
 router_bfd:
   multihop:
@@ -249,6 +268,16 @@ router_path_selection:
   - name: CONTROL-PLANE-PROFILE_LB
     path_groups:
     - name: INET
+  - name: DEFAULT-AVT-POLICY_it_LB
+    path_groups:
+    - name: MPLS
+    - name: INET
+  - name: DEFAULT-AVT-POLICY_default_LB
+    path_groups:
+    - name: INET
+    - name: Equinix
+    - name: MPLS
+      priority: 42
   - name: PROD-AVT-POLICY_voice_LB
     path_groups:
     - name: MPLS
@@ -265,16 +294,16 @@ router_path_selection:
     - name: INET
     - name: MPLS
       priority: 2
-  - name: DEFAULT-AVT-POLICY_it_LB
+  - name: TRANSIT-AVT-POLICY_voice_LB
     path_groups:
     - name: MPLS
     - name: INET
-  - name: DEFAULT-AVT-POLICY_default_LB
+      priority: 2
+  - name: TRANSIT-AVT-POLICY_default_LB
     path_groups:
     - name: INET
-    - name: Equinix
     - name: MPLS
-      priority: 42
+      priority: 2
 stun:
   server:
     local_interfaces:

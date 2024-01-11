@@ -53,8 +53,8 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         autovpn_policies = []
 
-        rule_id_offset = 0
-        for policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
+        for policy in self._filtered_wan_policies:
+            rule_id_offset = 0
             autovpn_policy = {
                 "name": policy["name"],
             }

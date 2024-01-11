@@ -230,7 +230,9 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                     "name",
                     wan_vrf[self._wan_policy_key],
                     required=True,
-                    custom_error_msg=f"The policy {wan_vrf[self._wan_policy_key]} used in vrf {wan_vrf['name']} is not configured under 'wan_virtual_topologies.policies'.",
+                    custom_error_msg=(
+                        f"The policy {wan_vrf[self._wan_policy_key]} used in vrf {wan_vrf['name']}" "is not configured under 'wan_virtual_topologies.policies'."
+                    ),
                 )
                 for match in policy.get("matches", []):
                     wan_vrf.setdefault("profiles", []).append(
@@ -323,7 +325,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
         name = get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
         wan_load_balance_policies = [self._generate_wan_load_balance_policy(f"{name}_LB", control_plane_virtual_topology, default_all=True)]
-        for avt_policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
+        for avt_policy in self._filtered_wan_policies:
             for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
                 # TODO add internet exit once supported
                 name = get(application_virtual_topology, "name", default=f"{avt_policy['name']}_{application_virtual_topology['application_profile']}")
@@ -348,6 +350,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             vrf_name = avt_vrf["name"]
             if vrf_name in network_services_vrfs or self.shared_utils.wan_role == "server":
                 # Needed because we can be rendering either for AutoVPN or CV Pathfinder and key names are different.
+                # TODO check that the policy exists or raise
                 policy_name = get(avt_vrf, "policy", required=True)
 
                 wan_vrf = {
@@ -362,9 +365,10 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
     @cached_property
     def _filtered_wan_policies(self) -> list:
         """
-        Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode
+        Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of policies to configure on this device.
         """
-        return [wan_vrf[self._wan_policy_key] for wan_vrf in self._filtered_wan_vrfs]
+        policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
+        return [get_item(policies, "name", wan_vrf[self._wan_policy_key]) for wan_vrf in self._filtered_wan_vrfs]
 
     def _get_default_vrf_policy(self) -> str:
         """

@@ -77,7 +77,7 @@ wan_transit:
   defaults:
     loopback_ipv4_pool: 192.168.43.0/24
     filter:
-      always_include_vrfs_in_tenants: [TenantA]
+      always_include_vrfs_in_tenants: [TenantA, TenantB]
   nodes:
     - name: cv-pathfinder-transit
       cv_pathfinder_region: AVD_Land_West
@@ -175,6 +175,12 @@ tenants:
         vrf_id: 42
       - name: IT
         vrf_id: 100
+  - name: TenantB
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: TRANSIT
+        vrf_id: 66
 
 wan_virtual_topologies:
   vrfs:
@@ -182,6 +188,9 @@ wan_virtual_topologies:
       policy: DEFAULT-AVT-POLICY
     - name: PROD
       policy: PROD-AVT-POLICY
+    # Testing a VRF only on transit and not edge
+    - name: TRANSIT
+      policy: TRANSIT-AVT-POLICY
   policies:
     - name: PROD-AVT-POLICY
       default_virtual_topology:
@@ -218,3 +227,18 @@ wan_virtual_topologies:
             - names: [MPLS, INET]
               preference: preferred
           id: 3
+    - name: TRANSIT-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+            preference: preferred
+          - names: [MPLS]
+            preference: alternate
+      application_virtual_topologies:
+        - application_profile: voice
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+          id: 42
