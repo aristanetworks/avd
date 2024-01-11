@@ -56,6 +56,16 @@ tenant_a:
           enabled: true
           nodes:
             - DC1-LEAF1A
+        loopback_interfaces:
+          - interfaces: [ Loopback123, Loopback123 ]
+            ip_addresses: [ 10.1.53.0/32, 10.1.53.1/32 ]
+            nodes: [ DC1-BL1A, DC1-BL1B ]
+            enabled: true
+            pim:
+              enabled: true
+            ospf:
+              enabled: true
+              cost: 100
       - name: Tenant_A_WEB_Zone
         vrf_vni: 11
         mlag_ibgp_peering_ipv4_pool: 172.31.11.0/24
