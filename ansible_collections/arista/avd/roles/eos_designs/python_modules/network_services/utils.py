@@ -273,19 +273,26 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             ]
             policy_entries = [{"names": local_path_groups_connected_to_pathfinder, "preference": 1}]
 
+        at_least_one_priority_1_found = False
         for policy_entry in policy_entries:
+            # TODO check if it cannot be optimized further in shared_utils or validated in a global fashion - maybe
+            # schema?
+            # check that the LB policy has at least one prio 1 / preferred EVEN if the path group is not configured.
+            if (priority := self._path_group_preference_to_eos_priority(get(policy_entry, "preference", required=True))) == 1:
+                at_least_one_priority_1_found = True
             for path_group_name in policy_entry.get("names"):
-                # Skip path-group if not present on the router except for pathfinders
+                # Skip path-group on this device if not present on the router except for pathfinders
                 if path_group_name not in wan_local_path_group_names and self.shared_utils.wan_role != "server":
                     continue
 
                 path_group = {
                     "name": path_group_name,
+                    "priority": priority if priority != 1 else None,
                 }
-                if (priority := self._path_group_preference_to_eos_priority(get(policy_entry, "preference", required=True))) != 1:
-                    path_group["priority"] = priority
 
                 wan_load_balance_policy["path_groups"].append(path_group)
+        if not at_least_one_priority_1_found:
+            raise AristaAvdError(f"At least one path-group must be configured with preference '1' or 'preferred' for policy {name[:-3]}.")
 
         return wan_load_balance_policy
 

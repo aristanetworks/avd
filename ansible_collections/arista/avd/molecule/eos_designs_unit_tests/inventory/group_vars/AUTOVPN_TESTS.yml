@@ -123,5 +123,7 @@ wan_virtual_topologies:
       application_virtual_topologies:
         - application_profile: it
           path_groups:
+            - names: [MPLS]
+              preference: preferred
             - names: [INET]
               preference: alternate

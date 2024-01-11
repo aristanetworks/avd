@@ -141,6 +141,7 @@ router_path_selection:
     - name: INET
   - name: DEFAULT-AVT-POLICY_it_LB
     path_groups:
+    - name: MPLS
     - name: INET
       priority: 2
   policies:
