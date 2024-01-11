@@ -10199,11 +10199,91 @@
     },
     "metadata": {
       "type": "object",
-      "description": "Key only used for documentation or validation purposes",
+      "description": "The data under `metadata` is used for documentation, validation or integration purposes.\nIt will not affect the generated EOS configuration.",
       "properties": {
         "platform": {
           "type": "string",
           "title": "Platform"
+        },
+        "cv_tags": {
+          "type": "object",
+          "properties": {
+            "device_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Name"
+                  },
+                  "value": {
+                    "type": "string",
+                    "title": "Value"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Device Tags"
+            },
+            "interface_tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "interface": {
+                    "type": "string",
+                    "title": "Interface"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "title": "Name"
+                        },
+                        "value": {
+                          "type": "string",
+                          "title": "Value"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Tags"
+                  }
+                },
+                "required": [
+                  "interface"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Interface Tags"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Cv Tags"
         }
       },
       "additionalProperties": false,

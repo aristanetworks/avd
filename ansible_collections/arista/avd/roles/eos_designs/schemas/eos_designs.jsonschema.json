@@ -3615,6 +3615,17 @@
       },
       "title": "Cv Pathfinder Regions"
     },
+    "cv_tags_topology_type": {
+      "description": "PREVIEW: This key is currently not supported\nDevice type that CloudVision should use when generating the Topology. Defaults to the setting under node_type_keys.",
+      "type": "string",
+      "enum": [
+        "leaf",
+        "spine",
+        "core",
+        "edge"
+      ],
+      "title": "Cv Tags Topology Type"
+    },
     "cv_topology": {
       "type": "array",
       "description": "Generate AVD configurations directly from the given CloudVision topology.\nActivate this feature by setting `use_cv_topology` to `true`.\nRequires `default_interfaces` to be set for the relevant platforms and node types to detect the proper interface roles automatically.\nNeighbor hostnames must match the inventory hostnames of the AVD inventory to be taken into consideration.",
@@ -4174,6 +4185,89 @@
       "description": "Fabric Name, required to match Ansible Group name covering all devices in the Fabric, **must** be an inventory group name.",
       "type": "string",
       "title": "Fabric Name"
+    },
+    "generate_cv_tags": {
+      "type": "object",
+      "description": "PREVIEW: This key is currently not supported\nGenerate CloudVision Tags based on AVD data.",
+      "properties": {
+        "topology_hints": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable the generation of CloudVision Topology Tags (hints).",
+          "title": "Topology Hints"
+        },
+        "interface_tags": {
+          "description": "List of interface tags that should be generated.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "Each tag can either have a static value or a dynamic value sourced from structured configuration.",
+            "properties": {
+              "name": {
+                "description": "Tag name to be assigned to generated tags. Tag names must be lower case.",
+                "type": "string",
+                "title": "Name"
+              },
+              "data_path": {
+                "description": "Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\nFor Example: 'data_path: channel_group.id' would set the tag with the value of the channel id of the interface. If there is no channel id, the tag is not created.\n`data_path` is ignored if `value` is set.",
+                "type": "string",
+                "title": "Data Path"
+              },
+              "value": {
+                "description": "Value to be assigned to the tag.",
+                "type": "string",
+                "title": "Value"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Interface Tags"
+        },
+        "device_tags": {
+          "description": "List of device tags that should be generated.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "Each tag can either have a static value or a dynamic value sourced from structured configuration.",
+            "properties": {
+              "name": {
+                "description": "Tag name to be assigned to generated tags. Tag names must be lower case.",
+                "type": "string",
+                "title": "Name"
+              },
+              "data_path": {
+                "description": "Structured config field/key path to be used to find the value for the tag. Dot notation is supported to reference values inside dictionaries.\nFor Example: 'data_path: router_bfd.multihop.interval' would set the tag with the value of the interval for multihop bfd. If this value is not specified in the structured config, the tag is not created.\n`data_path` is ignored if `value` is set.",
+                "type": "string",
+                "title": "Data Path"
+              },
+              "value": {
+                "description": "Value to be assigned to the tag.",
+                "type": "string",
+                "title": "Value"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Device Tags"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Generate Cv Tags"
     },
     "hardware_counters": {
       "type": "object",
@@ -13165,6 +13259,17 @@
               "^_.+$": {}
             },
             "title": "Interface Descriptions"
+          },
+          "cv_tags_topology_type": {
+            "description": "PREVIEW: This key is currently not supported\nType that CloudVision should use when generating the Topology.",
+            "type": "string",
+            "enum": [
+              "leaf",
+              "spine",
+              "core",
+              "edge"
+            ],
+            "title": "Cv Tags Topology Type"
           }
         },
         "additionalProperties": false,
