@@ -1,11 +1,11 @@
-# queue_monitor_length
+# queue-monitor-streaming
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Queue Monitor](#queue-monitor)
-  - [Queue Monitor Length](#queue-monitor-length)
+  - [Queue Monitor Streaming](#queue-monitor-streaming)
   - [Queue Monitor Configuration](#queue-monitor-configuration)
 
 ## Management
@@ -38,27 +38,20 @@ interface Management1
 
 ## Queue Monitor
 
-### Queue Monitor Length
+### Queue Monitor Streaming
 
-| Setting | Value |
-| ------- | ----- |
-| Enabled | True
-| Logging Interval | 100 |
-| Default Thresholds High | 100 |
-| Default Thresholds Low | 10 |
-| Notifying | enabled |
-| TX Latency | enabled |
-| CPU Thresholds High | 200000 |
-| CPU Thresholds Low | 100000 |
+| Enabled | IP Access Group | IPv6 Access Group | Max Connections | VRF |
+| ------- | --------------- | ----------------- | --------------- | --- |
+| True | ACL-QMS | ACLv6-QMS | 5 | test |
 
 ### Queue Monitor Configuration
 
 ```eos
 !
-queue-monitor length
-queue-monitor length default thresholds 100 10
-queue-monitor length log 100
-queue-monitor length notifying
-queue-monitor length tx-latency
-queue-monitor length cpu thresholds 200000 100000
+queue-monitor streaming
+   max-connections 5
+   ip access-group ACL-QMS
+   ipv6 access-group ACLv6-QMS
+   vrf test
+   no shutdown
 ```

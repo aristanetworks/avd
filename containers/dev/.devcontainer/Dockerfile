@@ -14,3 +14,5 @@ ENTRYPOINT [ "/bin/entrypoint.sh" ]
 # Switch user to given USERNAME otherwise Ansible will be installed as root.
 USER ${USERNAME}
 ENV PATH=$PATH:/home/${USERNAME}/.local/bin
+# make sure that path required to mount Ansible collection exists
+RUN mkdir -p /home/${USERNAME}/.ansible/collections/ansible_collections/arista/avd

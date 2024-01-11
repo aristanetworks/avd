@@ -8442,6 +8442,9 @@ keys:
                 type: int
                 convert_types:
                 - str
+      tx_latency:
+        type: bool
+        description: Enable tx-latency mode
   queue_monitor_streaming:
     type: dict
     keys:
