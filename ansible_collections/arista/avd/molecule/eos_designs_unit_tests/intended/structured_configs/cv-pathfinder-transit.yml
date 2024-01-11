@@ -160,17 +160,17 @@ router_adaptive_virtual_topology:
     id: 422
   profiles:
   - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: CONTROL-PLANE-PROFILE_lb
+    load_balance_policy: CONTROL-PLANE-PROFILE_LB
   - name: PROD-AVT-POLICY_voice
-    load_balance_policy: PROD-AVT-POLICY_voice_lb
+    load_balance_policy: PROD-AVT-POLICY_voice_LB
   - name: PROD-AVT-POLICY_video
-    load_balance_policy: PROD-AVT-POLICY_video_lb
+    load_balance_policy: PROD-AVT-POLICY_video_LB
   - name: PROD-AVT-POLICY_default
-    load_balance_policy: PROD-AVT-POLICY_default_lb
+    load_balance_policy: PROD-AVT-POLICY_default_LB
   - name: DEFAULT-AVT-POLICY_it
-    load_balance_policy: DEFAULT-AVT-POLICY_it_lb
+    load_balance_policy: DEFAULT-AVT-POLICY_it_LB
   - name: DEFAULT-AVT-POLICY_default
-    load_balance_policy: DEFAULT-AVT-POLICY_default_lb
+    load_balance_policy: DEFAULT-AVT-POLICY_default_LB
   policies:
   - name: PROD-AVT-POLICY
     matches:
@@ -252,40 +252,32 @@ router_path_selection:
       ipv4_addresses:
       - 172.16.0.1
   load_balance_policies:
-  - name: CONTROL-PLANE-PROFILE_lb
+  - name: CONTROL-PLANE-PROFILE_LB
     path_groups:
     - name: INET
-      priority: 1
     - name: MPLS
-      priority: 1
-  - name: PROD-AVT-POLICY_voice_lb
+  - name: PROD-AVT-POLICY_voice_LB
     path_groups:
     - name: MPLS
-      priority: 1
     - name: INET
       priority: 2
-  - name: PROD-AVT-POLICY_video_lb
+  - name: PROD-AVT-POLICY_video_LB
     path_groups:
     - name: MPLS
-      priority: 1
     - name: INET
       priority: 2
-  - name: PROD-AVT-POLICY_default_lb
+  - name: PROD-AVT-POLICY_default_LB
     path_groups:
     - name: INET
-      priority: 1
     - name: MPLS
       priority: 2
-  - name: DEFAULT-AVT-POLICY_it_lb
+  - name: DEFAULT-AVT-POLICY_it_LB
     path_groups:
     - name: MPLS
-      priority: 1
     - name: INET
-      priority: 1
-  - name: DEFAULT-AVT-POLICY_default_lb
+  - name: DEFAULT-AVT-POLICY_default_LB
     path_groups:
     - name: INET
-      priority: 1
     - name: MPLS
       priority: 42
 stun:

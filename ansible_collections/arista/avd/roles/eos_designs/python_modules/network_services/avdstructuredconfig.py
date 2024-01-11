@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
 
+from .application_traffic_recognition import ApplicationTrafficRecognitionMixin
 from .dps_interfaces import DpsInterfacesMixin
 from .eos_cli import EosCliMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
@@ -34,6 +35,7 @@ from .vxlan_interface import VxlanInterfaceMixin
 
 class AvdStructuredConfigNetworkServices(
     AvdFacts,
+    ApplicationTrafficRecognitionMixin,
     SpanningTreeMixin,
     PatchPanelMixin,
     VlansMixin,

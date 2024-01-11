@@ -6,16 +6,12 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 $defs:
-  application_virtual_topologies:
+  virtual_topology:
     type: dict
     keys:
       name:
         type: str
         description: Optional name.
-      id:
-        type: int
-        $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id"
-        description: ID of the AVT in each VRFs. ID must be unique across all virtual topologies.
       traffic_class:
         type: int
         $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/traffic_class"
@@ -24,7 +20,7 @@ $defs:
         $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp"
       path_groups:
         type: list
-        primary_key: priority
+        primary_key: preference
         items:
           type: dict
           keys:
@@ -35,7 +31,7 @@ $defs:
               min_length: 1
               items:
                 type: str
-            priority:
+            preference:
               type: str
               convert_types:
                 - int

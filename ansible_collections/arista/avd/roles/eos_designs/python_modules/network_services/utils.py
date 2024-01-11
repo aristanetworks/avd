@@ -206,6 +206,13 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return get(self._hostvars, "switch.evpn_multicast") is True
 
     @cached_property
+    def _wan_policy_key(self) -> str:
+        """
+        The key for policies is different for AutoVPN and CV Pathfinder
+        """
+        return "policy" if self.shared_utils.cv_pathfinder_role else "path_selection_policy"
+
+    @cached_property
     def _wan_vrfs(self) -> list:
         """
         Return a list of WAN VRFs based on filtered tenants and the AVT.
@@ -214,40 +221,26 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         """
         wan_vrfs = []
 
-        # TODO replace this with VRFs fact once it has been implemented
-        network_services_vrfs = {vrf["name"] for tenant in self._filtered_tenants for vrf in tenant["vrfs"]}
-
-        for avt_vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
-            vrf_name = avt_vrf["name"]
-            if vrf_name in network_services_vrfs or self.shared_utils.wan_role == "server":
-                # Needed because we can be rendering either for AutoVPN or CV Pathfinder and key names are different.
-                policy_key = "policy" if self.shared_utils.cv_pathfinder_role else "path_selection_policy"
-                policy_name = get(avt_vrf, "policy", required=True)
-
-                wan_vrf = {
-                    "name": vrf_name,
-                    policy_key: policy_name,
-                }
-
-                # For CV Pathfinder, it is required to go through all the AVT profiles in the policy to assign an ID.
-                if self.shared_utils.cv_pathfinder_role:
-                    # Need to allocate an ID for each profile in the policy, for now picked up from the input.
-                    policy = get_item(
-                        self._cv_pathfinder_policies,
-                        "name",
-                        policy_name,
-                        required=True,
-                        custom_error_msg=f"The policy {policy_name} used in vrf {vrf_name} is not configured under 'wan_virtual_topologies.policies'.",
+        for wan_vrf in self._filtered_wan_vrfs:
+            # For CV Pathfinder, it is required to go through all the AVT profiles in the policy to assign an ID.
+            if self.shared_utils.cv_pathfinder_role:
+                # Need to allocate an ID for each profile in the policy, for now picked up from the input.
+                policy = get_item(
+                    self._cv_pathfinder_policies,
+                    "name",
+                    wan_vrf[self._wan_policy_key],
+                    required=True,
+                    custom_error_msg=f"The policy {wan_vrf[self._wan_policy_key]} used in vrf {wan_vrf['name']} is not configured under 'wan_virtual_topologies.policies'.",
+                )
+                for match in policy.get("matches", []):
+                    wan_vrf.setdefault("profiles", []).append(
+                        {
+                            "name": get(match, "avt_profile", required=True),
+                            "id": get(match, "_id", required=False),
+                        }
                     )
-                    for match in policy.get("matches", []):
-                        wan_vrf.setdefault("profiles", []).append(
-                            {
-                                "name": get(match, "avt_profile", required=True),
-                                "id": get(match, "_id", required=False),
-                            }
-                        )
 
-                wan_vrfs.append(wan_vrf)
+            wan_vrfs.append(wan_vrf)
 
         return wan_vrfs
 
@@ -278,7 +271,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                 for path_group in self.shared_utils.wan_local_path_groups
                 if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group["interfaces"])
             ]
-            policy_entries = [{"names": local_path_groups_connected_to_pathfinder, "priority": 1}]
+            policy_entries = [{"names": local_path_groups_connected_to_pathfinder, "preference": 1}]
 
         for policy_entry in policy_entries:
             for path_group_name in policy_entry.get("names"):
@@ -286,28 +279,29 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                 if path_group_name not in wan_local_path_group_names and self.shared_utils.wan_role != "server":
                     continue
 
-                wan_load_balance_policy["path_groups"].append(
-                    {
-                        "name": path_group_name,
-                        "priority": self._path_group_priority_to_eos_priority(get(policy_entry, "priority", required=True)),
-                    }
-                )
+                path_group = {
+                    "name": path_group_name,
+                }
+                if (priority := self._path_group_preference_to_eos_priority(get(policy_entry, "preference", required=True))) != 1:
+                    path_group["priority"] = priority
+
+                wan_load_balance_policy["path_groups"].append(path_group)
 
         return wan_load_balance_policy
 
-    def _path_group_priority_to_eos_priority(self, path_group_priority: int | str) -> int:
+    def _path_group_preference_to_eos_priority(self, path_group_preference: int | str) -> int:
         """
         Convert "preferred" to 1 and "alternate" to 2. Everything else is returned as is.
         """
-        if path_group_priority == "preferred":
+        if path_group_preference == "preferred":
             return 1
-        elif path_group_priority == "alternate":
+        elif path_group_preference == "alternate":
             return 2
         try:
-            return int(path_group_priority)
+            return int(path_group_preference)
         except ValueError as e:
             raise AristaAvdError(
-                f"Invalid value {path_group_priority} for Path-Group priority - should be either 'preferred', 'alternate' or an integer."
+                f"Invalid value {path_group_preference} for Path-Group preference - should be either 'preferred', 'alternate' or an integer."
             ) from e
 
     @cached_property
@@ -321,24 +315,53 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         # Control plane Load Balancing policy - if not configured, render the default one.
         control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
         name = get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
-        wan_load_balance_policies = [self._generate_wan_load_balance_policy(f"{name}_lb", control_plane_virtual_topology, default_all=True)]
+        wan_load_balance_policies = [self._generate_wan_load_balance_policy(f"{name}_LB", control_plane_virtual_topology, default_all=True)]
         for avt_policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
             for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
                 # TODO add internet exit once supported
                 name = get(application_virtual_topology, "name", default=f"{avt_policy['name']}_{application_virtual_topology['application_profile']}")
-                wan_load_balance_policies.append(self._generate_wan_load_balance_policy(f"{name}_lb", application_virtual_topology))
+                wan_load_balance_policies.append(self._generate_wan_load_balance_policy(f"{name}_LB", application_virtual_topology))
 
             if (default_virtual_topology := get(avt_policy, "default_virtual_topology")) is not None:
                 name = get(default_virtual_topology, "name", default=f"{avt_policy['name']}_default")
-                wan_load_balance_policies.append(self._generate_wan_load_balance_policy(f"{name}_lb", default_virtual_topology))
+                wan_load_balance_policies.append(self._generate_wan_load_balance_policy(f"{name}_LB", default_virtual_topology))
 
         return wan_load_balance_policies
+
+    @cached_property
+    def _filtered_wan_vrfs(self) -> list:
+        """
+        Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode
+        """
+        wan_vrfs = []
+        # TODO replace this with VRFs fact once it has been implemented
+        network_services_vrfs = {vrf["name"] for tenant in self._filtered_tenants for vrf in tenant["vrfs"]}
+
+        for avt_vrf in get(self._hostvars, "wan_virtual_topologies.vrfs", []):
+            vrf_name = avt_vrf["name"]
+            if vrf_name in network_services_vrfs or self.shared_utils.wan_role == "server":
+                # Needed because we can be rendering either for AutoVPN or CV Pathfinder and key names are different.
+                policy_name = get(avt_vrf, "policy", required=True)
+
+                wan_vrf = {
+                    "name": vrf_name,
+                    self._wan_policy_key: policy_name,
+                }
+
+                wan_vrfs.append(wan_vrf)
+
+        return wan_vrfs
+
+    @cached_property
+    def _filtered_wan_policies(self) -> list:
+        """
+        Loop through all the VRFs defined under `wan_virtual_topologies.vrfs` and returns a list of mode
+        """
+        return [wan_vrf[self._wan_policy_key] for wan_vrf in self._filtered_wan_vrfs]
 
     def _get_default_vrf_policy(self) -> str:
         """
         Retrieves the name of the policy name used for the default VRF.
-
-        TODO - make it work
         """
         vrfs = get(self._hostvars, "wan_virtual_topologies.vrfs", [])
         if (default_vrf := get_item(vrfs, "name", "default")) is None:

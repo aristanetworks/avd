@@ -187,36 +187,34 @@ wan_virtual_topologies:
       default_virtual_topology:
         path_groups:
           - names: [INET]
-            priority: preferred
+            preference: preferred
           - names: [MPLS]
-            priority: alternate
-        id: 1
+            preference: alternate
       application_virtual_topologies:
         - application_profile: voice
           path_groups:
             - names: [MPLS]
-              priority: preferred
+              preference: preferred
             - names: [INET]
-              priority: alternate
+              preference: alternate
           id: 2
         - application_profile: video
           path_groups:
             - names: [MPLS, LTE]
-              priority: preferred
+              preference: preferred
             - names: [INET]
-              priority: alternate
+              preference: alternate
           id: 4
     - name: DEFAULT-AVT-POLICY
       default_virtual_topology:
         path_groups:
           - names: [INET, Equinix]
-            priority: preferred
+            preference: preferred
           - names: [MPLS]
-            priority: 42
-        id: 1
+            preference: 42
       application_virtual_topologies:
         - application_profile: it
           path_groups:
             - names: [MPLS, INET]
-              priority: preferred
+              preference: preferred
           id: 3

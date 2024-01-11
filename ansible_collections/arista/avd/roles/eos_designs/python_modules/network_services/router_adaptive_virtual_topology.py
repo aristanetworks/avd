@@ -62,8 +62,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                         "avt_profile": get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE"),
                         "traffic_class": get(control_plane_virtual_topology, "traffic_class"),
                         "dscp": get(control_plane_virtual_topology, "dscp"),
-                        # Storing id as _id to avoid schema validation and be able to pick up in VRFs
-                        "_id": get(control_plane_virtual_topology, "id"),
+                        "_id": 254,
                     }
                 )
 
@@ -88,7 +87,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                         "traffic_class": get(default_virtual_topology, "traffic_class"),
                         "dscp": get(default_virtual_topology, "dscp"),
                         # Storing id as _id to avoid schema validation and be able to pick up in VRFs
-                        "_id": get(default_virtual_topology, "id"),
+                        "_id": 1,
                     }
                 )
 
@@ -114,7 +113,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
         cv_pathfinder_profiles.append(
             {
                 "name": name,
-                "load_balance_policy": f"{name}_lb",
+                "load_balance_policy": f"{name}_LB",
             }
         )
 
@@ -124,7 +123,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 cv_pathfinder_profiles.append(
                     {
                         "name": name,
-                        "load_balance_policy": f"{name}_lb",
+                        "load_balance_policy": f"{name}_LB",
                     }
                 )
             if default_virtual_topology := get(avt_policy, "default_virtual_topology"):
@@ -132,7 +131,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 cv_pathfinder_profiles.append(
                     {
                         "name": name,
-                        "load_balance_policy": f"{name}_lb",
+                        "load_balance_policy": f"{name}_LB",
                     }
                 )
 

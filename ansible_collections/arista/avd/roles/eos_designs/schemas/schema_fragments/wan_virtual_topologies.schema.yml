@@ -39,15 +39,12 @@ keys:
 
           By default, if no path-groups are specified, all locally available path-groups
           are used in the generated load-balance policy.
-        $ref: "eos_designs#/$defs/application_virtual_topologies"
+          ID is hardcoded to 254 for the AVT profile in CV Pathfinder mode.
+        $ref: "eos_designs#/$defs/virtual_topology"
         keys:
           name:
             type: str
             description: Optional name, if not set `CONTROL-PLANE-PROFILE` is used.
-          id:
-            type: int
-            description: ID of the control plane AVT in the default VRF.
-            default: 254
       policies:
         type: list
         description: |-
@@ -89,7 +86,7 @@ keys:
               primary_key: application_profile
               items:
                 type: dict
-                $ref: "eos_designs#/$defs/application_virtual_topologies"
+                $ref: "eos_designs#/$defs/virtual_topology"
                 keys:
                   application_profile:
                     type: str
@@ -99,14 +96,20 @@ keys:
                     description: Optional name, if not set `<policy_name>_<application_profile>` is used.
                   id:
                     type: int
-                    description: ID of the AVT in each VRFs. ID must be unique across all virtual topologies.
+                    $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id"
+                    min: 2
+                    max: 253
+                    description: |-
+                      ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.
+                      ID 1 is reserved for the default_virtual_toplogy.
+                      ID 254 is reserved for the control_plane_virtual_topology.
             default_virtual_topology:
               type: dict
-              $ref: "eos_designs#/$defs/application_virtual_topologies"
+              description: |-
+                Default match for the policy.
+                ID is hardcoded to 1 for the AVT profile in CV Pathfinder mode.
+              $ref: "eos_designs#/$defs/virtual_topology"
               keys:
                 name:
                   type: str
                   description: Optional name, if not set `<policy_name>_default` is used.
-                id:
-                  type: int
-                  description: ID of the default AVT in each VRFs.

@@ -53,6 +53,7 @@ class RouterPathSelectionMixin(UtilsMixin):
 
         autovpn_policies = []
 
+        rule_id_offset = 0
         for policy in get(self._hostvars, "wan_virtual_topologies.policies", []):
             autovpn_policy = {
                 "name": policy["name"],
@@ -66,25 +67,25 @@ class RouterPathSelectionMixin(UtilsMixin):
                 # TODO centralize the default value of the CONTROL-PLANE-PROFILE to avoid having the constant in two places..
                 autovpn_policy.setdefault("rules", []).append(
                     {
-                        # TODO hardcoded id ..
-                        "id": 1,
+                        "id": 10,
                         "application_profile": "CONTROL-PLANE-APPLICATION-PROFILE",
-                        "load_balance": f"{name}_lb",
+                        "load_balance": f"{name}_LB",
                     }
                 )
+                rule_id_offset = 1
 
             for rule_id, application_virtual_topology in enumerate(get(policy, "application_virtual_topologies", []), start=1):
                 name = get(application_virtual_topology, "name", default=f"{policy['name']}_{application_virtual_topology['application_profile']}")
                 autovpn_policy.setdefault("rules", []).append(
                     {
-                        "id": 10 * rule_id,
+                        "id": 10 * (rule_id + rule_id_offset),
                         "application_profile": get(application_virtual_topology, "application_profile", required=True),
-                        "load_balance": f"{name}_lb",
+                        "load_balance": f"{name}_LB",
                     }
                 )
             if (default_virtual_topology := get(policy, "default_virtual_topology")) is not None:
                 name = get(default_virtual_topology, "name", default=f"{policy['name']}_default")
-                autovpn_policy["default_match"] = {"load_balance": f"{name}_lb"}
+                autovpn_policy["default_match"] = {"load_balance": f"{name}_LB"}
 
             autovpn_policies.append(autovpn_policy)
 
