@@ -15772,6 +15772,16 @@
                 "type": "boolean",
                 "title": "As Set"
               },
+              "advertise_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Advertise Map"
+              },
+              "supress_map": {
+                "type": "string",
+                "description": "Route-map name",
+                "title": "Supress Map"
+              },
               "summary_only": {
                 "type": "boolean",
                 "title": "Summary Only"
@@ -18731,6 +18741,16 @@
                     "as_set": {
                       "type": "boolean",
                       "title": "As Set"
+                    },
+                    "advertise_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Advertise Map"
+                    },
+                    "supress_map": {
+                      "type": "string",
+                      "description": "Route-map name",
+                      "title": "Supress Map"
                     },
                     "summary_only": {
                       "type": "boolean",

@@ -117,11 +117,11 @@ interface Management1
 
 #### BGP Route Aggregation
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False | - | - | False |
+| Prefix | AS Set | Advertise Map | Supress Map | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------- | ----------- | ------------ | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | - | - | False | - | - | True |
+| 1.12.1.0/24 | True | ADV-MAP | SUP-MAP | True | RM-ATTRIBUTE | RM-MATCH | True |
+| 2.2.1.0/24 | False | - | - | False | - | - | False |
 
 #### Router BGP Session Trackers
 
@@ -206,7 +206,7 @@ router bgp 65101
    neighbor 192.0.3.9 remote-as 65438
    no neighbor 192.0.3.9 bfd
    aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 1.12.1.0/24 as-set advertise-map ADV-MAP supress-map SUP-MAP summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
    redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
    redistribute ospf include leaked
