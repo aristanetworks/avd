@@ -14121,6 +14121,11 @@
             "^_.+$": {}
           },
           "title": "CPU"
+        },
+        "tx_latency": {
+          "type": "boolean",
+          "description": "Enable tx-latency mode",
+          "title": "TX Latency"
         }
       },
       "required": [

@@ -1,4 +1,4 @@
-# queue_monitor_length
+# queue-monitor-length
 
 ## Table of Contents
 
@@ -40,16 +40,9 @@ interface Management1
 
 ### Queue Monitor Length
 
-| Setting | Value |
-| ------- | ----- |
-| Enabled | True
-| Logging Interval | 100 |
-| Default Thresholds High | 100 |
-| Default Thresholds Low | 10 |
-| Notifying | enabled |
-| TX Latency | enabled |
-| CPU Thresholds High | 200000 |
-| CPU Thresholds Low | 100000 |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| True | 100 | 100 | 10 | enabled | enabled | 200000 | 100000 |
 
 ### Queue Monitor Configuration
 

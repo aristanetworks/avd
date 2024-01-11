@@ -46,6 +46,9 @@
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
+- [Queue Monitor](#queue-monitor)
+  - [Queue Monitor Length](#queue-monitor-length)
+  - [Queue Monitor Configuration](#queue-monitor-configuration)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
   - [PIM Sparse Mode](#pim-sparse-mode)
@@ -1250,6 +1253,24 @@ policy-map type pbr PM_PBR_BREAKOUT
    !
    class CM_PBR_INCLUDE
       set nexthop recursive 192.168.4.2
+```
+
+## Queue Monitor
+
+### Queue Monitor Length
+
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| True | 100 | - | - | enabled | disabled | 200000 | 100000 |
+
+### Queue Monitor Configuration
+
+```eos
+!
+queue-monitor length
+queue-monitor length log 100
+queue-monitor length notifying
+queue-monitor length cpu thresholds 200000 100000
 ```
 
 ## Multicast

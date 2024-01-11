@@ -1,4 +1,4 @@
-# queue_monitor_length
+# queue-monitor-length-notifying
 
 ## Table of Contents
 
@@ -40,25 +40,15 @@ interface Management1
 
 ### Queue Monitor Length
 
-| Setting | Value |
-| ------- | ----- |
-| Enabled | True
-| Logging Interval | 100 |
-| Default Thresholds High | 100 |
-| Default Thresholds Low | 10 |
-| Notifying | enabled |
-| TX Latency | enabled |
-| CPU Thresholds High | 200000 |
-| CPU Thresholds Low | 100000 |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
+| True | - | 100 | - | disabled | disabled | - | - |
 
 ### Queue Monitor Configuration
 
 ```eos
 !
 queue-monitor length
-queue-monitor length default thresholds 100 10
-queue-monitor length log 100
-queue-monitor length notifying
-queue-monitor length tx-latency
-queue-monitor length cpu thresholds 200000 100000
+queue-monitor length default threshold 100
+no queue-monitor length notifying
 ```
