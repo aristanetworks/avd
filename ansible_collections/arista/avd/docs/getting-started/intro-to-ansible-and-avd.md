@@ -358,7 +358,7 @@ Running the play described above would result in several files containing the co
 
 While this play shows both the `eos_designs` and `eos_cli_config_gen` roles used together, it's entirely possible to make use of just `eos_cli_config_gen` by itself - this would allow (for example) generation of management configuration that could potentially be merged into an existing network as discussed earlier.
 
-## System or Record
+## System of Record
 
 In a legacy network where configuration isn't administered centrally, you have very little control of the relationship between the configuration you *intend* to be applied to the network and the configuration *running* on the network. You might have centralized low-level design documents describing how the network should function in great detail, but you don't have much but the best intentions to ensure that your **entire** network is working as you intended. As a result, it takes only a single configuration mistake on a single device to create havoc.
 
