@@ -55,16 +55,17 @@ def _validate_python_version(info: dict, result: dict) -> bool:
     if sys.version_info < MIN_PYTHON_SUPPORTED_VERSION:
         display.error(f"Python Version running {running_version} - Minimum Version required is {min_version}", False)
         return False
-    elif sys.version_info[:2] == MIN_PYTHON_SUPPORTED_VERSION:
-        result.setdefault("deprecations", []).append(
-            {
-                "msg": (
-                    f"You are currently running Python {running_version}. The next minor release of AVD after November 6th 2023 will drop support for Python"
-                    f" {min_version} as it will be dropping support for ansible-core<2.14 and ansible-core>=2.14 does not support Python {min_version} as"
-                    " documented here: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
-                )
-            }
-        )
+    # Keeping this for next deprecation adjust the message as required
+    # elif sys.version_info[:2] == MIN_PYTHON_SUPPORTED_VERSION:
+    #     result.setdefault("deprecations", []).append(
+    #         {
+    #             "msg": (
+    #                 f"You are currently running Python {running_version}. The next minor release of AVD after November 6th 2023 will drop support for Python"
+    #                 f" {min_version} as it will be dropping support for ansible-core<2.14 and ansible-core>=2.14 does not support Python {min_version} as"
+    #                 " documented here: https://docs.ansible.com/ansible/latest/reference_appendices/release_and_maintenance.html#ansible-core-support-matrix"
+    #             )
+    #         }
+    #     )
 
     return True
 
@@ -187,7 +188,7 @@ def _validate_ansible_version(collection_name: str, running_version: str, info: 
             False,
         )
         return False
-    # TODO remove this once dropping support of ansible-core<2.14 as the previous if will catch it.
+    # Keeping this for next deprecation - set the value of deprecation_specifiers_set when needed and adjust message
     elif not deprecation_specifiers_set.contains(running_version):
         result.setdefault("deprecations", []).append(
             {
