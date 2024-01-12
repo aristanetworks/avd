@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Generate Cloudvision tags with eos_designs
+title: Generate Cloudvision Tags with eos_designs - Preview
 ---
 <!--
   ~ Copyright (c) 2023-2024 Arista Networks, Inc.
@@ -8,7 +8,7 @@ title: Generate Cloudvision tags with eos_designs
   ~ that can be found in the LICENSE file.
   -->
 
-# CloudVision Tags
+# Generate CloudVision Tags - Preview
 
 !!! warning
 
