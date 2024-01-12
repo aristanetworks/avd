@@ -14056,7 +14056,7 @@ keys:
                     log:
                       type: bool
                       description: Only supported when action is set to drop
-  transceiver_qsfp_default_mode_channelized:
+  transceiver_qsfp_default_mode_4x10:
     type: bool
     default: true
     description: On all front panel ports which support this feature, the following

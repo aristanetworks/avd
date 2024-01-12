@@ -6,7 +6,7 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
-  transceiver_qsfp_default_mode_channelized:
+  transceiver_qsfp_default_mode_4x10:
     type: bool
     default: true
     description: |
