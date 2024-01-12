@@ -82,9 +82,7 @@ class WanMixin:
         List of carriers present on this router based on the wan_interfaces with the associated WAN interfaces
             interfaces:
               - name: ...
-                ip: ...
-
-        For route servers with interface IP "dhcp" the ip value will be replaced with the IP address defined under wan
+                ip: ... (for route-servers the IP may come from wan_route_servers)
         """
         if not self.wan_role:
             return []
@@ -152,7 +150,7 @@ class WanMixin:
     def this_wan_route_server(self: SharedUtils) -> dict:
         """
         Returns the instance for this wan_rs found under wan_route_servers.
-        Should only be called when the device is actually a wan_rs. Will raise if not found.
+        Should only be called when the device is actually a wan_rs.
         """
         wan_route_servers = get(self.hostvars, "wan_route_servers", default=[])
         return get_item(wan_route_servers, "hostname", self.hostname, default={})
@@ -161,11 +159,12 @@ class WanMixin:
         """
         Takes a dict which looks like `l3_interface` from node config
 
-        Return the `ip` field unless for WAN route-servers with interface ip 'dhcp',
-        where we try to find the IP under wan_route_servers.path_groups.interfaces.
-        Raises if the IP is not found.
+        If not a WAN route-server this just returns the interface IP.
+
+        For WAN route-servers we try to find the IP under wan_route_servers.path_groups.interfaces.
+        If not found we use the IP under the interface, unless it is "dhcp" where we raise.
         """
-        if interface["ip"] != "dhcp" or self.wan_role != "server":
+        if self.wan_role != "server":
             return interface["ip"]
 
         for path_group in self.this_wan_route_server.get("path_groups", []):
@@ -174,11 +173,13 @@ class WanMixin:
 
             if found_interface.get("ip_address") is not None:
                 return found_interface["ip_address"]
+        if interface["ip"] == "dhcp":
+            raise AristaAvdError(
+                f"The IP address for WAN interface '{interface['name']}' on Route Server '{self.hostname}' is set 'dhcp'."
+                "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
+            )
 
-        raise AristaAvdError(
-            f"The IP address for WAN interface '{interface['name']}' on Route Server '{self.hostname}' is set 'dhcp'."
-            "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
-        )
+        return interface["ip"]
 
     @cached_property
     def wan_site(self: SharedUtils) -> dict:
