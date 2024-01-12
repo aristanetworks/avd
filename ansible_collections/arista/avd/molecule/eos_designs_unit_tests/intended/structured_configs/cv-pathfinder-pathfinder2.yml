@@ -192,45 +192,6 @@ router_adaptive_virtual_topology:
     load_balance_policy: LB-TRANSIT-AVT-POLICY_voice
   - name: TRANSIT-AVT-POLICY_default
     load_balance_policy: LB-TRANSIT-AVT-POLICY_default
-  policies:
-  - name: PROD-AVT-POLICY
-    matches:
-    - application_profile: voice
-      avt_profile: PROD-AVT-POLICY_voice
-      _id: 2
-    - application_profile: video
-      avt_profile: PROD-AVT-POLICY_video
-      _id: 4
-    - application_profile: default
-      avt_profile: PROD-AVT-POLICY_default
-      _id: 1
-  - name: DEFAULT-AVT-POLICY
-    matches:
-    - application_profile: video
-      avt_profile: DEFAULT-AVT-POLICY_video
-      _id: 3
-    - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY_default
-      _id: 1
-  - name: TRANSIT-AVT-POLICY
-    matches:
-    - application_profile: voice
-      avt_profile: TRANSIT-AVT-POLICY_voice
-      _id: 42
-    - application_profile: default
-      avt_profile: TRANSIT-AVT-POLICY_default
-      _id: 1
-  - name: DEFAULT-AVT-POLICY-WITH-CP
-    matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
-      _id: 254
-    - application_profile: video
-      avt_profile: DEFAULT-AVT-POLICY_video
-      _id: 3
-    - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY_default
-      _id: 1
   vrfs:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
@@ -264,6 +225,35 @@ router_adaptive_virtual_topology:
       id: 42
     - name: TRANSIT-AVT-POLICY_default
       id: 1
+  policies:
+  - name: PROD-AVT-POLICY
+    matches:
+    - application_profile: voice
+      avt_profile: PROD-AVT-POLICY_voice
+    - application_profile: video
+      avt_profile: PROD-AVT-POLICY_video
+    - application_profile: default
+      avt_profile: PROD-AVT-POLICY_default
+  - name: DEFAULT-AVT-POLICY
+    matches:
+    - application_profile: video
+      avt_profile: DEFAULT-AVT-POLICY_video
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY_default
+  - name: TRANSIT-AVT-POLICY
+    matches:
+    - application_profile: voice
+      avt_profile: TRANSIT-AVT-POLICY_voice
+    - application_profile: default
+      avt_profile: TRANSIT-AVT-POLICY_default
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    matches:
+    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      avt_profile: CONTROL-PLANE-PROFILE
+    - application_profile: video
+      avt_profile: DEFAULT-AVT-POLICY_video
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY_default
 router_bfd:
   multihop:
     interval: 300
