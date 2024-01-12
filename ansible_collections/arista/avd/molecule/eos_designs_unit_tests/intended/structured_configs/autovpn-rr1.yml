@@ -127,42 +127,42 @@ router_path_selection:
     ipsec_profile: AUTOVPN
   peer_dynamic_source: stun
   load_balance_policies:
-  - name: CONTROL-PLANE-PROFILE_LB
+  - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
     - name: INET
-  - name: DEFAULT-AVT-POLICY_it_LB
+  - name: LB-PROD-AVT-POLICY_voice
+    path_groups:
+    - name: INET
+  - name: LB-PROD-AVT-POLICY_video
+    path_groups:
+    - name: INET
+  - name: LB-PROD-AVT-POLICY_default
+    path_groups:
+    - name: INET
+  - name: LB-DEFAULT-AVT-POLICY_it
     path_groups:
     - name: MPLS
     - name: INET
       priority: 2
-  - name: PROD-AVT-POLICY_voice_LB
-    path_groups:
-    - name: INET
-  - name: PROD-AVT-POLICY_video_LB
-    path_groups:
-    - name: INET
-  - name: PROD-AVT-POLICY_default_LB
-    path_groups:
-    - name: INET
   policies:
-  - name: DEFAULT-AVT-POLICY-WITH-CP
-    rules:
-    - id: 10
-      application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      load_balance: CONTROL-PLANE-PROFILE_LB
-    - id: 20
-      application_profile: it
-      load_balance: DEFAULT-AVT-POLICY_it_LB
   - name: PROD-AVT-POLICY
     rules:
     - id: 10
       application_profile: voice
-      load_balance: PROD-AVT-POLICY_voice_LB
+      load_balance: LB-PROD-AVT-POLICY_voice
     - id: 20
       application_profile: video
-      load_balance: PROD-AVT-POLICY_video_LB
+      load_balance: LB-PROD-AVT-POLICY_video
     default_match:
-      load_balance: PROD-AVT-POLICY_default_LB
+      load_balance: LB-PROD-AVT-POLICY_default
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    rules:
+    - id: 10
+      application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      load_balance: LB-CONTROL-PLANE-PROFILE
+    - id: 20
+      application_profile: it
+      load_balance: LB-DEFAULT-AVT-POLICY_it
   vrfs:
   - name: default
     path_selection_policy: DEFAULT-AVT-POLICY-WITH-CP

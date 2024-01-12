@@ -206,45 +206,19 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return get(self._hostvars, "switch.evpn_multicast") is True
 
     @cached_property
+    def _wan_control_plane_profile(self) -> str:
+        """
+        Control plane profile name
+        """
+        control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
+        return get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
+
+    @cached_property
     def _wan_policy_key(self) -> str:
         """
         The key for policies is different for AutoVPN and CV Pathfinder
         """
         return "policy" if self.shared_utils.cv_pathfinder_role else "path_selection_policy"
-
-    @cached_property
-    def _wan_vrfs(self) -> list:
-        """
-        Return a list of WAN VRFs based on filtered tenants and the AVT.
-
-        Always render VRF on AutoVPN RRs / CV Pathfinder pathfinders
-        """
-        wan_vrfs = []
-
-        for wan_vrf in self._filtered_wan_vrfs:
-            # For CV Pathfinder, it is required to go through all the AVT profiles in the policy to assign an ID.
-            if self.shared_utils.cv_pathfinder_role:
-                # Need to allocate an ID for each profile in the policy, for now picked up from the input.
-                policy = get_item(
-                    self._cv_pathfinder_policies,
-                    "name",
-                    wan_vrf[self._wan_policy_key],
-                    required=True,
-                    custom_error_msg=(
-                        f"The policy {wan_vrf[self._wan_policy_key]} used in vrf {wan_vrf['name']}" "is not configured under 'wan_virtual_topologies.policies'."
-                    ),
-                )
-                for match in policy.get("matches", []):
-                    wan_vrf.setdefault("profiles", []).append(
-                        {
-                            "name": get(match, "avt_profile", required=True),
-                            "id": get(match, "_id", required=False),
-                        }
-                    )
-
-            wan_vrfs.append(wan_vrf)
-
-        return wan_vrfs
 
     def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, default_all: bool = False) -> dict:
         """
@@ -323,27 +297,27 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
         # Control plane Load Balancing policy - if not configured, render the default one.
         control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
-        name = get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
-        wan_load_balance_policies = [self._generate_wan_load_balance_policy(f"{name}_LB", control_plane_virtual_topology, default_all=True)]
-        for avt_policy in self._filtered_wan_policies:
-            policy_name = avt_policy["name"] if avt_policy["name"] != self._default_vrf_policy["name"] else avt_policy["realname"]
-            for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
+        wan_load_balance_policies = [
+            self._generate_wan_load_balance_policy(f"LB-{self._wan_control_plane_profile}", control_plane_virtual_topology, default_all=True)
+        ]
+        for policy in self._filtered_wan_policies:
+            for application_virtual_topology in get(policy, "application_virtual_topologies", []):
                 # TODO add internet exit once supported
-                name = get(application_virtual_topology, "name", default=f"{policy_name}_{application_virtual_topology['application_profile']}")
+                name = get(application_virtual_topology, "name", default=f"{policy['name']}_{application_virtual_topology['application_profile']}")
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"{name}_LB", application_virtual_topology),
+                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", application_virtual_topology),
                     context="Router Path-Selection Load-Balance policies.",
                     context_keys=["name"],
                 )
 
-            if (default_virtual_topology := get(avt_policy, "default_virtual_topology")) is not None:
-                name = get(default_virtual_topology, "name", default=f"{policy_name}_default")
+            if (default_virtual_topology := get(policy, "default_virtual_topology")) is not None:
+                name = get(default_virtual_topology, "name", default=f"{policy['name']}_default")
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"{name}_LB", default_virtual_topology),
+                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", default_virtual_topology),
                     context="Router Path-Selection Load-Balance policies.",
                     context_keys=["name"],
                 )
@@ -375,11 +349,11 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             wan_vrfs.append(
                 {
                     "name": "default",
-                    self._wan_policy_key: self._default_vrf_policy["name"],
+                    self._wan_policy_key: f"{self._default_vrf_policy['name']}-WITH-CP",
                 }
             )
         else:
-            vrf_default[self._wan_policy_key] = self._default_vrf_policy["name"]
+            vrf_default[self._wan_policy_key] = f"{vrf_default[self._wan_policy_key]}-WITH-CP"
 
         return wan_vrfs
 
@@ -391,8 +365,10 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         inject the default_vrf_policy
         """
         policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
-        policies.append(self._default_vrf_policy)
-        return [get_item(policies, "name", wan_vrf[self._wan_policy_key]) for wan_vrf in self._filtered_wan_vrfs]
+        # Need to handle VRF default differently
+        filtered_policies = [get_item(policies, "name", wan_vrf[self._wan_policy_key]) for wan_vrf in self._filtered_wan_vrfs if wan_vrf["name"] != "default"]
+        filtered_policies.append(self._default_vrf_policy)
+        return filtered_policies
 
     @cached_property
     def _default_vrf_policy(self) -> dict:
@@ -408,6 +384,5 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
         # copy is safe here as we change only the name
         default_policy = get_item(policies, "name", get(default_vrf, "policy", required=True), required=True).copy()
-        default_policy["realname"] = f"{default_policy['name']}"
-        default_policy["name"] = f"{default_policy['name']}-WITH-CP"
+        default_policy["is_default"] = True
         return default_policy

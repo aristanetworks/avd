@@ -37,7 +37,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         router_path_selection.update(
             {
                 "policies": self._autovpn_policies,
-                "vrfs": self._wan_vrfs,
+                "vrfs": self._filtered_wan_vrfs,
             }
         )
 
@@ -59,37 +59,30 @@ class RouterPathSelectionMixin(UtilsMixin):
                 "name": policy["name"],
             }
 
-            policy_name = policy["name"]
-            # TODO check if this is not possible to move this check in the self._default_vrf_policy generation
-            if policy_name == self._default_vrf_policy["name"]:
-                control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
-                name = get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
-                # This is the policy for the default VRF, inject control_plane_policy Profile first
-                # TODO - this is a problem is the VRF default policy is reused in other place ..
-                # TODO centralize the default value of the CONTROL-PLANE-PROFILE to avoid having the constant in two places..
+            if get(policy, "is_default", default=False):
+                # Update policy name
+                autovpn_policy["name"] = f"{autovpn_policy['name']}-WITH-CP"
                 autovpn_policy.setdefault("rules", []).append(
                     {
                         "id": 10,
                         "application_profile": "CONTROL-PLANE-APPLICATION-PROFILE",
-                        "load_balance": f"{name}_LB",
+                        "load_balance": f"LB-{self._wan_control_plane_profile}",
                     }
                 )
                 rule_id_offset = 1
-                # Use the real name for shared LB policies
-                policy_name = policy["realname"]
 
             for rule_id, application_virtual_topology in enumerate(get(policy, "application_virtual_topologies", []), start=1):
-                name = get(application_virtual_topology, "name", default=f"{policy_name}_{application_virtual_topology['application_profile']}")
+                name = get(application_virtual_topology, "name", default=f"{policy['name']}_{application_virtual_topology['application_profile']}")
                 autovpn_policy.setdefault("rules", []).append(
                     {
                         "id": 10 * (rule_id + rule_id_offset),
                         "application_profile": get(application_virtual_topology, "application_profile", required=True),
-                        "load_balance": f"{name}_LB",
+                        "load_balance": f"LB-{name}",
                     }
                 )
             if (default_virtual_topology := get(policy, "default_virtual_topology")) is not None:
                 name = get(default_virtual_topology, "name", default=f"{policy['name']}_default")
-                autovpn_policy["default_match"] = {"load_balance": f"{name}_LB"}
+                autovpn_policy["default_match"] = {"load_balance": f"LB-{name}"}
 
             autovpn_policies.append(autovpn_policy)
 

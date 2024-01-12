@@ -177,33 +177,22 @@ router_adaptive_virtual_topology:
   topology_role: pathfinder
   profiles:
   - name: CONTROL-PLANE-PROFILE
-    load_balance_policy: CONTROL-PLANE-PROFILE_LB
-  - name: DEFAULT-AVT-POLICY_video
-    load_balance_policy: DEFAULT-AVT-POLICY_video_LB
-  - name: DEFAULT-AVT-POLICY_default
-    load_balance_policy: DEFAULT-AVT-POLICY_default_LB
+    load_balance_policy: LB-CONTROL-PLANE-PROFILE
   - name: PROD-AVT-POLICY_voice
-    load_balance_policy: PROD-AVT-POLICY_voice_LB
+    load_balance_policy: LB-PROD-AVT-POLICY_voice
   - name: PROD-AVT-POLICY_video
-    load_balance_policy: PROD-AVT-POLICY_video_LB
+    load_balance_policy: LB-PROD-AVT-POLICY_video
   - name: PROD-AVT-POLICY_default
-    load_balance_policy: PROD-AVT-POLICY_default_LB
+    load_balance_policy: LB-PROD-AVT-POLICY_default
+  - name: DEFAULT-AVT-POLICY_video
+    load_balance_policy: LB-DEFAULT-AVT-POLICY_video
+  - name: DEFAULT-AVT-POLICY_default
+    load_balance_policy: LB-DEFAULT-AVT-POLICY_default
   - name: TRANSIT-AVT-POLICY_voice
-    load_balance_policy: TRANSIT-AVT-POLICY_voice_LB
+    load_balance_policy: LB-TRANSIT-AVT-POLICY_voice
   - name: TRANSIT-AVT-POLICY_default
-    load_balance_policy: TRANSIT-AVT-POLICY_default_LB
+    load_balance_policy: LB-TRANSIT-AVT-POLICY_default
   policies:
-  - name: DEFAULT-AVT-POLICY-WITH-CP
-    matches:
-    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
-      avt_profile: CONTROL-PLANE-PROFILE
-      _id: 254
-    - application_profile: video
-      avt_profile: DEFAULT-AVT-POLICY_video
-      _id: 3
-    - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY_default
-      _id: 1
   - name: PROD-AVT-POLICY
     matches:
     - application_profile: voice
@@ -230,6 +219,17 @@ router_adaptive_virtual_topology:
       _id: 42
     - application_profile: default
       avt_profile: TRANSIT-AVT-POLICY_default
+      _id: 1
+  - name: DEFAULT-AVT-POLICY-WITH-CP
+    matches:
+    - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
+      avt_profile: CONTROL-PLANE-PROFILE
+      _id: 254
+    - application_profile: video
+      avt_profile: DEFAULT-AVT-POLICY_video
+      _id: 3
+    - application_profile: default
+      avt_profile: DEFAULT-AVT-POLICY_default
       _id: 1
   vrfs:
   - name: default
@@ -296,42 +296,42 @@ router_path_selection:
       - 172.17.17.17
   peer_dynamic_source: stun
   load_balance_policies:
-  - name: CONTROL-PLANE-PROFILE_LB
+  - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
     - name: INET
     - name: MPLS
-  - name: DEFAULT-AVT-POLICY_video_LB
-    path_groups:
-    - name: MPLS
-    - name: INET
-  - name: DEFAULT-AVT-POLICY_default_LB
-    path_groups:
-    - name: INET
-    - name: Equinix
-    - name: MPLS
-      priority: 42
-  - name: PROD-AVT-POLICY_voice_LB
+  - name: LB-PROD-AVT-POLICY_voice
     path_groups:
     - name: MPLS
     - name: INET
       priority: 2
-  - name: PROD-AVT-POLICY_video_LB
+  - name: LB-PROD-AVT-POLICY_video
     path_groups:
     - name: MPLS
     - name: LTE
     - name: INET
       priority: 2
-  - name: PROD-AVT-POLICY_default_LB
+  - name: LB-PROD-AVT-POLICY_default
     path_groups:
     - name: INET
     - name: MPLS
       priority: 2
-  - name: TRANSIT-AVT-POLICY_voice_LB
+  - name: LB-DEFAULT-AVT-POLICY_video
+    path_groups:
+    - name: MPLS
+    - name: INET
+  - name: LB-DEFAULT-AVT-POLICY_default
+    path_groups:
+    - name: INET
+    - name: Equinix
+    - name: MPLS
+      priority: 42
+  - name: LB-TRANSIT-AVT-POLICY_voice
     path_groups:
     - name: MPLS
     - name: INET
       priority: 2
-  - name: TRANSIT-AVT-POLICY_default_LB
+  - name: LB-TRANSIT-AVT-POLICY_default
     path_groups:
     - name: INET
     - name: MPLS
