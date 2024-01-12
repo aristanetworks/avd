@@ -221,6 +221,29 @@ vxlan_interface:
       - name: default
         vni: 1
 metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: transit region
+    - name: Zone
+      value: DEFAULT-ZONE
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Comcast
+      - name: Circuit
+        value: '667'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10666'
   cv_pathfinder:
     role: transit region
     vtep_ip: 192.168.43.1

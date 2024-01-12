@@ -215,6 +215,19 @@ vxlan_interface:
       - name: default
         vni: 1
 metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: pathfinder
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Orange
+      - name: Circuit
+        value: '888'
   cv_pathfinder:
     role: pathfinder
     vtep_ip: 192.168.44.2

@@ -205,6 +205,35 @@ vxlan_interface:
       - name: default
         vni: 1
 metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: pathfinder
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Bouygues_Telecom
+      - name: Circuit
+        value: '777'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10000'
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Another-ISP
+      - name: Circuit
+        value: '999'
   cv_pathfinder:
     role: pathfinder
     vtep_ip: 192.168.44.1

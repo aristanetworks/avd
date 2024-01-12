@@ -53,7 +53,7 @@ class CvTagsMixin:
         """
         Generate the data structure `metadata.cv_tags`.
         """
-        if not self._generate_cv_tags:
+        if not self._generate_cv_tags and not self.shared_utils.cv_pathfinder_role:
             return None
 
         device_tags = self._get_topology_hints()
@@ -156,7 +156,7 @@ class CvTagsMixin:
         """
         Return list of interface_tags
         """
-        if not (tags_to_generate := get(self._generate_cv_tags, "interface_tags")):
+        if not (tags_to_generate := get(self._generate_cv_tags, "interface_tags", default=[])) and not self.shared_utils.cv_pathfinder_role:
             return []
 
         interface_tags = []

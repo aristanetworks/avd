@@ -233,6 +233,27 @@ vxlan_interface:
       - name: default
         vni: 1
 metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: pathfinder
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: SFR
+      - name: Circuit
+        value: '999'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ATT-MPLS
+      - name: Circuit
+        value: '10999'
   cv_pathfinder:
     role: pathfinder
     vtep_ip: 192.168.44.3
