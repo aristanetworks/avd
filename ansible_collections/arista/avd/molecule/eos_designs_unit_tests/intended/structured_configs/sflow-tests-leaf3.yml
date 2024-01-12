@@ -1,6 +1,4 @@
 hostname: sflow-tests-leaf3
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 router_bgp:
   as: '65105'
@@ -364,3 +362,5 @@ vxlan_interface:
       vrfs:
       - name: VRF1
         vni: 1
+metadata:
+  platform: vEOS-lab

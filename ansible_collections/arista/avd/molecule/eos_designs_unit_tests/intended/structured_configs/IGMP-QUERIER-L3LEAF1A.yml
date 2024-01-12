@@ -1,6 +1,4 @@
 hostname: IGMP-QUERIER-L3LEAF1A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65101'
@@ -549,3 +547,5 @@ vxlan_interface:
         vni: 21
       - name: IGMP_QUERIER_TEST_3
         vni: 41
+metadata:
+  platform: vEOS-LAB

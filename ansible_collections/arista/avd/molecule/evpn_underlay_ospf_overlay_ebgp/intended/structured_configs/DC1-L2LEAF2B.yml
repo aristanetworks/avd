@@ -1,6 +1,4 @@
 hostname: DC1-L2LEAF2B
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -146,3 +144,5 @@ mlag_configuration:
   reload_delay_non_mlag: '330'
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-LAB

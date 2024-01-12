@@ -1,6 +1,4 @@
 hostname: DC1-LEAF2B
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65102'
@@ -791,3 +789,5 @@ vxlan_interface:
 virtual_source_nat_vrfs:
 - name: Tenant_A_OP_Zone
   ip_address: 10.255.1.7
+metadata:
+  platform: vEOS-LAB

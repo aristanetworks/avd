@@ -1,6 +1,4 @@
 hostname: sflow-tests-l2-leaf2
-metadata:
-  platform: vEOS-lab
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -63,3 +61,5 @@ vlans:
   tenant: SFLOW
 ip_igmp_snooping:
   globally_enabled: true
+metadata:
+  platform: vEOS-lab
