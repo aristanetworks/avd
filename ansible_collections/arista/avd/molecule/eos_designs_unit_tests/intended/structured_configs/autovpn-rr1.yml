@@ -172,6 +172,17 @@ stun:
   server:
     local_interfaces:
     - Ethernet1
+application_traffic_recognition:
+  application_profiles:
+  - name: voice
+  - name: video
+  - name: it
+  categories: []
+  applications:
+    ipv4_applications: []
+  field_sets:
+    l4_ports: []
+    ipv4_prefixes: []
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

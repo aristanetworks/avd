@@ -129,3 +129,9 @@ wan_virtual_topologies:
               preference: preferred
             - names: [INET]
               preference: alternate
+
+application_traffic_recognition:
+  application_profiles:
+    - name: video
+    - name: it
+    - name: voice

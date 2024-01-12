@@ -245,3 +245,29 @@ wan_virtual_topologies:
             - names: [INET]
               preference: alternate
           id: 42
+
+application_traffic_recognition:
+  application_profiles:
+    - name: video
+      categories:
+        - name: video1
+      applications:
+        - name: skype
+    - name: it
+    - name: voice
+    - name: not-on-any-policy
+  categories:
+    - name: not-in-any-profile
+    - name: video1
+      applications:
+        - name: microsoft-teams
+  applications:
+    ipv4_applications:
+      - name: not-in-any-profile-not-category
+      - name: skype
+      - name: microsoft-teams
+  field_sets:
+    ipv4_prefixes:
+      - name: not-in-any-application
+    l4_ports:
+      - name: not-in-any-application

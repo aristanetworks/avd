@@ -313,6 +313,25 @@ stun:
   server:
     local_interfaces:
     - Ethernet1
+application_traffic_recognition:
+  application_profiles:
+  - name: voice
+  - name: video
+    categories:
+    - name: video1
+    applications:
+    - name: skype
+  categories:
+  - name: video1
+    applications:
+    - name: microsoft-teams
+  applications:
+    ipv4_applications:
+    - name: skype
+    - name: microsoft-teams
+  field_sets:
+    l4_ports: []
+    ipv4_prefixes: []
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

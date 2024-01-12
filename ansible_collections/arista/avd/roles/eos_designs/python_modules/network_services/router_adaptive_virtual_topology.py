@@ -100,9 +100,10 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 )
 
             for application_virtual_topology in get(avt_policy, "application_virtual_topologies", []):
+                application_profile = get(application_virtual_topology, "application_profile", required=True)
                 cv_pathfinder_policy["matches"].append(
                     {
-                        "application_profile": get(application_virtual_topology, "application_profile", required=True),
+                        "application_profile": application_profile,
                         "avt_profile": get(
                             application_virtual_topology, "name", default=f"{avt_policy['name']}_{application_virtual_topology['application_profile']}"
                         ),
@@ -115,9 +116,11 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
 
             default_virtual_topology = get(avt_policy, "default_virtual_topology", required=True)
             if not get(default_virtual_topology, "drop_unmatched", default=False):
+                application_profile = get(default_virtual_topology, "application_profile", default="default")
+                self._assert_application_profile_exist(application_profile)
                 cv_pathfinder_policy["matches"].append(
                     {
-                        "application_profile": get(default_virtual_topology, "application_profile", default="default"),
+                        "application_profile": application_profile,
                         "avt_profile": get(default_virtual_topology, "name", default=f"{avt_policy['name']}_default"),
                         "traffic_class": get(default_virtual_topology, "traffic_class"),
                         "dscp": get(default_virtual_topology, "dscp"),
