@@ -112,7 +112,9 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                         "_id": get(application_virtual_topology, "id"),
                     }
                 )
-            if (default_virtual_topology := get(avt_policy, "default_virtual_topology")) is not None:
+
+            default_virtual_topology = get(avt_policy, "default_virtual_topology", required=True)
+            if not get(default_virtual_topology, "drop_unmatched", default=False):
                 cv_pathfinder_policy["matches"].append(
                     {
                         "application_profile": get(default_virtual_topology, "application_profile", default="default"),
@@ -165,7 +167,8 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                     context="Router Adaptive Virtual Topology profiles.",
                     context_keys=["name"],
                 )
-            if default_virtual_topology := get(avt_policy, "default_virtual_topology"):
+            default_virtual_topology = get(avt_policy, "default_virtual_topology", required=True)
+            if not get(default_virtual_topology, "drop_unmatched", default=False):
                 name = get(default_virtual_topology, "name", default=f"{avt_policy['name']}_default")
                 append_if_not_duplicate(
                     list_of_dicts=cv_pathfinder_profiles,

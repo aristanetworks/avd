@@ -107,9 +107,15 @@ keys:
               type: dict
               description: |-
                 Default match for the policy.
-                ID is hardcoded to 1 for the AVT profile in CV Pathfinder mode.
+                If defined, ID is hardcoded to 1 for the AVT profile in CV Pathfinder mode.
+                If no default match should be configured, set `drop_unmatched` to `true`.
               $ref: "eos_designs#/$defs/virtual_topology"
+              required: true
               keys:
                 name:
                   type: str
                   description: Optional name, if not set `<policy_name>_default` is used.
+                drop_unmatched:
+                  type: bool
+                  description: When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped.
+                  default: false

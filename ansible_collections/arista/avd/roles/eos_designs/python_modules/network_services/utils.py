@@ -312,7 +312,8 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
                     context_keys=["name"],
                 )
 
-            if (default_virtual_topology := get(policy, "default_virtual_topology")) is not None:
+            default_virtual_topology = get(policy, "default_virtual_topology", required=True)
+            if not get(default_virtual_topology, "drop_unmatched", default=False):
                 name = get(default_virtual_topology, "name", default=f"{policy['name']}_default")
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,

@@ -21,6 +21,7 @@ $defs:
       path_groups:
         type: list
         primary_key: preference
+        min_length: 1
         items:
           type: dict
           keys:
