@@ -311,6 +311,9 @@ application_traffic_recognition:
     - name: video1
     applications:
     - name: skype
+  - name: CONTROL-PLANE-APPLICATION-PROFILE
+    applications:
+    - name: CONTROL-PLANE-APPLICATION
   categories:
   - name: video1
     applications:
@@ -320,9 +323,13 @@ application_traffic_recognition:
     ipv4_applications:
     - name: skype
     - name: microsoft-teams
+    - name: CONTROL-PLANE-APPLICATION
+      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
   field_sets:
-    l4_ports: []
-    ipv4_prefixes: []
+    ipv4_prefixes:
+    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+      prefix_values:
+      - 42.42.42.42/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

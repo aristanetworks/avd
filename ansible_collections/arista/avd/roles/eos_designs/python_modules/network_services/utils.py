@@ -214,6 +214,13 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         return get(control_plane_virtual_topology, "name", default="CONTROL-PLANE-PROFILE")
 
     @cached_property
+    def _wan_control_plane_application_profile(self) -> str:
+        """
+        Control plane application profile name
+        """
+        return "CONTROL-PLANE-APPLICATION-PROFILE"
+
+    @cached_property
     def _wan_policy_key(self) -> str:
         """
         The key for policies is different for AutoVPN and CV Pathfinder

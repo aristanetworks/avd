@@ -91,7 +91,7 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
                 cv_pathfinder_policy["name"] = f"{cv_pathfinder_policy['name']}-WITH-CP"
                 cv_pathfinder_policy["matches"].append(
                     {
-                        "application_profile": "CONTROL-PLANE-APPLICATION-PROFILE",
+                        "application_profile": self._wan_control_plane_application_profile,
                         "avt_profile": self._wan_control_plane_profile,
                         "traffic_class": get(control_plane_virtual_topology, "traffic_class"),
                         "dscp": get(control_plane_virtual_topology, "dscp"),

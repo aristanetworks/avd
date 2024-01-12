@@ -65,7 +65,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 autovpn_policy.setdefault("rules", []).append(
                     {
                         "id": 10,
-                        "application_profile": "CONTROL-PLANE-APPLICATION-PROFILE",
+                        "application_profile": self._wan_control_plane_application_profile,
                         "load_balance": f"LB-{self._wan_control_plane_profile}",
                     }
                 )

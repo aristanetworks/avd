@@ -179,12 +179,18 @@ application_traffic_recognition:
   - name: voice
   - name: video
   - name: it
-  categories: []
+  - name: CONTROL-PLANE-APPLICATION-PROFILE
+    applications:
+    - name: CONTROL-PLANE-APPLICATION
   applications:
-    ipv4_applications: []
+    ipv4_applications:
+    - name: CONTROL-PLANE-APPLICATION
+      dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
   field_sets:
-    l4_ports: []
-    ipv4_prefixes: []
+    ipv4_prefixes:
+    - name: CONTROL-PLANE-APP-DEST-PREFIXES
+      prefix_values:
+      - 42.42.42.42/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
