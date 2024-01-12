@@ -55,6 +55,9 @@
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_path_selection.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_selection_policy</samp>](## "router_path_selection.vrfs.[].path_selection_policy") | String |  |  |  | DPS policy name to use for this VRF. |
+    | [<samp>&nbsp;&nbsp;tcp_mss_ceiling</samp>](## "router_path_selection.tcp_mss_ceiling") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "router_path_selection.tcp_mss_ceiling.ipv4_segment_size") | Integer |  |  | Min: 64<br>Max: 65515 | Segment Size for IPv4. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "router_path_selection.tcp_mss_ceiling.direction") | String |  |  | Valid Values:<br>- <code>ingress</code> | Enforce on packets through DPS tunnel for a specific direction.<br>Only 'ingress' direction is supported today. |
 
 === "YAML"
 
@@ -172,4 +175,12 @@
 
           # DPS policy name to use for this VRF.
           path_selection_policy: <str>
+      tcp_mss_ceiling:
+
+        # Segment Size for IPv4.
+        ipv4_segment_size: <int; 64-65515>
+
+        # Enforce on packets through DPS tunnel for a specific direction.
+        # Only 'ingress' direction is supported today.
+        direction: <str; "ingress">
     ```

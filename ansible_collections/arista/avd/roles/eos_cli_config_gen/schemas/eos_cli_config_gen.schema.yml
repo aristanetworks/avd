@@ -12600,6 +12600,23 @@ keys:
             path_selection_policy:
               type: str
               description: DPS policy name to use for this VRF.
+      tcp_mss_ceiling:
+        type: dict
+        keys:
+          ipv4_segment_size:
+            type: int
+            description: Segment Size for IPv4.
+            min: 64
+            max: 65515
+            convert_types:
+            - str
+          direction:
+            type: str
+            valid_values:
+            - ingress
+            description: 'Enforce on packets through DPS tunnel for a specific direction.
+
+              Only ''ingress'' direction is supported today.'
   router_pim_sparse_mode:
     type: dict
     keys:

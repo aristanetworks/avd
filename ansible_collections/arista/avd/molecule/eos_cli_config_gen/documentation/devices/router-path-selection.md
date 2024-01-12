@@ -42,6 +42,12 @@ interface Management1
 | ------  | ----- |
 | Dynamic peers source | STUN |
 
+#### TCP MSS Ceiling Configuration
+
+| IPV4 segment size | Direction |
+| ----------------- | --------- |
+| 200 | ingress |
+
 #### Path Groups
 
 ##### Path Group PG-1
@@ -153,6 +159,7 @@ interface Management1
 !
 router path-selection
    peer dynamic source stun
+   tcp mss ceiling 200 ingress
    !
    path-group PG-1 id 666
       !

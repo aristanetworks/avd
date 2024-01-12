@@ -21729,6 +21729,31 @@
             ]
           },
           "title": "VRFs"
+        },
+        "tcp_mss_ceiling": {
+          "type": "object",
+          "properties": {
+            "ipv4_segment_size": {
+              "type": "integer",
+              "description": "Segment Size for IPv4.",
+              "minimum": 64,
+              "maximum": 65515,
+              "title": "IPv4 Segment Size"
+            },
+            "direction": {
+              "type": "string",
+              "enum": [
+                "ingress"
+              ],
+              "description": "Enforce on packets through DPS tunnel for a specific direction.\nOnly 'ingress' direction is supported today.",
+              "title": "Direction"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "TCP Mss Ceiling"
         }
       },
       "additionalProperties": false,
