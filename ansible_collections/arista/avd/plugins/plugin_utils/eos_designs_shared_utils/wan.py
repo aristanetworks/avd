@@ -184,7 +184,7 @@ class WanMixin:
     @cached_property
     def wan_site(self: SharedUtils) -> dict:
         """
-        Here assuming that cv_pathfinder_name is unique across zones and regions
+        WAN site for CV Pathfinder
         """
         node_defined_site = get(
             self.switch_data_combined,
@@ -207,7 +207,9 @@ class WanMixin:
     @cached_property
     def wan_region(self: SharedUtils) -> dict:
         """
-        WAN region for Pathfinder
+        WAN region for CV Pathfinder
+
+        Also checking if site names are unique across all regions.
         """
         node_defined_region = get(
             self.switch_data_combined,
@@ -218,6 +220,17 @@ class WanMixin:
         regions = get(
             self.hostvars, "cv_pathfinder_regions", required=True, org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'."
         )
+
+        # Verify that site names are unique across all regions.
+        site_names = [site["name"] for region in regions for site in region["sites"]]
+        if len(site_names) != len(set(site_names)):
+            # We have some site names that are not unique
+            # Now find them (slow so no need to do if we don't have duplicates)
+            duplicate_site_names = [site_name for site_name in site_names if site_names.count(site_name) > 1]
+            raise AristaAvdError(
+                "WAN Site names must be unique across all regions. "
+                f"Found the following duplicate site name(s) under 'cv_pathfinder_regions.[].sites. {duplicate_site_names}"
+            )
 
         return get_item(
             regions,
@@ -247,9 +260,6 @@ class WanMixin:
 
         If no peer_fact is found the variables are required in the inventory.
         """
-        # TODO - need to factor this with other function once we fix
-        # https://github.com/aristanetworks/ansible-avd/issues/3392
-
         wan_route_servers = {}
 
         wan_route_servers_list = get(self.hostvars, "wan_route_servers", default=[])
@@ -297,6 +307,7 @@ class WanMixin:
                     ),
                 )
 
+            # Filtering wan_path_groups to only take the ones this device uses to connect to pathfinders.
             wan_rs_result_dict = {
                 "router_id": router_id,
                 "wan_path_groups": [path_group for path_group in wan_path_groups if self.should_connect_to_wan_rs([path_group["name"]])],
@@ -308,7 +319,7 @@ class WanMixin:
 
     def should_connect_to_wan_rs(self: SharedUtils, path_groups: list) -> bool:
         """
-        This helper implements wherther or not a connection to the wan_rs should be made or not based on a list of path-groups.
+        This helper implements whether or not a connection to the wan_router_server should be made or not based on a list of path-groups.
 
         To do this the logic is the following:
         * Look at the wan_interfaces on the router and check if there is any path-group in common with the RR where
