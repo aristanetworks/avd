@@ -173,6 +173,7 @@ class WanMixin:
 
             if found_interface.get("ip_address") is not None:
                 return found_interface["ip_address"]
+
         if interface["ip"] == "dhcp":
             raise AristaAvdError(
                 f"The IP address for WAN interface '{interface['name']}' on Route Server '{self.hostname}' is set 'dhcp'."

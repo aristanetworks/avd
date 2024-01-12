@@ -237,7 +237,7 @@ metadata:
     - name: Ethernet1
       carrier: Orange
       pathgroup: INET
-      public_ip: 10.8.8.8/31
+      public_ip: 10.8.8.8
     pathgroups:
     - name: MPLS
       carriers:

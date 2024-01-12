@@ -263,11 +263,11 @@ metadata:
     - name: Ethernet1
       carrier: SFR
       pathgroup: INET
-      public_ip: 10.9.9.9/31
+      public_ip: 10.9.9.9
     - name: Ethernet2
       carrier: ATT-MPLS
       pathgroup: MPLS
-      public_ip: 172.19.9.9/31
+      public_ip: 172.19.9.9
     pathgroups:
     - name: MPLS
       carriers:

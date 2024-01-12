@@ -243,15 +243,15 @@ metadata:
     - name: Ethernet1
       carrier: Bouygues_Telecom
       pathgroup: INET
-      public_ip: 10.7.7.7/31
+      public_ip: 10.7.7.7
     - name: Ethernet2
       carrier: Colt
       pathgroup: MPLS
-      public_ip: 172.16.0.1/31
+      public_ip: 172.16.0.1
     - name: Ethernet3
       carrier: Another-ISP
       pathgroup: INET
-      public_ip: 10.9.9.9/31
+      public_ip: 10.9.9.9
     pathgroups:
     - name: MPLS
       carriers:
