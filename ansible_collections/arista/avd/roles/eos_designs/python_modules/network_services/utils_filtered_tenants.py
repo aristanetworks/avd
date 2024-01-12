@@ -188,11 +188,7 @@ class UtilsFilteredTenantsMixin(object):
             vrf["loopback_interfaces"] = [
                 loopback_interface
                 for loopback_interface in get(vrf, "loopback_interfaces", default=[])
-                if (
-                    self.shared_utils.hostname in get(loopback_interface, "nodes", default=[])
-                    and loopback_interface.get("ip_addresses") is not None
-                    and loopback_interface.get("interfaces") is not None
-                )
+                if self.shared_utils.hostname == get(loopback_interface, "node")
             ]
 
             if self.shared_utils.vtep is True:

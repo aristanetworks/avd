@@ -823,8 +823,9 @@ loopback_interfaces:
 - name: Loopback123
   ip_address: 10.1.53.0/32
   shutdown: false
+  description: Test-Loopback
   vrf: Tenant_A_OSPF
-  ospf_area: '0'
+  ospf_area: '1'
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

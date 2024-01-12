@@ -71,55 +71,29 @@ class LoopbackInterfacesMixin(UtilsMixin):
                 # The loopback_interfaces have already been filtered in _filtered_tenants
                 # to only contain entries with our hostname
                 for loopback_interface in vrf["loopback_interfaces"]:
-                    nodes_length = len(loopback_interface["nodes"])
-                    if (
-                        len(loopback_interface["interfaces"]) != nodes_length
-                        or len(loopback_interface["ip_addresses"]) != nodes_length
-                        or (
-                            "descriptions" in loopback_interface
-                            and "description" not in loopback_interface
-                            and len(loopback_interface["descriptions"]) != nodes_length
-                        )
-                    ):
-                        raise AristaAvdError(
-                            "Length of lists 'interfaces', 'nodes', 'ip_addresses' and 'descriptions' (if used) must match for loopback_interfaces for"
-                            f" {vrf['name']} in {tenant['name']}"
-                        )
+                    interface = {
+                        "name": loopback_interface.get("interface"),
+                        "ip_address": loopback_interface.get("ip_address"),
+                        "shutdown": not loopback_interface.get("enabled", True),
+                        "description": loopback_interface.get("description"),
+                        "eos_cli": loopback_interface.get("raw_eos_cli"),
+                    }
 
-                    for node_index, node_name in enumerate(loopback_interface["nodes"]):
-                        if node_name != self.shared_utils.hostname:
-                            continue
+                    if vrf["name"] != "default":
+                        interface["vrf"] = vrf["name"]
 
-                        interface_name = str(loopback_interface["interfaces"][node_index])
-                        # if 'descriptions' is set, it is preferred
-                        if (interface_descriptions := loopback_interface.get("descriptions")) is not None:
-                            interface_description = interface_descriptions[node_index]
-                        else:
-                            interface_description = loopback_interface.get("description")
-                        interface = {
-                            "name": interface_name,
-                            "ip_address": loopback_interface["ip_addresses"][node_index],
-                            "shutdown": not loopback_interface.get("enabled", True),
-                            "description": interface_description,
-                            "eos_cli": loopback_interface.get("raw_eos_cli"),
-                            "struct_cfg": loopback_interface.get("structured_config"),
-                        }
+                    if get(loopback_interface, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
+                        interface["ospf_area"] = loopback_interface["ospf"].get("area", "0")
 
-                        if vrf["name"] != "default":
-                            interface["vrf"] = vrf["name"]
-
-                        if get(loopback_interface, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
-                            interface["ospf_area"] = loopback_interface["ospf"].get("area", "0")
-
-                        # Strip None values from vlan before adding to list
-                        interface = {key: value for key, value in interface.items() if value is not None}
-                        append_if_not_duplicate(
-                            list_of_dicts=loopback_interfaces,
-                            primary_key="name",
-                            new_dict=interface,
-                            context="Loopback Interfaces defined under loopback_interfaces",
-                            context_keys=["name", "vrf"],
-                        )
+                    # Strip None values from interface before adding to list
+                    interface = {key: value for key, value in interface.items() if value is not None}
+                    append_if_not_duplicate(
+                        list_of_dicts=loopback_interfaces,
+                        primary_key="name",
+                        new_dict=interface,
+                        context="Loopback Interfaces defined under loopback_interfaces",
+                        context_keys=["name", "vrf"],
+                    )
 
         if loopback_interfaces:
             return loopback_interfaces

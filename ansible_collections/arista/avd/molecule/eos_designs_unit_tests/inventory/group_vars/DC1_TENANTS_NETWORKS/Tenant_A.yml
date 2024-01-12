@@ -276,14 +276,22 @@ tenant_a:
               point_to_point: true
               area: 0
         loopback_interfaces:
-          - interfaces: [ Loopback123, Loopback123 ]
-            ip_addresses: [ 10.1.53.0/32, 10.1.53.1/32 ]
-            nodes:
-              - DC1-LEAF2A
-              - DC1-LEAF2B
+          - interface: Loopback123
+            ip_address: 10.1.53.0/32
+            node: DC1-LEAF2A
+            description: Test-Loopback
             enabled: true
             ospf:
               enabled: true
+              area: 1
+          - interface: Loopback123
+            ip_address: 10.1.53.1/32
+            node: DC1-LEAF2B
+            enabled: false
+            ospf:
+              enabled: true
+            raw_eos_cli: |
+              ip ospf cost 100
         vtep_diagnostic:
           loopback: 101
           loopback_ip_range: 10.255.11.0/24

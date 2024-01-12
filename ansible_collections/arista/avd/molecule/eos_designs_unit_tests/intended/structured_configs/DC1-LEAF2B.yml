@@ -766,7 +766,10 @@ loopback_interfaces:
   ip_address: 10.255.11.11/32
 - name: Loopback123
   ip_address: 10.1.53.1/32
-  shutdown: false
+  shutdown: true
+  eos_cli: 'ip ospf cost 100
+
+    '
   vrf: Tenant_A_OSPF
   ospf_area: '0'
 prefix_lists:
