@@ -20,8 +20,6 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
     def application_traffic_recognition(self) -> dict | None:
         """
         Return structured config for application_traffic_recognition if `wan_role` is not None
-
-        Covers EVPN services in VRF "default" and redistribution of connected to BGP
         """
         if not self.shared_utils.wan_role:
             return None
@@ -33,25 +31,31 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         """
         Based on the filtered policies local to the device, filter which application profiles should be configured on the device.
 
-        Supports only `application_traffic_recognition.applications.ipv4_applications` for now
+        Supports only `application_traffic_recognition.applications.ipv4_applications` for now.
+
+        For applications - the existence cannot be verified as there are 4000+ applications built-in in the DPI engine used by EOS.
         """
         input_application_traffic_recognition = get(self._hostvars, "application_traffic_recognition", {})
         # Application profiles first
         application_profiles = []
         # TODO inject "application_profile": "CONTROL-PLANE-APPLICATION-PROFILE",
 
-        def _append_object_to_list_of_dicts(path: str, obj_name: str, list_of_dicts: list, message: str) -> None:
+        def _append_object_to_list_of_dicts(path: str, obj_name: str, list_of_dicts: list, message: str | None = None, required=True) -> None:
             """
             Helper function
             Technically impossible to get a duplicate, just reusing the methode when the same applicaiton is used in multiple places
             """
-            obj = get_item(
-                get(input_application_traffic_recognition, path, default=[]),
-                "name",
-                obj_name,
-                required=True,
-                custom_error_msg=message,
-            )
+            if (
+                obj := get_item(
+                    get(input_application_traffic_recognition, path, default=[]),
+                    "name",
+                    obj_name,
+                    required=required,
+                    custom_error_msg=message,
+                )
+            ) is None:
+                return
+
             append_if_not_duplicate(
                 list_of_dicts=list_of_dicts,
                 primary_key="name",
@@ -106,10 +110,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     path="applications.ipv4_applications",
                     obj_name=application["name"],
                     list_of_dicts=applications,
-                    message=(
-                        f"The application profile {application_profile} uses the application {application} "
-                        "undefined in 'application_traffic_recognition.applications'."
-                    ),
+                    required=False,
                 )
         # Applications in categories
         for category in categories:
@@ -118,7 +119,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     path="applications.ipv4_applications",
                     obj_name=application["name"],
                     list_of_dicts=applications,
-                    message=(f"The category {category} uses the application {application} " "undefined in 'application_traffic_recognition.applications'."),
+                    required=False,
                 )
         output["categories"] = categories
         # IPv4 only for now

@@ -338,6 +338,7 @@ application_traffic_recognition:
   - name: video1
     applications:
     - name: microsoft-teams
+    - name: built-in-not-raising
   applications:
     ipv4_applications:
     - name: skype
