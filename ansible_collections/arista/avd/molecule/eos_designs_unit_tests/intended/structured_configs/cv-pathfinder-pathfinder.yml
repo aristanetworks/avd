@@ -204,3 +204,84 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: pathfinder
+    - name: PathfinderSet
+      value: PATHFINDERS
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Bouygues_Telecom
+      - name: Circuit
+        value: '777'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10000'
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Another-ISP
+      - name: Circuit
+        value: '999'
+  cv_pathfinder:
+    role: pathfinder
+    vtep_ip: 192.168.44.1
+    interfaces:
+    - name: Ethernet1
+      carrier: Bouygues_Telecom
+      pathgroup: INET
+      public_ip: 10.7.7.7
+    - name: Ethernet2
+      carrier: Colt
+      pathgroup: MPLS
+      public_ip: 172.16.0.1
+    - name: Ethernet3
+      carrier: Another-ISP
+      pathgroup: INET
+      public_ip: 10.9.9.9
+    pathgroups:
+    - name: MPLS
+      carriers:
+      - name: Colt
+      - name: ATT-MPLS
+    - name: INET
+      carriers:
+      - name: Comcast
+      - name: ATT
+      - name: Bouygues_Telecom
+      - name: SFR
+      - name: Orange
+      - name: Another-ISP
+    - name: LTE
+    regions:
+    - name: AVD_Land_West
+      id: 42
+      zones:
+      - name: DEFAULT-ZONE
+        id: 1
+        sites:
+        - name: Site422
+          id: 422
+          location:
+            address: Somewhere
+    - name: AVD_Land_East
+      id: 43
+      zones:
+      - name: DEFAULT-ZONE
+        id: 1
+        sites:
+        - name: Site511
+          id: 511

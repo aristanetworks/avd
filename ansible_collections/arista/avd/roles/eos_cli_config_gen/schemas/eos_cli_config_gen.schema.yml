@@ -6070,6 +6070,135 @@ keys:
                       value:
                         type: str
                         required: true
+      cv_pathfinder:
+        type: dict
+        description: Metadata used for CV Pathfinder visualization on CloudVision
+        keys:
+          role:
+            type: str
+          region:
+            type: str
+          zone:
+            type: str
+          site:
+            type: str
+          vtep_ip:
+            type: str
+          ssl_profile:
+            type: str
+          pathfinders:
+            type: list
+            items:
+              type: dict
+              keys:
+                vtep_ip:
+                  type: str
+          interfaces:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                carrier:
+                  type: str
+                circuit_id:
+                  type: str
+                pathgroup:
+                  type: str
+                public_ip:
+                  type: str
+          pathgroups:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                imported_carriers:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+          regions:
+            type: list
+            items:
+              type: dict
+              keys:
+                id:
+                  type: int
+                name:
+                  type: str
+                zones:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      sites:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            id:
+                              type: int
+                            name:
+                              type: str
+                            location:
+                              type: dict
+                              keys:
+                                address:
+                                  type: str
+          vrfs:
+            type: list
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                vni:
+                  type: int
+                avts:
+                  type: list
+                  items:
+                    type: dict
+                    keys:
+                      constraints:
+                        type: dict
+                        keys:
+                          jitter:
+                            type: int
+                          latency:
+                            type: int
+                          lossrate:
+                            type: str
+                      description:
+                        type: str
+                      id:
+                        type: int
+                      name:
+                        type: str
+                      pathgroups:
+                        type: list
+                        items:
+                          type: dict
+                          keys:
+                            name:
+                              type: str
+                            preference:
+                              type: str
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration

@@ -629,6 +629,8 @@ metadata:
       value: EOS_DESIGNS_UNIT_TESTS
     - name: topology_hint_type
       value: leaf
+    - name: topology_hint_rack
+      value: DC1_BL1
 sflow:
   vrfs:
   - name: OOB
