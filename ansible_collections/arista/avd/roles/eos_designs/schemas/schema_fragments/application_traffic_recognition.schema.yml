@@ -7,8 +7,6 @@
 type: dict
 keys:
   application_traffic_recognition:
-    documentation_options:
-      table: wan-virtual-topologies
     type: dict
     description: |-
       PREVIEW: WAN Preview

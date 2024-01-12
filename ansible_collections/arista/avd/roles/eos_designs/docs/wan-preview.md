@@ -132,6 +132,12 @@ roles/eos_designs/docs/tables/wan-interfaces-settings.md
 roles/eos_designs/docs/tables/wan-virtual-topologies.md
 --8<--
 
+#### Application traffic recognition
+
+--8<--
+roles/eos_designs/docs/tables/application-traffic-recognition.md
+--8<--
+
 #### New BGP peer-group
 
 --8<--
