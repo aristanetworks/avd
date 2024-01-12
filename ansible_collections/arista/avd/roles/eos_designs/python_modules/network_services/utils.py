@@ -384,7 +384,17 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
         policies = get(self._hostvars, "wan_virtual_topologies.policies", default=[])
         # copy is safe here as we change only the name
-        default_policy = get_item(policies, "name", get(default_vrf, "policy", required=True), required=True).copy()
+        vrf_default_policy = get(default_vrf, "policy", required=True, org_key="VRF default under 'wan_virtual_topologies.vrfs' is missing a 'policy'.")
+        default_policy = get_item(
+            policies,
+            "name",
+            vrf_default_policy,
+            required=True,
+            custom_error_msg=(
+                f"The policy {vrf_default_policy} defined for vrf default under 'wan_virtual_topologies.vrfs' "
+                "is not defined under 'wan_virtual_topologies.policies'."
+            ),
+        ).copy()
         default_policy["is_default"] = True
         return default_policy
 
