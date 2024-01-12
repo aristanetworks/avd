@@ -6157,7 +6157,10 @@ keys:
                             name:
                               type: str
                             location:
-                              type: str
+                              type: dict
+                              keys:
+                                address:
+                                  type: str
           vrfs:
             type: list
             items:

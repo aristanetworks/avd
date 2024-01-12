@@ -10454,7 +10454,17 @@
                                 "title": "Name"
                               },
                               "location": {
-                                "type": "string",
+                                "type": "object",
+                                "properties": {
+                                  "address": {
+                                    "type": "string",
+                                    "title": "Address"
+                                  }
+                                },
+                                "additionalProperties": false,
+                                "patternProperties": {
+                                  "^_.+$": {}
+                                },
                                 "title": "Location"
                               }
                             },

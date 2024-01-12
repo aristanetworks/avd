@@ -100,7 +100,11 @@ class CvPathfinderMixin:
                             {
                                 "name": site["name"],
                                 "id": site["id"],
-                                "location": site.get("location"),
+                                "location": {
+                                    "address": site.get("location"),
+                                }
+                                if site.get("location")
+                                else None,
                             }
                             for site in region["sites"]
                         ],
