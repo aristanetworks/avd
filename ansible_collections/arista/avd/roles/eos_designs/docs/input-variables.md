@@ -727,15 +727,6 @@ roles/eos_designs/docs/tables/system-settings.md
 roles/eos_designs/docs/tables/cloudvision-settings.md
 --8<--
 
-## CloudVision Tags
-
-!!! tip
-    Refer to the how-to document [**here**](./how-to/cloudvision-tags.md) for more information.
-
---8<--
-roles/eos_designs/docs/tables/cloudvision-tags.md
---8<--
-
 ## Endpoint connectivity
 
 AVD supports two different data models for defining connectivity to endpoints:

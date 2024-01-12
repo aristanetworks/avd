@@ -45,14 +45,3 @@ roles/eos_designs/docs/tables/role-documentation-output-settings.md
 --8<--
 roles/eos_designs/docs/tables/role-custom-templates.md
 --8<--
-
-## CloudVision Tags
-
-The `generate_cv_tags` settings can be used to generate CloudVision Tags.
-
-!!! note
-    Refer to the [how-to](./how-to/cloudvision-tags.md) documentation for more details on how to use this feature.
-
---8<--
-roles/eos_designs/docs/tables/cloudvision-tags.md
---8<--
