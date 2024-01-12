@@ -225,8 +225,12 @@ metadata:
     device_tags:
     - name: Role
       value: transit region
+    - name: Region
+      value: AVD_Land_West
     - name: Zone
       value: DEFAULT-ZONE
+    - name: Site
+      value: Site422
     interface_tags:
     - interface: Ethernet1
       tags:

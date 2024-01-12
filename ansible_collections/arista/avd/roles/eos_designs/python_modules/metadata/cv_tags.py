@@ -106,13 +106,13 @@ class CvTagsMixin:
             self._tag_dict("Role", self.shared_utils.cv_pathfinder_role),
         ]
         if self.shared_utils.cv_pathfinder_role == "pathfinder":
-            device_tags.append(self._tag_dict("PathfinderSet", self.shared_utils.group))
+            device_tags.append(self._tag_dict("PathfinderSet", self.shared_utils.group or "PATHFINDERS"))
         else:
             device_tags.extend(
                 [
-                    self._tag_dict("Region", get(self.shared_utils.switch_data_combined, "wan_region")),
+                    self._tag_dict("Region", self.shared_utils.wan_region["name"]),
                     self._tag_dict("Zone", "DEFAULT-ZONE"),
-                    self._tag_dict("Site", get(self.shared_utils.switch_data_combined, "wan_site")),
+                    self._tag_dict("Site", self.shared_utils.wan_site["name"]),
                 ]
             )
 
