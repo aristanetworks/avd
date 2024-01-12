@@ -220,3 +220,19 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+metadata:
+  cv_pathfinder:
+    role: transit region
+    vtep_ip: 192.168.43.1
+    region: AVD_Land_West
+    zone: DEFAULT-ZONE
+    site: Site422
+    interfaces:
+    - name: Ethernet1
+      carrier: Comcast
+      pathgroup: INET
+    - name: Ethernet2
+      carrier: Colt
+      pathgroup: MPLS
+    pathfinders:
+    - vtep_ip: 192.168.44.1

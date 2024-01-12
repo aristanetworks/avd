@@ -232,3 +232,48 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+metadata:
+  cv_pathfinder:
+    role: pathfinder
+    vtep_ip: 192.168.44.3
+    interfaces:
+    - name: Ethernet1
+      carrier: SFR
+      pathgroup: INET
+      public_ip: 10.9.9.9/31
+    - name: Ethernet2
+      carrier: ATT-MPLS
+      pathgroup: MPLS
+      public_ip: 172.19.9.9/31
+    pathgroups:
+    - name: MPLS
+      carriers:
+      - name: Colt
+      - name: ATT-MPLS
+    - name: INET
+      carriers:
+      - name: Comcast
+      - name: ATT
+      - name: Bouygues_Telecom
+      - name: SFR
+      - name: Orange
+      - name: Another-ISP
+    - name: LTE
+    regions:
+    - name: AVD_Land_West
+      id: 42
+      zones:
+      - name: DEFAULT-ZONE
+        id: 1
+        sites:
+        - name: Site422
+          id: 422
+          location: Somewhere
+    - name: AVD_Land_East
+      id: 43
+      zones:
+      - name: DEFAULT-ZONE
+        id: 1
+        sites:
+        - name: Site511
+          id: 511

@@ -6,12 +6,13 @@ from __future__ import annotations
 from functools import cached_property
 
 from ansible_collections.arista.avd.plugins.plugin_utils.avdfacts import AvdFacts
-from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_null_from_data
+from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 
+from .cv_pathfinder import CvPathfinderMixin
 from .cv_tags import CvTagsMixin
 
 
-class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin):
+class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin, CvPathfinderMixin):
     """
     This returns the metadata data strucutre as per the below example
     {
@@ -43,7 +44,8 @@ class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin):
                         ]
                     }
                 ]
-            }
+            },
+            "cv_pathfinder": {<see schema for model>}
         }
     }
     """
@@ -53,5 +55,6 @@ class AvdStructuredConfigMetadata(AvdFacts, CvTagsMixin):
         metadata = {
             "platform": self.shared_utils.platform,
             "cv_tags": self._cv_tags(),
+            "cv_pathfinder": self._cv_pathfinder(),
         }
-        return strip_null_from_data(metadata) or None
+        return strip_empties_from_dict(metadata) or None

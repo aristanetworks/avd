@@ -128,7 +128,7 @@ class RouterPathSelectionMixin(UtilsMixin):
         for interface in path_group.get("interfaces", []):
             local_interface = {"name": get(interface, "name", required=True)}
 
-            if self.shared_utils.wan_role == "client" and self._should_connect_to_wan_rs([path_group_name]):
+            if self.shared_utils.wan_role == "client" and self.shared_utils.should_connect_to_wan_rs([path_group_name]):
                 stun_server_profiles = self._stun_server_profiles.get(path_group_name, [])
                 if stun_server_profiles:
                     local_interface["stun"] = {"server_profiles": [profile["name"] for profile in stun_server_profiles]}
@@ -153,7 +153,7 @@ class RouterPathSelectionMixin(UtilsMixin):
             return None
 
         static_peers = []
-        for wan_route_server, data in self._filtered_wan_route_servers.items():
+        for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
             if (path_group := get_item(data["wan_path_groups"], "name", path_group_name)) is not None:
                 ipv4_addresses = []
 
