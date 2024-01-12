@@ -8,6 +8,6 @@ type: dict
 keys:
   transceiver_qsfp_default_mode_channelized:
     type: bool
+    default: true
     description: |
-      The `transceiver_qsfp_default_mode_channelized` knob allows to set default qsfp mode to 40G when set to `false`.
-      If not defined, it defaults to the value of `generate_default_config`
+      On all front panel ports which support this feature, the following global configuration command changes the QSFP mode from 40G to 4x10G (default). When set to false the command reverts the default QSFP mode back to 40G.
