@@ -310,7 +310,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         for policy in self._filtered_wan_policies:
             for application_virtual_topology in get(policy, "application_virtual_topologies", []):
                 # TODO add internet exit once supported
-                name = get(application_virtual_topology, "name", default=f"{policy['name']}_{application_virtual_topology['application_profile']}")
+                name = get(application_virtual_topology, "name", default=f"{policy['name']}-{application_virtual_topology['application_profile']}")
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
@@ -321,7 +321,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
             default_virtual_topology = get(policy, "default_virtual_topology", required=True)
             if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(default_virtual_topology, "name", default=f"{policy['name']}_default")
+                name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",

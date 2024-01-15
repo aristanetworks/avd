@@ -111,11 +111,11 @@ wan_virtual_topologies:
           - names: [INET]
             preference: preferred
       application_virtual_topologies:
-        - application_profile: voice
+        - application_profile: VOICE
           path_groups:
             - names: [INET]
               preference: preferred
-        - application_profile: video
+        - application_profile: VIDEO
           path_groups:
             - names: [INET]
               preference: preferred
@@ -123,7 +123,7 @@ wan_virtual_topologies:
       default_virtual_topology:
         drop_unmatched: true
       application_virtual_topologies:
-        - application_profile: it
+        - application_profile: IT
           path_groups:
             - names: [MPLS]
               preference: preferred
@@ -132,6 +132,6 @@ wan_virtual_topologies:
 
 application_traffic_recognition:
   application_profiles:
-    - name: video
-    - name: it
-    - name: voice
+    - name: VIDEO
+    - name: IT
+    - name: VOICE

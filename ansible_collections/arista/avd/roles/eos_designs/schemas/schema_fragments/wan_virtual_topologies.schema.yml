@@ -93,7 +93,7 @@ keys:
                     description: The application profile to use for this virtual topology. It must be a defined `application_profile`.
                   name:
                     type: str
-                    description: Optional name, if not set `<policy_name>_<application_profile>` is used.
+                    description: Optional name, if not set `<policy_name>-<application_profile>` is used.
                   id:
                     type: int
                     $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/vrfs/items/keys/profiles/items/keys/id"
@@ -107,14 +107,14 @@ keys:
               type: dict
               description: |-
                 Default match for the policy.
-                If defined, ID is hardcoded to 1 for the AVT profile in CV Pathfinder mode.
                 If no default match should be configured, set `drop_unmatched` to `true`.
+                Otherwise, in CV Pathfinder mode, a default AVT profile will be configured with ID 1.
               $ref: "eos_designs#/$defs/virtual_topology"
               required: true
               keys:
                 name:
                   type: str
-                  description: Optional name, if not set `<policy_name>_default` is used.
+                  description: Optional name, if not set `<policy_name>-DEFAULT` is used.
                 drop_unmatched:
                   type: bool
                   description: When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped.

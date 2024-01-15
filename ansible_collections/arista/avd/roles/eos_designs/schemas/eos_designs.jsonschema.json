@@ -3,7 +3,7 @@
   "properties": {
     "application_traffic_recognition": {
       "type": "object",
-      "description": "PREVIEW: WAN Preview\n\nTODO",
+      "description": "PREVIEW: WAN Preview",
       "properties": {
         "categories": {
           "type": "array",
@@ -24065,7 +24065,7 @@
                     },
                     "name": {
                       "type": "string",
-                      "description": "Optional name, if not set `<policy_name>_<application_profile>` is used.",
+                      "description": "Optional name, if not set `<policy_name>-<application_profile>` is used.",
                       "title": "Name"
                     },
                     "id": {
@@ -24135,11 +24135,11 @@
               },
               "default_virtual_topology": {
                 "type": "object",
-                "description": "Default match for the policy.\nIf defined, ID is hardcoded to 1 for the AVT profile in CV Pathfinder mode.\nIf no default match should be configured, set `drop_unmatched` to `true`.",
+                "description": "Default match for the policy.\nIf no default match should be configured, set `drop_unmatched` to `true`.\nOtherwise, in CV Pathfinder mode, a default AVT profile will be configured with ID 1.",
                 "properties": {
                   "name": {
                     "type": "string",
-                    "description": "Optional name, if not set `<policy_name>_default` is used.",
+                    "description": "Optional name, if not set `<policy_name>-DEFAULT` is used.",
                     "title": "Name"
                   },
                   "drop_unmatched": {

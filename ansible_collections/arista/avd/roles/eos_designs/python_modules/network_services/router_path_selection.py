@@ -72,7 +72,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 rule_id_offset = 1
 
             for rule_id, application_virtual_topology in enumerate(get(policy, "application_virtual_topologies", []), start=1):
-                name = get(application_virtual_topology, "name", default=f"{policy['name']}_{application_virtual_topology['application_profile']}")
+                name = get(application_virtual_topology, "name", default=f"{policy['name']}-{application_virtual_topology['application_profile']}")
                 application_profile = get(application_virtual_topology, "application_profile", required=True)
                 autovpn_policy.setdefault("rules", []).append(
                     {
@@ -83,7 +83,7 @@ class RouterPathSelectionMixin(UtilsMixin):
                 )
             default_virtual_topology = get(policy, "default_virtual_topology", required=True)
             if not get(default_virtual_topology, "drop_unmatched", default=False):
-                name = get(default_virtual_topology, "name", default=f"{policy['name']}_default")
+                name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
                 autovpn_policy["default_match"] = {"load_balance": f"LB-{name}"}
 
             autovpn_policies.append(autovpn_policy)

@@ -10,6 +10,4 @@ keys:
     type: dict
     description: |-
       PREVIEW: WAN Preview
-
-      TODO
     $ref: "eos_cli_config_gen#/keys/application_traffic_recognition"

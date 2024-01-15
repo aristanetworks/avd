@@ -178,82 +178,82 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CONTROL-PLANE-PROFILE
     load_balance_policy: LB-CONTROL-PLANE-PROFILE
-  - name: PROD-AVT-POLICY_voice
-    load_balance_policy: LB-PROD-AVT-POLICY_voice
-  - name: PROD-AVT-POLICY_video
-    load_balance_policy: LB-PROD-AVT-POLICY_video
-  - name: PROD-AVT-POLICY_default
-    load_balance_policy: LB-PROD-AVT-POLICY_default
-  - name: DEFAULT-AVT-POLICY_video
-    load_balance_policy: LB-DEFAULT-AVT-POLICY_video
-  - name: DEFAULT-AVT-POLICY_default
-    load_balance_policy: LB-DEFAULT-AVT-POLICY_default
-  - name: TRANSIT-AVT-POLICY_voice
-    load_balance_policy: LB-TRANSIT-AVT-POLICY_voice
-  - name: TRANSIT-AVT-POLICY_default
-    load_balance_policy: LB-TRANSIT-AVT-POLICY_default
+  - name: PROD-AVT-POLICY-VOICE
+    load_balance_policy: LB-PROD-AVT-POLICY-VOICE
+  - name: PROD-AVT-POLICY-VIDEO
+    load_balance_policy: LB-PROD-AVT-POLICY-VIDEO
+  - name: PROD-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-PROD-AVT-POLICY-DEFAULT
+  - name: DEFAULT-AVT-POLICY-VIDEO
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-VIDEO
+  - name: DEFAULT-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-AVT-POLICY-DEFAULT
+  - name: TRANSIT-AVT-POLICY-VOICE
+    load_balance_policy: LB-TRANSIT-AVT-POLICY-VOICE
+  - name: TRANSIT-AVT-POLICY-DEFAULT
+    load_balance_policy: LB-TRANSIT-AVT-POLICY-DEFAULT
   vrfs:
   - name: default
     policy: DEFAULT-AVT-POLICY-WITH-CP
     profiles:
     - name: CONTROL-PLANE-PROFILE
       id: 254
-    - name: DEFAULT-AVT-POLICY_video
+    - name: DEFAULT-AVT-POLICY-VIDEO
       id: 3
-    - name: DEFAULT-AVT-POLICY_default
+    - name: DEFAULT-AVT-POLICY-DEFAULT
       id: 1
   - name: PROD
     policy: PROD-AVT-POLICY
     profiles:
-    - name: PROD-AVT-POLICY_voice
+    - name: PROD-AVT-POLICY-VOICE
       id: 2
-    - name: PROD-AVT-POLICY_video
+    - name: PROD-AVT-POLICY-VIDEO
       id: 4
-    - name: PROD-AVT-POLICY_default
+    - name: PROD-AVT-POLICY-DEFAULT
       id: 1
   - name: IT
     policy: DEFAULT-AVT-POLICY
     profiles:
-    - name: DEFAULT-AVT-POLICY_video
+    - name: DEFAULT-AVT-POLICY-VIDEO
       id: 3
-    - name: DEFAULT-AVT-POLICY_default
+    - name: DEFAULT-AVT-POLICY-DEFAULT
       id: 1
   - name: TRANSIT
     policy: TRANSIT-AVT-POLICY
     profiles:
-    - name: TRANSIT-AVT-POLICY_voice
+    - name: TRANSIT-AVT-POLICY-VOICE
       id: 42
-    - name: TRANSIT-AVT-POLICY_default
+    - name: TRANSIT-AVT-POLICY-DEFAULT
       id: 1
   policies:
   - name: PROD-AVT-POLICY
     matches:
-    - application_profile: voice
-      avt_profile: PROD-AVT-POLICY_voice
-    - application_profile: video
-      avt_profile: PROD-AVT-POLICY_video
+    - application_profile: VOICE
+      avt_profile: PROD-AVT-POLICY-VOICE
+    - application_profile: VIDEO
+      avt_profile: PROD-AVT-POLICY-VIDEO
     - application_profile: default
-      avt_profile: PROD-AVT-POLICY_default
+      avt_profile: PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-AVT-POLICY
     matches:
-    - application_profile: video
-      avt_profile: DEFAULT-AVT-POLICY_video
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY_default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
   - name: TRANSIT-AVT-POLICY
     matches:
-    - application_profile: voice
-      avt_profile: TRANSIT-AVT-POLICY_voice
+    - application_profile: VOICE
+      avt_profile: TRANSIT-AVT-POLICY-VOICE
     - application_profile: default
-      avt_profile: TRANSIT-AVT-POLICY_default
+      avt_profile: TRANSIT-AVT-POLICY-DEFAULT
   - name: DEFAULT-AVT-POLICY-WITH-CP
     matches:
     - application_profile: CONTROL-PLANE-APPLICATION-PROFILE
       avt_profile: CONTROL-PLANE-PROFILE
-    - application_profile: video
-      avt_profile: DEFAULT-AVT-POLICY_video
+    - application_profile: VIDEO
+      avt_profile: DEFAULT-AVT-POLICY-VIDEO
     - application_profile: default
-      avt_profile: DEFAULT-AVT-POLICY_default
+      avt_profile: DEFAULT-AVT-POLICY-DEFAULT
 router_bfd:
   multihop:
     interval: 300
@@ -290,38 +290,38 @@ router_path_selection:
     path_groups:
     - name: INET
     - name: MPLS
-  - name: LB-PROD-AVT-POLICY_voice
+  - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
     - name: MPLS
     - name: INET
       priority: 2
-  - name: LB-PROD-AVT-POLICY_video
+  - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
     - name: MPLS
     - name: LTE
     - name: INET
       priority: 2
-  - name: LB-PROD-AVT-POLICY_default
+  - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET
     - name: MPLS
       priority: 2
-  - name: LB-DEFAULT-AVT-POLICY_video
+  - name: LB-DEFAULT-AVT-POLICY-VIDEO
     path_groups:
     - name: MPLS
     - name: INET
-  - name: LB-DEFAULT-AVT-POLICY_default
+  - name: LB-DEFAULT-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET
     - name: Equinix
     - name: MPLS
       priority: 42
-  - name: LB-TRANSIT-AVT-POLICY_voice
+  - name: LB-TRANSIT-AVT-POLICY-VOICE
     path_groups:
     - name: MPLS
     - name: INET
       priority: 2
-  - name: LB-TRANSIT-AVT-POLICY_default
+  - name: LB-TRANSIT-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET
     - name: MPLS
@@ -333,63 +333,51 @@ stun:
     - Ethernet2
 application_traffic_recognition:
   application_profiles:
-  - name: voice
+  - name: VOICE
     applications:
-    - name: custom-voice-application
-  - name: video
+    - name: CUSTOM-VOICE-APPLICATION
+  - name: VIDEO
     categories:
-    - name: video1
+    - name: VIDEO1
     applications:
-    - name: custom-application-1
+    - name: CUSTOM-APPLICATION-1
     - name: skype
   - name: CONTROL-PLANE-APPLICATION-PROFILE
     applications:
     - name: CONTROL-PLANE-APPLICATION
   categories:
-  - name: video1
+  - name: VIDEO1
     applications:
-    - name: custom-application-2
+    - name: CUSTOM-APPLICATION-2
     - name: microsoft-teams
   applications:
     ipv4_applications:
-    - name: custom-voice-application
-      protocols:
-      - udp
-      udp_src_port_set_name: udp-src-voice
-      udp_dest_port_set_name: udp-dest-voice
-    - name: custom-application-1
+    - name: CUSTOM-APPLICATION-1
       protocols:
       - tcp
-      src_prefix_set_name: custom-src-prefix-1
-      dest_prefix_set_name: custom-dest-prefix-1
-    - name: custom-application-2
+      src_prefix_set_name: CUSTOM-SRC-PREFIX-1
+      dest_prefix_set_name: CUSTOM-DEST-PREFIX-1
+    - name: CUSTOM-APPLICATION-2
       protocols:
       - tcp
-      tcp_src_port_set_name: tcp-src-2
-      tcp_dest_port_set_name: tcp-dest-2
+      tcp_src_port_set_name: TCP-SRC-2
+      tcp_dest_port_set_name: TCP-DEST-2
     - name: CONTROL-PLANE-APPLICATION
       dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
   field_sets:
     l4_ports:
-    - name: udp-src-voice
-      port_values:
-      - 42000-42999
-    - name: udp-dest-voice
-      port_values:
-      - 30000-30100
-      - 31000-31100
-    - name: tcp-src-2
+    - name: TCP-SRC-2
       port_values:
       - '42'
-    - name: tcp-dest-2
+    - name: TCP-DEST-2
       port_values:
       - '666'
       - '777'
     ipv4_prefixes:
-    - name: custom-src-prefix-1
+    - name: CUSTOM-SRC-PREFIX-1
       prefix_values:
       - 42.42.42.0/24
-    - name: custom-dest-prefix-1
+    - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
     - name: CONTROL-PLANE-APP-DEST-PREFIXES

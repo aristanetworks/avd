@@ -130,16 +130,16 @@ router_path_selection:
   - name: LB-CONTROL-PLANE-PROFILE
     path_groups:
     - name: INET
-  - name: LB-PROD-AVT-POLICY_voice
+  - name: LB-PROD-AVT-POLICY-VOICE
     path_groups:
     - name: INET
-  - name: LB-PROD-AVT-POLICY_video
+  - name: LB-PROD-AVT-POLICY-VIDEO
     path_groups:
     - name: INET
-  - name: LB-PROD-AVT-POLICY_default
+  - name: LB-PROD-AVT-POLICY-DEFAULT
     path_groups:
     - name: INET
-  - name: LB-DEFAULT-AVT-POLICY_it
+  - name: LB-DEFAULT-AVT-POLICY-IT
     path_groups:
     - name: MPLS
     - name: INET
@@ -148,21 +148,21 @@ router_path_selection:
   - name: PROD-AVT-POLICY
     rules:
     - id: 10
-      application_profile: voice
-      load_balance: LB-PROD-AVT-POLICY_voice
+      application_profile: VOICE
+      load_balance: LB-PROD-AVT-POLICY-VOICE
     - id: 20
-      application_profile: video
-      load_balance: LB-PROD-AVT-POLICY_video
+      application_profile: VIDEO
+      load_balance: LB-PROD-AVT-POLICY-VIDEO
     default_match:
-      load_balance: LB-PROD-AVT-POLICY_default
+      load_balance: LB-PROD-AVT-POLICY-DEFAULT
   - name: DEFAULT-AVT-POLICY-WITH-CP
     rules:
     - id: 10
       application_profile: CONTROL-PLANE-APPLICATION-PROFILE
       load_balance: LB-CONTROL-PLANE-PROFILE
     - id: 20
-      application_profile: it
-      load_balance: LB-DEFAULT-AVT-POLICY_it
+      application_profile: IT
+      load_balance: LB-DEFAULT-AVT-POLICY-IT
   vrfs:
   - name: default
     path_selection_policy: DEFAULT-AVT-POLICY-WITH-CP
@@ -174,9 +174,9 @@ stun:
     - Ethernet1
 application_traffic_recognition:
   application_profiles:
-  - name: voice
-  - name: video
-  - name: it
+  - name: VOICE
+  - name: VIDEO
+  - name: IT
   - name: CONTROL-PLANE-APPLICATION-PROFILE
     applications:
     - name: CONTROL-PLANE-APPLICATION
