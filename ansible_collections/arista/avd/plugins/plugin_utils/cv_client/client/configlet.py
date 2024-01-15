@@ -64,7 +64,7 @@ class ConfigletMixin:
             timeout: Timeout in seconds.
 
         Returns:
-            ConfigletAssignment object.
+            ConfigletAssignment objects.
         """
         request = ConfigletAssignmentStreamRequest(partial_eq_filter=[], time=time)
         if container_ids:
@@ -146,7 +146,7 @@ class ConfigletMixin:
             timeout: Timeout in seconds.
 
         Returns:
-            ConfigletAssignmentConfig object after being set including any server-generated values.
+            ConfigletAssignmentKey objects after being set including any server-generated values.
         """
 
         request = ConfigletAssignmentConfigSetSomeRequest(
@@ -304,7 +304,7 @@ class ConfigletMixin:
             timeout: Timeout in seconds.
 
         Returns:
-            ConfigletAssignment object after being set including any server-generated values.
+            ConfigletConfig object after being set including any server-generated values.
         """
         request = ConfigletConfigSetRequest(
             value=ConfigletConfig(
@@ -333,11 +333,11 @@ class ConfigletMixin:
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
-            configlet_id: Unique identifier for Configlet.
+            configlet_ids: List of unique identifiers for Configlets to delete.
             timeout: Timeout in seconds.
 
         Returns:
-            List of ConfigletKey objects after being set including any server-generated values.
+            List of ConfigletKey objects after being deleted including any server-generated values.
         """
         request = ConfigletConfigSetSomeRequest(values=[])
         for configlet_id in configlet_ids:
@@ -360,7 +360,7 @@ class ConfigletMixin:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Configlet IDs '{configlet_ids}'") or e
 
     @staticmethod
-    def _match_configlet_assignments(a: ConfigletAssignment, b: ConfigletAssignment):
+    def _match_configlet_assignments(a: ConfigletAssignment, b: ConfigletAssignment) -> bool:
         """
         Match up the properties of two configlet assignments. Only matching on the assignment ID field.
         """

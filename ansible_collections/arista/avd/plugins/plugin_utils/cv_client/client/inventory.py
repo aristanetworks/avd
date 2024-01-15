@@ -32,12 +32,12 @@ class InventoryMixin:
         If 'devices' is set to None, all devices will be returned.
 
         Parameters:
-            devices: List of tuples where each tuple is in the format (<serial number> | None, <system_mac_address> | None, <hostname> | None)
+            devices: List of tuples where each tuple is in the format (serial number, system_mac_address, hostname)
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
         Returns:
-            Device objects
+            Device objects.
         """
         request = DeviceStreamRequest(
             partial_eq_filter=[],

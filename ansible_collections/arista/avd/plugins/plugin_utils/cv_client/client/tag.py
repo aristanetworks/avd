@@ -69,6 +69,8 @@ class TagMixin:
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched. Use "" for mainline.
+            element_type: Optionally filter tags on type.
+            creator_type: Optionally filter tags on creator type.
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
@@ -129,7 +131,7 @@ class TagMixin:
         self: CVClient,
         workspace_id: str,
         tags: list[tuple[str, str]],
-        element_type: Literal["device", "interface"] | None = None,
+        element_type: Literal["device", "interface"],
         timeout: float = 10.0,
     ) -> list[TagKey]:
         """
@@ -138,6 +140,7 @@ class TagMixin:
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             tags: List of tuples where each tuple is in the format (<tag_label>, <tag_value>).
+            element_type: Type of Tag(s) to create.
             timeout: Timeout in seconds.
 
         TODO: Consider if we should add sub_type.
@@ -186,6 +189,8 @@ class TagMixin:
 
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is fetched.
+            element_type: Optionally filter tag assignments on tag type.
+            creator_type: Optionally filter tag assignments on tag creator type.
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
@@ -246,7 +251,7 @@ class TagMixin:
         self: CVClient,
         workspace_id: str,
         tag_assignments: list[tuple[str, str, str, str | None]],
-        element_type: Literal["device", "interface"] | None = None,
+        element_type: Literal["device", "interface"],
         timeout: float = 10.0,
     ) -> list[TagAssignment]:
         """
@@ -255,6 +260,7 @@ class TagMixin:
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             tag_assignments: List of tuples where each tuple is in the format (<tag_label>, <tag_value>, <device_id/serial_number>, <interface_name | None>).
+            element_type: Type of Tag(s) to assign.
             timeout: Timeout in seconds.
 
         TODO: Consider if we should add sub_type.
@@ -292,7 +298,7 @@ class TagMixin:
         self: CVClient,
         workspace_id: str,
         tag_assignments: list[tuple[str, str, str, str | None]],
-        element_type: Literal["device", "interface"] | None = None,
+        element_type: Literal["device", "interface"],
         timeout: float = 10.0,
     ) -> list[TagAssignmentKey]:
         """
@@ -301,6 +307,7 @@ class TagMixin:
         Parameters:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             tag_assignments: List of tuples where each tuple is in the format (<tag_label>, <tag_value>, <device_id/serial_number>, <interface_name | None>).
+            element_type: Type of Tag assignment(s) to delete.
             timeout: Timeout in seconds.
 
         TODO: Consider if we should add sub_type.

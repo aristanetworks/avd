@@ -46,7 +46,15 @@ class CVClient(
 
         Parameters:
             servers: A single FQDN for CVaaS or a list of FQDNs for one CVP cluster.
-            timeout: Token defined in CloudVision under service-accounts.
+            token: Token defined in CloudVision under service-accounts.
+            port: TCP port to use for the connection.
+            verify_certs: Disables SSL certificate verification if set to False. Not recommended for production.
+
+        Use this class as an asynchronous context manager:
+        ```python
+        with CVClient(servers=["arista.io"], token="...") as cv_client:
+            ...
+        ```
         """
         if isinstance(servers, list):
             self._servers = servers

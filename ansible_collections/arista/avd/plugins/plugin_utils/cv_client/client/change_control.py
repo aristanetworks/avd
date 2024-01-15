@@ -6,6 +6,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Literal
 
+from aristaproto import _DateTime
+
 from ..api.arista.changecontrol.v1 import (
     ApproveConfig,
     ApproveConfigServiceStub,
@@ -44,7 +46,7 @@ class ChangeControlMixin:
         Get Change Control using arista.changecontrol.v1.ChangeControlService.GetOne API
 
         Parameters:
-            change_control_id: Unique identifier the Change Control.
+            change_control_id: Unique identifier of the Change Control.
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
@@ -75,14 +77,14 @@ class ChangeControlMixin:
         Set Change Control details using arista.changecontrol.v1.ChangeControlConfigService.Set API
 
         Parameters:
-            change_control_id: Unique identifier the Change Control.
+            change_control_id: Unique identifier of the Change Control.
             name: Change Control Name.
             description: Change Control description.
             TODO: Add CC template
             timeout: Timeout in seconds.
 
         Returns:
-            ChangeControl object matching the change_control_id
+            ChangeControlConfig object after being set including any server-generated values.
         """
         request = ChangeControlConfigSetRequest(
             value=ChangeControlConfig(
@@ -94,7 +96,7 @@ class ChangeControlMixin:
 
         try:
             response = await client.set(request, metadata=self._metadata, timeout=timeout)
-            return response
+            return response.value
 
         except Exception as e:
             raise get_cv_client_exception(e, f"Change Control ID '{change_control_id}'") or e
@@ -102,7 +104,7 @@ class ChangeControlMixin:
     async def approve_chance_control(
         self: CVClient,
         change_control_id: str,
-        timestamp: datetime,
+        timestamp: _DateTime,
         description: str | None = None,
         timeout: float = 10.0,
     ) -> ApproveConfig:
@@ -111,12 +113,14 @@ class ChangeControlMixin:
 
         Parameters:
             change_control_id: Unique identifier the Change Control.
-            time: Timestamp for the change control information to be approved.
+            timestamp: Timestamp for the change control information to be approved. \
+                This must be using the aristaproto._DateTime subclass which contains nanosecond information.
             description: Description to set on the approval.
             timeout: Timeout in seconds.
 
         Returns:
-            ChangeControl object matching the change_control_id
+            ApproveConfig object carrying all the values given in the ApproveConfigSetRequest as well
+            as any server-generated values.
         """
         request = ApproveConfigSetRequest(
             value=ApproveConfig(
@@ -145,11 +149,11 @@ class ChangeControlMixin:
 
         Parameters:
             change_control_id: Unique identifier the Change Control.
-            start_description: Description to add for the start request.
+            description: Description to add for the start request.
             timeout: Timeout in seconds.
 
         Returns:
-            ChangeControl object matching the change_control_id
+            ChangeControlConfig object including any server-generated values.
         """
         request = ChangeControlConfigSetRequest(
             value=ChangeControlConfig(

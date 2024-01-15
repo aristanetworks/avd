@@ -58,7 +58,7 @@ class StudioMixin:
         Parameters:
             studio_id: Unique identifier for the studio.
             workspace_id: Unique identifier of the Workspace for which the information is fetched. Use "" for mainline.
-            input_path: Data elements leading to specific inputs. Returning all inputs if not given.
+            default_value: Value to return if no inputs are found.
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
@@ -166,6 +166,7 @@ class StudioMixin:
             studio_id: Unique identifier for the studio.
             workspace_id: Unique identifier of the Workspace for which the information is fetched. Use "" for mainline.
             input_path: Data elements leading to specific inputs.
+            default_value: Value to return if no inputs are found.
             time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
@@ -266,10 +267,9 @@ class StudioMixin:
             workspace_id: Unique identifier of the Workspace for which the information is set.
             inputs: Data to set at the given path.
             input_path: Data path elements for setting specific inputs. If not given, inputs are set at the root, replacing all existing inputs.
-            time: Timestamp from which the information is fetched. `now()` if not set.
             timeout: Timeout in seconds.
 
-        TODO: Refactor to fetch inputs with GetAll so we can stream larger input sets. Issue is to reassemble all this data.
+        TODO: Refactor to split inputs into multiple messages in case of larger input sets.
 
         Returns:
             InputsConfig object after being set including any server-generated values.
@@ -281,9 +281,7 @@ class StudioMixin:
                     workspace_id=workspace_id,
                     path=RepeatedString(values=input_path),
                 ),
-                # Dumping inputs to JSON using our special JSON Encoder which will also render UserString instances.
-                # UserString is needed to support the special DeferredFormatString object as a value.
-                inputs=json.dumps(inputs, cls=self.JsonEncodeWithUserString),
+                inputs=json.dumps(inputs),
             )
         )
         client = InputsConfigServiceStub(self._channel)

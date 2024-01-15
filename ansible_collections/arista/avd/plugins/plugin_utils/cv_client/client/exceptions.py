@@ -15,6 +15,15 @@ else:
 
 
 def get_cv_client_exception(exception: Exception, cv_client_details: str | None = None) -> Exception or None:
+    """
+    Convert GRPCError or TimeoutError instances to an instance of the relevant subclass of CVClientException.
+
+    Parameters:
+        exception: Exception to convert.
+
+    Returns:
+        None if If the exception is unmatched, otherwise an instance of the relevant CVClientException subclass.
+    """
     if not HAS_GRPCLIB:
         raise RuntimeError("Missing Python library 'grpclib'")
 

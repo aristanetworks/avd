@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from collections import UserString
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Literal
@@ -161,30 +160,3 @@ class CVTimeOuts:
 
     workspace_build_timeout: float = 300.0
     change_control_creation_timeout: float = 300.0
-
-
-class DeferredFormatString(UserString):
-    """
-    Format string which is not rendered until __str__() is called.
-    This means any inplace updates of args or kwargs between initialization and rendering will affect the __str__() retult.
-    This can be used as a string value where components of the string are not available at time of initialization, but will be updated later.
-
-    Example:
-    mydict = {"k": "value"}
-    mylist = [DeferredFormatString("{0['k']}", mydict)]
-    mydict["k"] = "newvalue"
-    print(json.dumps(mylist, cls=JsonEncoderWithUserString))
-    > ["newvalue"]
-    """
-
-    _string: str
-    _args: list
-    _kwargs: dict
-
-    def __init__(self, string: str, *args, **kwargs):
-        self._string = string
-        self._args = args
-        self._kwargs = kwargs
-
-    def __str__(self) -> str:
-        return self._string.format(*self._args, **self._kwargs)

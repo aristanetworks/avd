@@ -2,6 +2,11 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
+# NOTE: This is supposed to be deprecated as per
+# https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_documenting.html#ansible-metadata-block
+# But our doc Jinja2 template renders it as preview which is what we want
+ANSIBLE_METADATA = {"metadata_version": "1.0", "status": ["preview"]}
+
 DOCUMENTATION = r"""
 ---
 module: deploy_to_cv
