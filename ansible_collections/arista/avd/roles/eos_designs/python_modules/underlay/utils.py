@@ -4,11 +4,16 @@
 from __future__ import annotations
 
 from functools import cached_property
+from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
+from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
+
+if TYPE_CHECKING:
+    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
 
 
 class UtilsMixin:
@@ -85,6 +90,32 @@ class UtilsMixin:
                         "sflow": {"enable": self.shared_utils.fabric_sflow_downlinks},
                         "structured_config": get(uplink, "structured_config"),
                     }
+                    if (subinterfaces := get(uplink, "subinterfaces")) is not None:
+                        link["subinterfaces"] = [
+                            {
+                                **subinterface,
+                                "interface": subinterface["peer_interface"],
+                                "peer_interface": subinterface["interface"],
+                                "ip_address": subinterface.get("peer_ip_address"),
+                                "peer_ip_address": subinterface.get("ip_address"),
+                            }
+                            for subinterface in subinterfaces
+                        ]
+
+                    if self.shared_utils.mlag:
+                        # Comment out below line after lines 100-104 work as intended
+                        link["mlag"] = True
+                        # Determine whether or not to make the port-channel towards the downlink switch an mlag port-channel
+                        logical_downlink_switches = [peer]
+                        # Add downlink_switch's mlag peer to logical_downlink_switches
+                        if get(peer_facts, "mlag"):
+                            logical_downlink_switches.append(get(peer_facts, "mlag_peer"))
+                        # Check to see if the mlag peer of this switch shares a neighbor in logical_downlink_switches
+                        # for logical_downlink_switch in logical_downlink_switches:
+                        #     mlag_peer_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
+                        #     if logical_downlink_switch in mlag_peer_facts.shared_utils.<downlink_devices>:
+                        #         link["mlag"] = True
+                        #         break
 
                     underlay_links.append(strip_empties_from_dict(link))
 
