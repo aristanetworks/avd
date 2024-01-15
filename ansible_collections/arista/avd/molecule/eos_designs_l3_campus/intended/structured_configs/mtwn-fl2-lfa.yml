@@ -1,0 +1,192 @@
+hostname: mtwn-fl2-lfa
+is_deployed: true
+router_bgp:
+  as: '65102'
+  router_id: 10.255.0.5
+  bgp_defaults:
+  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
+    remote_as: '65102'
+    next_hop_self: true
+    description: mtwn-fl2-lfb
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-MLAG-PEER-IN
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  address_family_ipv4:
+    peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+  neighbors:
+  - ip_address: 10.255.1.101
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: mtwn-fl2-lfb
+    description: mtwn-fl2-lfb
+  - ip_address: 10.255.255.8
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    peer: mtwn-spine1
+    description: mtwn-spine1_Ethernet3
+  - ip_address: 10.255.255.10
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    peer: mtwn-spine2
+    description: mtwn-spine2_Ethernet3
+  redistribute_routes:
+  - source_protocol: connected
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 172.16.1.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 4096
+  no_spanning_tree_vlan: 4093-4094
+vrfs:
+- name: MGMT
+  ip_routing: false
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+vlans:
+- id: 4093
+  tenant: system
+  name: LEAF_PEER_L3
+  trunk_groups:
+  - LEAF_PEER_L3
+- id: 4094
+  tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
+  shutdown: false
+  mtu: 9214
+  ip_address: 10.255.1.100/31
+- name: Vlan4094
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.255.1.68/31
+  no_autostate: true
+  mtu: 9214
+port_channel_interfaces:
+- name: Port-Channel49
+  description: MLAG_PEER_mtwn-fl2-lfb_Po49
+  type: switched
+  shutdown: false
+  mode: trunk
+  trunk_groups:
+  - LEAF_PEER_L3
+  - MLAG
+- name: Port-Channel53
+  description: MTWN-FL2-M1_Po49
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: none
+  mlag: 53
+ethernet_interfaces:
+- name: Ethernet49
+  peer: mtwn-fl2-lfb
+  peer_interface: Ethernet49
+  peer_type: mlag_peer
+  description: MLAG_PEER_mtwn-fl2-lfb_Ethernet49
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 49
+    mode: active
+- name: Ethernet50
+  peer: mtwn-fl2-lfb
+  peer_interface: Ethernet50
+  peer_type: mlag_peer
+  description: MLAG_PEER_mtwn-fl2-lfb_Ethernet50
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 49
+    mode: active
+- name: Ethernet51
+  peer: mtwn-spine1
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_MTWN-SPINE1_Ethernet3
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.255.255.9/31
+- name: Ethernet52
+  peer: mtwn-spine2
+  peer_interface: Ethernet3
+  peer_type: spine
+  description: P2P_LINK_TO_MTWN-SPINE2_Ethernet3
+  shutdown: false
+  mtu: 9214
+  type: routed
+  ip_address: 10.255.255.11/31
+- name: Ethernet53
+  peer: mtwn-fl2-m1
+  peer_interface: Ethernet49
+  peer_type: l2leaf
+  description: MTWN-FL2-M1_Ethernet49
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 53
+    mode: active
+mlag_configuration:
+  domain_id: MTWN_L3_FL2
+  local_interface: Vlan4094
+  peer_address: 10.255.1.69
+  peer_link: Port-Channel49
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - origin incomplete
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+loopback_interfaces:
+- name: Loopback0
+  description: Router_ID
+  shutdown: false
+  ip_address: 10.255.0.5/32
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+metadata:
+  platform: 720XP
