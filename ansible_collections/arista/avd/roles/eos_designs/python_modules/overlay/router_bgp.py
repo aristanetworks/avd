@@ -484,12 +484,12 @@ class RouterBgpMixin(UtilsMixin):
                         f"Loopback0 IP {self.shared_utils.router_id} is not in the Route Reflector listen range prefixes"
                         " 'bgp_peer_groups.wan_overlay_peers.listen_range_prefixes'."
                     )
-                for wan_route_server, data in self._filtered_wan_route_servers.items():
+                for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
                     neighbor = self._create_neighbor(data["router_id"], wan_route_server, self.shared_utils.bgp_peer_groups["wan_overlay_peers"]["name"])
                     neighbors.append(neighbor)
             if self.shared_utils.wan_role == "server":
                 # No neighbor configured on the `wan_overlay_peers` peer group as it is covered by listen ranges
-                for wan_route_server, data in self._filtered_wan_route_servers.items():
+                for wan_route_server, data in self.shared_utils.filtered_wan_route_servers.items():
                     neighbor = self._create_neighbor(data["router_id"], wan_route_server, self.shared_utils.bgp_peer_groups["rr_overlay_peers"]["name"])
                     neighbors.append(neighbor)
 

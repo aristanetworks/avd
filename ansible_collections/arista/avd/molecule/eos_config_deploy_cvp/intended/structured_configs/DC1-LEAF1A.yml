@@ -1,6 +1,4 @@
 hostname: DC1-LEAF1A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65101'
@@ -362,3 +360,5 @@ vxlan_interface:
         vni: 12
       - name: Tenant_A_WEB_Zone
         vni: 11
+metadata:
+  platform: vEOS-LAB

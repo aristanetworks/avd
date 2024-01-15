@@ -1,6 +1,4 @@
 hostname: LEAF2A
-metadata:
-  platform: 720XP
 is_deployed: true
 static_routes:
 - vrf: MGMT
@@ -9944,3 +9942,5 @@ vlan_interfaces:
   mtu: 1500
   ip_address: 10.10.10.8/24
   type: inband_mgmt
+metadata:
+  platform: 720XP

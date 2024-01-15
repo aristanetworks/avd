@@ -552,6 +552,19 @@ keys:
                 type: str
               site_after_hours_contact:
                 type: str
+  cv_tags_topology_type:
+    documentation_options:
+      table: cloudvision-tags
+    description: 'PREVIEW: This key is currently not supported
+
+      Device type that CloudVision should use when generating the Topology. Defaults
+      to the setting under node_type_keys.'
+    type: str
+    valid_values:
+    - leaf
+    - spine
+    - core
+    - edge
   cv_topology:
     documentation_options:
       table: cv-topology
@@ -1090,6 +1103,75 @@ keys:
       in the Fabric, **must** be an inventory group name.
     type: str
     required: true
+  generate_cv_tags:
+    documentation_options:
+      table: cloudvision-tags
+    type: dict
+    description: 'PREVIEW: This key is currently not supported
+
+      Generate CloudVision Tags based on AVD data.'
+    keys:
+      topology_hints:
+        type: bool
+        default: false
+        description: Enable the generation of CloudVision Topology Tags (hints).
+      interface_tags:
+        description: List of interface tags that should be generated.
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value
+            sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags. Tag names must
+                be lower case.
+              convert_to_lower_case: true
+              required: true
+              type: str
+            data_path:
+              description: 'Structured config field/key path to be used to find the
+                value for the tag. Dot notation is supported to reference values inside
+                dictionaries.
+
+                For Example: ''data_path: channel_group.id'' would set the tag with
+                the value of the channel id of the interface. If there is no channel
+                id, the tag is not created.
+
+                `data_path` is ignored if `value` is set.'
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str
+      device_tags:
+        description: List of device tags that should be generated.
+        type: list
+        items:
+          type: dict
+          description: Each tag can either have a static value or a dynamic value
+            sourced from structured configuration.
+          keys:
+            name:
+              description: Tag name to be assigned to generated tags. Tag names must
+                be lower case.
+              convert_to_lower_case: true
+              required: true
+              type: str
+            data_path:
+              description: 'Structured config field/key path to be used to find the
+                value for the tag. Dot notation is supported to reference values inside
+                dictionaries.
+
+                For Example: ''data_path: router_bfd.multihop.interval'' would set
+                the tag with the value of the interval for multihop bfd. If this value
+                is not specified in the structured config, the tag is not created.
+
+                `data_path` is ignored if `value` is set.'
+              type: str
+            value:
+              description: Value to be assigned to the tag.
+              type: str
   hardware_counters:
     documentation_options:
       table: system-settings
@@ -1715,6 +1797,18 @@ keys:
             vtep_loopback_interface:
               type: str
               description: Path to Custom J2 template.
+        cv_tags_topology_type:
+          documentation_options:
+            table: cloudvision-tags
+          description: 'PREVIEW: This key is currently not supported
+
+            Type that CloudVision should use when generating the Topology.'
+          type: str
+          valid_values:
+          - leaf
+          - spine
+          - core
+          - edge
   ntp_settings:
     documentation_options:
       table: management-settings

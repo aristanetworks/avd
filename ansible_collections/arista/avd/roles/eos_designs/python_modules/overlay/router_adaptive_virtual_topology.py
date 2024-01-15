@@ -28,13 +28,13 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
             router_adaptive_virtual_topology.update(
                 {
                     "region": {
-                        "name": self._wan_region["name"],
-                        "id": self._wan_region["id"],
+                        "name": self.shared_utils.wan_region["name"],
+                        "id": self.shared_utils.wan_region["id"],
                     },
-                    "zone": self._wan_zone,
+                    "zone": self.shared_utils.wan_zone,
                     "site": {
-                        "name": self._wan_site["name"],
-                        "id": self._wan_site["id"],
+                        "name": self.shared_utils.wan_site["name"],
+                        "id": self.shared_utils.wan_site["id"],
                     },
                 }
             )

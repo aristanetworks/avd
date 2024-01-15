@@ -1,6 +1,4 @@
 hostname: DC1.POD1.LEAF2A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65112.100'
@@ -780,6 +778,8 @@ virtual_source_nat_vrfs:
   ip_address: 10.100.0.4
 - name: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.4
+metadata:
+  platform: vEOS-LAB
 domain_list:
 - structured-config.set.on.node
 - structured-config.set.under.vrf.common-vrf

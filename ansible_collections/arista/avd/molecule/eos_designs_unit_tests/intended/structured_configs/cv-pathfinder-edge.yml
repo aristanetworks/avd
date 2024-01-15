@@ -210,3 +210,46 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
+metadata:
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: edge
+    - name: Region
+      value: AVD_Land_East
+    - name: Zone
+      value: DEFAULT-ZONE
+    - name: Site
+      value: Site511
+    interface_tags:
+    - interface: Ethernet1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ATT
+      - name: Circuit
+        value: '666'
+    - interface: Ethernet2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Colt
+      - name: Circuit
+        value: '10555'
+  cv_pathfinder:
+    role: edge
+    vtep_ip: 192.168.42.1
+    region: AVD_Land_East
+    zone: DEFAULT-ZONE
+    site: Site511
+    interfaces:
+    - name: Ethernet1
+      carrier: ATT
+      pathgroup: INET
+    - name: Ethernet2
+      carrier: Colt
+      pathgroup: MPLS
+    pathfinders:
+    - vtep_ip: 192.168.44.1

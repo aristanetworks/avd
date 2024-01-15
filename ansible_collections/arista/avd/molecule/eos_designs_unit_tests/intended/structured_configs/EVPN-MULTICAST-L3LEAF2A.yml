@@ -1,6 +1,4 @@
 hostname: EVPN-MULTICAST-L3LEAF2A
-metadata:
-  platform: 7050X3
 is_deployed: true
 router_bgp:
   as: '65103'
@@ -1284,3 +1282,5 @@ standard_access_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 232.0.136.0/21
+metadata:
+  platform: 7050X3

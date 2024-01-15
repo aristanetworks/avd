@@ -1,6 +1,4 @@
 hostname: MH-LEAF1A
-metadata:
-  platform: vEOS-LAB
 is_deployed: true
 router_bgp:
   as: '65151'
@@ -576,3 +574,5 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:5c8e:1f50:9fc4
     route_target: 5c:8e:1f:50:9f:c4
+metadata:
+  platform: vEOS-LAB
