@@ -300,7 +300,8 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             return int(path_group_preference)
         except ValueError as e:
             raise AristaAvdError(
-                f"Invalid value '{path_group_preference}' for Path-Group preference - should be either 'preferred', 'alternate' or an integer for {context_path}."
+                f"Invalid value '{path_group_preference}' for Path-Group preference - should be either 'preferred', "
+                f"'alternate' or an integer for {context_path}."
             ) from e
 
     @cached_property
