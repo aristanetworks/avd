@@ -306,10 +306,13 @@ stun:
 application_traffic_recognition:
   application_profiles:
   - name: voice
+    applications:
+    - name: custom-voice-application
   - name: video
     categories:
     - name: video1
     applications:
+    - name: custom-application-1
     - name: skype
   - name: CONTROL-PLANE-APPLICATION-PROFILE
     applications:
@@ -317,16 +320,50 @@ application_traffic_recognition:
   categories:
   - name: video1
     applications:
+    - name: custom-application-2
     - name: microsoft-teams
-    - name: built-in-not-raising
   applications:
     ipv4_applications:
-    - name: skype
-    - name: microsoft-teams
+    - name: custom-voice-application
+      protocols:
+      - udp
+      udp_src_port_set_name: udp-src-voice
+      udp_dest_port_set_name: udp-dest-voice
+    - name: custom-application-1
+      protocols:
+      - tcp
+      src_prefix_set_name: custom-src-prefix-1
+      dest_prefix_set_name: custom-dest-prefix-1
+    - name: custom-application-2
+      protocols:
+      - tcp
+      tcp_src_port_set_name: tcp-src-2
+      tcp_dest_port_set_name: tcp-dest-2
     - name: CONTROL-PLANE-APPLICATION
       dest_prefix_set_name: CONTROL-PLANE-APP-DEST-PREFIXES
   field_sets:
+    l4_ports:
+    - name: udp-src-voice
+      port_values:
+      - 42000-42999
+    - name: udp-dest-voice
+      port_values:
+      - 30000-30100
+      - 31000-31100
+    - name: tcp-src-2
+      port_values:
+      - '42'
+    - name: tcp-dest-2
+      port_values:
+      - '666'
+      - '777'
     ipv4_prefixes:
+    - name: custom-src-prefix-1
+      prefix_values:
+      - 42.42.42.0/24
+    - name: custom-dest-prefix-1
+      prefix_values:
+      - 6.6.6.0/24
     - name: CONTROL-PLANE-APP-DEST-PREFIXES
       prefix_values:
       - 192.168.42.0/24
