@@ -153,6 +153,7 @@ vlan 4094
 | Ethernet50 | MTWN-FL1-M2_Ethernet53 | *trunk | *none | *- | *- | 49 |
 | Ethernet51 | MLAG_PEER_mtwn-fl1-m4_Ethernet51 | *trunk | *- | *- | *['MLAG'] | 51 |
 | Ethernet52 | MLAG_PEER_mtwn-fl1-m4_Ethernet52 | *trunk | *- | *- | *['MLAG'] | 51 |
+| Ethernet53 | MTWN-FL1-M5_Ethernet49 | *trunk | *none | *- | *- | 53 |
 
 *Inherited from Port-Channel Interface
 
@@ -179,6 +180,11 @@ interface Ethernet52
    description MLAG_PEER_mtwn-fl1-m4_Ethernet52
    no shutdown
    channel-group 51 mode active
+!
+interface Ethernet53
+   description MTWN-FL1-M5_Ethernet49
+   no shutdown
+   channel-group 53 mode active
 ```
 
 ### Port-Channel Interfaces
@@ -191,6 +197,7 @@ interface Ethernet52
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel49 | MTWN_L2_FL1-M12_Po53 | switched | trunk | none | - | - | - | - | 49 | - |
 | Port-Channel51 | MLAG_PEER_mtwn-fl1-m4_Po51 | switched | trunk | - | - | ['MLAG'] | - | - | - | - |
+| Port-Channel53 | MTWN_L2_FL1-M56_Po49 | switched | trunk | none | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -210,6 +217,13 @@ interface Port-Channel51
    switchport
    switchport mode trunk
    switchport trunk group MLAG
+!
+interface Port-Channel53
+   description MTWN_L2_FL1-M56_Po49
+   no shutdown
+   switchport
+   switchport trunk allowed vlan none
+   switchport mode trunk
 ```
 
 ### VLAN Interfaces

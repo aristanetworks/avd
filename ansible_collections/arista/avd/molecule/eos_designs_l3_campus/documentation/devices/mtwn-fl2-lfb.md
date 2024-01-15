@@ -215,7 +215,7 @@ interface Ethernet53
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel49 | MLAG_PEER_mtwn-fl2-lfa_Po49 | switched | trunk | - | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel53 | MTWN-FL2-M2_Po49 | switched | trunk | none | - | - | - | - | 53 | - |
+| Port-Channel53 | MTWN-FL2-M2_Po49 | switched | trunk | none | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -235,7 +235,6 @@ interface Port-Channel53
    switchport
    switchport trunk allowed vlan none
    switchport mode trunk
-   mlag 53
 ```
 
 ### Loopback Interfaces

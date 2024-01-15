@@ -115,7 +115,6 @@ port_channel_interfaces:
   shutdown: false
   mode: trunk
   vlans: none
-  mlag: 53
 ethernet_interfaces:
 - name: Ethernet49
   peer: mtwn-fl2-lfa

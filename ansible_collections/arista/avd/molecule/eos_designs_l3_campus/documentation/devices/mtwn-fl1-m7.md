@@ -119,14 +119,14 @@ interface Ethernet49
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel49 | MTWN-FL1-M6_Po53 | switched | trunk | none | - | - | - | - | - | - |
+| Port-Channel49 | MTWN_L2_FL1-M56_Po53 | switched | trunk | none | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel49
-   description MTWN-FL1-M6_Po53
+   description MTWN_L2_FL1-M56_Po53
    no shutdown
    switchport
    switchport trunk allowed vlan none

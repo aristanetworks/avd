@@ -51,6 +51,12 @@ port_channel_interfaces:
   mode: trunk
   vlans: none
   mlag: 49
+- name: Port-Channel53
+  description: MTWN_L2_FL1-M56_Po49
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: none
 ethernet_interfaces:
 - name: Ethernet51
   peer: mtwn-fl1-m4
@@ -91,6 +97,16 @@ ethernet_interfaces:
   type: port-channel-member
   channel_group:
     id: 49
+    mode: active
+- name: Ethernet53
+  peer: mtwn-fl1-m5
+  peer_interface: Ethernet49
+  peer_type: l2leaf
+  description: MTWN-FL1-M5_Ethernet49
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 53
     mode: active
 mlag_configuration:
   domain_id: MTWN_L2_FL1-M34
