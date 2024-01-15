@@ -130,7 +130,7 @@ vlan_interfaces:
   tenant: INBAND_MGMT_TESTS
   description: Inband_management_vlan_ipv6
   shutdown: true
-  ip_address: 192.168.105.3
+  ip_address: 192.168.105.3/24
   ipv6_address: 2a00:105::3/64
   ipv6_enable: true
   ip_virtual_router_addresses:
