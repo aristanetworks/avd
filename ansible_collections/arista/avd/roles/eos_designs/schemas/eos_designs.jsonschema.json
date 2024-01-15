@@ -1,6 +1,338 @@
 {
   "type": "object",
   "properties": {
+    "application_traffic_recognition": {
+      "type": "object",
+      "description": "PREVIEW: WAN Preview\n\nTODO",
+      "properties": {
+        "categories": {
+          "type": "array",
+          "description": "List of categories.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Category name.",
+                "title": "Name"
+              },
+              "applications": {
+                "type": "array",
+                "description": "List of applications.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Application name.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "Categories"
+        },
+        "field_sets": {
+          "type": "object",
+          "properties": {
+            "l4_ports": {
+              "type": "array",
+              "description": "L4 port field-set.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "L4 port field-set name.",
+                    "title": "Name"
+                  },
+                  "port_values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Port values or range of port values.\nPort values are between 0 and 65535."
+                    },
+                    "title": "Port Values"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "L4 Ports"
+            },
+            "ipv4_prefixes": {
+              "type": "array",
+              "description": "IPv4 prefix field set.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "IPv4 prefix field-set name.",
+                    "title": "Name"
+                  },
+                  "prefix_values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "IP prefix (ex 1.2.3.0/24)."
+                    },
+                    "title": "Prefix Values"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "IPv4 Prefixes"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Field Sets"
+        },
+        "applications": {
+          "type": "object",
+          "properties": {
+            "ipv4_applications": {
+              "type": "array",
+              "description": "List of user defined IPv4 applications.",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Application name.",
+                    "title": "Name"
+                  },
+                  "src_prefix_set_name": {
+                    "type": "string",
+                    "description": "Source prefix set name.",
+                    "title": "Src Prefix Set Name"
+                  },
+                  "dest_prefix_set_name": {
+                    "type": "string",
+                    "description": "Destination prefix set name.",
+                    "title": "Dest Prefix Set Name"
+                  },
+                  "protocols": {
+                    "type": "array",
+                    "description": "List of protocols to consider for this application.\n\nTo use port field-sets (source, destination or both), the list\nmust contain only one or two protocols, either `tcp` or `udp`.\nWhen using both protocols, one line is rendered for each in the configuration,\nhence the field-sets must have the same value for `tcp_src_port_set_name` and\n`udp_src_port_set_name` and for `tcp_dest_port_set_name` and `udp_dest_port_set_name`\nif set in order to generate valid configuration in EOS.",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "ahp",
+                        "esp",
+                        "icmp",
+                        "igmp",
+                        "ospf",
+                        "pim",
+                        "rsvp",
+                        "tcp",
+                        "udp",
+                        "vrrp"
+                      ]
+                    },
+                    "title": "Protocols"
+                  },
+                  "protocol_ranges": {
+                    "type": "array",
+                    "description": "Acccept protocol value(s) or range(s).\nProtocol values can be between 1 and 255.",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Protocol Ranges"
+                  },
+                  "udp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_src_port_set_name`.",
+                    "title": "UDP Src Port Set Name"
+                  },
+                  "tcp_src_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP source ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_src_port_set_name`.",
+                    "title": "TCP Src Port Set Name"
+                  },
+                  "udp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for UDP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `tcp_dest_port_set_name`.",
+                    "title": "UDP Dest Port Set Name"
+                  },
+                  "tcp_dest_port_set_name": {
+                    "type": "string",
+                    "description": "Name of field set for TCP destination ports.\n\nWhen the `protocols` list contain both `tcp` and `udp`, this key value\nmust be the same as `udp_dest_port_set_name`.",
+                    "title": "TCP Dest Port Set Name"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "required": [
+                  "name"
+                ]
+              },
+              "title": "IPv4 Applications"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Applications"
+        },
+        "application_profiles": {
+          "type": "array",
+          "description": "Group of applications.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Application Profile name.",
+                "title": "Name"
+              },
+              "applications": {
+                "type": "array",
+                "description": "List of applications part of the application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Application Name.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Applications"
+              },
+              "application_transports": {
+                "type": "array",
+                "description": "List of transport protocols.",
+                "items": {
+                  "type": "string",
+                  "description": "Transport name.",
+                  "enum": [
+                    "http",
+                    "https",
+                    "udp",
+                    "tcp",
+                    "ip",
+                    "ip6",
+                    "ssl",
+                    "rtp",
+                    "sctp",
+                    "quic"
+                  ]
+                },
+                "title": "Application Transports"
+              },
+              "categories": {
+                "type": "array",
+                "description": "Categories under this application profile.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Name of a category.",
+                      "title": "Name"
+                    },
+                    "service": {
+                      "type": "string",
+                      "description": "Service Name.\nSpecific service to target for this application.\nIf no service is specified, all supported services of the application are matched.\nNot all valid values are valid for all applications, check on EOS CLI.",
+                      "enum": [
+                        "audio-video",
+                        "chat",
+                        "default",
+                        "file-transfer",
+                        "networking-protocols",
+                        "peer-to-peer",
+                        "software-update"
+                      ],
+                      "title": "Service"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Categories"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Application Profiles"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Application Traffic Recognition"
+    },
     "avd_data_conversion_mode": {
       "type": "string",
       "enum": [
@@ -23615,6 +23947,278 @@
         ]
       },
       "title": "Wan Route Servers"
+    },
+    "wan_virtual_topologies": {
+      "type": "object",
+      "description": "PREVIEW: WAN Preview\n\nConfigure Virtual Topologies for CV Pathfinder and AutoVPN.\n\nAuto create a control plane profile/policy/application and enforce it being first in the default VRF.",
+      "properties": {
+        "vrfs": {
+          "type": "array",
+          "description": "Map a VRF that exists in network_services to an AVT policy.\nTODO: missing default VRF behavior",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "VRF name.",
+                "title": "Name"
+              },
+              "policy": {
+                "type": "string",
+                "description": "Name of the AVT policy to apply to this VRF.",
+                "title": "Policy"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "required": [
+              "name"
+            ]
+          },
+          "title": "VRFs"
+        },
+        "control_plane_virtual_topology": {
+          "type": "object",
+          "description": "Always injected into the default VRF policy as the first entry.\n\nBy default, if no path-groups are specified, all locally available path-groups\nare used in the generated load-balance policy.\nID is hardcoded to 254 for the AVT profile in CV Pathfinder mode.",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Optional name, if not set `CONTROL-PLANE-PROFILE` is used.",
+              "title": "Name"
+            },
+            "traffic_class": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 7,
+              "description": "Set traffic-class for matched traffic.",
+              "title": "Traffic Class"
+            },
+            "dscp": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 63,
+              "description": "Set DSCP for matched traffic.",
+              "title": "DSCP"
+            },
+            "path_groups": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "names": {
+                    "type": "array",
+                    "description": "List of path-group names.",
+                    "minItems": 1,
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Names"
+                  },
+                  "preference": {
+                    "type": "string",
+                    "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
+                    "title": "Preference"
+                  }
+                },
+                "required": [
+                  "names",
+                  "preference"
+                ],
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                }
+              },
+              "title": "Path Groups"
+            }
+          },
+          "additionalProperties": false,
+          "patternProperties": {
+            "^_.+$": {}
+          },
+          "title": "Control Plane Virtual Topology"
+        },
+        "policies": {
+          "type": "array",
+          "description": "List of virtual toplogies policies.\n\nFor AutoVPN, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item\n        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane rule is injected\n    in the policy with index `1` referring to a control-plane load-balance policy as defined under\n    `control_plane_virtual_topology`.\n\n\nFor CV Pathfinder, each item in the list creates:\n  * one policy with:\n      * one `match` entry per `application_virtual_topologies` item ordered as in the model.\n      * one last match entry for the `default` application-profile using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies` item.\n  * one profile for the `default_virtual_topology`..\n  * one load-balance policy per `application_virtual_topologies`.\n  * one load_balance policy for the `default_virtual_topology`.\n  * if the policy is associated with the default VRF, a special control-plane profile is configured\n    and injected first in the policy assigned to the `default` VRF. This profile points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the AVT policy.",
+                "title": "Name"
+              },
+              "application_virtual_topologies": {
+                "type": "array",
+                "description": "List of application specific virtual topologies.",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "application_profile": {
+                      "type": "string",
+                      "description": "The application profile to use for this virtual topology. It must be a defined `application_profile`.",
+                      "title": "Application Profile"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Optional name, if not set `<policy_name>_<application_profile>` is used.",
+                      "title": "Name"
+                    },
+                    "id": {
+                      "type": "integer",
+                      "minimum": 2,
+                      "maximum": 253,
+                      "description": "ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.\nID 1 is reserved for the default_virtual_toplogy.\nID 254 is reserved for the control_plane_virtual_topology.",
+                      "title": "ID"
+                    },
+                    "traffic_class": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 7,
+                      "description": "Set traffic-class for matched traffic.",
+                      "title": "Traffic Class"
+                    },
+                    "dscp": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 63,
+                      "description": "Set DSCP for matched traffic.",
+                      "title": "DSCP"
+                    },
+                    "path_groups": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "names": {
+                            "type": "array",
+                            "description": "List of path-group names.",
+                            "minItems": 1,
+                            "items": {
+                              "type": "string"
+                            },
+                            "title": "Names"
+                          },
+                          "preference": {
+                            "type": "string",
+                            "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
+                            "title": "Preference"
+                          }
+                        },
+                        "required": [
+                          "names",
+                          "preference"
+                        ],
+                        "additionalProperties": false,
+                        "patternProperties": {
+                          "^_.+$": {}
+                        }
+                      },
+                      "title": "Path Groups"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "application_profile"
+                  ],
+                  "additionalProperties": false,
+                  "patternProperties": {
+                    "^_.+$": {}
+                  }
+                },
+                "title": "Application Virtual Topologies"
+              },
+              "default_virtual_topology": {
+                "type": "object",
+                "description": "Default match for the policy.\nIf defined, ID is hardcoded to 1 for the AVT profile in CV Pathfinder mode.\nIf no default match should be configured, set `drop_unmatched` to `true`.",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Optional name, if not set `<policy_name>_default` is used.",
+                    "title": "Name"
+                  },
+                  "drop_unmatched": {
+                    "type": "boolean",
+                    "description": "When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped.",
+                    "default": false,
+                    "title": "Drop Unmatched"
+                  },
+                  "traffic_class": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 7,
+                    "description": "Set traffic-class for matched traffic.",
+                    "title": "Traffic Class"
+                  },
+                  "dscp": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 63,
+                    "description": "Set DSCP for matched traffic.",
+                    "title": "DSCP"
+                  },
+                  "path_groups": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "names": {
+                          "type": "array",
+                          "description": "List of path-group names.",
+                          "minItems": 1,
+                          "items": {
+                            "type": "string"
+                          },
+                          "title": "Names"
+                        },
+                        "preference": {
+                          "type": "string",
+                          "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
+                          "title": "Preference"
+                        }
+                      },
+                      "required": [
+                        "names",
+                        "preference"
+                      ],
+                      "additionalProperties": false,
+                      "patternProperties": {
+                        "^_.+$": {}
+                      }
+                    },
+                    "title": "Path Groups"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Default Virtual Topology"
+              }
+            },
+            "required": [
+              "default_virtual_topology",
+              "name"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            }
+          },
+          "title": "Policies"
+        }
+      },
+      "additionalProperties": false,
+      "patternProperties": {
+        "^_.+$": {}
+      },
+      "title": "Wan Virtual Topologies"
     }
   },
   "required": [

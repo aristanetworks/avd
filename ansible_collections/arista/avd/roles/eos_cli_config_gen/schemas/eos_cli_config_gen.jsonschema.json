@@ -14961,7 +14961,7 @@
         },
         "policies": {
           "type": "array",
-          "description": "A sequence of application profiles mapped to some virtual topologies.",
+          "description": "A sequence of application profiles mapped to some virtual topologies.\n\nWhen `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index> in the list.",
           "items": {
             "type": "object",
             "properties": {

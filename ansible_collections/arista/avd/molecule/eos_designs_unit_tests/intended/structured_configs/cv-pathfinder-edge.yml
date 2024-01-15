@@ -354,7 +354,10 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
-<<<<<<< HEAD
+      - name: IT
+        vni: 100
+      - name: PROD
+        vni: 42
 metadata:
   cv_tags:
     device_tags:
@@ -383,6 +386,14 @@ metadata:
         value: Colt
       - name: Circuit
         value: '10555'
+    - interface: Ethernet3
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Comcast-5G
+      - name: Circuit
+        value: AF830
   cv_pathfinder:
     role: edge
     vtep_ip: 192.168.42.1
@@ -396,11 +407,8 @@ metadata:
     - name: Ethernet2
       carrier: Colt
       pathgroup: MPLS
+    - name: Ethernet3
+      carrier: Comcast-5G
+      pathgroup: LTE
     pathfinders:
     - vtep_ip: 192.168.44.1
-=======
-      - name: IT
-        vni: 100
-      - name: PROD
-        vni: 42
->>>>>>> 9a5715406 (Feat(eos_designs): Schema for AVT policies / VRF)

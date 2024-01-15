@@ -369,7 +369,12 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
-<<<<<<< HEAD
+      - name: IT
+        vni: 100
+      - name: PROD
+        vni: 42
+      - name: TRANSIT
+        vni: 66
 metadata:
   cv_tags:
     device_tags:
@@ -413,14 +418,3 @@ metadata:
       pathgroup: MPLS
     pathfinders:
     - vtep_ip: 192.168.44.1
-=======
-      - name: IT
-        vni: 100
-      - name: PROD
-        vni: 42
-<<<<<<< HEAD
->>>>>>> 9a5715406 (Feat(eos_designs): Schema for AVT policies / VRF)
-=======
-      - name: TRANSIT
-        vni: 66
->>>>>>> c9f601302 (Feat: Render policy/profile/lb policies only on relevant routers)

@@ -394,6 +394,9 @@ metadata:
       - name: Orange
       - name: Another-ISP
     - name: LTE
+      carriers:
+      - name: Comcast-5G
+    - name: Equinix
     regions:
     - name: AVD_Land_West
       id: 42
