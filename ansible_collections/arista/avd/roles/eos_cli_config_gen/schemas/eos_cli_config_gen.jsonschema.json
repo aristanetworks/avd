@@ -26078,6 +26078,10 @@
                   "description": "Source Interface Name",
                   "title": "Source Interface"
                 },
+                "multicast_headend_replication": {
+                  "type": "boolean",
+                  "title": "Multicast Headend Replication"
+                },
                 "controller_client": {
                   "type": "object",
                   "description": "Client to CVX Controllers",

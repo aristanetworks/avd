@@ -5,6 +5,7 @@ vxlan_interface:
     description: DC1-LEAF2A_VTEP
     vxlan:
       source_interface: Loopback0
+      multicast_headend_replication: true
       controller_client:
         enabled: true
       mlag_source_interface: Loopback1
