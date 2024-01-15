@@ -6,8 +6,6 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Literal
 
-from aristaproto import _DateTime
-
 from ..api.arista.changecontrol.v1 import (
     ApproveConfig,
     ApproveConfigServiceStub,
@@ -26,6 +24,8 @@ from ..api.arista.changecontrol.v1 import (
 from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
+    from aristaproto import _DateTime
+
     from .cv_client import CVClient
 
 

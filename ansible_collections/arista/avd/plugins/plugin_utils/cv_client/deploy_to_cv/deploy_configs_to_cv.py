@@ -114,12 +114,12 @@ async def deploy_configs_to_cv(configs: list[CVEosConfig], result: DeployToCvRes
 
     # First create all configlets in parallel coroutines.
     LOGGER.info("deploy_configs_to_cv: Deploying %s configlets in batches of 20.", len(configlet_coroutines))
-    for index, coroutines in enumerate(batch(configlet_coroutines, 20), start=1):
+    for index, coroutines in enumerate(batch(configlet_coroutines, 10), start=1):
         LOGGER.info("deploy_configs_to_cv: Batch %s", index)
         await gather(*coroutines)
     # Next create all containers in parallel coroutines.
     LOGGER.info("deploy_configs_to_cv: Deploying %s configlet assignments / containers in batches of 20.", len(container_coroutines))
-    for index, coroutines in enumerate(batch(container_coroutines, 20), start=1):
+    for index, coroutines in enumerate(batch(container_coroutines, 10), start=1):
         LOGGER.info("deploy_configs_to_cv: Batch %s", index)
         await gather(*coroutines)
 
