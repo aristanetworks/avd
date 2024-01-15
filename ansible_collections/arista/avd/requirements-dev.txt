@@ -21,5 +21,4 @@ black==23.12.1
 ansible-doc-extractor>=0.1.10
 tox
 pydantic>=2.3.0
-aristaproto>=0.1.1
 aristaproto[compiler]>=0.1.1
