@@ -404,23 +404,3 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         ).copy()
         default_policy["is_default"] = True
         return default_policy
-
-    def _assert_application_profile_exist(self, application_profile: str) -> None:
-        """
-        Check that the application_profile name exists in the `application_traffic_recognition` block
-        or is `default`
-        otherwise raise AristaAvdMissingVariableError
-        """
-        if application_profile == "default":
-            return
-        application_profiles = get(self._hostvars, "application_traffic_recognition.application_profiles", [])
-        get_item(
-            application_profiles,
-            "name",
-            application_profile,
-            required=True,
-            custom_error_msg=(
-                f"The application profile {application_profile} used in one of the policies "
-                "is not defined in 'application_traffic_recognition.application_profiles'."
-            ),
-        )

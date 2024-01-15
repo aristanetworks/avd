@@ -352,7 +352,7 @@ application_traffic_recognition:
     ipv4_prefixes:
     - name: CONTROL-PLANE-APP-DEST-PREFIXES
       prefix_values:
-      - 42.42.42.42/32
+      - 192.168.44.1/32
 dps_interfaces:
 - name: Dps1
   description: DPS Interface

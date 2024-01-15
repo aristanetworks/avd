@@ -88,8 +88,10 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
         ipv4_prefixes_field_sets = get(app_dict, "field_sets.ipv4_prefixes", [])
         if get_item(ipv4_prefixes_field_sets, "name", self._wan_cp_app_dst_prefix) is not None:
             return
-        # pathfinder_router_ids = [wan_rs_data.get("router_id") for wan_rs, wan_rs_data in self.shared_utils.wan_route_servers.items()]
-        pathfinder_router_ids = ["42.42.42.42/32"]
+        pathfinder_router_ids = [f"{wan_rs_data.get('router_id')}/32" for wan_rs, wan_rs_data in self.shared_utils.filtered_wan_route_servers.items()]
+        if self.shared_utils.wan_role == "server":
+            pathfinder_router_ids.extend(self.shared_utils.wan_listen_ranges)
+
         app_dict.setdefault("field_sets", {}).setdefault("ipv4_prefixes", []).append(
             {
                 "name": self._wan_cp_app_dst_prefix,
@@ -143,7 +145,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                     obj_name=application_profile,
                     list_of_dicts=application_profiles,
                     message=(
-                        f"The application profile {application_profile} used in one of the policies "
+                        f"The application profile {application_profile} used in policy {policy['name']}  "
                         "is not defined in 'application_traffic_recognition.application_profiles'."
                     ),
                 )
@@ -156,7 +158,7 @@ class ApplicationTrafficRecognitionMixin(UtilsMixin):
                         obj_name=application_profile,
                         list_of_dicts=application_profiles,
                         message=(
-                            f"The application profile {application_profile} used in one of the policies "
+                            f"The application profile {application_profile} used in policy {policy['name']} "
                             "is not defined in 'application_traffic_recognition.application_profiles'."
                         ),
                     )

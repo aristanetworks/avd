@@ -117,7 +117,6 @@ class RouterAdaptiveVirtualTopologyMixin(UtilsMixin):
             default_virtual_topology = get(avt_policy, "default_virtual_topology", required=True)
             if not get(default_virtual_topology, "drop_unmatched", default=False):
                 application_profile = get(default_virtual_topology, "application_profile", default="default")
-                self._assert_application_profile_exist(application_profile)
                 cv_pathfinder_policy["matches"].append(
                     {
                         "application_profile": application_profile,

@@ -357,7 +357,10 @@ application_traffic_recognition:
     ipv4_prefixes:
     - name: CONTROL-PLANE-APP-DEST-PREFIXES
       prefix_values:
-      - 42.42.42.42/32
+      - 192.168.44.2/32
+      - 6.6.6.6/32
+      - 192.168.42.0/24
+      - 192.168.43.0/24
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
@@ -436,8 +439,6 @@ metadata:
         sites:
         - name: Site422
           id: 422
-          location:
-            address: Somewhere
     - name: AVD_Land_East
       id: 43
       zones:
