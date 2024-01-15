@@ -11,6 +11,7 @@ cv_pathfinder_regions:
     sites:
       - name: Site422
         id: 422
+        location: Somewhere
   - name: AVD_Land_East
     id: 43
     description: AVD Region

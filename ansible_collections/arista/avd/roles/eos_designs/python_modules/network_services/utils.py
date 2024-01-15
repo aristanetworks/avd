@@ -227,20 +227,20 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         """
         return "policy" if self.shared_utils.wan_mode == "cv-pathfinder" else "path_selection_policy"
 
-    def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, default_all: bool = False) -> dict:
+    def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, context_path: str, default_all: bool = False) -> dict:
         """
         Generate and return a router path-selection load-balance policy.
 
         Attrs:
         ------
         name (str): The name of the load balance policy
-        input_dict (dict): The dictionary containing
+        input_dict (dict): The dictionary containing the list of path-groups and their preference.
+        context_path (str): Key used for context for error messages.
         default_all (bool): When set, if no path-group is found in the input_dict, all local path groups connected to pathfinder
                             are added to the policy with priority 1.
 
         TODO:
         * add LAN_HA with prio 1 when HA is implemented
-        * for now hardcoding priorities as requested by team
         * implement also the jitter / ...
         """
         wan_local_path_group_names = [path_group["name"] for path_group in self.shared_utils.wan_local_path_groups]
@@ -261,7 +261,11 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             # TODO check if it cannot be optimized further in shared_utils or validated in a global fashion - maybe
             # schema?
             # check that the LB policy has at least one prio 1 / preferred EVEN if the path group is not configured.
-            if (priority := self._path_group_preference_to_eos_priority(get(policy_entry, "preference", default=1))) == 1:
+            if (
+                priority := self._path_group_preference_to_eos_priority(
+                    get(policy_entry, "preference", default=1), f"{context_path}[{policy_entry.get('names')}]"
+                )
+            ) == 1:
                 at_least_one_priority_1_found = True
             for path_group_name in policy_entry.get("names"):
                 # Skip path-group on this device if not present on the router except for pathfinders
@@ -275,13 +279,18 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
 
                 wan_load_balance_policy["path_groups"].append(path_group)
         if not at_least_one_priority_1_found:
-            raise AristaAvdError(f"At least one path-group must be configured with preference '1' or 'preferred' for policy {name[:-3]}.")
+            raise AristaAvdError(f"At least one path-group must be configured with preference '1' or 'preferred' for {context_path}'.")
 
         return wan_load_balance_policy
 
-    def _path_group_preference_to_eos_priority(self, path_group_preference: int | str) -> int:
+    def _path_group_preference_to_eos_priority(self, path_group_preference: int | str, context_path: str) -> int:
         """
         Convert "preferred" to 1 and "alternate" to 2. Everything else is returned as is.
+
+        Arguments:
+        ----------
+        path_group_preference (str|int): The value of the preference key to be converted. It must be either "preferred", "alternate" or an integer.
+        context_path (str): Input path context for the error message.
         """
         if path_group_preference == "preferred":
             return 1
@@ -291,13 +300,13 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             return int(path_group_preference)
         except ValueError as e:
             raise AristaAvdError(
-                f"Invalid value {path_group_preference} for Path-Group preference - should be either 'preferred', 'alternate' or an integer."
+                f"Invalid value '{path_group_preference}' for Path-Group preference - should be either 'preferred', 'alternate' or an integer for {context_path}."
             ) from e
 
     @cached_property
     def _wan_load_balance_policies(self) -> list:
         """
-        Return a list of WAN router path-selection load-balance policy based on the local path-groups.
+        Return a list of WAN router path-selection load-balance policies based on the local path-groups.
         """
         if not self.shared_utils.wan_role:
             return []
@@ -305,16 +314,21 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         # Control plane Load Balancing policy - if not configured, render the default one.
         control_plane_virtual_topology = get(self._hostvars, "wan_virtual_topologies.control_plane_virtual_topology", default={})
         wan_load_balance_policies = [
-            self._generate_wan_load_balance_policy(f"LB-{self._wan_control_plane_profile}", control_plane_virtual_topology, default_all=True)
+            self._generate_wan_load_balance_policy(
+                f"LB-{self._wan_control_plane_profile}", control_plane_virtual_topology, self._default_vrf_policy["name"], default_all=True
+            )
         ]
         for policy in self._filtered_wan_policies:
             for application_virtual_topology in get(policy, "application_virtual_topologies", []):
                 # TODO add internet exit once supported
                 name = get(application_virtual_topology, "name", default=f"{policy['name']}-{application_virtual_topology['application_profile']}")
+                context_path = (
+                    f"wan_virtual_topologies.policies[{policy['name']}].application_virtual_topologies[{application_virtual_topology['application_profile']}]"
+                )
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", application_virtual_topology),
+                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", application_virtual_topology, context_path),
                     context="Router Path-Selection Load-Balance policies.",
                     context_keys=["name"],
                 )
@@ -322,10 +336,11 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             default_virtual_topology = get(policy, "default_virtual_topology", required=True)
             if not get(default_virtual_topology, "drop_unmatched", default=False):
                 name = get(default_virtual_topology, "name", default=f"{policy['name']}-DEFAULT")
+                context_path = f"wan_virtual_topologies.policies[{policy['name']}].default_virtual_topology"
                 append_if_not_duplicate(
                     list_of_dicts=wan_load_balance_policies,
                     primary_key="name",
-                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", default_virtual_topology),
+                    new_dict=self._generate_wan_load_balance_policy(f"LB-{name}", default_virtual_topology, context_path),
                     context="Router Path-Selection Load-Balance policies.",
                     context_keys=["name"],
                 )

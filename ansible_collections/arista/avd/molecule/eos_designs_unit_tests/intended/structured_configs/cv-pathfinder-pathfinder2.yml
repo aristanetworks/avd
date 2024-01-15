@@ -464,6 +464,8 @@ metadata:
         sites:
         - name: Site422
           id: 422
+          location:
+            address: Somewhere
     - name: AVD_Land_East
       id: 43
       zones:
