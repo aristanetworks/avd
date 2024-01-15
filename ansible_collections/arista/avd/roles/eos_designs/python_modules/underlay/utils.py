@@ -4,16 +4,12 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING
 
 from ansible_collections.arista.avd.plugins.filter.natural_sort import natural_sort
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_shared_utils.shared_utils import SharedUtils
 from ansible_collections.arista.avd.plugins.plugin_utils.strip_empties import strip_empties_from_dict
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import get
-from ansible_collections.arista.avd.plugins.plugin_utils.errors import AristaAvdError
 
-if TYPE_CHECKING:
-    from ansible_collections.arista.avd.plugins.plugin_utils.eos_designs_facts import EosDesignsFacts
 
 class UtilsMixin:
     """
