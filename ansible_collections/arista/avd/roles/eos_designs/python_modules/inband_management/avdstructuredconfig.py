@@ -194,7 +194,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
         }
 
         if self.shared_utils.configure_inband_mgmt_ipv6:
-            route_map["sequence_numbers"].append({"sequence": 40, "type": "permit", "match": ["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]})
+            route_map["sequence_numbers"].append({"sequence": 50, "type": "permit", "match": ["ipv6 address prefix-list IPv6-PL-L2LEAF-INBAND-MGMT"]})
 
         return [route_map]
 
