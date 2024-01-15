@@ -64,6 +64,9 @@
 | l2leaf | mtwn-fl1-m2 | Ethernet54 | l2leaf | mtwn-fl1-m4 | Ethernet50 |
 | l2leaf | mtwn-fl1-m3 | Ethernet51 | mlag_peer | mtwn-fl1-m4 | Ethernet51 |
 | l2leaf | mtwn-fl1-m3 | Ethernet52 | mlag_peer | mtwn-fl1-m4 | Ethernet52 |
+| l2leaf | mtwn-fl1-m3 | Ethernet53 | l2leaf | mtwn-fl1-m5 | Ethernet49 |
+| l2leaf | mtwn-fl1-m5 | Ethernet51 | mlag_peer | mtwn-fl1-m6 | Ethernet51 |
+| l2leaf | mtwn-fl1-m5 | Ethernet52 | mlag_peer | mtwn-fl1-m6 | Ethernet52 |
 | l2leaf | mtwn-fl1-m6 | Ethernet53 | l2leaf | mtwn-fl1-m7 | Ethernet49 |
 | l3leaf | mtwn-fl2-lfa | Ethernet49 | mlag_peer | mtwn-fl2-lfb | Ethernet49 |
 | l3leaf | mtwn-fl2-lfa | Ethernet50 | mlag_peer | mtwn-fl2-lfb | Ethernet50 |

@@ -35,7 +35,7 @@ ethernet_interfaces:
     mode: active
 port_channel_interfaces:
 - name: Port-Channel49
-  description: MTWN-FL1-M6_Po53
+  description: MTWN_L2_FL1-M56_Po53
   type: switched
   shutdown: false
   mode: trunk

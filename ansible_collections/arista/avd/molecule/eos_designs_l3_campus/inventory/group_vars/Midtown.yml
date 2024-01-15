@@ -138,12 +138,12 @@ l2leaf:
 
     - group: MTWN_L2_FL1-M56
       nodes:
-        - name: mtwn-fl1-m1
+        - name: mtwn-fl1-m5
           id: 5
-          uplink_interfaces: ['Ethernet51']
+          uplink_interfaces: ['Ethernet49']
           uplink_switches: ['mtwn-fl1-m3']
           uplink_switch_interfaces: ['Ethernet53']
-        - name: mtwn-fl1-m2
+        - name: mtwn-fl1-m6
           id: 6
           uplink_interfaces: []
           uplink_switches: []

@@ -15,6 +15,7 @@ spanning_tree:
   mst_instances:
   - id: '0'
     priority: 32768
+  no_spanning_tree_vlan: '4094'
 vrfs:
 - name: MGMT
   ip_routing: false
@@ -22,7 +23,54 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
   enable_https: true
+vlans:
+- id: 4094
+  tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+vlan_interfaces:
+- name: Vlan4094
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.255.1.105/31
+  no_autostate: true
+  mtu: 9214
+port_channel_interfaces:
+- name: Port-Channel51
+  description: MLAG_PEER_mtwn-fl1-m5_Po51
+  type: switched
+  shutdown: false
+  mode: trunk
+  trunk_groups:
+  - MLAG
+- name: Port-Channel53
+  description: MTWN-FL1-M7_Po49
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: none
 ethernet_interfaces:
+- name: Ethernet51
+  peer: mtwn-fl1-m5
+  peer_interface: Ethernet51
+  peer_type: mlag_peer
+  description: MLAG_PEER_mtwn-fl1-m5_Ethernet51
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 51
+    mode: active
+- name: Ethernet52
+  peer: mtwn-fl1-m5
+  peer_interface: Ethernet52
+  peer_type: mlag_peer
+  description: MLAG_PEER_mtwn-fl1-m5_Ethernet52
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 51
+    mode: active
 - name: Ethernet53
   peer: mtwn-fl1-m7
   peer_interface: Ethernet49
@@ -33,13 +81,13 @@ ethernet_interfaces:
   channel_group:
     id: 53
     mode: active
-port_channel_interfaces:
-- name: Port-Channel53
-  description: MTWN-FL1-M7_Po49
-  type: switched
-  shutdown: false
-  mode: trunk
-  vlans: none
+mlag_configuration:
+  domain_id: MTWN_L2_FL1-M56
+  local_interface: Vlan4094
+  peer_address: 10.255.1.104
+  peer_link: Port-Channel51
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
 ip_igmp_snooping:
   globally_enabled: true
 metadata:

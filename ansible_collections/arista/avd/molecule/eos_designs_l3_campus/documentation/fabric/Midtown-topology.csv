@@ -27,10 +27,16 @@ l2leaf,mtwn-fl1-m3,Ethernet49,l2leaf,mtwn-fl1-m1,Ethernet53,True
 l2leaf,mtwn-fl1-m3,Ethernet50,l2leaf,mtwn-fl1-m2,Ethernet53,True
 l2leaf,mtwn-fl1-m3,Ethernet51,mlag_peer,mtwn-fl1-m4,Ethernet51,True
 l2leaf,mtwn-fl1-m3,Ethernet52,mlag_peer,mtwn-fl1-m4,Ethernet52,True
+l2leaf,mtwn-fl1-m3,Ethernet53,l2leaf,mtwn-fl1-m5,Ethernet49,True
 l2leaf,mtwn-fl1-m4,Ethernet49,l2leaf,mtwn-fl1-m1,Ethernet54,True
 l2leaf,mtwn-fl1-m4,Ethernet50,l2leaf,mtwn-fl1-m2,Ethernet54,True
 l2leaf,mtwn-fl1-m4,Ethernet51,mlag_peer,mtwn-fl1-m3,Ethernet51,True
 l2leaf,mtwn-fl1-m4,Ethernet52,mlag_peer,mtwn-fl1-m3,Ethernet52,True
+l2leaf,mtwn-fl1-m5,Ethernet49,l2leaf,mtwn-fl1-m3,Ethernet53,True
+l2leaf,mtwn-fl1-m5,Ethernet51,mlag_peer,mtwn-fl1-m6,Ethernet51,True
+l2leaf,mtwn-fl1-m5,Ethernet52,mlag_peer,mtwn-fl1-m6,Ethernet52,True
+l2leaf,mtwn-fl1-m6,Ethernet51,mlag_peer,mtwn-fl1-m5,Ethernet51,True
+l2leaf,mtwn-fl1-m6,Ethernet52,mlag_peer,mtwn-fl1-m5,Ethernet52,True
 l2leaf,mtwn-fl1-m6,Ethernet53,l2leaf,mtwn-fl1-m7,Ethernet49,True
 l2leaf,mtwn-fl1-m7,Ethernet49,l2leaf,mtwn-fl1-m6,Ethernet53,True
 l3leaf,mtwn-fl2-lfa,Ethernet49,mlag_peer,mtwn-fl2-lfb,Ethernet49,True
