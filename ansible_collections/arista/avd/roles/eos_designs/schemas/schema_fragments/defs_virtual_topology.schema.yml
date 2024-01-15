@@ -20,7 +20,6 @@ $defs:
         $ref: "eos_cli_config_gen#keys/router_adaptive_virtual_topology/keys/policies/items/keys/matches/items/keys/dscp"
       path_groups:
         type: list
-        primary_key: preference
         min_length: 1
         items:
           type: dict
@@ -41,3 +40,4 @@ $defs:
 
                 preferred is converted to priority 1.
                 alternate is converted to priority 2.
+              default: "preferred"

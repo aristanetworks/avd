@@ -18,7 +18,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].preference") | String | Required, Unique |  |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.path_groups.[].preference") | String |  | `preferred` |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
     | [<samp>&nbsp;&nbsp;policies</samp>](## "wan_virtual_topologies.policies") | List, items: Dictionary |  |  |  | List of virtual toplogies policies.<br><br>For AutoVPN, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item<br>        they are indexed using `10 * <list_index>` where `list_index` starts at `1`.<br>      * one `default-match`<br>  * one load-balance policy per `application_virtual_topologies` and one for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane rule is injected<br>    in the policy with index `1` referring to a control-plane load-balance policy as defined under<br>    `control_plane_virtual_topology`.<br><br><br>For CV Pathfinder, each item in the list creates:<br>  * one policy with:<br>      * one `match` entry per `application_virtual_topologies` item ordered as in the model.<br>      * one last match entry for the `default` application-profile using `default_virtual_topology` information.<br>  * one profile per `application_virtual_topologies` item.<br>  * one profile for the `default_virtual_topology`..<br>  * one load-balance policy per `application_virtual_topologies`.<br>  * one load_balance policy for the `default_virtual_topology`.<br>  * if the policy is associated with the default VRF, a special control-plane profile is configured<br>    and injected first in the policy assigned to the `default` VRF. This profile points to a<br>    control-plane load-balance policy as defined under `control_plane_virtual_topology`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].name") | String | Required, Unique |  |  | Name of the AVT policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;application_virtual_topologies</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies") | List, items: Dictionary |  |  |  | List of application specific virtual topologies. |
@@ -30,7 +30,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].names.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].preference") | String | Required, Unique |  |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].path_groups.[].preference") | String |  | `preferred` |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_virtual_topology</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology") | Dictionary | Required |  |  | Default match for the policy.<br>If defined, ID is hardcoded to 1 for the AVT profile in CV Pathfinder mode.<br>If no default match should be configured, set `drop_unmatched` to `true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.name") | String |  |  |  | Optional name, if not set `<policy_name>_default` is used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_unmatched</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.drop_unmatched") | Boolean |  | `False` |  | When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped. |
@@ -39,7 +39,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;path_groups</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;names</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].names") | List, items: String | Required |  | Min Length: 1 | List of path-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].names.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].preference") | String | Required, Unique |  |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;preference</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.path_groups.[].preference") | String |  | `preferred` |  | Valid values are 1-255 | preferred | alternate.<br><br>preferred is converted to priority 1.<br>alternate is converted to priority 2. |
 
 === "YAML"
 
@@ -86,7 +86,7 @@
 
             # preferred is converted to priority 1.
             # alternate is converted to priority 2.
-            preference: <str; required; unique>
+            preference: <str; default="preferred">
 
       # List of virtual toplogies policies.
 
@@ -146,7 +146,7 @@
 
                   # preferred is converted to priority 1.
                   # alternate is converted to priority 2.
-                  preference: <str; required; unique>
+                  preference: <str; default="preferred">
 
           # Default match for the policy.
           # If defined, ID is hardcoded to 1 for the AVT profile in CV Pathfinder mode.
@@ -174,5 +174,5 @@
 
                 # preferred is converted to priority 1.
                 # alternate is converted to priority 2.
-                preference: <str; required; unique>
+                preference: <str; default="preferred">
     ```

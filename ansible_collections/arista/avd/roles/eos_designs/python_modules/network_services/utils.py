@@ -261,7 +261,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
             # TODO check if it cannot be optimized further in shared_utils or validated in a global fashion - maybe
             # schema?
             # check that the LB policy has at least one prio 1 / preferred EVEN if the path group is not configured.
-            if (priority := self._path_group_preference_to_eos_priority(get(policy_entry, "preference", required=True))) == 1:
+            if (priority := self._path_group_preference_to_eos_priority(get(policy_entry, "preference", default=1))) == 1:
                 at_least_one_priority_1_found = True
             for path_group_name in policy_entry.get("names"):
                 # Skip path-group on this device if not present on the router except for pathfinders

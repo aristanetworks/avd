@@ -219,8 +219,8 @@ wan_virtual_topologies:
     - name: DEFAULT-AVT-POLICY
       default_virtual_topology:
         path_groups:
+          # No prefence to check the default.
           - names: [INET, Equinix]
-            preference: preferred
           - names: [MPLS]
             preference: 42
       application_virtual_topologies:

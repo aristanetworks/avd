@@ -24020,12 +24020,12 @@
                   "preference": {
                     "type": "string",
                     "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
+                    "default": "preferred",
                     "title": "Preference"
                   }
                 },
                 "required": [
-                  "names",
-                  "preference"
+                  "names"
                 ],
                 "additionalProperties": false,
                 "patternProperties": {
@@ -24107,12 +24107,12 @@
                           "preference": {
                             "type": "string",
                             "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
+                            "default": "preferred",
                             "title": "Preference"
                           }
                         },
                         "required": [
-                          "names",
-                          "preference"
+                          "names"
                         ],
                         "additionalProperties": false,
                         "patternProperties": {
@@ -24180,12 +24180,12 @@
                         "preference": {
                           "type": "string",
                           "description": "Valid values are 1-255 | preferred | alternate.\n\npreferred is converted to priority 1.\nalternate is converted to priority 2.",
+                          "default": "preferred",
                           "title": "Preference"
                         }
                       },
                       "required": [
-                        "names",
-                        "preference"
+                        "names"
                       ],
                       "additionalProperties": false,
                       "patternProperties": {
