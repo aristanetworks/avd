@@ -225,7 +225,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         """
         The key for policies is different for AutoVPN and CV Pathfinder
         """
-        return "policy" if self.shared_utils.cv_pathfinder_role else "path_selection_policy"
+        return "policy" if self.shared_utils.wan_mode == "cv-pathfinder" else "path_selection_policy"
 
     def _generate_wan_load_balance_policy(self, name: str, input_dict: dict, default_all: bool = False) -> dict:
         """
@@ -285,7 +285,7 @@ class UtilsMixin(UtilsFilteredTenantsMixin):
         """
         if path_group_preference == "preferred":
             return 1
-        elif path_group_preference == "alternate":
+        if path_group_preference == "alternate":
             return 2
         try:
             return int(path_group_preference)
