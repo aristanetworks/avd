@@ -1974,6 +1974,17 @@ keys:
           type: list
           items:
             type: str
+        ip_verify:
+          type: dict
+          keys:
+            unicast_source:
+              type: dict
+              keys:
+                reachable_via:
+                  type: str
+                  valid_values:
+                  - any
+                  - rx
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP
@@ -7600,6 +7611,17 @@ keys:
         ip_address:
           type: str
           description: IPv4 address/mask
+        ip_verify:
+          type: dict
+          keys:
+            unicast_source:
+              type: dict
+              keys:
+                reachable_via:
+                  type: str
+                  valid_values:
+                  - any
+                  - rx
         ip_nat:
           type: dict
           $ref: eos_cli_config_gen#/$defs/interface_ip_nat
@@ -14388,6 +14410,17 @@ keys:
           items:
             type: str
             description: IPv4_address/Mask
+        ip_verify:
+          type: dict
+          keys:
+            unicast_source:
+              type: dict
+              keys:
+                reachable_via:
+                  type: str
+                  valid_values:
+                  - any
+                  - rx
         ip_igmp:
           type: bool
         ip_igmp_version:

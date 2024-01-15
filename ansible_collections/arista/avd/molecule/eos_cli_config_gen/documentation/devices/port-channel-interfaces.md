@@ -364,6 +364,7 @@ interface Port-Channel5
    l2 mtu 8000
    l2 mru 8000
    mlag 5
+   ip verify unicast source reachable-via rx
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1

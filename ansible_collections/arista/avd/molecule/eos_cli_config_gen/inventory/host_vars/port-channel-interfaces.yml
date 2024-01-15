@@ -23,6 +23,9 @@ port_channel_interfaces:
       session_tracker: ST2
     l2_mtu: 8000
     l2_mru: 8000
+    ip_verify:
+      unicast_source:
+        reachable_via: rx
     eos_cli: |
       comment
       Comment created from eos_cli under port_channel_interfaces.Port-Channel5

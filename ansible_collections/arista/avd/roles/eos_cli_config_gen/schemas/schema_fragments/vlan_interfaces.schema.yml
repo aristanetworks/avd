@@ -68,6 +68,17 @@ keys:
           items:
             type: str
             description: IPv4_address/Mask
+        ip_verify:
+          type: dict
+          keys:
+            unicast_source:
+              type: dict
+              keys:
+                reachable_via:
+                  type: str
+                  valid_values:
+                    - any
+                    - rx
         ip_igmp:
           type: bool
         ip_igmp_version:

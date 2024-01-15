@@ -276,6 +276,17 @@ keys:
           type: list
           items:
             type: str
+        ip_verify:
+          type: dict
+          keys:
+            unicast_source:
+              type: dict
+              keys:
+                reachable_via:
+                  type: str
+                  valid_values:
+                    - any
+                    - rx
         dhcp_client_accept_default_route:
           type: bool
           description: Install default-route obtained via DHCP

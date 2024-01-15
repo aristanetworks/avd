@@ -2882,6 +2882,34 @@
             },
             "title": "IP Address Secondaries"
           },
+          "ip_verify": {
+            "type": "object",
+            "properties": {
+              "unicast_source": {
+                "type": "object",
+                "properties": {
+                  "reachable_via": {
+                    "type": "string",
+                    "enum": [
+                      "any",
+                      "rx"
+                    ],
+                    "title": "Reachable Via"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unicast Source"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Verify"
+          },
           "dhcp_client_accept_default_route": {
             "type": "boolean",
             "description": "Install default-route obtained via DHCP",
@@ -12773,6 +12801,34 @@
             "type": "string",
             "description": "IPv4 address/mask",
             "title": "IP Address"
+          },
+          "ip_verify": {
+            "type": "object",
+            "properties": {
+              "unicast_source": {
+                "type": "object",
+                "properties": {
+                  "reachable_via": {
+                    "type": "string",
+                    "enum": [
+                      "any",
+                      "rx"
+                    ],
+                    "title": "Reachable Via"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unicast Source"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Verify"
           },
           "ip_nat": {
             "type": "object",
@@ -24806,6 +24862,34 @@
               "description": "IPv4_address/Mask"
             },
             "title": "IP Address Virtual Secondaries"
+          },
+          "ip_verify": {
+            "type": "object",
+            "properties": {
+              "unicast_source": {
+                "type": "object",
+                "properties": {
+                  "reachable_via": {
+                    "type": "string",
+                    "enum": [
+                      "any",
+                      "rx"
+                    ],
+                    "title": "Reachable Via"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Unicast Source"
+              }
+            },
+            "additionalProperties": false,
+            "patternProperties": {
+              "^_.+$": {}
+            },
+            "title": "IP Verify"
           },
           "ip_igmp": {
             "type": "boolean",

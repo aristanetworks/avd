@@ -341,6 +341,13 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.ip_address is arista.avd.defined("dhcp") and ethernet_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
    dhcp client accept default-route
 {%     endif %}
+{%     if ethernet_interface.ip_verify is arista.avd.defined %}
+{%         if ethernet_interface.ip_verify.unicast_source is arista.avd.defined %}
+{%             if ethernet_interface.ip_verify.unicast_source.reachable_via is arista.avd.defined %}
+   ip verify unicast source reachable-via {{ ethernet_interface.ip_verify.unicast_source.reachable_via }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.bfd.interval is arista.avd.defined and
           ethernet_interface.bfd.min_rx is arista.avd.defined and
           ethernet_interface.bfd.multiplier is arista.avd.defined %}
