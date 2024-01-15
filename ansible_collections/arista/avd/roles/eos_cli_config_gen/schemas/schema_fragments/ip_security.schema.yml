@@ -72,7 +72,7 @@ keys:
                     - aes128gcm128
                     - aes128gcm64
                     - aes256
-                    - aes256gcm256
+                    - aes256gcm128
                     - "null"  # TODO: AVD 5.0.0
             pfs_dh_group:
               type: int
