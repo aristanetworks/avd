@@ -4291,7 +4291,7 @@ keys:
                   - aes128gcm128
                   - aes128gcm64
                   - aes256
-                  - aes256gcm256
+                  - aes256gcm128
                   - 'null'
             pfs_dh_group:
               type: int
