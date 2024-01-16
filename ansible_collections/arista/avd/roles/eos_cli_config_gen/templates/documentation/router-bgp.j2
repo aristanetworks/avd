@@ -304,6 +304,9 @@
 {%                 if peer_group.passive is arista.avd.defined(true) %}
 {%                     set inherited.passive = "Inherited from peer group " ~ neighbor.peer_group %}
 {%                 endif %}
+{%                 if peer_group.ttl_maximum_hops is arista.avd.defined %}
+{%                     set inherited.ttl_maximum_hops = "Inherited from peer group " ~ neighbor.peer_group %}
+{%                 endif %}
 {%             endif %}
 {%             set active_parameter = namespace() %}
 {%             set active_parameter.remote_as = neighbor.remote_as | arista.avd.default(inherited.remote_as, '-') %}
@@ -356,10 +359,7 @@
 {%                     set value_allowas = "Allowed, allowed 3 (default) times" %}
 {%                 endif %}
 {%             endif %}
-{%             set ttl_maximum_hops = "-" %}
-{%             if neighbor.ttl_maximum_hops is arista.avd.defined %}
-{%                 set ttl_maximum_hops = neighbor.ttl_maximum_hops %}
-{%             endif %}
+{%             set ttl_maximum_hops = neighbor.ttl_maximum_hops | arista.avd.default(inherited.ttl_maximum_hops, "-") %}
 {%             set active_parameter.allowas_in = value_allowas | arista.avd.default(inherited.allowas_in, '-') %}
 | {{ neighbor.ip_address }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.shutdown }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.allowas_in }} | {{ active_parameter.bfd }} | {{ active_parameter.rib_in_pre_policy_retain }} | {{ active_parameter.route_reflector_client }} | {{ active_parameter.passive }} | {{ ttl_maximum_hops }} |
 {%         endfor %}

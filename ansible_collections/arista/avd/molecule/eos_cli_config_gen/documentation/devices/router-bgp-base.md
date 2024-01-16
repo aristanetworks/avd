@@ -70,6 +70,12 @@ interface Management1
 
 #### Router BGP Peer Groups
 
+##### TEST
+
+| Settings | Value |
+| -------- | ----- |
+| TTL Max Hops | 42 |
+
 ##### test-link-bandwidth1
 
 | Settings | Value |
@@ -106,8 +112,8 @@ interface Management1
 | 192.0.3.5 | 65436 | default | - | standard | 12000 | - | - | - | - | - | - |
 | 192.0.3.6 | 65437 | default | - | - | - | - | - | - | False | - | - |
 | 192.0.3.7 | 65438 | default | - | - | - | - | - | - | True | - | - |
-| 192.0.3.8 | 65438 | default | - | - | - | - | True | - | - | - | - |
-| 192.0.3.9 | 65438 | default | - | - | - | - | False | - | - | - | - |
+| 192.0.3.8 | 65438 | default | - | - | - | - | True | - | - | - | Inherited from peer group TEST |
+| 192.0.3.9 | 65438 | default | - | - | - | - | False | - | - | - | Inherited from peer group TEST |
 
 #### BGP Neighbor Interfaces
 
@@ -152,6 +158,8 @@ router bgp 65101
    bgp listen range 10.10.10.0/24 peer-group my-peer-group1 peer-filter my-peer-filter
    bgp listen range 12.10.10.0/24 peer-id include router-id peer-group my-peer-group3 remote-as 65444
    bgp listen range 13.10.10.0/24 peer-group my-peer-group4 peer-filter my-peer-filter
+   neighbor TEST peer group
+   neighbor TEST ttl maximum-hops 42
    neighbor test-link-bandwidth1 peer group
    neighbor test-link-bandwidth1 ttl maximum-hops 1
    neighbor test-link-bandwidth1 link-bandwidth default 100G

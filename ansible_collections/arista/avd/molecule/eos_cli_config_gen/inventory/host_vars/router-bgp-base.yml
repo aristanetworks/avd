@@ -59,6 +59,8 @@ router_bgp:
       passive: true
     - name: test-session-tracker
       session_tracker: ST2
+    - name: TEST
+      ttl_maximum_hops: 42
   aggregate_addresses:
     - prefix: 1.1.1.0/24
       advertise_only: true
