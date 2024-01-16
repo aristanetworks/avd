@@ -20858,6 +20858,34 @@
                   ]
                 },
                 "title": "Static Peers"
+              },
+              "keep_alive": {
+                "type": "object",
+                "properties": {
+                  "auto": {
+                    "type": "boolean",
+                    "description": "Adaptive keepalive and feedback interval.\nSet this to true to enable it.",
+                    "title": "Auto"
+                  },
+                  "interval": {
+                    "type": "integer",
+                    "description": "Interval in milliseconds.",
+                    "minimum": 50,
+                    "maximum": 60000,
+                    "title": "Interval"
+                  },
+                  "interval_count": {
+                    "type": "integer",
+                    "minimum": 2,
+                    "maximum": 100,
+                    "title": "Interval Count"
+                  }
+                },
+                "additionalProperties": false,
+                "patternProperties": {
+                  "^_.+$": {}
+                },
+                "title": "Keep Alive"
               }
             },
             "additionalProperties": false,
