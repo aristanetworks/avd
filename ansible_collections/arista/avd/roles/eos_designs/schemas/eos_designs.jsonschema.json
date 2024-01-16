@@ -819,6 +819,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
@@ -1158,6 +1165,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
@@ -1497,6 +1511,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
@@ -1836,6 +1857,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
@@ -2175,6 +2203,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
@@ -2514,6 +2549,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
@@ -2853,6 +2895,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
@@ -3202,6 +3251,13 @@
                 "session_tracker": {
                   "type": "string",
                   "title": "Session Tracker"
+                },
+                "ttl_maximum_hops": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 254,
+                  "description": "Maximum number of hops.",
+                  "title": "TTL Maximum Hops"
                 }
               },
               "additionalProperties": false,
