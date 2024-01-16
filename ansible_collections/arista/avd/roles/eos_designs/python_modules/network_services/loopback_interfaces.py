@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get, get_item
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import append_if_not_duplicate, get
 
 from .utils import UtilsMixin
 
@@ -31,42 +31,16 @@ class LoopbackInterfacesMixin(UtilsMixin):
         loopback_interfaces = []
         for tenant in self._filtered_tenants:
             for vrf in tenant["vrfs"]:
-                if (loopback := get(vrf, "vtep_diagnostic.loopback")) is None:
-                    continue
+                if (loopback_interface := self._get_vtep_diagnostic_loopback_for_vrf(vrf)) is not None:
+                    append_if_not_duplicate(
+                        list_of_dicts=loopback_interfaces,
+                        primary_key="name",
+                        new_dict=loopback_interface,
+                        context="VTEP Diagnostic Loopback Interfaces",
+                        context_keys=["name", "vrf", "tenant"],
+                        ignore_keys={"tenant"},
+                    )
 
-                if (loopback_ipv4_pool := get(vrf, "vtep_diagnostic.loopback_ip_range")) is None:
-                    if (pod_name := self.shared_utils.pod_name) is None:
-                        # Skip this vrf since we have no loopback_ip_range and pod_name
-                        continue
-
-                    if (loopback_ip_pools := get(vrf, "vtep_diagnostic.loopback_ip_pools")) is None:
-                        # Skip this vrf since we have no pools either
-                        continue
-
-                    if (loopback_ipv4_pool := get_item(loopback_ip_pools, "pod", pod_name, default={}).get("ipv4_pool")) is None:
-                        # Skip this vrf since we cannot find our pod_name in the pools or the pool is missing the ipv4_pool
-                        continue
-
-                # If we ended up here, it means we have a loopback_ipv4_pool set
-                interface_name = f"Loopback{loopback}"
-                loopback_interface = {
-                    "name": interface_name,
-                    "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
-                    "shutdown": False,
-                    "vrf": vrf["name"],
-                    "ip_address": f"{self.shared_utils.ip_addressing.vrf_loopback_ip(loopback_ipv4_pool)}/32",
-                }
-                append_if_not_duplicate(
-                    list_of_dicts=loopback_interfaces,
-                    primary_key="name",
-                    new_dict=loopback_interface,
-                    context="VTEP Diagnostic Loopback Interfaces",
-                    context_keys=["name", "vrf", "tenant"],
-                    ignore_keys={"tenant"},
-                )
-
-        for tenant in self._filtered_tenants:
-            for vrf in tenant["vrfs"]:
                 # The loopback_interfaces have already been filtered in _filtered_tenants
                 # to only contain entries with our hostname
                 for loopback_interface in vrf["loopback_interfaces"]:

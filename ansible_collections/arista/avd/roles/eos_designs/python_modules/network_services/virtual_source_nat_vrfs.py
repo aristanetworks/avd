@@ -23,27 +23,20 @@ class VirtualSourceNatVrfsMixin(UtilsMixin):
         Return structured config for virtual_source_nat_vrfs
 
         Only used by VTEPs with L2 and L3 services
-        Using data from _loopback_interfaces to avoid duplicating logic
         """
         if not (self.shared_utils.overlay_vtep and self.shared_utils.network_services_l2 and self.shared_utils.network_services_l3):
             return None
 
-        if (loopback_interfaces := self.loopback_interfaces) is None:
-            return None
-
         virtual_source_nat_vrfs = []
-        for loopback_interface in loopback_interfaces:
-            vrf_exists = False
-            for vrf in virtual_source_nat_vrfs:
-                if loopback_interface["vrf"] == vrf["name"]:
-                    vrf_exists = True
-            if not vrf_exists:
-                virtual_source_nat_vrfs.append(
-                    {
-                        "name": loopback_interface["vrf"],
-                        "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0],
-                    }
-                )
+        for tenant in self._filtered_tenants:
+            for vrf in tenant["vrfs"]:
+                if (loopback_interface := self._get_vtep_diagnostic_loopback_for_vrf(vrf)) is not None:
+                    virtual_source_nat_vrfs.append(
+                        {
+                            "name": loopback_interface["vrf"],
+                            "ip_address": loopback_interface["ip_address"].split("/", maxsplit=1)[0],
+                        }
+                    )
 
         if virtual_source_nat_vrfs:
             return virtual_source_nat_vrfs
