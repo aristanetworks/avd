@@ -47,12 +47,8 @@ interface {{ vlan_interface.name }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     if vlan_interface.ip_verify is arista.avd.defined %}
-{%         if vlan_interface.ip_verify.unicast_source is arista.avd.defined %}
-{%             if vlan_interface.ip_verify.unicast_source.reachable_via is arista.avd.defined %}
+{%     if vlan_interface.ip_verify.unicast_source.reachable_via is arista.avd.defined %}
    ip verify unicast source reachable-via {{ vlan_interface.ip_verify.unicast_source.reachable_via }}
-{%             endif %}
-{%         endif %}
 {%     endif %}
 {%     if vlan_interface.ip_directed_broadcast is arista.avd.defined(true) %}
    ip directed-broadcast
