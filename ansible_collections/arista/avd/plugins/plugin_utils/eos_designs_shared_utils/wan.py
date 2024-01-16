@@ -42,6 +42,15 @@ class WanMixin:
         return wan_role
 
     @cached_property
+    def wan_listen_ranges(self) -> list:
+        return get(
+            self.bgp_peer_groups["wan_overlay_peers"],
+            "listen_range_prefixes",
+            required=True,
+            org_key="bgp_peer_groups.wan_overlay_peers.listen_range_prefixes",
+        )
+
+    @cached_property
     def cv_pathfinder_role(self: SharedUtils) -> str | None:
         if self.underlay_router is False or self.wan_mode != "cv-pathfinder":
             return None

@@ -50,6 +50,8 @@ default_node_types:
 wan_edge:
   defaults:
     loopback_ipv4_pool: 192.168.42.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
   nodes:
     - name: cv-pathfinder-edge
       cv_pathfinder_region: AVD_Land_East
@@ -65,11 +67,17 @@ wan_edge:
           wan_carrier: Colt
           wan_circuit_id: 10555
           ip: 172.15.5.5/31
+        - name: Ethernet3
+          wan_carrier: Comcast-5G
+          wan_circuit_id: AF830
+          ip: 172.20.20.20/31
           connected_to_pathfinder: False
 
 wan_transit:
   defaults:
     loopback_ipv4_pool: 192.168.43.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA, TenantB]
   nodes:
     - name: cv-pathfinder-transit
       cv_pathfinder_region: AVD_Land_West
@@ -135,6 +143,8 @@ wan_path_groups:
     id: 101
   - name: LTE
     id: 102
+  - name: Equinix
+    id: 103
 
 wan_carriers:
   - name: Comcast
@@ -153,3 +163,157 @@ wan_carriers:
     path_group: MPLS
   - name: ATT-MPLS
     path_group: MPLS
+  - name: Comcast-5G
+    path_group: LTE
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: PROD
+        vrf_id: 42
+      - name: IT
+        vrf_id: 100
+  - name: TenantB
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: TRANSIT
+        vrf_id: 66
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AVT-POLICY
+    - name: PROD
+      policy: PROD-AVT-POLICY
+    # Testing reusing the same policy as default VRF
+    - name: IT
+      policy: DEFAULT-AVT-POLICY
+    # Testing a VRF only on transit and not edge
+    - name: TRANSIT
+      policy: TRANSIT-AVT-POLICY
+  policies:
+    - name: PROD-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+            preference: preferred
+          - names: [MPLS]
+            preference: alternate
+      application_virtual_topologies:
+        - application_profile: VOICE
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+          id: 2
+        - application_profile: VIDEO
+          path_groups:
+            - names: [MPLS, LTE]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+          id: 4
+    - name: DEFAULT-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          # No prefence to check the default.
+          - names: [INET, Equinix]
+          - names: [MPLS]
+            preference: 42
+      application_virtual_topologies:
+        - application_profile: VIDEO
+          path_groups:
+            - names: [MPLS, INET]
+              preference: preferred
+          id: 3
+    - name: TRANSIT-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET]
+            preference: preferred
+          - names: [MPLS]
+            preference: alternate
+      application_virtual_topologies:
+        - application_profile: VOICE
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+          id: 42
+
+application_traffic_recognition:
+  application_profiles:
+    - name: VIDEO
+      # Testing categories filtering
+      categories:
+        - name: VIDEO1
+      applications:
+        # Testing applications in application-profiles filtering
+        - name: CUSTOM-APPLICATION-1
+        # Builtin application that should not raise
+        - name: skype
+    - name: IT
+    - name: VOICE
+      applications:
+        # Testing applications in application-profiles filtering
+        - name: CUSTOM-VOICE-APPLICATION
+    # This should not be rendered in any device
+    - name: NOT-IN-ANY-POLICY
+  categories:
+    # This should not be rendered in any device
+    - name: NOT-IN-ANY-PROFILE
+    - name: VIDEO1
+      applications:
+        # Testing applications in categories filtering
+        - name: CUSTOM-APPLICATION-2
+        # Builtin application that should not raise
+        - name: microsoft-teams
+  applications:
+    ipv4_applications:
+      # This should not be rendered in any device
+      - name: NOT-IN-ANY-PROFILE-NOR-CATEGORY
+      - name: CUSTOM-APPLICATION-1
+        protocols: [tcp]
+        # Testing filtering of prefixes
+        src_prefix_set_name: CUSTOM-SRC-PREFIX-1
+        dest_prefix_set_name: CUSTOM-DEST-PREFIX-1
+      - name: CUSTOM-APPLICATION-2
+        protocols: [tcp]
+        tcp_src_port_set_name: TCP-SRC-2
+        tcp_dest_port_set_name: TCP-DEST-2
+      - name: CUSTOM-voice-APPLICATION
+        protocols: [udp]
+        udp_src_port_set_name: UDP-SRC-VOICE
+        udp_dest_port_set_name: UDP-DEST-VOICE
+  field_sets:
+    ipv4_prefixes:
+      # This should not be rendered in any device
+      - name: NOT-IN-ANY-APPLICATION
+      - name: CUSTOM-SRC-PREFIX-1
+        prefix_values:
+          - 42.42.42.0/24
+      - name: CUSTOM-DEST-PREFIX-1
+        prefix_values:
+          - 6.6.6.0/24
+    l4_ports:
+      # This should not be rendered in any device
+      - name: NOT-IN-ANY-APPLICATION
+      - name: TCP-SRC-2
+        port_values:
+          - 42
+      - name: TCP-DEST-2
+        port_values:
+          - 666
+          - 777
+      - name: UDP-SRC-VOICE
+        port_values:
+          - 42000-42999
+      - name: UDP-DEST-VOICE
+        port_values:
+          - 30000-30100
+          - 31000-31100
