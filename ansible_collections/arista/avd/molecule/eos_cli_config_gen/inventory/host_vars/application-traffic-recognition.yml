@@ -34,6 +34,11 @@ application_traffic_recognition:
       - name: dest_port_set2
         port_values:
           - 3300-3350
+      - name: ordering-test
+        port_values:
+          - 666
+          - 101-103
+          - 650
       - name: empty-l4-ports
     ipv4_prefixes:
       - name: src_prefix_set1
@@ -50,6 +55,11 @@ application_traffic_recognition:
       - name: dest_prefix_set2
         prefix_values:
           - 4.4.4.0/24
+      - name: order-test
+        prefix_values:
+          - 192.168.42.0/24
+          - 6.6.6.6/32
+          - 192.168.43.0/24
       - name: empty-ipv4-prefixes
   applications:
     ipv4_applications:

@@ -93,6 +93,7 @@ interface Management1
 | dest_port_set1 | 2300-2350 |
 | dest_port_set2 | 3300-3350 |
 | empty-l4-ports |  |
+| ordering-test | 101-103, 650, 666 |
 | src_port_set1 | 2400-2500, 2900-3000 |
 | src_port_set2 | 5700-5800, 6500-6600 |
 
@@ -103,6 +104,7 @@ interface Management1
 | dest_prefix_set1 | 2.3.4.0/24 |
 | dest_prefix_set2 | 4.4.4.0/24 |
 | empty-ipv4-prefixes |  |
+| order-test | 6.6.6.6/32<br>192.168.42.0/24<br>192.168.43.0/24 |
 | src_prefix_set1 | 1.2.3.0/24<br>1.2.5.0/24 |
 | src_prefix_set2 | 2.2.2.0/24<br>3.3.3.0/24 |
 
@@ -167,6 +169,9 @@ application traffic recognition
    !
    field-set ipv4 prefix empty-ipv4-prefixes
    !
+   field-set ipv4 prefix order-test
+      192.168.42.0/24 192.168.43.0/24 6.6.6.6/32
+   !
    field-set ipv4 prefix src_prefix_set1
       1.2.3.0/24 1.2.5.0/24
    !
@@ -180,6 +185,9 @@ application traffic recognition
       3300-3350
    !
    field-set l4-port empty-l4-ports
+   !
+   field-set l4-port ordering-test
+      101-103, 650, 666
    !
    field-set l4-port src_port_set1
       2400-2500, 2900-3000

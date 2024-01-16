@@ -81,7 +81,7 @@ application traffic recognition
    !
    field-set ipv4 prefix {{ prefix_set.name }}
 {%                 if prefix_set.prefix_values is arista.avd.defined %}
-      {{ prefix_set.prefix_values | arista.avd.natural_sort | join(" ") }}
+      {{ prefix_set.prefix_values | arista.avd.default([]) | sort | join(" ") }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
